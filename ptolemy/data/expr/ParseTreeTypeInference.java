@@ -41,8 +41,10 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeTypeInference
+
 /**
    This class visits parse trees and infers a type for each node in the
    parse tree.  This type is stored in the parse tree.
@@ -54,9 +56,7 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Yellow (neuendor)
    @see ptolemy.data.expr.ASTPtRootNode
 */
-
 public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -65,8 +65,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @return The result of evaluation.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    public Type inferTypes(ASTPtRootNode node)
-            throws IllegalActionException {
+    public Type inferTypes(ASTPtRootNode node) throws IllegalActionException {
         node.visit(this);
         return _inferredChildType;
     }
@@ -80,7 +79,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *   evaluation.
      */
     public Type inferTypes(ASTPtRootNode node, ParserScope scope)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _scope = scope;
         node.visit(this);
         _scope = null;
@@ -93,11 +92,12 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
-        _setType(node, new ArrayType((Type)
-                         TypeLattice.lattice().leastUpperBound(childTypes)));
+        _setType(node,
+            new ArrayType(
+                (Type) TypeLattice.lattice().leastUpperBound(childTypes)));
     }
 
     /** Set the type of the given node to be the type that is the
@@ -106,12 +106,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
         // FIXME: not consistent with expression evaluator.
-        _setType(node,
-                (Type)TypeLattice.lattice().leastUpperBound(childTypes));
+        _setType(node, (Type) TypeLattice.lattice().leastUpperBound(childTypes));
     }
 
     /** Set the type of the given node to be the return type of the
@@ -120,69 +119,76 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
         String functionName = node.getFunctionName();
 
         // Get the child types.
         Type[] childTypes = new Type[argCount];
+
         for (int i = 0; i < argCount; i++) {
             childTypes[i] = _inferChild(node, i + 1);
+
             if (childTypes[i] == null) {
-                throw new RuntimeException("node " +
-                        node + " has null type.");
+                throw new RuntimeException("node " + node + " has null type.");
             }
         }
 
         Type baseType = null;
-        if (_scope != null && functionName != null) {
+
+        if ((_scope != null) && (functionName != null)) {
             baseType = _scope.getType(functionName);
         }
 
-        if (baseType != null || functionName == null) {
+        if ((baseType != null) || (functionName == null)) {
             baseType = _inferChild(node, 0);
 
             // Handle as an array or matrix index into a named
             // variable reference.
             if (baseType instanceof FunctionType) {
-                _setType(node, ((FunctionType)baseType).getReturnType());
+                _setType(node, ((FunctionType) baseType).getReturnType());
                 return;
             } else if (argCount == 1) {
                 if (baseType instanceof ArrayType) {
-                    _setType(node, ((ArrayType)baseType).getElementType());
+                    _setType(node, ((ArrayType) baseType).getElementType());
                     return;
                 } else {
-                    _assert(true, node, "Cannot use array "
-                            + "indexing on '" + node.getFunctionName()
-                            + "' because it does not have an array type.");
+                    _assert(true, node,
+                        "Cannot use array " + "indexing on '"
+                        + node.getFunctionName()
+                        + "' because it does not have an array type.");
                 }
             } else if (argCount == 2) {
                 if (baseType instanceof UnsizedMatrixType) {
-                    _setType(node, ((UnsizedMatrixType) baseType).getElementType());
+                    _setType(node,
+                        ((UnsizedMatrixType) baseType).getElementType());
                     return;
                 } else {
-                    _assert(true, node, "Cannot use matrix "
-                            + "indexing on '" + node.getFunctionName()
-                            + "' because it does not have a matrix type.");
+                    _assert(true, node,
+                        "Cannot use matrix " + "indexing on '"
+                        + node.getFunctionName()
+                        + "' because it does not have a matrix type.");
                 }
             }
+
             throw new IllegalActionException("Wrong number of indices "
-                    + "when referencing " + functionName);
+                + "when referencing " + functionName);
         }
 
-
         // Psuedo-temporary hack for casts....
-        if (functionName.compareTo("cast") == 0 && argCount == 2) {
-            ASTPtRootNode castTypeNode =
-                ((ASTPtRootNode)node.jjtGetChild(0 + 1));
+        if ((functionName.compareTo("cast") == 0) && (argCount == 2)) {
+            ASTPtRootNode castTypeNode = ((ASTPtRootNode) node.jjtGetChild(0
+                    + 1));
             ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
+
             try {
-                ptolemy.data.Token t =
-                    parseTreeEvaluator.evaluateParseTree(castTypeNode, _scope);
+                ptolemy.data.Token t = parseTreeEvaluator.evaluateParseTree(castTypeNode,
+                        _scope);
                 _setType(node, t.getType());
             } catch (IllegalActionException ex) {
                 _setType(node, childTypes[0]);
             }
+
             return;
 
             // Note: We used to just do this, but in some case is it
@@ -206,17 +212,18 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         // Otherwise, try to reflect the method name.
-
         CachedMethod cachedMethod;
+
         try {
-            cachedMethod = CachedMethod.findMethod(functionName,
-                    childTypes, CachedMethod.FUNCTION);
+            cachedMethod = CachedMethod.findMethod(functionName, childTypes,
+                    CachedMethod.FUNCTION);
         } catch (Exception ex) {
             // Deal with what happens if the method is not found.
             // FIXME: hopefully this is monotonic???
             _setType(node, BaseType.UNKNOWN);
             return;
         }
+
         if (cachedMethod.isValid()) {
             Type type = cachedMethod.getReturnType();
             _setType(node, type);
@@ -224,6 +231,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             // If we reach this point it means the function was not found on
             // the search path.
             StringBuffer buffer = new StringBuffer();
+
             for (int i = 0; i < childTypes.length; i++) {
                 if (i == 0) {
                     buffer.append(childTypes[i].toString());
@@ -231,8 +239,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     buffer.append(", " + childTypes[i].toString());
                 }
             }
-            throw new IllegalActionException("No matching function " +
-                    node.getFunctionName() + "( " + buffer + " ).");
+
+            throw new IllegalActionException("No matching function "
+                + node.getFunctionName() + "( " + buffer + " ).");
         }
     }
 
@@ -245,44 +254,52 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         final Map map = new HashMap();
+
         for (int i = 0; i < node._argTypes.length; i++) {
             map.put(node.getArgumentNameList().get(i),
-                    node.getArgumentTypes()[i]);
+                node.getArgumentTypes()[i]);
         }
+
         // Push the current scope.
         final ParserScope currentScope = _scope;
         ParserScope functionScope = new ParserScope() {
                 public ptolemy.data.Token get(String name) {
                     return null;
                 }
-                public Type getType(String name)
-                        throws IllegalActionException {
-                    Type type = (Type)map.get(name);
-                    if (type == null && currentScope != null) {
+
+                public Type getType(String name) throws IllegalActionException {
+                    Type type = (Type) map.get(name);
+
+                    if ((type == null) && (currentScope != null)) {
                         return currentScope.getType(name);
                     } else {
                         return type;
                     }
                 }
+
                 public InequalityTerm getTypeTerm(String name)
-                        throws IllegalActionException {
-                    Type type = (Type)map.get(name);
-                    if (type == null && currentScope != null) {
+                    throws IllegalActionException {
+                    Type type = (Type) map.get(name);
+
+                    if ((type == null) && (currentScope != null)) {
                         return currentScope.getTypeTerm(name);
                     } else {
                         return new TypeConstant(type);
                     }
                 }
+
                 public Set identifierSet() throws IllegalActionException {
                     Set set = currentScope.identifierSet();
                     set.addAll(map.keySet());
                     return set;
                 }
             };
+
         _scope = functionScope;
         node.getExpressionTree().visit(this);
+
         Type returnType = _inferredChildType;
         FunctionType type = new FunctionType(node._argTypes, returnType);
         _setType(node, type);
@@ -296,21 +313,20 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type conditionalType = _inferChild(node, 0);
+
         if (conditionalType != BaseType.BOOLEAN) {
             throw new IllegalActionException(
-                    "Functional-if must branch on a boolean, " +
-                    "but instead type was "
-                    + conditionalType);
+                "Functional-if must branch on a boolean, "
+                + "but instead type was " + conditionalType);
         }
 
         Type trueType = _inferChild(node, 1);
-        Type falseType =  _inferChild(node, 2);
+        Type falseType = _inferChild(node, 2);
 
         _setType(node,
-                (Type)TypeLattice.lattice().leastUpperBound(
-                        trueType, falseType));
+            (Type) TypeLattice.lattice().leastUpperBound(trueType, falseType));
     }
 
     /** Set the type of the given node to be the type of constant the
@@ -321,11 +337,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error
      *  occurs, or an identifier is not bound in the current scope.
      */
-    public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _setType(node,
-                    node.getToken().getType());
+            _setType(node, node.getToken().getType());
             return;
         }
 
@@ -333,6 +347,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
         if (_scope != null) {
             Type type = _scope.getType(name);
+
             if (type != null) {
                 _setType(node, type);
                 return;
@@ -345,8 +360,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             _setType(node, Constants.get(name).getType());
             return;
         }
-        throw new IllegalActionException(
-                "The ID " + name + " is undefined.");
+
+        throw new IllegalActionException("The ID " + name + " is undefined.");
     }
 
     /** Set the type of the given node to be boolean.
@@ -354,8 +369,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _inferAllChildren(node);
+
         // FIXME: check arguments are valid?
         _setType(node, BaseType.BOOLEAN);
     }
@@ -366,14 +382,12 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
-        Type elementType = (Type)
-            TypeLattice.lattice().leastUpperBound(childTypes);
+        Type elementType = (Type) TypeLattice.lattice().leastUpperBound(childTypes);
 
-        Type matrixType
-            = UnsizedMatrixType.getMatrixTypeForElementType(elementType);
+        Type matrixType = UnsizedMatrixType.getMatrixTypeForElementType(elementType);
         _setType(node, matrixType);
     }
 
@@ -383,22 +397,21 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
         // Handle indexing into a record.
-        if (childTypes.length == 1 &&
-                childTypes[0] instanceof RecordType) {
-            RecordType type = (RecordType)childTypes[0];
+        if ((childTypes.length == 1) && childTypes[0] instanceof RecordType) {
+            RecordType type = (RecordType) childTypes[0];
+
             if (type.labelSet().contains(node.getMethodName())) {
                 _setType(node, type.get(node.getMethodName()));
                 return;
             }
         }
 
-        CachedMethod cachedMethod =
-            CachedMethod.findMethod(node.getMethodName(),
-                    childTypes, CachedMethod.METHOD);
+        CachedMethod cachedMethod = CachedMethod.findMethod(node.getMethodName(),
+                childTypes, CachedMethod.METHOD);
 
         if (cachedMethod.isValid()) {
             Type type = cachedMethod.getReturnType();
@@ -407,6 +420,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             // If we reach this point it means the function was not found on
             // the search path.
             StringBuffer buffer = new StringBuffer();
+
             for (int i = 1; i < childTypes.length; i++) {
                 if (i == 1) {
                     buffer.append(childTypes[i].toString());
@@ -414,9 +428,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     buffer.append(", " + childTypes[i].toString());
                 }
             }
-            throw new IllegalActionException("No matching method " +
-                    childTypes[0].toString() + "." +
-                    node.getMethodName() + "( " + buffer + " ).");
+
+            throw new IllegalActionException("No matching method "
+                + childTypes[0].toString() + "." + node.getMethodName() + "( "
+                + buffer + " ).");
         }
     }
 
@@ -426,11 +441,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitPowerNode(ASTPtPowerNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
         // FIXME: Check that exponents are valid??
-
         Type baseType = childTypes[0];
         _setType(node, baseType);
     }
@@ -441,12 +455,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitProductNode(ASTPtProductNode node)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
-        _setType(node,
-                (Type)TypeLattice.lattice().leastUpperBound(childTypes));
+        _setType(node, (Type) TypeLattice.lattice().leastUpperBound(childTypes));
     }
 
     /** Set the type of the given node to be a record token that
@@ -457,15 +469,13 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
-        String[] names = (String[])node.getFieldNames().toArray(
-                new String[node.jjtGetNumChildren()]);
+        String[] names = (String[]) node.getFieldNames().toArray(new String[node
+                .jjtGetNumChildren()]);
 
-        _setType(node,
-                new RecordType(names, childTypes));
-
+        _setType(node, new RecordType(names, childTypes));
     }
 
     /** Set the type of the given node to be boolean.
@@ -473,8 +483,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         /* Type[] childTypes = */ _inferAllChildren(node);
+
         // FIXME: Check args are booleans?
         _setType(node, BaseType.BOOLEAN);
     }
@@ -485,8 +496,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitShiftNode(ASTPtShiftNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
+
         // FIXME: Check others are scalars?
         Type baseType = childTypes[0];
         _setType(node, baseType);
@@ -497,12 +509,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
-    public void visitSumNode(ASTPtSumNode node)
-            throws IllegalActionException {
+    public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
-        _setType(node,
-                (Type)TypeLattice.lattice().leastUpperBound(childTypes));
+        _setType(node, (Type) TypeLattice.lattice().leastUpperBound(childTypes));
     }
 
     /** Set the type of the given node to be the type of the
@@ -511,7 +521,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error occurs.
      */
     public void visitUnaryNode(ASTPtUnaryNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
         Type baseType = childTypes[0];
         _setType(node, baseType);
@@ -535,10 +545,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     /** Return the type of the identifier with the given name.
      *  @exception IllegalActionException If the identifier is undefined.
      */
-    protected Type _getTypeForName(String name)
-            throws IllegalActionException {
+    protected Type _getTypeForName(String name) throws IllegalActionException {
         if (_scope != null) {
             Type type = _scope.getType(name);
+
             if (type != null) {
                 return type;
             }
@@ -549,8 +559,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             // A named constant that is recognized by the parser.
             return Constants.get(name).getType();
         }
-        throw new IllegalActionException(
-                "The ID " + name + " is undefined.");
+
+        throw new IllegalActionException("The ID " + name + " is undefined.");
+
         //        return BaseType.GENERAL;
     }
 
@@ -559,18 +570,23 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  value to be determined.
      */
     protected Type[] _inferAllChildren(ASTPtRootNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Type[] types = new Type[node.jjtGetNumChildren()];
         int numChildren = node.jjtGetNumChildren();
+
         for (int i = 0; i < numChildren; i++) {
             _inferChild(node, i);
+
             Type type = _inferredChildType;
+
             if (type == null) {
                 throw new RuntimeException("node " + node.jjtGetChild(i)
-                        + " has no type.");
+                    + " has no type.");
             }
+
             types[i] = type;
         }
+
         return types;
     }
 
@@ -578,16 +594,15 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  This is usually called while visiting the given node.
      */
     protected Type _inferChild(ASTPtRootNode node, int i)
-            throws IllegalActionException {
-        ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+        throws IllegalActionException {
+        ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
         child.visit(this);
         return _inferredChildType;
     }
 
     /** Test if the given identifier is valid.
      */
-    protected boolean _isValidName(String name)
-            throws IllegalActionException {
+    protected boolean _isValidName(String name) throws IllegalActionException {
         if (_scope != null) {
             try {
                 return (_scope.getType(name) != null);

@@ -29,6 +29,7 @@ import diva.canvas.interactor.DragInteractor;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.canvas.interactor.SelectionModel;
 
+
 /**
  * An interactor for nodes.
  *
@@ -38,7 +39,6 @@ import diva.canvas.interactor.SelectionModel;
  * @Pt.AcceptedRating Red
  */
 public class NodeInteractor extends SelectionInteractor {
-
     /** The interactor that drags nodes
      */
     private DragInteractor _nodeDragInteractor;
@@ -51,7 +51,7 @@ public class NodeInteractor extends SelectionInteractor {
     /** Create a new node interactor that belongs to the given
      * controller.
      */
-    public NodeInteractor (GraphController controller) {
+    public NodeInteractor(GraphController controller) {
         super();
         _controller = controller;
         setDragInteractor(new NodeDragInteractor(controller));
@@ -60,14 +60,14 @@ public class NodeInteractor extends SelectionInteractor {
     /** Create a new node interactor that belongs to the given
      * controller and that uses the given selection model
      */
-    public NodeInteractor (GraphController controller, SelectionModel sm) {
+    public NodeInteractor(GraphController controller, SelectionModel sm) {
         this(controller);
         super.setSelectionModel(sm);
     }
 
     /** Get the interactor that drags nodes
      */
-    public DragInteractor getDragInteractor () {
+    public DragInteractor getDragInteractor() {
         return _nodeDragInteractor;
     }
 
@@ -79,15 +79,15 @@ public class NodeInteractor extends SelectionInteractor {
 
     /** Set the interactor that drags nodes
      */
-    public void setDragInteractor (DragInteractor i) {
+    public void setDragInteractor(DragInteractor i) {
         if (_nodeDragInteractor != null) {
             removeInteractor(_nodeDragInteractor);
         }
+
         if (i != null) {
             addInteractor(i);
         }
+
         _nodeDragInteractor = i;
     }
 }
-
-

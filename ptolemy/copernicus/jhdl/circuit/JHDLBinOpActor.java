@@ -24,30 +24,31 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
-import byucc.jhdl.base.HWSystem;
-import byucc.jhdl.base.Wire;
 import byucc.jhdl.Logic.Logic;
 import byucc.jhdl.Logic.Modules.arrayMult;
 
-import java.util.*;
+import byucc.jhdl.base.HWSystem;
+import byucc.jhdl.base.Wire;
+
+import soot.*;
+
+import soot.jimple.*;
 
 import ptolemy.actor.*;
-
-import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.copernicus.jhdl.soot.*;
-
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.*;
-import soot.jimple.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * This class represents a binary operator JHDL circuit. This class
  * can generate the following JHDL circuits: ADD, SUB, AND, OR, XOR,
@@ -62,9 +63,8 @@ import soot.jimple.*;
  @Pt.AcceptedRating Red (cxh)
 */
 public class JHDLBinOpActor extends JHDLAtomicActor {
-
     JHDLBinOpActor(CompositeEntity container, int operation)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container);
         input1 = new JHDLIOPort(this, "input1");
         input2 = new JHDLIOPort(this, "input2");
@@ -78,20 +78,23 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
 
     public boolean resolve() {
         int width;
-        System.out.println("Resolving "+getName());
+        System.out.println("Resolving " + getName());
+
         if (input1.isResolved() && input2.isResolved()) {
             if (input1.getSignalWidth() != input2.getSignalWidth()) {
-                System.out.println("Binop input1/input2 signal mismatch: "+
-                        input1.getSignalWidth() + " vs. "+
-                        input2.getSignalWidth());
+                System.out.println("Binop input1/input2 signal mismatch: "
+                    + input1.getSignalWidth() + " vs. "
+                    + input2.getSignalWidth());
                 return false;
             }
+
             if (output.isResolved()) {
                 output.resolveOutside();
                 return true;
             }
         } else {
             width = Signal.UNRESOLVED;
+
             if (input1.isResolved()) {
                 input1.resolveOutside();
                 input2.setSignalWidth(input1.getSignalWidth());
@@ -117,42 +120,48 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
         Wire outputWire = output.getOutsideRelation().getJHDLWire();
         Wire binOpWire = null;
 
-        switch(_operation) {
+        switch (_operation) {
         case ADD:
-            binOpWire = cell.add(input1Wire,input2Wire);
+            binOpWire = cell.add(input1Wire, input2Wire);
             break;
+
         case SUB:
-            binOpWire = cell.sub(input1Wire,input2Wire);
+            binOpWire = cell.sub(input1Wire, input2Wire);
             break;
+
         case AND:
-            binOpWire = cell.and(input1Wire,input2Wire);
+            binOpWire = cell.and(input1Wire, input2Wire);
             break;
+
         case OR:
-            binOpWire = cell.or(input1Wire,input2Wire);
+            binOpWire = cell.or(input1Wire, input2Wire);
             break;
+
         case XOR:
-            binOpWire = cell.xor(input1Wire,input2Wire);
+            binOpWire = cell.xor(input1Wire, input2Wire);
             break;
+
         case MULT:
+
             Wire allbits = cell.wire(64);
-            new arrayMult(cell,       // parent
-                    input1Wire,       // x
-                    input2Wire,       // y
-                    null,        // clk_en
-                    allbits,     // pout
-                    true,        // signed
-                    0);          // pipedepth
-            binOpWire = allbits.range(31,0);
+            new arrayMult(cell, // parent
+                input1Wire, // x
+                input2Wire, // y
+                null, // clk_en
+                allbits, // pout
+                true, // signed
+                0); // pipedepth
+            binOpWire = allbits.range(31, 0);
             break;
         }
-        cell.buf_o (binOpWire,outputWire);
-        System.out.println("Building cell with wire "+binOpWire);
 
+        cell.buf_o(binOpWire, outputWire);
+        System.out.println("Building cell with wire " + binOpWire);
     }
 
     protected String _description(int detail, int indent, int bracket) {
-        return super._description(detail,indent,bracket) + " { OP="
-            +_operation+"}";
+        return super._description(detail, indent, bracket) + " { OP="
+        + _operation + "}";
     }
 
     public static final int ADD = 1;
@@ -162,7 +171,5 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
     public static final int XOR = 5;
     public static final int MULT = 6;
     public static final int CONDITION = 7;
-
     protected int _operation;
 }
-

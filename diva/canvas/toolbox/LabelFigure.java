@@ -45,6 +45,7 @@ import diva.canvas.CanvasUtilities;
 import diva.canvas.TransformContext;
 import diva.util.java2d.ShapeUtilities;
 
+
 /**
  * A figure which draws a string. If the string contains newlines,
  * then it will be broken up into multiple lines.
@@ -57,7 +58,6 @@ import diva.util.java2d.ShapeUtilities;
  * @version $Id$
  */
 public class LabelFigure extends AbstractFigure {
-
     /** The anchor on the label. This must be one of the
      * constants defined in SwingConstants.
      */
@@ -106,16 +106,12 @@ public class LabelFigure extends AbstractFigure {
 
     /** The order of anchors used by the autoanchor method.
      */
-    private static int _anchors[] = {
-        SwingConstants.SOUTH,
-        SwingConstants.NORTH,
-        SwingConstants.WEST,
-        SwingConstants.EAST,
-        SwingConstants.SOUTH_WEST,
-        SwingConstants.SOUTH_EAST,
-        SwingConstants.NORTH_WEST,
-        SwingConstants.NORTH_EAST
-    };
+    private static int[] _anchors = {
+            SwingConstants.SOUTH, SwingConstants.NORTH, SwingConstants.WEST,
+            SwingConstants.EAST, SwingConstants.SOUTH_WEST,
+            SwingConstants.SOUTH_EAST, SwingConstants.NORTH_WEST,
+            SwingConstants.NORTH_EAST
+        };
 
     /**
      * Construct an empty label figure.
@@ -172,17 +168,19 @@ public class LabelFigure extends AbstractFigure {
      * the anchor is not changed. The order of preference is the
      * current anchor, the four edges, and the four corners.
      */
-    public void autoAnchor (Shape s) {
+    public void autoAnchor(Shape s) {
         Rectangle2D.Double r = new Rectangle2D.Double();
         r.setRect(getBounds());
 
         // Try every anchor and if there's no overlap, use it
         Point2D location = getAnchorPoint();
+
         for (int i = 0; i < _anchors.length; i++) {
             Point2D pt = CanvasUtilities.getLocation(r, _anchors[i]);
             CanvasUtilities.translate(pt, _padding, _anchors[i]);
-            r.x += location.getX() - pt.getX();
-            r.y += location.getY() - pt.getY();
+            r.x += (location.getX() - pt.getX());
+            r.y += (location.getY() - pt.getY());
+
             if (!s.intersects(r)) {
                 //// System.out.println("Setting anchor to " + _anchors[i]);
                 setAnchor(_anchors[i]);
@@ -196,7 +194,7 @@ public class LabelFigure extends AbstractFigure {
      * will be one of the positioning constants defined in
      * javax.swing.SwingConstants.
      */
-    public int getAnchor () {
+    public int getAnchor() {
         return _anchor;
     }
 
@@ -205,26 +203,30 @@ public class LabelFigure extends AbstractFigure {
      * This method looks at the anchor and padding attributes to
      * figure out the point.
      */
-    public Point2D getAnchorPoint () {
+    public Point2D getAnchorPoint() {
         Rectangle2D bounds = getBounds();
         Point2D pt = CanvasUtilities.getLocation(bounds, _anchor);
+
         if (_anchor != SwingConstants.CENTER) {
             CanvasUtilities.translate(pt, _padding, _anchor);
         }
+
         return pt;
     }
 
     /**
      * Get the bounds of this string
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         if (_cachedBounds == null) {
             if (_shape == null) {
                 _update();
             }
+
             AffineTransform at = _transformContext.getTransform();
             _cachedBounds = ShapeUtilities.transformBounds(_bounds, at);
         }
+
         return _cachedBounds;
     }
 
@@ -247,14 +249,14 @@ public class LabelFigure extends AbstractFigure {
     /** Return the origin, which is the anchor point.
      *  @return The anchor point.
      */
-    public Point2D getOrigin () {
+    public Point2D getOrigin() {
         return getAnchorPoint();
     }
 
     /**
      * Get the padding around the text.
      */
-    public double getPadding () {
+    public double getPadding() {
         return _padding;
     }
 
@@ -266,7 +268,7 @@ public class LabelFigure extends AbstractFigure {
      * object anyway, and not have to click on an actual
      * filled pixel).
      */
-    public Shape getShape () {
+    public Shape getShape() {
         return getBounds();
     }
 
@@ -280,13 +282,15 @@ public class LabelFigure extends AbstractFigure {
     /**
      * Paint the figure.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
         }
+
         if (_cachedBounds == null) {
             getBounds();
         }
+
         if (_string != null) {
             // Push the context
             _transformContext.push(g);
@@ -311,19 +315,18 @@ public class LabelFigure extends AbstractFigure {
      * the text relative to the anchor point is shifted by the
      * padding attribute.
      */
-    public void setAnchor (int anchor) {
+    public void setAnchor(int anchor) {
         // Optimize if the figure is not yet painted
         if (_bounds == null) {
             _anchor = anchor;
         } else {
             Point2D oldpt = getAnchorPoint();
             _anchor = anchor;
+
             Point2D newpt = getAnchorPoint();
 
             repaint();
-            translate(
-                    oldpt.getX() - newpt.getX(),
-                    oldpt.getY() - newpt.getY());
+            translate(oldpt.getX() - newpt.getX(), oldpt.getY() - newpt.getY());
             repaint();
         }
     }
@@ -332,7 +335,7 @@ public class LabelFigure extends AbstractFigure {
      * Set the fill paint that this shape
      * is drawn with.
      */
-    public void setFillPaint (Paint p) {
+    public void setFillPaint(Paint p) {
         _fillPaint = p;
         repaint();
     }
@@ -340,7 +343,7 @@ public class LabelFigure extends AbstractFigure {
     /**
      * Set the font.
      */
-    public void setFont (Font f) {
+    public void setFont(Font f) {
         if (_cachedBounds == null) {
             _font = f;
         } else {
@@ -348,6 +351,7 @@ public class LabelFigure extends AbstractFigure {
             Point2D pt = getAnchorPoint();
             _font = f;
             _update();
+
             // Move it back
             translateTo(pt);
         }
@@ -362,7 +366,7 @@ public class LabelFigure extends AbstractFigure {
      * padding must not be set to zero if automatic anchoring
      * is used.
      */
-    public void setPadding (double padding) {
+    public void setPadding(double padding) {
         _padding = padding;
         setAnchor(_anchor);
     }
@@ -379,6 +383,7 @@ public class LabelFigure extends AbstractFigure {
 
             // Remember the current anchor point
             Point2D pt = getAnchorPoint();
+
             // Modify the string
             _string = s;
             _update();
@@ -398,6 +403,7 @@ public class LabelFigure extends AbstractFigure {
      * to move it back again if this method being called to
      * (for example) rotate the label.
      */
+
     //public void setTransform (AffineTransform at) {
     //      repaint();
     //      _transform = at;
@@ -411,7 +417,7 @@ public class LabelFigure extends AbstractFigure {
      * to move it back again if this method being called to
      * (for example) rotate the label.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
         _cachedBounds = null;
         _transformContext.preConcatenate(at);
@@ -424,12 +430,13 @@ public class LabelFigure extends AbstractFigure {
      * a label in order to rotate or scale it, but don't want
      * the label to actually go anywhere.
      */
-    public void translateTo (double x, double y) {
+    public void translateTo(double x, double y) {
         // FIXME: this might not work in the presence of
         // scaling. If not, modify to preconcatenate instead
         repaint();
+
         Point2D pt = getAnchorPoint();
-        translate(x-pt.getX(),y-pt.getY());
+        translate(x - pt.getX(), y - pt.getY());
         repaint();
     }
 
@@ -439,18 +446,19 @@ public class LabelFigure extends AbstractFigure {
      * a label in order to rotate or scale it, but don't want
      * the label to actually go anywhere.
      */
-    public void translateTo (Point2D pt) {
+    public void translateTo(Point2D pt) {
         translateTo(pt.getX(), pt.getY());
     }
 
     /** Update the shape used to draw the figure.
      */
-    private void _update () {
+    private void _update() {
         // Generate font render context with a unit transform.
         // Since we are generating a shape and drawing that, it makes
         // no difference what the values of the flags are
-        FontRenderContext frc = new FontRenderContext(
-                new AffineTransform(), false, false);
+        FontRenderContext frc = new FontRenderContext(new AffineTransform(),
+                false, false);
+
         // Only a single line
         if (_string.indexOf('\n') < 0) {
             // Get the shape
@@ -470,27 +478,32 @@ public class LabelFigure extends AbstractFigure {
             double dy = _font.getMaxCharBounds(frc).getHeight();
             StringTokenizer lines = new StringTokenizer(_string, "\n", true);
             _shape = null;
+
             int count = 0;
 
             while (lines.hasMoreTokens()) {
                 String line = lines.nextToken();
+
                 if (line.equals("\n")) {
                     // Note that leading or trailing newlines are ignored.
                     count++;
                 } else if (!line.trim().equals("")) {
                     GlyphVector gv = _font.createGlyphVector(frc, line);
                     Shape s = gv.getOutline();
+
                     if (_shape == null) {
                         _shape = s;
                     } else {
                         // Translate each line and append to the previous shape
                         s = ShapeUtilities.translateModify(s, 0, count * dy);
-                        ((GeneralPath)_shape).append(s, false);
+                        ((GeneralPath) _shape).append(s, false);
                     }
                 }
             }
+
             _bounds = _shape.getBounds2D();
         }
+
         _cachedBounds = null;
     }
 }

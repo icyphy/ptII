@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.test;
 
 import ptolemy.actor.TypedIORelation;
@@ -36,6 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestTypedIORelation
+
 /**
    Class for testing TypedIORelation
    @author Christopher Hylands
@@ -45,7 +45,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestTypedIORelation extends TypedIORelation {
-
     public TestTypedIORelation() {
         super();
     }
@@ -59,7 +58,7 @@ public class TestTypedIORelation extends TypedIORelation {
      *  @exception IllegalActionException If the port is not an
      *   TypedIOPort.
      */
-    public void checkPort (Port port) throws IllegalActionException {
+    public void checkPort(Port port) throws IllegalActionException {
         _checkPort(port);
     }
 }

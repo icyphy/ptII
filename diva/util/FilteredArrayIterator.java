@@ -25,6 +25,7 @@
 */
 package diva.util;
 
+
 /**
  * An iterator over an array, in which elements are filtered
  * by some function. To make this efficient, the filter is specified
@@ -41,7 +42,6 @@ package diva.util;
  * @version $Id$
  */
 public abstract class FilteredArrayIterator extends NullArrayIterator {
-
     public FilteredArrayIterator(Object[] array) {
         super(array);
     }
@@ -59,9 +59,11 @@ public abstract class FilteredArrayIterator extends NullArrayIterator {
      */
     protected void advance() {
         _nextindex++;
-        while (_nextindex < _arraylen && !accept(_array[_nextindex])) {
+
+        while ((_nextindex < _arraylen) && !accept(_array[_nextindex])) {
             _nextindex++;
         }
+
         if (_nextindex == _arraylen) {
             _nextindex = -1;
         }

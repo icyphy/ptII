@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.tree;
 
 import java.awt.BorderLayout;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TreeTableau
+
 /**
    This class provides a tree view for ptolemy models.
 
@@ -59,16 +60,16 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (johnr)
 */
 public class TreeTableau extends Tableau {
-
     public TreeTableau(PtolemyEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
+
         if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                    "Cannot have a tree view of a model that is "
-                    + "not a CompositeEntity.");
+                "Cannot have a tree view of a model that is "
+                + "not a CompositeEntity.");
         }
     }
 
@@ -83,11 +84,12 @@ public class TreeTableau extends Tableau {
     public void setFrame(JFrame frame) throws IllegalActionException {
         if (!(frame instanceof TreeFrame)) {
             throw new IllegalActionException(this,
-                    "Frame for PlotTableau must be an instance of "
-                    + "PlotTableauFrame.");
+                "Frame for PlotTableau must be an instance of "
+                + "PlotTableauFrame.");
         }
+
         super.setFrame(frame);
-        ((TreeFrame)frame).setTableau(this);
+        ((TreeFrame) frame).setTableau(this);
     }
 
     /** Make this tableau visible by calling setVisible(true), and
@@ -98,17 +100,19 @@ public class TreeTableau extends Tableau {
      */
     public void show() {
         JFrame frame = getFrame();
+
         if (frame == null) {
-            PtolemyEffigy container = (PtolemyEffigy)getContainer();
-            CompositeEntity model = (CompositeEntity)container.getModel();
+            PtolemyEffigy container = (PtolemyEffigy) getContainer();
+            CompositeEntity model = (CompositeEntity) container.getModel();
 
             frame = new TreeFrame(model);
             frame.setBackground(BACKGROUND_COLOR);
+
             // Give a reasonable default size.
             size.setExpression("300x500");
-            ((TreeFrame)frame).setTableau(this);
+            ((TreeFrame) frame).setTableau(this);
             frame.pack();
-            ((TreeFrame)frame).centerOnScreen();
+            ((TreeFrame) frame).centerOnScreen();
             frame.setVisible(true);
 
             try {
@@ -117,12 +121,12 @@ public class TreeTableau extends Tableau {
                 throw new InternalErrorException(ex);
             }
         }
+
         super.show();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The background color.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
@@ -133,13 +137,13 @@ public class TreeTableau extends Tableau {
      *  entity.
      */
     public static class TreeFrame extends PtolemyFrame {
-
         /** Construct a TreeFrame containing a tree view of the specified
          *  composite entity.
          *  @param entity The composite entity to view as a tree.
          */
         public TreeFrame(CompositeEntity entity) {
             super(entity);
+
             PTree pane = new PTree(new FullTreeModel(entity));
             getContentPane().add(new JScrollPane(pane), BorderLayout.CENTER);
         }
@@ -161,7 +165,6 @@ public class TreeTableau extends Tableau {
     /** This is a factory that creates tree-view tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create an factory with the given name and container.
          *  @param container The container entity.
          *  @param name The name of the entity.
@@ -171,7 +174,7 @@ public class TreeTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -197,19 +200,21 @@ public class TreeTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a TreeTableau.
-                TreeTableau previous =
-                    (TreeTableau)effigy.getEntity("treeTableau");
+                TreeTableau previous = (TreeTableau) effigy.getEntity(
+                        "treeTableau");
 
                 if (previous != null) {
                     return previous;
                 } else {
-                    PtolemyEffigy ptEffigy = (PtolemyEffigy)effigy;
+                    PtolemyEffigy ptEffigy = (PtolemyEffigy) effigy;
                     NamedObj model = ptEffigy.getModel();
+
                     if (model instanceof CompositeEntity) {
                         return new TreeTableau(ptEffigy, "treeTableau");
                     }
                 }
             }
+
             return null;
         }
     }

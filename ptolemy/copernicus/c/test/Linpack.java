@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -61,11 +61,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
   unequal increments or equal increments not equal to 1.
   Jack Dongarra)
 */
-
 import java.util.Date;
 import java.util.Random;
 
-public class Linpack{
+
+public class Linpack {
     double mflops_result = 0.0;
     double residn_result = 0.0;
     double time_result = 0.0;
@@ -75,7 +75,7 @@ public class Linpack{
 
     public static void main(String[] args) {
         Linpack a = new Linpack();
-        a.run_benchmark(500, 500*2);
+        a.run_benchmark(500, 500 * 2);
 
         System.out.println(a.mflops_result);
         System.out.println(a.residn_result);
@@ -83,85 +83,97 @@ public class Linpack{
         System.out.println(a.eps_result);
     }
 
-    final double abs (double d) {
-        return (d >= 0) ? d : -d;
+    final double abs(double d) {
+        return (d >= 0) ? d : (-d);
     }
 
-    double second()
-    {
-        if (second_orig==-1) {
+    double second() {
+        if (second_orig == -1) {
             second_orig = System.currentTimeMillis();
         }
-        return (System.currentTimeMillis() - second_orig)/1000;
+
+        return (System.currentTimeMillis() - second_orig) / 1000;
     }
 
-    public void run_benchmark (int n, int ldaa)
-    {
-        int lda = ldaa+1;
-        double a[][] = new double[ldaa][lda];
-        double b[] = new double[ldaa];
-        double x[] = new double[ldaa];
-        double cray,ops,norma,normx;
-        double resid,time;
+    public void run_benchmark(int n, int ldaa) {
+        int lda = ldaa + 1;
+        double[][] a = new double[ldaa][lda];
+        double[] b = new double[ldaa];
+        double[] x = new double[ldaa];
+        double cray;
+        double ops;
+        double norma;
+        double normx;
+        double resid;
+        double time;
         double kf;
-        int i,ntimes,info,kflops;
-        int ipvt[] = new int[ldaa];
+        int i;
+        int ntimes;
+        int info;
+        int kflops;
+        int[] ipvt = new int[ldaa];
 
         cray = .056;
 
-        ops = (2.0e0*(n*n*n))/3.0 + 2.0*(n*n);
+        ops = ((2.0e0 * (n * n * n)) / 3.0) + (2.0 * (n * n));
 
         /* Norm a == max element. */
-        norma = matgen(a,lda,n,b);
+        norma = matgen(a, lda, n, b);
         time = second();
+
         /* Factor a.    */
-        info = dgefa(a,lda,n,ipvt);
+        info = dgefa(a, lda, n, ipvt);
+
         /* Solve ax=b. */
-        dgesl(a,lda,n,ipvt,b,0);
+        dgesl(a, lda, n, ipvt, b, 0);
         total = second() - time;
 
         for (i = 0; i < n; i++) {
             x[i] = b[i];
         }
-        norma = matgen(a,lda,n,b);
+
+        norma = matgen(a, lda, n, b);
+
         for (i = 0; i < n; i++) {
             b[i] = -b[i];
         }
-        dmxpy(n,b,n,lda,x,a);
+
+        dmxpy(n, b, n, lda, x, a);
         resid = 0.0;
         normx = 0.0;
+
         for (i = 0; i < n; i++) {
             resid = (resid > abs(b[i])) ? resid : abs(b[i]);
             normx = (normx > abs(x[i])) ? normx : abs(x[i]);
         }
 
-        eps_result = epslon((double)1.0);
-        residn_result = resid/( n*norma*normx*eps_result );
+        eps_result = epslon((double) 1.0);
+        residn_result = resid / (n * norma * normx * eps_result);
         residn_result += 0.005; // for rounding
-        residn_result = (int)(residn_result*100);
+        residn_result = (int) (residn_result * 100);
         residn_result /= 100;
         time_result = total;
         time_result += 0.005; // for rounding
-        time_result = (int)(time_result*100);
+        time_result = (int) (time_result * 100);
         time_result /= 100;
-        mflops_result = ops/(1.0e6*total);
+        mflops_result = ops / (1.0e6 * total);
         mflops_result += 0.0005; // for rounding
-        mflops_result = (int)(mflops_result*1000);
+        mflops_result = (int) (mflops_result * 1000);
         mflops_result /= 1000;
-
     }
 
-
-    final double matgen (double a[][], int lda, int n, double b[])
-    {
+    final double matgen(double[][] a, int lda, int n, double[] b) {
         Random gen;
         double norma;
-        int init, i, j;
+        int init;
+        int i;
+        int j;
 
         init = 1325;
         norma = 0.0;
         gen = new Random();
         gen.setSeed(init);
+
         /*    Next two for () statements switched.    Solver wants
          *    matrix in column order. --dmd 3/3/97
          */
@@ -171,9 +183,11 @@ public class Linpack{
                 norma = (a[j][i] > norma) ? a[j][i] : norma;
             }
         }
+
         for (i = 0; i < n; i++) {
             b[i] = 0.0;
         }
+
         for (j = 0; j < n; j++) {
             for (i = 0; i < n; i++) {
                 b[i] += a[j][i];
@@ -227,33 +241,33 @@ public class Linpack{
 
       blas daxpy,dscal,idamax
     */
-    final int dgefa( double a[][], int lda, int n, int ipvt[])
-    {
-        double[] col_k, col_j;
+    final int dgefa(double[][] a, int lda, int n, int[] ipvt) {
+        double[] col_k;
+        double[] col_j;
         double t;
-        int j,k,kp1,l,nm1;
+        int j;
+        int k;
+        int kp1;
+        int l;
+        int nm1;
         int info;
 
         // gaussian elimination with partial pivoting
-
         info = 0;
         nm1 = n - 1;
-        if (nm1 >=    0) {
+
+        if (nm1 >= 0) {
             for (k = 0; k < nm1; k++) {
                 col_k = a[k];
                 kp1 = k + 1;
 
                 // find l = pivot index
-
-                l = idamax(n-k,col_k,k,1) + k;
+                l = idamax(n - k, col_k, k, 1) + k;
                 ipvt[k] = l;
 
                 // zero pivot implies this column already triangularized
-
                 if (col_k[l] != 0) {
-
                     // interchange if necessary
-
                     if (l != k) {
                         t = col_k[l];
                         col_k[l] = col_k[k];
@@ -261,34 +275,35 @@ public class Linpack{
                     }
 
                     // compute multipliers
-
-                    t = -1.0/col_k[k];
-                    dscal(n-(kp1),t,col_k,kp1,1);
+                    t = -1.0 / col_k[k];
+                    dscal(n - (kp1), t, col_k, kp1, 1);
 
                     // row elimination with column indexing
-
                     for (j = kp1; j < n; j++) {
                         col_j = a[j];
                         t = col_j[l];
+
                         if (l != k) {
                             col_j[l] = col_j[k];
                             col_j[k] = t;
                         }
-                        daxpy(n-(kp1),t,col_k,kp1,1,
-                                col_j,kp1,1);
+
+                        daxpy(n - (kp1), t, col_k, kp1, 1, col_j, kp1, 1);
                     }
-                }
-                else {
+                } else {
                     info = k;
                 }
             }
         }
-        ipvt[n-1] = n-1;
-        if (a[(n-1)][(n-1)] == 0) info = n-1;
+
+        ipvt[n - 1] = n - 1;
+
+        if (a[(n - 1)][(n - 1)] == 0) {
+            info = n - 1;
+        }
 
         return info;
     }
-
 
     /**
      * dgesl solves the double precision system
@@ -345,47 +360,56 @@ public class Linpack{
      *
      * blas daxpy,ddot
      **/
-    final void dgesl( double a[][], int lda, int n, int ipvt[], double b[], int job)
-    {
+    final void dgesl(double[][] a, int lda, int n, int[] ipvt, double[] b,
+        int job) {
         double t;
-        int k,kb,l,nm1,kp1;
+        int k;
+        int kb;
+        int l;
+        int nm1;
+        int kp1;
         nm1 = n - 1;
+
         if (job == 0) {
             // job = 0 , solve    a * x = b.    first solve    l*y = b
             if (nm1 >= 1) {
                 for (k = 0; k < nm1; k++) {
                     l = ipvt[k];
                     t = b[l];
+
                     if (l != k) {
                         b[l] = b[k];
                         b[k] = t;
                     }
+
                     kp1 = k + 1;
-                    daxpy(n-(kp1),t,a[k],kp1,1,b,kp1,1);
+                    daxpy(n - (kp1), t, a[k], kp1, 1, b, kp1, 1);
                 }
             }
+
             // now solve    u*x = y
             for (kb = 0; kb < n; kb++) {
                 k = n - (kb + 1);
                 b[k] /= a[k][k];
                 t = -b[k];
-                daxpy(k,t,a[k],0,1,b,0,1);
+                daxpy(k, t, a[k], 0, 1, b, 0, 1);
             }
-        }
-        else {
+        } else {
             // job = nonzero, solve    trans(a) * x = b.    first solve    trans(u)*y = b
             for (k = 0; k < n; k++) {
-                t = ddot(k,a[k],0,1,b,0,1);
-                b[k] = (b[k] - t)/a[k][k];
+                t = ddot(k, a[k], 0, 1, b, 0, 1);
+                b[k] = (b[k] - t) / a[k][k];
             }
+
             // now solve trans(l)*x = y
             if (nm1 >= 1) {
                 //for (kb = 1; kb < nm1; kb++) {
                 for (kb = 0; kb < nm1; kb++) {
-                    k = n - (kb+1);
+                    k = n - (kb + 1);
                     kp1 = k + 1;
-                    b[k] += ddot(n-(kp1),a[k],kp1,1,b,kp1,1);
+                    b[k] += ddot(n - (kp1), a[k], kp1, 1, b, kp1, 1);
                     l = ipvt[k];
+
                     if (l != k) {
                         t = b[l];
                         b[l] = b[k];
@@ -395,84 +419,110 @@ public class Linpack{
             }
         }
     }
+
     /**
      * constant times a vector plus a vector.
      * jack dongarra, linpack, 3/11/78.
      **/
-    final void daxpy( int n, double da, double dx[], int dx_off, int incx,
-            double dy[], int dy_off, int incy)
-    {
-        int i,ix,iy;
+    final void daxpy(int n, double da, double[] dx, int dx_off, int incx,
+        double[] dy, int dy_off, int incy) {
+        int i;
+        int ix;
+        int iy;
+
         if ((n > 0) && (da != 0)) {
-            if (incx != 1 || incy != 1) {
+            if ((incx != 1) || (incy != 1)) {
                 // code for unequal increments or equal increments not equal to 1
                 ix = 0;
                 iy = 0;
-                if (incx < 0) ix = (-n+1)*incx;
-                if (incy < 0) iy = (-n+1)*incy;
-                for (i = 0;i < n; i++) {
-                    dy[iy +dy_off] += da*dx[ix +dx_off];
+
+                if (incx < 0) {
+                    ix = (-n + 1) * incx;
+                }
+
+                if (incy < 0) {
+                    iy = (-n + 1) * incy;
+                }
+
+                for (i = 0; i < n; i++) {
+                    dy[iy + dy_off] += (da * dx[ix + dx_off]);
                     ix += incx;
                     iy += incy;
                 }
+
                 return;
             } else {
                 // code for both increments equal to 1
-                for (i=0; i < n; i++)
-                    dy[i +dy_off] += da*dx[i +dx_off];
+                for (i = 0; i < n; i++) {
+                    dy[i + dy_off] += (da * dx[i + dx_off]);
+                }
             }
         }
     }
+
     /**
      * forms the dot product of two vectors.
      * jack dongarra, linpack, 3/11/78.
      **/
-    final double ddot( int n, double dx[], int dx_off, int incx, double dy[],
-            int dy_off, int incy)
-    {
+    final double ddot(int n, double[] dx, int dx_off, int incx, double[] dy,
+        int dy_off, int incy) {
         double dtemp;
-        int i,ix,iy;
+        int i;
+        int ix;
+        int iy;
         dtemp = 0;
-        if (n > 0) {
 
-            if (incx != 1 || incy != 1) {
+        if (n > 0) {
+            if ((incx != 1) || (incy != 1)) {
                 // code for unequal increments or equal increments not equal to 1
                 ix = 0;
                 iy = 0;
-                if (incx < 0) ix = (-n+1)*incx;
-                if (incy < 0) iy = (-n+1)*incy;
-                for (i = 0;i < n; i++) {
-                    dtemp += dx[ix +dx_off]*dy[iy +dy_off];
+
+                if (incx < 0) {
+                    ix = (-n + 1) * incx;
+                }
+
+                if (incy < 0) {
+                    iy = (-n + 1) * incy;
+                }
+
+                for (i = 0; i < n; i++) {
+                    dtemp += (dx[ix + dx_off] * dy[iy + dy_off]);
                     ix += incx;
                     iy += incy;
                 }
             } else {
                 // code for both increments equal to 1
-
-                for (i=0;i < n; i++) {
-                    dtemp += dx[i +dx_off]*dy[i +dy_off];
+                for (i = 0; i < n; i++) {
+                    dtemp += (dx[i + dx_off] * dy[i + dy_off]);
                 }
             }
         }
-        return(dtemp);
+
+        return (dtemp);
     }
+
     /**
      * scales a vector by a constant.
      * jack dongarra, linpack, 3/11/78.
      **/
-    final void dscal( int n, double da, double dx[], int dx_off, int incx)
-    {
-        int i,nincx;
+    final void dscal(int n, double da, double[] dx, int dx_off, int incx) {
+        int i;
+        int nincx;
+
         if (n > 0) {
             if (incx != 1) {
                 // code for increment not equal to 1
-                nincx = n*incx;
-                for (i = 0; i < nincx; i += incx)
-                    dx[i +dx_off] *= da;
+                nincx = n * incx;
+
+                for (i = 0; i < nincx; i += incx) {
+                    dx[i + dx_off] *= da;
+                }
             } else {
                 // code for increment equal to 1
-                for (i = 0; i < n; i++)
-                    dx[i +dx_off] *= da;
+                for (i = 0; i < n; i++) {
+                    dx[i + dx_off] *= da;
+                }
             }
         }
     }
@@ -481,38 +531,49 @@ public class Linpack{
      * finds the index of element having max. absolute value.
      * jack dongarra, linpack, 3/11/78.
      **/
-    final int idamax( int n, double dx[], int dx_off, int incx)
-    {
-        double dmax, dtemp;
-        int i, ix, itemp=0;
+    final int idamax(int n, double[] dx, int dx_off, int incx) {
+        double dmax;
+        double dtemp;
+        int i;
+        int ix;
+        int itemp = 0;
+
         if (n < 1) {
             itemp = -1;
-        } else if (n ==1) {
+        } else if (n == 1) {
             itemp = 0;
         } else if (incx != 1) {
             // code for increment not equal to 1
-            dmax = (dx[dx_off] < 0.0) ? -dx[dx_off]: dx[dx_off];
+            dmax = (dx[dx_off] < 0.0) ? (-dx[dx_off]) : dx[dx_off];
             ix = 1 + incx;
+
             for (i = 0; i < n; i++) {
-                dtemp = (dx[ix + dx_off] < 0.0) ? -dx[ix + dx_off]: dx[ix + dx_off];
-                if (dtemp > dmax)    {
+                dtemp = (dx[ix + dx_off] < 0.0) ? (-dx[ix + dx_off])
+                                                : dx[ix + dx_off];
+
+                if (dtemp > dmax) {
                     itemp = i;
                     dmax = dtemp;
                 }
+
                 ix += incx;
             }
         } else {
             // code for increment equal to 1
             itemp = 0;
-            dmax = (dx[dx_off] < 0.0)? -dx[dx_off] : dx[dx_off];
+            dmax = (dx[dx_off] < 0.0) ? (-dx[dx_off]) : dx[dx_off];
+
             for (i = 0; i < n; i++) {
-                dtemp = (dx[i + dx_off] < 0.0) ? -dx[i+dx_off]: dx[i+dx_off];
+                dtemp = (dx[i + dx_off] < 0.0) ? (-dx[i + dx_off])
+                                               : dx[i + dx_off];
+
                 if (dtemp > dmax) {
                     itemp = i;
                     dmax = dtemp;
                 }
             }
         }
+
         return (itemp);
     }
 
@@ -545,18 +606,23 @@ public class Linpack{
      *
      *     this version dated 4/6/83.
      **/
-    final double epslon (double x)
-    {
-        double a,b,c,eps;
-        a = 4.0e0/3.0e0;
+    final double epslon(double x) {
+        double a;
+        double b;
+        double c;
+        double eps;
+        a = 4.0e0 / 3.0e0;
         eps = 0;
+
         while (eps == 0) {
             b = a - 1.0;
             c = b + b + b;
-            eps = abs(c-1.0);
+            eps = abs(c - 1.0);
         }
-        return(eps*abs(x));
+
+        return (eps * abs(x));
     }
+
     /**
      * purpose:
      * multiply matrix m times vector x and add the result to vector y.
@@ -578,36 +644,39 @@ public class Linpack{
      *
      * m double [ldm][n2], matrix of n1 rows and n2 columns
      **/
-    final void dmxpy ( int n1, double y[], int n2, int ldm, double x[], double m[][])
-    {
-        int j,i;
+    final void dmxpy(int n1, double[] y, int n2, int ldm, double[] x,
+        double[][] m) {
+        int j;
+        int i;
+
         // cleanup odd vector
         for (j = 0; j < n2; j++) {
             for (i = 0; i < n1; i++) {
-                y[i] += x[j]*m[j][i];
+                y[i] += (x[j] * m[j][i]);
             }
         }
     }
 
-    public void setCurrentRun( double mflops_result, double residn_result,
-            double time_result, double eps_result)
-    {
+    public void setCurrentRun(double mflops_result, double residn_result,
+        double time_result, double eps_result) {
         this.mflops_result = mflops_result;
         this.residn_result = residn_result;
         this.time_result = time_result;
         this.eps_result = eps_result;
     }
 }
+
+
 class DataItem {
     double mflops;
     String label;
     int itemtype;
     String info;
-    DataItem (double mflops, int itemtype, String info, String label) {
+
+    DataItem(double mflops, int itemtype, String info, String label) {
         this.mflops = mflops;
         this.label = label;
         this.itemtype = itemtype;
         this.info = info;
     }
 }
-

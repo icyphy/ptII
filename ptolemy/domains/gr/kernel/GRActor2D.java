@@ -23,7 +23,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.gr.kernel;
 
 import ptolemy.domains.gr.lib.ViewScreen2D;
@@ -34,6 +33,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRActor2D
+
 /**
    A base class for all two-dimensional GR actors. These actors use Diva
    to render two-dimensional scenes in the GR domain. This is an abstract
@@ -50,7 +50,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 abstract public class GRActor2D extends GRActor {
-
     /** Create a new GRActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -64,13 +63,12 @@ abstract public class GRActor2D extends GRActor {
      *   an entity already in the container.
      */
     public GRActor2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -80,16 +78,15 @@ abstract public class GRActor2D extends GRActor {
      */
     protected void _setViewScreen(GRActor actor) {
         if (actor instanceof ViewScreen2D) {
-            _viewScreen = (ViewScreen2D)actor;
+            _viewScreen = (ViewScreen2D) actor;
         } else {
-            throw new RuntimeException("Actor " + getClass().getName() +
-                    " can only be used with a ViewScreen2D");
+            throw new RuntimeException("Actor " + getClass().getName()
+                + " can only be used with a ViewScreen2D");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // The actor displaying the scene, if there is one
     protected ViewScreen2D _viewScreen;
 }

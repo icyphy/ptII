@@ -25,7 +25,6 @@
 */
 package diva.gui.toolbox;
 
-import java.awt.event.MouseEvent;
 import java.awt.event.InputEvent;
 
 import javax.swing.JPopupMenu;
@@ -34,6 +33,7 @@ import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.AbstractInteractor;
+
 
 /**
  * This interactor creates a menu when it is activated.  By default, this
@@ -91,14 +91,16 @@ public class MenuCreator extends AbstractInteractor {
     /** Process a mousePressed or mouseReleased event.
      */
     private void _doEvent(LayerEvent e) {
-        if (_factory != null && e.isPopupTrigger()) {
+        if ((_factory != null) && e.isPopupTrigger()) {
             Figure source = e.getFigureSource();
             JPopupMenu menu = _factory.create(source);
-            if (menu == null) return;
+
+            if (menu == null) {
+                return;
+            }
+
             menu.show(e.getComponent(), e.getX(), e.getY());
             e.consume();
         }
     }
 }
-
-

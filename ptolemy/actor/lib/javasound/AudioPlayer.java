@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.javasound;
 
 import java.io.IOException;
@@ -43,6 +42,7 @@ import ptolemy.media.javasound.LiveSound;
 
 /////////////////////////////////////////////////////////
 //// AudioPlayer
+
 /**
    This actor reads audio samples and plays them. Specifically,
    the input stream that this actor reads is interpreted as
@@ -104,7 +104,6 @@ import ptolemy.media.javasound.LiveSound;
    @see AudioWriter
 */
 public class AudioPlayer extends LiveSoundActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -114,14 +113,13 @@ public class AudioPlayer extends LiveSoundActor {
      *   actor with this name.
      */
     public AudioPlayer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
         input.setMultiport(true);
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setExpression("transferSize");
     }
@@ -150,15 +148,17 @@ public class AudioPlayer extends LiveSoundActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // Stop playback. Close any open sound files. Free
         // up audio system resources.
         if (LiveSound.isPlaybackActive()) {
             throw new IllegalActionException(this,
-                    "This actor cannot start audio playback because " +
-                    "another actor currently has access to the audio " +
-                    "playback resource. Only one AudioPlayer actor may " +
-                    "be used at a time.");
+                "This actor cannot start audio playback because "
+                + "another actor currently has access to the audio "
+                + "playback resource. Only one AudioPlayer actor may "
+                + "be used at a time.");
         }
+
         try {
             // Set the correct parameters in LiveSound.
             _initializeAudio();
@@ -168,6 +168,7 @@ public class AudioPlayer extends LiveSoundActor {
                     || (_channels != _audioPutArray.length)) {
                 _audioPutArray = new double[_channels][];
             }
+
             for (int i = 0; i < _channels; i++) {
                 _audioPutArray[i] = new double[_transferSize];
             }
@@ -176,7 +177,7 @@ public class AudioPlayer extends LiveSoundActor {
             LiveSound.startPlayback(this);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Error initializing audio playback.");
+                "Error initializing audio playback.");
         }
     }
 
@@ -184,11 +185,13 @@ public class AudioPlayer extends LiveSoundActor {
      */
     public boolean prefire() throws IllegalActionException {
         super.prefire();
+
         for (int j = 0; j < _channels; j++) {
             if (!input.hasToken(j, _transferSize)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -200,6 +203,7 @@ public class AudioPlayer extends LiveSoundActor {
      */
     public boolean postfire() throws IllegalActionException {
         int count = _transferSize;
+
         for (int j = 0; j < _channels; j++) {
             // NOTE: inArray[j].length may be > count, in which case
             // only the first count tokens are valid.
@@ -207,17 +211,18 @@ public class AudioPlayer extends LiveSoundActor {
 
             // Convert to doubles.
             for (int element = 0; element < count; element++) {
-                _audioPutArray[j][element] =
-                    ((DoubleToken)inputArray[element]).doubleValue();
+                _audioPutArray[j][element] = ((DoubleToken) inputArray[element])
+                    .doubleValue();
             }
         }
+
         try {
             // Write out samples to speaker.
             LiveSound.putSamples(this, _audioPutArray);
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot playback audio.");
+            throw new IllegalActionException(this, ex, "Cannot playback audio.");
         }
+
         return true;
     }
 
@@ -228,6 +233,7 @@ public class AudioPlayer extends LiveSoundActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
         // Stop playback. Close any open sound files. Free
         // up audio system resources.
         if (LiveSound.isPlaybackActive()) {
@@ -235,13 +241,12 @@ public class AudioPlayer extends LiveSoundActor {
                 LiveSound.stopPlayback(this);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Cannot free audio resources.");
+                    "Cannot free audio resources.");
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private double[][] _audioPutArray;
 }

@@ -28,6 +28,7 @@ package diva.util;
 import java.io.IOException;
 import java.io.Writer;
 
+
 /**
  * ModelWriter is an interface that should be extended by application
  * specified model writers to write out data structures to an output
@@ -38,16 +39,9 @@ import java.io.Writer;
  * @version $Id$
  */
 public interface ModelWriter {
-
     /**
      * Write the given model to the character stream.
      */
-    public void writeModel(Object model, Writer writer) throws IOException;
+    public void writeModel(Object model, Writer writer)
+        throws IOException;
 }
-
-
-
-
-
-
-

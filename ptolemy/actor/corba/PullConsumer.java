@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj)
 @AcceptedRating Yellow (janneck)
 */
-
 package ptolemy.actor.corba;
 
 import java.util.StringTokenizer;
@@ -42,7 +41,6 @@ import ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
 import ptolemy.actor.corba.CorbaIOUtil.pullSupplier;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -53,8 +51,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
+
 /**
    An actor that sends pull request to a remote publisher and asks for data.
 
@@ -76,9 +76,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 1.0
 */
-
 public class PullConsumer extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -88,10 +86,10 @@ public class PullConsumer extends Source {
      *   actor with this name.
      */
     public PullConsumer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         remoteSupplierName = new Parameter(this, "remoteSupplierName");
         remoteSupplierName.setToken(new StringToken(""));
@@ -100,13 +98,13 @@ public class PullConsumer extends Source {
         blocking.setExpression("false");
         defaultToken = new Parameter(this, "defaultToken");
         defaultToken.setExpression("0.0");
+
         //defaultToken.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(defaultToken.getType());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     public Parameter ORBInitProperties;
 
     /** The name of the remote supplier. The type of the Parameter
@@ -140,9 +138,9 @@ public class PullConsumer extends Source {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == blocking) {
-            _blocking = ((BooleanToken)blocking.getToken()).booleanValue();
+            _blocking = ((BooleanToken) blocking.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -156,16 +154,19 @@ public class PullConsumer extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(
-                ((StringToken)ORBInitProperties.getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
+                .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
+
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
             _debug("ORB initial argument: " + args[i]);
             i++;
         }
+
         _orb = null;
         _initORB(args);
         _requestData = false;
@@ -175,9 +176,7 @@ public class PullConsumer extends Source {
         _dataReadingThread = new DataReadingThread();
         _dataReadingThread.start();
         _debug("Finished initializing " + getName());
-
     }
-
 
     /** Set the request data flag to be true at each firing. If it
      *  is blocking and now new data received since the last firing,
@@ -187,18 +186,20 @@ public class PullConsumer extends Source {
      *  action fails due to network problems, transaction errors,
      *  or any remote exceptions.
      */
-
     public void fire() throws IllegalActionException {
         try {
             _requestData = true;
+
             synchronized (_lock) {
                 _lock.notifyAll();
             }
+
             for (int i = 0; i < trigger.getWidth(); i++) {
                 if (trigger.hasToken(i)) {
                     trigger.get(i);
                 }
             }
+
             if (_blocking) {
                 if (_lastReadToken == null) {
                     try {
@@ -206,19 +207,21 @@ public class PullConsumer extends Source {
                             if (_debugging) {
                                 _debug(getName(), " is waiting.");
                             }
+
                             _fireIsWaiting = true;
                             _fire.wait();
                             _fireIsWaiting = false;
+
                             if (_debugging) {
                                 _debug(getName(), " wake up.");
                             }
                         }
                     } catch (InterruptedException e) {
                         throw new IllegalActionException(this,
-                                "blocking interrupted." +
-                                e.getMessage());
+                            "blocking interrupted." + e.getMessage());
                     }
                 }
+
                 if (_lastReadToken != null) {
                     output.send(0, _lastReadToken);
                     _defaultToken = _lastReadToken;
@@ -227,11 +230,9 @@ public class PullConsumer extends Source {
             } else {
                 output.send(0, _defaultToken);
             }
-
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(this,
-                    "remote actor throws IllegalActionException"
-                    + ex.getMessage());
+                "remote actor throws IllegalActionException" + ex.getMessage());
         }
     }
 
@@ -239,13 +240,14 @@ public class PullConsumer extends Source {
      *  as possible. Wake up the waiting if there is any.
      */
     public void stop() {
-
         if (_fireIsWaiting) {
-            synchronized( _fire) {
+            synchronized (_fire) {
                 _fire.notifyAll();
             }
+
             _fireIsWaiting = false;
         }
+
         super.stop();
     }
 
@@ -262,76 +264,69 @@ public class PullConsumer extends Source {
             }
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     //use a private method to deal with necessary CORBA operations.
     // @exception IllegalActionException If ORB initialize failed.
-    private void _initORB(String[] args) throws IllegalActionException{
+    private void _initORB(String[] args) throws IllegalActionException {
         try {
             // start the ORB
             _orb = ORB.init(args, null);
             _debug(getName(), " ORB initialized");
+
             //get the root naming context
             org.omg.CORBA.Object objRef = _orb.resolve_initial_references(
                     "NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
+
             if (ncRef != null) {
                 _debug(getName(), "found name service.");
             }
+
             //resolve the remote consumer reference in Naming
-            NameComponent namecomp = new NameComponent(
-                    ((StringToken)remoteSupplierName.getToken()).
-                    stringValue(), "");
+            NameComponent namecomp = new NameComponent(((StringToken) remoteSupplierName
+                    .getToken()).stringValue(), "");
             _debug(getName(), " looking for name: ",
-                    (remoteSupplierName.getToken()).toString());
-            NameComponent path[] = {namecomp};
+                (remoteSupplierName.getToken()).toString());
+
+            NameComponent[] path = { namecomp };
+
             // locate the remote actor
-            _remoteSupplier =
-                ptolemy.actor.corba.CorbaIOUtil.pullSupplierHelper.narrow(
-                        ncRef.resolve(path));
+            _remoteSupplier = ptolemy.actor.corba.CorbaIOUtil.pullSupplierHelper
+                .narrow(ncRef.resolve(path));
+
             if (_remoteSupplier == null) {
                 throw new IllegalActionException(this,
-                        " can not find the remote supplier.");
+                    " can not find the remote supplier.");
             }
         } catch (UserException ex) {
             throw new IllegalActionException(this,
-                    " initialize ORB failed. Please make sure the " +
-                    "naming server has already started and the " +
-                    "ORBInitProperty parameter is configured correctly. " +
-                    "the error message is: " + ex.getMessage());
+                " initialize ORB failed. Please make sure the "
+                + "naming server has already started and the "
+                + "ORBInitProperty parameter is configured correctly. "
+                + "the error message is: " + ex.getMessage());
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private ORB _orb;
-
     private pullSupplier _remoteSupplier;
-
     private boolean _requestData;
 
     // The indicator the last read serial number
     private Token _lastReadToken;
-
     private DataReadingThread _dataReadingThread;
-
     private Object _lock = new Object();
-
     private Object _fire = new Object();
-
     private boolean _fireIsWaiting;
-
     private boolean _blocking;
-
     private Token _defaultToken;
 
     ///////////////////////////////////////////////////////////////////
     ////                        private inner class                ////
-
     private class DataReadingThread extends Thread {
-
         /** Constructor.  Create a new thread pull data from a remote supplier.
          *
          */
@@ -353,33 +348,34 @@ public class PullConsumer extends Source {
                             _lock.wait();
                         }
                     }
+
                     if (_requestData) {
                         org.omg.CORBA.Any data = _remoteSupplier.pull();
+
                         if (data != null) {
                             Variable variable = new Variable();
-                            variable.setExpression( data.extract_string());
+                            variable.setExpression(data.extract_string());
                             _lastReadToken = variable.getToken();
+
                             if (_debugging) {
                                 _debug(getName(), "gets " + data);
                             }
+
                             _requestData = false;
+
                             if (_fireIsWaiting) {
-                                synchronized(_fire) {
+                                synchronized (_fire) {
                                     _fire.notifyAll();
                                 }
                             }
-
                         }
                     }
                 } catch (CorbaIllegalActionException e) {
                     //fixme what should it throw here.
                 } catch (InterruptedException ex) {
-
                 } catch (IllegalActionException ex) {
-
                 }
             }
         }
     }
 }
-

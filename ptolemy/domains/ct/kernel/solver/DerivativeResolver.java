@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel.solver;
 
 import ptolemy.data.DoubleToken;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DerivativeResolver
+
 /**
    This solver finds the derivatives of the state variables of an ODE
    with respect to the current time.
@@ -69,9 +70,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (hyzheng)
    @Pt.AcceptedRating Green (hyzheng)
 */
-public class DerivativeResolver extends ODESolver
-    implements BreakpointODESolver {
-
+public class DerivativeResolver extends ODESolver implements BreakpointODESolver {
     /** Construct a solver in the default workspace with the name
      *  "CT_Derivative_Resolver". The solver is added to the list of
      *  objects in the workspace.
@@ -91,6 +90,7 @@ public class DerivativeResolver extends ODESolver
      */
     public DerivativeResolver(Workspace workspace) {
         super(workspace);
+
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
@@ -126,10 +126,10 @@ public class DerivativeResolver extends ODESolver
      *  @exception IllegalActionException If can not read input.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
+        throws IllegalActionException {
         integrator.setTentativeState(integrator.getState());
-        integrator.setTentativeDerivative(
-                ((DoubleToken)integrator.input.get(0)).doubleValue());
+        integrator.setTentativeDerivative(((DoubleToken) integrator.input.get(0))
+            .doubleValue());
     }
 
     /** Return true, since there is no step size control.
@@ -146,9 +146,8 @@ public class DerivativeResolver extends ODESolver
      *  @param integrator The integrator of that calls this method.
      *  @return The initial step size.
      */
-    public double integratorPredictedStepSize(
-            CTBaseIntegrator integrator) {
-        CTDirector director = (CTDirector)getContainer();
+    public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
+        CTDirector director = (CTDirector) getContainer();
         return director.getInitialStepSize();
     }
 
@@ -156,6 +155,5 @@ public class DerivativeResolver extends ODESolver
     ////                         private variables                 ////
 
     /** Name of this Solver. */
-    private static final String _DEFAULT_NAME="CT_Derivative_Resolver" ;
-
+    private static final String _DEFAULT_NAME = "CT_Derivative_Resolver";
 }

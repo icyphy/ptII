@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.mapping;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ToIntMapping
+
 /** A mapping from objects into int values.
 
 @since Ptolemy II 4.0
@@ -36,8 +37,6 @@ package ptolemy.graph.mapping;
 @version $Id$
 */
 public interface ToIntMapping extends Mapping {
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.TreeMap;
@@ -39,8 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sequencer
+
 /**
    This actor takes a sequence of inputs tagged with a sequence number
    and produces them on the output port in the order given by the
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (ctsay)
 */
-
 public class Sequencer extends Transformer implements SequenceActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -74,7 +73,7 @@ public class Sequencer extends Transformer implements SequenceActor {
      *   an actor already in the container.
      */
     public Sequencer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sequenceNumber = new TypedIOPort(this, "sequenceNumber", true, false);
@@ -108,6 +107,7 @@ public class Sequencer extends Transformer implements SequenceActor {
     public void fire() throws IllegalActionException {
         _sequenceNumberOfInput = ((IntToken) sequenceNumber.get(0)).intValue();
         _nextToken = input.get(0);
+
         if (_sequenceNumberOfInput == _nextSequenceNumber) {
             output.send(0, _nextToken);
             _fireProducedOutput = true;
@@ -121,8 +121,8 @@ public class Sequencer extends Transformer implements SequenceActor {
      */
     public void initialize() throws IllegalActionException {
         _fireProducedOutput = false;
-        _nextSequenceNumber =
-            ((IntToken)startingSequenceNumber.getToken()).intValue();
+        _nextSequenceNumber = ((IntToken) startingSequenceNumber.getToken())
+            .intValue();
     }
 
     /** If the fire() method produced the input token then check to
@@ -132,22 +132,31 @@ public class Sequencer extends Transformer implements SequenceActor {
     public boolean postfire() throws IllegalActionException {
         if (_fireProducedOutput) {
             _nextSequenceNumber++;
+
             if (_pending.size() > 0) {
-                Integer nextKey = (Integer)_pending.firstKey();
+                Integer nextKey = (Integer) _pending.firstKey();
                 int next = nextKey.intValue();
+
                 while (next == _nextSequenceNumber) {
                     _nextSequenceNumber++;
-                    Token token = (Token)_pending.remove(nextKey);
+
+                    Token token = (Token) _pending.remove(nextKey);
                     output.send(0, token);
-                    if (_pending.size() == 0) break;
-                    nextKey = (Integer)_pending.firstKey();
+
+                    if (_pending.size() == 0) {
+                        break;
+                    }
+
+                    nextKey = (Integer) _pending.firstKey();
                     next = nextKey.intValue();
                 }
             }
+
             _fireProducedOutput = false;
         } else {
             _pending.put(new Integer(_sequenceNumberOfInput), _nextToken);
         }
+
         return super.postfire();
     }
 
@@ -159,14 +168,20 @@ public class Sequencer extends Transformer implements SequenceActor {
      */
     public boolean prefire() throws IllegalActionException {
         _fireProducedOutput = false;
-        if (!sequenceNumber.hasToken(0)) return false;
-        if (!input.hasToken(0)) return false;
+
+        if (!sequenceNumber.hasToken(0)) {
+            return false;
+        }
+
+        if (!input.hasToken(0)) {
+            return false;
+        }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Indicator that an output was produced by the fire() method.
     private boolean _fireProducedOutput = false;
 
@@ -182,4 +197,3 @@ public class Sequencer extends Transformer implements SequenceActor {
     // The sequence number of the data read in the fire() method.
     private int _sequenceNumberOfInput;
 }
-

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.java;
 
 import java.io.File;
@@ -43,8 +42,10 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestApplication
+
 /** A simple application that reads in a .xml file as a command
     line argument and runs it.
 
@@ -61,20 +62,18 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
     @Pt.AcceptedRating Red (eal)
 */
 public class TestApplication implements ChangeListener {
-
     /** Parse the xml file and run it.
      *  If a parameter named "copernicus_iterations" is present, then
      *  the value of that parameter is used to set the iterations parameter.
      *  If there is no "copernicus_iterations" parameter, then then
      *  the number of iterations is set to 100000.
      */
-    public TestApplication(String xmlFilename) throws Exception{
+    public TestApplication(String xmlFilename) throws Exception {
         MoMLParser parser = new MoMLParser();
 
         // The test suite calls MoMLSimpleApplication multiple times,
         // and the list of filters is static, so we reset it each time
         // so as to avoid adding filters every time we run an auto test.
-
         // We set the list of MoMLFilters to handle Backward Compatibility.
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
@@ -85,7 +84,6 @@ public class TestApplication implements ChangeListener {
         parser.addMoMLFilter(new RemoveGraphicalClasses());
 
         //parser.setErrorHandler(new StreamErrorHandler());
-
         // We use parse(URL, URL) here instead of parseFile(String)
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
@@ -102,28 +100,27 @@ public class TestApplication implements ChangeListener {
 
         try {
             URL url = new URL(null, xmlFilename);
-            toplevel = (CompositeActor) parser.parse(url,
-                    url.openStream());
+            toplevel = (CompositeActor) parser.parse(url, url.openStream());
         } catch (Exception ex) {
             File f = new File(xmlFilename);
             URL url = f.toURL();
             System.err.println("Warning: Parsing '" + xmlFilename
-                    + "' failed: ");
+                + "' failed: ");
             ex.printStackTrace();
-            System.err.println(" Trying '"
-                    + url
-                    + "'");
+            System.err.println(" Trying '" + url + "'");
 
             toplevel = (CompositeActor) parser.parse(null, url);
         }
 
         // FIXME: nearly duplicate code in kernel/KernelMain.java
-        SDFDirector director = (SDFDirector)toplevel.getDirector();
+        SDFDirector director = (SDFDirector) toplevel.getDirector();
+
         if (director != null) {
-            Parameter iterations =
-                (Parameter) director.getAttribute("iterations");
-            Parameter copernicus_iterations =
-                (Parameter) director.getAttribute("copernicus_iterations");
+            Parameter iterations = (Parameter) director.getAttribute(
+                    "iterations");
+            Parameter copernicus_iterations = (Parameter) director.getAttribute(
+                    "copernicus_iterations");
+
             // Set to be a large number of iterations, unless
             // copernicus_iterations is set.
             if (copernicus_iterations != null) {
@@ -131,49 +128,44 @@ public class TestApplication implements ChangeListener {
             } else {
                 iterations.setToken(new IntToken(100000));
             }
+
             System.out.println("TestApplication: Setting Iterations to "
-                    + iterations.getToken());
+                + iterations.getToken());
         }
 
-        Manager manager = new Manager(toplevel.workspace(),
-                "TestApplication");
+        Manager manager = new Manager(toplevel.workspace(), "TestApplication");
         toplevel.setManager(manager);
         toplevel.addChangeListener(this);
 
         String modelName = toplevel.getName();
 
         long startTime = System.currentTimeMillis();
-        long totalMemory1 = runtime.totalMemory()/1024;
-        long freeMemory1 = runtime.freeMemory()/1024;
+        long totalMemory1 = runtime.totalMemory() / 1024;
+        long freeMemory1 = runtime.freeMemory() / 1024;
         System.out.println("Spent " + (startTime - _parseStartTime)
-                + " ms. creating the model.");
-        System.out.println(modelName +
-                ": Stats before execution:    "
-                + Manager.timeAndMemory(startTime,
-                        totalMemory1, freeMemory1));
+            + " ms. creating the model.");
+        System.out.println(modelName + ": Stats before execution:    "
+            + Manager.timeAndMemory(startTime, totalMemory1, freeMemory1));
 
         // Second, we run and print memory stats.
         manager.execute();
 
-        long totalMemory2 = runtime.totalMemory()/1024;
-        long freeMemory2 = runtime.freeMemory()/1024;
-        String standardStats = Manager.timeAndMemory(startTime,
-                totalMemory2, freeMemory2);
+        long totalMemory2 = runtime.totalMemory() / 1024;
+        long freeMemory2 = runtime.freeMemory() / 1024;
+        String standardStats = Manager.timeAndMemory(startTime, totalMemory2,
+                freeMemory2);
 
-        System.out.println(modelName +
-                ": Execution stats:           "
-                + standardStats);
+        System.out.println(modelName + ": Execution stats:           "
+            + standardStats);
 
         // Third, we gc and print memory stats.
         System.gc();
         Thread.sleep(1000);
 
-        long totalMemory3 = runtime.totalMemory()/1024;
-        long freeMemory3 = runtime.freeMemory()/1024;
-        System.out.println(modelName +
-                ": After Garbage Collection:  "
-                + Manager.timeAndMemory(startTime,
-                        totalMemory3, freeMemory3));
+        long totalMemory3 = runtime.totalMemory() / 1024;
+        long freeMemory3 = runtime.freeMemory() / 1024;
+        System.out.println(modelName + ": After Garbage Collection:  "
+            + Manager.timeAndMemory(startTime, totalMemory3, freeMemory3));
 
         // Print out the standard stats at the end
         // so as not to break too many scripts
@@ -206,25 +198,22 @@ public class TestApplication implements ChangeListener {
         // If we do not implement ChangeListener, then ChangeRequest
         // will print any errors to stdout and continue.
         // This causes no end of trouble with the test suite
-
         // We can't throw and Exception here because this method in
         // the base class does not throw Exception.
-
         // In JDK1.4, we can construct exceptions from exceptions, but
         // not in JDK1.3.1
         //throw new RuntimeException(exception);
-
         throw new RuntimeException(exception.toString());
     }
 
     /** Create an instance of a single model and run it
      *  @param args The command-line arguments naming the .xml file to run
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         _parseStartTime = System.currentTimeMillis();
+
         try {
-            TestApplication simpleApplication =
-                new TestApplication(args[0]);
+            TestApplication simpleApplication = new TestApplication(args[0]);
         } catch (Exception ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();

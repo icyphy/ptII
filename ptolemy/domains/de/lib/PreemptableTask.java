@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import java.util.LinkedList;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PreemptableTask
+
 /**
    This actor simulates a preemptable task.  The <i>executionTime</i>
    parameter specifies the time it takes to execute the task.  Tokens
@@ -70,9 +71,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (celaine)
    @Pt.AcceptedRating Yellow (celaine)
 */
-
 public class PreemptableTask extends DETransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -82,7 +81,7 @@ public class PreemptableTask extends DETransformer {
      *   actor with this name.
      */
     public PreemptableTask(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         interrupt = new TypedIOPort(this, "interrupt", true, false);
@@ -110,7 +109,6 @@ public class PreemptableTask extends DETransformer {
      */
     public Parameter executionTime;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -120,14 +118,15 @@ public class PreemptableTask extends DETransformer {
      *  @exception IllegalActionException If the service time is negative.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == executionTime) {
-            _executionTimeValue =
-                ((DoubleToken)(executionTime.getToken())).doubleValue();
+            _executionTimeValue = ((DoubleToken) (executionTime.getToken()))
+                .doubleValue();
+
             if (_executionTimeValue < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative execution time: "
-                        + _executionTimeValue);
+                    "Cannot have negative execution time: "
+                    + _executionTimeValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -151,8 +150,8 @@ public class PreemptableTask extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        Time currentTime = ((DEDirector)getDirector()).getModelTime();
-        DEDirector director = (DEDirector)getDirector();
+        Time currentTime = ((DEDirector) getDirector()).getModelTime();
+        DEDirector director = (DEDirector) getDirector();
 
         // If the task receives a token on the <i>input</i> port, queue
         // it inside of the actor.
@@ -162,7 +161,7 @@ public class PreemptableTask extends DETransformer {
 
         // If there is an input and actor is in a non-executing and
         // non-interrupted state.
-        if (_tokenList.size() > 0 && !_executing && !_interrupted) {
+        if ((_tokenList.size() > 0) && !_executing && !_interrupted) {
             _executing = true;
             _outputTime = currentTime.add(_executionTimeValue);
             director.fireAt(this, _outputTime);
@@ -170,16 +169,18 @@ public class PreemptableTask extends DETransformer {
 
         // If there is an interrupt.
         if (interrupt.hasToken(0)) {
-            boolean interruptValue =
-                ((BooleanToken)interrupt.get(0)).booleanValue();
+            boolean interruptValue = ((BooleanToken) interrupt.get(0))
+                .booleanValue();
+
             if (interruptValue) {
                 _interruptTime = currentTime;
                 _interrupted = true;
             } else {
                 _interrupted = false;
+
                 if (_executing) {
-                    _outputTime = _outputTime.add(
-                            currentTime.subtract(_interruptTime));
+                    _outputTime = _outputTime.add(currentTime.subtract(
+                                _interruptTime));
                     director.fireAt(this, _outputTime);
                 }
             }
@@ -209,12 +210,12 @@ public class PreemptableTask extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         // FIXME: can not be used in SR, dealing with time
-        DEDirector director = (DEDirector)getDirector();
+        DEDirector director = (DEDirector) getDirector();
         Time currentTime = director.getModelTime();
 
         if (_executing && !_interrupted) {
             if (currentTime.compareTo(_outputTime) >= 0) {
-                output.send(0, (Token)_tokenList.removeFirst());
+                output.send(0, (Token) _tokenList.removeFirst());
                 _executing = false;
             }
         }
@@ -227,12 +228,12 @@ public class PreemptableTask extends DETransformer {
                 director.fireAt(this, currentTime);
             }
         }
+
         return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Cache the value of the executionTime parameter.  Defaults to 1.0.
     private double _executionTimeValue = 1.0;
 

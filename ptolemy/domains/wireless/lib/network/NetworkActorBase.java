@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib.network;
 
 import java.util.HashSet;
@@ -37,6 +36,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// NetWorkActorBase
@@ -51,9 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (ellen_zh)
    @Pt.AcceptedRating Red (pjb2e)
 */
-
 public class NetworkActorBase extends TypedAtomicActor {
-
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -67,7 +65,7 @@ public class NetworkActorBase extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public NetworkActorBase(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -80,45 +78,45 @@ public class NetworkActorBase extends TypedAtomicActor {
     }
 
     // messages between the layers
-    protected static final String[] PCRequestMsgFields
-            = {"kind", "fromMACAddr", "toMACAddr", "range", "angle",
-               "num_nb", "xpos","ypos", "Length"};
-
-    protected static final String[] PCResponseMsgFields
-            = {"kind", "fromMACAddr", "toMACAddr", "xpos","ypos",
-               "range","Length"};
-
-    protected static final String[] StartRspMsgFields = {"kind","range"};
-
-    protected static final String[] cNetwInterestMessageFields
-            = {"kind","cost", "hop_distance","fromMACAddr","toMACAddr",
-               "hopcount","arrivalTime", "Length"};
-
-    protected static final String[] cNetwDataMessageFields
-            = {"kind", "fromMACAddr", "toMACAddr", "hopcount",
-               "arrivalTime","payload","Length"};
+    protected static final String[] PCRequestMsgFields = {
+            "kind", "fromMACAddr", "toMACAddr", "range", "angle", "num_nb",
+            "xpos", "ypos", "Length"
+        };
+    protected static final String[] PCResponseMsgFields = {
+            "kind", "fromMACAddr", "toMACAddr", "xpos", "ypos", "range",
+            "Length"
+        };
+    protected static final String[] StartRspMsgFields = { "kind", "range" };
+    protected static final String[] cNetwInterestMessageFields = {
+            "kind", "cost", "hop_distance", "fromMACAddr", "toMACAddr",
+            "hopcount", "arrivalTime", "Length"
+        };
+    protected static final String[] cNetwDataMessageFields = {
+            "kind", "fromMACAddr", "toMACAddr", "hopcount", "arrivalTime",
+            "payload", "Length"
+        };
 
     // message types
-    protected static final int  RxStart        = 30;
-    protected static final int  RxEnd          = 31;
-    protected static final int  RxData         = 32;
-    protected static final int  TxStart        = 36;
-    protected static final int  TxStartConfirm = 37;
-    protected static final int  TxData         = 38;
-    protected static final int  TxEnd          = 11;
-    protected static final int  Idle           = 8;
-    protected static final int  Busy           = 9;
-    protected static final int  NoError        = 0;
-    protected static final int  Error          = 1;
-    protected static final int  UNKNOWN        = -1;
-    protected static final int  Timeout        = 39;
-    protected static final int  Gilbert        = 40;
-    protected static final int  Turnaround     = 41;
-    protected static final int  Rxdelay        = 42;
-    protected static final int  appl_interest_msg = 100;
-    protected static final int  appl_data_msg  = 101;
-    protected static final int  netw_interest_msg = 200;
-    protected static final int  netw_data_msg  = 201;
+    protected static final int RxStart = 30;
+    protected static final int RxEnd = 31;
+    protected static final int RxData = 32;
+    protected static final int TxStart = 36;
+    protected static final int TxStartConfirm = 37;
+    protected static final int TxData = 38;
+    protected static final int TxEnd = 11;
+    protected static final int Idle = 8;
+    protected static final int Busy = 9;
+    protected static final int NoError = 0;
+    protected static final int Error = 1;
+    protected static final int UNKNOWN = -1;
+    protected static final int Timeout = 39;
+    protected static final int Gilbert = 40;
+    protected static final int Turnaround = 41;
+    protected static final int Rxdelay = 42;
+    protected static final int appl_interest_msg = 100;
+    protected static final int appl_data_msg = 101;
+    protected static final int netw_interest_msg = 200;
+    protected static final int netw_data_msg = 201;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -131,10 +129,11 @@ public class NetworkActorBase extends TypedAtomicActor {
      *  getDirector().fireAt().
      */
     protected Timer setTimer(int kind, Time expirationTime)
-            throws IllegalActionException {
-        Timer timer=new Timer();
-        timer.kind=kind;
-        timer.expirationTime=expirationTime;
+        throws IllegalActionException {
+        Timer timer = new Timer();
+        timer.kind = kind;
+        timer.expirationTime = expirationTime;
+
         // put all timers of this object into a queue
         _timersSet.add(timer);
         getDirector().fireAt(this, expirationTime);
@@ -145,12 +144,14 @@ public class NetworkActorBase extends TypedAtomicActor {
      *  from the timers set. If no match is found, do nothing.
      */
     protected void cancelTimer(Timer timerToCancel)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Iterator timers = _timersSet.iterator();
+
         // iterate through the queue to find the timer to be canceled
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-            if (timer==timerToCancel) {
+
+            if (timer == timerToCancel) {
                 _timersSet.remove(timer);
                 break;
             }
@@ -166,21 +167,21 @@ public class NetworkActorBase extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown by
      *  getDirector().getCurrentTime().
      */
-    protected int whoTimeout()
-            throws IllegalActionException {
+    protected int whoTimeout() throws IllegalActionException {
         // find the 1st timer expired
         Iterator timers = _timersSet.iterator();
+
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-            if (timer.expirationTime.compareTo(
-                getDirector().getModelTime()) == 0)
-                {
-                    // remove it from the set no matter that
-                    // it will be processed or ignored
-                    timers.remove();
-                    return timer.kind;
-                }
+
+            if (timer.expirationTime.compareTo(getDirector().getModelTime()) == 0) {
+                // remove it from the set no matter that
+                // it will be processed or ignored
+                timers.remove();
+                return timer.kind;
+            }
         }
+
         return UNKNOWN;
     }
 

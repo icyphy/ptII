@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import java.util.Iterator;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousTransferFunction
+
 /**
    A transfer function in the continuous time domain.
    This actor implements a transfer function where the single input (u) and
@@ -86,7 +87,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class ContinuousTransferFunction extends TypedCompositeActor {
-
     /** Construct the composite actor with a name and a container.
      * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
      * @param container The container.
@@ -96,7 +96,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      * @exception IllegalActionException If there was an internal problem.
      */
     public ContinuousTransferFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
@@ -114,16 +114,12 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         setClassName("ptolemy.domains.ct.lib.ContinuousTransferFunction");
 
         // icon
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<text x=\"-25\" y=\"0\" "
-                + "style=\"font-size:14\">\n"
-                + "b(s)/a(s) \n"
-                + "</text>\n"
-                + "style=\"fill:blue\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-25\" y=\"0\" " + "style=\"font-size:14\">\n"
+            + "b(s)/a(s) \n" + "</text>\n" + "style=\"fill:blue\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -167,26 +163,32 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      *   denominator matrix is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == numerator) {
             // Set this composite to opaque.
             _opaque = true;
+
             // Request for initialization.
             Director dir = getDirector();
+
             if (dir != null) {
                 dir.requestInitialization(this);
             }
         } else if (attribute == denominator) {
             // Check that a_0 is not 0.0
-            ArrayToken aToken = (ArrayToken)(denominator.getToken());
-            if (((DoubleToken)aToken.getElement(0)).doubleValue() == 0.0) {
+            ArrayToken aToken = (ArrayToken) (denominator.getToken());
+
+            if (((DoubleToken) aToken.getElement(0)).doubleValue() == 0.0) {
                 throw new IllegalActionException(this,
-                        "The denominator coefficient cannot start with 0.");
+                    "The denominator coefficient cannot start with 0.");
             }
+
             // Set this composite to opaque.
             _opaque = true;
+
             // Request for initialization.
             Director dir = getDirector();
+
             if (dir != null) {
                 dir.requestInitialization(this);
             }
@@ -224,74 +226,89 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      */
     public void preinitialize() throws IllegalActionException {
         // Construct local double[] and Check dimensions.
-        ArrayToken bToken = (ArrayToken)numerator.getToken();
+        ArrayToken bToken = (ArrayToken) numerator.getToken();
         int m = bToken.length();
         double[] bRow = new double[m];
+
         for (int i = 0; i < m; i++) {
-            bRow[i] = ((DoubleToken)bToken.getElement(i)).doubleValue();
+            bRow[i] = ((DoubleToken) bToken.getElement(i)).doubleValue();
         }
-        ArrayToken aToken = (ArrayToken)denominator.getToken();
+
+        ArrayToken aToken = (ArrayToken) denominator.getToken();
         int n = aToken.length();
         double[] a = new double[n];
+
         for (int i = 0; i < n; i++) {
-            a[i] = ((DoubleToken)aToken.getElement(i)).doubleValue();
+            a[i] = ((DoubleToken) aToken.getElement(i)).doubleValue();
         }
+
         if (m > n) {
             throw new IllegalActionException(this,
-                    "The order of the denominator must be greater than or "
-                    + "equal to the order of the numerator.");
+                "The order of the denominator must be greater than or "
+                + "equal to the order of the numerator.");
         }
+
         // Add leading zeros to bRow such that b has the same length as a.
         double[] b = new double[n];
+
         // Note that b is initialized to contain all zeros.
         for (int i = 1; i <= m; i++) {
-            b[n-i] = bRow[m-i];
+            b[n - i] = bRow[m - i];
         }
+
         try {
             _workspace.getWriteAccess();
             removeAllEntities();
             removeAllRelations();
+
             if (n == 1) {
                 // Algebraic system
                 if (a[0] == b[0]) {
                     connect(input, output);
                 } else {
                     Scale scaleD = new Scale(this, "ScaleD");
-                    scaleD.factor.setToken(new DoubleToken(b[0]/a[0]));
+                    scaleD.factor.setToken(new DoubleToken(b[0] / a[0]));
                     connect(input, scaleD.input);
                     connect(output, scaleD.output);
                 }
             } else {
-                double d = b[0]/a[0];
-                int order = n-1;
+                double d = b[0] / a[0];
+                int order = n - 1;
                 AddSubtract inputAdder = new AddSubtract(this, "InputAdder");
                 AddSubtract outputAdder = new AddSubtract(this, "OutputAdder");
                 Integrator[] integrators = new Integrator[order];
                 IORelation[] nodes = new IORelation[order];
                 Scale[] feedback = new Scale[order];
                 Scale[] feedforward = new Scale[order];
+
                 for (int i = 0; i < order; i++) {
                     // The integrator names are d0x, d1x, etc.
                     integrators[i] = new Integrator(this, "Integrator" + i);
                     feedback[i] = new Scale(this, "Feedback" + i);
-                    feedback[i].factor.setToken(new DoubleToken(-a[i+1]/a[0]));
-                    feedforward[i] = new Scale(this, "Feedforward" +i);
-                    feedforward[i].factor.setToken(new
-                            DoubleToken((b[i+1] - d * a[i+1])/a[0]));
+                    feedback[i].factor.setToken(new DoubleToken(
+                            -a[i + 1] / a[0]));
+                    feedforward[i] = new Scale(this, "Feedforward" + i);
+                    feedforward[i].factor.setToken(new DoubleToken(
+                            (b[i + 1] - (d * a[i + 1])) / a[0]));
+
                     // connections
-                    nodes[i] = (IORelation)connect(integrators[i].output,
+                    nodes[i] = (IORelation) connect(integrators[i].output,
                             feedforward[i].input, "node" + i);
                     feedback[i].input.link(nodes[i]);
                     connect(feedback[i].output, inputAdder.plus);
                     connect(feedforward[i].output, outputAdder.plus);
+
                     if (i >= 1) {
-                        integrators[i].input.link(nodes[i-1]);
+                        integrators[i].input.link(nodes[i - 1]);
                     }
                 }
+
                 connect(inputAdder.output, integrators[0].input);
-                IORelation inputRelation = (IORelation)
-                    connect(input, inputAdder.plus, "inputRelation");
+
+                IORelation inputRelation = (IORelation) connect(input,
+                        inputAdder.plus, "inputRelation");
                 connect(output, outputAdder.output, "outputRelation");
+
                 if (d != 0) {
                     Scale scaleD = new Scale(this, "ScaleD");
                     scaleD.factor.setToken(new DoubleToken(d));
@@ -299,18 +316,20 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                     connect(scaleD.output, outputAdder.plus);
                 }
             }
+
             _opaque = false;
             _workspace.incrVersion();
         } catch (NameDuplicationException ex) {
             // Should never happen.
             throw new InternalErrorException("Duplicated name when "
-                    + "constructing the subsystem" + ex.getMessage());
-        }finally {
+                + "constructing the subsystem" + ex.getMessage());
+        } finally {
             _workspace.doneWriting();
         }
+
         // preinitialize all contained actors.
         for (Iterator i = deepEntityList().iterator(); i.hasNext();) {
-            Actor actor = (Actor)i.next();
+            Actor actor = (Actor) i.next();
             actor.preinitialize();
         }
     }

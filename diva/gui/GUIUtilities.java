@@ -46,6 +46,7 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+
 /**
  * A collection of utilities for the GUI.
  *
@@ -54,7 +55,6 @@ import javax.swing.KeyStroke;
  * @version $Id$
  */
 public class GUIUtilities {
-
     /** JDK1.2 doesn't have this string defined in javax.swing.Action.
      *  This is the value that JDK1.3 uses.
      */
@@ -84,17 +84,19 @@ public class GUIUtilities {
      *  is null, Otherwise, set the
      *  ACCELERATOR_KEY property to the given key stroke.
      */
-    public static void addHotKey(JComponent pane, Action action,
-            KeyStroke key) {
-        String name = (String)action.getValue(Action.NAME);
+    public static void addHotKey(JComponent pane, Action action, KeyStroke key) {
+        String name = (String) action.getValue(Action.NAME);
+
         if (key == null) {
             key = (KeyStroke) action.getValue(ACCELERATOR_KEY);
         } else {
             action.putValue(ACCELERATOR_KEY, key);
         }
-        if (key != null)
-            pane.registerKeyboardAction(action, name,
-                    key, JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        if (key != null) {
+            pane.registerKeyboardAction(action, name, key,
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+        }
     }
 
     /** Add an action to a menu and return the menu item created.  If
@@ -106,16 +108,18 @@ public class GUIUtilities {
      * accelerator, if one has been set previously on the action.
      * The item will be enabled by default.
      */
-    public static JMenuItem addMenuItem (JMenu menu, Action action) {
-        String label = (String)action.getValue(Action.NAME);
+    public static JMenuItem addMenuItem(JMenu menu, Action action) {
+        String label = (String) action.getValue(Action.NAME);
         int mnemonic = 0;
-        Integer i = (Integer)action.getValue(MNEMONIC_KEY);
-        if (i != null)
+        Integer i = (Integer) action.getValue(MNEMONIC_KEY);
+
+        if (i != null) {
             mnemonic = i.intValue();
+        }
+
         return addMenuItem(menu, label, action, mnemonic, null, true);
     }
 
-
     /** Add an action to a menu and return the menu item created.  If
      * the tool tip is null, use the "tooltip" property already in the
      * action, otherwise add the property to the action. (The mnemonic
@@ -125,11 +129,11 @@ public class GUIUtilities {
      * accelerator, if one has been set previously on the action.
      * The item will be enabled by default.
      */
-    public static JMenuItem addMenuItem (JMenu menu, Action action,
-            int mnemonic, String tooltip) {
-        String label = (String)action.getValue(Action.NAME);
-        return addMenuItem(menu, label.toString(), action,
-                mnemonic, tooltip, true);
+    public static JMenuItem addMenuItem(JMenu menu, Action action,
+        int mnemonic, String tooltip) {
+        String label = (String) action.getValue(Action.NAME);
+        return addMenuItem(menu, label.toString(), action, mnemonic, tooltip,
+            true);
     }
 
     /** Add an action to a menu and return the menu item created.  If
@@ -139,19 +143,22 @@ public class GUIUtilities {
      * "menuItem" property.  The menu item's text is set to be "label",
      * and is disabled or enabled according to "isEnabled."
      */
-    public static JMenuItem addMenuItem (JMenu menu, String label,
-            Action action, int mnemonic, String tooltip, boolean isEnabled) {
+    public static JMenuItem addMenuItem(JMenu menu, String label,
+        Action action, int mnemonic, String tooltip, boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
         } else {
             action.putValue("tooltip", tooltip);
         }
+
         action.putValue("tooltip", tooltip);
+
         JMenuItem item = menu.add(action);
         item.setText(label);
         item.setEnabled(isEnabled);
         item.setMnemonic(mnemonic);
         item.setToolTipText(tooltip);
+
         KeyStroke key = (KeyStroke) action.getValue(ACCELERATOR_KEY);
         item.setAccelerator(key);
         action.putValue("menuItem", item);
@@ -169,12 +176,14 @@ public class GUIUtilities {
      *  The new button is added to the action as the "toolButton" property.
      *  The button is enabled by default.
      */
-    public static JButton addToolBarButton (JToolBar toolbar, Action action) {
-        Icon icon = (Icon)action.getValue(LARGE_ICON);
+    public static JButton addToolBarButton(JToolBar toolbar, Action action) {
+        Icon icon = (Icon) action.getValue(LARGE_ICON);
         String label = null;
+
         if (icon == null) {
-            label = (String)action.getValue(Action.NAME);
+            label = (String) action.getValue(Action.NAME);
         }
+
         return addToolBarButton(toolbar, action, null, icon, label, true);
     }
 
@@ -184,8 +193,8 @@ public class GUIUtilities {
      * as the "toolButton" property.  The button represented by an icon
      * (no text) and is enabled by default.
      */
-    public static JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon) {
+    public static JButton addToolBarButton(JToolBar toolbar, Action action,
+        String tooltip, Icon icon) {
         return addToolBarButton(toolbar, action, tooltip, icon, null, true);
     }
 
@@ -195,10 +204,9 @@ public class GUIUtilities {
      * as the "toolButton" property.  The button represented by an icon
      * (no text) and is enabled by default.
      */
-    public static JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon, boolean isEnabled) {
-        return addToolBarButton(toolbar, action, tooltip, icon,
-                null, isEnabled);
+    public static JButton addToolBarButton(JToolBar toolbar, Action action,
+        String tooltip, Icon icon, boolean isEnabled) {
+        return addToolBarButton(toolbar, action, tooltip, icon, null, isEnabled);
     }
 
     /** Add an action to the toolbar.  If the tool tip is null, use
@@ -207,8 +215,8 @@ public class GUIUtilities {
      * as the "toolButton" property.  The button represented by text
      * (no icon) and is enabled by default.
      */
-    public static JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, String lbl) {
+    public static JButton addToolBarButton(JToolBar toolbar, Action action,
+        String tooltip, String lbl) {
         return addToolBarButton(toolbar, action, tooltip, null, lbl, true);
     }
 
@@ -216,8 +224,8 @@ public class GUIUtilities {
      * are specified (non-null), they are added.  The button is enabled by
      * default.
      */
-    public static JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon, String lbl) {
+    public static JButton addToolBarButton(JToolBar toolbar, Action action,
+        String tooltip, Icon icon, String lbl) {
         return addToolBarButton(toolbar, action, tooltip, icon, lbl, true);
     }
 
@@ -227,20 +235,29 @@ public class GUIUtilities {
      * as the "toolButton" property.  If either an icon or a text string
      * are specified (non-null), they are added.
      */
-    public static JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon, String lbl, boolean isEnabled) {
+    public static JButton addToolBarButton(JToolBar toolbar, Action action,
+        String tooltip, Icon icon, String lbl, boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
         } else {
             action.putValue("tooltip", tooltip);
         }
+
         JButton button = toolbar.add(action);
         button.setToolTipText(tooltip);
         button.setText(null);
         button.setRequestFocusEnabled(false);
-        if (icon != null) button.setIcon(icon);
-        if (lbl != null) button.setText(lbl);
-        button.setMargin(new Insets(0,0,0,0));
+
+        if (icon != null) {
+            button.setIcon(icon);
+        }
+
+        if (lbl != null) {
+            button.setText(lbl);
+        }
+
+        button.setMargin(new Insets(0, 0, 0, 0));
+
         //        button.setBorderPainted(false);
         button.setBorderPainted(true);
         button.setEnabled(isEnabled);
@@ -255,8 +272,9 @@ public class GUIUtilities {
      */
     public static String ellipsis(String string, int length) {
         if (string.length() > length) {
-            return string.substring(0, length-3) + "...";
+            return string.substring(0, length - 3) + "...";
         }
+
         return string;
     }
 
@@ -266,8 +284,9 @@ public class GUIUtilities {
     public static String getFileExtension(File file) {
         String str = file.getName();
         int i = str.lastIndexOf('.');
+
         if (i > 0) {
-            return str.substring(i+1);
+            return str.substring(i + 1);
         } else {
             return "";
         }
@@ -280,31 +299,37 @@ public class GUIUtilities {
     public static String keyStrokeToString(KeyStroke key) {
         int modifiers = key.getModifiers();
         StringBuffer buffer = new StringBuffer();
+
         if ((modifiers & Event.SHIFT_MASK) == Event.SHIFT_MASK) {
             buffer.append("(Shift-");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
         }
+
         if ((modifiers & Event.CTRL_MASK) == Event.CTRL_MASK) {
             buffer.append("(Ctrl-");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
         }
+
         if ((modifiers & Event.META_MASK) == Event.META_MASK) {
             buffer.append("(Meta-");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
         }
+
         if ((modifiers & Event.ALT_MASK) == Event.ALT_MASK) {
             buffer.append("(Alt-");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
         }
+
         if (modifiers == 0) {
             buffer.append("(");
             buffer.append(KeyEvent.getKeyText(key.getKeyCode()));
             buffer.append(")");
         }
+
         return buffer.toString();
     }
 
@@ -312,32 +337,28 @@ public class GUIUtilities {
      *  displaying the whole stack trace, just display the exception message
      *  and a button for displaying the whole stack trace.
      */
-    public static void showException(Component parent,
-            Exception e, String info) {
+    public static void showException(Component parent, Exception e, String info) {
         Object[] message = new Object[1];
         String string;
+
         if (info != null) {
             string = info + "\n" + e.getMessage();
         } else {
             string = e.getMessage();
         }
+
         message[0] = ellipsis(string, 400);
 
-        Object[] options = {"Dismiss", "Display Stack Trace"};
+        Object[] options = { "Dismiss", "Display Stack Trace" };
 
         // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                parent,
-                message,
-                "Exception Caught",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
-                null,
-                options, options[0]);
+        int selected = JOptionPane.showOptionDialog(parent, message,
+                "Exception Caught", JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
-        if (selected == 1)
+        if (selected == 1) {
             showStackTrace(parent, e, info);
-
+        }
     }
 
     /** Display a stack trace dialog. Eventually, the dialog should
@@ -352,12 +373,12 @@ public class GUIUtilities {
      * string printed at the top of the dialog instead of the Exception
      * message.
      */
-    public static void showStackTrace(Component parent,
-            Exception e, String info) {
+    public static void showStackTrace(Component parent, Exception e, String info) {
         // Show the stack trace in a scrollable text area.
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
+
         JTextArea text = new JTextArea(sw.toString(), 60, 80);
         JScrollPane stext = new JScrollPane(text);
         stext.setPreferredSize(new Dimension(400, 200));
@@ -367,22 +388,18 @@ public class GUIUtilities {
         // We want to stack the text area with another message
         Object[] message = new Object[2];
         String string;
+
         if (info != null) {
             string = info + "\n" + e.getMessage();
         } else {
             string = e.getMessage();
         }
+
         message[0] = ellipsis(string, 400);
         message[1] = stext;
 
-
         // Show the MODAL dialog
-        JOptionPane.showMessageDialog(
-                parent,
-                message,
-                "Exception Caught",
-                JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(parent, message, "Exception Caught",
+            JOptionPane.WARNING_MESSAGE);
     }
 }
-
-

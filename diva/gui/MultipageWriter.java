@@ -24,11 +24,13 @@
   COPYRIGHTENDKEY
 */
 package diva.gui;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 
 import diva.util.ModelWriter;
+
 
 /**
  * MultipageWriter writes out all pages of a multi-page document to a
@@ -58,23 +60,29 @@ public class MultipageWriter {
      * Write the given document to the character stream (out).  Use the
      * given page writer to write out each page in the document.
      */
-    public void write(MultipageModel multipage, Writer out) throws IOException {
+    public void write(MultipageModel multipage, Writer out)
+        throws IOException {
         writeHeader(out);
-        out.write("<"+ MultipageParser.MULTIPAGE_TAG + " " + MultipageParser.TITLE_TAG + "=\"");
+        out.write("<" + MultipageParser.MULTIPAGE_TAG + " "
+            + MultipageParser.TITLE_TAG + "=\"");
         out.write(multipage.getTitle());
         out.write("\">\n");
-        int ct=0;
+
+        int ct = 0;
+
         for (Iterator iter = multipage.pages(); iter.hasNext();) {
-            Page s = (Page)iter.next();
+            Page s = (Page) iter.next();
             Object model = s.getModel();
             String label = s.getTitle();
 
             out.write("<" + MultipageParser.PAGE_TAG);
+
             if (label != null) {
                 out.write(" " + MultipageParser.PAGE_TITLE_TAG + "=\"");
                 out.write(label);
                 out.write("\"");
             }
+
             out.write(" " + MultipageParser.PAGE_NUM_TAG + "=\"");
             out.write(String.valueOf(ct));
             out.write("\">\n");
@@ -84,6 +92,7 @@ public class MultipageWriter {
             out.write("</" + MultipageParser.PAGE_TAG + ">\n");
             ct++;
         }
+
         out.write("</" + MultipageParser.MULTIPAGE_TAG + ">\n");
     }
 
@@ -92,10 +101,8 @@ public class MultipageWriter {
      */
     private void writeHeader(Writer writer) throws IOException {
         writer.write("<?xml version=\"1.0\" standalone=\"no\"?>\n");
-        writer.write("<!DOCTYPE " + MultipageParser.MULTIPAGE_TAG + " PUBLIC \""
-                + MultipageParser.PUBLIC_ID + "\"\n\t\""
-                + MultipageParser.DTD_URL + "\">\n\n");
+        writer.write("<!DOCTYPE " + MultipageParser.MULTIPAGE_TAG
+            + " PUBLIC \"" + MultipageParser.PUBLIC_ID + "\"\n\t\""
+            + MultipageParser.DTD_URL + "\">\n\n");
     }
 }
-
-

@@ -26,7 +26,6 @@
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.image;
 
 import java.awt.Image;
@@ -43,8 +42,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageReader
+
 /**
    An actor that reads a String input token naming a URL and outputs an
    Object Token that contains a java.awt.Image
@@ -78,7 +79,7 @@ public class URLToImage extends Transformer {
      *   actor with this name.
      */
     public URLToImage(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.OBJECT);
@@ -93,16 +94,16 @@ public class URLToImage extends Transformer {
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
-        StringToken urlToken = (StringToken)input.get(0);
+        StringToken urlToken = (StringToken) input.get(0);
+
         try {
             URL url = new URL(urlToken.stringValue());
             Image image = new ImageIcon(url).getImage();
             output.send(0, new AWTImageToken(image));
         } catch (MalformedURLException ex) {
             throw new IllegalActionException("'" + urlToken.stringValue()
-                    + "' is malformed: " + ex);
+                + "' is malformed: " + ex);
         }
-
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -113,7 +114,7 @@ public class URLToImage extends Transformer {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
-
 }

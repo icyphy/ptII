@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.HashMap;
@@ -60,8 +59,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Expression
+
 /**
    On each firing, evaluate an expression that may include references
    to the inputs, current time, and a count of the firing.  The ports
@@ -112,9 +113,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Green (neuendor)
 */
-
 public class Expression extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -124,7 +123,7 @@ public class Expression extends TypedAtomicActor {
      *   actor with this name.
      */
     public Expression(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -152,7 +151,7 @@ public class Expression extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == expression) {
             _parseTree = null;
         }
@@ -165,10 +164,8 @@ public class Expression extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Expression newObject = (Expression)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Expression newObject = (Expression) super.clone(workspace);
         newObject._iterationCount = 1;
         newObject._parseTree = null;
         newObject._parseTreeEvaluator = null;
@@ -186,8 +183,10 @@ public class Expression extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)(inputPorts.next());
+            IOPort port = (IOPort) (inputPorts.next());
+
             // FIXME: Handle multiports
             if (port.getWidth() > 0) {
                 if (port.hasToken(0)) {
@@ -195,11 +194,13 @@ public class Expression extends TypedAtomicActor {
                     _tokenMap.put(port.getName(), inputToken);
                 } else {
                     throw new IllegalActionException(this,
-                            "Input port " + port.getName() + " has no data.");
+                        "Input port " + port.getName() + " has no data.");
                 }
             }
         }
+
         Token result;
+
         try {
             // Note: this code parallels code in the OutputTypeFunction class
             // below.
@@ -208,17 +209,18 @@ public class Expression extends TypedAtomicActor {
                 // cases the expression doesn't change, and the parser
                 // requires a large amount of memory.
                 PtParser parser = new PtParser();
-                _parseTree = parser.generateParseTree(
-                        expression.getExpression());
+                _parseTree = parser.generateParseTree(expression.getExpression());
             }
+
             if (_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
+
             if (_scope == null) {
                 _scope = new VariableScope();
             }
-            result = _parseTreeEvaluator.evaluateParseTree(
-                    _parseTree, _scope);
+
+            result = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
             throw new IllegalActionException(this, ex, "Expression invalid.");
@@ -226,9 +228,10 @@ public class Expression extends TypedAtomicActor {
 
         if (result == null) {
             throw new IllegalActionException(this,
-                    "Expression yields a null result: " +
-                    expression.getExpression());
+                "Expression yields a null result: "
+                + expression.getExpression());
         }
+
         output.send(0, result);
     }
 
@@ -245,6 +248,7 @@ public class Expression extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
+
         // This actor never requests termination.
         return true;
     }
@@ -255,8 +259,10 @@ public class Expression extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)(inputPorts.next());
+            IOPort port = (IOPort) (inputPorts.next());
+
             // FIXME: Handle multiports
             if (port.getWidth() > 0) {
                 if (!port.hasToken(0)) {
@@ -264,6 +270,7 @@ public class Expression extends TypedAtomicActor {
                 }
             }
         }
+
         return super.prefire();
     }
 
@@ -273,37 +280,39 @@ public class Expression extends TypedAtomicActor {
         super.preinitialize();
         _tokenMap = new HashMap();
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Add a constraint to the type output port of this object.
     private void _setOutputTypeConstraint() {
         output.setTypeAtLeast(new OutputTypeFunction());
     }
 
     private class VariableScope extends ModelScope {
-
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
          *  @return The attribute with the specified name in the scope.
          */
         public Token get(String name) throws IllegalActionException {
             if (name.equals("time")) {
-                return new DoubleToken(
-                    getDirector().getModelTime().getDoubleValue());
+                return new DoubleToken(getDirector().getModelTime()
+                                           .getDoubleValue());
             } else if (name.equals("iteration")) {
                 return new IntToken(_iterationCount);
             }
 
-            Token token = (Token)_tokenMap.get(name);
+            Token token = (Token) _tokenMap.get(name);
+
             if (token != null) {
                 return token;
             }
 
             Variable result = getScopedVariable(null, Expression.this, name);
+
             if (result != null) {
                 return result.getToken();
             }
+
             return null;
         }
 
@@ -320,15 +329,18 @@ public class Expression extends TypedAtomicActor {
             }
 
             // Check the port names.
-            TypedIOPort port = (TypedIOPort)getPort(name);
+            TypedIOPort port = (TypedIOPort) getPort(name);
+
             if (port != null) {
                 return port.getType();
             }
 
             Variable result = getScopedVariable(null, Expression.this, name);
+
             if (result != null) {
-                return (Type)result.getTypeTerm().getValue();
+                return (Type) result.getTypeTerm().getValue();
             }
+
             return null;
         }
 
@@ -341,7 +353,7 @@ public class Expression extends TypedAtomicActor {
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
+            throws IllegalActionException {
             if (name.equals("time")) {
                 return new TypeConstant(BaseType.DOUBLE);
             } else if (name.equals("iteration")) {
@@ -349,15 +361,18 @@ public class Expression extends TypedAtomicActor {
             }
 
             // Check the port names.
-            TypedIOPort port = (TypedIOPort)getPort(name);
+            TypedIOPort port = (TypedIOPort) getPort(name);
+
             if (port != null) {
                 return port.getTypeTerm();
             }
 
             Variable result = getScopedVariable(null, Expression.this, name);
+
             if (result != null) {
                 return result.getTypeTerm();
             }
+
             return null;
         }
 
@@ -374,7 +389,6 @@ public class Expression extends TypedAtomicActor {
     // The function value is determined by type inference on the
     // expression, in the scope of this Expression actor.
     private class OutputTypeFunction extends MonotonicFunction {
-
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
 
@@ -392,9 +406,11 @@ public class Expression extends TypedAtomicActor {
                 // (but not for UNKNOWN arguments), and to give good error
                 // messages when functions are not found.
                 InequalityTerm[] terms = getVariables();
+
                 for (int i = 0; i < terms.length; i++) {
                     InequalityTerm term = terms[i];
-                    if (term != this && term.getValue() == BaseType.UNKNOWN) {
+
+                    if ((term != this) && (term.getValue() == BaseType.UNKNOWN)) {
                         return BaseType.UNKNOWN;
                     }
                 }
@@ -406,18 +422,19 @@ public class Expression extends TypedAtomicActor {
                     // cases the expression doesn't change, and the parser
                     // requires a large amount of memory.
                     PtParser parser = new PtParser();
-                    _parseTree = parser.generateParseTree(
-                            expression.getExpression());
+                    _parseTree = parser.generateParseTree(expression
+                            .getExpression());
                 }
 
                 if (_scope == null) {
                     _scope = new VariableScope();
                 }
+
                 Type type = _typeInference.inferTypes(_parseTree, _scope);
                 return type;
             } catch (Exception ex) {
                 throw new IllegalActionException(Expression.this, ex,
-                        "An error occurred during expression type inference");
+                    "An error occurred during expression type inference");
             }
         }
 
@@ -434,26 +451,29 @@ public class Expression extends TypedAtomicActor {
             try {
                 if (_parseTree == null) {
                     PtParser parser = new PtParser();
-                    _parseTree = parser.generateParseTree(
-                            expression.getExpression());
+                    _parseTree = parser.generateParseTree(expression
+                            .getExpression());
                 }
 
                 if (_scope == null) {
                     _scope = new VariableScope();
                 }
-                Set set = _variableCollector.collectFreeVariables(
-                        _parseTree, _scope);
+
+                Set set = _variableCollector.collectFreeVariables(_parseTree,
+                        _scope);
                 List termList = new LinkedList();
-                for (Iterator elements = set.iterator();
-                     elements.hasNext();) {
-                    String name = (String)elements.next();
+
+                for (Iterator elements = set.iterator(); elements.hasNext();) {
+                    String name = (String) elements.next();
                     InequalityTerm term = _scope.getTypeTerm(name);
-                    if (term != null && term.isSettable()) {
+
+                    if ((term != null) && term.isSettable()) {
                         termList.add(term);
                     }
                 }
-                return (InequalityTerm[])termList.toArray(
-                        new InequalityTerm[termList.size()]);
+
+                return (InequalityTerm[]) termList.toArray(new InequalityTerm[termList
+                    .size()]);
             } catch (IllegalActionException ex) {
                 return new InequalityTerm[0];
             }
@@ -468,16 +488,12 @@ public class Expression extends TypedAtomicActor {
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-
-        private ParseTreeTypeInference _typeInference =
-        new ParseTreeTypeInference();
-        private ParseTreeFreeVariableCollector _variableCollector =
-        new ParseTreeFreeVariableCollector();
+        private ParseTreeTypeInference _typeInference = new ParseTreeTypeInference();
+        private ParseTreeFreeVariableCollector _variableCollector = new ParseTreeFreeVariableCollector();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _iterationCount = 1;
     private ASTPtRootNode _parseTree = null;
     private ParseTreeEvaluator _parseTreeEvaluator = null;

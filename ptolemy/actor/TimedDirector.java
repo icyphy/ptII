@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import ptolemy.actor.util.Time;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimedDirector
+
 /**
    This is an interface for directors that operate on time-based signals.
    That is, logically, all signals observed or produced are tokens placed
@@ -45,7 +46,6 @@ import ptolemy.actor.util.Time;
    @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
-
 public interface TimedDirector {
     /** Return a time object that contains the value of the current time.
      *  @return A time object that contains the value of the current time.
@@ -66,5 +66,3 @@ public interface TimedDirector {
      */
     public double getTimeResolution();
 }
-
-

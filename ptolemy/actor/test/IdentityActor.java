@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.test;
 
 import ptolemy.actor.AtomicActor;
@@ -35,8 +34,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// IdentityActor
+
 /**
    An IdentityActor is a simple atomic actor that transfers the input token
    to the output. This actor is used in tests that needs to emulate the
@@ -63,7 +64,7 @@ public class IdentityActor extends AtomicActor {
      *   an entity already in the container.
      */
     public IdentityActor(CompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new IOPort(this, "input");
         input.setInput(true);
@@ -87,8 +88,8 @@ public class IdentityActor extends AtomicActor {
             Token in = input.get(0);
             output.broadcast(in);
         } catch (NoTokenException e) {
-            throw new IllegalActionException( this,
-                    " No token available when firing.");
+            throw new IllegalActionException(this,
+                " No token available when firing.");
         }
     }
 
@@ -96,5 +97,4 @@ public class IdentityActor extends AtomicActor {
     ////                         public  variables                 ////
     public IOPort input;
     public IOPort output;
-
 }

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.modal;
 
 import ptolemy.domains.ct.kernel.CTCompositeActor;
@@ -36,12 +35,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 // NOTE: This is a combination of ModalController and CTStepSizeControlActor,
 // but because of the inheritance hierarchy, there appears to be no convenient
 // way to share the code.
-
 //////////////////////////////////////////////////////////////////////////
 //// Refinement
+
 /**
    This typed composite actor supports mirroring of its ports in its container
    (which is required to be a ModalModel), which in turn assures
@@ -58,7 +58,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class Refinement extends CTCompositeActor {
-
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -70,7 +69,7 @@ public class Refinement extends CTCompositeActor {
      *   an actor already in the container.
      */
     public Refinement(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // The base class identifies the class name as TypedCompositeActor
@@ -93,7 +92,8 @@ public class Refinement extends CTCompositeActor {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Have already called newPort() in the container.
                 // This time, process the request.
                 RefinementPort port = new RefinementPort(this, name);
@@ -103,31 +103,34 @@ public class Refinement extends CTCompositeActor {
                 // will occur during MoML parsing, but this
                 // is harmless. EAL 12/04.
                 // port._mirrorDisable = false;
-
                 // Create the appropriate links.
-                ModalModel container = (ModalModel)getContainer();
+                ModalModel container = (ModalModel) getContainer();
+
                 if (container != null) {
                     String relationName = name + "Relation";
                     Relation relation = container.getRelation(relationName);
+
                     if (relation == null) {
                         relation = container.newRelation(relationName);
+
                         Port containerPort = container.getPort(name);
                         containerPort.link(relation);
                     }
+
                     port.link(relation);
                 }
+
                 return port;
             } else {
                 _mirrorDisable = true;
-                ((ModalModel)getContainer()).newPort(name);
+                ((ModalModel) getContainer()).newPort(name);
                 return getPort(name);
             }
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "Refinement.newPort: Internal error: " +
-                    ex.getMessage());
+                "Refinement.newPort: Internal error: " + ex.getMessage());
         } finally {
             _mirrorDisable = false;
             _workspace.doneWriting();
@@ -153,17 +156,15 @@ public class Refinement extends CTCompositeActor {
      *   TypedActor, or if the base class throws it.
      */
     protected void _checkContainer(Entity container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(container instanceof ModalModel) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "Refinement can only be contained by "
-                    + "ModalModel objects.");
+                "Refinement can only be contained by " + "ModalModel objects.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // These are protected to be accessible to ModalModel.
 
     /** Indicator that we are processing a newPort request. */

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.io;
 
 import ptolemy.data.expr.Variable;
@@ -36,6 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionReader
+
 /**
    This actor reads a file or URL, one line at a time, evaluates each
    line as an expression, and outputs the token resulting from the
@@ -55,7 +55,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (liuj)
 */
 public class ExpressionReader extends LineReader {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,7 +64,7 @@ public class ExpressionReader extends LineReader {
      *   actor with this name.
      */
     public ExpressionReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _expressionEvaluator = new Variable(this, "_expressionEvaluator");
@@ -87,6 +86,7 @@ public class ExpressionReader extends LineReader {
                 trigger.get(i);
             }
         }
+
         if (_currentLine != null) {
             _expressionEvaluator.setExpression(_currentLine);
             output.broadcast(_expressionEvaluator.getToken());

@@ -8,17 +8,19 @@
 */
 package ptolemy.codegen.lib;
 
+import ptolemy.codegen.kernel.ClassicCGCActor;
+import ptolemy.codegen.kernel.ClassicPort;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.codegen.kernel.ClassicCGCActor;
-import ptolemy.codegen.kernel.ClassicPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CGCGAL
+
 /**
    Gradient Adaptive Lattice filter.
 
@@ -37,7 +39,7 @@ public class CGCGAL extends ClassicCGCActor {
      *   an actor already in the container.
      */
     public CGCGAL(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new ClassicPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -75,6 +77,7 @@ public class CGCGAL extends ClassicCGCActor {
         /*
          */
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -128,50 +131,41 @@ public class CGCGAL extends ClassicCGCActor {
 
     /**
      */
-    public void  generateInitializeCode() {
+    public void generateInitializeCode() {
         //# line 122 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCGAL.pl"
-        k.resize(order+1);
-        f.resize(order+1);
-        b.resize(order+1);
-        e.resize(order+1);
+        k.resize(order + 1);
+        f.resize(order + 1);
+        b.resize(order + 1);
+        e.resize(order + 1);
         alpha = 1.0 - ((timeConstant - 1.0) / (timeConstant + 1.0));
     }
 
     /**
      */
-    public void  generateFireCode() {
+    public void generateFireCode() {
         //# line 131 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCGAL.pl"
         addCode(main);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
-
-    public String main =
-    "        {\n"
-    + "            int m;\n"
-    + "\n"
-    + "            /* Update forward errors. */\n"
-    + "            $ref(f,0) = $ref(input);\n"
-    + "            for (m = 1; m <= $val(order); m++)\n"
-    + "            {\n"
-    + "               $ref(f,m) = $ref(f,m-1) - $ref(k,m) * $ref(b,m-1);\n"
-    + "            }\n"
-    + "\n"
-    + "            /* Update backward errors, reflection coefficients. */\n"
-    + "            for (m = $val(order); m > 0; m--)\n"
-    + "            {\n"
-    + "                $ref(b,m) = $ref(b,m-1) - $ref(k,m)*$ref(f,m-1);\n"
-    + "                $ref(e,m) *= 1.0 - $val(alpha);\n"
-    + "                $ref(e,m) += $val(alpha) * ($ref(f,m-1)*$ref(f,m-1) + $ref(b,m-1)*$ref(b,m-1));\n"
-    + "                if ($ref(e,m) != 0.0)\n"
-    + "                {\n"
-    + "                    $ref(k,m) += $val(alpha) * ($ref(f,m)*$ref(b,m-1) + $ref(b,m)*$ref(f,m-1)) / $ref(e,m);\n"
-    + "                    if ($ref(k,m) > 1.0) $ref(k,m) = 1.0;\n"
-    + "                    if ($ref(k,m) < -1.0) $ref(k,m) = -1.0;\n"
-    + "                }\n"
-    + "            }\n"
-    + "\n"
-    + "            $ref(b,0) = $ref(input);\n"
-    + "            $ref(residual) =  $ref(f,order);\n"
-    + "        }\n";
+    public String main = "        {\n" + "            int m;\n" + "\n"
+        + "            /* Update forward errors. */\n"
+        + "            $ref(f,0) = $ref(input);\n"
+        + "            for (m = 1; m <= $val(order); m++)\n"
+        + "            {\n"
+        + "               $ref(f,m) = $ref(f,m-1) - $ref(k,m) * $ref(b,m-1);\n"
+        + "            }\n" + "\n"
+        + "            /* Update backward errors, reflection coefficients. */\n"
+        + "            for (m = $val(order); m > 0; m--)\n" + "            {\n"
+        + "                $ref(b,m) = $ref(b,m-1) - $ref(k,m)*$ref(f,m-1);\n"
+        + "                $ref(e,m) *= 1.0 - $val(alpha);\n"
+        + "                $ref(e,m) += $val(alpha) * ($ref(f,m-1)*$ref(f,m-1) + $ref(b,m-1)*$ref(b,m-1));\n"
+        + "                if ($ref(e,m) != 0.0)\n" + "                {\n"
+        + "                    $ref(k,m) += $val(alpha) * ($ref(f,m)*$ref(b,m-1) + $ref(b,m)*$ref(f,m-1)) / $ref(e,m);\n"
+        + "                    if ($ref(k,m) > 1.0) $ref(k,m) = 1.0;\n"
+        + "                    if ($ref(k,m) < -1.0) $ref(k,m) = -1.0;\n"
+        + "                }\n" + "            }\n" + "\n"
+        + "            $ref(b,0) = $ref(input);\n"
+        + "            $ref(residual) =  $ref(f,order);\n" + "        }\n";
 }

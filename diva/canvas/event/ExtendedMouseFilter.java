@@ -24,11 +24,11 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.event;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+
 
 /** A class that accepts mouse events. Instances of this class
  * are used by event-handling code to decide whether they are
@@ -40,7 +40,6 @@ import java.awt.event.MouseEvent;
  * @author         Steve Neuendorffer
  */
 public class ExtendedMouseFilter extends MouseFilter {
-
     /** The default mouse filter -- accepts button 1 with no
      * modifiers.
      */
@@ -53,8 +52,8 @@ public class ExtendedMouseFilter extends MouseFilter {
 
     /** The alternate selection filter -- accepts button 1 with shift.
      */
-    public static MouseFilter alternateSelectionFilter =
-    new ExtendedMouseFilter(1, InputEvent.SHIFT_DOWN_MASK);
+    public static MouseFilter alternateSelectionFilter = new ExtendedMouseFilter(1,
+            InputEvent.SHIFT_DOWN_MASK);
 
     /** The mouse button mask
      */
@@ -83,7 +82,7 @@ public class ExtendedMouseFilter extends MouseFilter {
      * button can be specified, in which case the filter will accept
      * events from any of them. In any case, modifier keys are ignored.
      */
-    public ExtendedMouseFilter (int button) {
+    public ExtendedMouseFilter(int button) {
         this(button, 0);
     }
 
@@ -94,14 +93,11 @@ public class ExtendedMouseFilter extends MouseFilter {
      * in which case the filter will accept events from any of them. The
      * filter will accept modifier sets that exactly match modifiers.
      */
-    public ExtendedMouseFilter (int button, int extendedModifiers) {
-        this(button,
-                extendedModifiers,
-                InputEvent.SHIFT_DOWN_MASK
-                | InputEvent.CTRL_DOWN_MASK
-                | InputEvent.ALT_DOWN_MASK
-                | InputEvent.ALT_GRAPH_DOWN_MASK
-                | InputEvent.META_DOWN_MASK);
+    public ExtendedMouseFilter(int button, int extendedModifiers) {
+        this(button, extendedModifiers,
+            InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK
+            | InputEvent.ALT_DOWN_MASK | InputEvent.ALT_GRAPH_DOWN_MASK
+            | InputEvent.META_DOWN_MASK);
     }
 
     /**
@@ -114,7 +110,7 @@ public class ExtendedMouseFilter extends MouseFilter {
      * ignored; the filter will accept modifier sets that, after
      * masking, exactly match modifiers.
      */
-    public ExtendedMouseFilter (int button, int extendedModifiers, int mask) {
+    public ExtendedMouseFilter(int button, int extendedModifiers, int mask) {
         this(button, extendedModifiers, mask, -1);
     }
 
@@ -131,8 +127,8 @@ public class ExtendedMouseFilter extends MouseFilter {
      * or two.  Notice that if you want to react to drag events, they always
      * have a press number of zero.
      */
-    public ExtendedMouseFilter (int button, int extendedModifiers,
-            int mask, int pressNumber) {
+    public ExtendedMouseFilter(int button, int extendedModifiers, int mask,
+        int pressNumber) {
         // bogus super constructor...  It would have been better if the
         // base class was an interface, but oh well.
         super(0);
@@ -145,12 +141,15 @@ public class ExtendedMouseFilter extends MouseFilter {
     /**
      * Test whether the given MouseEvent passes the filter.
      */
-    public boolean accept (MouseEvent event) {
-        if (_pressNumber != -1 &&
-                event.getClickCount() != _pressNumber) return false;
+    public boolean accept(MouseEvent event) {
+        if ((_pressNumber != -1) && (event.getClickCount() != _pressNumber)) {
+            return false;
+        }
+
         int m = event.getModifiersEx();
-        boolean val = (event.getButton() == _button) &&
-            (_modifierFlags == (m & _modifierMask));
+        boolean val = (event.getButton() == _button)
+            && (_modifierFlags == (m & _modifierMask));
+
         //         System.out.println("event = " + event);
         //         System.out.println("FILTER = " + this);
         //         System.out.println("ACCEPT? = " + val);
@@ -159,15 +158,12 @@ public class ExtendedMouseFilter extends MouseFilter {
 
     /** Print a useful description of the mouse filter.
      */
-    public String toString () {
+    public String toString() {
         StringBuffer result = new StringBuffer();
-        result.append(getClass().toString()
-                + "; Button " + _button
-                + "; Modifiers " + InputEvent.getModifiersExText(_modifierFlags)
-                + "; Modifier mask " + InputEvent.getModifiersExText(_modifierMask)
-                + "; Press Number " + _pressNumber);
+        result.append(getClass().toString() + "; Button " + _button
+            + "; Modifiers " + InputEvent.getModifiersExText(_modifierFlags)
+            + "; Modifier mask " + InputEvent.getModifiersExText(_modifierMask)
+            + "; Press Number " + _pressNumber);
         return result.toString();
     }
 }
-
-

@@ -29,12 +29,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixMath
+
 /**
    This class provides a library for mathematical operations on
    matrices of doubles.
@@ -52,11 +52,10 @@ package ptolemy.math;
    @Pt.ProposedRating Yellow (ctsay)
    @Pt.AcceptedRating Yellow (ctsay)
 */
-
 public class DoubleMatrixMath {
-
     // private constructor prevents construction of this class.
-    private DoubleMatrixMath() {}
+    private DoubleMatrixMath() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -69,11 +68,13 @@ public class DoubleMatrixMath {
      */
     public static final double[][] add(double[][] matrix, double z) {
         double[][] returnValue = new double[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
                 returnValue[i][j] = matrix[i][j] + z;
             }
         }
+
         return returnValue;
     }
 
@@ -87,15 +88,17 @@ public class DoubleMatrixMath {
      *  @return A new matrix of doubles.
      */
     public static final double[][] add(final double[][] matrix1,
-            final double[][] matrix2) {
+        final double[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
         double[][] returnValue = new double[_rows(matrix1)][_columns(matrix1)];
+
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
                 returnValue[i][j] = matrix1[i][j] + matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -104,7 +107,7 @@ public class DoubleMatrixMath {
      *  @return A new matrix of doubles.
      */
     public static final double[][] allocCopy(final double[][] matrix) {
-        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
+        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix));
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -113,16 +116,18 @@ public class DoubleMatrixMath {
      *  as the right operands (op.operate(z, matrix[i][j])).
      */
     public static final double[][] applyBinaryOperation(
-            DoubleBinaryOperation op, final double z, final double[][] matrix) {
+        DoubleBinaryOperation op, final double z, final double[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         double[][] returnValue = new double[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(z, matrix[i][j]);
             }
         }
+
         return returnValue;
     }
 
@@ -132,16 +137,18 @@ public class DoubleMatrixMath {
      *  operand in all cases (op.operate(matrix[i][j], z)).
      */
     public static final double[][] applyBinaryOperation(
-            DoubleBinaryOperation op, final double[][] matrix, final double z) {
+        DoubleBinaryOperation op, final double[][] matrix, final double z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         double[][] returnValue = new double[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix[i][j], z);
             }
         }
+
         return returnValue;
     }
 
@@ -153,19 +160,21 @@ public class DoubleMatrixMath {
      *  are not the same size, throw an IllegalArgumentException.
      */
     public static final double[][] applyBinaryOperation(
-            DoubleBinaryOperation op,
-            final double[][] matrix1, final double[][] matrix2) {
+        DoubleBinaryOperation op, final double[][] matrix1,
+        final double[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
 
         double[][] returnValue = new double[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
             }
         }
+
         return returnValue;
     }
 
@@ -174,20 +183,20 @@ public class DoubleMatrixMath {
      *  (op.operate(matrix[i][j])).
      */
     public static final double[][] applyUnaryOperation(
-            final DoubleUnaryOperation op, final double[][] matrix) {
+        final DoubleUnaryOperation op, final double[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         double[][] returnValue = new double[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix[i][j]);
             }
         }
+
         return returnValue;
     }
-
-
 
     /** Return a new matrix that is a sub-matrix of the input
      *  matrix argument. The row and column from which to start
@@ -199,13 +208,15 @@ public class DoubleMatrixMath {
      *  @param colSpan An int specifying how many columns to copy.
      */
     public static final double[][] crop(final double[][] matrix,
-            final int rowStart, final int colStart,
-            final int rowSpan, final int colSpan) {
+        final int rowStart, final int colStart, final int rowSpan,
+        final int colSpan) {
         double[][] returnValue = new double[rowSpan][colSpan];
+
         for (int i = 0; i < rowSpan; i++) {
-            System.arraycopy(matrix[rowStart + i], colStart,
-                    returnValue[i], 0, colSpan);
+            System.arraycopy(matrix[rowStart + i], colStart, returnValue[i], 0,
+                colSpan);
         }
+
         return returnValue;
     }
 
@@ -222,12 +233,14 @@ public class DoubleMatrixMath {
 
         a = allocCopy(matrix);
 
-        for (int pivot = 0; pivot < n-1; pivot++) {
+        for (int pivot = 0; pivot < (n - 1); pivot++) {
             // find the biggest absolute pivot
             double big = Math.abs(a[pivot][pivot]);
             int swapRow = 0; // initialize for no swap
+
             for (int row = pivot + 1; row < n; row++) {
                 double absElement = Math.abs(a[row][pivot]);
+
                 if (absElement > big) {
                     swapRow = row;
                     big = absElement;
@@ -248,27 +261,28 @@ public class DoubleMatrixMath {
             }
 
             // if almost singular matrix, give up now
-
             // If almost singular matrix, give up now.
             if (Math.abs(det) <= Complex.EPSILON) {
                 return det;
             }
 
             double pivotInverse = 1.0 / a[pivot][pivot];
+
             for (int col = pivot + 1; col < n; col++) {
                 a[pivot][col] *= pivotInverse;
             }
 
             for (int row = pivot + 1; row < n; row++) {
                 double temp = a[row][pivot];
+
                 for (int col = pivot + 1; col < n; col++) {
-                    a[row][col] -= a[pivot][col] * temp;
+                    a[row][col] -= (a[pivot][col] * temp);
                 }
             }
         }
 
         // Last pivot, no reduction required.
-        det *= a[n-1][n-1];
+        det *= a[n - 1][n - 1];
 
         return det;
     }
@@ -285,7 +299,6 @@ public class DoubleMatrixMath {
         double[][] returnValue = new double[n][n];
 
         // Assume the matrix is zero-filled.
-
         for (int i = 0; i < n; i++) {
             returnValue[i][i] = array[i];
         }
@@ -301,11 +314,13 @@ public class DoubleMatrixMath {
      */
     public static final double[][] divide(double[][] matrix, double z) {
         double[][] returnValue = new double[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                returnValue[i][j] = matrix[i][j]/z;
+                returnValue[i][j] = matrix[i][j] / z;
             }
         }
+
         return returnValue;
     }
 
@@ -316,18 +331,20 @@ public class DoubleMatrixMath {
      *  throw an IllegalArgumentException.
      */
     public static final double[][] divideElements(final double[][] matrix1,
-            final double[][] matrix2) {
+        final double[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("divideElements", matrix1, matrix2);
 
         double[][] returnValue = new double[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] / matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -357,11 +374,13 @@ public class DoubleMatrixMath {
      *  @return A new array of doubles.
      */
     public static final double[] fromMatrixToArray(final double[][] matrix,
-            int maxRow, int maxCol) {
+        int maxRow, int maxCol) {
         double[] returnValue = new double[maxRow * maxCol];
+
         for (int i = 0; i < maxRow; i++) {
             System.arraycopy(matrix[i], 0, returnValue, i * maxCol, maxCol);
         }
+
         return returnValue;
     }
 
@@ -372,14 +391,15 @@ public class DoubleMatrixMath {
      */
     public static final double[][] hilbert(final int dim) {
         double[][] returnValue = new double[dim][dim];
+
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
                 returnValue[i][j] = 1.0 / (double) (i + j + 1);
             }
         }
+
         return returnValue;
     }
-
 
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
@@ -388,10 +408,12 @@ public class DoubleMatrixMath {
      */
     public static final double[][] identity(final int dim) {
         double[][] returnValue = new double[dim][dim];
+
         // we rely on the fact Java fills the allocated matrix with 0's
         for (int i = 0; i < dim; i++) {
             returnValue[i][i] = 1.0;
         }
+
         return returnValue;
     }
 
@@ -419,16 +441,20 @@ public class DoubleMatrixMath {
         int[] swapCol = new int[n];
         int[] swapRow = new int[n];
 
-        int irow = 0, icol = 0;
+        int irow = 0;
+        int icol = 0;
 
         for (int i = 0; i < n; i++) { // n iterations of pivoting
+
             // find the biggest pivot element
             double big = 0.0;
+
             for (int row = 0; row < n; row++) {
                 if (pivotFlag[row] == 0) {
                     for (int col = 0; col < n; col++) {
                         if (pivotFlag[col] == 0) {
                             double absElement = Math.abs(Ai[row][col]);
+
                             if (absElement >= big) {
                                 big = absElement;
                                 irow = row;
@@ -438,6 +464,7 @@ public class DoubleMatrixMath {
                     }
                 }
             }
+
             pivotFlag[icol]++;
 
             // swap rows to make this diagonal the biggest absolute pivot
@@ -456,12 +483,13 @@ public class DoubleMatrixMath {
             // if the pivot is zero, the matrix is singular
             if (Ai[icol][icol] == 0.0) {
                 throw new IllegalArgumentException(
-                        "Attempt to invert a singular matrix.");
+                    "Attempt to invert a singular matrix.");
             }
 
             // divide the row by the pivot
             double pivotInverse = 1.0 / Ai[icol][icol];
             Ai[icol][icol] = 1.0; // pivot = 1 to avoid round off
+
             for (int col = 0; col < n; col++) {
                 Ai[icol][col] *= pivotInverse;
             }
@@ -471,8 +499,9 @@ public class DoubleMatrixMath {
                 if (row != icol) {
                     double temp = Ai[row][icol];
                     Ai[row][icol] = 0.0;
+
                     for (int col = 0; col < n; col++) {
-                        Ai[row][col] -= Ai[icol][col] * temp;
+                        Ai[row][col] -= (Ai[icol][col] * temp);
                     }
                 }
             }
@@ -499,13 +528,10 @@ public class DoubleMatrixMath {
      *  @param sourceMatrix A matrix of doubles, used as the source.
      */
     public static final void matrixCopy(final double[][] sourceMatrix,
-            final double[][] destinationMatrix) {
-        matrixCopy(sourceMatrix,
-                0, 0, destinationMatrix,
-                0, 0, _rows(sourceMatrix),
-                _columns(sourceMatrix));
+        final double[][] destinationMatrix) {
+        matrixCopy(sourceMatrix, 0, 0, destinationMatrix, 0, 0,
+            _rows(sourceMatrix), _columns(sourceMatrix));
     }
-
 
     /** Replace the destinationMatrix argument's values, in the specified row
      *  and column range, with the sourceMatrix argument's values, starting
@@ -523,17 +549,15 @@ public class DoubleMatrixMath {
      *  @param columnSpan An int specifying how many columns to copy.
      */
     public static final void matrixCopy(final double[][] sourceMatrix,
-            final int sourceRowStart, final int sourceColStart,
-            final double[][] destinationMatrix,
-            final int destinationRowStart, final int destinationColumnStart,
-            final int rowSpan, final int columnSpan) {
+        final int sourceRowStart, final int sourceColStart,
+        final double[][] destinationMatrix, final int destinationRowStart,
+        final int destinationColumnStart, final int rowSpan,
+        final int columnSpan) {
         // We should verify the parameters here
         for (int i = 0; i < rowSpan; i++) {
-            System.arraycopy(sourceMatrix[sourceRowStart + i],
-                    sourceColStart,
-                    destinationMatrix[destinationRowStart + i],
-                    destinationColumnStart,
-                    columnSpan);
+            System.arraycopy(sourceMatrix[sourceRowStart + i], sourceColStart,
+                destinationMatrix[destinationRowStart + i],
+                destinationColumnStart, columnSpan);
         }
     }
 
@@ -545,11 +569,13 @@ public class DoubleMatrixMath {
      */
     public static final double[][] modulo(double[][] matrix, double z) {
         double[][] returnValue = new double[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                returnValue[i][j] = matrix[i][j]%z;
+                returnValue[i][j] = matrix[i][j] % z;
             }
         }
+
         return returnValue;
     }
 
@@ -557,16 +583,18 @@ public class DoubleMatrixMath {
      *  by a scaleFactor.
      */
     public static final double[][] multiply(final double[][] matrix,
-            final double scaleFactor) {
+        final double scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         double[][] returnValue = new double[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix[i][j] * scaleFactor;
             }
         }
+
         return returnValue;
     }
 
@@ -577,26 +605,29 @@ public class DoubleMatrixMath {
      *  of columns of the matrix.
      */
     public static final double[] multiply(final double[][] matrix,
-            final double[] array) {
-
+        final double[] array) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (rows != array.length) {
             throw new IllegalArgumentException(
-                    "preMultiply : array does not have the same number of " +
-                    "elements (" + array.length + ") as the number of rows " +
-                    "of the matrix (" + rows + ")");
+                "preMultiply : array does not have the same number of "
+                + "elements (" + array.length + ") as the number of rows "
+                + "of the matrix (" + rows + ")");
         }
 
         double[] returnValue = new double[columns];
+
         for (int i = 0; i < columns; i++) {
             double sum = 0.0;
+
             for (int j = 0; j < rows; j++) {
-                sum += matrix[j][i] * array[j];
+                sum += (matrix[j][i] * array[j]);
             }
+
             returnValue[i] = sum;
         }
+
         return returnValue;
     }
 
@@ -607,25 +638,29 @@ public class DoubleMatrixMath {
      *  of rows of the matrix.
      */
     public static final double[] multiply(final double[] array,
-            final double[][] matrix) {
+        final double[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (columns != array.length) {
             throw new IllegalArgumentException(
-                    "postMultiply() : array does not have the same number " +
-                    "of elements (" + array.length + ") as the number of " +
-                    "columns of the matrix (" + columns + ")");
+                "postMultiply() : array does not have the same number "
+                + "of elements (" + array.length + ") as the number of "
+                + "columns of the matrix (" + columns + ")");
         }
 
         double[] returnValue = new double[rows];
+
         for (int i = 0; i < rows; i++) {
             double sum = 0.0;
+
             for (int j = 0; j < columns; j++) {
-                sum += matrix[i][j] * array[j];
+                sum += (matrix[i][j] * array[j]);
             }
+
             returnValue[i] = sum;
         }
+
         return returnValue;
     }
 
@@ -646,17 +681,21 @@ public class DoubleMatrixMath {
      *  @return A new matrix of doubles.
      */
     public static final double[][] multiply(double[][] matrix1,
-            double[][] matrix2) {
+        double[][] matrix2) {
         double[][] returnValue = new double[_rows(matrix1)][matrix2[0].length];
+
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 double sum = 0.0;
+
                 for (int k = 0; k < matrix2.length; k++) {
-                    sum += matrix1[i][k] * matrix2[k][j];
+                    sum += (matrix1[i][k] * matrix2[k][j]);
                 }
+
                 returnValue[i][j] = sum;
             }
         }
+
         return returnValue;
     }
 
@@ -669,18 +708,20 @@ public class DoubleMatrixMath {
      *  matrix multiplication.
      */
     public static final double[][] multiplyElements(final double[][] matrix1,
-            final double[][] matrix2) {
+        final double[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("multiplyElements", matrix1, matrix2);
 
         double[][] returnValue = new double[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] * matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -692,11 +733,13 @@ public class DoubleMatrixMath {
         int columns = _columns(matrix);
 
         double[][] returnValue = new double[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = -matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -706,8 +749,7 @@ public class DoubleMatrixMath {
      *  output matrix will contain a column of zeros for all redundant
      *  input columns.
      */
-    public static final double[][] orthogonalizeColumns(
-            final double[][] matrix) {
+    public static final double[][] orthogonalizeColumns(final double[][] matrix) {
         Object[] orthoInfo = _orthogonalizeRows(transpose(matrix));
         return transpose((double[][]) orthoInfo[0]);
     }
@@ -729,7 +771,7 @@ public class DoubleMatrixMath {
      *  redundant input columns.
      */
     public static final double[][] orthonormalizeColumns(
-            final double[][] matrix) {
+        final double[][] matrix) {
         return transpose(orthogonalizeRows(transpose(matrix)));
     }
 
@@ -739,8 +781,7 @@ public class DoubleMatrixMath {
      *  output matrix will contain a row of zeros for all redundant
      *  input rows.
      */
-    public static final double[][] orthonormalizeRows(
-            final double[][] matrix) {
+    public static final double[][] orthonormalizeRows(final double[][] matrix) {
         int rows = _rows(matrix);
 
         Object[] orthoInfo = _orthogonalizeRows(matrix);
@@ -748,8 +789,7 @@ public class DoubleMatrixMath {
         double[] oneOverNormSquaredArray = (double[]) orthoInfo[2];
 
         for (int i = 0; i < rows; i++) {
-            orthogonalMatrix[i] = DoubleArrayMath.scale(
-                    orthogonalMatrix[i],
+            orthogonalMatrix[i] = DoubleArrayMath.scale(orthogonalMatrix[i],
                     (double) Math.sqrt(oneOverNormSquaredArray[i]));
         }
 
@@ -788,19 +828,18 @@ public class DoubleMatrixMath {
         // dividing by the norm of each row vector.  To compute R,
         // normalize each row of dotProducts by dividing each row the
         // norm of each column vector of Q.
-
         double[] oneOverNormSquaredArray = (double[]) orthoRowInfo[2];
 
         // check that all columns were linearly independent
         Integer nullity = (Integer) orthoRowInfo[3];
+
         if (nullity.intValue() > 0) {
             throw new IllegalArgumentException("qr() : not all "
-                    + "column vectors are linearly independent.");
+                + "column vectors are linearly independent.");
         }
 
         for (int i = 0; i < columns; i++) {
-            double oneOverNorm =
-                (double) Math.sqrt(oneOverNormSquaredArray[i]);
+            double oneOverNorm = (double) Math.sqrt(oneOverNormSquaredArray[i]);
             qT[i] = DoubleArrayMath.scale(qT[i], oneOverNorm);
 
             // R is upper triangular, so normalize only upper elements
@@ -818,18 +857,20 @@ public class DoubleMatrixMath {
      *  IllegalArgumentException.
      */
     public static final double[][] subtract(final double[][] matrix1,
-            final double[][] matrix2) {
+        final double[][] matrix2) {
         _checkSameDimension("subtract", matrix1, matrix2);
 
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         double[][] returnValue = new double[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] - matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -838,11 +879,13 @@ public class DoubleMatrixMath {
      */
     public static final double sum(final double[][] matrix) {
         double sum = 0.0;
+
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
                 sum += matrix[i][j];
             }
         }
+
         return sum;
     }
 
@@ -865,6 +908,7 @@ public class DoubleMatrixMath {
                 returnValue[i][j] = new Complex(matrix[i][j], 0.0);
             }
         }
+
         return returnValue;
     }
 
@@ -884,6 +928,7 @@ public class DoubleMatrixMath {
                 returnValue[i][j] = (float) matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -903,6 +948,7 @@ public class DoubleMatrixMath {
                 returnValue[i][j] = (int) matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -922,6 +968,7 @@ public class DoubleMatrixMath {
                 returnValue[i][j] = (long) matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -937,11 +984,13 @@ public class DoubleMatrixMath {
      *  @return A new matrix of doubles.
      */
     public static final double[][] toMatrixFromArray(double[] array, int rows,
-            int cols) {
+        int cols) {
         double[][] returnValue = new double[rows][cols];
+
         for (int i = 0; i < rows; i++) {
             System.arraycopy(array, i * cols, returnValue[i], 0, cols);
         }
+
         return returnValue;
     }
 
@@ -959,14 +1008,14 @@ public class DoubleMatrixMath {
      *  format argument.
      */
     public static final String toString(final double[][] matrix,
-            String elementDelimiter, String matrixBegin, String matrixEnd,
-            String vectorBegin, String vectorDelimiter, String vectorEnd) {
+        String elementDelimiter, String matrixBegin, String matrixEnd,
+        String vectorBegin, String vectorDelimiter, String vectorEnd) {
         StringBuffer sb = new StringBuffer();
         sb.append(matrixBegin);
 
         for (int i = 0; i < _rows(matrix); i++) {
-
             sb.append(vectorBegin);
+
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(Double.toString(matrix[i][j]));
 
@@ -999,6 +1048,7 @@ public class DoubleMatrixMath {
         for (int i = 0; i < dim; i++) {
             sum += matrix[i][i];
         }
+
         return sum;
     }
 
@@ -1011,11 +1061,13 @@ public class DoubleMatrixMath {
         int columns = _columns(matrix);
 
         double[][] returnValue = new double[columns][rows];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[j][i] = matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -1031,7 +1083,7 @@ public class DoubleMatrixMath {
      *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final double[][] matrix1,
-            final double[][] matrix2, double distance) {
+        final double[][] matrix2, double distance) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1039,11 +1091,13 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (matrix1[i][j] > matrix2[i][j] + distance ||
-                        matrix1[i][j] < matrix2[i][j] - distance)
+                if ((matrix1[i][j] > (matrix2[i][j] + distance))
+                        || (matrix1[i][j] < (matrix2[i][j] - distance))) {
                     return false;
+                }
             }
         }
+
         return true;
     }
 
@@ -1062,7 +1116,7 @@ public class DoubleMatrixMath {
      *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final double[][] matrix1,
-            final double[][] matrix2, final double[][] errorMatrix) {
+        final double[][] matrix2, final double[][] errorMatrix) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1071,12 +1125,13 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j] ||
-                        matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
+                if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
+                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
@@ -1093,17 +1148,16 @@ public class DoubleMatrixMath {
      *   need not be declared explicitly.
      */
     protected static final void _checkSameDimension(final String caller,
-            final double[][] matrix1, final double[][] matrix2)
-            throws IllegalArgumentException {
+        final double[][] matrix1, final double[][] matrix2)
+        throws IllegalArgumentException {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.DoubleMatrixMath." + caller
-                    + "() : one matrix " + _dimensionString(matrix1) +
-                    " is not the same size as another matrix " +
-                    _dimensionString(matrix2) + ".");
+            throw new IllegalArgumentException("ptolemy.math.DoubleMatrixMath."
+                + caller + "() : one matrix " + _dimensionString(matrix1)
+                + " is not the same size as another matrix "
+                + _dimensionString(matrix2) + ".");
         }
     }
 
@@ -1116,14 +1170,13 @@ public class DoubleMatrixMath {
      *   This is a run-time exception, so it need not be declared explicitly.
      */
     protected static final int _checkSquare(final String caller,
-            final double[][] matrix)
-            throws IllegalArgumentException {
+        final double[][] matrix) throws IllegalArgumentException {
         if (_rows(matrix) != _columns(matrix)) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.DoubleMatrixMath." + caller +
-                    "() : matrix argument " + _dimensionString(matrix) +
-                    " is not a square matrix.");
+            throw new IllegalArgumentException("ptolemy.math.DoubleMatrixMath."
+                + caller + "() : matrix argument " + _dimensionString(matrix)
+                + " is not a square matrix.");
         }
+
         return _rows(matrix);
     }
 
@@ -1162,9 +1215,9 @@ public class DoubleMatrixMath {
      *  Orthogonalization is done with the Gram-Schmidt process.
      */
     protected static final Object[] _orthogonalizeRows(
-            final double[][] rowArrays) {
+        final double[][] rowArrays) {
         int rows = rowArrays.length;
-        int columns =  rowArrays[0].length;
+        int columns = rowArrays[0].length;
         int nullity = 0;
 
         double[][] orthogonalMatrix = new double[rows][];
@@ -1185,22 +1238,21 @@ public class DoubleMatrixMath {
 
             // Subtract projections onto all previous vectors.
             for (int j = 0; j < i; j++) {
-
                 // Save the dot product for future use for QR decomposition.
-                double dotProduct =
-                    DoubleArrayMath.dotProduct(refArray, orthogonalMatrix[j]);
+                double dotProduct = DoubleArrayMath.dotProduct(refArray,
+                        orthogonalMatrix[j]);
 
                 dotProductMatrix[j][i] = dotProduct;
 
                 rowArray = DoubleArrayMath.subtract(rowArray,
                         DoubleArrayMath.scale(orthogonalMatrix[j],
-                                dotProduct * oneOverNormSquaredArray[j]));
+                            dotProduct * oneOverNormSquaredArray[j]));
             }
 
             // Compute the dot product between the input and output vector
             // for the diagonal entry of dotProductMatrix.
-            dotProductMatrix[i][i] =
-                DoubleArrayMath.dotProduct(refArray, rowArray);
+            dotProductMatrix[i][i] = DoubleArrayMath.dotProduct(refArray,
+                    rowArray);
 
             // Check the norm to find zero rows, and save the 1 /
             // norm^2 for later computation.
@@ -1230,9 +1282,11 @@ public class DoubleMatrixMath {
                 oneOverNormSquaredArray[i] = 1.0 / normSquared;
             }
         }
-        return new Object[] { orthogonalMatrix, dotProductMatrix,
-                              oneOverNormSquaredArray,
-                              new Integer(nullity) };
+
+        return new Object[] {
+            orthogonalMatrix, dotProductMatrix, oneOverNormSquaredArray,
+            new Integer(nullity)
+        };
     }
 
     /** Return the number of rows of a matrix. */

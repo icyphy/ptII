@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.parameters;
 
 import java.io.BufferedReader;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FilePortParameter
+
 /**
    This file parameter creates an associated port that can be used to update
    the current value of the parameter. The value of this
@@ -192,7 +193,6 @@ import ptolemy.util.FileUtilities;
    @Pt.AcceptedRating Red (cxh)
 */
 public class FilePortParameter extends PortParameter {
-
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -205,7 +205,7 @@ public class FilePortParameter extends PortParameter {
      *   a parameter already in the container.
      */
     public FilePortParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setStringMode(true);
         setTypeEquals(BaseType.STRING);
@@ -230,9 +230,9 @@ public class FilePortParameter extends PortParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   an parameter already in the container.
      */
-    public FilePortParameter(
-            NamedObj container, String name, ptolemy.data.Token token)
-            throws IllegalActionException, NameDuplicationException {
+    public FilePortParameter(NamedObj container, String name,
+        ptolemy.data.Token token)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
         setStringMode(true);
         setTypeEquals(BaseType.STRING);
@@ -240,7 +240,6 @@ public class FilePortParameter extends PortParameter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     // NOTE: This code is duplicated from FileParameter, but without
     // multiple inheritance, I see no way around this.
 
@@ -273,14 +272,14 @@ public class FilePortParameter extends PortParameter {
      */
     public File asFile() throws IllegalActionException {
         String name = stringValue();
+
         try {
             return FileUtilities.nameToFile(name, getBaseDirectory());
         } catch (IllegalArgumentException ex) {
             // Java 1.4.2 some times reports:
             //  java.lang.IllegalArgumentException: URI is not absolute
             throw new IllegalActionException(this, ex,
-                    "Failed to create a file with name '" + name
-                    + "'.");
+                "Failed to create a file with name '" + name + "'.");
         }
     }
 
@@ -298,11 +297,11 @@ public class FilePortParameter extends PortParameter {
         String name = stringValue();
 
         try {
-            return FileUtilities.nameToURL(
-                    name, getBaseDirectory(), getClass().getClassLoader());
+            return FileUtilities.nameToURL(name, getBaseDirectory(),
+                getClass().getClassLoader());
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot read file '" + name + "'");
+                "Cannot read file '" + name + "'");
         }
     }
 
@@ -313,9 +312,8 @@ public class FilePortParameter extends PortParameter {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        FilePortParameter newObject = (FilePortParameter)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FilePortParameter newObject = (FilePortParameter) super.clone(workspace);
         newObject._baseDirectory = null;
         newObject._reader = null;
         newObject._writer = null;
@@ -340,9 +338,11 @@ public class FilePortParameter extends PortParameter {
                 }
             }
         }
+
         if (_writer != null) {
             try {
                 _writer.flush();
+
                 if (_writer != FileUtilities.STD_OUT) {
                     _writer.close();
                 }
@@ -382,14 +382,11 @@ public class FilePortParameter extends PortParameter {
      */
     public BufferedReader openForReading() throws IllegalActionException {
         try {
-            _reader = FileUtilities.openForReading(
-                    stringValue(),
-                    getBaseDirectory(),
-                    getClass().getClassLoader());
+            _reader = FileUtilities.openForReading(stringValue(),
+                    getBaseDirectory(), getClass().getClassLoader());
             return _reader;
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot open file or URL");
+            throw new IllegalActionException(this, ex, "Cannot open file or URL");
         }
     }
 
@@ -428,14 +425,12 @@ public class FilePortParameter extends PortParameter {
      */
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
-            _writer = FileUtilities.openForWriting(
-                    stringValue(),
-                    getBaseDirectory(),
-                    append);
+            _writer = FileUtilities.openForWriting(stringValue(),
+                    getBaseDirectory(), append);
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot open file for writing");
+                "Cannot open file for writing");
         }
     }
 
@@ -462,7 +457,7 @@ public class FilePortParameter extends PortParameter {
      *   and there are variables that depend on this one.
      */
     public String stringValue() throws IllegalActionException {
-        return ((StringToken)getToken()).stringValue();
+        return ((StringToken) getToken()).stringValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -476,5 +471,4 @@ public class FilePortParameter extends PortParameter {
 
     /** The current writer for the output file. */
     private Writer _writer;
-
 }

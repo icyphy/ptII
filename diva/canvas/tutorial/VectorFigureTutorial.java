@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -62,7 +61,6 @@ import diva.gui.BasicFrame;
  * @version $Id$
  */
 public class VectorFigureTutorial {
-
     // The JCanvas
     private JCanvas canvas;
 
@@ -71,23 +69,24 @@ public class VectorFigureTutorial {
 
     /** Create a JCanvas and put it into a window.
      */
-    public VectorFigureTutorial () {
+    public VectorFigureTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
         createFigures();
+
         BasicFrame frame = new BasicFrame("Vector figure tutorial", canvas);
     }
 
     /** Create instances of Vector Figures and make them
      * draggable and resizeable.
      */
-    public void createFigures () {
+    public void createFigures() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Create a controller to do the work.
         BasicController controller = new BasicController(graphicsPane);
-        SelectionInteractor defaultInteractor
-            = controller.getSelectionInteractor();
+        SelectionInteractor defaultInteractor = controller
+            .getSelectionInteractor();
         BoundsManipulator manip = new BoundsManipulator();
         defaultInteractor.setPrototypeDecorator(manip);
 
@@ -121,14 +120,14 @@ public class VectorFigureTutorial {
         two.add(new Line2D.Double(14.65, 14.65, 85.35, 85.35));
         two.add(new Line2D.Double(85.35, 14.65, 14.65, 85.35));
 
-        two.translate(200,100);
+        two.translate(200, 100);
         layer.add(two);
         two.setInteractor(defaultInteractor);
     }
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {

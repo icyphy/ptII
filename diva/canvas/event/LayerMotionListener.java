@@ -24,8 +24,8 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.event;
+
 
 /** The interface for listeners that respond to motion of the mouse over a
  * figure.
@@ -34,19 +34,15 @@ package diva.canvas.event;
  * @author         John Reekie
  */
 public interface LayerMotionListener extends java.util.EventListener {
-
     /** Invoked when the mouse enters a layer or figure.
      */
-    public void mouseEntered (LayerEvent e);
+    public void mouseEntered(LayerEvent e);
 
     /** Invoked when the mouse exits a layer or figure.
      */
-    public void mouseExited (LayerEvent e);
+    public void mouseExited(LayerEvent e);
 
     /** Invoked when the mouse moves while over a layer or figure.
      */
-    public void mouseMoved (LayerEvent e);
+    public void mouseMoved(LayerEvent e);
 }
-
-
-

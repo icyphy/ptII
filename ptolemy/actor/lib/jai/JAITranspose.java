@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import javax.media.jai.JAI;
@@ -41,6 +40,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// JAITranspose
@@ -62,9 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAITranspose extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,7 +72,7 @@ public class JAITranspose extends Transformer {
      *   actor with this name.
      */
     public JAITranspose(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         transposeType = new StringAttribute(this, "transposeType");
@@ -101,9 +99,10 @@ public class JAITranspose extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == transposeType) {
             String typeName = transposeType.getExpression();
+
             if (typeName.equals("flip antidiagonal")) {
                 _transposeType = TransposeDescriptor.FLIP_ANTIDIAGONAL;
             } else if (typeName.equals("flip diagonal")) {
@@ -120,7 +119,7 @@ public class JAITranspose extends Transformer {
                 _transposeType = TransposeDescriptor.ROTATE_270;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized interpolation type: " + typeName);
+                    "Unrecognized interpolation type: " + typeName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -134,18 +133,18 @@ public class JAITranspose extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
-        RenderedOp newImage =
-            JAI.create("transpose", oldImage, _transposeType);
+        RenderedOp newImage = JAI.create("transpose", oldImage, _transposeType);
         output.send(0, new JAIImageToken(newImage));
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** An indicator for the type of transposition to use */
     private TransposeType _transposeType;
-
     private final int _FLIP_ANTIDIAGONAL = 3;
     private final int _FLIP_DIAGONAL = 2;
     private final int _FLIP_HORIZONTAL = 1;

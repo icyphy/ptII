@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StateEvent
+
 /**
    An event indicating a state change.  This event can be used for debugging.
 
@@ -43,7 +44,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (nobody)
 */
 public class StateEvent implements DebugEvent {
-
     /** Construct an event with the specified source and destination
      *  state.
      */
@@ -79,11 +79,9 @@ public class StateEvent implements DebugEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The source.
     private FSMActor _source;
 
     // The new state.
     private State _state;
 }
-

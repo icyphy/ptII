@@ -31,6 +31,7 @@ package diva.graph;
 import diva.canvas.Figure;
 import diva.canvas.interactor.SelectionModel;
 
+
 /**
  * A class that represents the main component of a typical graph
  * editor.  It is associated with a GraphPane, and manages
@@ -56,8 +57,7 @@ public interface GraphController {
      * @exception GraphException If the connector target cannot return a
      * valid site on the node's figure.
      */
-    public void addEdge(Object edge, Object node,
-            int end, double x, double y);
+    public void addEdge(Object edge, Object node, int end, double x, double y);
 
     /** Add an edge to this graph between the given tail and head
      * nodes.  Give the new edge the given semanticObject.
@@ -94,7 +94,7 @@ public interface GraphController {
     /**
      * Remove all figures from the display
      */
-    public void clear ();
+    public void clear();
 
     /**
      * Remove the figure for the given edge.
@@ -221,7 +221,7 @@ public interface GraphController {
      * Set the graph pane. This is called by the GraphPane.
      * FIXME: should this be package private?
      */
-    public void setGraphPane (GraphPane pane);
+    public void setGraphPane(GraphPane pane);
 
     /**
      * Set the default selection model. The caller is expected to ensure
@@ -237,6 +237,3 @@ public interface GraphController {
      */
     public void dispatch(GraphViewEvent e);
 }
-
-
-

@@ -25,12 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// TransientSingletonConfigurableAttribute
+
 /**
    This class is a nonpersistent configurable singleton attribute.
    By "nonpersistent" we mean that it does not export MoML.
@@ -46,10 +46,8 @@ package ptolemy.kernel.util;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class TransientSingletonConfigurableAttribute
     extends ConfigurableAttribute implements Singleton {
-
     // NOTE: This class does not extend SingletonConfigurableAttribute
     // even though the setContainer() method is identical.  The reason
     // is subtle.  The base classes in the Ptolemy kernel all create
@@ -100,9 +98,8 @@ public class TransientSingletonConfigurableAttribute
      *   attribute with this name, and the class of that container is not
      *   SingletonConfigurableAttribute.
      */
-    public TransientSingletonConfigurableAttribute(
-            NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+    public TransientSingletonConfigurableAttribute(NamedObj container,
+        String name) throws NameDuplicationException, IllegalActionException {
         super(container, name);
         setPersistent(false);
     }
@@ -139,14 +136,17 @@ public class TransientSingletonConfigurableAttribute
      *   SingletonConfigurableAttribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
+
         if (container != null) {
             previous = container.getAttribute(getName());
+
             if (previous != null) {
                 previous.setContainer(null);
             }
         }
+
         try {
             super.setContainer(container);
         } catch (IllegalActionException ex) {
@@ -154,12 +154,14 @@ public class TransientSingletonConfigurableAttribute
             if (previous != null) {
                 previous.setContainer(container);
             }
+
             throw ex;
         } catch (NameDuplicationException ex) {
             // Restore previous.
             if (previous != null) {
                 previous.setContainer(container);
             }
+
             throw ex;
         }
     }

@@ -8,17 +8,19 @@
 */
 package ptolemy.codegen.dsp.lib;
 
+import ptolemy.codegen.kernel.ClassicCGCActor;
+import ptolemy.codegen.kernel.ClassicPort;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.codegen.kernel.ClassicCGCActor;
-import ptolemy.codegen.kernel.ClassicPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CGCBiquad
+
 /**
    A two-pole, two-zero parametric digital IIR filter (a biquad).
    <p>
@@ -39,7 +41,7 @@ public class CGCBiquad extends ClassicCGCActor {
      *   an actor already in the container.
      */
     public CGCBiquad(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new ClassicPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -77,6 +79,7 @@ public class CGCBiquad extends ClassicCGCActor {
         /*
          */
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -130,7 +133,7 @@ public class CGCBiquad extends ClassicCGCActor {
 
     /**
      */
-    public void  generatePreinitializeCode() {
+    public void generatePreinitializeCode() {
         //# line 77 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl"
         addInclude("<math.h>");
         addGlobal(mainDecl);
@@ -139,35 +142,29 @@ public class CGCBiquad extends ClassicCGCActor {
 
     /**
      */
-    public void  generateFireCode() {
+    public void generateFireCode() {
         //# line 96 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl"
         addCode(localDecl);
         addCode(iirfilter);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
-
-    public String mainDecl =
-    "          double $starSymbol(filtertaps)[5];\n";
-
-    public String settapDef =
-    "          $starSymbol(filtertaps)[0]=$val(d1);\n"
-    + "          $starSymbol(filtertaps)[1]=$val(d2);\n"
-    + "          $starSymbol(filtertaps)[2]=$val(n0);\n"
-    + "          $starSymbol(filtertaps)[3]=$val(n1);\n"
-    + "          $starSymbol(filtertaps)[4]=$val(n2);\n";
-
-    public String localDecl =
-    "          double nextstate,out;\n";
-
+    public String mainDecl = "          double $starSymbol(filtertaps)[5];\n";
+    public String settapDef = "          $starSymbol(filtertaps)[0]=$val(d1);\n"
+        + "          $starSymbol(filtertaps)[1]=$val(d2);\n"
+        + "          $starSymbol(filtertaps)[2]=$val(n0);\n"
+        + "          $starSymbol(filtertaps)[3]=$val(n1);\n"
+        + "          $starSymbol(filtertaps)[4]=$val(n2);\n";
+    public String localDecl = "          double nextstate,out;\n";
     public String iirfilter =
-    "          nextstate = $ref(input) - $starSymbol(filtertaps)[0] *\n"
-    + "            (double)$ref(state1) - $starSymbol(filtertaps)[1] *\n"
-    + "            (double)$ref(state2);\n"
-    + "          out = nextstate * $starSymbol(filtertaps)[2] +\n"
-    + "            (double)$ref(state1) * $starSymbol(filtertaps)[3] +\n"
-    + "            (double)$ref(state2) * $starSymbol(filtertaps)[4];\n"
-    + "          $ref(output)=out;\n"
-    + "          $ref(state2)=$ref(state1);\n"
-    + "          $ref(state1)=nextstate;\n";
+        "          nextstate = $ref(input) - $starSymbol(filtertaps)[0] *\n"
+        + "            (double)$ref(state1) - $starSymbol(filtertaps)[1] *\n"
+        + "            (double)$ref(state2);\n"
+        + "          out = nextstate * $starSymbol(filtertaps)[2] +\n"
+        + "            (double)$ref(state1) * $starSymbol(filtertaps)[3] +\n"
+        + "            (double)$ref(state2) * $starSymbol(filtertaps)[4];\n"
+        + "          $ref(output)=out;\n"
+        + "          $ref(state2)=$ref(state1);\n"
+        + "          $ref(state1)=nextstate;\n";
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 import java.io.Serializable;
@@ -33,8 +32,10 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Overflow
+
 /**
    The Overflow class provides a type safe enumeration of strategies for
    handling numeric overflows. Overflows are typically resolved when
@@ -77,7 +78,6 @@ import java.util.Map;
    @see Rounding
 */
 public abstract class Overflow implements Cloneable, Serializable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -104,7 +104,7 @@ public abstract class Overflow implements Cloneable, Serializable {
      *  @return An instance of Overflow or null.
      */
     public static Overflow forName(String name) {
-        return (Overflow)_nameToOverflow.get(name);
+        return (Overflow) _nameToOverflow.get(name);
     }
 
     /** Return an instance of this class with the specified name,
@@ -113,13 +113,15 @@ public abstract class Overflow implements Cloneable, Serializable {
      *  @exception IllegalArgumentException If the string does not
      *   match one of the known strategies.
      */
-    public static Overflow getName(String name)
-            throws IllegalArgumentException {
-        Overflow overflow = (Overflow)_nameToOverflow.get(name);
-        if (overflow != null)
+    public static Overflow getName(String name) throws IllegalArgumentException {
+        Overflow overflow = (Overflow) _nameToOverflow.get(name);
+
+        if (overflow != null) {
             return overflow;
-        throw new IllegalArgumentException(
-                "Unknown overflow strategy \"" + name + "\"." );
+        }
+
+        throw new IllegalArgumentException("Unknown overflow strategy \""
+            + name + "\".");
     }
 
     /** Return a hash code value for this object.
@@ -136,6 +138,7 @@ public abstract class Overflow implements Cloneable, Serializable {
      *  @param type An instance of Overflow.
      *  @return True if the argument is compatible with this type.
      */
+
     //    public boolean isCompatible(Overflow type) {
     //        if (this == UNKNOWN) {
     //            return true;
@@ -176,7 +179,7 @@ public abstract class Overflow implements Cloneable, Serializable {
      *  @return The bounded integer value.
      */
     abstract public BigInteger quantize(BigInteger integerValue,
-            Quantization quant);
+        Quantization quant);
 
     /** Return the string representation of this overflow.
      *  @return A String.
@@ -187,7 +190,6 @@ public abstract class Overflow implements Cloneable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // NOTE: It may seem strange that these inner classes are built this
     // way instead of as anonymous classes...  This code was copied from
     // ptolemy.data.type.BaseType where an explanation that was valid
@@ -198,11 +200,12 @@ public abstract class Overflow implements Cloneable, Serializable {
         private General() {
             super("general");
         }
-        public BigInteger quantize(BigInteger integerValue,
-                Quantization quant) {
+
+        public BigInteger quantize(BigInteger integerValue, Quantization quant) {
             return integerValue;
         }
     }
+
     public static final General GENERAL = new General();
 
     /** The grow overflow strategy */
@@ -210,11 +213,12 @@ public abstract class Overflow implements Cloneable, Serializable {
         private Grow() {
             super("grow");
         }
-        public BigInteger quantize(BigInteger integerValue,
-                Quantization quant) {
+
+        public BigInteger quantize(BigInteger integerValue, Quantization quant) {
             return integerValue;
         }
     }
+
     public static final Grow GROW = new Grow();
 
     /** The modulo overflow strategy */
@@ -223,22 +227,30 @@ public abstract class Overflow implements Cloneable, Serializable {
             super("modulo");
             _addOverflow(this, "wrap");
         }
-        public BigInteger quantize(BigInteger integerValue,
-                Quantization quant) {
+
+        public BigInteger quantize(BigInteger integerValue, Quantization quant) {
             BigInteger minValue = quant.getMinimumUnscaledValue();
             BigInteger maxValue = quant.getMaximumUnscaledValue();
+
             if ((0 <= integerValue.compareTo(minValue))
-                    && (integerValue.compareTo(maxValue) <= 0))
+                    && (integerValue.compareTo(maxValue) <= 0)) {
                 return integerValue;
+            }
+
             integerValue = integerValue.subtract(minValue);
+
             BigInteger modValue = quant.getModuloUnscaledValue();
             integerValue = integerValue.remainder(modValue);
-            if (integerValue.signum() < 0)
+
+            if (integerValue.signum() < 0) {
                 integerValue = integerValue.add(modValue);
+            }
+
             integerValue = integerValue.add(minValue);
             return integerValue;
         }
     }
+
     public static final Modulo MODULO = new Modulo();
     public static final Modulo WRAP = MODULO;
 
@@ -248,23 +260,32 @@ public abstract class Overflow implements Cloneable, Serializable {
             super("saturate");
             _addOverflow(this, "clip");
         }
+
         public BigInteger minusInfinity(Quantization quant) {
             return quant.getMinimumUnscaledValue();
         }
+
         public BigInteger plusInfinity(Quantization quant) {
             return quant.getMaximumUnscaledValue();
         }
-        public BigInteger quantize(BigInteger integerValue,
-                Quantization quant) {
+
+        public BigInteger quantize(BigInteger integerValue, Quantization quant) {
             BigInteger minValue = quant.getMinimumUnscaledValue();
-            if (integerValue.compareTo(minValue) < 0)
+
+            if (integerValue.compareTo(minValue) < 0) {
                 return minValue;
+            }
+
             BigInteger maxValue = quant.getMaximumUnscaledValue();
-            if (integerValue.compareTo(maxValue) > 0)
+
+            if (integerValue.compareTo(maxValue) > 0) {
                 return maxValue;
+            }
+
             return integerValue;
         }
     }
+
     public static final Saturate SATURATE = new Saturate();
     public static final Saturate CLIP = SATURATE;
 
@@ -272,25 +293,34 @@ public abstract class Overflow implements Cloneable, Serializable {
     public static class ToZero extends Overflow {
         private ToZero() {
             super("to_zero");
-            _addOverflow(this, "overflow_to_zero");  // For compatibility.
+            _addOverflow(this, "overflow_to_zero"); // For compatibility.
         }
+
         public BigInteger minusInfinity(Quantization quant) {
             return BigInteger.ZERO;
         }
+
         public BigInteger plusInfinity(Quantization quant) {
             return BigInteger.ZERO;
         }
-        public BigInteger quantize(BigInteger integerValue,
-                Quantization quant) {
+
+        public BigInteger quantize(BigInteger integerValue, Quantization quant) {
             BigInteger minValue = quant.getMinimumUnscaledValue();
-            if (integerValue.compareTo(minValue) < 0)
+
+            if (integerValue.compareTo(minValue) < 0) {
                 return BigInteger.ZERO;
+            }
+
             BigInteger maxValue = quant.getMaximumUnscaledValue();
-            if (integerValue.compareTo(maxValue) > 0)
+
+            if (integerValue.compareTo(maxValue) > 0) {
                 return BigInteger.ZERO;
+            }
+
             return integerValue;
         }
     }
+
     public static final ToZero TO_ZERO = new ToZero();
 
     /** The trap overflows strategy */
@@ -299,19 +329,26 @@ public abstract class Overflow implements Cloneable, Serializable {
             super("trap");
             _addOverflow(this, "throw");
         }
-        public BigInteger quantize(BigInteger integerValue,
-                Quantization quant) {
+
+        public BigInteger quantize(BigInteger integerValue, Quantization quant) {
             BigInteger minValue = quant.getMinimumUnscaledValue();
-            if (integerValue.compareTo(minValue) < 0)
+
+            if (integerValue.compareTo(minValue) < 0) {
                 throw new ArithmeticException(
-                        "Minimum overflow threshold exceeded.");
+                    "Minimum overflow threshold exceeded.");
+            }
+
             BigInteger maxValue = quant.getMaximumUnscaledValue();
-            if (integerValue.compareTo(maxValue) > 0)
+
+            if (integerValue.compareTo(maxValue) > 0) {
                 throw new ArithmeticException(
-                        "Maximum overflow threshold exceeded.");
+                    "Maximum overflow threshold exceeded.");
+            }
+
             return integerValue;
         }
     }
+
     public static final Trap TRAP = new Trap();
     public static final Trap THROW = TRAP;
 
@@ -321,16 +358,16 @@ public abstract class Overflow implements Cloneable, Serializable {
         private Unknown() {
             super("unknown");
         }
-        public BigInteger quantize(BigInteger integerValue,
-                Quantization quant) {
+
+        public BigInteger quantize(BigInteger integerValue, Quantization quant) {
             return integerValue;
         }
     }
+
     public static final Unknown UNKNOWN = new Unknown();
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////
-
     // The constructor is protected to make a type safe enumeration.
     protected Overflow(String name) {
         _name = name;
@@ -339,7 +376,6 @@ public abstract class Overflow implements Cloneable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////
-
     // Add entries in this class to index the given name to
     // the given overflow type.
     static void _addOverflow(Overflow type, String name) {
@@ -349,12 +385,12 @@ public abstract class Overflow implements Cloneable, Serializable {
         if (_nameToOverflow == null) {
             _nameToOverflow = new HashMap();
         }
+
         _nameToOverflow.put(name, type);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private String _name;
 
     // A map from overflow type name to the overflow type for all

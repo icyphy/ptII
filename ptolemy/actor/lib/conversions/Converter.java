@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.lib.Transformer;
@@ -33,8 +32,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Converter
+
 /**
    This actor is a base class for converters. All it does is provide a
    default icon.
@@ -45,9 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Converter extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -57,11 +56,10 @@ public class Converter extends Transformer {
      *   actor with this name.
      */
     public Converter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 }

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CSPActor
+
 /**
    This class is the base class of all atomic actors using the
    non-deterministic communication and timed features of  the communicating
@@ -108,10 +109,7 @@ import ptolemy.kernel.util.Workspace;
    @see ConditionalReceive
    @see ConditionalSend
 */
-
-public class CSPActor extends TypedAtomicActor
-    implements ConditionalBranchActor {
-
+public class CSPActor extends TypedAtomicActor implements ConditionalBranchActor {
     /** Construct a CSPActor in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -146,10 +144,9 @@ public class CSPActor extends TypedAtomicActor
      *  with an entity already in the container.
      */
     public CSPActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _conditionalBranchController =
-            new ConditionalBranchController(this);
+        _conditionalBranchController = new ConditionalBranchController(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -179,12 +176,10 @@ public class CSPActor extends TypedAtomicActor
      *   if one of the attributes cannot be cloned.
      *  @return A new CSPActor.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CSPActor newObject = (CSPActor)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CSPActor newObject = (CSPActor) super.clone(workspace);
         newObject._delayed = false;
-        newObject._conditionalBranchController =
-            new ConditionalBranchController(newObject);
+        newObject._conditionalBranchController = new ConditionalBranchController(newObject);
         return newObject;
     }
 
@@ -201,19 +196,20 @@ public class CSPActor extends TypedAtomicActor
      */
     public void delay(double delta) throws IllegalActionException {
         try {
-            synchronized(_internalLock) {
+            synchronized (_internalLock) {
                 if (delta == 0.0) {
                     return;
                 } else if (delta < 0.0) {
                     throw new IllegalActionException(this,
-                            "delay() called with a negative argument: "
-                            + delta);
+                        "delay() called with a negative argument: " + delta);
                 } else {
                     _delayed = true;
-                    ((CSPDirector)getDirector())._actorDelayed(delta, this);
+                    ((CSPDirector) getDirector())._actorDelayed(delta, this);
+
                     while (_delayed) {
                         _internalLock.wait();
                     }
+
                     if (_cancelDelay) {
                         // Throwing this exception is really not
                         // not necessary for a "well" written actor.
@@ -222,8 +218,8 @@ public class CSPActor extends TypedAtomicActor
                 }
             }
         } catch (InterruptedException ex) {
-            throw new TerminateProcessException("CSPActor interrupted " +
-                    "while delayed." );
+            throw new TerminateProcessException("CSPActor interrupted "
+                + "while delayed.");
         }
     }
 
@@ -255,7 +251,7 @@ public class CSPActor extends TypedAtomicActor
      *  this method does not allow the threads to terminate gracefully.
      */
     public void terminate() {
-        synchronized(_internalLock) {
+        synchronized (_internalLock) {
             _conditionalBranchController.terminate();
         }
     }
@@ -269,7 +265,7 @@ public class CSPActor extends TypedAtomicActor
      *  a TerminateProcessException.
      */
     protected void _cancelDelay() {
-        synchronized(_internalLock) {
+        synchronized (_internalLock) {
             if (_delayed) {
                 _cancelDelay = true;
                 _delayed = false;
@@ -283,13 +279,14 @@ public class CSPActor extends TypedAtomicActor
      */
     protected void _continue() {
         if (_delayed == false) {
-            throw new InvalidStateException("CSPActor._continue() " +
-                    "called on an actor that was not delayed: " + getName());
+            throw new InvalidStateException("CSPActor._continue() "
+                + "called on an actor that was not delayed: " + getName());
         }
+
         // NOTE: perhaps this notifyAll() should be called in another
         // thread?  However, the internal lock is private, so it seems
         // that if this class is correctly written, that is not necessary.
-        synchronized(_internalLock) {
+        synchronized (_internalLock) {
             _delayed = false;
             _internalLock.notifyAll();
         }
@@ -302,22 +299,22 @@ public class CSPActor extends TypedAtomicActor
      */
     protected void _waitForDeadlock() {
         try {
-            synchronized(_internalLock) {
+            synchronized (_internalLock) {
                 _delayed = true;
-                ((CSPDirector)getDirector())._actorDelayed(0.0, this);
+                ((CSPDirector) getDirector())._actorDelayed(0.0, this);
+
                 while (_delayed) {
                     _internalLock.wait();
                 }
             }
         } catch (InterruptedException ex) {
-            throw new TerminateProcessException("CSPActor interrupted " +
-                    "while waiting for deadlock." );
+            throw new TerminateProcessException("CSPActor interrupted "
+                + "while waiting for deadlock.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Flag that causes the delay() method to abort with an exception.
     private boolean _cancelDelay = false;
 

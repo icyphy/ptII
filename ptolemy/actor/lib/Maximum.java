@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Maximum
+
 /**
    Read at most one token from each input channel and broadcast the one with the
    greatest value to the <i>maximumValue</i> output.
@@ -57,9 +58,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (yuhong)
 */
-
 public class Maximum extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -69,7 +68,7 @@ public class Maximum extends TypedAtomicActor {
      *   actor with this name.
      */
     public Maximum(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -114,9 +113,8 @@ public class Maximum extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Maximum newObject = (Maximum)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Maximum newObject = (Maximum) super.clone(workspace);
         newObject.maximumValue.setTypeAtMost(BaseType.SCALAR);
         newObject.maximumValue.setTypeAtLeast(newObject.input);
         newObject.channelNumber.setTypeEquals(BaseType.INT);
@@ -132,9 +130,11 @@ public class Maximum extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         ScalarToken result = null;
         int channelNum = -1;
+
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                ScalarToken in = (ScalarToken)input.get(i);
+                ScalarToken in = (ScalarToken) input.get(i);
+
                 if (result == null) {
                     result = in;
                     channelNum = i;
@@ -146,6 +146,7 @@ public class Maximum extends TypedAtomicActor {
                 }
             }
         }
+
         if (result != null) {
             maximumValue.broadcast(result);
             channelNumber.broadcast(new IntToken(channelNum));

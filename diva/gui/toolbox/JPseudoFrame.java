@@ -42,6 +42,7 @@ import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 import javax.swing.event.EventListenerList;
 
+
 /**
  * JPseudoFrame is not a Frame at all, but a widget that enables a
  * JInternalFrame to be maximized in the manner exhibited by Windows
@@ -81,11 +82,19 @@ public abstract class JPseudoFrame extends JComponent {
 
     /** The dimension is fixed
      */
-    private transient Dimension _dim = new Dimension(52,18);
+    private transient Dimension _dim = new Dimension(52, 18);
 
     /** Three buttons
      */
-    private transient JButton _iconifyButton, _minimizeButton, _closeButton;
+    private transient JButton _iconifyButton;
+
+    /** Three buttons
+     */
+    private transient JButton _minimizeButton;
+
+    /** Three buttons
+     */
+    private transient JButton _closeButton;
 
     /** The menubar to draw in
      */
@@ -111,48 +120,56 @@ public abstract class JPseudoFrame extends JComponent {
     /** Construct a new PseudoFrame which will steal layout from the
      * given desktop and draw itself in the given JMenuBar.
      */
-    public JPseudoFrame (JDesktopPane desktopPane, JMenuBar menubar) {
+    public JPseudoFrame(JDesktopPane desktopPane, JMenuBar menubar) {
         this._desktopPane = desktopPane;
         this._menubar = menubar;
 
         setLayout(null);
+
         Hashtable ui = UIManager.getLookAndFeelDefaults();
         JButton b;
 
-        _iconifyButton = new JButton((Icon)ui.get("InternalFrame.iconifyIcon"));
-        _iconifyButton.setBounds(0,2,16,14);
+        _iconifyButton = new JButton((Icon) ui.get("InternalFrame.iconifyIcon"));
+        _iconifyButton.setBounds(0, 2, 16, 14);
         _iconifyButton.setRequestFocusEnabled(false);
         _iconifyButton.addActionListener(new ActionListener() {
-                public void actionPerformed (ActionEvent e) {
+                public void actionPerformed(ActionEvent e) {
                     try {
                         setIcon(true);
-                    } catch (PropertyVetoException ex) {}
+                    } catch (PropertyVetoException ex) {
+                    }
+
                     fireInternalAction("iconified");
                 }
             });
         add(_iconifyButton);
 
-        _minimizeButton = new JButton((Icon)ui.get("InternalFrame.minimizeIcon"));
-        _minimizeButton.setBounds(16,2,16,14);
+        _minimizeButton = new JButton((Icon) ui.get(
+                    "InternalFrame.minimizeIcon"));
+        _minimizeButton.setBounds(16, 2, 16, 14);
         _minimizeButton.setRequestFocusEnabled(false);
         _minimizeButton.addActionListener(new ActionListener() {
-                public void actionPerformed (ActionEvent e) {
+                public void actionPerformed(ActionEvent e) {
                     try {
                         setMaximum(false);
-                    } catch (PropertyVetoException ex) {}
+                    } catch (PropertyVetoException ex) {
+                    }
+
                     fireInternalAction("minimized");
                 }
             });
         add(_minimizeButton);
 
-        _closeButton = new JButton((Icon)ui.get("InternalFrame.closeIcon"));
-        _closeButton.setBounds(34,2,16,14);
+        _closeButton = new JButton((Icon) ui.get("InternalFrame.closeIcon"));
+        _closeButton.setBounds(34, 2, 16, 14);
         _closeButton.setRequestFocusEnabled(false);
         _closeButton.addActionListener(new ActionListener() {
-                public void actionPerformed (ActionEvent e) {
+                public void actionPerformed(ActionEvent e) {
                     try {
                         setClosed(true);
-                    } catch (PropertyVetoException ex) {}
+                    } catch (PropertyVetoException ex) {
+                    }
+
                     fireInternalAction("closed");
                 }
             });
@@ -168,12 +185,12 @@ public abstract class JPseudoFrame extends JComponent {
     /** Fire an action event
      */
     protected void fireInternalAction(String name) {
-        ActionEvent e =
-            new ActionEvent(this, ActionEvent.ACTION_PERFORMED, name);
+        ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, name);
         Object[] listeners = _listeners.getListenerList();
-        for (int i = listeners.length-2; i>=0; i-=2) {
+
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == ActionListener.class) {
-                ((ActionListener)listeners[i+1]).actionPerformed(e);
+                ((ActionListener) listeners[i + 1]).actionPerformed(e);
             }
         }
     }
@@ -201,15 +218,19 @@ public abstract class JPseudoFrame extends JComponent {
      * frame. Then it puts the desktop pane back to where its supposed
      * to go. If no component is already shown, do nothing.
      */
-    public void hideFrame () {
+    public void hideFrame() {
         if (_component == null) {
             return;
         }
+
         removeComponent(_component);
         _internalFrame.getContentPane().add(_component);
+
         try {
             _internalFrame.setMaximum(false);
-        } catch (PropertyVetoException e) {}
+        } catch (PropertyVetoException e) {
+        }
+
         setComponent(_desktopPane);
         _component = null;
         _internalFrame = null;
@@ -221,11 +242,11 @@ public abstract class JPseudoFrame extends JComponent {
 
     /** Remove the given component from its position in the display
      */
-    protected abstract void removeComponent (JComponent component);
+    protected abstract void removeComponent(JComponent component);
 
     /** Place the given component into the display
      */
-    protected abstract void setComponent (JComponent component);
+    protected abstract void setComponent(JComponent component);
 
     /** Show the pseudo-frame with the contents of the given internal
      * frame. This method removes the content pane from the internal
@@ -233,13 +254,14 @@ public abstract class JPseudoFrame extends JComponent {
      * puts the content pane where the desktop pane was. If a
      * component is already shown, do nothing.
      */
-    public void showFrame (JInternalFrame frame) {
+    public void showFrame(JInternalFrame frame) {
         if (_component != null) {
             return;
         }
+
         removeComponent(_desktopPane);
         _internalFrame = frame;
-        _component = (JComponent)frame.getContentPane().getComponent(0);
+        _component = (JComponent) frame.getContentPane().getComponent(0);
         frame.getContentPane().remove(_component);
         setComponent(_component);
         _menubar.add(_glue);
@@ -250,20 +272,20 @@ public abstract class JPseudoFrame extends JComponent {
 
     /** Test if the frame is closed. Inverse of isMaximum().
      */
-    public boolean isClosed () {
+    public boolean isClosed() {
         return !isMaximum();
     }
 
     /** Test if the frame is iconified. Inverse of isMaximum().
      */
-    public boolean isIconified () {
+    public boolean isIconified() {
         return !isMaximum();
     }
 
     /** Test if the frame is maximized. Return true if the frame has
      * a content pane displayed.
      */
-    public boolean isMaximum () {
+    public boolean isMaximum() {
         return (_component != null);
     }
 
@@ -283,7 +305,7 @@ public abstract class JPseudoFrame extends JComponent {
      * necessary.
      * @see diva.gui.DesktopContext
      */
-    public void setClosed (boolean flag) throws PropertyVetoException {
+    public void setClosed(boolean flag) throws PropertyVetoException {
         if (flag) {
             if (_internalFrame != null) {
                 // remember the internal frame.
@@ -304,7 +326,7 @@ public abstract class JPseudoFrame extends JComponent {
      * necessary.
      * @see diva.gui.DesktopContext
      */
-    public void setIcon (boolean flag) throws PropertyVetoException {
+    public void setIcon(boolean flag) throws PropertyVetoException {
         if (flag) {
             if (_internalFrame != null) {
                 // remember the internal frame.
@@ -324,12 +346,9 @@ public abstract class JPseudoFrame extends JComponent {
      * This is often useful if further management is necessary.
      * @see diva.gui.DesktopContext
      */
-    public void setMaximum (boolean flag) throws PropertyVetoException {
+    public void setMaximum(boolean flag) throws PropertyVetoException {
         if (!flag) {
             hideFrame();
         }
     }
 }
-
-
-

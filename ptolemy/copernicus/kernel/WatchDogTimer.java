@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.kernel;
 
 import java.util.Date;
@@ -37,6 +35,7 @@ import ptolemy.actor.Manager;
 import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
+
 
 /**
    A transformer that calls System.exit() after a certain amount of time.
@@ -52,18 +51,20 @@ import soot.SceneTransformer;
 */
 public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
     private static WatchDogTimer instance = new WatchDogTimer();
-    private WatchDogTimer() {}
+
+    private WatchDogTimer() {
+    }
 
     public static WatchDogTimer v() {
         return instance;
     }
 
     public void cancel() {
-        System.out.println("WatchDogTimer.cancel(): canceling "
-                + (new Date()));
-        if ( _timer == null) {
+        System.out.println("WatchDogTimer.cancel(): canceling " + (new Date()));
+
+        if (_timer == null) {
             System.out.println("WatchDogTimer.cancel(): "
-                    + "Warning: cancel called twice?");
+                + "Warning: cancel called twice?");
         } else {
             _timer.cancel();
             _timer = null;
@@ -95,20 +96,20 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
      *  <code>time</code> option to specify the number of milliseconds
      *  until System.exit() should be called.
      */
-    protected void internalTransform(String phaseName, Map options)
-    {
-        System.out.println("WatchDogTimer.internalTransform("
-                + phaseName + ", " + options + ")");
+    protected void internalTransform(String phaseName, Map options) {
+        System.out.println("WatchDogTimer.internalTransform(" + phaseName
+            + ", " + options + ")");
 
         boolean isCancelling = PhaseOptions.getBoolean(options, "cancel");
+
         if (isCancelling) {
             cancel();
             return;
         }
 
         String timeToDieString = PhaseOptions.getString(options, "time");
-        if (timeToDieString == null
-                || timeToDieString.length() == 0) {
+
+        if ((timeToDieString == null) || (timeToDieString.length() == 0)) {
             return;
         }
 
@@ -117,10 +118,10 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
         // Timers are new in JDK1.3
         // For information about Timers, see
         // http://java.sun.com/docs/books/tutorial/essential/threads/timer.html
-
         if (timeToDie <= 0) {
             return;
         }
+
         // Make a record of the time when the WatchDogTimer was set
         final long startTime = (new Date()).getTime();
 
@@ -128,47 +129,54 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
                 public void run() {
                     try {
                         System.err.println("WatchDogTimer went off after "
-                                + timeToDie + "ms.");
+                            + timeToDie + "ms.");
 
                         // Get the root ThreadGroup
-                        ThreadGroup parent, rootGroup;
+                        ThreadGroup parent;
+
+                        // Get the root ThreadGroup
+                        ThreadGroup rootGroup;
 
                         parent = Thread.currentThread().getThreadGroup();
+
                         do {
                             rootGroup = parent;
                             parent = parent.getParent();
                         } while (parent != null);
 
                         // Display all the threads
-                        Thread threads[] = new Thread[rootGroup.activeCount()];
+                        Thread[] threads = new Thread[rootGroup.activeCount()];
                         rootGroup.enumerate(threads);
+
                         for (int i = 0; i < threads.length; i++) {
                             System.err.println(i + ". " + threads[i]);
+
                             // It would be nice to display the stack traces,
                             // but this is hard to do.  Thread.dumpStack()
                             // only dumps the stack trace for the current thread.
                             // For an idea using Thread.stop(), see
                             // http://forum.java.sun.com/thread.jsp?forum=4&thread=178641&start=15&range=15&hilite=false&q=
                         }
-
                     } catch (Exception e) {
                         System.err.println(e);
                     } finally {
                         System.out.println("WatchDogTime went off, stats: "
-                                + Manager.timeAndMemory(startTime));
+                            + Manager.timeAndMemory(startTime));
+
                         // Do not pass go, do not collect $200
                         System.exit(4);
                     }
                 }
             };
+
         if (_timer == null) {
             // Create the timer as a Daemon.. This way it won't prevent
             // the compiler from exiting if an exception occurs.
             _timer = new Timer(true);
         }
+
         _timer.schedule(doTimeToDie, timeToDie);
     }
 
     private Timer _timer = null;
 }
-

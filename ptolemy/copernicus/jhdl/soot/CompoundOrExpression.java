@@ -24,15 +24,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.soot;
 
-import ptolemy.kernel.util.IllegalActionException;
 import soot.Value;
+
 import soot.jimple.Jimple;
+
+import ptolemy.kernel.util.IllegalActionException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CompoundOrExpression
+
 /**
  * Represents the "OR" compound Boolean expression.
  *
@@ -47,21 +50,23 @@ import soot.jimple.Jimple;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-
-public class CompoundOrExpression extends AbstractCompoundExpression  {
-
+public class CompoundOrExpression extends AbstractCompoundExpression {
     public CompoundOrExpression(Value op1, Value op2) {
-        super(op1,op2);
+        super(op1, op2);
     }
-    public final String getSymbol() { return " || "; }
-    public Object clone() {
-        return new CompoundOrExpression( Jimple.cloneIfNecessary(getOp1()),
-                Jimple.cloneIfNecessary(getOp2()));
 
+    public final String getSymbol() {
+        return " || ";
     }
+
+    public Object clone() {
+        return new CompoundOrExpression(Jimple.cloneIfNecessary(getOp1()),
+            Jimple.cloneIfNecessary(getOp2()));
+    }
+
     public CompoundBooleanExpression invert() throws IllegalActionException {
         // Apply demorgan's theorem
-        return new CompoundAndExpression( invertValue(getOp1()),
-                invertValue(getOp2()) );
+        return new CompoundAndExpression(invertValue(getOp1()),
+            invertValue(getOp2()));
     }
 }

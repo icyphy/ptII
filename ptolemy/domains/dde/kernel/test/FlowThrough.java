@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.domains.dde.kernel.test;
 
 import ptolemy.actor.Receiver;
@@ -45,6 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FlowThrough
+
 /**
    FlowThrough is a test class used to test token production AND consumption.
    It has a typed, input and output multiport. The fire() method of this
@@ -59,13 +59,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class FlowThrough extends TypedAtomicActor {
-
     /**
      */
     public FlowThrough(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -92,22 +90,28 @@ public class FlowThrough extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Token token = null;
-        if ( _inRcvrs.length == 0 ) {
+
+        if (_inRcvrs.length == 0) {
             _continueIterations = false;
         }
-        for ( int i = 0; i < _inRcvrs.length; i++ ) {
-            for ( int j = 0; j < _inRcvrs[i].length; j++ ) {
-                DDEReceiver inRcvr = (DDEReceiver)_inRcvrs[i][j];
-                if ( inRcvr.hasToken() ) {
+
+        for (int i = 0; i < _inRcvrs.length; i++) {
+            for (int j = 0; j < _inRcvrs[i].length; j++) {
+                DDEReceiver inRcvr = (DDEReceiver) _inRcvrs[i][j];
+
+                if (inRcvr.hasToken()) {
                     token = inRcvr.get();
+
                     Receiver[][] outRcvrs = output.getRemoteReceivers();
-                    for ( int k = 0; k < outRcvrs.length; k++ ) {
-                        for ( int l = 0; l < outRcvrs[k].length; l++ ) {
-                            DDEReceiver outRcvr = (DDEReceiver)outRcvrs[k][l];
+
+                    for (int k = 0; k < outRcvrs.length; k++) {
+                        for (int l = 0; l < outRcvrs[k].length; l++) {
+                            DDEReceiver outRcvr = (DDEReceiver) outRcvrs[k][l];
                             Thread thr = Thread.currentThread();
-                            if ( thr instanceof DDEThread ) {
-                                TimeKeeper kpr =
-                                    ((DDEThread)thr).getTimeKeeper();
+
+                            if (thr instanceof DDEThread) {
+                                TimeKeeper kpr = ((DDEThread) thr)
+                                    .getTimeKeeper();
                                 outRcvr.put(token, kpr.getModelTime());
                             }
                         }
@@ -131,13 +135,10 @@ public class FlowThrough extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     public TypedIOPort output;
     public TypedIOPort input;
     private int _outChannel = -1;
     private boolean _continueIterations = true;
     private Receiver[][] _inRcvrs;
-
     private String _name;
-
 }

@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 Created : December 2000
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.HashSet;
@@ -40,8 +39,10 @@ import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRecordConstructNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents record construction using
@@ -60,7 +61,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtRecordConstructNode extends ASTPtRootNode {
-
     public ASTPtRecordConstructNode(int id) {
         super(id);
     }
@@ -88,61 +88,63 @@ public class ASTPtRecordConstructNode extends ASTPtRootNode {
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
         // Note: we don't call super.isCongruent(), which checks for ordered
         // congruence of the children.
-
         // Check to see that they are the same kind of node.
         if (node._id != _id) {
             return false;
         }
-        ASTPtRecordConstructNode recordNode = (ASTPtRecordConstructNode)node;
+
+        ASTPtRecordConstructNode recordNode = (ASTPtRecordConstructNode) node;
+
         // Empty records are allowed (Are they?)
-        if (recordNode._fieldNames == null && _fieldNames == null) {
+        if ((recordNode._fieldNames == null) && (_fieldNames == null)) {
             return true;
         }
+
         // But both must be empty
-        if (recordNode._fieldNames == null || _fieldNames == null) {
+        if ((recordNode._fieldNames == null) || (_fieldNames == null)) {
             return false;
         }
+
         // Check that they have the same number of fields.
         if (recordNode._fieldNames.size() != _fieldNames.size()) {
             return false;
         }
+
         // The field names must be the same.
         // Not use set for unordered comparison.
         // Note that field names are not renamed!
         Set nameSet = new HashSet(_fieldNames);
-        Set nodeNameSet =
-            new HashSet(((ASTPtRecordConstructNode)node)._fieldNames);
+        Set nodeNameSet = new HashSet(((ASTPtRecordConstructNode) node)._fieldNames);
+
         if (!nameSet.equals(nodeNameSet)) {
             return false;
         }
+
         // Check that their children are congruent, under renaming.
         Iterator fieldNames = _fieldNames.iterator();
         Iterator children = _children.iterator();
+
         while (fieldNames.hasNext()) {
-            String fieldName = (String)fieldNames.next();
-            ASTPtRootNode child = (ASTPtRootNode)children.next();
+            String fieldName = (String) fieldNames.next();
+            ASTPtRootNode child = (ASTPtRootNode) children.next();
             int nodeIndex = recordNode._fieldNames.indexOf(fieldName);
-            ASTPtRootNode nodeChild =
-                (ASTPtRootNode)recordNode._children.get(nodeIndex);
+            ASTPtRootNode nodeChild = (ASTPtRootNode) recordNode._children.get(nodeIndex);
 
             if (!child.isCongruent(nodeChild, renaming)) {
                 return false;
             }
         }
 
-
         return true;
     }
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitRecordConstructNode(this);
     }
 
     /** The list of field names for the record.
      */
     protected LinkedList _fieldNames = new LinkedList();
-
 }

@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj)
 @AcceptedRating Yellow (janneck)
 */
-
 package ptolemy.actor.corba;
 
 import java.util.StringTokenizer;
@@ -43,7 +42,6 @@ import ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException;
 import ptolemy.actor.corba.CoordinatorUtil._ClientImplBase;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -54,8 +52,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TaskReceiver
+
 /**
    An actor that register itself to a romote data provide that implements the
    Coordinator inteface and receives data from it.
@@ -80,9 +80,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $$
    @since Ptolemy II 3.0
 */
-
 public class TaskReceiver extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -92,10 +90,10 @@ public class TaskReceiver extends Source {
      *   actor with this name.
      */
     public TaskReceiver(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         coordinatorName = new Parameter(this, "coordinatorName");
         coordinatorName.setToken(new StringToken("TaskCoordinator"));
@@ -106,12 +104,14 @@ public class TaskReceiver extends Source {
         blocking.setExpression("true");
         defaultToken = new Parameter(this, "defaultToken");
         defaultToken.setExpression("0.0");
+
         //defaultToken.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(defaultToken.getType());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
     /** the ORB initial property. for example:
      * "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
      */
@@ -144,7 +144,6 @@ public class TaskReceiver extends Source {
      */
     public Parameter defaultToken;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -157,13 +156,12 @@ public class TaskReceiver extends Source {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == blocking) {
-            _blocking = ((BooleanToken)blocking.getToken()).booleanValue();
+            _blocking = ((BooleanToken) blocking.getToken()).booleanValue();
         } else if (attribute == defaultToken) {
             output.setTypeEquals(defaultToken.getType());
-        }
-        else {
+        } else {
             super.attributeChanged(attribute);
         }
     }
@@ -176,16 +174,19 @@ public class TaskReceiver extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(
-                ((StringToken)ORBInitProperties.getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
+                .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
+
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
             _debug("ORB initial argument: " + args[i]);
             i++;
         }
+
         _orb = null;
         _client = null;
         _coordinator = null;
@@ -195,7 +196,6 @@ public class TaskReceiver extends Source {
         _fireIsWaiting = false;
         _defaultToken = defaultToken.getToken();
     }
-
 
     /** Read the received data if there is any and send to the output.
      *  If no data received, then wait if <i>blocking<i> is true, or
@@ -214,24 +214,25 @@ public class TaskReceiver extends Source {
         if (_blocking) {
             if (_lastReadToken == null) {
                 try {
-
                     synchronized (_lock) {
                         if (_debugging) {
                             _debug(getName(), " is waiting.");
                         }
+
                         _fireIsWaiting = true;
                         _lock.wait();
                         _fireIsWaiting = false;
+
                         if (_debugging) {
                             _debug(getName(), " wake up.");
                         }
                     }
                 } catch (InterruptedException e) {
                     throw new IllegalActionException(this,
-                            "blocking interrupted." +
-                            e.getMessage());
+                        "blocking interrupted." + e.getMessage());
                 }
             }
+
             if (_lastReadToken != null) {
                 output.send(0, _lastReadToken);
                 _defaultToken = _lastReadToken;
@@ -240,7 +241,6 @@ public class TaskReceiver extends Source {
         } else {
             output.send(0, _defaultToken);
         }
-
     }
 
     /** Request that execution of the current iteration stop as soon
@@ -248,29 +248,32 @@ public class TaskReceiver extends Source {
      *  the Client object from the coordinator.
      */
     public void stop() {
-        if (_coordinator!= null) {
+        if (_coordinator != null) {
             try {
-                _coordinator.unregister(((StringToken)thisClientName.getToken()).
-                        stringValue());
+                _coordinator.unregister(((StringToken) thisClientName.getToken())
+                    .stringValue());
             } catch (CorbaIllegalActionException ex) {
                 //e.printStackTrace();
                 throw new KernelRuntimeException(this,
-                        " failed to unregister itself from the remote " +
-                        " TaskCoordinator. " +
-                        " the error message is: " + ex.getMessage());
+                    " failed to unregister itself from the remote "
+                    + " TaskCoordinator. " + " the error message is: "
+                    + ex.getMessage());
             } catch (IllegalActionException e) {
                 throw new KernelRuntimeException(this,
-                        " gets an error when it tries to get the string value" +
-                        " from the thisClientName parameter. " +
-                        " the error message is: " + e.getMessage());
+                    " gets an error when it tries to get the string value"
+                    + " from the thisClientName parameter. "
+                    + " the error message is: " + e.getMessage());
             }
         }
+
         if (_fireIsWaiting) {
-            synchronized( _lock) {
+            synchronized (_lock) {
                 _lock.notifyAll();
             }
+
             _fireIsWaiting = false;
         }
+
         super.stop();
     }
 
@@ -278,50 +281,51 @@ public class TaskReceiver extends Source {
     ////                         private methods                   ////
     //use a private method to deal with necessary CORBA operations.
     // @exception IllegalActionException If ORB initialize failed.
-    private void _initORB(String[] args) throws IllegalActionException{
+    private void _initORB(String[] args) throws IllegalActionException {
         try {
             // start the ORB
             _orb = ORB.init(args, null);
             _debug(getName(), " ORB initialized");
+
             //get the root naming context
             org.omg.CORBA.Object objRef = _orb.resolve_initial_references(
                     "NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
+
             if (ncRef != null) {
                 _debug(getName(), "found name service.");
             }
+
             //resolve the remote consumer reference in Naming
-            NameComponent namecomp = new NameComponent(
-                    ((StringToken)coordinatorName.getToken()).
-                    stringValue(), "Multi");
+            NameComponent namecomp = new NameComponent(((StringToken) coordinatorName
+                    .getToken()).stringValue(), "Multi");
             _debug(getName(), " looking for name: ",
-                    (coordinatorName.getToken()).toString());
-            NameComponent path[] = {namecomp};
-            _coordinator =
-                ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
+                (coordinatorName.getToken()).toString());
+
+            NameComponent[] path = { namecomp };
+            _coordinator = ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
                 .narrow(ncRef.resolve(path));
             _client = new Client();
             _orb.connect(_client);
+
             if (_coordinator != null) {
-                _coordinator.register(((StringToken)thisClientName.getToken()).
-                        stringValue(), _client);
+                _coordinator.register(((StringToken) thisClientName.getToken())
+                    .stringValue(), _client);
             }
+
             //registe the consumer with the given name
         } catch (UserException ex) {
             throw new IllegalActionException(this,
-                    " Initialize ORB failed. Please make sure the " +
-                    "naming server has already started and the " +
-                    "ORBInitProperty parameter and look up names are" +
-                    " configured correctly. " +
-                    "the error message is: " + ex.getMessage());
+                " Initialize ORB failed. Please make sure the "
+                + "naming server has already started and the "
+                + "ORBInitProperty parameter and look up names are"
+                + " configured correctly. " + "the error message is: "
+                + ex.getMessage());
         }
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private ORB _orb;
 
     // the Client objecte to commute with the remote Coordinator object.
@@ -345,15 +349,13 @@ public class TaskReceiver extends Source {
     //The flag indicates wheather the fire() method is waiting.
     private boolean _fireIsWaiting;
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
     /** this inner class implements the Client interface defined in
      * Coordinator.idl.
      */
-    private class Client extends _ClientImplBase{
+    private class Client extends _ClientImplBase {
         /**
          * Construct a pushConsumer.
          */
@@ -368,32 +370,37 @@ public class TaskReceiver extends Source {
          * for new data, then wake up fire(), otherwise call fireAt.
          * //FIXME: need to deal with overwrite if the old data is not consumed.
          */
-        public void push( org.omg.CORBA.Any data) throws CorbaIllegalActionException
-        {
+        public void push(org.omg.CORBA.Any data)
+            throws CorbaIllegalActionException {
             if (_debugging) {
                 _debug("got pushed data");
             }
+
             //try {
-            synchronized(_lock) {
+            synchronized (_lock) {
                 // Variable variable = new Variable();
                 if (_debugging) {
                     _debug("got pushed data:\n" + data.extract_string());
                 }
+
                 // variable.setExpression( data.extract_string());
                 ////String string = variable.getExpression();
                 //_lastReadToken = variable.getToken();
                 _lastReadToken = new StringToken(data.extract_string());
+
                 if (_debugging) {
-                    _debug(getName(), " receive data:\n" + _lastReadToken.toString());
+                    _debug(getName(),
+                        " receive data:\n" + _lastReadToken.toString());
                 }
+
                 if (_fireIsWaiting) {
                     _lock.notifyAll();
-                }else {
+                } else {
                     try {
-                        getDirector().fireAtCurrentTime(
-                                TaskReceiver.this);
+                        getDirector().fireAtCurrentTime(TaskReceiver.this);
                     } catch (IllegalActionException ex) {
-                        throw new CorbaIllegalActionException("failed in dealing with director.");
+                        throw new CorbaIllegalActionException(
+                            "failed in dealing with director.");
                     }
                 }
             }
@@ -408,16 +415,12 @@ public class TaskReceiver extends Source {
          */
         public void start() {
             // TODO Auto-generated method stub
-
         }
 
         /* (non-Javadoc)
          * @see ptolemy.actor.corba.CoordinatorUtil.ClientOperations#stop()
          */
         public void stop() {
-
         }
     }
-
 }
-

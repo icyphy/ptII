@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel.test;
 
 import java.net.URL;
@@ -33,8 +32,10 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Project
+
 /**
    Compute the projection of an interface automaton to another one.
    This class reads the MoML description of two automata, computes the projection
@@ -50,9 +51,7 @@ import ptolemy.moml.MoMLParser;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-
 public class Project {
-
     /** Compute the projection of the first automaton to the second one and
      *  write the result to stdout.
      *  @param firstMoML The MoML file name for the first interface automaton.
@@ -60,26 +59,30 @@ public class Project {
      *  @exception Exception If the specified automata cannot be constructed
      *   or are not consistent.
      */
-    public Project (String firstMoML, String secondMoML) throws Exception {
+    public Project(String firstMoML, String secondMoML)
+        throws Exception {
         // Construct the first automaton
         URL url = MoMLApplication.specToURL(firstMoML);
+
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().
         MoMLParser parser = new MoMLParser();
-        InterfaceAutomaton firstAutomaton =
-            (InterfaceAutomaton)parser.parse(url, url);
+        InterfaceAutomaton firstAutomaton = (InterfaceAutomaton) parser.parse(url,
+                url);
         firstAutomaton.addPorts();
 
         // Construct the second automaton
         url = MoMLApplication.specToURL(secondMoML);
+
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().  Also, a new instance
         // of MoMLParser must be used to parse each file, otherwise
         // the same automaton will be returned the second time parse() is
         // called.
         parser = new MoMLParser();
-        InterfaceAutomaton secondAutomaton =
-            (InterfaceAutomaton)parser.parse(url, url);
+
+        InterfaceAutomaton secondAutomaton = (InterfaceAutomaton) parser.parse(url,
+                url);
         secondAutomaton.addPorts();
 
         // Compute the projection and write result
@@ -94,22 +97,21 @@ public class Project {
      *  arguments are two MoML files for interface automaton.
      *  @param args The command line arguments.
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Usage: java ptolemy.domains.fsm.kernel."
-                    + "test.Project <first_automaton.xml> <second_automaton.xml>");
+                + "test.Project <first_automaton.xml> <second_automaton.xml>");
             System.out.println("This program computes the projection of the "
-                    + "first automaton to the second one.");
+                + "first automaton to the second one.");
             System.exit(1);
         } else {
             try {
                 new Project(args[0], args[1]);
             } catch (Exception exception) {
                 System.out.println(exception.getClass().getName() + ": "
-                        + exception.getMessage());
+                    + exception.getMessage());
                 exception.printStackTrace();
             }
         }
     }
 }
-

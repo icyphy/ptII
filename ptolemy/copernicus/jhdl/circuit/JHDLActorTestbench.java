@@ -24,29 +24,31 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
+
+import byucc.jhdl.Logic.*;
 
 import byucc.jhdl.base.Cell;
 import byucc.jhdl.base.HWSystem;
 import byucc.jhdl.base.TestBench;
-import byucc.jhdl.Logic.*;
 
-import java.util.*;
+import soot.*;
 
-import ptolemy.copernicus.jhdl.soot.*;
-import ptolemy.copernicus.jhdl.util.*;
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.*;
-import soot.jimple.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * A testbench for a generated JHDL circuit. Creates the top-level
  * wires for the circuit under test.
@@ -57,35 +59,40 @@ import soot.jimple.*;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class JHDLActorTestbench extends JHDLCompositeActor {
-
     public JHDLActorTestbench(ComponentEntity e)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         setName("testbench");
         _e = e;
         _e.setContainer(this);
+
         // add relation for each port
         for (Iterator i = e.portList().iterator(); i.hasNext();) {
             JHDLIOPort port = (JHDLIOPort) i.next();
-            JHDLIORelation r =  (JHDLIORelation) newRelation();
+            JHDLIORelation r = (JHDLIORelation) newRelation();
             r.setSignalWidth(port.getSignalWidth());
             port.link(r);
         }
     }
 
-    public Cell getTestbench() { return _testbench; }
+    public Cell getTestbench() {
+        return _testbench;
+    }
 
     public void build(HWSystem hw) {
-        _testbench = new SimpleTestbench(hw,"testbench");
-        System.out.println("Buliding testbench "+_testbench);
+        _testbench = new SimpleTestbench(hw, "testbench");
+        System.out.println("Buliding testbench " + _testbench);
+
         for (Iterator i = relationList().iterator(); i.hasNext();) {
             JHDLIORelation r = (JHDLIORelation) i.next();
-            if (r.getJHDLWire() == null)
+
+            if (r.getJHDLWire() == null) {
                 r.buildJHDLWire(_testbench);
+            }
         }
-        ((ConstructJHDL)_e).build(_testbench);
+
+        ((ConstructJHDL) _e).build(_testbench);
     }
 
     // Component under test
@@ -93,5 +100,4 @@ public class JHDLActorTestbench extends JHDLCompositeActor {
 
     // Actual JHDL testbench
     protected Logic _testbench;
-
 }

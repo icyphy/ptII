@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.demo.HelloWorld;
 
 import java.util.LinkedList;
@@ -39,8 +38,10 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringOut
+
 /**
    An abstract class that is used to produce StringTokens on the
    output for each token that is consumed on the input.
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public abstract class StringOut extends TypedAtomicActor {
-
     /** Construct a StringOut actor with the specified container and
      *  name.
      * @param container The container of this actor.
@@ -63,19 +63,17 @@ public abstract class StringOut extends TypedAtomicActor {
      *  superclass throws a NameDuplicationException .
      */
     public StringOut(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        output = new TypedIOPort( this, "output", false, true );
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
-        input = new TypedIOPort( this, "input", true, false );
+        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     public TypedIOPort output;
     public TypedIOPort input;
 
@@ -105,12 +103,14 @@ public abstract class StringOut extends TypedAtomicActor {
      *  when checking token availability in the input port.
      */
     public void fire() throws IllegalActionException {
-        if ( input.hasToken(0) ) {
+        if (input.hasToken(0)) {
             input.get(0);
-            String string = (String)_contents.get( _cntr );
-            output.broadcast( new StringToken(string) );
+
+            String string = (String) _contents.get(_cntr);
+            output.broadcast(new StringToken(string));
             _cntr++;
-            if ( _cntr == _contents.size() ) {
+
+            if (_cntr == _contents.size()) {
                 _cntr = 0;
             }
         }
@@ -118,8 +118,6 @@ public abstract class StringOut extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private LinkedList _contents;
     private int _cntr = 0;
-
 }

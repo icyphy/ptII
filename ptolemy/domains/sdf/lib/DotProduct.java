@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DotProduct
+
 /**
    Compute the dot product of two arrays or matrices. This actor has two
    input ports, from which it receives two ArrayTokens or two Matrix
@@ -66,9 +67,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (pwhitake)
    @Pt.AcceptedRating Red (acataldo)
 */
-
 public class DotProduct extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -79,7 +78,7 @@ public class DotProduct extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public DotProduct(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input1 = new TypedIOPort(this, "input1", true, false);
@@ -88,7 +87,6 @@ public class DotProduct extends TypedAtomicActor {
 
         // Set the type constraints.
         output.setTypeAtLeast(new PortFunction(input1, input2));
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,11 +116,10 @@ public class DotProduct extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        DotProduct newObject = (DotProduct)super.clone(workspace);
-        PortFunction function =
-            new PortFunction(newObject.input1, newObject.input2);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DotProduct newObject = (DotProduct) super.clone(workspace);
+        PortFunction function = new PortFunction(newObject.input1,
+                newObject.input2);
         newObject.output.setTypeAtLeast(function);
         return newObject;
     }
@@ -135,25 +132,22 @@ public class DotProduct extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if ((input1.getType() instanceof ArrayType) &&
-                (input2.getType() instanceof ArrayType)) {
+
+        if ((input1.getType() instanceof ArrayType)
+                && (input2.getType() instanceof ArrayType)) {
             try {
                 _arrayFire();
-            }
-            catch (IllegalActionException e) {
+            } catch (IllegalActionException e) {
                 throw e;
             }
-        }
-        else if ((input1.getType() instanceof UnsizedMatrixType) &&
-                (input2.getType() instanceof UnsizedMatrixType)) {
+        } else if ((input1.getType() instanceof UnsizedMatrixType)
+                && (input2.getType() instanceof UnsizedMatrixType)) {
             try {
                 _matrixFire();
-            }
-            catch (IllegalActionException e) {
+            } catch (IllegalActionException e) {
                 throw e;
             }
-        }
-        else {
+        } else {
             throw new IllegalActionException("Invalid types");
         }
     }
@@ -168,6 +162,7 @@ public class DotProduct extends TypedAtomicActor {
             if (_debugging) {
                 _debug("Called prefire(), which returns false.");
             }
+
             return false;
         } else {
             return super.prefire();
@@ -190,27 +185,29 @@ public class DotProduct extends TypedAtomicActor {
         Token[] array2 = token2.arrayValue();
 
         if (array1.length != array2.length) {
-            throw new IllegalActionException("Inputs to DotProduct have " +
-                    "unequal lengths: " + array1.length + " and " +
-                    array2.length + ".");
+            throw new IllegalActionException("Inputs to DotProduct have "
+                + "unequal lengths: " + array1.length + " and " + array2.length
+                + ".");
         }
 
         if (array1.length < 1) {
-            throw new IllegalActionException("Inputs to DotProduct have " +
-                    "no elements.");
+            throw new IllegalActionException("Inputs to DotProduct have "
+                + "no elements.");
         }
 
         Token dotProd = null;
         ScalarToken currentTerm;
 
         for (int i = 0; i < array1.length; i++) {
-            currentTerm = (ScalarToken)array1[i].multiply(array2[i]);
+            currentTerm = (ScalarToken) array1[i].multiply(array2[i]);
+
             if (dotProd == null) {
                 dotProd = currentTerm;
             } else {
                 dotProd = dotProd.add(currentTerm);
             }
         }
+
         output.broadcast(dotProd);
     }
 
@@ -220,19 +217,21 @@ public class DotProduct extends TypedAtomicActor {
      *  unequal sizes.
      */
     private void _matrixFire() throws IllegalActionException {
-        MatrixToken token1 = (MatrixToken)input1.get(0);
-        MatrixToken token2 = (MatrixToken)input2.get(0);
+        MatrixToken token1 = (MatrixToken) input1.get(0);
+        MatrixToken token2 = (MatrixToken) input2.get(0);
 
         int columnCount1 = token1.getColumnCount();
         int rowCount1 = token1.getRowCount();
         int columnCount2 = token2.getColumnCount();
         int rowCount2 = token2.getRowCount();
 
-        Token element1, element2, sum;
+        Token element1;
+        Token element2;
+        Token sum;
 
-        if ((columnCount1 == columnCount2) &&
-                (rowCount1 == rowCount2)) {
-            sum = token1.getElementAsToken(0,0).zero();
+        if ((columnCount1 == columnCount2) && (rowCount1 == rowCount2)) {
+            sum = token1.getElementAsToken(0, 0).zero();
+
             for (int i = 0; i < rowCount1; i += 1) {
                 for (int j = 0; j < columnCount1; j += 1) {
                     element1 = token1.getElementAsToken(i, j);
@@ -240,13 +239,13 @@ public class DotProduct extends TypedAtomicActor {
                     sum = sum.add(element1.multiply(element2));
                 }
             }
+
             output.send(0, sum);
-        }
-        else {
+        } else {
             String matrix1 = rowCount1 + " by " + columnCount1;
             String matrix2 = rowCount2 + " by " + columnCount2;
-            throw new IllegalActionException("Tried to multiply a " +
-                    matrix1 + " matrix with a " + matrix2 + " matrix");
+            throw new IllegalActionException("Tried to multiply a " + matrix1
+                + " matrix with a " + matrix2 + " matrix");
         }
     }
 
@@ -260,9 +259,7 @@ public class DotProduct extends TypedAtomicActor {
      *     UNKNOWN                                     otherwise
      *  This function's value determinese the output port type.
      */
-
     private class PortFunction extends MonotonicFunction {
-
         private PortFunction(TypedIOPort port1, TypedIOPort port2) {
             _port1 = port1;
             _port2 = port2;
@@ -277,27 +274,22 @@ public class DotProduct extends TypedAtomicActor {
         public Object getValue() {
             Type type1 = _port1.getType();
             Type type2 = _port2.getType();
-            if ((type1 == BaseType.UNKNOWN)
-                    || (type2 == BaseType.UNKNOWN)) {
+
+            if ((type1 == BaseType.UNKNOWN) || (type2 == BaseType.UNKNOWN)) {
                 return BaseType.UNKNOWN;
-            }
-            else if ((type1 instanceof ArrayType) &&
-                    (type2 instanceof ArrayType)) {
-                Type elType1 = ((ArrayType)type1).getElementType();
-                Type elType2= ((ArrayType)type2).getElementType();
+            } else if ((type1 instanceof ArrayType)
+                    && (type2 instanceof ArrayType)) {
+                Type elType1 = ((ArrayType) type1).getElementType();
+                Type elType2 = ((ArrayType) type2).getElementType();
                 CPO lattice = TypeLattice.lattice();
                 return lattice.leastUpperBound(elType1, elType2);
-            }
-            else if ((type1 instanceof UnsizedMatrixType) &&
-                    (type2 instanceof UnsizedMatrixType)) {
-                Type elType1 =
-                    ((UnsizedMatrixType)type1).getElementType();
-                Type elType2 =
-                    ((UnsizedMatrixType)type2).getElementType();
+            } else if ((type1 instanceof UnsizedMatrixType)
+                    && (type2 instanceof UnsizedMatrixType)) {
+                Type elType1 = ((UnsizedMatrixType) type1).getElementType();
+                Type elType2 = ((UnsizedMatrixType) type2).getElementType();
                 CPO lattice = TypeLattice.lattice();
                 return lattice.leastUpperBound(elType1, elType2);
-            }
-            else {
+            } else {
                 return BaseType.UNKNOWN;
             }
         }
@@ -314,27 +306,24 @@ public class DotProduct extends TypedAtomicActor {
         public InequalityTerm[] getVariables() {
             InequalityTerm term1 = _port1.getTypeTerm();
             InequalityTerm term2 = _port2.getTypeTerm();
+
             if ((term1.isSettable()) && (term2.isSettable())) {
-                InequalityTerm[] array = {term1, term2};
+                InequalityTerm[] array = { term1, term2 };
+                return array;
+            } else if (term1.isSettable()) {
+                InequalityTerm[] array = { term1 };
+                return array;
+            } else if (term2.isSettable()) {
+                InequalityTerm[] array = { term2 };
                 return array;
             }
-            else if (term1.isSettable()) {
-                InequalityTerm[] array = {term1};
-                return array;
-            }
-            else if (term2.isSettable()) {
-                InequalityTerm[] array = {term2};
-                return array;
-            }
+
             return (new InequalityTerm[0]);
         }
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-
         private TypedIOPort _port1;
         private TypedIOPort _port2;
-
     }
-
 }

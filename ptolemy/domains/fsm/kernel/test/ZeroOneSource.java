@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.fsm.kernel.test;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ZeroOneSource
+
 /**
    This actor produces the sequence 011101011011000... as source of the AMI
    (Alternating Mark 1) test.
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ZeroOneSource extends SequenceSource {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -59,7 +59,7 @@ public class ZeroOneSource extends SequenceSource {
      *   actor with this name.
      */
     public ZeroOneSource(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeEquals(BaseType.INT);
     }
@@ -105,11 +105,7 @@ public class ZeroOneSource extends SequenceSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private int[] _seq = {0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0};
-
+    private int[] _seq = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0 };
     private int _iterationCount = 0;
-
     private Token _zero = new IntToken(0);
 }
-

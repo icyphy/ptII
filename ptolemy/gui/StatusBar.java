@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 */
 package ptolemy.gui;
 
+
 // Java imports.
 import java.awt.Color;
 
@@ -34,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
 
 // NOTE: This class is borrowed from Diva and modified.
 
@@ -47,7 +49,6 @@ import javax.swing.border.EmptyBorder;
  *  @Pt.AcceptedRating Red (eal)
  */
 public class StatusBar extends JPanel {
-
     /** Create a new status bar with an empty label and progress at zero.
      */
     public StatusBar() {
@@ -86,6 +87,7 @@ public class StatusBar extends JPanel {
      */
     public void setBackground(Color color) {
         super.setBackground(color);
+
         // For some incomprehensible reason, it is possible for this
         // to be null, even though it is set to non-null in the constructor.
         if (_progress != null) {
@@ -103,7 +105,6 @@ public class StatusBar extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The progress bar associated with this status bar.
     private JProgressBar _progress;
 

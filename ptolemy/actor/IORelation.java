@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor;
 
 import java.util.Collections;
@@ -50,8 +49,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// IORelation
+
 /**
    This class mediates connections between ports that can send data to
    one another via message passing. One purpose of this relation is to
@@ -86,7 +87,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (davisj)
 */
 public class IORelation extends ComponentRelation {
-
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Add the relation to the directory of the workspace.
      */
@@ -120,7 +120,7 @@ public class IORelation extends ComponentRelation {
      *   a relation already in the container.
      */
     public IORelation(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -137,10 +137,11 @@ public class IORelation extends ComponentRelation {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute instanceof Parameter &&
-                "width".equals(attribute.getName())) {
-            IntToken t = (IntToken)((Parameter)attribute).getToken();
+        throws IllegalActionException {
+        if (attribute instanceof Parameter
+                && "width".equals(attribute.getName())) {
+            IntToken t = (IntToken) ((Parameter) attribute).getToken();
+
             if (t != null) {
                 int width = t.intValue();
                 setWidth(width);
@@ -159,9 +160,8 @@ public class IORelation extends ComponentRelation {
      *   cannot be cloned.
      *  @return A new ComponentRelation.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        IORelation newObject = (IORelation)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        IORelation newObject = (IORelation) super.clone(workspace);
         newObject._inferredWidthVersion = -1;
         return newObject;
     }
@@ -203,14 +203,16 @@ public class IORelation extends ComponentRelation {
     public Receiver[][] deepReceivers(IOPort except) {
         try {
             _workspace.getReadAccess();
+
             Receiver[][] result = new Receiver[0][0];
-            Iterator inputs =
-                linkedDestinationPortList(except).iterator();
+            Iterator inputs = linkedDestinationPortList(except).iterator();
             Receiver[][] receivers = new Receiver[0][0];
+
             // NOTE: We have to be careful here to keep track of
             // multiple occurrences of a port in this list.
             // EAL 7/30/00.
             HashMap seen = new HashMap();
+
             while (inputs.hasNext()) {
                 IOPort p = (IOPort) inputs.next();
 
@@ -228,15 +230,16 @@ public class IORelation extends ComponentRelation {
                     try {
                         // Note that this may be an inside or outside linked
                         // relation.
-
                         // NOTE: We have to be careful here to keep track of
                         // multiple occurrences of a port in this list.
                         // EAL 7/30/00.
                         int occurrence = 0;
+
                         if (seen.containsKey(p)) {
-                            occurrence = ((Integer)(seen.get(p))).intValue();
+                            occurrence = ((Integer) (seen.get(p))).intValue();
                             occurrence++;
                         }
+
                         seen.put(p, new Integer(occurrence));
 
                         receivers = p.getReceivers(this, occurrence);
@@ -244,8 +247,10 @@ public class IORelation extends ComponentRelation {
                         throw new InternalErrorException(this, ex, null);
                     }
                 }
+
                 result = _cascade(result, receivers);
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -269,6 +274,7 @@ public class IORelation extends ComponentRelation {
         if (_width == 0) {
             return _inferWidth();
         }
+
         return _width;
     }
 
@@ -308,22 +314,30 @@ public class IORelation extends ComponentRelation {
     public List linkedDestinationPortList(IOPort except) {
         try {
             _workspace.getReadAccess();
+
             // NOTE: The result could be cached for efficiency, but
             // it would have to be cached in a hashtable indexed by the
             // except argument.  Probably not worth it.
             LinkedList resultPorts = new LinkedList();
             Iterator ports = linkedPortList().iterator();
+
             while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
+
                 if (p != except) {
                     if (p.isInsideLinked(this)) {
                         // Linked from the inside
-                        if (p.isOutput()) resultPorts.addLast(p);
+                        if (p.isOutput()) {
+                            resultPorts.addLast(p);
+                        }
                     } else {
-                        if (p.isInput()) resultPorts.addLast(p);
+                        if (p.isInput()) {
+                            resultPorts.addLast(p);
+                        }
                     }
                 }
             }
+
             return resultPorts;
         } finally {
             _workspace.doneReading();
@@ -358,7 +372,7 @@ public class IORelation extends ComponentRelation {
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedDestinationPorts(IOPort except) {
-        return Collections.enumeration( linkedDestinationPortList(except) );
+        return Collections.enumeration(linkedDestinationPortList(except));
     }
 
     /** List the output ports that we are linked to from the outside
@@ -386,22 +400,30 @@ public class IORelation extends ComponentRelation {
     public List linkedSourcePortList(IOPort except) {
         try {
             _workspace.getReadAccess();
+
             // NOTE: The result could be cached for efficiency, but
             // it would have to be cached in a hashtable indexed by the
             // except argument.  Probably not worth it.
             LinkedList resultPorts = new LinkedList();
             Iterator ports = linkedPortList().iterator();
+
             while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
+
                 if (p != except) {
                     if (p.isInsideLinked(this)) {
                         // Linked from the inside
-                        if (p.isInput()) resultPorts.addLast(p);
+                        if (p.isInput()) {
+                            resultPorts.addLast(p);
+                        }
                     } else {
-                        if (p.isOutput()) resultPorts.addLast(p);
+                        if (p.isOutput()) {
+                            resultPorts.addLast(p);
+                        }
                     }
                 }
             }
+
             return resultPorts;
         } finally {
             _workspace.doneReading();
@@ -420,7 +442,7 @@ public class IORelation extends ComponentRelation {
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedSourcePorts() {
-        return Collections.enumeration( linkedSourcePortList() );
+        return Collections.enumeration(linkedSourcePortList());
     }
 
     /** Enumerate the output ports that we are linked to from the outside
@@ -435,7 +457,7 @@ public class IORelation extends ComponentRelation {
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedSourcePorts(IOPort except) {
-        return Collections.enumeration( linkedSourcePortList(except) );
+        return Collections.enumeration(linkedSourcePortList(except));
     }
 
     /** Specify the container, adding the relation to the list
@@ -465,28 +487,34 @@ public class IORelation extends ComponentRelation {
      *   already on the relations list of the container.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof CompositeActor) && (container != null)) {
-            throw new IllegalActionException (this, container,
-                    "IORelation can only be contained by CompositeActor.");
+            throw new IllegalActionException(this, container,
+                "IORelation can only be contained by CompositeActor.");
         }
+
         // Invalidate schedule and type resolution of the old container.
         Nameable oldContainer = getContainer();
+
         if (oldContainer instanceof CompositeActor) {
-            Director director = ((CompositeActor)oldContainer).getDirector();
+            Director director = ((CompositeActor) oldContainer).getDirector();
+
             if (director != null) {
                 director.invalidateSchedule();
                 director.invalidateResolvedTypes();
             }
         }
+
         // Invalidate schedule and type resolution of the new container.
         if (container instanceof CompositeActor) {
-            Director director = ((CompositeActor)container).getDirector();
+            Director director = ((CompositeActor) container).getDirector();
+
             if (director != null) {
                 director.invalidateSchedule();
                 director.invalidateResolvedTypes();
             }
         }
+
         super.setContainer(container);
     }
 
@@ -512,37 +540,45 @@ public class IORelation extends ComponentRelation {
     public void setWidth(int width) throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
+
             if (width == 0) {
                 // Check legitimacy of the change.
                 try {
                     _inferWidth();
                 } catch (InvalidStateException ex) {
                     throw new IllegalActionException(this,
-                            "Cannot use unspecified width on this relation " +
-                            "because of its links.");
+                        "Cannot use unspecified width on this relation "
+                        + "because of its links.");
                 }
             }
+
             Iterator ports;
+
             if (width != 1) {
                 ports = linkedPortList().iterator();
+
                 while (ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
+
                     // Check for non-multiports
                     if (!p.isMultiport()) {
                         throw new IllegalActionException(this, p,
-                                "Cannot make bus because the " +
-                                "relation is linked to a non-multiport.");
+                            "Cannot make bus because the "
+                            + "relation is linked to a non-multiport.");
                     }
                 }
             }
+
             _width = width;
 
             // Do this as a second pass in case the change is aborted
             // above by an exception.
             ports = linkedPortList().iterator();
+
             while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
-                Entity portContainer = (Entity)p.getContainer();
+                Entity portContainer = (Entity) p.getContainer();
+
                 if (portContainer != null) {
                     portContainer.connectionsChanged(p);
                 }
@@ -550,8 +586,10 @@ public class IORelation extends ComponentRelation {
 
             // Invalidate schedule and type resolution.
             Nameable container = getContainer();
+
             if (container instanceof CompositeActor) {
-                Director director = ((CompositeActor)container).getDirector();
+                Director director = ((CompositeActor) container).getDirector();
+
                 if (director != null) {
                     director.invalidateSchedule();
                     director.invalidateResolvedTypes();
@@ -578,10 +616,10 @@ public class IORelation extends ComponentRelation {
      *  @param port The candidate port to link to.
      *  @exception IllegalActionException If the port is not an IOPort.
      */
-    protected void _checkPort (Port port) throws IllegalActionException {
+    protected void _checkPort(Port port) throws IllegalActionException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
-                    "IORelation can only link to a IOPort.");
+                "IORelation can only link to a IOPort.");
         }
     }
 
@@ -613,22 +651,34 @@ public class IORelation extends ComponentRelation {
     protected String _description(int detail, int indent, int bracket) {
         try {
             _workspace.getReadAccess();
+
             String result;
-            if (bracket == 1 || bracket == 2) {
+
+            if ((bracket == 1) || (bracket == 2)) {
                 result = super._description(detail, indent, 1);
             } else {
                 result = super._description(detail, indent, 0);
             }
+
             if ((detail & CONFIGURATION) != 0) {
                 if (result.trim().length() > 0) {
                     result += " ";
                 }
+
                 result += "configuration {";
-                result += "width " + getWidth();
-                if (isWidthFixed()) result += " fixed";
+                result += ("width " + getWidth());
+
+                if (isWidthFixed()) {
+                    result += " fixed";
+                }
+
                 result += "}";
             }
-            if (bracket == 2) result += "}";
+
+            if (bracket == 2) {
+                result += "}";
+            }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -637,19 +687,20 @@ public class IORelation extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Cascade two Receiver arrays to form a new array. For each row, each
     // element of the second array is appended behind the elements of the
     // first array. This method is solely for deepReceivers.
     // The two input arrays must have the same number of rows.
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
-            throws InvalidStateException {
-        if (array1 == null || array1.length <= 0) {
+        throws InvalidStateException {
+        if ((array1 == null) || (array1.length <= 0)) {
             return array2;
         }
-        if (array2 == null || array2.length <= 0) {
+
+        if ((array2 == null) || (array2.length <= 0)) {
             return array1;
         }
+
         int width = getWidth();
         Receiver[][] result = new Receiver[width][0];
 
@@ -663,18 +714,20 @@ public class IORelation extends ComponentRelation {
             } else if (array2[i].length <= 0) {
                 result[i] = array1[i];
             } else {
-
                 int m1 = array1[i].length;
                 int m2 = array2[i].length;
-                result[i] = new Receiver[m1+m2];
+                result[i] = new Receiver[m1 + m2];
+
                 for (int j = 0; j < m1; j++) {
                     result[i][j] = array1[i][j];
                 }
-                for (int j = m1; j < m1+m2; j++) {
-                    result[i][j] = array2[i][j-m1];
+
+                for (int j = m1; j < (m1 + m2); j++) {
+                    result[i][j] = array2[i][j - m1];
                 }
             }
         }
+
         return result;
     }
 
@@ -686,29 +739,35 @@ public class IORelation extends ComponentRelation {
     // should be.
     private int _inferWidth() {
         long version = _workspace.getVersion();
+
         if (version != _inferredWidthVersion) {
             _inferredWidth = 1;
+
             Iterator ports = linkedPortList().iterator();
+
             while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
+
                 if (p.isInsideLinked(this)) {
                     // I am linked on the inside...
                     int portInsideWidth = p._getInsideWidth(this);
                     int portOutsideWidth = p.getWidth();
                     int difference = portOutsideWidth - portInsideWidth;
+
                     if (difference > _inferredWidth) {
                         _inferredWidth = difference;
                     }
                 }
             }
+
             _inferredWidthVersion = version;
         }
+
         return _inferredWidth;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // width of the relation.
     private int _width = 1;
 

@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.actor.process;
 
 import java.util.Iterator;
@@ -39,8 +38,10 @@ import ptolemy.actor.Receiver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BranchController
+
 /**
    A BranchController manages the execution of a set of branch objects by
    monitoring whether the branches have blocked. A branch blocks when it is
@@ -63,9 +64,7 @@ import ptolemy.kernel.util.Nameable;
    @Pt.ProposedRating Red (davisj)
    @Pt.AcceptedRating Red (davisj)
 */
-
 public class BranchController implements Runnable {
-
     /** Construct a branch controller in the specified composite actor
      *  container.
      *
@@ -73,7 +72,7 @@ public class BranchController implements Runnable {
      */
     public BranchController(CompositeActor container) {
         _parentActor = container;
-        _parentName = ((Nameable)container).getName();
+        _parentName = ((Nameable) container).getName();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,16 +91,20 @@ public class BranchController implements Runnable {
         // on this controller during the run, as this can cause
         // deadlock.
         LinkedList branchesCopy;
-        synchronized(this) {
-            if ( !hasBranches() ) {
+
+        synchronized (this) {
+            if (!hasBranches()) {
                 return;
             }
+
             setActive(true);
             branchesCopy = new LinkedList(_branches);
         }
+
         Iterator branches = branchesCopy.iterator();
+
         while (branches.hasNext()) {
-            Branch branch = (Branch)branches.next();
+            Branch branch = (Branch) branches.next();
             branch.run();
         }
     }
@@ -122,31 +125,33 @@ public class BranchController implements Runnable {
      *   of ports for whom branches were previously add to this
      *   controller.
      */
-    public void addBranches(IOPort port) throws
-            IllegalActionException {
-        if ( port.getContainer() != getParent() ) {
+    public void addBranches(IOPort port) throws IllegalActionException {
+        if (port.getContainer() != getParent()) {
             throw new IllegalActionException("Can not contain "
-                    + "a port that is not contained by this "
-                    + "BranchController's container.");
+                + "a port that is not contained by this "
+                + "BranchController's container.");
         }
 
-        if ( _ports.contains(port) ) {
-            throw new IllegalActionException(port, "This port "
-                    + "is already controlled by this "
-                    + "BranchController");
+        if (_ports.contains(port)) {
+            throw new IllegalActionException(port,
+                "This port " + "is already controlled by this "
+                + "BranchController");
         }
+
         // Careful; maintain order of following test in case
         // Java is like C
-        if ( _hasInputPorts() && !port.isInput() ) {
+        if (_hasInputPorts() && !port.isInput()) {
             throw new IllegalActionException("BranchControllers "
-                    + "must contain only input ports or only output "
-                    + "ports; not both");
+                + "must contain only input ports or only output "
+                + "ports; not both");
         }
-        if ( _hasOutputPorts() && !port.isOutput() ) {
+
+        if (_hasOutputPorts() && !port.isOutput()) {
             throw new IllegalActionException("BranchControllers "
-                    + "must contain only input ports or only output "
-                    + "ports; not both");
+                + "must contain only input ports or only output "
+                + "ports; not both");
         }
+
         _ports.add(port);
 
         Branch branch = null;
@@ -155,11 +160,11 @@ public class BranchController implements Runnable {
         Receiver[][] producerReceivers = null;
         Receiver[][] consumerReceivers = null;
 
-        for ( int i = 0; i < port.getWidth(); i++ ) {
-            if ( port.isInput() ) {
+        for (int i = 0; i < port.getWidth(); i++) {
+            if (port.isInput()) {
                 producerReceivers = port.getReceivers();
                 consumerReceivers = port.deepGetReceivers();
-            } else if ( port.isOutput() ) {
+            } else if (port.isOutput()) {
                 producerReceivers = port.getInsideReceivers();
                 consumerReceivers = port.getRemoteReceivers();
             } else {
@@ -168,22 +173,20 @@ public class BranchController implements Runnable {
 
             // If the port lacks either producer or consumer
             // receivers, then there is no point in creating a branch.
-            if (producerReceivers.length > i && consumerReceivers.length > i) {
+            if ((producerReceivers.length > i)
+                    && (consumerReceivers.length > i)) {
                 try {
-                    producerReceiver =
-                        (ProcessReceiver)producerReceivers[i][0];
-                    consumerReceiver =
-                        (ProcessReceiver)consumerReceivers[i][0];
+                    producerReceiver = (ProcessReceiver) producerReceivers[i][0];
+                    consumerReceiver = (ProcessReceiver) consumerReceivers[i][0];
                 } catch (ClassCastException ex) {
                     // See [Bug 5] and pn/test/PNInsideDE.xml
                     throw new IllegalActionException(port, ex,
-                            "At the current time, process-oriented domains "
-                            + "(PN and CSP) cannot be nested inside "
-                            + "firing-based domains (SDF, DE, CT, etc.).");
+                        "At the current time, process-oriented domains "
+                        + "(PN and CSP) cannot be nested inside "
+                        + "firing-based domains (SDF, DE, CT, etc.).");
                 }
 
-                branch =
-                    new Branch( producerReceiver, consumerReceiver, this );
+                branch = new Branch(producerReceiver, consumerReceiver, this);
                 _branches.add(branch);
             }
         }
@@ -193,21 +196,27 @@ public class BranchController implements Runnable {
      */
     public synchronized void deactivateBranches() {
         setActive(false);
+
         Iterator branches = _branches.iterator();
         Branch branch = null;
         ProcessReceiver bReceiver = null;
+
         while (branches.hasNext()) {
-            branch = (Branch)branches.next();
+            branch = (Branch) branches.next();
             branch.setActive(false);
             bReceiver = branch.getConsReceiver();
-            synchronized(bReceiver) {
+
+            synchronized (bReceiver) {
                 bReceiver.notifyAll();
             }
+
             bReceiver = branch.getProdReceiver();
-            synchronized(bReceiver) {
+
+            synchronized (bReceiver) {
                 bReceiver.notifyAll();
             }
         }
+
         notifyAll();
     }
 
@@ -260,14 +269,16 @@ public class BranchController implements Runnable {
      *   no branches; return false otherwise.
      */
     public synchronized boolean isBlocked() {
-        if ( !hasBranches() ) {
+        if (!hasBranches()) {
             return true;
         }
-        if ( _branchesBlocked >= _branches.size() ) {
-            if ( _branchesBlocked > 0 ) {
+
+        if (_branchesBlocked >= _branches.size()) {
+            if (_branchesBlocked > 0) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -283,21 +294,24 @@ public class BranchController implements Runnable {
         // the run.
         try {
             activateBranches();
+
             // After starting the runs, acquire a lock
             // on this object.
-            synchronized(this) {
-                while (isActive() ) {
+            synchronized (this) {
+                while (isActive()) {
                     while (!isBlocked() && isActive()) {
                         wait();
                     }
+
                     while (isBlocked() && isActive()) {
                         _getDirector()._controllerBlocked(this);
                         wait();
                     }
+
                     _getDirector()._controllerUnBlocked(this);
                 }
             }
-        } catch (InterruptedException e ) {
+        } catch (InterruptedException e) {
             // FIXME: Do something
         }
     }
@@ -323,7 +337,7 @@ public class BranchController implements Runnable {
      *   as blocked.
      */
     protected void _branchBlocked(ProcessReceiver receiver) {
-        synchronized(this) {
+        synchronized (this) {
             _branchesBlocked++;
             _blockedReceivers.addFirst(receiver);
             notifyAll();
@@ -337,10 +351,11 @@ public class BranchController implements Runnable {
      *  blocked.
      */
     protected void _branchUnBlocked(ProcessReceiver receiver) {
-        synchronized(this) {
-            if ( _branchesBlocked > 0 ) {
+        synchronized (this) {
+            if (_branchesBlocked > 0) {
                 _branchesBlocked--;
             }
+
             _blockedReceivers.remove(receiver);
             notifyAll();
         }
@@ -356,14 +371,14 @@ public class BranchController implements Runnable {
      */
     private CompositeProcessDirector _getDirector() {
         try {
-            return  (CompositeProcessDirector)_parentActor.getDirector();
+            return (CompositeProcessDirector) _parentActor.getDirector();
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
-            String name = ((Nameable)getParent()).getName();
-            throw new TerminateProcessException("Error: " +
-                    name + " contains a branch controller that has a " +
-                    "receiver that does not have a director");
+            String name = ((Nameable) getParent()).getName();
+            throw new TerminateProcessException("Error: " + name
+                + " contains a branch controller that has a "
+                + "receiver that does not have a director");
         }
     }
 
@@ -373,14 +388,17 @@ public class BranchController implements Runnable {
      *  with it. False otherwise.
      */
     private boolean _hasInputPorts() {
-        if ( _ports.size() == 0 ) {
+        if (_ports.size() == 0) {
             return false;
         }
+
         Iterator ports = _ports.iterator();
-        while ( ports.hasNext() ) {
-            IOPort port = (IOPort)ports.next();
+
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
             return port.isInput();
         }
+
         return false;
     }
 
@@ -390,33 +408,30 @@ public class BranchController implements Runnable {
      *  with it. False otherwise.
      */
     private boolean _hasOutputPorts() {
-        if ( _ports.size() == 0 ) {
+        if (_ports.size() == 0) {
             return false;
         }
+
         Iterator ports = _ports.iterator();
-        while ( ports.hasNext() ) {
-            IOPort port = (IOPort)ports.next();
+
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
             return port.isOutput();
         }
+
         return false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The number of branches that are blocked
     private int _branchesBlocked = 0;
 
     // The CompositeActor that owns this controller object.
     private CompositeActor _parentActor;
-
     private LinkedList _branches = new LinkedList();
     private LinkedList _ports = new LinkedList();
     private LinkedList _blockedReceivers = new LinkedList();
-
     private boolean _isActive = false;
-
-
     private String _parentName = null;
-
 }

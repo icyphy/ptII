@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.kernel;
 
 import java.util.Collection;
@@ -50,6 +49,7 @@ import soot.jimple.JimpleBody;
 import soot.jimple.NewExpr;
 import soot.util.queue.ChunkedQueue;
 
+
 /** Collect all the classes that a set of classes depends on.  This includes:
  Any superclass.
  Any interface.
@@ -62,19 +62,19 @@ import soot.util.queue.ChunkedQueue;
  @Pt.AcceptedRating Red (cxh)
  */
 public class DependedClasses {
-
     /** Create a new set of classes that contains all of the classes that are
      *  required to load the given set of initial classes.
      */
     public DependedClasses(Collection initialClasses) {
         _reachableClasses = new LinkedList();
         _unprocessedClasses = new ChunkedQueue();
+
         Iterator classes = _unprocessedClasses.reader();
 
         _addClasses(initialClasses);
 
         while (classes.hasNext()) {
-            SootClass nextClass = (SootClass)classes.next();
+            SootClass nextClass = (SootClass) classes.next();
             _processClass(nextClass);
         }
     }
@@ -85,15 +85,16 @@ public class DependedClasses {
 
     private void _addClasses(Collection set) {
         for (Iterator i = set.iterator(); i.hasNext();) {
-            _addClass((SootClass)i.next());
+            _addClass((SootClass) i.next());
         }
     }
 
     private void _addClass(SootClass theClass) {
-        if (!_reachableClasses.contains(theClass) &&
-                !theClass.getName().startsWith("java")) {
+        if (!_reachableClasses.contains(theClass)
+                && !theClass.getName().startsWith("java")) {
             // System.out.println("adding class " + theClass);
             _reachableClasses.add(theClass);
+
             if (!theClass.isInterface()) {
                 _unprocessedClasses.add(theClass);
             }
@@ -110,38 +111,41 @@ public class DependedClasses {
         }
 
         _addClasses(hierarchy.getSuperclassesOfIncluding(theClass));
+
         // FIXME: what about super interfaces
         _addClasses(theClass.getInterfaces());
 
         // Grab the types of all fields.
         for (Iterator fields = theClass.getFields().iterator();
-             fields.hasNext();) {
-            SootField field = (SootField)fields.next();
+                fields.hasNext();) {
+            SootField field = (SootField) fields.next();
             Type type = field.getType();
+
             if (type instanceof RefType) {
-                _addClass(((RefType)type).getSootClass());
+                _addClass(((RefType) type).getSootClass());
             }
         }
 
         for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
+                methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             //   System.out.println("processing method = " + method);
             // Grab the classes of all arguments.
             for (Iterator types = method.getParameterTypes().iterator();
-                 types.hasNext();) {
-                Type type = (Type)types.next();
+                    types.hasNext();) {
+                Type type = (Type) types.next();
+
                 if (type instanceof RefType) {
-                    _addClass(((RefType)type).getSootClass());
+                    _addClass(((RefType) type).getSootClass());
                 }
             }
-
             // Grab the method return types.
             {
                 Type type = method.getReturnType();
+
                 if (type instanceof RefType) {
-                    _addClass(((RefType)type).getSootClass());
+                    _addClass(((RefType) type).getSootClass());
                 }
             }
 
@@ -150,38 +154,42 @@ public class DependedClasses {
                 continue;
             }
 
-            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            JimpleBody body = (JimpleBody) method.retrieveActiveBody();
+
             // Grab the types of all traps.
-            for (Iterator it = body.getTraps().iterator();
-                 it.hasNext();) {
-                Trap t = (Trap)it.next();
+            for (Iterator it = body.getTraps().iterator(); it.hasNext();) {
+                Trap t = (Trap) it.next();
                 _addClass(t.getException());
             }
 
             // Grab the classes of all referenced fields, invoked
             // methods, and created classes.
-            for (Iterator units = body.getUnits().iterator();
-                 units.hasNext();) {
-                Unit unit = (Unit)units.next();
+            for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
+                Unit unit = (Unit) units.next();
+
                 for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-                     boxes.hasNext();) {
-                    ValueBox box = (ValueBox)boxes.next();
+                        boxes.hasNext();) {
+                    ValueBox box = (ValueBox) boxes.next();
                     Value value = box.getValue();
+
                     if (value instanceof FieldRef) {
-                        SootField field = ((FieldRef)value).getField();
+                        SootField field = ((FieldRef) value).getField();
                         SootClass refClass = field.getDeclaringClass();
+
                         if (!refClass.equals(theClass)) {
                             _addClass(refClass);
                         }
                     } else if (value instanceof InvokeExpr) {
-                        SootMethod refMethod = ((InvokeExpr)value).getMethod();
+                        SootMethod refMethod = ((InvokeExpr) value).getMethod();
                         SootClass refClass = refMethod.getDeclaringClass();
+
                         if (!refClass.equals(theClass)) {
                             _addClass(refClass);
                         }
                     } else if (value instanceof NewExpr) {
-                        SootClass refClass =
-                            ((NewExpr)value).getBaseType().getSootClass();
+                        SootClass refClass = ((NewExpr) value).getBaseType()
+                                              .getSootClass();
+
                         if (!refClass.equals(theClass)) {
                             _addClass(refClass);
                         }
@@ -194,5 +202,3 @@ public class DependedClasses {
     private ChunkedQueue _unprocessedClasses;
     private List _reachableClasses;
 }
-
-

@@ -28,7 +28,6 @@
 */
 package diva.graph;
 
-import java.awt.event.InputEvent;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
 
@@ -39,9 +38,9 @@ import diva.canvas.Figure;
 import diva.canvas.FigureContainer;
 import diva.canvas.FigureDecorator;
 import diva.canvas.FigureLayer;
-import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionModel;
+
 
 /**
  * A basic node controller implementation, intended for use
@@ -54,7 +53,6 @@ import diva.canvas.interactor.SelectionModel;
  * @Pt.AcceptedRating      Red
  */
 public class BasicNodeController implements NodeController {
-
     private Interactor _interactor;
     private NodeRenderer _renderer;
     private GraphController _controller;
@@ -62,8 +60,9 @@ public class BasicNodeController implements NodeController {
     /**
      * Create a new basic controller with default node and edge interactors.
      */
-    public BasicNodeController (GraphController controller) {
+    public BasicNodeController(GraphController controller) {
         _controller = controller;
+
         SelectionModel sm = controller.getSelectionModel();
         _interactor = new NodeInteractor(controller, sm);
     }
@@ -73,8 +72,7 @@ public class BasicNodeController implements NodeController {
      */
     public void addNode(Object node) {
         // FIXME this may cause a classcast exception.
-        MutableGraphModel model =
-            (MutableGraphModel)_controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
         model.addNode(_controller, node, model.getRoot());
         drawNode(node);
     }
@@ -83,9 +81,9 @@ public class BasicNodeController implements NodeController {
      * at the given location.
      */
     public void addNode(Object node, double x, double y) {
-        MutableGraphModel model =
-            (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
         model.addNode(_controller, node, model.getRoot());
+
         Figure nf = drawNode(node);
         CanvasUtilities.translateTo(nf, x, y);
     }
@@ -95,8 +93,7 @@ public class BasicNodeController implements NodeController {
      * and place it where convenient
      */
     public void addNode(Object node, Object parent) {
-        MutableGraphModel model =
-            (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
         model.addNode(_controller, node, parent);
         drawNode(node, parent);
     }
@@ -106,9 +103,9 @@ public class BasicNodeController implements NodeController {
      * and render it at the given location relative to its parent.
      */
     public void addNode(Object node, Object parent, double x, double y) {
-        MutableGraphModel model =
-            (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
         model.addNode(_controller, node, parent);
+
         Figure nf = drawNode(node, parent);
         CanvasUtilities.translateTo(nf, x, y);
     }
@@ -118,26 +115,32 @@ public class BasicNodeController implements NodeController {
      */
     public void clearNode(Object node) {
         GraphModel model = _controller.getGraphModel();
+
         for (Iterator i = model.outEdges(node); i.hasNext();) {
             Object edge = i.next();
             _controller.clearEdge(edge);
         }
+
         for (Iterator i = model.inEdges(node); i.hasNext();) {
             Object edge = i.next();
             _controller.clearEdge(edge);
         }
+
         Figure f = _controller.getFigure(node);
+
         if (f != null) {
             CanvasComponent container = f.getParent();
             f.setUserObject(null);
             _controller.setFigure(node, null);
+
             // If the figure is decorated, then we have to undecorate
             // it before proceeding, or the figure remains as a ghost!
             while (container instanceof FigureDecorator) {
-                FigureDecorator decorator = (FigureDecorator)container;
+                FigureDecorator decorator = (FigureDecorator) container;
                 container = container.getParent();
-                ((FigureContainer)container).undecorate(decorator);
+                ((FigureContainer) container).undecorate(decorator);
             }
+
             if (container instanceof FigureLayer) {
                 ((FigureLayer) container).remove(f);
             } else if (container instanceof CompositeFigure) {
@@ -156,6 +159,7 @@ public class BasicNodeController implements NodeController {
 
         // Infer the location for the new node.
         Point2D center;
+
         if (oldFigure != null) {
             center = oldFigure.getOrigin();
             clearNode(node);
@@ -174,12 +178,11 @@ public class BasicNodeController implements NodeController {
         if (center != null) {
             // place the new figure where the old one was, if there
             // was an old figure.
-            CanvasUtilities.translateTo(newFigure,
-                    center.getX(), center.getY());
+            CanvasUtilities.translateTo(newFigure, center.getX(), center.getY());
         }
 
         _controller.dispatch(new GraphViewEvent(this,
-                                     GraphViewEvent.NODE_DRAWN, node));
+                GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -192,14 +195,14 @@ public class BasicNodeController implements NodeController {
     public Figure drawNode(Object node, Object parent) {
         // FIXME what if node was previously rendered?
         Figure newFigure = _renderNode(node);
-        CompositeFigure cf = (CompositeFigure)_controller.getFigure(parent);
+        CompositeFigure cf = (CompositeFigure) _controller.getFigure(parent);
         cf.add(newFigure);
 
         // Now draw the contained nodes, letting them go where they want to.
         _drawChildren(node);
 
         _controller.dispatch(new GraphViewEvent(this,
-                                     GraphViewEvent.NODE_DRAWN, node));
+                GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -230,17 +233,19 @@ public class BasicNodeController implements NodeController {
      */
     public void removeNode(Object node) {
         // FIXME why isn't this symmetric with addNode?
-        MutableGraphModel model =
-            (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
+
         // clearing the nodes is responsible for clearing any edges that are
         // connected
         if (model.isComposite(node)) {
-            for (Iterator i = model.nodes(node); i.hasNext(); ) {
+            for (Iterator i = model.nodes(node); i.hasNext();) {
                 Object insideNode = i.next();
                 _controller.clearNode(insideNode);
             }
         }
+
         clearNode(node);
+
         // we assume that the model will remove any edges that are connected.
         model.removeNode(_controller, node);
         _controller.getGraphPane().repaint();
@@ -278,8 +283,10 @@ public class BasicNodeController implements NodeController {
      */
     protected void _drawChildren(Object node) {
         GraphModel model = getController().getGraphModel();
+
         if (model.isComposite(node)) {
             Iterator children = model.nodes(node);
+
             while (children.hasNext()) {
                 Object child = children.next();
                 _controller.drawNode(child, node);
@@ -287,5 +294,3 @@ public class BasicNodeController implements NodeController {
         }
     }
 }
-
-

@@ -22,7 +22,6 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.HashSet;
@@ -31,8 +30,10 @@ import java.util.Iterator;
 import soot.Scene;
 import soot.SootClass;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MakefileGenerator_C6000
+
 /**
    This class generates a makefile specific to the TMS320C6xxx.
 
@@ -42,7 +43,7 @@ import soot.SootClass;
    @Pt.ProposedRating Red (ankush)
    @Pt.AcceptedRating Red (ssb)
 */
-public class MakefileGenerator_C6000 extends MakeFileGenerator{
+public class MakefileGenerator_C6000 extends MakeFileGenerator {
     /** Create the MakeFile.
      *  @param classPath The classPath.
      *  @param className The class for which the Makefile is to be generated.
@@ -50,30 +51,20 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator{
      */
     public static void generateMakeFile(String classPath, String className) {
         SootClass source = Scene.v().getSootClass(className);
-        String code = setupVariables(source)
-            + specifyRules()
-            + specifyFiles(source)
-            + specifyTargets(source);
+        String code = setupVariables(source) + specifyRules()
+            + specifyFiles(source) + specifyTargets(source);
 
         FileHandler.write(className + ".make", code.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected fields                    ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private static String setupVariables(SootClass source) {
@@ -85,15 +76,14 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator{
 
         // Native Bodies.
         code.append("NATIVE_BODIES ="
-                + NativeMethodGenerator.getNativeBodyLib() + "\n");
+            + NativeMethodGenerator.getNativeBodyLib() + "\n");
 
         // Overridden bodies.
         code.append("OVER_BODIES = "
-                + OverriddenMethodGenerator.getOverriddenBodyLib()
-                + "\n");
+            + OverriddenMethodGenerator.getOverriddenBodyLib() + "\n");
+
         // Java-to-C library.
-        code.append("LIB = " + Options.v().get("lib")
-                + "\n");
+        code.append("LIB = " + Options.v().get("lib") + "\n");
 
         // TI Directory
         code.append("TI_DIR  := C:/ti\n");
@@ -107,7 +97,7 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator{
         // Options
         code.append("\n#Options\n");
         code.append("CC62OPTS = -qq -i. -i../runtime -i$(LIB) "
-                + "-i$(NATIVE_BODIES) -i$(OVER_BODIES)\n");
+            + "-i$(NATIVE_BODIES) -i$(OVER_BODIES)\n");
         code.append("AS62OPTS = -g\n");
         code.append("LD62OPTS = -c -stack 0x400 -heap 0x400 -q\n");
         code.append("LIBS     = -l$(TI_DIR)/c6000/cgtools/lib/rts6700.lib\n");
@@ -121,19 +111,21 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator{
 
         // Get names of all .c files in the transitive closure.
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
-                + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n"
-                + "\t" + source.getName() + "_main.c\\\n");
+            + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n" + "\t"
+            + source.getName() + "_main.c\\\n");
 
         HashSet libSources = RequiredFileGenerator.generateUserClasses(code);
 
         // Generate all the source files for system(library) classes.
         code.append("\n\nLIB_SOURCES = ");
+
         Iterator i = libSources.iterator();
+
         while (i.hasNext()) {
-            code.append("\t" + (String)i.next() + ".c\\\n");
+            code.append("\t" + (String) i.next() + ".c\\\n");
         }
 
-        code.append("\n");// Takes care of blank line for last "\".
+        code.append("\n"); // Takes care of blank line for last "\".
 
         code.append("PROG = " + source.getName() + "_main\n");
         code.append("CMDS = generic.cmd\n");
@@ -154,7 +146,7 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator{
 
         code.append("%.out : %.obj\n");
         code.append("\t$(LD62) $(LD62FLAGS) $(LD62OPTS) -o $@ $< *.obj "
-                + "$(LIBS) $(CMDS)\n");
+            + "$(LIBS) $(CMDS)\n");
 
         code.append("\n");
         return code.toString();
@@ -174,5 +166,4 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator{
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
 }

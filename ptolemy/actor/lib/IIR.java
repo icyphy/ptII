@@ -27,7 +27,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 
+
 ///////////////////////////////////////////////////////////////////
 //// IIR
+
 /**
 
 This actor is an implementation of an infinite impulse response IIR
@@ -68,7 +69,6 @@ Prentice Hall, 1989.
 @Pt.AcceptedRating Red (cxh)
 */
 public class IIR extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,8 +78,9 @@ public class IIR extends Transformer {
      *   actor with this name.
      */
     public IIR(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         // Parameters
         numerator = new Parameter(this, "numerator");
         numerator.setExpression("{1.0}");
@@ -93,11 +94,11 @@ public class IIR extends Transformer {
 
         // Set the type of the output port.
         // Set type constraints.
-        ArrayType numeratorType = (ArrayType)numerator.getType();
+        ArrayType numeratorType = (ArrayType) numerator.getType();
         InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
 
-        ArrayType denominatorType = (ArrayType)denominator.getType();
+        ArrayType denominatorType = (ArrayType) denominator.getType();
         InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm2);
 
@@ -137,25 +138,24 @@ public class IIR extends Transformer {
     public void attributeChanged(Attribute attribute)
         throws IllegalActionException {
         if (attribute == numerator) {
-            ArrayToken numeratorValue = (ArrayToken)numerator.getToken();
+            ArrayToken numeratorValue = (ArrayToken) numerator.getToken();
             _numerator = numeratorValue.arrayValue();
         } else if (attribute == denominator) {
-            ArrayToken denominatorValue =
-                (ArrayToken)denominator.getToken();
+            ArrayToken denominatorValue = (ArrayToken) denominator.getToken();
             _denominator = denominatorValue.arrayValue();
 
             // Note: a<sub>0</sub> must always be 1.
             // Issue a warning if it isn't.
-            if (!_denominator[0].isEqualTo(_denominator[0].one())
-                .booleanValue()) {
+            if (!_denominator[0].isEqualTo(_denominator[0].one()).booleanValue()) {
                 try {
                     MessageHandler.warning(
-                                           "First denominator value is required to be 1. "
-                                           + "Using 1.");
+                        "First denominator value is required to be 1. "
+                        + "Using 1.");
                 } catch (CancelException ex) {
                     throw new IllegalActionException(this,
-                                                     "Canceled parameter change.");
+                        "Canceled parameter change.");
                 }
+
                 // Override the user and just use 1.
                 _denominator[0] = _denominator[0].one();
             }
@@ -163,6 +163,7 @@ public class IIR extends Transformer {
             super.attributeChanged(attribute);
             return;
         }
+
         // Initialize filter state.
         if ((_numerator != null) && (_denominator != null)) {
             _initStateVector();
@@ -176,23 +177,20 @@ public class IIR extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-        throws CloneNotSupportedException {
-        IIR newObject = (IIR)super.clone(workspace);
-        try {
-            newObject.numerator
-                .setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-            newObject.denominator
-                .setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        IIR newObject = (IIR) super.clone(workspace);
 
-            ArrayType numeratorType = (ArrayType)newObject.numerator.getType();
+        try {
+            newObject.numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+            newObject.denominator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+
+            ArrayType numeratorType = (ArrayType) newObject.numerator.getType();
             InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
             newObject.output.setTypeAtLeast(elementTerm);
 
-            ArrayType denominatorType =
-                (ArrayType)newObject.denominator.getType();
-            InequalityTerm elementTerm2 =
-                denominatorType.getElementTypeTerm();
+            ArrayType denominatorType = (ArrayType) newObject.denominator
+                .getType();
+            InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
             newObject.output.setTypeAtLeast(elementTerm2);
 
             newObject.input.setTypeAtLeast(newObject.output);
@@ -200,11 +198,11 @@ public class IIR extends Transformer {
         } catch (IllegalActionException ex) {
             // CloneNotSupportedException does not have a constructor
             // that takes a cause argument, so we use initCause
-            CloneNotSupportedException throwable
-                = new CloneNotSupportedException();
+            CloneNotSupportedException throwable = new CloneNotSupportedException();
             throwable.initCause(ex);
             throw throwable;
         }
+
         return newObject;
     }
 
@@ -221,10 +219,13 @@ public class IIR extends Transformer {
         if (input.hasToken(0)) {
             // Save state vector value.
             Token savedState = _stateVector[_currentTap];
+
             // Compute the current output sample given the input sample.
-            Token yCurrent = _computeOutput((Token)input.get(0));
+            Token yCurrent = _computeOutput((Token) input.get(0));
+
             // Shadowed state. used in postfire().
             _latestWindow = _stateVector[_currentTap];
+
             // Restore state vector to previous state.
             _stateVector[_currentTap] = savedState;
             output.send(0, yCurrent);
@@ -237,6 +238,7 @@ public class IIR extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // Initialize filter state.
         _initStateVector();
         _currentTap = 0;
@@ -248,36 +250,41 @@ public class IIR extends Transformer {
      */
     public boolean postfire() throws IllegalActionException {
         _stateVector[_currentTap] = _latestWindow;
+
         // Update the state vector pointer.
-        if (--_currentTap < 0) _currentTap = _stateVector.length - 1;
+        if (--_currentTap < 0) {
+            _currentTap = _stateVector.length - 1;
+        }
+
         return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    private Token _computeOutput(Token xCurrent) throws
-        IllegalActionException {
+    private Token _computeOutput(Token xCurrent) throws IllegalActionException {
         for (int j = 1; j < _denominator.length; j++) {
             xCurrent = xCurrent.subtract(_denominator[j].multiply(
-                                                                  _stateVector[(_currentTap + j) %
-                                                                               _stateVector.length]));
+                        _stateVector[(_currentTap + j) % _stateVector.length]));
         }
+
         _stateVector[_currentTap] = xCurrent;
+
         Token yCurrent = _numerator[0].zero();
+
         for (int k = 0; k < _numerator.length; k++) {
             yCurrent = yCurrent.add(_numerator[k].multiply(
-                                                           _stateVector[(_currentTap +k) %
-                                                                        _stateVector.length]));
+                        _stateVector[(_currentTap + k) % _stateVector.length]));
         }
+
         return yCurrent;
     }
 
-    private void _initStateVector() throws  IllegalActionException {
+    private void _initStateVector() throws IllegalActionException {
         if (_numerator.length > 0) {
-            int stateSize = (int)java.lang.Math.max(_numerator.length,
-                                                    _denominator.length);
+            int stateSize = (int) java.lang.Math.max(_numerator.length,
+                    _denominator.length);
             _stateVector = new Token[stateSize];
+
             Token zero = _numerator[0].zero();
 
             for (int j = 0; j < _stateVector.length; j++) {
@@ -288,7 +295,6 @@ public class IIR extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Filter parameters
     private Token[] _numerator = new Token[0];
     private Token[] _denominator = new Token[0];
@@ -302,4 +308,3 @@ public class IIR extends Transformer {
     // Shadow state.
     private Token _latestWindow;
 }
-

@@ -28,6 +28,7 @@ package diva.graph;
 import diva.canvas.Figure;
 import diva.canvas.interactor.Interactor;
 
+
 /**
  * Specifies the interface for objects that manage creation
  * of and interaction with graph nodes. GraphControllers
@@ -39,7 +40,6 @@ import diva.canvas.interactor.Interactor;
  * @Pt.AcceptedRating      Red
  */
 public interface NodeController {
-
     /** Given a node, add it to this graph editor and perform a layout
      * on the new node.
      */
@@ -111,5 +111,3 @@ public interface NodeController {
      */
     public void setNodeRenderer(NodeRenderer renderer);
 }
-
-

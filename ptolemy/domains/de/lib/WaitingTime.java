@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import java.util.Vector;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// WaitingTime
+
 /**
    This actor measures the time that events at one input have to wait for
    events at another.  Specifically, there will be one output event for
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class WaitingTime extends DEActor {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -72,8 +72,9 @@ public class WaitingTime extends DEActor {
      *   actor with this name.
      */
     public WaitingTime(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         // create the ports
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -111,9 +112,8 @@ public class WaitingTime extends DEActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        WaitingTime newObject = (WaitingTime)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        WaitingTime newObject = (WaitingTime) super.clone(workspace);
         newObject._waiting = new Vector();
         return newObject;
     }
@@ -126,26 +126,28 @@ public class WaitingTime extends DEActor {
      *  @exception IllegalActionException If get() or send() throws it.
      */
     public void fire() throws IllegalActionException {
+        Time currentTime = ((DEDirector) getDirector()).getModelTime();
 
-        Time currentTime = ((DEDirector)getDirector()).getModelTime();
         while (waiter.hasToken(0)) {
             waiter.get(0);
             _waiting.addElement(currentTime);
         }
+
         boolean godot = false;
+
         while (waitee.hasToken(0)) {
             waitee.get(0);
             godot = true;
         }
+
         if (godot) {
             for (int i = 0; i < _waiting.size(); i++) {
-                Time previousTime =
-                    (Time)_waiting.elementAt(i);
-                DoubleToken outToken =
-                    new DoubleToken(currentTime.subtract(previousTime)
-                            .getDoubleValue());
+                Time previousTime = (Time) _waiting.elementAt(i);
+                DoubleToken outToken = new DoubleToken(currentTime.subtract(
+                            previousTime).getDoubleValue());
                 output.send(0, outToken);
             }
+
             _waiting.removeAllElements();
         }
     }
@@ -160,6 +162,5 @@ public class WaitingTime extends DEActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Vector _waiting;
 }

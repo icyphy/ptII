@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import java.awt.Polygon;
@@ -51,6 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TerrainProperty
 
@@ -68,7 +68,6 @@ import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 */
 public class TerrainProperty extends TypedAtomicActor
     implements PropertyTransformer {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -78,13 +77,14 @@ public class TerrainProperty extends TypedAtomicActor
      *   actor with this name.
      */
     public TerrainProperty(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         channelName = new StringParameter(this, "channelName");
         channelName.setExpression("TerrainChannel");
 
         xyPoints = new Parameter(this, "xyPoints");
         xyPoints.setExpression("{{0, 0}, {0, 5}, {20, 5}, {20, 0}}");
+
         //create the default icon.
         _numberOfPoints = 4;
         _xPoints = new int[_numberOfPoints];
@@ -100,15 +100,15 @@ public class TerrainProperty extends TypedAtomicActor
 
         //Crate the icon.
         _icon = new EditorIcon(this, "_icon");
-        _terrain =
-            new FilledShapeAttribute(_icon, "terrain") {
-                protected Shape _newShape() {
-                    return new Polygon(_xPoints, _yPoints, _numberOfPoints);
-                }
-            };
+        _terrain = new FilledShapeAttribute(_icon, "terrain") {
+                    protected Shape _newShape() {
+                        return new Polygon(_xPoints, _yPoints, _numberOfPoints);
+                    }
+                };
 
         // Set the color to green.
         _terrain.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
+
         // NOTE: The width is not used, but this triggers a
         // call to _newShape().
         _terrain.width.setToken(new IntToken(10));
@@ -130,6 +130,7 @@ public class TerrainProperty extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Override the base class to parse the model specified if the
      *  attribute is modelFileOrURL.
      *  @param attribute The attribute that changed.
@@ -137,37 +138,40 @@ public class TerrainProperty extends TypedAtomicActor
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == xyPoints) {
             Token xypoints = xyPoints.getToken();
+
             if (xypoints instanceof ArrayToken) {
                 ArrayToken xypointsArray = (ArrayToken) xypoints;
+
                 if (xypointsArray.length() != _numberOfPoints) {
                     _numberOfPoints = xypointsArray.length();
                     _xPoints = new int[_numberOfPoints];
                     _yPoints = new int[_numberOfPoints];
                 }
+
                 for (int i = 0; i < xypointsArray.length(); i++) {
-                    ArrayToken xypointArray = (ArrayToken)
-                        xypointsArray.getElement(i);
-                    _xPoints[i] = ((IntToken)xypointArray.
-                            getElement(0)).intValue();
-                    _yPoints[i] = ((IntToken)xypointArray.
-                            getElement(1)).intValue();
+                    ArrayToken xypointArray = (ArrayToken) xypointsArray
+                        .getElement(i);
+                    _xPoints[i] = ((IntToken) xypointArray.getElement(0))
+                        .intValue();
+                    _yPoints[i] = ((IntToken) xypointArray.getElement(1))
+                        .intValue();
                 }
+
                 _number++;
+
                 //set the width different to trigger the shape change...
                 _terrain.width.setToken(new IntToken(_number));
-
             } else {
-                throw new IllegalActionException (this,
-                        "xPoints is required to be an integer array");
+                throw new IllegalActionException(this,
+                    "xPoints is required to be an integer array");
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
-
 
     /** Initialize the _registeredWithChannel.
      */
@@ -176,15 +180,17 @@ public class TerrainProperty extends TypedAtomicActor
         _terrain.width.setToken(new IntToken(10));
         _number = 10;
         _offset = new double[2];
-        Locatable location = (Locatable)
-            getAttribute(LOCATION_ATTRIBUTE_NAME, Locatable.class);
+
+        Locatable location = (Locatable) getAttribute(LOCATION_ATTRIBUTE_NAME,
+                Locatable.class);
+
         if (location == null) {
             throw new IllegalActionException(
-                    "Cannot determine location for entity "
-                    + getName()
-                    + ".");
+                "Cannot determine location for entity " + getName() + ".");
         }
+
         double[] center = _polygonCenter();
+
         //Note: the polygon is not centered, but the location
         //refers to the center of the polygon. We adjust the
         //offset here.
@@ -193,14 +199,15 @@ public class TerrainProperty extends TypedAtomicActor
 
         CompositeEntity container = (CompositeEntity) getContainer();
         _channelName = channelName.stringValue();
+
         Entity channel = container.getEntity(_channelName);
+
         if (channel instanceof WirelessChannel) {
-            _channel = (WirelessChannel)channel;
-            ((WirelessChannel)channel).
-                registerPropertyTransformer(this, null);
+            _channel = (WirelessChannel) channel;
+            ((WirelessChannel) channel).registerPropertyTransformer(this, null);
         } else {
             throw new IllegalActionException(this,
-                    "The channel name does not refer to a valid channel.");
+                "The channel name does not refer to a valid channel.");
         }
     }
 
@@ -218,46 +225,59 @@ public class TerrainProperty extends TypedAtomicActor
      * @exception IllegalActionException If failed to execute the model.
      */
     public RecordToken transformProperties(RecordToken properties,
-            WirelessIOPort sender, WirelessIOPort destination)
-            throws IllegalActionException {
+        WirelessIOPort sender, WirelessIOPort destination)
+        throws IllegalActionException {
         double[] p1 = _locationOf(sender);
         double[] p2 = _locationOf(destination);
-        double a, b, c, d, x0, y0, x1, y1, k;
+        double a;
+        double b;
+        double c;
+        double d;
+        double x0;
+        double y0;
+        double x1;
+        double y1;
+        double k;
         boolean cross = false;
+
         for (int i = 0; i < _numberOfPoints; i++) {
-            for (int j = i+1; j< _numberOfPoints; j++) {
+            for (int j = i + 1; j < _numberOfPoints; j++) {
                 x0 = _xPoints[i] + _offset[0];
                 y0 = _yPoints[i] + _offset[1];
                 x1 = _xPoints[j] + _offset[0];
                 y1 = _yPoints[j] + _offset[1];
-                if (x1 - x0 != 0) {
-                    k = (y1-y0)/(x1-x0);
-                    a = p1[1]-y0-k*(p1[0]-x0);
-                    b =  p2[1]-y0-k*(p2[0]-x0);
+
+                if ((x1 - x0) != 0) {
+                    k = (y1 - y0) / (x1 - x0);
+                    a = p1[1] - y0 - (k * (p1[0] - x0));
+                    b = p2[1] - y0 - (k * (p2[0] - x0));
                 } else {
-                    a = p1[0]-x0;
-                    b = p2[0]-x0;
+                    a = p1[0] - x0;
+                    b = p2[0] - x0;
                 }
-                if (p2[0]-p1[0] != 0) {
-                    k = (p2[1]-p1[1])/(p2[0]-p1[0]);
-                    c = y0 - p1[1]-k*(x0-p1[0]);
-                    d = y1 - p1[1]-k*(x1-p1[0]);
+
+                if ((p2[0] - p1[0]) != 0) {
+                    k = (p2[1] - p1[1]) / (p2[0] - p1[0]);
+                    c = y0 - p1[1] - (k * (x0 - p1[0]));
+                    d = y1 - p1[1] - (k * (x1 - p1[0]));
                 } else {
                     c = x0 - p1[0];
                     d = x1 - p1[0];
                 }
-                if (a*b<0 && c*d<0) {
+
+                if (((a * b) < 0) && ((c * d) < 0)) {
                     cross = true;
                     break;
                 }
             } //for j.
-        }//for i.
+        } //for i.
+
         if (cross) {
             Token transmitPower = properties.get("power");
 
             // Create a record token with the receive power.
-            String[] names = {"power"};
-            Token[] values = {new DoubleToken(0.0)};
+            String[] names = { "power" };
+            Token[] values = { new DoubleToken(0.0) };
             RecordToken newPower = new RecordToken(names, values);
 
             // Merge the receive power into the merged token.
@@ -273,10 +293,12 @@ public class TerrainProperty extends TypedAtomicActor
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
         if (_channel != null) {
             _channel.unregisterPropertyTransformer(this, null);
         }
     }
+
     /** Return the location of the given WirelessIOPort.
      *  @param port A port with a location.
      *  @return The location of the port.
@@ -284,17 +306,17 @@ public class TerrainProperty extends TypedAtomicActor
      *   be found.
      */
     private double[] _locationOf(WirelessIOPort port)
-            throws IllegalActionException {
-        Entity container = (Entity)port.getContainer();
+        throws IllegalActionException {
+        Entity container = (Entity) port.getContainer();
         Locatable location = null;
-        location = (Locatable)container.getAttribute(
-                LOCATION_ATTRIBUTE_NAME, Locatable.class);
+        location = (Locatable) container.getAttribute(LOCATION_ATTRIBUTE_NAME,
+                Locatable.class);
+
         if (location == null) {
             throw new IllegalActionException(
-                    "Cannot determine location for port "
-                    + port.getName()
-                    + ".");
+                "Cannot determine location for port " + port.getName() + ".");
         }
+
         return location.getLocation();
     }
 
@@ -313,28 +335,35 @@ public class TerrainProperty extends TypedAtomicActor
             if (_xPoints[j] > xMax) {
                 xMax = _xPoints[j];
             }
+
             if (_xPoints[j] < xMin) {
                 xMin = _xPoints[j];
             }
+
             if (_yPoints[j] > yMax) {
                 yMax = _yPoints[j];
             }
+
             if (_yPoints[j] < yMin) {
                 yMin = _yPoints[j];
             }
         }
-        center[0] = (xMin - xMax)/2;
-        center[1] = (yMin - yMax)/2;
+
+        center[0] = (xMin - xMax) / 2;
+        center[1] = (yMin - yMax) / 2;
 
         return center;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private WirelessChannel _channel;
-    private int[] _xPoints, _yPoints;
+    private int[] _xPoints;
+    private int[] _yPoints;
     private EditorIcon _icon;
     private FilledShapeAttribute _terrain;
     private int _numberOfPoints;
+
     // this variable is merely used to set the ShapeAttribute
     // with different width, so that is can update the shape.
     private int _number;
@@ -342,8 +371,8 @@ public class TerrainProperty extends TypedAtomicActor
     //the location of this actor. This is used as (0, 0) when
     //create the shape.
     private double[] _offset;
-
     private String _channelName;
+
     // Name of the location attribute.
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Uniform
+
 /**
    Produce a random sequence with a uniform distribution.  On each iteration,
    a new random number is produced.  The output port is of type DoubleToken.
@@ -51,9 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class Uniform extends RandomSource {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -63,7 +62,7 @@ public class Uniform extends RandomSource {
      *   actor with this name.
      */
     public Uniform(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -106,22 +105,21 @@ public class Uniform extends RandomSource {
      *  @return Whatever the superclass returns (probably true).
      */
     public boolean prefire() throws IllegalActionException {
-        double lowerValue = ((DoubleToken)
-                (lowerBound.getToken())).doubleValue();
-        double upperValue = ((DoubleToken)
-                (upperBound.getToken())).doubleValue();
+        double lowerValue = ((DoubleToken) (lowerBound.getToken())).doubleValue();
+        double upperValue = ((DoubleToken) (upperBound.getToken())).doubleValue();
+
         if (lowerValue > upperValue) {
             throw new IllegalActionException(this,
-                    "Invalid bounds: lowerBound is greater than upperBound.");
+                "Invalid bounds: lowerBound is greater than upperBound.");
         }
+
         double rawNum = _random.nextDouble();
-        _current = rawNum*(upperValue - lowerValue) + lowerValue;
+        _current = (rawNum * (upperValue - lowerValue)) + lowerValue;
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The random number for the current iteration.
     private double _current;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.demo.Butterfly;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -44,6 +43,7 @@ import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////
 //// Butterfly
+
 /**
    This class defines a Ptolemy II model that traces an elaborate curve
    called the butterfly curve.
@@ -58,9 +58,8 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class Butterfly extends TypedCompositeActor {
-
     public Butterfly(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         setName("Butterfly");
 
@@ -79,12 +78,12 @@ public class Butterfly extends TypedCompositeActor {
         TypedIOPort expInput = new TypedIOPort(expression, "ramp");
         expInput.setInput(true);
         expression.expression.setExpression("-2.0*cos(4.0*ramp) + "
-                + "exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)");
+            + "exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)");
 
         // Next, a conversion to use the ramp as an angle specifier,
         // and the output of the expression as the vector length.
-        PolarToCartesian polarToCartesian =
-            new PolarToCartesian(this, "Polar to Cartesian");
+        PolarToCartesian polarToCartesian = new PolarToCartesian(this,
+                "Polar to Cartesian");
 
         // Finally, the plotter.
         XYPlotter xyPlotter = new XYPlotter(this, "xyPlotter");

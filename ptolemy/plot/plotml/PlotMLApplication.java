@@ -44,6 +44,7 @@ import ptolemy.plot.PlotBox;
 
 import com.microstar.xml.XmlException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLApplication
 
@@ -65,7 +66,6 @@ import com.microstar.xml.XmlException;
    @see Plot
 */
 public class PlotMLApplication extends PlotApplication {
-
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
      *  @exception Exception If command line arguments have problems.
@@ -78,7 +78,7 @@ public class PlotMLApplication extends PlotApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotMLApplication(String args[]) throws Exception {
+    public PlotMLApplication(String[] args) throws Exception {
         this(new Plot(), args);
     }
 
@@ -88,7 +88,8 @@ public class PlotMLApplication extends PlotApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotMLApplication(PlotBox plot, String args[]) throws Exception {
+    public PlotMLApplication(PlotBox plot, String[] args)
+        throws Exception {
         super(plot, args);
     }
 
@@ -97,7 +98,7 @@ public class PlotMLApplication extends PlotApplication {
 
     /** Create a new plot window and map it to the screen.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             new PlotMLApplication(new Plot(), args);
         } catch (Exception ex) {
@@ -109,40 +110,35 @@ public class PlotMLApplication extends PlotApplication {
         if (_test) {
             try {
                 Thread.sleep(2000);
+            } catch (InterruptedException e) {
             }
-            catch (InterruptedException e) {
-            }
+
             System.exit(0);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "PlotMLApplication class\n" +
-                "By: Edward A. Lee " +
-                "and Christopher Hylands\n" +
-                "Version " + PlotBox.PTPLOT_RELEASE +
-                ", Build: $Id$\n\n"+
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
-                "Copyright (c) 1997-2005, " +
-                "The Regents of the University of California.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "PlotMLApplication class\n" + "By: Edward A. Lee "
+            + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
+            + ", Build: $Id$\n\n"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+            + "Copyright (c) 1997-2005, "
+            + "The Regents of the University of California.",
+            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-                "PlotMLApplication is a standalone plot " +
-                " application.\n" +
-                "  File formats understood: PlotML and Ptplot ASCII.\n" +
-                "  Left mouse button: Zooming.\n\n" +
-                _usage(),
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "PlotMLApplication is a standalone plot " + " application.\n"
+            + "  File formats understood: PlotML and Ptplot ASCII.\n"
+            + "  Left mouse button: Zooming.\n\n" + _usage(),
+            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether
@@ -157,30 +153,34 @@ public class PlotMLApplication extends PlotApplication {
         // Create a buffered input stream so that mark and reset
         // are supported.
         BufferedInputStream bin = new BufferedInputStream(in);
+
         // Peek at the file...
         bin.mark(9);
+
         // Read 8 bytes in case 16-bit encoding is being used.
         byte[] peek = new byte[8];
         bin.read(peek);
         bin.reset();
+
         if ((new String(peek)).startsWith("<?xm")) {
             // file is an XML file.
             PlotBoxMLParser parser = _newParser();
+
             try {
                 parser.parse(base, bin);
             } catch (Exception ex) {
                 String msg;
+
                 if (ex instanceof XmlException) {
-                    XmlException xmlex = (XmlException)ex;
-                    msg =
-                        "PlotMLApplication: failed to parse PlotML data:\n"
-                        + "line: " + xmlex.getLine()
-                        + ", column: " + xmlex.getColumn()
-                        + "\nIn entity: " + xmlex.getSystemId()
-                        + "\n";
+                    XmlException xmlex = (XmlException) ex;
+                    msg = "PlotMLApplication: failed to parse PlotML data:\n"
+                        + "line: " + xmlex.getLine() + ", column: "
+                        + xmlex.getColumn() + "\nIn entity: "
+                        + xmlex.getSystemId() + "\n";
                 } else {
                     msg = "PlotMLApplication: failed to parse PlotML data:\n";
                 }
+
                 System.err.println(msg + ex.toString());
                 ex.printStackTrace();
             }
@@ -195,7 +195,7 @@ public class PlotMLApplication extends PlotApplication {
      */
     protected PlotBoxMLParser _newParser() {
         if (plot instanceof Plot) {
-            return new PlotMLParser((Plot)plot);
+            return new PlotMLParser((Plot) plot);
         } else {
             return new PlotBoxMLParser(plot);
         }

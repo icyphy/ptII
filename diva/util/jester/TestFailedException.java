@@ -25,6 +25,7 @@
 */
 package diva.util.jester;
 
+
 /**
  * An exception that is thrown when a test produces an
  * incorrect result.
@@ -48,7 +49,7 @@ public class TestFailedException extends Exception {
     /**
      * Create a new test exception with a detail message
      */
-    public TestFailedException (String message) {
+    public TestFailedException(String message) {
         super(message);
     }
 
@@ -56,7 +57,7 @@ public class TestFailedException extends Exception {
      * Create a new test exception with a detail message
      * and one additional object.
      */
-    public TestFailedException (String message, Object a) {
+    public TestFailedException(String message, Object a) {
         super(message);
         first = a;
     }
@@ -65,11 +66,9 @@ public class TestFailedException extends Exception {
      * Create a new test exception with a detail message
      * and two additional objects.
      */
-    public TestFailedException (String message, Object a, Object b) {
+    public TestFailedException(String message, Object a, Object b) {
         super(message);
         first = a;
         second = b;
     }
 }
-
-

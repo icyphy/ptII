@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -59,6 +58,7 @@ import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.TypedDecorator;
 import diva.gui.BasicFrame;
+
 
 /** This tutorial shows how to use "arc" connectors.
  *
@@ -123,7 +123,6 @@ import diva.gui.BasicFrame;
  * @author John Reekie
  * @version $Id$ */
 public class ArcTutorial {
-
     // The JCanvas
     private JCanvas canvas;
 
@@ -153,12 +152,12 @@ public class ArcTutorial {
 
     /** Create a JCanvas and put it into a window.
      */
-    public ArcTutorial () {
+    public ArcTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         BasicFrame frame = new BasicFrame("Connector tutorial", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
 
         controller = new BasicController(graphicsPane);
@@ -167,12 +166,12 @@ public class ArcTutorial {
     /** Create the figures that we will draw connectors between.
      * This is fairly uninteresting.
      */
-    public void createFigures () {
+    public void createFigures() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
-        figureA = new BasicRectangle(10.0,10.0,100.0,50.0,Color.red);
-        figureB = new BasicEllipse(100.0,100.0,100.0,100.0,Color.green);
-        figureC = new BasicEllipse(300.0,100.0,100.0,100.0,Color.blue);
+        figureA = new BasicRectangle(10.0, 10.0, 100.0, 50.0, Color.red);
+        figureB = new BasicEllipse(100.0, 100.0, 100.0, 100.0, Color.green);
+        figureC = new BasicEllipse(300.0, 100.0, 100.0, 100.0, Color.blue);
 
         layer.add(figureA);
         layer.add(figureB);
@@ -184,7 +183,7 @@ public class ArcTutorial {
      * create one StraightConnector with a circle and an arrowhead
      * on it, and then an ArcConnector.
      */
-    public void createConnectors () {
+    public void createConnectors() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Create the target that finds sites on the figures
@@ -213,6 +212,7 @@ public class ArcTutorial {
         a = target.getTailSite(figureB, 0.0, 0.0);
         b = target.getHeadSite(figureC, 0.0, 0.0);
         connectorC = new ArcConnector(a, b);
+
         // Swap the direction
         connectorC.setAngle(-connectorC.getAngle());
         layer.add(connectorC);
@@ -224,6 +224,7 @@ public class ArcTutorial {
         b = target.getHeadSite(figureB, 0.0, 0.0);
         connectorD = new ArcConnector(a, b);
         connectorD.setSelfLoop(true);
+
         // Swap the direction
         // connectorD.setAngle(-connectorD.getAngle());
         // connectorD.setAngle(-0.1);
@@ -239,7 +240,7 @@ public class ArcTutorial {
      * interactor and just call the connectors to re-route whenever
      * the nmouse moves.
      */
-    public void setupInteraction () {
+    public void setupInteraction() {
         // Because this pane has connectors on it, we make the pick
         // halo larger than the default so we can click-select connectors
         FigureLayer layer = graphicsPane.getForegroundLayer();
@@ -254,8 +255,8 @@ public class ArcTutorial {
         // Add a layer listener to the drag interactor.
         // The listener just tells both connectors to reroute themselves.
         DragInteractor i = controller.getDragInteractor();
-        i.addLayerListener(new LayerAdapter () {
-                public void mouseDragged (LayerEvent e) {
+        i.addLayerListener(new LayerAdapter() {
+                public void mouseDragged(LayerEvent e) {
                     connectorA.reroute();
                     connectorB.reroute();
                     connectorC.reroute();
@@ -279,8 +280,8 @@ public class ArcTutorial {
 
         // Make resizing reroute the connectors too
         DragInteractor j = figureManipulator.getHandleInteractor();
-        j.addLayerListener(new LayerAdapter () {
-                public void mouseDragged (LayerEvent e) {
+        j.addLayerListener(new LayerAdapter() {
+                public void mouseDragged(LayerEvent e) {
                     connectorA.reroute();
                     connectorB.reroute();
                     connectorC.reroute();
@@ -314,7 +315,7 @@ public class ArcTutorial {
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     ArcTutorial ex = new ArcTutorial();
@@ -346,7 +347,3 @@ public class ArcTutorial {
         }
     }
 }
-
-
-
-

@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red
 @AcceptedRating Red (cxh)
 */
-
 package ptolemy.domains.ct.demo.Corba;
 
 import ptolemy.actor.IORelation;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NonlinearClient
+
 /**
    The square wave response of a second order CT system with a CORBA
    actor in the feedback. . This simple
@@ -60,24 +61,22 @@ import ptolemy.plot.Plot;
    @version $Id$
 */
 public class NonlinearClient extends TypedCompositeActor {
-
     public NonlinearClient(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        setName( "NonlinearSystem");
+        setName("NonlinearSystem");
 
         ORBInitProperties = new Parameter(this, "ORBInitProperties",
                 new StringToken("-ORBInitialPort 1050"));
         remoteActorName = new Parameter(this, "remoteActorName",
                 new StringToken("Nonlinear"));
-        stopTime = new Parameter(this, "stopTime",
-                new DoubleToken(6.0));
+        stopTime = new Parameter(this, "stopTime", new DoubleToken(6.0));
 
-        CTMultiSolverDirector director =
-            new CTMultiSolverDirector(this, "CTMultiSolverDirector");
+        CTMultiSolverDirector director = new CTMultiSolverDirector(this,
+                "CTMultiSolverDirector");
         setDirector(director);
         director.stopTime.setExpression("stopTime");
+
         //director.addDebugListener(new StreamListener());
         Clock sqwv = new Clock(this, "SQWV");
         AddSubtract add1 = new AddSubtract(this, "Add1");
@@ -86,8 +85,8 @@ public class NonlinearClient extends TypedCompositeActor {
         Scale gain1 = new Scale(this, "Gain1");
         Scale gain2 = new Scale(this, "Gain2");
         Scale gain3 = new Scale(this, "Gain3");
-        CorbaActorClient client =
-            new CorbaActorClient(this, "NonliearClient");
+        CorbaActorClient client = new CorbaActorClient(this, "NonliearClient");
+
         //client.addDebugListener(new StreamListener());
         client.ORBInitProperties.setExpression("ORBInitProperties");
         client.remoteActorName.setExpression("remoteActorName");
@@ -100,14 +99,16 @@ public class NonlinearClient extends TypedCompositeActor {
         myplot.plot.setXRange(0.0, 6.0);
         myplot.plot.setYRange(-2.0, 2.0);
         myplot.plot.setSize(400, 400);
-        myplot.plot.addLegend(0,"response");
+        myplot.plot.addLegend(0, "response");
 
-        IORelation r1 = (IORelation)connect(sqwv.output, gain1.input, "R1");
+        IORelation r1 = (IORelation) connect(sqwv.output, gain1.input, "R1");
         connect(gain1.output, add1.plus, "R2");
         connect(add1.output, intgl1.input, "R3");
-        IORelation r4 = (IORelation)connect(intgl1.output, intgl2.input, "R4");
+
+        IORelation r4 = (IORelation) connect(intgl1.output, intgl2.input, "R4");
         connect(intgl2.output, cin, "R5");
-        IORelation r5a = (IORelation)connect(cout, myplot.input, "R5a");
+
+        IORelation r5a = (IORelation) connect(cout, myplot.input, "R5a");
         gain2.input.link(r4);
         gain3.input.link(r5a);
         connect(gain2.output, add1.plus, "R6");
@@ -129,16 +130,11 @@ public class NonlinearClient extends TypedCompositeActor {
         gain2.factor.setToken(new DoubleToken(-10.0));
 
         gain3.factor.setToken(new DoubleToken(-1000.0));
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                           parameters                    ////
-
     public Parameter ORBInitProperties;
-
     public Parameter remoteActorName;
-
     public Parameter stopTime;
-
 }

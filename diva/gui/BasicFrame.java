@@ -34,6 +34,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+
 /**
  * BasicFrame is a very simple application context that is used
  * to display tutorial examples.  It contains a menubar with a quit
@@ -46,7 +47,6 @@ import javax.swing.JMenuItem;
  * @version $Id$
  */
 public class BasicFrame extends ApplicationContext {
-
     /** The component displaying the content
      */
     private transient JComponent _component = null;
@@ -64,7 +64,9 @@ public class BasicFrame extends ApplicationContext {
     public BasicFrame(String title, boolean show_and_size_window) {
         this(title, null, show_and_size_window);
     }
-    public BasicFrame(String title, JComponent component, boolean show_and_size_window) {
+
+    public BasicFrame(String title, JComponent component,
+        boolean show_and_size_window) {
         super();
 
         setTitle(title);
@@ -75,11 +77,12 @@ public class BasicFrame extends ApplicationContext {
         menuFile.setMnemonic('F');
 
         // NOT a default action.
-        Action action = new AbstractAction ("Exit") {
+        Action action = new AbstractAction("Exit") {
                 public void actionPerformed(ActionEvent e) {
                     System.exit(0);
                 }
             };
+
         setExitAction(action);
 
         JMenuItem itemQuit = menuFile.add(action);
@@ -92,8 +95,9 @@ public class BasicFrame extends ApplicationContext {
         if (component != null) {
             setMainComponent(component);
         }
+
         if (show_and_size_window) {
-            setSize(600,400);
+            setSize(600, 400);
             setVisible(true);
         }
     }
@@ -113,11 +117,12 @@ public class BasicFrame extends ApplicationContext {
         menuFile.setMnemonic('F');
 
         // NOT a default action.
-        Action action = new AbstractAction ("Exit") {
+        Action action = new AbstractAction("Exit") {
                 public void actionPerformed(ActionEvent e) {
                     System.exit(0);
                 }
             };
+
         setExitAction(action);
 
         JMenuItem itemQuit = menuFile.add(action);
@@ -130,22 +135,23 @@ public class BasicFrame extends ApplicationContext {
         if (component != null) {
             setMainComponent(component);
         }
-        setSize(600,400);
+
+        setSize(600, 400);
         setVisible(true);
     }
 
     /** Set the main component. If there already is one,
      * it is removed first.
      */
-    public void setMainComponent (JComponent component) {
+    public void setMainComponent(JComponent component) {
         if (_component != null) {
             getContentPane().remove(_component);
         }
+
         if (component != null) {
             getContentPane().add("Center", component);
         }
+
         this._component = component;
     }
 }
-
-

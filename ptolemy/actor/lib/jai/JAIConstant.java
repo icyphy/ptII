@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIConstant
+
 /**
 Produce an image with a uniform color.
 
@@ -59,9 +60,7 @@ Produce an image with a uniform color.
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIConstant extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +70,7 @@ public class JAIConstant extends Source {
      *   actor with this name.
      */
     public JAIConstant(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         width = new Parameter(this, "width", new IntToken(0));
@@ -109,22 +108,23 @@ public class JAIConstant extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == bandValues) {
-            values = ((ArrayToken)bandValues.getToken()).arrayValue();
+            values = ((ArrayToken) bandValues.getToken()).arrayValue();
+
             //_bandValues = new Double[values.length];
             //for (int i = 0; i < values.length; i++) {
             //    _bandValues[i] =
             //        new Double(((DoubleToken)values[i]).doubleValue());
             //}
         } else if (attribute == height) {
-            _height = ((IntToken)height.getToken()).intValue();
+            _height = ((IntToken) height.getToken()).intValue();
         } else if (attribute == width) {
-            _width = ((IntToken)width.getToken()).intValue();
+            _width = ((IntToken) width.getToken()).intValue();
         } else if (attribute == dataFormat) {
             String dataFormatName = dataFormat.getExpression();
+
             if (dataFormatName.equals("byte")) {
                 _dataFormat = _BYTE;
             } else if (dataFormatName.equals("double")) {
@@ -137,7 +137,7 @@ public class JAIConstant extends Source {
                 _dataFormat = _SHORT;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized data type: " + dataFormatName);
+                    "Unrecognized data type: " + dataFormatName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -146,61 +146,70 @@ public class JAIConstant extends Source {
 
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
-        parameters.add((float)_width);
-        parameters.add((float)_height);
+        parameters.add((float) _width);
+        parameters.add((float) _height);
+
         //parameters.add(_bandValues);
         if (_dataFormat == _BYTE) {
             Byte[] byteValues = new Byte[values.length];
+
             for (int i = 0; i < values.length; i++) {
-                byteValues[i] =
-                    new Byte((byte)(((ScalarToken)values[i]).intValue()));
+                byteValues[i] = new Byte((byte) (((ScalarToken) values[i])
+                        .intValue()));
             }
+
             parameters.add(byteValues);
         } else if (_dataFormat == _DOUBLE) {
             Double[] doubleValues = new Double[values.length];
+
             for (int i = 0; i < values.length; i++) {
-                doubleValues[i] =
-                    new Double(((ScalarToken)values[i]).doubleValue());
+                doubleValues[i] = new Double(((ScalarToken) values[i])
+                        .doubleValue());
             }
+
             parameters.add(doubleValues);
         } else if (_dataFormat == _FLOAT) {
             Float[] floatValues = new Float[values.length];
+
             for (int i = 0; i < values.length; i++) {
-                floatValues[i] =
-                    new Float((float)(((ScalarToken)values[i]).doubleValue()));
+                floatValues[i] = new Float((float) (((ScalarToken) values[i])
+                        .doubleValue()));
             }
+
             parameters.add(floatValues);
         } else if (_dataFormat == _INT) {
             Integer[] intValues = new Integer[values.length];
+
             for (int i = 0; i < values.length; i++) {
-                intValues[i] =
-                    new Integer(((ScalarToken)values[i]).intValue());
+                intValues[i] = new Integer(((ScalarToken) values[i]).intValue());
             }
+
             parameters.add(intValues);
         } else if (_dataFormat == _SHORT) {
             Short[] shortValues = new Short[values.length];
+
             for (int i = 0; i < values.length; i++) {
-                shortValues[i] =
-                    new Short((short)(((ScalarToken)values[i]).intValue()));
+                shortValues[i] = new Short((short) (((ScalarToken) values[i])
+                        .intValue()));
             }
+
             parameters.add(shortValues);
         }
+
         RenderedOp newImage = JAI.create("constant", parameters);
         output.send(0, new JAIImageToken(newImage));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private IntToken _zero = new IntToken(0);
-    private IntToken _defaultValues[] = {_zero};
-    private Double _bandValues[];
+    private IntToken[] _defaultValues = { _zero };
+    private Double[] _bandValues;
     private int _height;
     private int _width;
-
-    private Token values[];
-
+    private Token[] values;
     private int _dataFormat;
 
     // Constants used for more efficient execution.

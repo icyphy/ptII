@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DebugListener
+
 /**
    Interface for listeners that receive debug messages.
 
@@ -42,7 +43,6 @@ package ptolemy.kernel.util;
 
 */
 public interface DebugListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.conversions;
 
 import java.util.Set;
@@ -44,8 +43,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionToToken
+
 /**
    This actor reads a string expression from the input port and outputs
    the token resulting from the evaluation.  The type of the output port
@@ -60,7 +61,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (liuj)
 */
 public class ExpressionToToken extends Converter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,7 +70,7 @@ public class ExpressionToToken extends Converter {
      *   actor with this name.
      */
     public ExpressionToToken(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.STRING);
         output.setTypeEquals(BaseType.GENERAL);
@@ -85,22 +85,25 @@ public class ExpressionToToken extends Converter {
      *   if the expression read from the input cannot be parsed.
      */
     public void fire() throws IllegalActionException {
-        String string = ((StringToken)input.get(0)).stringValue();
+        String string = ((StringToken) input.get(0)).stringValue();
         Token result;
+
         try {
             if (_parser == null) {
                 _parser = new PtParser();
             }
+
             ASTPtRootNode parseTree = _parser.generateParseTree(string);
 
             if (_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
+
             if (_scope == null) {
                 _scope = new ExpressionScope();
             }
-            result = _parseTreeEvaluator.evaluateParseTree(
-                    parseTree, _scope);
+
+            result = _parseTreeEvaluator.evaluateParseTree(parseTree, _scope);
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
             throw new IllegalActionException(this, ex, "Expression invalid.");
@@ -108,9 +111,9 @@ public class ExpressionToToken extends Converter {
 
         if (result == null) {
             throw new IllegalActionException(this,
-                    "Expression yields a null result: " +
-                    string);
+                "Expression yields a null result: " + string);
         }
+
         output.broadcast(result);
     }
 
@@ -135,19 +138,19 @@ public class ExpressionToToken extends Converter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class ExpressionScope extends ModelScope {
-
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
          *  @return The attribute with the specified name in the scope.
          */
         public Token get(String name) throws IllegalActionException {
-            Variable result = getScopedVariable(null,
-                    ExpressionToToken.this, name);
+            Variable result = getScopedVariable(null, ExpressionToToken.this,
+                    name);
+
             if (result != null) {
                 return result.getToken();
             }
+
             return null;
         }
 
@@ -157,11 +160,13 @@ public class ExpressionToToken extends Converter {
          *  @return The attribute with the specified name in the scope.
          */
         public Type getType(String name) throws IllegalActionException {
-            Variable result =
-                getScopedVariable(null, ExpressionToToken.this, name);
+            Variable result = getScopedVariable(null, ExpressionToToken.this,
+                    name);
+
             if (result != null) {
-                return (Type)result.getTypeTerm().getValue();
+                return (Type) result.getTypeTerm().getValue();
             }
+
             return null;
         }
 
@@ -174,12 +179,14 @@ public class ExpressionToToken extends Converter {
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            Variable result =
-                getScopedVariable(null, ExpressionToToken.this, name);
+            throws IllegalActionException {
+            Variable result = getScopedVariable(null, ExpressionToToken.this,
+                    name);
+
             if (result != null) {
                 return result.getTypeTerm();
             }
+
             return null;
         }
 
@@ -193,7 +200,6 @@ public class ExpressionToToken extends Converter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private PtParser _parser = null;
     private ParseTreeEvaluator _parseTreeEvaluator = null;
     private ParserScope _scope = null;

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel.solver;
 
 import ptolemy.data.DoubleToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BackwardEulerSolver
+
 /**
    The Backward Euler ODE solver. For an ODE
    <pre>
@@ -64,7 +65,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public class BackwardEulerSolver extends FixedStepSolver {
-
     /** Construct a solver in the default workspace with the
      *  name "CT_Backward_Euler_Solver".
      *  The solver is added to the list of objects in
@@ -84,6 +84,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
      */
     public BackwardEulerSolver(Workspace workspace) {
         super(workspace);
+
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
@@ -102,27 +103,34 @@ public class BackwardEulerSolver extends FixedStepSolver {
      *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
-        CTDirector director = (CTDirector)getContainer();
+        throws IllegalActionException {
+        CTDirector director = (CTDirector) getContainer();
         double tentativeState = integrator.getState();
+
         if (_getRoundCount() == 0) {
             // During the first round, use the current derivative to predict
             // the states at currentModelTime + currentStepSize. The predicted
             // states are the initial guesses for fixed-point iteration.
             double f = integrator.getDerivative();
-            tentativeState = tentativeState + f*(director.getCurrentStepSize());
+            tentativeState = tentativeState
+                + (f * (director.getCurrentStepSize()));
+
             // Set converged to false such that the integrator will be refired
             // again to check convergence of resolved states.
             _voteForConverged(false);
         } else {
             // Not the first round, keep iterating until resolved states
             // converge.
-            double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-            tentativeState = tentativeState + f*(director.getCurrentStepSize());
-            double error =
-                Math.abs(tentativeState-integrator.getTentativeState());
+            double f = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            tentativeState = tentativeState
+                + (f * (director.getCurrentStepSize()));
+
+            double error = Math.abs(tentativeState
+                    - integrator.getTentativeState());
+
             if (error < director.getValueResolution()) {
                 integrator.setTentativeDerivative(f);
+
                 // Note that the FixedStepSolver sets converged to true for
                 // each round by default. Therefore, we do not need to set it
                 // to true again.
@@ -130,10 +138,10 @@ public class BackwardEulerSolver extends FixedStepSolver {
                 _voteForConverged(false);
             }
         }
+
         integrator.setTentativeState(tentativeState);
         integrator.output.broadcast(new DoubleToken(tentativeState));
     }
-
 
     /** Return true if the resolved states have converged. Return false if
      *  states have not converged but the number of iterations reaches the
@@ -142,11 +150,13 @@ public class BackwardEulerSolver extends FixedStepSolver {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        CTDirector director = (CTDirector)getContainer();
+        CTDirector director = (CTDirector) getContainer();
+
         if (_getRoundCount() > director.getMaxIterations()) {
             _resetRoundCount();
             return false;
         }
+
         return super.resolveStates();
     }
 

@@ -24,10 +24,10 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.geom.Point2D;
+
 
 /**
  * @deprecated This is complete unneeded. Do not use.
@@ -40,7 +40,6 @@ import java.awt.geom.Point2D;
  * @Pt.AcceptedRating  Red
  */
 public class SiteDecorator implements Site {
-
     private Site _site;
 
     /** Create a new decorator on the given site.
@@ -53,7 +52,7 @@ public class SiteDecorator implements Site {
      * will return a valid Figure, but clients must be aware that
      * certain types of site may return null.
      */
-    public Figure getFigure () {
+    public Figure getFigure() {
         return _site.getFigure();
     }
 
@@ -68,14 +67,14 @@ public class SiteDecorator implements Site {
      * between zero and 2pi. The direction is "out" of the site.
      * The result is meaningful only if hasNormal() returns true.
      */
-    public double getNormal () {
+    public double getNormal() {
         return _site.getNormal();
     }
 
     /** Get the point location of the site, in the enclosing
      * transform context with default normal.
      */
-    public Point2D getPoint () {
+    public Point2D getPoint() {
         return _site.getPoint();
     }
 
@@ -84,14 +83,14 @@ public class SiteDecorator implements Site {
      * The given context must be an enclosing
      * context of the site.
      */
-    public Point2D getPoint (TransformContext tc) {
+    public Point2D getPoint(TransformContext tc) {
         return _site.getPoint(tc);
     }
 
     /** Get the point location of the site, in the enclosing
      * transform context with the given normal.
      */
-    public Point2D getPoint (double normal) {
+    public Point2D getPoint(double normal) {
         return _site.getPoint(normal);
     }
 
@@ -100,27 +99,27 @@ public class SiteDecorator implements Site {
      * The given context must be an enclosing
      * context of the site.
      */
-    public Point2D getPoint (TransformContext tc, double normal) {
+    public Point2D getPoint(TransformContext tc, double normal) {
         return _site.getPoint(tc, normal);
     }
 
     /** Get the enclosing transform context of this site.
      */
-    public TransformContext getTransformContext () {
+    public TransformContext getTransformContext() {
         return _site.getTransformContext();
     }
 
     /** Get the x-coordinate of the site, in the enclosing
      * transform context.
      */
-    public double getX () {
+    public double getX() {
         return _site.getX();
     }
 
     /** Get the y-coordinate of the site, in the enclosing
      * transform context.
      */
-    public double getY () {
+    public double getY() {
         return _site.getY();
     }
 
@@ -130,7 +129,7 @@ public class SiteDecorator implements Site {
      * a shape will return true to this method, and sites
      * in the center of an object will return false.
      */
-    public boolean hasNormal () {
+    public boolean hasNormal() {
         return _site.hasNormal();
     }
 
@@ -139,7 +138,7 @@ public class SiteDecorator implements Site {
      * NORTH, SOUTH, EAST, or WEST, defined in
      * <b>javax.swing.SwingConstants</b>
      */
-    public boolean isNormal (int direction) {
+    public boolean isNormal(int direction) {
         return _site.isNormal(direction);
     }
 
@@ -150,7 +149,7 @@ public class SiteDecorator implements Site {
      * its position. For example, a site on the perimeter of a
      * figure may move to a different position.
      */
-    public void setNormal (double normal) {
+    public void setNormal(double normal) {
         _site.setNormal(normal);
     }
 
@@ -162,9 +161,7 @@ public class SiteDecorator implements Site {
      * it part of the distance. Clients are expected to check the
      * new location of the site.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         _site.translate(x, y);
     }
 }
-
-

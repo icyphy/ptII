@@ -26,13 +26,15 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util.test;
 
 import ptolemy.actor.util.CQComparator;
+import ptolemy.actor.util.CalendarQueue;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleCQComparator
+
 /**
    This class implements the CQComparator interface. It compares instances
    of Double. Therefore, all arguments passed to its methods have to be of
@@ -48,9 +50,7 @@ import ptolemy.actor.util.CQComparator;
    @see CQComparator
    @see CalendarQueue
 */
-
 public class DoubleCQComparator implements CQComparator {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -67,13 +67,12 @@ public class DoubleCQComparator implements CQComparator {
      *   of Double.
      */
     public int compare(Object object1, Object object2) {
-
         Double a = (Double) object1;
         Double b = (Double) object2;
 
-        if ( a.doubleValue() < b.doubleValue() )  {
+        if (a.doubleValue() < b.doubleValue()) {
             return -1;
-        } else if ( a.doubleValue() > b.doubleValue() ) {
+        } else if (a.doubleValue() > b.doubleValue()) {
             return 1;
         } else {
             return 0;
@@ -98,9 +97,8 @@ public class DoubleCQComparator implements CQComparator {
      *   Double.
      */
     public long getVirtualBinNumber(Object entry) {
-        return (long)((((Double)entry).doubleValue()
-                              - _zeroReference.doubleValue())/
-                _binWidth.doubleValue());
+        return (long) ((((Double) entry).doubleValue()
+        - _zeroReference.doubleValue()) / _binWidth.doubleValue());
     }
 
     /** Given an array of Double objects, find the appropriate bin
@@ -115,7 +113,7 @@ public class DoubleCQComparator implements CQComparator {
      *   an instance of Double.
      */
     public void setBinWidth(Object[] entryArray) {
-        if ( entryArray == null ) {
+        if (entryArray == null) {
             // Reset to default.
             _binWidth = new Double(1.0);
             return;
@@ -124,25 +122,31 @@ public class DoubleCQComparator implements CQComparator {
         double[] diff = new double[entryArray.length - 1];
 
         double average = 0;
+
         for (int i = 1; i < entryArray.length; ++i) {
-            diff[i-1] = ((Double)entryArray[i]).doubleValue() -
-                ((Double)entryArray[i-1]).doubleValue();
-            average = average + diff[i-1];
+            diff[i - 1] = ((Double) entryArray[i]).doubleValue()
+                - ((Double) entryArray[i - 1]).doubleValue();
+            average = average + diff[i - 1];
         }
+
         average = average / diff.length;
+
         double effAverage = 0;
         int nEffSamples = 0;
+
         for (int i = 1; i < entryArray.length; ++i) {
-            if ( diff[i-1] < 2*average ) {
+            if (diff[i - 1] < (2 * average)) {
                 nEffSamples++;
-                effAverage = effAverage + diff[i-1];
+                effAverage = effAverage + diff[i - 1];
             }
         }
+
         // To avoid returning NaN or 0.0 for the width, if this is
         // the result, leave the bin width unchanged.
-        if (effAverage == 0.0 || nEffSamples == 0) {
+        if ((effAverage == 0.0) || (nEffSamples == 0)) {
             return;
         }
+
         effAverage = effAverage / nEffSamples;
         _binWidth = new Double(3.0 * effAverage);
     }
@@ -158,7 +162,6 @@ public class DoubleCQComparator implements CQComparator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The bin width.
     private Double _binWidth = new Double(1.0);
 

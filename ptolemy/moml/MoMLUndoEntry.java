@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.moml;
 
 import ptolemy.kernel.undo.UndoAction;
@@ -32,8 +31,10 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MoMLUndoEntry
+
 /**
    This is an undo action on the undo/redo stack.  The undo/redo stack
    is stored in an instance of UndoInfoAttribute associated with the top-level
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class MoMLUndoEntry implements UndoAction, ChangeListener {
-
     /** Create an undo entry comprised of the specified MoML code.
      *  @param context The context in which to execute the undo.
      *  @param undoMoML The MoML specification of the undo action.
@@ -94,12 +94,14 @@ public class MoMLUndoEntry implements UndoAction, ChangeListener {
     public void execute() throws Exception {
         // Use a MoMLChangeRequest so that changes get propagated
         // as appropriate to models that defer to this.
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, _context, _undoMoML);
+        MoMLChangeRequest request = new MoMLChangeRequest(this, _context,
+                _undoMoML);
+
         // An undo entry is always undoable so that redo works.
         request.addChangeListener(this);
         request.setUndoable(true);
         request.execute();
+
         // The above call will result in a call to changeFailed()
         // if the execution fails.
         if (_exception != null) {
@@ -116,7 +118,6 @@ public class MoMLUndoEntry implements UndoAction, ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The context in which to execute the undo.
     private NamedObj _context;
 

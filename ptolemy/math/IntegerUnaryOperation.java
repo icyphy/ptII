@@ -27,7 +27,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 
@@ -41,7 +40,6 @@ package ptolemy.math;
     @Pt.AcceptedRating Red (ctsay)
 */
 public interface IntegerUnaryOperation {
-
     /** Operate on the operand, returning a value of the same type. */
     int operate(int operand);
 }

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.expr;
 
 import java.io.IOException;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Parameter
+
 /**
    Parameter extends Variable with additional support for string-valued
    variables that makes these friendlier at the user interface level.
@@ -73,9 +74,7 @@ import ptolemy.util.StringUtilities;
    @see ptolemy.data.Token
 
 */
-
 public class Parameter extends Variable {
-
     /** Construct a parameter in the default workspace with an empty
      *  string as its name. The parameter is added to the list of
      *  objects in the workspace.
@@ -84,6 +83,7 @@ public class Parameter extends Variable {
     public Parameter() {
         super();
         setVisibility(Settable.FULL);
+
         // Override the base class setting persistence to false,
         // making it once again unspecified.
         _isPersistent = null;
@@ -99,6 +99,7 @@ public class Parameter extends Variable {
     public Parameter(Workspace workspace) {
         super(workspace);
         setVisibility(Settable.FULL);
+
         // Override the base class setting persistence to false,
         // making it once again unspecified.
         _isPersistent = null;
@@ -120,9 +121,10 @@ public class Parameter extends Variable {
      *   a parameter already in the container.
      */
     public Parameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.FULL);
+
         // Override the base class setting persistence to false,
         // making it once again unspecified.
         _isPersistent = null;
@@ -147,9 +149,10 @@ public class Parameter extends Variable {
      *   an parameter already in the container.
      */
     public Parameter(NamedObj container, String name, ptolemy.data.Token token)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
         setVisibility(Settable.FULL);
+
         // Override the base class setting persistence to false,
         // making it once again unspecified.
         _isPersistent = null;
@@ -166,6 +169,7 @@ public class Parameter extends Variable {
         if (_choices == null) {
             _choices = new ArrayList();
         }
+
         _choices.add(choice);
     }
 
@@ -188,30 +192,23 @@ public class Parameter extends Variable {
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
+
         String value = getExpression();
         String valueTerm = "";
-        if (value != null && !value.equals("")) {
-            valueTerm = " value=\"" +
-                StringUtilities.escapeForXML(value) + "\"";
+
+        if ((value != null) && !value.equals("")) {
+            valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
+                + "\"";
         }
 
-        output.write(_getIndentPrefix(depth)
-                + "<"
-                + _elementName
-                + " name=\""
-                + name
-                + "\" class=\""
-                + getClassName()
-                + "\""
-                + valueTerm
-                + ">\n");
+        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
+            + name + "\" class=\"" + getClassName() + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
-        output.write(_getIndentPrefix(depth) + "</"
-                + _elementName + ">\n");
+        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
     /** Get choices.
@@ -219,10 +216,10 @@ public class Parameter extends Variable {
      *  @see #addChoice(String)
      */
     public String[] getChoices() {
-        if (_choices == null || _choices.size() == 0) {
+        if ((_choices == null) || (_choices.size() == 0)) {
             return null;
         } else {
-            return (String [])_choices.toArray(new String[_choices.size()]);
+            return (String[]) _choices.toArray(new String[_choices.size()]);
         }
     }
 
@@ -246,7 +243,6 @@ public class Parameter extends Variable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The List of choices.
     private List _choices;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -33,12 +32,14 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Switch
+
 /**
    A polymorphic switch, which routes inputs to specified output channels.
    This actor has two input ports, the <i>input</i> port for data,
@@ -64,9 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class Switch extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -77,7 +76,7 @@ public class Switch extends Transformer {
      *   an actor already in the container.
      */
     public Switch(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setMultiport(true);
@@ -86,8 +85,8 @@ public class Switch extends Transformer {
         control.setTypeEquals(BaseType.INT);
 
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal
-                = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
@@ -108,11 +107,13 @@ public class Switch extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (control.hasToken(0)) {
-            _control = ((IntToken)control.get(0)).intValue();
+            _control = ((IntToken) control.get(0)).intValue();
         }
+
         if (input.hasToken(0)) {
             Token token = input.get(0);
-            if (_control >= 0 && _control < output.getWidth()) {
+
+            if ((_control >= 0) && (_control < output.getWidth())) {
                 output.send(_control, token);
             }
         }
@@ -129,7 +130,6 @@ public class Switch extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The most recently read control token.
     private int _control = 0;
 }

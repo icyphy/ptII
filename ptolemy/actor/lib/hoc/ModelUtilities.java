@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.hoc;
-
 
 import java.net.URL;
 
@@ -43,8 +41,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ModelUtilities
+
 /**
    A collection of utilities for manipulating a Ptolemy model.
    FIXME: Currently there is only one major operation for invoke
@@ -57,7 +57,6 @@ import ptolemy.moml.MoMLParser;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ModelUtilities {
-
     /** Instances of this class cannot be created.
      */
     private ModelUtilities() {
@@ -65,6 +64,7 @@ public class ModelUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /**
      * This method takes a url specifying the model to be execute. The
      * <i>args<i> argument is a record token that will be used to set
@@ -82,22 +82,21 @@ public class ModelUtilities {
      * @exception IllegalActionException If can not parse the url
      * or failed to execute the model.
      */
-    public static synchronized RecordToken executeModel
-    (URL url, RecordToken args, String[] resultLabels)
-            throws IllegalActionException {
+    public static synchronized RecordToken executeModel(URL url,
+        RecordToken args, String[] resultLabels) throws IllegalActionException {
         if (url != null) {
             MoMLParser parser = new MoMLParser();
             NamedObj model;
+
             try {
                 model = parser.parse(null, url);
             } catch (Exception ex) {
-                throw new IllegalActionException(
-                        ex +
-                        "Failed to pass the model URL." +
-                        url.toString());
+                throw new IllegalActionException(ex
+                    + "Failed to pass the model URL." + url.toString());
             }
+
             if (model instanceof CompositeActor) {
-                return executeModel((CompositeActor)model, args, resultLabels);
+                return executeModel((CompositeActor) model, args, resultLabels);
             } else {
                 return null;
             }
@@ -122,25 +121,27 @@ public class ModelUtilities {
      * @return The execution result.
      * @exception IllegalActionException If failed to execute the model.
      */
-    public static synchronized RecordToken executeModel
-    (CompositeActor model, RecordToken args,
-            String[] resultLabels) throws IllegalActionException {
+    public static synchronized RecordToken executeModel(CompositeActor model,
+        RecordToken args, String[] resultLabels) throws IllegalActionException {
         Manager manager = model.getManager();
+
         if (manager == null) {
             //System.out.println("create manager for the model");
             manager = new Manager(model.workspace(), "Manager");
             model.setManager(manager);
         }
+
         _setAttribute(model, args);
 
         try {
             manager.execute();
         } catch (KernelException ex) {
-            throw new IllegalActionException(ex+
-                    "Execution failed.");
+            throw new IllegalActionException(ex + "Execution failed.");
         }
+
         return _getResult(model, resultLabels);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -151,23 +152,25 @@ public class ModelUtilities {
      *  @exception IllegalActionException If reading the ports or
      *   setting the parameters causes it.
      */
-    private static void _setAttribute(CompositeActor model,
-            RecordToken args) throws IllegalActionException {
+    private static void _setAttribute(CompositeActor model, RecordToken args)
+        throws IllegalActionException {
         Object[] labels = args.labelSet().toArray();
         int length = args.length();
+
         //String[] labels = new String[length];
         //Token[] values = new Token[length];
         for (int i = 0; i < length; i++) {
-            String label = (String)labels[i];
+            String label = (String) labels[i];
             Attribute attribute = model.getAttribute(label);
+
             // Use the token directly rather than a string if possible.
             if (attribute != null) {
                 Token token = args.get(label);
+
                 if (attribute instanceof Variable) {
                     ((Variable) attribute).setToken(token);
                 } else if (attribute instanceof Settable) {
-                    ((Settable) attribute).
-                        setExpression(token.toString());
+                    ((Settable) attribute).setExpression(token.toString());
                 }
             }
         }
@@ -185,16 +188,18 @@ public class ModelUtilities {
      *   setting the parameters causes it.
      */
     private static RecordToken _getResult(CompositeActor model,
-            String[] resultLabels) throws IllegalActionException {
+        String[] resultLabels) throws IllegalActionException {
         Token[] value = new Token[resultLabels.length];
+
         for (int i = 0; i < resultLabels.length; i++) {
             String label = resultLabels[i];
             Attribute attribute = model.getAttribute(label);
+
             if (attribute instanceof Variable) {
-                value[i] =((Variable) attribute).getToken();
+                value[i] = ((Variable) attribute).getToken();
             }
         }
+
         return new RecordToken(resultLabels, value);
     }
-
 }

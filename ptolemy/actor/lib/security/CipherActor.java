@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.security;
-
 
 import javax.crypto.Cipher;
 
@@ -39,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CipherActor
+
 /**
    A base class for actors that encrypt and decrypt data.
 
@@ -78,7 +78,6 @@ import ptolemy.kernel.util.Settable;
    @Pt.AcceptedRating Yellow (cxh)
 */
 abstract public class CipherActor extends CryptographyActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -88,13 +87,14 @@ abstract public class CipherActor extends CryptographyActor {
      *   actor with this name.
      */
     public CipherActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         mode = new StringParameter(this, "mode");
         mode.setVisibility(Settable.EXPERT);
         mode.setExpression("");
         mode.addChoice("");
+
         // The meaning of these is covered in the documentation of mode
         // in the ports and parameters section.
         mode.addChoice("NONE");
@@ -113,7 +113,6 @@ abstract public class CipherActor extends CryptographyActor {
         padding.addChoice("PKCS5Padding");
         padding.addChoice("SSL3Padding");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -218,13 +217,13 @@ abstract public class CipherActor extends CryptographyActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == mode) {
             _updateCipherNeeded = true;
-            _mode = ((StringToken)mode.getToken()).stringValue();
+            _mode = ((StringToken) mode.getToken()).stringValue();
         } else if (attribute == padding) {
             _updateCipherNeeded = true;
-            _padding = ((StringToken)padding.getToken()).stringValue();
+            _padding = ((StringToken) padding.getToken()).stringValue();
         } else if (attribute == algorithm) {
             _updateCipherNeeded = true;
             super.attributeChanged(attribute);
@@ -253,6 +252,7 @@ abstract public class CipherActor extends CryptographyActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // We do this in initialize so that derived classes can
         // access _cipher in their fire() methods.
         _updateCipher();
@@ -286,36 +286,33 @@ abstract public class CipherActor extends CryptographyActor {
         // Usually, this method is called from initialize().
         // This method may end up being called in fire() if
         // the user changed attributes while the model is running.
-
         if (_updateCipherNeeded) {
             try {
                 // If the mode or padding parameters are the empty
                 // string, then we use the default for the algorithm
                 // If they are not empty
-                String modeArgument = (_mode.length() > 0) ?
-                    "/" + _mode : "";
-                String paddingArgument = (_padding.length() > 0) ?
-                    "/" + _padding : "";
-                if (_mode.length() == 0
-                        && _padding.length() > 0) {
+                String modeArgument = (_mode.length() > 0) ? ("/" + _mode) : "";
+                String paddingArgument = (_padding.length() > 0)
+                    ? ("/" + _padding) : "";
+
+                if ((_mode.length() == 0) && (_padding.length() > 0)) {
                     modeArgument = "/";
                 }
 
                 if (_provider.equalsIgnoreCase("SystemDefault")) {
-                    _cipher = Cipher.getInstance(
-                            _algorithm + modeArgument + paddingArgument);
+                    _cipher = Cipher.getInstance(_algorithm + modeArgument
+                            + paddingArgument);
                 } else {
-                    _cipher = Cipher.getInstance(
-                            _algorithm + modeArgument + paddingArgument,
-                            _provider);
+                    _cipher = Cipher.getInstance(_algorithm + modeArgument
+                            + paddingArgument, _provider);
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to initialize Cipher with "
-                        + "algorithm: '"+ _algorithm
-                        + "', padding: '" + _padding
-                        + "', provider: '" + _provider + "'");
+                    "Failed to initialize Cipher with " + "algorithm: '"
+                    + _algorithm + "', padding: '" + _padding
+                    + "', provider: '" + _provider + "'");
             }
+
             _updateCipherNeeded = false;
         }
     }

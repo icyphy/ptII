@@ -24,11 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.kernel.undo;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// UndoAction
+
 /**
    This interface represents an undo or redo action that is
    maintained on an undo/redo stack, such as that maintained by
@@ -41,11 +42,9 @@ package ptolemy.kernel.undo;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (hyzheng)
 */
-public interface UndoAction  {
-
+public interface UndoAction {
     // NOTE: Except for the fact that execute() throws Exception,
     // we could have used the Java Runnable interface.
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

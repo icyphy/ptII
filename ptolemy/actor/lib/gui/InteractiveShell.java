@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import java.awt.Container;
@@ -57,8 +56,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InteractiveShell
+
 /**
    This actor creates a command shell on the screen, sending commands
    that are typed by the user to its output port, and reporting strings
@@ -83,9 +84,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-public class InteractiveShell extends TypedAtomicActor
-    implements Placeable, ShellInterpreter {
-
+public class InteractiveShell extends TypedAtomicActor implements Placeable,
+    ShellInterpreter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -95,7 +95,7 @@ public class InteractiveShell extends TypedAtomicActor
      *   actor with this name.
      */
     public InteractiveShell(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -104,27 +104,24 @@ public class InteractiveShell extends TypedAtomicActor
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
 
-        prompt = new PortParameter(this, "prompt",
-                new StringToken(">>"));
+        prompt = new PortParameter(this, "prompt", new StringToken(">>"));
+
         // Make command be a StringParameter (no surrounding double quotes).
         prompt.setTypeEquals(BaseType.STRING);
         prompt.setStringMode(true);
 
-        _windowProperties = new WindowPropertiesAttribute(
-                this, "_windowProperties");
+        _windowProperties = new WindowPropertiesAttribute(this,
+                "_windowProperties");
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-14\" y=\"-14\" "
-                + "width=\"28\" height=\"28\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"-10,-10, -5,-5, -10,0\" "
-                + "style=\"stroke:black\"/>\n"
-                + "<polyline points=\"-7,-10, -2,-5, -7,0\" "
-                + "style=\"stroke:black\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-14\" y=\"-14\" " + "width=\"28\" height=\"28\" "
+            + "style=\"fill:white\"/>\n"
+            + "<polyline points=\"-10,-10, -5,-5, -10,0\" "
+            + "style=\"stroke:black\"/>\n"
+            + "<polyline points=\"-7,-10, -2,-5, -7,0\" "
+            + "style=\"stroke:black\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -154,9 +151,8 @@ public class InteractiveShell extends TypedAtomicActor
      *  @exception CloneNotSupportedException If a derived class has an
      *   attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        InteractiveShell newObject = (InteractiveShell)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        InteractiveShell newObject = (InteractiveShell) super.clone(workspace);
         newObject.shell = null;
         newObject._container = null;
         newObject._frame = null;
@@ -172,6 +168,7 @@ public class InteractiveShell extends TypedAtomicActor
         // NOTE: This method is typically called in the swing event thread.
         // Be careful to avoid locking up the UI.
         setOutput(command);
+
         // Return null to indicate that the command evaluation is not
         // complete.  This results in disabling editing on the text
         // widget until returnResult() is called on it, which happens
@@ -189,12 +186,16 @@ public class InteractiveShell extends TypedAtomicActor
     public void fire() throws IllegalActionException {
         super.fire();
         prompt.update();
-        shell.mainPrompt = ((StringToken)prompt.getToken()).stringValue();
+        shell.mainPrompt = ((StringToken) prompt.getToken()).stringValue();
 
-        if (input.numberOfSources() > 0 && input.hasToken(0)) {
-            String value = ((StringToken)input.get(0)).stringValue();
+        if ((input.numberOfSources() > 0) && input.hasToken(0)) {
+            String value = ((StringToken) input.get(0)).stringValue();
+
             // If window has been dismissed, there is nothing more to do.
-            if (shell == null) return;
+            if (shell == null) {
+                return;
+            }
+
             if (_firstTime) {
                 _firstTime = false;
                 shell.initialize(value);
@@ -202,13 +203,17 @@ public class InteractiveShell extends TypedAtomicActor
                 shell.returnResult(value);
             }
         }
+
         shell.setEditable(true);
+
         // FIXME: What to type if there is no input connected.
         String userCommand = getOutput();
+
         if (userCommand.trim().equalsIgnoreCase("quit")
                 || userCommand.trim().equalsIgnoreCase("exit")) {
             _returnFalseInPostfire = true;
         }
+
         output.broadcast(new StringToken(userCommand));
     }
 
@@ -218,7 +223,7 @@ public class InteractiveShell extends TypedAtomicActor
      *  @see #setOutput(String)
      */
     public synchronized String getOutput() {
-        while (_outputValues.size() < 1 && !_stopRequested) {
+        while ((_outputValues.size() < 1) && !_stopRequested) {
             try {
                 // NOTE: Do not call wait on this object directly!
                 // If another thread tries to get write access to the
@@ -229,10 +234,11 @@ public class InteractiveShell extends TypedAtomicActor
             } catch (InterruptedException ex) {
             }
         }
+
         if (_stopRequested) {
-            return("");
+            return ("");
         } else {
-            return((String)_outputValues.remove(0));
+            return ((String) _outputValues.remove(0));
         }
     }
 
@@ -242,45 +248,53 @@ public class InteractiveShell extends TypedAtomicActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         if (shell == null) {
             // No container has been specified for the shell.
             // Place the shell in its own frame.
             // Need an effigy and a tableau so that menu ops work properly.
             Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                    "Cannot find effigy for top level: "
+                    + toplevel().getFullName());
             }
+
             try {
-                ExpressionShellEffigy shellEffigy = new ExpressionShellEffigy(
-                        containerEffigy, containerEffigy.uniqueName("shell"));
+                ExpressionShellEffigy shellEffigy = new ExpressionShellEffigy(containerEffigy,
+                        containerEffigy.uniqueName("shell"));
+
                 // The default identifier is "Unnamed", which is no good for
                 // two reasons: Wrong title bar label, and it causes a save-as
                 // to destroy the original window.
                 shellEffigy.identifier.setExpression(getFullName());
-                ShellTableau tableau = new ShellTableau(
-                        shellEffigy, "tableau");
+
+                ShellTableau tableau = new ShellTableau(shellEffigy, "tableau");
                 _frame = tableau.frame;
                 shell = tableau.shell;
                 shell.setInterpreter(this);
+
                 // Prevent editing until the first firing.
                 shell.setEditable(false);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
+                    "Error creating effigy and tableau");
             }
+
             _windowProperties.setProperties(_frame);
             _frame.pack();
         } else {
             shell.clearJTextArea();
         }
+
         if (_frame != null) {
             // show() used to override manual placement by calling pack.
             // No more.
             _frame.show();
             _frame.toFront();
         }
+
         _firstTime = true;
         _returnFalseInPostfire = false;
     }
@@ -308,17 +322,22 @@ public class InteractiveShell extends TypedAtomicActor
         if (_container == null) {
             // Dissociate with any container.
             // NOTE: _remove() doesn't work here.  Why?
-            if (_frame != null) _frame.dispose();
+            if (_frame != null) {
+                _frame.dispose();
+            }
+
             _frame = null;
             shell = null;
             return;
         }
+
         shell = new ShellTextArea();
         shell.setInterpreter(this);
         shell.clearJTextArea();
         shell.setEditable(false);
 
         _container.add(shell);
+
         // java.awt.Component.setBackground(color) says that
         // if the color "parameter is null then this component
         // will inherit the  background color of its parent."
@@ -334,6 +353,7 @@ public class InteractiveShell extends TypedAtomicActor
         if (_returnFalseInPostfire) {
             return false;
         }
+
         return super.postfire();
     }
 
@@ -344,10 +364,11 @@ public class InteractiveShell extends TypedAtomicActor
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
         super.setContainer(container);
-        if (container != previousContainer && previousContainer != null) {
+
+        if ((container != previousContainer) && (previousContainer != null)) {
             _remove();
         }
     }
@@ -368,7 +389,8 @@ public class InteractiveShell extends TypedAtomicActor
      */
     public void stop() {
         super.stop();
-        synchronized(this) {
+
+        synchronized (this) {
             notifyAll();
         }
     }
@@ -378,7 +400,8 @@ public class InteractiveShell extends TypedAtomicActor
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (_returnFalseInPostfire && _frame != null) {
+
+        if (_returnFalseInPostfire && (_frame != null)) {
             _frame.dispose();
             _frame = null;
             shell = null;
@@ -398,12 +421,13 @@ public class InteractiveShell extends TypedAtomicActor
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {
             _windowProperties.recordProperties(_frame);
         }
+
         super._exportMoMLContents(output, depth);
     }
 
@@ -456,7 +480,6 @@ public class InteractiveShell extends TypedAtomicActor
      *  the display when it is closed.
      */
     public class ShellTableau extends ExpressionShellTableau {
-
         /** Construct a new tableau for the model represented by the
          *  given effigy.
          *  @param container The container.
@@ -467,7 +490,7 @@ public class InteractiveShell extends TypedAtomicActor
          *   attribute already in the container.
          */
         public ShellTableau(ExpressionShellEffigy container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
             frame = new ShellFrame(this);
             setFrame(frame);
@@ -478,7 +501,6 @@ public class InteractiveShell extends TypedAtomicActor
     /** The frame that is created by an instance of ShellTableau.
      */
     public class ShellFrame extends ExpressionShellFrame {
-
         /** Construct a frame to display the ExpressionShell window.
          *  Override the base class to handle window closing.
          *  After constructing this, it is necessary
@@ -491,7 +513,7 @@ public class InteractiveShell extends TypedAtomicActor
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public ShellFrame(ExpressionShellTableau tableau)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(tableau);
         }
 
@@ -503,6 +525,7 @@ public class InteractiveShell extends TypedAtomicActor
             if (_frame != null) {
                 _windowProperties.setProperties(_frame);
             }
+
             // Return value can be ignored since there is no issue of saving.
             super._close();
             place(null);

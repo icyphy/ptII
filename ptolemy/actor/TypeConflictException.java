@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import java.util.Iterator;
@@ -34,8 +33,10 @@ import java.util.List;
 
 import ptolemy.kernel.util.KernelException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypeConflictException
+
 /**
    Thrown on detecting type conflicts.
    This class contains all the instances of Inequality where type conflicts
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.KernelException;
    @Pt.AcceptedRating Green (liuxj)
 */
 public class TypeConflictException extends KernelException {
-
     /** Construct an Exception with a list of Inequality instances where
      *  type conflicts occurred.
      *  The detailed message of this Exception will be the string
@@ -62,7 +62,7 @@ public class TypeConflictException extends KernelException {
      */
     public TypeConflictException(List inequalities) {
         this(inequalities,
-                "Type conflicts occurred at the following inequalities:");
+            "Type conflicts occurred at the following inequalities:");
     }
 
     /** Construct an Exception with a list of Inequality instances where
@@ -92,22 +92,22 @@ public class TypeConflictException extends KernelException {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Create a string listing all the inequalities in _inequalities.
     // Each inequality takes one line, and each line starts
     // with 2 white spaces to make the String more readable.
     private String _listInequalities() {
         String result = "";
         Iterator iterator = inequalityList().iterator();
+
         while (iterator.hasNext()) {
             Object inequality = iterator.next();
-            result += "  " + inequality.toString() + "\n";
+            result += ("  " + inequality.toString() + "\n");
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private List _inequalities = new LinkedList();
 }

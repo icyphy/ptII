@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -39,6 +38,7 @@ import ptolemy.kernel.util.KernelException;
 
 /////////////////////////////////////////////////////////////////
 //// CommandLineTemplate
+
 /**
    This class is similar to CompositeActorApplication, except that it
    does not parse command line elements.   It is used as
@@ -55,16 +55,16 @@ import ptolemy.kernel.util.KernelException;
    @Pt.AcceptedRating Red (vogel)
 */
 public class CommandLineTemplate {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Create a new application with the specified command-line arguments.
      *  @param args The command-line arguments.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             _parseStartTime = System.currentTimeMillis();
+
             CommandLineTemplate app = new CommandLineTemplate();
             app.processArgs(args);
             app.waitForFinish();
@@ -81,6 +81,7 @@ public class CommandLineTemplate {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
+
             System.exit(0);
         }
     }
@@ -90,23 +91,25 @@ public class CommandLineTemplate {
      *  @exception Exception If there is a problem processing
      *  the arguments.
      */
-    public void processArgs(String args[]) throws Exception {
+    public void processArgs(String[] args) throws Exception {
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
                 String arg = args[i];
+
                 if (arg.startsWith("-iterationLimit=")) {
                     String countString = arg.substring(arg.indexOf("=") + 1);
                     _iterationLimit = Integer.parseInt(countString);
                 }
             }
         }
+
         // start the models.
         Iterator models = _models.iterator();
-        while (models.hasNext()) {
 
+        while (models.hasNext()) {
             Runtime runtime = Runtime.getRuntime();
 
-            CompositeActor model = (CompositeActor)models.next();
+            CompositeActor model = (CompositeActor) models.next();
             String modelName = model.getName();
 
             // Allocate string buffers before hand, so that it is
@@ -120,48 +123,40 @@ public class CommandLineTemplate {
             Thread.sleep(1000);
 
             long startTime = System.currentTimeMillis();
-            long totalMemory1 = runtime.totalMemory()/1024;
-            long freeMemory1 = runtime.freeMemory()/1024;
-            timeAndMemory(startTime,
-                    totalMemory1, freeMemory1, buffer1);
+            long totalMemory1 = runtime.totalMemory() / 1024;
+            long freeMemory1 = runtime.freeMemory() / 1024;
+            timeAndMemory(startTime, totalMemory1, freeMemory1, buffer1);
             System.out.println("Spent " + (startTime - _parseStartTime)
-                    + " ms. creating the model.");
+                + " ms. creating the model.");
 
-            System.out.println(modelName +
-                    ": Stats before execution:    "
-                    + buffer1);
+            System.out.println(modelName + ": Stats before execution:    "
+                + buffer1);
 
             // Second, we run and print memory stats.
             startRun(model);
 
-            long totalMemory2 = runtime.totalMemory()/1024;
-            long freeMemory2 = runtime.freeMemory()/1024;
-            timeAndMemory(startTime,
-                    totalMemory2, freeMemory2, buffer2);
+            long totalMemory2 = runtime.totalMemory() / 1024;
+            long freeMemory2 = runtime.freeMemory() / 1024;
+            timeAndMemory(startTime, totalMemory2, freeMemory2, buffer2);
 
-            System.out.println(modelName +
-                    ": Execution stats:           "
-                    + buffer2);
+            System.out.println(modelName + ": Execution stats:           "
+                + buffer2);
 
             // GC, again to the log.
             System.gc();
             Thread.sleep(1000);
 
-            long totalMemory3 = runtime.totalMemory()/1024;
-            long freeMemory3 = runtime.freeMemory()/1024;
-            System.out.println(modelName +
-                    ": After Garbage Collection:  "
-                    + timeAndMemory(startTime,
-                            totalMemory3, freeMemory3));
+            long totalMemory3 = runtime.totalMemory() / 1024;
+            long freeMemory3 = runtime.freeMemory() / 1024;
+            System.out.println(modelName + ": After Garbage Collection:  "
+                + timeAndMemory(startTime, totalMemory3, freeMemory3));
 
             // Print out the standard stats at the end
             // so as not to break too many scripts
-
             System.out.println(buffer2.toString());
 
             // FIXME: Oddly, we need to have another statement here
             // or else the println above gets optimized away if it
-
             System.out.flush();
         }
     }
@@ -190,7 +185,7 @@ public class CommandLineTemplate {
      */
     public void report(String message, Exception ex) {
         System.err.println("Exception thrown.\n" + message + "\n"
-                + ex.toString());
+            + ex.toString());
         ex.printStackTrace();
     }
 
@@ -210,12 +205,11 @@ public class CommandLineTemplate {
     public synchronized void startRun(CompositeActor model) {
         // This method is synchronized so that it can atomically modify
         // the count of executing processes.
-
         // NOTE: If you modify this method, please be sure that it
         // will work for non-graphical models in the nightly test suite.
-
         // Iterate through the model, looking for something that is Placeable.
         boolean hasPlaceable = false;
+
         /* Iterator atomicEntities = model.allAtomicEntityList().iterator();
            while (atomicEntities.hasNext()) {
            Object object = atomicEntities.next();
@@ -259,18 +253,18 @@ public class CommandLineTemplate {
            }
            }
         */
-
         Manager manager = model.getManager();
+
         try {
             if (manager == null) {
                 model.setManager(new Manager(model.workspace(), "manager"));
                 manager = model.getManager();
             }
+
             long startTime = System.currentTimeMillis();
             manager.execute();
             System.out.println("Execution stats:");
             System.out.println(timeAndMemory(startTime));
-
         } catch (KernelException ex) {
             // Model is already running.  Ignore.
             System.out.println("Exception = " + ex);
@@ -281,20 +275,20 @@ public class CommandLineTemplate {
     // copied from Manager.
     public static String timeAndMemory(long startTime) {
         Runtime runtime = Runtime.getRuntime();
-        long totalMemory = runtime.totalMemory()/1024;
-        long freeMemory = runtime.freeMemory()/1024;
+        long totalMemory = runtime.totalMemory() / 1024;
+        long freeMemory = runtime.freeMemory() / 1024;
         return timeAndMemory(startTime, totalMemory, freeMemory);
     }
 
-    public static String timeAndMemory(long startTime,
-            long totalMemory, long freeMemory) {
+    public static String timeAndMemory(long startTime, long totalMemory,
+        long freeMemory) {
         StringBuffer buffer = new StringBuffer();
         timeAndMemory(startTime, totalMemory, freeMemory, buffer);
         return buffer.toString();
     }
 
-    public static void timeAndMemory(long startTime,
-            long totalMemory, long freeMemory, StringBuffer buffer) {
+    public static void timeAndMemory(long startTime, long totalMemory,
+        long freeMemory, StringBuffer buffer) {
         Runtime runtime = Runtime.getRuntime();
         buffer.append(System.currentTimeMillis() - startTime);
         buffer.append(" ms. Memory: ");
@@ -302,8 +296,8 @@ public class CommandLineTemplate {
         buffer.append("K Free: ");
         buffer.append(freeMemory);
         buffer.append("K (");
-        buffer.append(Math.round( (((double)freeMemory)/((double)totalMemory))
-                              * 100.0));
+        buffer.append(Math.round(
+                (((double) freeMemory) / ((double) totalMemory)) * 100.0));
         buffer.append("%)");
     }
 
@@ -314,6 +308,7 @@ public class CommandLineTemplate {
      */
     public void stopRun(CompositeActor model) {
         Manager manager = model.getManager();
+
         if (manager != null) {
             manager.finish();
         }
@@ -333,8 +328,8 @@ public class CommandLineTemplate {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected int _iterationLimit = Integer.MAX_VALUE;
+
     /** The list of all the models */
     protected List _models = null; // new LinkedList();
 
@@ -349,9 +344,7 @@ public class CommandLineTemplate {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Flag indicating that the previous argument was -class.
     // Exists to mirror CompositeActorApplication.
     private boolean _expectingClass = false;
-
 }

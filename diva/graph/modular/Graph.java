@@ -24,10 +24,12 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.modular;
+
 import java.util.Iterator;
 
 import diva.util.PropertyContainer;
 import diva.util.SemanticObjectContainer;
+
 
 /**
  * A graph is an object that contains nodes and
@@ -49,4 +51,3 @@ public interface Graph extends SemanticObjectContainer, PropertyContainer {
      */
     public int getNodeCount();
 }
-

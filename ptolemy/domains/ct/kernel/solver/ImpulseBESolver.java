@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel.solver;
 
 import java.util.Iterator;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImpulseBESolver
+
 /**
    This class implements the impulse backward Euler ODE solver.
    <p>
@@ -81,7 +82,6 @@ import ptolemy.kernel.util.Workspace;
 */
 public class ImpulseBESolver extends BackwardEulerSolver
     implements BreakpointODESolver {
-
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -101,6 +101,7 @@ public class ImpulseBESolver extends BackwardEulerSolver
      */
     public ImpulseBESolver(Workspace workspace) {
         super(workspace);
+
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException e) {
@@ -128,22 +129,24 @@ public class ImpulseBESolver extends BackwardEulerSolver
     public boolean resolveStates() throws IllegalActionException {
         CTDirector dir = (CTDirector) getContainer();
         dir.setCurrentStepSize(dir.getMinStepSize());
-        if (super.resolveStates()) {
 
-            Iterator actors = dir.getScheduler().getSchedule().get(
-                    CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        if (super.resolveStates()) {
+            Iterator actors = dir.getScheduler().getSchedule()
+                                 .get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+
             while (actors.hasNext()) {
-                Actor next = (Actor)actors.next();
-                _debug(getFullName(),
-                        "update state ...", ((Nameable)next).getName());
+                Actor next = (Actor) actors.next();
+                _debug(getFullName(), "update state ...",
+                    ((Nameable) next).getName());
                 next.postfire();
             }
 
             dir.setCurrentStepSize(-dir.getCurrentStepSize());
+
             if (super.resolveStates()) {
                 dir.setCurrentStepSize(-dir.getCurrentStepSize());
                 return true;
-            }else {
+            } else {
                 return false;
             }
         } else {
@@ -153,8 +156,6 @@ public class ImpulseBESolver extends BackwardEulerSolver
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The static name.
-    private static final String _DEFAULT_NAME = "CT_ImpulseBE_Solver" ;
-
+    private static final String _DEFAULT_NAME = "CT_ImpulseBE_Solver";
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictThreeBitAdder
+
 /**
    A nonstrict three-bit adder.  This adder has one input port, which is a
    multiport, and two output ports, which are single ports.  All of the ports
@@ -57,9 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (pwhitake)
    @Pt.AcceptedRating Red (pwhitake)
 */
-
 public class NonStrictThreeBitAdder extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -70,7 +69,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public NonStrictThreeBitAdder(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
         inputBits = new TypedIOPort(this, "inputBits", true, false);
@@ -114,18 +113,27 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
         int numOnes = 0;
 
         int width = inputBits.getWidth();
-        if (width != 3) throw new IllegalActionException(this,
+
+        if (width != 3) {
+            throw new IllegalActionException(this,
                 "inputBits must have exactly 3 connected channels.");
+        }
 
         for (int i = 0; i < width; i++) {
             if (inputBits.isKnown(i)) {
                 numKnown++;
+
                 if (inputBits.hasToken(i)) {
-                    int value = ((IntToken)inputBits.get(i)).intValue();
-                    if ((value != 0) && (value != 1))
+                    int value = ((IntToken) inputBits.get(i)).intValue();
+
+                    if ((value != 0) && (value != 1)) {
                         throw new IllegalActionException(this,
-                                "Inputs can only be 0 or 1.");
-                    if (value == 1) numOnes++;
+                            "Inputs can only be 0 or 1.");
+                    }
+
+                    if (value == 1) {
+                        numOnes++;
+                    }
                 }
             }
         }
@@ -142,11 +150,21 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
         }
 
         // numZeros = numKnown - numOnes
-        if (numKnown - numOnes >= 2) high = new IntToken(0);
-        if (numOnes >= 2) high = new IntToken(1);
+        if ((numKnown - numOnes) >= 2) {
+            high = new IntToken(0);
+        }
 
-        if (high != null) highBit.send(0, high);
-        if (low != null) lowBit.send(0, low);
+        if (numOnes >= 2) {
+            high = new IntToken(1);
+        }
+
+        if (high != null) {
+            highBit.send(0, high);
+        }
+
+        if (low != null) {
+            lowBit.send(0, low);
+        }
     }
 
     /** Override the base class to declare that the <i>highBit</i>

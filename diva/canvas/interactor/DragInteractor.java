@@ -37,6 +37,7 @@ import diva.canvas.event.LayerEventMulticaster;
 import diva.canvas.event.LayerListener;
 import diva.util.ArrayIterator;
 
+
 /**
  * An interactor that responds to mouse drag events. It adds
  * the notion of constraints, so that dragging can be limited
@@ -48,7 +49,6 @@ import diva.util.ArrayIterator;
  * @author John Reekie
  */
 public class DragInteractor extends AbstractInteractor {
-
     /** The set of constraints
      */
     private ArrayList _constraints;
@@ -78,13 +78,12 @@ public class DragInteractor extends AbstractInteractor {
     ///////////////////////////////////////////////////////////////////
     //// public methods
 
-
     /** Add the given layer listener to this interactor.  Any event that is
      * received by this interactor will be passed on to the listener after
      * it is handled by this interactor.
      */
     public void addLayerListener(LayerListener l) {
-        _layerListener = LayerEventMulticaster.add(_layerListener,l);
+        _layerListener = LayerEventMulticaster.add(_layerListener, l);
     }
 
     /** Append a constraint to the list of constraints on
@@ -94,6 +93,7 @@ public class DragInteractor extends AbstractInteractor {
         if (_constraints == null) {
             _constraints = new ArrayList();
         }
+
         _constraints.add(constraint);
     }
 
@@ -104,9 +104,10 @@ public class DragInteractor extends AbstractInteractor {
      * point if it is not guaranteed that changing the point will not
      * affect other objects with a reference to it.
      */
-    public void constrainPoint (Point2D p) {
+    public void constrainPoint(Point2D p) {
         if (_constraints != null) {
             Iterator i = _constraints.iterator();
+
             while (i.hasNext()) {
                 PointConstraint c = (PointConstraint) i.next();
                 c.constrain(p);
@@ -116,16 +117,19 @@ public class DragInteractor extends AbstractInteractor {
 
     /** Fire a layer event.
      */
-    public void fireLayerEvent (LayerEvent event) {
+    public void fireLayerEvent(LayerEvent event) {
         if (_layerListener != null) {
             int id = event.getID();
-            switch(id) {
+
+            switch (id) {
             case MouseEvent.MOUSE_PRESSED:
                 _layerListener.mousePressed(event);
                 break;
+
             case MouseEvent.MOUSE_DRAGGED:
                 _layerListener.mouseDragged(event);
                 break;
+
             case MouseEvent.MOUSE_RELEASED:
                 _layerListener.mouseReleased(event);
                 break;
@@ -137,25 +141,25 @@ public class DragInteractor extends AbstractInteractor {
      * if the figure being moused on is selected. By default, this
      * flag is false.
      */
-    public boolean getSelectiveEnabled () {
+    public boolean getSelectiveEnabled() {
         return _selectiveEnabled;
     }
 
     /** Get the target array.
      */
-    public Object[] getTargetArray () {
+    public Object[] getTargetArray() {
         return _targetArray;
     }
 
     /** Get the current value of the X coordinate
      */
-    public double getX () {
+    public double getX() {
         return _prevX;
     }
 
     /** Get the current value of the Y coordinate
      */
-    public double getY () {
+    public double getY() {
         return _prevY;
     }
 
@@ -165,13 +169,13 @@ public class DragInteractor extends AbstractInteractor {
      * Nothing happens if the interactor is not enabled, or if it
      * is "selective enabled" but not in the selection.
      */
-    public void mouseDragged (LayerEvent e) {
+    public void mouseDragged(LayerEvent e) {
         if (!isEnabled()
                 || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
             return;
         }
-        if (getMouseFilter() == null || getMouseFilter().accept(e)) {
 
+        if ((getMouseFilter() == null) || getMouseFilter().accept(e)) {
             // Constrain the point
             Point2D p = e.getLayerPoint();
             constrainPoint(p);
@@ -181,10 +185,12 @@ public class DragInteractor extends AbstractInteractor {
             double y = p.getY();
             double deltaX = x - _prevX;
             double deltaY = y - _prevY;
-            if (deltaX != 0 || deltaY != 0) {
+
+            if ((deltaX != 0) || (deltaY != 0)) {
                 translate(e, deltaX, deltaY);
                 fireLayerEvent(e);
             }
+
             _prevX = x;
             _prevY = y;
 
@@ -202,12 +208,13 @@ public class DragInteractor extends AbstractInteractor {
      * Nothing happens if the interactor is not enabled, or if it
      * is "selective enabled" but not in the selection.
      */
-    public void mousePressed (LayerEvent e) {
+    public void mousePressed(LayerEvent e) {
         if (!isEnabled()
                 || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
             return;
         }
-        if (getMouseFilter() == null || getMouseFilter().accept(e)) {
+
+        if ((getMouseFilter() == null) || getMouseFilter().accept(e)) {
             // Set up the target array if it hasn't already been
             if (_targetArray == null) {
                 _targetArray = new Object[1];
@@ -219,6 +226,7 @@ public class DragInteractor extends AbstractInteractor {
 
             // Constrain and remember the point
             Point2D p = e.getLayerPoint();
+
             // FIXME: no, don't constrain in mouse-pressed!?
             //constrainPoint(p);
             _prevX = p.getX();
@@ -238,12 +246,13 @@ public class DragInteractor extends AbstractInteractor {
      * Nothing happens if the interactor is not enabled, if if it
      * is "selective enabled" but not in the selection.
      */
-    public void mouseReleased (LayerEvent e) {
+    public void mouseReleased(LayerEvent e) {
         if (!isEnabled()
                 || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
             return;
         }
-        if (getMouseFilter() == null || getMouseFilter().accept(e)) {
+
+        if ((getMouseFilter() == null) || getMouseFilter().accept(e)) {
             fireLayerEvent(e);
             _targetArray = null;
 
@@ -261,7 +270,8 @@ public class DragInteractor extends AbstractInteractor {
         if (_constraints == null) {
             _constraints = new ArrayList();
         }
-        _constraints.add(0,constraint);
+
+        _constraints.add(0, constraint);
     }
 
     /** Remove the given layer listener from this interactor.
@@ -276,7 +286,7 @@ public class DragInteractor extends AbstractInteractor {
      * the figure is contained in the selection model of that
      * figure's selection interactor (if it has one).
      */
-    public boolean setSelectiveEnabled (boolean s) {
+    public boolean setSelectiveEnabled(boolean s) {
         return _selectiveEnabled = s;
     }
 
@@ -285,7 +295,7 @@ public class DragInteractor extends AbstractInteractor {
      * the event, but this method can be used to set it to
      * something else.
      */
-    public void setTargetArray (Object[] arr) {
+    public void setTargetArray(Object[] arr) {
         _targetArray = arr;
     }
 
@@ -294,13 +304,13 @@ public class DragInteractor extends AbstractInteractor {
      * does nothing, but clients can override to cause it to
      * perform some action, such as setting up constraints.
      */
-    public void setup (LayerEvent e) {
+    public void setup(LayerEvent e) {
         // do nothing
     }
 
     /** Get an iterator over the target figures.
      */
-    public Iterator targets () {
+    public Iterator targets() {
         return new ArrayIterator(_targetArray);
     }
 
@@ -309,14 +319,12 @@ public class DragInteractor extends AbstractInteractor {
      * be aware that the interactor may in general be operating on
      * multiple figures, and use the targets() method to get them.
      */
-    public void translate (LayerEvent e, double x, double y) {
+    public void translate(LayerEvent e, double x, double y) {
         Iterator i = targets();
+
         while (i.hasNext()) {
             Figure t = (Figure) i.next();
-            t.translate(x,y);
+            t.translate(x, y);
         }
     }
 }
-
-
-

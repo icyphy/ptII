@@ -26,14 +26,15 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnknownResultException
+
 /**
    Thrown on an attempt to evaluate an expression that can not be determined
    because some variables are unknown.
@@ -45,7 +46,6 @@ import ptolemy.kernel.util.Nameable;
    @Pt.AcceptedRating Red (pwhitake)
 */
 public class UnknownResultException extends KernelRuntimeException {
-
     /** Constructs an Exception with a detail message.
      *  @param detail The message.
      */
@@ -69,5 +69,4 @@ public class UnknownResultException extends KernelRuntimeException {
     public UnknownResultException(Nameable obj, String detail) {
         super(obj, detail);
     }
-
 }

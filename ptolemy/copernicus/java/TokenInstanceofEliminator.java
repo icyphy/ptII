@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.java;
 
 import java.util.HashSet;
@@ -52,8 +50,10 @@ import soot.jimple.InstanceOfExpr;
 import soot.jimple.JimpleBody;
 import soot.toolkits.graph.CompleteUnitGraph;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TokenInstanceofEliminator
+
 /**
    A transformer that removes unnecessary instanceof checks for tokens.
    This is similar to CastAndInstanceofEliminator, except here
@@ -66,14 +66,16 @@ import soot.toolkits.graph.CompleteUnitGraph;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class TokenInstanceofEliminator extends BodyTransformer
     implements HasPhaseOptions {
-    private static TokenInstanceofEliminator instance =
-    new TokenInstanceofEliminator();
-    private TokenInstanceofEliminator() {}
+    private static TokenInstanceofEliminator instance = new TokenInstanceofEliminator();
 
-    public static TokenInstanceofEliminator v() { return instance; }
+    private TokenInstanceofEliminator() {
+    }
+
+    public static TokenInstanceofEliminator v() {
+        return instance;
+    }
 
     public String getPhaseName() {
         return "";
@@ -87,63 +89,68 @@ public class TokenInstanceofEliminator extends BodyTransformer
         return "debug";
     }
 
-    protected void internalTransform(Body b, String phaseName, Map options)
-    {
-        JimpleBody body = (JimpleBody)b;
+    protected void internalTransform(Body b, String phaseName, Map options) {
+        JimpleBody body = (JimpleBody) b;
 
         //         System.out.println("TokenInstanceofEliminator.internalTransform(" +
         //                 body.getMethod() + ", " + phaseName + ")");
-
         boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
     }
 
-    public static void eliminateCastsAndInstanceOf(Body body,
-            String phaseName, Set unsafeLocalSet, boolean debug) {
+    public static void eliminateCastsAndInstanceOf(Body body, String phaseName,
+        Set unsafeLocalSet, boolean debug) {
         // Analyze the types of variables which refer to tokens.
-        TokenTypeAnalysis tokenTypes =
-            new TokenTypeAnalysis(body.getMethod(),
-                    new CompleteUnitGraph(body));
+        TokenTypeAnalysis tokenTypes = new TokenTypeAnalysis(body.getMethod(),
+                new CompleteUnitGraph(body));
 
-        for (Iterator units = body.getUnits().iterator();
-             units.hasNext();) {
-            Unit unit = (Unit)units.next();
+        for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
+            Unit unit = (Unit) units.next();
+
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                 boxes.hasNext();) {
-                ValueBox box = (ValueBox)boxes.next();
+                    boxes.hasNext();) {
+                ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
                 if (value instanceof CastExpr) {
                     // If the cast is to the same type as the
                     // operand already is, then replace with
                     // simple assignment.
-                    CastExpr expr = (CastExpr)value;
+                    CastExpr expr = (CastExpr) value;
                     Type castType = expr.getCastType();
                     Value op = expr.getOp();
+
                     if (!PtolemyUtilities.isTokenType(op.getType())) {
                         continue;
                     }
 
                     // Use the token type inference to get the actual
                     // type of the argument.
-                    ptolemy.data.type.Type type =
-                        tokenTypes.getTypeOfBefore((Local)op, unit);
+                    ptolemy.data.type.Type type = tokenTypes.getTypeOfBefore((Local) op,
+                            unit);
 
-                    if (debug) System.out.println("checking cast in " + unit);
-                    if (debug) System.out.println("op = " + op);
-                    if (debug) System.out.println("type = " + type);
+                    if (debug) {
+                        System.out.println("checking cast in " + unit);
+                    }
+
+                    if (debug) {
+                        System.out.println("op = " + op);
+                    }
+
+                    if (debug) {
+                        System.out.println("type = " + type);
+                    }
 
                     // Don't try to replace non-instantiable types, since they
                     // might be more refined later.
                     // General, is unfortuantely, considered instantiable.
-                    if (type.equals(BaseType.UNKNOWN) || //!type.isInstantiable() ||
-                            type.equals(BaseType.GENERAL)) {
+                    if (type.equals(BaseType.UNKNOWN) //!type.isInstantiable() ||
+                            || type.equals(BaseType.GENERAL)) {
                         continue;
                     }
 
-                    Type opType =
-                        PtolemyUtilities.getSootTypeForTokenType(type);
+                    Type opType = PtolemyUtilities.getSootTypeForTokenType(type);
 
                     //                     // Skip locals that are unsafe.
                     //                     if (castType.equals(opType) &&
@@ -156,48 +163,58 @@ public class TokenInstanceofEliminator extends BodyTransformer
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
-                    if (debug) System.out.println("opType = " + opType);
+                    if (debug) {
+                        System.out.println("opType = " + opType);
+                    }
 
                     CastAndInstanceofEliminator.replaceCast(box, hierarchy,
-                            castType, op, opType, debug);
-
+                        castType, op, opType, debug);
                 } else if (value instanceof InstanceOfExpr) {
                     // If the operand of the expression is
                     // declared to be of a type that implies
                     // the instanceof is true, then replace
                     // with true.
-                    InstanceOfExpr expr = (InstanceOfExpr)value;
+                    InstanceOfExpr expr = (InstanceOfExpr) value;
                     Type checkType = expr.getCheckType();
                     Value op = expr.getOp();
+
                     if (!PtolemyUtilities.isTokenType(op.getType())) {
                         continue;
                     }
 
                     // Use the token type inference to get the actual
                     // type of the argument.
-                    ptolemy.data.type.Type type =
-                        tokenTypes.getTypeOfBefore((Local)op, unit);
+                    ptolemy.data.type.Type type = tokenTypes.getTypeOfBefore((Local) op,
+                            unit);
 
-                    if (debug) System.out.println("Checking instanceof check: " + expr);
-                    if (debug) System.out.println("op = " + op);
-                    if (debug) System.out.println("type = " + type);
+                    if (debug) {
+                        System.out.println("Checking instanceof check: " + expr);
+                    }
+
+                    if (debug) {
+                        System.out.println("op = " + op);
+                    }
+
+                    if (debug) {
+                        System.out.println("type = " + type);
+                    }
 
                     // Don't try to replace non-instantiable types, since they
                     // might be more refined later.
                     // General, is unfortuantely, considered instantiable.
-                    if (type.equals(BaseType.UNKNOWN) || //!type.isInstantiable() ||
-                            type.equals(BaseType.GENERAL)) {
+                    if (type.equals(BaseType.UNKNOWN) //!type.isInstantiable() ||
+                            || type.equals(BaseType.GENERAL)) {
                         continue;
                     }
 
-                    Type opType =
-                        PtolemyUtilities.getSootTypeForTokenType(type);
+                    Type opType = PtolemyUtilities.getSootTypeForTokenType(type);
 
-                    if (debug) System.out.println("opType = " + opType);
+                    if (debug) {
+                        System.out.println("opType = " + opType);
+                    }
 
-                    CastAndInstanceofEliminator.replaceInstanceofCheck(
-                            box, Scene.v().getActiveHierarchy(),
-                            checkType, opType, debug);
+                    CastAndInstanceofEliminator.replaceInstanceofCheck(box,
+                        Scene.v().getActiveHierarchy(), checkType, opType, debug);
                 }
             }
         }

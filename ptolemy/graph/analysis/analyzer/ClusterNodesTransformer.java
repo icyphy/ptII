@@ -22,13 +22,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.analyzer;
 
 import ptolemy.graph.Graph;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ClusterNodesAnalyzer
+
 /**
    Base interface for cluster transformers for graphs.
    <p>
@@ -40,13 +41,10 @@ import ptolemy.graph.Graph;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public interface ClusterNodesTransformer extends Transformer {
-
     /** Return the clustered Graph.
      *
      *  @return Return the clustered Graph.
      */
     public Graph clusterNodes();
 }
-

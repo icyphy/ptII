@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import ptolemy.actor.lib.Clock;
@@ -34,8 +33,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ListenClock
+
 /**
    A ListenClock is a clock source that can notify an ExecEventListener
    of ExecEvents. In particular, the listener will be notified each time the
@@ -54,9 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.actor.gui.ExecEvent
    @see ptolemy.actor.gui.ExecEventListener
 */
-
 public class ListenClock extends Clock {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,7 +65,7 @@ public class ListenClock extends Clock {
      *   already has an actor with this name.
      */
     public ListenClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -80,13 +79,15 @@ public class ListenClock extends Clock {
      *  interruption while the calling thread sleeps.
      */
     public boolean prefire() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
+        _debug(new ExecEvent(this, ExecEvent.ACCESSING));
+
         try {
             Thread.sleep(100);
-        } catch(InterruptedException e) {
-            throw new InternalErrorException( "Error with "
-                    + "sleeping thread in prefire");
+        } catch (InterruptedException e) {
+            throw new InternalErrorException("Error with "
+                + "sleeping thread in prefire");
         }
+
         return super.prefire();
     }
 
@@ -100,13 +101,15 @@ public class ListenClock extends Clock {
      *  with the thread activity of this method.
      */
     public boolean postfire() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+        _debug(new ExecEvent(this, ExecEvent.WAITING));
+
         try {
             Thread.sleep(100);
-        } catch(InterruptedException e) {
-            throw new InternalErrorException( "Error with "
-                    + "sleeping thread in postfire");
+        } catch (InterruptedException e) {
+            throw new InternalErrorException("Error with "
+                + "sleeping thread in postfire");
         }
+
         return super.postfire();
     }
 
@@ -118,7 +121,7 @@ public class ListenClock extends Clock {
      *  superclass.
      */
     public void wrapup() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
+        _debug(new ExecEvent(this, ExecEvent.BLOCKED));
         super.wrapup();
     }
 }

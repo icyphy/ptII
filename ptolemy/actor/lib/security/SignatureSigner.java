@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.security;
-
 
 import java.security.PrivateKey;
 
@@ -39,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SignatureSigner
+
 /** Sign the input data using a private key.
 
 <p>In cryptography, digital signatures can be used to verify that the
@@ -76,7 +76,6 @@ resources about JCA and JCE.
 @Pt.AcceptedRating Red (cxh)
 */
 public class SignatureSigner extends SignatureActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -86,7 +85,7 @@ public class SignatureSigner extends SignatureActor {
      *   actor with this name.
      */
     public SignatureSigner(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         privateKey = new TypedIOPort(this, "privateKey", true, false);
@@ -128,27 +127,28 @@ public class SignatureSigner extends SignatureActor {
         // so that we handle any updates of _signature made necessary
         // by attribute changes.
         super.fire();
+
         if (privateKey.hasToken(0)) {
-            KeyToken keyToken = (KeyToken)privateKey.get(0);
-            _privateKey = (PrivateKey)keyToken.getValue();
+            KeyToken keyToken = (KeyToken) privateKey.get(0);
+            _privateKey = (PrivateKey) keyToken.getValue();
         }
 
         if (input.hasToken(0)) {
             try {
                 // Process the input data to generate a signature.
-                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
-                                                                            (ArrayToken)input.get(0));
+                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray((ArrayToken) input
+                        .get(0));
 
                 _signature.initSign(_privateKey);
                 _signature.update(dataBytes);
 
-                output.send(0, ArrayToken.unsignedByteArrayToArrayToken(
-                                                                        dataBytes));
-                signature.send(0, ArrayToken.unsignedByteArrayToArrayToken(
-                                                                           _signature.sign()));
+                output.send(0,
+                    ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
+                signature.send(0,
+                    ArrayToken.unsignedByteArrayToArrayToken(_signature.sign()));
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                                                 "Problem sending data");
+                    "Problem sending data");
             }
         }
     }

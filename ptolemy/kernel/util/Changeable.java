@@ -24,11 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Changeable
+
 /**
    This is an interface for objects that support change requests that can
    be deferred.  A change request is any
@@ -59,9 +60,7 @@ package ptolemy.kernel.util;
    @Pt.AcceptedRating Green (neuendor)
    @see ChangeRequest
 */
-
 public interface Changeable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

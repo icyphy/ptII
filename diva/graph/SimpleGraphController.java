@@ -38,7 +38,6 @@ package diva.graph;
  * @Pt.AcceptedRating      Red
  */
 public abstract class SimpleGraphController extends AbstractGraphController {
-
     /** The node controller
      */
     private NodeController _nodeController;
@@ -50,7 +49,7 @@ public abstract class SimpleGraphController extends AbstractGraphController {
     /**
      * Create a new basic controller with default node and edge controllers.
      */
-    public SimpleGraphController () {
+    public SimpleGraphController() {
         super();
     }
 
@@ -98,7 +97,3 @@ public abstract class SimpleGraphController extends AbstractGraphController {
         _nodeController = c;
     }
 }
-
-
-
-

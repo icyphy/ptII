@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.toolbox;
 
 import java.awt.BasicStroke;
@@ -43,6 +42,7 @@ import diva.canvas.AbstractFigure;
 import diva.canvas.Figure;
 import diva.canvas.TransformContext;
 import diva.util.java2d.ShapeUtilities;
+
 
 /** A VectorFigure is a figure containing a list of objects that
  * are drawn to produce the figure.
@@ -101,12 +101,12 @@ public class VectorFigure extends AbstractFigure {
 
     /** Create a new blank figure.
      */
-    public VectorFigure () {
+    public VectorFigure() {
     }
 
     /** Add a new painted shape to the list of drawn objects.
      */
-    public void add (Shape s) {
+    public void add(Shape s) {
         _objects.add(s);
         _bounds = null;
         _cachedBounds = null;
@@ -114,7 +114,7 @@ public class VectorFigure extends AbstractFigure {
 
     /** Add a new figure to the list of drawn objects
      */
-    public void add (Figure f) {
+    public void add(Figure f) {
         _objects.add(f);
         _bounds = null;
         _cachedBounds = null;
@@ -122,25 +122,25 @@ public class VectorFigure extends AbstractFigure {
 
     /** Add a new compositioning operator to the list of drawn objects.
      */
-    public void add (Composite c) {
+    public void add(Composite c) {
         _objects.add(c);
     }
 
     /** Add a new paint to the list of drawn objects.
      */
-    public void add (Paint p) {
+    public void add(Paint p) {
         _objects.add(p);
     }
 
     /** Add a new stroke to the list of drawn objects.
      */
-    public void add (Stroke s) {
+    public void add(Stroke s) {
         _objects.add(s);
     }
 
     /** Add an object to the list that puts drawing into fill mode
      */
-    public void fillMode () {
+    public void fillMode() {
         _objects.add(new CtrlObj(FILLMODE));
     }
 
@@ -149,7 +149,7 @@ public class VectorFigure extends AbstractFigure {
      * calling _setBounds()), then a new bounding box will be computed by
      * traversing the list of objects.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         if (_bounds == null) {
             Iterator i = _objects.iterator();
             Rectangle2D bounds = null;
@@ -160,11 +160,13 @@ public class VectorFigure extends AbstractFigure {
             while (i.hasNext()) {
                 Object obj = i.next();
                 Rectangle2D b = null;
+
                 if (obj instanceof CtrlObj) {
                     switch (((CtrlObj) obj).code) {
                     case FILLMODE:
                         fillMode = true;
                         break;
+
                     case LINEMODE:
                         fillMode = false;
                         break;
@@ -173,13 +175,15 @@ public class VectorFigure extends AbstractFigure {
                     if (fillMode) {
                         b = ((Shape) obj).getBounds2D();
                     } else {
-                        b = ShapeUtilities.computeStrokedBounds((Shape) obj, stroke);
+                        b = ShapeUtilities.computeStrokedBounds((Shape) obj,
+                                stroke);
                     }
                 } else if (obj instanceof Figure) {
                     b = ((Figure) obj).getBounds();
                 } else if (obj instanceof Stroke) {
                     stroke = (Stroke) obj;
                 }
+
                 if (b != null) {
                     if (bounds == null) {
                         bounds = b;
@@ -188,55 +192,64 @@ public class VectorFigure extends AbstractFigure {
                     }
                 }
             }
+
             if (bounds != null) {
                 _bounds = bounds;
             }
         }
+
         if (_cachedBounds == null) {
             AffineTransform at = _transformContext.getTransform();
             _cachedBounds = ShapeUtilities.transformBounds(_bounds, at);
         }
+
         return _cachedBounds;
     }
 
     /** Get the shape of this figure.  If a shape has not yet been set
      *  by calling setShape(), then the shape will be set to the bounding box.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         if (_shape == null) {
             return getBounds();
         }
+
         if (_cachedShape == null) {
             AffineTransform at = _transformContext.getTransform();
             _cachedShape = at.createTransformedShape(_shape);
         }
+
         return _cachedShape;
     }
 
     /** Add an object to the list that puts drawing into line mode
      */
-    public void lineMode () {
+    public void lineMode() {
         _objects.add(new CtrlObj(LINEMODE));
     }
 
     /** Paint the figure.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
         }
+
         // Push the context
         _transformContext.push(g);
 
         boolean fillMode = false;
         Iterator i = _objects.iterator();
+
         while (i.hasNext()) {
             Object obj = i.next();
+
             if (obj instanceof CtrlObj) {
                 switch (((CtrlObj) obj).code) {
                 case FILLMODE:
                     fillMode = true;
                     break;
+
                 case LINEMODE:
                     fillMode = false;
                     break;
@@ -257,6 +270,7 @@ public class VectorFigure extends AbstractFigure {
                 g.setComposite((Composite) obj);
             }
         }
+
         // Pop the context
         _transformContext.pop(g);
     }
@@ -265,7 +279,7 @@ public class VectorFigure extends AbstractFigure {
      * of the bounding box is not the right thing -- such as when
      * a circular shape is required, for instance.
      */
-    public void setShape (Shape s) {
+    public void setShape(Shape s) {
         _shape = s;
         _cachedShape = null;
     }
@@ -274,7 +288,7 @@ public class VectorFigure extends AbstractFigure {
      * used to perform arbitrary translation, scaling, shearing, and
      * rotation operations.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
         _cachedBounds = null;
         _cachedShape = null;
@@ -284,6 +298,7 @@ public class VectorFigure extends AbstractFigure {
 
     private class CtrlObj {
         private int code = 0;
+
         private CtrlObj(int i) {
             code = i;
         }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
@@ -51,8 +50,10 @@ import javax.swing.JScrollPane;
 import ptolemy.kernel.Entity;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyDialog
+
 /**
 
 @author Rowland R Johnson
@@ -61,16 +62,9 @@ import ptolemy.util.MessageHandler;
 @Pt.ProposedRating Red (rowland)
 @Pt.AcceptedRating Red (rowland)
 */
-
 public abstract class PtolemyDialog extends JFrame implements ActionListener {
-
-    public PtolemyDialog(
-        String title,
-        DialogTableau dialogTableau,
-        Frame owner,
-        Entity target,
-        Configuration configuration) {
-
+    public PtolemyDialog(String title, DialogTableau dialogTableau,
+        Frame owner, Entity target, Configuration configuration) {
         super(title);
         _owner = owner;
         _dialogTableau = dialogTableau;
@@ -82,45 +76,48 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         // inside of a JScrolPane that displays the ports and their attributes.
         // On bottom is a JPanel that contains buttons that cause various
         // actions.
-
         JPanel _buttons = _createButtonsPanel();
         getContentPane().add(_buttons, BorderLayout.SOUTH);
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                _cancel();
-            }
-        });
+                public void windowClosing(WindowEvent e) {
+                    _cancel();
+                }
+            });
 
         _owner.addWindowListener(new WindowAdapter() {
-            public void windowIconified(WindowEvent e) {
-                _iconify();
-            }
-            public void windowDeiconified(WindowEvent e) {
-                _deiconify();
-            }
-        });
-        GraphicsEnvironment ge =
-            GraphicsEnvironment.getLocalGraphicsEnvironment();
+                public void windowIconified(WindowEvent e) {
+                    _iconify();
+                }
+
+                public void windowDeiconified(WindowEvent e) {
+                    _deiconify();
+                }
+            });
+
+        GraphicsEnvironment ge = GraphicsEnvironment
+            .getLocalGraphicsEnvironment();
         GraphicsDevice[] SCREENS = ge.getScreenDevices();
         Point ownerLoc = owner.getLocation();
         Rectangle screenBounds = null;
+
         for (int screen = 0; screen < SCREENS.length; screen++) {
-            GraphicsConfiguration gc =
-                SCREENS[screen].getDefaultConfiguration();
+            GraphicsConfiguration gc = SCREENS[screen].getDefaultConfiguration();
             Rectangle bounds = gc.getBounds();
+
             if (bounds.contains(ownerLoc)) {
                 screenBounds = bounds;
                 break;
             }
         }
+
         if (screenBounds != null) {
             Dimension size = getPreferredSize();
             int relX = (screenBounds.width / 2) - (size.width / 2);
             int relY = (screenBounds.height / 2) - (size.height / 2);
-            int x =
-                screenBounds.x + (screenBounds.width / 2) - (size.width / 2);
-            int y =
-                screenBounds.y + (screenBounds.height / 2) - (size.height / 2);
+            int x = (screenBounds.x + (screenBounds.width / 2))
+                - (size.width / 2);
+            int y = (screenBounds.y + (screenBounds.height / 2))
+                - (size.height / 2);
             setLocation(x, y);
         } else {
             setLocationRelativeTo(_owner);
@@ -129,13 +126,13 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     // This method gets invoked as a result of a GUI action. Presently, it
     // handles button presses. It has to be a public, not protected, or private,
     // since it is inherited from ActionListener where it is public. Since it
     // isn't meant to be invoked by the developer there is no javadoc.
     public void actionPerformed(ActionEvent aEvent) {
         String command = aEvent.getActionCommand();
+
         if (aEvent.getSource() instanceof JButton) {
             _processButtonPress(command);
         }
@@ -165,6 +162,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     public void setScrollableContents(JComponent contents) {
         _contents = contents;
+
         JScrollPane scrollPane = new JScrollPane(_contents);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
@@ -178,7 +176,6 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     protected void _cancel() {
         saveIfRequired();
         dispose();
@@ -202,7 +199,6 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
      *  Cancel - Remove the dialog without making any pending changes.
      * @param button
      */
-
     protected void _processButtonPress(String button) {
         if (button.equals("Cancel")) {
             _cancel();
@@ -223,7 +219,8 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     protected void _showHelp() {
         URL toRead = _getHelpURL();
-        if (toRead != null && _configuration != null) {
+
+        if ((toRead != null) && (_configuration != null)) {
             try {
                 _configuration.openModel(null, toRead, toRead.toExternalForm());
             } catch (Exception ex) {
@@ -236,15 +233,13 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                   ////
-
     protected Configuration _configuration;
     protected boolean _debug = false;
-
-    protected JButton _helpButton, _cancelButton;
+    protected JButton _helpButton;
+    protected JButton _cancelButton;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private JPanel _createButtonsPanel() {
         JPanel _buttons = new JPanel();
 
@@ -253,9 +248,11 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         _buttons.add(_helpButton);
         _cancelButton = new JButton("Cancel");
         _buttons.add(_cancelButton);
+
         for (int i = 0; i < _buttons.getComponentCount(); i++) {
             ((JButton) (_buttons.getComponent(i))).addActionListener(this);
         }
+
         return _buttons;
     }
 
@@ -269,8 +266,8 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private JComponent _contents;
+
     // The following is true if any of the values have been changed but not
     // applied.
     private boolean _dirty = false;

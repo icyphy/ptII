@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.toolbox;
 
 import java.awt.Color;
@@ -52,6 +51,7 @@ import diva.util.java2d.Polygon2D;
 import diva.util.java2d.Polyline2D;
 import diva.util.xml.XmlElement;
 
+
 /** A collection of utilities to help parse graphics out of SVG files.
  *  For a description of SVG see <a href="http://www.w3.org/TR/SVG/">the
  *  specification</a>.
@@ -60,7 +60,6 @@ import diva.util.xml.XmlElement;
  * @author         John Reekie, Steve Neuendorffer
  */
 public class SVGParser {
-
     /** Return a list of basic color names that are understood.
      *  Note that colors can also be specified using #rrggbb notation,
      *  where rr is the hex representation of the red component, etc.
@@ -68,10 +67,12 @@ public class SVGParser {
      *  colors symbolically by name.
      *  @return An array of symbolic color names.
      */
-    public static String[] colorNames () {
-        String[] result = {"black", "blue", "cyan", "darkgray", "gray", "green",
-                           "lightgray", "magenta", "orange", "pink", "red", "white",
-                           "yellow"};
+    public static String[] colorNames() {
+        String[] result = {
+                "black", "blue", "cyan", "darkgray", "gray", "green",
+                "lightgray", "magenta", "orange", "pink", "red", "white",
+                "yellow"
+            };
         return result;
     }
 
@@ -83,8 +84,8 @@ public class SVGParser {
      *
      * </ul>
      */
-    public static PaintedObject createPaintedObject (
-            String type, String attributes, String content) {
+    public static PaintedObject createPaintedObject(String type,
+        String attributes, String content) {
         Map hm = new HashMap();
         hashAttributes(attributes, hm);
         return createPaintedObject(type, hm, content);
@@ -97,108 +98,127 @@ public class SVGParser {
      * String) for a description of legal types and their attributes.
      *
      */
-    public static PaintedObject createPaintedObject (
-            String type, Map attributes, String content) {
+    public static PaintedObject createPaintedObject(String type,
+        Map attributes, String content) {
         if (type.equals("rect")) {
-            double x, y, width, height;
+            double x;
+            double y;
+            double width;
+            double height;
             x = _getDouble(attributes, "x", 0);
             y = _getDouble(attributes, "y", 0);
             width = _getDouble(attributes, "width");
             height = _getDouble(attributes, "height");
 
-            PaintedShape ps = new PaintedShape(new Rectangle2D.Double(
-                                                       x, y, width, height));
+            PaintedShape ps = new PaintedShape(new Rectangle2D.Double(x, y,
+                        width, height));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
-
         } else if (type.equals("circle")) {
-            double cx, cy, r;
+            double cx;
+            double cy;
+            double r;
             cx = _getDouble(attributes, "cx", 0);
             cy = _getDouble(attributes, "cy", 0);
             r = _getDouble(attributes, "r");
 
-            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(
-                                                       cx - r, cy - r, 2 * r, 2 * r));
+            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - r,
+                        cy - r, 2 * r, 2 * r));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
-
         } else if (type.equals("ellipse")) {
-            double cx, cy, rx, ry;
+            double cx;
+            double cy;
+            double rx;
+            double ry;
             cx = _getDouble(attributes, "cx", 0);
             cy = _getDouble(attributes, "cy", 0);
             rx = _getDouble(attributes, "rx");
             ry = _getDouble(attributes, "ry");
 
-            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(
-                                                       cx - rx, cy - ry, 2 * rx, 2 * ry));
+            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - rx,
+                        cy - ry, 2 * rx, 2 * ry));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
-
         } else if (type.equals("line")) {
-            double x1, y1, x2, y2;
+            double x1;
+            double y1;
+            double x2;
+            double y2;
             x1 = _getDouble(attributes, "x1", 0);
             y1 = _getDouble(attributes, "y1", 0);
             x2 = _getDouble(attributes, "x2", 0);
             y2 = _getDouble(attributes, "y2", 0);
+
             Line2D line = new Line2D.Double(x1, y1, x2, y2);
             PaintedPath pp = new PaintedPath(line);
             processPaintedPathAttributes(pp, attributes);
             return pp;
         } else if (type.equals("polyline")) {
-            double coords[] =
-                parseCoordString((String)attributes.get("points"));
+            double[] coords = parseCoordString((String) attributes.get("points"));
             Polyline2D poly = new Polyline2D.Double();
             poly.moveTo(coords[0], coords[1]);
+
             for (int i = 2; i < coords.length; i += 2) {
-                poly.lineTo(coords[i], coords[i+1]);
+                poly.lineTo(coords[i], coords[i + 1]);
             }
+
             PaintedPath pp = new PaintedPath(poly);
             processPaintedPathAttributes(pp, attributes);
             return pp;
         } else if (type.equals("polygon")) {
-            double coords[] =
-                parseCoordString((String)attributes.get("points"));
+            double[] coords = parseCoordString((String) attributes.get("points"));
             Polygon2D poly = new Polygon2D.Double();
             poly.moveTo(coords[0], coords[1]);
+
             for (int i = 2; i < coords.length; i += 2) {
-                poly.lineTo(coords[i], coords[i+1]);
+                poly.lineTo(coords[i], coords[i + 1]);
             }
+
             poly.closePath();
 
             PaintedShape ps = new PaintedShape(poly);
             processPaintedShapeAttributes(ps, attributes);
             return ps;
-
         } else if (type.equals("text")) {
-            double x, y;
+            double x;
+            double y;
             x = _getDouble(attributes, "x", 0);
             y = _getDouble(attributes, "y", 0);
+
             PaintedString string = new PaintedString(content);
             processPaintedStringAttributes(string, attributes);
             string.translate(x, y);
             return string;
         } else if (type.equals("image")) {
-            double x, y, width, height;
+            double x;
+            double y;
+            double width;
+            double height;
             x = _getDouble(attributes, "x", 0);
             y = _getDouble(attributes, "y", 0);
             width = _getDouble(attributes, "width");
             height = _getDouble(attributes, "height");
+
             Rectangle2D bounds = new Rectangle2D.Double(x, y, width, height);
-            String link = (String)attributes.get("xlink:href");
+            String link = (String) attributes.get("xlink:href");
+
             // First try as a system resource.
             URL url = ClassLoader.getSystemResource(link);
+
             try {
                 if (url == null) {
                     // Web Start needs this.
                     if (_refClass == null) {
                         try {
-                            _refClass =
-                                Class.forName("diva.canvas.toolbox.SVGParser");
-                        } catch (ClassNotFoundException ex) {
-                            throw new RuntimeException("Could not find " +
+                            _refClass = Class.forName(
                                     "diva.canvas.toolbox.SVGParser");
+                        } catch (ClassNotFoundException ex) {
+                            throw new RuntimeException("Could not find "
+                                + "diva.canvas.toolbox.SVGParser");
                         }
                     }
+
                     url = _refClass.getClassLoader().getResource(link);
                 }
 
@@ -206,9 +226,11 @@ public class SVGParser {
                 if (url == null) {
                     url = new URL(link);
                 }
+
                 Toolkit tk = Toolkit.getDefaultToolkit();
                 Image img = tk.getImage(url);
                 PaintedImage image = new PaintedImage(img, bounds);
+
                 // Wait until the image has been completely loaded,
                 // unless an error occurred.
                 while (true) {
@@ -217,20 +239,24 @@ public class SVGParser {
                         // created image.
                         break;
                     }
+
                     int bitflags = tk.checkImage(img, -1, -1, image);
-                    if ((bitflags &
-                                (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
+
+                    if ((bitflags & (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
                         // There was an error if either flag is set,
                         // so return null.
                         return null;
                     }
+
                     Thread.yield();
                 }
+
                 return image;
             } catch (java.net.MalformedURLException ex) {
                 return null;
             }
         }
+
         return null;
     }
 
@@ -240,8 +266,7 @@ public class SVGParser {
      * that are not recognized will be ignored.  See the add(String,
      * String) for a description of legal types and their attributes.
      */
-    public static PaintedObject createPaintedObject (
-            String type, Map attributes) {
+    public static PaintedObject createPaintedObject(String type, Map attributes) {
         return createPaintedObject(type, attributes, null);
     }
 
@@ -250,26 +275,28 @@ public class SVGParser {
      *
      * <P> FIXME: this sucks.
      */
-    public static void hashAttributes (String s, Map map) {
+    public static void hashAttributes(String s, Map map) {
         StreamTokenizer t = new StreamTokenizer(new StringReader(s));
-        t.whitespaceChars('=','=');
+        t.whitespaceChars('=', '=');
         t.ordinaryChars('0', '9');
         t.ordinaryChar('.');
 
         String key = "Unknown";
         String val = "Unknown";
+
         while (true) {
             int ttype = 0;
 
             try {
                 ttype = t.nextToken();
+            } catch (Exception e) {
             }
-            catch (Exception e) {}
 
             if (ttype == StreamTokenizer.TT_EOF) {
                 break;
             }
-            switch(ttype) {
+
+            switch (ttype) {
             case StreamTokenizer.TT_WORD:
                 key = t.sval;
                 break;
@@ -277,17 +304,19 @@ public class SVGParser {
 
             try {
                 ttype = t.nextToken();
+            } catch (Exception e) {
             }
-            catch (Exception e) {}
 
             if (ttype == StreamTokenizer.TT_EOF) {
                 break;
             }
-            switch(ttype) {
+
+            switch (ttype) {
             case StreamTokenizer.TT_WORD:
                 val = t.sval;
                 break;
             }
+
             ////System.out.println(key + "=" + val);
             map.put(key, val);
         }
@@ -295,8 +324,9 @@ public class SVGParser {
 
     /** Given a string, return a color.
      */
-    private static Color lookupColor (String color) {
+    private static Color lookupColor(String color) {
         String s = color.toLowerCase();
+
         if (s.equals("black")) {
             return Color.black;
         } else if (s.equals("blue")) {
@@ -331,15 +361,18 @@ public class SVGParser {
             return Color.yellow;
         } else {
             Color c = Color.getColor(s);
+
             if (c == null) {
                 try {
                     c = Color.decode(s);
+                } catch (Exception e) {
                 }
-                catch (Exception e) {}
             }
+
             if (c == null) {
                 c = Color.black;
             }
+
             return c;
         }
     }
@@ -347,24 +380,28 @@ public class SVGParser {
     /** Parse a string of numbers into an array of double.  The doubles
      *  can be delimited by commas and spaces.
      */
-    private static double[] parseCoordString (String s) {
-        double result[] = new double[4];
+    private static double[] parseCoordString(String s) {
+        double[] result = new double[4];
         int i = 0;
         StringTokenizer t = new StringTokenizer(s, " ,");
+
         while (t.hasMoreTokens()) {
             String string = t.nextToken();
+
             // Ignore consecutive delimiters.
             if (string != "") {
                 result[i++] = Double.parseDouble(string);
+
                 if (i == result.length) {
-                    double temp[] = new double[2*result.length];
+                    double[] temp = new double[2 * result.length];
                     System.arraycopy(result, 0, temp, 0, result.length);
                     result = temp;
                 }
             }
         }
+
         // Yawn! now we have to chop it back to size...
-        double temp[] = new double[i];
+        double[] temp = new double[i];
         System.arraycopy(result, 0, temp, 0, i);
         result = temp;
 
@@ -374,16 +411,19 @@ public class SVGParser {
 
     /** Set the attributes of a PaintedShape from a hash-table
      */
-    private static void processPaintedShapeAttributes (
-            PaintedShape ps, Map attributes) {
+    private static void processPaintedShapeAttributes(PaintedShape ps,
+        Map attributes) {
         String style = (String) attributes.get("style");
+
         if (style != null) {
             StringTokenizer t = new StringTokenizer(style, ";");
+
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
                 int index = string.indexOf(":");
                 String name = string.substring(0, index);
                 String value = string.substring(index + 1);
+
                 if (name.equals("fill")) {
                     ps.fillPaint = lookupColor(value);
                 } else if (name.equals("stroke")) {
@@ -397,16 +437,19 @@ public class SVGParser {
 
     /** Set the attributes of a PaintedPath from a hash-table
      */
-    private static void processPaintedPathAttributes (
-            PaintedPath pp, Map attributes) {
+    private static void processPaintedPathAttributes(PaintedPath pp,
+        Map attributes) {
         String style = (String) attributes.get("style");
+
         if (style != null) {
             StringTokenizer t = new StringTokenizer(style, ";");
+
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
                 int index = string.indexOf(":");
                 String name = string.substring(0, index);
                 String value = string.substring(index + 1);
+
                 if (name.equals("stroke")) {
                     pp.strokePaint = lookupColor(value);
                 } else if (name.equals("stroke-width")) {
@@ -418,16 +461,19 @@ public class SVGParser {
 
     /** Set the attributes of a PaintedString from a hash-table
      */
-    private static void processPaintedStringAttributes (
-            PaintedString pp, Map attributes) {
+    private static void processPaintedStringAttributes(PaintedString pp,
+        Map attributes) {
         String style = (String) attributes.get("style");
+
         if (style != null) {
             StringTokenizer t = new StringTokenizer(style, ";");
+
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
                 int index = string.indexOf(":");
                 String name = string.substring(0, index);
                 String value = string.substring(index + 1);
+
                 if (name.equals("font-family")) {
                     pp.setFontName(value);
                 } else if (name.equals("font-size")) {
@@ -442,38 +488,39 @@ public class SVGParser {
     public static PaintedList createPaintedList(XmlElement root) {
         PaintedList list = new PaintedList();
         String name = root.getType();
-        if (!name.equals("svg"))
-            throw new IllegalArgumentException("Input XML has a root" +
-                    "name which is '" + name + "' instead of 'svg':" +
-                    root);
+
+        if (!name.equals("svg")) {
+            throw new IllegalArgumentException("Input XML has a root"
+                + "name which is '" + name + "' instead of 'svg':" + root);
+        }
+
         Iterator children = root.elements();
+
         while (children.hasNext()) {
-            XmlElement child = (XmlElement)children.next();
-            PaintedObject object = createPaintedObject(
-                    child.getType(),
-                    child.getAttributeMap(),
-                    child.getPCData());
+            XmlElement child = (XmlElement) children.next();
+            PaintedObject object = createPaintedObject(child.getType(),
+                    child.getAttributeMap(), child.getPCData());
+
             if (object != null) {
                 list.add(object);
             }
         }
+
         return list;
     }
 
     private static double _getDouble(Map map, String name, double def) {
         if (map.containsKey(name)) {
-            return Double.parseDouble((String)map.get(name));
+            return Double.parseDouble((String) map.get(name));
         } else {
             return def;
         }
     }
 
     private static double _getDouble(Map map, String name) {
-        return Double.parseDouble((String)map.get(name));
+        return Double.parseDouble((String) map.get(name));
     }
 
     // Reference class used to get resources.
     private static Class _refClass = null;
 }
-
-

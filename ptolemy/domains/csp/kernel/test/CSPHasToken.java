@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.csp.kernel.test;
 
 import ptolemy.actor.Receiver;
@@ -39,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPHasToken
+
 /**
 
 @author John S. Davis II
@@ -48,13 +48,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class CSPHasToken extends CSPGet {
-
     /**
      */
     public CSPHasToken(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }
 
@@ -64,16 +62,18 @@ public class CSPHasToken extends CSPGet {
     /**
      */
     public void fire() throws IllegalActionException {
-        Receiver[][] rcvrs = (Receiver[][])inputPort.getReceivers();
+        Receiver[][] rcvrs = (Receiver[][]) inputPort.getReceivers();
         CSPReceiver rcvr = null;
-        for ( int i = 0; i < rcvrs.length; i++ ) {
-            for ( int j = 0; j < rcvrs[i].length; j++ ) {
-                rcvr = (CSPReceiver)rcvrs[i][j];
+
+        for (int i = 0; i < rcvrs.length; i++) {
+            for (int j = 0; j < rcvrs[i].length; j++) {
+                rcvr = (CSPReceiver) rcvrs[i][j];
             }
         }
 
         Token token = rcvr.get();
-        if ( token != null ) {
+
+        if (token != null) {
             _hasToken = true;
         }
     }
@@ -86,7 +86,5 @@ public class CSPHasToken extends CSPGet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _hasToken = false;
-
 }

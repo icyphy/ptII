@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data;
 
 import java.awt.Image;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageToken
+
 /**
    An abstract class that all tokens which encapsulate images should extend.
    Each class that extends this class is required to implement the method
@@ -44,7 +45,6 @@ import java.awt.Image;
    @Pt.AcceptedRating Red (cxh)
 */
 public abstract class ImageToken extends Token {
-
     /** Construct an empty token.
      */
     public ImageToken() {
@@ -59,4 +59,3 @@ public abstract class ImageToken extends Token {
      */
     public abstract Image asAWTImage();
 }
-

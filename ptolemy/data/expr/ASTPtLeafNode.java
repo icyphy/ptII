@@ -28,15 +28,16 @@ COPYRIGHTENDKEY
 Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.Map;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtLeafNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents the leaf nodes of the
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtLeafNode extends ASTPtRootNode {
-
     public ASTPtLeafNode(int id) {
         super(id);
     }
@@ -82,20 +82,24 @@ public class ASTPtLeafNode extends ASTPtRootNode {
         if (!super.isCongruent(node, renaming)) {
             return false;
         }
+
         // Both must be constant or not.
         if (isConstant() != node.isConstant()) {
             return false;
         }
+
         if (isConstant()) {
             // If constant, then check the value
             return getToken().equals(node.getToken());
         } else {
             // Else, check the name.
-            String checkName = (String)renaming.get(getName());
+            String checkName = (String) renaming.get(getName());
+
             if (checkName == null) {
                 checkName = getName();
             }
-            if (!checkName.equals(((ASTPtLeafNode)node).getName())) {
+
+            if (!checkName.equals(((ASTPtLeafNode) node).getName())) {
                 return false;
             } else {
                 return true;
@@ -118,8 +122,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitLeafNode(this);
     }
 

@@ -24,11 +24,11 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.event;
 
 import java.awt.AWTEventMulticaster;
 import java.util.EventListener;
+
 
 /** A subclass of the AWT event multi-caster, which adds support
  * for layer events.
@@ -36,8 +36,8 @@ import java.util.EventListener;
  * @version        $Id$
  * @author         John Reekie
  */
-public class LayerEventMulticaster extends AWTEventMulticaster implements LayerListener, LayerMotionListener {
-
+public class LayerEventMulticaster extends AWTEventMulticaster
+    implements LayerListener, LayerMotionListener {
     /**
      * Create an event multicaster from two listeners.
      */
@@ -48,51 +48,51 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements LayerL
     /** Invoked when the mouse moves while the button is still held
      * down.
      */
-    public void mouseDragged (LayerEvent e) {
-        ((LayerListener)a).mouseDragged(e);
-        ((LayerListener)b).mouseDragged(e);
+    public void mouseDragged(LayerEvent e) {
+        ((LayerListener) a).mouseDragged(e);
+        ((LayerListener) b).mouseDragged(e);
     }
 
     /** Invoked when the mouse enters a layer or figure.
      */
-    public void mouseEntered (LayerEvent e)  {
-        ((LayerMotionListener)a).mouseEntered(e);
-        ((LayerMotionListener)b).mouseEntered(e);
+    public void mouseEntered(LayerEvent e) {
+        ((LayerMotionListener) a).mouseEntered(e);
+        ((LayerMotionListener) b).mouseEntered(e);
     }
 
     /** Invoked when the mouse exits a layer or figure.
      */
-    public void mouseExited (LayerEvent e) {
-        ((LayerMotionListener)a).mouseExited(e);
-        ((LayerMotionListener)b).mouseExited(e);
+    public void mouseExited(LayerEvent e) {
+        ((LayerMotionListener) a).mouseExited(e);
+        ((LayerMotionListener) b).mouseExited(e);
     }
 
     /** Invoked when the mouse moves while over a layer or figure.
      */
-    public void mouseMoved (LayerEvent e) {
-        ((LayerMotionListener)a).mouseExited(e);
-        ((LayerMotionListener)b).mouseExited(e);
+    public void mouseMoved(LayerEvent e) {
+        ((LayerMotionListener) a).mouseExited(e);
+        ((LayerMotionListener) b).mouseExited(e);
     }
 
     /** Invoked when the mouse is pressed on a layer or figure.
      */
-    public void mousePressed (LayerEvent e) {
-        ((LayerListener)a).mousePressed(e);
-        ((LayerListener)b).mousePressed(e);
+    public void mousePressed(LayerEvent e) {
+        ((LayerListener) a).mousePressed(e);
+        ((LayerListener) b).mousePressed(e);
     }
 
     /** Invoked when the mouse is released on a layer or figure.
      */
-    public void mouseReleased (LayerEvent e) {
-        ((LayerListener)a).mouseReleased(e);
-        ((LayerListener)b).mouseReleased(e);
+    public void mouseReleased(LayerEvent e) {
+        ((LayerListener) a).mouseReleased(e);
+        ((LayerListener) b).mouseReleased(e);
     }
 
     /** Invoked when the mouse is clicked on a layer or figure.
      */
-    public void mouseClicked (LayerEvent e) {
-        ((LayerListener)a).mouseClicked(e);
-        ((LayerListener)b).mouseClicked(e);
+    public void mouseClicked(LayerEvent e) {
+        ((LayerListener) a).mouseClicked(e);
+        ((LayerListener) b).mouseClicked(e);
     }
 
     /**
@@ -100,9 +100,8 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements LayerL
      * returns the resulting multicast listener.
      */
     public static LayerListener add(LayerListener a, LayerListener b) {
-        return (LayerListener)addInternal(a, b);
+        return (LayerListener) addInternal(a, b);
     }
-
 
     /**
      * Returns the resulting multicast listener from adding listener-a
@@ -115,8 +114,14 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements LayerL
      * @param b event listener-b
      */
     protected static EventListener addInternal(EventListener a, EventListener b) {
-        if (a == null)  return b;
-        if (b == null)  return a;
+        if (a == null) {
+            return b;
+        }
+
+        if (b == null) {
+            return a;
+        }
+
         return new LayerEventMulticaster(a, b);
     }
 
@@ -124,9 +129,9 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements LayerL
      * Adds layer-motion-listener-a with layer-motion-listener-b and
      * returns the resulting multicast listener.
      */
-    public static LayerMotionListener add(
-            LayerMotionListener a, LayerMotionListener b) {
-        return (LayerMotionListener)addInternal(a, b);
+    public static LayerMotionListener add(LayerMotionListener a,
+        LayerMotionListener b) {
+        return (LayerMotionListener) addInternal(a, b);
     }
 
     /**
@@ -141,12 +146,8 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements LayerL
      * Removes the old layer-motion-listener from layer-motion-listener-l and
      * returns the resulting multicast listener.
      */
-    public static LayerMotionListener remove(
-            LayerMotionListener l, LayerMotionListener oldl) {
+    public static LayerMotionListener remove(LayerMotionListener l,
+        LayerMotionListener oldl) {
         return (LayerMotionListener) removeInternal(l, oldl);
     }
-
 }
-
-
-

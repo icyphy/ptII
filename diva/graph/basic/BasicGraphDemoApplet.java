@@ -27,6 +27,7 @@ package diva.graph.basic;
 
 import diva.gui.AppletContext;
 
+
 /**
  * An applet version of the graph demo.
  *
@@ -40,10 +41,3 @@ public class BasicGraphDemoApplet extends AppletContext {
         new BasicGraphDemo(this);
     }
 }
-
-
-
-
-
-
-

@@ -36,8 +36,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SDFTestJoin
+
 /**
  * A deterministic merge of two token streams.
  * @author Stephen Neuendorffer
@@ -46,36 +48,32 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.ProposedRating Red
  * @Pt.AcceptedRating Red
  */
-
 public class SDFTestJoin extends TypedAtomicActor {
-
     public SDFTestJoin(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input1 = new TypedIOPort(this,"input1", true, false);
-        input1_tokenConsumptionRate =
-            new Parameter(input1, "tokenConsumptionRate", new IntToken(1));
+        input1 = new TypedIOPort(this, "input1", true, false);
+        input1_tokenConsumptionRate = new Parameter(input1,
+                "tokenConsumptionRate", new IntToken(1));
         input1.setTypeEquals(BaseType.GENERAL);
 
-        input2 = new TypedIOPort(this,"input2", true, false);
-        input2_tokenConsumptionRate =
-            new Parameter(input2, "tokenConsumptionRate", new IntToken(1));
+        input2 = new TypedIOPort(this, "input2", true, false);
+        input2_tokenConsumptionRate = new Parameter(input2,
+                "tokenConsumptionRate", new IntToken(1));
         input2.setTypeEquals(BaseType.GENERAL);
 
-        output = new TypedIOPort(this,"output", false, true);
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate", new IntToken(2));
+        output = new TypedIOPort(this, "output", false, true);
+        output_tokenProductionRate = new Parameter(output,
+                "tokenProductionRate", new IntToken(2));
 
         output.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public TypedIOPort input1;
     public TypedIOPort input2;
     public TypedIOPort output;
-
     public Parameter input1_tokenConsumptionRate;
     public Parameter input2_tokenConsumptionRate;
     public Parameter output_tokenProductionRate;
@@ -88,18 +86,9 @@ public class SDFTestJoin extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         IntToken message;
 
-        message = (IntToken)input1.get(0);
+        message = (IntToken) input1.get(0);
         output.send(0, message);
-        message = (IntToken)input2.get(0);
+        message = (IntToken) input2.get(0);
         output.send(0, message);
-
     }
 }
-
-
-
-
-
-
-
-

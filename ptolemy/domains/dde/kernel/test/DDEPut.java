@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.kernel.test;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -39,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEPut
+
 /**
    DDEPut is a test class used to test token production. It has a single
    typed, input multiport. Use this class to test DDEReceiver and DDEThread.
@@ -51,13 +51,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class DDEPut extends TypedAtomicActor {
-
     /**
      */
     public DDEPut(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         outputPort = new TypedIOPort(this, "output", false, true);
@@ -67,9 +65,7 @@ public class DDEPut extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     public TypedIOPort outputPort;
 }

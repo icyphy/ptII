@@ -28,15 +28,16 @@ COPYRIGHTENDKEY
 @AcceptedRating Red (liuxj)
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParserScope
+
 /**
    An interface used by the expression parser for identifier lookup.
    <p>
@@ -47,17 +48,14 @@ import ptolemy.kernel.util.IllegalActionException;
    @version $Id$
    @see ptolemy.data.expr.PtParser
 */
-
 public interface ParserScope {
-
     /** Look up and return the value with the specified name in the
      *  scope. Return null if the name is not defined in this scope.
      *  @return The token associated with the given name in the scope.
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
-    public ptolemy.data.Token get(String name)
-            throws IllegalActionException;
+    public ptolemy.data.Token get(String name) throws IllegalActionException;
 
     /** Look up and return the type of the value with the specified
      *  name in the scope. Return null if the name is not defined in
@@ -67,7 +65,7 @@ public interface ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.data.type.Type getType(String name)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Look up and return the type term for the specified name
      *  in the scope. Return null if the name is not defined in this
@@ -78,7 +76,7 @@ public interface ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Return a list of names corresponding to the identifiers
      *  defined by this scope.  If an identifier is returned in this
@@ -89,7 +87,5 @@ public interface ParserScope {
      *  @exception IllegalActionException If constructing the list causes
      *  it.
      */
-    public Set identifierSet()
-            throws IllegalActionException;
+    public Set identifierSet() throws IllegalActionException;
 }
-

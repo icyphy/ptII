@@ -29,7 +29,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.io.IOException;
@@ -37,8 +36,10 @@ import java.io.IOException;
 import soot.Scene;
 import soot.SootClass;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JavaToC
+
 /** An application that converts a Java class (from a class file) into  C
     source files (a .h file and a .c file) that implement the class.
     The C conversion capability is highly experimental and rudimentary
@@ -51,9 +52,7 @@ import soot.SootClass;
     @Pt.ProposedRating Red (ssb)
     @Pt.AcceptedRating Red (ssb)
 */
-
 public class JavaToC {
-
     // Private constructor to prevent instantiation of the class.
     private JavaToC() {
     }
@@ -67,21 +66,19 @@ public class JavaToC {
      *  @param className The name of the class to translate.
      */
     public static void convert(String classPath, String className)
-            throws IOException {
-
-        boolean generateSingleClass = Options.v().get("compileMode")
-            .equals("singleClass");
+        throws IOException {
+        boolean generateSingleClass = Options.v().get("compileMode").equals("singleClass");
         boolean verbose = Options.v().getBoolean("verbose");
 
         if (verbose) {
-            System.out.println("JavaToC.convert(): classpath is: "
-                    + classPath);
+            System.out.println("JavaToC.convert(): classpath is: " + classPath);
             System.out.println("Single class flag is: " + generateSingleClass);
         }
 
         // Initialize code generation.
         Scene.v().setSootClassPath(classPath);
         Scene.v().loadClassAndSupport(className);
+
         RequiredFileGenerator RFG = new RequiredFileGenerator();
         OverriddenMethodGenerator.init();
 
@@ -104,7 +101,7 @@ public class JavaToC {
         // Generate the "interface header" file.
         String code = sGenerator.generate(sootClass);
         FileHandler.write(CNames.sanitize(className)
-                + StubFileGenerator.stubFileNameSuffix(), code);
+            + StubFileGenerator.stubFileNameSuffix(), code);
 
         // Generate the .h file.
         code = hGenerator.generate(sootClass);
@@ -116,8 +113,8 @@ public class JavaToC {
 
         if (!generateSingleClass) {
             // Generate other required files.
-            RequiredFileGenerator
-                .generateTransitiveClosureOf(classPath, className);
+            RequiredFileGenerator.generateTransitiveClosureOf(classPath,
+                className);
 
             // Generate the makefile.
             MakeFileGenerator.generateMakeFile(classPath, className);
@@ -130,13 +127,11 @@ public class JavaToC {
         }
     }
 
-
     /** Entry point for the JavaToC application. See {@link JavaToC} for
      *  instructions on usage.
      *  @param args Application arguments.
      */
     public static void main(String[] args) throws IOException {
-
         String classPath = new String(args[0]);
         String className = new String();
 
@@ -145,10 +140,9 @@ public class JavaToC {
         boolean verbose = false;
 
         // Actual flags.
-        for (int i = 1;i<args.length; i++) {
+        for (int i = 1; i < args.length; i++) {
             if (args[i].startsWith("-")) {
                 // Its a flag.
-
                 // Call for help.
                 if (args[i].equals("-h")) {
                     showHelp();
@@ -156,26 +150,25 @@ public class JavaToC {
                 }
                 // Check for possible options.
                 else if (Options.isValidFlag(args[i])) {
-                    if (i<args.length-1) {
+                    if (i < (args.length - 1)) {
                         i++;
+
                         // Strip the leading "-" and note the option.
-                        Options.v().put(args[i-1].substring(1), args[i]);
-                    }
-                    else {
-                        System.err.println(
-                                "Invalid command-line format.");
+                        Options.v().put(args[i - 1].substring(1), args[i]);
+                    } else {
+                        System.err.println("Invalid command-line format.");
                     }
                 }
-            }
-            else {
+            } else {
                 // Its the name of a class to convert.
-                className=args[i];
+                className = args[i];
 
                 // Autodetection of garbage collector.
                 // If the gcDir option is specified, check that it exists.
                 // If it does not exist, set it to "" in order to turn off
                 // garbage collection.
                 String gcDir = Options.v().get("gcDir");
+
                 if (!gcDir.equals("")) {
                     if (!FileHandler.exists(gcDir)) {
                         Options.v().put("gcDir", "");
@@ -188,25 +181,25 @@ public class JavaToC {
         }
 
         // If no className specified
-        if (className.equals("")) showHelp();
-
+        if (className.equals("")) {
+            showHelp();
+        }
     }
 
     /** Prints out the help message on usage of this class and command-line
      *  arguments.
      */
     public static void showHelp() {
-        System.out.println( "USAGE: java "
-                + " javatoc classPath [flags] [value] [flag] [value] "
-                + "... className"
-                + " [flag][value] ... [flag] [value] [className2]...\n");
-        System.out.println( "Command-line flags and their possible values\n"
-                + "verbose (true/false)\n"
-                + "compileMode (singleClass/headersOnly/full) \n"
-                + "lib (path to library directory).");
+        System.out.println("USAGE: java "
+            + " javatoc classPath [flags] [value] [flag] [value] "
+            + "... className"
+            + " [flag][value] ... [flag] [value] [className2]...\n");
+        System.out.println("Command-line flags and their possible values\n"
+            + "verbose (true/false)\n"
+            + "compileMode (singleClass/headersOnly/full) \n"
+            + "lib (path to library directory).");
 
-        System.out.println( "help flags        : [-h] to see this message");
-        System.out.println( "\nLater flags override earlier ones.");
+        System.out.println("help flags        : [-h] to see this message");
+        System.out.println("\nLater flags override earlier ones.");
     }
-
 }

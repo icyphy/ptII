@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -168,7 +167,6 @@ import diva.gui.BasicFrame;
  * @version $Id$
  */
 public class ConnectorTutorial {
-
     // The JCanvas
     private JCanvas canvas;
 
@@ -191,13 +189,13 @@ public class ConnectorTutorial {
 
     /** Create a JCanvas and put it into a window.
      */
-    public ConnectorTutorial () {
+    public ConnectorTutorial() {
         canvas = new JCanvas();
 
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         BasicFrame frame = new BasicFrame("Connector tutorial", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
 
         controller = new BasicController(graphicsPane);
@@ -206,11 +204,11 @@ public class ConnectorTutorial {
     /** Create the figures that we will draw connectors between.
      * This is fairly uninteresting.
      */
-    public void createFigures () {
+    public void createFigures() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
-        figureA = new SitedRectangle(10.0,10.0,50.0,50.0,Color.red);
-        figureB = new SitedRectangle(100.0,100.0,100.0,50.0,Color.green);
+        figureA = new SitedRectangle(10.0, 10.0, 50.0, 50.0, Color.red);
+        figureB = new SitedRectangle(100.0, 100.0, 100.0, 50.0, Color.green);
 
         layer.add(figureA);
         layer.add(figureB);
@@ -221,7 +219,7 @@ public class ConnectorTutorial {
      * create one StraightConnector with a circle and an arrowhead
      * on it, and then a ManhattanConnector with a diamon on one end.
      */
-    public void createConnectors () {
+    public void createConnectors() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Create the first connector
@@ -230,8 +228,7 @@ public class ConnectorTutorial {
         connectorA = new StraightConnector(a, b);
 
         // Add the circle and arrowhead to it
-        Blob blob = new Blob(a.getX(), a.getY(),
-                a.getNormal(), Blob.BLOB_CIRCLE);
+        Blob blob = new Blob(a.getX(), a.getY(), a.getNormal(), Blob.BLOB_CIRCLE);
         connectorA.setTailEnd(blob);
 
         Arrowhead arrow = new Arrowhead(b.getX(), b.getY(), b.getNormal());
@@ -246,10 +243,7 @@ public class ConnectorTutorial {
         connectorB = new ManhattanConnector(c, d);
 
         // Add the diamond
-        Blob diamond = new Blob(
-                c.getX(),
-                c.getY(),
-                c.getNormal(),
+        Blob diamond = new Blob(c.getX(), c.getY(), c.getNormal(),
                 Blob.BLOB_DIAMOND);
         diamond.setSizeUnit(6.0);
         diamond.setFilled(false);
@@ -266,7 +260,7 @@ public class ConnectorTutorial {
      * interactor and just call the connectors to re-route whenever
      * the nmouse moves.
      */
-    public void setupInteraction () {
+    public void setupInteraction() {
         // Because this pane has connectors on it, we make the pick
         // halo larger than the default so we can click-select connectors
         FigureLayer layer = graphicsPane.getForegroundLayer();
@@ -280,8 +274,8 @@ public class ConnectorTutorial {
         // Add a layer listener to the drag interactor.
         // The listener just tells both connectors to reroute themselves.
         DragInteractor i = controller.getDragInteractor();
-        i.addLayerListener(new LayerAdapter () {
-                public void mouseDragged (LayerEvent e) {
+        i.addLayerListener(new LayerAdapter() {
+                public void mouseDragged(LayerEvent e) {
                     connectorA.reroute();
                     connectorB.reroute();
                 }
@@ -308,22 +302,26 @@ public class ConnectorTutorial {
                 public void connectorDragged(ConnectorEvent e) {
                     //// System.out.println("Dragged");
                 }
+
                 public void connectorDropped(ConnectorEvent e) {
                     System.out.println("Dropped");
                 }
+
                 public void connectorSnapped(ConnectorEvent e) {
                     System.out.println("Snapped");
                 }
+
                 public void connectorUnsnapped(ConnectorEvent e) {
                     System.out.println("Unsnapped");
                 }
             };
+
         manipulator.addConnectorListener(cl);
     }
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -354,49 +352,48 @@ public class ConnectorTutorial {
 
         /** Create a new instance of this figure.
          */
-        public SitedRectangle (
-                double x, double y,
-                double width, double height, Color color) {
+        public SitedRectangle(double x, double y, double width, double height,
+            Color color) {
             super(x, y, width, height, color);
-            _geometry = new BoundsGeometry(this,getBounds());
+            _geometry = new BoundsGeometry(this, getBounds());
         }
 
         /** Get the north site.
          */
-        public Site getN () {
+        public Site getN() {
             return _geometry.getN();
         }
 
         /** Get the south site.
          */
-        public Site getS () {
+        public Site getS() {
             return _geometry.getS();
         }
 
         /** Get the east site.
          */
-        public Site getE () {
+        public Site getE() {
             return _geometry.getE();
         }
 
         /** Get the west site.
          */
-        public Site getW () {
+        public Site getW() {
             return _geometry.getW();
         }
 
         /** Update the geometry
          */
-        public void transform (AffineTransform at) {
+        public void transform(AffineTransform at) {
             super.transform(at);
             _geometry.setShape(getShape());
         }
 
         /** Update the geometry
          */
-        public void translate (double x, double y) {
+        public void translate(double x, double y) {
             super.translate(x, y);
-            _geometry.translate(x,y);
+            _geometry.translate(x, y);
         }
     }
 
@@ -406,10 +403,9 @@ public class ConnectorTutorial {
     /** SRTarget is used to find a useful site on a SitedRectangle.
      */
     public class SRTarget extends AbstractConnectorTarget {
-
         /** Return the nearest site on the figure
          */
-        public Site getHeadSite (Figure f, double x, double y) {
+        public Site getHeadSite(Figure f, double x, double y) {
             if (f instanceof SitedRectangle) {
                 SitedRectangle sr = (SitedRectangle) f;
                 Site s = closest(sr.getN(), sr.getS(), x, y);
@@ -422,8 +418,9 @@ public class ConnectorTutorial {
         }
 
         private Site closest(Site a, Site b, double x, double y) {
-            double q = a.getPoint().distanceSq(x,y);
-            double r = b.getPoint().distanceSq(x,y);
+            double q = a.getPoint().distanceSq(x, y);
+            double r = b.getPoint().distanceSq(x, y);
+
             if (q < r) {
                 return a;
             } else {
@@ -432,6 +429,3 @@ public class ConnectorTutorial {
         }
     }
 }
-
-
-

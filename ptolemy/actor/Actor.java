@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import java.util.List;
@@ -34,8 +33,10 @@ import ptolemy.actor.util.FunctionDependency;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Actor
+
 /**
    An Actor is an executable entity. This interface defines the common
    functionality in AtomicActor and CompositeActor.
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.Nameable;
    @see ptolemy.actor.AtomicActor
 */
 public interface Actor extends Executable, Nameable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

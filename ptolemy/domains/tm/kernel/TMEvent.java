@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.data.Token;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TMEvent
+
 /**
    A TM event is an event that triggers the execution of a TM actor
    (task). It has the following information that assists the dispatching
@@ -72,7 +73,6 @@ import ptolemy.data.Token;
    @see ptolemy.domains.de.kernel.DEEvent
 */
 public class TMEvent implements Comparable {
-
     /** Construct an event with the specified destination receiver,
      *  token, priority, and executionTime. Upon creation,
      *  the processing of an event has not started.
@@ -87,11 +87,13 @@ public class TMEvent implements Comparable {
      *   not contained by a port contained by an actor.
      */
     public TMEvent(TMReceiver receiver, Token token, int priority,
-            double processingTime) {
+        double processingTime) {
         _receiver = receiver;
+
         if (receiver != null) {
-            _actor = (Actor)receiver.getContainer().getContainer();
+            _actor = (Actor) receiver.getContainer().getContainer();
         }
+
         _token = token;
         _priority = priority;
         _hasStarted = false;
@@ -120,7 +122,7 @@ public class TMEvent implements Comparable {
      *  of TMEvent.
      */
     public final int compareTo(Object event) {
-        return compareTo((TMEvent)event);
+        return compareTo((TMEvent) event);
     }
 
     /** Compare the tag of this event with the specified event for order.
@@ -142,14 +144,13 @@ public class TMEvent implements Comparable {
      *  @return -1, 0, or 1, depends on the order of the events.
      */
     public final int compareTo(TMEvent event) {
-
-        if ( _priority > event._priority)  {
+        if (_priority > event._priority) {
             return 1;
-        } else if ( _priority < event._priority) {
+        } else if (_priority < event._priority) {
             return -1;
-        } else if ( _hasStarted ) {
+        } else if (_hasStarted) {
             return -1;
-        } else if ( !_hasStarted && event._hasStarted ) {
+        } else if (!_hasStarted && event._hasStarted) {
             return 1;
         } else {
             return 0;
@@ -170,6 +171,7 @@ public class TMEvent implements Comparable {
      *  dispatching order.
      *  @param event The event to compare against.
      */
+
     // Commented out because it is not used anywhere
     //public final boolean isEquallyPriorTo(TMEvent event) {
     //    return (_priority == event._priority) &&
@@ -217,7 +219,6 @@ public class TMEvent implements Comparable {
         _processingTime = time;
     }
 
-
     /** Start the processing of this event.
      */
     public final void startProcessing() {
@@ -246,15 +247,12 @@ public class TMEvent implements Comparable {
      */
     public final String toString() {
         return "TMEvent(token = " + _token + ", priority = " + _priority
-            + ", destination = "
-            + _actor
-            + ", hasStarted = " + _hasStarted
-            + ", processingTime = " + _processingTime + ")";
+        + ", destination = " + _actor + ", hasStarted = " + _hasStarted
+        + ", processingTime = " + _processingTime + ")";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The destination receiver.
     private TMReceiver _receiver;
 
@@ -272,15 +270,4 @@ public class TMEvent implements Comparable {
 
     // The remaining time needed to finish processing the event.
     private double _processingTime;
-
 }
-
-
-
-
-
-
-
-
-
-

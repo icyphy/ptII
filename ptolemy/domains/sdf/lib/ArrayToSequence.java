@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import java.util.List;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToSequence
+
 /**
    This actor reads an array at the input and writes the array elements
    as a sequence to the output. The parameter <i>arrayLength</i> can be
@@ -68,9 +69,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (yuhong)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class ArrayToSequence extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -80,12 +79,13 @@ public class ArrayToSequence extends SDFTransformer {
      *   actor with this name.
      */
     public ArrayToSequence(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set type constraints.
         input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType inputType = (ArrayType)input.getType();
+
+        ArrayType inputType = (ArrayType) input.getType();
         InequalityTerm elementTerm = inputType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
 
@@ -99,10 +99,9 @@ public class ArrayToSequence extends SDFTransformer {
         output_tokenProductionRate.setExpression("arrayLength");
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -128,12 +127,13 @@ public class ArrayToSequence extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == arrayLength) {
-            int rate = ((IntToken)arrayLength.getToken()).intValue();
+            int rate = ((IntToken) arrayLength.getToken()).intValue();
+
             if (rate < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid arrayLength: " + rate);
+                    "Invalid arrayLength: " + rate);
             }
         } else {
             super.attributeChanged(attribute);
@@ -147,12 +147,11 @@ public class ArrayToSequence extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ArrayToSequence newObject = (ArrayToSequence)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayToSequence newObject = (ArrayToSequence) (super.clone(workspace));
 
         // set the type constraints
-        ArrayType inputType = (ArrayType)newObject.input.getType();
+        ArrayType inputType = (ArrayType) newObject.input.getType();
         InequalityTerm elementTerm = inputType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
@@ -163,15 +162,17 @@ public class ArrayToSequence extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        ArrayToken token = (ArrayToken)input.get(0);
-        int rate = ((IntToken)arrayLength.getToken()).intValue();
-        boolean enforce = ((BooleanToken)enforceArrayLength.getToken())
+
+        ArrayToken token = (ArrayToken) input.get(0);
+        int rate = ((IntToken) arrayLength.getToken()).intValue();
+        boolean enforce = ((BooleanToken) enforceArrayLength.getToken())
             .booleanValue();
-        if (enforce && token.length() != rate) {
-            throw new IllegalActionException(this, "The " +
-                    "number of elements in the input ArrayToken (" +
-                    token.length() + ") is not the same as the arrayLength " +
-                    "parameter (" + rate + ").");
+
+        if (enforce && (token.length() != rate)) {
+            throw new IllegalActionException(this,
+                "The " + "number of elements in the input ArrayToken ("
+                + token.length() + ") is not the same as the arrayLength "
+                + "parameter (" + rate + ").");
         }
 
         Token[] elements = token.arrayValue();

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.style;
 
 import java.io.File;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FileChooserStyle
+
 /**
    This attribute annotates user settable attributes to specify
    that the value of the parameter can be optionally given using a
@@ -57,9 +58,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class FileChooserStyle extends ParameterEditorStyle {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -91,7 +90,7 @@ public class FileChooserStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public FileChooserStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -103,8 +102,11 @@ public class FileChooserStyle extends ParameterEditorStyle {
      *  @return True if the argument is a StringAttribute, false otherwise.
      */
     public boolean acceptable(Settable param) {
-        if (!(param instanceof StringAttribute)) return false;
-        else return true;
+        if (!(param instanceof StringAttribute)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /** Create a new entry in the given query associated with the
@@ -114,62 +116,62 @@ public class FileChooserStyle extends ParameterEditorStyle {
      *  @exception IllegalActionException If thrown when accessing parameters
      *   specifying whether files or directories should be listed.
      */
-    public void addEntry(PtolemyQuery query)
-            throws IllegalActionException {
-        Settable container = (Settable)getContainer();
+    public void addEntry(PtolemyQuery query) throws IllegalActionException {
+        Settable container = (Settable) getContainer();
         String name = container.getName();
         String defaultValue = container.getExpression();
         defaultValue = container.getExpression();
+
         URI modelURI = URIAttribute.getModelURI(this);
         File directory = null;
+
         if (modelURI != null) {
             if (modelURI.getScheme().equals("file")) {
                 File modelFile = new File(modelURI);
                 directory = modelFile.getParentFile();
             }
         }
+
         // Check to see whether the attribute being configured
         // specifies whether files or directories should be listed.
         // By default, only files are selectable.
         boolean allowFiles = true;
         boolean allowDirectories = false;
+
         if (container instanceof NamedObj) {
-            Parameter marker = (Parameter)((NamedObj)container)
-                    .getAttribute("allowFiles", Parameter.class);
+            Parameter marker = (Parameter) ((NamedObj) container).getAttribute("allowFiles",
+                    Parameter.class);
+
             if (marker != null) {
                 Token value = marker.getToken();
+
                 if (value instanceof BooleanToken) {
-                    allowFiles = ((BooleanToken)value)
-                            .booleanValue();
+                    allowFiles = ((BooleanToken) value).booleanValue();
                 }
             }
-            marker = (Parameter)((NamedObj)container)
-                    .getAttribute("allowDirectories",
+
+            marker = (Parameter) ((NamedObj) container).getAttribute("allowDirectories",
                     Parameter.class);
+
             if (marker != null) {
                 Token value = marker.getToken();
+
                 if (value instanceof BooleanToken) {
-                    allowDirectories = ((BooleanToken)value)
-                            .booleanValue();
+                    allowDirectories = ((BooleanToken) value).booleanValue();
                 }
             }
         }
+
         // FIXME: What to do when neither files nor directories are allowed?
         if (!allowFiles && !allowDirectories) {
             // The given attribute will not have a query in the dialog.
             return;
         }
 
-        query.addFileChooser(
-                name,
-                name,
-                defaultValue,
-                modelURI,
-                directory,
-                allowFiles,
-                allowDirectories,
-                PtolemyQuery.preferredBackgroundColor(container),
-                PtolemyQuery.preferredForegroundColor(container));
+        query.addFileChooser(name, name, defaultValue, modelURI, directory,
+            allowFiles, allowDirectories,
+            PtolemyQuery.preferredBackgroundColor(container),
+            PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
     }
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.demo.EvaderAndPursuer;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -44,6 +43,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Pursuer
@@ -66,7 +66,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class Pursuer extends TypedAtomicActor {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -76,7 +75,7 @@ public class Pursuer extends TypedAtomicActor {
      *   actor with this name.
      */
     public Pursuer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create and configure the parameters.
@@ -94,10 +93,10 @@ public class Pursuer extends TypedAtomicActor {
         ylocation.setTypeEquals(BaseType.DOUBLE);
 
         workRange = new Parameter(this, "workRange");
+
         Type rangeType = new ArrayType(new ArrayType(BaseType.DOUBLE));
         workRange.setTypeEquals(rangeType);
         workRange.setExpression("{{0.0, 500.0}, {0.0, 500.0}}");
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +110,6 @@ public class Pursuer extends TypedAtomicActor {
      *
      */
     public TypedIOPort trigger;
-
 
     /** Port that output the current x direction location of the pursuer.
      *
@@ -143,7 +141,6 @@ public class Pursuer extends TypedAtomicActor {
      */
     public Parameter workRange;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -152,21 +149,20 @@ public class Pursuer extends TypedAtomicActor {
      *  port.
      */
     public void fire() throws IllegalActionException {
-
         //super.fire();
+        Entity container = (Entity) this.getContainer();
+        Location locationAttribute = (Location) container.getAttribute("_location",
+                Location.class);
 
-        Entity container = (Entity)this.getContainer();
-        Location locationAttribute = (Location)container.getAttribute(
-                "_location", Location.class);
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-                    "Cannot find a _location attribute of class Location.");
+                "Cannot find a _location attribute of class Location.");
         }
+
         _myLocation = locationAttribute.getLocation();
 
         if (trigger.hasToken(0)) {
             //System.out.println("receiving an trigger and firing the persure.");
-
             trigger.get(0);
             xlocation.send(0, new DoubleToken(_myLocation[0] + _speed[0]));
             ylocation.send(0, new DoubleToken(_myLocation[1] + _speed[1]));
@@ -175,25 +171,29 @@ public class Pursuer extends TypedAtomicActor {
         if (input.hasToken(0)) {
             //receive message for updating the spanning tree.
             RecordToken inputToken = (RecordToken) input.get(0);
+
             if (_debugging) {
                 _debug("message token received: ");
             }
-            DoubleToken time =(DoubleToken) inputToken.get("time");
+
+            DoubleToken time = (DoubleToken) inputToken.get("time");
             IntToken d = (IntToken) inputToken.get("depth");
-            if (time.doubleValue() > _timeValue ||
-                    (time.doubleValue() == _timeValue
-                            && d.intValue() < _parentDepth)) {
+
+            if ((time.doubleValue() > _timeValue)
+                    || ((time.doubleValue() == _timeValue)
+                    && (d.intValue() < _parentDepth))) {
                 //the root node may have been changed
                 //or there is a shorter path.
-                ArrayToken locationArray =
-                    (ArrayToken)inputToken.get("location");
+                ArrayToken locationArray = (ArrayToken) inputToken.get(
+                        "location");
                 int length = locationArray.length();
                 _parentLocation = new double[length];
-                for (int i = 0; i < length ; i++) {
-                    _parentLocation[i] =
-                        ((DoubleToken) locationArray
-                                .getElement(i)).doubleValue();
+
+                for (int i = 0; i < length; i++) {
+                    _parentLocation[i] = ((DoubleToken) locationArray
+                        .getElement(i)).doubleValue();
                 }
+
                 _timeValue = time.doubleValue();
                 _parentDepth = d.intValue();
 
@@ -207,14 +207,17 @@ public class Pursuer extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        Entity container = (Entity)this.getContainer();
-        Location locationAttribute = (Location)container.getAttribute(
-                "_location", Location.class);
+
+        Entity container = (Entity) this.getContainer();
+        Location locationAttribute = (Location) container.getAttribute("_location",
+                Location.class);
+
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-                    "Cannot find a _location attribute of class Location.");
+                "Cannot find a _location attribute of class Location.");
         }
-        _myLocation =locationAttribute.getLocation();
+
+        _myLocation = locationAttribute.getLocation();
         _getWorkRange();
         _parentLocation = _myLocation;
         _parentDepth = 0;
@@ -223,7 +226,6 @@ public class Pursuer extends TypedAtomicActor {
         _speed[0] = 0.0;
         _speed[1] = 0.0;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -236,60 +238,69 @@ public class Pursuer extends TypedAtomicActor {
     protected double[] _getSpeed() throws IllegalActionException {
         double dx = _parentLocation[0] - _myLocation[0];
         double dy = _parentLocation[1] - _myLocation[1];
-        double d = Math.sqrt(dx*dx + dy*dy);
+        double d = Math.sqrt((dx * dx) + (dy * dy));
         double[] result = new double[2];
+
         //FIXME: this check should be given by a parameter.
         if (d < 0.1) {
             result[0] = 0.0;
             result[1] = 0.0;
         } else {
-            double spd = ((DoubleToken)speed.getToken()).doubleValue();
-            result[0] = spd*dx/d;
-            result[1] = spd*dy/d;
+            double spd = ((DoubleToken) speed.getToken()).doubleValue();
+            result[0] = (spd * dx) / d;
+            result[1] = (spd * dy) / d;
+
             /*if (!_inWorkRange(_myLocation[0] + result[0],
               _myLocation[1] + result[1])) {
               result[0] = 0.0;
               result[1] = 0.0;
               }*/
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _getWorkRange() throws IllegalActionException {
-        ArrayToken rangeValue = (ArrayToken)workRange.getToken();
+        ArrayToken rangeValue = (ArrayToken) workRange.getToken();
         int dimensions = rangeValue.length();
+
         if (dimensions < 2) {
             throw new IllegalActionException(this,
-                    "Invalid range dimension: " + workRange.getExpression());
+                "Invalid range dimension: " + workRange.getExpression());
         }
+
         _workRange = new double[dimensions][dimensions];
+
         for (int i = 0; i < dimensions; i++) {
-            ArrayToken lowHigh = (ArrayToken)rangeValue.getElement(i);
+            ArrayToken lowHigh = (ArrayToken) rangeValue.getElement(i);
+
             if (lowHigh.length() < 2) {
                 throw new IllegalActionException(this,
-                        "Invalid range: " + workRange.getExpression());
+                    "Invalid range: " + workRange.getExpression());
             }
-            double low =
-                ((DoubleToken)lowHigh.getElement(0)).doubleValue();
-            double high =
-                ((DoubleToken)lowHigh.getElement(1)).doubleValue();
+
+            double low = ((DoubleToken) lowHigh.getElement(0)).doubleValue();
+            double high = ((DoubleToken) lowHigh.getElement(1)).doubleValue();
+
             if (high < low) {
                 throw new IllegalActionException(this,
-                        "Invalid range: " + workRange.getExpression());
+                    "Invalid range: " + workRange.getExpression());
             }
+
             _workRange[i][0] = low;
             _workRange[i][1] = high;
         }
     }
 
-    private boolean _inWorkRange(double xLocation, double yLocation) throws IllegalActionException {
-        return ((_workRange[0][0]<=xLocation) &&
-                (xLocation<=_workRange[0][1]) &&
-                (_workRange[1][0]<=yLocation) &&
-                (yLocation<=_workRange[1][1]));
+    private boolean _inWorkRange(double xLocation, double yLocation)
+        throws IllegalActionException {
+        return ((_workRange[0][0] <= xLocation)
+        && (xLocation <= _workRange[0][1]) && (_workRange[1][0] <= yLocation)
+        && (yLocation <= _workRange[1][1]));
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

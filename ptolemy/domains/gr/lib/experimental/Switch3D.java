@@ -27,17 +27,16 @@ COPYRIGHTENDKEY
 @ProposedRating Red (chf)
 @AcceptedRating Red (chf)
 */
-
 package ptolemy.domains.gr.lib.experimental;
 
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
+import ptolemy.domains.gr.kernel.*;
+import ptolemy.domains.gr.lib.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.domains.gr.lib.*;
-import ptolemy.domains.gr.kernel.*;
 
 import javax.media.j3d.*;
 import javax.vecmath.*;
@@ -45,12 +44,11 @@ import javax.vecmath.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Switch3D
+
 /**
    @author C. Fong
 */
-
 public class Switch3D extends GRTransform {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -61,7 +59,7 @@ public class Switch3D extends GRTransform {
      *   an actor already in the container.
      */
     public Switch3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphOut.setMultiport(true);
@@ -87,8 +85,7 @@ public class Switch3D extends GRTransform {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Switch3D newObject = (Switch3D) super.clone(workspace);
         newObject.select = (TypedIOPort) newObject.getPort("select");
         return newObject;
@@ -101,12 +98,13 @@ public class Switch3D extends GRTransform {
      *  an input port does not have a token.
      */
     public void fire() throws IllegalActionException {
-
         if (select.getWidth() != 0) {
             if (select.hasToken(0)) {
                 int index = (int) ((DoubleToken) select.get(0)).doubleValue();
+
                 if (index != _previousIndex) {
                     int width = sceneGraphOut.getWidth();
+
                     if (index < width) {
                         _stopRenderer();
                         detachableGroup.detach();
@@ -133,9 +131,11 @@ public class Switch3D extends GRTransform {
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         _previousIndex = -1;
+
         int width = sceneGraphIn.getWidth();
         int i;
-        for (i=0;i<width;i++) {
+
+        for (i = 0; i < width; i++) {
             if (sceneGraphIn.hasToken(i)) {
                 SceneGraphToken o = (SceneGraphToken) sceneGraphIn.get(i);
                 Node n = (Node) o.getSceneGraphNode();
@@ -144,10 +144,11 @@ public class Switch3D extends GRTransform {
         }
 
         width = sceneGraphOut.getWidth();
-        System.out.println("width "+width);
+        System.out.println("width " + width);
         attachmentGroup = new BranchGroup[width];
-        for (i=0;i<width;i++) {
-            System.out.println("accessing # "+i);
+
+        for (i = 0; i < width; i++) {
+            System.out.println("accessing # " + i);
             attachmentGroup[i] = new BranchGroup();
             attachmentGroup[i].setCapability(Group.ALLOW_CHILDREN_WRITE);
             attachmentGroup[i].setCapability(Group.ALLOW_CHILDREN_EXTEND);
@@ -159,4 +160,3 @@ public class Switch3D extends GRTransform {
     private BranchGroup[] attachmentGroup;
     private int _previousIndex = -1;
 }
-

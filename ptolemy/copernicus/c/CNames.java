@@ -28,7 +28,6 @@
   COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -51,6 +50,7 @@ import soot.SootMethod;
 import soot.Type;
 import soot.VoidType;
 
+
 /** A class that determines names of various entities to use for C code
     generation.
 
@@ -60,9 +60,7 @@ import soot.VoidType;
     @Pt.ProposedRating Red (ssb)
     @Pt.AcceptedRating Red (ssb)
 */
-
 public class CNames {
-
     // Private constructor to prevent instantiation of this class.
     private CNames() {
     }
@@ -89,11 +87,10 @@ public class CNames {
      */
     public static String classNameToFileName(String className) {
         if (isSystemClass(className)) {
-            return(Options.v().get("lib")
-                    + "/" + _sanitize(className).replace('.', '/'));
-        }
-        else {
-            return(_sanitize(className).replace('.', '/'));
+            return (Options.v().get("lib") + "/"
+            + _sanitize(className).replace('.', '/'));
+        } else {
+            return (_sanitize(className).replace('.', '/'));
         }
     }
 
@@ -119,15 +116,16 @@ public class CNames {
      */
     public static String fieldNameOf(SootField field) {
         String name;
-        if ((name = (String)(_nameMap.get(field))) == null) {
+
+        if ((name = (String) (_nameMap.get(field))) == null) {
             // Hash the type signature to avoid naming conflicts associated
             // with names that are longer than the number of significant
             // characters in a C identifier.
-            Integer prefixCode = new Integer(
-                    field.getSubSignature().hashCode());
+            Integer prefixCode = new Integer(field.getSubSignature().hashCode());
             name = _sanitize("f" + prefixCode + "_" + field.getName());
             _nameMap.put(field, name);
         }
+
         return name;
     }
 
@@ -137,7 +135,8 @@ public class CNames {
      */
     public static String functionNameOf(SootMethod method) {
         String name;
-        if ((name = (String)(_functionMap.get(method))) == null) {
+
+        if ((name = (String) (_functionMap.get(method))) == null) {
             if (method.isNative()) {
                 /*
                   name = ((method.getDeclaringClass().getName()) + "_" +
@@ -147,9 +146,9 @@ public class CNames {
                     + method.getSubSignature();
                 Integer prefixCode = new Integer(prefixBase.hashCode());
                 name = _sanitize("n" + prefixCode + "_" + method.getName());
+
                 //f for function,  n for native
-            }
-            else {
+            } else {
                 // Hash the class name + type signature combination to
                 // avoid naming conflicts.
                 String prefixBase = method.getDeclaringClass().getName()
@@ -157,6 +156,7 @@ public class CNames {
                 Integer prefixCode = new Integer(prefixBase.hashCode());
                 name = _sanitize("f" + prefixCode + "_" + method.getName());
             }
+
             _functionMap.put(method, name);
         }
 
@@ -181,7 +181,6 @@ public class CNames {
         return source.toString().hashCode();
     }
 
-
     /** Return the include file name for a given class.
      *  @param source The class.
      *  @return The include file name.
@@ -202,13 +201,15 @@ public class CNames {
      */
     public static String initializerNameOf(SootClass source) {
         String name;
-        if ((name = (String)(_initializerMap.get(source))) == null) {
+
+        if ((name = (String) (_initializerMap.get(source))) == null) {
             final String suffix = "_init";
             String base = instanceNameOf(source) + suffix;
             Integer prefixCode = new Integer(base.hashCode());
             name = _sanitize("f" + prefixCode + suffix);
             _initializerMap.put(source, name);
         }
+
         return name;
     }
 
@@ -222,10 +223,12 @@ public class CNames {
      *  @return The C name for the instance-specific structure type.
      */
     public static String instanceNameOf(SootClass source) {
-        if (_nameMap.containsKey(source)) return (String)(_nameMap.get(source));
-        else return _instanceNameOf(source);
+        if (_nameMap.containsKey(source)) {
+            return (String) (_nameMap.get(source));
+        } else {
+            return _instanceNameOf(source);
+        }
     }
-
 
     /** Return the C name of the method that performs lookups to
      * disambiguate interface references.
@@ -242,17 +245,13 @@ public class CNames {
      *  @return True if the given class is a System class.
      */
     public static boolean isSystemClass(String className) {
-
-        if ((className.startsWith("java."))
-                ||(className.startsWith("sun."))
-                ||(className.startsWith("org."))
-                ||(className.startsWith("com."))
-                ||(className.startsWith("javax."))
-            ) {
+        if ((className.startsWith("java.")) || (className.startsWith("sun."))
+                || (className.startsWith("org."))
+                || (className.startsWith("com."))
+                || (className.startsWith("javax."))) {
             return (true);
-        }
-        else {
-            return(false);
+        } else {
+            return (false);
         }
     }
 
@@ -262,10 +261,12 @@ public class CNames {
      */
     public static String localNameOf(Local local) {
         String name;
-        if ((name = (String)(_localMap.get(local))) == null) {
+
+        if ((name = (String) (_localMap.get(local))) == null) {
             name = _sanitize("L" + local.getName());
             _localMap.put(local, name);
         }
+
         return name;
     }
 
@@ -278,14 +279,15 @@ public class CNames {
      */
     public static String methodNameOf(SootMethod method) {
         String name;
-        if ((name = (String)(_nameMap.get(method))) == null) {
+
+        if ((name = (String) (_nameMap.get(method))) == null) {
             // Hash the type signature to avoid naming conflicts for overloaded
             // methods.
-            Integer prefixCode = new Integer(
-                    method.getSubSignature().hashCode());
+            Integer prefixCode = new Integer(method.getSubSignature().hashCode());
             name = _sanitize("m" + prefixCode + "_" + method.getName());
             _nameMap.put(method, name);
         }
+
         return name;
     }
 
@@ -320,7 +322,6 @@ public class CNames {
         return "superclass";
     }
 
-
     /** Determine the C name associated with a Soot type. For RefType types,
      *  the C name returned is the name of the instance-specific data structure.
      *  To obtain the name of the class-specific data structure associated with
@@ -330,39 +331,49 @@ public class CNames {
      */
     public static String typeNameOf(Type type) {
         String name = null;
+
         if (type instanceof RefType) {
-            SootClass source = ((RefType)type).getSootClass();
+            SootClass source = ((RefType) type).getSootClass();
 
             // Makes sure no references are made to non-required types that
             // are declarable in the class structure.
             if (RequiredFileGenerator.isRequired(source)) {
                 name = instanceNameOf(source);
-            }
-            else {
+            } else {
                 name = "void*";
             }
-
-        }
-        else if (type instanceof ArrayType) {
-            name="iA"+((ArrayType)type).numDimensions+"_"
-                +typeNameOf(((ArrayType)type).baseType);
+        } else if (type instanceof ArrayType) {
+            name = "iA" + ((ArrayType) type).numDimensions + "_"
+                + typeNameOf(((ArrayType) type).baseType);
         }
 
-        if (type instanceof BooleanType) name = "short";
-        else if (type instanceof ByteType) name = "char";
-        else if (type instanceof CharType) name = "char";
-        else if (type instanceof DoubleType) name = "double";
-        else if (type instanceof FloatType) name = "float";
-        else if (type instanceof IntType) name = "long";
-        else if (type instanceof LongType) name = "long";
-        else if (type instanceof NullType) name = "void*";
-        else if (type instanceof ShortType) name = "short";
-        else if (type instanceof VoidType) name = "void";
-        else new RuntimeException("Unsupported Soot type '"
+        if (type instanceof BooleanType) {
+            name = "short";
+        } else if (type instanceof ByteType) {
+            name = "char";
+        } else if (type instanceof CharType) {
+            name = "char";
+        } else if (type instanceof DoubleType) {
+            name = "double";
+        } else if (type instanceof FloatType) {
+            name = "float";
+        } else if (type instanceof IntType) {
+            name = "long";
+        } else if (type instanceof LongType) {
+            name = "long";
+        } else if (type instanceof NullType) {
+            name = "void*";
+        } else if (type instanceof ShortType) {
+            name = "short";
+        } else if (type instanceof VoidType) {
+            name = "void";
+        } else {
+            new RuntimeException("Unsupported Soot type '"
                 + type.getClass().getName() + "'");
+        }
+
         return name;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public constants                  ////
@@ -378,7 +389,6 @@ public class CNames {
      *  the class of arrays of integers.
      */
     public static final String arrayClassPrefix = "PCCG_ARRAY_";
-
 
     /** The name of the runtime function or macro to be used for
      *  determining the length of an array.
@@ -397,45 +407,41 @@ public class CNames {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Derive a unique name for a class that is to be used as the
     //  name of the user-defined C type that implements instances of
     //  the class.
     private static String _instanceNameOf(SootClass source) {
         String CClassName;
+
         // Classes that are not required just become void*. This is so that
         // they can be used as arguments of methods that are declared in
         // the class structure, but not used.
         if (!RequiredFileGenerator.isRequired(source)) {
             CClassName = "void*";
-        }
-        else {
+        } else {
             String name = source.getName();
 
             // The choice of 'i' as the first letter stands for "instance."
-            String className = (name.indexOf(".") < 0) ? name :
-                name.substring(name.lastIndexOf(".") + 1);
+            String className = (name.indexOf(".") < 0) ? name
+                                                       : name.substring(name
+                    .lastIndexOf(".") + 1);
             Integer prefixCode = new Integer(name.hashCode());
-            CClassName = _sanitize("i" + prefixCode.toString()
-                    + "_" + className);
+            CClassName = _sanitize("i" + prefixCode.toString() + "_"
+                    + className);
         }
+
         _nameMap.put(source, CClassName);
         return CClassName;
     }
 
-
     // Sanitize a name to be valid a C identifier.
     private static String _sanitize(String name) {
-        return name.
-            replace('-', '0').
-            replace('<', '_').
-            replace('>', '_').
-            replace('$', '_');
+        return name.replace('-', '0').replace('<', '_').replace('>', '_')
+                   .replace('$', '_');
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     //  Map from a Java method to the name of the C function that implements
     //  the method. Keys are of type SootMethod. Values are of type String.
     private static HashMap _functionMap;

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
 
 import ptolemy.actor.AtomicActor;
@@ -36,8 +35,10 @@ import ptolemy.graph.Edge;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfAtomicActor
+
 /**
    An instance of FunctionDependencyOfAtomicActor describes the function
    dependency between the inputs and outputs of an atomic actor.
@@ -70,7 +71,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Green (eal)
 */
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
-
     /** Construct a FunctionDependencyOfAtomicActor in the given actor.
      *  @param atomicActor The atomic actor.
      *  @param name The name for this attribute.
@@ -105,17 +105,18 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
         // again can only be accessed from the _validate() method.
         // The _validate() method does the validity checking already
         // and gets the read access of workspace.
-
         DirectedGraph dependencyGraph = _dependencyGraph;
 
         // Note we can not use iterator here because the edges() method
         // returns an unmodifiableList. The removeEdge() method will cause
         // a concurrentModification exception.
         Object[] edges = dependencyGraph.edges().toArray();
+
         for (int i = 0; i < edges.length; i++) {
             Edge edge = (Edge) edges[i];
-            if (edge.source().getWeight().equals(inputPort) &&
-                edge.sink().getWeight().equals(outputPort)) {
+
+            if (edge.source().getWeight().equals(inputPort)
+                    && edge.sink().getWeight().equals(outputPort)) {
                 dependencyGraph.removeEdge(edge);
             }
         }
@@ -131,6 +132,6 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
      */
     protected void _constructDependencyGraph() {
         super._constructDependencyGraph();
-        ((AtomicActor)getContainer()).pruneDependencies();
+        ((AtomicActor) getContainer()).pruneDependencies();
     }
 }

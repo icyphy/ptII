@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.type;
 
 import java.util.HashMap;
@@ -40,8 +39,10 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RecordType
+
 /**
    A class representing the type of a RecordToken.
    To set the type of a typeable object (such as a port or parameter)
@@ -75,7 +76,6 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class RecordType extends StructuredType {
-
     /** Construct a new RecordType with the specified labels and types.
      *  To leave the types of some fields undeclared, use BaseType.UNKNOWN.
      *  The labels and the types are specified in two arrays. These two
@@ -91,8 +91,8 @@ public class RecordType extends StructuredType {
      */
     public RecordType(String[] labels, Type[] types) {
         if (labels.length != types.length) {
-            throw new IllegalArgumentException("RecordType: the labels " +
-                    "and types arrays do not have the same size.");
+            throw new IllegalArgumentException("RecordType: the labels "
+                + "and types arrays do not have the same size.");
         }
 
         for (int i = 0; i < labels.length; i++) {
@@ -113,23 +113,27 @@ public class RecordType extends StructuredType {
             return this;
         } else {
             // empty record is a constant, so this record type is not empty.
-
             // construct the labels and declared types array
             Object[] labelsObj = _fields.keySet().toArray();
             String[] labels = new String[labelsObj.length];
             Type[] types = new Type[labelsObj.length];
+
             for (int i = 0; i < labels.length; i++) {
-                labels[i] = (String)labelsObj[i];
-                FieldType fieldType = (FieldType)_fields.get(labels[i]);
+                labels[i] = (String) labelsObj[i];
+
+                FieldType fieldType = (FieldType) _fields.get(labels[i]);
                 types[i] = fieldType._declaredType;
             }
+
             RecordType newObj = new RecordType(labels, types);
+
             try {
                 newObj.updateType(this);
             } catch (IllegalActionException ex) {
-                throw new InternalErrorException("RecordType.clone: Cannot " +
-                        "update new instance. " + ex.getMessage());
+                throw new InternalErrorException("RecordType.clone: Cannot "
+                    + "update new instance. " + ex.getMessage());
             }
+
             return newObj;
         }
     }
@@ -146,13 +150,13 @@ public class RecordType extends StructuredType {
      *   cannot be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-        if ( !isCompatible(token.getType())) {
-            throw new IllegalArgumentException(
-                    Token.notSupportedConversionMessage(
-                            token, this.toString()));
+        if (!isCompatible(token.getType())) {
+            throw new IllegalArgumentException(Token
+                .notSupportedConversionMessage(token, this.toString()));
         }
 
-        RecordToken recordToken = (RecordToken)token;
+        RecordToken recordToken = (RecordToken) token;
+
         // The converted token has the same set of labels as this type.
         Object[] labelArray = labelSet().toArray();
 
@@ -161,7 +165,7 @@ public class RecordType extends StructuredType {
         Token[] values = new Token[labelArray.length];
 
         for (int i = 0; i < labelArray.length; i++) {
-            String label = (String)labelArray[i];
+            String label = (String) labelArray[i];
 
             // Convert each field of the record.
             Token fieldToken = recordToken.get(label);
@@ -189,20 +193,23 @@ public class RecordType extends StructuredType {
             return false;
         }
 
-        RecordType recordType = (RecordType)object;
+        RecordType recordType = (RecordType) object;
 
         // Check that the label sets are equal
         Set myLabelSet = _fields.keySet();
         Set argLabelSet = recordType._fields.keySet();
+
         if (!myLabelSet.equals(argLabelSet)) {
             return false;
         }
 
         Iterator fieldNames = myLabelSet.iterator();
+
         while (fieldNames.hasNext()) {
-            String label = (String)fieldNames.next();
+            String label = (String) fieldNames.next();
             Type myType = this.get(label);
             Type argType = recordType.get(label);
+
             if (!myType.equals(argType)) {
                 return false;
             }
@@ -216,10 +223,12 @@ public class RecordType extends StructuredType {
      *  @return a Type.
      */
     public Type get(String label) {
-        FieldType fieldType = (FieldType)_fields.get(label);
+        FieldType fieldType = (FieldType) _fields.get(label);
+
         if (fieldType == null) {
             return null;
         }
+
         return fieldType._resolvedType;
     }
 
@@ -235,7 +244,7 @@ public class RecordType extends StructuredType {
      *  @see ptolemy.graph.InequalityTerm
      */
     public InequalityTerm getTypeTerm(String label) {
-        return (InequalityTerm)_fields.get(label);
+        return (InequalityTerm) _fields.get(label);
     }
 
     /** Return a hash code value for this object.
@@ -251,17 +260,19 @@ public class RecordType extends StructuredType {
     public void initialize(Type type) {
         try {
             Iterator fieldNames = _fields.keySet().iterator();
+
             while (fieldNames.hasNext()) {
-                String label = (String)fieldNames.next();
-                FieldType fieldType = (FieldType)_fields.get(label);
+                String label = (String) fieldNames.next();
+                FieldType fieldType = (FieldType) _fields.get(label);
+
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
                 }
             }
         } catch (IllegalActionException iae) {
-            throw new InternalErrorException("RecordType.initialize: Cannot " +
-                    "initialize the element type to " + type + " " +
-                    iae.getMessage());
+            throw new InternalErrorException("RecordType.initialize: Cannot "
+                + "initialize the element type to " + type + " "
+                + iae.getMessage());
         }
     }
 
@@ -277,20 +288,22 @@ public class RecordType extends StructuredType {
             return true;
         }
 
-        if ( !(type instanceof RecordType)) {
+        if (!(type instanceof RecordType)) {
             return false;
         }
 
-        RecordType argumentRecordType = (RecordType)type;
+        RecordType argumentRecordType = (RecordType) type;
 
         // Loop through all of the fields of this type...
         Iterator iterator = _fields.keySet().iterator();
+
         while (iterator.hasNext()) {
-            String label = (String)iterator.next();
+            String label = (String) iterator.next();
 
             // The given type cannot be losslessly converted to this type
             // if it does not contain one of the fields of this type.
             Type argumentFieldType = argumentRecordType.get(label);
+
             if (argumentFieldType == null) {
                 // argument token does not contain this label
                 return false;
@@ -299,6 +312,7 @@ public class RecordType extends StructuredType {
             // The given type cannot be losslessly converted to this type
             // if the individual fields are not compatible.
             Type thisFieldType = this.get(label);
+
             if (!thisFieldType.isCompatible(argumentFieldType)) {
                 return false;
             }
@@ -314,14 +328,17 @@ public class RecordType extends StructuredType {
     public boolean isConstant() {
         // Loop through all of the fields.
         Iterator fieldTypes = _fields.values().iterator();
+
         while (fieldTypes.hasNext()) {
-            FieldType fieldType = (FieldType)fieldTypes.next();
+            FieldType fieldType = (FieldType) fieldTypes.next();
             Type type = fieldType._declaredType;
+
             // Return false if the field is not constant.
             if (!type.isConstant()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -333,14 +350,17 @@ public class RecordType extends StructuredType {
     public boolean isInstantiable() {
         // Loop through all of the fields.
         Iterator fieldNames = _fields.keySet().iterator();
+
         while (fieldNames.hasNext()) {
-            String label = (String)fieldNames.next();
+            String label = (String) fieldNames.next();
             Type type = this.get(label);
+
             // Return false if the field is not instantiable.
             if (!type.isInstantiable()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -353,26 +373,28 @@ public class RecordType extends StructuredType {
      *  @see Type#isSubstitutionInstance
      */
     public boolean isSubstitutionInstance(Type type) {
-        if ( !(type instanceof RecordType)) {
+        if (!(type instanceof RecordType)) {
             return false;
         }
 
-        RecordType recordType = (RecordType)type;
+        RecordType recordType = (RecordType) type;
 
         // Check if this record type and the argument have the same
         // label set.
         Set myLabelSet = _fields.keySet();
         Set argLabelSet = recordType._fields.keySet();
+
         if (!myLabelSet.equals(argLabelSet)) {
             return false;
         }
 
         // Loop over all the labels.
         Iterator fieldNames = myLabelSet.iterator();
-        while (fieldNames.hasNext()) {
-            String label = (String)fieldNames.next();
 
-            FieldType fieldType = (FieldType)_fields.get(label);
+        while (fieldNames.hasNext()) {
+            String label = (String) fieldNames.next();
+
+            FieldType fieldType = (FieldType) _fields.get(label);
             Type myDeclaredType = fieldType._declaredType;
             Type argType = recordType.get(label);
 
@@ -380,6 +402,7 @@ public class RecordType extends StructuredType {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -398,12 +421,15 @@ public class RecordType extends StructuredType {
      */
     public String toString() {
         Object[] labelArray = _fields.keySet().toArray();
+
         // Order the labels
         int size = labelArray.length;
-        for (int i = 0; i < size-1; i++) {
+
+        for (int i = 0; i < (size - 1); i++) {
             for (int j = i + 1; j < size; j++) {
-                String labeli = (String)labelArray[i];
-                String labelj = (String)labelArray[j];
+                String labeli = (String) labelArray[i];
+                String labelj = (String) labelArray[j];
+
                 if (labeli.compareTo(labelj) >= 0) {
                     Object temp = labelArray[i];
                     labelArray[i] = labelArray[j];
@@ -414,14 +440,18 @@ public class RecordType extends StructuredType {
 
         // construct the string representation of this token.
         String s = "{";
+
         for (int i = 0; i < size; i++) {
-            String label = (String)labelArray[i];
+            String label = (String) labelArray[i];
             String type = this.get(label).toString();
+
             if (i != 0) {
                 s += ", ";
             }
-            s += label + " = " + type;
+
+            s += (label + " = " + type);
         }
+
         return s + "}";
     }
 
@@ -435,30 +465,32 @@ public class RecordType extends StructuredType {
      *   RecordType or it does not have the same structure as this one.
      */
     public void updateType(StructuredType newType)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (this.isConstant()) {
             if (this.equals(newType)) {
                 return;
             } else {
-                throw new IllegalActionException("RecordType.updateType: " +
-                        "This type is a constant and the argument is not the" +
-                        " same as this type. This type: " + this.toString() +
-                        " argument: " + newType.toString());
+                throw new IllegalActionException("RecordType.updateType: "
+                    + "This type is a constant and the argument is not the"
+                    + " same as this type. This type: " + this.toString()
+                    + " argument: " + newType.toString());
             }
         }
 
         // This type is a variable.
-        if ( !this.isSubstitutionInstance(newType)) {
+        if (!this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("RecordType.updateType: "
-                    + "Cannot update this type to the new type.");
+                + "Cannot update this type to the new type.");
         }
 
         Iterator fieldNames = _fields.keySet().iterator();
+
         while (fieldNames.hasNext()) {
-            String label = (String)fieldNames.next();
-            FieldType fieldType = (FieldType)_fields.get(label);
+            String label = (String) fieldNames.next();
+            FieldType fieldType = (FieldType) _fields.get(label);
+
             if (fieldType.isSettable()) {
-                Type newFieldType = ((RecordType)newType).get(label);
+                Type newFieldType = ((RecordType) newType).get(label);
                 fieldType.setValue(newFieldType);
             }
         }
@@ -481,20 +513,20 @@ public class RecordType extends StructuredType {
      *   not a RecordType.
      */
     protected int _compare(StructuredType type) {
-        if ( !(type instanceof RecordType)) {
-            throw new IllegalArgumentException("RecordType.compare: " +
-                    "The argument is not a RecordType.");
+        if (!(type instanceof RecordType)) {
+            throw new IllegalArgumentException("RecordType.compare: "
+                + "The argument is not a RecordType.");
         }
 
         if (this.equals(type)) {
             return CPO.SAME;
         }
 
-        if (_isLessThanOrEqualTo(this, (RecordType)type)) {
+        if (_isLessThanOrEqualTo(this, (RecordType) type)) {
             return CPO.LOWER;
         }
 
-        if (_isLessThanOrEqualTo((RecordType)type, this)) {
+        if (_isLessThanOrEqualTo((RecordType) type, this)) {
             return CPO.HIGHER;
         }
 
@@ -517,13 +549,13 @@ public class RecordType extends StructuredType {
      *   not a RecordType.
      */
     protected StructuredType _greatestLowerBound(StructuredType type) {
-        if ( !(type instanceof RecordType)) {
+        if (!(type instanceof RecordType)) {
             throw new IllegalArgumentException(
-                    "RecordType.greatestLowerBound: The argument is not a " +
-                    "RecordType.");
+                "RecordType.greatestLowerBound: The argument is not a "
+                + "RecordType.");
         }
 
-        RecordType recordType = (RecordType)type;
+        RecordType recordType = (RecordType) type;
 
         // the label set of the GLB is the union of the two label sets.
         Set unionSet = new HashSet();
@@ -540,16 +572,18 @@ public class RecordType extends StructuredType {
         Type[] types = new Type[size];
 
         for (int i = 0; i < size; i++) {
-            labels[i] = (String)labelArray[i];
+            labels[i] = (String) labelArray[i];
+
             Type type1 = this.get(labels[i]);
             Type type2 = recordType.get(labels[i]);
+
             if (type1 == null) {
                 types[i] = type2;
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type)TypeLattice.lattice().greatestLowerBound(
-                        type1, type2);
+                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(type1,
+                        type2);
             }
         }
 
@@ -565,12 +599,12 @@ public class RecordType extends StructuredType {
      *   not a RecordType.
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
-        if ( !(type instanceof RecordType)) {
+        if (!(type instanceof RecordType)) {
             throw new IllegalArgumentException("RecordType.leastUpperBound: "
-                    + "The argument is not a RecordType.");
+                + "The argument is not a RecordType.");
         }
 
-        RecordType recordType = (RecordType)type;
+        RecordType recordType = (RecordType) type;
 
         // the label set of the LUB is the intersection of the two label sets.
         Set intersectionSet = new HashSet();
@@ -585,12 +619,13 @@ public class RecordType extends StructuredType {
         int size = labelArray.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
+
         for (int i = 0; i < size; i++) {
-            labels[i] = (String)labelArray[i];
+            labels[i] = (String) labelArray[i];
+
             Type type1 = this.get(labels[i]);
             Type type2 = recordType.get(labels[i]);
-            types[i] = (Type)TypeLattice.lattice().leastUpperBound(
-                    type1, type2);
+            types[i] = (Type) TypeLattice.lattice().leastUpperBound(type1, type2);
         }
 
         return new RecordType(labels, types);
@@ -598,23 +633,25 @@ public class RecordType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Test if the first RecordType is less than or equal to the second
     private boolean _isLessThanOrEqualTo(RecordType t1, RecordType t2) {
         Set labelSet1 = t1._fields.keySet();
         Set labelSet2 = t2._fields.keySet();
+
         if (!labelSet1.containsAll(labelSet2)) {
             return false;
         }
 
         // iterate over the labels of the second type
         Iterator iter = labelSet2.iterator();
+
         while (iter.hasNext()) {
-            String label = (String)iter.next();
+            String label = (String) iter.next();
             Type type1 = t1.get(label);
             Type type2 = t2.get(label);
             int result = TypeLattice.compare(type1, type2);
-            if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
+
+            if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
                 return false;
             }
         }
@@ -624,29 +661,26 @@ public class RecordType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Mapping from label to field information.
     private Map _fields = new HashMap();
 
     // the representative in the type lattice is the empty record.
-    private static RecordType _representative =
-    new RecordType(new String[0], new Type[0]);
+    private static RecordType _representative = new RecordType(new String[0],
+            new Type[0]);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     // A class that encapsulates the declared and resolved types of a
     // field and implements the InequalityTerm interface.
     private class FieldType implements InequalityTerm {
-
         // Construct an instance of FieldType.
         private FieldType(Type declaredType) {
             try {
-                _declaredType = (Type)declaredType.clone();
+                _declaredType = (Type) declaredType.clone();
                 _resolvedType = _declaredType;
             } catch (CloneNotSupportedException cnse) {
-                throw new InternalErrorException("RecordType.FieldType: " +
-                        "The specified type cannot be cloned.");
+                throw new InternalErrorException("RecordType.FieldType: "
+                    + "The specified type cannot be cloned.");
             }
         }
 
@@ -677,6 +711,7 @@ public class RecordType extends StructuredType {
                 variable[0] = this;
                 return variable;
             }
+
             return (new InequalityTerm[0]);
         }
 
@@ -688,20 +723,20 @@ public class RecordType extends StructuredType {
          */
         public void initialize(Object e) throws IllegalActionException {
             if (!isSettable()) {
-                throw new IllegalActionException("RecordType$FieldType." +
-                        "initialize: The type is not settable.");
+                throw new IllegalActionException("RecordType$FieldType."
+                    + "initialize: The type is not settable.");
             }
 
             if (!(e instanceof Type)) {
                 throw new IllegalActionException("FieldType.initialize: "
-                        + "The argument is not a Type.");
+                    + "The argument is not a Type.");
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
-                _resolvedType = (Type)e;
+                _resolvedType = (Type) e;
             } else {
                 // this field type is a structured type.
-                ((StructuredType)_resolvedType).initialize((Type)e);
+                ((StructuredType) _resolvedType).initialize((Type) e);
             }
         }
 
@@ -727,30 +762,29 @@ public class RecordType extends StructuredType {
          *   the declared field type.
          */
         public void setValue(Object e) throws IllegalActionException {
-            if ( !isSettable()) {
+            if (!isSettable()) {
                 throw new IllegalActionException(
-                        "RecordType$FieldType.setValue: The type is not " +
-                        "settable.");
+                    "RecordType$FieldType.setValue: The type is not "
+                    + "settable.");
             }
 
-            if ( !_declaredType.isSubstitutionInstance((Type)e)) {
+            if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("FieldType.setValue: "
-                        + "Cannot update the field type of this RecordType "
-                        + "to the new type."
-                        + " Field type: " + _declaredType.toString()
-                        + ", New type: " + e.toString());
+                    + "Cannot update the field type of this RecordType "
+                    + "to the new type." + " Field type: "
+                    + _declaredType.toString() + ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
                 try {
-                    _resolvedType = (Type)((Type)e).clone();
+                    _resolvedType = (Type) ((Type) e).clone();
                 } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
-                            "RecordType$FieldType.setValue: " +
-                            "The specified type cannot be cloned.");
+                        "RecordType$FieldType.setValue: "
+                        + "The specified type cannot be cloned.");
                 }
             } else {
-                ((StructuredType)_resolvedType).updateType((StructuredType)e);
+                ((StructuredType) _resolvedType).updateType((StructuredType) e);
             }
         }
 
@@ -763,9 +797,7 @@ public class RecordType extends StructuredType {
 
         ///////////////////////////////////////////////////////////////
         ////                  private inner variables              ////
-
         private Type _declaredType = null;
         private Type _resolvedType = null;
     }
 }
-

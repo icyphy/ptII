@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.actor.lib;
 
 import java.awt.Image;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.ImageIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MonitorImage
+
 /**
    Display image inputs in the icon.
 
@@ -49,9 +50,7 @@ import ptolemy.vergil.icon.ImageIcon;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
 */
-
 public class MonitorImage extends Sink {
-
     /** Construct an actor.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,7 +60,7 @@ public class MonitorImage extends Sink {
      *   actor with this name.
      */
     public MonitorImage(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -80,16 +79,16 @@ public class MonitorImage extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ImageToken token = (ImageToken)input.get(0);
+            ImageToken token = (ImageToken) input.get(0);
             Image value = token.asAWTImage();
             _icon.setImage(value);
         }
+
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The image icon.
     private ImageIcon _icon;
 }

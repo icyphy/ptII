@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ExecutionListener
+
 /**
    An ExecutionListener listens for events that are issued
    during the execution of a model by a Manager.   In general, an
@@ -53,9 +54,7 @@ package ptolemy.actor;
    @Pt.AcceptedRating Green (bart)
    @see Manager
 */
-
 public interface ExecutionListener {
-
     /** Report an execution failure.   This method will be called
      *  when an exception or error is caught by a manager.
      *  Exceptions are reported this way when the run() or startRun()

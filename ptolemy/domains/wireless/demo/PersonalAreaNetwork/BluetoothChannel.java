@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.demo.PersonalAreaNetwork;
 
 import ptolemy.data.RecordToken;
@@ -41,6 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BluetoothChannel
 
@@ -54,9 +54,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (pjb2e)
 */
-
 public class BluetoothChannel extends LimitedRangeChannel {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,14 +64,15 @@ public class BluetoothChannel extends LimitedRangeChannel {
      *   actor with this name.
      */
     public BluetoothChannel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Force the type of the defaultProperties to at least include
         // the range field.
-        String[] labels = {"range"};
-        Type[] types = {BaseType.DOUBLE};
+        String[] labels = { "range" };
+        Type[] types = { BaseType.DOUBLE };
         RecordType type = new RecordType(labels, types);
+
         // Setting an upper bound allows the addition of fields.
         defaultProperties.setTypeAtMost(type);
         defaultProperties.setExpression("{range=Infinity}");
@@ -97,11 +96,9 @@ public class BluetoothChannel extends LimitedRangeChannel {
     }
 
     public boolean isInBluetoothRange() {
-
-
         return false;
-
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -121,41 +118,45 @@ public class BluetoothChannel extends LimitedRangeChannel {
      *   whether the destination is in range (not thrown in this base
      *   class).
      */
-    protected boolean _isInRange(
-            WirelessIOPort source,
-            WirelessIOPort destination,
-            RecordToken properties)
-            throws IllegalActionException {
+    protected boolean _isInRange(WirelessIOPort source,
+        WirelessIOPort destination, RecordToken properties)
+        throws IllegalActionException {
         double range = Double.POSITIVE_INFINITY;
         boolean rangeIsSet = false;
+
         if (properties != null) {
             Token field = properties.get("range");
+
             if (field instanceof ScalarToken) {
                 // NOTE: This may throw a NotConvertibleException, if,
                 // example, a Complex or a Long is given.
-                range = ((ScalarToken)field).doubleValue();
+                range = ((ScalarToken) field).doubleValue();
                 rangeIsSet = true;
             }
         }
+
         if (!rangeIsSet) {
             // Type constraints in the constructor make the casts safe.
-            RecordToken defaultPropertiesValue
-                = (RecordToken)defaultProperties.getToken();
+            RecordToken defaultPropertiesValue = (RecordToken) defaultProperties
+                .getToken();
+
             // Type of the field must be convertible to double, but
             // need not actually be a double.
-            ScalarToken field = (ScalarToken)defaultPropertiesValue.get("range");
+            ScalarToken field = (ScalarToken) defaultPropertiesValue.get(
+                    "range");
             range = field.doubleValue();
         }
+
         boolean result = (_distanceBetween(source, destination) <= range);
 
         if (result) {
             double dist = _distanceBetween(source, destination);
-            double incrRange = (dist/range)*100;
+            double incrRange = (dist / range) * 100;
+
             if (incrRange < 90) {
                 increaseRange = true;
             }
         }
-
 
         // Whether a port is in range depends on the
         // transmit properties of this sender, so we set up
@@ -173,10 +174,7 @@ public class BluetoothChannel extends LimitedRangeChannel {
         return result;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////// public variable
-
     public static boolean increaseRange = false;
-
 }

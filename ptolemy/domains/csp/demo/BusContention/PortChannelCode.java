@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.BusContention;
 
 import ptolemy.actor.IOPort;
@@ -34,6 +33,7 @@ import ptolemy.actor.IOPort;
 
 //////////////////////////////////////////////////////////////////////////
 //// PortChannelCode
+
 /**
    A PortChannelCode is an object that carries prioritization information
    to be associated with different contenders in a resource contention
@@ -49,9 +49,7 @@ import ptolemy.actor.IOPort;
    @Pt.ProposedRating Red (davisj)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class PortChannelCode {
-
     /** Construct a PortChannelCode with the specified port,
      *  channel and priority code.
      * @param port The specified port.
@@ -90,9 +88,7 @@ public class PortChannelCode {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     private IOPort _port;
     private int _channel;
     private int _code;
-
 }

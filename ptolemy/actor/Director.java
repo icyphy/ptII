@@ -30,7 +30,6 @@ Win added methods fireAtCurrentTime(Actor) and
 Semantics of initialize(Actor) have changed.
 Also, review stop() method.
 */
-
 package ptolemy.actor;
 
 import java.util.Iterator;
@@ -50,8 +49,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Director
+
 /**
    A Director governs the execution within a CompositeActor.  A composite actor
    that contains a director is said to be <i>opaque</i>, and the execution model
@@ -110,7 +111,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (neuendor)
 */
 public class Director extends Attribute implements Executable {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -130,7 +130,6 @@ public class Director extends Attribute implements Executable {
         super(workspace);
         _addIcon();
         _initializeParameters();
-
     }
 
     /** Construct a director in the given container with the given name.
@@ -148,7 +147,7 @@ public class Director extends Attribute implements Executable {
      *   an entity with the specified name.
      */
     public Director(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _addIcon();
         _initializeParameters();
@@ -168,30 +167,30 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    //    /** Check the status of the manager before update the timePrecisionInDigits
+    //     *  parameter. If the status of the manager is running,
+    //     *  throws an illegalActionException.
+    //     *  @param attribute The changed parameter.
+    //     *  @exception IllegalActionException If the status of manager is running.
+    //     */
+    //    public void attributeChanged(Attribute attribute)
+    //            throws IllegalActionException {
+    //        if (attribute == timePrecisionInDigits) {
+    //            Nameable container = getContainer();
+    //            if (container instanceof CompositeActor) {
+    //                Manager manager = ((CompositeActor)container).getManager();
+    //                if (manager != null
+    //                        && manager.getState() != Manager.ITERATING) {
+    //                    throw new IllegalActionException("Can not change the " +
+    //                        "timePrecisionInDigits parameter when model runs.");
+    //                }
+    //            }
+    //        } else {
+    //            super.attributeChanged(attribute);
+    //        }
+    //    }
+    //
 
-//    /** Check the status of the manager before update the timePrecisionInDigits
-//     *  parameter. If the status of the manager is running,
-//     *  throws an illegalActionException.
-//     *  @param attribute The changed parameter.
-//     *  @exception IllegalActionException If the status of manager is running.
-//     */
-//    public void attributeChanged(Attribute attribute)
-//            throws IllegalActionException {
-//        if (attribute == timePrecisionInDigits) {
-//            Nameable container = getContainer();
-//            if (container instanceof CompositeActor) {
-//                Manager manager = ((CompositeActor)container).getManager();
-//                if (manager != null
-//                        && manager.getState() != Manager.ITERATING) {
-//                    throw new IllegalActionException("Can not change the " +
-//                        "timePrecisionInDigits parameter when model runs.");
-//                }
-//            }
-//        } else {
-//            super.attributeChanged(attribute);
-//        }
-//    }
-//
     /** Transfer at most one data token from the given input port of
      *  the container to the ports it is connected to on the inside.
      *  This method delegates the operation to the IOPort, so that the
@@ -205,33 +204,41 @@ public class Director extends Attribute implements Executable {
      *  @see IOPort#transferInputs
      */
     public boolean domainPolymorphicTransferInputs(IOPort port)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferInputs on port: " + port.getFullName());
         }
+
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "Attempted to transferInputs on a port is not an opaque" +
-                    "input port.");
+                "Attempted to transferInputs on a port is not an opaque"
+                + "input port.");
         }
+
         boolean wasTransferred = false;
+
         for (int i = 0; i < port.getWidth(); i++) {
             try {
                 if (i < port.getWidthInside()) {
                     if (port.hasToken(i)) {
                         Token t = port.get(i);
-                        if (_debugging) _debug(getName(),
-                                "transferring input from "
-                                + port.getName());
+
+                        if (_debugging) {
+                            _debug(getName(),
+                                "transferring input from " + port.getName());
+                        }
+
                         port.sendInside(i, t);
                         wasTransferred = true;
                     }
                 } else {
                     // No inside connection to transfer tokens to.
                     // In this case, consume one input token if there is one.
-                    if (_debugging) _debug(getName(),
-                            "Dropping single input from "
-                            + port.getName());
+                    if (_debugging) {
+                        _debug(getName(),
+                            "Dropping single input from " + port.getName());
+                    }
+
                     if (port.hasToken(i)) {
                         port.get(i);
                     }
@@ -241,6 +248,7 @@ public class Director extends Attribute implements Executable {
                 throw new InternalErrorException(this, ex, null);
             }
         }
+
         return wasTransferred;
     }
 
@@ -256,23 +264,29 @@ public class Director extends Attribute implements Executable {
      *  @see IOPort#transferOutputs
      */
     public boolean domainPolymorphicTransferOutputs(IOPort port)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferOutputs on port: " + port.getFullName());
         }
+
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that "
-                    + "is not an opaque input port.");
+                "Attempted to transferOutputs on a port that "
+                + "is not an opaque input port.");
         }
+
         boolean wasTransferred = false;
+
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {
                 if (port.hasTokenInside(i)) {
                     Token t = port.getInside(i);
-                    if (_debugging) _debug(getName(),
-                            "transferring output from "
-                            + port.getName());
+
+                    if (_debugging) {
+                        _debug(getName(),
+                            "transferring output from " + port.getName());
+                    }
+
                     port.send(i, t);
                     wasTransferred = true;
                 }
@@ -281,6 +295,7 @@ public class Director extends Attribute implements Executable {
                 throw new InternalErrorException(this, ex, null);
             }
         }
+
         return wasTransferred;
     }
 
@@ -307,28 +322,32 @@ public class Director extends Attribute implements Executable {
      */
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
             int iterationCount = 1;
+
             while (actors.hasNext() && !_stopRequested) {
-                Actor actor = (Actor)actors.next();
+                Actor actor = (Actor) actors.next();
+
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.BEFORE_ITERATE,
-                                   iterationCount));
+                            FiringEvent.BEFORE_ITERATE, iterationCount));
                 }
+
                 if (actor.iterate(1) == Actor.STOP_ITERATING) {
                     if (_debugging) {
                         _debug("Actor requests halt: "
-                                + ((Nameable)actor).getFullName());
+                            + ((Nameable) actor).getFullName());
                     }
+
                     break;
                 }
+
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.AFTER_ITERATE,
-                                   iterationCount));
+                            FiringEvent.AFTER_ITERATE, iterationCount));
                 }
             }
         }
@@ -350,8 +369,7 @@ public class Director extends Attribute implements Executable {
      *  time object instead. As of Ptolemy 4.1, replaced by
      *  {@link #fireAt(Actor,Time)}
      */
-    public void fireAt(Actor actor, double time)
-            throws IllegalActionException {
+    public void fireAt(Actor actor, double time) throws IllegalActionException {
         fireAt(actor, new Time(this, time));
     }
 
@@ -369,14 +387,11 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      */
-    public void fireAt(Actor actor, Time time)
-            throws IllegalActionException {
-
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
         // do nothing in this base class.
         // Note that, alternatively, this method could have been abstract.
         // But we didn't do that, because otherwise we wouldn't be able
         // to run Tcl Blend test script on this class.
-
     }
 
     /** Schedule a firing of the given actor as soon as possible.  If
@@ -403,12 +418,10 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If this method is called
      *  before the model is running.
      */
-    public void fireAtCurrentTime(Actor actor)
-            throws IllegalActionException {
+    public void fireAtCurrentTime(Actor actor) throws IllegalActionException {
         if (_isEmbedded()) {
-            CompositeActor container = (CompositeActor)getContainer();
-            container.getExecutiveDirector().fireAtCurrentTime(
-                    container);
+            CompositeActor container = (CompositeActor) getContainer();
+            container.getExecutiveDirector().fireAtCurrentTime(container);
         }
     }
 
@@ -481,7 +494,7 @@ public class Director extends Attribute implements Executable {
      *  @return The time resolution of the model.
      */
     public final double getTimeResolution() {
-        return Math.pow(10, -1*getTimePrecisionInDigits());
+        return Math.pow(10, -1 * getTimePrecisionInDigits());
     }
 
     /** Get the time precision in digits, the number of digits of the fractional
@@ -493,20 +506,24 @@ public class Director extends Attribute implements Executable {
         // precision (that of the top level director) associated with a model.
         if (_isEmbedded()) {
             NamedObj container = getContainer();
+
             if (container instanceof CompositeActor) {
-                return ((CompositeActor)container).getExecutiveDirector()
-                    .getTimePrecisionInDigits();
+                return ((CompositeActor) container).getExecutiveDirector()
+                        .getTimePrecisionInDigits();
             }
         }
+
         int numberOfDigits = 10;
+
         try {
-            numberOfDigits =
-                ((IntToken)timePrecisionInDigits.getToken()).intValue();
+            numberOfDigits = ((IntToken) timePrecisionInDigits.getToken())
+                .intValue();
         } catch (IllegalActionException e) {
-            throw new InternalErrorException("Can not evaluate the " +
-                    "timePrecisionInDigits parameter into a valid integer: "
-                    + e.toString());
+            throw new InternalErrorException("Can not evaluate the "
+                + "timePrecisionInDigits parameter into a valid integer: "
+                + e.toString());
         }
+
         return numberOfDigits;
     }
 
@@ -587,16 +604,19 @@ public class Director extends Attribute implements Executable {
      */
     public void initialize() throws IllegalActionException {
         if (_debugging) {
-                _debug("Called initialize().");
+            _debug("Called initialize().");
         }
+
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
             Nameable containersContainer = container.getContainer();
+
             // Initialize the current time.
             if (containersContainer instanceof CompositeActor) {
                 // The container is an embedded model.
-                Time currentTime = ((CompositeActor)containersContainer)
-                    .getDirector().getModelTime();
+                Time currentTime = ((CompositeActor) containersContainer).getDirector()
+                                    .getModelTime();
                 _currentTime = currentTime;
             } else {
                 // The container is at the top level.
@@ -605,15 +625,19 @@ public class Director extends Attribute implements Executable {
                 // FIXME: simplify the initilize method of DE director
                 _currentTime = getModelStartTime();
             }
+
             // Initialize the contained actors.
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
+
             while (actors.hasNext() && !_stopRequested) {
-                Actor actor = (Actor)actors.next();
+                Actor actor = (Actor) actors.next();
+
                 if (_debugging) {
                     _debug("Invoking initialize(): ",
-                            ((NamedObj)actor).getFullName());
+                        ((NamedObj) actor).getFullName());
                 }
+
                 initialize(actor);
             }
         }
@@ -636,10 +660,10 @@ public class Director extends Attribute implements Executable {
      */
     public void initialize(Actor actor) throws IllegalActionException {
         if (_debugging) {
-                _debug("Initializing actor: "
-                    + ((Nameable)actor).getFullName()
-                    + ".");
+            _debug("Initializing actor: " + ((Nameable) actor).getFullName()
+                + ".");
         }
+
         actor.initialize();
     }
 
@@ -651,8 +675,10 @@ public class Director extends Attribute implements Executable {
      */
     public void invalidateResolvedTypes() {
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Manager manager = ((CompositeActor)container).getManager();
+            Manager manager = ((CompositeActor) container).getManager();
+
             if (manager != null) {
                 manager.invalidateResolvedTypes();
             }
@@ -693,14 +719,19 @@ public class Director extends Attribute implements Executable {
      */
     public int iterate(int count) throws IllegalActionException {
         int n = 0;
-        while (n++ < count && !_stopRequested) {
+
+        while ((n++ < count) && !_stopRequested) {
             if (prefire()) {
                 fire();
-                if (!postfire()) return Executable.STOP_ITERATING;
+
+                if (!postfire()) {
+                    return Executable.STOP_ITERATING;
+                }
             } else {
                 return Executable.NOT_READY;
             }
         }
+
         if (_stopRequested) {
             return Executable.STOP_ITERATING;
         } else {
@@ -735,16 +766,21 @@ public class Director extends Attribute implements Executable {
         if (_writeAccessRequired()) {
             return true;
         }
+
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
+
             while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
+                Actor actor = (Actor) actors.next();
+
                 // find out which of those actors has a local director.
-                if (actor instanceof CompositeActor &&
-                        ((CompositeActor)actor).isOpaque()) {
+                if (actor instanceof CompositeActor
+                        && ((CompositeActor) actor).isOpaque()) {
                     CompositeActor compositeActor = (CompositeActor) actor;
+
                     // compositeActor.getDirector() is guaranteed to return a
                     // local director, not the executive director.
                     if (compositeActor.getDirector().needWriteAccess()) {
@@ -754,13 +790,14 @@ public class Director extends Attribute implements Executable {
                     }
                 }
             }
+
             // Up to this point, all lower level directors have been queried
             // and none of them returned true (or else we would have returned)
             // Therefore, return false.
             return false;
         } else {
-            throw new InvalidStateException("Director is not " +
-                    "associated with a composite actor!");
+            throw new InvalidStateException("Director is not "
+                + "associated with a composite actor!");
         }
     }
 
@@ -791,6 +828,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Called postfire().");
         }
+
         return !_stopRequested;
     }
 
@@ -816,17 +854,22 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Called prefire().");
         }
+
         Nameable container = getContainer();
+
         if (container instanceof Actor) {
-            Director executiveDirector =
-                ((Actor)container).getExecutiveDirector();
+            Director executiveDirector = ((Actor) container)
+                .getExecutiveDirector();
+
             if (executiveDirector != null) {
                 Time outTime = executiveDirector.getModelTime();
+
                 if (_currentTime.compareTo(outTime) < 0) {
                     setModelTime(outTime);
                 }
             }
         }
+
         return true;
     }
 
@@ -847,7 +890,10 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        if (_debugging && _verbose) _debug("Preinitializing ...");
+        if (_debugging && _verbose) {
+            _debug("Preinitializing ...");
+        }
+
         // preinitialize protected variables.
         // FIXME: a duplicate operation also appears in the initialize method.
         _currentTime = getModelStartTime();
@@ -855,25 +901,34 @@ public class Director extends Attribute implements Executable {
 
         // validate all settable attributes.
         Iterator attributes = attributeList(Settable.class).iterator();
+
         while (attributes.hasNext()) {
-            Settable attribute = (Settable)attributes.next();
+            Settable attribute = (Settable) attributes.next();
             attribute.validate();
         }
 
         // preinitialize all the contained actors.
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
+
             while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
-                if (_debugging) _debug("Invoking preinitialize(): ",
-                        ((NamedObj)actor).getFullName());
+                Actor actor = (Actor) actors.next();
+
+                if (_debugging) {
+                    _debug("Invoking preinitialize(): ",
+                        ((NamedObj) actor).getFullName());
+                }
+
                 actor.preinitialize();
             }
         }
 
-        if (_debugging) _debug("Finished preinitialize().");
+        if (_debugging) {
+            _debug("Finished preinitialize().");
+        }
     }
 
     /** Queue an initialization request with the manager.
@@ -890,8 +945,10 @@ public class Director extends Attribute implements Executable {
      */
     public void requestInitialization(Actor actor) {
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Manager manager = ((CompositeActor)container).getManager();
+            Manager manager = ((CompositeActor) container).getManager();
+
             if (manager != null) {
                 manager.requestInitialization(actor);
             }
@@ -932,22 +989,26 @@ public class Director extends Attribute implements Executable {
      *   CompositeActor.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+
             Nameable oldContainer = getContainer();
+
             if (oldContainer instanceof CompositeActor
-                    && oldContainer != container) {
+                    && (oldContainer != container)) {
                 // Need to remove this director as the active one of the
                 // old container. Search for another director contained
                 // by the composite.  If it contains more than one,
                 // use the most recently added one.
                 Director previous = null;
-                CompositeActor castContainer = (CompositeActor)oldContainer;
-                Iterator directors =
-                    castContainer.attributeList(Director.class).iterator();
+                CompositeActor castContainer = (CompositeActor) oldContainer;
+                Iterator directors = castContainer.attributeList(Director.class)
+                                                  .iterator();
+
                 while (directors.hasNext()) {
-                    Director altDirector = (Director)directors.next();
+                    Director altDirector = (Director) directors.next();
+
                     // Since we haven't yet removed this director, we have
                     // to be sure to not just set it to the active
                     // director again.
@@ -955,6 +1016,7 @@ public class Director extends Attribute implements Executable {
                         previous = altDirector;
                     }
                 }
+
                 castContainer._setDirector(previous);
             }
 
@@ -962,7 +1024,7 @@ public class Director extends Attribute implements Executable {
 
             if (container instanceof CompositeActor) {
                 // Set cached value in composite actor.
-                ((CompositeActor)container)._setDirector(this);
+                ((CompositeActor) container)._setDirector(this);
             }
         } finally {
             _workspace.doneWriting();
@@ -995,14 +1057,16 @@ public class Director extends Attribute implements Executable {
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
         int comparisonResult = _currentTime.compareTo(newTime);
+
         if (comparisonResult > 0) {
-            throw new IllegalActionException(this, "Attempt to move current "
-                    + "time backwards. (newTime = " + newTime
-                    + ") < (getCurrentTime() = " + getModelTime() + ")");
+            throw new IllegalActionException(this,
+                "Attempt to move current " + "time backwards. (newTime = "
+                + newTime + ") < (getCurrentTime() = " + getModelTime() + ")");
         } else if (comparisonResult < 0) {
             if (_debugging) {
                 _debug("==== Set current time to: " + newTime);
             }
+
             _currentTime = newTime;
         } else {
             // the new time is equal to the current time, do nothing.
@@ -1016,14 +1080,17 @@ public class Director extends Attribute implements Executable {
      */
     public void stop() {
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
+
             while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
+                Actor actor = (Actor) actors.next();
                 actor.stop();
             }
         }
+
         _stopRequested = true;
     }
 
@@ -1046,11 +1113,13 @@ public class Director extends Attribute implements Executable {
      */
     public void stopFire() {
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
+
             while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
+                Actor actor = (Actor) actors.next();
                 actor.stopFire();
             }
         }
@@ -1062,9 +1131,9 @@ public class Director extends Attribute implements Executable {
      *  director used by a modal model.
      */
     public String[] suggestedModalModelDirectors() {
-       // Default is just one suggestion.
-       String[] defaultSuggestions = {"ptolemy.domains.fsm.kernel.FSMDirector"};
-       return defaultSuggestions;
+        // Default is just one suggestion.
+        String[] defaultSuggestions = { "ptolemy.domains.fsm.kernel.FSMDirector" };
+        return defaultSuggestions;
     }
 
     /** Terminate any currently executing model with extreme prejudice.
@@ -1089,11 +1158,13 @@ public class Director extends Attribute implements Executable {
      */
     public void terminate() {
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
+
             while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
+                Actor actor = (Actor) actors.next();
                 actor.terminate();
             }
         }
@@ -1147,11 +1218,13 @@ public class Director extends Attribute implements Executable {
      */
     public void wrapup() throws IllegalActionException {
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
+
             while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
+                Actor actor = (Actor) actors.next();
                 actor.wrapup();
             }
         }
@@ -1178,12 +1251,15 @@ public class Director extends Attribute implements Executable {
     protected String _description(int detail, int indent, int bracket) {
         try {
             _workspace.getReadAccess();
+
             String result;
-            if (bracket == 1 || bracket == 2) {
+
+            if ((bracket == 1) || (bracket == 2)) {
                 result = super._description(detail, indent, 1);
             } else {
                 result = super._description(detail, indent, 0);
             }
+
             // FIXME: Add director-specific information here, like
             // what is the state of the director.
             // if ((detail & FIXME) != 0 ) {
@@ -1193,7 +1269,10 @@ public class Director extends Attribute implements Executable {
             //  result += "FIXME {\n";
             //  result += _getIndentPrefix(indent) + "}";
             // }
-            if (bracket == 2) result += "}";
+            if (bracket == 2) {
+                result += "}";
+            }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -1213,17 +1292,19 @@ public class Director extends Attribute implements Executable {
      */
     protected boolean _isTopLevel() {
         NamedObj container = getContainer();
+
         // NOTE: the container may not be a composite actor.
         // For example, the container may be an entity as a library,
         // where the director is already at the top level.
         // FIXME: can the container be any other types?
         if (container instanceof CompositeActor) {
-            if (((CompositeActor)container).getExecutiveDirector() == null) {
+            if (((CompositeActor) container).getExecutiveDirector() == null) {
                 return true;
             } else {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -1255,14 +1336,12 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Add an XML graphic as a hint to UIs for rendering the director.
     private void _addIcon() {
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-50\" y=\"-15\" "
-                + "width=\"100\" height=\"30\" "
-                + "style=\"fill:green\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-50\" y=\"-15\" "
+            + "width=\"100\" height=\"30\" " + "style=\"fill:green\"/>\n"
+            + "</svg>\n");
     }
 
     // Initialize parameters.
@@ -1271,14 +1350,14 @@ public class Director extends Attribute implements Executable {
         try {
             // create parameters
             timePrecisionInDigits = new Parameter(this,
-                "timePrecisionInDigits", new IntToken(10));
+                    "timePrecisionInDigits", new IntToken(10));
             timePrecisionInDigits.setVisibility(Settable.NONE);
         } catch (Exception e) {
             // This is the only place to create
             // the timePrecisionInDigits parameter, no exception should ever
             // be thrown.
-            throw new InternalErrorException(
-                "Cannot set parameter:\n" + e.getMessage());
+            throw new InternalErrorException("Cannot set parameter:\n"
+                + e.getMessage());
         }
     }
 }

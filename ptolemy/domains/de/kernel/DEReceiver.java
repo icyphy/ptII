@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.kernel;
 
 import java.util.LinkedList;
@@ -39,6 +38,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
@@ -61,7 +61,6 @@ import ptolemy.kernel.util.InternalErrorException;
     @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class DEReceiver extends AbstractReceiver {
-
     /** Construct an empty DEReceiver with no container.
      */
     public DEReceiver() {
@@ -98,9 +97,10 @@ public class DEReceiver extends AbstractReceiver {
     public Token get() throws NoTokenException {
         if (_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
-                    "No more tokens in the DE receiver.");
+                "No more tokens in the DE receiver.");
         }
-        return (Token)_tokens.removeFirst();
+
+        return (Token) _tokens.removeFirst();
     }
 
     /** Return true, indicating that there is always room.
@@ -172,32 +172,37 @@ public class DEReceiver extends AbstractReceiver {
      *   or if the director is not an instance of DEDirector.
      */
     private DEDirector _getDirector() throws IllegalActionException {
-        IOPort port = (IOPort)getContainer();
+        IOPort port = (IOPort) getContainer();
+
         if (port != null) {
             if (_directorVersion == port.workspace().getVersion()) {
                 return _director;
             }
+
             // Cache is invalid.  Reconstruct it.
             try {
                 port.workspace().getReadAccess();
-                Actor actor = (Actor)port.getContainer();
+
+                Actor actor = (Actor) port.getContainer();
+
                 if (actor != null) {
                     Director dir;
-                    if ( (port.isOutput()) &&
-                            (actor instanceof CompositeActor) &&
-                            ((CompositeActor)actor).isOpaque()) {
+
+                    if ((port.isOutput()) && (actor instanceof CompositeActor)
+                            && ((CompositeActor) actor).isOpaque()) {
                         dir = actor.getDirector();
                     } else {
                         dir = actor.getExecutiveDirector();
                     }
+
                     if (dir != null) {
                         if (dir instanceof DEDirector) {
-                            _director = (DEDirector)dir;
+                            _director = (DEDirector) dir;
                             _directorVersion = port.workspace().getVersion();
                             return _director;
                         } else {
                             throw new IllegalActionException(getContainer(),
-                                    "Does not have a DEDirector.");
+                                "Does not have a DEDirector.");
                         }
                     }
                 }
@@ -205,13 +210,13 @@ public class DEReceiver extends AbstractReceiver {
                 port.workspace().doneReading();
             }
         }
+
         throw new IllegalActionException(getContainer(),
-                "Does not have a IOPort as the container of the receiver.");
+            "Does not have a IOPort as the container of the receiver.");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The director where this DEReceiver should register for De events.
     private DEDirector _director;
     private long _directorVersion = -1;

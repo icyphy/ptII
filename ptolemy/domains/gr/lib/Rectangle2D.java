@@ -36,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.canvas.toolbox.BasicFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Rectangle2D
+
 /**
    An actor that creates a rectangle or a rounded rectangle.  The initial
    size, position, and type of figure are specified in the parameter edit
@@ -52,10 +54,8 @@ import diva.canvas.toolbox.BasicFigure;
    @Pt.AcceptedRating Yellow (chf)
 */
 public class Rectangle2D extends RectangularFigure2D {
-
     public Rectangle2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         arcWidth = new Parameter(this, "arcWidth", new DoubleToken(0.0));
@@ -81,12 +81,10 @@ public class Rectangle2D extends RectangularFigure2D {
      *  @exception IllegalActionException If a parameter value is not valid.
      */
     protected BasicFigure _createFigure() throws IllegalActionException {
-        java.awt.geom.RoundRectangle2D.Double rectangle =
-            new java.awt.geom.RoundRectangle2D.Double();
+        java.awt.geom.RoundRectangle2D.Double rectangle = new java.awt.geom.RoundRectangle2D.Double();
         rectangle.setFrameFromCenter(_getCenterPoint(), _getCornerPoint());
-        rectangle.arcwidth = ((DoubleToken)arcWidth.getToken()).doubleValue();
-        rectangle.archeight =
-            ((DoubleToken)arcHeight.getToken()).doubleValue();
+        rectangle.arcwidth = ((DoubleToken) arcWidth.getToken()).doubleValue();
+        rectangle.archeight = ((DoubleToken) arcHeight.getToken()).doubleValue();
 
         return new BasicFigure(rectangle);
     }
@@ -95,13 +93,11 @@ public class Rectangle2D extends RectangularFigure2D {
      *  the appropriate parameters.
      * @exception IllegalActionException If a parameter value is not valid.
      */
-    protected void _updateFigure() throws IllegalActionException{
-        java.awt.geom.RoundRectangle2D.Double rectangle =
-            new java.awt.geom.RoundRectangle2D.Double();
+    protected void _updateFigure() throws IllegalActionException {
+        java.awt.geom.RoundRectangle2D.Double rectangle = new java.awt.geom.RoundRectangle2D.Double();
         rectangle.setFrameFromCenter(_getCenterPoint(), _getCornerPoint());
-        rectangle.arcwidth = ((DoubleToken)arcWidth.getToken()).doubleValue();
-        rectangle.archeight =
-            ((DoubleToken)arcHeight.getToken()).doubleValue();
+        rectangle.arcwidth = ((DoubleToken) arcWidth.getToken()).doubleValue();
+        rectangle.archeight = ((DoubleToken) arcHeight.getToken()).doubleValue();
         _figure.setPrototypeShape(rectangle);
     }
 }

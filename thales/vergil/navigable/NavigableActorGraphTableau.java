@@ -22,7 +22,6 @@
 
   Created on 01 sept. 2003
 */
-
 package thales.vergil.navigable;
 
 import java.awt.Color;
@@ -42,8 +41,10 @@ import ptolemy.moml.LibraryAttribute;
 import thales.actor.gui.NavigableEffigy;
 import thales.vergil.SingleWindowApplication;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NavigableActorGraphTableau
+
 /**
    A simple copy of the ActorGraphFrame with additional functionalities for
    navigation
@@ -55,12 +56,11 @@ import thales.vergil.SingleWindowApplication;
    @Pt.AcceptedRating Red (cxh)
 */
 public class NavigableActorGraphTableau extends Tableau {
-
     /** Create a tableau in the specified workspace.
      *  @param workspace The workspace.
      */
     public NavigableActorGraphTableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -70,7 +70,7 @@ public class NavigableActorGraphTableau extends Tableau {
      *  @param name The name.
      */
     public NavigableActorGraphTableau(PtolemyEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -80,30 +80,28 @@ public class NavigableActorGraphTableau extends Tableau {
      *  @param name The name.
      *  @param defaultLibrary The default library, or null to not specify one.
      */
-    public NavigableActorGraphTableau(
-            PtolemyEffigy container,
-            String name,
-            LibraryAttribute defaultLibrary)
-            throws IllegalActionException, NameDuplicationException {
-
+    public NavigableActorGraphTableau(PtolemyEffigy container, String name,
+        LibraryAttribute defaultLibrary)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (container instanceof PtolemyEffigy) {
             NamedObj model = container.getModel();
+
             if (model == null) {
                 return;
             }
+
             if (!(model instanceof CompositeEntity)) {
-                throw new IllegalActionException(
-                        this,
-                        "Cannot graphically edit a model "
-                        + "that is not a CompositeEntity. Model is a "
-                        + model);
+                throw new IllegalActionException(this,
+                    "Cannot graphically edit a model "
+                    + "that is not a CompositeEntity. Model is a " + model);
             }
+
             CompositeEntity entity = (CompositeEntity) model;
 
-            NavigableActorGraphFrame frame =
-                new NavigableActorGraphFrame(entity, this, defaultLibrary);
+            NavigableActorGraphFrame frame = new NavigableActorGraphFrame(entity,
+                    this, defaultLibrary);
             setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
         }
@@ -114,17 +112,18 @@ public class NavigableActorGraphTableau extends Tableau {
      */
     public void show() {
         JFrame frame = getFrame();
+
         if (frame != null) {
             if (!frame.isVisible()) {
                 frame.pack();
             }
         }
+
         SingleWindowApplication._mainFrame.selectTab(frame.getName());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The background color.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
@@ -134,7 +133,6 @@ public class NavigableActorGraphTableau extends Tableau {
     /** A factory that creates graph editing tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create an factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -144,7 +142,7 @@ public class NavigableActorGraphTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -165,21 +163,18 @@ public class NavigableActorGraphTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof NavigableEffigy) {
                 // First see whether the effigy already contains a RunTableau.
-                NavigableActorGraphTableau tableau =
-                    (NavigableActorGraphTableau) effigy.getEntity(
-                            "navigableGraphTableau");
+                NavigableActorGraphTableau tableau = (NavigableActorGraphTableau) effigy
+                    .getEntity("navigableGraphTableau");
+
                 if (tableau == null) {
                     // Check to see whether this factory contains a
                     // default library.
-                    LibraryAttribute library =
-                        (LibraryAttribute) getAttribute("_library",
-                                LibraryAttribute.class);
-                    tableau =
-                        new NavigableActorGraphTableau(
-                                (PtolemyEffigy) effigy,
-                                "navigableGraphTableau",
-                                library);
+                    LibraryAttribute library = (LibraryAttribute) getAttribute("_library",
+                            LibraryAttribute.class);
+                    tableau = new NavigableActorGraphTableau((PtolemyEffigy) effigy,
+                            "navigableGraphTableau", library);
                 }
+
                 // Don't call show() here, it is called for us in
                 // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;

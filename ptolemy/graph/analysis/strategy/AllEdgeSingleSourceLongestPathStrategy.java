@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import java.util.ArrayList;
@@ -38,8 +37,10 @@ import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
 import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AllEdgeSingleSourceLongestPathStrategy
+
 /**
    An analyzer used to find the longest path from a single source.
    <p>
@@ -52,10 +53,8 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
     implements SingleSourceLongestPathAnalyzer {
-
     /** Construct an instance of this analyzer.
      *
      *  @param graph The given graph.
@@ -65,7 +64,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  are going to be used to calculated the longest path.
      */
     public AllEdgeSingleSourceLongestPathStrategy(Graph graph, Node startNode,
-            ToDoubleMapping edgeLengths) {
+        ToDoubleMapping edgeLengths) {
         super(graph);
         _startNode = startNode;
         _edgeLengths = edgeLengths;
@@ -82,7 +81,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  in the graph.
      */
     public double[] distance() {
-        return (double[])_result();
+        return (double[]) _result();
     }
 
     /** Return the single source-node (start node) of this analyzer.
@@ -108,20 +107,23 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
 
         if ((predecessorsIndex != -1)) {
             predecessor = graph().node(predecessorsIndex);
+
             do {
                 pathNodes.add(predecessor);
-                predecessorsIndex =
-                    predecessors[graph().nodeLabel(predecessor)];
+                predecessorsIndex = predecessors[graph().nodeLabel(predecessor)];
+
                 if ((predecessorsIndex != -1)) {
                     predecessor = graph().node(predecessorsIndex);
                 } else {
                     break;
                 }
             } while (predecessor != _startNode);
+
             if (predecessor == _startNode) {
                 pathNodes.add(endNode);
             }
         }
+
         return pathNodes;
     }
 
@@ -152,7 +154,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      */
     public String toString() {
         return "Single source longest path analyzer"
-            + " which runs in O(E) in which E is the number of edges.";
+        + " which runs in O(E) in which E is the number of edges.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -164,11 +166,12 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      */
     public boolean valid() {
         boolean result = false;
+
         if (graph() instanceof DirectedGraph) {
-            CycleExistenceAnalyzer analyzer = new
-                FloydWarshallCycleExistenceStrategy(graph());
+            CycleExistenceAnalyzer analyzer = new FloydWarshallCycleExistenceStrategy(graph());
             result = !analyzer.hasCycle();
         }
+
         return result;
     }
 
@@ -180,56 +183,68 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  @return The result of the computation.
      */
     protected Object _compute() {
-        DirectedGraph graph = (DirectedGraph)graph();
+        DirectedGraph graph = (DirectedGraph) graph();
         ArrayList queue = new ArrayList();
+
         //HashMap color = new HashMap();
         double[] distance = new double[graph.nodeCount()];
         _predecessor = new int[graph.nodeCount()];
-        for (Iterator nodes = graph.nodes().iterator();
-             nodes.hasNext();) {
-            Node node = (Node)nodes.next();
+
+        for (Iterator nodes = graph.nodes().iterator(); nodes.hasNext();) {
+            Node node = (Node) nodes.next();
+
             if (node != _startNode) {
                 //color.put(node, Color.white);
                 distance[graph.nodeLabel(node)] = -Double.MIN_VALUE;
-                _predecessor[graph.nodeLabel(node)] = -1 ;
+                _predecessor[graph.nodeLabel(node)] = -1;
             } else {
                 distance[graph.nodeLabel(node)] = 0.0;
             }
         }
+
         queue.add(_startNode);
-        _predecessor[graph.nodeLabel(_startNode)] = -1 ;
+        _predecessor[graph.nodeLabel(_startNode)] = -1;
+
         while (!queue.isEmpty()) {
-            Node u = (Node)queue.get(0);
+            Node u = (Node) queue.get(0);
             Collection successors = graph.successors(u);
+
             if (successors != null) {
                 for (Iterator successorNodes = successors.iterator();
-                     successorNodes.hasNext();) {
-                    Node v = (Node)successorNodes.next();
+                        successorNodes.hasNext();) {
+                    Node v = (Node) successorNodes.next();
                     double predecessorDistance = distance[graph().nodeLabel(u)];
                     double actualDistance = distance[graph().nodeLabel(v)];
                     Collection edgeCollection = graph.predecessorEdges(v, u);
                     Iterator edges = edgeCollection.iterator();
-                    double connectingEdgeCost = - Double.MAX_VALUE;
+                    double connectingEdgeCost = -Double.MAX_VALUE;
+
                     while (edges.hasNext()) {
                         Edge edge = (Edge) edges.next();
+
                         if (_edgeLengths.toDouble(edge) > connectingEdgeCost) {
                             connectingEdgeCost = _edgeLengths.toDouble(edge);
                         }
                     }
-                    if ((actualDistance < predecessorDistance
-                                + connectingEdgeCost)) {
+
+                    if ((actualDistance < (predecessorDistance
+                            + connectingEdgeCost))) {
                         distance[graph.nodeLabel(v)] = predecessorDistance
                             + connectingEdgeCost;
                         _predecessor[graph.nodeLabel(v)] = graph.nodeLabel(u);
                     }
+
                     if (v != _startNode) {
                         queue.add(v);
                     }
                 }
             }
+
             queue.remove(0);
+
             //color.put(u, Color.black);
         }
+
         return distance;
     }
 
@@ -248,7 +263,6 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The values associated to the edges, in this analyzer.
     private ToDoubleMapping _edgeLengths;
 

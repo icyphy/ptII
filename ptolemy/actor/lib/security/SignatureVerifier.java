@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.security;
 
 import java.security.PublicKey;
@@ -38,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SignatureVerifier
+
 /**
    Verify the signature of the input data.
 
@@ -76,7 +77,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class SignatureVerifier extends SignatureActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -86,7 +86,7 @@ public class SignatureVerifier extends SignatureActor {
      *   actor with this name.
      */
     public SignatureVerifier(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         signature = new TypedIOPort(this, "signature", true, false);
@@ -126,29 +126,32 @@ public class SignatureVerifier extends SignatureActor {
         // so that we handle any updates of _signature made necessary
         // by attribute changes.
         super.fire();
-        if (publicKey.hasToken(0)) {
-            KeyToken keyToken = (KeyToken)publicKey.get(0);
-            _publicKey = (PublicKey)keyToken.getValue();
-        }
-        if (input.hasToken(0) && signature.hasToken(0) && _publicKey != null) {
-            // Process the input data to generate a signature.
 
-            byte [] signatureData = ArrayToken.arrayTokenToUnsignedByteArray(
-                    (ArrayToken)signature.get(0));
-            ArrayToken inputToken = (ArrayToken)input.get(0);
+        if (publicKey.hasToken(0)) {
+            KeyToken keyToken = (KeyToken) publicKey.get(0);
+            _publicKey = (PublicKey) keyToken.getValue();
+        }
+
+        if (input.hasToken(0) && signature.hasToken(0) && (_publicKey != null)) {
+            // Process the input data to generate a signature.
+            byte[] signatureData = ArrayToken.arrayTokenToUnsignedByteArray((ArrayToken) signature
+                    .get(0));
+            ArrayToken inputToken = (ArrayToken) input.get(0);
+
             try {
                 _signature.initVerify(_publicKey);
                 _signature.update(ArrayToken.arrayTokenToUnsignedByteArray(
-                                          inputToken));
+                        inputToken));
+
                 if (!_signature.verify(signatureData)) {
                     throw new IllegalActionException(this,
-                            "Signature verification failed, "
-                            + "potential corruption or man in the "
-                            + "middle attack?");
+                        "Signature verification failed, "
+                        + "potential corruption or man in the "
+                        + "middle attack?");
                 }
             } catch (java.security.GeneralSecurityException ex) {
                 throw new IllegalActionException(this, ex,
-                        "There was a problem with the key or signature.");
+                    "There was a problem with the key or signature.");
             }
 
             // If we got to here, then the signature verified, so
@@ -159,7 +162,6 @@ public class SignatureVerifier extends SignatureActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The PublicKey that is read in from the publicKey port.
     private PublicKey _publicKey;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.BooleanToken;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CountTrues
+
 /**
    Read the given number of input booleans and output the number that are true.
 
@@ -49,9 +50,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (yuhong)
 */
-
 public class CountTrues extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,7 +60,7 @@ public class CountTrues extends SDFTransformer {
      *   actor with this name.
      */
     public CountTrues(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -91,9 +90,8 @@ public class CountTrues extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CountTrues newObject = (CountTrues)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CountTrues newObject = (CountTrues) super.clone(workspace);
         return newObject;
     }
 
@@ -104,11 +102,12 @@ public class CountTrues extends SDFTransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        int count = ((IntToken)blockSize.getToken()).intValue();
+        int count = ((IntToken) blockSize.getToken()).intValue();
         Token[] inputBlock = input.get(0, count);
         int trueCount = 0;
+
         for (int i = 0; i < count; i += 1) {
-            if (((BooleanToken)inputBlock[i]).booleanValue()) {
+            if (((BooleanToken) inputBlock[i]).booleanValue()) {
                 trueCount++;
             }
         }

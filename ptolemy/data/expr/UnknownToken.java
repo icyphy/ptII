@@ -32,8 +32,10 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnknownToken
+
 /**
    This is a token that reports its type as "unknown."
    Otherwise, this class is identical to its parent class.
@@ -48,7 +50,6 @@ import ptolemy.data.type.Type;
    @see Constants
 */
 public class UnknownToken extends Token {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.io.BufferedReader;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TextEffigy
+
 /**
    An effigy for a text file.  If the ptolemy.user.texteditor property
    is set to "emacs", then {@link ExternalTextEffigy} is used as an Effigy,
@@ -58,7 +59,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class TextEffigy extends Effigy {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
@@ -72,7 +72,7 @@ public class TextEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public TextEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -96,17 +96,18 @@ public class TextEffigy extends Effigy {
      *   contained by the specified container, or if the specified
      *   text cannot be inserted into the document.
      */
-    public static TextEffigy newTextEffigy(
-            CompositeEntity container, String text)
-            throws Exception {
+    public static TextEffigy newTextEffigy(CompositeEntity container,
+        String text) throws Exception {
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
         Document doc = new DefaultStyledDocument();
         effigy.setDocument(doc);
+
         if (text != null) {
             doc.insertString(0, text, null);
         }
+
         return effigy;
     }
 
@@ -124,9 +125,8 @@ public class TextEffigy extends Effigy {
      *  @exception Exception If the URL cannot be read, or if the data
      *   is malformed in some way.
      */
-    public static TextEffigy newTextEffigy(
-            CompositeEntity container, URL base, URL in)
-            throws Exception {
+    public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
+        URL in) throws Exception {
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
@@ -139,16 +139,17 @@ public class TextEffigy extends Effigy {
 
             try {
                 InputStream inputStream = null;
+
                 try {
                     inputStream = in.openStream();
                 } catch (NullPointerException npe) {
                     throw new IOException("Failed to open '" + in
-                            + "', base: '" + base
-                            + "' : openStream() threw a "
-                            + "NullPointerException");
+                        + "', base: '" + base + "' : openStream() threw a "
+                        + "NullPointerException");
                 }
-                reader = new BufferedReader(
-                        new InputStreamReader(inputStream));
+
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
                 // openStream throws an IOException, not a
                 // FileNotFoundException
             } catch (IOException ex) {
@@ -157,10 +158,10 @@ public class TextEffigy extends Effigy {
                     // view source on a .html file that is not in
                     // ptsupport.jar, then we may end up here,
                     // so we look for the file as a resource.
-                    URL jarURL = JNLPUtilities
-                        .jarURLEntryResource(in.toString());
-                    reader = new BufferedReader(
-                            new InputStreamReader(jarURL.openStream()));
+                    URL jarURL = JNLPUtilities.jarURLEntryResource(in.toString());
+                    reader = new BufferedReader(new InputStreamReader(
+                                jarURL.openStream()));
+
                     // We were able to open the URL, so update the
                     // original URL so that the title bar accurately
                     // reflects the location of the file.
@@ -173,28 +174,34 @@ public class TextEffigy extends Effigy {
             }
 
             String line = reader.readLine();
+
             while (line != null) {
                 // Translate newlines to Java form.
                 doc.insertString(doc.getLength(), line + "\n", null);
                 line = reader.readLine();
             }
+
             reader.close();
+
             // Check the URL to see whether it is a file,
             // and if so, whether it is writable.
             if (in.getProtocol().equals("file")) {
                 String filename = in.getFile();
                 File file = new File(filename);
+
                 if (!file.canWrite()) {
                     effigy.setModifiable(false);
                 }
             } else {
                 effigy.setModifiable(false);
             }
+
             effigy.uri.setURL(in);
         } else {
             // No document associated.  Allow modifications.
             effigy.setModifiable(true);
         }
+
         return effigy;
     }
 
@@ -212,19 +219,20 @@ public class TextEffigy extends Effigy {
     public void writeFile(File file) throws IOException {
         if (_doc != null) {
             java.io.FileWriter fileWriter = new java.io.FileWriter(file);
+
             try {
                 fileWriter.write(_doc.getText(0, _doc.getLength()));
             } catch (BadLocationException ex) {
                 throw new IOException("Failed to get text from the document: "
-                        + ex);
+                    + ex);
             }
+
             fileWriter.close();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The document associated with this effigy.
     private Document _doc;
 
@@ -234,7 +242,6 @@ public class TextEffigy extends Effigy {
     /** A factory for creating new effigies.
      */
     public static class Factory extends EffigyFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -244,30 +251,31 @@ public class TextEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
+
             try {
                 String editorPreference = ".";
+
                 try {
-                    editorPreference =
-                        System.getProperty("ptolemy.user.texteditor",".");
+                    editorPreference = System.getProperty("ptolemy.user.texteditor",
+                            ".");
                 } catch (SecurityException security) {
                     // Ignore, we are probably running in a sandbox
                     // or applet.
                 }
 
                 Class effigyClass;
+
                 if (editorPreference.equals("emacs")) {
-                    effigyClass
-                        = Class.forName("ptolemy.actor.gui.ExternalTextEffigy");
+                    effigyClass = Class.forName(
+                            "ptolemy.actor.gui.ExternalTextEffigy");
                 } else {
-                    effigyClass
-                        = Class.forName("ptolemy.actor.gui.TextEffigy");
+                    effigyClass = Class.forName("ptolemy.actor.gui.TextEffigy");
                 }
-                _newTextEffigyURL =
-                    effigyClass.getMethod("newTextEffigy",
-                            new Class[]{CompositeEntity.class,
-                                        URL.class, URL.class});
+
+                _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
+                        new Class[] { CompositeEntity.class, URL.class, URL.class });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
@@ -303,20 +311,20 @@ public class TextEffigy extends Effigy {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
-        public Effigy createEffigy(
-                CompositeEntity container, URL base, URL in)
-                throws Exception {
+        public Effigy createEffigy(CompositeEntity container, URL base, URL in)
+            throws Exception {
             // Create a new effigy.
             try {
-                return (Effigy) _newTextEffigyURL.invoke
-                    (null, new Object[]{container, base, in});
+                return (Effigy) _newTextEffigyURL.invoke(null,
+                    new Object[] { container, base, in });
             } catch (java.lang.reflect.InvocationTargetException ex) {
                 if (ex instanceof Exception) {
                     // Rethrow the initial cause
-                    throw (Exception)(ex.getCause());
+                    throw (Exception) (ex.getCause());
                 } else {
                     throw new Exception(ex.getCause());
                 }
+
                 // Uncomment this for debugging
                 // throw new java.lang.reflect.InvocationTargetException(ex,
                 // " Invocation of method failed!. Method was: "

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.tree;
 
 import java.awt.event.MouseAdapter;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import diva.gui.toolbox.JContextMenu;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PTreeMenuCreator
+
 /**
    A mouse listener that creates context menus for a PTree using menu
    item factories.  When asked to create a context menu, This class
@@ -58,7 +59,6 @@ import diva.gui.toolbox.JContextMenu;
    @Pt.AcceptedRating Red (johnr)
 */
 public class PTreeMenuCreator extends MouseAdapter {
-
     /** Create a new menu factory that contains no menu item factories.
      */
     public PTreeMenuCreator() {
@@ -113,18 +113,22 @@ public class PTreeMenuCreator extends MouseAdapter {
         if (!e.isPopupTrigger()) {
             return;
         }
+
         PTree tree = (PTree) e.getComponent();
         TreePath treePath = tree.getPathForLocation(e.getX(), e.getY());
         Object object = treePath.getLastPathComponent();
+
         if (object instanceof NamedObj) {
-            NamedObj namedObj = (NamedObj)object;
-            JContextMenu menu = new JContextMenu(
-                    namedObj, namedObj.getFullName());
+            NamedObj namedObj = (NamedObj) object;
+            JContextMenu menu = new JContextMenu(namedObj,
+                    namedObj.getFullName());
             Iterator i = menuItemFactoryList().iterator();
+
             while (i.hasNext()) {
-                MenuItemFactory factory = (MenuItemFactory)i.next();
+                MenuItemFactory factory = (MenuItemFactory) i.next();
                 factory.create(menu, namedObj);
             }
+
             menu.show(tree, e.getX(), e.getY());
             e.consume();
         }

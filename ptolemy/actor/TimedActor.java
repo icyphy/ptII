@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedActor
+
 /**
    This is a marker interface for actors that operate on time-based signals.
    That is, logically, all signals observed or produced are tokens placed
@@ -43,7 +44,5 @@ package ptolemy.actor;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
-public interface TimedActor {}
-
-
+public interface TimedActor {
+}

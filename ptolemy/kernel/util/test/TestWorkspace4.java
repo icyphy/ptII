@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.kernel.util.test;
 
 import java.util.LinkedList;
@@ -34,8 +33,10 @@ import java.util.List;
 
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestWorkspace4
+
 /**
    Test the following scenario: thread T1 gets write access; T2 waits
    for read access and is interrupted, then waits for read access again;
@@ -51,26 +52,22 @@ import ptolemy.kernel.util.Workspace;
 
 */
 public class TestWorkspace4 extends TestWorkspaceBase {
-
     public void initializeTest() {
         Workspace workspace = new Workspace();
         List actions = new LinkedList();
-        AccessAction action =
-            new AccessAction(workspace, 0, 'W', 1000, null, _record, "A0");
+        AccessAction action = new AccessAction(workspace, 0, 'W', 1000, null,
+                _record, "A0");
         actions.add(action);
         _accessThreads.add(new AccessThread("T1", actions, this));
         actions = new LinkedList();
-        action =
-            new AccessAction(workspace, 500, 'R', 500, null, _record, "A2");
+        action = new AccessAction(workspace, 500, 'R', 500, null, _record, "A2");
         actions.add(action);
-        action =
-            new AccessAction(workspace, 0, 'R', 0, null, _record, "A3");
+        action = new AccessAction(workspace, 0, 'R', 0, null, _record, "A3");
         actions.add(action);
         _thread = new AccessThread("T2", actions, this);
         _accessThreads.add(_thread);
         actions = new LinkedList();
-        action =
-            new AccessAction(workspace, 2200, 'W', 100, null, _record, "A1");
+        action = new AccessAction(workspace, 2200, 'W', 100, null, _record, "A1");
         actions.add(action);
         _accessThreads.add(new AccessThread("T3", actions, this));
         _testTime = 5000; // ms
@@ -84,6 +81,7 @@ public class TestWorkspace4 extends TestWorkspaceBase {
                     } catch (InterruptedException e) {
                         // ignore
                     }
+
                     // interrupt T2 while it is waiting for read access
                     _thread.interrupt();
                 }

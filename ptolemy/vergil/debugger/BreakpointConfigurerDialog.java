@@ -24,20 +24,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.vergil.debugger;
 
 import java.awt.Frame;
 
-import ptolemy.gui.ComponentDialog;
 import ptolemy.actor.gui.QueryUtilities;
+import ptolemy.gui.ComponentDialog;
 import ptolemy.kernel.Entity;
-import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.BasicGraphController;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// BreakpointConfigurerDialog
+
 /**
    A top-level dialog window for configuring the breakpoints of an
    entity.  An instance of this class contains an instance of
@@ -55,7 +55,6 @@ import ptolemy.util.MessageHandler;
    @Pt.AcceptedRating Red (celaine)
 */
 public class BreakpointConfigurerDialog extends ComponentDialog {
-
     /** Construct a dialog with the specified owner and target.
      *  The dialog is placed relative to the owner.
      *  @param owner The object that, per the user, appears to be
@@ -64,19 +63,15 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
      *  @param graphController The GraphController associated with the
      *  target.
      */
-    public BreakpointConfigurerDialog(Frame owner,
-            Entity target,
-            BasicGraphController graphController) {
-        super(owner,
-                "Configure breakpoints for " + target.getName(),
-                new BreakpointConfigurer(target, graphController),
-                _moreButtons);
+    public BreakpointConfigurerDialog(Frame owner, Entity target,
+        BasicGraphController graphController) {
+        super(owner, "Configure breakpoints for " + target.getName(),
+            new BreakpointConfigurer(target, graphController), _moreButtons);
 
         // Once we get to here, the dialog has already been dismissed.
-
         if (buttonPressed().equals("Help")) {
-            QueryUtilities.openHTMLResource(
-                    "ptolemy/vergil/debugger/breakpoints.htm", owner);
+            QueryUtilities.openHTMLResource("ptolemy/vergil/debugger/breakpoints.htm",
+                owner);
         }
     }
 
@@ -88,21 +83,20 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
      */
     protected void _handleClosing() {
         super._handleClosing();
+
         if (!buttonPressed().equals("Cancel")
                 && !buttonPressed().equals("Help")) {
             try {
-                ((BreakpointConfigurer)contents).apply();
+                ((BreakpointConfigurer) contents).apply();
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to handle closing of breakpoint "
-                        + "dialog.", throwable);
+                    + "dialog.", throwable);
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Button labels.
-    private static String[] _moreButtons
-        = {"OK", "Cancel", "Help"};
+    private static String[] _moreButtons = { "OK", "Cancel", "Help" };
 }

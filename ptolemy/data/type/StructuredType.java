@@ -26,13 +26,14 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.type;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StructuredType
+
 /**
    Base class for structured type. Making this an abstract class (not an
    interface) allows the methods to be protected.
@@ -50,9 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public abstract class StructuredType implements Type {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -92,7 +91,7 @@ public abstract class StructuredType implements Type {
      *   different structure.
      */
     public abstract void updateType(StructuredType newType)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -137,6 +136,4 @@ public abstract class StructuredType implements Type {
      *   not the same structured type as this one.
      */
     protected abstract StructuredType _leastUpperBound(StructuredType type);
-
 }
-

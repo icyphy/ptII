@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package ptolemy.domains.ct.kernel.test;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -37,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyStatefulActor
+
 /**
    @author Jie Liu
    @version $Id$
@@ -49,7 +51,7 @@ public class CTDummyStatefulActor extends TypedAtomicActor
     /** Constructor
      */
     public CTDummyStatefulActor(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
@@ -61,16 +63,18 @@ public class CTDummyStatefulActor extends TypedAtomicActor
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Do nothing.
-     */
-    public void goToMarkedState() {}
 
     /** Do nothing.
      */
-    public void markState() {}
+    public void goToMarkedState() {
+    }
+
+    /** Do nothing.
+     */
+    public void markState() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

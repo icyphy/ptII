@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.kernel;
 
 import java.util.List;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ChannelPort
+
 /**
    This port is used in a channel to mediate type constraints between
    senders and receivers on a wireless channel. The way it works is by
@@ -60,9 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (cxh)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class ChannelPort extends WirelessIOPort {
-
     /** Construct a port with the specified container and name
      *  that is both an input and an output.
      *  @param container The container actor.
@@ -74,9 +73,10 @@ public class ChannelPort extends WirelessIOPort {
      *   a port already in the container.
      */
     public ChannelPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, true, true);
         setPersistent(false);
+
         SingletonParameter hide = new SingletonParameter(this, "_hide");
         hide.setToken(BooleanToken.TRUE);
     }
@@ -110,13 +110,13 @@ public class ChannelPort extends WirelessIOPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (container instanceof WirelessChannel) {
             super.setContainer(container);
         } else {
             throw new IllegalActionException(this,
-                    "ChannelPort can only be contained by an "
-                    +  "instance of WirelessChannel.");
+                "ChannelPort can only be contained by an "
+                + "instance of WirelessChannel.");
         }
     }
 
@@ -130,8 +130,9 @@ public class ChannelPort extends WirelessIOPort {
         if (_sinkPortListVersion == workspace().getVersion()) {
             return _sinkPortList;
         }
+
         try {
-            WirelessChannel channel = (WirelessChannel)getContainer();
+            WirelessChannel channel = (WirelessChannel) getContainer();
             _sinkPortList = channel.listeningInputPorts();
             _sinkPortList.addAll(channel.listeningOutputPorts());
             _sinkPortListVersion = workspace().getVersion();
@@ -153,8 +154,9 @@ public class ChannelPort extends WirelessIOPort {
         if (_sourcePortListVersion == workspace().getVersion()) {
             return _sourcePortList;
         }
+
         try {
-            WirelessChannel channel = (WirelessChannel)getContainer();
+            WirelessChannel channel = (WirelessChannel) getContainer();
             _sourcePortList = channel.sendingOutputPorts();
             _sourcePortList.addAll(channel.sendingInputPorts());
             _sourcePortListVersion = workspace().getVersion();
@@ -168,7 +170,6 @@ public class ChannelPort extends WirelessIOPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     private List _sourcePortList;
     private long _sourcePortListVersion = -1;
     private List _sinkPortList;

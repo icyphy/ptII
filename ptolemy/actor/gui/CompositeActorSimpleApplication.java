@@ -26,12 +26,8 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
-//import java.awt.Color;
-//import java.awt.event.WindowAdapter;
-//import java.awt.event.WindowEvent;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +45,7 @@ import ptolemy.moml.MoMLParser;
 
 /////////////////////////////////////////////////////////////////
 //// CompositeActorSimpleApplication
+
 /**
    This application creates one or more Ptolemy II models given a
    classname on the command line, and then executes those models, each in
@@ -83,16 +80,15 @@ import ptolemy.moml.MoMLParser;
    @Pt.AcceptedRating Red (vogel)
 */
 public class CompositeActorSimpleApplication {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Create a new application with the specified command-line arguments.
      *  @param args The command-line arguments.
      */
-    public static void main(String args[]) {
-        CompositeActorSimpleApplication application =
-            new CompositeActorSimpleApplication();
+    public static void main(String[] args) {
+        CompositeActorSimpleApplication application = new CompositeActorSimpleApplication();
+
         try {
             application.processArgs(args);
             application.waitForFinish();
@@ -107,6 +103,7 @@ public class CompositeActorSimpleApplication {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
+
             System.exit(0);
         }
     }
@@ -115,14 +112,15 @@ public class CompositeActorSimpleApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If something goes wrong.
      */
-    public void processArgs(String args[]) throws Exception {
+    public void processArgs(String[] args) throws Exception {
         if (args != null) {
             _parseArgs(args);
 
             // start the models.
             Iterator models = _models.iterator();
+
             while (models.hasNext()) {
-                startRun((CompositeActor)models.next());
+                startRun((CompositeActor) models.next());
             }
         }
     }
@@ -151,7 +149,7 @@ public class CompositeActorSimpleApplication {
      */
     public void report(String message, Exception ex) {
         System.err.println("Exception thrown:\n" + message + "\n"
-                + KernelException.stackTraceToString(ex));
+            + KernelException.stackTraceToString(ex));
     }
 
     /** If the specified model has a manager and is not already running,
@@ -167,26 +165,28 @@ public class CompositeActorSimpleApplication {
      *  @param model The model to execute.
      *  @see ptolemy.actor.Manager#startRun()
      */
-    public synchronized void startRun(CompositeActor model) throws IllegalActionException {
+    public synchronized void startRun(CompositeActor model)
+        throws IllegalActionException {
         // This method is synchronized so that it can atomically modify
         // the count of executing processes.
-
         // NOTE: If you modify this method, please be sure that it
         // will work for non-graphical models in the nightly test suite.
-
         // Iterate through the model, looking for something that is Placeable.
         Iterator atomicEntities = model.allAtomicEntityList().iterator();
+
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
+
             if (object instanceof Placeable) {
                 throw new IllegalActionException(
-                        "CompositeActorSimpleApplication does not support "
-                        + "actors that are instances of placeable, "
-                        + "object was: " + object);
+                    "CompositeActorSimpleApplication does not support "
+                    + "actors that are instances of placeable, "
+                    + "object was: " + object);
             }
         }
 
         Manager manager = model.getManager();
+
         if (manager != null) {
             try {
                 manager.startRun();
@@ -195,7 +195,7 @@ public class CompositeActorSimpleApplication {
             }
         } else {
             report("Model " + model.getFullName() + " cannot be executed "
-                    + "because it does not have a manager.");
+                + "because it does not have a manager.");
         }
     }
 
@@ -206,6 +206,7 @@ public class CompositeActorSimpleApplication {
      */
     public void stopRun(CompositeActor model) {
         Manager manager = model.getManager();
+
         if (manager != null) {
             manager.stop();
         }
@@ -249,13 +250,14 @@ public class CompositeActorSimpleApplication {
             _expectingClass = true;
         } else if (arg.equals("-help")) {
             System.out.println(_usage());
+
             // Don't call System.exit(0) here, it will break the test suites
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version "
-                    + VersionAttribute.CURRENT_VERSION
-                    + ", Build $Id$");
+            System.out.println("Version " + VersionAttribute.CURRENT_VERSION
+                + ", Build $Id$");
+
             // quit the program if the user asked for the version
             // Don't call System.exit(0) here, it will break the test suites
         } else if (arg.equals("")) {
@@ -265,14 +267,15 @@ public class CompositeActorSimpleApplication {
                 _expectingClass = false;
 
                 MoMLParser parser = new MoMLParser();
-                String string = "<entity name=\"toplevel\" class=\"" +
-                    arg + "\"/>";
-                CompositeActor model
-                    = (CompositeActor)parser.parse(string);
+                String string = "<entity name=\"toplevel\" class=\"" + arg
+                    + "\"/>";
+                CompositeActor model = (CompositeActor) parser.parse(string);
+
                 // Temporary hack because cloning doesn't properly clone
                 // type constraints.
-                CompositeActor modelClass = (CompositeActor)
-                    parser.searchForClass(arg, model.getSource());
+                CompositeActor modelClass = (CompositeActor) parser
+                    .searchForClass(arg, model.getSource());
+
                 if (modelClass != null) {
                     model = modelClass;
                 }
@@ -281,6 +284,7 @@ public class CompositeActorSimpleApplication {
 
                 // Create a manager.
                 Manager manager = model.getManager();
+
                 if (manager == null) {
                     model.setManager(new Manager(model.workspace(), "manager"));
                     manager = model.getManager();
@@ -290,6 +294,7 @@ public class CompositeActorSimpleApplication {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -297,11 +302,12 @@ public class CompositeActorSimpleApplication {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
-    protected void _parseArgs(String args[]) throws Exception {
+    protected void _parseArgs(String[] args) throws Exception {
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
+
             if (_parseArg(arg) == false) {
-                if (arg.startsWith("-") && i < args.length - 1) {
+                if (arg.startsWith("-") && (i < (args.length - 1))) {
                     // Save in case this is a parameter name and value.
                     _parameterNames.add(arg.substring(1));
                     _parameterValues.add(args[i + 1]);
@@ -309,46 +315,57 @@ public class CompositeActorSimpleApplication {
                 } else {
                     // Unrecognized option.
                     throw new IllegalActionException("Unrecognized option: "
-                            + arg);
+                        + arg);
                 }
             }
         }
+
         if (_expectingClass) {
             throw new IllegalActionException("Missing classname.");
         }
+
         // Check saved options to see whether any is a parameter.
         Iterator names = _parameterNames.iterator();
         Iterator values = _parameterValues.iterator();
+
         while (names.hasNext() && values.hasNext()) {
-            String name = (String)names.next();
-            String value = (String)values.next();
+            String name = (String) names.next();
+            String value = (String) values.next();
 
             boolean match = false;
             Iterator models = _models.iterator();
+
             while (models.hasNext()) {
                 CompositeActor model = (CompositeActor) models.next();
                 Attribute attribute = model.getAttribute(name);
+
                 if (attribute instanceof Variable) {
                     match = true;
-                    ((Variable)attribute).setExpression(value);
+                    ((Variable) attribute).setExpression(value);
+
                     // Force evaluation so that listeners are notified.
-                    ((Variable)attribute).getToken();
+                    ((Variable) attribute).getToken();
                 }
+
                 Director director = model.getDirector();
+
                 if (director != null) {
                     attribute = director.getAttribute(name);
+
                     if (attribute instanceof Variable) {
                         match = true;
-                        ((Variable)attribute).setExpression(value);
+                        ((Variable) attribute).setExpression(value);
+
                         // Force evaluation so that listeners are notified.
-                        ((Variable)attribute).getToken();
+                        ((Variable) attribute).getToken();
                     }
                 }
             }
+
             if (!match) {
                 // Unrecognized option.
-                throw new IllegalActionException("Unrecognized option: "
-                        + "-" + name);
+                throw new IllegalActionException("Unrecognized option: " + "-"
+                    + name);
             }
         }
     }
@@ -361,14 +378,18 @@ public class CompositeActorSimpleApplication {
             + "Options that take values:\n";
 
         int i;
+
         for (i = 0; i < _commandOptions.length; i++) {
-            result += " " + _commandOptions[i][0] +
-                " " + _commandOptions[i][1] + "\n";
+            result += (" " + _commandOptions[i][0] + " "
+            + _commandOptions[i][1] + "\n");
         }
+
         result += "\nBoolean flags:\n";
+
         for (i = 0; i < _commandFlags.length; i++) {
-            result += " " + _commandFlags[i];
+            result += (" " + _commandFlags[i]);
         }
+
         return result;
     }
 
@@ -376,17 +397,13 @@ public class CompositeActorSimpleApplication {
     ////                         protected variables               ////
 
     /** The command-line options that are either present or not. */
-    protected String _commandFlags[] = {
-        "-help",
-        "-test",
-        "-version",
-    };
+    protected String[] _commandFlags = { "-help", "-test", "-version", };
 
     /** The command-line options that take arguments. */
-    protected String _commandOptions[][] = {
-        {"-class",  "<classname>"},
-        {"-<parameter name>", "<parameter value>"},
-    };
+    protected String[][] _commandOptions = {
+            { "-class", "<classname>" },
+            { "-<parameter name>", "<parameter value>" },
+        };
 
     /** The form of the command line. */
     protected String _commandTemplate = "ptolemy [ options ]";
@@ -402,7 +419,6 @@ public class CompositeActorSimpleApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Flag indicating that the previous argument was -class.
     private boolean _expectingClass = false;
 

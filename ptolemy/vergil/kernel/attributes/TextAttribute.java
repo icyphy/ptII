@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import ptolemy.actor.gui.style.TextStyle;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TextAttribute
+
 /**
    This is an attribute that is rendered as text annotation.
    <p>
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TextAttribute extends AbstractTextAttribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -62,13 +62,14 @@ public class TextAttribute extends AbstractTextAttribute {
      *   an attribute already in the container.
      */
     public TextAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Don't use StringParameter here because variable
         // substitution would be strange.
         text = new StringAttribute(this, "text");
         text.setExpression("Double click to edit text.");
+
         TextStyle style = new TextStyle(text, "_style");
         style.height.setExpression("20");
         style.width.setExpression("80");
@@ -91,7 +92,7 @@ public class TextAttribute extends AbstractTextAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == text) {
             _icon.setText(text.getExpression());
         } else {

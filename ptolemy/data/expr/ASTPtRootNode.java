@@ -30,7 +30,6 @@
    Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.ArrayList;
@@ -39,8 +38,10 @@ import java.util.Map;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRootNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects, each of which is an instance of a class
@@ -70,7 +71,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtRootNode implements Node, Cloneable {
-
     public ASTPtRootNode(int i) {
         _id = i;
     }
@@ -90,16 +90,19 @@ public class ASTPtRootNode implements Node, Cloneable {
      */
     public Object clone() throws CloneNotSupportedException {
         ASTPtRootNode node = (ASTPtRootNode) super.clone();
+
         if (_children != null) {
             node._children = new ArrayList(_children.size());
+
             // Deeply clone all the children.
             for (Iterator i = _children.iterator(); i.hasNext();) {
-                ASTPtRootNode child = (ASTPtRootNode)i.next();
-                ASTPtRootNode clone = (ASTPtRootNode)child.clone();
+                ASTPtRootNode child = (ASTPtRootNode) i.next();
+                ASTPtRootNode clone = (ASTPtRootNode) child.clone();
                 node._children.add(clone);
                 clone._parent = node;
             }
         }
+
         return node;
     }
 
@@ -110,13 +113,15 @@ public class ASTPtRootNode implements Node, Cloneable {
         if (_ptToken != null) {
             String str = toString(prefix) + ", Token type: ";
             str = str + _ptToken.getClass().getName() + ", Value: ";
-            System.out.println( str + _ptToken.toString());
+            System.out.println(str + _ptToken.toString());
         } else {
-            System.out.println( toString(prefix) + "  _ptToken is null");
+            System.out.println(toString(prefix) + "  _ptToken is null");
         }
+
         if (_children != null) {
             for (int i = 0; i < _children.size(); ++i) {
-                ASTPtRootNode n = (ASTPtRootNode)_children.get(i);
+                ASTPtRootNode n = (ASTPtRootNode) _children.get(i);
+
                 if (n != null) {
                     n.displayParseTree(prefix + " ");
                 }
@@ -131,8 +136,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      *  @return The token contained by the root node for the parse tree.
      *  @deprecated Use a ParseTreeEvaluator instead.
      */
-    public ptolemy.data.Token evaluateParseTree()
-            throws IllegalActionException {
+    public ptolemy.data.Token evaluateParseTree() throws IllegalActionException {
         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
         return evaluator.evaluateParseTree(this);
     }
@@ -167,28 +171,35 @@ public class ASTPtRootNode implements Node, Cloneable {
         if (node._id != _id) {
             return false;
         }
+
         // Empty children are allowed
-        if (node._children == null && _children == null) {
+        if ((node._children == null) && (_children == null)) {
             return true;
         }
+
         // But both must be empty
-        if (node._children == null || _children == null) {
+        if ((node._children == null) || (_children == null)) {
             return false;
         }
+
         // Check that they have the same number of children.
         if (node._children.size() != _children.size()) {
             return false;
         }
+
         // Check that their children are congruent.
         Iterator children = _children.iterator();
         Iterator nodeChildren = node._children.iterator();
+
         while (children.hasNext()) {
-            ASTPtRootNode child = (ASTPtRootNode)children.next();
-            ASTPtRootNode nodeChild = (ASTPtRootNode)nodeChildren.next();
+            ASTPtRootNode child = (ASTPtRootNode) children.next();
+            ASTPtRootNode nodeChild = (ASTPtRootNode) nodeChildren.next();
+
             if (!child.isCongruent(nodeChild, renaming)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -211,11 +222,13 @@ public class ASTPtRootNode implements Node, Cloneable {
         if (_children == null) {
             _children = new ArrayList();
         }
+
         if (i >= _children.size()) {
             while (_children.size() <= i) {
                 _children.add(null);
             }
         }
+
         _children.set(i, n);
     }
 
@@ -227,8 +240,10 @@ public class ASTPtRootNode implements Node, Cloneable {
             // Check to see if this node is constant, i.e. it has
             // only constant children.
             _isConstant = true;
+
             for (int i = 0; i < _children.size(); ++i) {
-                ASTPtRootNode ch = (ASTPtRootNode)jjtGetChild(i);
+                ASTPtRootNode ch = (ASTPtRootNode) jjtGetChild(i);
+
                 if (!ch._isConstant) {
                     _isConstant = false;
                     break;
@@ -238,7 +253,7 @@ public class ASTPtRootNode implements Node, Cloneable {
     }
 
     public Node jjtGetChild(int i) {
-        return (Node)_children.get(i);
+        return (Node) _children.get(i);
     }
 
     public int jjtGetNumChildren() {
@@ -290,8 +305,8 @@ public class ASTPtRootNode implements Node, Cloneable {
      * all you need to do.
      */
     public String toString() {
-        return PtParserTreeConstants.jjtNodeName[_id] + ":"
-            + _isConstant + ":" + _ptType + ":" + _ptToken;
+        return PtParserTreeConstants.jjtNodeName[_id] + ":" + _isConstant + ":"
+        + _ptType + ":" + _ptToken;
     }
 
     public String toString(String prefix) {
@@ -302,16 +317,13 @@ public class ASTPtRootNode implements Node, Cloneable {
      *  subclasses should override this method to invoke the appropriate
      *  method in the visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         throw new IllegalActionException("The visit() method is not "
-                + " implemented for nodes of type "
-                + getClass().getName() + ".");
+            + " implemented for nodes of type " + getClass().getName() + ".");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected Node _parent;
     protected ArrayList _children;
     protected int _id;

@@ -30,6 +30,7 @@ import diva.graph.BasicNodeController;
 import diva.graph.EdgeController;
 import diva.graph.NodeController;
 
+
 /**
  * A controller for bubble-and-arc graph editors.
  *
@@ -43,7 +44,7 @@ public class BubbleGraphController extends BasicGraphController {
      * Set the node renderer to a bubble renderer, and the edge renderer
      * to an arc renderer.
      */
-    public BubbleGraphController () {
+    public BubbleGraphController() {
         NodeController nc = new BasicNodeController(this);
         nc.setNodeRenderer(new BubbleRenderer());
         setNodeController(nc);
@@ -52,8 +53,4 @@ public class BubbleGraphController extends BasicGraphController {
         ec.setEdgeRenderer(new ArcRenderer());
         setEdgeController(ec);
     }
-
-
 }
-
-

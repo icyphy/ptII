@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.ArrayToken;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LineCoder
+
 /**
    A line coder, which converts a sequence of booleans into symbols.
 
@@ -53,9 +54,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class LineCoder extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,7 +64,7 @@ public class LineCoder extends SDFTransformer {
      *   actor with this name.
      */
     public LineCoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -78,7 +77,7 @@ public class LineCoder extends SDFTransformer {
         wordLength = new Parameter(this, "wordLength", new IntToken(1));
         wordLength.setTypeEquals(BaseType.INT);
 
-        ArrayType paramType = (ArrayType)table.getType();
+        ArrayType paramType = (ArrayType) table.getType();
         InequalityTerm elementTerm = paramType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
     }
@@ -119,7 +118,7 @@ public class LineCoder extends SDFTransformer {
      *   allowed on the specified attribute.
      */
     public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute != table) {
             // The base class will probably throw an exception.
             super.attributeTypeChanged(attribute);
@@ -133,12 +132,11 @@ public class LineCoder extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        LineCoder newObject = (LineCoder)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        LineCoder newObject = (LineCoder) (super.clone(workspace));
 
         // set the type constraints
-        ArrayType paramType = (ArrayType)newObject.table.getType();
+        ArrayType paramType = (ArrayType) newObject.table.getType();
         InequalityTerm elementTerm = paramType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
@@ -149,14 +147,18 @@ public class LineCoder extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         int tableAddress = 0;
-        Token tokens[] = input.get(0, _wordLength);
+        Token[] tokens = input.get(0, _wordLength);
+
         for (int i = 0; i < _wordLength; i++) {
-            boolean data = ((BooleanToken)tokens[i]).booleanValue();
+            boolean data = ((BooleanToken) tokens[i]).booleanValue();
+
             if (data) {
-                tableAddress |= 1 << i;
+                tableAddress |= (1 << i);
             }
         }
+
         output.send(0, _table[tableAddress]);
     }
 
@@ -167,24 +169,25 @@ public class LineCoder extends SDFTransformer {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        _wordLength = ((IntToken)(wordLength.getToken())).intValue();
+        _wordLength = ((IntToken) (wordLength.getToken())).intValue();
 
         // Set the token consumption rate.
         input_tokenConsumptionRate.setToken(new IntToken(_wordLength));
 
-        ArrayToken tableToken = (ArrayToken)table.getToken();
-        int size = (int)Math.pow(2, _wordLength);
+        ArrayToken tableToken = (ArrayToken) table.getToken();
+        int size = (int) Math.pow(2, _wordLength);
+
         if (tableToken.length() < size) {
-            throw new IllegalActionException(this, "Table parameter must " +
-                    "have at least " + size + " entries, but only has " +
-                    tableToken.length());
+            throw new IllegalActionException(this,
+                "Table parameter must " + "have at least " + size
+                + " entries, but only has " + tableToken.length());
         }
+
         _table = tableToken.arrayValue();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Local cache of these parameter values.
     private int _wordLength;
     private Token[] _table;

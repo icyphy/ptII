@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import java.util.List;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NonstrictDelay
+
 /**
    This actor provides a one-tick delay.  On each firing, it produces
    on the output port whatever value it read on the input port in the
@@ -62,9 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (celaine)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class NonStrictDelay extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -75,13 +74,12 @@ public class NonStrictDelay extends Transformer {
      *   an actor already in the container.
      */
     public NonStrictDelay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
 
         initialValue = new Parameter(this, "initialValue");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -90,7 +88,6 @@ public class NonStrictDelay extends Transformer {
      *  @see #typeConstraintList()
      */
     public Parameter initialValue;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -177,10 +174,8 @@ public class NonStrictDelay extends Transformer {
         return typeConstraints;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // The token received on the previous iteration to be output on the
     // current iteration.
     protected Token _previousToken;
@@ -188,7 +183,4 @@ public class NonStrictDelay extends Transformer {
     // The most recent token received on the current iteration to be
     // output on the next iteration.
     protected Token _currentToken;
-
 }
-
-

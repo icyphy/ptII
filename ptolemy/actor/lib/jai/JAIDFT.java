@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIDFT
+
 /**
    Calculate the discrete Fourier transform of an image.  If the input
    is real, then the output has twice as many bands as the input (the
@@ -71,9 +72,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIDFT extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -83,7 +82,7 @@ public class JAIDFT extends Transformer {
      *   actor with this name.
      */
     public JAIDFT(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         scalingType = new StringAttribute(this, "scalingType");
@@ -125,9 +124,10 @@ public class JAIDFT extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == dataNature) {
             String natureName = dataNature.getExpression();
+
             if (natureName.equals("complexToComplex")) {
                 _dataNature = _COMPLEX_TO_COMPLEX;
             } else if (natureName.equals("complexToReal")) {
@@ -136,10 +136,11 @@ public class JAIDFT extends Transformer {
                 _dataNature = _REAL_TO_COMPLEX;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized dataNature type: " + natureName);
+                    "Unrecognized dataNature type: " + natureName);
             }
         } else if (attribute == scalingType) {
             String typeName = scalingType.getExpression();
+
             if (typeName.equals("dimensions")) {
                 _scalingType = _DIMENSIONS;
             } else if (typeName.equals("unitary")) {
@@ -148,7 +149,7 @@ public class JAIDFT extends Transformer {
                 _scalingType = _NONE;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized scaling type: " + typeName);
+                    "Unrecognized scaling type: " + typeName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -163,40 +164,46 @@ public class JAIDFT extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock dftParameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
         dftParameters.addSource(oldImage);
 
-        switch(_scalingType) {
+        switch (_scalingType) {
         case _DIMENSIONS:
             dftParameters.add(DFTDescriptor.SCALING_DIMENSIONS);
             break;
+
         case _NONE:
             dftParameters.add(DFTDescriptor.SCALING_NONE);
             break;
+
         case _UNITARY:
             dftParameters.add(DFTDescriptor.SCALING_UNITARY);
             break;
+
         default:
-            throw new IllegalActionException(
-                    "Invalid value for scaling type");
+            throw new IllegalActionException("Invalid value for scaling type");
         }
 
-        switch(_dataNature) {
+        switch (_dataNature) {
         case _COMPLEX_TO_COMPLEX:
             dftParameters.add(DFTDescriptor.COMPLEX_TO_COMPLEX);
             break;
+
         case _COMPLEX_TO_REAL:
             dftParameters.add(DFTDescriptor.COMPLEX_TO_REAL);
             break;
+
         case _REAL_TO_COMPLEX:
             dftParameters.add(DFTDescriptor.REAL_TO_COMPLEX);
             break;
+
         default:
-            throw new IllegalActionException(
-                    "Invalid data natures");
+            throw new IllegalActionException("Invalid data natures");
         }
+
         RenderedOp newImage = JAI.create("dft", dftParameters);
         output.send(0, new JAIImageToken(newImage));
     }
@@ -216,7 +223,6 @@ public class JAIDFT extends Transformer {
     private static final int _COMPLEX_TO_COMPLEX = 0;
     private static final int _COMPLEX_TO_REAL = 1;
     private static final int _REAL_TO_COMPLEX = 2;
-
     private static final int _DIMENSIONS = 0;
     private static final int _NONE = 1;
     private static final int _UNITARY = 2;

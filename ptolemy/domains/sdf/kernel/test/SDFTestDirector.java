@@ -31,6 +31,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 /**
    This actor is used to test the _writeAccessRequired method of
    SDFDirector
@@ -43,12 +44,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class SDFTestDirector extends SDFDirector {
     public SDFTestDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
     }
 
     public SDFTestDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// AnalysisException
+
 /**
    Base exception for non-checked exceptions in the analyses package.
 
@@ -37,10 +38,10 @@ package ptolemy.graph.analysis;
    @version $Id$
 */
 public class AnalysisException extends RuntimeException {
-
     /** The default constructor without arguments.
      */
-    public AnalysisException() {}
+    public AnalysisException() {
+    }
 
     /** Constructor with a text description as argument.
      *
@@ -50,4 +51,3 @@ public class AnalysisException extends RuntimeException {
         super(message);
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.DoubleToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FixToDouble
+
 /**
    This actor converts a FixToken into a DoubleToken. This conversion is
    explicitly provided because there is no lossless conversion
@@ -53,9 +54,7 @@ import ptolemy.math.FixPoint;
    @Pt.AcceptedRating Green (pwhitake)
    @see ptolemy.data.FixToken
 */
-
 public class FixToDouble extends Converter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,7 +64,7 @@ public class FixToDouble extends Converter {
      *   actor with this name.
      */
     public FixToDouble(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.FIX);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -79,7 +78,7 @@ public class FixToDouble extends Converter {
      * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        FixToken in = (FixToken)input.get(0);
+        FixToken in = (FixToken) input.get(0);
         FixPoint value = in.fixValue();
         output.send(0, new DoubleToken(value.doubleValue()));
     }
@@ -92,13 +91,7 @@ public class FixToDouble extends Converter {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-
-
-
-
-
-
-

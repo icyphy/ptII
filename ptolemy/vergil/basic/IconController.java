@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.vergil.basic;
 
 import java.util.HashMap;
@@ -47,8 +46,10 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// IconController
+
 /**
    This class provides interaction with nodes that represent Ptolemy II
    objects that are represented on screen as icons, such as attributes
@@ -66,7 +67,6 @@ import diva.graph.NodeRenderer;
    @Pt.AcceptedRating Red (johnr)
 */
 public class IconController extends ParameterizedNodeController {
-
     /** Create a controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
@@ -101,17 +101,21 @@ public class IconController extends ParameterizedNodeController {
 
             // NOTE: this code is similar to that in PtolemyTreeCellRenderer
             Figure result = null;
+
             try {
                 List iconList = object.attributeList(EditorIcon.class);
+
                 // Check to see whether there is an icon that has been created,
                 // but not inserted.
                 if (iconList.size() == 0) {
-                    XMLIcon alreadyCreated =
-                        (XMLIcon) _iconsPendingContainer.get(object);
+                    XMLIcon alreadyCreated = (XMLIcon) _iconsPendingContainer
+                        .get(object);
+
                     if (alreadyCreated != null) {
                         iconList.add(alreadyCreated);
                     }
                 }
+
                 // If there are still no icons, then we need to create one.
                 if (iconList.size() == 0) {
                     // NOTE: This used to directly create an XMLIcon within
@@ -127,8 +131,8 @@ public class IconController extends ParameterizedNodeController {
                     // executed before this gets around to setting the
                     // container.  Otherwise, that second change request
                     // will result in the creation of a second figure.
-                    final EditorIcon icon =
-                        new XMLIcon(object.workspace(), "_icon");
+                    final EditorIcon icon = new XMLIcon(object.workspace(),
+                            "_icon");
                     icon.setContainerToBe(object);
                     icon.setPersistent(false);
                     result = icon.createFigure();
@@ -144,64 +148,68 @@ public class IconController extends ParameterizedNodeController {
                     // in another call to this very same method, which will
                     // result in creation of yet another figure before this
                     // method even returns!
-                    GraphController controller =
-                        IconController.this.getController();
+                    GraphController controller = IconController.this
+                        .getController();
                     GraphModel graphModel = controller.getGraphModel();
-                    ChangeRequest request =
-                        new ChangeRequest(
-                                graphModel,
-                                "Set the container of a new XMLIcon.") {
+                    ChangeRequest request = new ChangeRequest(graphModel,
+                            "Set the container of a new XMLIcon.") {
                             // NOTE: The KernelException should not be thrown,
                             // but if it is, it will be handled properly.
                             protected void _execute() throws KernelException {
                                 _iconsPendingContainer.remove(object);
+
                                 // If the icon already has a container, do nothing.
-                                if (icon.getContainer() != null)
+                                if (icon.getContainer() != null) {
                                     return;
+                                }
+
                                 // If the container already has an icon, do nothing.
-                                if (object.getAttribute("_icon") != null)
+                                if (object.getAttribute("_icon") != null) {
                                     return;
+                                }
+
                                 icon.setContainer(object);
                             }
                         };
+
                     request.setPersistent(false);
                     object.requestChange(request);
                 } else if (iconList.size() >= 1) {
                     // Use only the last icon in the list.
-                    EditorIcon icon = (EditorIcon)
-                            iconList.get(iconList.size() - 1);
+                    EditorIcon icon = (EditorIcon) iconList.get(iconList.size()
+                            - 1);
                     result = icon.createFigure();
                 }
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        null,
-                        ex,
-                        "Could not create icon "
-                        + "in "
-                        + object
-                        + " even "
-                        + "though one did not previously exist.");
+                throw new InternalErrorException(null, ex,
+                    "Could not create icon " + "in " + object + " even "
+                    + "though one did not previously exist.");
             }
+
             result.setToolTipText(object.getClassName());
 
             // If the object is a ComponentEntity then check to see if it has
             // attributes that specify its color or an explanation.
             if (object instanceof ComponentEntity) {
                 ComponentEntity ce = (ComponentEntity) object;
-                StringAttribute _colorAttr =
-                    (StringAttribute) (ce.getAttribute("_color"));
+                StringAttribute _colorAttr = (StringAttribute) (ce.getAttribute(
+                        "_color"));
+
                 if (_colorAttr != null) {
                     String _color = _colorAttr.getExpression();
-                    AnimationRenderer _animationRenderer =
-                        new AnimationRenderer(SVGUtilities.getColor(_color));
+                    AnimationRenderer _animationRenderer = new AnimationRenderer(SVGUtilities
+                            .getColor(_color));
                     _animationRenderer.renderSelected(result);
-                    StringAttribute _explAttr =
-                        (StringAttribute) (ce.getAttribute("_explanation"));
+
+                    StringAttribute _explAttr = (StringAttribute) (ce
+                        .getAttribute("_explanation"));
+
                     if (_explAttr != null) {
                         result.setToolTipText(_explAttr.getExpression());
                     }
                 }
             }
+
             return result;
         }
     }

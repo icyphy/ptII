@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.rtp.kernel.test;
 
 import ptolemy.actor.Director;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestSource
+
 /**
    This actor produces a ramp at 2Hz.
 
@@ -49,9 +50,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestSource extends Source {
-
     public TestSource(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
         frequency = new Parameter(this, "frequency", new DoubleToken(2.0));
@@ -72,20 +72,23 @@ public class TestSource extends Source {
     /** Once the frequency is updated, calculate the execution period.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == frequency) {
-            double f = ((DoubleToken)(frequency.getToken())).doubleValue();
+            double f = ((DoubleToken) (frequency.getToken())).doubleValue();
+
             if (f > 1000) {
                 throw new IllegalActionException(this,
-                        "does not support frequency higher than 1000.");
+                    "does not support frequency higher than 1000.");
             }
-            _period = 1000.0/f;
+
+            _period = 1000.0 / f;
         }
     }
 
     public void fire() throws IllegalActionException {
         output.broadcast(new DoubleToken(value));
         value += 1.0;
+
         Director director = getDirector();
         Time time = director.getModelTime();
         System.out.println("Firing round " + value);
@@ -96,6 +99,7 @@ public class TestSource extends Source {
         value = 0.0;
         count = 0;
         super.initialize();
+
         // Director director = getDirector();
         // director.fireAt(this, director.getCurrentTime());
     }

@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.soot;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SootASTException
+
 /**
    This class is a custom Exception class for reporting errors within the
    Soot abstract syntax tree. This exception is generated in the
@@ -43,11 +44,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
    @see SootASTVisitor
 */
-
 public class SootASTException extends IllegalActionException {
-
     public SootASTException(String detail) {
         super(detail);
     }
-
 }

@@ -32,6 +32,7 @@ package diva.gui.tutorial;
 
 import diva.gui.AppletContext;
 
+
 /**
  * A graph editor that runs as an applet.
  *
@@ -44,10 +45,3 @@ public class AppletTutorial extends AppletContext {
         new ApplicationTutorial(this);
     }
 }
-
-
-
-
-
-
-

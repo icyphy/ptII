@@ -27,6 +27,7 @@ package diva.util;
 
 import java.util.NoSuchElementException;
 
+
 /**
  * An iterator over nothing.
  *
@@ -38,6 +39,7 @@ public class NullIterator extends IteratorAdapter {
     public boolean hasNext() {
         return false;
     }
+
     public Object next() {
         throw new NoSuchElementException("No more elements");
     }

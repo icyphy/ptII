@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.graph.toolbox;
 
 import java.awt.BasicStroke;
@@ -40,6 +39,7 @@ import diva.canvas.AbstractFigure;
 import diva.util.java2d.PaintedShape;
 import diva.util.java2d.ShapeUtilities;
 
+
 /** A Figure that is customized for representing state bubbles.
  *
  * @version        $Id$
@@ -47,7 +47,6 @@ import diva.util.java2d.ShapeUtilities;
  * @author         Xiaojun Liu
  */
 public class StateBubble extends AbstractFigure {
-
     /** The painted shape that we use to draw the outside ellipse.
      */
     private PaintedShape _outsideEllipse;
@@ -76,21 +75,20 @@ public class StateBubble extends AbstractFigure {
      */
     public static final int FINAL_STATE = INITIAL_STATE + 1;
 
-
     /** Create a new figure at the given coordinates. The figure, by
      *  default, has a unit-width continuous black outline and no fill.
      */
-    public StateBubble (double x, double y, double width, double height) {
-        Shape s = new Ellipse2D.Double(x,y,width,height);
+    public StateBubble(double x, double y, double width, double height) {
+        Shape s = new Ellipse2D.Double(x, y, width, height);
         _outsideEllipse = new PaintedShape(s);
     }
 
     /** Create a new figure at the given coordinates and with the
      * given fill.
      */
-    public StateBubble (double x, double y, double width, double height,
-            Paint fill) {
-        Shape s = new Ellipse2D.Double(x,y,width,height);
+    public StateBubble(double x, double y, double width, double height,
+        Paint fill) {
+        Shape s = new Ellipse2D.Double(x, y, width, height);
         _outsideEllipse = new PaintedShape(s, fill);
     }
 
@@ -98,32 +96,32 @@ public class StateBubble extends AbstractFigure {
      * the inherited method to take account of the thickness of
      * the stroke, if there is one.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         return _outsideEllipse.getBounds();
     }
 
     /** Get the shape of this figure.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         return _outsideEllipse.shape;
     }
 
     /** Get the state type. This will be one of NORMAL_STATE,
      * INITIAL_STATE, or FINAL_STATE.
      */
-    public int getStateType () {
+    public int getStateType() {
         return _stateType;
     }
 
     /** Get the stroke of this figure.
      */
-    public Stroke getStroke () {
+    public Stroke getStroke() {
         return _outsideEllipse.getStroke();
     }
 
     /** Get the stroke paint pattern of this figure.
      */
-    public Paint getStrokePaint () {
+    public Paint getStrokePaint() {
         return _outsideEllipse.strokePaint;
     }
 
@@ -136,21 +134,24 @@ public class StateBubble extends AbstractFigure {
      * a stroke, then return false. If the figure is not visible,
      * always return false.
      */
-    public boolean hit (Rectangle2D r) {
+    public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
         }
+
         return _outsideEllipse.hit(r);
     }
 
     /** Paint the figure. The figure is redrawn with the current
      *  shape, fill, and outline.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
         }
+
         _outsideEllipse.paint(g);
+
         if (_insideEllipse != null) {
             _insideEllipse.paint(g);
         }
@@ -160,67 +161,79 @@ public class StateBubble extends AbstractFigure {
      *  filled with this paint pattern. If no pattern is given, do not
      *  fill it.
      */
-    public void setFillPaint (Paint p) {
+    public void setFillPaint(Paint p) {
         _outsideEllipse.fillPaint = p;
+
         if (_insideEllipse != null) {
             _insideEllipse.fillPaint = p;
         }
+
         repaint();
     }
 
     /** Set the stroke of this figure.
      */
-    public void setStroke (BasicStroke s) {
+    public void setStroke(BasicStroke s) {
         repaint();
         _outsideEllipse.stroke = s;
+
         if (_insideEllipse != null) {
             _insideEllipse.stroke = s;
         }
+
         repaint();
     }
 
     /** Set the type of the state
      */
-    public void setStateType (int type) {
+    public void setStateType(int type) {
         repaint();
         _stateType = type;
+
         switch (type) {
         case NORMAL_STATE:
+
             if (_insideEllipse != null) {
                 _insideEllipse = null;
             }
+
             _outsideEllipse.setLineWidth(1);
             break;
 
         case INITIAL_STATE:
+
             Ellipse2D bounds = (Ellipse2D) _outsideEllipse.shape;
-            Shape s = new Ellipse2D.Double(
-                    bounds.getX() + _spacing,
+            Shape s = new Ellipse2D.Double(bounds.getX() + _spacing,
                     bounds.getY() + _spacing,
-                    bounds.getWidth() - 2 * _spacing,
-                    bounds.getHeight() - 2 * _spacing);
+                    bounds.getWidth() - (2 * _spacing),
+                    bounds.getHeight() - (2 * _spacing));
 
             _insideEllipse = new PaintedShape(s);
             _outsideEllipse.setLineWidth(1);
             break;
 
         case FINAL_STATE:
+
             if (_insideEllipse != null) {
                 _insideEllipse = null;
             }
-            _outsideEllipse.setLineWidth((float)_spacing);
+
+            _outsideEllipse.setLineWidth((float) _spacing);
             break;
         }
+
         repaint();
     }
 
     /** Set the stroke paint pattern of this figure.
      */
-    public void setStrokePaint (Paint p) {
+    public void setStrokePaint(Paint p) {
         _outsideEllipse.strokePaint = p;
+
         if (_insideEllipse != null) {
             _insideEllipse.strokePaint = p;
         }
+
         repaint();
     }
 
@@ -233,14 +246,16 @@ public class StateBubble extends AbstractFigure {
      * that loses the type of the shape, converting it into a
      * GeneralPath.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
-        _outsideEllipse.shape = ShapeUtilities.transformModify(
-                _outsideEllipse.shape, at);
+        _outsideEllipse.shape = ShapeUtilities.transformModify(_outsideEllipse.shape,
+                at);
+
         if (_insideEllipse != null) {
-            _insideEllipse.shape = ShapeUtilities.transformModify(
-                    _insideEllipse.shape, at);
+            _insideEllipse.shape = ShapeUtilities.transformModify(_insideEllipse.shape,
+                    at);
         }
+
         repaint();
     }
 
@@ -252,16 +267,16 @@ public class StateBubble extends AbstractFigure {
      * that loses the type of the shape, converting it into a
      * GeneralPath.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         repaint();
-        _outsideEllipse.shape = ShapeUtilities.translateModify(
-                _outsideEllipse.shape, x, y);
+        _outsideEllipse.shape = ShapeUtilities.translateModify(_outsideEllipse.shape,
+                x, y);
+
         if (_insideEllipse != null) {
-            _insideEllipse.shape = ShapeUtilities.translateModify(
-                    _insideEllipse.shape, x, y);
+            _insideEllipse.shape = ShapeUtilities.translateModify(_insideEllipse.shape,
+                    x, y);
         }
+
         repaint();
     }
 }
-
-

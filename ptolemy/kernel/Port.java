@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel;
 
 import java.util.Collections;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Port
+
 /**
    A Port is the interface of an Entity to any number of Relations.
    Normally, a Port is contained by an Entity, although a port
@@ -72,7 +73,6 @@ import ptolemy.kernel.util.Workspace;
    @see Relation
 */
 public class Port extends NamedObj {
-
     /** Construct a port in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -112,7 +112,7 @@ public class Port extends NamedObj {
      *   a port already in the container.
      */
     public Port(Entity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         _elementName = "port";
         setContainer(container);
@@ -130,9 +130,8 @@ public class Port extends NamedObj {
      *   cannot be cloned.
      *  @return A new Port.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Port newObject = (Port)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Port newObject = (Port) super.clone(workspace);
         newObject._relationsList = new CrossRefList(newObject);
         newObject._insideLinks = new CrossRefList(newObject);
         newObject._container = null;
@@ -147,16 +146,20 @@ public class Port extends NamedObj {
     public List connectedPortList() {
         try {
             _workspace.getReadAccess();
+
             LinkedList result = new LinkedList();
             Iterator relations = linkedRelationList().iterator();
+
             while (relations.hasNext()) {
-                Relation relation = (Relation)relations.next();
+                Relation relation = (Relation) relations.next();
+
                 // A null link (supported since indexed links) might
                 // yield a null relation here. EAL 7/19/00.
                 if (relation != null) {
                     result.addAll(relation.linkedPortList(this));
                 }
             }
+
             return Collections.unmodifiableList(result);
         } finally {
             _workspace.doneReading();
@@ -217,16 +220,20 @@ public class Port extends NamedObj {
      *   by a class definition.
      */
     public void insertLink(int index, Relation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
-                    "Cannot link because workspaces are different.");
+                "Cannot link because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
             _checkLink(relation);
             _relationsList.insertLink(index, relation._getPortList());
-            if (_container != null) _container.connectionsChanged(this);
+
+            if (_container != null) {
+                _container.connectionsChanged(this);
+            }
         } finally {
             _workspace.doneWriting();
         }
@@ -269,19 +276,24 @@ public class Port extends NamedObj {
      *   by a class definition.
      */
     public void link(Relation relation) throws IllegalActionException {
-        if (relation != null && _workspace != relation.workspace()) {
+        if ((relation != null) && (_workspace != relation.workspace())) {
             throw new IllegalActionException(this, relation,
-                    "Cannot link because workspaces are different.");
+                "Cannot link because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             if (relation != null) {
                 _checkLink(relation);
-                _relationsList.link( relation._getPortList() );
+                _relationsList.link(relation._getPortList());
             } else {
-                _relationsList.link( null );
+                _relationsList.link(null);
             }
-            if (_container != null) _container.connectionsChanged(this);
+
+            if (_container != null) {
+                _container.connectionsChanged(this);
+            }
         } finally {
             _workspace.doneWriting();
         }
@@ -298,14 +310,17 @@ public class Port extends NamedObj {
     public List linkedRelationList() {
         try {
             _workspace.getReadAccess();
+
             // Unfortunately, CrossRefList returns an enumeration only.
             // Use it to construct a list.
             // NOTE: This list should be cached.
             LinkedList result = new LinkedList();
             Enumeration relations = _relationsList.getContainers();
+
             while (relations.hasMoreElements()) {
                 result.add(relations.nextElement());
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -341,19 +356,23 @@ public class Port extends NamedObj {
      *   no container.
      */
     public int moveDown() throws IllegalActionException {
-        Entity container = (Entity)getContainer();
+        Entity container = (Entity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._portList.moveDown(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (Entity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (Entity) derived.getContainer();
                 container._portList.moveDown(derived);
             }
 
@@ -372,19 +391,23 @@ public class Port extends NamedObj {
      *   no container.
      */
     public int moveToFirst() throws IllegalActionException {
-        Entity container = (Entity)getContainer();
+        Entity container = (Entity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._portList.moveToFirst(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (Entity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (Entity) derived.getContainer();
                 container._portList.moveToFirst(derived);
             }
 
@@ -405,19 +428,23 @@ public class Port extends NamedObj {
      *   no container or if the index is out of bounds.
      */
     public int moveToIndex(int index) throws IllegalActionException {
-        Entity container = (Entity)getContainer();
+        Entity container = (Entity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._portList.moveToIndex(this, index);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (Entity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (Entity) derived.getContainer();
                 container._portList.moveToIndex(derived, index);
             }
 
@@ -436,19 +463,23 @@ public class Port extends NamedObj {
      *   no container.
      */
     public int moveToLast() throws IllegalActionException {
-        Entity container = (Entity)getContainer();
+        Entity container = (Entity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._portList.moveToLast(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (Entity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (Entity) derived.getContainer();
                 container._portList.moveToLast(derived);
             }
 
@@ -467,19 +498,23 @@ public class Port extends NamedObj {
      *   no container.
      */
     public int moveUp() throws IllegalActionException {
-        Entity container = (Entity)getContainer();
+        Entity container = (Entity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._portList.moveUp(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (Entity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (Entity) derived.getContainer();
                 container._portList.moveUp(derived);
             }
 
@@ -534,39 +569,50 @@ public class Port extends NamedObj {
      *  @see #_checkContainer(Entity)
      */
     public void setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
-        if (entity != null && _workspace != entity.workspace()) {
+        throws IllegalActionException, NameDuplicationException {
+        if ((entity != null) && (_workspace != entity.workspace())) {
             throw new IllegalActionException(this, entity,
-                    "Cannot set container because workspaces are different.");
+                "Cannot set container because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
             _checkContainer(entity);
+
             Entity previousContainer = _container;
-            if (previousContainer == entity) return;
+
+            if (previousContainer == entity) {
+                return;
+            }
+
             _container = entity;
+
             // Do this first, because it may throw an exception.
             if (entity != null) {
                 try {
                     entity._addPort(this);
                 } catch (IllegalActionException ex) {
                     _container = previousContainer;
-                    throw (IllegalActionException)ex.fillInStackTrace();
+                    throw (IllegalActionException) ex.fillInStackTrace();
                 } catch (NameDuplicationException ex) {
                     _container = previousContainer;
-                    throw (NameDuplicationException)ex.fillInStackTrace();
+                    throw (NameDuplicationException) ex.fillInStackTrace();
                 }
+
                 if (previousContainer == null) {
                     _workspace.remove(this);
                 }
+
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
                 // FIXME: Inappropriate?
                 // setOverrideDepth(0);
             }
+
             if (previousContainer != null) {
                 previousContainer._removePort(this);
             }
+
             if (entity == null) {
                 unlinkAll();
             } else {
@@ -576,13 +622,16 @@ public class Port extends NamedObj {
                 // requests.
                 if (_changeRequests != null) {
                     Iterator requests = _changeRequests.iterator();
+
                     while (requests.hasNext()) {
-                        ChangeRequest request = (ChangeRequest)requests.next();
+                        ChangeRequest request = (ChangeRequest) requests.next();
                         entity.requestChange(request);
                     }
+
                     _changeRequests = null;
                 }
             }
+
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.
             validateSettables();
@@ -599,18 +648,22 @@ public class Port extends NamedObj {
      *   with the same name in the container.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = new String("");
         }
+
         Entity container = (Entity) getContainer();
+
         if ((container != null)) {
             Port another = container.getPort(name);
+
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
-                        "Name duplication: " + name);
+                    "Name duplication: " + name);
             }
         }
+
         super.setName(name);
     }
 
@@ -627,7 +680,10 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _relationsList.unlink(index);
-            if (_container != null) _container.connectionsChanged(this);
+
+            if (_container != null) {
+                _container.connectionsChanged(this);
+            }
         } finally {
             _workspace.doneWriting();
         }
@@ -645,7 +701,10 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _relationsList.unlink(relation);
-            if (_container != null) _container.connectionsChanged(this);
+
+            if (_container != null) {
+                _container.connectionsChanged(this);
+            }
         } finally {
             _workspace.doneWriting();
         }
@@ -660,7 +719,10 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _relationsList.unlinkAll();
-            if (_container != null) _container.connectionsChanged(this);
+
+            if (_container != null) {
+                _container.connectionsChanged(this);
+            }
         } finally {
             _workspace.doneWriting();
         }
@@ -677,7 +739,8 @@ public class Port extends NamedObj {
      *   an acceptable class.  Not thrown in this base class.
      */
     protected void _checkContainer(Entity container)
-            throws IllegalActionException {}
+        throws IllegalActionException {
+    }
 
     /** Check that this port is compatible with the specified relation,
      *  that it has a container. If the argument is null, do nothing.
@@ -696,13 +759,13 @@ public class Port extends NamedObj {
      *   or if this port is not an acceptable port for the specified
      *   relation.
      */
-    protected void _checkLink(Relation relation)
-            throws IllegalActionException {
+    protected void _checkLink(Relation relation) throws IllegalActionException {
         if (relation != null) {
             if (_container == null) {
                 throw new IllegalActionException(this, relation,
-                        "Port must have a container to establish a link.");
+                    "Port must have a container to establish a link.");
             }
+
             // Throw an exception if this port is not of an acceptable
             // class for the relation.
             relation._checkPort(this);
@@ -727,36 +790,47 @@ public class Port extends NamedObj {
     protected String _description(int detail, int indent, int bracket) {
         try {
             _workspace.getReadAccess();
+
             String result;
-            if (bracket == 1 || bracket == 2) {
+
+            if ((bracket == 1) || (bracket == 2)) {
                 result = super._description(detail, indent, 1);
             } else {
                 result = super._description(detail, indent, 0);
             }
+
             if ((detail & LINKS) != 0) {
                 if (result.trim().length() > 0) {
                     result += " ";
                 }
+
                 // To avoid infinite loop, turn off the LINKS flag
                 // when querying the Ports.
                 detail &= ~LINKS;
                 result += "links {\n";
+
                 Enumeration linkedRelations = linkedRelations();
+
                 while (linkedRelations.hasMoreElements()) {
-                    Relation relation =
-                        (Relation)linkedRelations.nextElement();
+                    Relation relation = (Relation) linkedRelations.nextElement();
+
                     if (relation != null) {
-                        result += relation._description(detail,
-                                indent + 1, 2) + "\n";
+                        result += (relation._description(detail, indent + 1, 2)
+                        + "\n");
                     } else {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
-                        result += _getIndentPrefix(indent + 1) + "null\n";
+                        result += (_getIndentPrefix(indent + 1) + "null\n");
                     }
                 }
-                result += _getIndentPrefix(indent) + "}";
+
+                result += (_getIndentPrefix(indent) + "}");
             }
-            if (bracket == 2) result += "}";
+
+            if (bracket == 2) {
+                result += "}";
+            }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -775,27 +849,24 @@ public class Port extends NamedObj {
      *   and has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
-    protected NamedObj _getContainedObject(
-            NamedObj container, String relativeName)
-            throws IllegalActionException {
+    protected NamedObj _getContainedObject(NamedObj container,
+        String relativeName) throws IllegalActionException {
         if (!(container instanceof Entity)) {
             throw new IllegalActionException(this,
-                    "Expected "
-                    + container.getFullName()
-                    + " to be an instance of ptolemy.kernel.Entity,"
-                    + " but it is "
-                    + container.getClass().getName());
+                "Expected " + container.getFullName()
+                + " to be an instance of ptolemy.kernel.Entity,"
+                + " but it is " + container.getClass().getName());
         }
-        Port candidate = ((Entity)container).getPort(relativeName);
-        if (candidate != null && !getClass().isInstance(candidate)) {
+
+        Port candidate = ((Entity) container).getPort(relativeName);
+
+        if ((candidate != null) && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this,
-                    "Expected "
-                    + candidate.getFullName()
-                    + " to be an instance of "
-                    + getClass().getName()
-                    + ", but it is "
-                    + candidate.getClass().getName());
+                "Expected " + candidate.getFullName()
+                + " to be an instance of " + getClass().getName()
+                + ", but it is " + candidate.getClass().getName());
         }
+
         return candidate;
     }
 
@@ -809,11 +880,10 @@ public class Port extends NamedObj {
      *   as this one.
      */
     protected NamedObj _propagateExistence(NamedObj container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
-            Port newObject = (Port)super
-                    ._propagateExistence(container);
-            newObject.setContainer((Entity)container);
+            Port newObject = (Port) super._propagateExistence(container);
+            newObject.setContainer((Entity) container);
             return newObject;
         } catch (NameDuplicationException e) {
             throw new InternalErrorException(e);
@@ -822,7 +892,6 @@ public class Port extends NamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // NOTE: This is defined here in the base class rather than in
     // ComponentPort even though it is not used until ComponentPort
     // so that derived classes can safely create links to ports in

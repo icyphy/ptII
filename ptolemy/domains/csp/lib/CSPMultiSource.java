@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.lib;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -42,8 +41,10 @@ import ptolemy.domains.csp.kernel.ConditionalSend;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSource
+
 /**
    A CSPMultiSource actor produces tokens through an output channel
    via a continuous do (CDO) construct. The tokenLimit parameter
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.domains.csp.kernel.ConditionalBranch
 */
 public class CSPMultiSource extends CSPActor {
-
     /** Construct a CSPMultiSource in the default workspace with an
      *  empty string as its name. The actor is created with a single
      *  input port named "input". The number of tokens produced by this
@@ -73,11 +73,10 @@ public class CSPMultiSource extends CSPActor {
      *  @exception NameDuplicationException If the tokenLimit parameter
      *   name coincides with a port already in this actor.
      */
-    public CSPMultiSource() throws
-            IllegalActionException, NameDuplicationException {
+    public CSPMultiSource()
+        throws IllegalActionException, NameDuplicationException {
         super();
-        tokenLimit = new Parameter( this, "tokenLimit",
-                (new IntToken(-1)) );
+        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(-1)));
     }
 
     /** Construct a CSPMultiSource with the specified container and
@@ -98,15 +97,13 @@ public class CSPMultiSource extends CSPActor {
      *   parameter name coincides with a port or parameter already
      *   in this actor.
      */
-    public CSPMultiSource(TypedCompositeActor container, String name,
-            int limit) throws IllegalActionException,
-            NameDuplicationException {
+    public CSPMultiSource(TypedCompositeActor container, String name, int limit)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
         output.setTypeEquals(BaseType.INT);
-        tokenLimit = new Parameter( this, "tokenLimit",
-                (new IntToken(limit)) );
+        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -132,55 +129,63 @@ public class CSPMultiSource extends CSPActor {
      */
     public void fire() {
         try {
-            int limit =
-                ((IntToken)tokenLimit.getToken()).intValue();
+            int limit = ((IntToken) tokenLimit.getToken()).intValue();
             int count = 0;
             int size = output.getWidth();
             _branchCount = new int[size];
+
             int i = 0;
             boolean[] guards = new boolean[size];
+
             for (i = 0; i < size; i++) {
                 _branchCount[i] = 0;
                 guards[i] = true;
             }
 
             boolean continueCDO = true;
-            while ( continueCDO ) {
-                if ( count > limit && limit >= 0 ) {
+
+            while (continueCDO) {
+                if ((count > limit) && (limit >= 0)) {
                     return;
                 }
+
                 Token t = new IntToken(count);
                 ConditionalBranch[] branches = new ConditionalBranch[size];
+
                 for (i = 0; i < size; i++) {
-                    branches[i] = new ConditionalSend(guards[i],
-                            output, i, i, t);
+                    branches[i] = new ConditionalSend(guards[i], output, i, i, t);
                 }
 
                 int successfulBranch = chooseBranch(branches);
 
                 _branchCount[successfulBranch]++;
+
                 boolean flag = false;
+
                 for (i = 0; i < size; i++) {
                     if (successfulBranch == i) {
-                        System.out.println(getName() + ": sent Token: " +
-                                t.toString() + " to receiver " + i);
+                        System.out.println(getName() + ": sent Token: "
+                            + t.toString() + " to receiver " + i);
                         flag = true;
                     }
                 }
+
                 if (successfulBranch == -1) {
                     // all guards false so exit CDO
                     continueCDO = false;
                 } else if (!flag) {
-                    throw new TerminateProcessException(getName() + ": " +
-                            "invalid branch id returned during execution " +
-                            "of CDO.");
+                    throw new TerminateProcessException(getName() + ": "
+                        + "invalid branch id returned during execution "
+                        + "of CDO.");
                 }
+
                 count++;
             }
         } catch (IllegalActionException ex) {
-            throw new TerminateProcessException(getName() + ": could not " +
-                    "create all branches for CDO.");
+            throw new TerminateProcessException(getName() + ": could not "
+                + "create all branches for CDO.");
         }
+
         return;
     }
 
@@ -197,17 +202,15 @@ public class CSPMultiSource extends CSPActor {
      */
     public void wrapup() {
         System.out.println("Invoking wrapup of CSPMultiSource...\n");
+
         for (int i = 0; i < output.getWidth(); i++) {
-            System.out.println("MultiSource: Branch " + i +
-                    " successfully  rendezvoused " +
-                    _branchCount[i] + " times.");
+            System.out.println("MultiSource: Branch " + i
+                + " successfully  rendezvoused " + _branchCount[i] + " times.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Array storing the number of times each branch rendezvous.
     private int[] _branchCount;
-
 }

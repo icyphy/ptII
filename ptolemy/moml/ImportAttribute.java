@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import java.io.IOException;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImportAttribute
+
 /**
    This attribute represents an external file reference.
 
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.NamedObj;
    attribute instead.
 */
 public class ImportAttribute extends Attribute {
-
     /** Construct an attribute with the specified container and name.
      *  @param container The container.
      *  @param name The name of this attribute.
@@ -60,7 +60,7 @@ public class ImportAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public ImportAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -83,19 +83,17 @@ public class ImportAttribute extends Attribute {
      *  @param depth The depth in the hierarchy, to determine indenting.
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
-        String moml = "<import source=\""
-            + _source
-            + "\"/>";
+
+        String moml = "<import source=\"" + _source + "\"/>";
         output.write(_getIndentPrefix(depth) + moml + "\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The external file name;
     private String _source;
 }

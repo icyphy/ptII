@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Director;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
+
 /**
    A composite actor specially designed for the CT domain. This class
    extends TypedCompositeActor and implements the following interfaces:
@@ -74,14 +75,14 @@ import ptolemy.kernel.util.Workspace;
 */
 public class CTCompositeActor extends TypedCompositeActor
     implements CTDynamicActor, CTEventGenerator, CTStatefulActor,
-               CTStepSizeControlActor, CTWaveformGenerator {
-
+        CTStepSizeControlActor, CTWaveformGenerator {
     /** Construct a CTCompositeActor in the default workspace with
      *  no container and an empty string as its name. Add the actor
      *  to the workspace directory.
      */
     public CTCompositeActor() {
         super();
+
         // When exporting MoML, set the class name to CTCompositeActor
         // instead of the default TypedCompositeActor.
         setClassName("ptolemy.domains.ct.kernel.CTCompositeActor");
@@ -103,8 +104,9 @@ public class CTCompositeActor extends TypedCompositeActor
      *   an actor already in the container.
      */
     public CTCompositeActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // When exporting MoML, set the class name to CTCompositeActor
         // instead of the default TypedCompositeActor.
         setClassName("ptolemy.domains.ct.kernel.CTCompositeActor");
@@ -118,6 +120,7 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public CTCompositeActor(Workspace workspace) {
         super(workspace);
+
         // When exporting MoML, set the class name to CTCompositeActor
         // instead of the default TypedCompositeActor.
         setClassName("ptolemy.domains.ct.kernel.CTCompositeActor");
@@ -133,8 +136,9 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public void emitCurrentStates() throws IllegalActionException {
         Director dir = getDirector();
+
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector)dir).emitCurrentStates();
+            ((CTTransparentDirector) dir).emitCurrentStates();
         }
     }
 
@@ -144,8 +148,9 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public void goToMarkedState() throws IllegalActionException {
         Director dir = getDirector();
+
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector)dir).goToMarkedState();
+            ((CTTransparentDirector) dir).goToMarkedState();
         }
     }
 
@@ -157,9 +162,11 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public boolean hasCurrentEvent() {
         Director dir = getDirector();
+
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).hasCurrentEvent();
+            return ((CTTransparentDirector) dir).hasCurrentEvent();
         }
+
         return false;
     }
 
@@ -170,9 +177,11 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public boolean isOutputAccurate() {
         Director dir = getDirector();
+
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).isOutputAccurate();
+            return ((CTTransparentDirector) dir).isOutputAccurate();
         }
+
         return true;
     }
 
@@ -183,9 +192,11 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public boolean isStateAccurate() {
         Director dir = getDirector();
+
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).isStateAccurate();
+            return ((CTTransparentDirector) dir).isStateAccurate();
         }
+
         return true;
     }
 
@@ -202,8 +213,9 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public void markState() {
         Director dir = getDirector();
+
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector)dir).markState();
+            ((CTTransparentDirector) dir).markState();
         }
     }
 
@@ -214,9 +226,11 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public double predictedStepSize() {
         Director dir = getDirector();
+
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).predictedStepSize();
+            return ((CTTransparentDirector) dir).predictedStepSize();
         }
+
         return java.lang.Double.MAX_VALUE;
     }
 
@@ -230,9 +244,11 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public boolean prefireDynamicActors() throws IllegalActionException {
         Director dir = getDirector();
+
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).prefireDynamicActors();
+            return ((CTTransparentDirector) dir).prefireDynamicActors();
         }
+
         return true;
     }
 
@@ -243,9 +259,11 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public double refinedStepSize() {
         Director dir = getDirector();
+
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).refinedStepSize();
+            return ((CTTransparentDirector) dir).refinedStepSize();
         }
-        return ((CTGeneralDirector)getExecutiveDirector()).getCurrentStepSize();
+
+        return ((CTGeneralDirector) getExecutiveDirector()).getCurrentStepSize();
     }
 }

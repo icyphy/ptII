@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.event.KeyEvent;
@@ -38,6 +37,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
+
 /**
    A text editor to edit a specified string attribute.
 
@@ -47,27 +47,21 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (ptolemy)
 */
-
 public class TextEditorForStringAttributes extends TextEditor {
-
     /** Create a annotation text editor for the specified attribute.
      *  @param factory The factory that created this editor.
      *  @param attributeToEdit The string attribute to edit.
      *  @param title The window title to use.
      */
-    public TextEditorForStringAttributes(
-            TextEditorFactory factory,
-            StringAttribute attributeToEdit,
-            int rows,
-            int columns,
-            String title) {
-
+    public TextEditorForStringAttributes(TextEditorFactory factory,
+        StringAttribute attributeToEdit, int rows, int columns, String title) {
         super(title);
         this._factory = factory;
         _attributeToEdit = attributeToEdit;
         text.append(_attributeToEdit.getExpression());
         text.setColumns(columns);
         text.setRows(rows);
+
         // The above will mark the text object modified. Reverse this.
         setModified(false);
     }
@@ -82,8 +76,10 @@ public class TextEditorForStringAttributes extends TextEditor {
         // Rename Save command.
         _fileMenuItems[3].setText("Apply");
         _fileMenuItems[3].setMnemonic(KeyEvent.VK_A);
+
         // Remove various menu item.
         _fileMenu.remove(7);
+
         // _fileMenu.remove(6);
         _fileMenu.remove(5);
         _fileMenu.remove(4);
@@ -101,12 +97,12 @@ public class TextEditorForStringAttributes extends TextEditor {
     protected boolean _close() {
         // NOTE: The superclass doesn't do the right thing here,
         // since it requires an associated Tableau.
-
         // NOTE: We use dispose() here rather than just hiding the
         // window.  This ensures that derived classes can react to
         // windowClosed events rather than overriding the
         // windowClosing behavior given here.
         boolean returnValue = true;
+
         if (isModified()) {
             if (_queryForApply()) {
                 dispose();
@@ -131,12 +127,9 @@ public class TextEditorForStringAttributes extends TextEditor {
         // Issue a change request to ensure the change is
         // applied at a safe time and that the model is marked
         // modified.
-        NamedObj context = (NamedObj)_attributeToEdit.getContainer();
-        String request =
-            "<property name=\""
-            + _attributeToEdit.getName()
-            + "\" value=\""
-            + StringUtilities.escapeForXML(_factory.getText())
+        NamedObj context = (NamedObj) _attributeToEdit.getContainer();
+        String request = "<property name=\"" + _attributeToEdit.getName()
+            + "\" value=\"" + StringUtilities.escapeForXML(_factory.getText())
             + "\"/>";
         context.requestChange(new MoMLChangeRequest(this, context, request));
         setModified(false);
@@ -145,37 +138,29 @@ public class TextEditorForStringAttributes extends TextEditor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Open a dialog to prompt the user to apply the data.
     // Return false if the user clicks "cancel", and otherwise return true.
     private boolean _queryForApply() {
         Object[] options = { "Apply", "Discard changes", "Cancel" };
-        String query =
-            "Apply changes to " + _attributeToEdit.getFullName() + "?";
+        String query = "Apply changes to " + _attributeToEdit.getFullName()
+            + "?";
 
         // Show the MODAL dialog
-        int selected =
-            JOptionPane.showOptionDialog(
-                    this,
-                    query,
-                    "Apply Changes?",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
+        int selected = JOptionPane.showOptionDialog(this, query,
+                "Apply Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
         if (selected == 0) {
             return _save();
         } else if (selected == 1) {
             return true;
         }
+
         return false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private final TextEditorFactory _factory;
     private StringAttribute _attributeToEdit;
 }

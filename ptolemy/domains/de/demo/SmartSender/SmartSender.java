@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.de.demo.SmartSender;
 
 import java.util.Iterator;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SmartSender
+
 /**
    This actor adaptively establishes connections by searching for an
    unused input port in the model and connecting to it. If the output
@@ -81,7 +82,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (eal)
 */
 public class SmartSender extends TypedAtomicActor {
-
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -94,7 +94,7 @@ public class SmartSender extends TypedAtomicActor {
      *   an entity already in the container.
      */
     public SmartSender(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output");
@@ -129,8 +129,8 @@ public class SmartSender extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        double firingPeriodValue =
-            ((DoubleToken) firingPeriod.getToken()).doubleValue();
+        double firingPeriodValue = ((DoubleToken) firingPeriod.getToken())
+            .doubleValue();
         Director director = getDirector();
         director.fireAt(this, director.getModelTime().add(firingPeriodValue));
 
@@ -142,22 +142,25 @@ public class SmartSender extends TypedAtomicActor {
                         CompositeEntity container = (CompositeEntity) getContainer();
                         List entityList = container.entityList();
                         Iterator entities = entityList.iterator();
+
                         while (entities.hasNext()) {
                             Entity entity = (Entity) entities.next();
                             Iterator ports = entity.portList().iterator();
+
                             while (ports.hasNext()) {
                                 Port port = (Port) ports.next();
+
                                 if (port instanceof IOPort
                                         && ((IOPort) port).isInput()
-                                        && ((IOPort) port).getWidth() == 0) {
-
-                                    container.connect(output, (IOPort)port);
+                                        && (((IOPort) port).getWidth() == 0)) {
+                                    container.connect(output, (IOPort) port);
                                     return;
                                 }
                             }
                         }
                     }
                 };
+
             requestChange(request);
         }
     }
@@ -168,6 +171,7 @@ public class SmartSender extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         Director director = getDirector();
         director.fireAtCurrentTime(this);
 

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.io.IOException;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BrowserTableau
+
 /**
    A tableau representing a web browser window.
 
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.NamedObj;
    @see BrowserLauncher
 */
 public class BrowserTableau extends Tableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  @param container The container.
      *  @param name The name.
@@ -62,7 +62,7 @@ public class BrowserTableau extends Tableau {
      *   attribute already in the container.
      */
     public BrowserTableau(BrowserEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -94,30 +94,27 @@ public class BrowserTableau extends Tableau {
         // FIXME: Unfortunately, the _config.showAll() at the bottom
         // of MoMLApplication.parseArgs() will end up calling this method
         // a second time.
-
         // FIXME: Probably the following could make better use of URI
         // facilities (used to be URL based).
-        String url = ((Effigy)getContainer()).uri.getURI().toString();
-        try {
+        String url = ((Effigy) getContainer()).uri.getURI().toString();
 
+        try {
             if (url.startsWith("jar:")) {
                 // If the URL begins with jar: then we are inside Web
                 // Start, or the Windows installer // and we should
                 // get the resource, and try to write the file to the
                 // place where it would appear in the classpath.
-
                 // For example,  if url is
                 // jar:file:/D:/ptII/doc/design.jar!/doc/design/design.pdf
                 // then we try to save the file as
                 // d:/ptII/doc/design.pdf
                 // if d:/ptII/doc is writable.
-
                 String temporaryURL = null;
+
                 try {
                     // We try to save the resource in the classpath, but
                     // if we fail, then we copy the resource to a temporary
                     // location.
-
                     // If we are successful, then note that the file
                     // that we create is not deleted when we exit.
                     temporaryURL = JNLPUtilities.saveJarURLInClassPath(url);
@@ -136,16 +133,20 @@ public class BrowserTableau extends Tableau {
                     // as that of the jar URL.
                     // In this case, the temporary file is deleted when
                     // we exit.
-                    url = JNLPUtilities.saveJarURLAsTempFile(url, "tmp",
-                            null, null);
+                    url = JNLPUtilities.saveJarURLAsTempFile(url, "tmp", null,
+                            null);
                 }
             }
+
             String inBrowser = "#in_browser";
+
             if (url.endsWith(inBrowser)) {
                 // Strip off any trailing #in_browser, see HTMLViewer.
                 url = url.substring(0, url.length() - inBrowser.length());
             }
+
             BrowserLauncher.openURL(url);
+
             try {
                 // We set the container to null immediately because
                 // once we spawn the browser process, we have no
@@ -158,13 +159,12 @@ public class BrowserTableau extends Tableau {
                 // of communicating with the browser that we invoke.
                 setContainer(null);
             } catch (KernelException ex2) {
-                throw new InvalidStateException((Nameable)null, ex2,
-                        "setContainer(null) failed, url was " + url);
+                throw new InvalidStateException((Nameable) null, ex2,
+                    "setContainer(null) failed, url was " + url);
             }
         } catch (IOException ex) {
-            throw new InvalidStateException((Nameable)null, ex,
-                    "Failed to handle '"
-                    + url + "': ");
+            throw new InvalidStateException((Nameable) null, ex,
+                "Failed to handle '" + url + "': ");
         }
     }
 
@@ -174,7 +174,6 @@ public class BrowserTableau extends Tableau {
     /** A factory that creates web browser tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container entity.
          *  @param name The name of the entity.
@@ -184,7 +183,7 @@ public class BrowserTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -211,12 +210,14 @@ public class BrowserTableau extends Tableau {
             if (effigy instanceof BrowserEffigy) {
                 // First see whether the effigy already contains a
                 // BrowserTableau with the appropriate name.
-                BrowserTableau tableau =
-                    (BrowserTableau)effigy.getEntity("browserTableau");
+                BrowserTableau tableau = (BrowserTableau) effigy.getEntity(
+                        "browserTableau");
+
                 if (tableau == null) {
-                    tableau = new BrowserTableau(
-                            (BrowserEffigy)effigy, "browserTableau");
+                    tableau = new BrowserTableau((BrowserEffigy) effigy,
+                            "browserTableau");
                 }
+
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
             } else {

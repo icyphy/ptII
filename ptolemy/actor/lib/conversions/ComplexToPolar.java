@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
+
 
 ///////////////////////////////////////////////////////////////
 /// ComplexToPolar
@@ -54,9 +54,7 @@ import ptolemy.math.Complex;
    @Pt.ProposedRating Green (pwhitake)
    @Pt.AcceptedRating Green (cxh)
 */
-
 public class ComplexToPolar extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,7 +64,7 @@ public class ComplexToPolar extends TypedAtomicActor {
      *   actor with this name.
      */
     public ComplexToPolar(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -78,10 +76,9 @@ public class ComplexToPolar extends TypedAtomicActor {
         angle = new TypedIOPort(this, "angle", false, true);
         angle.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,17 +105,15 @@ public class ComplexToPolar extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        Complex inputValue = ((ComplexToken)(input.get(0))).complexValue();
+        Complex inputValue = ((ComplexToken) (input.get(0))).complexValue();
 
-        double magnitudeValue = Math.sqrt(
-                inputValue.real * inputValue.real
-                + inputValue.imag * inputValue.imag);
+        double magnitudeValue = Math.sqrt((inputValue.real * inputValue.real)
+                + (inputValue.imag * inputValue.imag));
 
-        double angleValue = Math.atan2(
-                inputValue.imag, inputValue.real);
+        double angleValue = Math.atan2(inputValue.imag, inputValue.real);
 
-        magnitude.send(0, new DoubleToken (magnitudeValue));
-        angle.send(0, new DoubleToken (angleValue));
+        magnitude.send(0, new DoubleToken(magnitudeValue));
+        angle.send(0, new DoubleToken(angleValue));
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -129,25 +124,7 @@ public class ComplexToPolar extends TypedAtomicActor {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.data.MatrixToken;
@@ -34,8 +33,10 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConcreteMatrixToken
+
 /**
    A token that represents an empty matrix, with no element type.
    This is instantiated by the Constants class with name "matrix".
@@ -48,7 +49,6 @@ import ptolemy.data.type.Type;
    @see Constants
 */
 public class ConcreteMatrixToken extends MatrixToken {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -66,7 +66,7 @@ public class ConcreteMatrixToken extends MatrixToken {
      *  @exception ArrayIndexOutOfBoundsException Always thrown.
      */
     public Token getElementAsToken(int row, int column)
-            throws ArrayIndexOutOfBoundsException {
+        throws ArrayIndexOutOfBoundsException {
         throw new ArrayIndexOutOfBoundsException("Empty matrix.");
     }
 

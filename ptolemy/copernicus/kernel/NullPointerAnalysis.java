@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.kernel;
 
 import soot.Local;
@@ -32,6 +31,7 @@ import soot.Unit;
 import soot.jimple.toolkits.annotation.nullcheck.BranchedRefVarsAnalysis;
 import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.FlowSet;
+
 
 /**
    An analysis that can determine, at any point in the code, if
@@ -53,7 +53,7 @@ public class NullPointerAnalysis extends BranchedRefVarsAnalysis {
      *  the given unit.
      */
     public boolean isAlwaysNullBefore(Local local, Unit unit) {
-        FlowSet flowSet = (FlowSet)getFlowBefore(unit);
+        FlowSet flowSet = (FlowSet) getFlowBefore(unit);
         int info = anyRefInfo(local, flowSet);
         return (info == kNull);
     }
@@ -63,7 +63,7 @@ public class NullPointerAnalysis extends BranchedRefVarsAnalysis {
      *  the given unit.
      */
     public boolean isNeverNullBefore(Local local, Unit unit) {
-        FlowSet flowSet = (FlowSet)getFlowBefore(unit);
+        FlowSet flowSet = (FlowSet) getFlowBefore(unit);
         int info = anyRefInfo(local, flowSet);
         return (info == kNonNull);
     }

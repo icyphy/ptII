@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.lib;
 
 import ptolemy.actor.AtomicActor;
@@ -38,8 +37,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CSPSink
+
 /**
    A CSPSink actor accepts tokens from a single input channel.
    Ten tokens can be consumed for every invocation of this
@@ -54,7 +55,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CSPSink extends AtomicActor {
-
     /** Construct a CSPSink in the default workspace with an
      *  empty string as a name.
      *  @exception IllegalActionException If there is an error
@@ -62,11 +62,9 @@ public class CSPSink extends AtomicActor {
      *  @exception NameDuplicationException If there is an error
      *   with instantiation of the tokenLimit parameter.
      */
-    public CSPSink() throws IllegalActionException,
-            NameDuplicationException {
+    public CSPSink() throws IllegalActionException, NameDuplicationException {
         super();
-        tokenLimit = new Parameter( this, "tokenLimit",
-                (new IntToken(-1)) );
+        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(-1)));
     }
 
     /** Construct a CSPSink with the specified container and the
@@ -84,11 +82,10 @@ public class CSPSink extends AtomicActor {
      *   container.
      */
     public CSPSink(CompositeActor container, String name, int limit)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new IOPort(this, "input", true, false);
-        tokenLimit = new Parameter( this, "tokenLimit",
-                (new IntToken(limit)) );
+        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,15 +109,17 @@ public class CSPSink extends AtomicActor {
      */
     public void fire() {
         int count = 0;
+
         try {
-            int limit =
-                ((IntToken)tokenLimit.getToken()).intValue();
-            while (count < limit || limit < 0 ) {
+            int limit = ((IntToken) tokenLimit.getToken()).intValue();
+
+            while ((count < limit) || (limit < 0)) {
                 Token t = input.get(0);
-                System.out.println(getName() + " received Token: " +
-                        t.toString());
+                System.out.println(getName() + " received Token: "
+                    + t.toString());
                 count++;
             }
+
             return;
         } catch (IllegalActionException ex) {
             System.out.println("CSPSink invalid get, exiting...");
@@ -138,5 +137,4 @@ public class CSPSink extends AtomicActor {
     public boolean postfire() {
         return false;
     }
-
 }

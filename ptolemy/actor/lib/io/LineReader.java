@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.io;
 
 import java.io.BufferedReader;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LineReader
+
 /**
    This actor reads a file or URL, one line at a time, and outputs each line
    as a string.  The file or URL is specified using any form acceptable
@@ -88,7 +89,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class LineReader extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -98,7 +98,7 @@ public class LineReader extends Source {
      *   actor with this name.
      */
     public LineReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.STRING);
@@ -112,14 +112,12 @@ public class LineReader extends Source {
         numberOfLinesToSkip.setExpression("0");
         numberOfLinesToSkip.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-25\" y=\"-20\" "
-                + "width=\"50\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
-                + " 15,-10 15,10, -15,10\" "
-                + "style=\"fill:red\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+            + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
+            + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,30 +157,35 @@ public class LineReader extends Source {
      *   <i>numberOfLinesToSkip</i> and its value is negative.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileOrURL) {
             // NOTE: We do not want to close the file if the file
             // has not in fact changed.  We check this by just comparing
             // name, which is not perfect...
-            String newFileOrURL = ((StringToken)fileOrURL.getToken()).stringValue();
-            if (_previousFileOrURL != null
+            String newFileOrURL = ((StringToken) fileOrURL.getToken())
+                .stringValue();
+
+            if ((_previousFileOrURL != null)
                     && !newFileOrURL.equals(_previousFileOrURL)) {
                 _previousFileOrURL = newFileOrURL;
                 fileOrURL.close();
+
                 // Ignore if the fileOrUL is blank.
                 if (fileOrURL.getExpression().trim().equals("")) {
                     _reader = null;
                 } else {
                     _reader = fileOrURL.openForReading();
                 }
+
                 _reachedEOF = false;
             }
         } else if (attribute == numberOfLinesToSkip) {
-            int linesToSkip =
-                ((IntToken)numberOfLinesToSkip.getToken()).intValue();
+            int linesToSkip = ((IntToken) numberOfLinesToSkip.getToken())
+                .intValue();
+
             if (linesToSkip < 0) {
-                throw new IllegalActionException(this, "The number of lines "
-                        + "to skip cannot be negative.");
+                throw new IllegalActionException(this,
+                    "The number of lines " + "to skip cannot be negative.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -195,9 +198,8 @@ public class LineReader extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        LineReader newObject = (LineReader)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        LineReader newObject = (LineReader) super.clone(workspace);
         newObject._currentLine = null;
         newObject._reachedEOF = false;
         newObject._reader = null;
@@ -210,6 +212,7 @@ public class LineReader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         if (_currentLine != null) {
             output.broadcast(new StringToken(_currentLine));
         }
@@ -227,6 +230,7 @@ public class LineReader extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         if (_firedSinceWrapup) {
             // It would be better if there were a way to reset the
             // input stream, but apparently there is not, short of
@@ -246,8 +250,10 @@ public class LineReader extends Source {
         if (_reader == null) {
             return false;
         }
+
         try {
             _currentLine = _reader.readLine();
+
             if (_currentLine == null) {
                 // In case the return value gets ignored by the domain:
                 _currentLine = "EOF";
@@ -255,6 +261,7 @@ public class LineReader extends Source {
                 endOfFile.broadcast(BooleanToken.TRUE);
                 return false;
             }
+
             endOfFile.broadcast(BooleanToken.FALSE);
             return super.postfire();
         } catch (IOException ex) {
@@ -268,8 +275,12 @@ public class LineReader extends Source {
      */
     public boolean prefire() throws IllegalActionException {
         _firedSinceWrapup = true;
-        if (_reachedEOF) return false;
-        else return super.prefire();
+
+        if (_reachedEOF) {
+            return false;
+        } else {
+            return super.prefire();
+        }
     }
 
     /** Open the file or URL, skip the number of lines specified by the
@@ -313,21 +324,23 @@ public class LineReader extends Source {
     private void _openAndReadFirstLine() throws IllegalActionException {
         _reader = fileOrURL.openForReading();
         _reachedEOF = false;
+
         try {
             // Read (numberOfLinesToSkip + 1) lines
-            int numberOfLines =
-                ((IntToken)numberOfLinesToSkip.getToken()).intValue();
+            int numberOfLines = ((IntToken) numberOfLinesToSkip.getToken())
+                .intValue();
+
             for (int i = 0; i <= numberOfLines; i++) {
                 _currentLine = _reader.readLine();
+
                 if (_currentLine == null) {
-                    throw new IllegalActionException(this, "The file '"
-                            + fileOrURL.stringValue() + "' does not "
-                            + "have enough lines.");
+                    throw new IllegalActionException(this,
+                        "The file '" + fileOrURL.stringValue() + "' does not "
+                        + "have enough lines.");
                 }
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Preinitialize failed.");
+            throw new IllegalActionException(this, ex, "Preinitialize failed.");
         }
     }
 

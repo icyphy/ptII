@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import ptolemy.actor.parameters.IntRangeParameter;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.JPEGEncodeParam;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIJPEGWriter
+
 /**
    Write a javax.media.jai.RenderedOp to a specified JPEG file.
    <p>
@@ -60,9 +61,7 @@ import com.sun.media.jai.codec.JPEGEncodeParam;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIJPEGWriter extends JAIWriter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,16 +71,14 @@ public class JAIJPEGWriter extends JAIWriter {
      *   actor with this name.
      */
     public JAIJPEGWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileName.setExpression("file.jpg");
 
         quality = new IntRangeParameter(this, "quality");
 
-        restartInterval
-            = new Parameter(this, "restartInterval",
-                    new IntToken(0));
+        restartInterval = new Parameter(this, "restartInterval", new IntToken(0));
 
         writeJFIFHeader = new Parameter(this, "writeJFIFHeader");
         writeJFIFHeader.setTypeEquals(BaseType.BOOLEAN);
@@ -90,7 +87,6 @@ public class JAIJPEGWriter extends JAIWriter {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
 
     /** The quality of the file written.  The quality ranges from 0
      *  which is a high amount of compression, small file size, and
@@ -129,12 +125,11 @@ public class JAIJPEGWriter extends JAIWriter {
         _imageEncoderName = "JPEG";
 
         JPEGEncodeParam jpegEncodeParameters = new JPEGEncodeParam();
-        jpegEncodeParameters.setWriteJFIFHeader(
-                ((BooleanToken)writeJFIFHeader.getToken()).booleanValue());
+        jpegEncodeParameters.setWriteJFIFHeader(((BooleanToken) writeJFIFHeader
+            .getToken()).booleanValue());
         jpegEncodeParameters.setQuality(0.01f * quality.getCurrentValue());
-        jpegEncodeParameters.setRestartInterval(
-                ((IntToken)restartInterval
-                        .getToken()).intValue());
+        jpegEncodeParameters.setRestartInterval(((IntToken) restartInterval
+            .getToken()).intValue());
 
         _imageEncodeParam = jpegEncodeParameters;
         return super.postfire();

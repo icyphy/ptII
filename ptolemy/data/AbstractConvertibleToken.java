@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data;
 
 import java.io.Serializable;
@@ -34,8 +33,10 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AbstractConvertibleToken
+
 /**
    The Token base class provides a very general interface for building
    new data types.  However, in many ways, the interface is rather complex
@@ -67,7 +68,6 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public abstract class AbstractConvertibleToken extends Token
     implements Serializable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -88,13 +88,14 @@ public abstract class AbstractConvertibleToken extends Token
      */
     public final Token add(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
         if (typeInfo == CPO.SAME) {
             Token result = _add(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(rightArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(rightArgument);
+
             try {
                 Token result = _add(convertedArgument);
                 return result;
@@ -103,15 +104,14 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("add", this, rightArgument));
+                    notSupportedMessage("add", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.addReverse(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("add",
-                            this, rightArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "add", this, rightArgument));
         }
     }
 
@@ -131,14 +131,15 @@ public abstract class AbstractConvertibleToken extends Token
      *  not make sense for the given types.
      */
     public final Token addReverse(ptolemy.data.Token leftArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
+
         // We would normally expect this to be LOWER, since this will almost
         // always be called by subtract, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(leftArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(leftArgument);
+
             try {
                 Token result = convertedArgument._add(this);
                 return result;
@@ -147,20 +148,17 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("addReverse",
-                                this, leftArgument));
+                    notSupportedMessage("addReverse", this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result =
-                ((AbstractConvertibleToken)leftArgument)._add(this);
+            Token result = ((AbstractConvertibleToken) leftArgument)._add(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.add(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("addReverse",
-                            this, leftArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "addReverse", this, leftArgument));
         }
     }
 
@@ -180,15 +178,15 @@ public abstract class AbstractConvertibleToken extends Token
      *   does not make sense for the given types.
      */
     public final Token divide(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
         if (typeInfo == CPO.SAME) {
             Token result = _divide(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(rightArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(rightArgument);
 
             try {
                 Token result = _divide(convertedArgument);
@@ -198,15 +196,14 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("divide", this, rightArgument));
+                    notSupportedMessage("divide", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.divideReverse(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("divide",
-                            this, rightArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "divide", this, rightArgument));
         }
     }
 
@@ -226,14 +223,15 @@ public abstract class AbstractConvertibleToken extends Token
      *  not make sense for the given types.
      */
     public final Token divideReverse(Token leftArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
+
         // We would normally expect this to be LOWER, since this will almost
         // always be called by subtract, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(leftArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(leftArgument);
+
             try {
                 Token result = convertedArgument._divide(this);
                 return result;
@@ -242,20 +240,17 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("divideReverse",
-                                this, leftArgument));
+                    notSupportedMessage("divideReverse", this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result =
-                ((AbstractConvertibleToken)leftArgument)._divide(this);
+            Token result = ((AbstractConvertibleToken) leftArgument)._divide(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.divide(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("divideReverse",
-                            this, leftArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "divideReverse", this, leftArgument));
         }
     }
 
@@ -282,16 +277,17 @@ public abstract class AbstractConvertibleToken extends Token
      *   not make sense for the given types.
      */
     public final BooleanToken isCloseTo(Token token, double epsilon)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Note that if we had absolute(), subtraction() and islessThan()
         // we could perhaps define this method for all tokens.
         int typeInfo = TypeLattice.compare(getType(), token);
+
         if (typeInfo == CPO.SAME) {
             return _isCloseTo(token, epsilon);
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(token);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(token);
+
             try {
                 BooleanToken result = _isCloseTo(convertedArgument, epsilon);
                 return result;
@@ -300,14 +296,13 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("isCloseTo", this, token));
+                    notSupportedMessage("isCloseTo", this, token));
             }
         } else if (typeInfo == CPO.LOWER) {
             return token.isCloseTo(this, epsilon);
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("isCloseTo",
-                            this, token));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "isCloseTo", this, token));
         }
     }
 
@@ -327,14 +322,15 @@ public abstract class AbstractConvertibleToken extends Token
      *  not make sense for the given types.
      */
     public final BooleanToken isEqualTo(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
         if (typeInfo == CPO.SAME) {
             return _isEqualTo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(rightArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(rightArgument);
+
             try {
                 BooleanToken result = _isEqualTo(convertedArgument);
                 return result;
@@ -343,14 +339,13 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("isEqualTo", this, rightArgument));
+                    notSupportedMessage("isEqualTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isEqualTo(this);
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("isEqualTo",
-                            this, rightArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "isEqualTo", this, rightArgument));
         }
     }
 
@@ -370,15 +365,16 @@ public abstract class AbstractConvertibleToken extends Token
      *  not make sense for the given types.
      */
     public final Token modulo(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
         if (typeInfo == CPO.SAME) {
             Token result = _modulo(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(rightArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(rightArgument);
+
             try {
                 Token result = _modulo(convertedArgument);
                 return result;
@@ -387,15 +383,14 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("modulo", this, rightArgument));
+                    notSupportedMessage("modulo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.moduloReverse(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("modulo",
-                            this, rightArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "modulo", this, rightArgument));
         }
     }
 
@@ -416,14 +411,15 @@ public abstract class AbstractConvertibleToken extends Token
      *  not make sense for the given types.
      */
     public final Token moduloReverse(Token leftArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
+
         // We would normally expect this to be LOWER, since this will almost
         // always be called by modulo, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(leftArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(leftArgument);
+
             try {
                 Token result = convertedArgument._modulo(this);
                 return result;
@@ -432,20 +428,17 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("moduloReverse",
-                                this, leftArgument));
+                    notSupportedMessage("moduloReverse", this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result =
-                ((AbstractConvertibleToken)leftArgument)._modulo(this);
+            Token result = ((AbstractConvertibleToken) leftArgument)._modulo(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.modulo(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("moduloReverse",
-                            this, leftArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "moduloReverse", this, leftArgument));
         }
     }
 
@@ -465,15 +458,16 @@ public abstract class AbstractConvertibleToken extends Token
      *   does not make sense for the given types.
      */
     public final Token multiply(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
         if (typeInfo == CPO.SAME) {
             Token result = _multiply(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(rightArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(rightArgument);
+
             try {
                 Token result = _multiply(convertedArgument);
                 return result;
@@ -482,15 +476,14 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("multiply", this, rightArgument));
+                    notSupportedMessage("multiply", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.multiplyReverse(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("multiply",
-                            this, rightArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "multiply", this, rightArgument));
         }
     }
 
@@ -511,14 +504,15 @@ public abstract class AbstractConvertibleToken extends Token
      *  not make sense for the given types.
      */
     public final Token multiplyReverse(Token leftArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
+
         // We would normally expect this to be LOWER, since this will almost
         // always be called by multiply, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(leftArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(leftArgument);
+
             try {
                 Token result = convertedArgument._multiply(this);
                 return result;
@@ -527,20 +521,17 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("multiplyReverse",
-                                this, leftArgument));
+                    notSupportedMessage("multiplyReverse", this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result =
-                ((AbstractConvertibleToken)leftArgument)._multiply(this);
+            Token result = ((AbstractConvertibleToken) leftArgument)._multiply(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.multiply(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("multiplyReverse",
-                            this, leftArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "multiplyReverse", this, leftArgument));
         }
     }
 
@@ -560,15 +551,16 @@ public abstract class AbstractConvertibleToken extends Token
      *  not make sense for the given types.
      */
     public final Token subtract(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
+
         if (typeInfo == CPO.SAME) {
             Token result = _subtract(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)
-                getType().convert(rightArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(rightArgument);
+
             try {
                 Token result = _subtract(convertedArgument);
                 return result;
@@ -577,15 +569,14 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("subtract", this, rightArgument));
+                    notSupportedMessage("subtract", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.subtractReverse(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("subtract",
-                            this, rightArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "subtract", this, rightArgument));
         }
     }
 
@@ -605,13 +596,15 @@ public abstract class AbstractConvertibleToken extends Token
      *  not make sense for the given types.
      */
     public final Token subtractReverse(Token leftArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
+
         // We would normally expect this to be LOWER, since this will almost
         // always be called by subtract, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            AbstractConvertibleToken convertedArgument =
-                (AbstractConvertibleToken)getType().convert(leftArgument);
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                                                                                        .convert(leftArgument);
+
             try {
                 Token result = convertedArgument._subtract(this);
                 return result;
@@ -620,20 +613,17 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("subtractReverse",
-                                this, leftArgument));
+                    notSupportedMessage("subtractReverse", this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result =
-                ((AbstractConvertibleToken)leftArgument)._subtract(this);
+            Token result = ((AbstractConvertibleToken) leftArgument)._subtract(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.subtract(this);
             return result;
         } else {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("subtractReverse",
-                            this, leftArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "subtractReverse", this, leftArgument));
         }
     }
 
@@ -653,7 +643,7 @@ public abstract class AbstractConvertibleToken extends Token
      *  as this token.
      */
     protected abstract Token _add(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed
@@ -667,7 +657,7 @@ public abstract class AbstractConvertibleToken extends Token
      *  as this token.
      */
     protected abstract Token _divide(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Test that the value of this token is close to the first argument,
      *  where "close" means that the distance between them is less than
@@ -682,9 +672,8 @@ public abstract class AbstractConvertibleToken extends Token
      *   supported by a derived class.
      *  @return A token that contains the result of the test.
      */
-    protected abstract BooleanToken _isCloseTo(
-            Token token, double epsilon)
-            throws IllegalActionException;
+    protected abstract BooleanToken _isCloseTo(Token token, double epsilon)
+        throws IllegalActionException;
 
     /** Test for equality of the values of this token and the argument.
      *  It is assumed that the type of the argument is the
@@ -697,7 +686,7 @@ public abstract class AbstractConvertibleToken extends Token
      *  @return A token that contains the result of the test.
      */
     protected abstract BooleanToken _isEqualTo(Token token)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.  It is assumed
@@ -711,7 +700,7 @@ public abstract class AbstractConvertibleToken extends Token
      *  as this token.
      */
     protected abstract Token _modulo(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is assumed
@@ -725,7 +714,7 @@ public abstract class AbstractConvertibleToken extends Token
      *  as this token.
      */
     protected abstract Token _multiply(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed
@@ -739,5 +728,5 @@ public abstract class AbstractConvertibleToken extends Token
      *  as this token.
      */
     protected abstract Token _subtract(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -37,8 +36,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sleep
+
 /**
    An actor that calls Thread.sleep() on the current thread the first
    time fire() is called.  The sleep delays the inputs for a certain
@@ -57,7 +58,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class VariableSleep extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,17 +67,17 @@ public class VariableSleep extends Transformer {
      *   actor with this name.
      */
     public VariableSleep(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         defaultSleepTime = new Parameter(this, "defaultSleepTime",
                 new LongToken(0));
         defaultSleepTime.setTypeEquals(BaseType.LONG);
+
         // Data type polymorphic, multiports.
         input.setMultiport(true);
         output.setMultiport(true);
         sleepTime = new TypedIOPort(this, "sleepTime", true, false);
         sleepTime.setTypeEquals(BaseType.LONG);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,27 +110,32 @@ public class VariableSleep extends Transformer {
         if (!_wasSleepCalledInFireYet) {
             try {
                 if (sleepTime.hasToken(0)) {
-                    _sleepTime =
-                        ((LongToken)sleepTime.get(0)).longValue();
+                    _sleepTime = ((LongToken) sleepTime.get(0)).longValue();
+                } else {
+                    _sleepTime = ((LongToken) defaultSleepTime.getToken())
+                        .longValue();
                 }
-                else {
-                    _sleepTime =
-                        ((LongToken)defaultSleepTime.getToken()).longValue();
+
+                if (_debugging) {
+                    _debug(getName() + ": Wait for " + _sleepTime
+                        + " milliseconds.");
                 }
-                if (_debugging) _debug(getName() + ": Wait for " +
-                        _sleepTime + " milliseconds.");
+
                 Thread.sleep(_sleepTime);
             } catch (InterruptedException e) {
                 // Ignore...
             }
+
             // Pull these out of the loop so we do not call them
             // more than once.
             int inputWidth = input.getWidth();
             int outputWidth = output.getWidth();
+
             for (int i = 0; i < inputWidth; i++) {
                 if (input.hasToken(i)) {
                     Token inToken = input.get(i);
-                    if ( i < outputWidth) {
+
+                    if (i < outputWidth) {
                         output.send(i, inToken);
                     }
                 }
@@ -158,10 +163,8 @@ public class VariableSleep extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // True if sleep was called in fire().  Sleep should only
     // be called once in fire().
     private boolean _wasSleepCalledInFireYet = false;
-
     private long _sleepTime;
 }

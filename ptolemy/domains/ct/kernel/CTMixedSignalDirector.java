@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.ct.kernel;
 
 import java.util.Iterator;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTMixedSignalDirector
+
 /**
    A CTDirector that supports the interaction of the continuous-time
    simulation with event-based domains. This director can both serve as
@@ -119,7 +120,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public CTMixedSignalDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -141,15 +142,20 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  a valid token, or the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == runAheadLength) {
-            if (_debugging) _debug("run ahead length updating.");
-            double value =
-                ((DoubleToken)runAheadLength.getToken()).doubleValue();
+            if (_debugging) {
+                _debug("run ahead length updating.");
+            }
+
+            double value = ((DoubleToken) runAheadLength.getToken())
+                .doubleValue();
+
             if (value < 0) {
                 throw new IllegalActionException(this,
-                        " runAheadLength cannot be negative.");
+                    " runAheadLength cannot be negative.");
             }
+
             _runAheadLength = value;
         } else {
             super.attributeChanged(attribute);
@@ -197,7 +203,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
 
         // Guarantee to stop at the iteration end time.
-        fireAt((CompositeActor)getContainer(), getIterationEndTime());
+        fireAt((CompositeActor) getContainer(), getIterationEndTime());
 
         _continuousPhaseExecution();
     }
@@ -212,8 +218,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _mutationVersion = -1;
+
         if (!_isTopLevel()) {
-            TypedCompositeActor container = (TypedCompositeActor)getContainer();
+            TypedCompositeActor container = (TypedCompositeActor) getContainer();
             Director exe = container.getExecutiveDirector();
             exe.fireAt(container, getModelTime());
         }
@@ -232,6 +239,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // director will fire the container again at the current time.
             getBreakPoints().insert(getModelTime());
         }
+
         return super.postfire();
     }
 
@@ -266,32 +274,34 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         if (_debugging) {
             _debug(getName(), " prefire: ");
         }
+
         if (!_isTopLevel()) {
             // synchronize the local time with the outside time.
             CompositeActor container = (CompositeActor) getContainer();
             Director executiveDirector = container.getExecutiveDirector();
             _outsideTime = executiveDirector.getModelTime();
+
             Time localTime = getModelTime();
             double timeResolution = getTimeResolution();
-            Time outsideNextIterationTime =
-                executiveDirector.getModelNextIterationTime();
+            Time outsideNextIterationTime = executiveDirector
+                .getModelNextIterationTime();
 
             if (_debugging) {
                 _debug("The current time of outside model is " + _outsideTime,
-                        " and its next iteration time is "
-                        + outsideNextIterationTime,
-                        "\nThe current time of this director is " + localTime);
+                    " and its next iteration time is "
+                    + outsideNextIterationTime,
+                    "\nThe current time of this director is " + localTime);
             }
 
             // Now, check the next iteration time.
             if (outsideNextIterationTime.compareTo(_outsideTime) < 0) {
                 // NOTE: This check is redundant. The outside director should
                 // guarantee that this never happen.
-                throw new IllegalActionException(this, "Outside domain"
-                        + " time is going backward."
-                        + " Current outside time = " + _outsideTime
-                        + ", but the next iteration time = "
-                        + outsideNextIterationTime);
+                throw new IllegalActionException(this,
+                    "Outside domain" + " time is going backward."
+                    + " Current outside time = " + _outsideTime
+                    + ", but the next iteration time = "
+                    + outsideNextIterationTime);
             }
 
             // Ideally, the outside time should equal the local time.
@@ -300,18 +310,20 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // an exception will be thrown.
             if (_outsideTime.compareTo(localTime) > 0) {
                 throw new IllegalActionException(this, executiveDirector,
-                        "Outside time is later than the local time. " +
-                        "This should never happen.");
+                    "Outside time is later than the local time. "
+                    + "This should never happen.");
             } else if (_outsideTime.compareTo(localTime) < 0) {
                 // FIXME: get a concrete example that illustrates how this
                 // can happen.
                 // Outside time less than the local time. Rollback!
                 System.out.println("Whaaat on earth are UUUUUU doing");
+
                 if (_debugging) {
-                    _debug(getName() + " rollback from: " +
-                            localTime + " to: " +_knownGoodTime +
-                            "due to outside time " +_outsideTime );
+                    _debug(getName() + " rollback from: " + localTime + " to: "
+                        + _knownGoodTime + "due to outside time "
+                        + _outsideTime);
                 }
+
                 // The local time is set backwards to a known good time.
                 _rollback();
 
@@ -332,8 +344,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             // Now, the outside time must be equal to the local time.
             if (_debugging) {
-                _debug("The outside time is equal to the local time. " +
-                        "Check whether there are outputs.");
+                _debug("The outside time is equal to the local time. "
+                    + "Check whether there are outputs.");
             }
 
             // set the start time of the current iteration
@@ -345,24 +357,24 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // time.
             _setIterationBeginTime(getModelTime());
 
-            double aheadLength
-                = outsideNextIterationTime.subtract(_outsideTime).
-                getDoubleValue();
+            double aheadLength = outsideNextIterationTime.subtract(_outsideTime)
+                                                         .getDoubleValue();
+
             if (_debugging) {
-                _debug(getName(),
-                        " local time = " + localTime,
-                        " Outside Time = " + _outsideTime,
-                        " NextIterationTime = " + outsideNextIterationTime +
-                        " Inferred run length = " + aheadLength);
+                _debug(getName(), " local time = " + localTime,
+                    " Outside Time = " + _outsideTime,
+                    " NextIterationTime = " + outsideNextIterationTime
+                    + " Inferred run length = " + aheadLength);
             }
 
-            if (aheadLength < timeResolution ) {
+            if (aheadLength < timeResolution) {
                 // This is a zero step size iteration.
                 // TESTIT: simultaneous events from the outside model drives
                 // a CT subsystem.
                 _setIterationEndTime(_outsideTime);
+
                 if (_debugging) {
-                    _debug( "This is an iteration with the step size as 0.");
+                    _debug("This is an iteration with the step size as 0.");
                 }
             } else if (aheadLength < _runAheadLength) {
                 _setIterationEndTime(outsideNextIterationTime);
@@ -370,11 +382,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 // aheadLength > _runAheadLength parameter.
                 _setIterationEndTime(_outsideTime.add(_runAheadLength));
             }
+
             // Now it is safe to execute the continuous part.
             if (_debugging) {
-                _debug(getName(), "Iteration end time = " +
-                        getIterationEndTime(), " <-- end of prefire.");
+                _debug(getName(),
+                    "Iteration end time = " + getIterationEndTime(),
+                    " <-- end of prefire.");
             }
+
             return true;
         } else {
             return super.prefire();
@@ -394,21 +409,28 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     protected void _catchUp() throws IllegalActionException {
         Time outsideTime = _getOutsideTime();
         Time localTime = getModelTime();
+
         if (localTime.compareTo(outsideTime) >= 0) {
             return;
         }
+
         _setIterationBeginTime(localTime);
+
         while (!localTime.equals(outsideTime)) {
             setCurrentStepSize(getSuggestedNextStepSize());
+
             if (_debugging) {
-                _debug("Catch up: ending..." +
-                        (localTime.add(getCurrentStepSize())));
+                _debug("Catch up: ending..."
+                    + (localTime.add(getCurrentStepSize())));
             }
+
             _resolveInitialStates();
+
             if (_debugging) {
                 _debug("Catch up one step: current time is" + localTime);
             }
         }
+
         if (_debugging) {
             _debug(getFullName() + " Catch up time" + localTime);
         }
@@ -421,17 +443,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     protected void _initParameters() {
         super._initParameters();
+
         try {
             _runAheadLength = 0.1;
-            runAheadLength = new Parameter(this,
-                    "runAheadLength", new DoubleToken(_runAheadLength));
+            runAheadLength = new Parameter(this, "runAheadLength",
+                    new DoubleToken(_runAheadLength));
             runAheadLength.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
         } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,
-                    "Parameter name duplication.");
+            throw new InvalidStateException(this, "Parameter name duplication.");
         }
     }
 
@@ -441,21 +463,27 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     protected final boolean _isTopLevel() {
         // This is a syntactic sugar.
         long version = workspace().getVersion();
+
         if (version == _mutationVersion) {
             return _isTop;
         }
+
         try {
             workspace().getReadAccess();
-            CompositeActor container = (CompositeActor)getContainer();
+
+            CompositeActor container = (CompositeActor) getContainer();
+
             if (container.getExecutiveDirector() == null) {
                 _isTop = true;
             } else {
                 _isTop = false;
             }
+
             _mutationVersion = version;
         } finally {
             workspace().doneReading();
         }
+
         return _isTop;
     }
 
@@ -466,14 +494,19 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     protected void _markStates() throws IllegalActionException {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-        Iterator actors = schedule.get(
-                CTSchedule.STATEFUL_ACTORS).actorIterator();
+        Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
+                                  .actorIterator();
+
         while (actors.hasNext()) {
-            CTStatefulActor actor = (CTStatefulActor)actors.next();
-            if (_debugging) _debug("Save State..."+
-                    ((Nameable)actor).getName());
+            CTStatefulActor actor = (CTStatefulActor) actors.next();
+
+            if (_debugging) {
+                _debug("Save State..." + ((Nameable) actor).getName());
+            }
+
             actor.markState();
         }
+
         _knownGoodTime = getModelTime();
     }
 
@@ -484,16 +517,20 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  @exception IllegalActionException If thrown by the goToMarkedState()
      *  method of an actor, or the schedule does not exist.
      */
-    protected void _rollback() throws IllegalActionException{
+    protected void _rollback() throws IllegalActionException {
         setModelTime(_knownGoodTime);
+
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-        Iterator actors = schedule.get(
-                CTSchedule.STATEFUL_ACTORS).actorIterator();
+        Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
+                                  .actorIterator();
+
         while (actors.hasNext()) {
-            CTStatefulActor actor = (CTStatefulActor)actors.next();
+            CTStatefulActor actor = (CTStatefulActor) actors.next();
+
             if (_debugging) {
-                _debug("Restore State..." + ((Nameable)actor).getName());
+                _debug("Restore State..." + ((Nameable) actor).getName());
             }
+
             actor.goToMarkedState();
         }
     }
@@ -509,12 +546,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         if (_isTopLevel()) {
             return getModelTime();
         }
+
         return _outsideTime;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Indicate whether there are pending discrete events.
     private boolean _hasDiscreteEvents;
 

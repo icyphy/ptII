@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.kernel;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ViewScreenInterface
 
@@ -39,6 +40,4 @@ package ptolemy.domains.gr.kernel;
 @Pt.AcceptedRating Red (chf)
 */
 public interface ViewScreenInterface {
-
 }
-

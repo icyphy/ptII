@@ -26,12 +26,14 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.graph;
+
 import ptolemy.kernel.util.IllegalActionException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Inequality
+
 /**
    An inequality over a CPO.
    Each inequality consists of two <code>InequalityTerms</code>, the lesser
@@ -47,9 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Green (kienhuis)
    @see InequalityTerm
 */
-
 public class Inequality {
-
     /** Construct an inequality.
      *  @param lesserTerm An <code>InequalityTerm</code> that is less than or
      *   equal to the second argument.
@@ -60,12 +60,13 @@ public class Inequality {
      */
     public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm) {
         if (lesserTerm == null) {
-            throw new IllegalArgumentException("Inequality.Inequality: " +
-                    "lesserTerm is null.");
+            throw new IllegalArgumentException("Inequality.Inequality: "
+                + "lesserTerm is null.");
         }
+
         if (greaterTerm == null) {
-            throw new IllegalArgumentException("Inequality.Inequality: " +
-                    "greaterTerm is null.");
+            throw new IllegalArgumentException("Inequality.Inequality: "
+                + "greaterTerm is null.");
         }
 
         _lesserTerm = lesserTerm;
@@ -96,9 +97,8 @@ public class Inequality {
      *  false otherwise.
      */
     public boolean isSatisfied(CPO cpo) throws IllegalActionException {
-        int result = cpo.compare(_lesserTerm.getValue(),
-                _greaterTerm.getValue());
-        return (result == CPO.LOWER || result == CPO.SAME);
+        int result = cpo.compare(_lesserTerm.getValue(), _greaterTerm.getValue());
+        return ((result == CPO.LOWER) || (result == CPO.SAME));
     }
 
     /** Override the base class to describe the inequality.

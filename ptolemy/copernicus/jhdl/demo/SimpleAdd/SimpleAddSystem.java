@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red (cxh)
 @AcceptedRating Red (cxh)
 */
-
 package ptolemy.copernicus.jhdl.demo.SimpleAdd;
 
 import ptolemy.actor.*;
@@ -40,16 +39,17 @@ import ptolemy.domains.sdf.lib.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
+
 /** A very simple demo that connects two Consts to a SimpleAdd actor to
  *  a Printer.
  */
 public class SimpleAddSystem extends TypedCompositeActor {
-
     public SimpleAddSystem(Workspace w) throws IllegalActionException {
         super(w);
 
         try {
             setDirector(new SDFDirector(this, "director"));
+
             Const const1 = new Const(this, "const1");
             const1.value.setExpression("1");
 
@@ -62,7 +62,6 @@ public class SimpleAddSystem extends TypedCompositeActor {
 
             FileWriter fileWriter = new FileWriter(this, "fileWriter");
             connect(simpleAdd.output, fileWriter.input);
-
         } catch (NameDuplicationException e) {
             throw new RuntimeException(e.toString());
         }

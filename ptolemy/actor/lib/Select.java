@@ -26,19 +26,20 @@ COPYRIGHTENDKEY
 
 Code review issue: This actor reads data in prefire.
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Select
+
 /**
    A polymorphic select, which routes specified input channels to the
    output.  This actor has two input ports, the <i>input</i> port for
@@ -74,9 +75,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Yellow (liuj)
 */
-
 public class Select extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -87,7 +86,7 @@ public class Select extends Transformer {
      *   an actor already in the container.
      */
     public Select(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setMultiport(true);
@@ -96,8 +95,8 @@ public class Select extends Transformer {
         control.setTypeEquals(BaseType.INT);
 
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal
-                = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
@@ -141,19 +140,19 @@ public class Select extends Transformer {
      */
     public boolean prefire() throws IllegalActionException {
         if (control.hasToken(0)) {
-            _control = ((IntToken)control.get(0)).intValue();
+            _control = ((IntToken) control.get(0)).intValue();
         }
-        if (_control < 0
-                || _control > input.getWidth()
+
+        if ((_control < 0) || (_control > input.getWidth())
                 || !input.hasToken(_control)) {
             return false;
         }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The most recently read control token.
     private int _control = 0;
 }

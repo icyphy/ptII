@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.IntToken;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Distributor
+
 /**
    A polymorphic distributor, which splits an input stream into a set of
    output streams. The distributor has an input port and an output port,
@@ -72,7 +73,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class Distributor extends Transformer implements SequenceActor {
-
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport. Create
      *  the actor parameters.
@@ -85,11 +85,12 @@ public class Distributor extends Transformer implements SequenceActor {
      *  by the proposed container.
      */
     public Distributor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         // These parameters are required for SDF
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate", new IntToken(0));
+        input_tokenConsumptionRate = new Parameter(input,
+                "tokenConsumptionRate", new IntToken(0));
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setPersistent(false);
@@ -115,11 +116,10 @@ public class Distributor extends Transformer implements SequenceActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   attributes that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Distributor newObject = (Distributor)super.clone(workspace);
-        newObject.input_tokenConsumptionRate = (Parameter)
-            (newObject.input.getAttribute("tokenConsumptionRate"));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Distributor newObject = (Distributor) super.clone(workspace);
+        newObject.input_tokenConsumptionRate = (Parameter) (newObject.input
+            .getAttribute("tokenConsumptionRate"));
         return newObject;
     }
 
@@ -132,16 +132,18 @@ public class Distributor extends Transformer implements SequenceActor {
      */
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
+
         if (port == output) {
             try {
-                input_tokenConsumptionRate.setToken(
-                        new IntToken(output.getWidth()));
+                input_tokenConsumptionRate.setToken(new IntToken(
+                        output.getWidth()));
                 _currentOutputPosition = 0;
+
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                        "output width was" + output.getWidth());
+                    "output width was" + output.getWidth());
             }
         }
     }
@@ -156,12 +158,16 @@ public class Distributor extends Transformer implements SequenceActor {
      */
     public void fire() throws IllegalActionException {
         _tentativeOutputPosition = _currentOutputPosition;
+
         int width = output.getWidth();
+
         for (int i = 0; i < width; i++) {
             if (!input.hasToken(0)) {
                 break;
             }
+
             output.send(_tentativeOutputPosition++, input.get(0));
+
             if (_tentativeOutputPosition >= width) {
                 _tentativeOutputPosition = 0;
             }
@@ -189,7 +195,6 @@ public class Distributor extends Transformer implements SequenceActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The channel number for the next output.
     private int _currentOutputPosition;
 

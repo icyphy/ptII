@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.kernel;
 
 import java.util.Collections;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SRRandomizedScheduler
+
 /**
    A scheduler the Synchronous Reactive (SR) domain.  This schedule is simply
    a random ordering of all the actors.  The director should cycle through this
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SRRandomizedScheduler extends Scheduler {
-
     /** Construct a SR scheduler with no container (director)
      *  in the default workspace.
      */
@@ -93,7 +93,7 @@ public class SRRandomizedScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public SRRandomizedScheduler(Director container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -112,21 +112,20 @@ public class SRRandomizedScheduler extends Scheduler {
      *   schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-
-        StaticSchedulingDirector director =
-            (StaticSchedulingDirector) getContainer();
+        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
 
         if (director == null) {
-            throw new NotSchedulableException(this, "SRRandomizedScheduler "
-                    + "cannot schedule graph with no director.");
+            throw new NotSchedulableException(this,
+                "SRRandomizedScheduler "
+                + "cannot schedule graph with no director.");
         }
 
-        CompositeActor compositeActor =
-            (CompositeActor) (director.getContainer());
+        CompositeActor compositeActor = (CompositeActor) (director.getContainer());
 
         if (compositeActor == null) {
-            throw new NotSchedulableException(this, "SRRandomizedScheduler "
-                    + "cannot schedule graph with no container.");
+            throw new NotSchedulableException(this,
+                "SRRandomizedScheduler "
+                + "cannot schedule graph with no container.");
         }
 
         List actorList = compositeActor.deepEntityList();
@@ -135,23 +134,14 @@ public class SRRandomizedScheduler extends Scheduler {
 
         Schedule schedule = new Schedule();
         Iterator actorIterator = actorList.iterator();
+
         while (actorIterator.hasNext()) {
-            Actor actor = (Actor)actorIterator.next();
+            Actor actor = (Actor) actorIterator.next();
             Firing firing = new Firing();
             firing.setActor(actor);
             schedule.add(firing);
         }
+
         return schedule;
     }
-
 }
-
-
-
-
-
-
-
-
-
-

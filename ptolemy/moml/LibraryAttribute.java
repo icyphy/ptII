@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import ptolemy.kernel.CompositeEntity;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LibraryAttribute
+
 /**
    This class is a configurable singleton attribute that associates a
    component library with a model.  By convention, it is typically named
@@ -67,9 +68,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (janneck)
 */
-
 public class LibraryAttribute extends ConfigurableAttribute {
-
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  workspace directory.
@@ -105,7 +104,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
      *   LibraryAttribute.
      */
     public LibraryAttribute(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -129,22 +128,29 @@ public class LibraryAttribute extends ConfigurableAttribute {
      *   because it does not define an instance of CompositeEntity.
      */
     public CompositeEntity getLibrary() throws Exception {
-        if (_librarySet) return _library;
+        if (_librarySet) {
+            return _library;
+        }
+
         MoMLParser parser = ParserAttribute.getParser(this);
         parser.reset();
+
         NamedObj library = parser.parse(value());
+
         if (!(library instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                    "Expected library to be in an instance of CompositeEntity,"
-                    + " but it is: "
-                    + library.getClass().getName());
+                "Expected library to be in an instance of CompositeEntity,"
+                + " but it is: " + library.getClass().getName());
         }
+
         // Ensure that the library is marked as a library.
         Attribute marker = library.getAttribute("_libraryMarker");
+
         if (marker == null) {
             new SingletonAttribute(library, "_libraryMarker");
         }
-        return (CompositeEntity)library;
+
+        return (CompositeEntity) library;
     }
 
     /** Specify the library, overriding any library that might have been
@@ -156,14 +162,16 @@ public class LibraryAttribute extends ConfigurableAttribute {
     public void setLibrary(CompositeEntity library) {
         _library = library;
         _librarySet = true;
+
         if (_library != null) {
             Attribute marker = _library.getAttribute("_libraryMarker");
+
             if (marker == null) {
                 try {
                     new SingletonAttribute(_library, "_libraryMarker");
                 } catch (KernelException ex) {
                     throw new InternalErrorException(
-                            "Can't add library marker: " + ex);
+                        "Can't add library marker: " + ex);
                 }
             }
         }
@@ -171,7 +179,6 @@ public class LibraryAttribute extends ConfigurableAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The library.
     private CompositeEntity _library;
 

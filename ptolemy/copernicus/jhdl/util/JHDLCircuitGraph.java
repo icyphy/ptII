@@ -24,17 +24,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.util;
-
-import java.util.*;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 
+import java.util.*;
+
+
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  *
  *
@@ -44,9 +45,7 @@ import ptolemy.graph.Node;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class JHDLCircuitGraph extends DirectedGraph {
-
     public JHDLCircuitGraph() {
         super();
         _inPortNodes = new Vector();
@@ -67,5 +66,4 @@ public class JHDLCircuitGraph extends DirectedGraph {
 
     List _inPortNodes;
     List _outPortNodes;
-
 }

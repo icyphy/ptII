@@ -53,7 +53,7 @@ public class NodeDragInteractor extends DragInteractor {
     /** Create a new NodeDragInteractor and give it a pointer
      * to its controller to it can find other useful objects
      */
-    public NodeDragInteractor (GraphController controller) {
+    public NodeDragInteractor(GraphController controller) {
         _controller = controller;
     }
 
@@ -66,20 +66,22 @@ public class NodeDragInteractor extends DragInteractor {
 
     /** Drag all selected nodes and move any attached edges
      */
-    public void translate (LayerEvent e, double x, double y) {
+    public void translate(LayerEvent e, double x, double y) {
         GraphModel model = _controller.getGraphModel();
         Iterator i = targets();
-        Point2D.Double pt = new Point2D.Double(x,y);
+        Point2D.Double pt = new Point2D.Double(x, y);
         Point2D.Double localpt = new Point2D.Double();
         Set edgeSet = new HashSet();
+
         while (i.hasNext()) {
             Figure t = (Figure) i.next();
+
             // Translate anything that is not an edge
             // FIXME: we want to drag edges that are not connected
             // at either end
             // FIXME: translate edges that are connected on both ends
             // to targets?
-            if ( !(model.isEdge(t.getUserObject()))) {
+            if (!(model.isEdge(t.getUserObject()))) {
                 // Perform an inverse transform on coordinates for
                 // composite nodes??
                 // FIXME: This isn't right for scaling canvases... so I
@@ -120,10 +122,10 @@ public class NodeDragInteractor extends DragInteractor {
         //                 }
         //             }
         //         }
-
-        for (Iterator edges = edgeSet.iterator(); edges.hasNext(); ) {
+        for (Iterator edges = edgeSet.iterator(); edges.hasNext();) {
             Object edge = edges.next();
             Connector c = (Connector) (_controller.getFigure(edge));
+
             if (c != null) {
                 c.reroute();
             }
@@ -161,5 +163,3 @@ public class NodeDragInteractor extends DragInteractor {
      }
      }*/
 }
-
-

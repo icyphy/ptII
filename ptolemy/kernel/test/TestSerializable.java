@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.kernel.test;
 
 import java.io.FileInputStream;
@@ -37,8 +36,10 @@ import java.io.ObjectOutputStream;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestSerializable
+
 /**
    This class constructs a system from the Ptolemy II design document, Figure 8,
    saves it to a file and then reloads it.
@@ -49,10 +50,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red
 */
 public class TestSerializable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Create an Example System, then print it out.
      * @exception NameDuplicationException if the example system cannot
@@ -60,21 +59,22 @@ public class TestSerializable {
      * @exception IllegalActionException if the example system cannot
      * be built.
      */
-    public static void main(String args[])
-            throws NameDuplicationException, IllegalActionException {
+    public static void main(String[] args)
+        throws NameDuplicationException, IllegalActionException {
         ExampleSystem exampleSystem = new ExampleSystem();
         String filename = new String("TestSerializable.data");
 
-        if (args.length > 0 && args[0].equals("write")) {
+        if ((args.length > 0) && args[0].equals("write")) {
             FileOutputStream f = null;
             ObjectOutput s = null;
+
             try {
                 // Write the system out.
                 f = new FileOutputStream(filename);
                 s = new ObjectOutputStream(f);
                 s.writeObject(exampleSystem);
             } catch (IOException e) {
-                System.err.println("Exception while writing: "+ e);
+                System.err.println("Exception while writing: " + e);
                 e.printStackTrace();
             } finally {
                 if (f != null) {
@@ -82,20 +82,22 @@ public class TestSerializable {
                         f.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on '" + filename + "'");
+                            + "on '" + filename + "'");
                         throwable.printStackTrace();
                     }
                 }
+
                 if (s != null) {
                     try {
                         s.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on '" + filename + "'");
+                            + "on '" + filename + "'");
                         throwable.printStackTrace();
                     }
                 }
             }
+
             System.out.println("Wrote to " + filename);
         } else {
             FileInputStream f = null;
@@ -105,42 +107,42 @@ public class TestSerializable {
                 // Read the system in
                 f = new FileInputStream(filename);
                 s = new ObjectInputStream(f);
-                ExampleSystem newExampleSystem = (ExampleSystem)s.readObject();
+
+                ExampleSystem newExampleSystem = (ExampleSystem) s.readObject();
                 String newDescription = newExampleSystem.toString();
                 String oldDescription = exampleSystem.toString();
+
                 if (oldDescription.equals(newDescription)) {
-                    System.out.println("OK: Description read in from " +
-                            filename + " is the same as the original\n");
+                    System.out.println("OK: Description read in from "
+                        + filename + " is the same as the original\n");
                 } else {
-                    System.out.println("ERROR\nDescription read in from " +
-                            filename + "\n"+
-                            newDescription + "\n" +
-                            "is NOT the same as the original:\n"+
-                            oldDescription);
+                    System.out.println("ERROR\nDescription read in from "
+                        + filename + "\n" + newDescription + "\n"
+                        + "is NOT the same as the original:\n" + oldDescription);
                     System.exit(1);
                 }
             } catch (IOException e) {
-                System.err.println("IOException while reading: "+ e);
+                System.err.println("IOException while reading: " + e);
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                System.err.println("ClassNotFoundException while reading: "
-                        + e);
+                System.err.println("ClassNotFoundException while reading: " + e);
             } finally {
                 if (f != null) {
                     try {
                         f.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on '" + filename + "'");
+                            + "on '" + filename + "'");
                         throwable.printStackTrace();
                     }
                 }
+
                 if (s != null) {
                     try {
                         s.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on '" + filename + "'");
+                            + "on '" + filename + "'");
                         throwable.printStackTrace();
                     }
                 }

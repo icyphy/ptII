@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.demo.HelloWorld;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -37,8 +36,10 @@ import ptolemy.domains.dde.kernel.DDEActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PrintString
+
 /**
    A demo actor that prints the value of each StringToken
    that it consumes.
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class PrintString extends DDEActor {
-
     /** Construct a PrintString actor with the specified container and
      *  name.
      * @param container The container of this actor.
@@ -61,10 +61,10 @@ public class PrintString extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public PrintString(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _input = new TypedIOPort( this, "input", true, false );
+        _input = new TypedIOPort(this, "input", true, false);
         _input.setMultiport(true);
     }
 
@@ -80,13 +80,15 @@ public class PrintString extends DDEActor {
         StringToken token = null;
         Time time;
 
-        while ( true ) {
-            token = (StringToken)getNextToken();
+        while (true) {
+            token = (StringToken) getNextToken();
             time = getDirector().getModelTime();
-            if ( token == null ) {
+
+            if (token == null) {
                 System.out.println("Null token in PrintString");
             }
-            System.out.println("\t"+token.toString()+"\tTime is " + time);
+
+            System.out.println("\t" + token.toString() + "\tTime is " + time);
         }
     }
 
@@ -102,7 +104,5 @@ public class PrintString extends DDEActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     public TypedIOPort _input;
-
 }

@@ -25,7 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.kernel;
 
 import java.util.Iterator;
@@ -60,8 +59,10 @@ import soot.jimple.toolkits.scalar.UnconditionalBranchFolder;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.toolkits.scalar.UnusedLocalEliminator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Main
+
 /**
    Base class that provides common functionality to be used by various
    code generators.  Particular code generators should extend this class
@@ -78,7 +79,6 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
    @Pt.AcceptedRating Red (cxh)
    */
 public abstract class KernelMain {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -86,20 +86,21 @@ public abstract class KernelMain {
      *  options specified in the transformer.
      */
     public static void addTransform(Pack pack, String name,
-            Transformer transformer, String defaultOptions) {
+        Transformer transformer, String defaultOptions) {
         Transform t = new Transform(name, transformer);
+
         if (transformer instanceof HasPhaseOptions) {
             HasPhaseOptions options = (HasPhaseOptions) transformer;
+
             // Note: First appearance of an option has precendence
-            t.setDefaultOptions(defaultOptions + " " +
-                    options.getDefaultOptions() + " " +
-                    t.getDefaultOptions());
-            t.setDeclaredOptions(options.getDeclaredOptions() + " " +
-                    t.getDeclaredOptions());
+            t.setDefaultOptions(defaultOptions + " "
+                + options.getDefaultOptions() + " " + t.getDefaultOptions());
+            t.setDeclaredOptions(options.getDeclaredOptions() + " "
+                + t.getDeclaredOptions());
         } else {
-            t.setDefaultOptions(defaultOptions + " " +
-                    t.getDefaultOptions());
+            t.setDefaultOptions(defaultOptions + " " + t.getDefaultOptions());
         }
+
         pack.add(t);
     }
 
@@ -107,7 +108,7 @@ public abstract class KernelMain {
      *  options specified in the transformer.
      */
     public static void addTransform(Pack pack, String name,
-            Transformer transformer) {
+        Transformer transformer) {
         addTransform(pack, name, transformer, "");
     }
 
@@ -121,7 +122,7 @@ public abstract class KernelMain {
      *  compilation.
      */
     public void compile(String modelName, CompositeActor toplevel,
-            GeneratorAttribute attribute) throws Exception {
+        GeneratorAttribute attribute) throws Exception {
         //  try {
         long startTime = System.currentTimeMillis();
 
@@ -143,13 +144,13 @@ public abstract class KernelMain {
             _toplevel.getManager().wrapup();
         } catch (Exception exception) {
             // Ignore until we get NonStrictTest figured out...
-          //   throw new KernelRuntimeException(exception,
-//                     "Could not wrapup composite actor");
+            //   throw new KernelRuntimeException(exception,
+            //                     "Could not wrapup composite actor");
         }
 
         // Print out memory usage info
         System.out.println(modelName + " "
-                + ptolemy.actor.Manager.timeAndMemory(startTime));
+            + ptolemy.actor.Manager.timeAndMemory(startTime));
 
         //         } catch (Exception ex) {
         //             System.err.println("Code generation of '" + modelName
@@ -173,13 +174,11 @@ public abstract class KernelMain {
         //         // it won't run.  Note that later we will call setLibraryClass() on
         //         // this class so that we don't actually generate code for it.
         //         args[0] = "java.lang.Object";
-
         //         // As of soot 2.0.1, this is all that is required.
         //         //        soot.Main.main(args);
         //         if (!Options.v().parse(args))
         //             throw new KernelRuntimeException(
         //                     "Option parse error");
-
         PackManager.v().getPack("wjtp").apply();
     }
 
@@ -200,32 +199,33 @@ public abstract class KernelMain {
      *  @param toplevel The model we are generating code for.
      */
     public void initialize(CompositeActor toplevel)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         _toplevel = toplevel;
 
         // Applet codegen works with all directors, not just SDF.
         Director topLevelDirector = toplevel.getDirector();
 
         // FIXME: nearly duplicate code in java/TestApplication.java
-        if (topLevelDirector != null
+        if ((topLevelDirector != null)
                 && topLevelDirector instanceof SDFDirector) {
             SDFDirector director = (SDFDirector) topLevelDirector;
-            Parameter iterations =
-                (Parameter) director.getAttribute("iterations");
-            Parameter copernicus_iterations =
-                (Parameter) director.getAttribute("copernicus_iterations");
+            Parameter iterations = (Parameter) director.getAttribute(
+                    "iterations");
+            Parameter copernicus_iterations = (Parameter) director.getAttribute(
+                    "copernicus_iterations");
 
             // Set to be a large number of iterations, unless
             // copernicus_iterations is set.
             if (copernicus_iterations != null) {
                 iterations.setToken(copernicus_iterations.getToken());
             } else {
-                String copernicusIterations = StringUtilities
-                    .getProperty("ptolemy.ptII.copernicusIterations");
+                String copernicusIterations = StringUtilities.getProperty(
+                        "ptolemy.ptII.copernicusIterations");
+
                 if (copernicusIterations.length() > 0) {
                     System.out.println("KernelMain: "
-                            + "Setting number of iterations to "
-                            + copernicusIterations);
+                        + "Setting number of iterations to "
+                        + copernicusIterations);
                     iterations.setToken(new IntToken(copernicusIterations));
                 }
             }
@@ -239,7 +239,7 @@ public abstract class KernelMain {
             manager.preinitializeAndResolveTypes();
         } catch (Exception exception) {
             throw new KernelRuntimeException(exception,
-                    "Could not initialize composite actor");
+                "Could not initialize composite actor");
         }
     }
 
@@ -265,19 +265,18 @@ public abstract class KernelMain {
         standardList.add(UnconditionalBranchFolder.v());
         standardList.add(UnusedLocalEliminator.v());
         addTransform(pack, "wjtp.StandardOptimizations" + time,
-                new TransformerAdapter(standardList));
+            new TransformerAdapter(standardList));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /** Parse any code generator specific arguments.  Derived classes
      * should override this method to extract any code
      * generator-specific variables from the GeneratorAttribute.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-            throws Exception {
+        throws Exception {
         return new String[0];
     }
 
@@ -295,9 +294,7 @@ public abstract class KernelMain {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
-    public static class _IgnoreAllApplicationClasses
-        extends SceneTransformer {
+    public static class _IgnoreAllApplicationClasses extends SceneTransformer {
         /** Transform the Scene according to the information specified
          *  in the model for this transform.
          *  @param phaseName The phase this transform is operating under.
@@ -307,10 +304,11 @@ public abstract class KernelMain {
             // For some reason, soot 2.0.1 gives java.lang.Object as
             // its own superclass!
             PtolemyUtilities.objectClass.setSuperclass(null);
-            for (Iterator classes =
-                     Scene.v().getApplicationClasses().snapshotIterator();
-                 classes.hasNext();) {
-                SootClass theClass = (SootClass)classes.next();
+
+            for (Iterator classes = Scene.v().getApplicationClasses()
+                                         .snapshotIterator();
+                    classes.hasNext();) {
+                SootClass theClass = (SootClass) classes.next();
                 theClass.setLibraryClass();
             }
         }

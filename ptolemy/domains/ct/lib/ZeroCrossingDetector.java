@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ZeroCrossingDetector
+
 /**
    An event detector that converts continuous signals to discrete events when
    the continuous signal crosses zero. This actor is a syntactic sugar
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ZeroCrossingDetector extends LevelCrossingDetector {
-
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -61,7 +61,7 @@ public class ZeroCrossingDetector extends LevelCrossingDetector {
      *   an entity already in the container.
      */
     public ZeroCrossingDetector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _removeAttribute(level);
         _level = 0;

@@ -27,8 +27,8 @@ COPYRIGHTENDKEY
 @Pt.ProposedRating Red (rowland)
 @Pt.AcceptedRating Red (rowland)
 */
-
 package ptolemy.data.unit;
+
 
 /**
  * This exception is thrown when parse errors are encountered.
@@ -40,7 +40,6 @@ package ptolemy.data.unit;
  * mechanisms so long as you retain the public fields.
  */
 public class ParseException extends Exception {
-
     /**
      * This constructor is used by the method "generateParseException"
      * in the generated parser.  Calling this constructor generates
@@ -54,10 +53,7 @@ public class ParseException extends Exception {
      *     ParseException: <result of getMessage>
      */
     public ParseException(Token currentTokenVal,
-            int[][] expectedTokenSequencesVal,
-            String[] tokenImageVal
-                          )
-    {
+        int[][] expectedTokenSequencesVal, String[] tokenImageVal) {
         super("");
         specialConstructor = true;
         currentToken = currentTokenVal;
@@ -74,7 +70,6 @@ public class ParseException extends Exception {
      * relevant information.  The JavaCC generated code does not use
      * these constructors.
      */
-
     public ParseException() {
         super();
         specialConstructor = false;
@@ -127,38 +122,53 @@ public class ParseException extends Exception {
         if (!specialConstructor) {
             return super.getMessage();
         }
+
         String expected = "";
         int maxSize = 0;
+
         for (int i = 0; i < expectedTokenSequences.length; i++) {
             if (maxSize < expectedTokenSequences[i].length) {
                 maxSize = expectedTokenSequences[i].length;
             }
+
             for (int j = 0; j < expectedTokenSequences[i].length; j++) {
-                expected += tokenImage[expectedTokenSequences[i][j]] + " ";
+                expected += (tokenImage[expectedTokenSequences[i][j]] + " ");
             }
+
             if (expectedTokenSequences[i][expectedTokenSequences[i].length - 1] != 0) {
                 expected += "...";
             }
-            expected += eol + "    ";
+
+            expected += (eol + "    ");
         }
+
         String retval = "Encountered \"";
         Token tok = currentToken.next;
+
         for (int i = 0; i < maxSize; i++) {
-            if (i != 0) retval += " ";
+            if (i != 0) {
+                retval += " ";
+            }
+
             if (tok.kind == 0) {
                 retval += tokenImage[0];
                 break;
             }
+
             retval += add_escapes(tok.image);
             tok = tok.next;
         }
-        retval += "\" at line " + currentToken.next.beginLine + ", column " + currentToken.next.beginColumn;
-        retval += "." + eol;
+
+        retval += ("\" at line " + currentToken.next.beginLine + ", column "
+        + currentToken.next.beginColumn);
+        retval += ("." + eol);
+
         if (expectedTokenSequences.length == 1) {
-            retval += "Was expecting:" + eol + "    ";
+            retval += ("Was expecting:" + eol + "    ");
         } else {
-            retval += "Was expecting one of:" + eol + "    ";
+            retval += ("Was expecting one of:" + eol + "    ");
         }
+
         retval += expected;
         return retval;
     }
@@ -176,46 +186,58 @@ public class ParseException extends Exception {
     protected String add_escapes(String str) {
         StringBuffer retval = new StringBuffer();
         char ch;
+
         for (int i = 0; i < str.length(); i++) {
-            switch (str.charAt(i))
-                {
-                case 0 :
-                    continue;
-                case '\b':
-                    retval.append("\\b");
-                    continue;
-                case '\t':
-                    retval.append("\\t");
-                    continue;
-                case '\n':
-                    retval.append("\\n");
-                    continue;
-                case '\f':
-                    retval.append("\\f");
-                    continue;
-                case '\r':
-                    retval.append("\\r");
-                    continue;
-                case '\"':
-                    retval.append("\\\"");
-                    continue;
-                case '\'':
-                    retval.append("\\\'");
-                    continue;
-                case '\\':
-                    retval.append("\\\\");
-                    continue;
-                default:
-                    if ((ch = str.charAt(i)) < 0x20 || ch > 0x7e) {
-                        String s = "0000" + Integer.toString(ch, 16);
-                        retval.append("\\u" + s.substring(s.length() - 4, s.length()));
-                    } else {
-                        retval.append(ch);
-                    }
-                    continue;
+            switch (str.charAt(i)) {
+            case 0:
+                continue;
+
+            case '\b':
+                retval.append("\\b");
+                continue;
+
+            case '\t':
+                retval.append("\\t");
+                continue;
+
+            case '\n':
+                retval.append("\\n");
+                continue;
+
+            case '\f':
+                retval.append("\\f");
+                continue;
+
+            case '\r':
+                retval.append("\\r");
+                continue;
+
+            case '\"':
+                retval.append("\\\"");
+                continue;
+
+            case '\'':
+                retval.append("\\\'");
+                continue;
+
+            case '\\':
+                retval.append("\\\\");
+                continue;
+
+            default:
+
+                if (((ch = str.charAt(i)) < 0x20) || (ch > 0x7e)) {
+                    String s = "0000" + Integer.toString(ch, 16);
+                    retval.append("\\u"
+                        + s.substring(s.length() - 4, s.length()));
+                } else {
+                    retval.append(ch);
                 }
+
+                continue;
+            }
         }
+
         return retval.toString();
     }
-
 }

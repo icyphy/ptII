@@ -42,8 +42,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageSequence
+
 /**
    Load a sequence of binary images from files, and create a sequence of
    IntMatrixTokens from them.  The data is assumed to row scanned, starting
@@ -75,7 +77,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red
 */
 public class ImageSequence extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -85,23 +86,18 @@ public class ImageSequence extends Source {
      *   actor with this name.
      */
     public ImageSequence(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT_MATRIX);
 
         imageURLTemplate = new Parameter(this, "imageURLTemplate",
-                new StringToken("ptolemy/domains/sdf/lib/vq" +
-                        "/data/seq/missa/missa***.qcf"));
-        imageColumns =
-            new Parameter(this, "imageColumns", new IntToken("176"));
-        imageRows =
-            new Parameter(this, "imageRows", new IntToken("144"));
-        startFrame =
-            new Parameter(this, "startFrame", new IntToken("0"));
-        endFrame =
-            new Parameter(this, "endFrame", new IntToken("29"));
+                new StringToken("ptolemy/domains/sdf/lib/vq"
+                    + "/data/seq/missa/missa***.qcf"));
+        imageColumns = new Parameter(this, "imageColumns", new IntToken("176"));
+        imageRows = new Parameter(this, "imageRows", new IntToken("144"));
+        startFrame = new Parameter(this, "startFrame", new IntToken("0"));
+        endFrame = new Parameter(this, "endFrame", new IntToken("29"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,7 +118,6 @@ public class ImageSequence extends Source {
     /** The ending frame number. */
     public Parameter endFrame;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -133,14 +128,15 @@ public class ImageSequence extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         InputStream source = null;
 
-        String fileRoot =
-            ((StringToken)imageURLTemplate.getToken()).stringValue();
-        _startFrame = ((IntToken)startFrame.getToken()).intValue();
-        _endFrame = ((IntToken)endFrame.getToken()).intValue();
-        _imageColumns = ((IntToken)imageColumns.getToken()).intValue();
-        _imageRows = ((IntToken)imageRows.getToken()).intValue();
+        String fileRoot = ((StringToken) imageURLTemplate.getToken())
+            .stringValue();
+        _startFrame = ((IntToken) startFrame.getToken()).intValue();
+        _endFrame = ((IntToken) endFrame.getToken()).intValue();
+        _imageColumns = ((IntToken) imageColumns.getToken()).intValue();
+        _imageRows = ((IntToken) imageRows.getToken()).intValue();
 
         // If we've already loaded all these images, then don't load
         // them again.
@@ -152,72 +148,75 @@ public class ImageSequence extends Source {
         _images = new IntMatrixToken[_frameCount];
         _frameInts = new int[_imageRows][_imageColumns];
         _frameBytes = new byte[_imageRows * _imageColumns];
-        for (_frameNumber = 0;
-             _frameNumber < _frameCount;
-             _frameNumber++) {
 
+        for (_frameNumber = 0; _frameNumber < _frameCount; _frameNumber++) {
             try {
                 // Assemble the file name, replacing '*'
-                byte arr[] = fileRoot.getBytes();
-                int i, j, n;
+                byte[] arr = fileRoot.getBytes();
+                int i;
+                int j;
+                int n;
                 i = _frameNumber + _startFrame;
+
                 String temporaryFileName = new String(fileRoot);
                 int location = temporaryFileName.lastIndexOf('*');
+
                 while (location >= 0) {
-                    arr[location] = (byte)('0' + i % 10);
+                    arr[location] = (byte) ('0' + (i % 10));
                     i = i / 10;
                     temporaryFileName = new String(arr);
                     location = temporaryFileName.lastIndexOf('*');
                 }
+
                 String fileName = new String(arr);
                 _debug("file = " + fileName + "\n");
 
                 if (fileName != null) {
-                    URL dataurl = getClass().getClassLoader()
-                        .getResource(fileName);
+                    URL dataurl = getClass().getClassLoader().getResource(fileName);
+
                     if (dataurl == null) {
                         throw new FileNotFoundException("Failed to find '"
-                                + fileName + "' as "
-                                + "a resource");
+                            + fileName + "' as " + "a resource");
                     }
+
                     source = dataurl.openStream();
                 }
 
                 // Load the frame from the file.
-                if (_fullRead(source, _frameBytes)
-                        != _imageRows*_imageColumns)
-                    throw new IllegalActionException("Error reading " +
-                            "image file!");
-                // This is necessary to convert from bytes to ints
-                for (i = 0, n = 0; i < _imageRows; i++) {
-                    for (j = 0; j < _imageColumns; j++, n++)
-                        _frameInts[i][j] = ((int) _frameBytes[n]) & 255;
+                if (_fullRead(source, _frameBytes) != (_imageRows * _imageColumns)) {
+                    throw new IllegalActionException("Error reading "
+                        + "image file!");
                 }
 
-                _images[_frameNumber] =
-                    new IntMatrixToken(_frameInts);
-            }
-            catch (IllegalActionException ex) {
+                // This is necessary to convert from bytes to ints
+                for (i = 0, n = 0; i < _imageRows; i++) {
+                    for (j = 0; j < _imageColumns; j++, n++) {
+                        _frameInts[i][j] = ((int) _frameBytes[n]) & 255;
+                    }
+                }
+
+                _images[_frameNumber] = new IntMatrixToken(_frameInts);
+            } catch (IllegalActionException ex) {
                 _images = null;
-                throw new IllegalActionException(this, ex, "Failed to initialize");
-            }
-            catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                    "Failed to initialize");
+            } catch (Exception ex) {
                 _images = null;
-                throw new IllegalActionException(this, ex, "Failed to initialize");
-            }
-            finally {
+                throw new IllegalActionException(this, ex,
+                    "Failed to initialize");
+            } finally {
                 if (source != null) {
                     try {
                         source.close();
-                    }
-                    catch (IOException ex) {
+                    } catch (IOException ex) {
                         _images = null;
                         throw new IllegalActionException(this, ex,
-                                "Failed to close source");
+                            "Failed to close source");
                     }
                 }
             }
         }
+
         _frameNumber = 0;
     }
 
@@ -228,38 +227,45 @@ public class ImageSequence extends Source {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        int i, j, n;
+        int i;
+        int j;
+        int n;
 
         output.send(0, _images[_frameNumber]);
         _frameNumber++;
-        if (_frameNumber >= _frameCount) _frameNumber = 0;
+
+        if (_frameNumber >= _frameCount) {
+            _frameNumber = 0;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    private int _fullRead(InputStream s, byte b[]) throws IOException {
+    private int _fullRead(InputStream s, byte[] b) throws IOException {
         int length = 0;
         int remaining = b.length;
         int bytesRead = 0;
+
         while (remaining > 0) {
             bytesRead = s.read(b, length, remaining);
+
             if (bytesRead == -1) {
                 throw new IOException("Unexpected EOF:" + s);
             }
+
             remaining -= bytesRead;
             length += bytesRead;
         }
+
         return length;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _frameCount;
-    private IntMatrixToken _images[];
-    private byte _frameBytes[];
-    private int _frameInts[][];
+    private IntMatrixToken[] _images;
+    private byte[] _frameBytes;
+    private int[][] _frameInts;
     private int _imageURLTemplate;
     private int _imageColumns;
     private int _imageRows;

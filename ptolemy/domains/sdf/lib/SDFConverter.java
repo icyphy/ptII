@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 ///////////////////////////////////////////////////////////////
 /// SDFConverter
+
 /**
    This actor is a base class for SDF converters. All it does is provide a
    default icon.
@@ -44,9 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (eal)
 */
-
 public class SDFConverter extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -56,11 +55,10 @@ public class SDFConverter extends SDFTransformer {
      *   actor with this name.
      */
     public SDFConverter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 }

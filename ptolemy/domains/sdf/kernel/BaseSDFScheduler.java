@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.kernel;
 
 import java.util.Iterator;
@@ -52,8 +51,10 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 ///////////////////////////////////////////////////////////
 //// BaseSDFScheduler
+
 /**
    This class factors code out of the SDF domain, for use in different
    schedulers, so that they can be implemented in a consistent fashion.
@@ -65,7 +66,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (neuendor)
 */
 public abstract class BaseSDFScheduler extends Scheduler {
-
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Scheduler".
@@ -100,7 +100,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public BaseSDFScheduler(Director container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -123,18 +123,17 @@ public abstract class BaseSDFScheduler extends Scheduler {
      * list to the given list.
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
-            Port port, String name, List dependents)
-            throws IllegalActionException {
+        Port port, String name, List dependents) throws IllegalActionException {
         if (_debugging && VERBOSE) {
-            _debug("declaring dependency for rate variable " +
-                    name + " in port " + port.getFullName());
+            _debug("declaring dependency for rate variable " + name
+                + " in port " + port.getFullName());
         }
-        Variable variable =
-            (Variable)DFUtilities.getRateVariable(port, name);
-        DependencyDeclaration declaration = (DependencyDeclaration)
-            variable.getAttribute(
-                    "_SDFRateDependencyDeclaration",
-                    DependencyDeclaration.class);
+
+        Variable variable = (Variable) DFUtilities.getRateVariable(port, name);
+        DependencyDeclaration declaration = (DependencyDeclaration) variable
+            .getAttribute("_SDFRateDependencyDeclaration",
+                DependencyDeclaration.class);
+
         if (declaration == null) {
             try {
                 declaration = new DependencyDeclaration(variable,
@@ -143,6 +142,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 // Ignore... should not happen.
             }
         }
+
         declaration.setDependents(dependents);
         analysis.addDependencyDeclaration(declaration);
     }
@@ -151,57 +151,61 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *  given receiver.  If the receiver is not contained within the port,
      *  throw an InternalErrorException.
      */
+
     // FIXME: Move this functionality to the kernel.
     protected int _getChannel(IOPort port, Receiver receiver)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int width = port.getWidth();
         Receiver[][] receivers = port.getReceivers();
         int channel;
+
         if (_debugging && VERBOSE) {
             _debug("-- getting channels on port " + port.getFullName());
             _debug("port width = " + width);
             _debug("number of channels = " + receivers.length);
         }
-        for (channel = 0;
-             channel < receivers.length;
-             channel++) {
+
+        for (channel = 0; channel < receivers.length; channel++) {
             if (_debugging && VERBOSE) {
-                _debug("number of receivers in channel " + channel
-                        + " = " + receivers[channel].length);
+                _debug("number of receivers in channel " + channel + " = "
+                    + receivers[channel].length);
             }
+
             for (int destinationIndex = 0;
-                 destinationIndex < receivers[channel].length;
-                 destinationIndex++) {
+                    destinationIndex < receivers[channel].length;
+                    destinationIndex++) {
                 if (receivers[channel][destinationIndex] == receiver) {
                     if (_debugging && VERBOSE) {
                         _debug("-- returning channel number:" + channel);
                     }
+
                     return channel;
                 }
             }
         }
+
         // Hmm...  didn't find it yet.  Port might be connected on the inside,
         // so try the inside relations.
         receivers = port.getInsideReceivers();
-        for (channel = 0;
-             channel < receivers.length;
-             channel++) {
+
+        for (channel = 0; channel < receivers.length; channel++) {
             if (_debugging && VERBOSE) {
                 _debug("number of inside receivers = "
-                        + receivers[channel].length);
+                    + receivers[channel].length);
             }
+
             for (int destinationIndex = 0;
-                 destinationIndex < receivers[channel].length;
-                 destinationIndex++) {
+                    destinationIndex < receivers[channel].length;
+                    destinationIndex++) {
                 if (receivers[channel][destinationIndex] == receiver) {
                     return channel;
                 }
             }
         }
 
-        throw new InternalErrorException("Receiver for port " +
-                receiver.getContainer() + " not found in the port " +
-                port.getFullName());
+        throw new InternalErrorException("Receiver for port "
+            + receiver.getContainer() + " not found in the port "
+            + port.getFullName());
     }
 
     /** Create and set a parameter in each relation according
@@ -211,43 +215,48 @@ public abstract class BaseSDFScheduler extends Scheduler {
      */
     protected void _saveBufferSizes(final Map minimumBufferSizes) {
         Director director = (Director) getContainer();
-        final CompositeActor container =
-            (CompositeActor)director.getContainer();
-        ChangeRequest request =
-            new ChangeRequest(this, "Record buffer sizes") {
+        final CompositeActor container = (CompositeActor) director.getContainer();
+        ChangeRequest request = new ChangeRequest(this, "Record buffer sizes") {
                 protected void _execute() throws KernelException {
                     Iterator relations = container.relationList().iterator();
+
                     while (relations.hasNext()) {
-                        Relation relation = (Relation)relations.next();
-                        Object bufferSizeObject =
-                            minimumBufferSizes.get(relation);
+                        Relation relation = (Relation) relations.next();
+                        Object bufferSizeObject = minimumBufferSizes.get(relation);
+
                         if (bufferSizeObject instanceof Integer) {
-                            int bufferSize = ((Integer)bufferSizeObject).intValue();
-                            DFUtilities.setOrCreate(relation, "bufferSize", bufferSize);
+                            int bufferSize = ((Integer) bufferSizeObject)
+                                .intValue();
+                            DFUtilities.setOrCreate(relation, "bufferSize",
+                                bufferSize);
+
                             if (_debugging) {
                                 _debug("Adding bufferSize parameter to "
-                                        + relation.getName() +
-                                        " with value " + bufferSize);
+                                    + relation.getName() + " with value "
+                                    + bufferSize);
                             }
                         } else if (bufferSizeObject instanceof String) {
-                            String bufferSizeExpression = (String)bufferSizeObject;
+                            String bufferSizeExpression = (String) bufferSizeObject;
                             DFUtilities.setOrCreate(relation, "bufferSize",
-                                    "\"" + bufferSizeExpression + "\"");
+                                "\"" + bufferSizeExpression + "\"");
+
                             if (_debugging) {
                                 _debug("Adding bufferSize parameter to "
-                                        + relation.getName() +
-                                        " with expression " + bufferSizeExpression);
+                                    + relation.getName() + " with expression "
+                                    + bufferSizeExpression);
                             }
                         } else if (bufferSizeObject == null) {
                         } else {
-                            throw new InternalErrorException("Invalid value found "
-                                    + "in buffer size map.\nValue is of type "
-                                    + bufferSizeObject.getClass().getName()
-                                    + ".\nIt should be of type Integer or String.\n"                                );
+                            throw new InternalErrorException(
+                                "Invalid value found "
+                                + "in buffer size map.\nValue is of type "
+                                + bufferSizeObject.getClass().getName()
+                                + ".\nIt should be of type Integer or String.\n");
                         }
                     }
                 }
             };
+
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.
         request.setPersistent(false);
@@ -267,76 +276,82 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *   tokenInitProduction.
      */
     protected void _saveContainerRates(Map externalRates)
-            throws NotSchedulableException, IllegalActionException {
+        throws NotSchedulableException, IllegalActionException {
         Director director = (Director) getContainer();
         CompositeActor container = (CompositeActor) director.getContainer();
         Iterator ports = container.portList().iterator();
+
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
+
             if (_debugging && VERBOSE) {
                 _debug("External Port " + port.getName());
             }
-            Integer rate = (Integer)externalRates.get(port);
+
+            Integer rate = (Integer) externalRates.get(port);
+
             if (port.isInput() && port.isOutput()) {
                 throw new NotSchedulableException(port,
-                        "External port is both an input and an output, "
-                        + "which is not allowed in SDF.");
+                    "External port is both an input and an output, "
+                    + "which is not allowed in SDF.");
             } else if (port.isInput()) {
-                DFUtilities.setIfNotDefined(
-                        port, "tokenConsumptionRate", rate.intValue());
+                DFUtilities.setIfNotDefined(port, "tokenConsumptionRate",
+                    rate.intValue());
+
                 if (_debugging && VERBOSE) {
-                    _debug("Setting tokenConsumptionRate to "
-                            + rate.intValue());
+                    _debug("Setting tokenConsumptionRate to " + rate.intValue());
                 }
             } else if (port.isOutput()) {
-                DFUtilities.setIfNotDefined(
-                        port, "tokenProductionRate", rate.intValue());
+                DFUtilities.setIfNotDefined(port, "tokenProductionRate",
+                    rate.intValue());
+
                 if (_debugging && VERBOSE) {
-                    _debug("Setting tokenProductionRate to "
-                            + rate.intValue());
+                    _debug("Setting tokenProductionRate to " + rate.intValue());
                 }
+
                 // Infer init production.
                 // Note that this is a very simple type of inference...
                 // However, in general, we don't want to try to
                 // flatten this model...
-                Iterator connectedPorts =
-                    port.insideSourcePortList().iterator();
+                Iterator connectedPorts = port.insideSourcePortList().iterator();
                 IOPort foundOutputPort = null;
                 int inferredRate = 0;
+
                 while (connectedPorts.hasNext()) {
                     IOPort connectedPort = (IOPort) connectedPorts.next();
 
                     int newRate;
+
                     if (connectedPort.isOutput()) {
-                        newRate =
-                            DFUtilities.getTokenInitProduction(connectedPort);
+                        newRate = DFUtilities.getTokenInitProduction(connectedPort);
                     } else {
                         newRate = 0;
                     }
+
                     // If we've already set the rate, then check that the
                     // rate for any other internal port is correct.
-                    if (foundOutputPort != null &&
-                            newRate != inferredRate) {
+                    if ((foundOutputPort != null) && (newRate != inferredRate)) {
                         throw new NotSchedulableException(
-                                "External output port " + port
-                                + " is connected on the inside to ports "
-                                + "with different initial production: "
-                                + foundOutputPort + " and "
-                                + connectedPort);
+                            "External output port " + port
+                            + " is connected on the inside to ports "
+                            + "with different initial production: "
+                            + foundOutputPort + " and " + connectedPort);
                     }
+
                     foundOutputPort = connectedPort;
                     inferredRate = newRate;
                 }
-                DFUtilities.setIfNotDefined(
-                        port, "tokenInitProduction", inferredRate);
+
+                DFUtilities.setIfNotDefined(port, "tokenInitProduction",
+                    inferredRate);
+
                 if (_debugging && VERBOSE) {
-                    _debug("Setting tokenInitProduction to "
-                            + inferredRate);
+                    _debug("Setting tokenInitProduction to " + inferredRate);
                 }
             } else {
                 throw new NotSchedulableException(port,
-                        "External port is neither an input and an output, "
-                        + "which is not allowed in SDF.");
+                    "External port is neither an input and an output, "
+                    + "which is not allowed in SDF.");
             }
         }
     }
@@ -347,26 +362,30 @@ public abstract class BaseSDFScheduler extends Scheduler {
      */
     protected void _saveFiringCounts(final Map entityToFiringsPerIteration) {
         Director director = (Director) getContainer();
-        final CompositeActor container =
-            (CompositeActor)director.getContainer();
+        final CompositeActor container = (CompositeActor) director.getContainer();
 
-        ChangeRequest request =
-            new ChangeRequest(this, "Record firings per iteration") {
+        ChangeRequest request = new ChangeRequest(this,
+                "Record firings per iteration") {
                 protected void _execute() throws KernelException {
-                    Iterator entities = entityToFiringsPerIteration.keySet().iterator();
+                    Iterator entities = entityToFiringsPerIteration.keySet()
+                                                                   .iterator();
+
                     while (entities.hasNext()) {
                         Entity entity = (Entity) entities.next();
-                        int firingCount =
-                            ((Integer)entityToFiringsPerIteration.get(entity)).intValue();
-                        DFUtilities.setOrCreate(entity, "firingsPerIteration", firingCount);
+                        int firingCount = ((Integer) entityToFiringsPerIteration
+                            .get(entity)).intValue();
+                        DFUtilities.setOrCreate(entity, "firingsPerIteration",
+                            firingCount);
+
                         if (_debugging) {
                             _debug("Adding firingsPerIteration parameter to "
-                                    + entity.getName() + " with value "
-                                    + firingCount);
+                                + entity.getName() + " with value "
+                                + firingCount);
                         }
                     }
                 }
             };
+
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.
         request.setPersistent(false);
@@ -375,7 +394,5 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected static final boolean VERBOSE = false;
-
 }

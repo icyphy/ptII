@@ -43,6 +43,7 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.util.CompoundIterator;
 
+
 /** A class that implements rubber-banding on a canvas. It contains
  * references to one or more instances of SelectionInteractor, which it
  * notifies whenever dragging on the canvas covers or uncovers items.
@@ -57,7 +58,6 @@ import diva.util.CompoundIterator;
  * @author John Reekie
  */
 public class SelectionDragger extends DragInteractor {
-
     /* The overlay layer
      */
     private OverlayLayer _overlayLayer;
@@ -115,7 +115,7 @@ public class SelectionDragger extends DragInteractor {
     /**
      * Create a new SelectionDragger
      */
-    public SelectionDragger () {
+    public SelectionDragger() {
         super();
     }
 
@@ -123,7 +123,7 @@ public class SelectionDragger extends DragInteractor {
      * Create a new SelectionDragger attached to the given graphics
      * pane.
      */
-    public SelectionDragger (GraphicsPane gpane) {
+    public SelectionDragger(GraphicsPane gpane) {
         super();
         setOverlayLayer(gpane.getOverlayLayer());
         setEventLayer(gpane.getBackgroundEventLayer());
@@ -139,8 +139,8 @@ public class SelectionDragger extends DragInteractor {
      * that have a selection interactor with a selection model in this
      * list are added to the selection model.
      */
-    public void addSelectionModel (SelectionModel model) {
-        if ( !(_selectionModels.contains(model))) {
+    public void addSelectionModel(SelectionModel model) {
+        if (!(_selectionModels.contains(model))) {
             _selectionModels.add(model);
         }
     }
@@ -152,8 +152,8 @@ public class SelectionDragger extends DragInteractor {
      * with a selection model in this list are added to the selection
      * model.
      */
-    public void addSelectionInteractor (SelectionInteractor interactor) {
-        if ( !(_selectionModels.contains(interactor.getSelectionModel()))) {
+    public void addSelectionInteractor(SelectionInteractor interactor) {
+        if (!(_selectionModels.contains(interactor.getSelectionModel()))) {
             _selectionModels.add(interactor.getSelectionModel());
         }
     }
@@ -161,8 +161,9 @@ public class SelectionDragger extends DragInteractor {
     /**
      * Clear the selection in all the relevant selection interactors.
      */
-    public void clearSelection () {
+    public void clearSelection() {
         Iterator models = _selectionModels.iterator();
+
         while (models.hasNext()) {
             SelectionModel model = (SelectionModel) models.next();
             model.clearSelection();
@@ -174,7 +175,7 @@ public class SelectionDragger extends DragInteractor {
      * removing highlight rendering. If the figure is not in
      * the selection, do nothing.
      */
-    public void contractSelection (SelectionInteractor i, Figure figure) {
+    public void contractSelection(SelectionInteractor i, Figure figure) {
         if (i.getSelectionModel().containsSelection(figure)) {
             i.getSelectionModel().removeSelection(figure);
         }
@@ -185,8 +186,8 @@ public class SelectionDragger extends DragInteractor {
      * highlight rendering to it. If the
      * figure is already in the selection, do nothing.
      */
-    public void expandSelection (SelectionInteractor i, Figure figure) {
-        if ( !(i.getSelectionModel().containsSelection(figure))) {
+    public void expandSelection(SelectionInteractor i, Figure figure) {
+        if (!(i.getSelectionModel().containsSelection(figure))) {
             i.getSelectionModel().addSelection(figure);
         }
     }
@@ -194,21 +195,21 @@ public class SelectionDragger extends DragInteractor {
     /**
      * Get the layer that drag rectangles are drawn on
      */
-    public OverlayLayer getOverlayLayer () {
+    public OverlayLayer getOverlayLayer() {
         return _overlayLayer;
     }
 
     /**
      * Get the layer that drag events are listened on
      */
-    public EventLayer getEventLayer () {
+    public EventLayer getEventLayer() {
         return _eventLayer;
     }
 
     /**
      * Get the layer that figures are selected on
      */
-    public FigureLayer getFigureLayer () {
+    public FigureLayer getFigureLayer() {
         return _figureLayer;
     }
 
@@ -216,7 +217,7 @@ public class SelectionDragger extends DragInteractor {
      * Get the mouse filter that controls when this selection
      * filter is activated.
      */
-    public MouseFilter getSelectionFilter () {
+    public MouseFilter getSelectionFilter() {
         return _selectionFilter;
     }
 
@@ -224,7 +225,7 @@ public class SelectionDragger extends DragInteractor {
      * Get the mouse filter that controls the toggling of
      * selections
      */
-    public MouseFilter getToggleFilter () {
+    public MouseFilter getToggleFilter() {
         return _toggleFilter;
     }
 
@@ -233,13 +234,15 @@ public class SelectionDragger extends DragInteractor {
      * the drag region are added to or removed from the appropriate
      * selection.
      */
-    public void mouseDragged (LayerEvent event) {
+    public void mouseDragged(LayerEvent event) {
         if (!isEnabled()) {
             return;
         }
+
         if (!_isToggling && !_isSelecting) {
             return;
         }
+
         if (_rubberBand == null) {
             // This should never happen, but it does.
             return;
@@ -252,46 +255,57 @@ public class SelectionDragger extends DragInteractor {
 
         // Figure out the coordinates of the rubber band
         _overlayLayer.repaint(_rubberBand);
-        if ( x < _originX ) {
+
+        if (x < _originX) {
             w = _originX - x;
         } else {
-            w = x -_originX;
+            w = x - _originX;
             x = _originX;
         }
-        if ( y < _originY ) {
+
+        if (y < _originY) {
             h = _originY - y;
         } else {
             h = y - _originY;
             y = _originY;
         }
-        _rubberBand.setFrame(x,y,w,h);
+
+        _rubberBand.setFrame(x, y, w, h);
         _overlayLayer.repaint(_rubberBand);
 
         // Update the intersected figure set
         _intersectedFigures.setGeometry(_rubberBand);
+
         HashSet freshFigures = new HashSet();
-        for (Iterator i = _intersectedFigures.figures(); i.hasNext(); ) {
-            Figure f = (Figure)i.next();
+
+        for (Iterator i = _intersectedFigures.figures(); i.hasNext();) {
+            Figure f = (Figure) i.next();
+
             if (f instanceof FigureDecorator) {
-                f = ((FigureDecorator)f).getDecoratedFigure();
+                f = ((FigureDecorator) f).getDecoratedFigure();
             }
+
             if (f.hit(_rubberBand)) {
                 freshFigures.add(f);
             } else {
                 _holdovers.add(f);
             }
         }
-        for (Iterator i = ((HashSet)_holdovers.clone()).iterator();
-             i.hasNext(); ) {
-            Figure f = (Figure)i.next();
+
+        for (Iterator i = ((HashSet) _holdovers.clone()).iterator();
+                i.hasNext();) {
+            Figure f = (Figure) i.next();
+
             if (f.hit(_rubberBand)) {
                 freshFigures.add(f);
                 _holdovers.remove(f);
             }
         }
+
         // stale = current-fresh;
         HashSet staleFigures = (HashSet) _currentFigures.clone();
         staleFigures.removeAll(freshFigures);
+
         // current = fresh-current
         HashSet temp = (HashSet) freshFigures.clone();
         freshFigures.removeAll(_currentFigures);
@@ -301,14 +315,16 @@ public class SelectionDragger extends DragInteractor {
         if (_isSelecting) {
             // Add figures to the selection
             Iterator i = freshFigures.iterator();
+
             while (i.hasNext()) {
                 Figure f = (Figure) i.next();
                 Interactor r = f.getInteractor();
-                if (r != null &&
-                        r instanceof SelectionInteractor) {
-                    SelectionInteractor interactor = (SelectionInteractor)r;
+
+                if ((r != null) && r instanceof SelectionInteractor) {
+                    SelectionInteractor interactor = (SelectionInteractor) r;
+
                     if (_selectionModels.contains(
-                               interactor.getSelectionModel())) {
+                                interactor.getSelectionModel())) {
                         expandSelection((SelectionInteractor) r, f);
                     }
                 }
@@ -316,31 +332,34 @@ public class SelectionDragger extends DragInteractor {
 
             // Remove figures from the selection
             i = staleFigures.iterator();
+
             while (i.hasNext()) {
                 Figure f = (Figure) i.next();
                 Interactor r = f.getInteractor();
-                if (r != null &&
-                        r instanceof SelectionInteractor) {
-                    SelectionInteractor interactor = (SelectionInteractor)r;
+
+                if ((r != null) && r instanceof SelectionInteractor) {
+                    SelectionInteractor interactor = (SelectionInteractor) r;
+
                     if (_selectionModels.contains(
-                               interactor.getSelectionModel())) {
+                                interactor.getSelectionModel())) {
                         contractSelection((SelectionInteractor) r, f);
                     }
                 }
             }
         } else {
             // Toggle figures into and out of the selection
-            Iterator i = new CompoundIterator(
-                    freshFigures.iterator(),
+            Iterator i = new CompoundIterator(freshFigures.iterator(),
                     staleFigures.iterator());
+
             while (i.hasNext()) {
                 Figure f = (Figure) i.next();
                 Interactor r = f.getInteractor();
-                if (r != null &&
-                        r instanceof SelectionInteractor) {
-                    SelectionInteractor interactor = (SelectionInteractor)r;
+
+                if ((r != null) && r instanceof SelectionInteractor) {
+                    SelectionInteractor interactor = (SelectionInteractor) r;
+
                     if (_selectionModels.contains(
-                               interactor.getSelectionModel())) {
+                                interactor.getSelectionModel())) {
                         if (interactor.getSelectionModel().containsSelection(f)) {
                             contractSelection(interactor, f);
                         } else {
@@ -350,6 +369,7 @@ public class SelectionDragger extends DragInteractor {
                 }
             }
         }
+
         // Consume the event
         if (isConsuming()) {
             event.consume();
@@ -358,10 +378,11 @@ public class SelectionDragger extends DragInteractor {
 
     /** Clear the selection, and create the rubber-band
      */
-    public void mousePressed (LayerEvent event) {
+    public void mousePressed(LayerEvent event) {
         if (!isEnabled()) {
             return;
         }
+
         // Check mouse event, set flags, etc
         _isSelecting = _selectionFilter.accept(event);
         _isToggling = _toggleFilter.accept(event);
@@ -373,17 +394,12 @@ public class SelectionDragger extends DragInteractor {
         // Do it
         _originX = event.getLayerX();
         _originY = event.getLayerY();
-        _rubberBand = new Rectangle2D.Double(
-                _originX,
-                _originY,
-                0.0,
-                0.0);
+        _rubberBand = new Rectangle2D.Double(_originX, _originY, 0.0, 0.0);
 
         _overlayLayer.add(_rubberBand);
         _overlayLayer.repaint(_rubberBand);
 
-        _intersectedFigures =
-            _figureLayer.getFigures().getIntersectedFigures(_rubberBand);
+        _intersectedFigures = _figureLayer.getFigures().getIntersectedFigures(_rubberBand);
         _currentFigures = new HashSet();
         _holdovers = new HashSet();
 
@@ -391,6 +407,7 @@ public class SelectionDragger extends DragInteractor {
         if (_isSelecting) {
             clearSelection();
         }
+
         // Consume the event
         if (isConsuming()) {
             event.consume();
@@ -399,14 +416,16 @@ public class SelectionDragger extends DragInteractor {
 
     /** Delete the rubber-band
      */
-    public void mouseReleased (LayerEvent event) {
+    public void mouseReleased(LayerEvent event) {
         if (!isEnabled()) {
             return;
         }
+
         if (_rubberBand == null) {
             // This should never happen, but it does.
             return;
         }
+
         terminateDragSelection();
 
         // Consume the event
@@ -419,8 +438,8 @@ public class SelectionDragger extends DragInteractor {
      * Remove a selection model from the list of models selected by
      * this dragger.
      */
-    public void removeSelectionModel (SelectionModel model) {
-        if (_selectionModels.contains(model) ) {
+    public void removeSelectionModel(SelectionModel model) {
+        if (_selectionModels.contains(model)) {
             _selectionModels.remove(model);
         }
     }
@@ -435,17 +454,18 @@ public class SelectionDragger extends DragInteractor {
     /**
      * Set the layer that drag rectangles are drawn on
      */
-    public void setOverlayLayer (OverlayLayer l) {
+    public void setOverlayLayer(OverlayLayer l) {
         _overlayLayer = l;
     }
 
     /**
      * Set the layer that drag events are listened on
      */
-    public void setEventLayer (EventLayer l) {
+    public void setEventLayer(EventLayer l) {
         if (_eventLayer != null) {
             _eventLayer.removeLayerListener(this);
         }
+
         _eventLayer = l;
         _eventLayer.addLayerListener(this);
     }
@@ -453,7 +473,7 @@ public class SelectionDragger extends DragInteractor {
     /**
      * Set the layer that figures are selected on
      */
-    public void setFigureLayer (FigureLayer l) {
+    public void setFigureLayer(FigureLayer l) {
         _figureLayer = l;
     }
 
@@ -476,7 +496,7 @@ public class SelectionDragger extends DragInteractor {
     /** Terminate drag-selection operation. This must only be called
      * from events that are triggered during a drag operation.
      */
-    public void terminateDragSelection () {
+    public void terminateDragSelection() {
         if (!_isToggling && !_isSelecting) {
             return;
         }
@@ -488,5 +508,3 @@ public class SelectionDragger extends DragInteractor {
         _holdovers = null;
     }
 }
-
-

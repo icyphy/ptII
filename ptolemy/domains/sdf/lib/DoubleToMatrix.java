@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.DoubleMatrixToken;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 ///////////////////////////////////////////////////////////////
 /// DoubleToMatrix
+
 /**
    This actor converts a sequence of input tokens to a matrix.
    The actor reads <i>rows</i> times <i>columns</i> inputs and
@@ -58,9 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (eal)
 */
-
 public class DoubleToMatrix extends SDFConverter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,7 +69,7 @@ public class DoubleToMatrix extends SDFConverter {
      *   actor with this name.
      */
     public DoubleToMatrix(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         rows = new Parameter(this, "rows");
@@ -107,13 +106,14 @@ public class DoubleToMatrix extends SDFConverter {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == rows || attribute == columns) {
-            _rows = ((IntToken)rows.getToken()).intValue();
-            _columns = ((IntToken)columns.getToken()).intValue();
-            if (_rows <= 0 || _columns <= 0) {
+        throws IllegalActionException {
+        if ((attribute == rows) || (attribute == columns)) {
+            _rows = ((IntToken) rows.getToken()).intValue();
+            _columns = ((IntToken) columns.getToken()).intValue();
+
+            if ((_rows <= 0) || (_columns <= 0)) {
                 throw new IllegalActionException(this,
-                        "Number of rows and columns is required to be positive.");
+                    "Number of rows and columns is required to be positive.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -123,22 +123,25 @@ public class DoubleToMatrix extends SDFConverter {
     /** Consume consecutive input tokens and produce the output matrix.
      *  @exception IllegalActionException If there is no director.
      */
-    public final void fire() throws IllegalActionException  {
+    public final void fire() throws IllegalActionException {
         super.fire();
+
         double[][] result = new double[_rows][_columns];
+
         for (int i = 0; i < _rows; i++) {
             Token[] row = input.get(0, _columns);
+
             for (int j = 0; j < _columns; j++) {
-                result[i][j] = ((DoubleToken)row[j]).doubleValue();
+                result[i][j] = ((DoubleToken) row[j]).doubleValue();
             }
         }
-        output.send(0, new DoubleMatrixToken(
-                            result, DoubleMatrixToken.DO_NOT_COPY));
+
+        output.send(0,
+            new DoubleMatrixToken(result, DoubleMatrixToken.DO_NOT_COPY));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The number of rows.
     private int _rows;
 

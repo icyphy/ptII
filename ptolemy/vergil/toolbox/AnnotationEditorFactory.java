@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.Component;
@@ -58,8 +57,10 @@ import diva.util.xml.XmlDocument;
 import diva.util.xml.XmlElement;
 import diva.util.xml.XmlReader;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AnnotationEditorFactory
+
 /**
    If this class is contained by a visible attribute (one that has
    an attribute called "_iconDescription"), then double clicking on that
@@ -75,9 +76,7 @@ import diva.util.xml.XmlReader;
    @Pt.AcceptedRating Red (johnr)
    @deprecated Use ptolemy.vergil.kernel.attributes.TextAttribute.
 */
-
 public class AnnotationEditorFactory extends EditorFactory {
-
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -87,7 +86,7 @@ public class AnnotationEditorFactory extends EditorFactory {
      *   an attribute already in the container.
      */
     public AnnotationEditorFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _container = container;
     }
@@ -98,29 +97,29 @@ public class AnnotationEditorFactory extends EditorFactory {
     /** Create an editor for configuring the specified object.
      */
     public void createEditor(NamedObj object, Frame parent) {
-        ComponentDialog dialog = new ComponentDialog(
-                parent, "Edit Annotation", createEditorPane());
+        ComponentDialog dialog = new ComponentDialog(parent, "Edit Annotation",
+                createEditorPane());
 
         String button = dialog.buttonPressed();
-        if (!button.equals("OK")) return;
+
+        if (!button.equals("OK")) {
+            return;
+        }
 
         String newText = _textArea.getText();
-        if (newText == null || newText.trim().equals("")) {
+
+        if ((newText == null) || newText.trim().equals("")) {
             // NOTE: Should we delete the attribute... no visible text.
             newText = "Double click to edit text.";
         }
+
         String moml = "<configure><svg><text x=\"20\" y=\"20\" "
-            + "style=\"font-size:"
-            + _fontProperties.getStringValue("fontSize")
-            + "; font-family:"
-            + _fontProperties.getStringValue("fontFamily")
-            + "; fill:"
-            + _fontProperties.getStringValue("fontColor")
-            + "\">"
-            + newText
-            + "</text></svg></configure>";
-        _iconDescription.requestChange(new MoMLChangeRequest(
-                                               this, _iconDescription, moml));
+            + "style=\"font-size:" + _fontProperties.getStringValue("fontSize")
+            + "; font-family:" + _fontProperties.getStringValue("fontFamily")
+            + "; fill:" + _fontProperties.getStringValue("fontColor") + "\">"
+            + newText + "</text></svg></configure>";
+        _iconDescription.requestChange(new MoMLChangeRequest(this,
+                _iconDescription, moml));
     }
 
     /** Return a new widget for configuring the container.
@@ -128,18 +127,19 @@ public class AnnotationEditorFactory extends EditorFactory {
      */
     public Component createEditorPane() {
         _textArea = new JTextArea();
-        _iconDescription =
-            (ConfigurableAttribute)_container
-            .getAttribute("_iconDescription");
+        _iconDescription = (ConfigurableAttribute) _container.getAttribute(
+                "_iconDescription");
+
         if (_iconDescription == null) {
             try {
-                _iconDescription = new SingletonConfigurableAttribute(
-                        _container, "_iconDescription");
+                _iconDescription = new SingletonConfigurableAttribute(_container,
+                        "_iconDescription");
             } catch (KernelException ex) {
                 // Cannot occur.
                 throw new InternalErrorException(ex.toString());
             }
         }
+
         // Parse the SVG to find the text.
         String text = _iconDescription.getExpression();
 
@@ -150,40 +150,50 @@ public class AnnotationEditorFactory extends EditorFactory {
 
         try {
             Reader in = new StringReader(text);
+
             // NOTE: Do we need a base here?
-            XmlDocument document = new XmlDocument((URL)null);
+            XmlDocument document = new XmlDocument((URL) null);
             XmlReader reader = new XmlReader();
             reader.parse(document, in);
+
             XmlElement root = document.getRoot();
             String name = root.getType();
+
             if (name.equals("svg")) {
                 Iterator children = root.elements();
+
                 while (children.hasNext()) {
-                    XmlElement child = (XmlElement)children.next();
+                    XmlElement child = (XmlElement) children.next();
                     name = child.getType();
+
                     if (name.equals("text")) {
                         text = child.getPCData();
-                        String style = (String)
-                            child.getAttributeMap().get("style");
+
+                        String style = (String) child.getAttributeMap().get("style");
+
                         if (style != null) {
-                            StringTokenizer tokenizer = new StringTokenizer(
-                                    style, ";");
+                            StringTokenizer tokenizer = new StringTokenizer(style,
+                                    ";");
+
                             while (tokenizer.hasMoreTokens()) {
                                 String token = tokenizer.nextToken();
                                 int colon = token.indexOf(":");
+
                                 if (colon > 0) {
-                                    String property =
-                                        token.substring(0, colon).trim();
+                                    String property = token.substring(0, colon)
+                                                           .trim();
+
                                     if (property.equals("fill")) {
-                                        _fontColor = token.substring(colon+1);
+                                        _fontColor = token.substring(colon + 1);
                                     } else if (property.equals("font-size")) {
-                                        _fontSize = token.substring(colon+1);
+                                        _fontSize = token.substring(colon + 1);
                                     } else if (property.equals("font-family")) {
-                                        _fontFamily = token.substring(colon+1);
+                                        _fontFamily = token.substring(colon + 1);
                                     }
                                 }
                             }
                         }
+
                         // We are done once we find a text element.
                         break;
                     }
@@ -226,33 +236,33 @@ public class AnnotationEditorFactory extends EditorFactory {
      *  visible attributes).
      */
     public class AnnotationTextEditor extends JPanel {
-
         /** Create an annotation text editor.
          */
         public AnnotationTextEditor(JTextArea textArea) {
             super();
+
             JScrollPane pane = new JScrollPane(textArea);
+
             // NOTE: Should the size be hardwired here?
             pane.setPreferredSize(new Dimension(600, 300));
             add(pane);
 
             // Add a query with font properties.
             _fontProperties = new Query();
-            String[] sizes = {"9", "10", "11", "12", "14", "18", "24", "32"};
+
+            String[] sizes = { "9", "10", "11", "12", "14", "18", "24", "32" };
             _fontProperties.addChoice("fontSize", "font size", sizes,
-                    _fontSize, true);
+                _fontSize, true);
 
             // FIXME: Need a way to specify Italic, Bold (style).
             // Check SVG standard and SVGParser.
-
             // Get font family names from the Font class in Java.
             // This includes logical font names, per Font class in Java:
             // Dialog, DialogInput, Monospaced, Serif, SansSerif, or Symbol.
-            String[] families = GraphicsEnvironment
-                .getLocalGraphicsEnvironment()
-                .getAvailableFontFamilyNames();
+            String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                   .getAvailableFontFamilyNames();
             _fontProperties.addChoice("fontFamily", "font family", families,
-                    _fontFamily, false);
+                _fontFamily, false);
 
             // FIXME: Add a facility to invoke a color chooser using
             // JColorChooser.
@@ -260,10 +270,11 @@ public class AnnotationEditorFactory extends EditorFactory {
             //                  String title,
             //                  Color initialColor)
             String[] colors = SVGParser.colorNames();
+
             // The last argument makes this editable.
             // Colors can be given in hex #rrggbb.
             _fontProperties.addChoice("fontColor", "font color", colors,
-                    _fontColor, true);
+                _fontColor, true);
 
             add(_fontProperties);
         }

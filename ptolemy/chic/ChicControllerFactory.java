@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.chic;
+
 
 // Diva imports
 import ptolemy.kernel.util.IllegalActionException;
@@ -36,10 +36,11 @@ import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import diva.graph.GraphController;
 
-// Java imports
 
+// Java imports
 //////////////////////////////////////////////////////////////////////////
 //// ChicControllerFactory
+
 /**
    This is an attribute that produces a custom node controller for
    Chic visible attributes.  This class creates an instance of
@@ -53,7 +54,6 @@ import diva.graph.GraphController;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ChicControllerFactory extends NodeControllerFactory {
-
     /** Construct a new attribute with the given container and name.
      *  @param container The container.
      *  @param name The name.
@@ -63,7 +63,7 @@ public class ChicControllerFactory extends NodeControllerFactory {
      *   attribute with this name.
      */
     public ChicControllerFactory(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

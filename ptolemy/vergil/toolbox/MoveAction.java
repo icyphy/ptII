@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.event.ActionEvent;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MoveAction
+
 /**
    An action to move an object up or down in its list.
    This can be used, for example, to move icon elements towards
@@ -56,9 +57,7 @@ import ptolemy.util.MessageHandler;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public class MoveAction extends FigureAction {
-
     /** Construct a new action. The type of move is specified by
      *  the public fields DOWN, TO_FIRST, TO_LAST, and UP.
      *  @param description A description.
@@ -93,23 +92,30 @@ public class MoveAction extends FigureAction {
     public void actionPerformed(final ActionEvent event) {
         // Determine which entity was selected for the look inside action.
         super.actionPerformed(event);
+
         final NamedObj target = getTarget();
-        if (target == null) return;
-        if (target.getDerivedLevel() < Integer.MAX_VALUE) {
-            MessageHandler.error("Cannot change the position of "
-                    + target.getFullName()
-                    + " because the position is set by the class.");
+
+        if (target == null) {
             return;
         }
+
+        if (target.getDerivedLevel() < Integer.MAX_VALUE) {
+            MessageHandler.error("Cannot change the position of "
+                + target.getFullName()
+                + " because the position is set by the class.");
+            return;
+        }
+
         ChangeRequest request = new ChangeRequest(target, "Move towards last") {
-            protected void _execute() throws IllegalActionException {
-                // Static method takes a list, so we construct a
-                // list with one element.
-                LinkedList targets = new LinkedList();
-                targets.add(target);
-                move(targets, _type, target);
-            }
-        };
+                protected void _execute() throws IllegalActionException {
+                    // Static method takes a list, so we construct a
+                    // list with one element.
+                    LinkedList targets = new LinkedList();
+                    targets.add(target);
+                    move(targets, _type, target);
+                }
+            };
+
         target.requestChange(request);
     }
 
@@ -128,57 +134,62 @@ public class MoveAction extends FigureAction {
      *  @param type One of DOWN, TO_FIRST, TO_LAST, and UP.
      *  @param context The context.
      */
-    public static void move(
-            final List targets,
-            final MoveType type,
-            final NamedObj context) {
+    public static void move(final List targets, final MoveType type,
+        final NamedObj context) {
         final int[] priorIndexes = new int[targets.size()];
         boolean movedOne = false;
+
         try {
-                        if (type == TO_FIRST || type == UP) {
-                            // Traverse the list in reverse order.
-                            ListIterator targetIterator = targets.listIterator(targets.size());
-                            for (int i = targets.size() - 1; i >= 0; i--) {
-                                NamedObj target = (NamedObj)targetIterator.previous();
-                                if (type == DOWN) {
-                                    priorIndexes[i] = target.moveDown();
-                                } else if (type == TO_FIRST) {
-                                    priorIndexes[i] = target.moveToFirst();
-                                } else if (type == TO_LAST) {
-                                    priorIndexes[i] = target.moveToLast();
-                                } else {
-                                    priorIndexes[i] = target.moveUp();
-                                }
-                                if (priorIndexes[i] >= 0) {
-                                    movedOne = true;
-                                }
-                            }
-                        } else {
-                            // Traverse the list in forward order.
-                            Iterator targetIterator = targets.iterator();
-                            for (int i = 0; i < targets.size(); i++) {
-                                NamedObj target;
-                                target = (NamedObj)targetIterator.next();
-                                if (type == DOWN) {
-                                    priorIndexes[i] = target.moveDown();
-                                } else if (type == TO_FIRST) {
-                                    priorIndexes[i] = target.moveToFirst();
-                                } else if (type == TO_LAST) {
-                                    priorIndexes[i] = target.moveToLast();
-                                } else {
-                                    priorIndexes[i] = target.moveUp();
-                                }
-                                if (priorIndexes[i] >= 0) {
-                                    movedOne = true;
-                                }
-                            }
-                        }
-                } catch (IllegalActionException e) {
-                        // This should only be thrown if the target
+            if ((type == TO_FIRST) || (type == UP)) {
+                // Traverse the list in reverse order.
+                ListIterator targetIterator = targets.listIterator(targets.size());
+
+                for (int i = targets.size() - 1; i >= 0; i--) {
+                    NamedObj target = (NamedObj) targetIterator.previous();
+
+                    if (type == DOWN) {
+                        priorIndexes[i] = target.moveDown();
+                    } else if (type == TO_FIRST) {
+                        priorIndexes[i] = target.moveToFirst();
+                    } else if (type == TO_LAST) {
+                        priorIndexes[i] = target.moveToLast();
+                    } else {
+                        priorIndexes[i] = target.moveUp();
+                    }
+
+                    if (priorIndexes[i] >= 0) {
+                        movedOne = true;
+                    }
+                }
+            } else {
+                // Traverse the list in forward order.
+                Iterator targetIterator = targets.iterator();
+
+                for (int i = 0; i < targets.size(); i++) {
+                    NamedObj target;
+                    target = (NamedObj) targetIterator.next();
+
+                    if (type == DOWN) {
+                        priorIndexes[i] = target.moveDown();
+                    } else if (type == TO_FIRST) {
+                        priorIndexes[i] = target.moveToFirst();
+                    } else if (type == TO_LAST) {
+                        priorIndexes[i] = target.moveToLast();
+                    } else {
+                        priorIndexes[i] = target.moveUp();
+                    }
+
+                    if (priorIndexes[i] >= 0) {
+                        movedOne = true;
+                    }
+                }
+            }
+        } catch (IllegalActionException e) {
+            // This should only be thrown if the target
             // has no container, which in theory is not
             // possible.
-                        throw new InternalErrorException(e);
-                }
+            throw new InternalErrorException(e);
+        }
 
         if (!movedOne) {
             // Do not generate any undo action if no move happened.
@@ -186,44 +197,50 @@ public class MoveAction extends FigureAction {
         }
 
         UndoAction undoAction = new UndoAction() {
-            public void execute() {
-                try {
-                                        // Undo has to reverse the order of the do.
-                                        if (type == TO_FIRST || type == UP) {
-                                            // Traverse the list in forward order.
-                                            Iterator targetIterator = targets.iterator();
-                                            for (int i = 0; i < targets.size(); i++) {
-                                                NamedObj target = (NamedObj)targetIterator.next();
-                                                target.moveToIndex(priorIndexes[i]);
-                                            }
-                                        } else {
-                                            // Traverse the list in reverse order.
-                                            ListIterator targetIterator
-                                                    = targets.listIterator(targets.size());
-                                            for (int i = targets.size() - 1; i >= 0; i--) {
-                                                NamedObj target = (NamedObj)targetIterator.previous();
-                                                target.moveToIndex(priorIndexes[i]);
-                                            }
-                                        }
-                                } catch (IllegalActionException e) {
-                    // This should only be thrown if the target
-                    // has no container, which in theory is not
-                    // possible.
-                    throw new InternalErrorException(e);
-                                }
-                // Create redo action.
-                UndoAction redoAction = new UndoAction() {
-                    public void execute() {
-                        move(targets, type, context);
+                public void execute() {
+                    try {
+                        // Undo has to reverse the order of the do.
+                        if ((type == TO_FIRST) || (type == UP)) {
+                            // Traverse the list in forward order.
+                            Iterator targetIterator = targets.iterator();
+
+                            for (int i = 0; i < targets.size(); i++) {
+                                NamedObj target = (NamedObj) targetIterator
+                                    .next();
+                                target.moveToIndex(priorIndexes[i]);
+                            }
+                        } else {
+                            // Traverse the list in reverse order.
+                            ListIterator targetIterator = targets.listIterator(targets
+                                    .size());
+
+                            for (int i = targets.size() - 1; i >= 0; i--) {
+                                NamedObj target = (NamedObj) targetIterator
+                                    .previous();
+                                target.moveToIndex(priorIndexes[i]);
+                            }
+                        }
+                    } catch (IllegalActionException e) {
+                        // This should only be thrown if the target
+                        // has no container, which in theory is not
+                        // possible.
+                        throw new InternalErrorException(e);
                     }
-                };
-                UndoStackAttribute undoInfo
-                        = UndoStackAttribute.getUndoInfo(context);
-                undoInfo.push(redoAction);
-            }
-        };
-        UndoStackAttribute undoInfo
-                = UndoStackAttribute.getUndoInfo(context);
+
+                    // Create redo action.
+                    UndoAction redoAction = new UndoAction() {
+                            public void execute() {
+                                move(targets, type, context);
+                            }
+                        };
+
+                    UndoStackAttribute undoInfo = UndoStackAttribute
+                        .getUndoInfo(context);
+                    undoInfo.push(redoAction);
+                }
+            };
+
+        UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(context);
         undoInfo.push(undoAction);
     }
 

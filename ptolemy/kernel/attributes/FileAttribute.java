@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.attributes;
 
 import java.io.BufferedReader;
@@ -47,6 +46,7 @@ import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// FileAttribute
+
 /**
    This is an attribute that specifies a file or URL.  The value of this
    attribute, accessed by getExpression(), is a string that names a file
@@ -123,7 +123,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class FileAttribute extends StringAttribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -138,7 +137,7 @@ public class FileAttribute extends StringAttribute {
      *   an attribute already in the container.
      */
     public FileAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -174,14 +173,14 @@ public class FileAttribute extends StringAttribute {
      */
     public File asFile() throws IllegalActionException {
         String name = _substituteSpecialStrings(getExpression());
+
         try {
             return FileUtilities.nameToFile(name, getBaseDirectory());
         } catch (IllegalArgumentException ex) {
             // Java 1.4.2 some times reports:
             //  java.lang.IllegalArgumentException: URI is not absolute
             throw new IllegalActionException(this, ex,
-                    "Failed to create a file with name '" + name
-                    + "'.");
+                "Failed to create a file with name '" + name + "'.");
         }
     }
 
@@ -197,37 +196,43 @@ public class FileAttribute extends StringAttribute {
     public URL asURL() throws IllegalActionException {
         String name = _substituteSpecialStrings(getExpression());
 
-        if (name == null || name.trim().equals("")) {
+        if ((name == null) || name.trim().equals("")) {
             return null;
         }
+
         // If the name begins with "$CLASSPATH", then attempt to
         // open the file relative to the classpath.
         if (name.startsWith("$CLASSPATH")) {
             // Try relative to classpath.
             String trimmedName = name.substring(11);
             URL result = getClass().getClassLoader().getResource(trimmedName);
+
             if (result == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find file in classpath: " + name);
+                    "Cannot find file in classpath: " + name);
             }
+
             return result;
         }
 
         File file = new File(name);
+
         if (file.isAbsolute()) {
             if (!file.canRead()) {
                 throw new IllegalActionException(this,
-                        "Cannot read file: " + name);
+                    "Cannot read file: " + name);
             }
+
             try {
                 return file.toURL();
             } catch (MalformedURLException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot open file: " + ex.toString());
+                    "Cannot open file: " + ex.toString());
             }
         } else {
             // Try relative to the base directory.
             URI modelURI = getBaseDirectory();
+
             if (modelURI != null) {
                 try {
                     // Try to resolve the URI.
@@ -235,7 +240,7 @@ public class FileAttribute extends StringAttribute {
                     return newURI.toURL();
                 } catch (MalformedURLException e) {
                     throw new IllegalActionException(this,
-                            "Unable to open as a file or URL: " + name);
+                        "Unable to open as a file or URL: " + name);
                 }
             }
 
@@ -245,7 +250,7 @@ public class FileAttribute extends StringAttribute {
                 return new URL(name);
             } catch (MalformedURLException e) {
                 throw new IllegalActionException(this,
-                        "Unable to open as a file or URL: " + name);
+                    "Unable to open as a file or URL: " + name);
             }
         }
     }
@@ -257,9 +262,8 @@ public class FileAttribute extends StringAttribute {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        FileAttribute newObject = (FileAttribute)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FileAttribute newObject = (FileAttribute) super.clone(workspace);
         newObject._baseDirectory = null;
         newObject._reader = null;
         return newObject;
@@ -283,9 +287,11 @@ public class FileAttribute extends StringAttribute {
                 }
             }
         }
+
         if (_writer != null) {
             try {
                 _writer.flush();
+
                 if (_writer != FileUtilities.STD_OUT) {
                     _writer.close();
                 }
@@ -325,14 +331,11 @@ public class FileAttribute extends StringAttribute {
      */
     public BufferedReader openForReading() throws IllegalActionException {
         try {
-            _reader = FileUtilities.openForReading(
-                    getExpression(),
-                    getBaseDirectory(),
-                    getClass().getClassLoader());
+            _reader = FileUtilities.openForReading(getExpression(),
+                    getBaseDirectory(), getClass().getClassLoader());
             return _reader;
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot open file or URL");
+            throw new IllegalActionException(this, ex, "Cannot open file or URL");
         }
     }
 
@@ -371,14 +374,12 @@ public class FileAttribute extends StringAttribute {
      */
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
-            _writer = FileUtilities.openForWriting(
-                    getExpression(),
-                    getBaseDirectory(),
-                    append);
+            _writer = FileUtilities.openForWriting(getExpression(),
+                    getBaseDirectory(), append);
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot open file for writing");
+                "Cannot open file for writing");
         }
     }
 
@@ -404,27 +405,28 @@ public class FileAttribute extends StringAttribute {
      */
     private static String _substituteSpecialStrings(String string) {
         String result = string;
+
         // Keep these alphabetized.
         if (result.indexOf("$CWD") >= 0) {
-            result = StringUtilities.substitute(result,
-                    "$CWD",
+            result = StringUtilities.substitute(result, "$CWD",
                     StringUtilities.getProperty("user.dir"));
         }
+
         if (result.indexOf("$HOME") >= 0) {
-            result = StringUtilities.substitute(result,
-                    "$HOME",
+            result = StringUtilities.substitute(result, "$HOME",
                     StringUtilities.getProperty("user.home"));
         }
+
         if (result.indexOf("$PTII") >= 0) {
-            result = StringUtilities.substitute(result,
-                    "$PTII",
+            result = StringUtilities.substitute(result, "$PTII",
                     StringUtilities.getProperty("ptolemy.ptII.dir"));
         }
+
         if (result.indexOf("$TMPDIR") >= 0) {
-            result = StringUtilities.substitute(result,
-                    "$TMPDIR",
+            result = StringUtilities.substitute(result, "$TMPDIR",
                     StringUtilities.getProperty("java.io.tmpdir"));
         }
+
         return result;
     }
 

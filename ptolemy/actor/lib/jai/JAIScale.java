@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -50,8 +49,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIScale
+
 /**
    Scale a RenderedOp using the javax.media.jai.JAI class.
 
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIScale extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,7 +72,7 @@ public class JAIScale extends Transformer {
      *   actor with this name.
      */
     public JAIScale(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         specifySize = new Parameter(this, "specifySize");
@@ -83,17 +82,16 @@ public class JAIScale extends Transformer {
         width = new Parameter(this, "width", new IntToken(800));
         height = new Parameter(this, "height", new IntToken(600));
 
-        xScaleFactor =
-            new Parameter(this, "xScaleFactor", new DoubleToken("1.0F"));
-        yScaleFactor =
-            new Parameter(this, "yScaleFactor", new DoubleToken("1.0F"));
+        xScaleFactor = new Parameter(this, "xScaleFactor",
+                new DoubleToken("1.0F"));
+        yScaleFactor = new Parameter(this, "yScaleFactor",
+                new DoubleToken("1.0F"));
 
         interpolationType = new StringAttribute(this, "interpolationType");
         interpolationType.setExpression("bilinear");
         _interpolationType = _BILINEAR;
 
-        subSampleBits =
-            new Parameter(this, "subSampleBits", new IntToken(8));
+        subSampleBits = new Parameter(this, "subSampleBits", new IntToken(8));
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -147,9 +145,10 @@ public class JAIScale extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == interpolationType) {
             String typeName = interpolationType.getExpression();
+
             if (typeName.equals("bicubic")) {
                 _interpolationType = _BICUBIC;
             } else if (typeName.equals("bicubic2")) {
@@ -160,24 +159,20 @@ public class JAIScale extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized interpolation type: " + typeName);
+                    "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == xScaleFactor) {
-            _xScaleFactor =
-                ((DoubleToken)xScaleFactor.getToken()).doubleValue();
+            _xScaleFactor = ((DoubleToken) xScaleFactor.getToken()).doubleValue();
         } else if (attribute == yScaleFactor) {
-            _yScaleFactor =
-                ((DoubleToken)yScaleFactor.getToken()).doubleValue();
+            _yScaleFactor = ((DoubleToken) yScaleFactor.getToken()).doubleValue();
         } else if (attribute == width) {
-            _width = ((IntToken)width.getToken()).intValue();
+            _width = ((IntToken) width.getToken()).intValue();
         } else if (attribute == height) {
-            _height = ((IntToken)height.getToken()).intValue();
+            _height = ((IntToken) height.getToken()).intValue();
         } else if (attribute == specifySize) {
-            _specifySize =
-                ((BooleanToken)specifySize.getToken()).booleanValue();
+            _specifySize = ((BooleanToken) specifySize.getToken()).booleanValue();
         } else if (attribute == subSampleBits) {
-            _subSampleBits =
-                ((IntToken)subSampleBits.getToken()).intValue();
+            _subSampleBits = ((IntToken) subSampleBits.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -190,6 +185,7 @@ public class JAIScale extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
@@ -198,33 +194,38 @@ public class JAIScale extends Transformer {
         if (_specifySize) {
             int oldImageWidth = oldImage.getWidth();
             int oldImageHeight = oldImage.getHeight();
-            parameters.add((float)_width/(float)oldImageWidth);
-            parameters.add((float)_height/(float)oldImageHeight);
+            parameters.add((float) _width / (float) oldImageWidth);
+            parameters.add((float) _height / (float) oldImageHeight);
         } else {
-            parameters.add((float)_xScaleFactor);
-            parameters.add((float)_yScaleFactor);
+            parameters.add((float) _xScaleFactor);
+            parameters.add((float) _yScaleFactor);
         }
 
         parameters.add(0.0F);
         parameters.add(0.0F);
 
-        switch(_interpolationType) {
+        switch (_interpolationType) {
         case _BICUBIC:
             parameters.add(new InterpolationBicubic(_subSampleBits));
             break;
+
         case _BICUBIC2:
             parameters.add(new InterpolationBicubic2(_subSampleBits));
             break;
+
         case _BILINEAR:
             parameters.add(new InterpolationBilinear(_subSampleBits));
             break;
+
         case _NEARESTNEIGHBOR:
             parameters.add(new InterpolationNearest());
             break;
+
         default:
             throw new IllegalActionException(
-                    "Invalid value for interpolationType");
+                "Invalid value for interpolationType");
         }
+
         RenderedOp newImage = JAI.create("scale", parameters);
         output.send(0, new JAIImageToken(newImage));
     }
@@ -264,6 +265,6 @@ public class JAIScale extends Transformer {
     /** The type of Interpolation being used is specified using this
      *  variable.
      */
-    //private Interpolation _interpolation;
 
+    //private Interpolation _interpolation;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import java.io.Serializable;
@@ -38,8 +37,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTReceiver
+
 /**
    The receiver for the continuous-time and mixed-signal domain. The receiver
    can be of one of the two types: CONTINUOUS and DISCRETE. Conceptually,
@@ -69,7 +70,6 @@ import ptolemy.kernel.util.InvalidStateException;
    @Pt.AcceptedRating Green (yuhong)
 */
 public class CTReceiver extends Mailbox {
-
     /** Construct an empty CTReceiver with no container.
      */
     public CTReceiver() {
@@ -92,15 +92,24 @@ public class CTReceiver extends Mailbox {
 
     /** Signal type: CONTINUOUS. */
     public static SignalType CONTINUOUS = new SignalType() {
-            public String toString() {return "CONTINUOUS";}};
+            public String toString() {
+                return "CONTINUOUS";
+            }
+        };
 
     /** Signal type: DISCRETE. */
     public static SignalType DISCRETE = new SignalType() {
-            public String toString() {return "DISCRETE";}};
+            public String toString() {
+                return "DISCRETE";
+            }
+        };
 
     /** Signal type: UNKNOWN. */
     public static SignalType UNKNOWN = new SignalType() {
-            public String toString() {return "UNKNOWN";}};
+            public String toString() {
+                return "UNKNOWN";
+            }
+        };
 
     ///////////////////////////////////////////////////////////////////
     ////                    public inner classes                   ////
@@ -110,11 +119,11 @@ public class CTReceiver extends Mailbox {
      *  the enclosing interface because its constructor is protected.
      */
     public static class SignalType implements Serializable {
-
         // Protected constructor prevents construction outside.
         // This constructor should not be called!
         // it is protected to work around a compiler bug in JDK1.2.2
-        protected SignalType() {}
+        protected SignalType() {
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,15 +148,15 @@ public class CTReceiver extends Mailbox {
             } else if (_type == DISCRETE) {
                 return super.get();
             } else {
-                throw new InvalidStateException( getContainer(),
-                        "get() is called before the signal type of this port"
-                        + " has been set. Bug in CTScheduler?");
+                throw new InvalidStateException(getContainer(),
+                    "get() is called before the signal type of this port"
+                    + " has been set. Bug in CTScheduler?");
             }
         } else {
             throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty CTReceiver.\n"
-                    + "Are you trying to use a discrete signal "
-                    + "to drive a continuous port?");
+                "Attempt to get data from an empty CTReceiver.\n"
+                + "Are you trying to use a discrete signal "
+                + "to drive a continuous port?");
         }
     }
 
@@ -158,7 +167,6 @@ public class CTReceiver extends Mailbox {
     public SignalType getSignalType() {
         return _type;
     }
-
 
     /** Return true, since the new token will overwrite the old one.
      *  @return True.
@@ -175,7 +183,7 @@ public class CTReceiver extends Mailbox {
      *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this base class.
      */
-    public void put(Token token) throws NoRoomException{
+    public void put(Token token) throws NoRoomException {
         _token = token;
     }
 

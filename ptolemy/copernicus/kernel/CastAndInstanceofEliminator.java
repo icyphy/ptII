@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.kernel;
 
 import java.util.HashSet;
@@ -51,6 +49,7 @@ import soot.jimple.InstanceOfExpr;
 import soot.jimple.IntConstant;
 import soot.jimple.JimpleBody;
 
+
 /**
    A transformer that remove unnecessary casts and instanceof checks.
    Note that this relies on properly inferred Java types to operate properly.
@@ -64,11 +63,11 @@ import soot.jimple.JimpleBody;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class CastAndInstanceofEliminator extends BodyTransformer {
-    private static CastAndInstanceofEliminator instance =
-    new CastAndInstanceofEliminator();
-    private CastAndInstanceofEliminator() {}
+    private static CastAndInstanceofEliminator instance = new CastAndInstanceofEliminator();
+
+    private CastAndInstanceofEliminator() {
+    }
 
     public static CastAndInstanceofEliminator v() {
         return instance;
@@ -78,27 +77,27 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
         return "targetPackage debug";
     }
 
-    protected void internalTransform(Body b, String phaseName, Map options)
-    {
-        JimpleBody body = (JimpleBody)b;
+    protected void internalTransform(Body b, String phaseName, Map options) {
+        JimpleBody body = (JimpleBody) b;
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
+
         if (debug) {
             System.out.println("CastAndInstanceofEliminator.internalTransform("
-                    + b.getMethod() + phaseName + ")");
+                + b.getMethod() + phaseName + ")");
         }
+
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
     }
 
-    public static void eliminateCastsAndInstanceOf(Body body,
-            String phaseName, Set unsafeLocalSet, boolean debug) {
+    public static void eliminateCastsAndInstanceOf(Body body, String phaseName,
+        Set unsafeLocalSet, boolean debug) {
+        for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
+            Unit unit = (Unit) units.next();
 
-        for (Iterator units = body.getUnits().iterator();
-             units.hasNext();) {
-            Unit unit = (Unit)units.next();
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                 boxes.hasNext();) {
-                ValueBox box = (ValueBox)boxes.next();
+                    boxes.hasNext();) {
+                ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
                 // This assumes that the types of local
@@ -110,7 +109,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     // If the cast is to the same type as the
                     // operand already is, then replace with
                     // simple assignment.
-                    CastExpr expr = (CastExpr)value;
+                    CastExpr expr = (CastExpr) value;
                     Type castType = expr.getCastType();
                     Value op = expr.getOp();
                     Type opType = op.getType();
@@ -129,15 +128,13 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     //   if (debug) System.out.println("checking cast in " + unit);
                     //                     if (debug) System.out.println("op = " + op);
                     //                     if (debug) System.out.println("opType = " + opType);
-                    replaceCast(box, hierarchy,
-                            castType, op, opType, debug);
-
+                    replaceCast(box, hierarchy, castType, op, opType, debug);
                 } else if (value instanceof InstanceOfExpr) {
                     // If the operand of the expression is
                     // declared to be of a type that implies
                     // the instanceof is true, then replace
                     // with true.
-                    InstanceOfExpr expr = (InstanceOfExpr)value;
+                    InstanceOfExpr expr = (InstanceOfExpr) value;
                     Type checkType = expr.getCheckType();
                     Value op = expr.getOp();
                     Type opType = op.getType();
@@ -149,11 +146,20 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
-                    if (debug) System.out.println("checking instanceof in " + unit);
-                    if (debug) System.out.println("op = " + op);
-                    if (debug) System.out.println("opType = " + opType);
-                    replaceInstanceofCheck(box, hierarchy,
-                            checkType, opType, debug);
+                    if (debug) {
+                        System.out.println("checking instanceof in " + unit);
+                    }
+
+                    if (debug) {
+                        System.out.println("op = " + op);
+                    }
+
+                    if (debug) {
+                        System.out.println("opType = " + opType);
+                    }
+
+                    replaceInstanceofCheck(box, hierarchy, checkType, opType,
+                        debug);
                 }
             }
         }
@@ -167,31 +173,33 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
      *  with a false constant.
      */
     public static void replaceInstanceofCheck(ValueBox box,
-            Hierarchy hierarchy, Type checkType, Type opType,
-            boolean debug) {
+        Hierarchy hierarchy, Type checkType, Type opType, boolean debug) {
+        RefType checkRef;
+        RefType opRef;
 
-        RefType checkRef, opRef;
-        if (checkType instanceof RefType &&
-                opType instanceof RefType) {
-            checkRef = (RefType)checkType;
-            opRef = (RefType)opType;
-
-        } else if (checkType instanceof ArrayType &&
-                opType instanceof ArrayType) {
-            if (((ArrayType)checkType).numDimensions !=
-                    ((ArrayType)opType).numDimensions) {
+        if (checkType instanceof RefType && opType instanceof RefType) {
+            checkRef = (RefType) checkType;
+            opRef = (RefType) opType;
+        } else if (checkType instanceof ArrayType
+                && opType instanceof ArrayType) {
+            if (((ArrayType) checkType).numDimensions != ((ArrayType) opType).numDimensions) {
                 // We know the answer is false.
                 box.setValue(IntConstant.v(0));
-                if (debug) System.out.println("Replacing " +
-                        box.getValue() + " with false.");
+
+                if (debug) {
+                    System.out.println("Replacing " + box.getValue()
+                        + " with false.");
+                }
+
                 return;
             }
-            Type checkBase = ((ArrayType)checkType).baseType;
-            Type opBase = ((ArrayType)opType).baseType;
-            if (checkBase instanceof RefType &&
-                    opBase instanceof RefType) {
-                checkRef = (RefType)checkBase;
-                opRef = (RefType)opBase;
+
+            Type checkBase = ((ArrayType) checkType).baseType;
+            Type opBase = ((ArrayType) opType).baseType;
+
+            if (checkBase instanceof RefType && opBase instanceof RefType) {
+                checkRef = (RefType) checkBase;
+                opRef = (RefType) opBase;
             } else {
                 // Can't say anything?
                 return;
@@ -200,27 +208,41 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             // Can't say anything?
             return;
         }
-        SootClass checkClass = ((RefType)checkRef).getSootClass();
-        SootClass opClass = ((RefType)opRef).getSootClass();
-        if (debug) System.out.println("checkClass = " + checkClass);
-        if (debug) System.out.println("opClass = " + opClass);
+
+        SootClass checkClass = ((RefType) checkRef).getSootClass();
+        SootClass opClass = ((RefType) opRef).getSootClass();
+
+        if (debug) {
+            System.out.println("checkClass = " + checkClass);
+        }
+
+        if (debug) {
+            System.out.println("opClass = " + opClass);
+        }
+
         if (checkClass.isInterface()) {
             if (opClass.isInterface()) {
-                if (hierarchy.isInterfaceSubinterfaceOf(
-                            opClass, checkClass) ||
-                        opClass.equals(checkClass)) {
+                if (hierarchy.isInterfaceSubinterfaceOf(opClass, checkClass)
+                        || opClass.equals(checkClass)) {
                     // Then we know the instanceof will be true.
-                    if (debug) System.out.println("Replacing " +
-                            box.getValue() + " with true.");
+                    if (debug) {
+                        System.out.println("Replacing " + box.getValue()
+                            + " with true.");
+                    }
+
                     box.setValue(IntConstant.v(1));
                 }
             } else {
                 // opClass is a class, not an interface.
                 List implementorList = hierarchy.getImplementersOf(checkClass);
+
                 if (implementorList.contains(opClass)) {
                     // Then we know the instanceof will be true.
-                    if (debug) System.out.println("Replacing " +
-                            box.getValue() + " with true.");
+                    if (debug) {
+                        System.out.println("Replacing " + box.getValue()
+                            + " with true.");
+                    }
+
                     box.setValue(IntConstant.v(1));
                 } else {
                     // We need to ensure that no subclass
@@ -228,17 +250,22 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     // interface.  This will mean we
                     // replace with false.
                     boolean foundOne = false;
+
                     for (Iterator implementors = implementorList.iterator();
-                         implementors.hasNext() && !foundOne;) {
-                        SootClass implementor = (SootClass)implementors.next();
-                        if (hierarchy.getSuperclassesOf(implementor).contains(
-                                    opClass)) {
+                            implementors.hasNext() && !foundOne;) {
+                        SootClass implementor = (SootClass) implementors.next();
+
+                        if (hierarchy.getSuperclassesOf(implementor).contains(opClass)) {
                             foundOne = true;
                         }
                     }
+
                     if (!foundOne) {
-                        if (debug) System.out.println("Replacing " +
-                                box.getValue() + " with false.");
+                        if (debug) {
+                            System.out.println("Replacing " + box.getValue()
+                                + " with false.");
+                        }
+
                         box.setValue(IntConstant.v(0));
                     }
                 }
@@ -247,19 +274,24 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             if (opClass.isInterface()) {
                 //???
             } else {
-                if (hierarchy.isClassSuperclassOfIncluding(
-                            checkClass, opClass)) {
+                if (hierarchy.isClassSuperclassOfIncluding(checkClass, opClass)) {
                     // Then we know the instanceof will be true.
-                    if (debug) System.out.println("Replacing " +
-                            box.getValue() + " with true.");
+                    if (debug) {
+                        System.out.println("Replacing " + box.getValue()
+                            + " with true.");
+                    }
+
                     box.setValue(IntConstant.v(1));
-                } else if (!hierarchy.isClassSuperclassOfIncluding(
-                                   opClass, checkClass)) {
+                } else if (!hierarchy.isClassSuperclassOfIncluding(opClass,
+                            checkClass)) {
                     // Then we know the instanceof will be false,
                     // because no subclass of opClass can suddenly
                     // become a subclass of checkClass.
-                    if (debug) System.out.println("Replacing " +
-                            box.getValue() + " with false.");
+                    if (debug) {
+                        System.out.println("Replacing " + box.getValue()
+                            + " with false.");
+                    }
+
                     box.setValue(IntConstant.v(0));
                 }
             }
@@ -271,29 +303,27 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
      *  <i>checkType</i>, based on the given hierarchy,
      *  then replace with an assignment.
      */
-    public static void replaceCast(ValueBox box,
-            Hierarchy hierarchy, Type checkType,
-            Value op, Type opType, boolean debug) {
+    public static void replaceCast(ValueBox box, Hierarchy hierarchy,
+        Type checkType, Value op, Type opType, boolean debug) {
+        RefType checkRef;
+        RefType opRef;
 
-        RefType checkRef, opRef;
-        if (checkType instanceof RefType &&
-                opType instanceof RefType) {
-            checkRef = (RefType)checkType;
-            opRef = (RefType)opType;
-
-        } else if (checkType instanceof ArrayType &&
-                opType instanceof ArrayType) {
-            if (((ArrayType)checkType).numDimensions !=
-                    ((ArrayType)opType).numDimensions) {
+        if (checkType instanceof RefType && opType instanceof RefType) {
+            checkRef = (RefType) checkType;
+            opRef = (RefType) opType;
+        } else if (checkType instanceof ArrayType
+                && opType instanceof ArrayType) {
+            if (((ArrayType) checkType).numDimensions != ((ArrayType) opType).numDimensions) {
                 // We know the cast is necessary
                 return;
             }
-            Type checkBase = ((ArrayType)checkType).baseType;
-            Type opBase = ((ArrayType)opType).baseType;
-            if (checkBase instanceof RefType &&
-                    opBase instanceof RefType) {
-                checkRef = (RefType)checkBase;
-                opRef = (RefType)opBase;
+
+            Type checkBase = ((ArrayType) checkType).baseType;
+            Type opBase = ((ArrayType) opType).baseType;
+
+            if (checkBase instanceof RefType && opBase instanceof RefType) {
+                checkRef = (RefType) checkBase;
+                opRef = (RefType) opBase;
             } else {
                 // Can't say anything?
                 return;
@@ -302,18 +332,27 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             // Can't say anything?
             return;
         }
-        SootClass checkClass = ((RefType)checkRef).getSootClass();
-        SootClass opClass = ((RefType)opRef).getSootClass();
-        if (debug) System.out.println("castClass = " + checkClass);
-        if (debug) System.out.println("opClass = " + opClass);
+
+        SootClass checkClass = ((RefType) checkRef).getSootClass();
+        SootClass opClass = ((RefType) opRef).getSootClass();
+
+        if (debug) {
+            System.out.println("castClass = " + checkClass);
+        }
+
+        if (debug) {
+            System.out.println("opClass = " + opClass);
+        }
+
         if (checkClass.isInterface()) {
             if (opClass.isInterface()) {
-                if (hierarchy.isInterfaceSubinterfaceOf(
-                            opClass, checkClass) ||
-                        opClass.equals(checkClass)) {
+                if (hierarchy.isInterfaceSubinterfaceOf(opClass, checkClass)
+                        || opClass.equals(checkClass)) {
                     // Then we know the instanceof will be true.
-                    if (debug) System.out.println("Replacing " +
-                            "with assignment.");
+                    if (debug) {
+                        System.out.println("Replacing " + "with assignment.");
+                    }
+
                     box.setValue(op);
                 }
             } else {
@@ -334,14 +373,15 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             if (opClass.isInterface()) {
                 //???
             } else {
-                if (hierarchy.isClassSuperclassOfIncluding(
-                            checkClass, opClass)) {
+                if (hierarchy.isClassSuperclassOfIncluding(checkClass, opClass)) {
                     // Then we know the instanceof will be true.
-                    if (debug) System.out.println("Replacing " +
-                            "with assignment.");
+                    if (debug) {
+                        System.out.println("Replacing " + "with assignment.");
+                    }
+
                     box.setValue(op);
-                } else if (!hierarchy.isClassSuperclassOfIncluding(
-                                   opClass, checkClass)) {
+                } else if (!hierarchy.isClassSuperclassOfIncluding(opClass,
+                            checkClass)) {
                     // Then we know the instanceof will be false,
                     // because no subclass of opClass can suddenly
                     // become a subclass of checkClass.

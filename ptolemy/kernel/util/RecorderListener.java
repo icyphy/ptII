@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// RecorderListener
+
 /**
    A debug listener that records messages in a string buffer.
 
@@ -43,7 +44,6 @@ package ptolemy.kernel.util;
 
 */
 public class RecorderListener implements DebugListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
@@ -83,6 +83,5 @@ public class RecorderListener implements DebugListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private StringBuffer _buffer = new StringBuffer();
 }

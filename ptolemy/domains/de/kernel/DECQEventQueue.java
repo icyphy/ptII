@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.Actor;
@@ -35,6 +34,7 @@ import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.InvalidStateException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DECQEventQueue
@@ -56,12 +56,12 @@ import ptolemy.kernel.util.InvalidStateException;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public class DECQEventQueue implements DEEventQueue {
-
     /** Construct an empty event queue.
      *  @param director The director that contains this event queue.
      */
     public DECQEventQueue(Director director) {
         _director = director;
+
         // Construct a calendar queue _cQueue with its default parameters:
         // minBinCount is 2, binCountFactor is 2, and isAdaptive is true.
         _cQueue = new CalendarQueue(new DECQComparator());
@@ -74,11 +74,12 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param isAdaptive If the queue changes its number of bins at run time.
      */
     public DECQEventQueue(Director director, int minBinCount,
-            int binCountFactor, boolean isAdaptive) {
+        int binCountFactor, boolean isAdaptive) {
         _director = director;
+
         // Construct a calendar queue _cQueue with the given parameters.
-        _cQueue = new CalendarQueue(new DECQComparator(),
-                minBinCount, binCountFactor);
+        _cQueue = new CalendarQueue(new DECQComparator(), minBinCount,
+                binCountFactor);
         _cQueue.setAdaptive(isAdaptive);
     }
 
@@ -106,7 +107,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @exception InvalidStateException If the queue is empty.
      */
     public final DEEvent get() {
-        return (DEEvent)_cQueue.get();
+        return (DEEvent) _cQueue.get();
     }
 
     /** Return true if this event queue is empty.
@@ -153,25 +154,20 @@ public class DECQEventQueue implements DEEventQueue {
      *  @exception InvalidStateException If the queue is empty.
      */
     public final DEEvent take() {
-        return (DEEvent)_cQueue.take();
+        return (DEEvent) _cQueue.take();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
-
     // An implementation of the CQComparator interface for use with
     // calendar queue that compares two DEEvents according to their
     // time stamps, microstep, and depth in that order.
-
     // One DE event is said to be earlier than another, if it has
     // a smaller time stamp, or when the time stamps are identical,
     // it has a smaller microstep, or when both time stamps and
     // microsteps are identical, it has a smaller depth.
-
     // The default binWidth is 1.0, and the default zeroReference is 0.0.
-
     private class DECQComparator implements CQComparator {
-
         /** Compare two arguments for order. Return a negative integer,
          *  zero, or a positive integer if the first argument is less than,
          *  equal to, or greater than the second.
@@ -187,7 +183,7 @@ public class DECQEventQueue implements DEEventQueue {
          *  an instance of DEEvent.
          */
         public final int compare(Object object1, Object object2) {
-            return((DEEvent)object1).compareTo((DEEvent)object2);
+            return ((DEEvent) object1).compareTo((DEEvent) object2);
         }
 
         /** Given a DE event, return the virtual index of the bin that
@@ -199,16 +195,14 @@ public class DECQEventQueue implements DEEventQueue {
          *   an instance of DEEvent.
          */
         public final long getVirtualBinNumber(Object event) {
-            long value = (long)(
-                    (((DEEvent)event).timeStamp()
-                            .subtract(_zeroReference.timeStamp()))
-                               .getDoubleValue()
-                    / _binWidth.timeStamp().getDoubleValue()
-                    );
+            long value = (long) ((((DEEvent) event).timeStamp()
+                                   .subtract(_zeroReference.timeStamp()))
+                .getDoubleValue() / _binWidth.timeStamp().getDoubleValue());
+
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
-                return Long.MAX_VALUE-1;
+                return Long.MAX_VALUE - 1;
             }
         }
 
@@ -229,41 +223,44 @@ public class DECQEventQueue implements DEEventQueue {
          *  an instance of DEEvent.
          */
         public void setBinWidth(Object[] entryArray) {
-
-            if ( entryArray == null || entryArray.length < 2) {
-                _zeroReference =
-                    new DEEvent((Actor)null, new Time(_director, 0.0), 0, 0);
+            if ((entryArray == null) || (entryArray.length < 2)) {
+                _zeroReference = new DEEvent((Actor) null,
+                        new Time(_director, 0.0), 0, 0);
                 return;
             }
+
             double[] diff = new double[entryArray.length - 1];
-            double average =
-                (((DEEvent)entryArray[entryArray.length - 1]).timeStamp()
-                        .subtract(((DEEvent)entryArray[0]).timeStamp()))
-                .getDoubleValue() / (entryArray.length-1);
+            double average = (((DEEvent) entryArray[entryArray.length - 1]).timeStamp()
+                               .subtract(((DEEvent) entryArray[0]).timeStamp()))
+                .getDoubleValue() / (entryArray.length - 1);
             double effectiveAverage = 0.0;
             int effectiveSamples = 0;
+
             if (average == Double.POSITIVE_INFINITY) {
                 return;
             }
-            for (int i = 0; i < entryArray.length - 1; ++i) {
-                diff[i] = ((DEEvent)entryArray[i+1]).timeStamp().subtract(
-                        ((DEEvent)entryArray[i]).timeStamp()).getDoubleValue();
-                if (diff[i] < 2.0 * average) {
+
+            for (int i = 0; i < (entryArray.length - 1); ++i) {
+                diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
+                           .subtract(((DEEvent) entryArray[i]).timeStamp())
+                           .getDoubleValue();
+
+                if (diff[i] < (2.0 * average)) {
                     effectiveSamples++;
                     effectiveAverage += diff[i];
                 }
             }
-            if (effectiveAverage == 0.0 || effectiveSamples == 0) {
+
+            if ((effectiveAverage == 0.0) || (effectiveSamples == 0)) {
                 // To avoid setting NaN or 0.0
                 // for the width, apparently due to simultaneous events,
                 // we leave it unchanged instead.
                 return;
             }
-            effectiveAverage /= (double)effectiveSamples;
-            _binWidth =
-                new DEEvent((Actor)null,
-                        new Time(_director, 3.0 * effectiveAverage),
-                        0, 0);
+
+            effectiveAverage /= (double) effectiveSamples;
+            _binWidth = new DEEvent((Actor) null,
+                    new Time(_director, 3.0 * effectiveAverage), 0, 0);
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -278,23 +275,20 @@ public class DECQEventQueue implements DEEventQueue {
 
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
-
         // The bin width.
-        private DEEvent _binWidth
-        = new DEEvent((Actor)null, new Time(_director, 1.0), 0, 0);
+        private DEEvent _binWidth = new DEEvent((Actor) null,
+                new Time(_director, 1.0), 0, 0);
 
         // The zero reference.
-        private DEEvent _zeroReference
-        = new DEEvent((Actor)null, new Time(_director, 0.0), 0, 0);
+        private DEEvent _zeroReference = new DEEvent((Actor) null,
+                new Time(_director, 0.0), 0, 0);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // An instance of CalendarQueue used for sorting and storing events.
     private CalendarQueue _cQueue;
+
     // The director that contains this event queue.
     private Director _director;
-
 }

@@ -38,6 +38,7 @@ import javax.swing.event.DocumentListener;
 
 import diva.gui.AbstractView;
 
+
 /**
  * A simple MDI text editor view.  FIXME
  *
@@ -47,17 +48,21 @@ import diva.gui.AbstractView;
 public class TextView extends AbstractView {
     private JEditorPane _editorPane;
     private JScrollPane _scrollPane;
+
     public TextView(TextDocument doc) {
         super(doc);
     }
+
     public TextDocument getTextDocument() {
-        return (TextDocument)getDocument();
+        return (TextDocument) getDocument();
     }
+
     public JComponent getComponent() {
         if (_scrollPane == null) {
-            TextDocument td = (TextDocument)getDocument();
+            TextDocument td = (TextDocument) getDocument();
             _editorPane = new JEditorPane();
             _editorPane.setText(td.getText());
+
             // Get notified every time text is changed in the component to update
             // our text document.  The "Document" here is a
             // javax.swing.text.Document.  Don't get confused!
@@ -65,22 +70,26 @@ public class TextView extends AbstractView {
                     public void changedUpdate(DocumentEvent e) {
                         getTextDocument().setText(_editorPane.getText());
                     }
+
                     public void insertUpdate(DocumentEvent e) {
                         getTextDocument().setText(_editorPane.getText());
                     }
+
                     public void removeUpdate(DocumentEvent e) {
                         getTextDocument().setText(_editorPane.getText());
                     }
                 });
             _scrollPane = new JScrollPane(_editorPane);
         }
+
         return _scrollPane;
     }
+
     public String getTitle() {
         return getDocument().getTitle();
     }
+
     public String getShortTitle() {
         return getTitle();
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.javasound.test.pitchshift;
 
 import java.awt.Component;
@@ -44,8 +43,10 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PitchSlider
+
 /**
    Perform real-time pitch shifting of audio signals. This only works
    for audio signals that have either a unique pitch or no pitch at
@@ -82,17 +83,13 @@ import javax.swing.event.ChangeListener;
    @Pt.AcceptedRating Red (vogel)
 */
 public class PitchSlider extends JFrame {
-
     ProcessAudio processAudio;
-
     DecimalField textField;
     ConverterRangeModel sliderModel;
-
     boolean frozen = false;
 
     public PitchSlider(String windowTitle) {
         super(windowTitle);
-
 
         //Create the slider and its label
         JLabel sliderLabel = new JLabel("Pitch Scale Factor", JLabel.CENTER);
@@ -102,11 +99,10 @@ public class PitchSlider extends JFrame {
         numberFormat.setMaximumFractionDigits(3);
         textField = new DecimalField(1, 10, numberFormat);
         sliderModel = new ConverterRangeModel();
-        textField.setValue(0.001*sliderModel.getDoubleValue());
+        textField.setValue(0.001 * sliderModel.getDoubleValue());
         textField.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    sliderModel.setDoubleValue(1000*textField.getValue());
-
+                    sliderModel.setDoubleValue(1000 * textField.getValue());
                 }
             });
 
@@ -115,17 +111,14 @@ public class PitchSlider extends JFrame {
         sliderModel.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
                     //textField.setValue(sliderModel.getDoubleValue());
-                    textField.setValue(0.001*sliderModel.getDoubleValue());
+                    textField.setValue(0.001 * sliderModel.getDoubleValue());
                 }
             });
 
         //Turn on labels at major tick marks.
         pitchSlider.setPaintTicks(false);
         pitchSlider.setPaintLabels(true);
-        pitchSlider.setBorder(
-                BorderFactory.createEmptyBorder(0,0,10,0));
-
-
+        pitchSlider.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         //Put everything in the content pane.
         JPanel contentPane = new JPanel();
@@ -133,10 +126,8 @@ public class PitchSlider extends JFrame {
         contentPane.add(sliderLabel);
         contentPane.add(pitchSlider);
         contentPane.add(textField);
-        contentPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setContentPane(contentPane);
-
-
 
         //Add a listener for window events
         addWindowListener(new WindowAdapter() {
@@ -144,17 +135,16 @@ public class PitchSlider extends JFrame {
                     System.exit(0);
                 }
             });
-
     }
 
     /** Listens to the slider. */
     class SliderListener implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
-            JSlider source = (JSlider)e.getSource();
-            int fps = (int)source.getValue();
-            // Update pitch while user is sliding the slider.
-            processAudio.updatePitchScaleFactor((double)fps/(double)1000);
+            JSlider source = (JSlider) e.getSource();
+            int fps = (int) source.getValue();
 
+            // Update pitch while user is sliding the slider.
+            processAudio.updatePitchScaleFactor((double) fps / (double) 1000);
         }
     }
 
@@ -169,14 +159,14 @@ public class PitchSlider extends JFrame {
         frozen = true;
     }
 
-
     public static void main(String[] args) {
         double sampRate;
         PitchSlider pitchSlider = new PitchSlider("PitchSlider");
         pitchSlider.pack();
         pitchSlider.setVisible(true);
         System.out.println("");
-        System.out.println("PitchSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
+        System.out.println(
+            "PitchSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
         System.out.println("");
         System.out.println("Usage: java PitchSlider <sample rate>");
         System.out.println("<sample rate> is optional.");
@@ -188,6 +178,7 @@ public class PitchSlider extends JFrame {
         } else {
             sampRate = 22050;
         }
+
         pitchSlider.startPitchShifting(sampRate);
     }
 }

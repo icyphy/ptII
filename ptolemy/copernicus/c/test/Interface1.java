@@ -37,7 +37,6 @@ COPYRIGHTENDKEY
 @Pt.AcceptedRating Red (ssb)
 
 */
-
 public interface Interface1 {
     void print();
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 
+
 ///////////////////////////////////////////////////////////////
 /// ComplexToCartesian
+
 /**
    Read a complex token and output double tokens that represent the real and
    imaginary parts to two different output ports.
@@ -50,9 +51,7 @@ import ptolemy.math.Complex;
    @Pt.ProposedRating Green (pwhitake)
    @Pt.AcceptedRating Green (pwhitake)
 */
-
 public class ComplexToCartesian extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,7 +61,7 @@ public class ComplexToCartesian extends TypedAtomicActor {
      *   actor with this name.
      */
     public ComplexToCartesian(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -74,10 +73,9 @@ public class ComplexToCartesian extends TypedAtomicActor {
         y = new TypedIOPort(this, "y", false, true);
         y.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,13 +100,11 @@ public class ComplexToCartesian extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If there is no director.
      */
-
-    public void fire() throws IllegalActionException  {
-
+    public void fire() throws IllegalActionException {
         Complex complexNumber = ((ComplexToken) (input.get(0))).complexValue();
 
-        x.send(0, new DoubleToken (complexNumber.real));
-        y.send(0, new DoubleToken (complexNumber.imag));
+        x.send(0, new DoubleToken(complexNumber.real));
+        y.send(0, new DoubleToken(complexNumber.imag));
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -119,13 +115,7 @@ public class ComplexToCartesian extends TypedAtomicActor {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-
-
-
-
-
-
-

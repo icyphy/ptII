@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.Director;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 ///////////////////////////////////////////////////////////////
 /// MatrixToDouble
+
 /**
    This actor converts a matrix input sequence of output tokens.
    The input must be a DoubleMatrixToken and the output will be a sequence
@@ -63,9 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (eal)
 */
-
 public class MatrixToDouble extends SDFConverter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,7 +74,7 @@ public class MatrixToDouble extends SDFConverter {
      *   actor with this name.
      */
     public MatrixToDouble(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         rows = new Parameter(this, "rows");
@@ -115,15 +114,15 @@ public class MatrixToDouble extends SDFConverter {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == rows || attribute == columns) {
-            _rows = ((IntToken)rows.getToken()).intValue();
-            _columns = ((IntToken)columns.getToken()).intValue();
-            if (_rows <= 0 || _columns <= 0) {
-                throw new IllegalActionException(this,
-                        "Number of rows and columns is required to be positive.");
-            }
+        throws IllegalActionException {
+        if ((attribute == rows) || (attribute == columns)) {
+            _rows = ((IntToken) rows.getToken()).intValue();
+            _columns = ((IntToken) columns.getToken()).intValue();
 
+            if ((_rows <= 0) || (_columns <= 0)) {
+                throw new IllegalActionException(this,
+                    "Number of rows and columns is required to be positive.");
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -134,35 +133,40 @@ public class MatrixToDouble extends SDFConverter {
      *   the director is an SDFDirector and the number of rows and columns
      *   of the input matrix does not match the declared parameter values.
      */
-    public final void fire() throws IllegalActionException  {
+    public final void fire() throws IllegalActionException {
         super.fire();
-        DoubleMatrixToken matrix = (DoubleMatrixToken)input.get(0);
+
+        DoubleMatrixToken matrix = (DoubleMatrixToken) input.get(0);
         int inputRows = matrix.getRowCount();
         int inputColumns = matrix.getColumnCount();
+
         // If the director is an SDFDirector, check the dimensions
         // of the matrix.
         Director director = getDirector();
+
         if (director instanceof SDFDirector) {
-            if (inputRows * inputColumns != _rows * _columns) {
+            if ((inputRows * inputColumns) != (_rows * _columns)) {
                 throw new IllegalActionException(this,
-                        "Received a matrix whose dimension does not "
-                        + "match the declared dimensions.");
+                    "Received a matrix whose dimension does not "
+                    + "match the declared dimensions.");
             }
         }
+
         int totalSize = inputRows * inputColumns;
         DoubleToken[] result = new DoubleToken[totalSize];
         int k = 0;
+
         for (int i = 0; i < inputRows; i++) {
             for (int j = 0; j < inputColumns; j++) {
-                result[k++] = (DoubleToken)matrix.getElementAsToken(i,j);
+                result[k++] = (DoubleToken) matrix.getElementAsToken(i, j);
             }
         }
+
         output.send(0, result, totalSize);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The number of rows.
     private int _rows;
 

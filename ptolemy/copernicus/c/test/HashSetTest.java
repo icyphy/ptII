@@ -26,14 +26,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HashSetTest
+
 /**
 
 A simple class for testing HashSets. It only prints out data that are
@@ -47,19 +47,16 @@ is not guaranteed to be consistent, but the size of the HashSet is.
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class HashSetTest{
-
+public class HashSetTest {
     public static void main(String[] args) {
-
         // Check that Object.hashCode works.
+
         /* Cannot be checked by a script.
            Object object= new Object();
            System.out.println(object.hashCode());
         */
+        System.out.println("Checking that strings have consistent HashCodes...");
 
-        System.out.println(
-                "Checking that strings have consistent HashCodes...");
         // Check that String.hashCode is consistent.
         String string1 = new String("abcdef");
         String string2 = new String("abcdef");
@@ -67,6 +64,7 @@ public class HashSetTest{
 
         // Generate and populate a HashSet.
         System.out.println("\nGenerating and populating a HashSet ...");
+
         HashSet set = new HashSet();
         set.add("1");
         System.out.println(set);
@@ -79,8 +77,8 @@ public class HashSetTest{
         // the set is not guaranteed.
         System.out.println(set.size());
 
-        System.out.println(
-                "\nChecking that HashSets work with LinkedLists.");
+        System.out.println("\nChecking that HashSets work with LinkedLists.");
+
         LinkedList list = new LinkedList();
         list.add("1");
         list.add("1");
@@ -90,11 +88,13 @@ public class HashSetTest{
 
         set.addAll(list);
         System.out.println(set.size());
+
         // Add the list itself as an object.
         set.add(list);
         System.out.println(set.size());
 
         System.out.println("\nChecking HashSet.remove() ...");
+
         // Check removal of an element in the set.
         System.out.println(set.size());
         System.out.println(set);
@@ -107,6 +107,7 @@ public class HashSetTest{
 
         // Initialize with a collection.
         System.out.println("\nChecking HashSet(Collection) ...");
+
         HashSet set2 = new HashSet(list);
         System.out.println(set2.size());
 
@@ -120,12 +121,13 @@ public class HashSetTest{
 
         // Check Iteration and removal.
         System.out.println("\nChecking HashSet.iterator() ...");
+
         Iterator items = set.iterator();
         int i = 1;
+
         while (items.hasNext()) {
             Object item = items.next();
             System.out.println(i++);
         }
-
     }
 }

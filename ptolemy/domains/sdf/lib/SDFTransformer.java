@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SDFTransformer
+
 /**
    This is an abstract base class for actors that transform an input
    stream into an output stream.  It provides an input and an output
@@ -54,9 +55,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,28 +65,25 @@ public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
      *   actor with this name.
      */
     public SDFTransformer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("1");
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setPersistent(false);
 
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setExpression("1");
         output_tokenProductionRate.setVisibility(Settable.NOT_EDITABLE);
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setPersistent(false);
 
-        output_tokenInitProduction =
-            new Parameter(output, "tokenInitProduction");
+        output_tokenInitProduction = new Parameter(output, "tokenInitProduction");
         output_tokenInitProduction.setExpression("0");
         output_tokenInitProduction.setVisibility(Settable.NOT_EDITABLE);
         output_tokenInitProduction.setTypeEquals(BaseType.INT);
@@ -103,18 +99,21 @@ public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
      *  @exception IllegalActionException If it is thrown accessing the port.
      *  @return True if there are enough tokens.
      */
-    public boolean prefire() throws IllegalActionException  {
+    public boolean prefire() throws IllegalActionException {
         Token rateToken = input_tokenConsumptionRate.getToken();
-        int required = ((IntToken)rateToken).intValue();
+        int required = ((IntToken) rateToken).intValue();
+
         // Derived classes may convert the input port to a multiport.
         for (int i = 0; i < input.getWidth(); i++) {
             if (!input.hasToken(i, required)) {
                 if (_debugging) {
                     _debug("Called prefire(), which returns false");
                 }
+
                 return false;
             }
         }
+
         return super.prefire();
     }
 

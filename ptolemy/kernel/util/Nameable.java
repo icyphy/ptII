@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Nameable
+
 /**
    This is an interface for objects with a name and a container. A simple
    name is an arbitrary string that identifies the object in the context of
@@ -46,9 +47,7 @@ package ptolemy.kernel.util;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (johnr)
 */
-
 public interface Nameable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -108,5 +107,5 @@ public interface Nameable {
      *   contains an object with this name.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException;
+        throws IllegalActionException, NameDuplicationException;
 }

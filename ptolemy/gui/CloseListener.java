@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui;
 
 import java.awt.Window;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CloseListener
+
 /**
    This is an interface for listeners that need to be informed when a
    window closes.  Note that this is a very small subset of what Java's
@@ -51,7 +52,6 @@ import java.awt.Window;
    @Pt.AcceptedRating Green (janneck)
 */
 public interface CloseListener {
-
     /** Notify that the specified window has closed.  The second argument,
      *  if non-null, gives the name of the button that was used to close
      *  the window.

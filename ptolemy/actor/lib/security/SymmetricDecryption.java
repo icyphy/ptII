@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.security;
-
 
 import java.io.ByteArrayOutputStream;
 
@@ -40,9 +38,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SymmetricDecryption
+
 /**
    Decrypt an unsigned byte array using a symmetric algorithm.
 
@@ -80,7 +78,6 @@ import ptolemy.kernel.util.Settable;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class SymmetricDecryption extends CipherActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -90,11 +87,12 @@ public class SymmetricDecryption extends CipherActor {
      *   actor with this name.
      */
     public SymmetricDecryption(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         algorithm.setVisibility(Settable.NOT_EDITABLE);
         algorithm.setPersistent(false);
+
         // Hide the algorithm parameter.
         algorithm.setVisibility(Settable.EXPERT);
 
@@ -129,8 +127,9 @@ public class SymmetricDecryption extends CipherActor {
     public void fire() throws IllegalActionException {
         try {
             if (key.hasToken(0)) {
-                KeyToken keyToken = (KeyToken)key.get(0);
-                _key = (java.security.Key)keyToken.getValue();
+                KeyToken keyToken = (KeyToken) key.get(0);
+                _key = (java.security.Key) keyToken.getValue();
+
                 if (!_algorithm.equals(_key.getAlgorithm())) {
                     // We have the name of the algorithm from the Key,
                     // so we reinitialize the cipher
@@ -143,9 +142,9 @@ public class SymmetricDecryption extends CipherActor {
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "fire() failed");
         }
+
         super.fire();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
@@ -157,17 +156,16 @@ public class SymmetricDecryption extends CipherActor {
      *  ByteArrayOutputStream, a key is invalid, padding is bad,
      *  or if the block size is illegal.
      */
-    protected byte[] _process(byte[] dataBytes)
-            throws IllegalActionException {
-        ByteArrayOutputStream byteArrayOutputStream =
-            new ByteArrayOutputStream();
+    protected byte[] _process(byte[] dataBytes) throws IllegalActionException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
         try {
             _cipher.init(Cipher.DECRYPT_MODE, _key);
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
             return byteArrayOutputStream.toByteArray();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem processing " + dataBytes.length + " bytes.");
+                "Problem processing " + dataBytes.length + " bytes.");
         }
     }
 

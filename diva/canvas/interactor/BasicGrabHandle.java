@@ -32,6 +32,7 @@ import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.toolbox.BasicRectangle;
 
+
 /**
  * A basic rectangle grab-handle implementation.
  *
@@ -59,7 +60,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
      */
     public BasicGrabHandle(Site s) {
         // Can't reference variable until superclass is called...
-        super(0,0,0,0, java.awt.Color.blue);
+        super(0, 0, 0, 0, java.awt.Color.blue);
         setSize(_size);
         _site = s;
     }
@@ -75,14 +76,14 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
      * Get the "size" of the grab-handle. The size is half the
      * length of each side. The default is 4.0.
      */
-    public float getSize () {
+    public float getSize() {
         return _size;
     }
 
     /**
      * Reposition the grab-handle if necessary
      */
-    public void relocate () {
+    public void relocate() {
         // Be sure to take into account that the transformContext of the
         // site and the context of the grab handle may be different.
         TransformContext tc = getTransformContext();
@@ -90,18 +91,18 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
         double x = p.getX();
         double y = p.getY();
 
-        if (x != _x || y != _y) {
+        if ((x != _x) || (y != _y)) {
             _x = x;
             _y = y;
-            ((Rectangle2D)getShape()).setFrame(
-                    x - _size, y - _size, _size*2, _size*2);
+            ((Rectangle2D) getShape()).setFrame(x - _size, y - _size,
+                _size * 2, _size * 2);
         }
     }
 
     /**
      * Set the set to which this grab-handle is attached.
      */
-    public void setSite (Site s) {
+    public void setSite(Site s) {
         _site = s;
         relocate();
     }
@@ -110,10 +111,10 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
      * Set the "size" of the grab-handle.  The size is half the
      * length of each side.
      */
-    public void setSize (float size) {
+    public void setSize(float size) {
         this._size = size;
-        ((Rectangle2D)getShape()).setFrame(
-                _x - _size, _y - _size, _size*2, _size*2);
+        ((Rectangle2D) getShape()).setFrame(_x - _size, _y - _size, _size * 2,
+            _size * 2);
     }
 
     /**
@@ -121,9 +122,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
      * move the grab-handle itself (that will be handled by the
      * reshape manipulator).
      */
-    public void translate (double x, double y) {
-        _site.translate(x,y);
+    public void translate(double x, double y) {
+        _site.translate(x, y);
     }
 }
-
-

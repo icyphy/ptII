@@ -25,6 +25,7 @@
 */
 package diva.graph;
 
+
 /**
  * A graph view event that is emitted when anything interesting happens
  * inside a graph view. The source of a event
@@ -44,22 +45,22 @@ public class GraphViewEvent extends java.util.EventObject {
     /**
      * The figure representing a node was moved.
      */
-    public static final int NODE_MOVED   = 11;
+    public static final int NODE_MOVED = 11;
 
     /**
      * The connector representing an edge was just routed.
      */
-    public static final int EDGE_ROUTED   = 12;
+    public static final int EDGE_ROUTED = 12;
 
     /**
      * The given node was just drawn.
      */
-    public static final int NODE_DRAWN         = 20;
+    public static final int NODE_DRAWN = 20;
 
     /**
      * The given edge was just drawn.
      */
-    public static final int EDGE_DRAWN        = 21;
+    public static final int EDGE_DRAWN = 21;
 
     /**
      * @serial
@@ -101,7 +102,9 @@ public class GraphViewEvent extends java.util.EventObject {
     /**
      * Return the type id for this event.
      */
-    public int getID() { return _id; }
+    public int getID() {
+        return _id;
+    }
 
     /**
      * Return the target value, which is event-specific.
@@ -121,15 +124,19 @@ public class GraphViewEvent extends java.util.EventObject {
      * Return a string representation of the ID.
      */
     private String idToString() {
-        switch(getID()) {
+        switch (getID()) {
         case NODE_MOVED:
             return "NODE_MOVED";
+
         case EDGE_ROUTED:
             return "EDGE_ROUTED";
+
         case NODE_DRAWN:
             return "NODE_DRAWN";
+
         case EDGE_DRAWN:
             return "EDGE_DRAWN";
+
         default:
             return "Invalid event ID";
         }
@@ -139,9 +146,7 @@ public class GraphViewEvent extends java.util.EventObject {
      * Return a string representation of this event.
      */
     public String toString() {
-        return "GraphViewEvent[" + idToString() + ", "
-            + getTarget() + ", " + getOldValue() + "]";
+        return "GraphViewEvent[" + idToString() + ", " + getTarget() + ", "
+        + getOldValue() + "]";
     }
 }
-
-

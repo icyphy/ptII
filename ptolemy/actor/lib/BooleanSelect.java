@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 (This is similar to Select and BooleanMultiplexor and could be
 design/code reviewed at the same time.
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BooleanSelect
+
 /**
    A type polymorphic select with boolean valued control.  In an
    iteration, if an input token is available at the <i>control</i> input,
@@ -70,9 +71,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Red (neuendor)
 */
-
 public class BooleanSelect extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -83,7 +82,7 @@ public class BooleanSelect extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public BooleanSelect(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         trueInput = new TypedIOPort(this, "trueInput", true, false);
@@ -95,30 +94,21 @@ public class BooleanSelect extends TypedAtomicActor {
         output.setTypeAtLeast(falseInput);
 
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal
-                = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
 
         /** Make the icon show T, F, and C for trueInput, falseInput
          *  and control.
          */
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<text x=\"-17\" y=\"-3\" "
-                + "style=\"font-size:14\">\n"
-                + "T \n"
-                + "</text>\n"
-                + "<text x=\"-17\" y=\"15\" "
-                + "style=\"font-size:14\">\n"
-                + "F \n"
-                + "</text>\n"
-                + "<text x=\"-5\" y=\"16\" "
-                + "style=\"font-size:14\">\n"
-                + "C \n"
-                + "</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-17\" y=\"-3\" " + "style=\"font-size:14\">\n"
+            + "T \n" + "</text>\n" + "<text x=\"-17\" y=\"15\" "
+            + "style=\"font-size:14\">\n" + "F \n" + "</text>\n"
+            + "<text x=\"-5\" y=\"16\" " + "style=\"font-size:14\">\n" + "C \n"
+            + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,13 +117,16 @@ public class BooleanSelect extends TypedAtomicActor {
     /** Input for tokens on the true path.  The type can be anything.
      */
     public TypedIOPort trueInput;
+
     /** Input for tokens on the false path.  The type can be anything.
      */
     public TypedIOPort falseInput;
+
     /** Input that selects one of the other input ports.  The type is
      *  BooleanToken.
      */
     public TypedIOPort control;
+
     /** The output port.  The type is at least the type of
      *  <i>trueInput</i> and <i>falseInput</i>
      */
@@ -180,7 +173,8 @@ public class BooleanSelect extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         if (control.hasToken(0)) {
-            _control = ((BooleanToken)control.get(0)).booleanValue();
+            _control = ((BooleanToken) control.get(0)).booleanValue();
+
             if (_control) {
                 if (!trueInput.hasToken(0)) {
                     return false;
@@ -193,12 +187,12 @@ public class BooleanSelect extends TypedAtomicActor {
         } else {
             return false;
         }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The most recently read control token.
     private boolean _control = false;
 }

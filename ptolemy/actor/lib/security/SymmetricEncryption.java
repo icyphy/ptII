@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.security;
-
 
 import java.io.ByteArrayOutputStream;
 
@@ -39,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SymmetricEncryption
+
 /**
    Encrypt an unsigned byte array using a symmetric algorithm.
 
@@ -85,8 +85,6 @@ import ptolemy.kernel.util.Settable;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class SymmetricEncryption extends CipherActor {
-
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -96,7 +94,7 @@ public class SymmetricEncryption extends CipherActor {
      *   actor with this name.
      */
     public SymmetricEncryption(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         algorithm.setVisibility(Settable.NOT_EDITABLE);
@@ -139,10 +137,12 @@ public class SymmetricEncryption extends CipherActor {
     public void fire() throws IllegalActionException {
         if (key.hasToken(0)) {
             try {
-                KeyToken keyToken = (KeyToken)key.get(0);
+                KeyToken keyToken = (KeyToken) key.get(0);
+
                 // FIXME: do we really want to initialize the key each time?
-                java.security.Key securityKey =
-                    (java.security.Key)keyToken.getValue();
+                java.security.Key securityKey = (java.security.Key) keyToken
+                    .getValue();
+
                 if (!_algorithm.equals(securityKey.getAlgorithm())) {
                     // We have the name of the algorithm from the Key,
                     // so we reinitialize the cipher
@@ -151,15 +151,16 @@ public class SymmetricEncryption extends CipherActor {
                     _updateCipherNeeded = true;
                     _updateCipher();
                 }
+
                 _cipher.init(Cipher.ENCRYPT_MODE, securityKey);
             } catch (Exception ex) {
-                throw new IllegalActionException (this, ex,
-                        "Failed to initialize Cipher with "
-                        + "algorithm: '"+ _algorithm
-                        + "', padding: '" + _padding
-                        + "', provider: '" + _provider + "'");
+                throw new IllegalActionException(this, ex,
+                    "Failed to initialize Cipher with " + "algorithm: '"
+                    + _algorithm + "', padding: '" + _padding
+                    + "', provider: '" + _provider + "'");
             }
         }
+
         super.fire();
     }
 
@@ -171,18 +172,18 @@ public class SymmetricEncryption extends CipherActor {
      * ByteArrayOutputStream, if the key is invalid, if the padding is bad
      * or if the block size is illegal.
      */
-    protected byte[] _process(byte[] dataBytes)
-            throws IllegalActionException{
+    protected byte[] _process(byte[] dataBytes) throws IllegalActionException {
         // FIXME: should this method try to stream the data and
         // have a wrapup method that calls _cipher.doFinal() instead?
-        ByteArrayOutputStream byteArrayOutputStream
-            = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
         try {
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem processing " + dataBytes.length + " bytes.");
+                "Problem processing " + dataBytes.length + " bytes.");
         }
+
         return byteArrayOutputStream.toByteArray();
     }
 }

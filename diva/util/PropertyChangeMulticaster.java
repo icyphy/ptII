@@ -24,11 +24,13 @@
   COPYRIGHTENDKEY
 */
 package diva.util;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 
 /**
  * A list of PropertyChangeListeners.
@@ -71,8 +73,8 @@ public class PropertyChangeMulticaster implements PropertyChangeListener {
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        for (Iterator i = listeners(); i.hasNext(); ) {
-            PropertyChangeListener l = (PropertyChangeListener)i.next();
+        for (Iterator i = listeners(); i.hasNext();) {
+            PropertyChangeListener l = (PropertyChangeListener) i.next();
             l.propertyChange(evt);
         }
     }
@@ -85,5 +87,3 @@ public class PropertyChangeMulticaster implements PropertyChangeListener {
         _listeners.remove(l);
     }
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ddf.lib;
 
 import java.io.IOException;
@@ -56,6 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 /**
    This actor performs actor recursion dynamically during execution.
    Upon firing, it clones the composite actor which contains itself and
@@ -79,7 +79,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ActorRecursion extends TypedCompositeActor {
-
     /** Create an ActorRecursion with a name and a container.
      *  The container argument must not be null, or a NullPointerException
      *  will be thrown. This actor will use the workspace of the container
@@ -98,7 +97,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public ActorRecursion(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new DDFDirector(this, uniqueName("DDFDirector"));
         recursionActor = new StringParameter(this, "recursionActor");
@@ -135,21 +134,22 @@ public class ActorRecursion extends TypedCompositeActor {
         try {
             // Disable redoing type resolution because type compatibility
             // has been guaranteed during initialization.
-            ((DDFDirector)getExecutiveDirector()).setTypeResolutionFlag(true);
-            ((DDFDirector)getDirector()).setTypeResolutionFlag(true);
+            ((DDFDirector) getExecutiveDirector()).setTypeResolutionFlag(true);
+            ((DDFDirector) getDirector()).setTypeResolutionFlag(true);
 
             try {
                 _cloneRecursionActor();
             } catch (CloneNotSupportedException ex) {
                 throw new IllegalActionException(this, "cannot clone.");
             }
+
             getDirector().preinitialize();
             _transferInputs();
             _setOutputPortRate();
             getDirector().initialize();
             _transferOutputs();
-            ((DDFDirector)getExecutiveDirector()).
-                merge((DDFDirector)getDirector());
+            ((DDFDirector) getExecutiveDirector()).merge((DDFDirector) getDirector());
+
             try {
                 getDirector().setContainer(null);
             } catch (NameDuplicationException ex) {
@@ -157,7 +157,7 @@ public class ActorRecursion extends TypedCompositeActor {
                 throw new InternalErrorException(this, ex, null);
             }
         } finally {
-            ((DDFDirector)getExecutiveDirector()).setTypeResolutionFlag(false);
+            ((DDFDirector) getExecutiveDirector()).setTypeResolutionFlag(false);
         }
     }
 
@@ -172,8 +172,10 @@ public class ActorRecursion extends TypedCompositeActor {
      */
     public void initialize() throws IllegalActionException {
         _searchRecursionActor();
-        if (!_isCompatibilityChecked)
+
+        if (!_isCompatibilityChecked) {
             _checkCompatibility();
+        }
     }
 
     /** Override the base class to return false. Upon seeing the return
@@ -196,17 +198,18 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-
+        throws IOException {
         Iterator attributes = attributeList().iterator();
+
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute) attributes.next();
             attribute.exportMoML(output, depth);
         }
 
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            Port port = (Port)ports.next();
+            Port port = (Port) ports.next();
             port.exportMoML(output, depth);
         }
     }
@@ -217,7 +220,6 @@ public class ActorRecursion extends TypedCompositeActor {
      *  have already been done in the fire method.
      */
     protected void _finishedAddEntity(ComponentEntity entity) {
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -233,48 +235,66 @@ public class ActorRecursion extends TypedCompositeActor {
      */
     private void _checkCompatibility() throws IllegalActionException {
         if (!(getExecutiveDirector() instanceof DDFDirector)) {
-            throw new IllegalActionException(this, "The executive Director " +
-                    "must be DDFDirector.");
+            throw new IllegalActionException(this,
+                "The executive Director " + "must be DDFDirector.");
         }
-        if (_recursionActor.inputPortList().size()
-                != inputPortList().size()
-                ||
-                _recursionActor.outputPortList().size()
-                != outputPortList().size()) {
-            throw new IllegalActionException(this, "The recursionActor " +
-                    recursionActor.stringValue() + " must have the same " +
-                    "number of input ports and same number of output " +
-                    "ports as the actor to be replaced.");
+
+        if ((_recursionActor.inputPortList().size() != inputPortList().size())
+                || (_recursionActor.outputPortList().size() != outputPortList()
+                                                                       .size())) {
+            throw new IllegalActionException(this,
+                "The recursionActor " + recursionActor.stringValue()
+                + " must have the same "
+                + "number of input ports and same number of output "
+                + "ports as the actor to be replaced.");
         }
+
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            TypedIOPort port = (TypedIOPort)ports.next();
+            TypedIOPort port = (TypedIOPort) ports.next();
             Object matching = _recursionActor.getPort(port.getName());
-            if (matching == null)
-                throw new IllegalActionException(this, "Each port of the " +
-                        "recursionActor " + recursionActor.stringValue() +
-                        " must have the same name as the matching " +
-                        "port of the actor to be replaced.");
-            TypedIOPort matchingPort = (TypedIOPort)matching;
-            if (port.getWidth() != matchingPort.getWidth())
-                throw new IllegalActionException(this, "The matching " +
-                        "ports must have same width.");
-            if (port.isInput() && !matchingPort.isInput() ||
-                    port.isOutput() && !matchingPort.isOutput())
-                throw new IllegalActionException(this, "The matching " +
-                        "ports must be both input ports or output ports.");
-            Type portType = port.getType();
-            Type matchingPortType  = matchingPort.getType();
-            if (port.isInput() && !matchingPortType.isCompatible(portType)) {
-                throw new IllegalActionException(this, "The type of the port "
-                        + port.getName() + " of the actor " + getName()
-                        + " must be the same or less than the matching port.");
+
+            if (matching == null) {
+                throw new IllegalActionException(this,
+                    "Each port of the " + "recursionActor "
+                    + recursionActor.stringValue()
+                    + " must have the same name as the matching "
+                    + "port of the actor to be replaced.");
             }
-            if (port.isOutput() && !portType.isCompatible(matchingPortType))
-                throw new IllegalActionException(this, "The type of the port " +
-                        port.getName() + " of the actor " + getName() + " must "
-                        + "be the same or less than the matching port.");
+
+            TypedIOPort matchingPort = (TypedIOPort) matching;
+
+            if (port.getWidth() != matchingPort.getWidth()) {
+                throw new IllegalActionException(this,
+                    "The matching " + "ports must have same width.");
+            }
+
+            if ((port.isInput() && !matchingPort.isInput())
+                    || (port.isOutput() && !matchingPort.isOutput())) {
+                throw new IllegalActionException(this,
+                    "The matching "
+                    + "ports must be both input ports or output ports.");
+            }
+
+            Type portType = port.getType();
+            Type matchingPortType = matchingPort.getType();
+
+            if (port.isInput() && !matchingPortType.isCompatible(portType)) {
+                throw new IllegalActionException(this,
+                    "The type of the port " + port.getName() + " of the actor "
+                    + getName()
+                    + " must be the same or less than the matching port.");
+            }
+
+            if (port.isOutput() && !portType.isCompatible(matchingPortType)) {
+                throw new IllegalActionException(this,
+                    "The type of the port " + port.getName() + " of the actor "
+                    + getName() + " must "
+                    + "be the same or less than the matching port.");
+            }
         }
+
         _isCompatibilityChecked = true;
     }
 
@@ -289,17 +309,19 @@ public class ActorRecursion extends TypedCompositeActor {
      *   be cloned.
      */
     private void _cloneRecursionActor()
-            throws IllegalActionException, CloneNotSupportedException {
+        throws IllegalActionException, CloneNotSupportedException {
         try {
             // Clone the composite actor.
-            CompositeActor clone = (CompositeActor)
-                _recursionActor.clone(workspace());
+            CompositeActor clone = (CompositeActor) _recursionActor.clone(workspace());
+
             // Place the clone inside this actor.
             clone.setContainer(this);
+
             int i = 0;
             Iterator ports = portList().iterator();
+
             while (ports.hasNext()) {
-                IOPort port = (IOPort)ports.next();
+                IOPort port = (IOPort) ports.next();
 
                 // Store all tokens contained by input ports of this actor
                 // because connecting ports will result in creating receivers
@@ -308,13 +330,16 @@ public class ActorRecursion extends TypedCompositeActor {
                     int width = port.getWidth();
                     Receiver[][] receivers = port.getReceivers();
                     Token[][] tokens = new Token[width][0];
+
                     for (int channel = 0; channel < width; channel++) {
-                        int size = ((SDFReceiver)receivers[channel][0]).size();
+                        int size = ((SDFReceiver) receivers[channel][0]).size();
                         tokens[channel] = new Token[size];
+
                         for (int count = 0; count < size; count++) {
                             tokens[channel][count] = port.get(channel);
                         }
                     }
+
                     _inputTokensHolder.put(port, tokens);
                 }
 
@@ -325,10 +350,11 @@ public class ActorRecursion extends TypedCompositeActor {
                 // implementation, the model will redo type resolution
                 // every time a composite actor is cloned and connected.
                 // It will be more efficient to get around this.
-                IOPort matchingPort = (IOPort)clone.getPort(port.getName());
-                IORelation relation = (IORelation)newRelation("r_" + i++);
+                IOPort matchingPort = (IOPort) clone.getPort(port.getName());
+                IORelation relation = (IORelation) newRelation("r_" + i++);
                 port.link(relation);
                 matchingPort.link(relation);
+
                 if (port.isMultiport()) {
                     relation.setWidth(port.getWidth());
                 }
@@ -346,17 +372,19 @@ public class ActorRecursion extends TypedCompositeActor {
      */
     private void _searchRecursionActor() throws IllegalActionException {
         String recursionActorValue = recursionActor.stringValue();
-        CompositeActor container = (CompositeActor)getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
+
         while (container != null) {
             if (recursionActorValue.equals(container.getName())) {
                 _recursionActor = container;
                 return;
             } else {
-                container = (CompositeActor)container.getContainer();
+                container = (CompositeActor) container.getContainer();
             }
         }
-        throw new IllegalActionException(this, "Can not find a " +
-                "container with name " + recursionActorValue);
+
+        throw new IllegalActionException(this,
+            "Can not find a " + "container with name " + recursionActorValue);
     }
 
     /** Read rate parameters of input ports of all actors receiving tokens
@@ -373,10 +401,11 @@ public class ActorRecursion extends TypedCompositeActor {
      */
     private void _setOutputPortRate() throws IllegalActionException {
         Iterator outputPorts = outputPortList().iterator();
-        while (outputPorts.hasNext()) {
 
-            IOPort outputPort = (IOPort)outputPorts.next();
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort) outputPorts.next();
             int[] productionRate = new int[outputPort.getWidthInside()];
+
             // If there are more inside channels than outside channels,
             // it sets default rates of these non-connecting inside
             // channels to be Integer.MAX_VALUE. This will effectively
@@ -385,68 +414,80 @@ public class ActorRecursion extends TypedCompositeActor {
             // After the local director is removed, these channels won't
             // transfer any data.
             Arrays.fill(productionRate, Integer.MAX_VALUE);
+
             Receiver[][] farReceivers = outputPort.getRemoteReceivers();
+
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (farReceivers[i] != null) {
                     for (int j = 0; j < farReceivers[i].length; j++) {
-                        SDFReceiver farReceiver
-                            = (SDFReceiver)farReceivers[i][j];
+                        SDFReceiver farReceiver = (SDFReceiver) farReceivers[i][j];
                         IOPort port = farReceiver.getContainer();
 
                         // Having a self-loop doesn't make it deferrable.
-                        if (port == outputPort)
+                        if (port == outputPort) {
                             continue;
+                        }
 
                         // The default rate for the port containing
                         // farReceiver is 1.
                         int portRate = 1;
                         Parameter rate = null;
+
                         if (port.isInput()) {
-                            rate = (Parameter)port.
-                                getAttribute("tokenConsumptionRate");
+                            rate = (Parameter) port.getAttribute(
+                                    "tokenConsumptionRate");
+
                             // Ports of opaque SDF composite actors contain
                             // parameters named "_tokenConsumptionRate" given
                             // by inside scheduler.
                             if (rate == null) {
-                                rate = (Parameter)port.
-                                    getAttribute("_tokenConsumptionRate");
+                                rate = (Parameter) port.getAttribute(
+                                        "_tokenConsumptionRate");
                             }
                         }
+
                         // If DDF domain is inside another domain and the
                         // farReceiver is contained by an output port.
                         if (port.isOutput()) {
-                            rate = (Parameter)port.
-                                getAttribute("tokenProductionRate");
+                            rate = (Parameter) port.getAttribute(
+                                    "tokenProductionRate");
+
                             if (rate == null) {
-                                rate = (Parameter)port.
-                                    getAttribute("_tokenProductionRate");
+                                rate = (Parameter) port.getAttribute(
+                                        "_tokenProductionRate");
                             }
                         }
+
                         if (rate != null) {
                             Token token = rate.getToken();
+
                             if (token instanceof ArrayToken) {
-                                Token[] tokens
-                                    = ((ArrayToken)token).arrayValue();
+                                Token[] tokens = ((ArrayToken) token)
+                                    .arrayValue();
+
                                 // Scan the contained receivers of the remote
                                 // port to find the channel index.
-                                Receiver[][] portReceivers
-                                    = port.getReceivers();
+                                Receiver[][] portReceivers = port.getReceivers();
                                 int channelIndex = 0;
-                                foundChannelIndex:
-                                for (int m = 0; m < portReceivers.length; m++)
+foundChannelIndex: 
+                                for (int m = 0; m < portReceivers.length;
+                                        m++) {
                                     for (int n = 0;
-                                        n < portReceivers[m].length; n++)
-                                        if (farReceiver ==
-                                            portReceivers[m][n]) {
+                                            n < portReceivers[m].length; n++) {
+                                        if (farReceiver == portReceivers[m][n]) {
                                             channelIndex = m;
                                             break foundChannelIndex;
                                         }
-                                portRate =
-                                    ((IntToken)tokens[channelIndex]).intValue();
+                                    }
+                                }
+
+                                portRate = ((IntToken) tokens[channelIndex])
+                                    .intValue();
                             } else {
-                                portRate = ((IntToken)token).intValue();
+                                portRate = ((IntToken) token).intValue();
                             }
                         }
+
                         // According to the definition of deferrability,
                         // we need to find the minimum rate associated with
                         // this channel.
@@ -456,28 +497,34 @@ public class ActorRecursion extends TypedCompositeActor {
                     }
                 }
             }
-            IntToken[] productionRateToken
-                = new IntToken[outputPort.getWidthInside()];
+
+            IntToken[] productionRateToken = new IntToken[outputPort
+                .getWidthInside()];
+
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 productionRateToken[i] = new IntToken(productionRate[i]);
             }
+
             // Since this is output port, we look for token production rate
             // instead of token consumption rate.
-            Parameter tokenProductionRate = (Parameter)
-                outputPort.getAttribute("tokenProductionRate");
+            Parameter tokenProductionRate = (Parameter) outputPort.getAttribute(
+                    "tokenProductionRate");
+
             if (tokenProductionRate == null) {
-                tokenProductionRate = (Parameter)
-                    outputPort.getAttribute("_tokenProductionRate");
+                tokenProductionRate = (Parameter) outputPort.getAttribute(
+                        "_tokenProductionRate");
             }
+
             if (tokenProductionRate == null) {
                 try {
-                    tokenProductionRate
-                        = new Parameter(outputPort, "tokenProductionRate");
+                    tokenProductionRate = new Parameter(outputPort,
+                            "tokenProductionRate");
                 } catch (NameDuplicationException ex) {
                     //should not happen.
                     throw new InternalErrorException(this, ex, null);
                 }
             }
+
             tokenProductionRate.setToken(new ArrayToken(productionRateToken));
         }
     }
@@ -493,9 +540,11 @@ public class ActorRecursion extends TypedCompositeActor {
      */
     private void _transferInputs() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
-            Token[][] tokens = (Token[][])_inputTokensHolder.get(inputPort);
+            IOPort inputPort = (IOPort) inputPorts.next();
+            Token[][] tokens = (Token[][]) _inputTokensHolder.get(inputPort);
+
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
                 for (int j = 0; j < tokens[channel].length; j++) {
                     inputPort.sendInside(channel, tokens[channel][j]);
@@ -513,8 +562,10 @@ public class ActorRecursion extends TypedCompositeActor {
      */
     private void _transferOutputs() throws IllegalActionException {
         Iterator outputPorts = outputPortList().iterator();
+
         while (outputPorts.hasNext()) {
-            IOPort outputPort = (IOPort)outputPorts.next();
+            IOPort outputPort = (IOPort) outputPorts.next();
+
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 while (outputPort.hasTokenInside(i)) {
                     outputPort.send(i, outputPort.getInside(i));
@@ -525,7 +576,6 @@ public class ActorRecursion extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The composite actor to be cloned.
     private CompositeActor _recursionActor = null;
 
@@ -537,5 +587,3 @@ public class ActorRecursion extends TypedCompositeActor {
     // Store tokens of the input ports.
     private HashMap _inputTokensHolder = new HashMap();
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.Component;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VisibleParameterEditorFactory
+
 /**
    If this class is contained by a settable attribute, then double
    clicking on that attribute will invoke an editor for only that
@@ -59,9 +60,7 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public class VisibleParameterEditorFactory extends EditorFactory {
-
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -71,7 +70,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
      *   an attribute already in the container.
      */
     public VisibleParameterEditorFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -81,25 +80,22 @@ public class VisibleParameterEditorFactory extends EditorFactory {
     /** Create an editor for configuring the specified object.
      */
     public void createEditor(final NamedObj object, Frame parent) {
-        ComponentDialog dialog = new ComponentDialog(
-                parent, "Edit Parameter " + object.getName(),
-                createEditorPane());
+        ComponentDialog dialog = new ComponentDialog(parent,
+                "Edit Parameter " + object.getName(), createEditorPane());
 
         // If we were canceled, then restore the old value.
         if (dialog.buttonPressed().equals("Cancel")) {
             SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        NamedObj parent = (NamedObj)object.getContainer();
-                        String moml = "<property name=\""
-                            + object.getName()
+                        NamedObj parent = (NamedObj) object.getContainer();
+                        String moml = "<property name=\"" + object.getName()
                             + "\" value=\""
                             + StringUtilities.escapeForXML(_oldExpression)
                             + "\"/>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(
-                                this,         // originator
-                                parent,       // context
-                                moml,         // MoML code
-                                null);        // base
+                        MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+                                parent, // context
+                                moml, // MoML code
+                                null); // base
                         object.requestChange(request);
                     }
                 });
@@ -115,18 +111,18 @@ public class VisibleParameterEditorFactory extends EditorFactory {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
-        NamedObj object = (NamedObj)getContainer();
+        NamedObj object = (NamedObj) getContainer();
         PtolemyQuery query = new PtolemyQuery(object);
         query.setTextWidth(25);
 
         if (object instanceof Settable) {
-            Settable parameter = (Settable)object;
+            Settable parameter = (Settable) object;
             _oldExpression = parameter.getExpression();
             query.addStyledEntry(parameter);
             return query;
         } else {
-            return new JLabel(object.getName() +
-                    " is not a settable attribute!");
+            return new JLabel(object.getName()
+                + " is not a settable attribute!");
         }
     }
 

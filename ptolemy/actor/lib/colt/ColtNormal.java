@@ -25,13 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.Normal;
+import cern.jet.random.engine.DRand;
+
 import ptolemy.actor.gui.style.ChoiceStyle;
-import ptolemy.data.StringToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -39,11 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-import cern.jet.random.Normal;
-import cern.jet.random.engine.DRand;
 
 //////////////////////////////////////////////////////////////////////////
 //// Normal
+
 /**
    Produce a random sequence with a Normal distribution.  On each
    iteration, a new random number is produced.  The output port is of
@@ -58,9 +59,7 @@ import cern.jet.random.engine.DRand;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ColtNormal extends ColtRandomSource {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,16 +69,15 @@ public class ColtNormal extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtNormal(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
-
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
 
         mean = new Parameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
-        standardDeviation =
-            new Parameter(this, "standardDeviation", new DoubleToken(1.0));
+        standardDeviation = new Parameter(this, "standardDeviation",
+                new DoubleToken(1.0));
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
 
         randomNumberGeneratorClass = _getRandomNumberGeneratorClass(container);
@@ -118,10 +116,9 @@ public class ColtNormal extends ColtRandomSource {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-
         double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
-        double standardDeviationValue =
-            ((DoubleToken) standardDeviation.getToken()).doubleValue();
+        double standardDeviationValue = ((DoubleToken) standardDeviation
+            .getToken()).doubleValue();
 
         ((Normal) _rng).setState(meanValue, standardDeviationValue);
         _current = ((Normal) _rng).nextDouble();
@@ -131,7 +128,6 @@ public class ColtNormal extends ColtRandomSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The random number for the current iteration.
     private double _current;
 }

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.xslt;
 
 import java.io.BufferedReader;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// XSLTTransformer
+
 /**
    This actor reads an XSLT file and apply it to a dom tree. The file or
    URL is specified using any form acceptable to the FileParameter class.
@@ -66,8 +67,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (liuj)
 */
-public class XSLTransformer extends Transformer{
-
+public class XSLTransformer extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,7 +77,7 @@ public class XSLTransformer extends Transformer{
      *   actor with this name.
      */
     public XSLTransformer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the input port.
@@ -110,9 +110,8 @@ public class XSLTransformer extends Transformer{
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        XSLTransformer newObject = (XSLTransformer)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        XSLTransformer newObject = (XSLTransformer) super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.XMLTOKEN);
         newObject.output.setTypeEquals(BaseType.STRING);
         return newObject;
@@ -126,48 +125,53 @@ public class XSLTransformer extends Transformer{
      */
     public void fire() throws IllegalActionException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        javax.xml.transform.Result result =
-            new javax.xml.transform.stream.StreamResult(out);
+        javax.xml.transform.Result result = new javax.xml.transform.stream.StreamResult(out);
+
         if (_debugging) {
             _debug("--- open an output stream for the result. \n");
         }
 
-        if (_transformer != null ) {
+        if (_transformer != null) {
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
-                    XMLToken in = (XMLToken)input.get(i);
+                    XMLToken in = (XMLToken) input.get(i);
                     Document doc = in.getDomTree();
+
                     try {
-                        javax.xml.transform.Source xmlSource
-                            = new javax.xml.transform.dom.DOMSource(doc);
+                        javax.xml.transform.Source xmlSource = new javax.xml.transform.dom.DOMSource(doc);
                         _transformer.transform(xmlSource, result);
+
                         if (_debugging) {
                             _debug("--- transform the xmlSource: "
-                                    + in.toString() + "\n");
+                                + in.toString() + "\n");
                         }
+
                         if (out != null) {
                             if (_debugging) {
                                 _debug("--- moml change request string: "
-                                        + out.toString() + "\n");
+                                    + out.toString() + "\n");
                             }
-                            StringToken outputToken =
-                                new StringToken(out.toString());
+
+                            StringToken outputToken = new StringToken(out
+                                    .toString());
                             output.broadcast(outputToken);
+
                             if (_debugging) {
                                 _debug("--- change request string token "
-                                        + "send out. \n");
+                                    + "send out. \n");
                             }
                         }
                     } catch (TransformerException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Failed  to process '" + in + "'");
+                            "Failed  to process '" + in + "'");
                     }
+
                     try {
                         out.flush();
                         out.close();
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Failed  to close or flush '" + out + "'");
+                            "Failed  to close or flush '" + out + "'");
                     }
                 }
             }
@@ -175,7 +179,7 @@ public class XSLTransformer extends Transformer{
             // If there is no transformer, then output the xml string.
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
-                    XMLToken in = (XMLToken)input.get(i);
+                    XMLToken in = (XMLToken) input.get(i);
                     output.broadcast(new StringToken(in.toString()));
                 }
             }
@@ -190,61 +194,61 @@ public class XSLTransformer extends Transformer{
     public void initialize() throws IllegalActionException {
         _xsltSource = null;
         _transformer = null;
+
         try {
             BufferedReader reader;
+
             // Ignore if the fileOrURL is blank.
             if (fileOrURL.getExpression().trim().equals("")) {
                 reader = null;
             } else {
                 reader = fileOrURL.openForReading();
             }
+
             if (reader != null) {
-                _xsltSource =
-                    new javax.xml.transform.stream.StreamSource(reader);
+                _xsltSource = new javax.xml.transform.stream.StreamSource(reader);
             } else {
                 _xsltSource = null;
             }
+
             if (_debugging) {
                 _debug("processing xsltSource change in " + getFullName());
             }
-            if (_xsltSource != null) {
-                _transformerFactory =
-                    javax.xml.transform.TransformerFactory.newInstance();
-                if (!_transformerFactory.getClass()
-                        .getName().startsWith("net.sf.saxon")) {
 
+            if (_xsltSource != null) {
+                _transformerFactory = javax.xml.transform.TransformerFactory
+                    .newInstance();
+
+                if (!_transformerFactory.getClass().getName().startsWith("net.sf.saxon")) {
                     throw new IllegalActionException(this,
-                            "The XSLTransformer actor works best\nwith "
-                            + "saxon7.jar.\n"
-                            + "The transformerFactory was '"
-                            + _transformerFactory.getClass().getName()
-                            + "'.\nIf saxon7.jar was in the classpath, then "
-                            + "it should have\nstarted with "
-                            + "\"net.sf.saxon\".\n"
-                            + "If this actor does not use "
-                            + "saxon, then the results will be "
-                            + "different between\nruns that "
-                            + "use saxon and runs that "
-                            + "do not.\nDetails:\n"
-                            + "This actor uses "
-                            + "javax.xml.transform.TransformerFactory.\nThe "
-                            + "concrete TransformerFactory class can be "
-                            + "adjusted by\nsetting the "
-                            + "javax.xml.transform.TransformerFactory "
-                            + "property or by\nreading in a jar file that "
-                            + "has the appropriate\nService Provider set.\n"
-                            + "(For details about Jar Service Providers,\nsee "
-                            + "http://java.sun.com/j2se/1.4.2/docs/guide/jar/jar.html)\n"
-                            + "The saxon7.jar file includes a\n"
-                            + "META-INF/services/javax.xml.transform.TransformerFactory "
-                            + "\nfile that sets the TransformerFactory "
-                            + "class name start with 'net.sf.saxon'."
-                                                     );
+                        "The XSLTransformer actor works best\nwith "
+                        + "saxon7.jar.\n" + "The transformerFactory was '"
+                        + _transformerFactory.getClass().getName()
+                        + "'.\nIf saxon7.jar was in the classpath, then "
+                        + "it should have\nstarted with "
+                        + "\"net.sf.saxon\".\n" + "If this actor does not use "
+                        + "saxon, then the results will be "
+                        + "different between\nruns that "
+                        + "use saxon and runs that " + "do not.\nDetails:\n"
+                        + "This actor uses "
+                        + "javax.xml.transform.TransformerFactory.\nThe "
+                        + "concrete TransformerFactory class can be "
+                        + "adjusted by\nsetting the "
+                        + "javax.xml.transform.TransformerFactory "
+                        + "property or by\nreading in a jar file that "
+                        + "has the appropriate\nService Provider set.\n"
+                        + "(For details about Jar Service Providers,\nsee "
+                        + "http://java.sun.com/j2se/1.4.2/docs/guide/jar/jar.html)\n"
+                        + "The saxon7.jar file includes a\n"
+                        + "META-INF/services/javax.xml.transform.TransformerFactory "
+                        + "\nfile that sets the TransformerFactory "
+                        + "class name start with 'net.sf.saxon'.");
                 }
+
                 _transformer = _transformerFactory.newTransformer(_xsltSource);
+
                 if (_debugging) {
-                    _debug("1 processing xsltSource change in "
-                            + getFullName());
+                    _debug("1 processing xsltSource change in " + getFullName());
                 }
             } else {
                 _transformer = null;
@@ -256,10 +260,7 @@ public class XSLTransformer extends Transformer{
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private javax.xml.transform.Source _xsltSource;
-
     private javax.xml.transform.TransformerFactory _transformerFactory;
-
     private javax.xml.transform.Transformer _transformer;
 }

@@ -26,15 +26,16 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.copernicus.java;
 
 import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.util.IllegalActionException;
 import soot.Local;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerationScope
+
 /**
    An interface used by the expression code generator for identifier lookup.
 
@@ -45,9 +46,7 @@ import soot.Local;
    @Pt.AcceptedRating Red (liuxj)
    @see ptolemy.data.expr.ParserScope
 */
-
 public interface CodeGenerationScope extends ParserScope {
-
     /** Look up and return the type of the value with the specified
      *  name in the scope. Return null if the name is not defined in
      *  this scope.
@@ -55,7 +54,5 @@ public interface CodeGenerationScope extends ParserScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
-    public Local getLocal(String name)
-            throws IllegalActionException;
+    public Local getLocal(String name) throws IllegalActionException;
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Transformer
+
 /**
    This is an abstract base class for actors that transform
    an input stream into an output stream.  It provides an input
@@ -47,9 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class Transformer extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -59,7 +58,7 @@ public class Transformer extends TypedAtomicActor {
      *   actor with this name.
      */
     public Transformer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
-// Ptolemy imports.
 import java.awt.Component;
 import java.util.Iterator;
 
@@ -40,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditorPaneFactory
+
 /**
    This is an attribute that can create a pane (called a "configuration
    widget") for interactively configuring its container.  To use this,
@@ -67,9 +67,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public class EditorPaneFactory extends Attribute {
-
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -79,7 +77,7 @@ public class EditorPaneFactory extends Attribute {
      *   an attribute already in the container.
      */
     public EditorPaneFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -93,7 +91,7 @@ public class EditorPaneFactory extends Attribute {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
-        return createEditorPane((NamedObj)getContainer());
+        return createEditorPane((NamedObj) getContainer());
     }
 
     /** Return a new default widget for configuring the specified object.
@@ -109,16 +107,20 @@ public class EditorPaneFactory extends Attribute {
 
         Iterator parameters = object.attributeList(Settable.class).iterator();
         boolean foundOne = false;
+
         while (parameters.hasNext()) {
-            Settable parameter = (Settable)parameters.next();
+            Settable parameter = (Settable) parameters.next();
+
             if (Configurer.isVisible(object, parameter)) {
                 foundOne = true;
                 query.addStyledEntry(parameter);
             }
         }
+
         if (!foundOne) {
             return new JLabel(object.getName() + " has no parameters.");
         }
+
         return query;
     }
 }

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.TypedIOPort;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// XYPlotter
+
 /**
    An XY plotter.  This plotter contains an instance of the Plot class
    from the Ptolemy plot package as a public member.
@@ -61,7 +62,6 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Green (cxh)
 */
 public class XYPlotter extends Plotter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +71,7 @@ public class XYPlotter extends Plotter {
      *   actor with this name.
      */
     public XYPlotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input ports and make them single ports.
@@ -83,29 +83,18 @@ public class XYPlotter extends Plotter {
         inputY.setMultiport(true);
         inputY.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-12\" y=\"-12\" "
-                + "width=\"24\" height=\"24\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"2\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"8\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"14\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<ellipse cx=\"-4\" cy=\"0\" "
-                + "rx=\"4\" ry=\"8\" "
-                + "style=\"stroke:red\"/>\n"
-                + "<ellipse cx=\"4\" cy=\"0\" "
-                + "rx=\"4\" ry=\"8\" "
-                + "style=\"stroke:red\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
+            + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+            + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<ellipse cx=\"-4\" cy=\"0\" " + "rx=\"4\" ry=\"8\" "
+            + "style=\"stroke:red\"/>\n" + "<ellipse cx=\"4\" cy=\"0\" "
+            + "rx=\"4\" ry=\"8\" " + "style=\"stroke:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,28 +127,36 @@ public class XYPlotter extends Plotter {
     public boolean postfire() throws IllegalActionException {
         int widthX = inputX.getWidth();
         int widthY = inputY.getWidth();
+
         if (widthX != widthY) {
             throw new IllegalActionException(this,
-                    " The number of input channels mismatch.");
+                " The number of input channels mismatch.");
         }
-        int offset = ((IntToken)startingDataset.getToken()).intValue();
+
+        int offset = ((IntToken) startingDataset.getToken()).intValue();
+
         for (int i = widthX - 1; i >= 0; i--) {
-            boolean hasX = false, hasY = false;
+            boolean hasX = false;
+            boolean hasY = false;
             double xValue = 0.0;
             double yValue = 0.0;
+
             if (inputX.hasToken(i)) {
-                xValue = ((DoubleToken)inputX.get(i)).doubleValue();
+                xValue = ((DoubleToken) inputX.get(i)).doubleValue();
                 hasX = true;
             }
+
             if (inputY.hasToken(i)) {
-                yValue = ((DoubleToken)inputY.get(i)).doubleValue();
+                yValue = ((DoubleToken) inputY.get(i)).doubleValue();
                 hasY = true;
             }
+
             if (hasX && hasY) {
                 // NOTE: We assume the superclass ensures this cast is safe.
-                ((Plot)plot).addPoint(i + offset, xValue, yValue, true);
+                ((Plot) plot).addPoint(i + offset, xValue, yValue, true);
             }
         }
+
         return super.postfire();
     }
 }

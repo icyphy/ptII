@@ -28,14 +28,17 @@ COPYRIGHTENDKEY
 @Pt.AcceptedRating Red (yuhong)
 
 */
-
 package ptolemy.data.unit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ptolemy.kernel.util.NamedObj;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// UnitUtilities.
+
 /**
    A set of manipulation routines that are useful for factoring most of
    the difficulty of dealing with units out of individual token classes.
@@ -61,7 +64,6 @@ import java.util.HashMap;
    @Pt.AcceptedRating Red (cxh)
 */
 public class UnitUtilities {
-
     /** There are no instances of this class.
      */
     private UnitUtilities() {
@@ -89,15 +91,18 @@ public class UnitUtilities {
             int units1Length = units1.length;
             int units2Length = units2.length;
             int[] result;
+
             if (units1Length < units2Length) {
                 result = new int[units2Length];
                 System.arraycopy(units2, 0, result, 0, units2Length);
+
                 for (int i = 0; i < units1Length; i++) {
                     result[i] += units1[i];
                 }
             } else {
                 result = new int[units1Length];
                 System.arraycopy(units1, 0, result, 0, units1Length);
+
                 for (int i = 0; i < units2Length; i++) {
                     result[i] += units2[i];
                 }
@@ -106,6 +111,7 @@ public class UnitUtilities {
             if (isUnitless(result)) {
                 return null;
             }
+
             return result;
         }
     }
@@ -133,21 +139,25 @@ public class UnitUtilities {
             int units1Length = units1.length;
             int units2Length = units2.length;
             int shorterLength = Math.min(units1Length, units2Length);
+
             for (int i = 0; i < shorterLength; i++) {
                 if (units1[i] != units2[i]) {
                     return false;
                 }
             }
+
             for (int i = shorterLength; i < units1Length; i++) {
                 if (units1[i] != 0) {
                     return false;
                 }
             }
+
             for (int i = shorterLength; i < units2Length; i++) {
                 if (units2[i] != 0) {
                     return false;
                 }
             }
+
             return true;
         }
     }
@@ -158,7 +168,6 @@ public class UnitUtilities {
      *  exponents of this token.
      */
     public static int[] copyUnitsArray(int[] units) {
-
         if (isUnitless(units)) {
             return null;
         }
@@ -175,11 +184,12 @@ public class UnitUtilities {
      */
     public static String getBaseUnitName(int categoryIndex) {
         synchronized (_indexTable) {
-            if (categoryIndex < 0 || categoryIndex >= _categories) {
+            if ((categoryIndex < 0) || (categoryIndex >= _categories)) {
                 // FIXME: exception?
                 return "unknown";
             } else {
                 String categoryName = (String) _categoryList.get(categoryIndex);
+
                 if (categoryName != null) {
                     return categoryName;
                 } else {
@@ -203,6 +213,7 @@ public class UnitUtilities {
     public static int getUnitCategoryIndex(String categoryName) {
         synchronized (_indexTable) {
             Integer index = (Integer) _indexTable.get(categoryName);
+
             if (index == null) {
                 //FIXME: throw an exception?
                 return -1;
@@ -223,6 +234,7 @@ public class UnitUtilities {
                 }
             }
         }
+
         return true;
     }
 
@@ -235,10 +247,12 @@ public class UnitUtilities {
      */
     public static int[] newUnitArrayInCategory(int index) {
         int[] units = new int[index + 1];
+
         // Note: java.util.Arrays not available on Tini Arrays.fill(units, 0);
         for (int i = 0; i < units.length; i++) {
             units[i] = 0;
         }
+
         units[index] = 1;
         return units;
     }
@@ -257,6 +271,7 @@ public class UnitUtilities {
     public static void registerUnitCategory(String categoryName) {
         synchronized (_indexTable) {
             Integer index = (Integer) _indexTable.get(categoryName);
+
             if (index != null) {
                 return;
             } else {
@@ -291,13 +306,16 @@ public class UnitUtilities {
         // negate the exponents of the argument token and add to
         // this token.
         int[] negation = null;
+
         if (!isUnitless(units2)) {
             int length = units2.length;
             negation = new int[length];
+
             for (int i = 0; i < length; i++) {
                 negation[i] = -units2[i];
             }
         }
+
         return addUnitsArray(units1, negation);
     }
 
@@ -306,10 +324,8 @@ public class UnitUtilities {
      */
     public static String summarizeUnitCategories() {
         synchronized (_indexTable) {
-            return "The registered categories are: "
-                + _categories
-                + " "
-                + _categoryList.toString();
+            return "The registered categories are: " + _categories + " "
+            + _categoryList.toString();
         }
     }
 
@@ -332,22 +348,24 @@ public class UnitUtilities {
             }
 
             //System.out.println(summarizeUnitCategories());
-
             String positiveUnits = "";
             String negativeUnits = "";
             boolean justOnePositive = true;
             boolean justOneNegative = true;
+
             for (int i = 0; i < units.length; i++) {
                 int exponent = units[i];
+
                 if (exponent != 0) {
                     String baseString = null;
                     baseString = UnitUtilities.getBaseUnitName(i);
+
                     if (exponent > 0) {
                         for (int j = 0; j < exponent; j++) {
                             if (positiveUnits.equals("")) {
                                 positiveUnits = baseString;
                             } else {
-                                positiveUnits += " * " + baseString;
+                                positiveUnits += (" * " + baseString);
                                 justOnePositive = false;
                             }
                         }
@@ -356,7 +374,7 @@ public class UnitUtilities {
                             if (negativeUnits.equals("")) {
                                 negativeUnits = baseString;
                             } else {
-                                negativeUnits += " * " + baseString;
+                                negativeUnits += (" * " + baseString);
                                 justOneNegative = false;
                             }
                         }
@@ -386,7 +404,6 @@ public class UnitUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The hash table that maps the name of a unit category to its
     // index.  This object also serves as a synchronization object for
     // the three fields of this class.

@@ -24,11 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// StatePair
+
 /**
    A pair of states.
    This class is used in the representation of alternating simulation.
@@ -40,9 +41,7 @@ package ptolemy.domains.fsm.kernel;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (yuhong)
 */
-
 public class StatePair {
-
     /** Construct an instance with the specified states.
      *  @param first The first state in the pair.
      *  @param second The second state in the pair.
@@ -64,9 +63,10 @@ public class StatePair {
      */
     public boolean equals(Object object) {
         if (object instanceof StatePair) {
-            return ((this.first() == ((StatePair)object).first()) &&
-                    (this.second() == ((StatePair)object).second()));
+            return ((this.first() == ((StatePair) object).first())
+            && (this.second() == ((StatePair) object).second()));
         }
+
         return false;
     }
 
@@ -105,8 +105,6 @@ public class StatePair {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private State _first;
     private State _second;
 }
-

@@ -24,27 +24,29 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
 import byucc.jhdl.Logic.Logic;
+
 import byucc.jhdl.base.Cell;
 
-import java.util.*;
+import soot.*;
 
-import ptolemy.copernicus.jhdl.util.*;
-import ptolemy.copernicus.jhdl.soot.*;
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.jimple.*;
-import soot.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * This class represents an abstract circuit topology. The primary
  * purpose of this class is to force the use of a bit-width resolve
@@ -58,20 +60,17 @@ import soot.*;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-public abstract class JHDLAtomicActor extends AtomicActor
-    implements Resolve, ConstructJHDL {
-
+public abstract class JHDLAtomicActor extends AtomicActor implements Resolve,
+    ConstructJHDL {
     JHDLAtomicActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
     }
 
     JHDLAtomicActor(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        super(container,container.uniqueName("C"));
+        throws IllegalActionException, NameDuplicationException {
+        super(container, container.uniqueName("C"));
     }
 
     public abstract boolean resolve();
-
-
 }

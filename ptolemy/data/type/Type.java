@@ -26,14 +26,15 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.type;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Type
+
 /**
    An interface representing the type of a Token.
 
@@ -43,9 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Red (neuendor)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public interface Type {
-
     /** Return a deep clone of this type.
      *  @return A Type.
      *  @exception CloneNotSupportedException If an instance cannot be cloned.
@@ -122,7 +121,6 @@ public interface Type {
      *  @return A String.
      */
     public String toString();
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

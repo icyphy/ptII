@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -50,6 +49,7 @@ import soot.util.Chain;
 
 //////////////////////////////////////////////////////////////////////////
 //// FieldOptimizationTransformer
+
 /**
    A Transformer that is responsible for inlining the values of parameters.
    The values of the parameters are taken from the model specified for this
@@ -81,106 +81,91 @@ public class FieldOptimizationTransformer extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("FieldOptimizationTransformer.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
-        SootClass stringClass =
-            Scene.v().loadClassAndSupport("java.lang.String");
+        SootClass stringClass = Scene.v().loadClassAndSupport("java.lang.String");
         Type stringType = RefType.v(stringClass);
-        SootClass objectClass =
-            Scene.v().loadClassAndSupport("java.lang.Object");
-        SootMethod toStringMethod =
-            objectClass.getMethod("java.lang.String toString()");
-        SootClass namedObjClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
+        SootClass objectClass = Scene.v().loadClassAndSupport("java.lang.Object");
+        SootMethod toStringMethod = objectClass.getMethod(
+                "java.lang.String toString()");
+        SootClass namedObjClass = Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
         SootMethod getAttributeMethod = namedObjClass.getMethod(
                 "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
         SootMethod attributeChangedMethod = namedObjClass.getMethod(
                 "void attributeChanged(ptolemy.kernel.util.Attribute)");
 
-        SootClass attributeClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
+        SootClass attributeClass = Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
         Type attributeType = RefType.v(attributeClass);
-        SootClass settableClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
+        SootClass settableClass = Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
         Type settableType = RefType.v(settableClass);
-        SootMethod getExpressionMethod =
-            settableClass.getMethod("java.lang.String getExpression()");
-        SootMethod setExpressionMethod =
-            settableClass.getMethod("void setExpression(java.lang.String)");
+        SootMethod getExpressionMethod = settableClass.getMethod(
+                "java.lang.String getExpression()");
+        SootMethod setExpressionMethod = settableClass.getMethod(
+                "void setExpression(java.lang.String)");
 
-        SootClass tokenClass =
-            Scene.v().loadClassAndSupport("ptolemy.data.Token");
+        SootClass tokenClass = Scene.v().loadClassAndSupport("ptolemy.data.Token");
         Type tokenType = RefType.v(tokenClass);
-        SootClass parameterClass =
-            Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
-        SootMethod getTokenMethod =
-            parameterClass.getMethod("ptolemy.data.Token getToken()");
-        SootMethod setTokenMethod =
-            parameterClass.getMethod("void setToken(ptolemy.data.Token)");
+        SootClass parameterClass = Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
+        SootMethod getTokenMethod = parameterClass.getMethod(
+                "ptolemy.data.Token getToken()");
+        SootMethod setTokenMethod = parameterClass.getMethod(
+                "void setToken(ptolemy.data.Token)");
 
         // Loop over all the actor instance classes.
-        for (Iterator i = _model.deepEntityList().iterator();
-             i.hasNext();) {
-            Entity entity = (Entity)i.next();
+        for (Iterator i = _model.deepEntityList().iterator(); i.hasNext();) {
+            Entity entity = (Entity) i.next();
             String className = PhaseOptions.getString(options, "targetPackage")
                 + "." + entity.getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
             for (Iterator fields = entityClass.getFields().iterator();
-                 fields.hasNext();) {
-                SootField field = (SootField)fields.next();
+                    fields.hasNext();) {
+                SootField field = (SootField) fields.next();
+
                 // FIXME: static fields too.
                 if (Modifier.isStatic(field.getModifiers())) {
                     continue;
                 }
+
                 boolean finalize = true;
                 Value fieldValue = null;
+
                 for (Iterator methods = entityClass.getMethods().iterator();
-                     (methods.hasNext() && finalize);) {
-                    SootMethod method = (SootMethod)methods.next();
+                        (methods.hasNext() && finalize);) {
+                    SootMethod method = (SootMethod) methods.next();
+
                     if (method.getName().equals("<init>")) {
                         Chain units = method.retrieveActiveBody().getUnits();
-                        Stmt stmt = (Stmt)units.getLast();
+                        Stmt stmt = (Stmt) units.getLast();
+
                         while (!stmt.equals(units.getFirst())) {
-                            if (stmt instanceof DefinitionStmt &&
-                                    ((DefinitionStmt)stmt)
-                                    .getLeftOp() instanceof InstanceFieldRef) {
-                                InstanceFieldRef ref =
-                                    (InstanceFieldRef) ((DefinitionStmt)stmt)
+                            if (stmt instanceof DefinitionStmt
+                                    && ((DefinitionStmt) stmt).getLeftOp() instanceof InstanceFieldRef) {
+                                InstanceFieldRef ref = (InstanceFieldRef) ((DefinitionStmt) stmt)
                                     .getLeftOp();
-                                if (ref.getField() == field
-                                        && fieldValue == null) {
-                                    fieldValue =
-                                        ((DefinitionStmt)stmt).getRightOp();
+
+                                if ((ref.getField() == field)
+                                        && (fieldValue == null)) {
+                                    fieldValue = ((DefinitionStmt) stmt)
+                                        .getRightOp();
                                     break;
                                 } else if (fieldValue != null) {
                                     finalize = false;
                                 }
                             }
-                            stmt = (Stmt)units.getPredOf(stmt);
+
+                            stmt = (Stmt) units.getPredOf(stmt);
                         }
                     }
                 }
-                if (finalize && fieldValue != null) {
-                    System.out.println("field " + field
-                            + " has final value = " + fieldValue);
+
+                if (finalize && (fieldValue != null)) {
+                    System.out.println("field " + field + " has final value = "
+                        + fieldValue);
                 }
             }
         }
     }
+
     private CompositeActor _model;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

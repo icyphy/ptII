@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -49,8 +48,10 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TokenEffigy
+
 /**
    An effigy for a file that contains one or more tokens, one per line,
    represented as text in the expression language.
@@ -62,7 +63,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class TokenEffigy extends Effigy {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
@@ -76,7 +76,7 @@ public class TokenEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public TokenEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -88,10 +88,12 @@ public class TokenEffigy extends Effigy {
      */
     public void append(Token token) {
         _tokens.add(token);
+
         // Notify the contained tableaux.
         Iterator tableaux = entityList(TokenTableau.class).iterator();
+
         while (tableaux.hasNext()) {
-            TokenTableau tableau = (TokenTableau)tableaux.next();
+            TokenTableau tableau = (TokenTableau) tableaux.next();
             tableau.append(token);
         }
     }
@@ -102,18 +104,20 @@ public class TokenEffigy extends Effigy {
      *   if the data is malformed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // The superclass does some handling of the url attribute.
         super.attributeChanged(attribute);
+
         if (attribute == uri) {
             try {
                 URL urlToRead = uri.getURL();
+
                 if (urlToRead != null) {
                     read(urlToRead);
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, null, ex,
-                        "Failed to read data: " + ex.getMessage());
+                    "Failed to read data: " + ex.getMessage());
             }
         }
     }
@@ -122,10 +126,12 @@ public class TokenEffigy extends Effigy {
      */
     public void clear() {
         _tokens.clear();
+
         // Notify the contained tableaux.
         Iterator tableaux = entityList(TokenTableau.class).iterator();
+
         while (tableaux.hasNext()) {
-            TokenTableau tableau = (TokenTableau)tableaux.next();
+            TokenTableau tableau = (TokenTableau) tableaux.next();
             tableau.clear();
         }
     }
@@ -146,32 +152,42 @@ public class TokenEffigy extends Effigy {
         if (input == null) {
             throw new IOException("Attempt to read from null input.");
         }
-        LineNumberReader reader = new LineNumberReader(
-                new InputStreamReader(input.openStream()));
+
+        LineNumberReader reader = new LineNumberReader(new InputStreamReader(
+                    input.openStream()));
+
         while (true) {
             // NOTE: The following tolerates all major line terminators.
             String line = reader.readLine();
-            if (line == null) break;
+
+            if (line == null) {
+                break;
+            }
+
             try {
                 // Parse the line.
                 if (_variable == null) {
                     _variable = new Variable(workspace());
                     _variable.setName("Expression evaluator");
                 }
+
                 _variable.setExpression(line);
+
                 Token token = _variable.getToken();
+
                 if (token != null) {
                     _tokens.add(token);
+
                     // Notify the contained tableaux.
-                    Iterator tableaux
-                        = entityList(TokenTableau.class).iterator();
+                    Iterator tableaux = entityList(TokenTableau.class).iterator();
+
                     while (tableaux.hasNext()) {
-                        ((TokenTableau)tableaux.next()).append(token);
+                        ((TokenTableau) tableaux.next()).append(token);
                     }
                 }
             } catch (KernelException ex) {
                 throw new IOException("Error evaluating data expression: "
-                        + ex.getMessage());
+                    + ex.getMessage());
             }
         }
     }
@@ -182,14 +198,15 @@ public class TokenEffigy extends Effigy {
     public void setTokens(List tokens) {
         _tokens.clear();
         _tokens.addAll(tokens);
+
         // Notify the contained tableaux.
         Iterator tableaux = entityList(TokenTableau.class).iterator();
+
         while (tableaux.hasNext()) {
-            TokenTableau tableau = (TokenTableau)tableaux.next();
+            TokenTableau tableau = (TokenTableau) tableaux.next();
             tableau.clear();
             tableau.append(tokens);
         }
-
     }
 
     /** Write the current data of this effigy to the specified file.
@@ -200,26 +217,29 @@ public class TokenEffigy extends Effigy {
      */
     public void writeFile(File file) throws IOException {
         Writer writer = null;
+
         if (file == null) {
             writer = new OutputStreamWriter(System.out);
         } else {
             writer = new FileWriter(file);
         }
+
         // Use a PrintWriter so that the local platform's notion
         // of line termination is used, making a more user-friendly output.
         // Note that the corresponding reader is platform-tolerant.
         PrintWriter print = new PrintWriter(writer);
         Iterator tokens = _tokens.iterator();
+
         while (tokens.hasNext()) {
-            Token token = (Token)tokens.next();
+            Token token = (Token) tokens.next();
             print.println(token.toString());
         }
+
         print.close();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The list of tokens read from the file.
     private ArrayList _tokens = new ArrayList();
 
@@ -232,7 +252,6 @@ public class TokenEffigy extends Effigy {
     /** A factory for creating new effigies.
      */
     public static class Factory extends EffigyFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -242,13 +261,12 @@ public class TokenEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
-
 
         /** Return false, indicating that this effigy factory is not
          *  capable of creating an effigy without a URL being specified.
@@ -270,11 +288,11 @@ public class TokenEffigy extends Effigy {
          *   does not have a recognized extension.
          *  @exception Exception If the URL cannot be read.
          */
-        public Effigy createEffigy(
-                CompositeEntity container, URL base, URL input)
-                throws Exception {
+        public Effigy createEffigy(CompositeEntity container, URL base,
+            URL input) throws Exception {
             if (input != null) {
                 String extension = getExtension(input);
+
                 if (extension.equals("ptd")) {
                     TokenEffigy effigy = new TokenEffigy(container,
                             container.uniqueName("effigy"));
@@ -282,6 +300,7 @@ public class TokenEffigy extends Effigy {
                     return effigy;
                 }
             }
+
             return null;
         }
     }

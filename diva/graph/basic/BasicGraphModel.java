@@ -24,6 +24,7 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.basic;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -35,6 +36,7 @@ import diva.graph.modular.Node;
 import diva.util.ArrayIterator;
 import diva.util.BasicPropertyContainer;
 import diva.util.SemanticObjectContainer;
+
 
 /**
  * A basic implementation of a mutable graph model that stores its
@@ -162,13 +164,15 @@ public class BasicGraphModel extends BasicModularGraphModel {
          * graph.
          */
         public Iterator inNodes() {
-            return new diva.util.IteratorAdapter () {
+            return new diva.util.IteratorAdapter() {
                     Iterator edges = inEdges();
+
                     public boolean hasNext() {
                         return edges.hasNext();
                     }
+
                     public Object next() {
-                        return ((Edge)edges.next()).getTail();
+                        return ((Edge) edges.next()).getTail();
                     }
                 };
         }
@@ -188,13 +192,15 @@ public class BasicGraphModel extends BasicModularGraphModel {
          * graph.
          */
         public Iterator outNodes() {
-            return new diva.util.IteratorAdapter () {
+            return new diva.util.IteratorAdapter() {
                     Iterator edges = outEdges();
+
                     public boolean hasNext() {
                         return edges.hasNext();
                     }
+
                     public Object next() {
-                        return ((Edge)edges.next()).getHead();
+                        return ((Edge) edges.next()).getHead();
                     }
                 };
         }
@@ -209,11 +215,13 @@ public class BasicGraphModel extends BasicModularGraphModel {
 
         public void setParent(Graph parent) {
             if (_parent != null) {
-                ((BasicCompositeNode)_parent).remove(this);
+                ((BasicCompositeNode) _parent).remove(this);
             }
-            _parent = (BasicCompositeNode)parent;
+
+            _parent = (BasicCompositeNode) parent;
+
             if (_parent != null) {
-                ((BasicCompositeNode)_parent).add(this);
+                ((BasicCompositeNode) _parent).add(this);
             }
         }
 
@@ -221,7 +229,6 @@ public class BasicGraphModel extends BasicModularGraphModel {
             Object o = this.getSemanticObject();
             return "BasicNode[" + o + "]";
         }
-
     }
 
     /**
@@ -251,13 +258,12 @@ public class BasicGraphModel extends BasicModularGraphModel {
             return _nodes.contains(n);
         }
 
-
         public int getNodeCount() {
             return _nodes.size();
         }
 
         public Node getNode(int i) {
-            return (Node)_nodes.get(i);
+            return (Node) _nodes.get(i);
         }
 
         public int getIndex(Node n) {
@@ -350,25 +356,29 @@ public class BasicGraphModel extends BasicModularGraphModel {
 
         public void setHead(Node n) {
             if (_head != null) {
-                ((BasicNode)_head).removeInEdge(this);
+                ((BasicNode) _head).removeInEdge(this);
             }
+
             _head = n;
+
             if (_head != null) {
-                ((BasicNode)_head).addInEdge(this);
+                ((BasicNode) _head).addInEdge(this);
             }
         }
 
         public void setTail(Node n) {
             if (_tail != null) {
-                ((BasicNode)_tail).removeOutEdge(this);
+                ((BasicNode) _tail).removeOutEdge(this);
             }
+
             _tail = n;
+
             if (_tail != null) {
-                ((BasicNode)_tail).addOutEdge(this);
+                ((BasicNode) _tail).addOutEdge(this);
             }
         }
 
-        public void setWeight(double weight ) {
+        public void setWeight(double weight) {
             _weight = weight;
         }
 
@@ -380,4 +390,3 @@ public class BasicGraphModel extends BasicModularGraphModel {
         }
     }
 }
-

@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
-
 
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.Token;
@@ -38,8 +36,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Ramp
+
 /**
    Produce an output token on each firing with a value that is
    incremented by the specified step each iteration. The
@@ -63,9 +63,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class Ramp extends SequenceSource {
-
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
@@ -79,7 +77,7 @@ public class Ramp extends SequenceSource {
      *   actor with this name.
      */
     public Ramp(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         init = new Parameter(this, "init");
         init.setExpression("0");
@@ -90,13 +88,11 @@ public class Ramp extends SequenceSource {
         output.setTypeAtLeast(init);
         output.setTypeAtLeast(step);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polygon points=\"-20,10 20,-10 20,10\" "
-                + "style=\"fill:grey\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<polygon points=\"-20,10 20,-10 20,10\" "
+            + "style=\"fill:grey\"/>\n" + "</svg>\n");
         _resultArray = new Token[1];
     }
 
@@ -124,9 +120,9 @@ public class Ramp extends SequenceSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Ramp newObject = (Ramp)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Ramp newObject = (Ramp) super.clone(workspace);
+
         // set the type constraints.
         newObject.output.setTypeAtLeast(newObject.init);
         newObject.output.setTypeAtLeast(newObject.step);
@@ -177,24 +173,30 @@ public class Ramp extends SequenceSource {
         if (count > _resultArray.length) {
             _resultArray = new Token[count];
         }
+
         for (int i = 0; i < count; i++) {
             _resultArray[i] = _stateToken;
+
             try {
                 step.update();
                 _stateToken = _stateToken.add(step.getToken());
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                        "Should not be thrown because we have already"
-                        + "verified that the tokens can be added");
+                    "Should not be thrown because we have already"
+                    + "verified that the tokens can be added");
             }
         }
+
         output.send(0, _resultArray, count);
+
         if (_firingCountLimit != 0) {
             _iterationCount += count;
+
             if (_iterationCount >= _firingCountLimit) {
                 return STOP_ITERATING;
             }
         }
+
         return COMPLETED;
     }
 
@@ -215,7 +217,6 @@ public class Ramp extends SequenceSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Token _stateToken = null;
     private Token[] _resultArray;
 }

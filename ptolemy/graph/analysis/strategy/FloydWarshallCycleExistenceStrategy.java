@@ -23,15 +23,16 @@
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FloydWarshallCycleExistenceStrategy
+
 /**
    Computation of cycle existence in directed graphs using an all pair shortest
    path algorithm based on the Floyd-Warshall algorithm.
@@ -44,10 +45,8 @@ import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
     implements CycleExistenceAnalyzer {
-
     /** Construct an instance of this analyzer for a given graph.
      *
      *  @param graph The given graph.
@@ -65,7 +64,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
      *  @return True if cyclic.
      */
     public boolean hasCycle() {
-        return ((Boolean)_result()).booleanValue();
+        return ((Boolean) _result()).booleanValue();
     }
 
     /** Return a description of the analyzer.
@@ -74,7 +73,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
      */
     public String toString() {
         return "Cycle existence analyzer"
-            + " based on the Floyd-Warshall algorithm.";
+        + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -97,19 +96,20 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
      */
     protected Object _compute() {
         boolean cyclic = false;
-        boolean [][] transitiveClosure = _strategy.transitiveClosureMatrix();
+        boolean[][] transitiveClosure = _strategy.transitiveClosureMatrix();
+
         for (int i = 0; i < transitiveClosure.length; i++) {
             if (transitiveClosure[i][i] == true) {
                 cyclic = true;
                 break;
             }
         }
+
         return new Boolean(cyclic);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The transitive closure analyzer used to check the existence of a cycle
     // in the associated graph.
     private FloydWarshallTransitiveClosureStrategy _strategy;

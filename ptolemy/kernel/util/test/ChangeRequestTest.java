@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util.test;
 
 import java.util.Collections;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ChangeRequestTest
+
 /**
    Test for ChangeRequest.
 
@@ -60,14 +61,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 */
 public class ChangeRequestTest implements ChangeListener {
-
     /** Constructor.
      */
     public ChangeRequestTest()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         _top = new TypedCompositeActor();
         _top.setName("top");
         _manager = new Manager();
+
         SDFDirector director = new SDFDirector();
         _top.setDirector(director);
         _top.setManager(_manager);
@@ -104,17 +105,13 @@ public class ChangeRequestTest implements ChangeListener {
         // If we do not implement ChangeListener, then ChangeRequest
         // will print any errors to stdout and continue.
         // This causes no end of trouble with the test suite
-
         // We can't throw and Exception here because this method in
         // the base class does not throw Exception.
-
         // In JDK1.4, we can construct exceptions from exceptions, but
         // not in JDK1.3.1
         //throw new RuntimeException(exception);
-
         throw new RuntimeException(exception.toString());
     }
-
 
     /** Finish a run.  Return the results.
      */
@@ -122,6 +119,7 @@ public class ChangeRequestTest implements ChangeListener {
         for (int i = 0; i < 4; i++) {
             _manager.iterate();
         }
+
         _manager.wrapup();
         return Collections.enumeration(_rec.getHistory(0));
     }
@@ -134,19 +132,24 @@ public class ChangeRequestTest implements ChangeListener {
                 protected void _execute() throws Exception {
                     _const.output.unlinkAll();
                     _rec.input.unlinkAll();
+
                     AddSubtract add = new AddSubtract(_top, "add");
-                    SampleDelay sampleDelay = new SampleDelay(_top, "sampleDelay");
+                    SampleDelay sampleDelay = new SampleDelay(_top,
+                            "sampleDelay");
                     sampleDelay.initialOutputs.setExpression("{4, 5}");
                     _top.connect(_const.output, add.plus);
-                    ComponentRelation relation =
-                        _top.connect(add.output, sampleDelay.input);
+
+                    ComponentRelation relation = _top.connect(add.output,
+                            sampleDelay.input);
                     _rec.input.link(relation);
+
                     // Any pre-existing input port whose connections
                     // are modified needs to have this method called.
                     _rec.input.createReceivers();
                     _top.connect(sampleDelay.output, add.plus);
                 }
             };
+
         _top.requestChange(change);
     }
 
@@ -156,22 +159,24 @@ public class ChangeRequestTest implements ChangeListener {
         if (_changeRequest == null) {
             _changeRequest = mutateConst2ChangeRequest();
         }
+
         _top.requestChange(_changeRequest);
     }
 
     public void waitForCompletionTask() {
-        Thread waitForCompletionThread =
-            new /*Ptolemy*/Thread ( new Runnable() {
+        Thread waitForCompletionThread = new Thread(new Runnable() {
                     public void run() {
                         System.out.println(Thread.currentThread().getName()
-                                + " About to wait for completion");
+                            + " About to wait for completion");
+
                         try {
                             _changeRequest.waitForCompletion();
                         } catch (Exception ex) {
                             System.out.println(ex);
                         }
+
                         System.out.println(Thread.currentThread().getName()
-                                + " Done waiting for completion");
+                            + " Done waiting for completion");
                     }
                 });
 
@@ -184,30 +189,25 @@ public class ChangeRequestTest implements ChangeListener {
         // Create an anonymous inner class
         _changeRequest = new ChangeRequest(this,
                 "Change request that always throws an Exception") {
-
-                protected void _execute() throws Exception {
-                    if (1 == 1) {
-                        throw new Exception("Always Thrown Exception");
+                    protected void _execute() throws Exception {
+                        if (1 == 1) {
+                            throw new Exception("Always Thrown Exception");
+                        }
                     }
-                }
-
-            };
+                };
         return _changeRequest;
     }
-
 
     /** Create a change request that sets const to 2.0. */
     public ChangeRequest mutateConst2ChangeRequest() {
         // Create an anonymous inner class
         _changeRequest = new ChangeRequest(this, "Changing Const to 2.0") {
-                protected void _execute() throws Exception {
-                    _const.value.setToken(new DoubleToken(2.0));
-                }
-            };
+                    protected void _execute() throws Exception {
+                        _const.value.setToken(new DoubleToken(2.0));
+                    }
+                };
         return _changeRequest;
     }
-
-
 
     /** Start a run.
      */
@@ -218,7 +218,6 @@ public class ChangeRequestTest implements ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // ChangeRequest that modifies the system.
     public ChangeRequest _changeRequest;
     private Manager _manager;

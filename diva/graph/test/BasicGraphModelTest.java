@@ -24,6 +24,7 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.test;
+
 import diva.graph.basic.BasicGraphModel;
 import diva.graph.modular.CompositeNode;
 import diva.graph.modular.Edge;
@@ -33,6 +34,7 @@ import diva.util.jester.TestFailedException;
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
 
+
 /**
  * A test suite for the BasicGraphModel class.
  *
@@ -40,17 +42,16 @@ import diva.util.jester.TestSuite;
  * @version $Id$
  */
 public class BasicGraphModelTest extends TestSuite {
-
     /** The graph factory interface
      */
     public interface GraphFactory {
-        public BasicGraphModel createGraph ();
+        public BasicGraphModel createGraph();
     }
 
     /** The factory for the BasicGraphModel class
      */
     public static class BasicGraphModelFactory implements GraphFactory {
-        public BasicGraphModel createGraph () {
+        public BasicGraphModel createGraph() {
             return new BasicGraphModel();
         }
     }
@@ -62,7 +63,7 @@ public class BasicGraphModelTest extends TestSuite {
 
     /** Constructor
      */
-    public BasicGraphModelTest (TestHarness harness, GraphFactory factory) {
+    public BasicGraphModelTest(TestHarness harness, GraphFactory factory) {
         setTestHarness(harness);
         setFactory(factory);
         this.factory = factory;
@@ -71,7 +72,7 @@ public class BasicGraphModelTest extends TestSuite {
     /**
      * runSuite()
      */
-    public void runSuite () {
+    public void runSuite() {
         testEmpty();
         testStarConnected();
         testBig();
@@ -82,9 +83,9 @@ public class BasicGraphModelTest extends TestSuite {
 
     /** Create a default test harness and run all tests on it.
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         new BasicGraphModelTest(new TestHarness(),
-                new BasicGraphModelTest.BasicGraphModelFactory()).run();
+            new BasicGraphModelTest.BasicGraphModelFactory()).run();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,17 +93,19 @@ public class BasicGraphModelTest extends TestSuite {
 
     /** Perform tests on an empty graph
      */
-    public void testEmpty () {
+    public void testEmpty() {
         runTestCase(new TestCase("Empty graph") {
                 BasicGraphModel g;
 
-                public void init () throws Exception {
+                public void init() throws Exception {
                     g = factory.createGraph();
                 }
-                public void run () throws Exception {
+
+                public void run() throws Exception {
                     ;
                 }
-                public void check () throws TestFailedException {
+
+                public void check() throws TestFailedException {
                     // assertExpr(g.getNodeCount(g) == 0, "Node count != 0");
                 }
             });
@@ -110,29 +113,33 @@ public class BasicGraphModelTest extends TestSuite {
 
     /** Test a star-connected graph
      */
-    public void testStarConnected () {
+    public void testStarConnected() {
         runTestCase(new TestCase("Star-connected from single node") {
                 BasicGraphModel g;
                 CompositeNode root;
 
-                public void init () throws Exception {
+                public void init() throws Exception {
                     startTimer();
                     g = factory.createGraph();
                     root = (CompositeNode) g.getRoot();
                 }
-                public void run () throws Exception {
+
+                public void run() throws Exception {
                     Node first = g.createNode(null);
                     g.addNode(this, first, root);
 
                     for (int i = 1; i < 32; i++) {
                         Node n = g.createNode(null);
                         g.addNode(this, n, root);
+
                         Edge e = g.createEdge(null);
                         g.connectEdge(this, e, first, n);
                     }
+
                     stopTimer();
                 }
-                public void check () throws TestFailedException {
+
+                public void check() throws TestFailedException {
                     assertExpr(g.getNodeCount(root) == 32, "Node count != 32");
                 }
             });
@@ -143,34 +150,39 @@ public class BasicGraphModelTest extends TestSuite {
      * a problem with the diva.graph package (apart from the bug
      * that won't even let you get the number of nodes).
      */
-    public void testBig () {
+    public void testBig() {
         runTestCase(new TestCase("Test 64 knode graph") {
                 BasicGraphModel g;
                 CompositeNode root;
                 Node[] nodes = new Node[65536];
 
-                public void init () throws Exception {
+                public void init() throws Exception {
                     startTimer();
                     g = factory.createGraph();
                     root = (CompositeNode) g.getRoot();
                 }
-                public void run () throws Exception {
+
+                public void run() throws Exception {
                     Node first = g.createNode(null);
                     g.addNode(this, first, root);
-                    //nodes[0] = first;
 
+                    //nodes[0] = first;
                     for (int i = 1; i < 65536; i++) {
                         Node n = g.createNode(null);
                         g.addNode(this, n, root);
+
                         //nodes[i] = n;
                         Edge e = g.createEdge(null);
                         int s = i / 2;
                         g.connectEdge(this, e, first, n);
                     }
+
                     stopTimer();
                 }
-                public void check () throws TestFailedException {
-                    assertExpr(g.getNodeCount(root) == 65536, "Node count != 65536");
+
+                public void check() throws TestFailedException {
+                    assertExpr(g.getNodeCount(root) == 65536,
+                        "Node count != 65536");
                 }
             });
     }

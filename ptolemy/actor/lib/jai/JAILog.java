@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -40,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAILog
+
 /**
    Output the logarithm of an image.  This actor can be used to reduce the
    dynamic range of an image.  For instance, the magnitude of a dft can
@@ -67,9 +68,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAILog extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -79,7 +78,7 @@ public class JAILog extends Transformer {
      *   actor with this name.
      */
     public JAILog(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -96,10 +95,12 @@ public class JAILog extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
         parameters.addSource(oldImage);
+
         RenderedOp newImage = JAI.create("log", parameters);
         output.send(0, new JAIImageToken(newImage));
     }

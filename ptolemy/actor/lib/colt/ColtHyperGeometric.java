@@ -25,13 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.HyperGeometric;
+import cern.jet.random.engine.DRand;
+
 import ptolemy.actor.gui.style.ChoiceStyle;
-import ptolemy.data.StringToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -39,11 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-import cern.jet.random.HyperGeometric;
-import cern.jet.random.engine.DRand;
 
 //////////////////////////////////////////////////////////////////////////
 //// HyperGeometric
+
 /**
    Produce a random sequence with a HyperGeometric distribution.  On each
    iteration, a new random number is produced.  The output port is of
@@ -58,9 +59,7 @@ import cern.jet.random.engine.DRand;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ColtHyperGeometric extends ColtRandomSource {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,8 +69,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtHyperGeometric(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
-
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);
@@ -126,7 +124,6 @@ public class ColtHyperGeometric extends ColtRandomSource {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-
         int NValue = ((IntToken) N.getToken()).intValue();
         int sValue = ((IntToken) s.getToken()).intValue();
         int nValue = ((IntToken) n.getToken()).intValue();
@@ -138,7 +135,6 @@ public class ColtHyperGeometric extends ColtRandomSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The random number for the current iteration.
     private int _current;
 }

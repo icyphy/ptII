@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.kernel;
 
 import java.util.LinkedList;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TMReceiver
+
 /**
    The receiver for the TM domain. This receiver contains a FIFO queue.
    Upon receiving a token, it creates a TMEvent. The properties of the
@@ -76,7 +77,6 @@ import ptolemy.kernel.util.NamedObj;
    @see ptolemy.domains.tm.kernel.TMDirector
 */
 public class TMReceiver extends AbstractReceiver {
-
     /** Construct an empty TMReceiver with no container.
      */
     public TMReceiver() {
@@ -87,7 +87,6 @@ public class TMReceiver extends AbstractReceiver {
     // TMReceiver(IOPort container), TMReceiver(IOPort container, name)
     // It could also use TMReceiver(IOPort container, priority)
     // like DDEReceiver(IOPort container, priority)
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -114,9 +113,10 @@ public class TMReceiver extends AbstractReceiver {
     public synchronized Token get() throws NoTokenException {
         if (_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
-                    "No more tokens in the TM receiver.");
+                "No more tokens in the TM receiver.");
         }
-        return (Token)_tokens.removeFirst();
+
+        return (Token) _tokens.removeFirst();
     }
 
     /** Return the director that created this receiver.
@@ -133,32 +133,37 @@ public class TMReceiver extends AbstractReceiver {
      *   or if the director is not an instance of TMDirector.
      */
     public TMDirector getDirector() throws IllegalActionException {
-        IOPort port = (IOPort)getContainer();
+        IOPort port = (IOPort) getContainer();
+
         if (port != null) {
             if (_directorVersion == port.workspace().getVersion()) {
                 return _director;
             }
+
             // Cache is invalid.  Reconstruct it.
             try {
                 port.workspace().getReadAccess();
-                Actor actor = (Actor)port.getContainer();
+
+                Actor actor = (Actor) port.getContainer();
+
                 if (actor != null) {
                     Director director;
-                    if ( (port.isOutput()) &&
-                            (actor instanceof CompositeActor) &&
-                            ((CompositeActor)actor).isOpaque()) {
+
+                    if ((port.isOutput()) && (actor instanceof CompositeActor)
+                            && ((CompositeActor) actor).isOpaque()) {
                         director = actor.getDirector();
                     } else {
                         director = actor.getExecutiveDirector();
                     }
+
                     if (director != null) {
                         if (director instanceof TMDirector) {
-                            _director = (TMDirector)director;
+                            _director = (TMDirector) director;
                             _directorVersion = port.workspace().getVersion();
                             return _director;
                         } else {
                             throw new IllegalActionException(getContainer(),
-                                    "Does not have a TMDirector.");
+                                "Does not have a TMDirector.");
                         }
                     }
                 }
@@ -166,8 +171,9 @@ public class TMReceiver extends AbstractReceiver {
                 port.workspace().doneReading();
             }
         }
+
         throw new IllegalActionException(getContainer(),
-                "Does not have a IOPort as the container of the receiver.");
+            "Does not have a IOPort as the container of the receiver.");
     }
 
     /** Return true, indicating that there is always room.
@@ -218,35 +224,40 @@ public class TMReceiver extends AbstractReceiver {
     public synchronized void put(Token token) {
         try {
             IOPort port = getContainer();
+
             if (port == null) {
                 throw new InternalErrorException(
-                        "put() requires that the port has a container");
+                    "put() requires that the port has a container");
             }
-            Parameter priority = (Parameter)port.getAttribute("priority");
+
+            Parameter priority = (Parameter) port.getAttribute("priority");
+
             if (priority == null) {
                 if (port.getContainer() == null) {
                     throw new InternalErrorException(
-                            "put() requires that the port '" + port
-                            + "' that contains this receiver be itself "
-                            + "contained");
+                        "put() requires that the port '" + port
+                        + "' that contains this receiver be itself "
+                        + "contained");
                 }
-                priority = (Parameter)((NamedObj)port.getContainer()).
-                    getAttribute("priority");
+
+                priority = (Parameter) ((NamedObj) port.getContainer())
+                    .getAttribute("priority");
             }
+
             int priorityValue = 5;
+
             if (priority != null) {
                 try {
-                    priorityValue = ((IntToken)priority.getToken()).
-                        intValue();
+                    priorityValue = ((IntToken) priority.getToken()).intValue();
                 } catch (ClassCastException ex) {
                     throw new InternalErrorException(null, ex,
-                            "priorityValue '" + priority.getToken()
-                            + "' must be an integer in " + getContainer());
+                        "priorityValue '" + priority.getToken()
+                        + "' must be an integer in " + getContainer());
                 }
             }
-            getDirector()._enqueueEvent(new TMEvent(this, token,
-                                                priorityValue, -1.0));
 
+            getDirector()._enqueueEvent(new TMEvent(this, token, priorityValue,
+                    -1.0));
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);
         }
@@ -265,7 +276,6 @@ public class TMReceiver extends AbstractReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The director that creates this receiver.
     private TMDirector _director;
     private long _directorVersion = -1;

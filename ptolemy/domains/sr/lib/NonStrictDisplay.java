@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.sr.lib;
 
 import javax.swing.text.BadLocationException;
@@ -36,6 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 /**
    Display the values of the tokens arriving on the input channels along
@@ -57,7 +57,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (pwhitake)
 */
 public class NonStrictDisplay extends Display {
-
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,7 +66,7 @@ public class NonStrictDisplay extends Display {
      *   actor with this name.
      */
     public NonStrictDisplay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
     }
@@ -82,21 +81,26 @@ public class NonStrictDisplay extends Display {
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
+
         for (int i = 0; i < width; i++) {
             String value;
+
             if (input.isKnown(i)) {
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
 
                     // If the window has been deleted, read the
                     // rest of the inputs.
-                    if (textArea == null) continue;
+                    if (textArea == null) {
+                        continue;
+                    }
 
                     value = token.toString();
+
                     // If it is a pure string, strip the quotation marks.
-                    if ((value.length() > 1) && value.startsWith("\"") &&
-                            value.endsWith("\"")) {
-                        value = value.substring(1, value.length()-1);
+                    if ((value.length() > 1) && value.startsWith("\"")
+                            && value.endsWith("\"")) {
+                        value = value.substring(1, value.length() - 1);
                     }
                 } else {
                     value = ABSENT_STRING;
@@ -108,7 +112,9 @@ public class NonStrictDisplay extends Display {
             textArea.append(value);
 
             // Append a newline character.
-            if (width > i + 1) textArea.append("\n");
+            if (width > (i + 1)) {
+                textArea.append("\n");
+            }
 
             // Regrettably, the default in swing is that the top
             // of the textArea is visible, not the most recent text.
@@ -117,24 +123,24 @@ public class NonStrictDisplay extends Display {
             // caret position (despite the fact that the caret
             // is already where want it).
             try {
-                int lineOffset = textArea
-                    .getLineStartOffset(textArea.getLineCount() - 1);
+                int lineOffset = textArea.getLineStartOffset(textArea
+                        .getLineCount() - 1);
                 textArea.setCaretPosition(lineOffset);
             } catch (BadLocationException ex) {
                 // Ignore ... worst case is that the scrollbar
                 // doesn't move.
             }
         }
+
         if (textArea != null) {
             textArea.append("\n");
         }
+
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private static final String ABSENT_STRING = "absent";
     private static final String UNDEFINED_STRING = "undefined";
-
 }

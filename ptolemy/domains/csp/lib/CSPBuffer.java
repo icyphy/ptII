@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.lib;
 
 import ptolemy.actor.NoTokenException;
@@ -42,8 +41,10 @@ import ptolemy.domains.csp.kernel.ConditionalSend;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CSPBuffer
+
 /**
    A single channel buffer. This actor is the canonical example of how
    to use a CDO construct. It is parameterized by the Parameter "depth",
@@ -58,9 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (nsmyth)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class CSPBuffer extends CSPActor {
-
     /** Construct a CSPBuffer in the default workspace with an empty
      *  string as its name. The actor is parameterized by its depth,
      *  which must be an integer. The default depth of the buffer is
@@ -75,10 +74,9 @@ public class CSPBuffer extends CSPActor {
      *   with a port already in this actor, or if the parameter name
      *   coincides with a parameter already in this actor.
      */
-    public CSPBuffer() throws IllegalActionException,
-            NameDuplicationException {
+    public CSPBuffer() throws IllegalActionException, NameDuplicationException {
         super();
-        depth = new Parameter(this, "depth", (new IntToken(1)) );
+        depth = new Parameter(this, "depth", (new IntToken(1)));
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
 
@@ -105,7 +103,7 @@ public class CSPBuffer extends CSPActor {
      *   coincides with an entity already in the container.
      */
     public CSPBuffer(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, 1);
     }
 
@@ -128,9 +126,9 @@ public class CSPBuffer extends CSPActor {
      *   with an entity already in the container.
      */
     public CSPBuffer(TypedCompositeActor container, String name, int theDepth)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        depth = new Parameter(this, "depth", (new IntToken(theDepth)) );
+        depth = new Parameter(this, "depth", (new IntToken(theDepth)));
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
 
@@ -166,12 +164,14 @@ public class CSPBuffer extends CSPActor {
      */
     public void fire() throws IllegalActionException {
         try {
-            int iDepth = ((IntToken)depth.getToken()).intValue();
+            int iDepth = ((IntToken) depth.getToken()).intValue();
             _buffer = new Token[iDepth];
+
             int count = 0;
             boolean guard = false;
             boolean continueCDO = true;
             ConditionalBranch[] branches = new ConditionalBranch[2];
+
             while (continueCDO) {
                 // step 1
                 guard = (_size < iDepth);
@@ -196,9 +196,9 @@ public class CSPBuffer extends CSPActor {
                     // all guards false so exit CDO
                     continueCDO = false;
                 } else {
-                    throw new IllegalActionException(getName() + ": " +
-                            "invalid branch id returned during " +
-                            "execution of CDO.");
+                    throw new IllegalActionException(getName() + ": "
+                        + "invalid branch id returned during "
+                        + "execution of CDO.");
                 }
 
                 count++;
@@ -208,10 +208,8 @@ public class CSPBuffer extends CSPActor {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // The array storing the buffered Tokens.
     private Token[] _buffer;
 

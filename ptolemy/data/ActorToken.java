@@ -35,6 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorToken
+
 /**
    A token that contains an actor.  This token allows components to be
    moved around in a model.  One subtlety is that actors are not,
@@ -50,14 +51,14 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ActorToken extends Token {
-
     public ActorToken(Entity entity) throws IllegalActionException {
         super();
+
         try {
-            _entity = (Entity)entity.clone();
-        } catch(CloneNotSupportedException ex) {
+            _entity = (Entity) entity.clone();
+        } catch (CloneNotSupportedException ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to create actor token");
+                "Failed to create actor token");
         }
     }
 
@@ -68,10 +69,10 @@ public class ActorToken extends Token {
      */
     public Entity getEntity() {
         try {
-            return (Entity)_entity.clone();
-        } catch(CloneNotSupportedException ex) {
+            return (Entity) _entity.clone();
+        } catch (CloneNotSupportedException ex) {
             throw new RuntimeException(
-                    "Failed to clone actor, but I already cloned it once!!!");
+                "Failed to clone actor, but I already cloned it once!!!");
         }
     }
 
@@ -93,11 +94,12 @@ public class ActorToken extends Token {
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof ActorToken) {
             return new BooleanToken(this == token);
-        } else
+        } else {
             throw new IllegalActionException(
-                    "Equality test not supported between "
-                    + this.getClass().getName() + " and "
-                    + token.getClass().getName() + ".");
+                "Equality test not supported between "
+                + this.getClass().getName() + " and "
+                + token.getClass().getName() + ".");
+        }
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -112,7 +114,6 @@ public class ActorToken extends Token {
     }
 
     public static class ActorType implements Type, Serializable {
-
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -130,14 +131,12 @@ public class ActorToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
-        public Token convert(Token token)
-                throws IllegalActionException {
+        public Token convert(Token token) throws IllegalActionException {
             if (token instanceof ActorToken) {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                        + token +
-                        " into a test token, which is not possible.");
+                    + token + " into a test token, which is not possible.");
             }
         }
 
@@ -182,7 +181,6 @@ public class ActorToken extends Token {
         public int getTypeHash() {
             return Type.HASH_INVALID;
         }
-
 
         /** Determine if this type corresponds to an instantiable token
          *  classes. A BaseType is instantiable if it does not correspond

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Scale
+
 /**
    Produce an output token on each firing with a value that is
    equal to a scaled version of the input.  The actor is polymorphic
@@ -68,9 +69,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (yuhong)
 */
-
 public class Scale extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -80,7 +79,7 @@ public class Scale extends Transformer {
      *   actor with this name.
      */
     public Scale(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         factor = new Parameter(this, "factor");
         factor.setExpression("1");
@@ -91,10 +90,9 @@ public class Scale extends Transformer {
         output.setTypeAtLeast(new PortParameterFunction(input, factor));
 
         // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-30,-20 30,-4 30,4 -30,20\" "
-                + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-30,-20 30,-4 30,4 -30,20\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,7 +112,6 @@ public class Scale extends Transformer {
      */
     public Parameter scaleOnLeft;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -125,11 +122,10 @@ public class Scale extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Scale newObject = (Scale)super.clone(workspace);
-        PortParameterFunction function =
-            new PortParameterFunction(newObject.input, newObject.factor);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Scale newObject = (Scale) super.clone(workspace);
+        PortParameterFunction function = new PortParameterFunction(newObject.input,
+                newObject.factor);
         newObject.output.setTypeAtLeast(function);
         return newObject;
     }
@@ -143,26 +139,28 @@ public class Scale extends Transformer {
             Token in = input.get(0);
             Token factorToken = factor.getToken();
             Token result;
-            if (((BooleanToken)scaleOnLeft.getToken()).booleanValue()) {
+
+            if (((BooleanToken) scaleOnLeft.getToken()).booleanValue()) {
                 // Scale on the left.
                 result = _scaleOnLeft(in, factorToken);
             } else {
                 // Scale on the right.
                 result = _scaleOnRight(in, factorToken);
             }
+
             output.send(0, result);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Scale the given input token on the left by the given factor.
     private Token _scaleOnLeft(Token input, Token factor)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (input instanceof ArrayToken) {
-            Token[] argArray = ((ArrayToken)input).arrayValue();
+            Token[] argArray = ((ArrayToken) input).arrayValue();
             Token[] result = new Token[argArray.length];
+
             for (int i = 0; i < argArray.length; i++) {
                 result[i] = _scaleOnLeft(argArray[i], factor);
             }
@@ -175,10 +173,11 @@ public class Scale extends Transformer {
 
     // Scale the given input token on the right by the given factor.
     private Token _scaleOnRight(Token input, Token factor)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (input instanceof ArrayToken) {
-            Token[] argArray = ((ArrayToken)input).arrayValue();
+            Token[] argArray = ((ArrayToken) input).arrayValue();
             Token[] result = new Token[argArray.length];
+
             for (int i = 0; i < argArray.length; i++) {
                 result[i] = _scaleOnRight(argArray[i], factor);
             }
@@ -191,7 +190,6 @@ public class Scale extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // This class implements a monotonic function of the type of a
     // port and a parameter.
     // The function value is determined by:
@@ -205,7 +203,6 @@ public class Scale extends Transformer {
     // array is the result of a recursive call to this function. This allows
     // the port type to be an array or array, for example.
     private class PortParameterFunction extends MonotonicFunction {
-
         private PortParameterFunction(TypedIOPort port, Parameter param) {
             _port = port;
             _param = param;
@@ -231,25 +228,26 @@ public class Scale extends Transformer {
          */
         public InequalityTerm[] getVariables() {
             InequalityTerm portTerm = _port.getTypeTerm();
+
             if (portTerm.isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
                 variable[0] = portTerm;
                 return variable;
             }
+
             return (new InequalityTerm[0]);
         }
 
         ///////////////////////////////////////////////////////////////
         ////                      private inner methods            ////
-
         // compute the function value based on the types of the port
         // and the parameter.
         private Object compute(Type portType, Type paramType) {
             if (portType == BaseType.UNKNOWN) {
                 return BaseType.UNKNOWN;
             } else if (portType instanceof ArrayType) {
-                Type elementType = ((ArrayType)portType).getElementType();
-                Type newElementType = (Type)compute(elementType, paramType);
+                Type elementType = ((ArrayType) portType).getElementType();
+                Type newElementType = (Type) compute(elementType, paramType);
                 return new ArrayType(newElementType);
             } else {
                 CPO lattice = TypeLattice.lattice();
@@ -259,7 +257,6 @@ public class Scale extends Transformer {
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-
         private TypedIOPort _port;
         private Parameter _param;
     }

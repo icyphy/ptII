@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MoMLFilter
+
 /**
    This class filters MoML (modeling markup language) identifiers.
    It can be used to
@@ -46,7 +47,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public interface MoMLFilter {
-
     /** Given a container, attribute name and attribute value,
      *  return a new attribute value.  Note that "attribute"
      *  means XML attribute, not Ptolemy II attribute. Also,
@@ -89,8 +89,8 @@ public interface MoMLFilter {
      *   to leave it unchanged, or null to cause the current element
      *   to be ignored (unless the attributeValue argument is null).
      */
-    public String filterAttributeValue(NamedObj container,
-            String element, String attributeName, String attributeValue);
+    public String filterAttributeValue(NamedObj container, String element,
+        String attributeName, String attributeValue);
 
     /** Make modifications to the specified container, which is
      *  defined in a MoML element with the specified name.
@@ -109,7 +109,7 @@ public interface MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception;
+        throws Exception;
 
     /** Return a string that describes what the filter does.
      *  @return A description of the filter (ending with a newline).

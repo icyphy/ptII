@@ -31,8 +31,10 @@ import java.util.Vector;
 
 import ptolemy.actor.IOPort;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnitExpr
+
 /** A UnitExpr contains UnitTerms.
     @author Rowland R Johnson
     @version $Id$
@@ -41,7 +43,6 @@ import ptolemy.actor.IOPort;
     @Pt.AcceptedRating Red (rowland)
 */
 public class UnitExpr implements UnitPresentation {
-
     /** Construct an empty (i.e. no UnitTerms) UnitExpr.
      *
      */
@@ -55,8 +56,8 @@ public class UnitExpr implements UnitPresentation {
      */
     public UnitExpr(IOPort ioPort) {
         UnitTerm uTerm = new UnitTerm();
-        uTerm.setVariable(
-            ioPort.getContainer().getName() + "." + ioPort.getName());
+        uTerm.setVariable(ioPort.getContainer().getName() + "."
+            + ioPort.getName());
         _uTerms.add(uTerm);
     }
 
@@ -76,10 +77,12 @@ public class UnitExpr implements UnitPresentation {
     public UnitExpr copy() {
         UnitExpr retv = new UnitExpr();
         Vector newUTerms = new Vector();
+
         for (int i = 0; i < _uTerms.size(); i++) {
             UnitTerm term = (UnitTerm) (_uTerms.elementAt(i));
             newUTerms.add(term.copy());
         }
+
         retv._setUTerms(newUTerms);
         return retv;
     }
@@ -90,9 +93,11 @@ public class UnitExpr implements UnitPresentation {
     public String descriptiveForm() {
         Iterator iter = _uTerms.iterator();
         String retv = ((UnitTerm) (iter.next())).descriptiveForm();
+
         while (iter.hasNext()) {
-            retv += " " + ((UnitTerm) (iter.next())).descriptiveForm();
+            retv += (" " + ((UnitTerm) (iter.next())).descriptiveForm());
         }
+
         return retv;
     }
 
@@ -101,10 +106,10 @@ public class UnitExpr implements UnitPresentation {
      * otherwise.
      */
     public Unit getSingleUnit() {
-        if (_uTerms.size() == 1
-            && ((UnitTerm) _uTerms.elementAt(0)).isUnit()) {
+        if ((_uTerms.size() == 1) && ((UnitTerm) _uTerms.elementAt(0)).isUnit()) {
             return ((UnitTerm) _uTerms.elementAt(0)).getUnit();
         }
+
         return null;
     }
 
@@ -121,9 +126,11 @@ public class UnitExpr implements UnitPresentation {
     public UnitExpr invert() {
         UnitExpr retv = new UnitExpr();
         Vector myUTerms = new Vector();
+
         for (int i = 0; i < _uTerms.size(); i++) {
             myUTerms.add(((UnitTerm) (_uTerms.elementAt(i))).invert());
         }
+
         retv._setUTerms(myUTerms);
         return retv;
     }
@@ -138,19 +145,23 @@ public class UnitExpr implements UnitPresentation {
      */
     public UnitExpr reduce() {
         _flatten();
+
         Unit reductionUnit = UnitLibrary.Identity.copy();
         Vector newUTerms = new Vector();
+
         for (int i = 0; i < _uTerms.size(); i++) {
             UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
+
             if (unitTerm.isUnit()) {
-                reductionUnit =
-                    reductionUnit.multiplyBy(
-                        unitTerm.getUnit().pow(unitTerm.getExponent()));
+                reductionUnit = reductionUnit.multiplyBy(unitTerm.getUnit().pow(unitTerm
+                            .getExponent()));
             } else {
                 newUTerms.add(unitTerm);
             }
         }
+
         newUTerms.add(new UnitTerm(reductionUnit));
+
         UnitExpr retv = new UnitExpr();
         retv._setUTerms(newUTerms);
         return retv;
@@ -158,19 +169,21 @@ public class UnitExpr implements UnitPresentation {
 
     public String toString() {
         String retv = "UnitExpr:[";
+
         if (_uTerms.size() > 0) {
             retv += ((UnitTerm) (_uTerms.elementAt(0))).toString();
+
             for (int i = 1; i < _uTerms.size(); i++) {
-                retv += " " + ((UnitTerm) (_uTerms.elementAt(i))).toString();
+                retv += (" " + ((UnitTerm) (_uTerms.elementAt(i))).toString());
             }
         }
+
         retv += "]";
         return retv;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     protected void _setUTerms(Vector uTerms) {
         _uTerms = uTerms;
     }
@@ -181,11 +194,15 @@ public class UnitExpr implements UnitPresentation {
         if (_isFlat) {
             return;
         }
+
         Vector newUTerms = new Vector();
+
         for (int i = 0; i < _uTerms.size(); i++) {
             UnitTerm unitTerm = (UnitTerm) (_uTerms.elementAt(i));
+
             if (unitTerm.isUnitExpr()) {
                 UnitExpr uExpr = unitTerm.getUnitExpr();
+
                 if (uExpr != null) {
                     uExpr._flatten();
                     newUTerms.addAll(uExpr.getUTerms());
@@ -194,6 +211,7 @@ public class UnitExpr implements UnitPresentation {
                 newUTerms.add(unitTerm);
             }
         }
+
         _isFlat = true;
         _setUTerms(newUTerms);
     }
@@ -202,5 +220,4 @@ public class UnitExpr implements UnitPresentation {
     ////                         private variables                 ////
     boolean _isFlat = false;
     Vector _uTerms = new Vector();
-
 }

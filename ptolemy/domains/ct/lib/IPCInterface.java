@@ -25,12 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// IPCInterface
+
 /**
    Interface for actors that support inter-process communication.
    @author  Jie Liu, William Wu

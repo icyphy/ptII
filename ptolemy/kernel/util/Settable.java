@@ -25,12 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.io.Serializable;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// Settable
+
 /**
    This is an interface for attributes that can have their values
    externally set.  An attribute class that implements this interface has to
@@ -80,9 +82,7 @@ import java.io.Serializable;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (cxh)
 */
-
 public interface Settable extends Nameable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -101,7 +101,6 @@ public interface Settable extends Nameable {
      *   if there is none.
      */
     public String getDefaultExpression();
-
 
     /** Get the value of the attribute that has been set by setExpression(),
      *  or null if there is none.
@@ -183,10 +182,10 @@ public interface Settable extends Nameable {
      *  the enclosing interface because its constructor is private.
      */
     public static class Visibility implements Serializable {
-
         // Private constructor prevents construction outside.
         // This constructor should not be called!
         // it is protected to work around a compiler bug in JDK1.2.2
-        protected Visibility() {}
+        protected Visibility() {
+        }
     }
 }

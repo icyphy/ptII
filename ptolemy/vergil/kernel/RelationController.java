@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel;
 
 import java.awt.Color;
@@ -44,8 +43,10 @@ import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RelationController
+
 /**
    This class provides interaction with nodes that represent Ptolemy II
    relations.  It provides a double click binding to edit the parameters
@@ -59,7 +60,6 @@ import diva.util.java2d.Polygon2D;
    @Pt.AcceptedRating Red (johnr)
 */
 public class RelationController extends ParameterizedNodeController {
-
     /** Create a relation controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
@@ -69,8 +69,8 @@ public class RelationController extends ParameterizedNodeController {
         setNodeRenderer(new RelationRenderer());
 
         // Add to the context menu.
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new GetDocumentationAction()));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                new GetDocumentationAction()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,27 +85,31 @@ public class RelationController extends ParameterizedNodeController {
             double w = 12.0;
 
             Polygon2D.Double polygon = new Polygon2D.Double();
-            polygon.moveTo(w/2, 0);
-            polygon.lineTo(0, h/2);
-            polygon.lineTo(-w/2, 0);
-            polygon.lineTo(0, -h/2);
+            polygon.moveTo(w / 2, 0);
+            polygon.lineTo(0, h / 2);
+            polygon.lineTo(-w / 2, 0);
+            polygon.lineTo(0, -h / 2);
             polygon.closePath();
+
             Figure figure = new BasicFigure(polygon, Color.black);
+
             if (n != null) {
-                Vertex vertex = (Vertex)n;
+                Vertex vertex = (Vertex) n;
                 Relation relation = (Relation) vertex.getContainer();
-                ActorGraphModel model =
-                    (ActorGraphModel)getController().getGraphModel();
-                figure.setToolTipText(relation.getName(
-                                              model.getPtolemyModel()));
-                StringAttribute _colorAttr =
-                    (StringAttribute) (relation.getAttribute("_color"));
+                ActorGraphModel model = (ActorGraphModel) getController()
+                                                              .getGraphModel();
+                figure.setToolTipText(relation.getName(model.getPtolemyModel()));
+
+                StringAttribute _colorAttr = (StringAttribute) (relation
+                    .getAttribute("_color"));
+
                 if (_colorAttr != null) {
                     String _color = _colorAttr.getExpression();
-                    ((BasicFigure) figure).setFillPaint(
-                            SVGUtilities.getColor(_color));
+                    ((BasicFigure) figure).setFillPaint(SVGUtilities.getColor(
+                            _color));
                 }
             }
+
             return new CompositeFigure(figure);
         }
     }

@@ -34,12 +34,9 @@ package diva.resource;
  * @version $Id$
  */
 public class DefaultBundle extends RelativeBundle {
-
     /** Create a new Bundle of default resources.
      */
-    public DefaultBundle () {
+    public DefaultBundle() {
         super("diva.resource.Defaults", null, null);
     }
 }
-
-

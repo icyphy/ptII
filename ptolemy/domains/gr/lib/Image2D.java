@@ -32,10 +32,10 @@ import java.awt.Toolkit;
 import java.net.URL;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.domains.gr.kernel.GRActor2D;
 import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.canvas.toolbox.ImageFigure;
@@ -55,7 +55,6 @@ import diva.canvas.toolbox.ImageFigure;
    @Pt.AcceptedRating Yellow (chf)
 */
 public class Image2D extends GRActor2D {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,7 +64,7 @@ public class Image2D extends GRActor2D {
      *   actor with this name.
      */
     public Image2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileOrURL = new FileParameter(this, "fileOrURL");
@@ -89,7 +88,6 @@ public class Image2D extends GRActor2D {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Create the imageFigure.
      *  @exception IllegalActionException If the base class throws such
      *  an exception.
@@ -108,7 +106,6 @@ public class Image2D extends GRActor2D {
      *  @exception IllegalActionException If the selected file does not exist.
      */
     protected ImageFigure _createFigure() throws IllegalActionException {
-
         URL url = fileOrURL.asURL();
 
         Image image = Toolkit.getDefaultToolkit().createImage(url);
@@ -118,7 +115,6 @@ public class Image2D extends GRActor2D {
         return figure;
     }
 
-
     /** Set up the scene graph connections of this actor.
      *
      *  @exception IllegalActionException Always thrown for this base class.
@@ -126,7 +122,6 @@ public class Image2D extends GRActor2D {
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0, new Scene2DToken(_figure));
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

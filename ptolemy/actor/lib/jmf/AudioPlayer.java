@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jmf;
 
 import java.awt.Component;
@@ -49,8 +48,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AudioPlayer
+
 /**
    This actor accepts an ObjectToken that contains a DataSource.
    This is typically obtained from the output of the StreamLoader
@@ -64,9 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class AudioPlayer extends Sink implements ControllerListener {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -76,7 +75,7 @@ public class AudioPlayer extends Sink implements ControllerListener {
      *   actor with this name.
      */
     public AudioPlayer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -102,25 +101,28 @@ public class AudioPlayer extends Sink implements ControllerListener {
     public boolean postfire() throws IllegalActionException {
         ObjectToken objectToken = (ObjectToken) input.get(0);
         DataSource input = (DataSource) objectToken.getValue();
+
         if (_player != null) {
             _player.removeControllerListener(this);
         }
+
         try {
             _player = Manager.createRealizedPlayer(input);
             _player.addControllerListener(this);
             _player.prefetch();
         } catch (IOException ex) {
             throw new IllegalActionException(this,
-                    "Cannot open file: " + ex.toString());
+                "Cannot open file: " + ex.toString());
         } catch (MediaException ex) {
             throw new IllegalActionException(this,
-                    "Exception thrown by media framework: " + ex.toString());
+                "Exception thrown by media framework: " + ex.toString());
         }
 
         _player.setMediaTime(_startTime);
 
         _frame = new JFrame();
         _container = _frame.getContentPane();
+
         Component controlPanel = _player.getControlPanelComponent();
         _container.add(controlPanel);
         _frame.pack();
@@ -144,7 +146,3 @@ public class AudioPlayer extends Sink implements ControllerListener {
     /** Start time for the audio clip. */
     private Time _startTime = new Time(0.0);
 }
-
-
-
-

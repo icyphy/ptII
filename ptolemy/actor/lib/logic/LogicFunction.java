@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.logic;
 
 import ptolemy.actor.lib.Transformer;
@@ -39,11 +38,12 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/logic/logic.xml.
-
 //////////////////////////////////////////////////////////////////////////
 //// LogicFunction
+
 /**
    Produce an output token on each firing with a value that is
    equal to the specified logic operator of the input(s).
@@ -78,7 +78,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Green (pwhitake)
 */
 public class LogicFunction extends Transformer {
-
     /** Construct an actor with the given container and name.  Set the
      *  logic function to the default ("and").  Set the types of the ports
      *  to boolean.
@@ -90,7 +89,7 @@ public class LogicFunction extends Transformer {
      *   actor with this name.
      */
     public LogicFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -105,11 +104,10 @@ public class LogicFunction extends Transformer {
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,7 +121,6 @@ public class LogicFunction extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Override the base class to determine which function is being
      *  specified.  Read the value of the function attribute and set
      *  the cached value appropriately.
@@ -131,11 +128,9 @@ public class LogicFunction extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws  IllegalActionException {
-
+        throws IllegalActionException {
         if (attribute == function) {
-            String functionName =
-                function.getExpression().trim().toLowerCase();
+            String functionName = function.getExpression().trim().toLowerCase();
 
             if (functionName.equals("and")) {
                 _function = _AND;
@@ -157,9 +152,9 @@ public class LogicFunction extends Transformer {
                 _negate = true;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized logic function: " + functionName
-                        + ".  Valid functions are 'and', 'or', 'xor', "
-                        + "'nand', 'nor', and 'xnor'.");
+                    "Unrecognized logic function: " + functionName
+                    + ".  Valid functions are 'and', 'or', 'xor', "
+                    + "'nand', 'nor', and 'xnor'.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -174,25 +169,28 @@ public class LogicFunction extends Transformer {
     public void fire() throws IllegalActionException {
         BooleanToken value = null;
         BooleanToken in = null;
+
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                in = (BooleanToken)(input.get(i));
+                in = (BooleanToken) (input.get(i));
+
                 if (in != null) {
                     value = _updateFunction(in, value);
                 }
             }
         }
+
         if (value != null) {
             if (_negate) {
                 value = value.not();
             }
-            output.send(0, (BooleanToken)value);
+
+            output.send(0, (BooleanToken) value);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /** Calculate the function on the given arguments.
      *  @param in The new input value.  Should never be null.
@@ -201,30 +199,34 @@ public class LogicFunction extends Transformer {
      *  @exception IllegalActionException If thrown by BooleanToken operations.
      */
     protected BooleanToken _updateFunction(BooleanToken in, BooleanToken old)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Token result;
+
         if (old == null) {
             result = in;
         } else {
-            switch(_function) {
+            switch (_function) {
             case _AND:
                 result = old.and(in);
                 break;
+
             case _OR:
                 result = old.or(in);
                 break;
+
             case _XOR:
                 result = old.xor(in);
                 break;
+
             default:
                 throw new InternalErrorException(
-                        "Invalid value for _function private variable. "
-                        + "LogicFunction actor (" + getFullName()
-                        + ")"
-                        + " on function type " + _function);
+                    "Invalid value for _function private variable. "
+                    + "LogicFunction actor (" + getFullName() + ")"
+                    + " on function type " + _function);
             }
         }
-        return (BooleanToken)result;
+
+        return (BooleanToken) result;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -242,9 +244,8 @@ public class LogicFunction extends Transformer {
     protected static final int _AND = 0;
 
     /** Perform a logical OR. */
-    protected static final int _OR  = 1;
+    protected static final int _OR = 1;
 
     /** Perform a logical XOR. */
     protected static final int _XOR = 2;
 }
-

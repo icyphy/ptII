@@ -22,13 +22,14 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
 
 import ptolemy.graph.Graph;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Analyzer
+
 /**
    A base interface for all the graph analyzers. Graph analyzers are analyzers
    which analyze graphs and compute results, that will be accessed through methods
@@ -40,7 +41,6 @@ import ptolemy.graph.Graph;
    @version $Id$
 */
 public interface GraphAnalyzer extends Analyzer {
-
     /** Return the graph associated with this analyzer.
      *
      *  @return Return the graph associated with this analyzer.

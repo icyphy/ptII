@@ -25,16 +25,16 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.c;
 
-// FIXME: clean up import list.
 import ptolemy.copernicus.kernel.WatchDogTimer;
 import soot.Pack;
 import soot.PackManager;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Main
+
 /** Read in a MoML model, generate .c files with very few
     dependencies on Ptolemy II.
 
@@ -45,7 +45,6 @@ import soot.PackManager;
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxh)
 */
-
 public class Main extends ptolemy.copernicus.java.Main {
     /** Add transforms to the Scene.
      */
@@ -57,7 +56,7 @@ public class Main extends ptolemy.copernicus.java.Main {
 
         addTransform(pack, "wjtp.finalSnapshotC", CWriter.v());
 
-        addTransform(pack, "wjtp.watchDogCancel",
-                WatchDogTimer.v(), "cancel:true");
+        addTransform(pack, "wjtp.watchDogCancel", WatchDogTimer.v(),
+            "cancel:true");
     }
 }

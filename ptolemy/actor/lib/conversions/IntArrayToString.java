@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,6 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 ///////////////////////////////////////////////////////////////
 /// IntArrayToString
@@ -56,9 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (winthrop)
    @Pt.AcceptedRating Red (winthrop)
 */
-
 public class IntArrayToString extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +66,7 @@ public class IntArrayToString extends TypedAtomicActor {
      *   actor with this name.
      */
     public IntArrayToString(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -77,10 +75,9 @@ public class IntArrayToString extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,11 +108,12 @@ public class IntArrayToString extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         ArrayToken dataIntArrayToken = (ArrayToken) input.get(0);
         byte[] dataBytes = new byte[dataIntArrayToken.length()];
+
         for (int j = 0; j < dataIntArrayToken.length(); j++) {
-            IntToken dataIntOneToken =
-                (IntToken)dataIntArrayToken.getElement(j);
-            dataBytes[j] = (byte)dataIntOneToken.intValue(); //Keep low 8 bits
+            IntToken dataIntOneToken = (IntToken) dataIntArrayToken.getElement(j);
+            dataBytes[j] = (byte) dataIntOneToken.intValue(); //Keep low 8 bits
         }
+
         // Note:  Following line may assume 1 byte per character, not sure.
         String outputValue = new String(dataBytes);
         output.send(0, new StringToken(outputValue));
@@ -129,25 +127,7 @@ public class IntArrayToString extends TypedAtomicActor {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -30,9 +30,10 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math.test;
+
 import ptolemy.math.FloatUnaryOperation;
+
 
 /** A operation taking one argument of type float, and producing a value of
     type float. This interface attempts to mimic a first-class function of
@@ -45,7 +46,6 @@ import ptolemy.math.FloatUnaryOperation;
     @Pt.AcceptedRating Red (ctsay)
 */
 public class TestFloatUnaryOperation implements FloatUnaryOperation {
-
     /** Operate on the operand, returning a value of the same type. */
     public float operate(float operand) {
         return -operand;

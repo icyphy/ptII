@@ -25,12 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorFactory
+
 /**
    An interface for objects with a clear() method.
    This is implemented, for example, by TextEditorConfigureFactory and
@@ -46,9 +46,7 @@ package ptolemy.vergil.toolbox;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (ptolemy)
 */
-
 public interface TextEditorFactory {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

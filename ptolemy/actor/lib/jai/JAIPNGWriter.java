@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.io.File;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.PNGEncodeParam;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIPNGWriter
+
 /**
    Write a javax.media.jai.RenderedOp to a specified PNG file.
 
@@ -66,9 +67,7 @@ import com.sun.media.jai.codec.PNGEncodeParam;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIPNGWriter extends JAIWriter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,7 +77,7 @@ public class JAIPNGWriter extends JAIWriter {
      *   actor with this name.
      */
     public JAIPNGWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         adam7Interlacing = new Parameter(this, "adam7Interlacing");
@@ -156,26 +155,27 @@ public class JAIPNGWriter extends JAIWriter {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // We use attributeChanged here to avoid code duplication
         // in postfire().
         if (attribute == adam7Interlacing) {
-            _adam7Interlacing =
-                ((BooleanToken)adam7Interlacing.getToken()).booleanValue();
+            _adam7Interlacing = ((BooleanToken) adam7Interlacing.getToken())
+                .booleanValue();
         } else if (attribute == setGamma) {
-            _setGamma = ((BooleanToken)setGamma.getToken()).booleanValue();
+            _setGamma = ((BooleanToken) setGamma.getToken()).booleanValue();
         } else if (attribute == gamma) {
-            _gamma = ((DoubleToken)gamma.getToken()).doubleValue();
+            _gamma = ((DoubleToken) gamma.getToken()).doubleValue();
         } else if (attribute == bitDepth) {
-            _bitDepth = ((IntToken)bitDepth.getToken()).intValue();
+            _bitDepth = ((IntToken) bitDepth.getToken()).intValue();
         } else if (attribute == setBackground) {
-            _setBackground =
-                ((BooleanToken)setBackground.getToken()).booleanValue();
+            _setBackground = ((BooleanToken) setBackground.getToken())
+                .booleanValue();
         } else if (attribute == background) {
-            Token data[] = ((ArrayToken)background.getToken()).arrayValue();
+            Token[] data = ((ArrayToken) background.getToken()).arrayValue();
+
             for (int i = 0; i < data.length; i++) {
                 _valueArray = new int[data.length];
-                _valueArray[i] = ((IntToken)(data[i])).intValue();
+                _valueArray[i] = ((IntToken) (data[i])).intValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -202,53 +202,60 @@ public class JAIPNGWriter extends JAIWriter {
 
             _imageEncoderName = "PNG";
 
-            PNGEncodeParam parameters =
-                PNGEncodeParam.getDefaultEncodeParam(_image);
+            PNGEncodeParam parameters = PNGEncodeParam.getDefaultEncodeParam(_image);
+
             if (parameters instanceof PNGEncodeParam.Gray) {
                 PNGEncodeParam.Gray parametersGray = new PNGEncodeParam.Gray();
                 parametersGray.setBitDepth(_bitDepth);
                 parametersGray.setInterlacing(_adam7Interlacing);
+
                 if (_setGamma) {
-                    parametersGray.setGamma((float)_gamma);
+                    parametersGray.setGamma((float) _gamma);
                 }
+
                 if (_setBackground) {
                     if (_valueArray.length < 1) {
                         throw new IllegalActionException("Need "
-                                + "one value to set Transparency");
+                            + "one value to set Transparency");
                     } else {
                         parametersGray.setBackgroundGray(_valueArray[0]);
                     }
                 }
+
                 _imageEncodeParam = parametersGray;
             } else if (parameters instanceof PNGEncodeParam.RGB) {
                 PNGEncodeParam.RGB parametersRGB = new PNGEncodeParam.RGB();
                 parametersRGB.setBitDepth(_bitDepth);
                 parametersRGB.setInterlacing(_adam7Interlacing);
+
                 if (_setGamma) {
-                    parametersRGB.setGamma((float)_gamma);
+                    parametersRGB.setGamma((float) _gamma);
                 }
+
                 if (_setBackground) {
                     if (_valueArray.length < 3) {
                         throw new IllegalActionException("Need "
-                                + "three values to set transparency");
+                            + "three values to set transparency");
                     } else {
-                        int RGBvalues[] = new int[3];
+                        int[] RGBvalues = new int[3];
+
                         for (int i = 0; i < 3; i++) {
                             RGBvalues[i] = _valueArray[i];
                         }
+
                         parametersRGB.setBackgroundRGB(RGBvalues);
                     }
                 }
+
                 _imageEncodeParam = parametersRGB;
             }
         }
+
         return super.postfire();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _bitDepth;
 
     /** The value of the confirmOverwrite parameter. */
@@ -265,25 +272,11 @@ public class JAIPNGWriter extends JAIWriter {
 
     /** The FileOutputStream for file writing. */
     private FileOutputStream _stream;
-
     private boolean _setGamma;
-
     private double _gamma;
-
     private boolean _setBackground;
-
-    private IntToken _initialArray[] = {new IntToken(0),
-                                        new IntToken(0),
-                                        new IntToken(0)};
-
-    private int _valueArray[];
+    private IntToken[] _initialArray = {
+            new IntToken(0), new IntToken(0), new IntToken(0)
+        };
+    private int[] _valueArray;
 }
-
-
-
-
-
-
-
-
-

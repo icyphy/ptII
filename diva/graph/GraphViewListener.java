@@ -25,6 +25,7 @@
 */
 package diva.graph;
 
+
 /**
  * A listener for changes in a graph's structure or contents,
  * which are communicated through GraphViewEvent objects.  GraphViewListeners
@@ -38,7 +39,6 @@ package diva.graph;
  * @Pt.AcceptedRating Red
  */
 public interface GraphViewListener extends java.util.EventListener {
-
     /**
      * The figure representing a node was moved.
      */

@@ -38,9 +38,12 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelTopology
+
 /**
    Define the methods that deal with the model topology here statically
    for the convenience to build a set of actors to be used for a
@@ -54,7 +57,6 @@ import ptolemy.kernel.util.Locatable;
    @Pt.AcceptedRating Red (sanjeev)
 */
 public class ModelTopology {
-
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This relation will use the
@@ -68,7 +70,8 @@ public class ModelTopology {
      *  @exception NameDuplicationException If the name coincides with
      *   a relation already in the container.
      */
-    private ModelTopology() {}
+    private ModelTopology() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -83,12 +86,11 @@ public class ModelTopology {
      *   cannot be determined.
      */
     public static double distanceBetween(WirelessIOPort port1,
-            WirelessIOPort port2)
-            throws IllegalActionException {
+        WirelessIOPort port2) throws IllegalActionException {
         double[] p1 = locationOf(port1);
         double[] p2 = locationOf(port2);
-        return Math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0])
-                + (p1[1] - p2[1])*(p1[1] - p2[1]));
+        return Math.sqrt(((p1[0] - p2[0]) * (p1[0] - p2[0]))
+            + ((p1[1] - p2[1]) * (p1[1] - p2[1])));
     }
 
     /** Return a list of input ports that can potentially receive data
@@ -107,19 +109,24 @@ public class ModelTopology {
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
      */
     public static List listeningInputPorts(CompositeEntity container,
-            String theChannelName) throws IllegalActionException {
+        String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator entities = container.entityList().iterator();
+
         while (entities.hasNext()) {
-            Entity entity = (Entity)entities.next();
+            Entity entity = (Entity) entities.next();
             Iterator ports = entity.portList().iterator();
+
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
+                Port port = (Port) ports.next();
+
                 if (port instanceof WirelessIOPort) {
-                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    WirelessIOPort castPort = (WirelessIOPort) port;
+
                     if (castPort.isInput()) {
-                        String channelName
-                            = castPort.outsideChannel.stringValue();
+                        String channelName = castPort.outsideChannel
+                            .stringValue();
+
                         if (channelName.equals(theChannelName)) {
                             result.add(port);
                         }
@@ -127,8 +134,8 @@ public class ModelTopology {
                 }
             }
         }
-        return result;
 
+        return result;
     }
 
     /** Return a list of output ports that can potentially receive data
@@ -145,23 +152,26 @@ public class ModelTopology {
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
     public static List listeningOutputPorts(CompositeEntity container,
-            String theChannelName)
-            throws IllegalActionException {
+        String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator ports = container.portList().iterator();
+
         while (ports.hasNext()) {
-            Port port = (Port)ports.next();
+            Port port = (Port) ports.next();
+
             if (port instanceof WirelessIOPort) {
-                WirelessIOPort castPort = (WirelessIOPort)port;
+                WirelessIOPort castPort = (WirelessIOPort) port;
+
                 if (castPort.isOutput()) {
-                    String channelName =
-                        castPort.insideChannel.stringValue();
+                    String channelName = castPort.insideChannel.stringValue();
+
                     if (channelName.equals(theChannelName)) {
                         result.add(port);
                     }
                 }
             }
         }
+
         return result;
     }
 
@@ -176,9 +186,9 @@ public class ModelTopology {
      *  @exception IllegalActionException If a valid location attribute cannot
      *   be found.
      */
-    public static double[] locationOf(
-            IOPort port) throws IllegalActionException {
-        Entity portContainer = (Entity)port.getContainer();
+    public static double[] locationOf(IOPort port)
+        throws IllegalActionException {
+        Entity portContainer = (Entity) port.getContainer();
         Locatable location = null;
 
         //FIXME: What should I do here...
@@ -186,15 +196,15 @@ public class ModelTopology {
         //    location = (Locatable)port.getAttribute(LOCATION_ATTRIBUTE_NAME,
         //            Locatable.class);
         //} else {
-        location = (Locatable)portContainer.getAttribute(
-                LOCATION_ATTRIBUTE_NAME, Locatable.class);
+        location = (Locatable) portContainer.getAttribute(LOCATION_ATTRIBUTE_NAME,
+                Locatable.class);
+
         //}
         if (location == null) {
             throw new IllegalActionException(
-                    "Cannot determine location for port "
-                    + port.getName()
-                    + ".");
+                "Cannot determine location for port " + port.getName() + ".");
         }
+
         return location.getLocation();
     }
 
@@ -212,22 +222,26 @@ public class ModelTopology {
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
     public static List sendingInputPorts(CompositeEntity container,
-            String theChannelName) throws IllegalActionException {
+        String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator ports = container.portList().iterator();
+
         while (ports.hasNext()) {
-            Port port = (Port)ports.next();
+            Port port = (Port) ports.next();
+
             if (port instanceof WirelessIOPort) {
-                WirelessIOPort castPort = (WirelessIOPort)port;
+                WirelessIOPort castPort = (WirelessIOPort) port;
+
                 if (castPort.isInput()) {
-                    String channelName =
-                        castPort.insideChannel.stringValue();
+                    String channelName = castPort.insideChannel.stringValue();
+
                     if (channelName.equals(theChannelName)) {
                         result.add(port);
                     }
                 }
             }
         }
+
         return result;
     }
 
@@ -245,19 +259,24 @@ public class ModelTopology {
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
      */
     public static List sendingOutputPorts(CompositeEntity container,
-            String theChannelName) throws IllegalActionException {
+        String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator entities = container.entityList().iterator();
+
         while (entities.hasNext()) {
-            Entity entity = (Entity)entities.next();
+            Entity entity = (Entity) entities.next();
             Iterator ports = entity.portList().iterator();
+
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
+                Port port = (Port) ports.next();
+
                 if (port instanceof WirelessIOPort) {
-                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    WirelessIOPort castPort = (WirelessIOPort) port;
+
                     if (castPort.isOutput()) {
-                        String channelName
-                            = castPort.outsideChannel.stringValue();
+                        String channelName = castPort.outsideChannel
+                            .stringValue();
+
                         if (channelName.equals(theChannelName)) {
                             result.add(port);
                         }
@@ -265,12 +284,12 @@ public class ModelTopology {
                 }
             }
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Name of the location attribute.
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ci.kernel;
 
 import java.util.HashSet;
@@ -49,8 +48,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CIDirector
+
 /**
    Director of the component interaction (CI) domain. The CI domain supports
    two styles of interaction between actors, push and pull. In push interaction,
@@ -96,7 +97,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (liuxj)
 */
 public class CIDirector extends Director {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -128,7 +128,7 @@ public class CIDirector extends Director {
      *   an attribute with the specified name.
      */
     public CIDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -152,25 +152,32 @@ public class CIDirector extends Director {
      *  of the associated actors throws it.
      */
     public void fire() throws IllegalActionException {
-
         Actor pushedActor = _nextAsyncPushedActor();
+
         if (pushedActor != null) {
             _actorsToFire.add(pushedActor);
         } else {
             Actor pulledActor = _nextAsyncPulledActor();
+
             if (pulledActor != null) {
-                if (_debugging)
+                if (_debugging) {
                     _debug("Process async pulled actor "
-                            + ((Nameable)pulledActor).getName());
+                        + ((Nameable) pulledActor).getName());
+                }
+
                 if (pulledActor.prefire()) {
-                    if (_debugging)
+                    if (_debugging) {
                         _debug("Async pulled actor ready to fire "
-                                + ((Nameable)pulledActor).getName());
+                            + ((Nameable) pulledActor).getName());
+                    }
+
                     _actorsToFire.add(pulledActor);
                 } else {
-                    if (_debugging)
+                    if (_debugging) {
                         _debug("Request sync pull for async pulled actor "
-                                + ((Nameable)pulledActor).getName());
+                            + ((Nameable) pulledActor).getName());
+                    }
+
                     _requestSyncPull(pulledActor);
                 }
             }
@@ -178,10 +185,13 @@ public class CIDirector extends Director {
 
         if (_actorsToFire.size() > 0) {
             while (_actorsToFire.size() > 0) {
-                Actor actor = (Actor)_actorsToFire.removeFirst();
+                Actor actor = (Actor) _actorsToFire.removeFirst();
+
                 if (actor.prefire()) {
-                    if (_debugging)
-                        _debug("Fire actor " + ((Nameable)actor).getName());
+                    if (_debugging) {
+                        _debug("Fire actor " + ((Nameable) actor).getName());
+                    }
+
                     actor.fire();
                     actor.postfire();
                 }
@@ -193,14 +203,18 @@ public class CIDirector extends Director {
                 return;
             } else {
                 synchronized (this) {
-                    if (_asyncPushedActors.size() == 0 &&
-                            _asyncPulledActors.size() == 0) {
+                    if ((_asyncPushedActors.size() == 0)
+                            && (_asyncPulledActors.size() == 0)) {
                         try {
-                            if (_debugging)
+                            if (_debugging) {
                                 _debug("Wait for async request...");
+                            }
+
                             wait();
-                            if (_debugging)
+
+                            if (_debugging) {
                                 _debug("Wake up from wait...");
+                            }
                         } catch (InterruptedException ex) {
                             // stop
                             _stopRequested = true;
@@ -224,17 +238,22 @@ public class CIDirector extends Director {
         super.initialize();
 
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator actors =
-                ((CompositeActor)container).deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
+
             while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
+                Actor actor = (Actor) actors.next();
+
                 if (_isActive(actor)) {
-                    if (_debugging)
+                    if (_debugging) {
                         _debug("Initialize -- create actor manager for "
-                                + ((Nameable)actor).getName());
-                    ActiveActorManager manager =
-                        new ActiveActorManager(actor, this);
+                            + ((Nameable) actor).getName());
+                    }
+
+                    ActiveActorManager manager = new ActiveActorManager(actor,
+                            this);
                     manager.start();
                 }
             }
@@ -256,8 +275,9 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_actorManagers.size() == 0 && _asyncPushedActors.size() == 0 &&
-                _asyncPulledActors.size() == 0 && _actorsToFire.size() == 0) {
+        if ((_actorManagers.size() == 0) && (_asyncPushedActors.size() == 0)
+                && (_asyncPulledActors.size() == 0)
+                && (_actorsToFire.size() == 0)) {
             return false;
         } else {
             return true;
@@ -272,17 +292,19 @@ public class CIDirector extends Director {
     public boolean prefire() throws IllegalActionException {
         _iteratingStarted = true;
         super.prefire();
+
         if (_pauseRequested) {
             synchronized (this) {
                 notifyAll();
                 _pauseRequested = false;
             }
         }
+
         if (_isTopLevel()) {
             return true;
         } else {
             return (_asyncPushedActors.size() > 0)
-                || (_asyncPulledActors.size() > 0);
+            || (_asyncPulledActors.size() > 0);
         }
     }
 
@@ -310,9 +332,11 @@ public class CIDirector extends Director {
         _pauseRequested = false;
         _iteratingStarted = false;
         _receivers.clear();
-        Parameter interval = (Parameter)getAttribute("interval");
+
+        Parameter interval = (Parameter) getAttribute("interval");
+
         if (interval != null) {
-            _interval = ((IntToken)interval.getToken()).intValue();
+            _interval = ((IntToken) interval.getToken()).intValue();
         } else {
             _interval = 0;
         }
@@ -325,6 +349,7 @@ public class CIDirector extends Director {
      */
     public void stop() {
         super.stop();
+
         synchronized (this) {
             notifyAll();
         }
@@ -337,11 +362,15 @@ public class CIDirector extends Director {
      */
     public void stopFire() {
         super.stopFire();
-        if (_debugging)
+
+        if (_debugging) {
             _debug("Stop fire called...");
+        }
+
         if (_iteratingStarted) {
             _pauseRequested = true;
         }
+
         synchronized (this) {
             notifyAll();
         }
@@ -364,15 +393,20 @@ public class CIDirector extends Director {
      */
     public void terminate() {
         super.terminate();
-        if (_debugging)
+
+        if (_debugging) {
             _debug("Terminate called...");
+        }
+
         if (_iteratingStarted) {
             _stopRequested = true;
         }
+
         synchronized (this) {
             Iterator actorManagers = _actorManagers.iterator();
+
             while (actorManagers.hasNext()) {
-                Thread actorManager = (Thread)actorManagers.next();
+                Thread actorManager = (Thread) actorManagers.next();
                 actorManager.interrupt();
             }
         }
@@ -387,12 +421,14 @@ public class CIDirector extends Director {
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
-
         _stopRequested = true;
-        Iterator actors =
-            ((CompositeEntity)getContainer()).entityList().iterator();
+
+        Iterator actors = ((CompositeEntity) getContainer()).entityList()
+                           .iterator();
+
         while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
+            Actor actor = (Actor) actors.next();
+
             if (_isActive(actor)) {
                 synchronized (actor) {
                     actor.notifyAll();
@@ -402,19 +438,21 @@ public class CIDirector extends Director {
 
         synchronized (this) {
             Iterator actorManagers = _actorManagers.iterator();
+
             while (actorManagers.hasNext()) {
-                Thread actorManager = (Thread)actorManagers.next();
+                Thread actorManager = (Thread) actorManagers.next();
                 actorManager.interrupt();
             }
+
             while (_actorManagers.size() > 0) {
                 try {
                     wait();
-                } catch (InterruptedException ex) {}
+                } catch (InterruptedException ex) {
+                }
             }
         }
 
         super.wrapup();
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -425,9 +463,11 @@ public class CIDirector extends Director {
      */
     protected void _actorEnabled(Actor actor) {
         // assert actor is pulled
-        if (_debugging)
+        if (_debugging) {
             _debug("Schedule pulled actor to fire "
-                    + ((Nameable)actor).getName());
+                + ((Nameable) actor).getName());
+        }
+
         _pulledActors.remove(actor);
         _actorsToFire.add(actor);
     }
@@ -445,9 +485,12 @@ public class CIDirector extends Director {
      *   actor.
      */
     protected synchronized void _addAsyncPushedActor(Actor actor) {
-        if (_debugging)
-            _debug("Async pushed actor " + ((Nameable)actor).getName());
+        if (_debugging) {
+            _debug("Async pushed actor " + ((Nameable) actor).getName());
+        }
+
         _asyncPushedActors.add(actor);
+
         // this director may be waiting for an async request
         notifyAll();
     }
@@ -458,8 +501,10 @@ public class CIDirector extends Director {
      *  @param actor The actor that received synchronously pushed data.
      */
     protected void _addSyncPushedActor(Actor actor) {
-        if (_debugging)
-            _debug("Sync pushed actor " + ((Nameable)actor).getName());
+        if (_debugging) {
+            _debug("Sync pushed actor " + ((Nameable) actor).getName());
+        }
+
         _actorsToFire.add(actor);
     }
 
@@ -475,23 +520,29 @@ public class CIDirector extends Director {
         boolean outputIsPush = false;
         boolean hasOutput = false;
         Iterator inputPorts = actor.inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)inputPorts.next();
+            IOPort port = (IOPort) inputPorts.next();
+
             if (port.getWidth() > 0) {
                 hasInput = true;
                 inputIsPush |= _isPushPort(port);
             }
         }
+
         Iterator outputPorts = actor.outputPortList().iterator();
+
         while (outputPorts.hasNext()) {
-            IOPort port = (IOPort)outputPorts.next();
+            IOPort port = (IOPort) outputPorts.next();
+
             if (port.getWidth() > 0) {
                 hasOutput = true;
                 outputIsPush |= _isPushPort(port);
             }
         }
+
         return (!hasInput && outputIsPush) || (!hasOutput && !inputIsPush)
-            || (!inputIsPush && outputIsPush);
+        || (!inputIsPush && outputIsPush);
     }
 
     /** Return true if the given actor has a pending pull request.
@@ -510,17 +561,20 @@ public class CIDirector extends Director {
      */
     protected static boolean _isPushPort(IOPort port) {
         boolean result = false;
-        Parameter p = (Parameter)port.getAttribute("push");
+        Parameter p = (Parameter) port.getAttribute("push");
+
         if (p != null) {
             try {
                 Token t = p.getToken();
+
                 if (t instanceof BooleanToken) {
-                    result = ((BooleanToken)t).booleanValue();
+                    result = ((BooleanToken) t).booleanValue();
                 }
             } catch (IllegalActionException e) {
                 // ignore, the port is considered a pull port
             }
         }
+
         return result;
     }
 
@@ -535,7 +589,7 @@ public class CIDirector extends Director {
      *  @param actorManager An active actor manager.
      */
     protected synchronized void _removeActorManager(
-            ActiveActorManager actorManager) {
+        ActiveActorManager actorManager) {
         _actorManagers.remove(actorManager);
         notifyAll();
     }
@@ -546,18 +600,25 @@ public class CIDirector extends Director {
      *  @param actor The active actor with pull request.
      */
     protected synchronized void _requestAsyncPull(Actor actor) {
-        if (_debugging)
-            _debug("Async pull requested " + ((Nameable)actor).getName());
+        if (_debugging) {
+            _debug("Async pull requested " + ((Nameable) actor).getName());
+        }
+
         Iterator actors = _providerActors(actor).iterator();
+
         while (actors.hasNext()) {
-            Actor a = (Actor)actors.next();
+            Actor a = (Actor) actors.next();
+
             if (!_asyncPulledActors.contains(a)) {
                 _asyncPulledActors.add(a);
-                if (_debugging)
+
+                if (_debugging) {
                     _debug("   Add async pulled actor "
-                            + ((Nameable)a).getName());
+                        + ((Nameable) a).getName());
+                }
             }
         }
+
         notifyAll();
     }
 
@@ -565,13 +626,15 @@ public class CIDirector extends Director {
      *  the pull request to those actors providing data to it.
      *  @param actor The actor being pulled.
      */
-    protected void _requestSyncPull(Actor actor)
-            throws IllegalActionException {
+    protected void _requestSyncPull(Actor actor) throws IllegalActionException {
         _pulledActors.add(actor);
+
         if (_isPullThrough(actor)) {
             Iterator providers = _providerActors(actor).iterator();
+
             while (providers.hasNext()) {
-                Actor provider = (Actor)providers.next();
+                Actor provider = (Actor) providers.next();
+
                 if (_isPullThrough(provider)) {
                     if (provider.prefire()) {
                         if (!_actorsToFire.contains(provider)) {
@@ -598,44 +661,51 @@ public class CIDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Return true if the actor has both pull input and pull output.
     private boolean _isPullThrough(Actor actor) {
         boolean inputIsPush = false;
         boolean hasInput = false;
         boolean outputIsPush = false;
         Iterator inputPorts = actor.inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)inputPorts.next();
+            IOPort port = (IOPort) inputPorts.next();
+
             if (port.getWidth() > 0) {
                 hasInput = true;
                 inputIsPush |= _isPushPort(port);
             }
         }
+
         Iterator outputPorts = actor.outputPortList().iterator();
+
         while (outputPorts.hasNext()) {
-            IOPort port = (IOPort)outputPorts.next();
+            IOPort port = (IOPort) outputPorts.next();
+
             if (port.getWidth() > 0) {
                 outputIsPush |= _isPushPort(port);
             }
         }
+
         return (!outputIsPush && (!hasInput || !inputIsPush));
     }
 
     // Return the next actor pulled by an active actor.
     private synchronized Actor _nextAsyncPulledActor() {
-        if (_asyncPulledActors.size() > 0)
-            return (Actor)_asyncPulledActors.removeFirst();
-        else
+        if (_asyncPulledActors.size() > 0) {
+            return (Actor) _asyncPulledActors.removeFirst();
+        } else {
             return null;
+        }
     }
 
     // Return the next actor having pushed data from an active actor.
     private synchronized Actor _nextAsyncPushedActor() {
-        if (_asyncPushedActors.size() > 0)
-            return (Actor)_asyncPushedActors.removeFirst();
-        else
+        if (_asyncPushedActors.size() > 0) {
+            return (Actor) _asyncPushedActors.removeFirst();
+        } else {
             return null;
+        }
     }
 
     // Return the list of actors providing data to the given actor.
@@ -646,27 +716,33 @@ public class CIDirector extends Director {
     private List _providerActors(Actor actor) {
         List result = new LinkedList();
         Iterator ports = actor.inputPortList().iterator();
+
         while (ports.hasNext()) {
-            IOPort port = (IOPort)ports.next();
+            IOPort port = (IOPort) ports.next();
+
             try {
-                if (port.hasToken(0)) continue;
+                if (port.hasToken(0)) {
+                    continue;
+                }
             } catch (IllegalActionException ex) {
                 // this should not happen
                 throw new InternalErrorException("Error in testing token "
-                        + "presence in the CI domain: " + ex);
+                    + "presence in the CI domain: " + ex);
             }
+
             Iterator sourcePorts = port.sourcePortList().iterator();
+
             while (sourcePorts.hasNext()) {
-                IOPort sourcePort = (IOPort)sourcePorts.next();
+                IOPort sourcePort = (IOPort) sourcePorts.next();
                 result.add(sourcePort.getContainer());
             }
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The list of active actor managers.
     private HashSet _actorManagers = new HashSet();
 

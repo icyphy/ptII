@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -57,8 +56,10 @@ import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 import diva.gui.toolbox.FigureIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditorIcon
+
 /**
    An icon is the visual representation of an entity or attribute.
    The visual representation is a Diva Figure. This class is an attribute
@@ -107,7 +108,6 @@ import diva.gui.toolbox.FigureIcon;
    @see ptolemy.actor.gui.Configuration
 */
 public class EditorIcon extends Attribute {
-
     /** Construct an icon in the specified workspace and name.
      *  This constructor is typically used in conjunction with
      *  setContainerToBe() and createFigure() to create an icon
@@ -122,14 +122,16 @@ public class EditorIcon extends Attribute {
      *   a period.
      */
     public EditorIcon(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace);
+
         try {
             setName(name);
+
             // Create a tableau factory so that an instance
             // of this class is opened using the EditIconTableau.
-            Attribute tableauFactory =
-                new EditIconTableau.Factory(this, "_tableauFactory");
+            Attribute tableauFactory = new EditIconTableau.Factory(this,
+                    "_tableauFactory");
             tableauFactory.setPersistent(false);
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(ex);
@@ -145,12 +147,13 @@ public class EditorIcon extends Attribute {
      *   an attribute already in the container.
      */
     public EditorIcon(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // Create a tableau factory so that an instance
         // of this class is opened using the EditIconTableau.
-        Attribute tableauFactory =
-            new EditIconTableau.Factory(this, "_tableauFactory");
+        Attribute tableauFactory = new EditIconTableau.Factory(this,
+                "_tableauFactory");
         tableauFactory.setPersistent(false);
     }
 
@@ -165,9 +168,8 @@ public class EditorIcon extends Attribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        EditorIcon newObject = (EditorIcon)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        EditorIcon newObject = (EditorIcon) super.clone(workspace);
         newObject._containerToBe = null;
         newObject._iconCache = null;
         return newObject;
@@ -183,20 +185,23 @@ public class EditorIcon extends Attribute {
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
-
         // If this icon itself contains any visible attributes, then
         // compose their background figures to make this one.
         CompositeFigure figure = null;
         Iterator attributes = attributeList().iterator();
+
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute) attributes.next();
+
             // There is a level of indirection where the "subIcon" is a
             // "visible attribute" containing an attribute named "_icon"
             // that actually has the icon.
-            Iterator subIcons =
-                attribute.attributeList(EditorIcon.class).iterator();
+            Iterator subIcons = attribute.attributeList(EditorIcon.class)
+                                         .iterator();
+
             while (subIcons.hasNext()) {
                 EditorIcon subIcon = (EditorIcon) subIcons.next();
+
                 if (figure == null) {
                     // NOTE: This used to use a constructor that
                     // takes a "background figure" argument, which would
@@ -206,7 +211,9 @@ public class EditorIcon extends Attribute {
                     // wrong selection region being highlighted.
                     figure = new CompositeFigure();
                 }
+
                 Figure subFigure = subIcon.createBackgroundFigure();
+
                 // Translate the figure to the location of the subfigure,
                 // if there is a location. Also, center it if necessary.
                 try {
@@ -216,26 +223,30 @@ public class EditorIcon extends Attribute {
                     // centered capability to a base class.
                     if (attribute instanceof FilledShapeAttribute
                             && subFigure instanceof BasicFigure) {
-                        boolean centeredValue = ((BooleanToken)
-                                ((FilledShapeAttribute)attribute)
-                                .centered.getToken()).booleanValue();
+                        boolean centeredValue = ((BooleanToken) ((FilledShapeAttribute) attribute).centered
+                            .getToken()).booleanValue();
+
                         if (centeredValue) {
-                            ((BasicFigure)subFigure).setCentered(true);
+                            ((BasicFigure) subFigure).setCentered(true);
                         }
                     }
-                    Locatable location = (Locatable)attribute.getAttribute(
-                            "_location", Locatable.class);
+
+                    Locatable location = (Locatable) attribute.getAttribute("_location",
+                            Locatable.class);
+
                     if (location != null) {
                         double[] locationValue = location.getLocation();
-                        CanvasUtilities.translateTo(
-                                subFigure, locationValue[0], locationValue[1]);
+                        CanvasUtilities.translateTo(subFigure,
+                            locationValue[0], locationValue[1]);
                     }
                 } catch (IllegalActionException e) {
                     throw new InternalErrorException(e);
                 }
+
                 figure.add(subFigure);
             }
         }
+
         if (figure == null) {
             // There are no component figures.
             return _createDefaultBackgroundFigure();
@@ -263,31 +274,35 @@ public class EditorIcon extends Attribute {
         Rectangle2D backBounds = background.getBounds();
         CompositeFigure figure = new CompositeFigure(background);
 
-        NamedObj container = (NamedObj)getContainerOrContainerToBe();
+        NamedObj container = (NamedObj) getContainerOrContainerToBe();
+
         // Create the label, unless this is a visible attribute,
         // which typically carries no label.
         // NOTE: backward compatibility problem...
         // Old style annotations now have labels...
         if (!_isPropertySet(container, "_hideName")) {
             String name = container.getName();
+
             // Do not add a label figure if the name is null.
-            if (name != null && !name.equals("")) {
+            if ((name != null) && !name.equals("")) {
                 if (!_isPropertySet(container, "_centerName")) {
-                    LabelFigure label = new LabelFigure(name,
-                            _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+                    LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                            SwingConstants.SOUTH_WEST);
+
                     // Shift the label slightly right so it doesn't
                     // collide with ports.
                     label.translateTo(backBounds.getX() + 5, backBounds.getY());
                     figure.add(label);
                 } else {
-                    LabelFigure label = new LabelFigure(name,
-                            _labelFont, 1.0, SwingConstants.CENTER);
+                    LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                            SwingConstants.CENTER);
                     label.translateTo(backBounds.getCenterX(),
-                            backBounds.getCenterY());
+                        backBounds.getCenterY());
                     figure.add(label);
                 }
             }
         }
+
         return figure;
     }
 
@@ -304,6 +319,7 @@ public class EditorIcon extends Attribute {
         if (_iconCache != null) {
             return _iconCache;
         }
+
         // No cached object, so rerender the icon.
         Figure figure = createBackgroundFigure();
         _iconCache = new FigureIcon(figure, 20, 15);
@@ -329,23 +345,16 @@ public class EditorIcon extends Attribute {
      *  @exception IOException If an I/O error occurs.
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         // If this icon is not persistent, do nothing.
         if (_isMoMLSuppressed(depth)) {
             return;
         }
-        output.write(_getIndentPrefix(depth)
-                + "<"
-                + _elementName
-                + " name=\""
-                + name
-                + "\" class=\""
-                + getClassName()
-                + "\""
-                + ">\n");
+
+        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
+            + name + "\" class=\"" + getClassName() + "\"" + ">\n");
         _exportMoMLContents(output, depth + 1);
-        output.write(_getIndentPrefix(depth) + "</"
-                + _elementName + ">\n");
+        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
     /** Return the container of this object, if there is one, or
@@ -366,6 +375,7 @@ public class EditorIcon extends Attribute {
      */
     public Nameable getContainerOrContainerToBe() {
         Nameable container = getContainer();
+
         if (container != null) {
             return container;
         } else {
@@ -408,6 +418,7 @@ public class EditorIcon extends Attribute {
         // as a change request, and we can't get the figure until the
         // change request is processed.  This is what the code would
         // look like:
+
         /*
           StringBuffer moml = new StringBuffer();
           moml.append("<group name=\"auto\">" +
@@ -422,7 +433,6 @@ public class EditorIcon extends Attribute {
           this, this, moml.toString());
           requestChange(request);
         */
-
         return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);
     }
 
@@ -437,14 +447,17 @@ public class EditorIcon extends Attribute {
      */
     protected boolean _isPropertySet(NamedObj object, String name) {
         Attribute attribute = object.getAttribute(name);
+
         if (attribute == null) {
             return false;
         }
+
         if (attribute instanceof Parameter) {
             try {
-                Token token = ((Parameter)attribute).getToken();
+                Token token = ((Parameter) attribute).getToken();
+
                 if (token instanceof BooleanToken) {
-                    if (!((BooleanToken)token).booleanValue()) {
+                    if (!((BooleanToken) token).booleanValue()) {
                         return false;
                     }
                 }
@@ -452,6 +465,7 @@ public class EditorIcon extends Attribute {
                 // Ignore, using default of true.
             }
         }
+
         return true;
     }
 
@@ -473,6 +487,5 @@ public class EditorIcon extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 }

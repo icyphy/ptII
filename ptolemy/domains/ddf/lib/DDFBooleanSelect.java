@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ddf.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -40,6 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+
 
 /**
    A type polymorphic select with boolean valued control for use in
@@ -63,9 +63,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (zgang)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class DDFBooleanSelect extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -76,7 +74,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public DDFBooleanSelect(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         trueInput = new TypedIOPort(this, "trueInput", true, false);
@@ -87,24 +85,24 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
 
-        trueInput_tokenConsumptionRate =
-            new Parameter(trueInput, "tokenConsumptionRate");
+        trueInput_tokenConsumptionRate = new Parameter(trueInput,
+                "tokenConsumptionRate");
         trueInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         trueInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
-        falseInput_tokenConsumptionRate =
-            new Parameter(falseInput, "tokenConsumptionRate");
+        falseInput_tokenConsumptionRate = new Parameter(falseInput,
+                "tokenConsumptionRate");
         falseInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         falseInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
-        control_tokenConsumptionRate =
-            new Parameter(control, "tokenConsumptionRate");
+        control_tokenConsumptionRate = new Parameter(control,
+                "tokenConsumptionRate");
         control_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         control_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal
-            = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
@@ -114,23 +112,29 @@ public class DDFBooleanSelect extends TypedAtomicActor {
     /** Input for tokens on the true path.  The type can be anything.
      */
     public TypedIOPort trueInput;
+
     /** Input for tokens on the false path.  The type can be anything.
      */
     public TypedIOPort falseInput;
+
     /** Input that selects one of the other input ports.  The type is
      *  BooleanToken.
      */
     public TypedIOPort control;
+
     /** The output port.  The type is at least the type of
      *  <i>trueInput</i> and <i>falseInput</i>
      */
     public TypedIOPort output;
+
     /** This parameter provides token consumption rate for true input.
      */
     public Parameter trueInput_tokenConsumptionRate;
+
     /** This parameter provides token consumption rate for false input.
      */
     public Parameter falseInput_tokenConsumptionRate;
+
     /** This parameter provides token consumption rate for control.
      */
     public Parameter control_tokenConsumptionRate;
@@ -145,9 +149,8 @@ public class DDFBooleanSelect extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        DDFBooleanSelect newObject = (DDFBooleanSelect)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DDFBooleanSelect newObject = (DDFBooleanSelect) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.trueInput);
         newObject.output.setTypeAtLeast(newObject.falseInput);
         return newObject;
@@ -172,9 +175,10 @@ public class DDFBooleanSelect extends TypedAtomicActor {
             } else {
                 output.send(0, falseInput.get(0));
             }
+
             _isControlRead = false;
         } else {
-            _control = ((BooleanToken)control.get(0)).booleanValue();
+            _control = ((BooleanToken) control.get(0)).booleanValue();
             _isControlRead = true;
         }
     }
@@ -212,6 +216,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
             falseInput_tokenConsumptionRate.setToken(new IntToken(0));
             control_tokenConsumptionRate.setToken(new IntToken(1));
         }
+
         return super.postfire();
     }
 
@@ -238,12 +243,12 @@ public class DDFBooleanSelect extends TypedAtomicActor {
                 return false;
             }
         }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The most recently read control token.
     private boolean _control;
 

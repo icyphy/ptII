@@ -27,6 +27,7 @@ package diva.util;
 
 import java.io.PrintStream;
 
+
 /**
  * This is an abstract base class for objects that need to log
  * error or warning messages. It is useful for things like parsers
@@ -38,7 +39,6 @@ import java.io.PrintStream;
  * @version $Id$
  */
 public class LoggableOp {
-
     /** The output stream for error messages. By default, this
      * is System.err.
      */
@@ -69,20 +69,20 @@ public class LoggableOp {
     /** Get the number of errors generated during the most
      * recent operation.
      */
-    public int getErrorCount () {
+    public int getErrorCount() {
         return _errCount;
     }
 
     /** Get the stream to which errors are printed.
      */
-    public PrintStream getErrorStream () {
+    public PrintStream getErrorStream() {
         return _err;
     }
 
     /** Get the number of warnings generated during the most
      * recent parse.
      */
-    public int getWarningCount () {
+    public int getWarningCount() {
         return _warnCount;
     }
 
@@ -97,14 +97,14 @@ public class LoggableOp {
     /** Print an error message to the error stream. This message
      * includes the line number, and info message.
      */
-    public void logError (String msg) {
+    public void logError(String msg) {
         logError("ERROR", msg, null);
     }
 
     /** Print an error message to the error stream. This prints
      * the error id, line number, and info message.
      */
-    public void logError (String id, String msg) {
+    public void logError(String id, String msg) {
         logError(id, msg, null);
     }
 
@@ -112,16 +112,20 @@ public class LoggableOp {
      * the error id, line number, info message. On a second line,
      * it prints the detail information.
      */
-    public void logError (String id, String msg, String detail) {
+    public void logError(String id, String msg, String detail) {
         int linenum = getLineNumber();
         _err.print(id + ":");
+
         if (linenum >= 0) {
             _err.print(linenum + ":");
         }
+
         _err.println(" " + msg);
+
         if (detail != null) {
             _err.println("                " + detail + "\n");
         }
+
         _errCount++;
     }
 
@@ -131,7 +135,7 @@ public class LoggableOp {
      * indentation amount, allowing recursive operations to be printed
      * more clearly.
      */
-    public void logInfo (String msg) {
+    public void logInfo(String msg) {
         logInfo(null, msg);
     }
 
@@ -141,36 +145,40 @@ public class LoggableOp {
      * amount, allowing recursive operations to be printed more
      * clearly.
      */
-    public void logInfo (String id, String msg) {
+    public void logInfo(String id, String msg) {
         for (int i = _indent; i > 0; i--) {
             _err.print(_tab);
         }
+
         if (id != null) {
             _err.print(id + ":");
         }
+
         int linenum = getLineNumber();
+
         if (linenum >= 0) {
             _err.print(linenum + ":");
         }
+
         _err.println(" " + msg);
     }
 
     /** Increment the indentation counter.
      */
-    public void indent () {
+    public void indent() {
         _indent++;
     }
 
     /** Test if we are in verbose mode
      */
-    public final boolean isVerbose () {
+    public final boolean isVerbose() {
         return _verbose;
     }
 
     /** Reset the error counters.
      */
-    public void reset () {
-        _indent= 0;
+    public void reset() {
+        _indent = 0;
         _errCount = 0;
         _warnCount = 0;
     }
@@ -178,34 +186,34 @@ public class LoggableOp {
     /** Set the stream to which errors are printed. The default
      * error stream is System.err.
      */
-    public void setErrorStream (PrintStream err) {
+    public void setErrorStream(PrintStream err) {
         _err = err;
     }
 
     /** Set the verbose mode flag. In verbose mode, calls to
      * the logInfo() method write to the error output.
      */
-    public void setVerbose (boolean v) {
+    public void setVerbose(boolean v) {
         _verbose = v;
     }
 
     /** Decrement the indentation counter.
      */
-    public void unindent () {
+    public void unindent() {
         _indent--;
     }
 
     /** Print an warning message to the error stream. This message
      * includes the line number, and info message.
      */
-    public void logWarning (String msg) {
+    public void logWarning(String msg) {
         logWarning("Warning", msg, null);
     }
 
     /** Print an warning message to the error stream. This prints
      * the warning id, line number, and info message.
      */
-    public void logWarning (String id, String msg) {
+    public void logWarning(String id, String msg) {
         logWarning(id, msg, null);
     }
 
@@ -213,18 +221,20 @@ public class LoggableOp {
      * the warning id, line number, info message. On a second line,
      * it prints the detail information.
      */
-    public void logWarning (String id, String msg, String detail) {
+    public void logWarning(String id, String msg, String detail) {
         int linenum = getLineNumber();
         _err.print(id + ":");
+
         if (linenum >= 0) {
             _err.print(linenum + ":");
         }
+
         _err.println(" " + msg);
+
         if (detail != null) {
             _err.println("                " + detail + "\n");
         }
+
         _warnCount++;
     }
 }
-
-

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.sdf.demo.HTVQ;
 
 import java.awt.BorderLayout;
@@ -37,8 +36,10 @@ import ptolemy.actor.lib.gui.Display;
 import ptolemy.domains.sdf.lib.vq.ImageDisplay;
 import ptolemy.kernel.CompositeEntity;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HTVQApplet
+
 /**
    An applet that uses Ptolemy II SDF domain.
 
@@ -49,7 +50,6 @@ import ptolemy.kernel.CompositeEntity;
    @Pt.AcceptedRating Red (cxh)
 */
 public class HTVQApplet extends MoMLApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,25 +71,27 @@ public class HTVQApplet extends MoMLApplet {
         displayPanel.add(compressedPanel, BorderLayout.CENTER);
 
         JPanel prnPanel = new JPanel();
+
         // So the background shows through.
         prnPanel.setBackground(null);
         prnPanel.setLayout(new BorderLayout());
         prnPanel.add(new JLabel("SNR (dB)"), BorderLayout.NORTH);
         displayPanel.add(prnPanel, BorderLayout.EAST);
 
-        CompositeEntity toplevel = (CompositeEntity)_toplevel;
-        ImageDisplay consumer = (ImageDisplay)toplevel.getEntity("Compressed");
+        CompositeEntity toplevel = (CompositeEntity) _toplevel;
+        ImageDisplay consumer = (ImageDisplay) toplevel.getEntity("Compressed");
         consumer.place(compressedPanel);
         consumer.setBackground(null);
 
-        ImageDisplay original = (ImageDisplay)toplevel.getEntity("Original");
+        ImageDisplay original = (ImageDisplay) toplevel.getEntity("Original");
         original.place(originalPanel);
         original.setBackground(null);
 
         // Display actor puts the text at the right of the
         // applet window. Text Area size is set to be 7*10 (row* column)
         // in order to fit well with the image size.
-        Display prn = (Display)toplevel.getEntity("Display");
+        Display prn = (Display) toplevel.getEntity("Display");
+
         // To control the position, we put this in its own panel.
         JPanel textPanel = new JPanel();
         prnPanel.add(textPanel, BorderLayout.SOUTH);

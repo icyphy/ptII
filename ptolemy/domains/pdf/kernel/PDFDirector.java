@@ -26,23 +26,24 @@ COPYRIGHTENDKEY
 @ProposedRating Red (neuendor)
 @AcceptedRating Red (johnr)
 */
-
 package ptolemy.domains.pdf.kernel;
 
-import ptolemy.graph.*;
 import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
+import ptolemy.graph.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.util.*;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PDFDirector
+
 /**
    <h1>PDF overview</h1>
    The Synchronous Dataflow(PDF) domain supports the efficient
@@ -82,7 +83,6 @@ import java.util.*;
    @version $Id$
 */
 public class PDFDirector extends Director {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -122,7 +122,7 @@ public class PDFDirector extends Director {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public PDFDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -162,15 +162,17 @@ public class PDFDirector extends Director {
      *  container.
      */
     public void fire() throws IllegalActionException {
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+        TypedCompositeActor container = ((TypedCompositeActor) getContainer());
 
         if (container == null) {
-            throw new InvalidStateException("PDFDirector " + getName() +
-                    " fired, but it has no container!");
+            throw new InvalidStateException("PDFDirector " + getName()
+                + " fired, but it has no container!");
         } else {
             _postfirereturns = true;
+
             String name = init.getExpression();
             Actor actor = (Actor) container.getEntity(name);
+
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
             }
@@ -180,6 +182,7 @@ public class PDFDirector extends Director {
 
             name = model.getExpression();
             actor = (Actor) container.getEntity(name);
+
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
             }
@@ -221,33 +224,41 @@ public class PDFDirector extends Director {
     public boolean prefire() throws IllegalActionException {
         _postfirereturns = true;
 
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+        TypedCompositeActor container = ((TypedCompositeActor) getContainer());
         Iterator inputPorts = container.inputPortList().iterator();
         int inputCount = 0;
+
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
+
             if (_debugging) {
                 _debug("checking input " + inputPort.getFullName());
                 _debug("Threshold = " + threshold);
             }
-            Receiver receivers[][] = inputPort.getReceivers();
+
+            Receiver[][] receivers = inputPort.getReceivers();
 
             int channel;
+
             for (channel = 0; channel < inputPort.getWidth(); channel++) {
                 if (!receivers[channel][0].hasToken(threshold)) {
                     if (_debugging) {
-                        _debug("Channel " + channel +
-                                " does not have enough tokens." +
-                                " Prefire returns false on " +
-                                container.getFullName());
+                        _debug("Channel " + channel
+                            + " does not have enough tokens."
+                            + " Prefire returns false on "
+                            + container.getFullName());
                     }
+
                     return false;
                 }
             }
         }
-        if (_debugging) _debug("Prefire returns true on " +
-                container.getFullName());
+
+        if (_debugging) {
+            _debug("Prefire returns true on " + container.getFullName());
+        }
+
         return true;
     }
 
@@ -292,32 +303,41 @@ public class PDFDirector extends Director {
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" +
-                    "input port.");
+                "transferInputs: port argument is not an opaque"
+                + "input port.");
         }
+
         boolean trans = false;
         Receiver[][] insiderecs = port.deepGetReceivers();
+
         for (int i = 0; i < port.getWidth(); i++) {
             int rate = SDFScheduler.getTokenConsumptionRate(port);
+
             for (int k = 0; k < rate; k++) {
                 try {
                     ptolemy.data.Token t = port.get(i);
-                    if (insiderecs != null && insiderecs[i] != null) {
-                        if (_debugging) _debug(getName(),
+
+                    if ((insiderecs != null) && (insiderecs[i] != null)) {
+                        if (_debugging) {
+                            _debug(getName(),
                                 "transferring input from " + port.getName());
+                        }
+
                         for (int j = 0; j < insiderecs[i].length; j++) {
                             insiderecs[i][j].put(t);
                         }
+
                         trans = true;
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
                     throw new InternalErrorException(
-                            "PDFDirector.transferInputs: Not enough tokens " +
-                            ex.getMessage());
+                        "PDFDirector.transferInputs: Not enough tokens "
+                        + ex.getMessage());
                 }
             }
         }
+
         return trans;
     }
 
@@ -336,39 +356,44 @@ public class PDFDirector extends Director {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
-    public boolean transferOutputs(IOPort port)
-            throws IllegalActionException {
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferOutputs: port argument is not " +
-                    "an opaque output port.");
+                "transferOutputs: port argument is not "
+                + "an opaque output port.");
         }
+
         System.out.println("transferring Outputs for port" + port.getFullName());
 
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-        Entity initEntity =
-            (Entity) container.getEntity(init.getExpression());
-        Entity modelEntity =
-            (Entity) container.getEntity(model.getExpression());
+        TypedCompositeActor container = ((TypedCompositeActor) getContainer());
+        Entity initEntity = (Entity) container.getEntity(init.getExpression());
+        Entity modelEntity = (Entity) container.getEntity(model.getExpression());
         Attribute attribute = modelEntity.getAttribute(port.getName());
         boolean trans = false;
         Receiver[][] insiderecs = port.getInsideReceivers();
+
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
                 System.out.println("channel " + i);
+
                 if (insiderecs[i] != null) {
-                    System.out.println("has " + insiderecs[i].length +
-                            " Receivers");
+                    System.out.println("has " + insiderecs[i].length
+                        + " Receivers");
+
                     for (int j = 0; j < insiderecs[i].length; j++) {
                         System.out.println("checking hasToken number" + j);
+
                         while (insiderecs[i][j].hasToken()) {
                             try {
                                 System.out.println("transferring");
+
                                 ptolemy.data.Token t = insiderecs[i][j].get();
-                                if (port.getContainer().equals(initEntity) &&
-                                        port.deepConnectedPortList().size() > 0) {
+
+                                if (port.getContainer().equals(initEntity)
+                                        && (port.deepConnectedPortList().size() > 0)) {
                                     System.out.println("Setting");
-                                    Settable settable = (Settable)attribute;
+
+                                    Settable settable = (Settable) attribute;
                                     settable.setExpression(t.toString());
                                 } else {
                                     System.out.println("Sending");
@@ -378,18 +403,17 @@ public class PDFDirector extends Director {
                                 trans = true;
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
-                                        "Director.transferOutputs: " +
-                                        "Internal error: " +
-                                        ex.getMessage());
+                                    "Director.transferOutputs: "
+                                    + "Internal error: " + ex.getMessage());
                             }
                         }
                     }
                 }
             }
         }
+
         return trans;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -408,26 +432,21 @@ public class PDFDirector extends Director {
     /** Initialize the object.   In this case, we give the PDFDirector a
      *  default scheduler of the class SDFScheduler.
      */
-
     private void _init() {
         try {
-            init
-                = new StringAttribute(this, "init");
+            init = new StringAttribute(this, "init");
             init.setExpression("");
-            model
-                = new StringAttribute(this, "model");
+
+            model = new StringAttribute(this, "model");
             model.setExpression("");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new InternalErrorException(
-                    "Cannot create default parameter:\n" +
-                    e.getMessage());
+                "Cannot create default parameter:\n" + e.getMessage());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     protected boolean _postfirereturns = true;
 }

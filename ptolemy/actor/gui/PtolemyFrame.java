@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -53,6 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyFrame
+
 /**
    This is a top-level window for Ptolemy models with a menubar and status bar.
    Derived classes should add components to the content pane using a
@@ -75,7 +75,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Yellow (johnr)
 */
 public abstract class PtolemyFrame extends TableauFrame {
-
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -112,9 +111,10 @@ public abstract class PtolemyFrame extends TableauFrame {
         // Set the window properties if there is an attribute in the
         // model specifying them.  Errors are ignored.
         try {
-            WindowPropertiesAttribute properties
-                = (WindowPropertiesAttribute)model.getAttribute(
-                        "_windowProperties", WindowPropertiesAttribute.class);
+            WindowPropertiesAttribute properties = (WindowPropertiesAttribute) model
+                .getAttribute("_windowProperties",
+                    WindowPropertiesAttribute.class);
+
             if (properties != null) {
                 properties.setProperties(this);
             }
@@ -143,7 +143,9 @@ public abstract class PtolemyFrame extends TableauFrame {
     public void setModel(NamedObj model) {
         _model = model;
         _model.setModelErrorHandler(new BasicModelErrorHandler());
+
         List attrList = _model.attributeList(UndoStackAttribute.class);
+
         if (attrList.size() == 0) {
             // Create and attach a new instance
             try {
@@ -178,7 +180,6 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
-
         PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) getEffigy();
 
         // The effigy should not be null, but if the window has
@@ -186,15 +187,20 @@ public abstract class PtolemyFrame extends TableauFrame {
         if (ptolemyEffigy != null) {
             List tableaux = ptolemyEffigy.entityList(Tableau.class);
             Iterator tableauxIterator = tableaux.iterator();
+
             while (tableauxIterator.hasNext()) {
                 Tableau tableau = (Tableau) tableauxIterator.next();
+
                 if (tableau instanceof DialogTableau) {
                     DialogTableau dialogTableau = (DialogTableau) tableau;
-                    if (!(dialogTableau.close()))
+
+                    if (!(dialogTableau.close())) {
                         return false;
+                    }
                 }
             }
         }
+
         return super._close();
     }
 
@@ -205,8 +211,9 @@ public abstract class PtolemyFrame extends TableauFrame {
      */
     protected void _help() {
         try {
-            FileParameter helpAttribute = (FileParameter)getModel()
-                .getAttribute("_help", FileParameter.class);
+            FileParameter helpAttribute = (FileParameter) getModel()
+                                                              .getAttribute("_help",
+                    FileParameter.class);
             URL doc = helpAttribute.asURL();
             getConfiguration().openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {
@@ -226,6 +233,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                         PtolemyFrame.super._print();
                     }
                 };
+
             _model.requestChange(request);
         } else {
             super._print();
@@ -247,6 +255,7 @@ public abstract class PtolemyFrame extends TableauFrame {
         if (_model != null) {
             // Use the name of the top level by default.
             _initialSaveAsFileName = _model.toplevel().getName() + ".xml";
+
             if (_initialSaveAsFileName.length() == 4) {
                 // Useless model name (empty string).
                 _initialSaveAsFileName = "model.xml";
@@ -260,20 +269,23 @@ public abstract class PtolemyFrame extends TableauFrame {
         // SDFDirector with default parameters and run it and then do
         // SaveAs, we got strange behaviour.
         if (_model instanceof CompositeActor) {
-            Manager manager = ((CompositeActor)_model).getManager();
+            Manager manager = ((CompositeActor) _model).getManager();
+
             if (manager != null) {
                 Manager.State state = manager.getState();
-                if (state == Manager.IDLE
-                        && state == Manager.PAUSED) {
+
+                if ((state == Manager.IDLE) && (state == Manager.PAUSED)) {
                     return super._saveAs();
                 } else {
                     manager.pause();
+
                     boolean returnValue = super._saveAs();
                     manager.resume();
                     return returnValue;
                 }
             }
         }
+
         return super._saveAs();
     }
 
@@ -284,7 +296,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     protected JFileChooser _saveAsFileDialog() {
         JFileChooser fileDialog = super._saveAsFileDialog();
 
-        if (_model != null && _model.getContainer() != null) {
+        if ((_model != null) && (_model.getContainer() != null)) {
             _query = new Query();
             _query.addCheckBox("submodel", "Save submodel only", false);
             fileDialog.setAccessory(_query);
@@ -307,22 +319,24 @@ public abstract class PtolemyFrame extends TableauFrame {
      */
     protected void _writeFile(File file) throws IOException {
         Tableau tableau = getTableau();
+
         if (tableau != null) {
-            Effigy effigy = (Effigy)tableau.getContainer();
+            Effigy effigy = (Effigy) tableau.getContainer();
+
             if (effigy != null) {
                 // Update all the attributes that need updated.
                 if (_model != null) {
-                    Iterator attributes =
-                        _model.attributeList(Attribute.class).iterator();
+                    Iterator attributes = _model.attributeList(Attribute.class)
+                                                .iterator();
+
                     while (attributes.hasNext()) {
-                        Attribute attribute = (Attribute)attributes.next();
+                        Attribute attribute = (Attribute) attributes.next();
                         attribute.updateContent();
                     }
                 }
 
                 // Ensure that if we do ever try to call this method,
                 // that it is the top effigy that is written.
-
                 // If there is no model, delegate to the top effigy.
                 // Otherwise, delegate to the effigy corresponding
                 // to the top-level of the model (which may not be
@@ -333,21 +347,22 @@ public abstract class PtolemyFrame extends TableauFrame {
                 // we do no delegating.
                 if (_model == null) {
                     effigy = effigy.topEffigy();
-                } else if (_query == null
-                        || (_model.getContainer() != null
+                } else if ((_query == null)
+                        || ((_model.getContainer() != null)
                         && !_query.getBooleanValue("submodel"))) {
                     effigy = effigy.masterEffigy();
                 }
+
                 effigy.writeFile(file);
                 return;
             }
         }
+
         throw new IOException("Cannot find an effigy to delegate writing.");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The model that this window controls, if any.
     private NamedObj _model;
 

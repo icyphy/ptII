@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 /* A simple class for testing that Linked Lists work.
 
 Copyright (c) 2003-2005 The University of Maryland
@@ -26,13 +28,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 import java.util.LinkedList;
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// LinkedListTest
+
 /**
 
 A simple class for testing standard output.
@@ -44,10 +45,8 @@ A simple class for testing standard output.
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class  LinkedListTest{
-
-    public static void main(String args[]) {
+public class LinkedListTest {
+    public static void main(String[] args) {
         LinkedList list = new LinkedList();
 
         // Test add
@@ -57,7 +56,6 @@ public class  LinkedListTest{
         list.addLast("4");
         list.addFirst("0");
 
-
         LinkedList list2 = new LinkedList();
         list.addAll(list2);
         list2.add("5");
@@ -66,9 +64,11 @@ public class  LinkedListTest{
 
         // Test Iterator.
         Iterator items = list.iterator();
+
         while (items.hasNext()) {
             System.out.println(items.next());
         }
+
         System.out.println();
 
         // Test size.
@@ -78,6 +78,7 @@ public class  LinkedListTest{
         for (int i = 0; i < size; i++) {
             System.out.println(list.get(i));
         }
+
         System.out.println();
 
         // Test removeFirst()

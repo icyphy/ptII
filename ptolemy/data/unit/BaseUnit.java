@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.unit;
 
 import java.util.Iterator;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BaseUnit
+
 /**
    The base unit of a unit category.  The category of a base unit is specified
    by a unit category property.
@@ -48,9 +49,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (liuxj)
    @Pt.AcceptedRating Red (liuxj)
 */
-
 public class BaseUnit extends Parameter {
-
     /** Construct a base unit with the given name contained by
      *  the specified entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -65,7 +64,7 @@ public class BaseUnit extends Parameter {
      *   an attribute already in the container.
      */
     public BaseUnit(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -92,28 +91,30 @@ public class BaseUnit extends Parameter {
      */
     public Token getToken() throws IllegalActionException {
         Token token = super.getToken();
+
         if (token != _token) {
-            Iterator attributes =
-                attributeList(UnitCategory.class).iterator();
+            Iterator attributes = attributeList(UnitCategory.class).iterator();
+
             if (attributes.hasNext()) {
-                UnitCategory category = (UnitCategory)attributes.next();
+                UnitCategory category = (UnitCategory) attributes.next();
                 String name = getName();
                 UnitUtilities.registerUnitCategory(name);
-                int index =
-                    UnitUtilities.getUnitCategoryIndex(name);
+
+                int index = UnitUtilities.getUnitCategoryIndex(name);
+
                 if (index >= 0) {
-                    ((ScalarToken)token).setUnitCategory(index);
+                    ((ScalarToken) token).setUnitCategory(index);
                 }
             }
+
             _token = token;
         }
+
         return _token;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The token that has unit exponents set correctly.
     private Token _token = null;
-
 }

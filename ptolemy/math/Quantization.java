@@ -26,11 +26,11 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.math;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+
 
 /**
    The Quantization class defines the mapping of numeric values with unlimited
@@ -99,7 +99,6 @@ import java.math.BigInteger;
    @see Rounding
 */
 public abstract class Quantization implements Cloneable, Serializable {
-
     /** Construct a Quantization with the given precision, overflow
      *  strategy, and rounding strategy.
      */
@@ -124,12 +123,14 @@ public abstract class Quantization implements Cloneable, Serializable {
      */
     public boolean equals(Object object) {
         if (object instanceof Quantization) {
-            Quantization other = (Quantization)object;
+            Quantization other = (Quantization) object;
+
             if (_overflow.equals(other._overflow)
                     && _rounding.equals(other._rounding)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -201,7 +202,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      */
     public BigInteger getMaximumUnscaledValue() {
         int numBits = getNumberOfBits();
-        return BigInteger.ZERO.setBit(numBits-1).subtract(BigInteger.ONE);
+        return BigInteger.ZERO.setBit(numBits - 1).subtract(BigInteger.ONE);
     }
 
     /** Return the maximum quantizable value.
@@ -218,7 +219,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      */
     public BigInteger getMinimumUnscaledValue() {
         int numBits = getNumberOfBits();
-        return BigInteger.ZERO.setBit(numBits-1).negate();
+        return BigInteger.ZERO.setBit(numBits - 1).negate();
     }
 
     /** Return the minimum quantizable value.

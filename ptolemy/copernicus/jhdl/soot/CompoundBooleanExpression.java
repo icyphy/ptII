@@ -24,19 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.soot;
 
-import ptolemy.kernel.util.IllegalActionException;
-
+import soot.UnitPrinter;
 import soot.Value;
+
 import soot.jimple.ConditionExpr;
-import soot.jimple.internal.JNeExpr;
-import soot.jimple.internal.JLtExpr;
-import soot.jimple.internal.JLeExpr;
-import soot.jimple.internal.JGtExpr;
-import soot.jimple.internal.JGeExpr;
-import soot.jimple.internal.JEqExpr;
 import soot.jimple.EqExpr;
 import soot.jimple.GeExpr;
 import soot.jimple.GtExpr;
@@ -44,10 +37,19 @@ import soot.jimple.LeExpr;
 import soot.jimple.LtExpr;
 import soot.jimple.NeExpr;
 
-import soot.UnitPrinter;
+import soot.jimple.internal.JEqExpr;
+import soot.jimple.internal.JGeExpr;
+import soot.jimple.internal.JGtExpr;
+import soot.jimple.internal.JLeExpr;
+import soot.jimple.internal.JLtExpr;
+import soot.jimple.internal.JNeExpr;
+
+import ptolemy.kernel.util.IllegalActionException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CompoundBooleanExpression
+
 /**
  * This abstract class represents a CompoundBooleanExpression within Soot.
  * Note that this class is an extension to Soot by providing a
@@ -73,11 +75,15 @@ import soot.UnitPrinter;
  * @Pt.AcceptedRating Red (cxh)
 */
 public abstract class CompoundBooleanExpression implements Value, ConditionExpr {
+    public abstract CompoundBooleanExpression invert()
+        throws IllegalActionException;
 
-    public abstract CompoundBooleanExpression invert() throws IllegalActionException;
     public abstract Object clone();
+
     public abstract Value getOp1();
+
     public abstract Value getOp2();
+
     public abstract void toString(UnitPrinter up);
 
     /**
@@ -98,32 +104,37 @@ public abstract class CompoundBooleanExpression implements Value, ConditionExpr 
      * <li> NeExpr -> EqExpr
      * </ul>
      **/
-    public static Value invertValue(Value inValue) throws IllegalActionException {
-        Value newValue=null;
+    public static Value invertValue(Value inValue)
+        throws IllegalActionException {
+        Value newValue = null;
+
         if (inValue instanceof ConditionExpr) {
-            Value op1 = ((ConditionExpr)inValue).getOp1();
-            Value op2 = ((ConditionExpr)inValue).getOp2();
+            Value op1 = ((ConditionExpr) inValue).getOp1();
+            Value op2 = ((ConditionExpr) inValue).getOp2();
+
             if (inValue instanceof EqExpr) {
-                newValue = new JNeExpr(op1,op2);
+                newValue = new JNeExpr(op1, op2);
             } else if (inValue instanceof GeExpr) {
-                newValue = new JLtExpr(op1,op2);
+                newValue = new JLtExpr(op1, op2);
             } else if (inValue instanceof GtExpr) {
-                newValue = new JLeExpr(op1,op2);
+                newValue = new JLeExpr(op1, op2);
             } else if (inValue instanceof LeExpr) {
-                newValue = new JGtExpr(op1,op2);
+                newValue = new JGtExpr(op1, op2);
             } else if (inValue instanceof LtExpr) {
-                newValue = new JGeExpr(op1,op2);
+                newValue = new JGeExpr(op1, op2);
             } else if (inValue instanceof NeExpr) {
-                newValue = new JEqExpr(op1,op2);
+                newValue = new JEqExpr(op1, op2);
             } else if (inValue instanceof CompoundBooleanExpression) {
-                newValue = ((CompoundBooleanExpression)inValue).invert();
-            } else
-                throw new IllegalActionException("Unknown ConditionExpr "+
-                        inValue.getClass());
-        } else
-            throw new IllegalActionException("Can't Invert " +
-                    inValue.getClass());
+                newValue = ((CompoundBooleanExpression) inValue).invert();
+            } else {
+                throw new IllegalActionException("Unknown ConditionExpr "
+                    + inValue.getClass());
+            }
+        } else {
+            throw new IllegalActionException("Can't Invert "
+                + inValue.getClass());
+        }
+
         return newValue;
     }
-
 }

@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.connector;
 
 import java.awt.BasicStroke;
@@ -43,6 +42,7 @@ import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 
+
 /** A terminal that consists of a straight line plus an additional
  * decoration at the connection end of the terminal.
  *
@@ -50,7 +50,6 @@ import diva.canvas.Site;
  * @author  John Reekie
  */
 public class StraightTerminal extends AbstractFigure implements Terminal {
-
     /** The end decoration
      */
     private ConnectorEnd _end;
@@ -83,13 +82,13 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      * The terminal should not be displayed until after setAttachSite()
      * is called.
      */
-    public StraightTerminal () {
+    public StraightTerminal() {
         this(new NullSite(), new BasicStroke(), Color.black);
     }
 
     /** Create a new terminal attached to the given site.
      */
-    public StraightTerminal (Site attachSite) {
+    public StraightTerminal(Site attachSite) {
         this(attachSite, new BasicStroke(), Color.black);
     }
 
@@ -97,13 +96,14 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      * with the given stroke and paint. If the attach site is not
      * yet available, pass a NullSite.
      */
-    public StraightTerminal (Site attachSite, Stroke stroke, Paint paint) {
+    public StraightTerminal(Site attachSite, Stroke stroke, Paint paint) {
         this._attachSite = attachSite;
         this._paint = paint;
         this._stroke = stroke;
 
         _connectSite = new ConnectSite();
         _line = new Line2D.Double();
+
         if (!(_attachSite instanceof NullSite)) {
             recompute();
         }
@@ -111,73 +111,78 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
 
     /** Get the site to which the terminal is attached
      */
-    public Site getAttachSite () {
+    public Site getAttachSite() {
         return _attachSite;
     }
 
     /** Get the bounding box of this terminal.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         Rectangle2D bounds = _stroke.createStrokedShape(_line).getBounds2D();
+
         if (_end != null) {
             Rectangle2D.union(bounds, _end.getBounds(), bounds);
         }
+
         return bounds;
     }
 
     /** Get the site to which a connector can attach
      */
-    public Site getConnectSite () {
+    public Site getConnectSite() {
         return _connectSite;
     }
 
     /** Get the object drawn at the end of the terminal, if there
      * is one.
      */
-    public ConnectorEnd getEnd () {
+    public ConnectorEnd getEnd() {
         return _end;
     }
 
     /** Get the paint of this terminal.
      */
-    public Paint getPaint () {
+    public Paint getPaint() {
         return _paint;
     }
 
     /** Get the outline shape of this terminal.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         // FIXME: this really should include the "end"
         return _line;
     }
 
     /** Get the stroke of this terminal.
      */
-    public Stroke getStroke () {
+    public Stroke getStroke() {
         return _stroke;
     }
 
     /** Test if this terminal is hit by the given rectangle.
      */
-    public boolean hit (Rectangle2D r) {
+    public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
         }
+
         boolean hit = intersects(r);
 
         // Do the end too. Does ConnectorEnd needs a proper hit() method?
         if (_end != null) {
             hit = hit || r.intersects(_end.getBounds());
         }
+
         return hit;
     }
 
     /** Paint the terminal.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         g.setStroke(_stroke);
         g.setPaint(_paint);
         g.draw(_line);
+
         if (_end != null) {
             _end.paint(g);
         }
@@ -185,14 +190,15 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
 
     /** Tell the terminal to completely recompute its shape.
      */
-    private void recompute () {
+    private void recompute() {
         double x1 = _attachSite.getX();
         double y1 = _attachSite.getY();
         double normal = _attachSite.getNormal();
-        double x2 = x1 + _length * Math.cos(normal);
-        double y2 = y1 + _length * Math.sin(normal);
+        double x2 = x1 + (_length * Math.cos(normal));
+        double y2 = y1 + (_length * Math.sin(normal));
 
         _line.setLine(x1, y1, x2, y2);
+
         if (_end != null) {
             _end.setOrigin(x2, y2);
             _end.setNormal(normal);
@@ -202,15 +208,14 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
     /** Tell the terminal to reposition itself over the attachment
      * site.
      */
-    public void relocate () {
-        translate(
-                _attachSite.getX() - _line.getX1(),
-                _attachSite.getY() - _line.getY1());
+    public void relocate() {
+        translate(_attachSite.getX() - _line.getX1(),
+            _attachSite.getY() - _line.getY1());
     }
 
     /** Set the site to which the terminal is attached.
      */
-    public void setAttachSite (Site s) {
+    public void setAttachSite(Site s) {
         _attachSite = s;
         recompute();
         repaint();
@@ -219,7 +224,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
     /**
      * Set the object drawn at the end of the terminal.
      */
-    public void setEnd (ConnectorEnd e) {
+    public void setEnd(ConnectorEnd e) {
         repaint();
         _end = e;
         _end.setOrigin(_connectSite.getX(), _connectSite.getY());
@@ -231,7 +236,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      * Currently, this call has no effect on the terminal end
      * shape, if it has one.
      */
-    public void setStroke (Stroke s) {
+    public void setStroke(Stroke s) {
         repaint();
         _stroke = s;
         repaint();
@@ -241,7 +246,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      * Currently, this call has no effect on the terminal end
      * shape, if it has one.
      */
-    public void setPaint (Paint p) {
+    public void setPaint(Paint p) {
         _paint = p;
         repaint();
     }
@@ -250,7 +255,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      * and orientation of a terminal is determined solely by its
      * attachment site and other parameters.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         // do nothing
     }
 
@@ -260,14 +265,15 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      * call repaint(), on the assumption that the parent figure
      * will do so anyway.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         //// repaint();
-        _line.setLine(
-                _line.getX1()+x, _line.getY1()+y,
-                _line.getX2()+x, _line.getY2()+y);
+        _line.setLine(_line.getX1() + x, _line.getY1() + y, _line.getX2() + x,
+            _line.getY2() + y);
+
         if (_end != null) {
-            _end.translate(x,y);
+            _end.translate(x, y);
         }
+
         //// repaint();
     }
 
@@ -279,7 +285,6 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      * ID 0.
      */
     private class ConnectSite extends AbstractSite {
-
         /** Get the ID of this site.
          */
         public int getID() {
@@ -295,26 +300,26 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
         /** Get the normal to this site, in radians
          * between zero and 2pi. The direction is "out" of the site.
          */
-        public double getNormal () {
+        public double getNormal() {
             return _attachSite.getNormal();
         }
 
         /** Get the x-coordinate of the site.
          */
-        public double getX () {
+        public double getX() {
             return _line.getX2();
         }
 
         /** Get the y-coordinate of the site.
          */
-        public double getY () {
+        public double getY() {
             return _line.getY2();
         }
 
         /** Test if this site has a "normal" to it. This method
          * returns the same value as the attachment site.
          */
-        public boolean hasNormal () {
+        public boolean hasNormal() {
             return _attachSite.hasNormal();
         }
 
@@ -323,27 +328,24 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
          * NORTH, SOUTH, EAST, or WEST, defined in
          * <b>javax.swing.SwingConstants</b>.
          */
-        public boolean isNormal (int direction) {
+        public boolean isNormal(int direction) {
             return _attachSite.isNormal(direction);
         }
 
         /** Set the point location of the site. This method throws
          * an exception.
          */
-        public void setPoint (Point2D point) {
+        public void setPoint(Point2D point) {
             throw new UnsupportedOperationException(
-                    "Terminal connection points cannot be moved");
+                "Terminal connection points cannot be moved");
         }
 
         /** Translate the site by the indicated distance. This
          * method throws an exception.
          */
-        public void translate (double x, double y) {
+        public void translate(double x, double y) {
             throw new UnsupportedOperationException(
-                    "Terminal connection points cannot be moved");
+                "Terminal connection points cannot be moved");
         }
     }
 }
-
-
-

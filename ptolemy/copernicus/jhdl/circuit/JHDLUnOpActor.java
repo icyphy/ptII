@@ -24,29 +24,31 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
-import byucc.jhdl.base.HWSystem;
-import byucc.jhdl.base.Wire;
 import byucc.jhdl.Logic.Logic;
 import byucc.jhdl.Logic.Modules.arrayMult;
 
-import java.util.*;
+import byucc.jhdl.base.HWSystem;
+import byucc.jhdl.base.Wire;
 
-import ptolemy.copernicus.jhdl.soot.*;
-import ptolemy.copernicus.jhdl.util.*;
+import soot.*;
+
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.*;
-import soot.jimple.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * This class represents a unary operator JHDL circuit. This class
  * can generate the following JHDL circuits: NOT
@@ -57,9 +59,8 @@ import soot.jimple.*;
  @Pt.AcceptedRating Red (cxh)
 */
 public class JHDLUnOpActor extends JHDLAtomicActor {
-
     JHDLUnOpActor(CompositeEntity container, int operation)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container);
         input = new JHDLIOPort(this, "input");
         output = new JHDLIOPort(this, "output");
@@ -67,10 +68,14 @@ public class JHDLUnOpActor extends JHDLAtomicActor {
     }
 
     public boolean resolve() {
-        if (!input.isResolved())
+        if (!input.isResolved()) {
             return false;
-        if (output.isResolved())
+        }
+
+        if (output.isResolved()) {
             return true;
+        }
+
         output.setSignalWidth(input.getSignalWidth());
         output.resolveOutside();
         return true;
@@ -81,13 +86,11 @@ public class JHDLUnOpActor extends JHDLAtomicActor {
         Wire inputWire = input.getOutsideRelation().getJHDLWire();
         Wire outputWire = output.getOutsideRelation().getJHDLWire();
         Wire notWire = parent.not(inputWire);
-        parent.buf_o(notWire,outputWire);
+        parent.buf_o(notWire, outputWire);
     }
 
     public JHDLIOPort input;
     public JHDLIOPort output;
-
     public static final int NOT = 1;
-
     protected int _operation;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ShapeIcon
+
 /**
    An icon that displays a specified java.awt.Shape.
 
@@ -55,7 +56,6 @@ import diva.canvas.toolbox.BasicFigure;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ShapeIcon extends DynamicEditorIcon {
-
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
      *  @param name The name of the attribute.
@@ -65,7 +65,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      *   an attribute already in the container.
      */
     public ShapeIcon(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -80,7 +80,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      *   an attribute already in the container.
      */
     public ShapeIcon(NamedObj container, String name, Shape defaultShape)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _defaultShape = defaultShape;
         setShape(defaultShape);
@@ -97,9 +97,9 @@ public class ShapeIcon extends DynamicEditorIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ShapeIcon newObject = (ShapeIcon)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ShapeIcon newObject = (ShapeIcon) super.clone(workspace);
+
         // NOTE: Do not set back to the default shape!
         // newObject._shape = _defaultShape;
         return newObject;
@@ -116,7 +116,6 @@ public class ShapeIcon extends DynamicEditorIcon {
         // repainted, which seems excessive to me.  This will happen
         // every time there is a modification to the model that is
         // carried out by a MoMLChangeRequest.
-
         // The Diva graph package implements a model-view-controller
         // architecture, which implies that this needs to return a new
         // figure each time it is called.  The reason is that the figure
@@ -128,13 +127,15 @@ public class ShapeIcon extends DynamicEditorIcon {
         // references, so that this class does not interfere with garbage
         // collection of the figure when the view is destroyed.
         BasicFigure newFigure;
+
         if (_shape != null) {
             newFigure = new BasicFigure(_shape);
         } else {
             // Create a white rectangle.
-            newFigure = new BasicFigure(new Rectangle2D.Double(
-                                                0.0, 0.0, 20.0, 20.0));
+            newFigure = new BasicFigure(new Rectangle2D.Double(0.0, 0.0, 20.0,
+                        20.0));
         }
+
         // By default, the origin should be the upper left.
         newFigure.setCentered(_centered);
         newFigure.setLineWidth(_lineWidth);
@@ -177,12 +178,14 @@ public class ShapeIcon extends DynamicEditorIcon {
         Runnable doSet = new Runnable() {
                 public void run() {
                     Iterator figures = _liveFigureIterator();
+
                     while (figures.hasNext()) {
                         Object figure = figures.next();
-                        ((BasicFigure)figure).setCentered(_centered);
+                        ((BasicFigure) figure).setCentered(_centered);
                     }
                 }
             };
+
         SwingUtilities.invokeLater(doSet);
     }
 
@@ -192,11 +195,11 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setFillColor(Color fillColor) {
         // Avoid calling swing if things haven't actually changed.
-        if (_fillColor != null && _fillColor.equals(fillColor)) {
+        if ((_fillColor != null) && _fillColor.equals(fillColor)) {
             return;
         }
 
-         _fillColor = fillColor;
+        _fillColor = fillColor;
 
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
@@ -207,12 +210,14 @@ public class ShapeIcon extends DynamicEditorIcon {
         Runnable doSet = new Runnable() {
                 public void run() {
                     Iterator figures = _liveFigureIterator();
+
                     while (figures.hasNext()) {
                         Object figure = figures.next();
-                        ((BasicFigure)figure).setFillPaint(_fillColor);
+                        ((BasicFigure) figure).setFillPaint(_fillColor);
                     }
                 }
             };
+
         SwingUtilities.invokeLater(doSet);
     }
 
@@ -222,7 +227,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setLineColor(Color lineColor) {
         // Avoid calling swing if things haven't actually changed.
-        if (_lineColor != null && _lineColor.equals(lineColor)) {
+        if ((_lineColor != null) && _lineColor.equals(lineColor)) {
             return;
         }
 
@@ -237,12 +242,14 @@ public class ShapeIcon extends DynamicEditorIcon {
         Runnable doSet = new Runnable() {
                 public void run() {
                     Iterator figures = _liveFigureIterator();
+
                     while (figures.hasNext()) {
                         Object figure = figures.next();
-                        ((BasicFigure)figure).setStrokePaint(_lineColor);
+                        ((BasicFigure) figure).setStrokePaint(_lineColor);
                     }
                 }
             };
+
         SwingUtilities.invokeLater(doSet);
     }
 
@@ -267,12 +274,14 @@ public class ShapeIcon extends DynamicEditorIcon {
         Runnable doSet = new Runnable() {
                 public void run() {
                     Iterator figures = _liveFigureIterator();
+
                     while (figures.hasNext()) {
                         Object figure = figures.next();
-                        ((BasicFigure)figure).setLineWidth(_lineWidth);
+                        ((BasicFigure) figure).setLineWidth(_lineWidth);
                     }
                 }
             };
+
         SwingUtilities.invokeLater(doSet);
     }
 
@@ -292,18 +301,19 @@ public class ShapeIcon extends DynamicEditorIcon {
         Runnable doSet = new Runnable() {
                 public void run() {
                     Iterator figures = _liveFigureIterator();
+
                     while (figures.hasNext()) {
                         Object figure = figures.next();
-                        ((BasicFigure)figure).setPrototypeShape(_shape);
+                        ((BasicFigure) figure).setPrototypeShape(_shape);
                     }
                 }
             };
+
         Top.deferIfNecessary(doSet);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Indicator of whether the figure should be centered on its origin.
     private boolean _centered = false;
 

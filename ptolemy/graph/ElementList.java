@@ -22,7 +22,6 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
 
 import java.util.ArrayList;
@@ -33,8 +32,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+
 ////////////////////////////////////////////////////////////////////////// //
 //ElementList
+
 /**
    A list of graph elements. This class manages the storage and weight
    information associated with a list of unique graph elements.
@@ -47,7 +48,6 @@ import java.util.List;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ElementList extends LabeledList {
-
     /** Construct an empty element list.
      *  @param descriptor A one-word description of the type of elements
      *  that are to be stored in this list.
@@ -88,19 +88,24 @@ public class ElementList extends LabeledList {
     public boolean cancelWeight(Element element) {
         // FIXME: needs better documentation
         boolean removed = false;
+
         if (element.hasWeight()) {
             Object weight = element.getWeight();
-            ArrayList sameWeightList = (ArrayList)(_weightMap.get(weight));
+            ArrayList sameWeightList = (ArrayList) (_weightMap.get(weight));
+
             if (sameWeightList == null) {
                 return false;
             }
+
             removed = sameWeightList.remove(element);
+
             if (sameWeightList.size() == 0) {
                 _weightMap.remove(weight);
             }
         } else {
             removed = _unweightedSet.remove(element);
         }
+
         return removed;
     }
 
@@ -118,8 +123,10 @@ public class ElementList extends LabeledList {
         boolean weightValueHasChanged = false;
         boolean found = false;
         Object newWeight = element.hasWeight() ? element.getWeight() : null;
+
         if (_unweightedSet.contains(element)) {
             weightValueHasChanged = (newWeight != null);
+
             if (weightValueHasChanged) {
                 _unweightedSet.remove(element);
                 registerWeight(element);
@@ -130,32 +137,37 @@ public class ElementList extends LabeledList {
             Iterator weights = _weightMap.keySet().iterator();
             Object nextWeight = null;
             List nextList = null;
+
             while (weights.hasNext() && !found) {
                 nextWeight = weights.next();
-                nextList = (List)_weightMap.get(nextWeight);
+                nextList = (List) _weightMap.get(nextWeight);
                 found = nextList.contains(element);
             }
+
             if (found) {
                 // Note that the weight can change without the weight
                 // comparison here changing (if the change does not affect
                 // comparison under the equals method).
                 weightValueHasChanged = !nextWeight.equals(newWeight);
+
                 if (weightValueHasChanged) {
                     nextList.remove(element);
+
                     if (nextList.size() == 0) {
                         _weightMap.remove(nextWeight);
                     }
+
                     registerWeight(element);
                 }
             } else {
                 // FIXME: use an internal error exception here.
                 throw new RuntimeException("Internal error: the specified "
-                        + _descriptor + " is neither unweighted nor associated "
-                        + "with a weight."
-                        + GraphException.elementDump(element, _graph));
-
+                    + _descriptor + " is neither unweighted nor associated "
+                    + "with a weight."
+                    + GraphException.elementDump(element, _graph));
             }
         }
+
         return weightValueHasChanged;
     }
 
@@ -193,12 +205,14 @@ public class ElementList extends LabeledList {
      */
     public Element element(Object weight) {
         Collection elements = elements(weight);
+
         if (elements.size() == 0) {
             throw new GraphWeightException(weight, null, _graph,
-                    "Invalid weight argument, the number of elements for"
-                    + " this weight is zero.");
+                "Invalid weight argument, the number of elements for"
+                + " this weight is zero.");
         }
-        return (Element)(elements.iterator().next());
+
+        return (Element) (elements.iterator().next());
     }
 
     /** Return all the elements in this list in the form of an unmodifiable
@@ -223,7 +237,8 @@ public class ElementList extends LabeledList {
         if (weight == null) {
             return Collections.unmodifiableCollection(_unweightedSet);
         } else {
-            Collection sameWeightElements = (Collection)_weightMap.get(weight);
+            Collection sameWeightElements = (Collection) _weightMap.get(weight);
+
             if (sameWeightElements == null) {
                 return _emptyCollection;
             } else {
@@ -241,11 +256,13 @@ public class ElementList extends LabeledList {
     public void registerWeight(Element element) {
         if (element.hasWeight()) {
             Object weight = element.getWeight();
-            ArrayList sameWeightList = (ArrayList)(_weightMap.get(weight));
+            ArrayList sameWeightList = (ArrayList) (_weightMap.get(weight));
+
             if (sameWeightList == null) {
                 sameWeightList = new ArrayList();
                 _weightMap.put(weight, sameWeightList);
             }
+
             sameWeightList.add(element);
         } else {
             _unweightedSet.add(element);
@@ -259,9 +276,11 @@ public class ElementList extends LabeledList {
      */
     public boolean remove(Element element) {
         boolean removed = super.remove(element);
+
         if (removed) {
             cancelWeight(element);
         }
+
         return removed;
     }
 
@@ -274,35 +293,40 @@ public class ElementList extends LabeledList {
     public boolean validateWeight(Element element, Object oldWeight) {
         boolean changed = false;
         Object newWeight = element.hasWeight() ? element.getWeight() : null;
+
         if (oldWeight == null) {
             if (!_unweightedSet.contains(element)) {
                 // This 'dump' of a null weight will also dump the graph.
                 throw new GraphWeightException(oldWeight, null, _graph,
-                        "Incorrect previous weight specified.");
+                    "Incorrect previous weight specified.");
             }
+
             if (newWeight == null) {
                 return false;
             }
+
             _unweightedSet.remove(element);
             changed = true;
         } else {
             // The weight may have changed in value even if comparison under
             // the equals method has not changed. Thus we proceed
             // with the removal unconditionally.
-            List elementList = (List)_weightMap.get(oldWeight);
+            List elementList = (List) _weightMap.get(oldWeight);
+
             if ((elementList == null) || !elementList.remove(element)) {
                 throw new GraphWeightException(oldWeight, null, _graph,
-                        "Incorrect previous weight specified.");
+                    "Incorrect previous weight specified.");
             }
+
             changed = !oldWeight.equals(newWeight);
         }
+
         registerWeight(element);
         return changed;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A one-word description of the type of elements stored in this list
     private String _descriptor;
 
@@ -310,8 +334,8 @@ public class ElementList extends LabeledList {
     private Graph _graph;
 
     // An unmodifiable, empty collection.
-    private static final Collection _emptyCollection =
-    Collections.unmodifiableCollection(new ArrayList(0));
+    private static final Collection _emptyCollection = Collections
+        .unmodifiableCollection(new ArrayList(0));
 
     // The set of elements that do not have weights. Each member is an
     // Element.
@@ -322,6 +346,4 @@ public class ElementList extends LabeledList {
     // are instances of of Object, and values instances of ArrayList
     // whose elements are instances of Element.
     private HashMap _weightMap;
-
-
 }

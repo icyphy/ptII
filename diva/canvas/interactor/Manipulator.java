@@ -36,6 +36,7 @@ import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
 import diva.canvas.event.MouseFilter;
 
+
 /**
  * A Manipulator is an object that decorates some figure, and generally
  * paint grab-handles or some other stuff to the figure to that
@@ -47,7 +48,6 @@ import diva.canvas.event.MouseFilter;
  * @version        $Id$
  */
 public abstract class Manipulator extends FigureDecorator {
-
     /** The factory that builds the grab handles.
      */
     private GrabHandleFactory _factory = new BasicGrabHandleFactory();
@@ -70,45 +70,46 @@ public abstract class Manipulator extends FigureDecorator {
 
     /** Add a grab-handle to this manipulator's collection of grab-handles.
      */
-    public void addGrabHandle (GrabHandle gh) {
+    public void addGrabHandle(GrabHandle gh) {
         _grabHandles.add(gh);
     }
 
     /** Clear all grab-handles.
      */
-    public void clearGrabHandles () {
+    public void clearGrabHandles() {
         _grabHandles.clear();
     }
 
     /** Get the bounds. This is the union of the child's bounding box
      * and the bounding boxes of all the grab-handles
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         Rectangle2D bounds = getChild().getBounds();
+
         if (_grabHandles.size() > 0) {
-            bounds = bounds.createUnion(
-                    CanvasUtilities.computeCompositeBounds(
-                            _grabHandles.iterator()));
+            bounds = bounds.createUnion(CanvasUtilities.computeCompositeBounds(
+                        _grabHandles.iterator()));
         }
+
         return bounds;
     }
 
     /** Get the grab handle factory.
      */
-    public GrabHandleFactory getGrabHandleFactory () {
+    public GrabHandleFactory getGrabHandleFactory() {
         return this._factory;
     }
 
     /** Get the grab handle interactor.
      */
-    public DragInteractor getHandleInteractor () {
+    public DragInteractor getHandleInteractor() {
         return _handleInteractor;
     }
 
     /** Test if this manipulator is in the process of repainting
      * itself and its child.
      */
-    public boolean isRepainting () {
+    public boolean isRepainting() {
         return _repainting;
     }
 
@@ -120,10 +121,13 @@ public abstract class Manipulator extends FigureDecorator {
         if (getChild() == null) {
             return;
         }
+
         getChild().paint(g);
+
         Iterator i = _grabHandles.iterator();
+
         while (i.hasNext()) {
-            GrabHandle h = (GrabHandle)i.next();
+            GrabHandle h = (GrabHandle) i.next();
             h.paint(g);
         }
     }
@@ -132,17 +136,21 @@ public abstract class Manipulator extends FigureDecorator {
      * it. This could be one of the grab-handles, or the child.
      * If nothing hits, return null.
      */
-    public Figure pick (Rectangle2D r) {
+    public Figure pick(Rectangle2D r) {
         if (getChild() == null) {
             return null;
         }
+
         Iterator i = _grabHandles.iterator();
+
         while (i.hasNext()) {
-            GrabHandle h = (GrabHandle)i.next();
+            GrabHandle h = (GrabHandle) i.next();
+
             if (h.intersects(r)) {
                 return h;
             }
         }
+
         if (getChild().hit(r)) {
             return getChild();
         } else {
@@ -153,7 +161,7 @@ public abstract class Manipulator extends FigureDecorator {
     /** Remove a grab-handle from this manipulator's
      * collection of grab-handles.
      */
-    public void removeGrabHandle (GrabHandle gh) {
+    public void removeGrabHandle(GrabHandle gh) {
         _grabHandles.remove(gh);
     }
 
@@ -164,10 +172,11 @@ public abstract class Manipulator extends FigureDecorator {
      * the grab-handles are moved to their new locations. Oh, and
      * move the grab-handles to their new locations.
      */
-    public void repaint (DamageRegion d) {
+    public void repaint(DamageRegion d) {
         if (isRepainting()) {
             return;
         }
+
         repaint();
     }
 
@@ -175,15 +184,16 @@ public abstract class Manipulator extends FigureDecorator {
      * geometry must be adjusted to match the current position
      * of the child figure.
      */
-    public abstract void refresh ();
+    public abstract void refresh();
 
     /** Relocate grab-handles to their correct positions. This is
      * a utility method to simplify notification callbacks.
      */
-    public void relocateGrabHandles () {
+    public void relocateGrabHandles() {
         Iterator i = _grabHandles.iterator();
+
         while (i.hasNext()) {
-            ((GrabHandle)i.next()).relocate();
+            ((GrabHandle) i.next()).relocate();
         }
     }
 
@@ -194,10 +204,9 @@ public abstract class Manipulator extends FigureDecorator {
      * adjusts the geometry to the current location of the child
      * moves the grab-handles to their new locations.
      */
-    public void repaint () {
+    public void repaint() {
         // Create the damage region
-        DamageRegion d = DamageRegion.createDamageRegion(
-                getTransformContext(),
+        DamageRegion d = DamageRegion.createDamageRegion(getTransformContext(),
                 getBounds());
 
         // Change the geometry to match the current location
@@ -224,10 +233,9 @@ public abstract class Manipulator extends FigureDecorator {
      * should therefore be used for repaints that are generated by
      * modifications to the geometry.
      */
-    public void repaintAlready () {
+    public void repaintAlready() {
         // Create the damage region
-        DamageRegion d = DamageRegion.createDamageRegion(
-                getTransformContext(),
+        DamageRegion d = DamageRegion.createDamageRegion(getTransformContext(),
                 getBounds());
 
         // Move the grabhandles
@@ -245,13 +253,13 @@ public abstract class Manipulator extends FigureDecorator {
     /** Set the grab handle factory. This is set by default to
      * an instance of BasicGrabHandleFactory.
      */
-    public void setGrabHandleFactory (GrabHandleFactory factory) {
+    public void setGrabHandleFactory(GrabHandleFactory factory) {
         this._factory = factory;
     }
 
     /** Set the mouse filter that is set in the grab handle interactor.
      */
-    public void setHandleFilter (MouseFilter filter) {
+    public void setHandleFilter(MouseFilter filter) {
         _handleInteractor.setMouseFilter(filter);
     }
 
@@ -259,7 +267,7 @@ public abstract class Manipulator extends FigureDecorator {
      * an instance of DragInteractor. Note that any previously-set mouse
      * filter will be lost.
      */
-    public void setHandleInteractor (DragInteractor interactor) {
+    public void setHandleInteractor(DragInteractor interactor) {
         _handleInteractor = interactor;
     }
 
@@ -268,9 +276,7 @@ public abstract class Manipulator extends FigureDecorator {
      * that it can therefore ignore repaint requests for the
      * children.
      */
-    public void setRepainting (boolean repainting) {
+    public void setRepainting(boolean repainting) {
         this._repainting = repainting;
     }
 }
-
-

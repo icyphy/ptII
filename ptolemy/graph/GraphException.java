@@ -22,12 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphException
+
 /**
    Base exception for graph errors. This is also an instance of
    <code>RuntimeException</code>.
@@ -39,7 +39,6 @@ package ptolemy.graph;
    @Pt.AcceptedRating Red (ssb)
 */
 public class GraphException extends RuntimeException {
-
     /** The default constructor without arguments.
      */
     public GraphException() {
@@ -66,8 +65,8 @@ public class GraphException extends RuntimeException {
      *  @return A text string dump of the graph.
      */
     static public String graphDump(Graph graph) {
-        return "\nA Dump of the offending graph follows.\n"
-            + graph.toString() + "\n";
+        return "\nA Dump of the offending graph follows.\n" + graph.toString()
+        + "\n";
     }
 
     /** Return a dump of a graph element and the container graph suitable to
@@ -79,11 +78,13 @@ public class GraphException extends RuntimeException {
      */
     static public String elementDump(Element element, Graph graph) {
         String descriptor;
+
         if (element == null) {
             descriptor = "element";
         } else {
             descriptor = element.descriptor();
         }
+
         return _elementDump(element, graph, descriptor);
     }
 
@@ -95,10 +96,8 @@ public class GraphException extends RuntimeException {
      *  @return A text string dump of the weight and graph.
      */
     static public String weightDump(Object weight) {
-        String dump = "\nThe weight is of class "
-            + weight.getClass().getName()
-            + " and its description follows:\n"
-            + weight.toString();
+        String dump = "\nThe weight is of class " + weight.getClass().getName()
+            + " and its description follows:\n" + weight.toString();
         return dump;
     }
 
@@ -114,16 +113,11 @@ public class GraphException extends RuntimeException {
      *  @param elementDescriptor Descriptor of the element.
      *  @return A text string dump of the element and graph.
      */
-    static protected String _elementDump(
-            Object element, Graph graph, String elementDescriptor) {
-
-        String elementString =
-            (element == null) ? "<null>" : element.toString();
-        return "\nDumps of the offending "
-            + elementDescriptor + " and graph follow.\n"
-            + "The offending " + elementDescriptor + ":\n" + elementString
-            + "\nThe offending graph:\n" + graph.toString() + "\n";
+    static protected String _elementDump(Object element, Graph graph,
+        String elementDescriptor) {
+        String elementString = (element == null) ? "<null>" : element.toString();
+        return "\nDumps of the offending " + elementDescriptor
+        + " and graph follow.\n" + "The offending " + elementDescriptor + ":\n"
+        + elementString + "\nThe offending graph:\n" + graph.toString() + "\n";
     }
-
 }
-

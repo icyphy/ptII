@@ -29,6 +29,7 @@ package diva.canvas.connector;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 
+
 /** An abstract implementation of the ConnectorTarget interface.  Most
  * connector targets do only basic filtering on a connector, by disallowing
  * the head and tail of a connector from attaching to the same figure.  Most
@@ -40,13 +41,15 @@ import diva.canvas.Site;
  * @author John Reekie
  */
 public abstract class AbstractConnectorTarget implements ConnectorTarget {
-
     /** Return true if the given connector can be connected to the given
      * figure.  In this base class return true if the tail of the connector
      * is not attached to the same figure.
      */
     public boolean acceptHead(Connector c, Figure f) {
-        if (c != null && c.getTailSite().getFigure() == f) return false;
+        if ((c != null) && (c.getTailSite().getFigure() == f)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -55,7 +58,10 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * is not attached to the same figure.
      */
     public boolean acceptTail(Connector c, Figure f) {
-        if (c != null && c.getHeadSite().getFigure() == f) return false;
+        if ((c != null) && (c.getHeadSite().getFigure() == f)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -66,7 +72,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * connection.  This method is primarily useful for manually
      * creating new figures.
      */
-    public abstract Site getHeadSite (Figure f, double x, double y);
+    public abstract Site getHeadSite(Figure f, double x, double y);
 
     /** Return a suitable site to connect a connector's tail to,
      * based on this figure and location. Return null if there
@@ -77,7 +83,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * the same way as heads, so call the getHeadSite method with the same
      * arguments.
      */
-    public Site getTailSite (Figure f, double x, double y) {
+    public Site getTailSite(Figure f, double x, double y) {
         return getHeadSite(f, x, y);
     }
 
@@ -90,7 +96,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * passed site is the best one available.  In this base class, just
      * return the same site.
      */
-    public Site getHeadSite (Site s, double x, double y) {
+    public Site getHeadSite(Site s, double x, double y) {
         return s;
     }
 
@@ -98,7 +104,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * See the description for getheadSite().  In this base class, just
      * return the same site.
      */
-    public Site getTailSite (Site s, double x, double y) {
+    public Site getTailSite(Site s, double x, double y) {
         return s;
     }
 
@@ -108,8 +114,11 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * method called with the connector and the figure returns false.
      * Otherwise call the method that just takes a figure.
      */
-    public Site getHeadSite (Connector c, Figure f, double x, double y) {
-        if (acceptHead(c, f) == false) return null;
+    public Site getHeadSite(Connector c, Figure f, double x, double y) {
+        if (acceptHead(c, f) == false) {
+            return null;
+        }
+
         return getHeadSite(f, x, y);
     }
 
@@ -119,8 +128,11 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * method called with the connector and the figure returns false.
      * Otherwise call the method that just takes a figure.
      */
-    public Site getTailSite (Connector c, Figure f, double x, double y) {
-        if (acceptTail(c, f) == false) return null;
+    public Site getTailSite(Connector c, Figure f, double x, double y) {
+        if (acceptTail(c, f) == false) {
+            return null;
+        }
+
         return getTailSite(f, x, y);
     }
 
@@ -133,18 +145,15 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * passed site is the best one available.
      * In this base class, just return the site.
      */
-    public Site getHeadSite (Connector c, Site s, double x, double y) {
+    public Site getHeadSite(Connector c, Site s, double x, double y) {
         return s;
     }
-
 
     /** Return a suitable site to connect a connector's tail to.
      * See the description for getheadSite().
      * In this base class, just return the site.
      */
-    public Site getTailSite (Connector c, Site s, double x, double y) {
+    public Site getTailSite(Connector c, Site s, double x, double y) {
         return s;
     }
 }
-
-

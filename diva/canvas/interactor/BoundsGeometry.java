@@ -45,7 +45,6 @@ import diva.canvas.Site;
  * @author         John Reekie
  */
 public class BoundsGeometry implements Geometry {
-
     ///////////////////////////////////////////////////////////////////
     //// private fields
 
@@ -73,7 +72,7 @@ public class BoundsGeometry implements Geometry {
 
     /** The sites that exist so far
      */
-    private BoundsSite _sites[] = new BoundsSite[_siteCount];
+    private BoundsSite[] _sites = new BoundsSite[_siteCount];
 
     ///////////////////////////////////////////////////////////////////
     //// public methods
@@ -81,97 +80,98 @@ public class BoundsGeometry implements Geometry {
     /** Create a new geometry object on the given figure and with the
      * given initial bounds.
      */
-    public BoundsGeometry (Figure figure, Rectangle2D bounds) {
+    public BoundsGeometry(Figure figure, Rectangle2D bounds) {
         this._parentFigure = figure;
         setShape(bounds);
     }
 
     /** Get the single site with the given ID.
      */
-    public Site getSite (int id) {
+    public Site getSite(int id) {
         if (_sites[id] == null) {
             _sites[id] = new BoundsSite(id);
         }
+
         return _sites[id];
     }
 
     /** Get the minimum size of the rectangle.
      */
-    public double getMinimumSize () {
+    public double getMinimumSize() {
         return _minSize;
     }
 
     /** Get the north-east site.
      */
-    public Site getNE () {
+    public Site getNE() {
         return getSite(SwingConstants.NORTH_EAST);
     }
 
     /** Get the north-west site.
      */
-    public Site getNW () {
+    public Site getNW() {
         return getSite(SwingConstants.NORTH_WEST);
     }
 
     /** Get the south-east site.
      */
-    public Site getSE () {
+    public Site getSE() {
         return getSite(SwingConstants.SOUTH_EAST);
     }
 
     /** Get the south-west site.
      */
-    public Site getSW () {
+    public Site getSW() {
         return getSite(SwingConstants.SOUTH_WEST);
     }
 
     /** Get the north site.
      */
-    public Site getN () {
+    public Site getN() {
         return getSite(SwingConstants.NORTH);
     }
 
     /** Get the south site.
      */
-    public Site getS () {
+    public Site getS() {
         return getSite(SwingConstants.SOUTH);
     }
 
     /** Get the east site.
      */
-    public Site getE () {
+    public Site getE() {
         return getSite(SwingConstants.EAST);
     }
 
     /** Get the west site.
      */
-    public Site getW () {
+    public Site getW() {
         return getSite(SwingConstants.WEST);
     }
 
     /** Get the figure to which this geometry object is attached.
      * Returns null if there isn't one.
      */
-    public Figure getFigure () {
+    public Figure getFigure() {
         return _parentFigure;
     }
 
     /** Get the current shape that defines this geometry
      */
-    public Shape getShape () {
+    public Shape getShape() {
         return _rect;
     }
 
     /** Get the current rectangle that defines this geometry. This
      * returns the same shape as getShape(), but as a Rectangle2D type.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         return _rect;
     }
 
     /** Set the minimum size of the rectangle. The default is 1.0.
      */
-    public void setMinimumSize (double minimumSize) {
+    public void setMinimumSize(double minimumSize) {
         _minSize = minimumSize;
     }
 
@@ -179,11 +179,11 @@ public class BoundsGeometry implements Geometry {
      * The shape must be a Rectangle2D, or an exception
      * will be thrown.
      */
-    public void setShape (Shape shape) {
-        if ( !(shape instanceof Rectangle2D)) {
-            throw new IllegalArgumentException(
-                    "Argument must be a Rectangle2D");
+    public void setShape(Shape shape) {
+        if (!(shape instanceof Rectangle2D)) {
+            throw new IllegalArgumentException("Argument must be a Rectangle2D");
         }
+
         // Important: make a copy of it
         _rect = (Rectangle2D) ((Rectangle2D) shape).clone();
     }
@@ -192,40 +192,44 @@ public class BoundsGeometry implements Geometry {
      * This is the same as setShape(), but does not need to
      * perform the type check.
      */
-    public void setBounds (Rectangle2D rect) {
+    public void setBounds(Rectangle2D rect) {
         // Important: make a copy of it
         _rect = (Rectangle2D) rect.clone();
     }
 
     /** Return an iteration over the sites in this geometry object.
      */
-    public Iterator sites () {
+    public Iterator sites() {
         return new Iterator() {
                 // Note: SwingConstants start at 1!
                 int cursor = 1;
+
                 public boolean hasNext() {
                     return cursor < _siteCount;
                 }
+
                 public Object next() {
                     if (_sites[cursor] == null) {
                         _sites[cursor] = new BoundsSite(cursor);
                     }
+
                     Site result = _sites[cursor];
                     cursor++;
                     return result;
                 }
+
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Sites cannot be removed");
+                        "Sites cannot be removed");
                 }
             };
     }
 
     /** Translate the geometry object
      */
-    public void translate (double x, double y) {
-        _rect.setFrame(_rect.getX()+x, _rect.getY()+y,
-                _rect.getWidth(), _rect.getHeight());
+    public void translate(double x, double y) {
+        _rect.setFrame(_rect.getX() + x, _rect.getY() + y, _rect.getWidth(),
+            _rect.getHeight());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,7 +239,6 @@ public class BoundsGeometry implements Geometry {
      * editable sites of Rectangle objects.
      */
     public class BoundsSite extends AbstractSite {
-
         // Its id
         private int _id;
 
@@ -244,7 +247,7 @@ public class BoundsGeometry implements Geometry {
 
         /** Create a new site with the given ID
          */
-        BoundsSite (int id) {
+        BoundsSite(int id) {
             this._id = id;
         }
 
@@ -264,58 +267,69 @@ public class BoundsGeometry implements Geometry {
         /** Get the angle of the normal to this site, in radians
          * between zero and 2pi.
          */
-        public double getNormal () {
+        public double getNormal() {
             switch (_id) {
             case SwingConstants.EAST:
                 return 0.0;
+
             case SwingConstants.NORTH_EAST:
                 return piOver4 * 7;
+
             case SwingConstants.NORTH:
                 return piOver4 * 6;
+
             case SwingConstants.NORTH_WEST:
                 return piOver4 * 5;
+
             case SwingConstants.WEST:
                 return piOver4 * 4;
+
             case SwingConstants.SOUTH_WEST:
                 return piOver4 * 3;
+
             case SwingConstants.SOUTH:
                 return piOver4 * 2;
+
             case SwingConstants.SOUTH_EAST:
                 return piOver4 * 1;
             }
+
             return 0.0;
         }
 
         /** Get the point location of the site.
          */
-        public Point2D getPoint () {
+        public Point2D getPoint() {
             return new Point2D.Double(getX(), getY());
         }
 
         /** Get the x-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
-        public double getX () {
+        public double getX() {
             switch (_id) {
             case SwingConstants.NORTH_WEST:
             case SwingConstants.SOUTH_WEST:
             case SwingConstants.WEST:
                 return _rect.getX();
+
             case SwingConstants.NORTH_EAST:
             case SwingConstants.SOUTH_EAST:
             case SwingConstants.EAST:
-                return _rect.getX()+_rect.getWidth();
+                return _rect.getX() + _rect.getWidth();
+
             case SwingConstants.NORTH:
             case SwingConstants.SOUTH:
-                return _rect.getX()+_rect.getWidth()/2.0;
+                return _rect.getX() + (_rect.getWidth() / 2.0);
             }
+
             return 0.0;
         }
 
         /** Get the y-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
-        public double getY () {
+        public double getY() {
             switch (_id) {
             case SwingConstants.NORTH_WEST:
             case SwingConstants.NORTH_EAST:
@@ -325,25 +339,26 @@ public class BoundsGeometry implements Geometry {
             case SwingConstants.SOUTH_WEST:
             case SwingConstants.SOUTH_EAST:
             case SwingConstants.SOUTH:
-                return _rect.getY()+_rect.getHeight();
+                return _rect.getY() + _rect.getHeight();
 
             case SwingConstants.EAST:
             case SwingConstants.WEST:
-                return _rect.getY()+_rect.getHeight()/2.0;
+                return _rect.getY() + (_rect.getHeight() / 2.0);
             }
+
             return 0.0;
         }
 
         /** Test if this site has a "normal" to it. Returns
          * true.
          */
-        public boolean hasNormal () {
+        public boolean hasNormal() {
             return true;
         }
 
         /** Test if this site has a normal in the given direction.
          */
-        public boolean isNormal (int direction) {
+        public boolean isNormal(int direction) {
             return direction == _id;
         }
 
@@ -351,7 +366,7 @@ public class BoundsGeometry implements Geometry {
          * where distances are in the local coordinates of the
          * containing pane.
          */
-        public void translate (double x, double y) {
+        public void translate(double x, double y) {
             // Adjust the coordinates
             double x1 = _rect.getX();
             double y1 = _rect.getY();
@@ -402,24 +417,27 @@ public class BoundsGeometry implements Geometry {
             case SwingConstants.NORTH_EAST:
             case SwingConstants.SOUTH_EAST:
             case SwingConstants.EAST:
-                if (x2 < x1 + _minSize || _xOvershoot < 0) {
-                    _xOvershoot += x - (x1 + _minSize - (x2 - x));
+
+                if ((x2 < (x1 + _minSize)) || (_xOvershoot < 0)) {
+                    _xOvershoot += (x - ((x1 + _minSize) - (x2 - x)));
                     x2 = x1 + _minSize;
-                }
-                else {
+                } else {
                     _xOvershoot = 0;
                 }
+
                 break;
+
             case SwingConstants.NORTH_WEST:
             case SwingConstants.SOUTH_WEST:
             case SwingConstants.WEST:
-                if (x1 > x2 - _minSize || _xOvershoot < 0) {
-                    _xOvershoot += x - (x1 + _minSize - (x2 - x));
+
+                if ((x1 > (x2 - _minSize)) || (_xOvershoot < 0)) {
+                    _xOvershoot += (x - ((x1 + _minSize) - (x2 - x)));
                     x1 = x2 - _minSize;
-                }
-                else {
+                } else {
                     _xOvershoot = 0;
                 }
+
                 break;
             }
 
@@ -428,37 +446,38 @@ public class BoundsGeometry implements Geometry {
             case SwingConstants.NORTH_EAST:
             case SwingConstants.NORTH_WEST:
             case SwingConstants.NORTH:
-                if (y1 > y2 - _minSize || _yOvershoot < 0) {
-                    _yOvershoot += y - (y1 + _minSize - (y2 - y));
+
+                if ((y1 > (y2 - _minSize)) || (_yOvershoot < 0)) {
+                    _yOvershoot += (y - ((y1 + _minSize) - (y2 - y)));
                     y1 = y2 - _minSize;
-                }
-                else {
+                } else {
                     _yOvershoot = 0;
                 }
+
                 break;
+
             case SwingConstants.SOUTH_EAST:
             case SwingConstants.SOUTH_WEST:
             case SwingConstants.SOUTH:
-                if (y2 < y1 + _minSize || _yOvershoot < 0) {
-                    _yOvershoot += y - (y1 + _minSize - (y2 - y));
+
+                if ((y2 < (y1 + _minSize)) || (_yOvershoot < 0)) {
+                    _yOvershoot += (y - ((y1 + _minSize) - (y2 - y)));
                     y2 = y1 + _minSize;
-                }
-                else {
+                } else {
                     _yOvershoot = 0;
                 }
+
                 break;
             }
 
             // Set the rectangle
-            _rect.setFrameFromDiagonal(x1,y1,x2,y2);
+            _rect.setFrameFromDiagonal(x1, y1, x2, y2);
         }
 
         /** Set the point location of the site
          */
-        public void setPoint (Point2D point) {
-            translate(point.getX()-getX(), point.getY() - getY());
+        public void setPoint(Point2D point) {
+            translate(point.getX() - getX(), point.getY() - getY());
         }
     }
 }
-
-

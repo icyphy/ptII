@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -40,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIDCT
+
 /**
    Calculate the discrete cosine transform of an image.  Even though the
    input image data may be 3 bytes (one for each band) per pixel, the
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JAIDCT extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +71,7 @@ public class JAIDCT extends Transformer {
      *   actor with this name.
      */
     public JAIDCT(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -86,10 +86,12 @@ public class JAIDCT extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock dctParameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
         dctParameters.addSource(oldImage);
+
         RenderedOp newImage = JAI.create("dct", dctParameters);
         output.send(0, new JAIImageToken(newImage));
     }

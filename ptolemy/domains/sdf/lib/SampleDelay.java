@@ -39,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SampleDelay
+
 /**
    This actor outputs a set of initial tokens during the initialize()
    method, and subsequently passes the input tokens to the output.
@@ -58,9 +60,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class SampleDelay extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,7 +70,7 @@ public class SampleDelay extends SDFTransformer {
      *   actor with this name.
      */
     public SampleDelay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         initialOutputs = new Parameter(this, "initialOutputs");
@@ -80,7 +80,7 @@ public class SampleDelay extends SDFTransformer {
         output_tokenInitProduction.setExpression("initialOutputs.length()");
 
         // set type constraints.
-        ArrayType paramType = (ArrayType)initialOutputs.getType();
+        ArrayType paramType = (ArrayType) initialOutputs.getType();
         InequalityTerm elementTerm = paramType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
         output.setTypeAtLeast(input);
@@ -106,7 +106,7 @@ public class SampleDelay extends SDFTransformer {
      *   allowed on the specified attribute.
      */
     public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute != initialOutputs) {
             super.attributeTypeChanged(attribute);
         }
@@ -119,12 +119,11 @@ public class SampleDelay extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SampleDelay newObject = (SampleDelay)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SampleDelay newObject = (SampleDelay) (super.clone(workspace));
 
         // set the type constraints
-        ArrayType paramType = (ArrayType)newObject.initialOutputs.getType();
+        ArrayType paramType = (ArrayType) newObject.initialOutputs.getType();
         InequalityTerm elementTerm = paramType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -137,6 +136,7 @@ public class SampleDelay extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         Token message = input.get(0);
         output.send(0, message);
     }
@@ -166,21 +166,20 @@ public class SampleDelay extends SDFTransformer {
         super.preinitialize();
 
         Token contents = initialOutputs.getToken();
+
         if (!(contents instanceof ArrayToken)) {
             throw new IllegalActionException(this,
-                    "InitialOutputs was " + contents + " which is not an" +
-                    " array token.");
+                "InitialOutputs was " + contents + " which is not an"
+                + " array token.");
         }
-        _outputsArray = (ArrayToken)contents;
+
+        _outputsArray = (ArrayToken) contents;
 
         getDirector().invalidateResolvedTypes();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The outputs to be produced in the initialize method.
     private ArrayToken _outputsArray;
 }
-
-

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Color;
@@ -74,8 +73,10 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
+
 /**
    This class is a query dialog box with various entries for setting
    the values of Ptolemy II attributes that implement the Settable
@@ -101,9 +102,8 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-public class PtolemyQuery extends Query
-    implements QueryListener, ValueListener, ChangeListener, CloseListener {
-
+public class PtolemyQuery extends Query implements QueryListener, ValueListener,
+    ChangeListener, CloseListener {
     /** Construct a panel with no queries in it and with the specified
      *  change handler. When an entry changes, a change request is
      *  queued with the given change handler. The change handler should
@@ -124,6 +124,7 @@ public class PtolemyQuery extends Query
             // each change request.  EAL 9/15/02.
             _handler.addChangeListener(this);
         }
+
         _varToListOfEntries = new HashMap();
     }
 
@@ -148,15 +149,16 @@ public class PtolemyQuery extends Query
         // entry for a particular parameter.  However, the style configurer
         // doesn't support it and we don't have a good way of representing
         // it in this class.
-
         // Look for a ParameterEditorStyle.
         boolean foundStyle = false;
+
         if (attribute instanceof NamedObj) {
-            Iterator styles = ((NamedObj)attribute)
-                .attributeList(ParameterEditorStyle.class).iterator();
+            Iterator styles = ((NamedObj) attribute).attributeList(ParameterEditorStyle.class)
+                               .iterator();
+
             while (styles.hasNext() && !foundStyle) {
-                ParameterEditorStyle style =
-                    (ParameterEditorStyle)styles.next();
+                ParameterEditorStyle style = (ParameterEditorStyle) styles.next();
+
                 try {
                     style.addEntry(this);
                     foundStyle = true;
@@ -176,6 +178,7 @@ public class PtolemyQuery extends Query
             // a style attribute here, because we don't necessarily
             // have write access to the workspace.
             String name = attribute.getName();
+
             try {
                 if (attribute.getVisibility() == Settable.NOT_EDITABLE) {
                     String defaultValue = attribute.getExpression();
@@ -183,38 +186,32 @@ public class PtolemyQuery extends Query
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof IntRangeParameter) {
-                    int current = ((IntRangeParameter)attribute)
+                    int current = ((IntRangeParameter) attribute)
                         .getCurrentValue();
-                    int min = ((IntRangeParameter)attribute).getMinValue();
-                    int max = ((IntRangeParameter)attribute).getMaxValue();
+                    int min = ((IntRangeParameter) attribute).getMinValue();
+                    int max = ((IntRangeParameter) attribute).getMaxValue();
 
                     addSlider(name, name, current, min, max);
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof DoubleRangeParameter) {
-                    double current = ((DoubleToken)
-                                    ((DoubleRangeParameter)attribute)
-                                                        .getToken()).doubleValue();
-                    double max = ((DoubleToken)
-                                    ((DoubleRangeParameter)attribute)
-                                                        .max.getToken()).doubleValue();
-                    double min = ((DoubleToken)
-                                    ((DoubleRangeParameter)attribute)
-                                                        .min.getToken()).doubleValue();
-                    int precision = ((IntToken)
-                                    ((DoubleRangeParameter)attribute)
-                                    .precision.getToken()).intValue();
+                    double current = ((DoubleToken) ((DoubleRangeParameter) attribute)
+                        .getToken()).doubleValue();
+                    double max = ((DoubleToken) ((DoubleRangeParameter) attribute).max
+                        .getToken()).doubleValue();
+                    double min = ((DoubleToken) ((DoubleRangeParameter) attribute).min
+                        .getToken()).doubleValue();
+                    int precision = ((IntToken) ((DoubleRangeParameter) attribute).precision
+                        .getToken()).intValue();
 
                     // Get the quantized integer for the current value.
-                    int quantized = ((int)Math.round((current - min)*precision
-                                    /(max - min)));
+                    int quantized = ((int) Math.round(((current - min) * precision) / (max
+                            - min)));
                     addSlider(name, name, quantized, 0, precision);
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof ColorAttribute) {
-                    addColorChooser(name,
-                            name,
-                            attribute.getExpression());
+                    addColorChooser(name, name, attribute.getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof FileParameter
@@ -222,45 +219,54 @@ public class PtolemyQuery extends Query
                     // Specify the directory in which to start browsing
                     // to be the location where the model is defined,
                     // if that is known.
-                    URI modelURI = URIAttribute.getModelURI(
-                            (NamedObj)attribute);
+                    URI modelURI = URIAttribute.getModelURI((NamedObj) attribute);
                     File directory = null;
+
                     if (modelURI != null) {
                         if (modelURI.getScheme().equals("file")) {
                             File modelFile = new File(modelURI);
                             directory = modelFile.getParentFile();
                         }
                     }
+
                     URI base = null;
+
                     if (directory != null) {
                         base = directory.toURI();
                     }
+
                     // Check to see whether the attribute being configured
                     // specifies whether files or directories should be listed.
                     // By default, only files are selectable.
                     boolean allowFiles = true;
                     boolean allowDirectories = false;
+
                     if (attribute instanceof NamedObj) {
-                        Parameter marker = (Parameter)((NamedObj)attribute)
-                                .getAttribute("allowFiles", Parameter.class);
+                        Parameter marker = (Parameter) ((NamedObj) attribute)
+                            .getAttribute("allowFiles", Parameter.class);
+
                         if (marker != null) {
                             Token value = marker.getToken();
+
                             if (value instanceof BooleanToken) {
-                                    allowFiles = ((BooleanToken)value)
-                                        .booleanValue();
+                                allowFiles = ((BooleanToken) value)
+                                    .booleanValue();
                             }
                         }
-                        marker = (Parameter)((NamedObj)attribute)
-                                .getAttribute("allowDirectories",
-                                Parameter.class);
+
+                        marker = (Parameter) ((NamedObj) attribute)
+                            .getAttribute("allowDirectories", Parameter.class);
+
                         if (marker != null) {
                             Token value = marker.getToken();
+
                             if (value instanceof BooleanToken) {
-                                allowDirectories = ((BooleanToken)value)
-                                        .booleanValue();
+                                allowDirectories = ((BooleanToken) value)
+                                    .booleanValue();
                             }
                         }
                     }
+
                     // FIXME: What to do when neither files nor directories are allowed?
                     if (!allowFiles && !allowDirectories) {
                         // The given attribute will not have a query in the dialog.
@@ -269,15 +275,10 @@ public class PtolemyQuery extends Query
 
                     // FIXME: Should remember previous browse location?
                     // Next to last argument is the starting directory.
-                    addFileChooser(name,
-                            name,
-                            attribute.getExpression(),
-                            base,
-                            directory,
-                            allowFiles,
-                            allowDirectories,
-                            preferredBackgroundColor(attribute),
-                            preferredForegroundColor(attribute));
+                    addFileChooser(name, name, attribute.getExpression(), base,
+                        directory, allowFiles, allowDirectories,
+                        preferredBackgroundColor(attribute),
+                        preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof PasswordAttribute) {
@@ -285,22 +286,21 @@ public class PtolemyQuery extends Query
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof Parameter
-                        && ((Parameter)attribute).getChoices() != null) {
-                    Parameter castAttribute = (Parameter)attribute;
+                        && (((Parameter) attribute).getChoices() != null)) {
+                    Parameter castAttribute = (Parameter) attribute;
+
                     // NOTE: Make this always editable since Parameter
                     // supports a form of expressions for value propagation.
-                    addChoice(name,
-                            name,
-                            castAttribute.getChoices(),
-                            castAttribute.getExpression(),
-                            true,
-                            preferredBackgroundColor(attribute),
-                            preferredForegroundColor(attribute));
+                    addChoice(name, name, castAttribute.getChoices(),
+                        castAttribute.getExpression(), true,
+                        preferredBackgroundColor(attribute),
+                        preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof Variable) {
-                    Type declaredType = ((Variable)attribute).getDeclaredType();
-                    Token current = ((Variable)attribute).getToken();
+                    Type declaredType = ((Variable) attribute).getDeclaredType();
+                    Token current = ((Variable) attribute).getToken();
+
                     if (declaredType == BaseType.BOOLEAN) {
                         // NOTE: If the expression is something other than
                         // "true" or "false", then this parameter is set
@@ -308,14 +308,14 @@ public class PtolemyQuery extends Query
                         // and the default Line style should be used.
                         if (attribute.getExpression().equals("true")
                                 || attribute.getExpression().equals("false")) {
-                            addCheckBox(name,
-                                    name,
-                                    ((BooleanToken)current).booleanValue());
+                            addCheckBox(name, name,
+                                ((BooleanToken) current).booleanValue());
                             attachParameter(attribute, name);
                             foundStyle = true;
                         }
                     }
                 }
+
                 // FIXME: Other attribute classes? TextStyle?
             } catch (IllegalActionException ex) {
                 // Ignore and create a line entry.
@@ -323,13 +323,16 @@ public class PtolemyQuery extends Query
         }
 
         String defaultValue = attribute.getExpression();
-        if (defaultValue == null) defaultValue = "";
+
+        if (defaultValue == null) {
+            defaultValue = "";
+        }
+
         if (!(foundStyle)) {
-            addLine(attribute.getName(),
-                    attribute.getName(),
-                    defaultValue,
-                    preferredBackgroundColor(attribute),
-                    preferredForegroundColor(attribute));
+            addLine(attribute.getName(), attribute.getName(), defaultValue,
+                preferredBackgroundColor(attribute),
+                preferredForegroundColor(attribute));
+
             // The style itself does this, so we don't need to do it again.
             attachParameter(attribute, attribute.getName());
         }
@@ -370,32 +373,38 @@ public class PtolemyQuery extends Query
         } else {
             // attribute is mapped to a list of entry names, but need to
             // check whether entryName is in the list. If not, add it.
-            List entryNameList = (List)_varToListOfEntries.get(attribute);
+            List entryNameList = (List) _varToListOfEntries.get(attribute);
             Iterator entryNames = entryNameList.iterator();
             boolean found = false;
+
             while (entryNames.hasNext()) {
                 // Check whether entryName is in the list. If not, add it.
-                String name = (String)entryNames.next();
+                String name = (String) entryNames.next();
+
                 if (name == entryName) {
                     found = true;
                 }
             }
+
             if (found == false) {
                 // Add entryName to the list.
                 entryNameList.add(entryName);
             }
         }
+
         // Handle tool tips.  This is almost certainly an instance
         // of NamedObj, but check to be sure.
         if (attribute instanceof NamedObj) {
-            Attribute tooltipAttribute =
-                ((NamedObj)attribute).getAttribute("tooltip");
-            if (tooltipAttribute != null
+            Attribute tooltipAttribute = ((NamedObj) attribute).getAttribute(
+                    "tooltip");
+
+            if ((tooltipAttribute != null)
                     && tooltipAttribute instanceof Documentation) {
                 setToolTip(entryName,
-                        ((Documentation)tooltipAttribute).getValue());
+                    ((Documentation) tooltipAttribute).getValue());
             } else {
-                String tip = Documentation.consolidate((NamedObj)attribute);
+                String tip = Documentation.consolidate((NamedObj) attribute);
+
                 if (tip != null) {
                     setToolTip(entryName, tip);
                 }
@@ -410,7 +419,9 @@ public class PtolemyQuery extends Query
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this was not the originator.
         if (change != null) {
-            if (change.getSource() != this) return;
+            if (change.getSource() != this) {
+                return;
+            }
 
             // Restore the parser error handler.
             if (_savedErrorHandler != null) {
@@ -418,8 +429,9 @@ public class PtolemyQuery extends Query
             }
 
             String name = change.getDescription();
+
             if (_attributes.containsKey(name)) {
-                final Settable attribute = (Settable)(_attributes.get(name));
+                final Settable attribute = (Settable) (_attributes.get(name));
 
                 // Make a record of the successful attribute value change
                 // in case some future change fails and the user
@@ -442,7 +454,7 @@ public class PtolemyQuery extends Query
     public void changeFailed(final ChangeRequest change, Exception exception) {
         // Ignore if this was not the originator, or if the error has already
         // been reported, or if the change request is null.
-        if (change == null || change.getSource() != this) {
+        if ((change == null) || (change.getSource() != this)) {
             return;
         }
 
@@ -456,20 +468,23 @@ public class PtolemyQuery extends Query
         // create a new dialog to prompt the user for a corrected input.
         if (_isOpenErrorWindow) {
             setMessage(exception.getMessage()
-                    + "\n\nPlease enter a new value (or cancel to revert):");
+                + "\n\nPlease enter a new value (or cancel to revert):");
         } else {
             if (change.isErrorReported()) {
                 // Error has already been reported.
                 return;
             }
+
             change.setErrorReported(true);
 
             _query = new PtolemyQuery(_handler);
             _query.setTextWidth(getTextWidth());
             _query._isOpenErrorWindow = true;
+
             String description = change.getDescription();
             _query.setMessage(exception.getMessage()
-                    + "\n\nPlease enter a new value:");
+                + "\n\nPlease enter a new value:");
+
             /* NOTE: The error message used to be more verbose, as follows.
              * But this is intimidating to users.
              _query.setMessage("Change failed:\n"
@@ -484,15 +499,19 @@ public class PtolemyQuery extends Query
             // form of the MoML change request.
             String tmpEntryName = description;
             int patternStart = description.lastIndexOf("<property name=\"");
+
             if (patternStart >= 0) {
                 int nextQuote = description.indexOf("\"", patternStart + 16);
-                if (nextQuote > patternStart + 15) {
-                    tmpEntryName = description.substring(patternStart + 16, nextQuote);
+
+                if (nextQuote > (patternStart + 15)) {
+                    tmpEntryName = description.substring(patternStart + 16,
+                            nextQuote);
                 }
             }
+
             final String entryName = tmpEntryName;
-            final Settable attribute
-                = (Settable)_attributes.get(entryName);
+            final Settable attribute = (Settable) _attributes.get(entryName);
+
             // NOTE: Do this in the event thread, since this might be invoked
             // in whatever thread is processing mutations.
             SwingUtilities.invokeLater(new Runnable() {
@@ -501,37 +520,33 @@ public class PtolemyQuery extends Query
                             _query.addStyledEntry(attribute);
                         } else {
                             throw new InternalErrorException(
-                                    "Expected attribute attached to entry name: "
-                                    + entryName);
+                                "Expected attribute attached to entry name: "
+                                + entryName);
                         }
-                        _dialog =
-                            new ComponentDialog(
-                                    JOptionPane.getFrameForComponent(
-                                            PtolemyQuery.this),
-                                    "Error", _query, null);
+
+                        _dialog = new ComponentDialog(JOptionPane
+                                .getFrameForComponent(PtolemyQuery.this),
+                                "Error", _query, null);
 
                         // The above returns only when the modal
                         // dialog is closing.  The following will
                         // force a new dialog to be created if the
                         // value is not valid.
-
                         _query._isOpenErrorWindow = false;
 
                         if (_dialog.buttonPressed().equals("Cancel")) {
                             if (_revertValue.containsKey(entryName)) {
-                                String revertValue = (String)
-                                    _revertValue.get(entryName);
+                                String revertValue = (String) _revertValue.get(entryName);
 
                                 // NOTE: Do not use setAndNotify() here because
                                 // that checks whether the string entry has
                                 // changed, and we want to force revert even
                                 // if it appears to not have changed.
-                                set(((NamedObj)attribute).getName(),
-                                        revertValue);
+                                set(((NamedObj) attribute).getName(),
+                                    revertValue);
                                 changed(entryName);
                             }
                         } else {
-
                             // Force evaluation to check validity of
                             // the entry.  NOTE: Normally, we would
                             // not need to force evaluation because if
@@ -542,7 +557,6 @@ public class PtolemyQuery extends Query
                             // value was invalid, it is not acceptable
                             // to skip notification in this case.  So
                             // we force it.
-
                             try {
                                 attribute.validate();
                             } catch (IllegalActionException ex) {
@@ -565,113 +579,114 @@ public class PtolemyQuery extends Query
     public void changed(final String name) {
         // Check if the entry that changed is in the mapping.
         if (_attributes.containsKey(name)) {
-            final Settable attribute
-                = (Settable)(_attributes.get(name));
-            if ( attribute == null ) {
+            final Settable attribute = (Settable) (_attributes.get(name));
+
+            if (attribute == null) {
                 // No associated attribute.
                 return;
             }
 
             ChangeRequest request;
 
-           if (attribute instanceof PasswordAttribute) {
-                       // Passwords have to be handled specially because the password
-                       // is not represented in a string.
+            if (attribute instanceof PasswordAttribute) {
+                // Passwords have to be handled specially because the password
+                // is not represented in a string.
                 request = new ChangeRequest(this, name) {
-                        protected void _execute()
+                            protected void _execute()
                                 throws IllegalActionException {
-                            char[] password = getCharArrayValue(name);
-                            ((PasswordAttribute)attribute).setPassword(password);
-                            attribute.validate();
-                            Iterator derived = ((PasswordAttribute)attribute).getDerivedList().iterator();
-                            while (derived.hasNext()) {
-                                    PasswordAttribute derivedPassword = (PasswordAttribute)derived.next();
-                                derivedPassword.setPassword(password);
+                                char[] password = getCharArrayValue(name);
+                                ((PasswordAttribute) attribute).setPassword(password);
+                                attribute.validate();
+
+                                Iterator derived = ((PasswordAttribute) attribute).getDerivedList()
+                                                    .iterator();
+
+                                while (derived.hasNext()) {
+                                    PasswordAttribute derivedPassword = (PasswordAttribute) derived
+                                        .next();
+                                    derivedPassword.setPassword(password);
+                                }
                             }
-                       }
-                    };
+                        };
             } else if (attribute instanceof NamedObj) {
                 // NOTE: We must use a MoMLChangeRequest so that changes
                 // propagate to any objects that have been instantiating
                 // using this one as a class.  This is only an issue if
                 // attribute is a NamedObj.
-                NamedObj castAttribute = (NamedObj)attribute;
+                NamedObj castAttribute = (NamedObj) attribute;
 
                 String stringValue = getStringValue(name);
+
                 // If the attribute is a DoubleRangeParameter, then we
                 // have to translate the integer value returned by the
                 // JSlider into a double.
                 if (attribute instanceof DoubleRangeParameter) {
                     try {
-                            int newValue = Integer.parseInt(stringValue);
-                                            int precision = ((IntToken)
-                                                            ((DoubleRangeParameter)attribute)
-                                                            .precision.getToken()).intValue();
-                                            double max = ((DoubleToken)
-                                                            ((DoubleRangeParameter)attribute)
-                                                            .max.getToken()).doubleValue();
-                                            double min = ((DoubleToken)
-                                                            ((DoubleRangeParameter)attribute)
-                                                            .min.getToken()).doubleValue();
-                                            double newValueAsDouble
-                                                            = min + ((max - min)*newValue)/precision;
-                                            stringValue = "" + newValueAsDouble;
-                                    } catch (IllegalActionException e) {
-                                            throw new InternalErrorException(e);
-                                    }
+                        int newValue = Integer.parseInt(stringValue);
+                        int precision = ((IntToken) ((DoubleRangeParameter) attribute).precision
+                            .getToken()).intValue();
+                        double max = ((DoubleToken) ((DoubleRangeParameter) attribute).max
+                            .getToken()).doubleValue();
+                        double min = ((DoubleToken) ((DoubleRangeParameter) attribute).min
+                            .getToken()).doubleValue();
+                        double newValueAsDouble = min
+                            + (((max - min) * newValue) / precision);
+                        stringValue = "" + newValueAsDouble;
+                    } catch (IllegalActionException e) {
+                        throw new InternalErrorException(e);
+                    }
                 }
 
                 // The context for the MoML should be the first container
                 // above this attribute in the hierarchy that defers its
                 // MoML definition, or the immediate parent if there is none.
-                NamedObj parent = (NamedObj)castAttribute.getContainer();
-                String moml = "<property name=\""
-                    + castAttribute.getName()
-                    + "\" value=\""
-                    + StringUtilities.escapeForXML(stringValue)
+                NamedObj parent = (NamedObj) castAttribute.getContainer();
+                String moml = "<property name=\"" + castAttribute.getName()
+                    + "\" value=\"" + StringUtilities.escapeForXML(stringValue)
                     + "\"/>";
-                request = new MoMLChangeRequest(
-                        this,         // originator
-                        parent,       // context
-                        moml,         // MoML code
-                        null) {       // base
-                        protected void _execute() throws Exception {
-                            synchronized (PtolemyQuery.this) {
-                                try {
-                                    _ignoreChangeNotifications = true;
-                                    super._execute();
-                                } finally {
-                                    _ignoreChangeNotifications = false;
+                request = new MoMLChangeRequest(this, // originator
+                        parent, // context
+                        moml, // MoML code
+                        null) { // base
+                            protected void _execute() throws Exception {
+                                synchronized (PtolemyQuery.this) {
+                                    try {
+                                        _ignoreChangeNotifications = true;
+                                        super._execute();
+                                    } finally {
+                                        _ignoreChangeNotifications = false;
+                                    }
                                 }
                             }
-                        }
-                    };
+                        };
             } else {
                 // If the attribute is not a NamedObj, then we
                 // set its value directly.
                 request = new ChangeRequest(this, name) {
-                        protected void _execute()
+                            protected void _execute()
                                 throws IllegalActionException {
-                            attribute.setExpression(getStringValue(name));
+                                attribute.setExpression(getStringValue(name));
 
-                            attribute.validate();
-                            /* NOTE: Earlier version:
-                            // Here, we need to handle instances of Variable
-                            // specially.  This is too bad...
-                            if (attribute instanceof Variable) {
+                                attribute.validate();
 
-                            // Will this ever happen?  A
-                            // Variable that is not a NamedObj???
-                            // Retrieve the token to force
-                            // evaluation, so as to check the
-                            // validity of the new value.
+                                /* NOTE: Earlier version:
+                                // Here, we need to handle instances of Variable
+                                // specially.  This is too bad...
+                                if (attribute instanceof Variable) {
 
-                            ((Variable)attribute).getToken();
+                                // Will this ever happen?  A
+                                // Variable that is not a NamedObj???
+                                // Retrieve the token to force
+                                // evaluation, so as to check the
+                                // validity of the new value.
+
+                                ((Variable)attribute).getToken();
+                                }
+                                */
                             }
-                            */
-                        }
-                    };
+                        };
             }
+
             // NOTE: This object is never removed as a listener from
             // the change request.  This is OK because this query will
             // be closed at some point, and all references to it will
@@ -685,11 +700,12 @@ public class PtolemyQuery extends Query
             // as a change listener on the handler.  This results in
             // two notifications.  EAL 9/15/02.
             request.addChangeListener(this);
+
             if (_handler == null) {
                 request.execute();
             } else {
                 if (request instanceof MoMLChangeRequest) {
-                    ((MoMLChangeRequest)request).setUndoable(true);
+                    ((MoMLChangeRequest) request).setUndoable(true);
                 }
 
                 // Remove the error handler so that this class handles
@@ -711,11 +727,13 @@ public class PtolemyQuery extends Query
      */
     public static Color preferredBackgroundColor(Object object) {
         Color background = Color.white;
+
         if (object instanceof Parameter) {
-            if (((Parameter)object).isStringMode()) {
+            if (((Parameter) object).isStringMode()) {
                 background = _STRING_MODE_BACKGROUND_COLOR;
             }
         }
+
         return background;
     }
 
@@ -726,6 +744,7 @@ public class PtolemyQuery extends Query
      */
     public static Color preferredForegroundColor(Object object) {
         Color foreground = Color.black;
+
         /* NOTE: This doesn't work very well because when you
          * start typing on a red entry, it remains red rather
          * than switching to black to indicate an override.
@@ -747,7 +766,9 @@ public class PtolemyQuery extends Query
     public void valueChanged(final Settable attribute) {
         // If our own change request is the cause of this notification,
         // then ignore it.
-        if (_ignoreChangeNotifications) return;
+        if (_ignoreChangeNotifications) {
+            return;
+        }
 
         // Do this in the event thread, since it depends on interacting
         // with the UI.  In particular, there is no assurance that
@@ -756,15 +777,12 @@ public class PtolemyQuery extends Query
         // attribute change has occurred, which can happen in any thread.
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-
                     // Check that the attribute is attached
                     // to at least one entry.
                     if (_attributes.containsValue(attribute)) {
-
                         // Get the list of entry names that the attribute
                         // is attached to.
-                        List entryNameList = (List)
-                            _varToListOfEntries.get(attribute);
+                        List entryNameList = (List) _varToListOfEntries.get(attribute);
 
                         // For each entry name, call set() to update its
                         // value with the value of attribute
@@ -773,7 +791,7 @@ public class PtolemyQuery extends Query
                         String newValue = _getTranslatedExpression(attribute);
 
                         while (entryNames.hasNext()) {
-                            String name = (String)entryNames.next();
+                            String name = (String) entryNames.next();
 
                             // Compare value against what is in
                             // already to avoid changing it again.
@@ -799,7 +817,6 @@ public class PtolemyQuery extends Query
         // trigger a dialog even if the cancel button is pressed!
         // No good workaround here.
         // notifyListeners();
-
         _handler.removeChangeListener(PtolemyQuery.this);
 
         // It's a bit bizarre that we have to remove ourselves as a listener
@@ -809,8 +826,9 @@ public class PtolemyQuery extends Query
         removeQueryListener(this);
 
         Iterator attributes = _attributes.values().iterator();
+
         while (attributes.hasNext()) {
-            Settable attribute = (Settable)attributes.next();
+            Settable attribute = (Settable) attributes.next();
             attribute.removeValueListener(this);
         }
     }
@@ -833,34 +851,30 @@ public class PtolemyQuery extends Query
         // double in the range to an int for the
         // JSlider.
         if (attribute instanceof DoubleRangeParameter) {
-                try {
-                                double current = Double.parseDouble(newValue);
-                                double max = ((DoubleToken)
-                                                ((DoubleRangeParameter)attribute)
-                                                .max.getToken()).doubleValue();
-                                double min = ((DoubleToken)
-                                                ((DoubleRangeParameter)attribute)
-                                                .min.getToken()).doubleValue();
-                                int precision = ((IntToken)
-                                                ((DoubleRangeParameter)attribute)
-                                                .precision.getToken()).intValue();
+            try {
+                double current = Double.parseDouble(newValue);
+                double max = ((DoubleToken) ((DoubleRangeParameter) attribute).max
+                    .getToken()).doubleValue();
+                double min = ((DoubleToken) ((DoubleRangeParameter) attribute).min
+                    .getToken()).doubleValue();
+                int precision = ((IntToken) ((DoubleRangeParameter) attribute).precision
+                    .getToken()).intValue();
 
-                                // Get the quantized integer for the current value.
-                                int quantized = ((int)Math.round(
-                                                (current - min)*precision
-                                                /(max - min)));
+                // Get the quantized integer for the current value.
+                int quantized = ((int) Math.round(((current - min) * precision) / (max
+                        - min)));
 
-                                newValue = "" + quantized;
-                        } catch (IllegalActionException e) {
-                                throw new InternalErrorException(e);
-                        }
+                newValue = "" + quantized;
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
         }
+
         return newValue;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Another dialog used to prompt for corrections to errors.
     private ComponentDialog _dialog;
 
@@ -878,8 +892,8 @@ public class PtolemyQuery extends Query
     private Map _attributes = new HashMap();
 
     // Background color for string mode edit boxes.
-    private static Color _NOT_OVERRIDDEN_FOREGROUND_COLOR
-            = new Color(200, 10, 10, 255);
+    private static Color _NOT_OVERRIDDEN_FOREGROUND_COLOR = new Color(200, 10,
+            10, 255);
 
     // A query box for dealing with an erroneous entry.
     private PtolemyQuery _query = null;
@@ -891,8 +905,8 @@ public class PtolemyQuery extends Query
     private ErrorHandler _savedErrorHandler = null;
 
     // Background color for string mode edit boxes.
-    private static Color _STRING_MODE_BACKGROUND_COLOR
-            = new Color(230, 255, 255, 255);
+    private static Color _STRING_MODE_BACKGROUND_COLOR = new Color(230, 255,
+            255, 255);
 
     // Maps an attribute name to a list of entry names that the
     // attribute is attached to.

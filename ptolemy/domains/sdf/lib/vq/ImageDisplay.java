@@ -42,8 +42,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.Picture;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
+
 /**
    Display an image on the screen using the ptolemy.media.Picture
    class.  For a sequence of images that are all the same size, this class
@@ -58,7 +60,6 @@ import ptolemy.media.Picture;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red
 */
-
 public class ImageDisplay extends Sink implements Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -69,8 +70,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *   actor with this name.
      */
     public ImageDisplay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT_MATRIX);
@@ -95,6 +95,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
         _oldXSize = 0;
         _oldYSize = 0;
+
         if (_container == null) {
             _frame = new JFrame("ImageDisplay");
             _frame.getContentPane().setLayout(new BorderLayout(15, 15));
@@ -103,6 +104,7 @@ public class ImageDisplay extends Sink implements Placeable {
             _frame.validate();
             _container = _frame.getContentPane();
         }
+
         if (_frame != null) {
             _frame.setVisible(true);
             _frame.toFront();
@@ -122,9 +124,8 @@ public class ImageDisplay extends Sink implements Placeable {
      * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        IntMatrixToken message = (IntMatrixToken)
-            input.get(0);
-        int frame[][] = message.intMatrix();
+        IntMatrixToken message = (IntMatrixToken) input.get(0);
+        int[][] frame = message.intMatrix();
         int xSize = message.getColumnCount();
         int ySize = message.getRowCount();
 
@@ -135,8 +136,9 @@ public class ImageDisplay extends Sink implements Placeable {
             _oldYSize = ySize;
             _RGBbuffer = new int[xSize * ySize];
 
-            if (_picture != null)
+            if (_picture != null) {
                 _container.remove(_picture);
+            }
 
             _picture = new Picture(xSize, ySize);
             _picture.setImage(_RGBbuffer);
@@ -146,12 +148,15 @@ public class ImageDisplay extends Sink implements Placeable {
             _container.invalidate();
             _container.repaint();
             _container.doLayout();
+
             Container c = _container.getParent();
+
             while (c.getParent() != null) {
                 c.invalidate();
                 c.validate();
                 c = c.getParent();
             }
+
             if (_frame != null) {
                 _frame.pack();
             }
@@ -160,13 +165,23 @@ public class ImageDisplay extends Sink implements Placeable {
         // convert the B/W image to a packed RGB image.  This includes
         // flipping the image upside down.  (When it is drawn, it gets
         // drawn from bottom up).
-        int i, j, index = 0;
+        int i;
+
+        // convert the B/W image to a packed RGB image.  This includes
+        // flipping the image upside down.  (When it is drawn, it gets
+        // drawn from bottom up).
+        int j;
+
+        // convert the B/W image to a packed RGB image.  This includes
+        // flipping the image upside down.  (When it is drawn, it gets
+        // drawn from bottom up).
+        int index = 0;
+
         for (j = ySize - 1; j >= 0; j--) {
-            for (i = 0; i < xSize; i++, index++)
-                _RGBbuffer[index] = (255 << 24) |
-                    ((frame[j][i] & 255) << 16) |
-                    ((frame[j][i] & 255) << 8) |
-                    (frame[j][i] & 255);
+            for (i = 0; i < xSize; i++, index++) {
+                _RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
+                    | ((frame[j][i] & 255) << 8) | (frame[j][i] & 255);
+            }
         }
 
         // display it.
@@ -180,6 +195,7 @@ public class ImageDisplay extends Sink implements Placeable {
     public Color getBackground() {
         return _container.getBackground();
     }
+
     /** Set the background */
     public void setBackground(Color background) {
         _container.setBackground(background);
@@ -190,23 +206,29 @@ public class ImageDisplay extends Sink implements Placeable {
      */
     public void place(Container container) {
         _container = container;
+
         // FIXME: Need support for toolbar run.
-        if (_container == null) return;
+        if (_container == null) {
+            return;
+        }
+
         Container c = _container.getParent();
+
         while (c.getParent() != null) {
             c = c.getParent();
         }
+
         if (c instanceof JFrame) {
-            _frame = (JFrame)c;
+            _frame = (JFrame) c;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Picture _picture;
     private JFrame _frame;
     private Container _container;
-    private int _oldXSize, _oldYSize;
-    private int _RGBbuffer[] = null;
+    private int _oldXSize;
+    private int _oldYSize;
+    private int[] _RGBbuffer = null;
 }

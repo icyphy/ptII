@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// OrderedMerge
+
 /**
    This actor merges two monotonically nondecreasing streams of tokens into
    one monotonically nondecreasing stream. On each firing, it reads data from
@@ -68,9 +69,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (eal)
 */
-
 public class OrderedMerge extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -80,7 +79,7 @@ public class OrderedMerge extends TypedAtomicActor {
      *   actor with this name.
      */
     public OrderedMerge(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         inputA = new TypedIOPort(this, "inputA", true, false);
@@ -95,15 +94,14 @@ public class OrderedMerge extends TypedAtomicActor {
         selectedA.setTypeEquals(BaseType.BOOLEAN);
 
         // Add an attribute to get the port placed on the bottom.
-        StringAttribute channelCardinal
-                = new StringAttribute(selectedA, "_cardinal");
+        StringAttribute channelCardinal = new StringAttribute(selectedA,
+                "_cardinal");
         channelCardinal.setExpression("SOUTH");
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:blue\"/>\n" +
-                "</svg>\n");
-}
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+            + "style=\"fill:blue\"/>\n" + "</svg>\n");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -134,9 +132,8 @@ public class OrderedMerge extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        OrderedMerge newObject = (OrderedMerge)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        OrderedMerge newObject = (OrderedMerge) super.clone(workspace);
         newObject.inputA.setTypeAtMost(BaseType.SCALAR);
         newObject.inputB.setTypeSameAs(newObject.inputA);
         newObject.output.setTypeSameAs(newObject.inputA);
@@ -155,7 +152,8 @@ public class OrderedMerge extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         if (_nextPort.hasToken(0)) {
-            ScalarToken readToken = (ScalarToken)_nextPort.get(0);
+            ScalarToken readToken = (ScalarToken) _nextPort.get(0);
+
             if (_recordedToken == null) {
                 // First firing.  Just record the token.
                 _tentativeRecordedToken = readToken;
@@ -165,20 +163,23 @@ public class OrderedMerge extends TypedAtomicActor {
                 if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
                     // Produce the smaller output.
                     output.send(0, readToken);
+
                     // Token was just read from _nextPort.
                     if (_nextPort == inputA) {
-                            selectedA.send(0, BooleanToken.TRUE);
+                        selectedA.send(0, BooleanToken.TRUE);
                     } else {
                         selectedA.send(0, BooleanToken.FALSE);
                     }
                 } else {
                     // Produce the smaller output.
                     output.send(0, _recordedToken);
+
                     if (_readFromA) {
                         selectedA.send(0, BooleanToken.TRUE);
                     } else {
                         selectedA.send(0, BooleanToken.FALSE);
                     }
+
                     _tentativeRecordedToken = readToken;
                     _tentativeReadFromA = (_nextPort == inputA);
 

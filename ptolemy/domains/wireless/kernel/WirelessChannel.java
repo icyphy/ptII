@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.kernel;
 
 import java.util.List;
@@ -36,8 +35,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// WirelessChannel
+
 /**
    Interface for wireless channels in the wireless domain.
    Wireless channels are special components in a wireless model.
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.Nameable;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -118,8 +118,8 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *   property transformer, or null to make them subject to all
      *   transmissions through this channel.
      */
-    public void registerPropertyTransformer(
-            PropertyTransformer transformer, WirelessIOPort port);
+    public void registerPropertyTransformer(PropertyTransformer transformer,
+        WirelessIOPort port);
 
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This must include input ports contained by
@@ -156,8 +156,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *   the transmission.
      */
     public void transmit(Token token, WirelessIOPort port,
-            RecordToken properties)
-            throws IllegalActionException;
+        RecordToken properties) throws IllegalActionException;
 
     /** Unregister a property transformer for transmissions from the specified
      *  port (or from null for a generic property transformer). If the transformer
@@ -167,6 +166,6 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *   property transformer, or null for a generic transformer.
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
-    public void unregisterPropertyTransformer(
-            PropertyTransformer transformer, WirelessIOPort port);
+    public void unregisterPropertyTransformer(PropertyTransformer transformer,
+        WirelessIOPort port);
 }

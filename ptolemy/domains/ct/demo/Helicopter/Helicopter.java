@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.demo.Helicopter;
 
 import java.util.Iterator;
@@ -60,8 +59,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
+
 ///////////////////////////////////////////////////////////
 ////  Helicopter
+
 /**
    An applet that models a 2-D helicopter control system.
 
@@ -72,40 +73,40 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Helicopter extends TypedCompositeActor {
-
     public Helicopter(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         // Creating the model.
         super(workspace);
 
         // Set up the top level composite actor, director and manager
         this.setName("HelicopterSystem");
+
         CTMultiSolverDirector dir = new CTMultiSolverDirector(this,
                 "OuterDirector");
+
         //dir.addDebugListener(new StreamListener());
-
-
         // ---------------------------------
         // Create the controller actors.
         // ---------------------------------
-
-        CTCompositeActor sub = new CTCompositeActor(this,
-                "Controllers");
+        CTCompositeActor sub = new CTCompositeActor(this, "Controllers");
         HSDirector hsdir = new HSDirector(sub, "HSDirector");
 
         TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
         subinPx.setInput(true);
         subinPx.setOutput(false);
+
         TypedIOPort subinDPx = new TypedIOPort(sub, "inputDPx");
         subinDPx.setInput(true);
         subinDPx.setOutput(false);
+
         TypedIOPort subinDDPx = new TypedIOPort(sub, "inputDDPx");
         subinDDPx.setInput(true);
         subinDDPx.setOutput(false);
+
         TypedIOPort subinD3Px = new TypedIOPort(sub, "inputD3Px");
         subinD3Px.setInput(true);
         subinD3Px.setOutput(false);
+
         TypedIOPort subinD4Px = new TypedIOPort(sub, "inputD4Px");
         subinD4Px.setInput(true);
         subinD4Px.setOutput(false);
@@ -113,15 +114,19 @@ public class Helicopter extends TypedCompositeActor {
         TypedIOPort subinPz = new TypedIOPort(sub, "inputPz");
         subinPz.setInput(true);
         subinPz.setOutput(false);
+
         TypedIOPort subinDPz = new TypedIOPort(sub, "inputDPz");
         subinDPz.setInput(true);
         subinDPz.setOutput(false);
+
         TypedIOPort subinDDPz = new TypedIOPort(sub, "inputDDPz");
         subinDDPz.setInput(true);
         subinDDPz.setOutput(false);
+
         TypedIOPort subinD3Pz = new TypedIOPort(sub, "inputD3Pz");
         subinD3Pz.setInput(true);
         subinD3Pz.setOutput(false);
+
         TypedIOPort subinD4Pz = new TypedIOPort(sub, "inputD4Pz");
         subinD4Pz.setInput(true);
         subinD4Pz.setOutput(false);
@@ -133,6 +138,7 @@ public class Helicopter extends TypedCompositeActor {
         TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
         suboutVx.setInput(false);
         suboutVx.setOutput(true);
+
         TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
         suboutVz.setInput(false);
         suboutVz.setOutput(true);
@@ -143,12 +149,15 @@ public class Helicopter extends TypedCompositeActor {
         TypedIOPort hscInAct = new TypedIOPort(hsctrl, "inputAction");
         hscInAct.setInput(true);
         hscInAct.setOutput(false);
+
         TypedIOPort hscInPz = new TypedIOPort(hsctrl, "inputPz");
         hscInPz.setInput(true);
         hscInPz.setOutput(false);
+
         TypedIOPort hscInV = new TypedIOPort(hsctrl, "outputV");
         hscInV.setInput(true);
         hscInV.setOutput(false);
+
         TypedIOPort hscInR = new TypedIOPort(hsctrl, "outputR");
         hscInR.setInput(true);
         hscInR.setOutput(false);
@@ -159,37 +168,46 @@ public class Helicopter extends TypedCompositeActor {
         State climbState = new State(hsctrl, "ClimbState");
         State cruise2State = new State(hsctrl, "Cruise2State");
         hsctrl.initialStateName.setExpression("HoverState");
+
         /* CTCompositeActor linHover = */ _createLinearizer(sub, 0);
+
         /* CTCompositeActor linAccel = */ _createLinearizer(sub, 1);
+
         /* CTCompositeActor linCruise1 = */ _createLinearizer(sub, 2);
+
         /* CTCompositeActor linClimb = */ _createLinearizer(sub, 3);
+
         /* CTCompositeActor linCruise2 = */ _createLinearizer(sub, 4);
         hoverState.refinementName.setExpression("HoverCTSub");
         accelState.refinementName.setExpression("AccelCTSub");
         cruise1State.refinementName.setExpression("Cruise1CTSub");
         climbState.refinementName.setExpression("ClimbCTSub");
         cruise2State.refinementName.setExpression("Cruise2CTSub");
+
         Transition tr1 = new Transition(hsctrl, "tr1");
         hoverState.outgoingPort.link(tr1);
         accelState.incomingPort.link(tr1);
         tr1.setGuardExpression("inputAction");
+
         Transition tr2 = new Transition(hsctrl, "tr2");
         accelState.outgoingPort.link(tr2);
         cruise1State.incomingPort.link(tr2);
-        tr2.setGuardExpression("(outputV >= 5.0) && (inputPz > -2.05) " +
-                "&& (inputPz < -1.95)");
+        tr2.setGuardExpression("(outputV >= 5.0) && (inputPz > -2.05) "
+            + "&& (inputPz < -1.95)");
 
         Transition tr3 = new Transition(hsctrl, "tr3");
         cruise1State.outgoingPort.link(tr3);
         climbState.incomingPort.link(tr3);
-        tr3.setGuardExpression("(outputV > 4.9) && (outputV < 5.1) " +
-                "&& (outputR > -0.01) && (outputR < 0.01)");
+        tr3.setGuardExpression("(outputV > 4.9) && (outputV < 5.1) "
+            + "&& (outputR > -0.01) && (outputR < 0.01)");
+
         Transition tr4 = new Transition(hsctrl, "tr4");
         climbState.outgoingPort.link(tr4);
         cruise2State.incomingPort.link(tr4);
+
         //
-        tr4.setGuardExpression("(outputV > 4.9) && (outputV < 5.1) " +
-                "&& (inputPz > -10.05) && (inputPz < -9.95)");
+        tr4.setGuardExpression("(outputV > 4.9) && (outputV < 5.1) "
+            + "&& (inputPz > -10.05) && (inputPz < -9.95)");
 
         TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
         TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
@@ -220,71 +238,100 @@ public class Helicopter extends TypedCompositeActor {
         suboutVz.link(rSubOutVz);
 
         sub.connect(subinAction, hscInAct);
+
         //hscInPz.link(rSubPz);
         //hscInV.link(rSubOutV);
         //hscInR.link(rSubOutR);
         Iterator entities = sub.entityList().iterator();
+
         while (entities.hasNext()) {
-            Entity ent = (Entity)entities.next();
+            Entity ent = (Entity) entities.next();
             Port p = ent.getPort("inputPx");
+
             if (p != null) {
                 p.link(rSubPx);
             }
+
             p = ent.getPort("inputDPx");
+
             if (p != null) {
                 p.link(rSubDPx);
             }
+
             p = ent.getPort("inputDDPx");
+
             if (p != null) {
                 p.link(rSubDDPx);
             }
+
             p = ent.getPort("inputD3Px");
+
             if (p != null) {
                 p.link(rSubD3Px);
             }
+
             p = ent.getPort("inputD4Px");
+
             if (p != null) {
                 p.link(rSubD4Px);
             }
+
             p = ent.getPort("inputPz");
+
             if (p != null) {
                 p.link(rSubPz);
             }
+
             p = ent.getPort("inputDPz");
+
             if (p != null) {
                 p.link(rSubDPz);
             }
+
             p = ent.getPort("inputDDPz");
+
             if (p != null) {
                 p.link(rSubDDPz);
             }
+
             p = ent.getPort("inputD3Pz");
+
             if (p != null) {
                 p.link(rSubD3Pz);
             }
+
             p = ent.getPort("inputD4Pz");
+
             if (p != null) {
                 p.link(rSubD4Pz);
             }
+
             p = ent.getPort("outputVx");
+
             if (p != null) {
                 p.link(rSubOutVx);
             }
+
             p = ent.getPort("outputVz");
+
             if (p != null) {
                 p.link(rSubOutVz);
             }
+
             p = ent.getPort("outputV");
+
             if (p != null) {
                 p.link(rSubOutV);
             }
+
             p = ent.getPort("outputR");
+
             if (p != null) {
                 p.link(rSubOutR);
             }
         }
-        // CTActors
 
+        // CTActors
         Clock clock = new Clock(this, "Clock");
         clock.period.setToken(new DoubleToken(1e308));
         clock.offsets.setExpression("{0.0, 20.0}");
@@ -312,9 +359,10 @@ public class Helicopter extends TypedCompositeActor {
         Integrator A = new Integrator(this, "IntegratorA");
 
         Scale MINUS = new Scale(this, "MINUS");
+
         //CTPlot ctPlot = new CTPlot(this, "CTPlot", ctPanel);
         XYPlotter xzPlot = new XYPlotter(this, "Helicopter Position");
-        xzPlot.plot= new Plot();
+        xzPlot.plot = new Plot();
         xzPlot.plot.setTitle("Helicopter Position");
         xzPlot.plot.setButtons(false);
         xzPlot.plot.setGrid(true);
@@ -323,8 +371,7 @@ public class Helicopter extends TypedCompositeActor {
         xzPlot.plot.setSize(200, 200);
         xzPlot.plot.addLegend(0, "x, z");
 
-        TimedPlotter vxPlot = new TimedPlotter(this,
-                "Horizontal Speed");
+        TimedPlotter vxPlot = new TimedPlotter(this, "Horizontal Speed");
         vxPlot.plot = new Plot();
         vxPlot.plot.setTitle("Horizontal Speed");
         vxPlot.plot.setButtons(false);
@@ -332,10 +379,9 @@ public class Helicopter extends TypedCompositeActor {
         vxPlot.plot.setXRange(0.0, 70.0);
         vxPlot.plot.setYRange(0.0, 6.0);
         vxPlot.plot.setSize(200, 200);
-        vxPlot.plot.addLegend(0,"Vx");
+        vxPlot.plot.addLegend(0, "Vx");
 
-        TimedPlotter pzPlot = new TimedPlotter(this,
-                "Vertical Position");
+        TimedPlotter pzPlot = new TimedPlotter(this, "Vertical Position");
         pzPlot.plot = new Plot();
         pzPlot.plot.setTitle("Vertical Position");
         pzPlot.plot.setButtons(false);
@@ -343,10 +389,9 @@ public class Helicopter extends TypedCompositeActor {
         pzPlot.plot.setXRange(0.0, 70.0);
         pzPlot.plot.setYRange(0.0, 12.0);
         pzPlot.plot.setSize(200, 200);
-        pzPlot.plot.addLegend(0,"Pz");
+        pzPlot.plot.addLegend(0, "Pz");
 
-        TimedPlotter thPlot = new TimedPlotter(this,
-                "Pitch Angle");
+        TimedPlotter thPlot = new TimedPlotter(this, "Pitch Angle");
         thPlot.plot = new Plot();
         thPlot.plot.setTitle("Pitch Angle");
         thPlot.plot.setButtons(false);
@@ -354,7 +399,7 @@ public class Helicopter extends TypedCompositeActor {
         thPlot.plot.setXRange(0.0, 70.0);
         thPlot.plot.setYRange(-0.05, 0.05);
         thPlot.plot.setSize(200, 200);
-        thPlot.plot.addLegend(0,"Th");
+        thPlot.plot.addLegend(0, "Th");
 
         // CTConnections
         TypedIORelation rPx = new TypedIORelation(this, "rPx");
@@ -452,12 +497,12 @@ public class Helicopter extends TypedCompositeActor {
         higher.inputA.link(rA);
 
         // Connect HoverLinearizer
-
         TypedIORelation rmPz = new TypedIORelation(this, "RMPz");
         MINUS.input.link(rPz);
         MINUS.output.link(rmPz);
         xzPlot.inputX.link(rPx);
         xzPlot.inputY.link(rmPz);
+
         //ctPlot.input.link(rPz);
         vxPlot.input.link(rDPx);
         pzPlot.input.link(rmPz);
@@ -501,26 +546,28 @@ public class Helicopter extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    CTCompositeActor _createLinearizer(TypedCompositeActor container,
-            int code)
-            throws NameDuplicationException, IllegalActionException {
+    CTCompositeActor _createLinearizer(TypedCompositeActor container, int code)
+        throws NameDuplicationException, IllegalActionException {
         CTCompositeActor sub = new CTCompositeActor(container, "dummy");
-        CTEmbeddedDirector subdir =
-            new CTEmbeddedDirector(sub, "CTInnerDirector");
+        CTEmbeddedDirector subdir = new CTEmbeddedDirector(sub,
+                "CTInnerDirector");
 
         TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
         subinPx.setInput(true);
         subinPx.setOutput(false);
+
         TypedIOPort subinDPx = new TypedIOPort(sub, "inputDPx");
         subinDPx.setInput(true);
         subinDPx.setOutput(false);
+
         TypedIOPort subinDDPx = new TypedIOPort(sub, "inputDDPx");
         subinDDPx.setInput(true);
         subinDDPx.setOutput(false);
+
         TypedIOPort subinD3Px = new TypedIOPort(sub, "inputD3Px");
         subinD3Px.setInput(true);
         subinD3Px.setOutput(false);
+
         TypedIOPort subinD4Px = new TypedIOPort(sub, "inputD4Px");
         subinD4Px.setInput(true);
         subinD4Px.setOutput(false);
@@ -528,15 +575,19 @@ public class Helicopter extends TypedCompositeActor {
         TypedIOPort subinPz = new TypedIOPort(sub, "inputPz");
         subinPz.setInput(true);
         subinPz.setOutput(false);
+
         TypedIOPort subinDPz = new TypedIOPort(sub, "inputDPz");
         subinDPz.setInput(true);
         subinDPz.setOutput(false);
+
         TypedIOPort subinDDPz = new TypedIOPort(sub, "inputDDPz");
         subinDDPz.setInput(true);
         subinDDPz.setOutput(false);
+
         TypedIOPort subinD3Pz = new TypedIOPort(sub, "inputD3Pz");
         subinD3Pz.setInput(true);
         subinD3Pz.setOutput(false);
+
         TypedIOPort subinD4Pz = new TypedIOPort(sub, "inputD4Pz");
         subinD4Pz.setInput(true);
         subinD4Pz.setOutput(false);
@@ -544,6 +595,7 @@ public class Helicopter extends TypedCompositeActor {
         TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
         suboutVx.setInput(false);
         suboutVx.setOutput(true);
+
         TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
         suboutVz.setInput(false);
         suboutVz.setOutput(true);
@@ -551,6 +603,7 @@ public class Helicopter extends TypedCompositeActor {
         TypedIOPort suboutV = new TypedIOPort(sub, "outputV");
         suboutV.setInput(false);
         suboutV.setOutput(true);
+
         TypedIOPort suboutR = new TypedIOPort(sub, "outputR");
         suboutR.setInput(false);
         suboutR.setOutput(true);
@@ -558,43 +611,50 @@ public class Helicopter extends TypedCompositeActor {
         // ---------------------------------
         // Create the actors.
         // ---------------------------------
-
         TypedAtomicActor lin = null;
         ThresholdMonitor mon1 = null;
         ThresholdMonitor mon2 = null;
+
         switch (code) {
         case 0: // hover state
             sub.setName("HoverCTSub");
             lin = new HoverLinearizer(sub, "Hover");
             break;
+
         case 1: // acc state
             sub.setName("AccelCTSub");
             lin = new AccelerLinearizer(sub, "Accel");
             mon1 = new ThresholdMonitor(sub, "Mon1");
             break;
+
         case 2: // first cruise state
             sub.setName("Cruise1CTSub");
             lin = new CruiseLinearizer(sub, "Cruise1");
             mon1 = new ThresholdMonitor(sub, "Mon1");
             mon2 = new ThresholdMonitor(sub, "Mon2");
             break;
+
         case 3: // climb state
             sub.setName("ClimbCTSub");
             lin = new ClimbLinearizer(sub, "Climb");
             mon1 = new ThresholdMonitor(sub, "Mon1");
             mon2 = new ThresholdMonitor(sub, "Mon2");
             break;
+
         case 4: // second cruise state
             sub.setName("Cruise2CTSub");
             lin = new CruiseLinearizer(sub, "Cruise2");
-            Parameter param = (Parameter)lin.getAttribute("CPz");
+
+            Parameter param = (Parameter) lin.getAttribute("CPz");
             param.setToken(new DoubleToken(-10.0));
-            param = (Parameter)lin.getAttribute("CVx");
+            param = (Parameter) lin.getAttribute("CVx");
             param.setToken(new DoubleToken(5.0));
             break;
+
         default:
             break;
         }
+
         /*
           ZeroOrderHold hPx = new ZeroOrderHold(sub, "HPx");
           ZeroOrderHold hDPx = new ZeroOrderHold(sub, "HDPx");
@@ -631,67 +691,67 @@ public class Helicopter extends TypedCompositeActor {
           sub.connect(hD3Pz.output, (ComponentPort)lin.getPort("inputD3Pz"));
           sub.connect(hD4Pz.output, (ComponentPort)lin.getPort("inputD4Pz"));
         */
-
-        sub.connect(subinPx, (ComponentPort)lin.getPort("inputPx"));
-        sub.connect(subinDPx, (ComponentPort)lin.getPort("inputDPx"));
-        sub.connect(subinDDPx, (ComponentPort)lin.getPort("inputDDPx"));
-        sub.connect(subinD3Px, (ComponentPort)lin.getPort("inputD3Px"));
-        sub.connect(subinD4Px, (ComponentPort)lin.getPort("inputD4Px"));
+        sub.connect(subinPx, (ComponentPort) lin.getPort("inputPx"));
+        sub.connect(subinDPx, (ComponentPort) lin.getPort("inputDPx"));
+        sub.connect(subinDDPx, (ComponentPort) lin.getPort("inputDDPx"));
+        sub.connect(subinD3Px, (ComponentPort) lin.getPort("inputD3Px"));
+        sub.connect(subinD4Px, (ComponentPort) lin.getPort("inputD4Px"));
 
         Relation rInPz = sub.connect(subinPz,
-                (ComponentPort)lin.getPort("inputPz"));
+                (ComponentPort) lin.getPort("inputPz"));
+
         //sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
-        sub.connect(subinDPz, (ComponentPort)lin.getPort("inputDPz"));
-        sub.connect(subinDDPz, (ComponentPort)lin.getPort("inputDDPz"));
-        sub.connect(subinD3Pz, (ComponentPort)lin.getPort("inputD3Pz"));
-        sub.connect(subinD4Pz, (ComponentPort)lin.getPort("inputD4Pz"));
+        sub.connect(subinDPz, (ComponentPort) lin.getPort("inputDPz"));
+        sub.connect(subinDDPz, (ComponentPort) lin.getPort("inputDDPz"));
+        sub.connect(subinD3Pz, (ComponentPort) lin.getPort("inputD3Pz"));
+        sub.connect(subinD4Pz, (ComponentPort) lin.getPort("inputD4Pz"));
 
-
-
-        sub.connect(suboutVx, (ComponentPort)lin.getPort("outputVx"));
-        sub.connect(suboutVz, (ComponentPort)lin.getPort("outputVz"));
-
-
+        sub.connect(suboutVx, (ComponentPort) lin.getPort("outputVx"));
+        sub.connect(suboutVz, (ComponentPort) lin.getPort("outputVz"));
 
         Relation rV = sub.connect(suboutV,
-                (ComponentPort)lin.getPort("outputV"));
+                (ComponentPort) lin.getPort("outputV"));
         Relation rR = sub.connect(suboutR,
-                (ComponentPort)lin.getPort("outputR"));
+                (ComponentPort) lin.getPort("outputR"));
 
         // connect and set the monitors
         Parameter p = null;
+
         switch (code) {
         case 1: // accel state
             mon1.input.link(rInPz);
-            p = (Parameter)mon1.getAttribute("thresholdWidth");
+            p = (Parameter) mon1.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.1));
-            p = (Parameter)mon1.getAttribute("thresholdCenter");
+            p = (Parameter) mon1.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(-2.0));
             break;
+
         case 2: // first cruise state
             mon1.input.link(rV);
-            p = (Parameter)mon1.getAttribute("thresholdWidth");
+            p = (Parameter) mon1.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.2));
-            p = (Parameter)mon1.getAttribute("thresholdCenter");
+            p = (Parameter) mon1.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(5.0));
             mon2.input.link(rR);
-            p = (Parameter)mon2.getAttribute("thresholdWidth");
+            p = (Parameter) mon2.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.02));
-            p = (Parameter)mon2.getAttribute("thresholdCenter");
+            p = (Parameter) mon2.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(0.0));
             break;
+
         case 3: // climb state
             mon1.input.link(rInPz);
-            p = (Parameter)mon1.getAttribute("thresholdWidth");
+            p = (Parameter) mon1.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.1));
-            p = (Parameter)mon1.getAttribute("thresholdCenter");
+            p = (Parameter) mon1.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(-10.0));
             mon2.input.link(rV);
-            p = (Parameter)mon2.getAttribute("thresholdWidth");
+            p = (Parameter) mon2.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.2));
-            p = (Parameter)mon2.getAttribute("thresholdCenter");
+            p = (Parameter) mon2.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(5.0));
             break;
+
         default:
             break;
         }

@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.Point;
@@ -56,8 +55,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToJAI
+
 /**
    Converts a DoubleMatrix to a JAIImageToken.  This JAIImageToken is a
    single-banded grayscale image.  To assemble multiple band's into one
@@ -77,7 +78,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (cxh)
 */
 public class DoubleMatrixToJAI extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -87,7 +87,7 @@ public class DoubleMatrixToJAI extends Transformer {
      *   actor with this name.
      */
     public DoubleMatrixToJAI(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         dataFormat = new StringAttribute(this, "dataFormat");
         dataFormat.setExpression("byte");
@@ -124,11 +124,11 @@ public class DoubleMatrixToJAI extends Transformer {
      *  @exception IllegalActionException If the base class throws it,
      *  or if the data type is not recognized.
      */
-
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == dataFormat) {
             String dataFormatName = dataFormat.getExpression();
+
             if (dataFormatName.equals("byte")) {
                 _dataFormat = _BYTE;
             } else if (dataFormatName.equals("double")) {
@@ -143,10 +143,10 @@ public class DoubleMatrixToJAI extends Transformer {
                 _dataFormat = _USHORT;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized data type: " + dataFormatName);
+                    "Unrecognized data type: " + dataFormatName);
             }
         } else if (attribute == scale) {
-            _scale = ((BooleanToken)scale.getToken()).booleanValue();
+            _scale = ((BooleanToken) scale.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -161,69 +161,77 @@ public class DoubleMatrixToJAI extends Transformer {
         super.fire();
 
         DoubleMatrixToken doubleMatrixToken = (DoubleMatrixToken) input.get(0);
-        double data[][] = doubleMatrixToken.doubleMatrix();
+        double[][] data = doubleMatrixToken.doubleMatrix();
         int width = doubleMatrixToken.getRowCount();
         int height = doubleMatrixToken.getColumnCount();
-        double newData[] = new double[width*height];
+        double[] newData = new double[width * height];
         _maxValue = 1;
         _minValue = 0;
+
         if (_scale) {
-            switch(_dataFormat) {
+            switch (_dataFormat) {
             case _BYTE:
-                _maxValue = (double)Byte.MAX_VALUE - (double)Byte.MIN_VALUE;
+                _maxValue = (double) Byte.MAX_VALUE - (double) Byte.MIN_VALUE;
                 _minValue = 0;
                 break;
+
             case _INT:
-                _maxValue = (double)Integer.MAX_VALUE;
-                _minValue = (double)Integer.MIN_VALUE;
+                _maxValue = (double) Integer.MAX_VALUE;
+                _minValue = (double) Integer.MIN_VALUE;
                 break;
+
             case _SHORT:
-                _maxValue = (double)Short.MAX_VALUE;
-                _minValue = (double)Short.MIN_VALUE;
+                _maxValue = (double) Short.MAX_VALUE;
+                _minValue = (double) Short.MIN_VALUE;
                 break;
+
             case _USHORT:
-                _maxValue = (double)Short.MAX_VALUE - (double)Short.MIN_VALUE;
+                _maxValue = (double) Short.MAX_VALUE - (double) Short.MIN_VALUE;
                 _minValue = 0;
                 break;
+
             case _FLOAT:
-                _maxValue = (double)Float.MAX_VALUE;
+                _maxValue = (double) Float.MAX_VALUE;
                 break;
+
             case _DOUBLE:
-                _maxValue = (double)Double.MAX_VALUE;
+                _maxValue = (double) Double.MAX_VALUE;
                 break;
+
             default:
                 throw new InternalErrorException(this, null,
-                        "Invalid value for _dataFormat private variable. "
-                        + "DoubleMatrixToJAI actor (" + getFullName()
-                        + ") on data type " + _dataFormat);
+                    "Invalid value for _dataFormat private variable. "
+                    + "DoubleMatrixToJAI actor (" + getFullName()
+                    + ") on data type " + _dataFormat);
             }
-            if (_dataFormat == _DOUBLE || _dataFormat == _FLOAT) {
+
+            if ((_dataFormat == _DOUBLE) || (_dataFormat == _FLOAT)) {
                 System.out.println("DoubleMatrixTOJAI:0");
+
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
                         // There is some confusion about which order the
                         // array should be in.
                         // We go with i*height + j here so that we
                         // can read in data from the SDF VQ actors.
-
-//                         newData[i*height + j] = data[i][j];
-//                         newData[i*height + j] = newData[i*height + j] - 0.5D;
-//                         newData[i*height + j] = newData[i*height + j]*2;
-//                         newData[i*height + j] = newData[i*height + j]*_maxValue;
-                        newData[i + j * width] = data[i][j];
-                        newData[i + j * width] = newData[i + j * width] - 0.5D;
-                        newData[i + j * width] = newData[i + j * width]*2;
-                        newData[i + j * width] = newData[i + j * width]*_maxValue;
+                        //                         newData[i*height + j] = data[i][j];
+                        //                         newData[i*height + j] = newData[i*height + j] - 0.5D;
+                        //                         newData[i*height + j] = newData[i*height + j]*2;
+                        //                         newData[i*height + j] = newData[i*height + j]*_maxValue;
+                        newData[i + (j * width)] = data[i][j];
+                        newData[i + (j * width)] = newData[i + (j * width)]
+                            - 0.5D;
+                        newData[i + (j * width)] = newData[i + (j * width)] * 2;
+                        newData[i + (j * width)] = newData[i + (j * width)] * _maxValue;
                     }
                 }
             } else {
-
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
-//                         newData[i*height + j] =
-//                             data[i][j]*(_maxValue - _minValue) + _minValue;
-                        newData[i + j*width] =
-                            data[i][j]*(_maxValue - _minValue) + _minValue;
+                        //                         newData[i*height + j] =
+                        //                             data[i][j]*(_maxValue - _minValue) + _minValue;
+                        newData[i + (j * width)] = (data[i][j] * (_maxValue
+                            - _minValue)) + _minValue;
                     }
                 }
             }
@@ -231,71 +239,77 @@ public class DoubleMatrixToJAI extends Transformer {
             // Convert the matrix of doubles into an array of doubles
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-//                    newData[i*height + j] = data[i][j];
-                    newData[i + j*width] = data[i][j];
+                    //                    newData[i*height + j] = data[i][j];
+                    newData[i + (j * width)] = data[i][j];
                 }
             }
         }
+
         // Create a new dataBuffer from the array of doubles
-        DataBufferDouble dataBuffer =
-            new DataBufferDouble(newData, width*height);
+        DataBufferDouble dataBuffer = new DataBufferDouble(newData,
+                width * height);
 
         // The length of the bandOffset array indicates how many bands
         // there are.  Since we are just dealing with a single
         // DoubleMatrixToken, the length of this array will be one.
         // The values of the array indicate the offset to be added
         // To the bands.  This is set to 0.
-        int bandOffset[] = new int[1];
+        int[] bandOffset = new int[1];
         bandOffset[0] = 0;
 
         // Create a ComponentSampleModel, with type double, the same width
         // and height as the matrix, a pixel stride of one (the final image
         // is single-banded), and a scanline stride equal to the width.
-        ComponentSampleModelJAI sampleModel =
-            new ComponentSampleModelJAI(DataBuffer.TYPE_DOUBLE,
-                    width, height, 1, width, bandOffset);
+        ComponentSampleModelJAI sampleModel = new ComponentSampleModelJAI(DataBuffer.TYPE_DOUBLE,
+                width, height, 1, width, bandOffset);
 
         // Create a new raster that has its origin at (0, 0).
-        Raster raster =
-            Raster.createWritableRaster(sampleModel, dataBuffer, new Point());
+        Raster raster = Raster.createWritableRaster(sampleModel, dataBuffer,
+                new Point());
 
         // Create a grayscale colormodel.
-        ComponentColorModel colorModel =
-            new ComponentColorModel(
-                    new ICC_ColorSpace(
-                            ICC_ProfileGray.getInstance(ColorSpace.CS_GRAY)),
-                    false, false,
-                    ComponentColorModel.OPAQUE, DataBuffer.TYPE_DOUBLE);
-        TiledImage tiledImage =
-            new TiledImage(0, 0, width, height, 0, 0, sampleModel, colorModel);
+        ComponentColorModel colorModel = new ComponentColorModel(new ICC_ColorSpace(
+                    ICC_ProfileGray.getInstance(ColorSpace.CS_GRAY)), false,
+                false, ComponentColorModel.OPAQUE, DataBuffer.TYPE_DOUBLE);
+        TiledImage tiledImage = new TiledImage(0, 0, width, height, 0, 0,
+                sampleModel, colorModel);
         tiledImage.setData(raster);
+
         ParameterBlock parameters = new ParameterBlock();
         parameters.addSource(tiledImage);
-        switch(_dataFormat) {
+
+        switch (_dataFormat) {
         case _BYTE:
             parameters.add(DataBuffer.TYPE_BYTE);
             break;
+
         case _DOUBLE:
             parameters.add(DataBuffer.TYPE_DOUBLE);
             break;
+
         case _FLOAT:
             parameters.add(DataBuffer.TYPE_FLOAT);
             break;
+
         case _INT:
             parameters.add(DataBuffer.TYPE_INT);
             break;
+
         case _SHORT:
             parameters.add(DataBuffer.TYPE_SHORT);
             break;
+
         case _USHORT:
             parameters.add(DataBuffer.TYPE_USHORT);
             break;
+
         default:
             throw new InternalErrorException(this, null,
-                    "Invalid value for _dataFormat private variable. "
-                    + "DoubleMatrixToJAI actor (" + getFullName()
-                    + ") on data type " + _dataFormat);
+                "Invalid value for _dataFormat private variable. "
+                + "DoubleMatrixToJAI actor (" + getFullName()
+                + ") on data type " + _dataFormat);
         }
+
         RenderedOp newImage = JAI.create("format", parameters);
         output.send(0, new JAIImageToken(newImage));
     }
@@ -327,9 +341,3 @@ public class DoubleMatrixToJAI extends Transformer {
     private static final int _SHORT = 4;
     private static final int _USHORT = 5;
 }
-
-
-
-
-
-

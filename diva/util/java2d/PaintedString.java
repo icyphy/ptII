@@ -39,6 +39,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+
 /**
  * A utility class that paints a string. This is a low-level class
  * which is designed to simplify the construction of drawn graphics.
@@ -53,7 +54,6 @@ import java.util.StringTokenizer;
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public class PaintedString implements PaintedObject {
-
     /** The string that gets painted.
      */
     private String _string;
@@ -127,10 +127,11 @@ public class PaintedString implements PaintedObject {
     /**
      * Get the bounds of this string
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         if (_bounds == null) {
             _update();
         }
+
         return _bounds;
     }
 
@@ -177,10 +178,11 @@ public class PaintedString implements PaintedObject {
      * object anyway, and not have to click on an actual
      * filled pixel).
      */
-    public Shape getShape () {
+    public Shape getShape() {
         if (_bounds == null) {
             _update();
         }
+
         return _bounds;
     }
 
@@ -198,9 +200,12 @@ public class PaintedString implements PaintedObject {
         if (_bounds == null) {
             _update();
         }
+
         if (getString() != null) {
             g.setPaint(_fillPaint);
+
             Iterator i = _shapes.iterator();
+
             while (i.hasNext()) {
                 Shape shape = (Shape) i.next();
                 g.fill(shape);
@@ -221,6 +226,7 @@ public class PaintedString implements PaintedObject {
      */
     public void setFont(Font f) {
         _font = f;
+
         // clear the bounds.
         _bounds = null;
     }
@@ -251,6 +257,7 @@ public class PaintedString implements PaintedObject {
      */
     public void setString(String s) {
         _string = s;
+
         // clear the bounds.
         _bounds = null;
     }
@@ -261,8 +268,9 @@ public class PaintedString implements PaintedObject {
      * to move it back again if this method being called to
      * (for example) rotate the label.
      */
-    public void setTransform (AffineTransform at) {
+    public void setTransform(AffineTransform at) {
         _transform = at;
+
         // clear the bounds.
         _bounds = null;
     }
@@ -273,8 +281,9 @@ public class PaintedString implements PaintedObject {
      * to move it back again if this method being called to
      * (for example) rotate the label.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         _transform.preConcatenate(at);
+
         // clear the bounds.
         _bounds = null;
     }
@@ -282,8 +291,9 @@ public class PaintedString implements PaintedObject {
     /**
      * Translate the label the given distance.
      */
-    public void translate (double x, double y) {
-        _transform.translate(x,y);
+    public void translate(double x, double y) {
+        _transform.translate(x, y);
+
         // clear the bounds.
         _bounds = null;
     }
@@ -298,10 +308,11 @@ public class PaintedString implements PaintedObject {
      * TWICE. After screwing around with it for a while,
      * I gave up [johnr].
      */
-    private void _update () {
+    private void _update() {
         // Since we are generating a shape and drawing that, it makes
         // no difference what the values of the flags are
         FontRenderContext frc = new FontRenderContext(null, true, false);
+
         // Return the delimiters, so that we get the right line count.
         StringTokenizer lines = new StringTokenizer(_string, "\n", true);
         double dy = _font.getMaxCharBounds(frc).getHeight();
@@ -310,8 +321,10 @@ public class PaintedString implements PaintedObject {
         double y = 0;
         _bounds = null;
         _shapes.clear();
+
         while (lines.hasMoreElements()) {
             String line = lines.nextToken();
+
             if (line.equals("\n")) {
                 // Note that leading or trailing newlines are ignored.
                 y += dy;
@@ -323,22 +336,18 @@ public class PaintedString implements PaintedObject {
                 Rectangle2D b;
                 s = _transform.createTransformedShape(s);
                 b = s.getBounds2D();
+
                 if (_bounds == null) {
                     // implicit translate by (0,0)
                     _bounds = b;
                     _shapes.add(s);
                 } else {
-                    Rectangle2D.union(
-                            _bounds,
-                            (Rectangle2D)ShapeUtilities.translateModify(
-                                    b, x, y),
-                            _bounds);
-                    _shapes.add(ShapeUtilities.translateModify(
-                                        s, x, y));
+                    Rectangle2D.union(_bounds,
+                        (Rectangle2D) ShapeUtilities.translateModify(b, x, y),
+                        _bounds);
+                    _shapes.add(ShapeUtilities.translateModify(s, x, y));
                 }
             }
         }
     }
 }
-
-

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.conversions.TokenToExpression;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictTokenToExpression
+
 /**
    This actor is a non-strict version of the TokenToExpression actor.
    When its input is unknown, it ouptuts "unknown". When its input is
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.actor.lib.conversions.TokenToExpression
 */
 public class NonStrictTokenToExpression extends TokenToExpression {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,7 +61,7 @@ public class NonStrictTokenToExpression extends TokenToExpression {
      *   actor with this name.
      */
     public NonStrictTokenToExpression(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         new Attribute(this, "_nonStrictMarker");

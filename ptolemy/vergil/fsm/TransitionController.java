@@ -25,11 +25,9 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm;
 
 import java.awt.Color;
-import java.awt.Event;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -75,8 +73,10 @@ import diva.graph.GraphController;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.MenuCreator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TransitionController
+
 /**
    This class provides interaction techniques for transitions in an FSM.
 
@@ -87,16 +87,15 @@ import diva.gui.toolbox.MenuCreator;
    @Pt.AcceptedRating Red (johnr)
 */
 public class TransitionController extends BasicEdgeController {
-
     /** Create a transition controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
      */
     public TransitionController(final GraphController controller) {
         super(controller);
+
         SelectionModel sm = controller.getSelectionModel();
-        SelectionInteractor interactor =
-            (SelectionInteractor) getEdgeInteractor();
+        SelectionInteractor interactor = (SelectionInteractor) getEdgeInteractor();
         interactor.setSelectionModel(sm);
 
         // Create and set up the manipulator for connectors.
@@ -122,13 +121,11 @@ public class TransitionController extends BasicEdgeController {
         // menu factory, which is a protected member of this class.
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(_configureAction));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(_configureAction));
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
-        ActionInteractor doubleClickInteractor
-            = new ActionInteractor(_configureAction);
+        ActionInteractor doubleClickInteractor = new ActionInteractor(_configureAction);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
@@ -137,8 +134,8 @@ public class TransitionController extends BasicEdgeController {
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _lookInsideAction));
         }
     }
 
@@ -151,11 +148,12 @@ public class TransitionController extends BasicEdgeController {
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
+
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _lookInsideAction));
         }
     }
 
@@ -166,8 +164,8 @@ public class TransitionController extends BasicEdgeController {
     protected Configuration _configuration;
 
     /** The configure action, which handles edit parameters requests. */
-    protected static ConfigureAction _configureAction
-    = new ConfigureAction("Configure");
+    protected static ConfigureAction _configureAction = new ConfigureAction(
+            "Configure");
 
     /** The action that handles look inside. */
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
@@ -180,7 +178,6 @@ public class TransitionController extends BasicEdgeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 10);
 
     ///////////////////////////////////////////////////////////////////
@@ -188,7 +185,6 @@ public class TransitionController extends BasicEdgeController {
 
     /** An inner class that handles interactive changes to connectivity. */
     protected class LinkDropper extends ConnectorAdapter {
-
         /** Called when a connector end is dropped.  Attach or
          *  detach the edge as appropriate.
          */
@@ -197,37 +193,43 @@ public class TransitionController extends BasicEdgeController {
             Figure f = evt.getTarget();
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
-            FSMGraphModel model =
-                (FSMGraphModel) getController().getGraphModel();
+            FSMGraphModel model = (FSMGraphModel) getController().getGraphModel();
 
             switch (evt.getEnd()) {
             case ConnectorEvent.HEAD_END:
                 model.getArcModel().setHead(edge, node);
                 break;
+
             case ConnectorEvent.TAIL_END:
                 model.getArcModel().setTail(edge, node);
                 break;
+
             case ConnectorEvent.MIDPOINT:
                 break;
+
             default:
                 throw new IllegalStateException(
-                        "Cannot handle both ends of an edge being dragged.");
+                    "Cannot handle both ends of an edge being dragged.");
             }
+
             // Make the arc rerender itself so that geometry is preserved
             Arc arc = (Arc) edge;
-            Transition transition = (Transition)arc.getRelation();
-            if (transition != null && c instanceof ArcConnector) {
-                double angle = ((ArcConnector)c).getAngle();
-                double gamma = ((ArcConnector)c).getGamma();
+            Transition transition = (Transition) arc.getRelation();
+
+            if ((transition != null) && c instanceof ArcConnector) {
+                double angle = ((ArcConnector) c).getAngle();
+                double gamma = ((ArcConnector) c).getGamma();
+
                 // Set the new exitAngle and gamma parameter values based
                 // on the current arc.
                 String moml = "<group><property name=\"exitAngle\" value=\""
-                    + angle + "\"/>" +
-                    "<property name=\"gamma\" value=\"" + gamma + "\"/></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(
-                        this, transition, moml);
+                    + angle + "\"/>" + "<property name=\"gamma\" value=\""
+                    + gamma + "\"/></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        transition, moml);
                 transition.requestChange(request);
             }
+
             // rerender the edge.  This is necessary for several reasons.
             // First, the edge is only associated with a relation after it
             // is fully connected.  Second, edges that aren't
@@ -238,59 +240,67 @@ public class TransitionController extends BasicEdgeController {
     }
 
     public class LinkRenderer implements EdgeRenderer {
-
         /** Render a visual representation of the given edge. */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ArcConnector c = new ArcConnector(tailSite, headSite);
             c.setHeadEnd(new Arrowhead());
-            c.setLineWidth((float)2.0);
+            c.setLineWidth((float) 2.0);
             c.setUserObject(edge);
+
             Arc arc = (Arc) edge;
-            Transition transition = (Transition)arc.getRelation();
+            Transition transition = (Transition) arc.getRelation();
+
             if (transition != null) {
                 c.setToolTipText(transition.getName());
+
                 String labelStr = transition.getLabel();
+
                 try {
-                    double exitAngle = ((DoubleToken)(transition.exitAngle
-                                                .getToken())).doubleValue();
+                    double exitAngle = ((DoubleToken) (transition.exitAngle
+                        .getToken())).doubleValue();
+
                     // If the angle is too large, then truncate it to
                     // a reasonable value.
-                    double maximum = 99.0*Math.PI;
+                    double maximum = 99.0 * Math.PI;
+
                     if (exitAngle > maximum) {
                         exitAngle = maximum;
                     } else if (exitAngle < -maximum) {
                         exitAngle = -maximum;
                     }
+
                     // If the angle is zero, then the arc does not get
                     // drawn.  So we restrict it so that it can't quite
                     // go to zero.
-                    double minimum = Math.PI/999.0;
-                    if (exitAngle < minimum && exitAngle > -minimum) {
+                    double minimum = Math.PI / 999.0;
+
+                    if ((exitAngle < minimum) && (exitAngle > -minimum)) {
                         if (exitAngle > 0.0) {
                             exitAngle = minimum;
                         } else {
-                            exitAngle = - minimum;
+                            exitAngle = -minimum;
                         }
                     }
+
                     c.setAngle(exitAngle);
 
                     // Set the gamma angle
-                    double gamma = ((DoubleToken)(transition.gamma
-                                            .getToken())).doubleValue();
+                    double gamma = ((DoubleToken) (transition.gamma.getToken()))
+                        .doubleValue();
                     c.setGamma(gamma);
-
                 } catch (IllegalActionException ex) {
                     // Ignore, accepting the default.
                     // This exception should not occur.
                 }
+
                 if (!labelStr.equals("")) {
                     // FIXME: get label position modifier, if any.
-                    LabelFigure label = new LabelFigure(
-                            labelStr, _labelFont);
+                    LabelFigure label = new LabelFigure(labelStr, _labelFont);
                     label.setFillPaint(Color.black);
                     c.setLabelFigure(label);
                 }
             }
+
             return c;
         }
     }
@@ -298,13 +308,17 @@ public class TransitionController extends BasicEdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
+
             if (object instanceof Locatable) {
-                Locatable location = (Locatable)object;
-                if (location.getContainer() instanceof Entity)
+                Locatable location = (Locatable) object;
+
+                if (location.getContainer() instanceof Entity) {
                     return true;
-                else
+                } else {
                     return false;
+                }
             }
+
             return false;
         }
 
@@ -320,34 +334,40 @@ public class TransitionController extends BasicEdgeController {
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside)");
+
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_L,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
-        public void actionPerformed(ActionEvent e) {
 
+        public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                        "Cannot look inside without a configuration.");
+                    "Cannot look inside without a configuration.");
                 return;
             }
+
             super.actionPerformed(e);
+
             NamedObj target = getTarget();
+
             // If the target is not an instance of
             // State or Transition, do nothing.
             try {
                 TypedActor[] refinements = null;
+
                 if (target instanceof Transition) {
-                    refinements = ((Transition)target).getRefinement();
+                    refinements = ((Transition) target).getRefinement();
                 } else if (target instanceof State) {
-                    refinements = ((State)target).getRefinement();
+                    refinements = ((State) target).getRefinement();
                 }
-                if (refinements != null && refinements.length > 0) {
+
+                if ((refinements != null) && (refinements.length > 0)) {
                     for (int i = 0; i < refinements.length; i++) {
                         // Open each refinement.
-                        _configuration.openModel((NamedObj)refinements[i]);
+                        _configuration.openModel((NamedObj) refinements[i]);
                     }
                 } else {
                     MessageHandler.error("No refinement.");

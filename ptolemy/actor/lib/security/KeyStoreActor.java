@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.security;
 
 import java.io.File;
@@ -56,8 +55,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// KeyStore
+
 /** A baseclass for actors that read or write keystores.
 
 <p>Keystores are ways to manage keys and certificates.  A keystore file can
@@ -182,7 +183,6 @@ and
 @Pt.AcceptedRating Red (cxh)
 */
 public class KeyStoreActor extends TypedAtomicActor {
-
     // This actor could be called 'KeyStore', but that conflicts with
     // java.security.KeyStore, so we call it 'KeyStoreActor', which also
     // better matches the other actor base classes in this directory.
@@ -196,55 +196,57 @@ public class KeyStoreActor extends TypedAtomicActor {
      *   actor with this name.
      */
     public KeyStoreActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-                super(container, name);
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
-                alias = new StringParameter(this, "alias");
-                alias.setExpression("claudius");
+        alias = new StringParameter(this, "alias");
+        alias.setExpression("claudius");
 
-                createFileOrURLIfNecessary = new Parameter(this,
-                        "createFileOrURLIfNecessary");
-                createFileOrURLIfNecessary.setExpression("true");
-                createFileOrURLIfNecessary.setTypeEquals(BaseType.BOOLEAN);
+        createFileOrURLIfNecessary = new Parameter(this,
+                "createFileOrURLIfNecessary");
+        createFileOrURLIfNecessary.setExpression("true");
+        createFileOrURLIfNecessary.setTypeEquals(BaseType.BOOLEAN);
 
-                fileOrURL = new FileParameter(this, "fileOrURL");
-                // To create the initial default KeyStore, do
-                // cd $PTII; make ptKeystore
-                // or set createFileOrURLIfNecessary to true.
-                fileOrURL.setExpression("$PTII/ptKeystore");
+        fileOrURL = new FileParameter(this, "fileOrURL");
 
-                keyPassword = new PortParameter(this, "keyPassword");
-                keyPassword.setTypeEquals(BaseType.STRING);
-                keyPassword.setStringMode(true);
-                keyPassword.setExpression(
-                        "this.is.the.keyPassword,change.it");
+        // To create the initial default KeyStore, do
+        // cd $PTII; make ptKeystore
+        // or set createFileOrURLIfNecessary to true.
+        fileOrURL.setExpression("$PTII/ptKeystore");
 
-                // Add the possible keystore types.
-                keyStoreType = new StringParameter(this, "keyStoreType");
-                keyStoreType.setExpression(KeyStore.getDefaultType());
-                Iterator keyStoreTypes = Security.getAlgorithms("KeyStore").iterator();
-                while (keyStoreTypes.hasNext()) {
-                    String keyStoreName = (String)keyStoreTypes.next();
-                    keyStoreType.addChoice(keyStoreName);
-                }
+        keyPassword = new PortParameter(this, "keyPassword");
+        keyPassword.setTypeEquals(BaseType.STRING);
+        keyPassword.setStringMode(true);
+        keyPassword.setExpression("this.is.the.keyPassword,change.it");
 
-                // Add the possible provider choices.
-                provider = new StringParameter(this, "provider");
-                provider.setExpression("SystemDefault");
-                provider.addChoice("SystemDefault");
-                Provider [] providers = Security.getProviders();
-                for (int i = 0; i < providers.length; i++) {
-                    provider.addChoice(providers[i].getName());
-                }
+        // Add the possible keystore types.
+        keyStoreType = new StringParameter(this, "keyStoreType");
+        keyStoreType.setExpression(KeyStore.getDefaultType());
 
-                storePassword = new PortParameter(this, "storePassword");
-                storePassword.setTypeEquals(BaseType.STRING);
-                storePassword.setStringMode(true);
-                storePassword.setExpression(
-                        "this.is.the.storePassword,change.it");
-                _storePassword = storePassword.getExpression();
-            }
+        Iterator keyStoreTypes = Security.getAlgorithms("KeyStore").iterator();
 
+        while (keyStoreTypes.hasNext()) {
+            String keyStoreName = (String) keyStoreTypes.next();
+            keyStoreType.addChoice(keyStoreName);
+        }
+
+        // Add the possible provider choices.
+        provider = new StringParameter(this, "provider");
+        provider.setExpression("SystemDefault");
+        provider.addChoice("SystemDefault");
+
+        Provider[] providers = Security.getProviders();
+
+        for (int i = 0; i < providers.length; i++) {
+            provider.addChoice(providers[i].getName());
+        }
+
+        storePassword = new PortParameter(this, "storePassword");
+        storePassword.setTypeEquals(BaseType.STRING);
+        storePassword.setStringMode(true);
+        storePassword.setExpression("this.is.the.storePassword,change.it");
+        _storePassword = storePassword.getExpression();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -309,7 +311,7 @@ public class KeyStoreActor extends TypedAtomicActor {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == alias) {
             _alias = alias.getExpression();
         } else if (attribute == fileOrURL) {
@@ -336,76 +338,73 @@ public class KeyStoreActor extends TypedAtomicActor {
      *  the keystore.
      */
     public void createKeystore(String keystoreFilename)
-            throws IllegalActionException {
+        throws IllegalActionException {
         System.out.println("Creating keystore " + keystoreFilename);
+
         String javaHomeProperty = "ptolemy.ptII.java.home";
         String javaHome = null;
+
         try {
             javaHome = StringUtilities.getProperty(javaHomeProperty);
         } catch (SecurityException ex) {
             System.out.println("Warning: KeyStoreActor: Failed to get the "
-                    + "java home directory "
-                    + "(-sandbox always causes this): " + ex);
+                + "java home directory " + "(-sandbox always causes this): "
+                + ex);
         }
-        if (javaHome == null || javaHome.length() == 0) {
+
+        if ((javaHome == null) || (javaHome.length() == 0)) {
             // Use java.home property if the ptolemy.ptII.java.home property
             // can not be read.  For example, MoMLSimpleApplication does not
             // read $PTII/lib/ptII.properties.
             javaHome = StringUtilities.getProperty("java.home");
-            if (javaHome != null && javaHome.length() > 0) {
+
+            if ((javaHome != null) && (javaHome.length() > 0)) {
                 javaHome = javaHome.replace('\\', '/');
             } else {
                 throw new InternalErrorException(this, null,
-                        "Could not find the " + javaHomeProperty + " and the "
-                        + "java.home property. Perhaps "
-                        + "$PTII/lib/ptII.properties "
-                        + "is not being read properly?");
+                    "Could not find the " + javaHomeProperty + " and the "
+                    + "java.home property. Perhaps "
+                    + "$PTII/lib/ptII.properties "
+                    + "is not being read properly?");
             }
         }
+
         File javaHomeFile = new File(javaHome);
-        if ( !javaHomeFile.isDirectory()) {
+
+        if (!javaHomeFile.isDirectory()) {
             throw new InternalErrorException(this, null,
-                    "Could not find the Java "
-                    + "directory that contains bin/keytool.  "
-                    + "Tried looking for the '" + javaHome + "' directory. "
-                    + "Perhaps the "
-                    + javaHomeProperty + " or java.home property was not set "
-                    + "properly because "
-                    + "$PTII/lib/ptII.properties is not being read properly?");
+                "Could not find the Java "
+                + "directory that contains bin/keytool.  "
+                + "Tried looking for the '" + javaHome + "' directory. "
+                + "Perhaps the " + javaHomeProperty
+                + " or java.home property was not set " + "properly because "
+                + "$PTII/lib/ptII.properties is not being read properly?");
         }
+
         String keytoolPath = javaHome + "/bin/keytool";
 
         String commonCommand = " -keystore " + keystoreFilename
-                + " -storetype " + _keyStoreType
-                + " -alias " + _alias
-                + " -storepass \"" + _storePassword + "\""
-                + " -keypass \"" + _keyPassword + "\"";
+            + " -storetype " + _keyStoreType + " -alias " + _alias
+            + " -storepass \"" + _storePassword + "\"" + " -keypass \""
+            + _keyPassword + "\"";
 
-        String command1 = keytoolPath
-                + " -genkey"
-                + " -dname \"CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US\""
-                + commonCommand;
+        String command1 = keytoolPath + " -genkey"
+            + " -dname \"CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US\""
+            + commonCommand;
 
-        String command2 = keytoolPath
-                + " -selfcert"
-                + commonCommand;
+        String command2 = keytoolPath + " -selfcert" + commonCommand;
 
-        String command3 = keytoolPath
-                + " -list"
-                + " -keystore " + keystoreFilename
-                + " -storepass \"" + _storePassword + "\"";
-
+        String command3 = keytoolPath + " -list" + " -keystore "
+            + keystoreFilename + " -storepass \"" + _storePassword + "\"";
 
         _exec(command1);
         _exec(command2);
         _exec(command3);
 
-
-        if (! (new File(keystoreFilename)).exists()) {
+        if (!(new File(keystoreFilename)).exists()) {
             throw new IllegalActionException(this,
-                    "Failed to create '" + keystoreFilename
-                    + "', try running\n" + command1 + "\n" + command2 + "\n"
-                    + command3);
+                "Failed to create '" + keystoreFilename + "', try running\n"
+                + command1 + "\n" + command2 + "\n" + command3);
         }
     }
 
@@ -415,19 +414,23 @@ public class KeyStoreActor extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire(); // Print debugging messages etc.
         keyPassword.update();
-        _keyPassword = ((StringToken)keyPassword.getToken()).stringValue();
+        _keyPassword = ((StringToken) keyPassword.getToken()).stringValue();
+
         if (keyPassword.getExpression() != _keyPassword) {
             // keyPassword changed, so reload the keyStore
             _loadKeyStoreNeeded = true;
         }
+
         // Set the persistent value to the current value.
         keyPassword.setExpression(_keyPassword);
 
         storePassword.update();
-        _storePassword = ((StringToken)storePassword.getToken()).stringValue();
+        _storePassword = ((StringToken) storePassword.getToken()).stringValue();
+
         if (storePassword.getExpression() != _storePassword) {
             _loadKeyStoreNeeded = true;
         }
+
         // Set the persistent value to the current value.
         storePassword.setExpression(_storePassword);
 
@@ -440,6 +443,7 @@ public class KeyStoreActor extends TypedAtomicActor {
     public synchronized void stopFire() {
         super.stopFire();
         _stopFireRequested = true;
+
         try {
             _terminateProcess();
         } catch (IllegalActionException ex) {
@@ -478,7 +482,6 @@ public class KeyStoreActor extends TypedAtomicActor {
     /** The password for the keyStore. */
     protected String _storePassword;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -488,27 +491,24 @@ public class KeyStoreActor extends TypedAtomicActor {
      *  throws an exception.
      */
     protected void _initializeKeyStore() throws IllegalActionException {
-
         // One would think that we could call _initializeKeyStore() in
         // initialize(), but we need to be able to read the
         // PortParameters, so we call this method from fire() and
         // other places.
-
         if (_initializeKeyStoreNeeded) {
             try {
                 // FIXME: do we try to write the old _keyStore?
                 if (_provider.equalsIgnoreCase("SystemDefault")) {
                     _keyStore = KeyStore.getInstance(_keyStoreType);
                 } else {
-                    _keyStore = KeyStore.getInstance(_keyStoreType,
-                            _provider);
+                    _keyStore = KeyStore.getInstance(_keyStoreType, _provider);
                 }
+
                 _initializeKeyStoreNeeded = false;
                 _loadKeyStoreNeeded = true;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to get instance '" + keyStoreType
-                        + "'of keyStore");
+                    "Failed to get instance '" + keyStoreType + "'of keyStore");
             }
         }
     }
@@ -526,6 +526,7 @@ public class KeyStoreActor extends TypedAtomicActor {
             // FileParameter needs to have a way of getting the
             // unbuffered stream.
             InputStream keyStoreInputStream = null;
+
             try {
                 // The next line might throw a NullPointerException
                 // if the fileOrURL does not exist.
@@ -534,26 +535,30 @@ public class KeyStoreActor extends TypedAtomicActor {
                 // Ignore, this means that the file does not exist,
                 // so we are trying to create a new empty keyStore.
             }
-            if (keyStoreInputStream == null) {
-                if (((BooleanToken)createFileOrURLIfNecessary.getToken()).booleanValue()) {
-                    String keystoreFileName = fileOrURL.stringValue();
-                    try {
-                        String classpathProperty = ((StringToken)Constants.get("CLASSPATH")).stringValue();
-                        if (keystoreFileName.startsWith(classpathProperty)) {
-                            keystoreFileName =
-                                ((StringToken) Constants.get("PTII"))
-                                .stringValue()
-                                + "/"
-                                + keystoreFileName.substring(
-                                        classpathProperty.length());
 
+            if (keyStoreInputStream == null) {
+                if (((BooleanToken) createFileOrURLIfNecessary.getToken())
+                        .booleanValue()) {
+                    String keystoreFileName = fileOrURL.stringValue();
+
+                    try {
+                        String classpathProperty = ((StringToken) Constants.get(
+                                "CLASSPATH")).stringValue();
+
+                        if (keystoreFileName.startsWith(classpathProperty)) {
+                            keystoreFileName = ((StringToken) Constants.get(
+                                    "PTII")).stringValue() + "/"
+                                + keystoreFileName.substring(classpathProperty
+                                    .length());
                         }
+
                         createKeystore(keystoreFileName);
                     } catch (IllegalActionException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Failed to create keystore '"
-                                + keystoreFileName + "'");
+                            "Failed to create keystore '" + keystoreFileName
+                            + "'");
                     }
+
                     try {
                         // Try again
                         keyStoreInputStream = fileOrURL.asURL().openStream();
@@ -563,6 +568,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                     }
                 }
             }
+
             if (keyStoreInputStream == null) {
                 // fileOrURL does not yet exist, so we are creating
                 // a new empty keyStore.
@@ -571,32 +577,34 @@ public class KeyStoreActor extends TypedAtomicActor {
                     alias.removeAllChoices();
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
-                            "Problem creating a new empty keyStore.");
+                        "Problem creating a new empty keyStore.");
                 }
             } else {
                 try {
                     _keyStore.load(keyStoreInputStream,
-                            _storePassword.toCharArray());
+                        _storePassword.toCharArray());
                     alias.removeAllChoices();
+
                     // Add all the aliases as possible choices.
                     for (Enumeration aliases = _keyStore.aliases();
-                         aliases.hasMoreElements() ;) {
-                        String aliasName = (String)aliases.nextElement();
+                            aliases.hasMoreElements();) {
+                        String aliasName = (String) aliases.nextElement();
                         alias.addChoice(aliasName);
                     }
+
                     keyStoreInputStream.close();
                 } catch (java.io.EOFException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Problem loading " + fileOrURLDescription()
-                            + ", perhaps the file is of length 0? "
-                            + "To create a sample file, try "
-                            + "cd $PTII; make ptKeystore");
-
+                        "Problem loading " + fileOrURLDescription()
+                        + ", perhaps the file is of length 0? "
+                        + "To create a sample file, try "
+                        + "cd $PTII; make ptKeystore");
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
-                            "Problem loading " + fileOrURLDescription());
+                        "Problem loading " + fileOrURLDescription());
                 }
             }
+
             _loadKeyStoreNeeded = false;
         }
     }
@@ -611,19 +619,23 @@ public class KeyStoreActor extends TypedAtomicActor {
         if (fileOrURL == null) {
             return "Keystore URL is null";
         }
+
         StringBuffer results = new StringBuffer("Keystore");
         String name = null;
+
         try {
             name = ": '" + fileOrURL.stringValue() + "'";
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             name = ": " + fileOrURL.toString();
         }
+
         results.append(name);
 
-
         String exists = ", which does not exist";
+
         try {
             File fileHandle = fileOrURL.asFile();
+
             if (fileHandle.exists()) {
                 if (fileHandle.canRead()) {
                     exists = ", which exists and is readable";
@@ -634,15 +646,17 @@ public class KeyStoreActor extends TypedAtomicActor {
         } catch (Exception ex) {
             // Ignore
         }
+
         results.append(exists + ", ");
 
-
         String url = " and cannot be represented as a URL";
+
         try {
             url = " as a URL is: '" + fileOrURL.asURL().toString() + "'";
         } catch (Exception ex) {
             // Ignore
         }
+
         results.append(url);
 
         return results.toString();
@@ -657,12 +671,12 @@ public class KeyStoreActor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Execute a command.
     private void _exec(String command) throws IllegalActionException {
         // FIXME: Exec, KeyStoreActor, JTextAreaExec have duplicate code
         String outputString = "";
         String errorString = "";
+
         try {
             _stopFireRequested = false;
 
@@ -675,35 +689,33 @@ public class KeyStoreActor extends TypedAtomicActor {
             }
 
             Runtime runtime = Runtime.getRuntime();
+
             // Preprocess by removing lines that begin with '#'
             // and converting substrings that begin and end
             // with double quotes into one array element.
-            final String [] commandTokens =
-                StringUtilities
-                .tokenizeForExec(command);
+            final String[] commandTokens = StringUtilities.tokenizeForExec(command);
             _process = runtime.exec(commandTokens);
 
             // Create two threads to read from the subprocess.
-            _outputGobbler =
-                new _StreamReaderThread(_process.getInputStream(),
-                        "KeyStoreActor Stdout Gobbler-"
-                        + _keystoreStreamReaderThreadCount++,
-                        this);
-            _errorGobbler =
-                new _StreamReaderThread(_process.getErrorStream(),
-                        "KeyStoreActor Stderr Gobbler-"
-                        +  _keystoreStreamReaderThreadCount++,
-                        this);
+            _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
+                    "KeyStoreActor Stdout Gobbler-"
+                    + _keystoreStreamReaderThreadCount++, this);
+            _errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
+                    "KeyStoreActor Stderr Gobbler-"
+                    + _keystoreStreamReaderThreadCount++, this);
             _errorGobbler.start();
             _outputGobbler.start();
+
             try {
                 int processReturnCode = _process.waitFor();
-                synchronized(this) {
+
+                synchronized (this) {
                     _process = null;
                 }
             } catch (InterruptedException interrupted) {
                 // Ignored
             }
+
             outputString = _outputGobbler.getAndReset();
             errorString = _errorGobbler.getAndReset();
 
@@ -713,10 +725,10 @@ public class KeyStoreActor extends TypedAtomicActor {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem setting up command '" + command + "'\n"
-                                             + outputString + "\n"
-                                             + errorString);
+                "Problem setting up command '" + command + "'\n" + outputString
+                + "\n" + errorString);
         }
+
         System.out.print(outputString);
         System.err.print(errorString);
     }
@@ -728,13 +740,12 @@ public class KeyStoreActor extends TypedAtomicActor {
             _process = null;
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // Private class that reads a stream in a thread and updates the
     // stringBuffer.
     private class _StreamReaderThread extends Thread {
-
         /** Create a _StreamReaderThread.
          *  @param inputStream The stream to read from.
          *  @param name The name of this StreamReaderThread,
@@ -742,15 +753,12 @@ public class KeyStoreActor extends TypedAtomicActor {
          *  @param actor The parent actor of this thread, which
          *  is used in error messages.
          */
-        _StreamReaderThread(InputStream inputStream, String name,
-                Nameable actor) {
+        _StreamReaderThread(InputStream inputStream, String name, Nameable actor) {
             super(name);
             _inputStream = inputStream;
-            _inputStreamReader =
-                new InputStreamReader(_inputStream);
+            _inputStreamReader = new InputStreamReader(_inputStream);
             _actor = actor;
             _stringBuffer = new StringBuffer();
-
         }
 
         /** Read any remaining data in the input stream and return the
@@ -760,10 +768,9 @@ public class KeyStoreActor extends TypedAtomicActor {
         public String getAndReset() {
             if (_debugging) {
                 try {
-                    _debug("getAndReset: Gobbler '" + getName()
-                            + "' Ready: " + _inputStreamReader.ready()
-                            + " Available: " + _inputStream.available());
-
+                    _debug("getAndReset: Gobbler '" + getName() + "' Ready: "
+                        + _inputStreamReader.ready() + " Available: "
+                        + _inputStream.available());
                 } catch (Exception ex) {
                     throw new InternalErrorException(ex);
                 }
@@ -775,19 +782,21 @@ public class KeyStoreActor extends TypedAtomicActor {
             } catch (Throwable throwable) {
                 if (_debugging) {
                     _debug("WARNING: getAndReset(): _read() threw an "
-                            + "exception, which we are ignoring.\n"
-                            + throwable.getMessage());
+                        + "exception, which we are ignoring.\n"
+                        + throwable.getMessage());
                 }
             }
 
             String results = _stringBuffer.toString();
             _stringBuffer = new StringBuffer();
+
             try {
                 _inputStreamReader.close();
             } catch (Exception ex) {
-                throw new InternalErrorException(null, ex, getName()
-                        + " failed to close.");
+                throw new InternalErrorException(null, ex,
+                    getName() + " failed to close.");
             }
+
             return results;
         }
 
@@ -803,37 +812,30 @@ public class KeyStoreActor extends TypedAtomicActor {
             // We read the data as a char[] instead of using readline()
             // so that we can get strings that do not end in end of
             // line chars.
-
-            char [] chars = new char[80];
+            char[] chars = new char[80];
             int length; // Number of characters read.
 
             try {
                 // Oddly, InputStreamReader.read() will return -1
                 // if there is no data present, but the string can still
                 // read.
-                while ((length = _inputStreamReader.read(chars, 0, 80))
-                        != -1
-                        && !_stopRequested
-                        && !_stopFireRequested
-                       ) {
+                while (((length = _inputStreamReader.read(chars, 0, 80)) != -1)
+                        && !_stopRequested && !_stopFireRequested) {
                     if (_debugging) {
                         // Note that ready might be false here since
                         // we already read the data.
-                        _debug("_read(): Gobbler '" + getName()
-                                + "' Ready: " + _inputStreamReader.ready()
-                                + " Value: '"
-                                + String.valueOf(chars, 0, length) + "'");
+                        _debug("_read(): Gobbler '" + getName() + "' Ready: "
+                            + _inputStreamReader.ready() + " Value: '"
+                            + String.valueOf(chars, 0, length) + "'");
                     }
 
                     _stringBuffer.append(chars, 0, length);
                 }
             } catch (Throwable throwable) {
                 throw new InternalErrorException(_actor, throwable,
-                        getName() + ": Failed while reading from "
-                        + _inputStream);
+                    getName() + ": Failed while reading from " + _inputStream);
             }
         }
-
 
         // The actor associated with this stream reader.
         private Nameable _actor;
@@ -846,12 +848,10 @@ public class KeyStoreActor extends TypedAtomicActor {
 
         // Stream from which to read.
         private InputStreamReader _inputStreamReader;
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // StreamReader with which we read stderr.
     private _StreamReaderThread _errorGobbler;
 
@@ -874,5 +874,4 @@ public class KeyStoreActor extends TypedAtomicActor {
 
     // The URL of the file.
     private URL _url;
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConvolutionalCoder
+
 /**
    Encode an input sequence with a convolutional code. The inputs and
    outputs are booleans. The input sequence
@@ -164,7 +165,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ViterbiDecoder
 */
 public class ConvolutionalCoder extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -175,7 +175,7 @@ public class ConvolutionalCoder extends Transformer {
      *   actor with this name.
      */
     public ConvolutionalCoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         uncodedRate = new Parameter(this, "uncodedRate");
@@ -235,35 +235,43 @@ public class ConvolutionalCoder extends Transformer {
      *  non-positive or any element of <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == uncodedRate) {
-            _inputNumber = ((IntToken)uncodedRate.getToken()).intValue();
-            if (_inputNumber < 1 ) {
+            _inputNumber = ((IntToken) uncodedRate.getToken()).intValue();
+
+            if (_inputNumber < 1) {
                 throw new IllegalActionException(this,
-                        "inputLength must be non-negative.");
+                    "inputLength must be non-negative.");
             }
+
             // Set a flag indicating the private variable
             // _inputNumber is invalid, but do not compute
             // the value until all parameters have been set.
             _inputNumberInvalid = true;
+
             // Set the input comsumption rate.
             _inputRate.setToken(new IntToken(_inputNumber));
         } else if (attribute == polynomialArray) {
-            ArrayToken maskToken = ((ArrayToken)polynomialArray.getToken());
+            ArrayToken maskToken = ((ArrayToken) polynomialArray.getToken());
             _maskNumber = maskToken.length();
             _mask = new int[_maskNumber];
             _maxPolyValue = 0;
+
             for (int i = 0; i < _maskNumber; i++) {
-                _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
+                _mask[i] = ((IntToken) maskToken.getElement(i)).intValue();
+
                 if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,
-                            "Polynomial is required to be strictly positive.");
+                        "Polynomial is required to be strictly positive.");
                 }
+
                 if (_mask[i] > _maxPolyValue) {
                     _maxPolyValue = _mask[i];
                 }
             }
+
             _inputNumberInvalid = true;
+
             // Set the output production rate.
             _outputRate.setToken(new IntToken(_maskNumber));
         } else {
@@ -278,16 +286,17 @@ public class ConvolutionalCoder extends Transformer {
      *  corresponds to the parity computed using the i-th polynomial.
      */
     public void fire() throws IllegalActionException {
-
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
-                        "Output rate should be larger than input rate.");
+                    "Output rate should be larger than input rate.");
             }
-            if ((1<< _inputNumber) > _maxPolyValue) {
+
+            if ((1 << _inputNumber) > _maxPolyValue) {
                 throw new IllegalActionException(this,
-                        "The highest order of all polynomials is too low.");
+                    "The highest order of all polynomials is too low.");
             }
+
             _inputNumberInvalid = false;
         }
 
@@ -295,13 +304,16 @@ public class ConvolutionalCoder extends Transformer {
 
         // Read from the input port and shift the bits into
         // the shift register.
-        Token[] inputToken = (Token[])input.get(0, _inputNumber);
+        Token[] inputToken = (Token[]) input.get(0, _inputNumber);
         int reg = _latestShiftReg;
+
         for (int i = 0; i < _inputNumber; i++) {
             reg = reg << 1;
-            BooleanToken input = (BooleanToken)inputToken[i];
-            reg = reg | (input.booleanValue() ? 1:0);
+
+            BooleanToken input = (BooleanToken) inputToken[i];
+            reg = reg | (input.booleanValue() ? 1 : 0);
         }
+
         _latestShiftReg = reg;
 
         // Compute the parities for all polynomials respectively.
@@ -313,13 +325,13 @@ public class ConvolutionalCoder extends Transformer {
         for (int i = 0; i < _maskNumber; i++) {
             if (parity[i] == 1) {
                 result[i] = BooleanToken.TRUE;
-            }else {
+            } else {
                 result[i] = BooleanToken.FALSE;
             }
         }
+
         output.broadcast(result, result.length);
     }
-
 
     /** Initialize the actor by resetting the shift register state
      *  equal to the value of <i>initialState</i>.
@@ -327,8 +339,8 @@ public class ConvolutionalCoder extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _latestShiftReg = _shiftReg =
-            ((IntToken)initialState.getToken()).intValue();
+        _latestShiftReg = _shiftReg = ((IntToken) initialState.getToken())
+                .intValue();
     }
 
     /** Record the most recent shift register state as the new
@@ -351,22 +363,25 @@ public class ConvolutionalCoder extends Transformer {
      */
     private int[] _calculateParity(int[] mask, int maskNumber, int reg) {
         int[] parity = new int[maskNumber];
+
         for (int i = 0; i < maskNumber; i++) {
             int masked = mask[i] & reg;
+
             // Find the parity of the "masked".
             parity[i] = 0;
+
             // Calculate the parity of the masked word.
             while (masked > 0) {
                 parity[i] = parity[i] ^ (masked & 1);
                 masked = masked >> 1;
             }
         }
+
         return parity;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Consumption rate of the input port.
     private Parameter _inputRate;
 

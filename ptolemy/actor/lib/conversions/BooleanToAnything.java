@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.BooleanToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BooleanToAnything
+
 /**
    This actor converts a boolean input token into any data type.
    A <i>true</i> at the input results in an output with value given
@@ -54,9 +55,7 @@ import ptolemy.kernel.util.Workspace;
 
    @see ptolemy.data.BooleanToken
 */
-
 public class BooleanToAnything extends Converter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,7 +65,7 @@ public class BooleanToAnything extends Converter {
      *   actor with this name.
      */
     public BooleanToAnything(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         falseValue = new Parameter(this, "falseValue", new IntToken(0));
@@ -97,10 +96,9 @@ public class BooleanToAnything extends Converter {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        BooleanToAnything newObject = (BooleanToAnything)
-            super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        BooleanToAnything newObject = (BooleanToAnything) super.clone(workspace);
+
         // Set the type constraint.
         newObject.output.setTypeAtLeast(newObject.trueValue);
         newObject.output.setTypeAtLeast(newObject.falseValue);
@@ -113,7 +111,8 @@ public class BooleanToAnything extends Converter {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        BooleanToken inputToken = (BooleanToken)input.get(0);
+        BooleanToken inputToken = (BooleanToken) input.get(0);
+
         if (inputToken.booleanValue()) {
             output.send(0, trueValue.getToken());
         } else {
@@ -129,7 +128,7 @@ public class BooleanToAnything extends Converter {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-

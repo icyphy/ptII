@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data;
 
 import java.text.DecimalFormat;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TokenUtilities
+
 /**
    Various methods and fields that are used from within the various token
    classes.  This code is factored out here into a separate class to allow
@@ -44,10 +45,8 @@ import java.text.DecimalFormat;
    @Pt.AcceptedRating Green (cxh)
 */
 public class TokenUtilities {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
     // Note that these fields are public, since they are sometimes
     // useful to have in other places, like the code generator.
 
@@ -56,8 +55,8 @@ public class TokenUtilities {
      *  digits here is determined by the place at which common
      *  numbers, such as one half, will get rounded to display nicely.
      */
-    public static final DecimalFormat regularFormat =
-    new DecimalFormat("####0.0############");
+    public static final DecimalFormat regularFormat = new DecimalFormat(
+            "####0.0############");
 
     // Note: This used to be new DecimalFormat("0.0############E0##"),
     // but compiling with gcj resulted in the following error:
@@ -69,6 +68,6 @@ public class TokenUtilities {
     /** The format that is used to print floating point numbers that
      *  are very large, or very small.
      */
-    public static final DecimalFormat exponentialFormat =
-    new DecimalFormat("0.0############E0");
+    public static final DecimalFormat exponentialFormat = new DecimalFormat(
+            "0.0############E0");
 }

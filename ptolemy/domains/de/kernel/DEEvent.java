@@ -25,13 +25,13 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.NamedObj;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DEEvent
@@ -75,7 +75,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public final class DEEvent implements Comparable {
-
     /** Construct a pure event with the specified destination actor,
      *  timestamp, microstep, and depth.
      *  @param actor The destination actor
@@ -99,7 +98,7 @@ public final class DEEvent implements Comparable {
      *  @param depth The topological depth of the destination IO Port.
      */
     public DEEvent(IOPort ioPort, Time timeStamp, int microstep, int depth) {
-        _actor = (Actor)ioPort.getContainer();
+        _actor = (Actor) ioPort.getContainer();
         _ioPort = ioPort;
         _timestamp = timeStamp;
         _microstep = microstep;
@@ -124,7 +123,7 @@ public final class DEEvent implements Comparable {
      *  of DEEvent.
      */
     public final int compareTo(Object event) {
-        return compareTo((DEEvent)event);
+        return compareTo((DEEvent) event);
     }
 
     /** Compare the tag and depth of this event with those of the argument
@@ -143,18 +142,17 @@ public final class DEEvent implements Comparable {
      *  @return -1, 0, or 1, depends on the order of the events.
      */
     public final int compareTo(DEEvent event) {
-
-        if (timeStamp().compareTo(event.timeStamp()) > 0 ) {
+        if (timeStamp().compareTo(event.timeStamp()) > 0) {
             return 1;
-        } else if ( timeStamp().compareTo(event.timeStamp()) < 0) {
+        } else if (timeStamp().compareTo(event.timeStamp()) < 0) {
             return -1;
         } else if (microstep() > event.microstep()) {
             return 1;
-        } else if ( microstep() < event.microstep()) {
+        } else if (microstep() < event.microstep()) {
             return -1;
         } else if (depth() > event.depth()) {
             return 1;
-        } else if ( depth() < event.depth()) {
+        } else if (depth() < event.depth()) {
             return -1;
         } else {
             return 0;
@@ -185,8 +183,8 @@ public final class DEEvent implements Comparable {
      *  @return True if this event has the same tag as the specified one.
      */
     public final boolean hasTheSameTagAs(DEEvent event) {
-        return (timeStamp().equals(event.timeStamp())) &&
-            (microstep() == event.microstep());
+        return (timeStamp().equals(event.timeStamp()))
+        && (microstep() == event.microstep());
     }
 
     /** Return the destination IO port of this event. Note that
@@ -217,22 +215,20 @@ public final class DEEvent implements Comparable {
      */
     public String toString() {
         if (_ioPort != null) {
-            return "DEEvent(time = " + _timestamp
-                + ", microstep = " + _microstep
-                + ", depth = " + _depth
-                + ", dest = " + ((NamedObj)_actor).getFullName() + "."
-                + _ioPort.getName() + ").";
+            return "DEEvent(time = " + _timestamp + ", microstep = "
+            + _microstep + ", depth = " + _depth + ", dest = "
+            + ((NamedObj) _actor).getFullName() + "." + _ioPort.getName()
+            + ").";
         } else {
-            return "DEEvent(time = " + _timestamp
-                + ", microstep = " + _microstep
-                + ", depth = " + _depth
-                + ", dest = " + ((NamedObj)_actor).getFullName() + ")"
-                + " -- A PURE EVENT.";
+            return "DEEvent(time = " + _timestamp + ", microstep = "
+            + _microstep + ", depth = " + _depth + ", dest = "
+            + ((NamedObj) _actor).getFullName() + ")" + " -- A PURE EVENT.";
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
     /** Update the depth of this event if the new depth is no less than
      *  0. Otherwise, do nothing.
      *  @param newDepth The new depth for this event.
@@ -245,7 +241,6 @@ public final class DEEvent implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The destination actor.
     private Actor _actor;
 

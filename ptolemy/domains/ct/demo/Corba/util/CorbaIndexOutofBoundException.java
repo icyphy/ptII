@@ -7,18 +7,15 @@ package ptolemy.domains.ct.demo.Corba.util;
  * from CorbaActor.idl
  * Thursday, January 18, 2001 5:51:19 PM PST
  */
+public final class CorbaIndexOutofBoundException
+    extends org.omg.CORBA.UserException
+    implements org.omg.CORBA.portable.IDLEntity {
+    public short index = (short) 0;
 
-public final class CorbaIndexOutofBoundException extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity
-{
-    public short index = (short)0;
-
-    public CorbaIndexOutofBoundException ()
-    {
+    public CorbaIndexOutofBoundException() {
     } // ctor
 
-    public CorbaIndexOutofBoundException (short _index)
-    {
+    public CorbaIndexOutofBoundException(short _index) {
         index = _index;
     } // ctor
-
 } // class CorbaIndexOutofBoundException

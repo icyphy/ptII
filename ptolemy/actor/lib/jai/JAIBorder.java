@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -51,6 +50,7 @@ import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIBorder
+
 /**
    Adds a border to an image.  The amount to pad must be specified for all
    four sides.  There are five different borders to choose from.
@@ -76,9 +76,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIBorder extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -88,7 +86,7 @@ public class JAIBorder extends Transformer {
      *   actor with this name.
      */
     public JAIBorder(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         leftPadding = new Parameter(this, "leftPadding", new IntToken(0));
@@ -100,8 +98,8 @@ public class JAIBorder extends Transformer {
         borderType.setExpression("Zero");
         _borderType = _BORDER_ZERO;
 
-        constants =
-            new Parameter(this, "constants", new ArrayToken(_initialArray));
+        constants = new Parameter(this, "constants",
+                new ArrayToken(_initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,7 +131,6 @@ public class JAIBorder extends Transformer {
      */
     public Parameter topPadding;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -143,9 +140,10 @@ public class JAIBorder extends Transformer {
      *  or if a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == borderType) {
             String name = borderType.getExpression();
+
             if (name.equals("Constant")) {
                 _borderType = _BORDER_CONSTANT;
             } else if (name.equals("Copy")) {
@@ -158,21 +156,22 @@ public class JAIBorder extends Transformer {
                 _borderType = _BORDER_ZERO;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized Border Name: " + name);
+                    "Unrecognized Border Name: " + name);
             }
         } else if (attribute == leftPadding) {
-            _leftPadding = ((IntToken)leftPadding.getToken()).intValue();
+            _leftPadding = ((IntToken) leftPadding.getToken()).intValue();
         } else if (attribute == rightPadding) {
-            _rightPadding = ((IntToken)rightPadding.getToken()).intValue();
+            _rightPadding = ((IntToken) rightPadding.getToken()).intValue();
         } else if (attribute == topPadding) {
-            _topPadding = ((IntToken)topPadding.getToken()).intValue();
+            _topPadding = ((IntToken) topPadding.getToken()).intValue();
         } else if (attribute == bottomPadding) {
-            _bottomPadding = ((IntToken)bottomPadding.getToken()).intValue();
+            _bottomPadding = ((IntToken) bottomPadding.getToken()).intValue();
         } else if (attribute == constants) {
-            Token data[] = ((ArrayToken)constants.getToken()).arrayValue();
+            Token[] data = ((ArrayToken) constants.getToken()).arrayValue();
             _constantValues = new double[data.length];
+
             for (int i = 0; i < data.length; i++) {
-                _constantValues[i] = ((DoubleToken)(data[i])).doubleValue();
+                _constantValues[i] = ((DoubleToken) (data[i])).doubleValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -185,6 +184,7 @@ public class JAIBorder extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
@@ -195,26 +195,31 @@ public class JAIBorder extends Transformer {
         parameters.add(_topPadding);
         parameters.add(_bottomPadding);
 
-        switch(_borderType) {
+        switch (_borderType) {
         case _BORDER_CONSTANT:
             parameters.add(new BorderExtenderConstant(_constantValues));
             break;
+
         case _BORDER_COPY:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_COPY));
+                    BorderExtender.BORDER_COPY));
             break;
+
         case _BORDER_REFLECT:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_REFLECT));
+                    BorderExtender.BORDER_REFLECT));
             break;
+
         case _BORDER_WRAP:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_WRAP));
+                    BorderExtender.BORDER_WRAP));
             break;
+
         case _BORDER_ZERO:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_ZERO));
+                    BorderExtender.BORDER_ZERO));
             break;
+
         default:
             throw new IllegalActionException("Could not assign border");
         }
@@ -227,13 +232,13 @@ public class JAIBorder extends Transformer {
     ////                         private variables                 ////
 
     /** The constant values to use if a constant border is desired. */
-    private double _constantValues[];
+    private double[] _constantValues;
 
     /** The type of border to use. */
     private int _borderType;
 
     /** An initial array that simply copies a three banded image. */
-    private DoubleToken _initialArray[] = {new DoubleToken(0)};
+    private DoubleToken[] _initialArray = { new DoubleToken(0) };
 
     /** The amount to pad on the four sides. */
     private int _bottomPadding;

@@ -26,9 +26,7 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.lib.string;
-
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -43,8 +41,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringIndexOf
+
 /**
    Output the index of a <i>searchFor</i> string contained in a given
    <i>inText</i>.  The search begins at the index given by
@@ -60,9 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (pjb2e)
    @Pt.AcceptedRating Green (eal)
 */
-
 public class StringIndexOf extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,20 +70,18 @@ public class StringIndexOf extends TypedAtomicActor {
      *   actor with this name.
      */
     public StringIndexOf(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         searchFor = new PortParameter(this, "searchFor");
         searchFor.setStringMode(true);
         searchFor.setExpression("");
-        (new SingletonParameter(searchFor.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(searchFor.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         inText = new PortParameter(this, "inText");
         inText.setStringMode(true);
         inText.setExpression("");
-        (new SingletonParameter(inText.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(inText.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         ignoreCase = new Parameter(this, "ignoreCase");
         ignoreCase.setTypeEquals(BaseType.BOOLEAN);
@@ -94,8 +90,7 @@ public class StringIndexOf extends TypedAtomicActor {
         startIndex = new PortParameter(this, "startIndex");
         startIndex.setTypeEquals(BaseType.INT);
         startIndex.setExpression("0");
-        (new SingletonParameter(startIndex.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(startIndex.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         // Create new parameters and ports, then set default values and/or
         // types of parameters and ports.
@@ -156,12 +151,12 @@ public class StringIndexOf extends TypedAtomicActor {
         inText.update();
         startIndex.update();
 
-        String searchForString
-            = ((StringToken)searchFor.getToken()).stringValue();
-        String inTextString = ((StringToken)inText.getToken()).stringValue();
-        int startIndexValue = ((IntToken)startIndex.getToken()).intValue();
-        boolean forwards
-            = ((BooleanToken)searchForwards.getToken()).booleanValue();
+        String searchForString = ((StringToken) searchFor.getToken())
+            .stringValue();
+        String inTextString = ((StringToken) inText.getToken()).stringValue();
+        int startIndexValue = ((IntToken) startIndex.getToken()).intValue();
+        boolean forwards = ((BooleanToken) searchForwards.getToken())
+            .booleanValue();
 
         if (((BooleanToken) ignoreCase.getToken()).booleanValue()) {
             searchForString = searchForString.toLowerCase();
@@ -169,13 +164,14 @@ public class StringIndexOf extends TypedAtomicActor {
         }
 
         int returnValue;
+
         if (forwards) {
-            returnValue
-                = inTextString.indexOf(searchForString, startIndexValue);
+            returnValue = inTextString.indexOf(searchForString, startIndexValue);
         } else {
-            returnValue
-                = inTextString.lastIndexOf(searchForString, startIndexValue);
+            returnValue = inTextString.lastIndexOf(searchForString,
+                    startIndexValue);
         }
+
         output.send(0, new IntToken(returnValue));
     }
 }

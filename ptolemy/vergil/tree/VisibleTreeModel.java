@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.tree;
 
 import java.util.Collections;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.icon.EditorIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VisibleTreeModel
+
 /**
 
 A tree model for the Vergil library panel.  This is a tree model that
@@ -64,7 +65,6 @@ This is designed for use with JTree, which renders the hierarchy.
 @Pt.AcceptedRating Red (johnr)
 */
 public class VisibleTreeModel extends FullTreeModel {
-
     /** Create a new tree model with the specified root.
      *  @param root The root of the tree.
      */
@@ -85,14 +85,17 @@ public class VisibleTreeModel extends FullTreeModel {
     public boolean isLeaf(Object object) {
         // NOTE: handle EntityLibrary specially to prevent evaluation
         // of the library prematurely.
-        if (object instanceof EntityLibrary) return false;
+        if (object instanceof EntityLibrary) {
+            return false;
+        }
 
         // If the object is an instance of CompositeEntity, but does not
         // contain an attribute named "_libraryMarker", then treat it as an
         // atomic entity.
         if (object instanceof CompositeEntity) {
-            Attribute marker = ((CompositeEntity)object).getAttribute(
+            Attribute marker = ((CompositeEntity) object).getAttribute(
                     "_libraryMarker");
+
             if (marker == null) {
                 return true;
             }
@@ -117,19 +120,27 @@ public class VisibleTreeModel extends FullTreeModel {
 
         // Use the cached list, if possible.
         long version = _workspace.getVersion();
+
         if (version == _workspaceAttributeVersion) {
             Object result = _attributeListCache.get(object);
-            if (result != null) return (List)result;
+
+            if (result != null) {
+                return (List) result;
+            }
         }
+
         // Cache is not valid.
         List result = new LinkedList();
-        Iterator attributes = ((NamedObj)object).attributeList().iterator();
+        Iterator attributes = ((NamedObj) object).attributeList().iterator();
+
         while (attributes.hasNext()) {
-            NamedObj attribute = (NamedObj)attributes.next();
+            NamedObj attribute = (NamedObj) attributes.next();
+
             if (_isVisible(attribute)) {
                 result.add(attribute);
             }
         }
+
         _attributeListCache.put(object, result);
         _workspaceAttributeVersion = _workspace.getVersion();
         return result;
@@ -143,9 +154,10 @@ public class VisibleTreeModel extends FullTreeModel {
      */
     protected boolean _isVisible(NamedObj object) {
         List iconList = object.attributeList(EditorIcon.class);
-        if (iconList.size() > 0
-                || object.getAttribute("_iconDescription") != null
-                || object.getAttribute("_smallIconDescription")!= null) {
+
+        if ((iconList.size() > 0)
+                || (object.getAttribute("_iconDescription") != null)
+                || (object.getAttribute("_smallIconDescription") != null)) {
             return true;
         } else {
             return false;
@@ -164,19 +176,27 @@ public class VisibleTreeModel extends FullTreeModel {
 
         // Use the cached list, if possible.
         long version = _workspace.getVersion();
+
         if (version == _workspacePortVersion) {
             Object result = _portListCache.get(object);
-            if (result != null) return (List)result;
+
+            if (result != null) {
+                return (List) result;
+            }
         }
+
         // Cache is not valid.
         List result = new LinkedList();
-        Iterator ports = ((Entity)object).portList().iterator();
+        Iterator ports = ((Entity) object).portList().iterator();
+
         while (ports.hasNext()) {
-            NamedObj port = (NamedObj)ports.next();
+            NamedObj port = (NamedObj) ports.next();
+
             if (_isVisible(port)) {
                 result.add(port);
             }
         }
+
         _portListCache.put(object, result);
         _workspacePortVersion = _workspace.getVersion();
         return result;
@@ -194,20 +214,27 @@ public class VisibleTreeModel extends FullTreeModel {
 
         // Use the cached list, if possible.
         long version = _workspace.getVersion();
+
         if (version == _workspaceRelationVersion) {
             Object result = _relationListCache.get(object);
-            if (result != null) return (List)result;
+
+            if (result != null) {
+                return (List) result;
+            }
         }
+
         // Cache is not valid.
         List result = new LinkedList();
-        Iterator relations
-            = ((CompositeEntity)object).relationList().iterator();
+        Iterator relations = ((CompositeEntity) object).relationList().iterator();
+
         while (relations.hasNext()) {
-            NamedObj relation = (NamedObj)relations.next();
+            NamedObj relation = (NamedObj) relations.next();
+
             if (_isVisible(relation)) {
                 result.add(relation);
             }
         }
+
         _relationListCache.put(object, result);
         _workspaceRelationVersion = _workspace.getVersion();
         return result;
@@ -215,7 +242,6 @@ public class VisibleTreeModel extends FullTreeModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Workspace and version information.
     private Workspace _workspace;
     private long _workspaceAttributeVersion;

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -44,8 +43,10 @@ import ptolemy.math.Precision;
 import ptolemy.math.Quantization;
 import ptolemy.math.Rounding;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FixToken
+
 /**
    A token that contains an instance of FixPoint.
 
@@ -60,9 +61,7 @@ import ptolemy.math.Rounding;
    @Pt.ProposedRating Yellow (kienhuis)
    @Pt.AcceptedRating Yellow (kienhuis)
 */
-
 public class FixToken extends ScalarToken {
-
     /** Construct a FixToken with the supplied FixPoint value.
      *  @param value A FixPoint value.
      */
@@ -85,7 +84,7 @@ public class FixToken extends ScalarToken {
      *   is invalid.
      */
     public FixToken(double value, Precision precision)
-            throws IllegalArgumentException {
+        throws IllegalArgumentException {
         try {
             FixPointQuantization q = new FixPointQuantization(precision,
                     Overflow.SATURATE, Rounding.NEAREST);
@@ -106,7 +105,7 @@ public class FixToken extends ScalarToken {
      *   is invalid.
      */
     public FixToken(double value, int numberOfBits, int integerBits)
-            throws IllegalArgumentException {
+        throws IllegalArgumentException {
         try {
             Precision precision = new Precision(numberOfBits, integerBits);
             FixPointQuantization q = new FixPointQuantization(precision,
@@ -127,11 +126,12 @@ public class FixToken extends ScalarToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+
         if (token instanceof FixToken) {
-            _value = ((FixToken)token).fixValue();
+            _value = ((FixToken) token).fixValue();
         } else {
             throw new IllegalActionException("A FixToken cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -152,21 +152,20 @@ public class FixToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *  cannot be carried out.
      */
-    public static FixToken convert(Token token)
-            throws IllegalActionException {
+    public static FixToken convert(Token token) throws IllegalActionException {
         if (token instanceof FixToken) {
-            return (FixToken)token;
+            return (FixToken) token;
         }
 
         int compare = TypeLattice.compare(BaseType.FIX, token);
-        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(
-                            token, "fix"));
+
+        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
+                    token, "fix"));
         }
 
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "fix"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "fix"));
     }
 
     /** Return the fixed point value of this token as a double. The
@@ -191,7 +190,7 @@ public class FixToken extends ScalarToken {
             return false;
         }
 
-        if (((FixToken)object).fixValue().equals(_value)) {
+        if (((FixToken) object).fixValue().equals(_value)) {
             return true;
         }
 
@@ -225,7 +224,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken with value 1.0.
      */
     public Token one() {
-        return new FixToken( 1.0, _value.getPrecision() );
+        return new FixToken(1.0, _value.getPrecision());
     }
 
     /** Print the content of this FixToken: This is used for debugging
@@ -259,9 +258,8 @@ public class FixToken extends ScalarToken {
      */
     public String toString() {
         Precision precision = _value.getPrecision();
-        return "fix(" + _value.toString() +
-            "," + precision.getNumberOfBits() +
-            "," + precision.getIntegerBitLength() + ")";
+        return "fix(" + _value.toString() + "," + precision.getNumberOfBits()
+        + "," + precision.getIntegerBitLength() + ")";
     }
 
     /** Return a new token representing the additive identity with
@@ -269,7 +267,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken with value 0.0.
      */
     public Token zero() {
-        return new FixToken( 0.0, _value.getPrecision() );
+        return new FixToken(0.0, _value.getPrecision());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -294,7 +292,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken containing the result.
      */
     protected ScalarToken _add(ScalarToken rightArgument) {
-        FixPoint result = _value.add(((FixToken)rightArgument).fixValue());
+        FixPoint result = _value.add(((FixToken) rightArgument).fixValue());
         return new FixToken(result);
     }
 
@@ -306,9 +304,9 @@ public class FixToken extends ScalarToken {
      *  sense for this type.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("bitwiseAnd", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
+                this, rightArgument));
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -317,10 +315,9 @@ public class FixToken extends ScalarToken {
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
-    protected ScalarToken _bitwiseNot()
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("bitwiseNot", this, this));
+    protected ScalarToken _bitwiseNot() throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseNot",
+                this, this));
     }
 
     /** Returns a token representing the bitwise OR of this token and
@@ -331,9 +328,9 @@ public class FixToken extends ScalarToken {
      *  sense for this type.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("bitwiseOr", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
+                rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -344,9 +341,9 @@ public class FixToken extends ScalarToken {
      *  sense for this type.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("bitwiseXor", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseXor",
+                this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -356,7 +353,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken containing the result.
      */
     protected ScalarToken _divide(ScalarToken rightArgument) {
-        FixPoint result = _value.divide(((FixToken)rightArgument).fixValue());
+        FixPoint result = _value.divide(((FixToken) rightArgument).fixValue());
         return new FixToken(result);
     }
 
@@ -367,10 +364,9 @@ public class FixToken extends ScalarToken {
      *  @param quant The quantization specification.
      *  @return A new FixToken containing the result.
      */
-    protected ScalarToken _divide(ScalarToken rightArgument,
-            Quantization quant) {
-        FixPoint result =
-            _value.divide(((FixToken)rightArgument).fixValue(), quant);
+    protected ScalarToken _divide(ScalarToken rightArgument, Quantization quant) {
+        FixPoint result = _value.divide(((FixToken) rightArgument).fixValue(),
+                quant);
         return new FixToken(result);
     }
 
@@ -386,11 +382,11 @@ public class FixToken extends ScalarToken {
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
-    protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon) {
-        double right = ((FixToken)rightArgument).convertToDouble();
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+        double right = ((FixToken) rightArgument).convertToDouble();
         double left = convertToDouble();
-        if (right > left + epsilon || right < left - epsilon) {
+
+        if ((right > (left + epsilon)) || (right < (left - epsilon))) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;
@@ -405,11 +401,10 @@ public class FixToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-            throws IllegalActionException {
-        FixToken convertedArgument = (FixToken)rightArgument;
-        return BooleanToken.getInstance(
-                _value.doubleValue() <
-                convertedArgument.fixValue().doubleValue());
+        throws IllegalActionException {
+        FixToken convertedArgument = (FixToken) rightArgument;
+        return BooleanToken.getInstance(_value.doubleValue() < convertedArgument.fixValue()
+                                                                                .doubleValue());
     }
 
     /** Return a new token whose value is the value of this token
@@ -422,9 +417,9 @@ public class FixToken extends ScalarToken {
      *  as this token.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("modulo", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("modulo", this,
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -434,8 +429,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken containing the result.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        FixPoint result =
-            _value.multiply(((FixToken)rightArgument).fixValue());
+        FixPoint result = _value.multiply(((FixToken) rightArgument).fixValue());
         return new FixToken(result);
     }
 
@@ -456,8 +450,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        FixPoint result =
-            _value.subtract(((FixToken)rightArgument).fixValue());
+        FixPoint result = _value.subtract(((FixToken) rightArgument).fixValue());
         return new FixToken(result);
     }
 

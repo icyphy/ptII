@@ -25,6 +25,7 @@
 */
 package diva.util;
 
+
 /**
  * An interface for objects that filter other objects
  *
@@ -35,7 +36,5 @@ public interface Filter {
     /** Test if an object passes the filter, returning true
      * if it does and false if it does not.
      */
-    public boolean accept (Object o);
+    public boolean accept(Object o);
 }
-
-

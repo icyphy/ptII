@@ -27,11 +27,9 @@ COPYRIGHTENDKEY
 
 */
 
-
-
-
 //////////////////////////////////////////////////////////////////////////
 //// Turtle
+
 /**
 
 A simple class for testing bitwise rightshift operators.
@@ -43,9 +41,7 @@ A simple class for testing bitwise rightshift operators.
 @Pt.AcceptedRating Red (ssb)
 
 */
-
 public class RightShift {
-
     public static void main(String[] args) {
         int number = 100;
         int shiftIndex = 3;
@@ -66,7 +62,5 @@ public class RightShift {
         System.out.println(shortNumber >>> shiftIndex);
         System.out.println(-shortNumber >> shiftIndex);
         System.out.println(-shortNumber >>> shiftIndex);
-
-
     }
 }

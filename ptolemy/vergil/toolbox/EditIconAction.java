@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.event.ActionEvent;
@@ -39,8 +38,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConfigureAction
+
 /** Action to edit a custom icon.
    @author Edward A. Lee
    @version $Id$
@@ -49,9 +50,9 @@ import ptolemy.vergil.icon.XMLIcon;
    @Pt.AcceptedRating Red (johnr)
  */
 public class EditIconAction extends FigureAction {
-
     public EditIconAction() {
         super("Edit Custom Icon");
+
         // For some inexplicable reason, the I key doesn't work here.
         // putValue(GUIUtilities.ACCELERATOR_KEY,
         //       KeyStroke.getKeyStroke(KeyEvent.VK_I, Event.CTRL_MASK));
@@ -65,13 +66,13 @@ public class EditIconAction extends FigureAction {
      */
     public void actionPerformed(ActionEvent e) {
         if (_configuration == null) {
-            MessageHandler.error(
-                    "Cannot edit icon without a configuration.");
+            MessageHandler.error("Cannot edit icon without a configuration.");
             return;
         }
 
         // Determine which entity was selected for the action.
         super.actionPerformed(e);
+
         final NamedObj object = getTarget();
 
         // Do this as a change request since it may add a new icon.
@@ -79,10 +80,12 @@ public class EditIconAction extends FigureAction {
                 protected void _execute() throws Exception {
                     EditorIcon icon = null;
                     List iconList = object.attributeList(EditorIcon.class);
+
                     if (iconList.size() > 0) {
                         // Get the last icon.
-                        icon = (EditorIcon)iconList.get(iconList.size() - 1);
+                        icon = (EditorIcon) iconList.get(iconList.size() - 1);
                     }
+
                     if (icon == null) {
                         icon = new EditorIcon(object, "_icon");
                     } else if (icon instanceof XMLIcon) {
@@ -98,20 +101,22 @@ public class EditIconAction extends FigureAction {
                         // They may not have a custom icon, but rather have
                         // an instance of XMLIcon.  We have to remove that
                         // first.
-                        Iterator derivedObjects
-                                = object.getDerivedList().iterator();
+                        Iterator derivedObjects = object.getDerivedList()
+                                                        .iterator();
+
                         while (derivedObjects.hasNext()) {
-                            NamedObj derived = (NamedObj)derivedObjects.next();
+                            NamedObj derived = (NamedObj) derivedObjects.next();
 
                             // See whether it has an icon.
                             EditorIcon derivedIcon = null;
-                            List derivedIconList
-                                    = derived.attributeList(EditorIcon.class);
+                            List derivedIconList = derived.attributeList(EditorIcon.class);
+
                             if (derivedIconList.size() > 0) {
                                 // Get the last icon.
-                                derivedIcon = (EditorIcon)derivedIconList.get(
-                                        derivedIconList.size() - 1);
+                                derivedIcon = (EditorIcon) derivedIconList.get(derivedIconList
+                                        .size() - 1);
                             }
+
                             if (derivedIcon instanceof XMLIcon) {
                                 // There is an icon currently that is not custom.
                                 // Without trashing the _iconDescription, we can remove
@@ -119,12 +124,15 @@ public class EditIconAction extends FigureAction {
                                 derivedIcon.setContainer(null);
                             }
                         }
+
                         // Now it is safe to propagate.
                         icon.propagateExistence();
                     }
+
                     _configuration.openModel(icon);
                 }
             };
+
         object.requestChange(request);
     }
 
@@ -137,7 +145,6 @@ public class EditIconAction extends FigureAction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The configuration.
     private Configuration _configuration;
 }

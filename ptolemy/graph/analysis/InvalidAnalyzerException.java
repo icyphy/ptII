@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// InvalidAnalyzerException
+
 /**
    Invalid analyzer plugged into an analysis.
    Signals an invalid analyzer plugged into an analysis.
@@ -38,10 +39,10 @@ package ptolemy.graph.analysis;
    @version $Id$
 */
 public class InvalidAnalyzerException extends AnalysisException {
-
     /** The default constructor without arguments.
      */
-    public InvalidAnalyzerException() {}
+    public InvalidAnalyzerException() {
+    }
 
     /** Constructor with a text description as argument.
      *
@@ -51,4 +52,3 @@ public class InvalidAnalyzerException extends AnalysisException {
         super(message);
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Color;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FilledShapeAttribute
+
 /**
    This is an abstract attribute that is rendered as a filled shape.
    Concrete subclasses produce particular shapes, such as rectangles
@@ -59,7 +60,6 @@ import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
    @Pt.AcceptedRating Red (cxh)
 */
 public abstract class FilledShapeAttribute extends ShapeAttribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -74,7 +74,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *   an attribute already in the container.
      */
     public FilledShapeAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         width = new Parameter(this, "width");
@@ -132,8 +132,9 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if ((attribute == width || attribute == height) && !_inAttributeChanged) {
+        throws IllegalActionException {
+        if (((attribute == width) || (attribute == height))
+                && !_inAttributeChanged) {
             try {
                 // Prevent redundant actions here... When we evaluate the
                 // _other_ atribute here (whichever one did _not_ trigger
@@ -141,10 +142,14 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
                 // attributeChanged(), which will result in this action
                 // being performed twice.
                 _inAttributeChanged = true;
-                double widthValue = ((DoubleToken) width.getToken()).doubleValue();
-                double heightValue =
-                    ((DoubleToken) height.getToken()).doubleValue();
-                if (widthValue != _widthValue || heightValue != _heightValue) {
+
+                double widthValue = ((DoubleToken) width.getToken())
+                    .doubleValue();
+                double heightValue = ((DoubleToken) height.getToken())
+                    .doubleValue();
+
+                if ((widthValue != _widthValue)
+                        || (heightValue != _heightValue)) {
                     _widthValue = widthValue;
                     _heightValue = heightValue;
                     _icon.setShape(_newShape());
@@ -153,14 +158,16 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
                 _inAttributeChanged = false;
             }
         } else if (attribute == centered) {
-            boolean centeredValue
-                = ((BooleanToken)centered.getToken()).booleanValue();
+            boolean centeredValue = ((BooleanToken) centered.getToken())
+                .booleanValue();
+
             if (centeredValue != _centeredValue) {
                 _centeredValue = centeredValue;
                 _icon.setCentered(_centeredValue);
             }
         } else if (attribute == fillColor) {
             Color fillColorValue = fillColor.asColor();
+
             if (fillColorValue.getAlpha() == 0f) {
                 _icon.setFillColor(null);
             } else {
@@ -179,10 +186,8 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        FilledShapeAttribute newObject
-            = (FilledShapeAttribute)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FilledShapeAttribute newObject = (FilledShapeAttribute) super.clone(workspace);
         newObject._inAttributeChanged = false;
         return newObject;
     }

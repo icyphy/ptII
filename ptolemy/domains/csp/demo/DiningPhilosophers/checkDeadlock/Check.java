@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock;
 
 import java.net.URL;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Check
+
 /**
    Check the dining philosopher model.
    Construct the interface automata model for the dining philosopher demo
@@ -69,8 +70,8 @@ public class Check {
      *  @param numberOfPhilosophers The number of philosophers.
      *  @exception Exception If the automata cannot be loaded.
      */
-    public Check(int numberOfPhilosophers, boolean useSimple )
-            throws Exception {
+    public Check(int numberOfPhilosophers, boolean useSimple)
+        throws Exception {
         _numberOfPhilosophers = numberOfPhilosophers;
         _useSimple = useSimple;
 
@@ -86,35 +87,34 @@ public class Check {
         // called.
         URL url = MoMLApplication.specToURL(base + "CSPReceiver.xml");
         MoMLParser parser = new MoMLParser();
-        _receiver = (InterfaceAutomaton)parser.parse(url, url);
+        _receiver = (InterfaceAutomaton) parser.parse(url, url);
 
         if (useSimple) {
             url = MoMLApplication.specToURL(base + "SimpleSend.xml");
             parser = new MoMLParser();
-            _simpleSend = (InterfaceAutomaton)parser.parse(url, url);
+            _simpleSend = (InterfaceAutomaton) parser.parse(url, url);
         } else {
             url = MoMLApplication.specToURL(base + "ConditionalSend.xml");
             parser = new MoMLParser();
-            _send = (InterfaceAutomaton)parser.parse(url, url);
+            _send = (InterfaceAutomaton) parser.parse(url, url);
 
             url = MoMLApplication.specToURL(base
                     + "ConditionalBranchController.xml");
             parser = new MoMLParser();
-            _controller = (InterfaceAutomaton)parser.parse(url, url);
+            _controller = (InterfaceAutomaton) parser.parse(url, url);
         }
 
         url = MoMLApplication.specToURL(base + "Philosopher.xml");
         parser = new MoMLParser();
-        _philosopher = (InterfaceAutomaton)parser.parse(url, url);
+        _philosopher = (InterfaceAutomaton) parser.parse(url, url);
 
         url = MoMLApplication.specToURL(base + "Chopstick.xml");
         parser = new MoMLParser();
-        _chopstick = (InterfaceAutomaton)parser.parse(url, url);
+        _chopstick = (InterfaceAutomaton) parser.parse(url, url);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -137,9 +137,9 @@ public class Check {
         // of all the instances correct. If cloning the philosopher/chopstick
         // pairs from one instance, the state names in all the clones will
         // be the same as that in the master instance.
-        InterfaceAutomaton[] phiCho =
-            new InterfaceAutomaton[_numberOfPhilosophers];
-        for (int i=0; i<_numberOfPhilosophers; i++) {
+        InterfaceAutomaton[] phiCho = new InterfaceAutomaton[_numberOfPhilosophers];
+
+        for (int i = 0; i < _numberOfPhilosophers; i++) {
             InterfaceAutomaton phiAndReceiver = _composePhiAndReceiver(i);
             phiAndReceiver.combineInternalTransitions();
 
@@ -157,28 +157,27 @@ public class Check {
 
             System.out.println(i + "th philosopher/chopstick pair:");
             System.out.println(phiCho[i].getInfo());
-
         }
 
         // compose all philosopher/chopstick pairs.
         InterfaceAutomaton all = phiCho[0];
-        for (int i=1; i<_numberOfPhilosophers; i++) {
+
+        for (int i = 1; i < _numberOfPhilosophers; i++) {
             all = all.compose(phiCho[i]);
             all.combineInternalTransitions();
 
-            System.out.println("0 to " + i
-                    + "th philosopher/chopstick pairs:");
+            System.out.println("0 to " + i + "th philosopher/chopstick pairs:");
             System.out.println(all.getInfo());
-
         }
 
         // System.out.println(all.exportMoML());
-
         // check for deadlock
         System.out.println("Deadlock States:");
+
         Iterator deadlockStates = all.deadlockStates().iterator();
+
         while (deadlockStates.hasNext()) {
-            State state = (State)deadlockStates.next();
+            State state = (State) deadlockStates.next();
             System.out.println(state.getFullName());
         }
     }
@@ -189,41 +188,39 @@ public class Check {
      *   if the simple or the full version of conditional send model is
      *   used. The second argument is optional, the default is simple.
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         try {
             int number = (Integer.valueOf(args[0])).intValue();
             boolean useSimple = true;
+
             if (args.length > 1) {
                 if (args[1].equals("full")) {
                     useSimple = false;
                 }
             }
+
             Check check = new Check(number, useSimple);
             check.go();
         } catch (Exception ex) {
-            System.out.println(ex.getClass().getName() + ": "
-                    + ex.getMessage());
+            System.out.println(ex.getClass().getName() + ": " + ex.getMessage());
             ex.printStackTrace();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // compose a chopstick and its left and right receivers, conditional
     // send, and the controller. The argument specifies the index of this
     // chopstick.
     private InterfaceAutomaton _composeChoAndReceiver(int index)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             // general a chopstick with the correct name
-            InterfaceAutomaton cho = (InterfaceAutomaton)_chopstick.clone();
+            InterfaceAutomaton cho = (InterfaceAutomaton) _chopstick.clone();
             cho.setName("c" + index);
 
             HashMap nameMap = new HashMap();
@@ -240,8 +237,8 @@ public class Check {
             cho.renameTransitionLabels(nameMap);
 
             // create left receiver
-            InterfaceAutomaton leftReceiver =
-                (InterfaceAutomaton)_receiver.clone();
+            InterfaceAutomaton leftReceiver = (InterfaceAutomaton) _receiver
+                .clone();
             leftReceiver.setName("c" + index + "lr");
 
             nameMap = new HashMap();
@@ -258,8 +255,8 @@ public class Check {
             leftReceiver.renameTransitionLabels(nameMap);
 
             // create right receiver
-            InterfaceAutomaton rightReceiver =
-                (InterfaceAutomaton)_receiver.clone();
+            InterfaceAutomaton rightReceiver = (InterfaceAutomaton) _receiver
+                .clone();
             rightReceiver.setName("c" + index + "rr");
 
             nameMap = new HashMap();
@@ -291,17 +288,17 @@ public class Check {
             return whole;
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Check._composeChoAndReceiver: "
-                    + "clone not supported: " + cnse.getMessage());
+                + "clone not supported: " + cnse.getMessage());
         }
     }
 
     // compose a philosopher and its left and right receivers. The
     // argument specify the index of this philosopher.
     private InterfaceAutomaton _composePhiAndReceiver(int index)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             // generate a philosopher with the correct name
-            InterfaceAutomaton phi = (InterfaceAutomaton)_philosopher.clone();
+            InterfaceAutomaton phi = (InterfaceAutomaton) _philosopher.clone();
             phi.setName("p" + index);
 
             HashMap nameMap = new HashMap();
@@ -326,15 +323,14 @@ public class Check {
             phi.renameTransitionLabels(nameMap);
 
             // create left receiver
-            InterfaceAutomaton leftReceiver =
-                (InterfaceAutomaton)_receiver.clone();
+            InterfaceAutomaton leftReceiver = (InterfaceAutomaton) _receiver
+                .clone();
             leftReceiver.setName("p" + index + "lr");
 
             nameMap = new HashMap();
 
             // compute the index of the chopstick on the left
-            int leftIndex =
-                (index + _numberOfPhilosophers - 1) % _numberOfPhilosophers;
+            int leftIndex = ((index + _numberOfPhilosophers) - 1) % _numberOfPhilosophers;
 
             nameMap.put("p", "c" + leftIndex + "pr");
             nameMap.put("pR", "c" + leftIndex + "prR");
@@ -349,8 +345,8 @@ public class Check {
             leftReceiver.renameTransitionLabels(nameMap);
 
             // create right receiver
-            InterfaceAutomaton rightReceiver =
-                (InterfaceAutomaton)_receiver.clone();
+            InterfaceAutomaton rightReceiver = (InterfaceAutomaton) _receiver
+                .clone();
             rightReceiver.setName("p" + index + "rr");
 
             nameMap = new HashMap();
@@ -373,17 +369,18 @@ public class Check {
             return phiWithReceivers;
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Check._composePhiAndReceiver: "
-                    + "clone not supported: " + cnse.getMessage());
+                + "clone not supported: " + cnse.getMessage());
         }
     }
 
     // compose the simple or the full version of conditional send.
     private InterfaceAutomaton _composeSend(int index)
-            throws CloneNotSupportedException, IllegalActionException,
+        throws CloneNotSupportedException, IllegalActionException, 
             NameDuplicationException {
         InterfaceAutomaton send;
+
         if (_useSimple) {
-            send = (InterfaceAutomaton)_simpleSend.clone();
+            send = (InterfaceAutomaton) _simpleSend.clone();
             send.setName("c" + index + "s");
 
             HashMap nameMap = new HashMap();
@@ -409,8 +406,8 @@ public class Check {
             return send;
         } else {
             // create conditional branch controller
-            InterfaceAutomaton controller =
-                (InterfaceAutomaton)_controller.clone();
+            InterfaceAutomaton controller = (InterfaceAutomaton) _controller
+                .clone();
             controller.setName("c" + index + "c");
 
             HashMap nameMap = new HashMap();
@@ -443,7 +440,7 @@ public class Check {
             controller.renameTransitionLabels(nameMap);
 
             // create left conditional send
-            InterfaceAutomaton leftSend = (InterfaceAutomaton)_send.clone();
+            InterfaceAutomaton leftSend = (InterfaceAutomaton) _send.clone();
             leftSend.setName("c" + index + "sl");
 
             nameMap = new HashMap();
@@ -468,7 +465,7 @@ public class Check {
             leftSend.renameTransitionLabels(nameMap);
 
             // create right conditional send
-            InterfaceAutomaton rightSend = (InterfaceAutomaton)_send.clone();
+            InterfaceAutomaton rightSend = (InterfaceAutomaton) _send.clone();
             rightSend.setName("c" + index + "sr");
 
             nameMap = new HashMap();
@@ -498,9 +495,10 @@ public class Check {
             send.combineInternalTransitions();
 
             System.out.println("Controller and two send, "
-                    + "after combining internals:");
+                + "after combining internals:");
             System.out.println(send.getInfo());
         }
+
         return send;
     }
 
@@ -511,14 +509,11 @@ public class Check {
     // if useSimple is false:
     private InterfaceAutomaton _send;
     private InterfaceAutomaton _controller;
+
     // if useSimple is true:
     private InterfaceAutomaton _simpleSend;
-
     private InterfaceAutomaton _philosopher;
-
     private InterfaceAutomaton _chopstick;
-
     private int _numberOfPhilosophers;
-
     private boolean _useSimple = true;
 }

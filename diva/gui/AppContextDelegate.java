@@ -34,6 +34,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JMenuBar;
 import javax.swing.JRootPane;
 
+
 /**
  * This class provides basic support for an instance of AppContext which
  * delegates its operation to one of the basic AppContexts (usually an
@@ -45,7 +46,6 @@ import javax.swing.JRootPane;
  * @version $Id$
  */
 public class AppContextDelegate implements AppContext {
-
     /** The app-context that implements the windowing facilities.
      */
     private transient AppContext _delegate;
@@ -94,7 +94,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Return the title of the context.
      */
-    public String getTitle () {
+    public String getTitle() {
         return _delegate.getTitle();
     }
 
@@ -105,7 +105,6 @@ public class AppContextDelegate implements AppContext {
     public void setContentPane(Container contentPane) {
         _delegate.setContentPane(contentPane);
     }
-
 
     /**
      * Set the glassPane of the delegate.  The glassPane is always the
@@ -184,7 +183,7 @@ public class AppContextDelegate implements AppContext {
      * Set the title of the context.  This has no significance in an
      * applet context.
      */
-    public void setTitle (String title) {
+    public void setTitle(String title) {
         _delegate.setTitle(title);
     }
 
@@ -209,6 +208,3 @@ public class AppContextDelegate implements AppContext {
         return _delegate.makeComponent();
     }
 }
-
-
-

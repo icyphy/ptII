@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import java.io.IOException;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Documentation
+
 /**
    An attribute that contains documentation for the container.
    <p>
@@ -59,7 +60,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Yellow (neuendor)
 */
 public class Documentation extends StringAttribute {
-
     /** Construct an attribute with the specified container and name.
      *  The documentation contained by the attribute is initially empty,
      *  but can be set using the setValue() method.
@@ -71,14 +71,13 @@ public class Documentation extends StringAttribute {
      *   an attribute already in the container.
      */
     public Documentation(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Return as a single string all the documentation associated with
      *  the specified object.  Each attribute of type of class Documentation
@@ -90,14 +89,20 @@ public class Documentation extends StringAttribute {
      */
     public static String consolidate(NamedObj object) {
         List docList = object.attributeList(Documentation.class);
+
         if (docList.size() > 0) {
             StringBuffer doc = new StringBuffer();
             Iterator segments = docList.iterator();
+
             while (segments.hasNext()) {
-                Documentation segment = (Documentation)segments.next();
+                Documentation segment = (Documentation) segments.next();
                 doc.append(segment.getValue());
-                if (segments.hasNext()) doc.append("\n");
+
+                if (segments.hasNext()) {
+                    doc.append("\n");
+                }
             }
+
             return doc.toString();
         } else {
             return null;
@@ -118,24 +123,20 @@ public class Documentation extends StringAttribute {
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
+
         if (name.equals("_doc")) {
             // Name is the default name.  Omit.
-            output.write(_getIndentPrefix(depth)
-                    + "<doc>"
-                    + StringUtilities.escapeForXML(getExpression())
-                    + "</doc>\n");
+            output.write(_getIndentPrefix(depth) + "<doc>"
+                + StringUtilities.escapeForXML(getExpression()) + "</doc>\n");
         } else {
             // Name is not the default name.
-            output.write(_getIndentPrefix(depth)
-                    + "<doc name=\""
-                    + name
-                    + "\">"
-                    + StringUtilities.escapeForXML(getExpression())
-                    + "</doc>\n");
+            output.write(_getIndentPrefix(depth) + "<doc name=\"" + name
+                + "\">" + StringUtilities.escapeForXML(getExpression())
+                + "</doc>\n");
         }
     }
 
@@ -154,21 +155,20 @@ public class Documentation extends StringAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
      */
-    public void setExpression(String expression)
-            throws IllegalActionException {
+    public void setExpression(String expression) throws IllegalActionException {
         if (expression.equals("")) {
-            ChangeRequest request = new ChangeRequest(
-                    this, "Delete empty doc tag.") {
-                protected void _execute() throws Exception {
-                    setContainer(null);
-                }
-            };
+            ChangeRequest request = new ChangeRequest(this,
+                    "Delete empty doc tag.") {
+                    protected void _execute() throws Exception {
+                        setContainer(null);
+                    }
+                };
+
             requestChange(request);
         } else {
             super.setExpression(expression);
         }
     }
-
 
     /** Set the documentation string.
      *  @param value The documentation.

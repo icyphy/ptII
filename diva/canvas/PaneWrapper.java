@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.AWTEvent;
@@ -39,6 +38,7 @@ import diva.canvas.event.EventAcceptor;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionInteractor;
+
 
 /** A figure that wraps a whole canvas pane.  This class is thus one
  * of the ways in which a canvas pane can be nested within other
@@ -55,7 +55,6 @@ import diva.canvas.interactor.SelectionInteractor;
  * @Pt.AcceptedRating Red
  */
 public class PaneWrapper extends AbstractFigure implements EventAcceptor {
-
     /** The flag saying whether to clip.
      */
     private boolean _clipEnabled = true;
@@ -73,7 +72,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * can be changed with setTransform(), and a background figure added
      * if desired with setBackground().
      */
-    public PaneWrapper (CanvasPane pane) {
+    public PaneWrapper(CanvasPane pane) {
         super();
         _wrappedPane = pane;
         pane.setParent(this);
@@ -82,9 +81,9 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     /** Dispatch an AWT event on this pane figure. Currently only
      * layer events are handled.
      */
-    public void dispatchEvent (AWTEvent event) {
+    public void dispatchEvent(AWTEvent event) {
         if (event instanceof LayerEvent) {
-            processLayerEvent((LayerEvent)event);
+            processLayerEvent((LayerEvent) event);
         } else {
             // FIXME
             System.out.println("Bad event: " + event);
@@ -93,7 +92,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
 
     /** Get the background figure.
      */
-    public Figure getBackground () {
+    public Figure getBackground() {
         return _background;
     }
 
@@ -102,27 +101,27 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * formed by taking the size of the contained pane and
      * converting it with its transform.
      */
-    public Shape getShape () {
-        if ( _background != null ) {
+    public Shape getShape() {
+        if (_background != null) {
             return _background.getShape();
         } else {
             Point2D d = _wrappedPane.getSize();
             Rectangle2D r = new Rectangle2D.Double(0.0, 0.0, d.getX(), d.getY());
-            AffineTransform at =
-                _wrappedPane.getTransformContext().getTransform();
+            AffineTransform at = _wrappedPane.getTransformContext()
+                                             .getTransform();
             return at.createTransformedShape(r);
         }
     }
 
     /** Get the wrapped pane
      */
-    public CanvasPane getWrappedPane () {
+    public CanvasPane getWrappedPane() {
         return _wrappedPane;
     }
 
     /** Get the clipping enabled flag.
      */
-    public boolean isClipEnabled () {
+    public boolean isClipEnabled() {
         return _clipEnabled;
     }
 
@@ -131,7 +130,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * whole pane will be treated as though it were a single figure, and
      * events passed to its event dispatcher, if it has one.
      */
-    public boolean isEnabled () {
+    public boolean isEnabled() {
         return _wrappedPane.isEnabled();
     }
 
@@ -141,7 +140,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * appears to change the way that lines are rendered in the presence
      * of scaling. Don't know why...)
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         // Paint the background, if any
         if (_background != null) {
             _background.paint(g);
@@ -150,7 +149,8 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         // Set the clip region. This could probably be made more
         // efficient by downcasting to Rectangle2D where possible
         Shape currentClip = g.getClip();
-        if (isClipEnabled() && currentClip != null) {
+
+        if (isClipEnabled() && (currentClip != null)) {
             // Note: clip screws up down-scaled lines
             // Note: we need to take the intersection of the current
             // clip with the background figure. This is probably slow...
@@ -160,7 +160,6 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
             g.setClip(a);
 
             // g.setClip(getShape());
-
             // Paint the pane
             _wrappedPane.paint(g);
 
@@ -179,7 +178,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * lines are rendered in the presence of scaling. Don't know
      * why...)
      */
-    public void paint (Graphics2D g, Rectangle2D region) {
+    public void paint(Graphics2D g, Rectangle2D region) {
         // Paint the background, if any
         if (_background != null) {
             _background.paint(g, region);
@@ -188,7 +187,8 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         // Set the clip region. This could probably be made more
         // efficient by downcasting to Rectangle2D where possible
         Shape currentClip = g.getClip();
-        if (isClipEnabled() && currentClip != null) {
+
+        if (isClipEnabled() && (currentClip != null)) {
             // Note: clip screws up down-scaled lines
             // Note: we need to take the intersection of the current
             // clip with the background figure. This is probably slow...
@@ -198,7 +198,6 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
             g.setClip(a);
 
             // g.setClip(getShape());
-
             // Paint the pane
             _wrappedPane.paint(g, region);
 
@@ -222,7 +221,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * means that the outer pane gets to handle all events if
      * the wrapper has already been selected.
      */
-    protected void processLayerEvent (LayerEvent event) {
+    protected void processLayerEvent(LayerEvent event) {
         LayerEvent paneEvent = null;
 
         if (!isEnabled()) {
@@ -232,8 +231,9 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         // See whether to handle this event
         // FIXME This is only temporary
         Interactor r = getInteractor();
-        if (r != null && r instanceof SelectionInteractor) {
-            if (((SelectionInteractor)r).getSelectionModel().containsSelection(this)) {
+
+        if ((r != null) && r instanceof SelectionInteractor) {
+            if (((SelectionInteractor) r).getSelectionModel().containsSelection(this)) {
                 return;
             }
         }
@@ -241,8 +241,9 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         // Transform the layer coordinates in the event if needed
         double savedX = event.getLayerX();
         double savedY = event.getLayerX();
-        AffineTransform at =
-            _wrappedPane.getTransformContext().getInverseTransform();
+        AffineTransform at = _wrappedPane.getTransformContext()
+                                         .getInverseTransform();
+
         if (!at.isIdentity()) {
             event.transform(at);
         }
@@ -256,7 +257,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     /** Accept notification that a repaint has occurred in the wrapped
      * pane.  This implementation forwards the notification to its parent.
      */
-    public void repaint (DamageRegion d) {
+    public void repaint(DamageRegion d) {
         if (getParent() != null) {
             getParent().repaint(d);
         }
@@ -264,10 +265,11 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
 
     /** Set the background figure.
      */
-    public void setBackground (Figure background) {
+    public void setBackground(Figure background) {
         if (background != null) {
             background.setParent(null);
         }
+
         this._background = background;
         background.setParent(this);
         repaint();
@@ -279,7 +281,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * but if the pane is well-behaved, this should be turned
      * off as it seems to slow things down.
      */
-    public void setClipEnabled (boolean flag) {
+    public void setClipEnabled(boolean flag) {
         _clipEnabled = flag;
     }
 
@@ -288,7 +290,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * whole pane will be treated as though it were a single figure, and
      * events passed to its event dispatcher, if it has one.
      */
-    public void setEnabled (boolean flag) {
+    public void setEnabled(boolean flag) {
         _wrappedPane.setEnabled(flag);
     }
 
@@ -296,7 +298,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * external one. This call will not affect the background
      * figure.
      */
-    public void setTransform (AffineTransform at) {
+    public void setTransform(AffineTransform at) {
         repaint();
         _wrappedPane.getTransformContext().setTransform(at);
         repaint();
@@ -305,25 +307,27 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     /** Transform the figure with the supplied transform. The background,
      *  if any, will also be transformed.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
-        if ( _background != null ) {
+
+        if (_background != null) {
             _background.transform(at);
         }
+
         _wrappedPane.getTransformContext().preConcatenate(at);
         repaint();
     }
 
     /** Translate this pane wrapper the given distance.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         repaint();
-        if ( _background != null ) {
-            _background.translate(x,y);
+
+        if (_background != null) {
+            _background.translate(x, y);
         }
-        _wrappedPane.getTransformContext().translate(x,y);
+
+        _wrappedPane.getTransformContext().translate(x, y);
         repaint();
     }
 }
-
-

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.csp.kernel.test;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -37,6 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPGetToken
+
 /**
 
 @author John S. Davis II
@@ -46,13 +46,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class CSPGetToken extends CSPGet {
-
     /**
      */
     public CSPGetToken(TypedCompositeActor cont, String name, int numTokens)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         _numTokens = numTokens;
@@ -72,6 +70,7 @@ public class CSPGetToken extends CSPGet {
      */
     public void fire() throws IllegalActionException {
         int cnt = 0;
+
         while (cnt < _numTokens) {
             _tokens[cnt] = inputPort.get(0);
             cnt++;
@@ -80,7 +79,6 @@ public class CSPGetToken extends CSPGet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _numTokens;
     private Token[] _tokens = null;
 }

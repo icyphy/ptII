@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Derivable
+
 /**
    This interface is for objects that can be derived.  A derived object
    is "inherited" via the class mechanism in Ptolemy II and tracks the
@@ -83,9 +84,7 @@ import java.util.List;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (neuendor)
 */
-
 public interface Derivable extends Nameable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

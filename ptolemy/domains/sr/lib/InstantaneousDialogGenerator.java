@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InstantaneousDialogGenerator
+
 /**
    An actor that generates instantaneous dialog with a LookupTable.  This actor
    outputs incrementing integers on the <i>indexOutput</i> port.  A server is
@@ -53,9 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (pwhitake)
    @Pt.AcceptedRating Red (pwhitake)
 */
-
 public class InstantaneousDialogGenerator extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -66,7 +65,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public InstantaneousDialogGenerator(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
 
@@ -101,6 +100,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         indexOutput.send(0, new IntToken(_index));
+
         if (dataInput.isKnown(0)) {
             if (dataInput.hasToken(0)) {
                 dataOutput.send(0, dataInput.get(0));
@@ -138,14 +138,6 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The index number to output on the indexOutput port.
     private int _index;
-
 }
-
-
-
-
-
-

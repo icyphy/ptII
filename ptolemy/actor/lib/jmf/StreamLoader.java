@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.actor.lib.jmf;
 
 import java.net.URL;
@@ -43,8 +41,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StreamLoader
+
 /** Load a datasource from a URL.
     <p> This actor generates an ObjectToken that contains a DataSource.
     <p> This actor is typically connected to a {@link VideoPlayer} actor.
@@ -56,7 +56,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class StreamLoader extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,7 +65,7 @@ public class StreamLoader extends Source {
      *   actor with this name.
      */
     public StreamLoader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
@@ -76,7 +75,9 @@ public class StreamLoader extends Source {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         URL url = fileOrURL.asURL();
+
         if (url == null) {
             throw new IllegalActionException("URLToken was null");
         } else {
@@ -86,7 +87,9 @@ public class StreamLoader extends Source {
                 throw new IllegalActionException("Invalid URL");
             }
         }
+
         Director director = getDirector();
+
         if (director != null) {
             director.fireAt(this, new Time(director));
         } else {
@@ -98,6 +101,7 @@ public class StreamLoader extends Source {
         if (getDirector().getModelTime().getDoubleValue() == 0.0) {
             output.send(0, new ObjectToken(_dataSource));
         }
+
         return super.postfire();
     }
 

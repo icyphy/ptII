@@ -50,8 +50,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AtomicWirelessChannel
+
 /**
 
 The base class for communication channels in the wireless domain.
@@ -90,7 +92,6 @@ or the transmit() public method.
 */
 public class AtomicWirelessChannel extends TypedAtomicActor
     implements WirelessChannel, ValueListener {
-
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This relation will use the
@@ -105,23 +106,23 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   a relation already in the container.
      */
     public AtomicWirelessChannel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         defaultProperties = new Parameter(this, "defaultProperties");
+
         // Force this to be a record type without specifying the fields.
         // NOTE: This doesn't actually work because the type remains
         // unknown, which triggers an error message. Instead, we check
         // the type in attributeChanged().
         // defaultProperties.setTypeAtMost(
         //      new RecordType(new String[0], new Type[0]));
-
         _channelPort = new ChannelPort(this, "_channelPort");
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" " +
-                "style=\"fill:red\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n"
+            + "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" "
+            + "style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,13 +148,13 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == defaultProperties) {
             Token value = defaultProperties.getToken();
-            if (value != null && !(value instanceof RecordToken)) {
+
+            if ((value != null) && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
-                        "Expected a record for defaultProperties but got: "
-                        + value);
+                    "Expected a record for defaultProperties but got: " + value);
             }
         } else {
             super.attributeChanged(attribute);
@@ -184,25 +185,32 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     public List listeningInputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+
             // NOTE: This caching relies on the fact that WirelessIOPort
             // will increment the workspace version number if any
             // parameter identifying the channel changes.
             if (workspace().getVersion() == _listeningInputPortsVersion) {
                 return _listeningInputPorts;
             }
+
             List result = new LinkedList();
-            CompositeEntity container = (CompositeEntity)getContainer();
+            CompositeEntity container = (CompositeEntity) getContainer();
             Iterator entities = container.entityList().iterator();
+
             while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
+                Entity entity = (Entity) entities.next();
                 Iterator ports = entity.portList().iterator();
+
                 while (ports.hasNext()) {
-                    Port port = (Port)ports.next();
+                    Port port = (Port) ports.next();
+
                     if (port instanceof WirelessIOPort) {
-                        WirelessIOPort castPort = (WirelessIOPort)port;
+                        WirelessIOPort castPort = (WirelessIOPort) port;
+
                         if (castPort.isInput()) {
-                            String channelName
-                                = castPort.outsideChannel.stringValue();
+                            String channelName = castPort.outsideChannel
+                                .stringValue();
+
                             if (channelName.equals(getName())) {
                                 result.add(port);
                             }
@@ -210,6 +218,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                     }
                 }
             }
+
             _listeningInputPorts = result;
             _listeningInputPortsVersion = workspace().getVersion();
             return result;
@@ -231,28 +240,34 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     public List listeningOutputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+
             // NOTE: This caching relies on the fact that WirelessIOPort
             // will increment the workspace version number if any
             // parameter identifying the channel changes.
             if (workspace().getVersion() == _listeningOutputPortsVersion) {
                 return _listeningOutputPorts;
             }
+
             List result = new LinkedList();
-            CompositeEntity container = (CompositeEntity)getContainer();
+            CompositeEntity container = (CompositeEntity) getContainer();
             Iterator ports = container.portList().iterator();
+
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
+                Port port = (Port) ports.next();
+
                 if (port instanceof WirelessIOPort) {
-                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    WirelessIOPort castPort = (WirelessIOPort) port;
+
                     if (castPort.isOutput()) {
-                        String channelName =
-                            castPort.insideChannel.stringValue();
+                        String channelName = castPort.insideChannel.stringValue();
+
                         if (channelName.equals(getName())) {
                             result.add(port);
                         }
                     }
                 }
             }
+
             _listeningOutputPorts = result;
             _listeningOutputPortsVersion = workspace().getVersion();
             return result;
@@ -271,22 +286,26 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   property transformer, or null to make them subject to all
      *   transmissions through this channel.
      */
-    public void registerPropertyTransformer(
-            PropertyTransformer transformer, WirelessIOPort port) {
+    public void registerPropertyTransformer(PropertyTransformer transformer,
+        WirelessIOPort port) {
         if (port != null) {
             if (_propertyTransformersByPort == null) {
                 _propertyTransformersByPort = new HashMap();
             }
-            Set transformers = (Set)_propertyTransformersByPort.get(port);
+
+            Set transformers = (Set) _propertyTransformersByPort.get(port);
+
             if (transformers == null) {
                 transformers = new HashSet();
                 _propertyTransformersByPort.put(port, transformers);
             }
+
             transformers.add(transformer);
         } else {
             if (_propertyTransformers == null) {
                 _propertyTransformers = new HashSet();
             }
+
             _propertyTransformers.add(transformer);
         }
     }
@@ -314,28 +333,34 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     public List sendingInputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+
             // NOTE: This caching relies on the fact that WirelessIOPort
             // will increment the workspace version number if any
             // parameter identifying the channel changes.
             if (workspace().getVersion() == _sendingInputPortsVersion) {
                 return _sendingInputPorts;
             }
+
             List result = new LinkedList();
-            CompositeEntity container = (CompositeEntity)getContainer();
+            CompositeEntity container = (CompositeEntity) getContainer();
             Iterator ports = container.portList().iterator();
+
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
+                Port port = (Port) ports.next();
+
                 if (port instanceof WirelessIOPort) {
-                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    WirelessIOPort castPort = (WirelessIOPort) port;
+
                     if (castPort.isInput()) {
-                        String channelName =
-                            castPort.insideChannel.stringValue();
+                        String channelName = castPort.insideChannel.stringValue();
+
                         if (channelName.equals(getName())) {
                             result.add(port);
                         }
                     }
                 }
             }
+
             _sendingInputPorts = result;
             _sendingInputPortsVersion = workspace().getVersion();
             return result;
@@ -357,25 +382,32 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     public List sendingOutputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+
             // NOTE: This caching relies on the fact that WirelessIOPort
             // will increment the workspace version number if any
             // parameter identifying the channel changes.
             if (workspace().getVersion() == _sendingOutputPortsVersion) {
                 return _sendingOutputPorts;
             }
+
             List result = new LinkedList();
-            CompositeEntity container = (CompositeEntity)getContainer();
+            CompositeEntity container = (CompositeEntity) getContainer();
             Iterator entities = container.entityList().iterator();
+
             while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
+                Entity entity = (Entity) entities.next();
                 Iterator ports = entity.portList().iterator();
+
                 while (ports.hasNext()) {
-                    Port port = (Port)ports.next();
+                    Port port = (Port) ports.next();
+
                     if (port instanceof WirelessIOPort) {
-                        WirelessIOPort castPort = (WirelessIOPort)port;
+                        WirelessIOPort castPort = (WirelessIOPort) port;
+
                         if (castPort.isOutput()) {
-                            String channelName
-                                = castPort.outsideChannel.stringValue();
+                            String channelName = castPort.outsideChannel
+                                .stringValue();
+
                             if (channelName.equals(getName())) {
                                 result.add(port);
                             }
@@ -383,6 +415,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                     }
                 }
             }
+
             _sendingOutputPorts = result;
             _sendingOutputPortsVersion = workspace().getVersion();
             return result;
@@ -406,62 +439,66 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   be transformed. Not thrown in this base class.
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
-    public RecordToken transformProperties(
-            RecordToken properties,
-            WirelessIOPort source,
-            WirelessIOPort destination)
-            throws IllegalActionException {
+    public RecordToken transformProperties(RecordToken properties,
+        WirelessIOPort source, WirelessIOPort destination)
+        throws IllegalActionException {
         RecordToken result = properties;
         Token defaultPropertiesValue = defaultProperties.getToken();
+
         if (defaultPropertiesValue instanceof RecordToken) {
             if (properties != null) {
-                result = RecordToken.merge(
-                        properties, (RecordToken)defaultPropertiesValue);
+                result = RecordToken.merge(properties,
+                        (RecordToken) defaultPropertiesValue);
             } else {
-                result = (RecordToken)defaultPropertiesValue;
+                result = (RecordToken) defaultPropertiesValue;
             }
         }
 
         if (_propertyTransformersByPort != null) {
             //Apply property transformer for the sender.
-            Set transformers = (Set)_propertyTransformersByPort.get(source);
+            Set transformers = (Set) _propertyTransformersByPort.get(source);
+
             if (transformers != null) {
                 Iterator iterator = transformers.iterator();
+
                 while (iterator.hasNext()) {
-                    PropertyTransformer transformer
-                        = (PropertyTransformer)iterator.next();
-                    result = transformer.transformProperties(
-                            result, source, destination);
+                    PropertyTransformer transformer = (PropertyTransformer) iterator
+                        .next();
+                    result = transformer.transformProperties(result, source,
+                            destination);
                 }
             }
+
             //Apply property transformers for the receiver.
-            transformers = (Set)_propertyTransformersByPort.get(destination);
+            transformers = (Set) _propertyTransformersByPort.get(destination);
+
             if (transformers != null) {
                 Iterator iterator = transformers.iterator();
+
                 while (iterator.hasNext()) {
-                    PropertyTransformer transformer
-                        = (PropertyTransformer)iterator.next();
-                    result = transformer.transformProperties(
-                            result, source, destination);
+                    PropertyTransformer transformer = (PropertyTransformer) iterator
+                        .next();
+                    result = transformer.transformProperties(result, source,
+                            destination);
                 }
             }
         }
 
         if (_propertyTransformers != null) {
             Iterator iterator = _propertyTransformers.iterator();
+
             while (iterator.hasNext()) {
-                PropertyTransformer transformer
-                    = (PropertyTransformer)iterator.next();
-                result = transformer.transformProperties(
-                        result, source, destination);
+                PropertyTransformer transformer = (PropertyTransformer) iterator
+                    .next();
+                result = transformer.transformProperties(result, source,
+                        destination);
             }
         }
 
         if (_debugging) {
             if (result != null) {
-                _debug(" * transmission properties: \""
-                        + result.toString()
-                        + "\".");
+                _debug(" * transmission properties: \"" + result.toString()
+                    + "\".");
             } else {
                 _debug(" * no transmission properties.\"");
             }
@@ -486,31 +523,33 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   director is not a WirelessDirector.
      */
     public void transmit(Token token, WirelessIOPort port,
-            RecordToken properties)
-            throws IllegalActionException {
+        RecordToken properties) throws IllegalActionException {
         try {
             workspace().getReadAccess();
+
             // The following check will ensure that receivers are of type
             // WirelessReceiver.
             if (!(getDirector() instanceof WirelessDirector)) {
                 throw new IllegalActionException(this,
-                        "AtomicWirelessChannel can only work "
-                        + "with a WirelessDirector.");
+                    "AtomicWirelessChannel can only work "
+                    + "with a WirelessDirector.");
             }
-            Iterator receivers =
-                _receiversInRange(port, properties).iterator();
+
+            Iterator receivers = _receiversInRange(port, properties).iterator();
+
             if (_debugging) {
                 _debug("----\nTransmitting from port: " + port.getFullName());
                 _debug("Token value: " + token.toString());
+
                 if (receivers.hasNext()) {
                     _debug("Receivers in range:");
                 } else {
                     _debug("No receivers in range.");
                 }
             }
+
             while (receivers.hasNext()) {
-                WirelessReceiver receiver
-                    = (WirelessReceiver)receivers.next();
+                WirelessReceiver receiver = (WirelessReceiver) receivers.next();
                 _transmitTo(token, port, receiver, properties);
             }
         } finally {
@@ -526,11 +565,12 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   property transformer, or null for a generic transformer.
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
-    public void unregisterPropertyTransformer(
-            PropertyTransformer transformer, WirelessIOPort port) {
+    public void unregisterPropertyTransformer(PropertyTransformer transformer,
+        WirelessIOPort port) {
         if (port != null) {
             if (_propertyTransformersByPort != null) {
-                Set transformers = (Set)_propertyTransformersByPort.get(port);
+                Set transformers = (Set) _propertyTransformersByPort.get(port);
+
                 if (transformers != null) {
                     transformers.remove(transformer);
                 }
@@ -574,13 +614,12 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *  @exception IllegalActionException If the distance
      *   cannot be determined.
      */
-    protected double _distanceBetween(
-            WirelessIOPort port1, WirelessIOPort port2)
-            throws IllegalActionException {
+    protected double _distanceBetween(WirelessIOPort port1, WirelessIOPort port2)
+        throws IllegalActionException {
         double[] p1 = _locationOf(port1);
         double[] p2 = _locationOf(port2);
-        return Math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0])
-                + (p1[1] - p2[1])*(p1[1] - p2[1]));
+        return Math.sqrt(((p1[0] - p2[0]) * (p1[0] - p2[0]))
+            + ((p1[1] - p2[1]) * (p1[1] - p2[1])));
     }
 
     /** Return true if the specified destination port is in range of the
@@ -600,11 +639,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   whether the destination is in range (not thrown in this base
      *   class).
      */
-    protected boolean _isInRange(
-            WirelessIOPort source,
-            WirelessIOPort destination,
-            RecordToken properties)
-            throws IllegalActionException {
+    protected boolean _isInRange(WirelessIOPort source,
+        WirelessIOPort destination, RecordToken properties)
+        throws IllegalActionException {
         return true;
     }
 
@@ -625,21 +662,22 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   be found.
      */
     protected double[] _locationOf(IOPort port) throws IllegalActionException {
-        Entity container = (Entity)port.getContainer();
+        Entity container = (Entity) port.getContainer();
         Locatable location = null;
+
         if (container == getContainer()) {
-            location = (Locatable)port.getAttribute(LOCATION_ATTRIBUTE_NAME,
+            location = (Locatable) port.getAttribute(LOCATION_ATTRIBUTE_NAME,
                     Locatable.class);
         } else {
-            location = (Locatable)container.getAttribute(
-                    LOCATION_ATTRIBUTE_NAME, Locatable.class);
+            location = (Locatable) container.getAttribute(LOCATION_ATTRIBUTE_NAME,
+                    Locatable.class);
         }
+
         if (location == null) {
             throw new IllegalActionException(
-                    "Cannot determine location for port "
-                    + port.getName()
-                    + ".");
+                "Cannot determine location for port " + port.getName() + ".");
         }
+
         // NOTE: We assume here that the implementation
         // of addValueListener() is smart enough to not add
         // this if it is already a listener.
@@ -661,10 +699,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *  @exception IllegalActionException If a location of a port cannot be
      *   evaluated.
      */
-    protected List _receiversInRange(
-            WirelessIOPort sourcePort,
-            RecordToken properties)
-            throws IllegalActionException {
+    protected List _receiversInRange(WirelessIOPort sourcePort,
+        RecordToken properties) throws IllegalActionException {
         // This information is carefully cached in
         // a hashtable indexed by the source port.  The cache should
         // be invalidated if:
@@ -681,24 +717,29 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         //     invalidate the cache if it changes.
         //  Use the performance.xml test to determine whether/how much
         //  this helps.
-        if (_receiversInRangeCache != null
+        if ((_receiversInRangeCache != null)
                 && _receiversInRangeCache.containsKey(sourcePort)
-                && ((Long)_receiversInRangeCacheVersion.get(sourcePort))
-                .longValue() == workspace().getVersion()
+                && (((Long) _receiversInRangeCacheVersion.get(sourcePort))
+                .longValue() == workspace().getVersion())
                 && _receiversInRangeCacheValid) {
             // Cached list is valid. Return that.
-            return (List)_receiversInRangeCache.get(sourcePort);
+            return (List) _receiversInRangeCache.get(sourcePort);
         }
+
         List receiversInRangeList = new LinkedList();
         Iterator ports = listeningInputPorts().iterator();
+
         while (ports.hasNext()) {
-            WirelessIOPort port = (WirelessIOPort)ports.next();
+            WirelessIOPort port = (WirelessIOPort) ports.next();
 
             // Skip ports contained by the same container as the source.
-            if (port.getContainer() == sourcePort.getContainer()) continue;
+            if (port.getContainer() == sourcePort.getContainer()) {
+                continue;
+            }
 
             if (_isInRange(sourcePort, port, properties)) {
                 Receiver[][] receivers = port.getReceivers();
+
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         receiversInRangeList.add(receivers[i][j]);
@@ -706,12 +747,15 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                 }
             }
         }
+
         ports = listeningOutputPorts().iterator();
+
         while (ports.hasNext()) {
-            WirelessIOPort port = (WirelessIOPort)ports.next();
+            WirelessIOPort port = (WirelessIOPort) ports.next();
 
             if (_isInRange(sourcePort, port, properties)) {
                 Receiver[][] receivers = port.getInsideReceivers();
+
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         receiversInRangeList.add(receivers[i][j]);
@@ -719,13 +763,15 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                 }
             }
         }
+
         if (_receiversInRangeCache == null) {
             _receiversInRangeCache = new HashMap();
             _receiversInRangeCacheVersion = new HashMap();
         }
+
         _receiversInRangeCache.put(sourcePort, receiversInRangeList);
-        _receiversInRangeCacheVersion.put(
-                sourcePort, new Long(workspace().getVersion()));
+        _receiversInRangeCacheVersion.put(sourcePort,
+            new Long(workspace().getVersion()));
         _receiversInRangeCacheValid = true;
         return receiversInRangeList;
     }
@@ -742,26 +788,23 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   or if the token argument is null and the destination receiver
      *   does not support clear.
      */
-    protected void _transmitTo(
-            Token token,
-            WirelessIOPort sender,
-            WirelessReceiver receiver,
-            RecordToken properties)
-            throws IllegalActionException {
+    protected void _transmitTo(Token token, WirelessIOPort sender,
+        WirelessReceiver receiver, RecordToken properties)
+        throws IllegalActionException {
         if (_debugging) {
             _debug(" * transmitting to: "
-                    + receiver.getContainer().getFullName());
+                + receiver.getContainer().getFullName());
         }
+
         if (token != null) {
             if (receiver.hasRoom()) {
-                WirelessIOPort destination = (WirelessIOPort)
-                    receiver.getContainer();
+                WirelessIOPort destination = (WirelessIOPort) receiver
+                    .getContainer();
                 Token newToken = destination.convert(token);
+
                 // Transform the properties.
-                Token transformedProperties = transformProperties(
-                        properties,
-                        sender,
-                        destination);
+                Token transformedProperties = transformProperties(properties,
+                        sender, destination);
                 receiver.put(newToken, transformedProperties);
             }
         } else {
@@ -785,7 +828,6 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Caches of port lists.
     private List _listeningInputPorts;
     private long _listeningInputPortsVersion = -1L;
@@ -802,10 +844,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *  indexed by port.
      */
     private HashMap _propertyTransformersByPort;
-
     private HashMap _receiversInRangeCache;
     private HashMap _receiversInRangeCacheVersion;
-
     private List _sendingInputPorts;
     private long _sendingInputPortsVersion = -1L;
     private List _sendingOutputPorts;

@@ -24,15 +24,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.java;
 
 import soot.SootField;
 import soot.tagkit.AttributeValueException;
 import soot.tagkit.Tag;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// ValueTag
+
 /**
    A tag that references an object.  This tag is usually used
    to store the constant runtime value of a field, if that
@@ -45,7 +46,6 @@ import soot.tagkit.Tag;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ValueTag implements Tag {
-
     /** Construct a new tag that refers to the given object.
      */
     public ValueTag(Object object) {
@@ -74,7 +74,8 @@ public class ValueTag implements Tag {
      *  If the field does not have a value tag, then return null.
      */
     public static Object getFieldObject(SootField field) {
-        ValueTag tag = (ValueTag)field.getTag("_CGValue");
+        ValueTag tag = (ValueTag) field.getTag("_CGValue");
+
         if (tag == null) {
             return null;
         } else {
@@ -83,5 +84,4 @@ public class ValueTag implements Tag {
     }
 
     private Object _object;
-
 }

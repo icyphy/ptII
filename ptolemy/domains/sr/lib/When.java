@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// When
+
 /**
    When the <i>control</i> input is true, copy the <i>input</i> to the
    <i>output</i>. If <i>control</i> is absent, or it is true and
@@ -52,9 +53,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class When extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -65,13 +64,14 @@ public class When extends Transformer {
      *   an actor already in the container.
      */
     public When(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         control = new TypedIOPort(this, "control", true, false);
         control.setTypeEquals(BaseType.BOOLEAN);
-        StringAttribute controlCardinal
-                = new StringAttribute(control, "_cardinal");
+
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
 
         output.setTypeAtLeast(input);
@@ -94,9 +94,8 @@ public class When extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        When newObject = (When)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        When newObject = (When) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -107,7 +106,7 @@ public class When extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (control.hasToken(0)
-                && ((BooleanToken)control.get(0)).booleanValue()
+                && ((BooleanToken) control.get(0)).booleanValue()
                 && input.hasToken(0)) {
             output.send(0, input.get(0));
         } else {

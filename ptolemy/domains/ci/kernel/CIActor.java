@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ci.kernel;
 
 import ptolemy.actor.lib.Transformer;
@@ -36,6 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 ///CIActor
+
 /*
 
 
@@ -46,7 +46,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Yellow (cxh)
 */
 public class CIActor extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -56,7 +55,7 @@ public class CIActor extends Transformer {
      *   actor with this name.
      */
     public CIActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(false);
         output.setMultiport(false);
@@ -64,8 +63,6 @@ public class CIActor extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     public void enableActor() {
@@ -82,5 +79,4 @@ public class CIActor extends Transformer {
     ////                         private variables                 ////
     // The director.
     private CIDirector _director;
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Pulse
+
 /**
    Produce a pulse with a shape specified by the parameters.
    The <i>values</i> parameter contains an ArrayToken, which specifies
@@ -79,9 +80,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class Pulse extends SequenceSource {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -91,12 +90,13 @@ public class Pulse extends SequenceSource {
      *   actor with this name.
      */
     public Pulse(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         indexes = new Parameter(this, "indexes");
         indexes.setExpression("{0, 1}");
         indexes.setTypeEquals(new ArrayType(BaseType.INT));
+
         // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
 
@@ -111,7 +111,7 @@ public class Pulse extends SequenceSource {
         attributeChanged(repeat);
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType)values.getType();
+        ArrayType valuesArrayType = (ArrayType) values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
 
@@ -146,36 +146,40 @@ public class Pulse extends SequenceSource {
      *   increasing and nonnegative, or the indexes is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == indexes) {
-            ArrayToken indexesValue = (ArrayToken)indexes.getToken();
+            ArrayToken indexesValue = (ArrayToken) indexes.getToken();
             _indexes = new int[indexesValue.length()];
+
             int previous = 0;
+
             for (int i = 0; i < indexesValue.length(); i++) {
-                _indexes[i] = ((IntToken)indexesValue.getElement(i)).intValue();
+                _indexes[i] = ((IntToken) indexesValue.getElement(i)).intValue();
+
                 // Check nondecreasing property.
                 if (_indexes[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of indexes is not nondecreasing " +
-                            "and nonnegative.");
+                        "Value of indexes is not nondecreasing "
+                        + "and nonnegative.");
                 }
+
                 previous = _indexes[i];
             }
         } else if (attribute == values) {
             try {
-                ArrayToken valuesArray = (ArrayToken)values.getToken();
+                ArrayToken valuesArray = (ArrayToken) values.getToken();
                 Token prototype = valuesArray.getElement(0);
                 _zero = prototype.zero();
             } catch (ArrayIndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot set values to an empty array.");
+                    "Cannot set values to an empty array.");
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot set values to something that is not an array: "
-                        + values.getToken());
+                    "Cannot set values to something that is not an array: "
+                    + values.getToken());
             }
         } else if (attribute == repeat) {
-            _repeatFlag = ((BooleanToken)repeat.getToken()).booleanValue();
+            _repeatFlag = ((BooleanToken) repeat.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -188,10 +192,9 @@ public class Pulse extends SequenceSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Pulse newObject = (Pulse)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Pulse newObject = (Pulse) super.clone(workspace);
+        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
@@ -206,15 +209,19 @@ public class Pulse extends SequenceSource {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         int currentIndex = 0;
-        ArrayToken val = (ArrayToken)values.getToken();
+        ArrayToken val = (ArrayToken) values.getToken();
+
         if (_indexColCount < _indexes.length) {
             if (val.length() != _indexes.length) {
                 throw new IllegalActionException(this,
-                        "Parameters values and indexes have " +
-                        "different lengths.");
+                    "Parameters values and indexes have "
+                    + "different lengths.");
             }
+
             currentIndex = _indexes[_indexColCount];
+
             if (_iterationCount == currentIndex) {
                 // Got a match with an index.
                 output.send(0, val.getElement(_indexColCount));
@@ -222,23 +229,24 @@ public class Pulse extends SequenceSource {
                 return;
             }
         } else {
-            if ( _repeatFlag ) {
-
+            if (_repeatFlag) {
                 // Repeat the pulse sequence again.
                 _iterationCount = 0;
                 _indexColCount = 0;
 
                 currentIndex = _indexes[_indexColCount];
+
                 if (_iterationCount == currentIndex) {
                     output.send(0, val.getElement(_indexColCount));
                     _match = true;
                 }
+
                 return;
             }
         }
+
         output.send(0, _zero);
         _match = false;
-
     }
 
     /** Set the iteration count to zero.
@@ -258,12 +266,14 @@ public class Pulse extends SequenceSource {
     public boolean postfire() throws IllegalActionException {
         // We stop incrementing after reaching the top of the indexes
         // vector to avoid possibility of overflow.
-        if (_iterationCount <= _indexes[_indexes.length-1]) {
+        if (_iterationCount <= _indexes[_indexes.length - 1]) {
             ++_iterationCount;
         }
+
         if (_match) {
             ++_indexColCount;
         }
+
         return super.postfire();
     }
 
@@ -277,7 +287,6 @@ public class Pulse extends SequenceSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Count of the iterations.  This stops incrementing when
     // we exceed the top of the indexes vector.
     private int _iterationCount = 0;
@@ -296,5 +305,4 @@ public class Pulse extends SequenceSource {
 
     // Flag to indicate whether or not to repeat the sequence.
     private boolean _repeatFlag;
-
 }

@@ -27,11 +27,9 @@ COPYRIGHTENDKEY
 
 */
 
-
-
-
 //////////////////////////////////////////////////////////////////////////
 //// Turtle
+
 /**
 
 A simple class for testing standard output.
@@ -43,15 +41,14 @@ A simple class for testing standard output.
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class PrintStreamTest{
-
+public class PrintStreamTest {
     public static void main(String[] args) {
         System.out.println(1);
         System.out.println(2.012);
 
         String string = new String("Fear the Turtle!!!");
         System.out.println(string);
+
         Object object = string;
         System.out.println(object);
 

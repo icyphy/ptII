@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.vergil.tree;
 
 import java.awt.event.WindowAdapter;
@@ -35,8 +34,10 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TreeEditor
+
 /**
    An application that shows the elements of a Ptolemy II model in a JTree.
 
@@ -47,7 +48,6 @@ import javax.swing.JFrame;
    @Pt.AcceptedRating Red (ctsay)
 */
 public class TreeEditor extends JFrame {
-
     /** Construct a display of the Ptolemy II model given by the
      *  specified MoML file.
      *  @param filename The name of a MoML file.
@@ -79,9 +79,10 @@ public class TreeEditor extends JFrame {
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println(
-                    "usage : ptolemy.vergil.tree.TreeEditor file.java");
+                "usage : ptolemy.vergil.tree.TreeEditor file.java");
             return;
         }
+
         try {
             new TreeEditor(args[0]);
         } catch (Exception ex) {

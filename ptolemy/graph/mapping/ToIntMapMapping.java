@@ -22,13 +22,14 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.mapping;
 
 import java.util.Map;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ToIntMapMapping
+
 /** A ToIntMapping that is based on a Map. The values in the Map
     must be instances of Integer. ToIntMapMappings are immutable in the
     sense that the underlying Map cannot be changed (although the keys and
@@ -41,7 +42,6 @@ import java.util.Map;
     @version $Id$
 */
 public class ToIntMapMapping extends MapMapping implements ToIntMapping {
-
     /** Construct a ToIntMapMapping from a given map. The values in the
      *  must be instances of Integer; otherwise, unpredictable behavior
      *  may result. Modifications to the argument Map after construction
@@ -65,8 +65,8 @@ public class ToIntMapMapping extends MapMapping implements ToIntMapping {
      *  @return True if the given object is in the domain of this Mapping.
      */
     public boolean inDomain(Object object) {
-        return ((_map.containsKey(object)) &&
-                (_map.get(object) instanceof Integer));
+        return ((_map.containsKey(object))
+        && (_map.get(object) instanceof Integer));
     }
 
     /** Return the int value that is associated with given object under
@@ -82,7 +82,7 @@ public class ToIntMapMapping extends MapMapping implements ToIntMapping {
      *  domain of the mapping.
      */
     public int toInt(Object object) {
-        return ((Integer)(_map.get(object))).intValue();
+        return ((Integer) (_map.get(object))).intValue();
     }
 
     public Object toObject(Object object) {

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ci.demo.Router;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// QueueControl
+
 /**
    An actor that distribute its input data to different outputs.
    Its output ports <i>queue1<i> and <i>queue2<i> is connected
@@ -65,9 +66,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class QueueControl extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,7 +76,7 @@ public class QueueControl extends TypedAtomicActor {
      *   actor with this name.
      */
     public QueueControl(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         q1Length = new TypedIOPort(this, "q1Length", true, false);
@@ -109,11 +108,33 @@ public class QueueControl extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+    public TypedIOPort q1Length;
 
-    public TypedIOPort q1Length, input, q2Length, queue1, dropped, queue2;
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    public TypedIOPort input;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    public TypedIOPort q2Length;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    public TypedIOPort queue1;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    public TypedIOPort dropped;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    public TypedIOPort queue2;
 
     //the thresholds used for control queue1 and queue2's length.
-    public Parameter minMark, maxMark;
+    public Parameter minMark;
+
+    //the thresholds used for control queue1 and queue2's length.
+    public Parameter maxMark;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -126,20 +147,24 @@ public class QueueControl extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
         if (q1Length.hasToken(0)) {
-            _q1Length = ((IntToken)q1Length.get(0)).intValue();
+            _q1Length = ((IntToken) q1Length.get(0)).intValue();
         }
+
         if (q2Length.hasToken(0)) {
-            _q2Length = ((IntToken)q2Length.get(0)).intValue();
+            _q2Length = ((IntToken) q2Length.get(0)).intValue();
         }
+
         if (input.hasToken(0)) {
             Token pkt = input.get(0);
             double r = Math.random();
-            int min = ((IntToken)minMark.getToken()).intValue();
-            int max = ((IntToken)maxMark.getToken()).intValue();
+            int min = ((IntToken) minMark.getToken()).intValue();
+            int max = ((IntToken) maxMark.getToken()).intValue();
             double l = 0.0;
-            if (_q1Length + _q2Length > min) {
-                l = (0.0 + _q1Length + _q2Length - min)/(max - min);
+
+            if ((_q1Length + _q2Length) > min) {
+                l = ((0.0 + _q1Length + _q2Length) - min) / (max - min);
             }
+
             if (l > r) {
                 dropped.broadcast(pkt);
             } else {
@@ -165,9 +190,9 @@ public class QueueControl extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     //length of the queue that <i>queue1<i> connected to.
     private int _q1Length;
+
     //length of the queue that <i>queue2<i> connected to.
     private int _q2Length;
 }

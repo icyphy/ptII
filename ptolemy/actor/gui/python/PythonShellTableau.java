@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui.python;
 
 import java.awt.BorderLayout;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PythonShellTableau
+
 /**
    A tableau that provides an interactive shell for evaluating Python expressions.
    @author Christopher Hylands and Edward A. Lee
@@ -56,9 +57,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class PythonShellTableau extends Tableau
-    implements ShellInterpreter {
-
+public class PythonShellTableau extends Tableau implements ShellInterpreter {
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
      *  and having the specified name.  The frame is not made visible
@@ -71,8 +70,9 @@ public class PythonShellTableau extends Tableau
      *   an entity with the specified name.
      */
     public PythonShellTableau(PythonShellEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         PythonShellFrame frame = new PythonShellFrame(this);
         setFrame(frame);
 
@@ -109,7 +109,6 @@ public class PythonShellTableau extends Tableau
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The parameter used for evaluation.
     // FIXME: Perhaps the interpreter should be in its own thread?
     private PythonInterpreter _interpreter = new PythonInterpreter();
@@ -120,7 +119,6 @@ public class PythonShellTableau extends Tableau
     /** The frame that is created by an instance of PythonShellTableau.
      */
     public class PythonShellFrame extends TableauFrame {
-
         /** Construct a frame to display the PythonShell window.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
@@ -133,7 +131,7 @@ public class PythonShellTableau extends Tableau
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public PythonShellFrame(Tableau tableau)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(tableau);
 
             JPanel component = new JPanel();
@@ -147,11 +145,9 @@ public class PythonShellTableau extends Tableau
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////
-
         protected void _help() {
             try {
-                URL doc = getClass().getClassLoader().getResource(
-                        "ptolemy/actor/gui/python/help.htm");
+                URL doc = getClass().getClassLoader().getResource("ptolemy/actor/gui/python/help.htm");
                 getConfiguration().openModel(null, doc, doc.toExternalForm());
             } catch (Exception ex) {
                 System.out.println("PythonShellTableau._help(): " + ex);
@@ -163,7 +159,6 @@ public class PythonShellTableau extends Tableau
     /** A factory that creates a control panel to display a Tcl Shell
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -173,7 +168,7 @@ public class PythonShellTableau extends Tableau
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -193,9 +188,8 @@ public class PythonShellTableau extends Tableau
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?
             if (effigy instanceof PythonShellEffigy) {
-                return new PythonShellTableau(
-                        (PythonShellEffigy)effigy,
-                        "PythonShellTableau");
+                return new PythonShellTableau((PythonShellEffigy) effigy,
+                    "PythonShellTableau");
             } else {
                 return null;
             }

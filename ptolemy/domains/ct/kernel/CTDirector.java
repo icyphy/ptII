@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import java.util.HashSet;
@@ -54,8 +53,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
+
 /**
    Abstract base class for directors in the CT domain. A CTDirector
    has a CTScheduler which provides static schedules for firing
@@ -129,7 +130,6 @@ import ptolemy.kernel.util.Workspace;
 */
 public abstract class CTDirector extends StaticSchedulingDirector
     implements TimedDirector, CTGeneralDirector {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -154,18 +154,19 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *   a property in the container.
      */
     public CTDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
+
         try {
             setScheduler(new CTScheduler(container.workspace()));
-        } catch(IllegalActionException e) {
+        } catch (IllegalActionException e) {
             // This should never occur.
-            throw new InternalErrorException(this.getFullName() +
-                    "Error setting a CTScheduler.");
+            throw new InternalErrorException(this.getFullName()
+                + "Error setting a CTScheduler.");
         } catch (NameDuplicationException ex) {
-            throw new InternalErrorException("There is already a scheduler" +
-                    " with name " + this.getFullName());
+            throw new InternalErrorException("There is already a scheduler"
+                + " with name " + this.getFullName());
         }
     }
 
@@ -180,15 +181,16 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public CTDirector(Workspace workspace) {
         super(workspace);
         _initParameters();
+
         try {
             setScheduler(new CTScheduler(workspace));
-        } catch(IllegalActionException e) {
+        } catch (IllegalActionException e) {
             // This should never occur.
-            throw new InternalErrorException(this.getFullName() +
-                    "Error setting a CTScheduler.");
+            throw new InternalErrorException(this.getFullName()
+                + "Error setting a CTScheduler.");
         } catch (NameDuplicationException ex) {
-            throw new InternalErrorException("There is already a scheduler" +
-                    " with name " + this.getFullName());
+            throw new InternalErrorException("There is already a scheduler"
+                + " with name " + this.getFullName());
         }
     }
 
@@ -252,61 +254,74 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  is not valid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_debugging) {
             _debug("Updating CTDirector parameter: ", attribute.getName());
         }
+
         if (attribute == startTime) {
-            double startTimeValue =
-                ((DoubleToken)startTime.getToken()).doubleValue();
+            double startTimeValue = ((DoubleToken) startTime.getToken())
+                .doubleValue();
             _startTimeValue = startTimeValue;
         } else if (attribute == stopTime) {
-            double stopTimeValue =
-                ((DoubleToken)stopTime.getToken()).doubleValue();
+            double stopTimeValue = ((DoubleToken) stopTime.getToken())
+                .doubleValue();
             _stopTimeValue = stopTimeValue;
         } else if (attribute == initStepSize) {
-            double value = ((DoubleToken)initStepSize.getToken()).doubleValue();
+            double value = ((DoubleToken) initStepSize.getToken()).doubleValue();
+
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot set a negative step size.");
+                    "Cannot set a negative step size.");
             }
+
             _initStepSize = value;
         } else if (attribute == errorTolerance) {
-            double value = ((DoubleToken)errorTolerance.getToken()).
-                doubleValue();
+            double value = ((DoubleToken) errorTolerance.getToken())
+                .doubleValue();
+
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot set a negative error tolerance.");
+                    "Cannot set a negative error tolerance.");
             }
+
             _errorTolerance = value;
         } else if (attribute == minStepSize) {
-            double value = ((DoubleToken)minStepSize.getToken()).doubleValue();
+            double value = ((DoubleToken) minStepSize.getToken()).doubleValue();
+
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot set a negative step size.");
+                    "Cannot set a negative step size.");
             }
+
             _minStepSize = value;
         } else if (attribute == maxStepSize) {
-            double value = ((DoubleToken)maxStepSize.getToken()).doubleValue();
+            double value = ((DoubleToken) maxStepSize.getToken()).doubleValue();
+
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot set a negative step size.");
+                    "Cannot set a negative step size.");
             }
+
             _maxStepSize = value;
         } else if (attribute == valueResolution) {
-            double value = ((DoubleToken)valueResolution.getToken()).
-                doubleValue();
+            double value = ((DoubleToken) valueResolution.getToken())
+                .doubleValue();
+
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot set a negative value resolution.");
+                    "Cannot set a negative value resolution.");
             }
+
             _valueResolution = value;
         } else if (attribute == maxIterations) {
-            int value = ((IntToken)maxIterations.getToken()).intValue();
+            int value = ((IntToken) maxIterations.getToken()).intValue();
+
             if (value < 1) {
                 throw new IllegalActionException(this,
-                        "Cannot set a zero or negative iteration number.");
+                    "Cannot set a zero or negative iteration number.");
             }
+
             _maxIterations = value;
         } else {
             super.attributeChanged(attribute);
@@ -344,24 +359,27 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @exception IllegalActionException If the time is earlier than
      *  the current time, or the breakpont table is null.
      */
-    public void fireAt(Actor actor, Time time)
-            throws IllegalActionException{
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
         // Check if the request time is earlier than the current time.
         Time currentTime = getModelTime();
-        if (time.compareTo(currentTime) < 0 ) {
-            throw new IllegalActionException((Nameable)actor,
-                    "Requested fire time: " + time + " is earlier than" +
-                    " the current time." + currentTime );
+
+        if (time.compareTo(currentTime) < 0) {
+            throw new IllegalActionException((Nameable) actor,
+                "Requested fire time: " + time + " is earlier than"
+                + " the current time." + currentTime);
         }
+
         // check the validity of breakpoint table
         if (_breakpoints == null) {
             throw new IllegalActionException(
-                    "Breakpoint table can not be null!");
+                "Breakpoint table can not be null!");
         }
+
         if (_debugging) {
-            String name = ((Nameable)actor).getName();
+            String name = ((Nameable) actor).getName();
             _debug("----> " + name + " requests refiring at " + time);
         }
+
         // insert a new breakpoint into the breakpoint table.
         _breakpoints.insert(time);
     }
@@ -405,6 +423,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public CTExecutionPhase getExecutionPhase() {
         CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+
         if (executiveDirector != null) {
             return executiveDirector.getExecutionPhase();
         } else {
@@ -532,9 +551,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public void initialize() throws IllegalActionException {
         // Reset _postFireReturns to true.
         _postfireReturns = true;
+
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
+
         // set current time and initialize actors.
         super.initialize();
     }
@@ -572,14 +593,17 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public boolean postfire() throws IllegalActionException {
         if (!_isTopLevel() && (getBreakPoints().size() > 0)) {
             Time time = (Time) getBreakPoints().removeFirst();
-            CompositeActor container = (CompositeActor)getContainer();
+            CompositeActor container = (CompositeActor) getContainer();
             container.getExecutiveDirector().fireAt(container, time);
         }
+
         boolean postfireReturns = _postfireReturns && !_stopRequested;
+
         if (_debugging && _verbose) {
-            _debug("Postfire returns " + postfireReturns
-                    + " at: " + getModelTime());
+            _debug("Postfire returns " + postfireReturns + " at: "
+                + getModelTime());
         }
+
         return postfireReturns;
     }
 
@@ -599,41 +623,41 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  actors throw it in their prefire() method, or they can not be prefired.
      */
     public boolean prefireDynamicActors() throws IllegalActionException {
-
         // NOTE: We will also treat dynamic actors as waveform generators.
         // This is crucial to implement Dirac function.
-
         _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
 
-        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-        Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS)
-            .actorIterator();
+        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
+        Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
 
         while (actors.hasNext() && !_stopRequested) {
-            Actor actor = (Actor)actors.next();
+            Actor actor = (Actor) actors.next();
+
             if (_debugging && _verbose) {
-                _debug("Prefire dynamic actor: "
-                        + ((Nameable)actor).getName());
+                _debug("Prefire dynamic actor: " + ((Nameable) actor).getName());
             }
+
             boolean ready = actor.prefire();
+
             if (actor instanceof CTCompositeActor) {
-                ready =
-                    ready && ((CTCompositeActor)actor).prefireDynamicActors();
+                ready = ready
+                    && ((CTCompositeActor) actor).prefireDynamicActors();
             }
+
             // If ready is false, at least one dynamic actor is not
             // ready to fire. This should never happen.
             if (!ready) {
                 _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
-                throw new IllegalActionException((Nameable)actor,
-                        "Actor is not ready to fire. In the CT domain, all "
-                        + "dynamic actors should be ready to fire at "
-                        + "all times.\n "
-                        + "Does the actor only operate on sequence of tokens?"
-                                                 );
+                throw new IllegalActionException((Nameable) actor,
+                    "Actor is not ready to fire. In the CT domain, all "
+                    + "dynamic actors should be ready to fire at "
+                    + "all times.\n "
+                    + "Does the actor only operate on sequence of tokens?");
             }
+
             if (_debugging && _verbose) {
-                _debug("Prefire of " + ((Nameable)actor).getName()
-                        + " returns " + ready);
+                _debug("Prefire of " + ((Nameable) actor).getName()
+                    + " returns " + ready);
             }
         }
 
@@ -642,14 +666,16 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // date inputs and generate derivatives for integrators.
         // Without this, on the first round of integration, the state
         // transition actors will complain that inputs are not ready.
-        Iterator integrators =
-            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        Iterator integrators = schedule.get(CTSchedule.DYNAMIC_ACTORS)
+                                       .actorIterator();
+
         while (integrators.hasNext() && !_stopRequested) {
-            CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
+            CTDynamicActor dynamic = (CTDynamicActor) integrators.next();
+
             if (_debugging && _verbose) {
-                _debug("Emit tentative state "
-                        + ((Nameable)dynamic).getName());
+                _debug("Emit tentative state " + ((Nameable) dynamic).getName());
             }
+
             dynamic.emitCurrentStates();
         }
 
@@ -682,27 +708,31 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // Verify that this director resides in an approriate level
         // of hierarchy.
         Nameable nameable = getContainer();
+
         if (!(nameable instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-                    "has no CompositeActor container.");
+                "has no CompositeActor container.");
         }
-        CompositeActor container = (CompositeActor)nameable;
+
+        CompositeActor container = (CompositeActor) nameable;
+
         if (container.getContainer() != null) {
             if (!canBeInsideDirector()) {
                 throw new IllegalActionException(this,
-                        "cannot serve as an inside director.");
+                    "cannot serve as an inside director.");
             }
         } else {
             if (!canBeTopLevelDirector()) {
                 throw new IllegalActionException(this,
-                        "cannot serve as an top-level director.");
+                    "cannot serve as an top-level director.");
             }
         }
 
         // Construct a scheduler.
-        CTScheduler scheduler = (CTScheduler)getScheduler();
+        CTScheduler scheduler = (CTScheduler) getScheduler();
+
         if (scheduler == null) {
-            throw new IllegalActionException( this, "has no scheduler.");
+            throw new IllegalActionException(this, "has no scheduler.");
         }
 
         // Invalidate schedule and force a reconstructition of the schedule.
@@ -736,6 +766,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         if (_debugging) {
             _debug("----- Setting the current step size to " + stepSize);
         }
+
         _currentStepSize = stepSize;
     }
 
@@ -818,8 +849,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             valueResolution.setExpression("1e-6");
             valueResolution.setTypeEquals(BaseType.DOUBLE);
 
-            synchronizeToRealTime = new Parameter(this,
-                    "synchronizeToRealTime");
+            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
@@ -829,7 +859,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             throw new InternalErrorException("Parameter creation error: " + e);
         } catch (NameDuplicationException ex) {
             throw new InvalidStateException(this,
-                    "Parameter name duplication: " + ex);
+                "Parameter name duplication: " + ex);
         }
     }
 
@@ -841,24 +871,27 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @exception IllegalActionException If the solver can not be created.
      */
     protected final ODESolver _instantiateODESolver(String className)
-            throws IllegalActionException {
+        throws IllegalActionException {
         ODESolver newSolver;
+
         if (_debugging) {
             _debug("instantiating solver..." + className);
         }
+
         try {
             Class solver = Class.forName(className);
-            newSolver = (ODESolver)solver.newInstance();
-        } catch(ClassNotFoundException e) {
-            throw new IllegalActionException(this, "ODESolver: "+
-                    className + " is not found.");
-        } catch(InstantiationException e) {
-            throw new IllegalActionException(this, "ODESolver: "+
-                    className + " instantiation failed.");
-        } catch(IllegalAccessException e) {
-            throw new IllegalActionException(this, "ODESolver: "+
-                    className + " is not accessible.");
+            newSolver = (ODESolver) solver.newInstance();
+        } catch (ClassNotFoundException e) {
+            throw new IllegalActionException(this,
+                "ODESolver: " + className + " is not found.");
+        } catch (InstantiationException e) {
+            throw new IllegalActionException(this,
+                "ODESolver: " + className + " instantiation failed.");
+        } catch (IllegalAccessException e) {
+            throw new IllegalActionException(this,
+                "ODESolver: " + className + " is not accessible.");
         }
+
         newSolver._makeSolverOf(this);
         return newSolver;
     }
@@ -870,7 +903,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  appropriate.
      */
     protected final void _setCurrentODESolver(ODESolver solver)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _currentSolver = solver;
     }
 
@@ -910,9 +943,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
     protected final void _setIterationEndTime(Time time) {
         if (time.compareTo(getModelTime()) < 0) {
             throw new InvalidStateException(this,
-                    " Iteration end time" + time + " is earlier than" +
-                    " the current time." + getModelTime());
+                " Iteration end time" + time + " is earlier than"
+                + " the current time." + getModelTime());
         }
+
         _iterationEndTime = time;
     }
 
@@ -938,20 +972,18 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Initialize the local variables of this CTDirector. This is called in
     // the preinitialize method.
     // NOTE: Time objects are not initialized here. They are initialized at
     // the end of the preinitialize method of this director.
     private void _initializeLocalVariables() throws IllegalActionException {
-        _errorTolerance =
-            ((DoubleToken)errorTolerance.getToken()).doubleValue();
-        _initStepSize = ((DoubleToken)initStepSize.getToken()).doubleValue();
-        _maxIterations = ((IntToken)maxIterations.getToken()).intValue();
-        _maxStepSize = ((DoubleToken)maxStepSize.getToken()).doubleValue();
-        _minStepSize = ((DoubleToken)minStepSize.getToken()).doubleValue();
-        _valueResolution =
-            ((DoubleToken)valueResolution.getToken()).doubleValue();
+        _errorTolerance = ((DoubleToken) errorTolerance.getToken()).doubleValue();
+        _initStepSize = ((DoubleToken) initStepSize.getToken()).doubleValue();
+        _maxIterations = ((IntToken) maxIterations.getToken()).intValue();
+        _maxStepSize = ((DoubleToken) maxStepSize.getToken()).doubleValue();
+        _minStepSize = ((DoubleToken) minStepSize.getToken()).doubleValue();
+        _valueResolution = ((DoubleToken) valueResolution.getToken())
+            .doubleValue();
 
         _currentSolver = null;
         _prefiredActors = new HashSet();
@@ -967,7 +999,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
         if (_debugging) {
             _debug(getFullName(), "create/clear break point table.");
         }
+
         TotallyOrderedSet breakpoints = getBreakPoints();
+
         if (breakpoints != null) {
             breakpoints.clear();
         } else {
@@ -977,9 +1011,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Indicate whether this is a breakpoint iteration.
     private boolean _breakpointIteration = false;
+
     // A table for breakpoints.
     private TotallyOrderedSet _breakpoints;
 
@@ -987,27 +1021,36 @@ public abstract class CTDirector extends StaticSchedulingDirector
     // in the _initializeLocalVariables() method before their usage.
     // Current ODE solver.
     private ODESolver _currentSolver = null;
+
     // Simulation step sizes.
     private double _currentStepSize;
+
     // Indicate that this is the discrete phase.
     private boolean _discretePhase;
+
     // the error tolerance for state resolution
     private double _errorTolerance;
+
     // The private variable indicates the current execution phase of this
     // director.
     private CTExecutionPhase _executionPhase;
+
     // the first step size used by solver.
     private double _initStepSize;
+
     // The begin time of a iteration. This value is remembered so that
     // we don't need to resolve it from the iteration end time and step size.
     private Time _iterationBeginTime;
+
     // the iteration end time.
     private Time _iterationEndTime;
     private int _maxIterations;
     private double _maxStepSize;
     private double _minStepSize;
+
     // Collection of actors that have been prefired()
     private Set _prefiredActors = new HashSet();
+
     // Local copies of parameters.
     private Time _startTime;
     private double _startTimeValue;

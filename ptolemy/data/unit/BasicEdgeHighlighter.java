@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package ptolemy.data.unit;
 
 import java.awt.BasicStroke;
@@ -39,8 +38,10 @@ import diva.canvas.DamageRegion;
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BasicEdgeHighlighter
+
 /**
    A decorator figure that displays a highlight behind an edge. This capability
    was planned for BasicHighlighter but there doesn't seem to be an easy way to
@@ -53,9 +54,7 @@ import diva.canvas.FigureDecorator;
    @Pt.ProposedRating Red (rowland)
    @Pt.AcceptedRating Red (rowland)
 */
-
 public class BasicEdgeHighlighter extends FigureDecorator {
-
     /** Create a new highlighter with a default paint, "halo", and stroke.
      */
     public BasicEdgeHighlighter() {
@@ -88,9 +87,11 @@ public class BasicEdgeHighlighter extends FigureDecorator {
         g.setPaint(_paint);
 
         Shape shape = getChild().getShape();
+
         if (_stroke != null) {
             g.setStroke(_stroke);
         }
+
         g.draw(shape);
 
         // Draw the child
@@ -114,12 +115,13 @@ public class BasicEdgeHighlighter extends FigureDecorator {
         Rectangle2D bounds = getChild().getBounds();
         double x = bounds.getX() - _halo;
         double y = bounds.getY() - _halo;
-        double w = bounds.getWidth() + 2 * _halo;
-        double h = bounds.getHeight() + 2 * _halo;
+        double w = bounds.getWidth() + (2 * _halo);
+        double h = bounds.getHeight() + (2 * _halo);
 
-        getParent().repaint(
-            DamageRegion.createDamageRegion(getTransformContext(), x, y, w, h));
+        getParent().repaint(DamageRegion.createDamageRegion(
+                getTransformContext(), x, y, w, h));
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -134,5 +136,4 @@ public class BasicEdgeHighlighter extends FigureDecorator {
     /* The highlight stroke, or null if none.
      */
     private Stroke _stroke;
-
 }

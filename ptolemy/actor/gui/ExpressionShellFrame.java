@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
@@ -37,8 +36,10 @@ import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionShellFrame
+
 /**
    A frame that provides an interactive shell for evaluating expressions.
 
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ExpressionShellEffigy
 */
 public class ExpressionShellFrame extends TableauFrame {
-
     /** Construct a frame to display the ExpressionShell window.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -64,7 +64,7 @@ public class ExpressionShellFrame extends TableauFrame {
      *  @exception NameDuplicationException If a name collision occurs.
      */
     public ExpressionShellFrame(ExpressionShellTableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(tableau);
 
         JPanel component = new JPanel();
@@ -78,11 +78,9 @@ public class ExpressionShellFrame extends TableauFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     protected void _help() {
         try {
-            URL doc = getClass().getClassLoader().getResource(
-                    "doc/expressions.htm");
+            URL doc = getClass().getClassLoader().getResource("doc/expressions.htm");
             getConfiguration().openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {
             System.out.println("ExpressionShellTableau._help(): " + ex);

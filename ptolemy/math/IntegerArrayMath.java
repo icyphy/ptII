@@ -26,12 +26,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// IntegerArrayMath
+
 /**
    This class provides a library for mathematical operations on int arrays.
    Unless explicitly noted otherwise, all array arguments are assumed to be
@@ -45,9 +45,9 @@ package ptolemy.math;
    @Pt.AcceptedRating Yellow (ctsay)
 */
 public class IntegerArrayMath {
-
     // Protected constructor prevents construction of this class.
-    protected IntegerArrayMath() {}
+    protected IntegerArrayMath() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -58,9 +58,11 @@ public class IntegerArrayMath {
     public static final int[] add(final int[] array, final int z) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array[i] + z;
         }
+
         return returnValue;
     }
 
@@ -70,13 +72,14 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] add(final int[] array1,
-            final int[] array2) {
+    public static final int[] add(final int[] array1, final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.add");
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] + array2[i];
         }
+
         return returnValue;
     }
 
@@ -95,8 +98,7 @@ public class IntegerArrayMath {
      *  of array1. This method simply calls
      *  append(array1, 0, array1.length, array2, 0, array2.length)
      */
-    public static final int[] append(final int[] array1,
-            final int[] array2) {
+    public static final int[] append(final int[] array1, final int[] array2) {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
@@ -115,9 +117,8 @@ public class IntegerArrayMath {
      *  @param length2 The number of elements of array2 to append.
      *  @return A new array of ints.
      */
-    public static final int[] append(final int[] array1,
-            final int idx1, final int length1,
-            final int[] array2, final int idx2, final int length2) {
+    public static final int[] append(final int[] array1, final int idx1,
+        final int length1, final int[] array2, final int idx2, final int length2) {
         int[] returnValue = new int[length1 + length2];
 
         if (length1 > 0) {
@@ -137,13 +138,15 @@ public class IntegerArrayMath {
      *  as the right operand in all cases. (op.operate(array[i], z)).
      *  If the length of the array is 0, return a new array of length 0.
      */
-    public static final int[] applyBinaryOperation(
-            IntegerBinaryOperation op, final int[] array, final int z) {
+    public static final int[] applyBinaryOperation(IntegerBinaryOperation op,
+        final int[] array, final int z) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = op.operate(array[i], z);
         }
+
         return returnValue;
     }
 
@@ -153,13 +156,15 @@ public class IntegerArrayMath {
      *  as the right operands (op.operate(z, array[i])).
      *  If the length of the array is 0, return a new array of length 0.
      */
-    public static final int[] applyBinaryOperation(
-            IntegerBinaryOperation op, final int z, final int[] array) {
+    public static final int[] applyBinaryOperation(IntegerBinaryOperation op,
+        final int z, final int[] array) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = op.operate(array[i], z);
         }
+
         return returnValue;
     }
 
@@ -172,15 +177,16 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] applyBinaryOperation(
-            IntegerBinaryOperation op, final int[] array1,
-            final int[] array2) {
+    public static final int[] applyBinaryOperation(IntegerBinaryOperation op,
+        final int[] array1, final int[] array2) {
         int length = _commonLength(array1, array2,
                 "IntegerArrayMath.applyBinaryOperation");
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = op.operate(array1[i], array2[i]);
         }
+
         return returnValue;
     }
 
@@ -190,12 +196,14 @@ public class IntegerArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final int[] applyUnaryOperation(
-            final IntegerUnaryOperation op, final int[] array) {
+        final IntegerUnaryOperation op, final int[] array) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = op.operate(array[i]);
         }
+
         return returnValue;
     }
 
@@ -206,9 +214,11 @@ public class IntegerArrayMath {
     public static final int[] bitwiseAnd(final int[] array, final int z) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array[i] & z;
         }
+
         return returnValue;
     }
 
@@ -218,14 +228,14 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] bitwiseAnd(final int[] array1,
-            final int[] array2) {
-        int length = _commonLength(array1, array2,
-                "IntegerArrayMath.bitwiseAnd");
+    public static final int[] bitwiseAnd(final int[] array1, final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseAnd");
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] & array2[i];
         }
+
         return returnValue;
     }
 
@@ -236,9 +246,11 @@ public class IntegerArrayMath {
     public static final int[] bitwiseComplement(final int[] array) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = ~array[i];
         }
+
         return returnValue;
     }
 
@@ -249,9 +261,11 @@ public class IntegerArrayMath {
     public static final int[] bitwiseOr(final int[] array, final int z) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array[i] | z;
         }
+
         return returnValue;
     }
 
@@ -261,14 +275,14 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] bitwiseOr(final int[] array1,
-            final int[] array2) {
-        int length = _commonLength(array1, array2,
-                "IntegerArrayMath.bitwiseOr");
+    public static final int[] bitwiseOr(final int[] array1, final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseOr");
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] | array2[i];
         }
+
         return returnValue;
     }
 
@@ -279,9 +293,11 @@ public class IntegerArrayMath {
     public static final int[] bitwiseXor(final int[] array, final int z) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array[i] ^ z;
         }
+
         return returnValue;
     }
 
@@ -291,14 +307,14 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] bitwiseXor(final int[] array1,
-            final int[] array2) {
-        int length = _commonLength(array1, array2,
-                "IntegerArrayMath.bitwiseXor");
+    public static final int[] bitwiseXor(final int[] array1, final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseXor");
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] ^ array2[i];
         }
+
         return returnValue;
     }
 
@@ -309,12 +325,13 @@ public class IntegerArrayMath {
     public static final int[] divide(final int[] array, final int z) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array[i] / z;
         }
+
         return returnValue;
     }
-
 
     /** Return a new array that is the element-by-element division of
      *  the first array by the second array (array1[i] / array2[i]).
@@ -326,34 +343,34 @@ public class IntegerArrayMath {
      *  @return A new array of ints.
      */
     public static final int[] divideElements(final int[] array1,
-            final int[] array2) {
-        int length = _commonLength(array1, array2, "IntegerArrayMath.divideElements");
+        final int[] array2) {
+        int length = _commonLength(array1, array2,
+                "IntegerArrayMath.divideElements");
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] / array2[i];
         }
+
         return returnValue;
     }
-
 
     /** Return the dot product of the two arrays.
      *  If the lengths of the array are both 0, return 0.
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int dotProduct(final int[] array1,
-            final int[] array2) {
-        int length = _commonLength(array1, array2,
-                "IntegerArrayMath.dotProduct");
+    public static final int dotProduct(final int[] array1, final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.dotProduct");
 
         int sum = 0;
 
         for (int i = 0; i < length; i++) {
-            sum += array1[i] * array2[i];
+            sum += (array1[i] * array2[i]);
         }
+
         return sum;
     }
-
 
     /** Return a new array that is a copy of the argument except that
      *  the elements are limited to lie within the specified range.
@@ -367,25 +384,20 @@ public class IntegerArrayMath {
      *  @param top The top limit.
      *  @return A new array with values in the range [bottom, top].
      */
-    public static final int[] limit(final int[] array,
-            final int bottom, final int top) {
+    public static final int[] limit(final int[] array, final int bottom,
+        final int top) {
         int[] returnValue = new int[array.length];
+
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top) ||
-
-                    (array[i] == Integer.MAX_VALUE)) {
-
+            if ((array[i] > top) || (array[i] == Integer.MAX_VALUE)) {
                 returnValue[i] = top;
-            } else if ((array[i] < bottom) ||
-
-                    (array[i] == Integer.MIN_VALUE)) {
-
+            } else if ((array[i] < bottom) || (array[i] == Integer.MIN_VALUE)) {
                 returnValue[i] = bottom;
-
             } else {
                 returnValue[i] = array[i];
             }
         }
+
         return returnValue;
     }
 
@@ -395,9 +407,11 @@ public class IntegerArrayMath {
     public static final int[] modulo(final int[] array, final int z) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array[i] % z;
         }
+
         return returnValue;
     }
 
@@ -407,17 +421,16 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] modulo(final int[] array1,
-            final int[] array2) {
-        int length = _commonLength(array1, array2,
-                "IntegerArrayMath.modulo");
+    public static final int[] modulo(final int[] array1, final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.modulo");
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] % array2[i];
         }
+
         return returnValue;
     }
-
 
     /** Return a new array that is the element-by-element multiplication of
      *  the two input arrays.
@@ -425,14 +438,14 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] multiply(final int[] array1,
-            final int[] array2) {
-        int length = _commonLength(array1, array2,
-                "IntegerArrayMath.multiply");
+    public static final int[] multiply(final int[] array1, final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.multiply");
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] * array2[i];
         }
+
         return returnValue;
     }
 
@@ -449,7 +462,7 @@ public class IntegerArrayMath {
         int[] returnValue = new int[length];
 
         for (int i = 0; i < length; i++) {
-            returnValue[i] = array[i]*factor;
+            returnValue[i] = array[i] * factor;
         }
 
         return returnValue;
@@ -461,12 +474,13 @@ public class IntegerArrayMath {
     public static final int[] negative(final int[] array) {
         int length = array.length;
         int[] returnValue = new int[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = -array[i];
         }
+
         return returnValue;
     }
-
 
     /** Return a new array of ints that is formed by padding the
      *  middle of the array with 0's. If either the length of the
@@ -479,30 +493,28 @@ public class IntegerArrayMath {
      *  @param newLength The desired length of the returned array.
      *  @return A new array of ints.
      */
-    public static final int[] padMiddle(final int[] array,
-            final int newLength) {
+    public static final int[] padMiddle(final int[] array, final int newLength) {
         int length = array.length;
 
         int entriesNeeded = newLength - length;
 
         if (entriesNeeded < 0) {
             throw new IllegalArgumentException("ptolemy.math."
-                    + "IntegerArrayMath.padMiddle() : newLength must be "
-                    + " >= length of array.");
+                + "IntegerArrayMath.padMiddle() : newLength must be "
+                + " >= length of array.");
         } else if (entriesNeeded == 0) {
             return resize(array, newLength); // allocates a new array
         }
 
-        double halfLength   = length * 0.5;
+        double halfLength = length * 0.5;
         int halfLengthFloor = (int) Math.floor(halfLength);
-        int halfLengthCeil  = (int) Math.ceil(halfLength);
+        int halfLengthCeil = (int) Math.ceil(halfLength);
         int[] returnValue = new int[newLength];
 
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array,  halfLengthFloor, returnValue,
-                newLength - halfLengthCeil, halfLengthCeil);
-
+        System.arraycopy(array, halfLengthFloor, returnValue,
+            newLength - halfLengthCeil, halfLengthCeil);
 
         return returnValue;
     }
@@ -515,9 +527,8 @@ public class IntegerArrayMath {
      *  @param newLength The desired length of the output array.
      *  @return A new array of ints of length newLength.
      */
-    public static final int[] resize(final int[] array,
-            final int newLength) {
-        return resize(array,  newLength, 0);
+    public static final int[] resize(final int[] array, final int newLength) {
+        return resize(array, newLength, 0);
     }
 
     /** Return a new array of length newLength that is formed by
@@ -536,17 +547,16 @@ public class IntegerArrayMath {
      *  @param startIdx The starting index for the input array.
      *  @return A new array of ints of length newLength.
      */
-    public static final int[] resize(int[] array,
-            final int newLength, final int startIdx) {
-
+    public static final int[] resize(int[] array, final int newLength,
+        final int startIdx) {
         int[] returnValue = new int[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
+
         if ((startIdx >= array.length) && (copySize > 0)) {
-            throw new IllegalArgumentException(
-                    "resize():  the start index '" + startIdx
-                    + "' is greather than equal to the array length '"
-                    + array.length + "' and the number of items to be copied '"
-                    + copySize + "' is greater than zero.");
+            throw new IllegalArgumentException("resize():  the start index '"
+                + startIdx + "' is greather than equal to the array length '"
+                + array.length + "' and the number of items to be copied '"
+                + copySize + "' is greater than zero.");
         }
 
         if (copySize > 0) {
@@ -562,9 +572,11 @@ public class IntegerArrayMath {
      */
     public static final int[] scale(int[] array, int scaleFactor) {
         int[] returnValue = new int[array.length];
+
         for (int i = 0; i < array.length; i++) {
             returnValue[i] = scaleFactor * array[i];
         }
+
         return returnValue;
     }
 
@@ -628,21 +640,19 @@ public class IntegerArrayMath {
         return returnValue;
     }
 
-
     /** Return a new array that is the element-by-element difference of the
      *  two input arrays, i.e. the first array minus the second array
      *  (array1[i] - array2[i]).
      *  If the lengths of both arrays are 0, return a new array of length 0.
      */
-    public static final int[] subtract(final int[] array1,
-            final int[] array2) {
-        int length = _commonLength(array1, array2,
-                "IntegerArrayMath.subtract");
+    public static final int[] subtract(final int[] array1, final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.subtract");
         int[] returnValue = new int[length];
 
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] - array2[i];
         }
+
         return returnValue;
     }
 
@@ -652,9 +662,11 @@ public class IntegerArrayMath {
      */
     public static final int sumOfSquares(int[] array) {
         int sum = 0;
+
         for (int i = 0; i < array.length; i++) {
             sum += (array[i] * array[i]);
         }
+
         return sum;
     }
 
@@ -671,10 +683,10 @@ public class IntegerArrayMath {
         Complex[] returnValue = new Complex[length];
 
         for (int i = 0; i < length; i++) {
-            returnValue[i] = new Complex((double)array[i], 0.0);
+            returnValue[i] = new Complex((double) array[i], 0.0);
         }
-        return returnValue;
 
+        return returnValue;
     }
 
     /** Return a new array that is formed by converting the ints in
@@ -690,9 +702,9 @@ public class IntegerArrayMath {
         for (int i = 0; i < length; i++) {
             returnValue[i] = (double) array[i];
         }
+
         return returnValue;
     }
-
 
     /** Return a new array that is formed by converting the ints in
      *  the argument array to doubles.
@@ -708,9 +720,9 @@ public class IntegerArrayMath {
         for (int i = 0; i < length; i++) {
             returnValue[i] = (float) array[i];
         }
+
         return returnValue;
     }
-
 
     /** Return a new array that is formed by converting the ints in
      *  the argument array to longs.  If the length of the argument
@@ -725,9 +737,9 @@ public class IntegerArrayMath {
         for (int i = 0; i < length; i++) {
             returnValue[i] = (long) array[i];
         }
+
         return returnValue;
     }
-
 
     /** Return a new String representing the array, formatted as
      *  in Java array initializers.
@@ -743,14 +755,13 @@ public class IntegerArrayMath {
      *  format argument.
      */
     public static final String toString(final int[] array,
-            String elementDelimiter, String vectorBegin, String vectorEnd) {
+        String elementDelimiter, String vectorBegin, String vectorEnd) {
         int length = array.length;
         StringBuffer sb = new StringBuffer();
 
         sb.append(vectorBegin);
 
         for (int i = 0; i < length; i++) {
-
             sb.append(Integer.toString(array[i]));
 
             if (i < (length - 1)) {
@@ -777,16 +788,17 @@ public class IntegerArrayMath {
      *  @exception IllegalArgumentException If the arrays are not of the same
      *   length.
      */
-    public static final boolean within(final int[] array1,
-            final int[] array2, int maxError) {
+    public static final boolean within(final int[] array1, final int[] array2,
+        int maxError) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.within");
 
         for (int i = 0; i < length; i++) {
-            if (array1[i] > array2[i] + maxError ||
-                    array1[i] < array2[i] - maxError) {
+            if ((array1[i] > (array2[i] + maxError))
+                    || (array1[i] < (array2[i] - maxError))) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -806,16 +818,17 @@ public class IntegerArrayMath {
      *  @exception IllegalArgumentException If the arrays are not of the same
      *   length.
      */
-    public static final boolean within(final int[] array1,
-            final int[] array2, int[] maxError) {
+    public static final boolean within(final int[] array1, final int[] array2,
+        int[] maxError) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.within");
 
         for (int i = 0; i < length; i++) {
-            if (array1[i] > array2[i] + maxError[i] ||
-                    array1[i] < array2[i] - maxError[i]) {
+            if ((array1[i] > (array2[i] + maxError[i]))
+                    || (array1[i] < (array2[i] - maxError[i]))) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -833,24 +846,22 @@ public class IntegerArrayMath {
      *  @return The common length of both arrays.
      */
     protected static final int _commonLength(final int[] array1,
-            final int[] array2,
-            String methodName) {
+        final int[] array2, String methodName) {
         if (array1 == null) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : first input array is null.");
+            throw new IllegalArgumentException("ptolemy.math." + methodName
+                + "() : first input array is null.");
         }
 
         if (array2 == null) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : second input array is null.");
+            throw new IllegalArgumentException("ptolemy.math." + methodName
+                + "() : second input array is null.");
         }
 
         if (array1.length != array2.length) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input arrays must have the same length, " +
-                    "but the first array has length " + array1.length +
-                    " and the second array has length " +
-                    array2.length + ".");
+            throw new IllegalArgumentException("ptolemy.math." + methodName
+                + "() : input arrays must have the same length, "
+                + "but the first array has length " + array1.length
+                + " and the second array has length " + array2.length + ".");
         }
 
         return array1.length;

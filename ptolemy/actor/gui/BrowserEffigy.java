@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.net.URL;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BrowserEffigy
+
 /**
    An effigy for a web browser.
 
@@ -49,13 +50,13 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class BrowserEffigy extends Effigy {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
      */
     public BrowserEffigy(Workspace workspace) {
         super(workspace);
+
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }
@@ -65,8 +66,9 @@ public class BrowserEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public BrowserEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }
@@ -88,10 +90,8 @@ public class BrowserEffigy extends Effigy {
      *  @exception Exception If the URL cannot be read, or if the data
      *   is malformed in some way.
      */
-    public static BrowserEffigy newBrowserEffigy(
-            CompositeEntity container, URL base, URL in)
-            throws Exception {
-
+    public static BrowserEffigy newBrowserEffigy(CompositeEntity container,
+        URL base, URL in) throws Exception {
         // Create a new effigy.
         BrowserEffigy effigy = new BrowserEffigy(container,
                 container.uniqueName("browserEffigy"));
@@ -121,7 +121,6 @@ public class BrowserEffigy extends Effigy {
     /** A factory for creating new effigies.
      */
     public static class Factory extends EffigyFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -131,8 +130,9 @@ public class BrowserEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
+
             // Record the latest factory for use by HTMLViewer.
             staticFactory = this;
         }
@@ -165,30 +165,40 @@ public class BrowserEffigy extends Effigy {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
-        public Effigy createEffigy(
-                CompositeEntity container, URL base, URL in)
-                throws Exception {
+        public Effigy createEffigy(CompositeEntity container, URL base, URL in)
+            throws Exception {
             if (in == null) {
                 return null;
             }
+
             String extension = getExtension(in);
+
             // This could be a list, or a user preference
-            if (extension.equals("pdf")
-                    || extension.startsWith("htm")
+            if (extension.equals("pdf") || extension.startsWith("htm")
                     || extension.startsWith("shtm")) {
                 Effigy effigy = newBrowserEffigy(container, base, in);
                 return effigy;
             }
+
             // The extension doesn't match.  Try the content type.
             URLConnection connection = in.openConnection();
-            if (connection == null) return null;
+
+            if (connection == null) {
+                return null;
+            }
+
             String contentType = connection.getContentType();
-            if (contentType == null) return null;
+
+            if (contentType == null) {
+                return null;
+            }
+
             if (contentType.startsWith("text/html")
                     || contentType.startsWith("text/rtf")) {
                 Effigy effigy = newBrowserEffigy(container, base, in);
                 return effigy;
             }
+
             return null;
         }
     }

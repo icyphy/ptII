@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Green (eal)
 
 */
-
 package ptolemy.kernel.util.test;
 
 import java.util.List;
@@ -35,10 +34,10 @@ import java.util.List;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
 
+
 public class AccessAction {
-    public AccessAction(Workspace workspace, long sleepBefore,
-            char action, long sleepAfter, Object lock,
-            List record, String name) {
+    public AccessAction(Workspace workspace, long sleepBefore, char action,
+        long sleepAfter, Object lock, List record, String name) {
         _workspace = workspace;
         _sleepBefore = sleepBefore;
         _action = action;
@@ -52,8 +51,10 @@ public class AccessAction {
         if (_sleepBefore > 0) {
             Thread.sleep(_sleepBefore);
         }
+
         switch (_action) {
         case 'R':
+
             synchronized (_workspace) {
                 try {
                     _workspace.getReadAccess();
@@ -63,8 +64,11 @@ public class AccessAction {
                     _record.add(_name + " failed to get read access");
                 }
             }
+
             break;
+
         case 'W':
+
             synchronized (_workspace) {
                 try {
                     _workspace.getWriteAccess();
@@ -74,8 +78,11 @@ public class AccessAction {
                     _record.add(_name + " failed to get write access");
                 }
             }
+
             break;
+
         case 'U':
+
             //synchronized (_workspace) {
             try {
                 _record.add(_name + " entered waiting on lock");
@@ -84,12 +91,16 @@ public class AccessAction {
             } catch (InterruptedException ex) {
                 _record.add(_name + " interrupted while waiting");
             }
+
             //}
             break;
+
         default:
+
             // no-op
             break;
         }
+
         if (_sleepAfter > 0) {
             Thread.sleep(_sleepAfter);
         }
@@ -99,37 +110,50 @@ public class AccessAction {
         if (_sleepAfter > 0) {
             Thread.sleep(_sleepAfter);
         }
+
         switch (_action) {
         case 'R':
+
             synchronized (_workspace) {
                 _workspace.doneReading();
+
                 if (_failed) {
                     _record.add(_name
-                            + " handled failure in getting read access");
+                        + " handled failure in getting read access");
                 } else {
                     _record.add(_name + " released read access");
                 }
             }
+
             break;
+
         case 'W':
+
             synchronized (_workspace) {
                 _workspace.doneWriting();
+
                 if (_failed) {
                     _record.add(_name
-                            + " handled failure in getting write access");
+                        + " handled failure in getting write access");
                 } else {
                     _record.add(_name + " released write access");
                 }
             }
+
             break;
+
         case 'U':
+
             //_workspace.wait(_lock);
             // no-op
             break;
+
         default:
+
             // no-op
             break;
         }
+
         if (_sleepBefore > 0) {
             Thread.sleep(_sleepBefore);
         }

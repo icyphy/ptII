@@ -24,24 +24,25 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
-import java.util.*;
+import soot.*;
 
-import ptolemy.copernicus.jhdl.util.*;
-import ptolemy.copernicus.jhdl.soot.*;
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.jimple.*;
-import soot.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
 
 @author Mike Wirthlin
@@ -50,15 +51,15 @@ import soot.*;
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */
-
-interface Signal  {
-
+interface Signal {
     public int getSignalWidth();
+
     public void setSignalWidth(int width);
+
     public boolean isResolved();
+
     public String getName();
 
     public static final int UNRESOLVED = -1;
     public static final int UNRESOLVABLE = -2;
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.hsif;
 
 import java.io.FileWriter;
@@ -34,8 +33,10 @@ import java.util.List;
 
 import ptolemy.util.XSLTUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HSIFUtilities
+
 /** Utilities methods for operating on HSIF files.  These methods
     are in a separate non-graphical class so that we can test them
     as part of the nightly build, or provide non-graphical tools
@@ -63,11 +64,10 @@ public class HSIFUtilities {
      *  @exception Exception If there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, FileWriter fileWriter)
-            throws Exception {
+        throws Exception {
         // This method takes a FileWriter so that the user can
         // ensure that the FileWriter exists and is writable before going
         // through the trouble of doing the conversion.
-
         List transforms = new LinkedList();
 
         // The transform() method will look in the classpath.
@@ -91,7 +91,7 @@ public class HSIFUtilities {
      *  @exception Exception If there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, String output)
-            throws Exception {
+        throws Exception {
         // This method makes it much easier to test the conversion,
         FileWriter fileWriter = new FileWriter(output);
         HSIFToMoML(input, fileWriter);
@@ -112,11 +112,11 @@ public class HSIFUtilities {
      *  file to be generated.
      *  @exception Exception If the conversion fails.
      */
-    public static void main(String [] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         if (args.length != 2) {
             System.err.println("Usage: java -classpath $PTII "
-                    + "ptolemy.hsif.HSIFUtilities HSIFInputFile "
-                    + "MoMLOutputFile");
+                + "ptolemy.hsif.HSIFUtilities HSIFInputFile "
+                + "MoMLOutputFile");
             System.exit(2);
         } else {
             HSIFToMoML(args[0], args[1]);

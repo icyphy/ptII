@@ -26,11 +26,12 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ChangeListener
+
 /**
    A ChangeListener is an interface implemented by objects that are
    interested in being kept informed about changes in a model as they
@@ -45,7 +46,6 @@ package ptolemy.kernel.util;
    @see ChangeRequest
 */
 public interface ChangeListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

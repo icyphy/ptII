@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -56,6 +55,7 @@ import diva.canvas.toolbox.PathFigure;
 import diva.gui.BasicFrame;
 import diva.util.java2d.Polyline2D;
 
+
 /**
  * <p> This tutorial shows how to add different types of manipulators
  * to figures.
@@ -64,7 +64,6 @@ import diva.util.java2d.Polyline2D;
  * @version $Id$
  */
 public class ManipulatorTutorial {
-
     // The figures
     private BasicRectangle _rectangle;
     private BasicEllipse _circle;
@@ -79,42 +78,42 @@ public class ManipulatorTutorial {
 
     /** Create a JCanvas and put it into a window
      */
-    public ManipulatorTutorial () {
+    public ManipulatorTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         BasicFrame frame = new BasicFrame("Manipulator canvas tutorial", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
     }
 
     /** Create the figures.
      */
-    public void createFigures () {
+    public void createFigures() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
-        _rectangle = new BasicRectangle(50,50,80,80,Color.black);
+        _rectangle = new BasicRectangle(50, 50, 80, 80, Color.black);
         layer.add(_rectangle);
 
-        _circle = new BasicEllipse(150,50,80,80,Color.green);
+        _circle = new BasicEllipse(150, 50, 80, 80, Color.green);
         layer.add(_circle);
 
         GeneralPath path = new GeneralPath();
-        path.moveTo(120,240);
-        path.lineTo(240,240);
-        path.quadTo(180,120,120,240);
+        path.moveTo(120, 240);
+        path.lineTo(240, 240);
+        path.quadTo(180, 120, 120, 240);
         path.closePath();
         _shape = new BasicFigure(path, Color.red);
         layer.add(_shape);
 
         Polyline2D poly = new Polyline2D.Double();
-        poly.moveTo(240,120);
-        poly.lineTo(280,140);
-        poly.lineTo(240,160);
-        poly.lineTo(280,180);
-        poly.lineTo(240,200);
-        poly.lineTo(280,220);
-        poly.lineTo(240,240);
+        poly.moveTo(240, 120);
+        poly.lineTo(280, 140);
+        poly.lineTo(240, 160);
+        poly.lineTo(280, 180);
+        poly.lineTo(240, 200);
+        poly.lineTo(280, 220);
+        poly.lineTo(240, 240);
         _line = new PathFigure(poly);
         layer.add(_line);
     }
@@ -124,7 +123,7 @@ public class ManipulatorTutorial {
      * different type of manipulator attached to it. Usually, each
      * selection interactor will be attached to many figures.
      */
-    public void createInteraction () {
+    public void createInteraction() {
         // Create a selection drag-selector on the pane
         SelectionDragger selectionDragger = new SelectionDragger(graphicsPane);
         SelectionModel model = new BasicSelectionModel();
@@ -173,7 +172,7 @@ public class ManipulatorTutorial {
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -184,5 +183,3 @@ public class ManipulatorTutorial {
             });
     }
 }
-
-

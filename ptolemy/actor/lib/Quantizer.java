@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Quantizer
+
 /**
    Produce an output token on each firing with a value that is
    a quantized version of the input.  The input and output types
@@ -73,9 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (liuj)
    @Pt.AcceptedRating Yellow (yuhong)
 */
-
 public class Quantizer extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -85,11 +84,12 @@ public class Quantizer extends Transformer {
      *   actor with this name.
      */
     public Quantizer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         levels = new Parameter(this, "levels");
         levels.setExpression("{-1.0, 1.0}");
         levels.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
         // Call this so that we don't have to copy its code here...
         attributeChanged(levels);
 
@@ -117,26 +117,30 @@ public class Quantizer extends Transformer {
      *   increasing.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == levels) {
-            ArrayToken levelsValue = (ArrayToken)levels.getToken();
+            ArrayToken levelsValue = (ArrayToken) levels.getToken();
             double[] _levels = new double[levelsValue.length()];
             double previous = Double.NEGATIVE_INFINITY;
+
             for (int i = 0; i < levelsValue.length(); i++) {
-                _levels[i] = ((DoubleToken)levelsValue.getElement(i))
+                _levels[i] = ((DoubleToken) levelsValue.getElement(i))
                     .doubleValue();
+
                 // Check nondecreasing property.
                 if (_levels[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of levels is not nondecreasing.");
+                        "Value of levels is not nondecreasing.");
                 }
+
                 previous = _levels[i];
             }
 
             // Compute the quantization thresholds.
-            _thresholds = new double[_levels.length-1];
-            for (int j = 0; j < _levels.length - 1; j++) {
-                _thresholds[j] = (_levels[j+1] + _levels[j])/2.0;
+            _thresholds = new double[_levels.length - 1];
+
+            for (int j = 0; j < (_levels.length - 1); j++) {
+                _thresholds[j] = (_levels[j + 1] + _levels[j]) / 2.0;
             }
         } else {
             super.attributeChanged(attribute);
@@ -149,9 +153,9 @@ public class Quantizer extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            double in = ((DoubleToken)input.get(0)).doubleValue();
+            double in = ((DoubleToken) input.get(0)).doubleValue();
             int index = _getQuantizationIndex(in);
-            output.send(0, ((ArrayToken)levels.getToken()).getElement(index));
+            output.send(0, ((ArrayToken) levels.getToken()).getElement(index));
         }
     }
 
@@ -164,19 +168,19 @@ public class Quantizer extends Transformer {
      */
     private int _getQuantizationIndex(double in) {
         int index = _thresholds.length;
+
         for (int i = 0; i < _thresholds.length; i++) {
             if (in <= _thresholds[i]) {
                 index = i;
                 break;
             }
         }
+
         return index;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The thresholds for quantization.
     private double[] _thresholds;
 }

@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NoRoomException
+
 /**
    This exception is thrown when an attempt is made to put a token
    into a receiver that does not have room to accommodate one.
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.Nameable;
    @see Receiver
 */
 public class NoRoomException extends KernelRuntimeException {
-
     /** Construct an exception with the given error message.
      *  @param message The message.
      */

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.kernel;
 
 import ptolemy.actor.AbstractReceiver;
@@ -35,8 +34,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SRReceiver
+
 /**
 
    The receiver for the Synchronous Reactive (SR) domain.  This
@@ -91,9 +92,7 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Green (pwhitake)
    @see ptolemy.domains.sr.kernel.SRDirector
 */
-public class SRReceiver extends AbstractReceiver
-    implements StateReceiver {
-
+public class SRReceiver extends AbstractReceiver implements StateReceiver {
     /** Construct an SRReceiver with unknown state and the given director.
      */
     public SRReceiver(SRDirector director) {
@@ -115,9 +114,10 @@ public class SRReceiver extends AbstractReceiver
     public void clear() throws IllegalActionException {
         if (isKnown() && hasToken()) {
             throw new IllegalActionException(
-                    "SRReceiver: Cannot transition from a present state "
-                    + "to an absent state.");
+                "SRReceiver: Cannot transition from a present state "
+                + "to an absent state.");
         }
+
         // Ivan Jeukens: Signal the SR director to increment the
         // _currentNumberOfKnownReceivers variable. Clearing a
         // SRReceiver in the unknown state means changing its state to
@@ -129,6 +129,7 @@ public class SRReceiver extends AbstractReceiver
             // If we don't call receiverChanged, then SendClearTest fails.
             _director.receiverChanged(this);
         }
+
         _token = null;
         _known = true;
     }
@@ -141,12 +142,14 @@ public class SRReceiver extends AbstractReceiver
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(
-                    "SRReceiver: Attempt to get data from an empty receiver.");
+                "SRReceiver: Attempt to get data from an empty receiver.");
         }
+
         if (!isKnown()) {
             throw new UnknownTokenException(
-                    "SRReceiver: get() called on SRReceiver with unknown state.");
+                "SRReceiver: get() called on SRReceiver with unknown state.");
         }
+
         return _token;
     }
 
@@ -172,9 +175,13 @@ public class SRReceiver extends AbstractReceiver
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "hasRoom() requires a positive argument.");
+                "hasRoom() requires a positive argument.");
         }
-        if (numberOfTokens == 1) return hasRoom();
+
+        if (numberOfTokens == 1) {
+            return hasRoom();
+        }
+
         return false;
     }
 
@@ -189,7 +196,7 @@ public class SRReceiver extends AbstractReceiver
             return (_token != null);
         } else {
             throw new UnknownTokenException(getContainer(),
-                    "hasToken() called on SRReceiver with unknown state.");
+                "hasToken() called on SRReceiver with unknown state.");
         }
     }
 
@@ -210,17 +217,18 @@ public class SRReceiver extends AbstractReceiver
      *  @see #hasToken()
      *  @since Ptolemy II 2.1
      */
-    public boolean hasToken(int numberOfTokens)
-            throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (!isKnown()) {
             throw new UnknownTokenException(getContainer(),
-                    "hasToken(" + numberOfTokens
-                    + ") called on SRReceiver with unknown state.");
+                "hasToken(" + numberOfTokens
+                + ") called on SRReceiver with unknown state.");
         }
+
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "SRReceiver: hasToken() requires a positive argument.");
+                "SRReceiver: hasToken() requires a positive argument.");
         }
+
         if (numberOfTokens == 1) {
             return hasToken();
         } else {
@@ -249,6 +257,7 @@ public class SRReceiver extends AbstractReceiver
                     }
                 }
             }
+
             return false;
         } else {
             // since tokens can not change according to
@@ -279,30 +288,31 @@ public class SRReceiver extends AbstractReceiver
     public void put(Token token) {
         if (token == null) {
             throw new IllegalArgumentException(
-                    "SRReceiver.put(null) is invalid.");
+                "SRReceiver.put(null) is invalid.");
         }
+
         if (!isKnown()) {
             _putToken(token);
         } else {
             if (!hasToken()) {
                 throw new IllegalOutputException(getContainer(),
-                        "SRReceiver cannot transition from an absent state " +
-                        "to a present state.  Call reset().");
+                    "SRReceiver cannot transition from an absent state "
+                    + "to a present state.  Call reset().");
             } else {
                 try {
-                    if ( (token.getType().equals( _token.getType())) &&
-                            (token.isEqualTo(_token).booleanValue()) ) {
+                    if ((token.getType().equals(_token.getType()))
+                            && (token.isEqualTo(_token).booleanValue())) {
                         // Do nothing, because this token was already present.
                     } else {
                         throw new IllegalOutputException(getContainer(),
-                                "SRReceiver cannot receive two tokens " +
-                                "that differ.");
+                            "SRReceiver cannot receive two tokens "
+                            + "that differ.");
                     }
                 } catch (IllegalActionException ex) {
                     // Should never happen.
-                    throw new InternalErrorException("SRReceiver cannot " +
-                            "determine whether the two tokens received are " +
-                            "equal.");
+                    throw new InternalErrorException("SRReceiver cannot "
+                        + "determine whether the two tokens received are "
+                        + "equal.");
                 }
             }
         }
@@ -340,7 +350,6 @@ public class SRReceiver extends AbstractReceiver
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _lastKnownStatus;
     private Token _cachedToken;
 
@@ -352,4 +361,3 @@ public class SRReceiver extends AbstractReceiver
     // The director of this receiver.
     private SRDirector _director;
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.expr.Parameter;
@@ -34,8 +33,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Const
+
 /**
    Produce a constant output. The value of the
    output is that of the token contained by the <i>value</i> parameter,
@@ -48,9 +49,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class Const extends Source {
-
     /** Construct a constant source with the given container and name.
      *  Create the <i>value</i> parameter, initialize its value to
      *  the default value of an IntToken with value 1.
@@ -62,7 +61,7 @@ public class Const extends Source {
      *   actor with this name.
      */
     public Const(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         value = new Parameter(this, "value");
         value.setExpression("1");
@@ -70,11 +69,10 @@ public class Const extends Source {
         // Set the type constraint.
         output.setTypeAtLeast(value);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+            + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,9 +96,9 @@ public class Const extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Const newObject = (Const)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Const newObject = (Const) super.clone(workspace);
+
         // Set the type constraint.
         newObject.output.setTypeAtLeast(newObject.value);
         return newObject;

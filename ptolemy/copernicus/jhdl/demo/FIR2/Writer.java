@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.demo.FIR2;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -40,6 +39,7 @@ import ptolemy.kernel.util.*;
 
 import java.io.IOException;
 
+
 /**
    This actor reads tokens from any number of input channels and writes
    their string values to the specified output file.  If no file name
@@ -51,8 +51,7 @@ import java.io.IOException;
    @Pt.ProposedRating Yellow (yuhong)
    @Pt.AcceptedRating Yellow (mudit)
 */
-public class Writer extends TypedAtomicActor{
-
+public class Writer extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,11 +61,10 @@ public class Writer extends TypedAtomicActor{
      *   actor with this name.
      */
     public Writer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,17 +79,16 @@ public class Writer extends TypedAtomicActor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token inputToken = input.get(0);
             System.out.println(inputToken.toString());
         }
+
         return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private boolean _usingStdOut = true;
 }

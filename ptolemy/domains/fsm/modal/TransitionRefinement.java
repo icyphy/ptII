@@ -27,7 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.modal;
 
 import ptolemy.kernel.CompositeEntity;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TransitionRefinement
+
 /**
 
 Transition refinements provide a way to use composite actors which are run
@@ -62,7 +63,6 @@ it can be used to construct hybrid systems using the CT domain.<p>
 @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class TransitionRefinement extends Refinement {
-
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -97,47 +97,51 @@ public class TransitionRefinement extends Refinement {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Have already called newPort() in the container.
                 // This time, process the request.
-                TransitionRefinementPort port =
-                    new TransitionRefinementPort(this, name);
+                TransitionRefinementPort port = new TransitionRefinementPort(this,
+                        name);
 
                 // NOTE: This is a total kludge, but when a port is created
                 // this way, rather than by parsing MoML that specifies the
                 // class, we assume that it is being created interactively,
                 // rather than by reading a stored MoML file, so we enable
                 // mirroring in the port.
-        // NOTE: Changed RefinementPort so mirroring
-        // is enabled by default. This means mirroring
-        // will occur during MoML parsing, but this
-        // should be harmless.  EAL 12/04.
+                // NOTE: Changed RefinementPort so mirroring
+                // is enabled by default. This means mirroring
+                // will occur during MoML parsing, but this
+                // should be harmless.  EAL 12/04.
                 // port._mirrorDisable = false;
-
                 // Create the appropriate links.
-                ModalModel container = (ModalModel)getContainer();
+                ModalModel container = (ModalModel) getContainer();
+
                 if (container != null) {
                     String relationName = name + "Relation";
                     Relation relation = container.getRelation(relationName);
+
                     if (relation == null) {
                         relation = container.newRelation(relationName);
+
                         Port containerPort = container.getPort(name);
                         containerPort.link(relation);
                     }
+
                     port.link(relation);
                 }
+
                 return port;
             } else {
                 _mirrorDisable = true;
-                ((ModalModel)getContainer()).newPort(name);
+                ((ModalModel) getContainer()).newPort(name);
                 return getPort(name);
             }
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(this, ex,
-                                             "TransitionRefinement.newPort: "
-                                             + "Internal error");
+                "TransitionRefinement.newPort: " + "Internal error");
         } finally {
             _mirrorDisable = false;
             _workspace.doneWriting();

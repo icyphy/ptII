@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.Source;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Undefined
+
 /**
    This actor outputs no values.  It produces no tokens.  In domains such as
    SR, the output will never converge to a defined value.
@@ -49,9 +50,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (pwhitake)
    @Pt.AcceptedRating Red (pwhitake)
 */
-
 public class Undefined extends Source {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -62,7 +61,7 @@ public class Undefined extends Source {
      *   an actor already in the container.
      */
     public Undefined(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
         outputType = new StringAttribute(this, "outputType");
@@ -78,13 +77,14 @@ public class Undefined extends Source {
      *  @exception IllegalActionException If the type is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == outputType) {
             String typeName = outputType.getExpression().trim().toLowerCase();
             Type newType = BaseType.forName(typeName);
+
             if (newType == null) {
                 throw new IllegalActionException(this,
-                        "Unrecognized type: " + typeName);
+                    "Unrecognized type: " + typeName);
             } else {
                 output.setTypeEquals(newType);
             }
@@ -100,11 +100,4 @@ public class Undefined extends Source {
      *  that defaults to "int".
      */
     public StringAttribute outputType;
-
 }
-
-
-
-
-
-

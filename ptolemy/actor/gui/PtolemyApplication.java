@@ -25,16 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
-// Ptolemy imports
 import java.net.URL;
 
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplication
+
 /**
    This application opens run control panels for models specified on the
    command line.  The exact facilities that are available are determined
@@ -52,13 +52,12 @@ import ptolemy.util.MessageHandler;
    @see RunTableau
 */
 public class PtolemyApplication extends MoMLApplication {
-
     /** Parse the specified command-line arguments, creating models
      *  and frames to interact with them.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PtolemyApplication(String args[]) throws Exception {
+    public PtolemyApplication(String[] args) throws Exception {
         super(args);
     }
 
@@ -69,7 +68,7 @@ public class PtolemyApplication extends MoMLApplication {
      *  command-line arguments.
      *  @param args The command-line arguments.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             new PtolemyApplication(args);
         } catch (Exception ex) {
@@ -83,6 +82,7 @@ public class PtolemyApplication extends MoMLApplication {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
+
             System.exit(0);
         }
     }
@@ -97,9 +97,10 @@ public class PtolemyApplication extends MoMLApplication {
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
-    protected Configuration _createDefaultConfiguration() throws Exception {
-        URL specificationURL =
-            specToURL("ptolemy/configs/runPanelConfiguration.xml");
+    protected Configuration _createDefaultConfiguration()
+        throws Exception {
+        URL specificationURL = specToURL(
+                "ptolemy/configs/runPanelConfiguration.xml");
         return _readConfiguration(specificationURL);
     }
 
@@ -110,13 +111,15 @@ public class PtolemyApplication extends MoMLApplication {
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
-    protected Configuration _createEmptyConfiguration() throws Exception {
+    protected Configuration _createEmptyConfiguration()
+        throws Exception {
         Configuration configuration = _createDefaultConfiguration();
         URL inURL = specToURL("ptolemy/configs/runWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inURL, inURL);
-        Effigy doc = (Effigy)configuration.getEntity("directory.doc");
+
+        Effigy doc = (Effigy) configuration.getEntity("directory.doc");
         URL idURL = specToURL("ptolemy/configs/intro.htm");
         doc.identifier.setExpression(idURL.toExternalForm());
         return configuration;
@@ -127,7 +130,7 @@ public class PtolemyApplication extends MoMLApplication {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
-    protected void _parseArgs(String args[]) throws Exception {
+    protected void _parseArgs(String[] args) throws Exception {
         _commandTemplate = "ptolemy [ options ] [file ...]";
         super._parseArgs(args);
     }

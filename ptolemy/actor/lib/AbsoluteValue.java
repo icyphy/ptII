@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.List;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AbsoluteValue
+
 /**
    Produce an output token on each firing with a value that is
    equal to the absolute value of the input. The input can have any
@@ -57,9 +58,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (yuhong)
 */
-
 public class AbsoluteValue extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -69,7 +68,7 @@ public class AbsoluteValue extends Transformer {
      *   actor with this name.
      */
     public AbsoluteValue(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeAtLeast(new FunctionTerm(input));
@@ -85,9 +84,8 @@ public class AbsoluteValue extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        AbsoluteValue newObject = (AbsoluteValue)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        AbsoluteValue newObject = (AbsoluteValue) super.clone(workspace);
         newObject.output.setTypeAtLeast(new FunctionTerm(newObject.input));
         return newObject;
     }
@@ -98,7 +96,7 @@ public class AbsoluteValue extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ScalarToken in = (ScalarToken)input.get(0);
+            ScalarToken in = (ScalarToken) input.get(0);
             output.send(0, in.absolute());
         }
     }
@@ -115,15 +113,12 @@ public class AbsoluteValue extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // This class implements a monotonic function of the input port
     // type. The result of the function is the same as the input type
     // if is not Complex; otherwise, the result is Double.
     private class FunctionTerm extends MonotonicFunction {
-
         // The constructor takes a port argument so that the clone()
         // method can construct an instance of this class for the
         // input port on the clone.
@@ -139,6 +134,7 @@ public class AbsoluteValue extends Transformer {
          */
         public Object getValue() {
             Type inputType = _port.getType();
+
             if (inputType == BaseType.COMPLEX) {
                 return BaseType.DOUBLE;
             } else if (inputType == BaseType.COMPLEX_MATRIX) {
@@ -166,7 +162,6 @@ public class AbsoluteValue extends Transformer {
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-
         private TypedIOPort _port;
     }
 }

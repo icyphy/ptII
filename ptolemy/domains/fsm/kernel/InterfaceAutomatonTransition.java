@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.data.expr.Parameter;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonTransition
+
 /**
    A Transition for Interface Automaton. In the Interface Automata paper
    written by Luca de Alfaro and Henzinger, transitions are called actions.
@@ -74,9 +75,7 @@ import ptolemy.kernel.util.StringAttribute;
    @see InterfaceAutomaton
    @see Action
 */
-
 public class InterfaceAutomatonTransition extends Transition {
-
     /** Construct a transition with the specified container and name.
      *  The container argument must not be null, or a NullPointerException
      *  will be thrown. This transition will use the workspace of the
@@ -90,9 +89,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *   any relation already in the container.
      */
     public InterfaceAutomatonTransition(InterfaceAutomaton container,
-            String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
         label = new StringAttribute(this, "label");
         outputActions.setVisibility(Settable.NONE);
@@ -125,11 +122,13 @@ public class InterfaceAutomatonTransition extends Transition {
      *   <i>label</i> and it does not ends with "?" or "!" or ";".
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.attributeChanged(attribute);
+
         if (attribute == label) {
             String labelString = label.getExpression();
-            String name = labelString.substring(0, labelString.length()-1);
+            String name = labelString.substring(0, labelString.length() - 1);
+
             if (labelString.endsWith("?")) {
                 setGuardExpression(name + "_isPresent");
                 outputActions.setExpression("");
@@ -141,28 +140,28 @@ public class InterfaceAutomatonTransition extends Transition {
                 // Note that if this transition is removed, or changed to
                 // an input or output transition, the parameter is still
                 // in the Interface Automaton.
-                InterfaceAutomaton container =
-                    (InterfaceAutomaton)getContainer();
+                InterfaceAutomaton container = (InterfaceAutomaton) getContainer();
+
                 if (container.getAttribute(name) == null) {
                     try {
                         Parameter param = new Parameter(container, name);
                     } catch (NameDuplicationException exception) {
                         // should not happen
                         throw new InternalErrorException(
-                                "InterfaceAutomatonTransition."
-                                + "attributeChanged:\n"
-                                + "Cannot create Parameter for internal "
-                                + "transition:\n"
-                                + exception.getMessage());
+                            "InterfaceAutomatonTransition."
+                            + "attributeChanged:\n"
+                            + "Cannot create Parameter for internal "
+                            + "transition:\n" + exception.getMessage());
                     }
                 }
+
                 setGuardExpression("true");
                 outputActions.setExpression(name + "=true");
             } else {
                 throw new IllegalActionException(
-                        "InterfaceAutomatonTransition.attributeChanged: "
-                        + "The argument " + label + " does not end with ? "
-                        + "or ! or ;");
+                    "InterfaceAutomatonTransition.attributeChanged: "
+                    + "The argument " + label + " does not end with ? "
+                    + "or ! or ;");
             }
         }
     }
@@ -173,9 +172,11 @@ public class InterfaceAutomatonTransition extends Transition {
      */
     public String getLabel() {
         String labelStr = label.getExpression();
+
         if (labelStr == null) {
             labelStr = "";
         }
+
         return labelStr;
     }
 
@@ -185,6 +186,7 @@ public class InterfaceAutomatonTransition extends Transition {
      */
     public int getType() {
         String labelString = label.getExpression();
+
         if (labelString.endsWith("?")) {
             return _INPUT_TRANSITION;
         } else if (labelString.endsWith("!")) {
@@ -193,8 +195,8 @@ public class InterfaceAutomatonTransition extends Transition {
             return _INTERNAL_TRANSITION;
         } else {
             throw new InternalErrorException(
-                    "InterfaceAutomatonTransition.getType: "
-                    + "The label does not end with ? or ! or ;");
+                "InterfaceAutomatonTransition.getType: "
+                + "The label does not end with ? or ! or ;");
         }
     }
 
@@ -212,13 +214,13 @@ public class InterfaceAutomatonTransition extends Transition {
      *   an relation with the name of this transition.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof InterfaceAutomaton) &&
-                (container != null)) {
+        throws IllegalActionException, NameDuplicationException {
+        if (!(container instanceof InterfaceAutomaton) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "Transition can only be contained by instances of "
-                    + "InterfaceAutomaton.");
+                "Transition can only be contained by instances of "
+                + "InterfaceAutomaton.");
         }
+
         super.setContainer(container);
     }
 
@@ -229,14 +231,13 @@ public class InterfaceAutomatonTransition extends Transition {
      */
     public void setTriggerExpression(String expression) {
         throw new UnsupportedOperationException(
-                "InterfaceAutomatonTransition.setTriggerExpression: "
-                + "The trigger expression is not used in InterfaceAutomaton, "
-                + "so this method should not be called.");
+            "InterfaceAutomatonTransition.setTriggerExpression: "
+            + "The trigger expression is not used in InterfaceAutomaton, "
+            + "so this method should not be called.");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // Transition types.
     protected static final int _INPUT_TRANSITION = 0;
     protected static final int _OUTPUT_TRANSITION = 1;

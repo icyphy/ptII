@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import java.util.List;
@@ -32,8 +31,10 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.SourceNodeAnalyzer;
 import ptolemy.graph.analysis.strategy.SourceNodeStrategy;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SourceNodeAnalysis
+
 /**
    Computation of source nodes in a graph.
    A source node in a graph is a node without input edges.
@@ -47,9 +48,7 @@ import ptolemy.graph.analysis.strategy.SourceNodeStrategy;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class SourceNodeAnalysis extends Analysis {
-
     /** Construct an instance of this class for a given graph.
      *
      *  @param graph The given graph.
@@ -69,14 +68,13 @@ public class SourceNodeAnalysis extends Analysis {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Return the source nodes in the graph under analysis.
      *  Each element of the collection is an {@link ptolemy.graph.Node}.
      *
      *  @return Return the source nodes.
      */
     public List nodes() {
-        return ((SourceNodeAnalyzer)analyzer()).nodes();
+        return ((SourceNodeAnalyzer) analyzer()).nodes();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -85,7 +83,7 @@ public class SourceNodeAnalysis extends Analysis {
      */
     public String toString() {
         return "Source node analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import java.util.List;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParserAttribute
+
 /**
    This attribute represents a MoML parser.
    If it is present in an entity that is the context for a MoMLChangeRequest,
@@ -59,7 +60,6 @@ import ptolemy.kernel.util.SingletonAttribute;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class ParserAttribute extends SingletonAttribute {
-
     /** Construct an attribute with the specified container and name.
      *  @param container The container.
      *  @param name The name of this attribute.
@@ -69,7 +69,7 @@ public class ParserAttribute extends SingletonAttribute {
      *   an attribute already in the container.
      */
     public ParserAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }
@@ -84,6 +84,7 @@ public class ParserAttribute extends SingletonAttribute {
         if (_parser == null) {
             _parser = new MoMLParser();
         }
+
         return _parser;
     }
 
@@ -96,17 +97,22 @@ public class ParserAttribute extends SingletonAttribute {
      */
     public static MoMLParser getParser(NamedObj object) {
         NamedObj container = object;
+
         while (container != null) {
             List attributes = object.attributeList(ParserAttribute.class);
-            if (attributes != null && attributes.size() > 0) {
+
+            if ((attributes != null) && (attributes.size() > 0)) {
                 // Found one.
-                ParserAttribute attribute = (ParserAttribute)attributes.get(0);
+                ParserAttribute attribute = (ParserAttribute) attributes.get(0);
                 return attribute.getParser();
             }
-            container = (NamedObj)container.getContainer();
+
+            container = (NamedObj) container.getContainer();
         }
+
         // No parser attribute was found.
         NamedObj toplevel = object.toplevel();
+
         try {
             ParserAttribute attribute = new ParserAttribute(toplevel, "_parser");
             return attribute.getParser();
@@ -125,7 +131,6 @@ public class ParserAttribute extends SingletonAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The parser.
     private MoMLParser _parser;
 }

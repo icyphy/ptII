@@ -22,15 +22,16 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
 
 import java.util.List;
 
 import ptolemy.graph.Node;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SingleSourceLongestPathAnalyzer
+
 /**
    A common interface for all the single source longest path analyzers.
    <p>
@@ -42,7 +43,6 @@ import ptolemy.graph.Node;
    @version $Id$
 */
 public interface SingleSourceLongestPathAnalyzer extends GraphAnalyzer {
-
     /** Return the distance from the start node to all the other nodes in the
      *  graph. The result is a double[] indexed by the destination node label.
      *

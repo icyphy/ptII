@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.SignalProcessing;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DiscreteRandomSource
+
 /**
    An actor that produces tokens with a given probability mass function.
    <p>
@@ -65,9 +66,7 @@ import ptolemy.math.SignalProcessing;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (ssachs)
 */
-
 public class DiscreteRandomSource extends RandomSource {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,7 +76,7 @@ public class DiscreteRandomSource extends RandomSource {
      *   actor with this name.
      */
     public DiscreteRandomSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         pmf = new Parameter(this, "pmf");
         pmf.setExpression("{0.5, 0.5}");
@@ -89,7 +88,7 @@ public class DiscreteRandomSource extends RandomSource {
         values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType)values.getType();
+        ArrayType valuesArrayType = (ArrayType) values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
     }
@@ -120,20 +119,22 @@ public class DiscreteRandomSource extends RandomSource {
      *   violated.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == pmf) {
-
-            ArrayToken pmfValue = (ArrayToken)pmf.getToken();
+            ArrayToken pmfValue = (ArrayToken) pmf.getToken();
             _pmf = new double[pmfValue.length()];
+
             double sum = 0.0;
+
             for (int i = 0; i < _pmf.length; i++) {
-                _pmf[i] = ((DoubleToken)pmfValue.getElement(i)).doubleValue();
+                _pmf[i] = ((DoubleToken) pmfValue.getElement(i)).doubleValue();
                 sum += _pmf[i];
             }
+
             // Allow for roundoff error.
             if (!SignalProcessing.close(sum, 1.0)) {
                 throw new IllegalActionException(this,
-                        "Parameter values is required to sum to one.");
+                    "Parameter values is required to sum to one.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -148,11 +149,9 @@ public class DiscreteRandomSource extends RandomSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        DiscreteRandomSource newObject =
-            (DiscreteRandomSource)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DiscreteRandomSource newObject = (DiscreteRandomSource) super.clone(workspace);
+        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
 
@@ -178,19 +177,24 @@ public class DiscreteRandomSource extends RandomSource {
         // Generate a double between 0 and 1, uniformly distributed.
         double randomValue = _random.nextDouble();
         ArrayToken valuesToken = (ArrayToken) values.getToken();
+
         if (_pmf.length != valuesToken.length()) {
             throw new IllegalActionException(this,
-                    "Parameters values and pmf are required to be arrays "
-                    + "with the same length.");
+                "Parameters values and pmf are required to be arrays "
+                + "with the same length.");
         }
+
         double cdf = 0.0;
+
         for (int i = 0; i < _pmf.length; i++) {
             cdf += _pmf[i];
+
             if (randomValue <= cdf) {
                 _current = valuesToken.getElement(i);
                 return true;
             }
         }
+
         // We shouldn't get here, but if we do, we output the last value.
         _current = valuesToken.getElement(_pmf.length - 1);
         return true;

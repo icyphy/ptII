@@ -26,10 +26,10 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.math;
 
 import java.util.StringTokenizer;
+
 
 /**
    The FixPointQuantization class defines the mapping of numeric values
@@ -63,7 +63,6 @@ import java.util.StringTokenizer;
    @see Rounding
 */
 public class FixPointQuantization extends Quantization {
-
     /** Construct a FixPointQuantization object based on the provided
      *  string.  The string may consist of just <i>precision</i> or
      *  <i>precision,overflow</i> or
@@ -89,19 +88,22 @@ public class FixPointQuantization extends Quantization {
      *   supplied, overflow strategy or rounding strategy does not
      *   match one of the known formats.
      */
-    public FixPointQuantization(String string)
-            throws IllegalArgumentException {
+    public FixPointQuantization(String string) throws IllegalArgumentException {
         super(Overflow.SATURATE, Rounding.NEAREST);
+
         int strLen = string.length();
-        if ((strLen >= 2)
-                && (string.charAt(0) == '(')
-                && (string.charAt(strLen-1) == ')'))
-            string = string.substring(1, strLen-1);
-        StringTokenizer st = new StringTokenizer(string,",");
+
+        if ((strLen >= 2) && (string.charAt(0) == '(')
+                && (string.charAt(strLen - 1) == ')')) {
+            string = string.substring(1, strLen - 1);
+        }
+
+        StringTokenizer st = new StringTokenizer(string, ",");
+
         if (!st.hasMoreTokens()) {
-            throw new IllegalArgumentException("A precision string" +
-                    " consisting of two integers separated " +
-                    " by a '/', or '.' token is required");
+            throw new IllegalArgumentException("A precision string"
+                + " consisting of two integers separated "
+                + " by a '/', or '.' token is required");
         }
 
         _precision = new Precision(st.nextToken());
@@ -109,12 +111,15 @@ public class FixPointQuantization extends Quantization {
         if (st.hasMoreTokens()) {
             _overflow = Overflow.getName(st.nextToken());
         }
+
         if (st.hasMoreTokens()) {
             _rounding = Rounding.getName(st.nextToken());
         }
-        if (st.hasMoreTokens())
+
+        if (st.hasMoreTokens()) {
             throw new IllegalArgumentException("FixPointQuantization "
-                    + "requires at most a precision overflow and rounding,");
+                + "requires at most a precision overflow and rounding,");
+        }
     }
 
     /** Construct a FixPointQuantization with specified precision, overflow
@@ -125,7 +130,7 @@ public class FixPointQuantization extends Quantization {
      *  @param rounding The rounding.
      */
     public FixPointQuantization(Precision precision, Overflow overflow,
-            Rounding rounding) {
+        Rounding rounding) {
         super(overflow, rounding);
         _precision = precision;
     }
@@ -138,13 +143,14 @@ public class FixPointQuantization extends Quantization {
      *  @return True if the quantizations are equal.
      */
     public boolean equals(Object object) {
-        if (super.equals(object)
-                && object instanceof FixPointQuantization) {
-            FixPointQuantization other = (FixPointQuantization)object;
+        if (super.equals(object) && object instanceof FixPointQuantization) {
+            FixPointQuantization other = (FixPointQuantization) object;
+
             if (_precision.equals(other._precision)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -160,8 +166,7 @@ public class FixPointQuantization extends Quantization {
      *  @return A new quantization.
      */
     public FixPointQuantization setOverflow(Overflow overflow) {
-        return new FixPointQuantization(_precision,
-                overflow, getRounding());
+        return new FixPointQuantization(_precision, overflow, getRounding());
     }
 
     /** Return a FixPointQuantization with a changed precision.
@@ -169,8 +174,7 @@ public class FixPointQuantization extends Quantization {
      *  @return A new quantization.
      */
     public FixPointQuantization setPrecision(Precision precision) {
-        return new FixPointQuantization(precision,
-                getOverflow(), getRounding());
+        return new FixPointQuantization(precision, getOverflow(), getRounding());
     }
 
     /** Return a FixPointQuantization with a changed rounding strategy.
@@ -178,8 +182,7 @@ public class FixPointQuantization extends Quantization {
      *  @return A new quantization.
      */
     public FixPointQuantization setRounding(Rounding rounding) {
-        return new FixPointQuantization(_precision,
-                getOverflow(), rounding);
+        return new FixPointQuantization(_precision, getOverflow(), rounding);
     }
 
     /** Return a string representing this quantization. The string is
@@ -191,11 +194,9 @@ public class FixPointQuantization extends Quantization {
      *  @return A string representing this quantization.
      */
     public String toString() {
-        String x = "(" + _precision.getIntegerBitLength()
-            + "." + _precision.getFractionBitLength()
-            + "," + getOverflow().toString()
-            + "," + getRounding().toString()
-            + ")";
+        String x = "(" + _precision.getIntegerBitLength() + "."
+            + _precision.getFractionBitLength() + ","
+            + getOverflow().toString() + "," + getRounding().toString() + ")";
         return x;
     }
 

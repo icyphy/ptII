@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.graph.test;
 
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestVariable
+
 /**
    A variable InequalityTerm.
    This class is for testing inequality related classes.
@@ -45,9 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class TestVariable implements InequalityTerm {
-
     /** Construct a variable InequalityTerm with a null initial value.
      */
     public TestVariable() {
@@ -110,13 +109,12 @@ public class TestVariable implements InequalityTerm {
      *  @param e a String
      *  @exception IllegalActionException not thrown
      */
-    public void initialize(Object e)
-            throws IllegalActionException {
+    public void initialize(Object e) throws IllegalActionException {
         if (isSettable()) {
-            _value = (String)e;
+            _value = (String) e;
         } else {
-            throw new IllegalActionException("TestVariable.initialize: " +
-                    "This term is not settable.");
+            throw new IllegalActionException("TestVariable.initialize: "
+                + "This term is not settable.");
         }
     }
 
@@ -152,16 +150,14 @@ public class TestVariable implements InequalityTerm {
      *  @param e a String
      *  @exception IllegalActionException not thrown
      */
-    public void setValue(Object e)
-            throws IllegalActionException {
+    public void setValue(Object e) throws IllegalActionException {
         if (isSettable()) {
-            _value = (String)e;
+            _value = (String) e;
         } else {
-            throw new IllegalActionException("TestVariable.isSettable: " +
-                    "value is not settable.");
+            throw new IllegalActionException("TestVariable.isSettable: "
+                + "value is not settable.");
         }
     }
-
 
     /** Override the base class to describe the variable.
      *  @return A string describing the variable.
@@ -178,7 +174,6 @@ public class TestVariable implements InequalityTerm {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private String _name = "";
     private String _value = null;
     private boolean _valueFixed = false;

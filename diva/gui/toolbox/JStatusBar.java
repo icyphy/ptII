@@ -31,6 +31,7 @@ import javax.swing.JProgressBar;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
+
 /**
  * A status bar for displaying at the bottom of typical applications.
  *
@@ -38,7 +39,6 @@ import javax.swing.border.Border;
  * @version $Id$
  */
 public class JStatusBar extends JPanel {
-
     /** The progress bar associated with this status bar
      */
     JProgressBar _progress;
@@ -53,7 +53,7 @@ public class JStatusBar extends JPanel {
 
     /** Create a new JStatusBar
      */
-    public JStatusBar () {
+    public JStatusBar() {
         _message = new JLabel("");
         add(_message);
 
@@ -62,13 +62,11 @@ public class JStatusBar extends JPanel {
 
         // ??!?!? How do you make a 1-pixel width border???
         // System.out.println(_messageBorder.getBorderInsets(_message));
-
         _progress = new JProgressBar();
         _progress.setMinimum(0);
         _progress.setMaximum(100);
         _progress.setValue(00);
         add(_progress);
-
     }
 
     /** Return the progress bar associated with this status bar
@@ -80,10 +78,8 @@ public class JStatusBar extends JPanel {
     /** Set the message displayed in the status bar. Set this
      * to null to clear the message.
      */
-    public void setMessage (String message) {
+    public void setMessage(String message) {
         _message.setText(message);
         _message.setBorder(_messageBorder);
     }
 }
-
-

@@ -25,21 +25,18 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.ecsl;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.util.XSLTUtilities;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ECSLUtilities
+
 /** Utilities methods for operating on ECSL files.  These methods
     are in a separate non-graphical class so that we can test them
     as part of the nightly build, or provide non-graphical tools
@@ -65,17 +62,16 @@ public class ECSLUtilities {
      *  @exception Exception If there is a problem with the transformation.
      */
     public static void ECSLToMoML(String input, FileWriter fileWriter)
-            throws Exception {
+        throws Exception {
         // This method takes a FileWriter so that the user can
         // ensure that the FileWriter exists and is writable before going
         // through the trouble of doing the conversion.
-
         List transforms = new LinkedList();
 
         // The transform() method will look in the classpath.
         transforms.add("ptolemy/actor/lib/ecsl/xsl/ecsl.xsl");
 
-        XSLTUtilities.transform(input, fileWriter,transforms);
+        XSLTUtilities.transform(input, fileWriter, transforms);
 
         // Let the caller close the fileWriter.
         //fileWriter.close();
@@ -88,7 +84,7 @@ public class ECSLUtilities {
      *  @exception Exception If there is a problem with the transformation.
      */
     public static void ECSLToMoML(String input, String output)
-            throws Exception {
+        throws Exception {
         // This method makes it much easier to test the conversion,
         FileWriter fileWriter = new FileWriter(output);
         ECSLToMoML(input, fileWriter);
@@ -104,11 +100,11 @@ public class ECSLUtilities {
      *  </pre>
      *  will read in cruseControlECSL.xml and create CruiseControlECSL.moml
      */
-    public static void main(String [] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         if (args.length != 2) {
             System.err.println("Usage: java -classpath $PTII "
-                    + "ptolemy.actor.lib.ecsl.ECSLUtilities ECSLInputFile "
-                    + "MoMLOutputFile");
+                + "ptolemy.actor.lib.ecsl.ECSLUtilities ECSLInputFile "
+                + "MoMLOutputFile");
             System.exit(2);
         } else {
             ECSLToMoML(args[0], args[1]);

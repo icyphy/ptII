@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.net.URL;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HTMLEffigyFactory
+
 /**
    A factory for creating new effigies for HTML pages.
 
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class HTMLEffigyFactory extends EffigyFactory {
-
     /** Create a factory in the specified workspace.
      *  @param workspace The workspace.
      */
@@ -64,7 +64,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
      *   an entity already in the container.
      */
     public HTMLEffigyFactory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -95,11 +95,14 @@ public class HTMLEffigyFactory extends EffigyFactory {
      *  @exception Exception If the URL cannot be read, or if the data
      *   is malformed in some way.
      */
-    public Effigy createEffigy(
-            CompositeEntity container, URL base, URL in)
-            throws Exception {
-        if (in == null) return null;
+    public Effigy createEffigy(CompositeEntity container, URL base, URL in)
+        throws Exception {
+        if (in == null) {
+            return null;
+        }
+
         String extension = getExtension(in);
+
         // Here, if it has an "http" protocol, we agree to
         // open it.  The reason is that many main HTML pages are
         // referenced by a string like "http://ptolemy.eecs.berkeley.edu".
@@ -110,18 +113,28 @@ public class HTMLEffigyFactory extends EffigyFactory {
         if (!extension.equals("htm") && !extension.equals("html")) {
             // The extension doesn't match.  Try the content type.
             URLConnection connection = in.openConnection();
-            if (connection == null) return null;
+
+            if (connection == null) {
+                return null;
+            }
+
             String contentType = connection.getContentType();
-            if (contentType == null) return null;
+
+            if (contentType == null) {
+                return null;
+            }
+
             if (!contentType.startsWith("text/html")
                     && !contentType.startsWith("text/rtf")) {
                 return null;
             }
         }
+
         // Create a new effigy.
         HTMLEffigy effigy = new HTMLEffigy(container,
                 container.uniqueName("effigy"));
         effigy.uri.setURL(in);
+
         // FIXME: What to do about the base?
         return effigy;
     }

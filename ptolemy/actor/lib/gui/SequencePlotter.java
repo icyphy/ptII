@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.TypedIOPort;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SequencePlotter
+
 /**
    A sequence plotter.  This plotter contains an instance of the Plot
    class from the Ptolemy plot package as a public member. Data at
@@ -61,7 +62,6 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Green (cxh)
 */
 public class SequencePlotter extends Plotter implements SequenceActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +71,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      *   actor with this name.
      */
     public SequencePlotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.
@@ -110,12 +110,12 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      *   attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == xInit) {
-            _xInit = ((DoubleToken)xInit.getToken()).doubleValue();
+            _xInit = ((DoubleToken) xInit.getToken()).doubleValue();
         } else {
             if (attribute == xUnit) {
-                _xUnit = ((DoubleToken)xUnit.getToken()).doubleValue();
+                _xUnit = ((DoubleToken) xUnit.getToken()).doubleValue();
             } else {
                 super.attributeChanged(attribute);
             }
@@ -143,15 +143,18 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
-        int offset = ((IntToken)startingDataset.getToken()).intValue();
+        int offset = ((IntToken) startingDataset.getToken()).intValue();
+
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
-                DoubleToken curToken = (DoubleToken)input.get(i);
+                DoubleToken curToken = (DoubleToken) input.get(i);
                 double curValue = curToken.doubleValue();
+
                 // NOTE: We assume the superclass ensures this cast is safe.
-                ((Plot)plot).addPoint(i + offset, _xValue, curValue, true);
+                ((Plot) plot).addPoint(i + offset, _xValue, curValue, true);
             }
         }
+
         _xValue += _xUnit;
         return super.postfire();
     }

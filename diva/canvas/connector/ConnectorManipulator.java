@@ -37,6 +37,7 @@ import diva.canvas.interactor.GrabHandleFactory;
 import diva.canvas.interactor.Manipulator;
 import diva.canvas.toolbox.BasicHighlighter;
 
+
 /**
  * A manipulator which attaches grab handles to the ends of
  * a connector. The interactor given to the grab-handles determines
@@ -47,7 +48,6 @@ import diva.canvas.toolbox.BasicHighlighter;
  * @version $Id$
  */
 public class ConnectorManipulator extends Manipulator {
-
     /** Layer motion listeners
      */
     LayerMotionListener _layerMotionListener;
@@ -101,7 +101,7 @@ public class ConnectorManipulator extends Manipulator {
     /** Add a connector listener to the interactor that
      * is attached to grab-handles.
      */
-    public void addConnectorListener (ConnectorListener l) {
+    public void addConnectorListener(ConnectorListener l) {
         ((ConnectorInteractor) getHandleInteractor()).addConnectorListener(l);
     }
 
@@ -110,37 +110,36 @@ public class ConnectorManipulator extends Manipulator {
      * into, around on, or out of a suitable target object.
      */
     public void addLayerMotionListener(LayerMotionListener l) {
-        _layerMotionListener =
-            LayerEventMulticaster.add(_layerMotionListener,l);
+        _layerMotionListener = LayerEventMulticaster.add(_layerMotionListener, l);
     }
 
     /** Get the connector target
      */
-    public ConnectorTarget getConnectorTarget () {
+    public ConnectorTarget getConnectorTarget() {
         return _connectorTarget;
     }
 
     /** Get the head handle
      */
-    public GrabHandle getHeadHandle () {
+    public GrabHandle getHeadHandle() {
         return _headHandle;
     }
 
     /** Get the tail handle
      */
-    public GrabHandle getTailHandle () {
+    public GrabHandle getTailHandle() {
         return _tailHandle;
     }
 
     /** Get the snap halo.
      */
-    public double getSnapHalo () {
+    public double getSnapHalo() {
         return _snapHalo;
     }
 
     /** Get the listener that highlights target objects.
      */
-    public LayerMotionListener getTargetHighlighter () {
+    public LayerMotionListener getTargetHighlighter() {
         return _targetHighlighter;
     }
 
@@ -148,7 +147,7 @@ public class ConnectorManipulator extends Manipulator {
      * instance will have the same grab handle, and interactor
      * for grab-handles, as this one.
      */
-    public FigureDecorator newInstance (Figure f) {
+    public FigureDecorator newInstance(Figure f) {
         ConnectorManipulator m = new ConnectorManipulator();
         m.setGrabHandleFactory(this.getGrabHandleFactory());
         m.setHandleInteractor(this.getHandleInteractor());
@@ -159,15 +158,15 @@ public class ConnectorManipulator extends Manipulator {
      * Remove a connector listener from the interactor that
      * is attached to grab-handles.
      */
-    public void removeConnectorListener (ConnectorListener l) {
+    public void removeConnectorListener(ConnectorListener l) {
         ((ConnectorInteractor) getHandleInteractor()).removeConnectorListener(l);
     }
 
     /** Remove the given layer motion listener from this interactor.
      */
     public void removeLayerMotionListener(LayerMotionListener l) {
-        _layerMotionListener =
-            LayerEventMulticaster.remove(_layerMotionListener, l);
+        _layerMotionListener = LayerEventMulticaster.remove(_layerMotionListener,
+                l);
     }
 
     /** Refresh the geometry. Check that the sites that the handles
@@ -178,13 +177,15 @@ public class ConnectorManipulator extends Manipulator {
      * re-attached accordingly, grabbing and moving them will cause
      * unpredictable results.
      */
-    public void refresh () {
+    public void refresh() {
         Connector c = (Connector) getChild();
+
         // Check sites
         if (c != null) {
             if (_headHandle.getSite() != c.getHeadSite()) {
                 _headHandle.setSite(c.getHeadSite());
             }
+
             if (_tailHandle.getSite() != c.getTailSite()) {
                 _tailHandle.setSite(c.getTailSite());
             }
@@ -194,17 +195,19 @@ public class ConnectorManipulator extends Manipulator {
     /** Set the child figure. If we have any grab-handles, lose them.
      * Then create the grab-handles on the ends of the connector.
      */
-    public void setChild (Figure f) {
+    public void setChild(Figure f) {
         if (f == null) {
             super.setChild(null);
             clearGrabHandles();
             return;
         }
+
         if (!(f instanceof Connector)) {
             throw new IllegalArgumentException(
-                    "Connector required by ConnectorManipulator");
+                "Connector required by ConnectorManipulator");
         }
-        _createGrabHandles((Connector)f);
+
+        _createGrabHandles((Connector) f);
 
         // Finally call the superclass method, which will
         // make it repaint
@@ -213,21 +216,22 @@ public class ConnectorManipulator extends Manipulator {
 
     /** Set the connector target object
      */
-    public void setConnectorTarget (ConnectorTarget t) {
+    public void setConnectorTarget(ConnectorTarget t) {
         _connectorTarget = t;
     }
 
     /** Set the snap halo. This is the distance from a target
      * object that the connector will "snap" to it.
      */
-    public void setSnapHalo (double halo) {
+    public void setSnapHalo(double halo) {
         _snapHalo = halo;
     }
 
     /** Set the listener that highlights target objects.
      */
-    public void setTargetHighlighter (LayerMotionListener l) {
+    public void setTargetHighlighter(LayerMotionListener l) {
         _targetHighlighter = l;
+
         /// FIXME doesn't work
         //// addLayerMotionListener(_targetHighlighter);
     }
@@ -237,7 +241,7 @@ public class ConnectorManipulator extends Manipulator {
      * over any figure which has an interactor with matching
      * properties.
      */
-    public void setTargetProperty (String key, String value) {
+    public void setTargetProperty(String key, String value) {
         _targetProperty = key;
         _targetPropertyValue = value;
     }
@@ -267,28 +271,28 @@ public class ConnectorManipulator extends Manipulator {
 
     ///////////////////////////////////////////////////////////////////
     //// TargetHighlighter
-
     static class TargetHighlighter implements LayerMotionListener {
         BasicHighlighter _high;
         FigureContainer _parent;
 
         public void mouseEntered(LayerEvent e) {
             Figure f = e.getFigureSource();
-            _parent = (FigureContainer)f.getParent();
+            _parent = (FigureContainer) f.getParent();
+
             if (_parent != null) {
                 _high = new BasicHighlighter(java.awt.Color.red, 2.0f);
-                _parent.decorate(f,_high);
+                _parent.decorate(f, _high);
             }
         }
+
         public void mouseExited(LayerEvent e) {
             _parent.undecorate(_high);
             _high = null;
             _parent = null;
         }
+
         public void mouseMoved(LayerEvent e) {
             //XXX System.out.println(e);
         }
     }
 }
-
-

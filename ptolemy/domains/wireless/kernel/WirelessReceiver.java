@@ -25,12 +25,10 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.kernel;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
-import ptolemy.actor.util.Time;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DEReceiver;
@@ -38,9 +36,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 
-
 //////////////////////////////////////////////////////////////////////////
 //// WirelessReceiver
+
 /**
    A receiver for use in the wireless domain.
 
@@ -57,14 +55,13 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.ProposedRating Green (cxh)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class WirelessReceiver extends DEReceiver {
-
     /** Construct an empty WirelessReceiver with no container.
      */
     public WirelessReceiver() {
         super();
     }
+
     /** Construct an empty WirelessReceiver with the specified container.
      *  @param container The container.
      *  @exception IllegalActionException If the container does
@@ -87,7 +84,7 @@ public class WirelessReceiver extends DEReceiver {
      *   a runtime exception, so it need not be declared explicitly.
      */
     public synchronized Token get() throws NoTokenException {
-        RecordToken bundled = (RecordToken)super.get();
+        RecordToken bundled = (RecordToken) super.get();
         _properties = bundled.get("properties");
         return bundled.get("value");
     }
@@ -105,7 +102,7 @@ public class WirelessReceiver extends DEReceiver {
      *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token)
      */
     public synchronized void put(Token token) {
-        put(token, (Token)null);
+        put(token, (Token) null);
     }
 
     /** Put the specified token bundled with the specified properties.
@@ -116,19 +113,20 @@ public class WirelessReceiver extends DEReceiver {
     public synchronized void put(Token token, Token properties) {
         // Bundle the two into one token.
         // Construct the message about the input signal detected.
-        String[] labels = {"properties", "value"};
+        String[] labels = { "properties", "value" };
+
         if (properties == null) {
             properties = _dummy;
         }
+
         // The following should not occur, but just in case...
         if (token == null) {
             token = _dummy;
         }
-        Token[] values = {
-            properties,
-            token
-        };
+
+        Token[] values = { properties, token };
         Token result = null;
+
         try {
             result = new RecordToken(labels, values);
         } catch (IllegalActionException e) {
@@ -136,12 +134,12 @@ public class WirelessReceiver extends DEReceiver {
             // nothing is null and the arrays have the same size.
             throw new InternalErrorException(e);
         }
+
         super.put(result);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Dummy token used when no properties are sent.
     private Token _dummy = new Token();
 

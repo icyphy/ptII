@@ -26,12 +26,13 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.media.javasound.demo.SoftClip;
 
 import ptolemy.media.javasound.LiveSound;
 
+
 ////////////////////////////////////////////////////
+
 /**
    A simple application that demonstrates the use of LiveSound by
    performing soft clipping in real-time.  This application performs
@@ -55,11 +56,12 @@ public class SoftClip {
         int sampleRate = 44100; // in Hz
         int sampleSizeInBits = 16;
         int channels = 2; // stereo.
-        int inBufferSize = 4096;  // Internal buffer size for capture.
+        int inBufferSize = 4096; // Internal buffer size for capture.
         int outBufferSize = 4096; // Internal buffer size for playback.
 
         // the object that has access to the sound capture device.
         Object consumer = new Object();
+
         // the object that has access to the sound playback device.
         Object producer = new Object();
 
@@ -74,8 +76,10 @@ public class SoftClip {
           channels, inBufferSize,
           getSamplesSize);
         */
+
         // Construct a sound playback object that plays audio
         //through the computer's speaker.
+
         /*
           SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
           sampleSizeInBits,
@@ -84,18 +88,16 @@ public class SoftClip {
           putSamplesSize);
         */
 
-
         // Initialize and begin real-time capture and playback.
         try {
             //soundCapture.startCapture();
-
             // Set up LiveSound parameters for capture/playback
             LiveSound.setSampleRate(sampleRate);
             LiveSound.setBitsPerSample(sampleSizeInBits);
             LiveSound.setChannels(channels);
             LiveSound.setBufferSize(inBufferSize);
-            System.out.println("Attempting to set both buffer sizes: " +
-                    outBufferSize + " samples.");
+            System.out.println("Attempting to set both buffer sizes: "
+                + outBufferSize + " samples.");
             LiveSound.setTransferSize(getSamplesSize);
 
             int putSamplesSize = getSamplesSize;
@@ -103,37 +105,39 @@ public class SoftClip {
             LiveSound.startCapture(consumer);
 
             LiveSound.startPlayback(producer);
+
             //soundPlayback.startPlayback();
         } catch (Exception ex) {
             System.err.println(ex);
         }
 
-        double[][] capturedSamplesArray =
-            new double[channels][getSamplesSize];
+        double[][] capturedSamplesArray = new double[channels][getSamplesSize];
 
-        System.out.println("   Actual audio capture buffer size: " +
-                LiveSound.getBufferSizeCapture() + " samples.");
-        System.out.println("  Actual audio playback buffer size: " +
-                LiveSound.getBufferSizePlayback() + " samples.");
+        System.out.println("   Actual audio capture buffer size: "
+            + LiveSound.getBufferSizeCapture() + " samples.");
+        System.out.println("  Actual audio playback buffer size: "
+            + LiveSound.getBufferSizePlayback() + " samples.");
 
         try {
             // Loop forever.
             System.out.println("starting");
+
             int count = 0;
+
             while (count < 1000) {
                 count++;
+
                 // Read in some captured audio.
                 //capturedSamplesArray = soundCapture.getSamples();
                 capturedSamplesArray = LiveSound.getSamples(consumer);
 
                 // Do some simple processing on the
                 // captured audio.
-                for (int j=0; j< channels; j++) {
-                    for (int i=0; i< getSamplesSize; i++) {
+                for (int j = 0; j < channels; j++) {
+                    for (int i = 0; i < getSamplesSize; i++) {
                         //  ********** PROCESSING CODE HERE **********
                         // Perform soft clipping using the arc tangent.
-                        capturedSamplesArray[j][i] =
-                            java.lang.Math.atan(capturedSamplesArray[j][i])*0.6;
+                        capturedSamplesArray[j][i] = java.lang.Math.atan(capturedSamplesArray[j][i]) * 0.6;
                     }
                 }
 
@@ -141,8 +145,10 @@ public class SoftClip {
                 //soundPlayback.putSamples(capturedSamplesArray);
                 LiveSound.putSamples(producer, capturedSamplesArray);
             }
+
             // Stop capture.
             LiveSound.stopCapture(consumer);
+
             // Stop playback.
             //soundPlayback.stopPlayback();
             LiveSound.stopPlayback(producer);

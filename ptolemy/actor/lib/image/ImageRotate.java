@@ -26,9 +26,7 @@
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.image;
-
 
 import java.awt.Image;
 
@@ -42,8 +40,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageRotate
+
 /**
    This actor reads an ObjectToken that is a java.awt.Image from the input,
    rotates it a certain number of degrees and writes the resulting
@@ -56,7 +56,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ImageRotate extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,7 +65,7 @@ public class ImageRotate extends Transformer {
      *   actor with this name.
      */
     public ImageRotate(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -93,8 +92,8 @@ public class ImageRotate extends Transformer {
      */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
-        int rotation =
-            ((IntToken)(rotationInDegrees.getToken())).intValue();
+        int rotation = ((IntToken) (rotationInDegrees.getToken())).intValue();
+
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 ImageToken imageToken = (ImageToken) input.get(i);

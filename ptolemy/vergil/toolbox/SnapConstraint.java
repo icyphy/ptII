@@ -25,12 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.geom.Point2D;
 
 import diva.canvas.interactor.PointConstraint;
+
 
 /**
    This constraint ensures that a point is a multiple of a constant
@@ -43,7 +43,6 @@ import diva.canvas.interactor.PointConstraint;
    @author Edward A. Lee
 */
 public class SnapConstraint implements PointConstraint {
-
     /** Construct a new instance of a snap constraint.
      */
     public SnapConstraint() {
@@ -58,8 +57,8 @@ public class SnapConstraint implements PointConstraint {
      *  @param point The point to modify.
      */
     public void constrain(Point2D point) {
-        double x = Math.round(point.getX()/_resolution)*_resolution;
-        double y = Math.round(point.getY()/_resolution)*_resolution;
+        double x = Math.round(point.getX() / _resolution) * _resolution;
+        double y = Math.round(point.getY() / _resolution) * _resolution;
         point.setLocation(x, y);
     }
 
@@ -69,8 +68,8 @@ public class SnapConstraint implements PointConstraint {
      */
     public double[] constrain(double[] point) {
         double[] result = new double[2];
-        result[0] = Math.round(point[0]/_resolution)*_resolution;
-        result[1] = Math.round(point[1]/_resolution)*_resolution;
+        result[0] = Math.round(point[0] / _resolution) * _resolution;
+        result[1] = Math.round(point[1] / _resolution) * _resolution;
         return result;
     }
 
@@ -81,8 +80,8 @@ public class SnapConstraint implements PointConstraint {
      */
     public double[] constrain(double x, double y) {
         double[] result = new double[2];
-        result[0] = Math.round(x/_resolution)*_resolution;
-        result[1] = Math.round(y/_resolution)*_resolution;
+        result[0] = Math.round(x / _resolution) * _resolution;
+        result[1] = Math.round(y / _resolution) * _resolution;
         return result;
     }
 
@@ -94,6 +93,7 @@ public class SnapConstraint implements PointConstraint {
         double[] originalPoint = new double[2];
         originalPoint[0] = point.getX();
         originalPoint[1] = point.getY();
+
         double[] result = constrainPoint(originalPoint);
         return new Point2D.Double(result[0], result[1]);
     }
@@ -113,8 +113,8 @@ public class SnapConstraint implements PointConstraint {
      */
     public static double[] constrainPoint(double x, double y) {
         double[] result = new double[2];
-        result[0] = Math.round(x/_defaultResolution)*_defaultResolution;
-        result[1] = Math.round(y/_defaultResolution)*_defaultResolution;
+        result[0] = Math.round(x / _defaultResolution) * _defaultResolution;
+        result[1] = Math.round(y / _defaultResolution) * _defaultResolution;
         return result;
     }
 

@@ -30,12 +30,12 @@
   COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// FractionArrayMath
+
 /**
    This class provides a library for mathematical operations on Fraction arrays.
    unless explicitly noted otherwise, all array arguments are assumed to be
@@ -45,9 +45,9 @@ package ptolemy.math;
    @Pt.ProposedRating Red (acataldo)
 */
 public class FractionArrayMath {
-
     // Protected constructor prevents construction of this class.
-    protected FractionArrayMath() {}
+    protected FractionArrayMath() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -58,9 +58,11 @@ public class FractionArrayMath {
     public static final Fraction[] add(Fraction[] array, final Fraction z) {
         int length = array.length;
         Fraction[] returnValue = new Fraction[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array[i].add(z);
         }
+
         return returnValue;
     }
 
@@ -71,15 +73,16 @@ public class FractionArrayMath {
      *  IllegalArgumentException.
      */
     public static final Fraction[] add(final Fraction[] array1,
-            final Fraction[] array2) {
+        final Fraction[] array2) {
         int length = _commonLength(array1, array2, "FractionArrayMath.add");
         Fraction[] returnValue = new Fraction[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i].add(array2[i]);
         }
+
         return returnValue;
     }
-
 
     /** Return a new array that is a copy of the array argument.
      *  @param array An array of Fractions.
@@ -97,7 +100,7 @@ public class FractionArrayMath {
      *  append(array1, 0, array1.length, array2, 0, array2.length)
      */
     public static final Fraction[] append(final Fraction[] array1,
-            final Fraction[] array2) {
+        final Fraction[] array2) {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
@@ -118,8 +121,8 @@ public class FractionArrayMath {
      *  @return A new array of doubles.
      */
     public static final Fraction[] append(final Fraction[] array1,
-            final int idx1, final int length1,
-            final Fraction[] array2, final int idx2, final int length2) {
+        final int idx1, final int length1, final Fraction[] array2,
+        final int idx2, final int length2) {
         Fraction[] returnValue = new Fraction[length1 + length2];
 
         if (length1 > 0) {
@@ -142,9 +145,11 @@ public class FractionArrayMath {
     public static final Fraction[] divide(Fraction[] num, Fraction[] den) {
         int length = _commonLength(num, den, "divide");
         Fraction[] returnValue = new Fraction[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = num[i].divide(den[i]);
         }
+
         return returnValue;
     }
 
@@ -154,7 +159,7 @@ public class FractionArrayMath {
      *  IllegalArgumentException.
      */
     public static final Fraction dotProduct(final Fraction[] array1,
-            final Fraction[] array2) {
+        final Fraction[] array2) {
         int length = _commonLength(array1, array2,
                 "FractionArrayMath.dotProduct");
 
@@ -163,6 +168,7 @@ public class FractionArrayMath {
         for (int i = 0; i < length; i++) {
             sum = sum.add(array1[i].multiply(array2[i]));
         }
+
         return sum;
     }
 
@@ -173,16 +179,18 @@ public class FractionArrayMath {
      * @param array2 The second input array.
      * @return True if array1 == array2.
      */
-    public static final boolean equals(final Fraction[] array1, final Fraction[] array2) {
+    public static final boolean equals(final Fraction[] array1,
+        final Fraction[] array2) {
         boolean output = true;
+
         if (array1.length != array2.length) {
             output = false;
-        }
-        else {
+        } else {
             for (int i = 0; i < array1.length; i++) {
                 output = output && array1[i].equals(array2[i]);
             }
         }
+
         return output;
     }
 
@@ -193,12 +201,14 @@ public class FractionArrayMath {
      *  IllegalArgumentException.
      */
     public static final Fraction[] multiply(final Fraction[] array1,
-            final Fraction[] array2) {
+        final Fraction[] array2) {
         int length = _commonLength(array1, array2, "FractionArrayMath.multiply");
         Fraction[] returnValue = new Fraction[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i].multiply(array2[i]);
         }
+
         return returnValue;
     }
 
@@ -221,16 +231,17 @@ public class FractionArrayMath {
         return returnValue;
     }
 
-
     /** Return a new array that is the formed by the additive inverse of each
      *  element of the input array (-array[i]).
      */
     public static final Fraction[] negative(final Fraction[] array) {
         int length = array.length;
         Fraction[] returnValue = new Fraction[length];
+
         for (int i = 0; i < length; i++) {
             returnValue[i] = array[i].negate();
         }
+
         return returnValue;
     }
 
@@ -240,13 +251,14 @@ public class FractionArrayMath {
      *  If the lengths of both arrays are 0, return a new array of length 0.
      */
     public static final Fraction[] subtract(final Fraction[] array1,
-            final Fraction[] array2) {
+        final Fraction[] array2) {
         int length = _commonLength(array1, array2, "FractionArrayMath.subtract");
         Fraction[] returnValue = new Fraction[length];
 
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i].subtract(array2[i]);
         }
+
         return returnValue;
     }
 
@@ -255,9 +267,11 @@ public class FractionArrayMath {
      */
     public static final Fraction sum(Fraction[] array) {
         Fraction sum = new Fraction(0, 1);
+
         for (int i = 0; i < array.length; i++) {
             sum = sum.add(array[i]);
         }
+
         return sum;
     }
 
@@ -274,9 +288,9 @@ public class FractionArrayMath {
         for (int i = 0; i < length; i++) {
             returnValue[i] = array[i].toDouble();
         }
+
         return returnValue;
     }
-
 
     /** Return a new String representing the array, formatted as
      *  in Java array initializers.
@@ -292,14 +306,13 @@ public class FractionArrayMath {
      *  format argument.
      */
     public static final String toString(final Fraction[] array,
-            String elementDelimiter, String vectorBegin, String vectorEnd) {
+        String elementDelimiter, String vectorBegin, String vectorEnd) {
         int length = array.length;
         StringBuffer sb = new StringBuffer();
 
         sb.append(vectorBegin);
 
         for (int i = 0; i < length; i++) {
-
             sb.append(array[i].toString());
 
             if (i < (length - 1)) {
@@ -323,24 +336,22 @@ public class FractionArrayMath {
      *  @return The common length of both arrays.
      */
     protected static final int _commonLength(final Fraction[] array1,
-            final Fraction[] array2,
-            String methodName) {
+        final Fraction[] array2, String methodName) {
         if (array1 == null) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : first input array is null.");
+            throw new IllegalArgumentException("ptolemy.math." + methodName
+                + "() : first input array is null.");
         }
 
         if (array2 == null) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : second input array is null.");
+            throw new IllegalArgumentException("ptolemy.math." + methodName
+                + "() : second input array is null.");
         }
 
         if (array1.length != array2.length) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input arrays must have the same length, " +
-                    "but the first array has length " + array1.length +
-                    " and the second array has length " +
-                    array2.length + ".");
+            throw new IllegalArgumentException("ptolemy.math." + methodName
+                + "() : input arrays must have the same length, "
+                + "but the first array has length " + array1.length
+                + " and the second array has length " + array2.length + ".");
         }
 
         return array1.length;

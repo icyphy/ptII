@@ -23,7 +23,6 @@
    ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.actor.test;
 
 import java.util.Collection;
@@ -36,8 +35,10 @@ import ptolemy.graph.Node;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestGraphReader
+
 /** An application for testing the conversion of Ptolemy models into
     weighted graphs.
     <p>
@@ -54,12 +55,11 @@ import ptolemy.moml.MoMLParser;
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxh)
 */
-
 public class TestGraphReader {
-
     // Make the constructor protected to prevent instantiation of this class
     // outside of subclasses.
-    protected TestGraphReader() {}
+    protected TestGraphReader() {
+    }
 
     /** Convert a MoML file that contains a Ptolemy II specification into a
      *  weighted graph representation, and display information about
@@ -67,11 +67,10 @@ public class TestGraphReader {
      *  @param args The name of the MoML file.
      */
     public static void main(String[] args) {
-
         TestGraphReader tester = new TestGraphReader();
         CompositeActor toplevel = tester._readGraph(args);
         GraphReader graphReader = new GraphReader();
-        DirectedGraph graph = (DirectedGraph)(graphReader.convert(toplevel));
+        DirectedGraph graph = (DirectedGraph) (graphReader.convert(toplevel));
         tester._printGraph(graph);
     }
 
@@ -90,28 +89,30 @@ public class TestGraphReader {
 
         // Determine the source nodes
         Collection sourceCollection = graph.sourceNodes();
-        System.out.println("Number of source nodes = " +
-                sourceCollection.size());
+        System.out.println("Number of source nodes = "
+            + sourceCollection.size());
+
         Iterator sources = sourceCollection.iterator();
         int sourceNumber = 1;
+
         while (sources.hasNext()) {
-            System.out.println("source #" + sourceNumber++ + ": " +
-                    ((Node)(sources.next())).getWeight());
+            System.out.println("source #" + sourceNumber++ + ": "
+                + ((Node) (sources.next())).getWeight());
             System.out.println();
         }
 
         // Determine the sink nodes
         Collection sinkCollection = graph.sinkNodes();
-        System.out.println("Number of sink nodes = " +
-                sinkCollection.size());
+        System.out.println("Number of sink nodes = " + sinkCollection.size());
+
         Iterator sinks = sinkCollection.iterator();
         int sinkNumber = 1;
+
         while (sinks.hasNext()) {
-            System.out.println("sink #" + sinkNumber++ + ": " +
-                    ((Node)(sinks.next())).getWeight());
+            System.out.println("sink #" + sinkNumber++ + ": "
+                + ((Node) (sinks.next())).getWeight());
             System.out.println();
         }
-
     }
 
     /** Convert a MoML file that contains a Ptolemy II specification into a
@@ -122,7 +123,7 @@ public class TestGraphReader {
     protected CompositeActor _readGraph(String[] args) {
         if (args.length != 1) {
             throw new RuntimeException("TestGraphReader expects exactly one "
-                    + "argument.");
+                + "argument.");
         }
 
         // The Ptolemy II model returned by the Java parser.
@@ -133,18 +134,16 @@ public class TestGraphReader {
             toplevel = parser.parseFile(args[0]);
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage()
-                    + "Exception raised from the MoML parser\n");
+                + "Exception raised from the MoML parser\n");
         }
 
-        if (! (toplevel instanceof CompositeActor)) {
+        if (!(toplevel instanceof CompositeActor)) {
             throw new RuntimeException("Top level must be a CompositeActor "
-                    + "(in this case, it is '"
-                    + ((toplevel == null) ? "null" :
-                            toplevel.getClass().getName())
-                    + "')\n");
+                + "(in this case, it is '"
+                + ((toplevel == null) ? "null" : toplevel.getClass().getName())
+                + "')\n");
         }
 
-        return (CompositeActor)toplevel;
-
+        return (CompositeActor) toplevel;
     }
 }

@@ -27,7 +27,6 @@
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (bilung@eecs.berkeley.edu)
 */
-
 package ptolemy.actor.gui;
 
 import ptolemy.data.expr.StringParameter;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PasswordAttribute
+
 /**
 An attribute that represents a password. The value of this attribute is
 a string that represents the password in an encrypted form. To access the
@@ -50,7 +51,6 @@ FIXME: we need to support the persistence and encryption.
 @since Ptolemy II 4.1
 */
 public class PasswordAttribute extends StringParameter {
-
     /** Construct a password attribute with the given container and name.
      *  @param container The container.
      *  @param name The name of this attribute.
@@ -60,7 +60,7 @@ public class PasswordAttribute extends StringParameter {
      *   attribute with this name.
      */
     public PasswordAttribute(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -77,6 +77,7 @@ public class PasswordAttribute extends StringParameter {
             //FIXME: this need to be done in the swing thread...
             new EditParametersDialog(null, this);
         }
+
         return _password;
     }
 
@@ -89,6 +90,5 @@ public class PasswordAttribute extends StringParameter {
 
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
-
     private char[] _password = null;
 }

@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import ptolemy.graph.Graph;
@@ -31,8 +30,10 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallTransitiveClosureStrategy;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TransitiveClosureAnalysis
+
 /**
    An analysis for the computation of transitive closure of a directed graph.
    While there is a path directed from node X to Y in the given graph,
@@ -53,9 +54,7 @@ import ptolemy.graph.analysis.strategy.FloydWarshallTransitiveClosureStrategy;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class TransitiveClosureAnalysis extends Analysis {
-
     /** Construct an instance of this class for a given graph with
      *  a default analyzer.
      *  The complexity of the default algorithm is O(N^3), where N is the
@@ -86,8 +85,8 @@ public class TransitiveClosureAnalysis extends Analysis {
      *  @return True if such a path exists.
      */
     public boolean pathExistence(Node startNode, Node endNode) {
-        return ((TransitiveClosureAnalyzer)analyzer())
-            .pathExistence(startNode, endNode);
+        return ((TransitiveClosureAnalyzer) analyzer()).pathExistence(startNode,
+            endNode);
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -97,7 +96,7 @@ public class TransitiveClosureAnalysis extends Analysis {
      */
     public String toString() {
         return "Transitive closure analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Compute the transitive closure of the graph under analysis in the
@@ -108,8 +107,7 @@ public class TransitiveClosureAnalysis extends Analysis {
      *  @return The transitive closure in the form of 2D array.
      */
     public boolean[][] transitiveClosureMatrix() {
-        return ((TransitiveClosureAnalyzer)analyzer())
-            .transitiveClosureMatrix();
+        return ((TransitiveClosureAnalyzer) analyzer()).transitiveClosureMatrix();
     }
 
     /** Check if a given analyzer is compatible with this analysis.
@@ -123,4 +121,3 @@ public class TransitiveClosureAnalysis extends Analysis {
         return analyzer instanceof TransitiveClosureAnalyzer;
     }
 }
-

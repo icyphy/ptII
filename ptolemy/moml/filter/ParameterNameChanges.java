@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParameterNameChanges
+
 /** When this class is registered with the MoMLParser.setMoMLFilter()
     method, it will cause MoMLParser to filter so that models from
     earlier releases will run in the current release.
@@ -86,7 +87,6 @@ import ptolemy.moml.MoMLParser;
     @Pt.AcceptedRating Red (cxh)
 */
 public class ParameterNameChanges implements MoMLFilter {
-
     /** If the attributeName is "class" and attributeValue names a
      *  class that has had a Parameter names changed between releases,
      *  then substitute in the new Parameter names.
@@ -98,32 +98,32 @@ public class ParameterNameChanges implements MoMLFilter {
      *  @param attributeValue The value of the attribute.
      *  @return the value of the attributeValue argument.
      */
-    public String filterAttributeValue(NamedObj container,
-            String element, String attributeName, String attributeValue) {
-
+    public String filterAttributeValue(NamedObj container, String element,
+        String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
         // are not making the same comparison more than once.
-
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first
             return null;
         }
 
-
         if (attributeName.equals("name")) {
             // Save the name for later use if we see a "class"
             _lastNameSeen = attributeValue;
+
             if (_currentlyProcessingActorWithParameterNameChanges) {
                 if (_propertyMap.containsKey(attributeValue)) {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
-                    _newName = (String)_propertyMap.get(attributeValue);
+                    _newName = (String) _propertyMap.get(attributeValue);
+
                     if (!attributeValue.equals(_newName)) {
                         MoMLParser.setModified(true);
                     }
+
                     return _newName;
                 } else {
                     return attributeValue;
@@ -137,41 +137,34 @@ public class ParameterNameChanges implements MoMLFilter {
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
         if (attributeName.equals("class")) {
-            if (_classesWithParameterNameChanges
-                    .containsKey(attributeValue)) {
+            if (_classesWithParameterNameChanges.containsKey(attributeValue)) {
                 // We found a class with a parameter name change.
                 _currentlyProcessingActorWithParameterNameChanges = true;
-                _currentActorFullName = container.getFullName()
-                    + "." + _lastNameSeen;
-                _propertyMap =
-                    (HashMap) _classesWithParameterNameChanges
-                    .get(attributeValue);
+                _currentActorFullName = container.getFullName() + "."
+                    + _lastNameSeen;
+                _propertyMap = (HashMap) _classesWithParameterNameChanges.get(attributeValue);
             } else if (_currentlyProcessingActorWithParameterNameChanges
-                    && _newName != null) {
-
+                    && (_newName != null)) {
                 // We found a property class to change, and now we
                 // found the class itself that needs changing.
                 // Only return the new class once, but we might
                 // have other properties that need changing
                 //_currentlyProcessingActorWithParameterNameChanges = false;
-
                 //                 String temporaryNewClass = _newName;
                 //                 if (!attributeValue.equals(_newName)) {
                 //                     MoMLParser.setModified(true);
                 //                 }
-
                 _newName = null;
-            } else if (  _currentlyProcessingActorWithParameterNameChanges
-                    && container != null
-                    && !container.getFullName()
-                    .equals(_currentActorFullName)
-                    && !container.getFullName()
-                    .startsWith(_currentActorFullName)) {
+            } else if (_currentlyProcessingActorWithParameterNameChanges
+                    && (container != null)
+                    && !container.getFullName().equals(_currentActorFullName)
+                    && !container.getFullName().startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes
                 _currentlyProcessingActorWithParameterNameChanges = false;
             }
         }
+
         return attributeValue;
     }
 
@@ -180,38 +173,41 @@ public class ParameterNameChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {}
+        throws Exception {
+    }
 
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-        StringBuffer results =
-            new StringBuffer(getClass().getName()
-                    + ": Update any Parameter names\n"
-                    + "that have been renamed.\n"
-                    + "Below are the actors that are affected, along "
-                    + "with the Parameter name \nand the new name:\n"
-                             );
+        StringBuffer results = new StringBuffer(getClass().getName()
+                + ": Update any Parameter names\n"
+                + "that have been renamed.\n"
+                + "Below are the actors that are affected, along "
+                + "with the Parameter name \nand the new name:\n");
         Iterator actors = _classesWithParameterNameChanges.keySet().iterator();
+
         while (actors.hasNext()) {
-            String actor = (String)actors.next();
+            String actor = (String) actors.next();
             results.append("\t" + actor + "\n");
-            HashMap propertyMap =
-                (HashMap) _classesWithParameterNameChanges.get(actor);
+
+            HashMap propertyMap = (HashMap) _classesWithParameterNameChanges
+                .get(actor);
             Iterator properties = propertyMap.keySet().iterator();
+
             while (properties.hasNext()) {
                 String oldProperty = (String) properties.next();
                 String newProperty = (String) propertyMap.get(oldProperty);
-                results.append("\t\t" + oldProperty + "\t -> " + newProperty + "\n");
+                results.append("\t\t" + oldProperty + "\t -> " + newProperty
+                    + "\n");
             }
         }
+
         return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Map of actor names a HashMap of property names to new classes.
     private static HashMap _classesWithParameterNameChanges;
 
@@ -220,8 +216,7 @@ public class ParameterNameChanges implements MoMLFilter {
 
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
-    private static boolean
-    _currentlyProcessingActorWithParameterNameChanges = false;
+    private static boolean _currentlyProcessingActorWithParameterNameChanges = false;
 
     // Last "name" value seen, for use if we see a "class".
     private static String _lastNameSeen;
@@ -236,38 +231,29 @@ public class ParameterNameChanges implements MoMLFilter {
     static {
         ///////////////////////////////////////////////////////////
         // Actors that have properties that have changed class.
-
         _classesWithParameterNameChanges = new HashMap();
 
         // PNDirectory: After 2.2, 'Initial_queue_capacity'
         // property is now 'initialQueueCapacity'
         HashMap pnDirectorChanges = new HashMap();
+
         // Key = property name, Value = new class name
-        pnDirectorChanges.put(
-                "Initial_queue_capacity",
-                "initialQueueCapacity");
-        _classesWithParameterNameChanges.put(
-                "ptolemy.domains.pn.kernel.PNDirector",
-                 pnDirectorChanges);
+        pnDirectorChanges.put("Initial_queue_capacity", "initialQueueCapacity");
+        _classesWithParameterNameChanges.put("ptolemy.domains.pn.kernel.PNDirector",
+            pnDirectorChanges);
 
         // VariableDelay: After 4.0, 'defaultDelay'
         // property is now 'delay'
         HashMap variableDelayChanges = new HashMap();
-        variableDelayChanges.put(
-                "defaultDelay",
-                "delay");
-        _classesWithParameterNameChanges.put(
-                "ptolemy.domains.de.lib.VariableDelay",
-                variableDelayChanges);
+        variableDelayChanges.put("defaultDelay", "delay");
+        _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.VariableDelay",
+            variableDelayChanges);
 
         // ServerDelay: After 4.1, 'serviceTime'
         // property is now 'newServiceTime'
         HashMap serverChanges = new HashMap();
-        serverChanges.put(
-                "serviceTime",
-                "newServiceTime");
-        _classesWithParameterNameChanges.put(
-                "ptolemy.domains.de.lib.Server",
-                serverChanges);
+        serverChanges.put("serviceTime", "newServiceTime");
+        _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.Server",
+            serverChanges);
     }
 }

@@ -28,7 +28,6 @@
  COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib.network.mac;
 
 import java.util.Iterator;
@@ -43,8 +42,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FilterMPDU
+
 /**
    Filter the received MPDU (MAC Protocol Data Unit) packets.
    The code is based on a OMNET model created by Charlie Zhong.
@@ -56,7 +57,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class FilterMpdu extends MACActorBase {
-
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -70,7 +70,7 @@ public class FilterMpdu extends MACActorBase {
      *   an actor already in the container.
      */
     public FilterMpdu(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true, false);
@@ -81,7 +81,8 @@ public class FilterMpdu extends MACActorBase {
         toChannelState.setTypeEquals(BaseType.GENERAL);
         toChannelState.setMultiport(true);
 
-        toProtocolControl = new TypedIOPort(this, "toProtocolControl", false, true);
+        toProtocolControl = new TypedIOPort(this, "toProtocolControl", false,
+                true);
         toProtocolControl.setTypeEquals(BaseType.GENERAL);
     }
 
@@ -100,7 +101,6 @@ public class FilterMpdu extends MACActorBase {
      */
     public TypedIOPort toProtocolControl;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -111,85 +111,102 @@ public class FilterMpdu extends MACActorBase {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if (!fromValidateMpdu.hasToken(0)) return;
+        if (!fromValidateMpdu.hasToken(0)) {
+            return;
+        }
 
         int dAck = 0;
 
-        RecordToken msg = (RecordToken)fromValidateMpdu.get(0);
-        int msgKind = ((IntToken)msg.get("kind")).intValue();
+        RecordToken msg = (RecordToken) fromValidateMpdu.get(0);
+        int msgKind = ((IntToken) msg.get("kind")).intValue();
 
         if (msgKind == RxMpdu) {
-            if (_debugging) _debug("FILTER: Got RxMpdu");
-            RecordToken pdu = (RecordToken)msg.get("pdu");
-            if (intFieldValue(pdu, "moreFrag") ==1)
+            if (_debugging) {
+                _debug("FILTER: Got RxMpdu");
+            }
+
+            RecordToken pdu = (RecordToken) msg.get("pdu");
+
+            if (intFieldValue(pdu, "moreFrag") == 1) {
                 dAck = intFieldValue(pdu, "durId");
+            }
+
             int dNav = intFieldValue(pdu, "durId");
-            int src =misc;
+            int src = misc;
+
             // code for broadcast
             if (intFieldValue(pdu, "Addr1") == mac_broadcast_addr) {
-                RecordToken msgout = new RecordToken(
-                        RxIndicateMessageFields,
+                RecordToken msgout = new RecordToken(RxIndicateMessageFields,
                         new Token[] {
-                            new IntToken(RxIndicate),
-                            //TODO: how to implement this?
-                            //msgout->pdu=pdu->copyEncapMsg();
-                            pdu,
-                            msg.get("endRx"),
-                            msg.get("rxRate")
+                            new IntToken(RxIndicate), 
+                        //TODO: how to implement this?
+                        //msgout->pdu=pdu->copyEncapMsg();
+                        pdu, msg.get("endRx"), msg.get("rxRate")
                         });
+
                 // send RxIndicate message to the ProtocolControl block
                 toProtocolControl.send(0, msgout);
-                if (_debugging) {_debug("FILTER: Sent RxIndicate");}
+
+                if (_debugging) {
+                    _debug("FILTER: Sent RxIndicate");
+                }
             } else if (intFieldValue(pdu, "Addr1") == getID()) {
                 boolean dup = false;
-                if (intFieldValue(pdu, "retryBit") == 1)
+
+                if (intFieldValue(pdu, "retryBit") == 1) {
                     dup = _searchTupleCache(pdu);
-                if (intFieldValue(pdu, "retryBit") == 0 || !dup) {
-                    RecordToken msgout = new RecordToken(
-                            RxIndicateMessageFields,
+                }
+
+                if ((intFieldValue(pdu, "retryBit") == 0) || !dup) {
+                    RecordToken msgout = new RecordToken(RxIndicateMessageFields,
                             new Token[] {
-                                new IntToken(RxIndicate),
-                                //TODO: how to implement this?
-                                //msgout->pdu=pdu->copyEncapMsg();
-                                pdu,
-                                msg.get("endRx"),
-                                msg.get("rxRate")
+                                new IntToken(RxIndicate), 
+                            //TODO: how to implement this?
+                            //msgout->pdu=pdu->copyEncapMsg();
+                            pdu, msg.get("endRx"), msg.get("rxRate")
                             });
+
                     // only if it is not a duplicate packet, will it be forwarded
                     toProtocolControl.send(0, msgout);
-                    if (_debugging) _debug("FILTER: Sent RxIndicate");
+
+                    if (_debugging) {
+                        _debug("FILTER: Sent RxIndicate");
+                    }
                 }
 
                 if (intFieldValue(pdu, "Type") == DataType) {
-                    RecordToken msgout = new RecordToken(
-                            NeedAckMessageFields,
+                    RecordToken msgout = new RecordToken(NeedAckMessageFields,
                             new Token[] {
-                                new IntToken(NeedAck),
-                                pdu.get("Addr2"),
-                                msg.get("endRx"),
-                                msg.get("rxRate"),
-                                new IntToken(dAck)});
+                                new IntToken(NeedAck), pdu.get("Addr2"),
+                                msg.get("endRx"), msg.get("rxRate"),
+                                new IntToken(dAck)
+                            });
+
                     // if it is a data packet, an Ack is needed
                     toProtocolControl.send(0, msgout);
-                    if (_debugging) _debug("FILTER: Sent NeedAck");
+
+                    if (_debugging) {
+                        _debug("FILTER: Sent NeedAck");
+                    }
+
                     // add this packet to the TupleCache
                     _updateTupleCache(pdu);
                 }
             }
             // if this packet is not for me
             else {
-                if (intFieldValue(pdu, "Type") ==ControlType &&
-                        intFieldValue(pdu, "Subtype") == Rts)
+                if ((intFieldValue(pdu, "Type") == ControlType)
+                        && (intFieldValue(pdu, "Subtype") == Rts)) {
                     src = Rts;
+                }
 
                 if (intFieldValue(pdu, "durId") <= 32767) {
-                    RecordToken msgout = new RecordToken(
-                            SetNavMessageFields,
+                    RecordToken msgout = new RecordToken(SetNavMessageFields,
                             new Token[] {
-                                new IntToken(SetNav),
-                                msg.get("endRx"),
-                                new IntToken(dNav),
-                                new IntToken(src)});
+                                new IntToken(SetNav), msg.get("endRx"),
+                                new IntToken(dNav), new IntToken(src)
+                            });
+
                     //TODO: send(msgout, toChannelstateGateId+msgin->channel);
                     // ask the ChannelState process to make reservation
                     toChannelState.send(0, msgout);
@@ -207,7 +224,7 @@ public class FilterMpdu extends MACActorBase {
     }
 
     private int intFieldValue(RecordToken token, String label) {
-        IntToken t = (IntToken)token.get(label);
+        IntToken t = (IntToken) token.get(label);
         return t.intValue();
     }
 
@@ -217,11 +234,16 @@ public class FilterMpdu extends MACActorBase {
         int seqNum = intFieldValue(pdu, "SeqNum");
         int fragNum = intFieldValue(pdu, "FragNum");
         Iterator tuples = _tupleCache.iterator();
+
         while (tuples.hasNext()) {
-            int[] tuple = (int[])tuples.next();
-            if (addr == tuple[0] && seqNum == tuple[1] && fragNum == tuple[2])
+            int[] tuple = (int[]) tuples.next();
+
+            if ((addr == tuple[0]) && (seqNum == tuple[1])
+                    && (fragNum == tuple[2])) {
                 return true;
+            }
         }
+
         return false;
     }
 
@@ -230,28 +252,31 @@ public class FilterMpdu extends MACActorBase {
         int seqNum = intFieldValue(pdu, "SeqNum");
         int fragNum = intFieldValue(pdu, "FragNum");
         Iterator tuples = _tupleCache.iterator();
+
         while (tuples.hasNext()) {
-            int[] tuple = (int[])tuples.next();
+            int[] tuple = (int[]) tuples.next();
+
             // if both Addr2 and SeqNum match, use this entry
             // but overwite its FragNum
-            if (addr == tuple[0] && seqNum == tuple[1])
-                {
-                    tuple[2]=fragNum;
-                    return;
-                }
+            if ((addr == tuple[0]) && (seqNum == tuple[1])) {
+                tuple[2] = fragNum;
+                return;
+            }
         }
+
         // only if no entry is found, will we add a new one
         int[] tuple = new int[] {
-            intFieldValue(pdu, "Addr2"),
-            intFieldValue(pdu, "SeqNum"),
-            intFieldValue(pdu, "FragNum")};
-        if (_tupleCache.size() == _TUPLE_CACHE_SIZE)
+                intFieldValue(pdu, "Addr2"), intFieldValue(pdu, "SeqNum"),
+                intFieldValue(pdu, "FragNum")
+            };
+
+        if (_tupleCache.size() == _TUPLE_CACHE_SIZE) {
             _tupleCache.removeLast();
+        }
+
         _tupleCache.addFirst(tuple);
     }
 
     private LinkedList _tupleCache;
     private static final int _TUPLE_CACHE_SIZE = 32;
-
-
 }

@@ -22,12 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphConstructionException
+
 /**
    The exception of modifying graph elements in wrong ways. The
    modification is due to the change of topology or improper weight
@@ -41,13 +41,10 @@ package ptolemy.graph;
    @Pt.AcceptedRating Red (ssb)
 */
 public class GraphConstructionException extends GraphException {
-
     /** Constructor with an argument of text description.
      *  @param message The exception message.
      */
     public GraphConstructionException(String message) {
         super(message);
     }
-
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.List;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToElements
+
 /**
    An actor that disassembles an ArrayToken to a multiport output.
    <p>On each firing, this actor reads an ArrayToken frome the input
@@ -63,9 +64,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ArrayToElements extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,26 +74,25 @@ public class ArrayToElements extends Transformer {
      *   already has an actor with this name.
      */
     public ArrayToElements(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set type constraints.
         input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType inputType = (ArrayType)input.getType();
+
+        ArrayType inputType = (ArrayType) input.getType();
         InequalityTerm elementTerm = inputType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
         output.setMultiport(true);
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
@@ -103,13 +101,11 @@ public class ArrayToElements extends Transformer {
      *  @exception CloneNotSupportedException If a derived class
      *   contains an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ArrayToElements newObject =
-            (ArrayToElements)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayToElements newObject = (ArrayToElements) (super.clone(workspace));
 
         // set the type constraints
-        ArrayType inputType = (ArrayType)newObject.input.getType();
+        ArrayType inputType = (ArrayType) newObject.input.getType();
         InequalityTerm elementTerm = inputType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
@@ -124,12 +120,13 @@ public class ArrayToElements extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ArrayToken token = (ArrayToken)input.get(0);
+            ArrayToken token = (ArrayToken) input.get(0);
             int size = token.length();
 
             int min = Math.min(size, output.getWidth());
 
             Token[] elements = token.arrayValue();
+
             for (int i = 0; i < min; i++) {
                 output.send(i, elements[i]);
             }

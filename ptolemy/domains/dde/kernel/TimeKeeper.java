@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.kernel;
 
 import java.util.Collections;
@@ -41,8 +40,10 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimeKeeper
+
 /**
    A TimeKeeper manages an actor's local value of time in the DDE domain.
    A TimeKeeper is instantiated by a DDEThread and is used by the thread
@@ -91,7 +92,6 @@ import ptolemy.kernel.util.NamedObj;
    @see ptolemy.domains.dde.kernel.DDEThread
 */
 public class TimeKeeper {
-
     /** Construct a time keeper to manage the local time of an actor
      *  in the DDE domain. Set the receiver priorities of all receivers
      *  contained by the actor of this time keeper.
@@ -132,10 +132,11 @@ public class TimeKeeper {
      *  managed by this TimeKeeper.
      */
     public synchronized PrioritizedTimedQueue getFirstReceiver() {
-        if ( _receiverList.size() == 0 ) {
+        if (_receiverList.size() == 0) {
             return null;
         }
-        return (PrioritizedTimedQueue)_receiverList.getFirst();
+
+        return (PrioritizedTimedQueue) _receiverList.getFirst();
     }
 
     /** Return the current time of this TimeKeeper. The current time is
@@ -156,10 +157,12 @@ public class TimeKeeper {
      *  this actor.
      */
     public Time getNextTime() {
-        if ( _receiverList.size() == 0 ) {
+        if (_receiverList.size() == 0) {
             return _currentTime;
         }
-        return ((PrioritizedTimedQueue)_receiverList.getFirst()).getReceiverTime();
+
+        return ((PrioritizedTimedQueue) _receiverList.getFirst())
+        .getReceiverTime();
     }
 
     /** Return the current value of the output time associated with
@@ -168,15 +171,14 @@ public class TimeKeeper {
      * @return double The output time of this time keeper.
      */
     public synchronized Time getOutputTime() {
-
-        if ( !((ComponentEntity)_actor).isAtomic() ) {
+        if (!((ComponentEntity) _actor).isAtomic()) {
             return _outputTime;
         }
 
-
-        if ( _outputTime.compareTo(_currentTime) < 0) {
+        if (_outputTime.compareTo(_currentTime) < 0) {
             _outputTime = _currentTime;
         }
+
         return _outputTime;
     }
 
@@ -185,18 +187,21 @@ public class TimeKeeper {
      *  each such receiver, call DDEReceiver.removeIgnoredToken().
      */
     public synchronized void removeAllIgnoreTokens() {
-        if ( _receiverList == null ) {
+        if (_receiverList == null) {
             return;
         }
-        if ( _ignoredReceivers ) {
+
+        if (_ignoredReceivers) {
             PrioritizedTimedQueue receiver;
-            for ( int i = 0; i < _receiverList.size(); i++ ) {
-                receiver = (PrioritizedTimedQueue)_receiverList.get(i);
-                if ( receiver.getReceiverTime().getDoubleValue() ==
-                        PrioritizedTimedQueue.IGNORE ) {
+
+            for (int i = 0; i < _receiverList.size(); i++) {
+                receiver = (PrioritizedTimedQueue) _receiverList.get(i);
+
+                if (receiver.getReceiverTime().getDoubleValue() == PrioritizedTimedQueue.IGNORE) {
                     receiver.removeIgnoredToken();
                 }
             }
+
             _ignoredReceivers = false;
         }
     }
@@ -213,16 +218,17 @@ public class TimeKeeper {
     public void sendOutNullTokens(DDEReceiver receiver) {
         Iterator ports = _actor.outputPortList().iterator();
         Time time = getModelTime();
-        while ( ports.hasNext() ) {
-            IOPort port = (IOPort)ports.next();
-            Receiver receivers[][] =
-                (Receiver[][])port.getRemoteReceivers();
+
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
+            Receiver[][] receivers = (Receiver[][]) port.getRemoteReceivers();
+
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if ( time.compareTo(
-                        ((DDEReceiver)receivers[i][j])._lastTime) > 0 ) {
-                        ((DDEReceiver)receivers[i][j]).put(
-                                new NullToken(), time );
+                    if (time.compareTo(
+                                ((DDEReceiver) receivers[i][j])._lastTime) > 0) {
+                        ((DDEReceiver) receivers[i][j]).put(new NullToken(),
+                            time);
                     }
                 }
             }
@@ -239,17 +245,15 @@ public class TimeKeeper {
      *  decrease the value of current time to a nonnegative number.
      */
     public synchronized void setCurrentTime(Time time) {
-        if ( time.compareTo(_currentTime) < 0
-                && time.getDoubleValue() != PrioritizedTimedQueue.INACTIVE
-                && time.getDoubleValue() != PrioritizedTimedQueue.IGNORE ) {
-            throw new IllegalArgumentException(
-                    ((NamedObj)_actor).getName() + " - Attempt to "
-                    + "set current time in the past."
-                    + " time = " + time
-                    + "; current time = " + _currentTime );
+        if ((time.compareTo(_currentTime) < 0)
+                && (time.getDoubleValue() != PrioritizedTimedQueue.INACTIVE)
+                && (time.getDoubleValue() != PrioritizedTimedQueue.IGNORE)) {
+            throw new IllegalArgumentException(((NamedObj) _actor).getName()
+                + " - Attempt to " + "set current time in the past."
+                + " time = " + time + "; current time = " + _currentTime);
         }
 
-        if ( time.getDoubleValue() != PrioritizedTimedQueue.IGNORE ) {
+        if (time.getDoubleValue() != PrioritizedTimedQueue.IGNORE) {
             _currentTime = time;
         }
     }
@@ -262,32 +266,32 @@ public class TimeKeeper {
      * @see ptolemy.domains.dde.kernel.ReceiverComparator
      */
     public synchronized void updateReceiverList(
-            PrioritizedTimedQueue prioritizedTimedQueue) {
+        PrioritizedTimedQueue prioritizedTimedQueue) {
         if (_receiverList == null) {
             _receiverList = new LinkedList();
         }
 
         Time time = prioritizedTimedQueue.getReceiverTime();
+
         if (time.getDoubleValue() == PrioritizedTimedQueue.IGNORE) {
             _ignoredReceivers = true;
         }
 
-        if ( !_receiverList.contains(prioritizedTimedQueue) ) {
+        if (!_receiverList.contains(prioritizedTimedQueue)) {
             // Add receiver to list with a touch of
             // optimization before actually sorting.
-            if ( time.getDoubleValue() > 0 ) {
+            if (time.getDoubleValue() > 0) {
                 _receiverList.addFirst(prioritizedTimedQueue);
             } else {
                 _receiverList.addLast(prioritizedTimedQueue);
             }
         }
 
-        Collections.sort( _receiverList, _receiverComparator );
+        Collections.sort(_receiverList, _receiverComparator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly variables              ////
-
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods                   ////
 
@@ -325,21 +329,19 @@ public class TimeKeeper {
      System.out.println("###End of printReceiverList()\n");
      }
     */
-
     /** Set the output time associated with this time keeper.
      * @param outputTime The output time of this time keeper.
      * @exception IllegalActionException If the output time is
      *  less than the current time.
      */
     synchronized void _setOutputTime(Time outputTime)
-            throws IllegalActionException {
-
-        if ( outputTime.compareTo(_currentTime) < 0) {
+        throws IllegalActionException {
+        if (outputTime.compareTo(_currentTime) < 0) {
             throw new IllegalActionException("Illegal attempt "
-                    + "to set the time keeper's output time "
-                    + "in the past");
+                + "to set the time keeper's output time " + "in the past");
         }
-        if ( outputTime.getDoubleValue() != PrioritizedTimedQueue.IGNORE ) {
+
+        if (outputTime.getDoubleValue() != PrioritizedTimedQueue.IGNORE) {
             _outputTime = outputTime;
         }
     }
@@ -355,20 +357,19 @@ public class TimeKeeper {
      * @exception IllegalActionException If an error occurs during
      *  receiver access.
      */
-    synchronized void _setReceiverPriorities()
-            throws IllegalActionException {
-
+    synchronized void _setReceiverPriorities() throws IllegalActionException {
         LinkedList listOfPorts = new LinkedList();
         Iterator inputPorts = _actor.inputPortList().iterator();
-        if ( !inputPorts.hasNext() ) {
+
+        if (!inputPorts.hasNext()) {
             return;
         }
 
         //
         // First Order The Ports
         //
-        while ( inputPorts.hasNext() ) {
-            listOfPorts.addLast( (IOPort)inputPorts.next() );
+        while (inputPorts.hasNext()) {
+            listOfPorts.addLast((IOPort) inputPorts.next());
         }
 
         //
@@ -377,28 +378,30 @@ public class TimeKeeper {
         //
         int cnt = 0;
         int currentPriority = 0;
-        while ( cnt < listOfPorts.size() ) {
-            IOPort port = (IOPort)listOfPorts.get(cnt);
+
+        while (cnt < listOfPorts.size()) {
+            IOPort port = (IOPort) listOfPorts.get(cnt);
             Receiver[][] receivers = port.getReceivers();
-            for ( int i = 0; i < receivers.length; i++ ) {
-                for ( int j = 0; j < receivers[i].length; j++ ) {
-                    ((DDEReceiver)receivers[i][j])._priority =
-                        currentPriority;
+
+            for (int i = 0; i < receivers.length; i++) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    ((DDEReceiver) receivers[i][j])._priority = currentPriority;
+
                     //
                     // Is the following necessary??
                     //
-                    updateReceiverList( (DDEReceiver)receivers[i][j] );
+                    updateReceiverList((DDEReceiver) receivers[i][j]);
 
                     currentPriority++;
                 }
             }
+
             cnt++;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The actor that is managed by this time keeper.
     private Actor _actor;
 
@@ -422,5 +425,4 @@ public class TimeKeeper {
     // this time keeper. The receivers are ordered
     // according to the receiver comparator.
     private LinkedList _receiverList;
-
 }

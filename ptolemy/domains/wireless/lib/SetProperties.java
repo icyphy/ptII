@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import java.util.Iterator;
@@ -42,6 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// SetProperties
@@ -65,7 +65,6 @@ import ptolemy.kernel.util.Workspace;
 
 */
 public class SetProperties extends TypedAtomicActor {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -75,27 +74,24 @@ public class SetProperties extends TypedAtomicActor {
      *   actor with this name.
      */
     public SetProperties(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         payload = new TypedIOPort(this, "payload", true, false);
-        (new SingletonParameter(payload, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(payload, "_showName")).setToken(BooleanToken.TRUE);
 
         properties = new TypedIOPort(this, "properties", true, false);
-        (new SingletonParameter(properties, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(properties, "_showName")).setToken(BooleanToken.TRUE);
+
         // FIXME: This should be constrained to be a record token.
         // How to do that?
-
         // Create and configure the ports.
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(payload);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:green\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,9 +122,8 @@ public class SetProperties extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SetProperties newObject = (SetProperties)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SetProperties newObject = (SetProperties) (super.clone(workspace));
 
         // set the type constraints
         newObject.output.setTypeSameAs(newObject.payload);
@@ -143,33 +138,33 @@ public class SetProperties extends TypedAtomicActor {
      *   an instance of WirelessIOPort, or if there is no such port.
      */
     public void fire() throws IllegalActionException {
-
         super.fire();
 
         if (properties.hasToken(0)) {
             Token propertiesValue = properties.get(0);
+
             // The following will throw an exception if the value is
             // not a RecordToken.
             Iterator connectedPorts = output.sinkPortList().iterator();
+
             while (connectedPorts.hasNext()) {
-                IOPort port = (IOPort)connectedPorts.next();
+                IOPort port = (IOPort) connectedPorts.next();
+
                 if (port.isOutput() && port instanceof WirelessIOPort) {
                     // Found the port.
-                    ((WirelessIOPort)port).outsideTransmitProperties.
-                            setToken(propertiesValue);
-
+                    ((WirelessIOPort) port).outsideTransmitProperties.setToken(propertiesValue);
                 }
             }
         }
 
         if (payload.hasToken(0)) {
             Token inputValue = payload.get(0);
+
             if (_debugging) {
                 _debug("Input data received: " + inputValue.toString());
             }
-            output.send(0, inputValue);
 
+            output.send(0, inputValue);
         }
     }
-
 }

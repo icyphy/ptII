@@ -24,6 +24,7 @@
   COPYRIGHTENDKEY
 */
 package diva.util.test;
+
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
 
@@ -35,17 +36,16 @@ import diva.util.jester.TestSuite;
  * @version $Id$
  */
 public class All extends TestSuite {
-
     /** Constructor
      */
-    public All (TestHarness harness) {
+    public All(TestHarness harness) {
         setTestHarness(harness);
     }
 
     /**
      * runSuite()
      */
-    public void runSuite () {
+    public void runSuite() {
         // Test Shape utilities
         new ShapeUtilitiesTest(getTestHarness()).run();
 
@@ -60,11 +60,7 @@ public class All extends TestSuite {
     /** Create a default test harness and
      * run all tests on it.
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         new All(new TestHarness()).run();
     }
 }
-
-
-
-

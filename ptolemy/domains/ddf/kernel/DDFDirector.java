@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ddf.kernel;
 
 import java.util.Arrays;
@@ -42,6 +41,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -50,7 +50,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
-import ptolemy.actor.util.DFUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -61,6 +60,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DDFDirector
@@ -121,7 +121,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class DDFDirector extends Director {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -131,7 +130,7 @@ public class DDFDirector extends Director {
      *   an entity with the specified name.
      */
     public DDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -146,7 +145,7 @@ public class DDFDirector extends Director {
      *   an entity with the specified name.
      */
     public DDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -165,7 +164,7 @@ public class DDFDirector extends Director {
      *   an attribute that already exists in the given container.
      */
     public DDFDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -206,20 +205,22 @@ public class DDFDirector extends Director {
      *   level and runUntilDeadlock is set to be true.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == runUntilDeadlock) {
-            _runUntilDeadlock = ((BooleanToken)
-                runUntilDeadlock.getToken()).booleanValue();
+            _runUntilDeadlock = ((BooleanToken) runUntilDeadlock.getToken())
+                .booleanValue();
+
             if (_runUntilDeadlock && _isTopLevel()) {
                 // The reason we don't allow this is because we cannot
                 // pause the model easily if the whole execution is in
                 // one iteration. And the same effect can be achieved
                 // by setting the parameter iterations to be zero anyway.
-                throw new IllegalActionException(this, "Cannot set " +
-                        "runUntilDeadlock to be true if this DDFDirector " +
-                        "is at top level. Instead you should set " +
-                        "the parameter iterations to be zero to achieve " +
-                        "the same effect.");
+                throw new IllegalActionException(this,
+                    "Cannot set "
+                    + "runUntilDeadlock to be true if this DDFDirector "
+                    + "is at top level. Instead you should set "
+                    + "the parameter iterations to be zero to achieve "
+                    + "the same effect.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -244,10 +245,9 @@ public class DDFDirector extends Director {
      *   actor return false in prefire.
      */
     public void fire() throws IllegalActionException {
-
         boolean repeatBasicIteration = true;
-        while (repeatBasicIteration && !_stopRequested) {
 
+        while (repeatBasicIteration && !_stopRequested) {
             // The default value indicates basic iteration will not
             // be repeated until proved otherwise.
             repeatBasicIteration = false;
@@ -260,13 +260,14 @@ public class DDFDirector extends Director {
             List toBeFiredActors = new LinkedList();
 
             Iterator actors = _activeActors.iterator();
-            while (actors.hasNext()) {
 
+            while (actors.hasNext()) {
                 // Scan all actors to find all enabled and not
                 // deferrable actors.
-                Actor actor = (Actor)actors.next();
-                int[] flags = (int[])_actorsFlags.get(actor);
+                Actor actor = (Actor) actors.next();
+                int[] flags = (int[]) _actorsFlags.get(actor);
                 int canFire = flags[_ENABLING_STATUS];
+
                 if (canFire == _ENABLED_NOT_DEFERRABLE) {
                     toBeFiredActors.add(actor);
                 }
@@ -274,6 +275,7 @@ public class DDFDirector extends Director {
                 // Find set of minimax actors.
                 if (canFire == _ENABLED_DEFERRABLE) {
                     int newSize = flags[_MAX_NUMBER_OF_TOKENS];
+
                     if (newSize < minimaxSize) {
                         minimaxActors.clear();
                         minimaxActors.add(actor);
@@ -289,28 +291,32 @@ public class DDFDirector extends Director {
             _firedOne = false;
 
             // Fire all enabled and not deferrable actors.
-            Iterator  enabledActors = toBeFiredActors.iterator();
+            Iterator enabledActors = toBeFiredActors.iterator();
+
             while (enabledActors.hasNext()) {
-                Actor actor = (Actor)enabledActors.next();
+                Actor actor = (Actor) enabledActors.next();
                 _fireActor(actor);
             }
 
             // If no actor has been fired, fire set of minimax actors.
-            if (!_firedOne && minimaxActors.size() != 0) {
+            if (!_firedOne && (minimaxActors.size() != 0)) {
                 Iterator minimaxActorsIterator = minimaxActors.iterator();
+
                 while (minimaxActorsIterator.hasNext()) {
-                    Actor minimaxActor = (Actor)minimaxActorsIterator.next();
+                    Actor minimaxActor = (Actor) minimaxActorsIterator.next();
                     _fireActor(minimaxActor);
                 }
             }
 
             // If still no actor has been fired, declare deadlock unless
             // the parameter runUntilDeadlock is true.
-            if (!_firedOne && !_runUntilDeadlock ) {
+            if (!_firedOne && !_runUntilDeadlock) {
                 _isDeadlocked = true;
+
                 if (_debugging) {
                     _debug("deadlock detected");
                 }
+
                 return;
             }
 
@@ -318,12 +324,13 @@ public class DDFDirector extends Director {
                 // Check to see if we need to repeat basic iteration to
                 // satisfy requiredFiringsPerIteration for some actors.
                 actors = _actorsToCheckNumberOfFirings.iterator();
+
                 while (actors.hasNext()) {
-                    Actor actor = (Actor)actors.next();
-                    int[] flags = (int[])_actorsFlags.get(actor);
-                    int requiredFirings
-                        = flags[_REQUIRED_FIRINGS_PER_ITERATION];
+                    Actor actor = (Actor) actors.next();
+                    int[] flags = (int[]) _actorsFlags.get(actor);
+                    int requiredFirings = flags[_REQUIRED_FIRINGS_PER_ITERATION];
                     int firingsDone = flags[_NUMBER_OF_FIRINGS];
+
                     if (firingsDone < requiredFirings) {
                         repeatBasicIteration = true;
                         break;
@@ -349,23 +356,25 @@ public class DDFDirector extends Director {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _runUntilDeadlock = ((BooleanToken)
-                runUntilDeadlock.getToken()).booleanValue();
+        _runUntilDeadlock = ((BooleanToken) runUntilDeadlock.getToken())
+            .booleanValue();
         _isDeadlocked = false;
         _iterationCount = 0;
         _actorsToCheckNumberOfFirings.clear();
 
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+        TypedCompositeActor container = ((TypedCompositeActor) getContainer());
         _activeActors = new LinkedList(container.deepEntityList());
-        Iterator actors = _activeActors.iterator();
-        while (actors.hasNext()) {
 
+        Iterator actors = _activeActors.iterator();
+
+        while (actors.hasNext()) {
             // Get an array of actor flags from HashMap.
             // Create it if none found.
             int[] flags;
-            Actor actor = (Actor)actors.next();
+            Actor actor = (Actor) actors.next();
+
             if (_actorsFlags.containsKey(actor)) {
-                flags = (int[])_actorsFlags.get(actor);
+                flags = (int[]) _actorsFlags.get(actor);
             } else {
                 flags = new int[4];
                 _actorsFlags.put(actor, flags);
@@ -377,21 +386,27 @@ public class DDFDirector extends Director {
             // Determine required requiredFiringsPerIteration for each actor.
             // The default value 0 means no requirement on this actor.
             flags[_REQUIRED_FIRINGS_PER_ITERATION] = 0;
-            Variable requiredFiringsPerIteration = (Variable)((Entity)actor).
-                getAttribute("requiredFiringsPerIteration");
+
+            Variable requiredFiringsPerIteration = (Variable) ((Entity) actor)
+                .getAttribute("requiredFiringsPerIteration");
+
             if (requiredFiringsPerIteration != null) {
                 Token token = requiredFiringsPerIteration.getToken();
+
                 if (token instanceof IntToken) {
-                    int value = ((IntToken)token).intValue();
+                    int value = ((IntToken) token).intValue();
+
                     if (value > 0) {
                         flags[_REQUIRED_FIRINGS_PER_ITERATION] = value;
                     }
+
                     _actorsToCheckNumberOfFirings.add(actor);
                 } else {
                     throw new IllegalActionException(this,
-                            (ComponentEntity)actor, "The variable " +
-                            "requiredFiringsPerIteration must contain " +
-                            "an IntToken.");
+                        (ComponentEntity) actor,
+                        "The variable "
+                        + "requiredFiringsPerIteration must contain "
+                        + "an IntToken.");
                 }
             }
         }
@@ -414,8 +429,7 @@ public class DDFDirector extends Director {
      */
     public void merge(DDFDirector director) {
         _activeActors.addAll(director._activeActors);
-        _actorsToCheckNumberOfFirings.addAll(director.
-                _actorsToCheckNumberOfFirings);
+        _actorsToCheckNumberOfFirings.addAll(director._actorsToCheckNumberOfFirings);
         _actorsFlags.putAll(director._actorsFlags);
     }
 
@@ -434,20 +448,25 @@ public class DDFDirector extends Director {
      *   does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
-        int iterationsValue = ((IntToken)(iterations.getToken())).intValue();
+        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
         _iterationCount++;
+
         if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
             if (_debugging) {
                 _debug("iteration limit reached");
             }
+
             return false;
         }
+
         if (_activeActors.size() == 0) {
             if (_debugging) {
                 _debug("no more active actors");
             }
+
             return false;
         }
+
         return !_isDeadlocked && super.postfire();
     }
 
@@ -467,36 +486,42 @@ public class DDFDirector extends Director {
         if (_debugging) {
             _debug("\niterationCount " + _iterationCount);
         }
+
         super.prefire();
 
-        Actor container = ((Actor)getContainer());
+        Actor container = ((Actor) getContainer());
         Iterator inputPorts = container.inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
+            IOPort inputPort = (IOPort) inputPorts.next();
 
             // NOTE: If the port is a ParameterPort, then we should not
             // insist on there being an input.
-            if (inputPort instanceof ParameterPort) continue;
+            if (inputPort instanceof ParameterPort) {
+                continue;
+            }
 
             int[] rate = _getTokenConsumptionRate(inputPort);
+
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (!inputPort.hasToken(i, rate[i])) {
                     if (_debugging) {
-                        _debug("Channel " + i + " of port " +
-                                inputPort.getFullName()
-                                + " does not have enough tokens: "
-                                + rate[i]
-                                + ". Prefire returns false.");
+                        _debug("Channel " + i + " of port "
+                            + inputPort.getFullName()
+                            + " does not have enough tokens: " + rate[i]
+                            + ". Prefire returns false.");
                     }
+
                     return false;
                 }
             }
         }
 
         Iterator actors = _actorsToCheckNumberOfFirings.iterator();
+
         while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            int[] flags = (int[])_actorsFlags.get(actor);
+            Actor actor = (Actor) actors.next();
+            int[] flags = (int[]) _actorsFlags.get(actor);
             flags[_NUMBER_OF_FIRINGS] = 0;
         }
 
@@ -519,13 +544,10 @@ public class DDFDirector extends Director {
         // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[4];
-        defaultSuggestions[0] =
-            "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
-        defaultSuggestions[1] =
-            "ptolemy.domains.hdf.kernel.HDFFSMDirector";
+        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
+        defaultSuggestions[1] = "ptolemy.domains.hdf.kernel.HDFFSMDirector";
         defaultSuggestions[2] = "ptolemy.domains.fsm.kernel.FSMDirector";
-        defaultSuggestions[3] =
-            "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
+        defaultSuggestions[3] = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         return defaultSuggestions;
     }
 
@@ -539,38 +561,40 @@ public class DDFDirector extends Director {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
-    public boolean transferInputs(IOPort port)
-            throws IllegalActionException {
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferInputs on port: " + port.getFullName());
         }
+
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "Attempted to transferInputs on a port is not an " +
-                    "opaque input port.");
+                "Attempted to transferInputs on a port is not an "
+                + "opaque input port.");
         }
+
         boolean wasTransferred = false;
 
         int[] rate = _getTokenConsumptionRate(port);
+
         for (int i = 0; i < port.getWidth(); i++) {
             try {
                 for (int k = 0; k < rate[i]; k++) {
                     if (port.hasToken(i)) {
                         Token t = port.get(i);
+
                         if (_debugging) {
                             _debug(getName(),
                                 "transferring input from channel " + i
                                 + " of input port " + port.getName());
                         }
+
                         port.sendInside(i, t);
                         wasTransferred = true;
                     } else {
                         throw new IllegalActionException(this, port,
-                                "Channel " + i + "should consume "
-                                + rate[i]
-                                + " tokens, but there were only "
-                                + k
-                                + " tokens available.");
+                            "Channel " + i + "should consume " + rate[i]
+                            + " tokens, but there were only " + k
+                            + " tokens available.");
                     }
                 }
             } catch (NoTokenException ex) {
@@ -582,17 +606,20 @@ public class DDFDirector extends Director {
         // Update enabling status for all inside opaque actors that receive
         // data from this port.
         Iterator insideSinkPorts = port.insideSinkPortList().iterator();
+
         while (insideSinkPorts.hasNext()) {
-            IOPort insideSinkPort = (IOPort)insideSinkPorts.next();
-            Actor actor = (Actor)insideSinkPort.getContainer();
+            IOPort insideSinkPort = (IOPort) insideSinkPorts.next();
+            Actor actor = (Actor) insideSinkPort.getContainer();
+
             // Skip it if the actor to be checked contains this director.
             // In other words, the data directly go to output port instead
             // of any inside actors.
             if (getContainer() != actor) {
-                int[] flags = (int[])_actorsFlags.get(actor);
+                int[] flags = (int[]) _actorsFlags.get(actor);
                 flags[_ENABLING_STATUS] = _actorStatus(actor);
             }
         }
+
         return wasTransferred;
     }
 
@@ -604,36 +631,40 @@ public class DDFDirector extends Director {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
-    public boolean transferOutputs(IOPort port)
-            throws IllegalActionException {
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferOutputs on port: " + port.getFullName());
         }
+
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that "
-                    + "is not an opaque output port.");
+                "Attempted to transferOutputs on a port that "
+                + "is not an opaque output port.");
         }
+
         boolean wasTransferred = false;
 
         int[] rate = _getTokenProductionRate(port);
+
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {
                 for (int k = 0; k < rate[i]; k++) {
                     if (port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
+
                         if (_debugging) {
                             _debug(getName(),
                                 "transferring output from channel " + i
                                 + " of port " + port.getName());
                         }
+
                         port.send(i, t);
                         wasTransferred = true;
                     } else {
                         throw new IllegalActionException(this, port,
-                                "Channel " + i + " should produce " + rate[i]
-                                + " tokens, but there were only "
-                                + k + " tokens available.");
+                            "Channel " + i + " should produce " + rate[i]
+                            + " tokens, but there were only " + k
+                            + " tokens available.");
                     }
                 }
             } catch (NoTokenException ex) {
@@ -655,14 +686,14 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException If any called method throws
      *   IllegalActionException.
      */
-    protected int _actorStatus(Actor actor)
-            throws IllegalActionException {
-
-        if (!_isEnabled(actor))
+    protected int _actorStatus(Actor actor) throws IllegalActionException {
+        if (!_isEnabled(actor)) {
             return _NOT_ENABLED;
+        }
 
-        if (_isDeferrable(actor))
+        if (_isDeferrable(actor)) {
             return _ENABLED_DEFERRABLE;
+        }
 
         return _ENABLED_NOT_DEFERRABLE;
     }
@@ -676,24 +707,29 @@ public class DDFDirector extends Director {
      *   connected to this actor exceeds maximum receiver capacity.
      */
     protected void _checkDownstreamReceiverCapacity(Actor actor)
-            throws IllegalActionException {
-        int maximumCapacity
-            = ((IntToken)maximumReceiverCapacity.getToken()).intValue();
+        throws IllegalActionException {
+        int maximumCapacity = ((IntToken) maximumReceiverCapacity.getToken())
+            .intValue();
+
         if (maximumCapacity > 0) {
             Iterator outputPorts = actor.outputPortList().iterator();
+
             while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort)outputPorts.next();
+                IOPort outputPort = (IOPort) outputPorts.next();
                 Receiver[][] Receivers = outputPort.getRemoteReceivers();
-                for (int i = 0; i < Receivers.length; i++)
+
+                for (int i = 0; i < Receivers.length; i++) {
                     for (int j = 0; j < Receivers[i].length; j++) {
-                        SDFReceiver receiver = (SDFReceiver)Receivers[i][j];
+                        SDFReceiver receiver = (SDFReceiver) Receivers[i][j];
+
                         if (receiver.size() > maximumCapacity) {
                             throw new IllegalActionException(this,
-                                    "Receiver size exceeds the maximum " +
-                                    "capacity in port " +
-                                    receiver.getContainer().getFullName());
+                                "Receiver size exceeds the maximum "
+                                + "capacity in port "
+                                + receiver.getContainer().getFullName());
                         }
                     }
+                }
             }
         }
     }
@@ -710,18 +746,20 @@ public class DDFDirector extends Director {
         if (_debugging) {
             _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE));
         }
+
         // Iterate once.
         int returnValue = actor.iterate(1);
+
         if (_debugging) {
             _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE));
         }
+
         if (returnValue == STOP_ITERATING) {
             _activeActors.remove(actor);
             _actorsToCheckNumberOfFirings.remove(actor);
         } else if (returnValue == NOT_READY) {
-            throw new IllegalActionException(this,
-                    (ComponentEntity)actor, "Actor " +
-                    "is not ready to fire.");
+            throw new IllegalActionException(this, (ComponentEntity) actor,
+                "Actor " + "is not ready to fire.");
         }
 
         _checkDownstreamReceiverCapacity(actor);
@@ -730,25 +768,25 @@ public class DDFDirector extends Director {
         _firedOne = true;
 
         // Increment the firing number.
-        int[] flags = (int[])_actorsFlags.get(actor);
+        int[] flags = (int[]) _actorsFlags.get(actor);
         flags[_NUMBER_OF_FIRINGS]++;
 
         // Update enabling status for each connected actor.
-        Iterator ports = ((Entity)actor).portList().iterator();
+        Iterator ports = ((Entity) actor).portList().iterator();
+
         while (ports.hasNext()) {
-            ComponentPort port = (ComponentPort)ports.next();
-            Iterator deepConnectedPorts =
-                port.deepConnectedPortList().iterator();
+            ComponentPort port = (ComponentPort) ports.next();
+            Iterator deepConnectedPorts = port.deepConnectedPortList().iterator();
+
             while (deepConnectedPorts.hasNext()) {
-                Port deepConnectedPort = (Port)deepConnectedPorts.next();
-                Actor connectedActor = (Actor)deepConnectedPort.getContainer();
+                Port deepConnectedPort = (Port) deepConnectedPorts.next();
+                Actor connectedActor = (Actor) deepConnectedPort.getContainer();
+
                 // Skip it if the connectedActor to be checked contains
                 // this director.
                 if (getContainer() != connectedActor) {
-                    int[] containerFlags =
-                        (int[])_actorsFlags.get(connectedActor);
-                    containerFlags[_ENABLING_STATUS] =
-                        _actorStatus(connectedActor);
+                    int[] containerFlags = (int[]) _actorsFlags.get(connectedActor);
+                    containerFlags[_ENABLING_STATUS] = _actorStatus(connectedActor);
                 }
             }
         }
@@ -770,61 +808,70 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException If any called method throws
      *  IllegalActionException.
      */
-    protected boolean _isDeferrable(Actor actor)
-            throws IllegalActionException {
-
+    protected boolean _isDeferrable(Actor actor) throws IllegalActionException {
         boolean deferrable = false;
         int maxSize = 0;
 
         Iterator outputPorts = actor.outputPortList().iterator();
-        while (outputPorts.hasNext()) {
 
-            IOPort outputPort = (IOPort)outputPorts.next();
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort) outputPorts.next();
             Receiver[][] farReceivers = outputPort.getRemoteReceivers();
-            for (int i = 0; i < farReceivers.length; i++)
+
+            for (int i = 0; i < farReceivers.length; i++) {
                 for (int j = 0; j < farReceivers[i].length; j++) {
-                    SDFReceiver farReceiver = (SDFReceiver)farReceivers[i][j];
+                    SDFReceiver farReceiver = (SDFReceiver) farReceivers[i][j];
                     IOPort port = farReceiver.getContainer();
 
                     // Having a self-loop doesn't make it deferrable.
-                    if (port == outputPort) continue;
+                    if (port == outputPort) {
+                        continue;
+                    }
 
                     // The default value for tokenConsumptionRate is 1.
                     int tokenConsumptionRate = 1;
                     Variable rate = null;
+
                     if (port.isInput()) {
                         rate = DFUtilities.getRateVariable(port,
                                 "tokenConsumptionRate");
                     }
+
                     // If DDF domain is inside another domain and the
                     // farReceiver is contained by an opaque output port...
                     if (port.isOutput()) {
                         rate = DFUtilities.getRateVariable(port,
                                 "tokenProductionRate");
                     }
+
                     if (rate != null) {
                         Token token = rate.getToken();
+
                         if (token instanceof ArrayToken) {
-                            Token[] tokens = ((ArrayToken)token).arrayValue();
+                            Token[] tokens = ((ArrayToken) token).arrayValue();
+
                             // Scan the contained receivers of the remote
                             // port to find out channel index.
-                            Receiver[][] portReceivers =
-                                port.getReceivers();
+                            Receiver[][] portReceivers = port.getReceivers();
                             int channelIndex = 0;
-                            foundChannelIndex:
-                            for (int m = 0; m < portReceivers.length; m++)
+foundChannelIndex: 
+                            for (int m = 0; m < portReceivers.length; m++) {
                                 for (int n = 0; n < portReceivers[m].length;
-                                     n++)
+                                        n++) {
                                     if (farReceiver == portReceivers[m][n]) {
                                         channelIndex = m;
                                         break foundChannelIndex;
                                     }
-                            tokenConsumptionRate =
-                                ((IntToken)tokens[channelIndex]).intValue();
+                                }
+                            }
+
+                            tokenConsumptionRate = ((IntToken) tokens[channelIndex])
+                                .intValue();
                         } else {
-                            tokenConsumptionRate = ((IntToken)token).intValue();
+                            tokenConsumptionRate = ((IntToken) token).intValue();
                         }
                     }
+
                     if (farReceiver.size() >= tokenConsumptionRate) {
                         deferrable = true;
 
@@ -845,14 +892,12 @@ public class DDFDirector extends Director {
                             maxSize = farReceiver.size();
                         }
                     }
-
-
-
                 }
+            }
         }
 
         if (deferrable) {
-            int[] flags = (int[])_actorsFlags.get(actor);
+            int[] flags = (int[]) _actorsFlags.get(actor);
             flags[_MAX_NUMBER_OF_TOKENS] = maxSize;
         }
 
@@ -867,18 +912,20 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException If any called method throws
      *   IllegalActionException.
      */
-    protected boolean _isEnabled(Actor actor)
-            throws IllegalActionException {
+    protected boolean _isEnabled(Actor actor) throws IllegalActionException {
         Iterator inputPorts = actor.inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
+            IOPort inputPort = (IOPort) inputPorts.next();
             int[] rate = _getTokenConsumptionRate(inputPort);
+
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (!inputPort.hasToken(i, rate[i])) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
@@ -892,32 +939,39 @@ public class DDFDirector extends Director {
      *   length of tokenConsumptionRate array is less than port width.
      */
     private int[] _getTokenConsumptionRate(IOPort port)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int[] rate = new int[port.getWidth()];
         Arrays.fill(rate, 1);
+
         Variable parameter = DFUtilities.getRateVariable(port,
                 "tokenConsumptionRate");
+
         if (parameter != null) {
             Token token = parameter.getToken();
+
             // If token is ArrayToken, then each channel has a
             // corresponding input rate in the array.
             if (token instanceof ArrayToken) {
-                Token[] tokens = ((ArrayToken)token).arrayValue();
+                Token[] tokens = ((ArrayToken) token).arrayValue();
+
                 if (tokens.length < port.getWidth()) {
-                    throw new IllegalActionException(this, "The length of " +
-                            "tokenConsumptionRate array is less than " +
-                            "port width.");
+                    throw new IllegalActionException(this,
+                        "The length of "
+                        + "tokenConsumptionRate array is less than "
+                        + "port width.");
                 }
-                for (int i = 0; i < port.getWidth(); i++)
-                    rate[i] = ((IntToken)tokens[i]).intValue();
+
+                for (int i = 0; i < port.getWidth(); i++) {
+                    rate[i] = ((IntToken) tokens[i]).intValue();
+                }
             } else { // All the channels in the port has same
                      // tokenConsumptionRate.
-                Arrays.fill(rate, ((IntToken)token).intValue());
+                Arrays.fill(rate, ((IntToken) token).intValue());
             }
         }
+
         return rate;
     }
-
 
     /** Get token production rate for the given port.
      *  @param port The port to get token production rate.
@@ -927,29 +981,37 @@ public class DDFDirector extends Director {
      *   than port inside width.
      */
     private int[] _getTokenProductionRate(IOPort port)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int[] rate = new int[port.getWidthInside()];
         Arrays.fill(rate, 1);
+
         Variable parameter = DFUtilities.getRateVariable(port,
                 "tokenProductionRate");
+
         if (parameter != null) {
             Token token = parameter.getToken();
+
             // If token is ArrayToken, then each channel has a
             // corresponding output rate in the array.
             if (token instanceof ArrayToken) {
-                Token[] tokens = ((ArrayToken)token).arrayValue();
+                Token[] tokens = ((ArrayToken) token).arrayValue();
+
                 if (tokens.length < port.getWidthInside()) {
-                    throw new IllegalActionException(this, "The length of " +
-                            "tokenProductionRate array is less than " +
-                            "port inside width.");
+                    throw new IllegalActionException(this,
+                        "The length of "
+                        + "tokenProductionRate array is less than "
+                        + "port inside width.");
                 }
-                for (int i = 0; i < port.getWidthInside(); i++)
-                    rate[i] = ((IntToken)tokens[i]).intValue();
+
+                for (int i = 0; i < port.getWidthInside(); i++) {
+                    rate[i] = ((IntToken) tokens[i]).intValue();
+                }
             } else { // All the channels in the port has same
                      // tokenProductionRate.
-                Arrays.fill(rate, ((IntToken)token).intValue());
+                Arrays.fill(rate, ((IntToken) token).intValue());
             }
         }
+
         return rate;
     }
 
@@ -959,13 +1021,12 @@ public class DDFDirector extends Director {
      *  and a runUntilDeadlock parameter with default value false.
      */
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setToken(new IntToken(0));
 
-        maximumReceiverCapacity
-            = new Parameter(this, "maximumReceiverCapacity");
+        maximumReceiverCapacity = new Parameter(this, "maximumReceiverCapacity");
         maximumReceiverCapacity.setTypeEquals(BaseType.INT);
         maximumReceiverCapacity.setToken(new IntToken(0));
 
@@ -976,7 +1037,6 @@ public class DDFDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A flag indicating whether type resolution is disabled.
     private boolean _isTypeResolutionDisabled = false;
 

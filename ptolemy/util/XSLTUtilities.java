@@ -25,11 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.util;
-
-// Note that classes in ptolemy.util do not depend on any
-// other ptolemy packages.
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -56,8 +52,10 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// XSLTUtilities
+
 /**
    A collection of utilities for manipulating strings using XSLT
    These utilities do not depend on any other ptolemy.* packages.
@@ -77,7 +75,6 @@ import org.xml.sax.SAXException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class XSLTUtilities {
-
     /** Instances of this class cannot be created.
      */
     private XSLTUtilities() {
@@ -102,25 +99,30 @@ public class XSLTUtilities {
      * <li> The final argument is the output file name.
      * @exception Exception If there are problems with the transform.
      */
-    public static void main(String []args) throws Exception {
+    public static void main(String[] args) throws Exception {
         if (args.length < 3) {
             System.err.println("Usage: java -classpath $PTII "
-                    + "ptolemy.util.XSLTUtilities inputFile "
-                    + "xslFile1 [xslFile2 . . .] outputFile");
+                + "ptolemy.util.XSLTUtilities inputFile "
+                + "xslFile1 [xslFile2 . . .] outputFile");
             System.exit(2);
         }
+
         // Make sure we can write the output first
         FileWriter fileWriter = null;
+
         try {
             fileWriter = new FileWriter(args[args.length - 1]);
+
             Document inputDocument = parse(args[0]);
 
             List transforms = new LinkedList();
-            for (int i = 1; i < args.length - 1; i++) {
+
+            for (int i = 1; i < (args.length - 1); i++) {
                 transforms.add(args[i]);
             }
-            Document outputDocument =
-                XSLTUtilities.transform(inputDocument, transforms);
+
+            Document outputDocument = XSLTUtilities.transform(inputDocument,
+                    transforms);
             fileWriter.write(XSLTUtilities.toString(outputDocument));
         } finally {
             if (fileWriter != null) {
@@ -139,20 +141,22 @@ public class XSLTUtilities {
      *  @exception IOException If the filename could not be parsed.
      */
     public static Document parse(String filename)
-            throws ParserConfigurationException, IOException {
+        throws ParserConfigurationException, IOException {
         // FIXME: Throw something other than Exception
         System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
-                "net.sf.saxon.om.DocumentBuilderFactoryImpl");
+            "net.sf.saxon.om.DocumentBuilderFactoryImpl");
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
+
         // We use InputSource here so that we can specify the filename
         // argument as a jar url so that HSIFToMoML works under Web Start.
         try {
             return builder.parse(new InputSource(filename));
         } catch (SAXException ex) {
             // Rethrow this with the filename included.
-            IOException exception =
-                new IOException("Failed to parse '" + filename + "'");
+            IOException exception = new IOException("Failed to parse '"
+                    + filename + "'");
             exception.initCause(ex);
             throw exception;
         }
@@ -167,20 +171,21 @@ public class XSLTUtilities {
      *  stream.
      */
     public static String toString(Document document)
-            throws TransformerException, IOException {
+        throws TransformerException, IOException {
         // FIXME: Joern's sample code had this in it, but if we
         // include it, then we get Provider   not found errors
         //String defaultDBFI =
         //    System.getProperty("javax.xml.parsers.DocumentBuilderFactory");
         //System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
         //                   defaultDBFI == null ? "" : defaultDBFI);
-
         OutputStream outputStream = null;
+
         try {
             outputStream = new ByteArrayOutputStream();
+
             StreamResult result = new StreamResult(outputStream);
-            TransformerFactory transformerFactory =
-                TransformerFactory.newInstance();
+            TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
             Transformer serializer = transformerFactory.newTransformer();
             serializer.transform(new DOMSource(document), result);
             return outputStream.toString();
@@ -201,44 +206,43 @@ public class XSLTUtilities {
      *  @exception IOException If there is a problem
      *  finding the transform file.
      */
-    public static Document transform(Document inputDocument,
-            String xslFileName) throws TransformerException, IOException {
-        TransformerFactory transformerFactory =
-            TransformerFactory.newInstance();
+    public static Document transform(Document inputDocument, String xslFileName)
+        throws TransformerException, IOException {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = null;
+
         try {
-            transformer = transformerFactory
-                .newTransformer(new StreamSource(xslFileName));
+            transformer = transformerFactory.newTransformer(new StreamSource(
+                        xslFileName));
         } catch (javax.xml.transform.TransformerConfigurationException ex) {
             try {
                 // We might be in the Swing Event thread, so
                 // Thread.currentThread().getContextClassLoader()
                 // .getResource(entry) probably will not work.
                 Class refClass = Class.forName("ptolemy.util.XSLTUtilities");
-                URL entryURL =
-                    refClass.getClassLoader().getResource(xslFileName);
+                URL entryURL = refClass.getClassLoader().getResource(xslFileName);
+
                 if (entryURL != null) {
-                    transformer = transformerFactory
-                        .newTransformer(new StreamSource(entryURL.toString()));
+                    transformer = transformerFactory.newTransformer(new StreamSource(
+                                entryURL.toString()));
                 } else {
-                    IOException exception =
-                        new IOException("Failed to open '" + xslFileName
-                                + "'");
+                    IOException exception = new IOException("Failed to open '"
+                            + xslFileName + "'");
                     exception.initCause(ex);
                     throw exception;
                 }
-
             } catch (Exception ex2) {
-                IOException exception =
-                    new IOException("Failed to open \"" + xslFileName + "\".\n"
-                            + "Searching the classpath threw:\n" + ex2);
+                IOException exception = new IOException("Failed to open \""
+                        + xslFileName + "\".\n"
+                        + "Searching the classpath threw:\n" + ex2);
                 exception.initCause(ex);
                 throw exception;
             }
         }
+
         DOMResult result = new DOMResult();
         transformer.transform(new DOMSource(inputDocument), result);
-        return (Document)result.getNode();
+        return (Document) result.getNode();
     }
 
     /** Transform a document by applying a list of transforms.
@@ -251,13 +255,15 @@ public class XSLTUtilities {
      *  @exception IOException If there is a problem closing the output
      *  stream.
      */
-    public static Document transform(Document inputDocument,
-            List xslFileNames) throws TransformerException, IOException {
+    public static Document transform(Document inputDocument, List xslFileNames)
+        throws TransformerException, IOException {
         Iterator fileNames = xslFileNames.iterator();
+
         while (fileNames.hasNext()) {
             String fileName = (String) fileNames.next();
             inputDocument = transform(inputDocument, fileName);
         }
+
         return inputDocument;
     }
 
@@ -272,19 +278,19 @@ public class XSLTUtilities {
      *  a problem with the transform.
      * the transformation.
      */
-    public static void transform(String xsltFileName,
-            String sourceFileName,
-            String resultFileName)
-            throws IOException, TransformerException {
+    public static void transform(String xsltFileName, String sourceFileName,
+        String resultFileName) throws IOException, TransformerException {
         OutputStream resultStream = null;
+
         try {
             resultStream = new FileOutputStream(resultFileName);
+
             StreamSource source = new StreamSource(sourceFileName);
             StreamResult result = new StreamResult(resultStream);
-            TransformerFactory transformerFactory =
-                TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory
-                .newTransformer(new StreamSource(xsltFileName));
+            TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
+            Transformer transformer = transformerFactory.newTransformer(new StreamSource(
+                        xsltFileName));
             transformer.setOutputProperty("indent", "yes");
             transformer.transform(source, result);
             resultStream.flush();
@@ -294,7 +300,7 @@ public class XSLTUtilities {
                     resultStream.close();
                 } catch (Throwable throwable) {
                     System.out.println("Ignoring failure to close stream "
-                            + "on " + resultFileName);
+                        + "on " + resultFileName);
                     throwable.printStackTrace();
                 }
             }
@@ -314,15 +320,14 @@ public class XSLTUtilities {
      *  @exception IOException If there is a problem
      *  finding a transform file or applying a transform.
      */
-
     public static void transform(String input, FileWriter fileWriter,
-            List xslFileNames)
-            throws ParserConfigurationException, TransformerException, IOException {
+        List xslFileNames)
+        throws ParserConfigurationException, TransformerException, IOException {
         // This method takes a FileWriter so that the user can
         // ensure that the FileWriter exists and is writable before going
         // through the trouble of doing the conversion.
-
         Document inputDocument = null;
+
         try {
             inputDocument = XSLTUtilities.parse(input);
         } catch (IOException ex) {
@@ -330,23 +335,24 @@ public class XSLTUtilities {
             // can throw a javax.xml.transform.TransformerException
             // which extends Exception, but has  IOException as a cause,
             // so we must catch Exception here, not IOException.
-
             // Try it as a jar url
             try {
-                URL jarURL =
-                    ClassUtilities.jarURLEntryResource(input);
+                URL jarURL = ClassUtilities.jarURLEntryResource(input);
+
                 if (jarURL == null) {
                     throw new IOException("'" + input + "' was not a jar "
-                            + "URL, or was not found");
+                        + "URL, or was not found");
                 }
+
                 inputDocument = XSLTUtilities.parse(jarURL.toString());
             } catch (IOException ex2) {
                 // FIXME: IOException does not take a cause argument
                 throw ex;
             }
         }
-        Document outputDocument =
-            XSLTUtilities.transform(inputDocument, xslFileNames);
+
+        Document outputDocument = XSLTUtilities.transform(inputDocument,
+                xslFileNames);
 
         fileWriter.write(XSLTUtilities.toString(outputDocument));
 

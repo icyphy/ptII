@@ -24,14 +24,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.type;
 
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MonotonicFunction
+
 /**
    Actors often need to implement monotonic functions as part of the
    declaration of type constraints.  This base class makes it easy to do
@@ -45,7 +46,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (neuendor)
 */
 public abstract class MonotonicFunction implements InequalityTerm {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -85,10 +85,9 @@ public abstract class MonotonicFunction implements InequalityTerm {
      *  monotonic function term.
      *  @exception IllegalActionException Always thrown.
      */
-    public final void initialize(Object e)
-            throws IllegalActionException {
+    public final void initialize(Object e) throws IllegalActionException {
         throw new IllegalActionException(getClass().getName()
-                + ": Cannot initialize a function term.");
+            + ": Cannot initialize a function term.");
     }
 
     /** Return false.  Monotonic Functions are not settable.
@@ -111,7 +110,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
      */
     public final void setValue(Object e) throws IllegalActionException {
         throw new IllegalActionException(getClass().getName()
-                + ": The type is not settable.");
+            + ": The type is not settable.");
     }
 
     /** Override the base class to give a description of this term.
@@ -119,17 +118,18 @@ public abstract class MonotonicFunction implements InequalityTerm {
      */
     public final String toString() {
         String string = getVerboseString();
+
         if (string == null) {
             string = "";
         } else {
             string = ", " + string;
         }
+
         try {
-            return "(" + getClass().getName() +
-                ", " + getValue() + string + ")";
+            return "(" + getClass().getName() + ", " + getValue() + string
+            + ")";
         } catch (IllegalActionException ex) {
-            return "(" + getClass().getName() +
-                ", INVALID" + string + ")";
+            return "(" + getClass().getName() + ", INVALID" + string + ")";
         }
     }
 }

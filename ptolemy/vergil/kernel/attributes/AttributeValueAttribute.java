@@ -25,24 +25,25 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeValueAttribute
+
 /**
    This is a text attribute whose text string is derived from the
    value of a parameter. <p>
@@ -75,7 +76,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *   an attribute already in the container.
      */
     public AttributeValueAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -104,12 +105,11 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == attributeName) {
             _setAttributeName(attributeName.getExpression());
         } else if (attribute == displayWidth) {
-            _displayWidth =
-                ((IntToken) displayWidth.getToken()).intValue();
+            _displayWidth = ((IntToken) displayWidth.getToken()).intValue();
             _icon.setText(_getText());
         } else {
             super.attributeChanged(attribute);
@@ -207,25 +207,28 @@ public class AttributeValueAttribute extends AbstractTextAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     protected void _setAttributeName(String attributeName)
-            throws IllegalActionException {
-        NamedObj container = (NamedObj)getContainer();
+        throws IllegalActionException {
+        NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
-            Attribute newAttribute = ModelScope.getScopedVariable(
-                    null, container, attributeName);
+            Attribute newAttribute = ModelScope.getScopedVariable(null,
+                    container, attributeName);
+
             if (_attribute != newAttribute) {
                 if (_attribute != null) {
                     _attribute.removeValueListener(this);
                 }
+
                 if (newAttribute instanceof Settable) {
-                    _attribute = (Settable)newAttribute;
+                    _attribute = (Settable) newAttribute;
                     _attribute.addValueListener(this);
                 } else {
                     _attribute = null;
                 }
             }
         }
+
         _icon.setText(_getText());
     }
 
@@ -234,37 +237,44 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *  @return A new shape.
      */
     protected String _getText() {
-        NamedObj container = (NamedObj)getContainer();
+        NamedObj container = (NamedObj) getContainer();
+
         try {
             if (container != null) {
                 if (_attribute instanceof Variable) {
-                    String value =
-                        ((Variable)_attribute).getToken().toString();
+                    String value = ((Variable) _attribute).getToken().toString();
                     String truncated = value;
                     int width = _displayWidth;
+
                     if (value.length() > width) {
                         truncated = value.substring(0, width) + "...";
                     }
+
                     if (truncated.length() == 0) {
                         truncated = " ";
                     }
+
                     return truncated;
                 } else if (_attribute instanceof Settable) {
-                    String value = ((Settable)_attribute).getExpression();
+                    String value = ((Settable) _attribute).getExpression();
                     String truncated = value;
                     int width = _displayWidth;
+
                     if (value.length() > width) {
                         truncated = value.substring(0, width) + "...";
                     }
+
                     if (truncated.length() == 0) {
                         truncated = " ";
                     }
+
                     return truncated;
                 }
             }
         } catch (Exception ex) {
             return "???";
         }
+
         return "???";
     }
 

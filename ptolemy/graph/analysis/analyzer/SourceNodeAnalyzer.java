@@ -22,13 +22,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.analyzer;
 
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SourceNodeAnalyzer
+
 /**
    Base interface for the computation of source nodes in a graph.
    <p>
@@ -39,9 +40,7 @@ import java.util.List;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public interface SourceNodeAnalyzer extends GraphAnalyzer {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

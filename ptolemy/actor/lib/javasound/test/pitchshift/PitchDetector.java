@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.javasound.test.pitchshift;
 
 import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PitchDetector
+
 /** Perform pitch detection on an input signal using an autocorrelation
     estimate. The autocorrelation estimate is computed using the
     DFT (an FFT algorithm is used) for efficiency.
@@ -44,7 +45,6 @@ import ptolemy.math.SignalProcessing;
     @Pt.AcceptedRating Red (vogel)
 */
 public class PitchDetector {
-
     /** Initialize the pitch detector.
      *  Parameter <i>vectorSize</i> sets the vector size to be used by
      *  <i>performPitchDetect()</i>. <i>vectorSize</i> may be any length.
@@ -55,19 +55,20 @@ public class PitchDetector {
      */
     public PitchDetector(int vectorSize, int sampleRate) {
         PitchDetector._sampleRate = sampleRate;
-        this._minAutoCorInd = (int)((double)_sampleRate/_maxAllowablePitch);
-        this._maxAutoCorInd = (int)(1.1*(double)_sampleRate/_minAllowablePitch);
+        this._minAutoCorInd = (int) ((double) _sampleRate / _maxAllowablePitch);
+        this._maxAutoCorInd = (int) ((1.1 * (double) _sampleRate) / _minAllowablePitch);
+
         // FIXME: Should force _recentInputArraySize to be a power of 2.
         this._recentInputArraySize = 2048;
 
         this._outPitchArray = new double[vectorSize];
-        this._magSqDFT = new double[2*_recentInputArraySize];
+        this._magSqDFT = new double[2 * _recentInputArraySize];
 
-        this._autocorEst = new double[2*_recentInputArraySize];
+        this._autocorEst = new double[2 * _recentInputArraySize];
 
         // Make this double the length, since need zero padding for
         // the DFT.
-        this._recentInputArray = new double[2*_recentInputArraySize];
+        this._recentInputArray = new double[2 * _recentInputArraySize];
     }
 
     /** Perform pitch detection. The input signal should uniformly
@@ -90,9 +91,7 @@ public class PitchDetector {
      *  @return An array of pitch estimates of the same length as
      *   the input array parameter.
      */
-    public double[] performPitchDetect(double [] inputArray) {
-
-
+    public double[] performPitchDetect(double[] inputArray) {
         // The number of samples of the input signal to skip
         // between autocorrelation estimates. Must be a
         // non-negative integer. A value of zero means that
@@ -102,9 +101,10 @@ public class PitchDetector {
         int skipSamples = 0;
 
         int curSkipSmaple = 0;
+
         // Main loop.
         for (int vectorLoopPos = 0; vectorLoopPos < inputArray.length;
-             vectorLoopPos++) {
+                vectorLoopPos++) {
             //System.out.println("vectorLoopPos " + vectorLoopPos);
             // Want to leave half of the array full of zeros, so that
             // we will have the appropriate amount of zero-padding
@@ -112,35 +112,37 @@ public class PitchDetector {
             if (curSkipSmaple == 0) {
                 if (_recentInputArrayPos < _recentInputArraySize) {
                     // Ok to read in another samples, array not full yet.
-
                     // Read in an input sample.
-                    _recentInputArray[_recentInputArrayPos] =
-                        inputArray[vectorLoopPos];
+                    _recentInputArray[_recentInputArrayPos] = inputArray[vectorLoopPos];
                     _recentInputArrayPos++;
-                } else  {
+                } else {
                     // Step 2. Take DFT of recent input padded with zeros.
                     _dftInput = SignalProcessing.FFTComplexOut(_recentInputArray);
 
                     // Step 3. Take the Mag^2 of the DFT.
-                    for (int ind2 = 0; ind2 <
-                             _recentInputArray.length; ind2++) {
-                        _magSqDFT[ind2] =
-                            _dftInput[ind2].magnitude()*_dftInput[ind2].magnitude();
+                    for (int ind2 = 0; ind2 < _recentInputArray.length;
+                            ind2++) {
+                        _magSqDFT[ind2] = _dftInput[ind2].magnitude() * _dftInput[ind2]
+                            .magnitude();
                     }
+
                     // Step 4. Take IDFT of _magSqDFT.
-                    _autocorEst =
-                        SignalProcessing.IFFTRealOut(_magSqDFT);
+                    _autocorEst = SignalProcessing.IFFTRealOut(_magSqDFT);
+
                     double maxAutoCorVal = _autocorEst[0];
+
                     // Normalize the autocorrelation estimate.
                     for (int i = 0; i < _maxAutoCorInd; i++) {
-                        _autocorEst[i] = _autocorEst[i]/maxAutoCorVal;
+                        _autocorEst[i] = _autocorEst[i] / maxAutoCorVal;
+
                         //System.out.println("_autocorEst[" +i+"] = " + _autocorEst[i]);
                         if (_autocorEst[i] > 1.01) {
-                            System.out.println("FIXME: _autocorEst[" +i+"] = " + _autocorEst[i]);
+                            System.out.println("FIXME: _autocorEst[" + i
+                                + "] = " + _autocorEst[i]);
                         }
                     }
-                    // Step 5. Find the peak in the the autocorrelation estimate.
 
+                    // Step 5. Find the peak in the the autocorrelation estimate.
                     // Find the index at which the autocorrelation function
                     // becomes less than the threshold.
                     int firstZzeroIndex = -1;
@@ -149,25 +151,31 @@ public class PitchDetector {
                     for (int j = _minAutoCorInd; j < _maxAutoCorInd; j++) {
                         if (_autocorEst[j] < closeEnoughToZero) {
                             firstZzeroIndex = j;
+
                             //System.out.println("firstZzeroIndex = " + firstZzeroIndex);
                             break;
                         }
                     }
+
                     double maxv = 0;
                     int maxInd = 0;
+
                     if (firstZzeroIndex > 0) {
-                        for (int m = firstZzeroIndex; m <
-                                 _maxAutoCorInd; m++) {
+                        for (int m = firstZzeroIndex; m < _maxAutoCorInd;
+                                m++) {
                             if (_autocorEst[m] > maxv) {
                                 maxv = _autocorEst[m];
                                 maxInd = m;
                             }
                         }
                     }
+
                     _currentPitch = -1;
+
                     if (maxv > 0.3) {
-                        _currentPitch = (double)_sampleRate/(double)maxInd;
+                        _currentPitch = (double) _sampleRate / (double) maxInd;
                     }
+
                     //if (_currentPitch < 0) {
                     //System.out.println("_currentPitch = " + _currentPitch);
                     //System.out.println("value = " + _autocorEst[maxInd]);
@@ -176,19 +184,21 @@ public class PitchDetector {
                     //}
                     _recentInputArrayPos = 0;
                     curSkipSmaple = skipSamples;
+
                     //System.out.println("Done");
                 }
             } else {
                 curSkipSmaple--;
             }
+
             _outPitchArray[vectorLoopPos] = _currentPitch;
         }
+
         return _outPitchArray;
     }
 
     ///////////////////////////////////////////////////////////////////
     ///              private variables                        /////
-
     // Array to hold recent input. Note that the size of this
     // array is independent from the size of the array read in
     // by performPitchDetect().
@@ -205,21 +215,18 @@ public class PitchDetector {
 
     // The lowest pitch to search for.
     private final double _minAllowablePitch = 60;
-
     private int _maxAutoCorInd;
     private int _minAutoCorInd;
-
     private double[] _outPitchArray;
 
     //private double[] windowedInput;
     private Complex[] _dftInput;
-
     private double[] _recentInputArray;
     private double[] _magSqDFT;
     private double[] _autocorEst;
 
     // Initialize input pos
-    private int _recentInputArrayPos  = 0;
+    private int _recentInputArrayPos = 0;
 
     // Most recent pitch estimate (in Hz).
     // Set to -1 for unvoiced/don't know.

@@ -24,8 +24,8 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.event;
+
 
 /** An adapter for layer listeners. The methods in this class
  * are empty -- the class is provided to make it easier to
@@ -35,24 +35,24 @@ package diva.canvas.event;
  * @author         John Reekie
  */
 public class LayerAdapter implements LayerListener {
-
     /** Invoked when the mouse moves while the button is still held
      * down.
      */
-    public void mouseDragged (LayerEvent e) {}
+    public void mouseDragged(LayerEvent e) {
+    }
 
     /** Invoked when the mouse is pressed on a layer or figure.
      */
-    public void mousePressed (LayerEvent e) {}
+    public void mousePressed(LayerEvent e) {
+    }
 
     /** Invoked when the mouse is released on a layer or figure.
      */
-    public void mouseReleased (LayerEvent e) {}
+    public void mouseReleased(LayerEvent e) {
+    }
 
     /** Invoked when the mouse is clicked on a layer or figure.
      */
-    public void mouseClicked (LayerEvent e) {}
+    public void mouseClicked(LayerEvent e) {
+    }
 }
-
-
-

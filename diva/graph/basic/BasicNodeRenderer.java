@@ -39,6 +39,7 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 
+
 /**
  * A factory which creates and returns a NodeFigure given a node input
  * to render.
@@ -84,9 +85,9 @@ public class BasicNodeRenderer implements NodeRenderer {
      * Create a renderer which renders nodes square and orange.
      */
     public BasicNodeRenderer(GraphController controller) {
-        this(controller, new Rectangle2D.Double(0.0,0.0,40.0,40.0),
-                new Rectangle2D.Double(0.0,0.0,600.0,600.0),
-                Color.orange, Color.red, .3);
+        this(controller, new Rectangle2D.Double(0.0, 0.0, 40.0, 40.0),
+            new Rectangle2D.Double(0.0, 0.0, 600.0, 600.0), Color.orange,
+            Color.red, .3);
     }
 
     /**
@@ -94,9 +95,9 @@ public class BasicNodeRenderer implements NodeRenderer {
      * given shape and fill paint.  The given shape must be
      * cloneable.
      */
-    public BasicNodeRenderer(GraphController controller,
-            Shape nodeShape, Shape compositeShape,
-            Paint nodeFill, Paint compositeFill, double compositeScale) {
+    public BasicNodeRenderer(GraphController controller, Shape nodeShape,
+        Shape compositeShape, Paint nodeFill, Paint compositeFill,
+        double compositeScale) {
         _controller = controller;
         setNodeShape(nodeShape);
         setNodeFill(nodeFill);
@@ -155,13 +156,14 @@ public class BasicNodeRenderer implements NodeRenderer {
     public Figure render(Object node) {
         GraphModel model = _controller.getGraphModel();
         Shape shape = (model.isComposite(node)) ? _compositeShape : _nodeShape;
+
         if (shape instanceof RectangularShape) {
-            RectangularShape r = (RectangularShape)shape;
-            shape = (Shape)(r.clone());
-        }
-        else {
+            RectangularShape r = (RectangularShape) shape;
+            shape = (Shape) (r.clone());
+        } else {
             shape = new GeneralPath(shape);
         }
+
         Paint fill = model.isComposite(node) ? _compositeFill : _nodeFill;
 
         BasicFigure bf = new BasicFigure(shape);
@@ -197,6 +199,7 @@ public class BasicNodeRenderer implements NodeRenderer {
             String err = "Scale must be between > 0 and <= 1.";
             throw new IllegalArgumentException(err);
         }
+
         _compositeScale = scale;
     }
 
@@ -222,7 +225,4 @@ public class BasicNodeRenderer implements NodeRenderer {
     public void setNodeShape(Shape s) {
         _nodeShape = s;
     }
-
 }
-
-

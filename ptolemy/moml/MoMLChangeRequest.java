@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.moml;
 
 import java.net.URL;
@@ -35,8 +34,10 @@ import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MoMLChangeRequest
+
 /**
    A mutation request specified in MoML.  This class provides the preferred
    mechanism for implementing mutations on a model while it is executing.
@@ -77,7 +78,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class MoMLChangeRequest extends ChangeRequest {
-
     /** Construct a mutation request.
      *  The originator is the source of the change request.
      *  Since no context is given, a new parser will be used, and it
@@ -110,8 +110,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @param context The context in which to execute the MoML.
      *  @param request The mutation request in MoML.
      */
-    public MoMLChangeRequest(
-            Object originator, NamedObj context, String request) {
+    public MoMLChangeRequest(Object originator, NamedObj context, String request) {
         this(originator, context, request, null);
     }
 
@@ -133,8 +132,8 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @param base The URL relative to which external references should
      *   be resolved.
      */
-    public MoMLChangeRequest(
-            Object originator, NamedObj context, String request, URL base) {
+    public MoMLChangeRequest(Object originator, NamedObj context,
+        String request, URL base) {
         super(originator, request);
         _context = context;
         _base = base;
@@ -169,13 +168,14 @@ public class MoMLChangeRequest extends ChangeRequest {
         if (object == null) {
             return null;
         } else if (!(object instanceof InstantiableNamedObj)) {
-            return getDeferredToParent((NamedObj)object.getContainer());
+            return getDeferredToParent((NamedObj) object.getContainer());
         } else {
-            List deferList = ((InstantiableNamedObj)object).getChildren();
-            if (deferList != null && deferList.size() > 0) {
+            List deferList = ((InstantiableNamedObj) object).getChildren();
+
+            if ((deferList != null) && (deferList.size() > 0)) {
                 return object;
             } else {
-                return getDeferredToParent((NamedObj)object.getContainer());
+                return getDeferredToParent((NamedObj) object.getContainer());
             }
         }
     }
@@ -228,10 +228,10 @@ public class MoMLChangeRequest extends ChangeRequest {
         if (_DEBUG) {
             System.out.println("****** Executing MoML change:");
             System.out.println(getDescription());
+
             if (_context != null) {
-                System.out.println(
-                        "------ in context "
-                        + _context.getFullName());
+                System.out.println("------ in context "
+                    + _context.getFullName());
             }
         }
 
@@ -240,23 +240,28 @@ public class MoMLChangeRequest extends ChangeRequest {
             _parser = ParserAttribute.getParser(_context);
             _parser.reset();
         }
+
         if (_parser == null) {
             // There is no previously associated parser (can only
             // happen if _context is null).
             _parser = new MoMLParser();
         }
+
         if (_context != null) {
             _parser.setContext(_context);
-
         }
+
         // Tell the parser whether this change is undoable.
         if (_undoable) {
             _parser.setUndoable(true);
         }
+
         ErrorHandler handler = MoMLParser.getErrorHandler();
+
         if (!_reportToHandler) {
             MoMLParser.setErrorHandler(null);
         }
+
         try {
             _parser.parse(_base, getDescription());
         } finally {
@@ -274,7 +279,6 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The URL relative to which external references should be resolved.
     private URL _base;
 

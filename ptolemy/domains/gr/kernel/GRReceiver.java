@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.kernel;
 
 import ptolemy.actor.IOPort;
@@ -34,8 +33,10 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GRReceiver
+
 /**
    The receiver for the GR domain. This receiver is a mailbox with capacity one,
    and any token put in the receiver overwrites any token previously present in
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating yellow (vogel)
 */
 public class GRReceiver extends Mailbox {
-
     /** Construct an empty GRReceiver with no container.
      */
     public GRReceiver() {
@@ -90,10 +90,11 @@ public class GRReceiver extends Mailbox {
      *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this base class
      */
-    public void put(Token token) throws NoRoomException{
+    public void put(Token token) throws NoRoomException {
         if (hasToken()) {
             get();
         }
+
         super.put(token);
     }
 }

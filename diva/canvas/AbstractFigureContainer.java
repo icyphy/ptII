@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.Graphics2D;
@@ -34,6 +33,7 @@ import java.util.Iterator;
 
 import diva.util.Filter;
 
+
 /** AbstractFigureContainer is an abstract class that roots the tree
  * of figure-containing classes.
  *
@@ -41,19 +41,17 @@ import diva.util.Filter;
  * @author John Reekie
  * @Pt.AcceptedRating Yellow
  */
-public abstract class AbstractFigureContainer extends AbstractFigure implements FigureContainer {
-
+public abstract class AbstractFigureContainer extends AbstractFigure
+    implements FigureContainer {
     /** Decorate a child figure, replacing the reference to the
      * child figure with the decorator.
      */
-    public void decorate (Figure child, FigureDecorator decorator) {
+    public void decorate(Figure child, FigureDecorator decorator) {
         if (child.getParent() != this) {
-            throw new IllegalArgumentException(
-                    "The object " +
-                    child +
-                    " is not a child of " +
-                    this);
+            throw new IllegalArgumentException("The object " + child
+                + " is not a child of " + this);
         }
+
         child.repaint();
         decorator.setParent(this);
         decorator.setChild(child);
@@ -63,38 +61,40 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements 
 
     /** Test if the given figure is a child of this composite.
      */
-    public abstract boolean contains (Figure f);
+    public abstract boolean contains(Figure f);
 
     /** Return an iteration of the children, in an undefined order.
      */
-    public abstract Iterator figures ();
+    public abstract Iterator figures();
 
     /** Return an iteration of the children, from
      * back to front. This is the order
      * in which the children are painted.
      */
-    public abstract Iterator figuresFromBack ();
+    public abstract Iterator figuresFromBack();
 
     /** Return an iteration of the children, from
      * front to back. This is the order in which
      * events are intercepted.
      */
-    public abstract Iterator figuresFromFront ();
+    public abstract Iterator figuresFromFront();
 
     /** Return the number of child figures in this container.
      */
-    public abstract int getFigureCount ();
+    public abstract int getFigureCount();
 
     /** Paint this composite figure onto a 2D graphics object. If the layer
      * is not visible, return immediately. Otherwise paint all children
      * from back to front.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
         }
+
         Figure f;
         Iterator i = figuresFromBack();
+
         while (i.hasNext()) {
             f = (Figure) i.next();
             f.paint(g);
@@ -104,26 +104,23 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements 
     /** Given a rectangle, return the top-most descendent figure
      * that it hits. If none does, return null.
      */
-    public Figure pick (Rectangle2D region) {
-        return CanvasUtilities.pick(
-                figuresFromFront(),
-                region);
+    public Figure pick(Rectangle2D region) {
+        return CanvasUtilities.pick(figuresFromFront(), region);
     }
 
     /** Given a rectangle, return the top-most descendent figure
      * that it hits that is accepted by the given filter.
      * If none does, return null.
      */
-    public Figure pick (Rectangle2D region, Filter filter) {
-        return CanvasUtilities.pick(figuresFromFront(),
-                region, filter);
+    public Figure pick(Rectangle2D region, Filter filter) {
+        return CanvasUtilities.pick(figuresFromFront(), region, filter);
     }
 
     /** Accept notification that a repaint has occurred somewhere
      * in the hierarchy below this container. This default implementation
      * simply forwards the notification to its parent.
      */
-    public void repaint (DamageRegion d) {
+    public void repaint(DamageRegion d) {
         if (getParent() != null) {
             getParent().repaint(d);
         }
@@ -135,19 +132,22 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements 
      * the first figure is a child of this container, and that the
      * second is not.
      */
-    protected abstract void replaceChild (Figure child, Figure replacement);
+    protected abstract void replaceChild(Figure child, Figure replacement);
 
     /** Transform this figure with the supplied transform.
      * This default implementation simply forwards the transform
      * call to each child.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
+
         Iterator i = figures();
+
         while (i.hasNext()) {
             Figure f = (Figure) i.next();
             f.transform(at);
         }
+
         repaint();
     }
 
@@ -155,36 +155,35 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements 
      * This default implementation simply forwards the translate
      * call to each child.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         repaint();
+
         Iterator i = figures();
+
         while (i.hasNext()) {
             Figure f = (Figure) i.next();
-            f.translate(x,y);
+            f.translate(x, y);
         }
+
         repaint();
     }
 
     /** Remove a figure from the given decorator and add
      * it back into this container.
      */
-    public void undecorate (FigureDecorator decorator) {
+    public void undecorate(FigureDecorator decorator) {
         if (decorator.getParent() != this) {
-            throw new IllegalArgumentException(
-                    "The object " +
-                    decorator +
-                    " is not a child of " +
-                    this);
+            throw new IllegalArgumentException("The object " + decorator
+                + " is not a child of " + this);
         }
+
         decorator.repaint();
+
         Figure child = decorator.getChild();
-        replaceChild(decorator,child);
+        replaceChild(decorator, child);
         decorator.setChild(null);
         decorator.setParent(null);
         child.setParent(this); // This is needed
         repaint();
     }
 }
-
-
-

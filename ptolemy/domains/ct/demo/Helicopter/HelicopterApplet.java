@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.demo.Helicopter;
 
 import java.util.StringTokenizer;
@@ -34,8 +33,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.ModelPane;
 import ptolemy.actor.gui.PtolemyApplet;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HelicopterApplet
+
 /**
    This applet extends the PtolemyApplet to use the HelicopterModelPane
    instead of the default ModelPane. The HelicopterModelPane organizes
@@ -48,8 +49,6 @@ import ptolemy.actor.gui.PtolemyApplet;
    @Pt.AcceptedRating Red (liuj)
 */
 public class HelicopterApplet extends PtolemyApplet {
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -57,30 +56,35 @@ public class HelicopterApplet extends PtolemyApplet {
      */
     protected void _createView() {
         // Parse applet parameters that determine visual appearance.
-
         // Start with orientation.
         String orientationSpec = getParameter("orientation");
+
         // Default is vertical
         int orientation = ModelPane.VERTICAL;
+
         if (orientationSpec != null) {
             if (orientationSpec.trim().toLowerCase().equals("horizontal")) {
                 orientation = ModelPane.HORIZONTAL;
-            } else if (orientationSpec.trim().toLowerCase()
-                    .equals("controls_only")) {
+            } else if (orientationSpec.trim().toLowerCase().equals("controls_only")) {
                 orientation = ModelPane.CONTROLS_ONLY;
             }
         }
 
         // Next do controls.
         String controlsSpec = getParameter("controls");
+
         // Default has only the buttons.
         int controls = ModelPane.BUTTONS;
+
         if (controlsSpec != null) {
             // If controls are given, then buttons need to be explicit.
             controls = 0;
+
             StringTokenizer tokenizer = new StringTokenizer(controlsSpec, ",");
+
             while (tokenizer.hasMoreTokens()) {
                 String controlSpec = tokenizer.nextToken().trim().toLowerCase();
+
                 if (controlSpec.equals("buttons")) {
                     controls = controls | ModelPane.BUTTONS;
                 } else if (controlSpec.equals("topparameters")) {
@@ -95,11 +99,9 @@ public class HelicopterApplet extends PtolemyApplet {
             }
         }
 
-        ModelPane pane = new HelicopterModelPane(
-                (CompositeActor)_toplevel, orientation, controls);
+        ModelPane pane = new HelicopterModelPane((CompositeActor) _toplevel,
+                orientation, controls);
         pane.setBackground(null);
         getContentPane().add(pane);
     }
 }
-
-

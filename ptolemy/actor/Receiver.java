@@ -26,14 +26,15 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Receiver
+
 /**
    Interface for objects that can hold tokens. An implementation of this
    interface has two key methods: put() and get(). The put() method
@@ -66,7 +67,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see Token
 */
 public interface Receiver {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -167,7 +167,7 @@ public interface Receiver {
      *  @exception NoRoomException If the token array cannot be put.
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
-            throws NoRoomException;
+        throws NoRoomException;
 
     /** Set the container.
      *  @param port The container.

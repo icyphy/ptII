@@ -24,10 +24,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.vergil.basic;
 
 import diva.graph.modular.NodeModel;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjNodeModel
@@ -42,10 +42,8 @@ import diva.graph.modular.NodeModel;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public abstract class NamedObjNodeModel implements NodeModel {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Return a MoML String that will delete the given node from the
      *  Ptolemy model.

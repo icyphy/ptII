@@ -26,13 +26,14 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Actor;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTEventGenerator
+
 /**
    Interface for CT actors that convert continuous-time signals to
    discrete events. Typical implementations of event generator are
@@ -45,7 +46,6 @@ import ptolemy.actor.Actor;
    @Pt.AcceptedRating Green (yuhong)
 */
 public interface CTEventGenerator extends Actor {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

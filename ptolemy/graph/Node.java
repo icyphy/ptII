@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
+
 
 ////////////////////////////////////////////////////////////////////////// //
 //Node
+
 /**
    An optionally-weighted node for an undirected or directed graph.  More
    specifically, a node consists of an optional <i>weight</i> (an arbitrary
@@ -43,7 +44,6 @@ package ptolemy.graph;
    @see ptolemy.graph.Edge
 */
 public final class Node extends Element {
-
     /** Construct an unweighted node.
      */
     public Node() {

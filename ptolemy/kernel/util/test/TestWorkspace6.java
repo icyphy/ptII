@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.kernel.util.test;
 
 import java.util.LinkedList;
@@ -34,8 +33,10 @@ import java.util.List;
 
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestWorkspace6
+
 /**
    Test the following scenario: thread T1 gets read access twice, then waits
    on a lock object (and in doing so, releases the read access); T2 gets/releases
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.Workspace;
 
 */
 public class TestWorkspace6 extends TestWorkspaceBase {
-
     public static void main(String[] args) {
         TestWorkspace6 tw = new TestWorkspace6();
         tw.runTest();
@@ -58,20 +58,18 @@ public class TestWorkspace6 extends TestWorkspaceBase {
     public void initializeTest() {
         Workspace workspace = new Workspace();
         List actions = new LinkedList();
-        AccessAction action =
-            new AccessAction(workspace, 0, 'R', 0, null, _record, "A0");
+        AccessAction action = new AccessAction(workspace, 0, 'R', 0, null,
+                _record, "A0");
         actions.add(action);
-        action =
-            new AccessAction(workspace, 0, 'R', 0, null, _record, "A1");
+        action = new AccessAction(workspace, 0, 'R', 0, null, _record, "A1");
         actions.add(action);
-        action =
-            new AccessAction(workspace, 0, 'U', 0, new Object(), _record, "A2");
+        action = new AccessAction(workspace, 0, 'U', 0, new Object(), _record,
+                "A2");
         actions.add(action);
         _thread = new AccessThread("T1", actions, this);
         _accessThreads.add(_thread);
         actions = new LinkedList();
-        action =
-            new AccessAction(workspace, 500, 'W', 500, null, _record, "A3");
+        action = new AccessAction(workspace, 500, 'W', 500, null, _record, "A3");
         actions.add(action);
         _accessThreads.add(new AccessThread("T2", actions, this));
         _testTime = 5000; // ms
@@ -85,6 +83,7 @@ public class TestWorkspace6 extends TestWorkspaceBase {
                     } catch (InterruptedException e) {
                         // ignore
                     }
+
                     // interrupt T2 while it is waiting for read access
                     _thread.interrupt();
                 }

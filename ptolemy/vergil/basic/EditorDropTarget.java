@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
 import java.awt.Color;
@@ -56,8 +55,10 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.util.UserObjectContainer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget
+
 /**
    This class provides drag-and-drop support. When this drop target
    receives a transferable object containing a ptolemy entity, it creates
@@ -82,15 +83,16 @@ import diva.util.UserObjectContainer;
    @Pt.AcceptedRating Red (johnr)
 */
 public class EditorDropTarget extends DropTarget {
-
     /** Construct a new graph target to operate on the given JGraph.
      *  @param graph The diva graph panel.
      */
     public EditorDropTarget(JGraph graph) {
         setComponent(graph);
+
         try {
             addDropTargetListener(new DTListener());
-        } catch(java.util.TooManyListenersException wow) {}
+        } catch (java.util.TooManyListenersException wow) {
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,7 +118,6 @@ public class EditorDropTarget extends DropTarget {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Flag indicating whether drop into is enabled.
     private boolean _dropIntoEnabled = true;
 
@@ -126,7 +127,6 @@ public class EditorDropTarget extends DropTarget {
     /** The drop target listener used with the diva graph object.
      */
     private class DTListener implements DropTargetListener {
-
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
 
@@ -169,24 +169,28 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragOver(DropTargetDragEvent dtde) {
             // See whether there is a container under the point.
-            Point2D originalPoint = SnapConstraint.constrainPoint(
-                    dtde.getLocation());
+            Point2D originalPoint = SnapConstraint.constrainPoint(dtde
+                    .getLocation());
             NamedObj over = _getObjectUnder(originalPoint);
+
             if (over != _highlighted) {
                 if (_highlighted != null) {
                     _highlighter.renderDeselected(_highlightedFigure);
                     _highlighted = null;
                     _highlightedFigure = null;
                 }
-                if (over != null && _dropIntoEnabled) {
+
+                if ((over != null) && _dropIntoEnabled) {
                     if (_highlighter == null) {
                         _highlighter = new AnimationRenderer(Color.white);
                     }
+
                     _highlighted = over;
                     _highlightedFigure = _getFigureUnder(originalPoint);
                     _highlighter.renderSelected(_highlightedFigure);
                 }
             }
+
             // Used to do this... Any reason for it?
             // dragEnter(dtde);
         }
@@ -204,7 +208,6 @@ public class EditorDropTarget extends DropTarget {
          *  @param dtde The drop event.
          */
         public void drop(DropTargetDropEvent dtde) {
-
             // Unhighlight the target. Do this first in case
             // errors occur... Don't want to leave highlighting.
             if (_highlighted != null) {
@@ -214,38 +217,37 @@ public class EditorDropTarget extends DropTarget {
             }
 
             // See whether there is a container under the point.
-            Point2D originalPoint = SnapConstraint.constrainPoint(
-                    dtde.getLocation());
+            Point2D originalPoint = SnapConstraint.constrainPoint(dtde
+                    .getLocation());
             NamedObj container = _getObjectUnder(originalPoint);
 
-            GraphPane pane = ((JGraph)getComponent()).getGraphPane();
+            GraphPane pane = ((JGraph) getComponent()).getGraphPane();
 
-            if (container == null  || !_dropIntoEnabled) {
+            if ((container == null) || !_dropIntoEnabled) {
                 // Find the default container for the dropped object
                 GraphController controller = pane.getGraphController();
                 GraphModel model = controller.getGraphModel();
-                container = (NamedObj)model.getRoot();
+                container = (NamedObj) model.getRoot();
             }
 
             // Find the location for the dropped objects.
             // Account for the scaling in the pane.
             Point2D transformedPoint = new Point2D.Double();
-            pane.getTransformContext().getInverseTransform().transform(
-                    originalPoint, transformedPoint);
+            pane.getTransformContext().getInverseTransform().transform(originalPoint,
+                transformedPoint);
 
             // Get an iterator over objects to drop.
             Iterator iterator = null;
-            if (dtde.isDataFlavorSupported(
-                        PtolemyTransferable.namedObjFlavor)) {
+
+            if (dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 try {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                    iterator = (Iterator)dtde.getTransferable().getTransferData(
-                            PtolemyTransferable.namedObjFlavor);
-                } catch(Exception e) {
+                    iterator = (Iterator) dtde.getTransferable()
+                                              .getTransferData(PtolemyTransferable.namedObjFlavor);
+                } catch (Exception e) {
                     MessageHandler.error(
-                            "Can't find a supported data flavor for drop in "
-                            + dtde,
-                            e);
+                        "Can't find a supported data flavor for drop in "
+                        + dtde, e);
                     return;
                 }
             } else {
@@ -260,9 +262,11 @@ public class EditorDropTarget extends DropTarget {
             // Create the MoML change request to instantiate the new objects.
             StringBuffer moml = new StringBuffer();
             moml.append("<group>");
+
             while (iterator.hasNext()) {
                 final NamedObj dropObj = (NamedObj) iterator.next();
                 final String name;
+
                 if (dropObj instanceof Singleton) {
                     name = dropObj.getName();
                 } else {
@@ -273,16 +277,20 @@ public class EditorDropTarget extends DropTarget {
                 Point2D newPoint = SnapConstraint.constrainPoint(transformedPoint);
 
                 moml.append(dropObj.exportMoML(name));
-                moml.append("<" + dropObj.getElementName() + " name=\"" + name + "\">\n");
-                moml.append("<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{");
-                moml.append((int)newPoint.getX());
+                moml.append("<" + dropObj.getElementName() + " name=\"" + name
+                    + "\">\n");
+                moml.append(
+                    "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{");
+                moml.append((int) newPoint.getX());
                 moml.append(", ");
-                moml.append((int)newPoint.getY());
+                moml.append((int) newPoint.getY());
                 moml.append("}\"/>\n</" + dropObj.getElementName() + ">\n");
             }
+
             moml.append("</group>");
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this, container, moml.toString());
+
+            MoMLChangeRequest request = new MoMLChangeRequest(this, container,
+                    moml.toString());
             request.setUndoable(true);
             container.requestChange(request);
             dtde.dropComplete(true); //success!
@@ -307,12 +315,12 @@ public class EditorDropTarget extends DropTarget {
          *   is none or it is not a NamedObj.
          */
         private Figure _getFigureUnder(Point2D point) {
-            GraphPane pane = ((JGraph)getComponent()).getGraphPane();
+            GraphPane pane = ((JGraph) getComponent()).getGraphPane();
 
             // Account for the scaling in the pane.
             Point2D transformedPoint = new Point2D.Double();
-            pane.getTransformContext().getInverseTransform().transform(
-                    point, transformedPoint);
+            pane.getTransformContext().getInverseTransform().transform(point,
+                transformedPoint);
 
             FigureLayer layer = pane.getForegroundLayer();
 
@@ -322,25 +330,28 @@ public class EditorDropTarget extends DropTarget {
             // so we have to use a lower level mechanism.
             double halo = layer.getPickHalo();
             double width = halo * 2;
-            Rectangle2D region = new Rectangle2D.Double (
-                    transformedPoint.getX() - halo,
-                    transformedPoint.getY() - halo,
-                    width, width);
+            Rectangle2D region = new Rectangle2D.Double(transformedPoint.getX()
+                    - halo, transformedPoint.getY() - halo, width, width);
             CanvasComponent figureUnderMouse = layer.pick(region);
 
             // Find a user object belonging to the figure under the mouse
             // or to any figure containing it (it may be a composite figure).
             Object objectUnderMouse = null;
+
             while (figureUnderMouse instanceof UserObjectContainer
-                    && objectUnderMouse == null) {
-                objectUnderMouse = ((UserObjectContainer)figureUnderMouse).getUserObject();
+                    && (objectUnderMouse == null)) {
+                objectUnderMouse = ((UserObjectContainer) figureUnderMouse)
+                    .getUserObject();
+
                 if (objectUnderMouse instanceof NamedObj) {
                     if (figureUnderMouse instanceof Figure) {
-                        return (Figure)figureUnderMouse;
+                        return (Figure) figureUnderMouse;
                     }
                 }
+
                 figureUnderMouse = figureUnderMouse.getParent();
             }
+
             return null;
         }
 
@@ -352,22 +363,26 @@ public class EditorDropTarget extends DropTarget {
          */
         private NamedObj _getObjectUnder(Point2D point) {
             Figure figureUnderMouse = _getFigureUnder(point);
+
             if (figureUnderMouse == null) {
                 return null;
             }
-            Object objectUnderMouse = ((UserObjectContainer)figureUnderMouse).getUserObject();
+
+            Object objectUnderMouse = ((UserObjectContainer) figureUnderMouse)
+                .getUserObject();
+
             // Object might be a Location, in which case we want its container.
             if (objectUnderMouse instanceof Location) {
-                return (NamedObj)((NamedObj)objectUnderMouse).getContainer();
+                return (NamedObj) ((NamedObj) objectUnderMouse).getContainer();
             } else if (objectUnderMouse instanceof NamedObj) {
-                return (NamedObj)objectUnderMouse;
+                return (NamedObj) objectUnderMouse;
             }
+
             return null;
         }
 
         ///////////////////////////////////////////////////////////////
         ////                     private variables                 ////
-
         // Currently highlighted drop target.
         private NamedObj _highlighted = null;
 

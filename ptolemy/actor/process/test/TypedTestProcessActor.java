@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.process.test;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -33,8 +32,10 @@ import ptolemy.actor.test.TypedTestActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypedTestProcessActor
+
 /**
    A TypedTestProcessActor is a simple atomic actor that is used for
    testing the actor package constructs for Processes. It overrides
@@ -48,7 +49,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TypedTestProcessActor extends TypedTestActor {
-
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -62,13 +62,12 @@ public class TypedTestProcessActor extends TypedTestActor {
      *   an entity already in the container.
      */
     public TypedTestProcessActor(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Record the firing and force postfire to return false.
      */
@@ -87,6 +86,5 @@ public class TypedTestProcessActor extends TypedTestActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _notDone = true;
 }

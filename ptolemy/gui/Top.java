@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui;
 
 import java.awt.BorderLayout;
@@ -62,8 +61,10 @@ import javax.swing.filechooser.FileFilter;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Top
+
 /**
    This is a top-level window with a menubar and an optional status bar.
    Derived classes should add components to the content pane using a
@@ -122,7 +123,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Yellow (janneck)
 */
 public abstract class Top extends JFrame {
-
     /** Construct an empty top-level frame with the default status
      *  bar.  After constructing this, it is necessary to call
      *  pack() to have the menus added, and then setVisible(true)
@@ -165,7 +165,6 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Center the window on the screen.  This must be called after the
      *  window is populated with its contents, since it depends on the size
      *  being known. If this method is called from a thread that is not
@@ -176,12 +175,14 @@ public abstract class Top extends JFrame {
         Runnable doCenter = new Runnable() {
                 public void run() {
                     Toolkit tk = Toolkit.getDefaultToolkit();
-                    setLocation((tk.getScreenSize().width - getSize().width)/2,
-                            (tk.getScreenSize().height - getSize().height)/2);
+                    setLocation((tk.getScreenSize().width - getSize().width) / 2,
+                        (tk.getScreenSize().height - getSize().height) / 2);
+
                     // Make this the default context for modal messages.
                     GraphicalMessageHandler.setContext(Top.this);
                 }
             };
+
         deferIfNecessary(doCenter);
     }
 
@@ -197,6 +198,7 @@ public abstract class Top extends JFrame {
                     _close();
                 }
             };
+
         deferIfNecessary(doClose);
     }
 
@@ -217,14 +219,13 @@ public abstract class Top extends JFrame {
         // NOTE: This is a static version of a method in PlotBox, but
         // we do not want to create cross dependencies between these
         // packages.
-
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, queue a request or add to a pending request.
         if (EventQueue.isDispatchThread()) {
             action.run();
         } else {
-            synchronized(_deferredActions) {
+            synchronized (_deferredActions) {
                 // Add the specified action to the list of actions to perform.
                 _deferredActions.add(action);
 
@@ -236,6 +237,7 @@ public abstract class Top extends JFrame {
                                 _executeDeferredActions();
                             }
                         };
+
                     try {
                         // NOTE: Using invokeAndWait() here risks causing
                         // deadlock.  Don't do it!
@@ -244,12 +246,12 @@ public abstract class Top extends JFrame {
                         // Ignore InterruptedException.
                         // Other exceptions should not occur.
                     }
+
                     _actionsDeferred = true;
                 }
             }
         }
     }
-
 
     /** Return true if the window is set to be centered when pack() is called.
      *  @return True if the window will be centered when pack is called.
@@ -293,6 +295,7 @@ public abstract class Top extends JFrame {
                     }
                 }
             };
+
         deferIfNecessary(doReport);
     }
 
@@ -309,12 +312,14 @@ public abstract class Top extends JFrame {
         Runnable doReport = new Runnable() {
                 public void run() {
                     if (_statusBar != null) {
-                        _statusBar.setMessage(MessageHandler.shortDescription(throwable)
-                                + ". " + message);
+                        _statusBar.setMessage(MessageHandler.shortDescription(
+                                throwable) + ". " + message);
                     }
+
                     MessageHandler.error(message, throwable);
                 }
             };
+
         deferIfNecessary(doReport);
     }
 
@@ -328,6 +333,7 @@ public abstract class Top extends JFrame {
         Runnable doSet = new Runnable() {
                 public void run() {
                     Top.super.setBackground(background);
+
                     // This seems to be called in a base class constructor, before
                     // this variable has been set. Hence the test against null.
                     if (_statusBar != null) {
@@ -335,6 +341,7 @@ public abstract class Top extends JFrame {
                     }
                 }
             };
+
         deferIfNecessary(doSet);
     }
 
@@ -378,53 +385,59 @@ public abstract class Top extends JFrame {
                         _helpMenu.setMnemonic(KeyEvent.VK_H);
 
                         // Open button = ctrl-o.
-                        _fileMenuItems[0].setAccelerator(
-                                KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+                        _fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(
+                                KeyEvent.VK_O, Event.CTRL_MASK));
 
                         // The mnemonic isn't set in the static initializer because
                         // JMenu doesn't have an appropriate constructor.
                         _fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
+
                         // New button disabled by default.
                         _fileMenuItems[2].setEnabled(false);
 
                         // Save button = ctrl-s.
-                        _fileMenuItems[3].setAccelerator(
-                                KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+                        _fileMenuItems[3].setAccelerator(KeyStroke.getKeyStroke(
+                                KeyEvent.VK_S, Event.CTRL_MASK));
 
                         // Print button = ctrl-p.
-                        _fileMenuItems[5].setAccelerator(
-                                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+                        _fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(
+                                KeyEvent.VK_P, Event.CTRL_MASK));
+
                         // Print button disabled by default, unless this class implements
                         // one of the JDK1.2 printing interfaces.
-                        if (Top.this instanceof Printable ||
-                                Top.this instanceof Pageable) {
+                        if (Top.this instanceof Printable
+                                || Top.this instanceof Pageable) {
                             _fileMenuItems[5].setEnabled(true);
                         } else {
                             _fileMenuItems[5].setEnabled(false);
                         }
 
                         // Close button = ctrl-w.
-                        _fileMenuItems[6].setAccelerator(
-                                KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+                        _fileMenuItems[6].setAccelerator(KeyStroke.getKeyStroke(
+                                KeyEvent.VK_W, Event.CTRL_MASK));
 
                         // Construct the File menu by adding action commands
                         // and action listeners.
                         FileMenuListener fileMenuListener = new FileMenuListener();
+
                         // Set the action command and listener for each menu item.
                         for (int i = 0; i < _fileMenuItems.length; i++) {
-                            _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
+                            _fileMenuItems[i].setActionCommand(_fileMenuItems[i]
+                                .getText());
                             _fileMenuItems[i].addActionListener(fileMenuListener);
                             _fileMenu.add(_fileMenuItems[i]);
                         }
+
                         _menubar.add(_fileMenu);
 
                         // Construct the Help menu by adding action commands
                         // and action listeners.
                         HelpMenuListener helpMenuListener = new HelpMenuListener();
+
                         // Set the action command and listener for each menu item.
                         for (int i = 0; i < _helpMenuItems.length; i++) {
-                            _helpMenuItems[i].setActionCommand(
-                                    _helpMenuItems[i].getText());
+                            _helpMenuItems[i].setActionCommand(_helpMenuItems[i]
+                                .getText());
                             _helpMenuItems[i].addActionListener(helpMenuListener);
                             _helpMenu.add(_helpMenuItems[i]);
                         }
@@ -449,12 +462,15 @@ public abstract class Top extends JFrame {
                             getContentPane().add(_statusBar, BorderLayout.SOUTH);
                         }
                     }
+
                     Top.super.pack();
+
                     if (_centering) {
                         centerOnScreen();
                     }
                 }
             };
+
         deferIfNecessary(doPack);
     }
 
@@ -473,6 +489,7 @@ public abstract class Top extends JFrame {
                     Top.super.show();
                 }
             };
+
         deferIfNecessary(doShow);
     }
 
@@ -483,13 +500,13 @@ public abstract class Top extends JFrame {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "Ptolemy II " + getClass().getName() + "\n" +
-                "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n" +
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n" +
-                "Copyright (c) 1997-2005, " +
-                "The Regents of the University of California.",
-                "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
+            "Ptolemy II " + getClass().getName() + "\n"
+            + "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n"
+            + "Copyright (c) 1997-2005, "
+            + "The Regents of the University of California.",
+            "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Add menus to the menu bar.  In this base class, this does nothing.
@@ -524,7 +541,7 @@ public abstract class Top extends JFrame {
      */
     protected boolean _clear() {
         int result = _queryForSave();
-        return (result == _SAVED || result == _DISCARDED);
+        return ((result == _SAVED) || (result == _DISCARDED));
     }
 
     /** Close the window.  Derived classes should override this to
@@ -541,10 +558,12 @@ public abstract class Top extends JFrame {
         // windowClosing behavior given here.
         if (isModified()) {
             int result = _queryForSave();
-            if (result == _SAVED || result == _DISCARDED) {
+
+            if ((result == _SAVED) || (result == _DISCARDED)) {
                 dispose();
                 return true;
             }
+
             return false;
         } else {
             // Window is not modified, so just dispose.
@@ -560,7 +579,8 @@ public abstract class Top extends JFrame {
     protected void _exit() {
         if (isModified()) {
             int result = _queryForSave();
-            if (result == _SAVED || result == _DISCARDED) {
+
+            if ((result == _SAVED) || (result == _DISCARDED)) {
                 System.exit(0);
             }
         } else {
@@ -578,6 +598,7 @@ public abstract class Top extends JFrame {
         if (_file == null) {
             return "Unnamed";
         }
+
         return _file.getName();
     }
 
@@ -594,9 +615,11 @@ public abstract class Top extends JFrame {
      */
     protected void _open() {
         JFileChooser fileDialog = new JFileChooser();
+
         if (_fileFilter != null) {
             fileDialog.addChoosableFileFilter(_fileFilter);
         }
+
         fileDialog.setDialogTitle("Select a model file.");
 
         if (_directory != null) {
@@ -608,14 +631,17 @@ public abstract class Top extends JFrame {
             // This will throw a security exception in an applet.
             // FIXME: we should support users under applets opening files
             // on the server.
-            String currentWorkingDirectory = StringUtilities.getProperty("user.dir");
+            String currentWorkingDirectory = StringUtilities.getProperty(
+                    "user.dir");
+
             if (currentWorkingDirectory != null) {
                 fileDialog.setCurrentDirectory(new File(currentWorkingDirectory));
             }
         }
-        if (fileDialog.showOpenDialog(this)
-                == JFileChooser.APPROVE_OPTION) {
+
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             _directory = fileDialog.getCurrentDirectory();
+
             try {
                 // NOTE: It would be nice if it were possible to enter
                 // a URL in the file chooser, but Java's file chooser does
@@ -638,7 +664,7 @@ public abstract class Top extends JFrame {
                 // NOTE: The XML parser can only throw an XmlException.
                 // It signals that it is a user cancellation with the special
                 // string pattern "*** Canceled." in the message.
-                if (ex.getMessage() != null
+                if ((ex.getMessage() != null)
                         && !ex.getMessage().startsWith("*** Canceled.")) {
                     // No need to report a CancelException, since it results
                     // from the user clicking a "Cancel" button.
@@ -655,9 +681,12 @@ public abstract class Top extends JFrame {
         Query query = new Query();
         query.setTextWidth(60);
         query.addLine("url", "URL", _lastURL);
+
         ComponentDialog dialog = new ComponentDialog(this, "Open URL", query);
+
         if (dialog.buttonPressed().equals("OK")) {
             _lastURL = query.getStringValue("url");
+
             try {
                 URL url = new URL(_lastURL);
                 _read(url);
@@ -673,15 +702,17 @@ public abstract class Top extends JFrame {
      */
     protected void _print() {
         PrinterJob job = PrinterJob.getPrinterJob();
+
         if (this instanceof Pageable) {
-            job.setPageable((Pageable)this);
+            job.setPageable((Pageable) this);
         } else if (this instanceof Printable) {
             PageFormat format = job.pageDialog(job.defaultPage());
-            job.setPrintable((Printable)this, format);
+            job.setPrintable((Printable) this, format);
         } else {
             // Can't print it.
             return;
         }
+
         if (job.printDialog()) {
             try {
                 job.print();
@@ -699,23 +730,15 @@ public abstract class Top extends JFrame {
      *   _FAILED if the user selects save and the save fails.
      */
     protected int _queryForSave() {
-        Object[] options = {"Save", "Discard changes", "Cancel"};
+        Object[] options = { "Save", "Discard changes", "Cancel" };
 
-
-        String query = "Save changes to "
-            + StringUtilities.split(_getName()) + "?";
-
+        String query = "Save changes to " + StringUtilities.split(_getName())
+            + "?";
 
         // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                this,
-                query,
-                "Save Changes?",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
+        int selected = JOptionPane.showOptionDialog(this, query,
+                "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
         if (selected == 0) {
             if (_save()) {
@@ -724,9 +747,11 @@ public abstract class Top extends JFrame {
                 return _FAILED;
             }
         }
+
         if (selected == 1) {
             return _DISCARDED;
         }
+
         return _CANCELED;
     }
 
@@ -768,30 +793,28 @@ public abstract class Top extends JFrame {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _file = fileDialog.getSelectedFile();
+
             if (_file.exists()) {
                 // Ask for confirmation before overwriting a file.
                 String query = "Overwrite " + _file.getName() + "?";
+
                 // Show a MODAL dialog
-                int selected = JOptionPane.showOptionDialog(
-                        this,
-                        query,
-                        "Save Changes?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        null,
-                        null);
+                int selected = JOptionPane.showOptionDialog(this, query,
+                        "Save Changes?", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, null, null);
 
                 if (selected == 1) {
                     return false;
                 }
             }
+
             // Truncate the name so that dialogs under Web Start on the Mac
             // work better.
             setTitle(StringUtilities.abbreviate(_getName()));
             _directory = fileDialog.getCurrentDirectory();
             return _save();
         }
+
         // Action was canceled.
         return false;
     }
@@ -801,10 +824,13 @@ public abstract class Top extends JFrame {
      */
     protected JFileChooser _saveAsFileDialog() {
         JFileChooser fileDialog = new JFileChooser();
+
         if (_fileFilter != null) {
             fileDialog.addChoosableFileFilter(_fileFilter);
         }
+
         fileDialog.setDialogTitle("Save as...");
+
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
         } else {
@@ -812,13 +838,14 @@ public abstract class Top extends JFrame {
             // typically not what we want.
             // So we use the current directory instead.
             // This will fail with a security exception in applets.
-            String currentWorkingDirectory
-                    = StringUtilities.getProperty("user.dir");
+            String currentWorkingDirectory = StringUtilities.getProperty(
+                    "user.dir");
+
             if (currentWorkingDirectory != null) {
-                fileDialog.setCurrentDirectory(
-                        new File(currentWorkingDirectory));
+                fileDialog.setCurrentDirectory(new File(currentWorkingDirectory));
             }
         }
+
         return fileDialog;
     }
 
@@ -858,24 +885,23 @@ public abstract class Top extends JFrame {
 
     /** Items in the file menu. */
     protected JMenuItem[] _fileMenuItems = {
-        new JMenuItem("Open File", KeyEvent.VK_O),
-        new JMenuItem("Open URL", KeyEvent.VK_U),
-        new JMenu("New"),
-        new JMenuItem("Save", KeyEvent.VK_S),
-        new JMenuItem("SaveAs", KeyEvent.VK_A),
-        new JMenuItem("Print", KeyEvent.VK_P),
-        new JMenuItem("Close", KeyEvent.VK_C),
-        new JMenuItem("Exit", KeyEvent.VK_X),
-    };
+            new JMenuItem("Open File", KeyEvent.VK_O),
+            new JMenuItem("Open URL", KeyEvent.VK_U), new JMenu("New"),
+            new JMenuItem("Save", KeyEvent.VK_S),
+            new JMenuItem("SaveAs", KeyEvent.VK_A),
+            new JMenuItem("Print", KeyEvent.VK_P),
+            new JMenuItem("Close", KeyEvent.VK_C),
+            new JMenuItem("Exit", KeyEvent.VK_X),
+        };
 
     /** Help menu for this frame. */
     protected JMenu _helpMenu = new JMenu("Help");
 
     /** Help menu items. */
     protected JMenuItem[] _helpMenuItems = {
-        new JMenuItem("About", KeyEvent.VK_A),
-        new JMenuItem("Help", KeyEvent.VK_H),
-    };
+            new JMenuItem("About", KeyEvent.VK_A),
+            new JMenuItem("Help", KeyEvent.VK_H),
+        };
 
     /** Menubar for this frame. */
     protected JMenuBar _menubar = new JMenuBar();
@@ -909,7 +935,6 @@ public abstract class Top extends JFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Execute all actions pending on the deferred action list.
     // The list is cleared and the _actionsDeferred variable is set
     // to false, even if one of the deferred actions fails.
@@ -918,11 +943,12 @@ public abstract class Top extends JFrame {
     // of that list is ensured, since modifications to that list occur
     // only in other places that are also synchronized on the list.
     private static void _executeDeferredActions() {
-        synchronized(_deferredActions) {
+        synchronized (_deferredActions) {
             try {
                 Iterator actions = _deferredActions.iterator();
+
                 while (actions.hasNext()) {
-                    Runnable action = (Runnable)actions.next();
+                    Runnable action = (Runnable) actions.next();
                     action.run();
                 }
             } finally {
@@ -941,8 +967,9 @@ public abstract class Top extends JFrame {
             // Make this the default context for modal messages.
             GraphicalMessageHandler.setContext(Top.this);
 
-            JMenuItem target = (JMenuItem)e.getSource();
+            JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
+
             try {
                 if (actionCommand.equals("Open File")) {
                     _open();
@@ -965,6 +992,7 @@ public abstract class Top extends JFrame {
                 // where there is no stdout visible.
                 MessageHandler.error("File Menu Exception:", exception);
             }
+
             // NOTE: The following should not be needed, but jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -978,8 +1006,9 @@ public abstract class Top extends JFrame {
             // Make this the default context for modal messages.
             GraphicalMessageHandler.setContext(Top.this);
 
-            JMenuItem target = (JMenuItem)e.getSource();
+            JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
+
             try {
                 if (actionCommand.equals("About")) {
                     _about();
@@ -992,6 +1021,7 @@ public abstract class Top extends JFrame {
                 // where there is no stdout visible.
                 MessageHandler.error("Help Menu Exception:", exception);
             }
+
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.

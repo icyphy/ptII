@@ -26,13 +26,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+
 
 /** A class that maintains context information for C code generation.
 
@@ -42,10 +42,7 @@ import java.util.Iterator;
 @Pt.ProposedRating Red (ssb)
 @Pt.AcceptedRating Red (ssb)
 */
-
-
 public class Context {
-
     /** Construct an empty context. */
     public Context() {
         _includeFileSet = new HashSet();
@@ -56,7 +53,6 @@ public class Context {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Add an array instance to the set of array instances in the context.
      *  @param instanceName The name of the array instance.
@@ -108,7 +104,6 @@ public class Context {
         return _arrayInstanceSet;
     }
 
-
     /** Return true if and only if importing of referenced include files
      *  is presently disabled.
      *  @return True if and only if importing is disabled.
@@ -123,9 +118,8 @@ public class Context {
      *  @return The C identifier.
      */
     public String getIdentifier(String constant) {
-        return (String)(_stringConstantMap.get(constant));
+        return (String) (_stringConstantMap.get(constant));
     }
-
 
     /** Return an Iterator over the set of include files in the context.
      *  Each element in the Iterator is a String representing an include
@@ -146,7 +140,7 @@ public class Context {
      *  @return True if and only if single class mode translation is enabled.
      */
     public static boolean getSingleClassMode() {
-        return ((String)Options.v().get("compileMode")).equals("singleClass");
+        return ((String) Options.v().get("compileMode")).equals("singleClass");
     }
 
     /** Return an Iterator over the set of string constants in the context.
@@ -164,10 +158,12 @@ public class Context {
      */
     public String newStringConstant(String value) {
         String name;
-        if ((name = (String)(_stringConstantMap.get(value))) == null) {
-            name = new String ("PCCG__string" + _stringConstantCount++);
+
+        if ((name = (String) (_stringConstantMap.get(value))) == null) {
+            name = new String("PCCG__string" + _stringConstantCount++);
             _stringConstantMap.put(value, name);
         }
+
         return name;
     }
 
@@ -186,7 +182,6 @@ public class Context {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Flag that indicates whether or not importing of referenced include files
     // is disabled.
     private boolean _disableImports;
@@ -211,5 +206,4 @@ public class Context {
 
     //The set of array instances that need to be typedef'd
     private HashSet _arrayInstanceSet;
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.SignalProcessing;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LevinsonDurbin
+
 /**
    This actor uses the Levinson-Durbin algorithm to compute the linear
    predictor coefficients of a random process, given its autocorrelation
@@ -121,9 +122,7 @@ import ptolemy.math.SignalProcessing;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class LevinsonDurbin extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -134,16 +133,14 @@ public class LevinsonDurbin extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public LevinsonDurbin(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        autocorrelation =
-            new TypedIOPort(this, "autocorrelation", true, false);
+        autocorrelation = new TypedIOPort(this, "autocorrelation", true, false);
         errorPower = new TypedIOPort(this, "errorPower", false, true);
-        linearPredictor =
-            new TypedIOPort(this, "linearPredictor", false, true);
-        reflectionCoefficients = new TypedIOPort(
-                this, "reflectionCoefficients", false, true);
+        linearPredictor = new TypedIOPort(this, "linearPredictor", false, true);
+        reflectionCoefficients = new TypedIOPort(this,
+                "reflectionCoefficients", false, true);
 
         // FIXME: Can the inputs be complex?
         autocorrelation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -182,30 +179,29 @@ public class LevinsonDurbin extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        ArrayToken autocorrelationValue = (ArrayToken)autocorrelation.get(0);
+        ArrayToken autocorrelationValue = (ArrayToken) autocorrelation.get(0);
         int autocorrelationValueLength = autocorrelationValue.length();
 
         // If the length of the input is odd, then the order is
         // (length + 1)/2. Otherwise, it is 1 + length/2.
         // Both numbers are the result of integer division
         // (length + 2)/2.
-        int order = autocorrelationValueLength/2;
+        int order = autocorrelationValueLength / 2;
 
         Token[] power = new Token[order + 1];
         Token[] refl = new Token[order];
         Token[] lp = new Token[order];
         double[] a = new double[order + 1];
         double[] aP = new double[order + 1];
-        double[] r = new double[order+1];
+        double[] r = new double[order + 1];
 
         a[0] = 1.0;
         aP[0] = 1.0;
 
         // For convenience, read the autocorrelation lags into a vector.
         for (int i = 0; i <= order; i++) {
-            r[i] = ((DoubleToken)autocorrelationValue
-                    .getElement(autocorrelationValueLength - order + i - 1))
-                .doubleValue();
+            r[i] = ((DoubleToken) autocorrelationValue.getElement((autocorrelationValueLength
+                    - order + i) - 1)).doubleValue();
         }
 
         // Output the zeroth order prediction error power, which is
@@ -216,32 +212,35 @@ public class LevinsonDurbin extends TypedAtomicActor {
         double gamma;
 
         // The order recurrence
-        for (int M = 0; M < order; M++ ) {
-
+        for (int M = 0; M < order; M++) {
             // Compute the new reflection coefficient.
             double deltaM = 0.0;
-            for (int m = 0; m < M+1; m++) {
-                deltaM += a[m]*r[M+1-m];
+
+            for (int m = 0; m < (M + 1); m++) {
+                deltaM += (a[m] * r[(M + 1) - m]);
             }
+
             // Compute and output the reflection coefficient
             // (which is also equal to the last AR parameter).
             if (SignalProcessing.close(P, 0.0)) {
-                aP[M+1] = gamma = 0.0;
+                aP[M + 1] = gamma = 0.0;
             } else {
-                aP[M+1] = gamma = -deltaM/P;
+                aP[M + 1] = gamma = -deltaM / P;
             }
 
             refl[M] = new DoubleToken(-gamma);
 
-            for (int m = 1; m < M+1; m++) {
-                aP[m] = a[m] + gamma*a[M+1-m];
+            for (int m = 1; m < (M + 1); m++) {
+                aP[m] = a[m] + (gamma * a[(M + 1) - m]);
             }
 
             // Update the prediction error power.
-            P = P*(1.0 - gamma*gamma);
-            if (P < 0.0 || SignalProcessing.close(P, 0.0)) {
+            P = P * (1.0 - (gamma * gamma));
+
+            if ((P < 0.0) || SignalProcessing.close(P, 0.0)) {
                 P = 0.0;
             }
+
             power[M + 1] = new DoubleToken(P);
 
             // Swap a and aP for next order recurrence.
@@ -249,9 +248,10 @@ public class LevinsonDurbin extends TypedAtomicActor {
             a = aP;
             aP = temp;
         }
+
         // Generate the lp outputs.
-        for (int m = 1; m <= order; m++ ) {
-            lp[m-1] = new DoubleToken(-a[m]);
+        for (int m = 1; m <= order; m++) {
+            lp[m - 1] = new DoubleToken(-a[m]);
         }
 
         linearPredictor.broadcast(new ArrayToken(lp));
@@ -268,6 +268,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
         if (!autocorrelation.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }

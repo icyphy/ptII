@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Remainder
+
 /**
    Compute the remainder after dividing the input by the divisor.
    The input and output data types are both double.
@@ -71,7 +72,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class Remainder extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -81,7 +81,7 @@ public class Remainder extends Transformer {
      *   actor with this name.
      */
     public Remainder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);
@@ -108,11 +108,10 @@ public class Remainder extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            double in = ((DoubleToken)input.get(0)).doubleValue();
-            double divisorValue = ((DoubleToken)
-                    divisor.getToken()).doubleValue();
-            output.send(0, new DoubleToken(
-                                Math.IEEEremainder(in, divisorValue)));
+            double in = ((DoubleToken) input.get(0)).doubleValue();
+            double divisorValue = ((DoubleToken) divisor.getToken())
+                .doubleValue();
+            output.send(0, new DoubleToken(Math.IEEEremainder(in, divisorValue)));
         }
     }
 }

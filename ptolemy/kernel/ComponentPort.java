@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel;
 
 import java.util.Collections;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ComponentPort
+
 /**
    A port supporting hierarchy. A component port can have "inside"
    links as well as the usual "outside" links supported by the base
@@ -93,7 +94,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (bart)
 */
 public class ComponentPort extends Port {
-
     /** Construct a port in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -127,7 +127,7 @@ public class ComponentPort extends Port {
      *   a port already in the container.
      */
     public ComponentPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -143,9 +143,8 @@ public class ComponentPort extends Port {
      *   attributes cannot be cloned.
      *  @return A new ComponentPort.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ComponentPort newObject = (ComponentPort)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ComponentPort newObject = (ComponentPort) super.clone(workspace);
         newObject._insideLinks = new CrossRefList(newObject);
         return newObject;
     }
@@ -249,18 +248,21 @@ public class ComponentPort extends Port {
      *   same workspace as the relation.
      */
     public void insertInsideLink(int index, Relation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (relation != null) {
             insertLink(index, relation);
             return;
         }
+
         try {
             _workspace.getWriteAccess();
+
             // Assume an inside link
             _insideLinks.insertLink(index, null);
+
             // NOTE: _checkLink() ensures that the container is
             // not null, and the class ensures that it is an Entity.
-            ((Entity)getContainer()).connectionsChanged(this);
+            ((Entity) getContainer()).connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
         }
@@ -299,18 +301,21 @@ public class ComponentPort extends Port {
      *   same workspace as the relation.
      */
     public void insertLink(int index, Relation relation)
-            throws IllegalActionException {
-        if (relation != null && _workspace != relation.workspace()) {
+        throws IllegalActionException {
+        if ((relation != null) && (_workspace != relation.workspace())) {
             throw new IllegalActionException(this, relation,
-                    "Cannot link because workspaces are different.");
+                "Cannot link because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             if (relation == null) {
                 // Assume outside link
                 _relationsList.insertLink(index, null);
             } else {
                 _checkLink(relation);
+
                 if (_isInsideLinkable(relation.getContainer())) {
                     // An inside link
                     _insideLinks.insertLink(index, relation._getPortList());
@@ -319,9 +324,10 @@ public class ComponentPort extends Port {
                     _relationsList.insertLink(index, relation._getPortList());
                 }
             }
+
             // NOTE: _checkLink() ensures that the container is
             // not null, and the class ensures that it is an Entity.
-            ((Entity)getContainer()).connectionsChanged(this);
+            ((Entity) getContainer()).connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
         }
@@ -336,15 +342,19 @@ public class ComponentPort extends Port {
     public List insidePortList() {
         try {
             _workspace.getReadAccess();
+
             LinkedList result = new LinkedList();
             Iterator relations = insideRelationList().iterator();
+
             while (relations.hasNext()) {
-                Relation relation = (Relation)relations.next();
+                Relation relation = (Relation) relations.next();
+
                 // A null link might yield a null relation here.
                 if (relation != null) {
                     result.addAll(relation.linkedPortList(this));
                 }
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -371,13 +381,16 @@ public class ComponentPort extends Port {
     public List insideRelationList() {
         try {
             _workspace.getReadAccess();
+
             // Unfortunately, CrossRefList returns an enumeration only.
             // Use it to construct a list.
             LinkedList result = new LinkedList();
             Enumeration relations = _insideLinks.getContainers();
+
             while (relations.hasMoreElements()) {
                 result.add(relations.nextElement());
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -411,6 +424,7 @@ public class ComponentPort extends Port {
         if (port == null) {
             return false;
         }
+
         try {
             _workspace.getReadAccess();
             return deepConnectedPortList().contains(port);
@@ -431,10 +445,12 @@ public class ComponentPort extends Port {
      *  @return True if the container entity is opaque.
      */
     public boolean isOpaque() {
-        ComponentEntity entity = (ComponentEntity)getContainer();
+        ComponentEntity entity = (ComponentEntity) getContainer();
+
         if (entity == null) {
             return true;
         }
+
         return entity.isOpaque();
     }
 
@@ -463,10 +479,11 @@ public class ComponentPort extends Port {
      *   the same workspace, or the port has no container.
      */
     public void liberalLink(ComponentRelation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (relation != null) {
             _checkLiberalLink(relation);
         }
+
         _doLink(relation);
     }
 
@@ -487,6 +504,7 @@ public class ComponentPort extends Port {
         if (relation != null) {
             _checkLink(relation);
         }
+
         _doLink(relation);
     }
 
@@ -516,14 +534,16 @@ public class ComponentPort extends Port {
      *   a port with the name of this port.
      */
     public void setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
-        if (entity != null && _workspace != entity.workspace()) {
+        throws IllegalActionException, NameDuplicationException {
+        if ((entity != null) && (_workspace != entity.workspace())) {
             throw new IllegalActionException(this, entity,
-                    "Cannot set container because workspaces are different.");
+                "Cannot set container because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
             super.setContainer(entity);
+
             if (entity == null) {
                 unlinkAllInside();
             }
@@ -544,8 +564,7 @@ public class ComponentPort extends Port {
      *  @param relation The relation to unlink.
      */
     public void unlink(Relation relation) {
-        if (relation != null
-                && _isInsideLinkable(relation.getContainer())) {
+        if ((relation != null) && _isInsideLinkable(relation.getContainer())) {
             // An inside link
             unlinkInside(relation);
         } else {
@@ -573,7 +592,9 @@ public class ComponentPort extends Port {
         try {
             _workspace.getWriteAccess();
             _insideLinks.unlinkAll();
-            Entity container = (Entity)getContainer();
+
+            Entity container = (Entity) getContainer();
+
             if (container != null) {
                 container.connectionsChanged(this);
             }
@@ -596,7 +617,9 @@ public class ComponentPort extends Port {
         try {
             _workspace.getWriteAccess();
             _insideLinks.unlink(index);
-            Entity container = (Entity)getContainer();
+
+            Entity container = (Entity) getContainer();
+
             if (container != null) {
                 container.connectionsChanged(this);
             }
@@ -618,7 +641,9 @@ public class ComponentPort extends Port {
         try {
             _workspace.getWriteAccess();
             _insideLinks.unlink(relation);
-            Entity container = (Entity)getContainer();
+
+            Entity container = (Entity) getContainer();
+
             if (container != null) {
                 container.connectionsChanged(this);
             }
@@ -637,10 +662,10 @@ public class ComponentPort extends Port {
      *   ComponentEntity.
      */
     protected void _checkContainer(Entity container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(container instanceof ComponentEntity) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "ComponentPort can only be contained by ComponentEntity");
+                "ComponentPort can only be contained by ComponentEntity");
         }
     }
 
@@ -655,26 +680,30 @@ public class ComponentPort extends Port {
      *   no container, or the link crosses levels of the hierarchy.
      */
     protected void _checkLiberalLink(Relation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (relation != null) {
             if (!(relation instanceof ComponentRelation)) {
                 throw new IllegalActionException(this, relation,
-                        "Attempt to link to an incompatible relation "
-                        + "(expected ComponentRelation).");
+                    "Attempt to link to an incompatible relation "
+                    + "(expected ComponentRelation).");
             }
-            Entity container = (Entity)getContainer();
+
+            Entity container = (Entity) getContainer();
+
             if (container == null) {
                 throw new IllegalActionException(this, relation,
-                        "Port must have a container to establish a link.");
+                    "Port must have a container to establish a link.");
             }
+
             // Check that the container is not a class or that
             // if it is, that this is an inside link.
             if (container.isClassDefinition()
-                    && container != relation.getContainer()) {
+                    && (container != relation.getContainer())) {
                 throw new IllegalActionException(this, relation,
-                        "Cannot establish a link to a port contained " +
-                        "by a class definition");
+                    "Cannot establish a link to a port contained "
+                    + "by a class definition");
             }
+
             // Throw an exception if this port is not of an acceptable
             // class for the relation.
             relation._checkPort(this);
@@ -700,31 +729,36 @@ public class ComponentPort extends Port {
      *   or if the container of this port is a class definition and the
      *   link is not an inside link.
      */
-    protected void _checkLink(Relation relation)
-            throws IllegalActionException {
+    protected void _checkLink(Relation relation) throws IllegalActionException {
         super._checkLink(relation);
+
         if (relation != null) {
             if (!(relation instanceof ComponentRelation)) {
                 throw new IllegalActionException(this, relation,
-                        "Attempt to link to an incompatible relation "
-                        + "(expected ComponentRelation).");
+                    "Attempt to link to an incompatible relation "
+                    + "(expected ComponentRelation).");
             }
-            Entity container = (Entity)getContainer();
+
+            Entity container = (Entity) getContainer();
+
             // Superclass assures that the container is not null.
             Nameable relationContainer = relation.getContainer();
-            if (container != relationContainer &&
-                    container.getContainer() != relationContainer) {
+
+            if ((container != relationContainer)
+                    && (container.getContainer() != relationContainer)) {
                 throw new IllegalActionException(this, relation,
-                        "Link crosses levels of the hierarchy");
+                    "Link crosses levels of the hierarchy");
             }
+
             // Check that the container is not a class or that
             // if it is, that this is an inside link.
             if (container.isClassDefinition()
-                    && container != relationContainer) {
+                    && (container != relationContainer)) {
                 throw new IllegalActionException(this, relation,
-                        "Cannot establish a link to a port contained " +
-                        "by a class definition");
+                    "Cannot establish a link to a port contained "
+                    + "by a class definition");
             }
+
             // Throw an exception if this port is not of an acceptable
             // class for the relation.
             relation._checkPort(this);
@@ -754,6 +788,7 @@ public class ComponentPort extends Port {
             // Cache is valid.  Use it.
             return _deepLinkedPorts;
         }
+
         if (path == null) {
             path = new LinkedList();
         } else {
@@ -761,22 +796,24 @@ public class ComponentPort extends Port {
                 throw new InvalidStateException(path, "Loop in topology!");
             }
         }
+
         path.add(0, this);
+
         Iterator nearRelations = linkedRelationList().iterator();
         LinkedList result = new LinkedList();
 
         while (nearRelations.hasNext()) {
-            ComponentRelation relation =
-                (ComponentRelation)nearRelations.next();
+            ComponentRelation relation = (ComponentRelation) nearRelations.next();
 
             // A null link (supported since indexed links) might
             // yield a null relation here. EAL 7/19/00.
             if (relation != null) {
-                Iterator connectedPorts
-                    = relation.linkedPortList(this).iterator();
+                Iterator connectedPorts = relation.linkedPortList(this)
+                                                  .iterator();
+
                 while (connectedPorts.hasNext()) {
-                    ComponentPort port
-                        = (ComponentPort)connectedPorts.next();
+                    ComponentPort port = (ComponentPort) connectedPorts.next();
+
                     // NOTE: If level-crossing transitions are not allowed,
                     // then a simpler test than that of the following
                     // would work.
@@ -800,6 +837,7 @@ public class ComponentPort extends Port {
                 }
             }
         }
+
         _deepLinkedPorts = Collections.unmodifiableList(result);
         _deepLinkedPortsVersion = _workspace.getVersion();
         path.remove(0);
@@ -849,6 +887,7 @@ public class ComponentPort extends Port {
             // Cache is valid.  Use it.
             return _deepLinkedInPorts;
         }
+
         if (path == null) {
             path = new LinkedList();
         } else {
@@ -856,19 +895,24 @@ public class ComponentPort extends Port {
                 throw new InvalidStateException(path, "Loop in topology!");
             }
         }
+
         path.add(0, this);
+
         LinkedList result = new LinkedList();
+
         // Port is transparent.
         Iterator relations = insideRelationList().iterator();
+
         while (relations.hasNext()) {
-            Relation relation = (Relation)relations.next();
+            Relation relation = (Relation) relations.next();
+
             // A null link might yield a null relation here.
             if (relation != null) {
-                Iterator insidePorts =
-                    relation.linkedPortList(this).iterator();
+                Iterator insidePorts = relation.linkedPortList(this).iterator();
+
                 while (insidePorts.hasNext()) {
-                    ComponentPort port =
-                        (ComponentPort)insidePorts.next();
+                    ComponentPort port = (ComponentPort) insidePorts.next();
+
                     // The inside port may not be actually inside,
                     // in which case we want to look through it
                     // from the inside (this supports transparent
@@ -879,8 +923,7 @@ public class ComponentPort extends Port {
                         if (port.isOpaque()) {
                             result.add(port);
                         } else {
-                            result.addAll(
-                                    port._deepConnectedPortList(path));
+                            result.addAll(port._deepConnectedPortList(path));
                         }
                     } else {
                         // We are coming at the port from the outside.
@@ -888,13 +931,13 @@ public class ComponentPort extends Port {
                             // The inside port is truly inside.
                             result.add(port);
                         } else {
-                            result.addAll(
-                                    port._deepInsidePortList(path));
+                            result.addAll(port._deepInsidePortList(path));
                         }
                     }
                 }
             }
         }
+
         _deepLinkedInPorts = Collections.unmodifiableList(result);
         _deepLinkedInPortsVersion = _workspace.getVersion();
         path.remove(0);
@@ -941,33 +984,45 @@ public class ComponentPort extends Port {
     protected String _description(int detail, int indent, int bracket) {
         try {
             _workspace.getReadAccess();
+
             String result;
-            if (bracket == 1 || bracket == 2) {
+
+            if ((bracket == 1) || (bracket == 2)) {
                 result = super._description(detail, indent, 1);
             } else {
                 result = super._description(detail, indent, 0);
             }
+
             if ((detail & LINKS) != 0) {
                 if (result.trim().length() > 0) {
                     result += " ";
                 }
+
                 // To avoid infinite loop, turn off the LINKS flag
                 // when querying the Ports.
                 detail &= ~LINKS;
                 result += "insidelinks {\n";
+
                 Iterator insideRelations = insideRelationList().iterator();
+
                 while (insideRelations.hasNext()) {
-                    Relation relation = (Relation)insideRelations.next();
+                    Relation relation = (Relation) insideRelations.next();
+
                     if (relation != null) {
-                        result += relation._description(detail,
-                                indent + 1, 2) + "\n";
+                        result += (relation._description(detail, indent + 1, 2)
+                        + "\n");
                     } else {
-                        result += _getIndentPrefix(indent + 1) + "null\n";
+                        result += (_getIndentPrefix(indent + 1) + "null\n");
                     }
                 }
-                result += _getIndentPrefix(indent) + "}";
+
+                result += (_getIndentPrefix(indent) + "}");
             }
-            if (bracket == 2) result += "}";
+
+            if (bracket == 2) {
+                result += "}";
+            }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -983,11 +1038,17 @@ public class ComponentPort extends Port {
     protected boolean _isInsideLinkable(Nameable entity) {
         try {
             _workspace.getReadAccess();
+
             Nameable portContainer = getContainer();
+
             while (entity != null) {
-                if (portContainer == entity) return true;
+                if (portContainer == entity) {
+                    return true;
+                }
+
                 entity = entity.getContainer();
             }
+
             return false;
         } finally {
             _workspace.doneReading();
@@ -1001,28 +1062,31 @@ public class ComponentPort extends Port {
      *  @param relation The relation to link to.
      */
     private void _doLink(Relation relation) throws IllegalActionException {
-        if (relation != null && _workspace != relation.workspace()) {
+        if ((relation != null) && (_workspace != relation.workspace())) {
             throw new IllegalActionException(this, relation,
-                    "Cannot link because workspaces are different.");
+                "Cannot link because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             if (relation == null) {
                 // Create a null link.
-                _relationsList.link( null );
+                _relationsList.link(null);
             } else {
                 if (_isInsideLinkable(relation.getContainer())) {
                     // An inside link
-                    _insideLinks.link( relation._getPortList() );
+                    _insideLinks.link(relation._getPortList());
                 } else {
                     // An outside link
-                    _relationsList.link( relation._getPortList() );
+                    _relationsList.link(relation._getPortList());
                 }
             }
+
             // NOTE: _checkLink() and _checkLiberalLink()
             // ensure that the container is
             // not null, and the class ensures that it is an Entity.
-            ((Entity)getContainer()).connectionsChanged(this);
+            ((Entity) getContainer()).connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
         }
@@ -1030,7 +1094,6 @@ public class ComponentPort extends Port {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A cache of the deeply linked ports, and the version used to
     // construct it.
     // 'transient' means that the variable will not be serialized.

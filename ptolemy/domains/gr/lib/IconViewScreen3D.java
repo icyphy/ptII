@@ -46,8 +46,10 @@ import ptolemy.vergil.icon.ImageIcon;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// IconViewScreen3D
+
 /**
    A sink actor that renders a two-dimensional scene into an Icon.
 
@@ -64,7 +66,6 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
    @Pt.AcceptedRating Red (chf)
 */
 public class IconViewScreen3D extends ViewScreen3D {
-
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -78,7 +79,7 @@ public class IconViewScreen3D extends ViewScreen3D {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public IconViewScreen3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         icon = new ImageIcon(this, "_icon");
@@ -106,8 +107,7 @@ public class IconViewScreen3D extends ViewScreen3D {
      * frame and use that.
      */
     protected void _createViewScreen() {
-        GraphicsConfiguration config =
-            SimpleUniverse.getPreferredConfiguration();
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
 
         int horizontalDimension = 400;
         int verticalDimension = 400;
@@ -137,11 +137,11 @@ public class IconViewScreen3D extends ViewScreen3D {
         if (_canvas != null) {
             _container.remove(_canvas);
         }
+
         _canvas = new CapturingCanvas3D(config, false);
 
         _container.add("Center", _canvas);
-        _canvas.setSize(new Dimension(horizontalDimension,
-                                verticalDimension));
+        _canvas.setSize(new Dimension(horizontalDimension, verticalDimension));
         _simpleUniverse = new SimpleUniverse(_canvas);
         _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
     }
@@ -157,25 +157,20 @@ public class IconViewScreen3D extends ViewScreen3D {
         Dept of Physics and Astronomy
         Baltimore MD
     */
-    private class CapturingCanvas3D extends Canvas3D  {
-        public CapturingCanvas3D(
-                GraphicsConfiguration gc, boolean offscreen) {
+    private class CapturingCanvas3D extends Canvas3D {
+        public CapturingCanvas3D(GraphicsConfiguration gc, boolean offscreen) {
             super(gc, offscreen);
         }
 
         public void postSwap() {
             GraphicsContext3D context = getGraphicsContext3D();
+
             // The raster components need all be set!
-            Raster raster = new Raster(
-                    new Point3f(-1.0f, -1.0f, -1.0f),
-                    Raster.RASTER_COLOR,
-                    0, 0,
-                    _frameWidth, _frameHeight,
-                    new ImageComponent2D(
-                            ImageComponent.FORMAT_RGB,
-                            new BufferedImage(_frameWidth, _frameHeight,
-                                    BufferedImage.TYPE_INT_RGB)),
-                    null);
+            Raster raster = new Raster(new Point3f(-1.0f, -1.0f, -1.0f),
+                    Raster.RASTER_COLOR, 0, 0, _frameWidth, _frameHeight,
+                    new ImageComponent2D(ImageComponent.FORMAT_RGB,
+                        new BufferedImage(_frameWidth, _frameHeight,
+                            BufferedImage.TYPE_INT_RGB)), null);
 
             context.readRaster(raster);
 
@@ -188,7 +183,6 @@ public class IconViewScreen3D extends ViewScreen3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private BufferedImage _image;
     private int _frameWidth = 400;
     private int _frameHeight = 400;

@@ -36,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 /**
  * This actor copies one token from its input to its output when fired.
  *
@@ -54,6 +55,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      * conditions that the method (or one of the methods it calls) has
      * detected (notice the @exception tag).
      */
+
     /**
      * Create an SDFTestDelay actor in the given container with the given name.
      * This actor copies one token from the input port named "input" to the
@@ -62,12 +64,13 @@ public class SDFTestDelay extends TypedAtomicActor {
      * @exception NameDuplicationException If the contained methods throw it
      */
     public SDFTestDelay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         /* This starts out by calling TypedAtomicActor's constructor.
          * allows us to add some extra code specific to this actor, in
          * addition to the regular initializer in TypedAtomicActor.
          */
         super(container, name);
+
         /* This construct is called a "try-catch block".  It is used to
          * detect exceptions that occurred during the execution of some
          * other code.  In this case, we detect IllegalActionException and
@@ -77,14 +80,16 @@ public class SDFTestDelay extends TypedAtomicActor {
          */
         /* Create a new input port */
         input = new TypedIOPort(this, "input", true, false);
+
         /* Set the Consumption rate on the port.  A good way to think of
          * this is that you are making a contract with the Ptolemy system.
          * If you always consume one token from this port when fired,
          * then Ptolemy will always guarantee that there will be a token
          * ready when you are fired.
          */
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate", new IntToken(1));
+        input_tokenConsumptionRate = new Parameter(input,
+                "tokenConsumptionRate", new IntToken(1));
+
         /* The getPort method (in ptolemy.kernel.Entity) finds a port by
          * name.  It returns a Port object, but all the ports in the
          * actor package are of type TypedIOPort,
@@ -96,16 +101,15 @@ public class SDFTestDelay extends TypedAtomicActor {
         input.setTypeEquals(BaseType.INT);
 
         /* Similarly for the output port */
-        output = new TypedIOPort(this,"output", false, true);
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate", new IntToken(1));
+        output = new TypedIOPort(this, "output", false, true);
+        output_tokenProductionRate = new Parameter(output,
+                "tokenProductionRate", new IntToken(1));
 
         output.setTypeEquals(BaseType.INT);
     }
 
     public TypedIOPort input;
     public TypedIOPort output;
-
     public Parameter input_tokenConsumptionRate;
     public Parameter output_tokenProductionRate;
 
@@ -113,12 +117,12 @@ public class SDFTestDelay extends TypedAtomicActor {
      * in alphabetical order, followed by protected and private methods.
      * Instance variables come at the end of the class.
      */
-
     /* The fire method is where the bulk of the action takes place.   In
      * SDF, fire will be called exactly once between prefire and postfire.
      * In this class, we get an input port, print its value, and put the
      * same token back on the output port.
      */
+
     /** This fires an actor and may be invoked several times between
      *  invocations of prefire() and postfire(). It may produce output
      *  data. Typically, the fire() method performs the computation associated
@@ -135,14 +139,17 @@ public class SDFTestDelay extends TypedAtomicActor {
         /* Figure out how many tokens should be copied from the input to the
          * output.
          */
-        int tokens =
-            ((IntToken)input_tokenConsumptionRate.getToken()).intValue();
-        if (((IntToken)output_tokenProductionRate.getToken()).intValue() != tokens)
+        int tokens = ((IntToken) input_tokenConsumptionRate.getToken())
+            .intValue();
+
+        if (((IntToken) output_tokenProductionRate.getToken()).intValue() != tokens) {
             throw new IllegalActionException(
-                    "SDFTestDelay: Rates on input port and output port " +
-                    "must match!");
+                "SDFTestDelay: Rates on input port and output port "
+                + "must match!");
+        }
 
         int i;
+
         for (i = 0; i < tokens; i++) {
             /* now that we have the port, we can get a token from it.
              * The argument to get is known as the channel.
@@ -151,7 +158,7 @@ public class SDFTestDelay extends TypedAtomicActor {
              * input.  Multiple channels are useful with Multiports, which
              * allow more than one relation to be connected to a port.
              */
-            message = (IntToken)input.get(0);
+            message = (IntToken) input.get(0);
 
             /* After looking at the token, pass it along to the next actor
              */
@@ -164,6 +171,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      * practice this method can be used to define a stopping condition,
      * where execution will stop once some condition has been met.
      */
+
     /** This method should be invoked once per iteration, after the last
      *  invocation of fire() in that iteration. It may produce output data.
      *  It returns true if the execution can proceed into the next iteration.
@@ -186,6 +194,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      * have made a contract with the SDF domain to be fired when enough data
      * is present.
      */
+
     /** This method should be invoked once per iteration, before the first
      *  invocation of fire() in that iteration.  It returns true if the
      *  iteration can proceed (the fire() method can be invoked). Thus
@@ -207,6 +216,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      * via CTRL-C.  The second is if an error occurs during wrapup() that
      * cannot be recovered from.
      */
+
     /** This method is invoked to immediately terminate any execution
      *  within an actor.
      */
@@ -220,6 +230,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      * called under most abnormal termination conditions.
      * This actor has nothing to do here.
      */
+
     /** This method should be invoked exactly once per execution
      *  of an application.  None of the other action methods should be
      *  be invoked after it.  It finalizes an execution, typically closing
@@ -231,4 +242,3 @@ public class SDFTestDelay extends TypedAtomicActor {
         return;
     }
 }
-

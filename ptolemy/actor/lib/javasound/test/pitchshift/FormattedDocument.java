@@ -35,8 +35,10 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FormattedDocument
+
 /**
    @author Brian Vogel
    @version $Id$
@@ -56,8 +58,7 @@ public class FormattedDocument extends PlainDocument {
     }
 
     public void insertString(int offs, String str, AttributeSet a)
-            throws BadLocationException {
-
+        throws BadLocationException {
         String currentText = getText(0, getLength());
         String beforeOffset = currentText.substring(0, offs);
         String afterOffset = currentText.substring(offs, currentText.length());
@@ -69,7 +70,7 @@ public class FormattedDocument extends PlainDocument {
         } catch (ParseException e) {
             Toolkit.getDefaultToolkit().beep();
             System.err.println("insertString: could not parse: "
-                    + proposedResult);
+                + proposedResult);
         }
     }
 
@@ -81,8 +82,10 @@ public class FormattedDocument extends PlainDocument {
         String proposedResult = beforeOffset + afterOffset;
 
         try {
-            if (proposedResult.length() != 0)
+            if (proposedResult.length() != 0) {
                 format.parseObject(proposedResult);
+            }
+
             super.remove(offs, len);
         } catch (ParseException e) {
             Toolkit.getDefaultToolkit().beep();

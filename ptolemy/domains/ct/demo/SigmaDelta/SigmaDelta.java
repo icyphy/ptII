@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.demo.SigmaDelta;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -55,8 +54,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SigmaDelta
+
 /**
    A demo of Sigma Delta quantization. The underlying model is a
    micro-accelerometer which uses beam-gap capacitor to measure accelerations.
@@ -79,36 +80,31 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Red (cxh)
 */
 public class SigmaDelta extends TypedCompositeActor {
-
     public SigmaDelta(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         // Creating the model.
         super(workspace);
         setName("DigitalSystem");
 
         // Set up the top level composite actor, director and manager
         DEDirector deDirector = new DEDirector(this, "DEDirector");
-        //deDirector.addDebugListener(new StreamListener());
 
+        //deDirector.addDebugListener(new StreamListener());
         double stopT = 15.0;
         deDirector.stopTime.setToken(new DoubleToken(stopT));
 
         // Create toplevel parameters.
-        samplePeriod = new Parameter(this, "samplePeriod",
-                new DoubleToken(0.02));
+        samplePeriod = new Parameter(this, "samplePeriod", new DoubleToken(0.02));
         feedbackGain = new Parameter(this, "feedbackGain",
                 new DoubleToken(-20.0));
 
         // CT subsystem
-        TypedCompositeActor ctsub = new TypedCompositeActor(this,
-                "CTSubsystem");
+        TypedCompositeActor ctsub = new TypedCompositeActor(this, "CTSubsystem");
         Parameter ctSamplePeriod = new Parameter(ctsub, "samplePeriod");
         ctSamplePeriod.setExpression("samplePeriod");
 
         Parameter ctFeedbackGain = new Parameter(ctsub, "feedbackGain");
         ctFeedbackGain.setExpression("feedbackGain");
-
 
         TypedIOPort subin = new TypedIOPort(ctsub, "Pin");
         subin.setInput(true);
@@ -116,19 +112,16 @@ public class SigmaDelta extends TypedCompositeActor {
         TypedIOPort subout = new TypedIOPort(ctsub, "Pout");
         subout.setOutput(true);
 
-        CTMixedSignalDirector ctdir =
-            new CTMixedSignalDirector(ctsub, "CTEmbDir");
-        //ctdir.addDebugListener(new StreamListener());
+        CTMixedSignalDirector ctdir = new CTMixedSignalDirector(ctsub,
+                "CTEmbDir");
 
+        //ctdir.addDebugListener(new StreamListener());
         // ---------------------------------
         // Create the actors.
         // ---------------------------------
-
         // CTActors
-
         CurrentTime time = new CurrentTime(ctsub, "CurTime");
-        TrigFunction trigFunction =
-            new TrigFunction(ctsub, "TrigFunction");
+        TrigFunction trigFunction = new TrigFunction(ctsub, "TrigFunction");
         ZeroOrderHold hold = new ZeroOrderHold(ctsub, "Hold");
         AddSubtract add1 = new AddSubtract(ctsub, "Add1");
 
@@ -147,44 +140,51 @@ public class SigmaDelta extends TypedCompositeActor {
         ctPlot.plot.setXRange(0.0, stopT);
         ctPlot.plot.setYRange(-1.0, 1.0);
         ctPlot.plot.setSize(500, 180);
-        ctPlot.plot.addLegend(0,"Position");
-        ctPlot.plot.addLegend(1,"Input");
+        ctPlot.plot.addLegend(0, "Position");
+        ctPlot.plot.addLegend(1, "Input");
         ctPlot.plot.addLegend(2, "Control");
 
-        CTPeriodicSampler ctSampler =
-            new CTPeriodicSampler(ctsub, "PeriodicSampler");
+        CTPeriodicSampler ctSampler = new CTPeriodicSampler(ctsub,
+                "PeriodicSampler");
         ctSampler.samplePeriod.setExpression("samplePeriod");
 
         // CT Connections
         ctsub.connect(time.output, scale3.input);
         ctsub.connect(scale3.output, trigFunction.input);
+
         Relation cr0 = ctsub.connect(trigFunction.output, scale0.input, "CR0");
         ctsub.connect(scale0.output, add1.plus, "CR1");
         ctsub.connect(add1.output, intgl1.input, "CR2");
+
         Relation cr3 = ctsub.connect(intgl1.output, intgl2.input, "CR3");
         Relation cr4 = ctsub.connect(intgl2.output, ctPlot.input, "CR4");
         scale1.input.link(cr3);
         scale2.input.link(cr4);
         ctSampler.input.link(cr4);
+
         TypedIORelation cr5 = new TypedIORelation(ctsub, "CR5");
         ctSampler.output.link(cr5);
         subout.link(cr5);
         ctsub.connect(scale1.output, add1.plus, "CR6");
         ctsub.connect(scale2.output, add1.plus, "CR7");
         ctsub.connect(scale4.output, add1.plus, "CR8");
+
         TypedIORelation cr9 = new TypedIORelation(ctsub, "CR9");
         hold.input.link(cr9);
         subin.link(cr9);
+
         Relation cr10 = ctsub.connect(hold.output, scale4.input, "CR10");
         ctPlot.input.link(cr0);
         ctPlot.input.link(cr10);
 
         // DE System
-        ptolemy.domains.de.lib.TimedDelay delay =
-            new ptolemy.domains.de.lib.TimedDelay(this, "delay");
+        ptolemy.domains.de.lib.TimedDelay delay = new ptolemy.domains.de.lib.TimedDelay(this,
+                "delay");
         delay.delay.setToken(new DoubleToken(0.02));
+
         FIR fir = new FIR(this, "fir");
         fir.taps.setExpression("{0.7, 0.3}");
+
         Quantizer quan = new Quantizer(this, "Quantizer");
         Average accumulator = new Average(this, "accumulator");
         Sampler sampler = new Sampler(this, "sampler");
@@ -207,17 +207,18 @@ public class SigmaDelta extends TypedCompositeActor {
         newPlot.addLegend(1, "Quantize");
 
         FIR mav = new FIR(this, "MAV");
-        mav.taps.setExpression(
-                "{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
-                + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}");
+        mav.taps.setExpression("{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
+            + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}");
 
         // DE connections.
-        connect(subout,  delay.input);
-        connect(delay.output,  fir.input);
+        connect(subout, delay.input);
+        connect(delay.output, fir.input);
         connect(fir.output, quan.input);
+
         Relation dr3 = connect(quan.output, subin);
         mav.input.link(dr3);
         connect(mav.output, accumulator.input);
+
         Relation dr4 = connect(clk.output, sampler.trigger);
         accumulator.reset.link(dr4);
         connect(accumulator.output, sampler.input);
@@ -232,13 +233,11 @@ public class SigmaDelta extends TypedCompositeActor {
         //StringToken token1 = new StringToken(
         //        "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
         //ctdir.BreakpointODESolver.setToken(token1);
-
         StringToken token2 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         ctdir.ODESolver.setToken(token2);
 
         // CT Actor Parameters
-
         scale0.factor.setToken(new DoubleToken(50.0));
         scale1.factor.setToken(new DoubleToken(-2.50));
         scale2.factor.setToken(new DoubleToken(-250.0));
@@ -255,5 +254,4 @@ public class SigmaDelta extends TypedCompositeActor {
     /** Feedback gain.
      */
     Parameter feedbackGain;
-
 }

@@ -23,7 +23,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.gr.kernel;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -31,8 +30,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GRActor
+
 /**
    A base class for all GR actors. This is an abstract class that is never
    used as a standalone actor in a Ptolemy model. Subclasses of this actor
@@ -48,7 +49,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 abstract public class GRActor extends TypedAtomicActor {
-
     /** Create a new GRActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -62,7 +62,7 @@ abstract public class GRActor extends TypedAtomicActor {
      *   an entity already in the container.
      */
     public GRActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _allowAttributeChanges = false;
         _isSceneGraphInitialized = false;
@@ -92,6 +92,7 @@ abstract public class GRActor extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _isSceneGraphInitialized = false;
+
         /*if (!(getDirector() instanceof GRDirector)) {
           throw new IllegalActionException(this,
           "GR Actors can only be used under a GR Director");
@@ -117,16 +118,15 @@ abstract public class GRActor extends TypedAtomicActor {
      *  @exception IllegalActionException Always thrown for this base class.
      */
     abstract protected void _makeSceneGraphConnection()
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Set the view screen that this actor is connected to.
      */
     abstract protected void _setViewScreen(GRActor actor)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // Boolean variable to determine whether the scene graph is initialized
     protected boolean _isSceneGraphInitialized;
 

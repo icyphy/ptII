@@ -32,6 +32,7 @@ import javax.swing.Action;
 import javax.swing.JMenuBar;
 import javax.swing.RootPaneContainer;
 
+
 /**
  * A context for either an application or an applet
  * that wants to use the diva.gui infrastructure.
@@ -41,7 +42,6 @@ import javax.swing.RootPaneContainer;
  * @version $Id$
  */
 public interface AppContext extends RootPaneContainer {
-
     /**
      * Return the action that is called back when the user
      * exits the app.
@@ -50,7 +50,7 @@ public interface AppContext extends RootPaneContainer {
 
     /** Get the image that represents this frame.
      */
-    public Image getIconImage ();
+    public Image getIconImage();
 
     /**
      * Return the menu bar that the container uses.
@@ -60,7 +60,7 @@ public interface AppContext extends RootPaneContainer {
     /**
      * Return the title of the context.
      */
-    public String getTitle ();
+    public String getTitle();
 
     /**
      * Return whether the context is visible.
@@ -81,7 +81,7 @@ public interface AppContext extends RootPaneContainer {
 
     /** Set the icon that represents this frame.
      */
-    public void setIconImage (Image image);
+    public void setIconImage(Image image);
 
     /**
      * Set the menu bar that the container uses.
@@ -91,7 +91,7 @@ public interface AppContext extends RootPaneContainer {
     /**
      *  Set the title of the context.
      */
-    public void setTitle (String title);
+    public void setTitle(String title);
 
     /**
      * Set the size of the context.  Won't do
@@ -112,6 +112,3 @@ public interface AppContext extends RootPaneContainer {
      */
     public void showStatus(String status);
 }
-
-
-

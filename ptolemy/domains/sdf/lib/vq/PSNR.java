@@ -36,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.ExtendedMath;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PSNR
+
 /**
    This actor consumes an IntMatrixToken from each input port, and calculates the
    Power Signal to Noise Ratio (PSNR) between them.  The PSNR is output on the
@@ -60,8 +62,7 @@ public class PSNR extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public PSNR(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -72,7 +73,6 @@ public class PSNR extends TypedAtomicActor {
 
         distortedSignal = new TypedIOPort(this, "distortedSignal", true, false);
         distortedSignal.setTypeEquals(BaseType.INT_MATRIX);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,8 +98,8 @@ public class PSNR extends TypedAtomicActor {
      *  input tokens do not match.
      */
     public void fire() throws IllegalActionException {
-
-        int i, j;
+        int i;
+        int j;
         int signalPower = 0;
         int noisePower = 0;
         int element1;
@@ -107,33 +107,30 @@ public class PSNR extends TypedAtomicActor {
 
         double PSNRValue;
 
-        IntMatrixToken signalToken =
-            (IntMatrixToken) signal.get(0);
-        IntMatrixToken distortedSignalToken =
-            (IntMatrixToken) distortedSignal.get(0);
+        IntMatrixToken signalToken = (IntMatrixToken) signal.get(0);
+        IntMatrixToken distortedSignalToken = (IntMatrixToken) distortedSignal
+            .get(0);
         int columns = signalToken.getColumnCount();
         int rows = signalToken.getRowCount();
-        if ((distortedSignalToken.getColumnCount() != columns)||
-                (distortedSignalToken.getRowCount() != rows)) {
-            throw new IllegalActionException("Input token dimensions " +
-                    "must match!");
+
+        if ((distortedSignalToken.getColumnCount() != columns)
+                || (distortedSignalToken.getRowCount() != rows)) {
+            throw new IllegalActionException("Input token dimensions "
+                + "must match!");
         }
 
-        for (j = 0; j < rows; j ++) {
-            for (i = 0; i < columns; i ++) {
-
+        for (j = 0; j < rows; j++) {
+            for (i = 0; i < columns; i++) {
                 element1 = signalToken.getElementAt(j, i);
                 element2 = distortedSignalToken.getElementAt(j, i);
 
-                signalPower = signalPower +
-                    element1 * element1;
-                noisePower = noisePower +
-                    (element1 - element2)*
-                    (element1 - element2);
+                signalPower = signalPower + (element1 * element1);
+                noisePower = noisePower
+                    + ((element1 - element2) * (element1 - element2));
             }
         }
 
-        PSNRValue = 10 * ExtendedMath.log10((double)signalPower / noisePower);
+        PSNRValue = 10 * ExtendedMath.log10((double) signalPower / noisePower);
 
         DoubleToken message = new DoubleToken(PSNRValue);
         output.send(0, message);

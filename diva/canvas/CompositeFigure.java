@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.Graphics2D;
@@ -37,6 +36,7 @@ import java.util.Iterator;
 import diva.util.Filter;
 import diva.util.UnitIterator;
 import diva.util.java2d.ShapeUtilities;
+
 
 /** A CompositeFigure is a figure that contains a set of child
  * figures.  It uses a ZList as the internal representation of its
@@ -55,7 +55,6 @@ import diva.util.java2d.ShapeUtilities;
  * @Pt.AcceptedRating Yellow
  */
 public class CompositeFigure extends AbstractFigureContainer {
-
     /** The background figure
      */
     private Figure _background = null;
@@ -74,7 +73,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Create a new composite figure containing no figures.
      */
-    public CompositeFigure () {
+    public CompositeFigure() {
         _children = new BasicZList();
     }
 
@@ -83,7 +82,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * a composite figure that you know is going to contain a
      * lot of children, you can give it an optimized z-list.
      */
-    public CompositeFigure (ZList zlist) {
+    public CompositeFigure(ZList zlist) {
         _children = zlist;
     }
 
@@ -98,7 +97,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Add a child figure to this composite.
      */
-    public void add (Figure f) {
+    public void add(Figure f) {
         _children.add(f);
         f.setParent(this);
         _cachedBounds = null;
@@ -107,7 +106,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Insert a figure at the given position.
      */
-    public void add (int index, Figure f) {
+    public void add(int index, Figure f) {
         _children.add(index, f);
         ((AbstractFigure) f).setParent(this);
         _cachedBounds = null;
@@ -119,7 +118,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * be used for performance reasons -- instead, test if the parent
      * of the child is the same as this composite.
      */
-    public boolean contains (Figure f) {
+    public boolean contains(Figure f) {
         return _children.contains(f);
     }
 
@@ -127,7 +126,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * This does not include the background figure, even if there is
      * one.
      */
-    public Iterator figures () {
+    public Iterator figures() {
         return _children.figures();
     }
 
@@ -135,7 +134,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * is the order in which the children are painted.  This does not
      * include the background figure, even if there is one.
      */
-    public Iterator figuresFromBack () {
+    public Iterator figuresFromBack() {
         return _children.figuresFromBack();
     }
 
@@ -143,7 +142,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * is the order in which events are intercepted.  This does not
      * include the background figure, even if there is one.
      */
-    public Iterator figuresFromFront () {
+    public Iterator figuresFromFront() {
         return _children.figuresFromFront();
     }
 
@@ -151,7 +150,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      *
      * @exception IndexOutOfBoundsException The index is out of range.
      */
-    public Figure get (int index) {
+    public Figure get(int index) {
         return _children.get(index);
     }
 
@@ -163,7 +162,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      *  @see #figures()
      *  @see #setBackgroundFigure(Figure)
      */
-    public Figure getBackgroundFigure () {
+    public Figure getBackgroundFigure() {
         return _background;
     }
 
@@ -172,12 +171,13 @@ public class CompositeFigure extends AbstractFigureContainer {
      * been called here or by any descendents, a cached copy of the
      * bounding box will be returned, otherwise a new one will be generated.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         if (_cachedBounds == null) {
             // This could be made faster by optimizing for orthogonal
             // transforms. Since it's cached though, don't worry about it.
             AffineTransform at = _transformContext.getTransform();
             Rectangle2D bounds = null;
+
             if (_children.getFigureCount() == 0) {
                 if (_background != null) {
                     bounds = _background.getBounds();
@@ -186,25 +186,28 @@ public class CompositeFigure extends AbstractFigureContainer {
                 }
             } else {
                 bounds = _children.getBounds();
+
                 if (_background != null) {
                     Rectangle2D.union(bounds, _background.getBounds(), bounds);
                 }
             }
+
             _cachedBounds = ShapeUtilities.transformBounds(bounds, at);
         }
+
         return _cachedBounds;
     }
 
     /** Get the internal z-list. Clients must <i>not</i> modify
      * the z-list, but can use it for making queries on its contents.
      */
-    public ZList getChildren () {
+    public ZList getChildren() {
         return _children;
     }
 
     /** Return the number of elements in this container.
      */
-    public int getFigureCount () {
+    public int getFigureCount() {
         return _children.getFigureCount();
     }
 
@@ -212,8 +215,8 @@ public class CompositeFigure extends AbstractFigureContainer {
      *  transform context.
      *  @return The origin of the background figure.
      */
-    public Point2D getOrigin () {
-        if ( _background != null ) {
+    public Point2D getOrigin() {
+        if (_background != null) {
             AffineTransform at = _transformContext.getTransform();
             Point2D point = _background.getOrigin();
             return at.transform(point, point);
@@ -225,8 +228,8 @@ public class CompositeFigure extends AbstractFigureContainer {
     /** Get the shape of this figure. This will be the shape of
      * the background if there is one, otherwise the bounding box.
      */
-    public Shape getShape () {
-        if ( _background != null ) {
+    public Shape getShape() {
+        if (_background != null) {
             AffineTransform at = _transformContext.getTransform();
             return at.createTransformedShape(_background.getShape());
         } else {
@@ -236,35 +239,39 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Return the transform context of this figure.
      */
-    public TransformContext getTransformContext () {
+    public TransformContext getTransformContext() {
         return _transformContext;
     }
 
     /** Return the index of the given figure in the Z-list, or -1
      * if the figure is not in this list.
      */
-    public int indexOf (Figure f) {
+    public int indexOf(Figure f) {
         return _children.indexOf(f);
     }
 
     /** Test if this figure intersects the given rectangle.
      */
-    public boolean intersects (Rectangle2D region) {
+    public boolean intersects(Rectangle2D region) {
         // Transform the region to test
         AffineTransform t = _transformContext.getInverseTransform();
         Rectangle2D r = ShapeUtilities.transformBounds(region, t);
 
         // Check against all children
         boolean result;
-        if (_background!= null) {
+
+        if (_background != null) {
             result = getBackgroundFigure().intersects(r);
         } else {
             result = false;
         }
+
         Iterator i = _children.figures();
+
         while (!result && i.hasNext()) {
             result = result || ((Figure) i.next()).intersects(r);
         }
+
         return result;
     }
 
@@ -276,23 +283,27 @@ public class CompositeFigure extends AbstractFigureContainer {
      * This implementation pushes the transform context onto the
      * transform stack, and then paints all children.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
         }
+
         _transformContext.push(g);
 
         // Paint the background first, if there is one
         if (_background != null) {
             _background.paint(g);
         }
+
         // Now the rest of the children
         Figure f;
         Iterator i = _children.figuresFromBack();
+
         while (i.hasNext()) {
             f = (Figure) i.next();
             f.paint(g);
         }
+
         _transformContext.pop(g);
     }
 
@@ -301,10 +312,11 @@ public class CompositeFigure extends AbstractFigureContainer {
      * immediately. Otherwise paint all figures that overlap the given
      * region, from back to front.
      */
-    public void paint (Graphics2D g, Rectangle2D region) {
+    public void paint(Graphics2D g, Rectangle2D region) {
         if (!isVisible()) {
             return;
         }
+
         _transformContext.push(g);
 
         // Transform the region to paint
@@ -315,12 +327,15 @@ public class CompositeFigure extends AbstractFigureContainer {
         if (_background != null) {
             _background.paint(g, r);
         }
+
         // Paint the children
         Iterator i = _children.getIntersectedFigures(r).figuresFromBack();
+
         while (i.hasNext()) {
             Figure f = (Figure) i.next();
             f.paint(g, r);
         }
+
         _transformContext.pop(g);
     }
 
@@ -331,16 +346,18 @@ public class CompositeFigure extends AbstractFigureContainer {
      * figure is hit. If still no figure is hit, return null. Note that
      * the region should not have zero size, or no figure will be hit.
      */
-    public Figure pick (Rectangle2D region) {
+    public Figure pick(Rectangle2D region) {
         // Transform the region and then do the pick
         AffineTransform at = _transformContext.getInverseTransform();
         region = ShapeUtilities.transformBounds(region, at);
-        Figure hit = CanvasUtilities.pick(
-                _children.getIntersectedFigures(region).figuresFromFront(),
-                region);
-        if (hit == null && _background != null && _background.hit(region)) {
+
+        Figure hit = CanvasUtilities.pick(_children.getIntersectedFigures(
+                    region).figuresFromFront(), region);
+
+        if ((hit == null) && (_background != null) && _background.hit(region)) {
             return CanvasUtilities.pick(new UnitIterator(_background), region);
         }
+
         return hit;
     }
 
@@ -348,22 +365,24 @@ public class CompositeFigure extends AbstractFigureContainer {
      * that it hits that is accepted by the given filter.
      * If none does, return null.
      */
-    public Figure pick (Rectangle2D region, Filter filter) {
+    public Figure pick(Rectangle2D region, Filter filter) {
         // Transform the region and then do the pick
         AffineTransform at = _transformContext.getInverseTransform();
         region = ShapeUtilities.transformBounds(region, at);
-        Figure hit = CanvasUtilities.pick(figuresFromFront(),
-                region, filter);
-        if (hit == null && _background != null && _background.hit(region)) {
+
+        Figure hit = CanvasUtilities.pick(figuresFromFront(), region, filter);
+
+        if ((hit == null) && (_background != null) && _background.hit(region)) {
             return CanvasUtilities.pick(new UnitIterator(_background), region,
-                    filter);
+                filter);
         }
+
         return hit;
     }
 
     /** Remove the given child from this composite.
      */
-    public void remove (Figure f) {
+    public void remove(Figure f) {
         f.repaint();
         f.setParent(null);
         _children.remove(f);
@@ -375,7 +394,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      *
      * @exception IndexOutOfBoundsException The index is out of range.
      */
-    public void remove (int index) {
+    public void remove(int index) {
         remove(_children.get(index));
     }
 
@@ -384,14 +403,16 @@ public class CompositeFigure extends AbstractFigureContainer {
      * the inherited method to clear the cached bounding box, and
      * then forwards the notification to the parent.
      */
-    public void repaint (DamageRegion d) {
+    public void repaint(DamageRegion d) {
         d.checkCacheValid(_transformContext);
+
         // Check to make sure that this repaint isn't being triggered
         // by something below in the hierarchy that has moved in such
         // a way as to modify the bounding box.
-        if (_cachedBounds != null && !_cachedBounds.contains(d.getBounds())) {
+        if ((_cachedBounds != null) && !_cachedBounds.contains(d.getBounds())) {
             _cachedBounds = null;
         }
+
         super.repaint(d);
     }
 
@@ -403,10 +424,11 @@ public class CompositeFigure extends AbstractFigureContainer {
      *  @see #figures()
      *  @see #getBackgroundFigure()
      */
-    public void setBackgroundFigure (Figure background) {
+    public void setBackgroundFigure(Figure background) {
         if (background != null) {
             background.setParent(null);
         }
+
         this._background = background;
         background.setParent(this);
         _cachedBounds = null;
@@ -417,7 +439,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      *
      * @exception IndexOutOfBoundsException The new index is out of range.
      */
-    public void setIndex (int index, Figure f) {
+    public void setIndex(int index, Figure f) {
         _children.setIndex(index, f);
         _cachedBounds = null;
         repaint();
@@ -426,7 +448,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     /** Replace the first figure, which must be a child, with the
      * second, which must not be a child.
      */
-    protected void replaceChild (Figure child, Figure replacement) {
+    protected void replaceChild(Figure child, Figure replacement) {
         repaint();
         _children.set(_children.indexOf(child), replacement);
         _cachedBounds = null;
@@ -437,13 +459,16 @@ public class CompositeFigure extends AbstractFigureContainer {
      */
     public String toString() {
         String s = getClass().getName();
-        s += ":Background=" + getBackgroundFigure();
+        s += (":Background=" + getBackgroundFigure());
         s += ":others={";
+
         Iterator i = figuresFromFront();
+
         while (i.hasNext()) {
-            Figure f = (Figure)i.next();
-            s += "," + f;
+            Figure f = (Figure) i.next();
+            s += ("," + f);
         }
+
         s += "}";
         return s;
     }
@@ -451,7 +476,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     /** Transform this figure with the supplied transform.
      * This method modifies the transform context with the transform.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
         ShapeUtilities.transformModify(_cachedBounds, at);
         _transformContext.preConcatenate(at);
@@ -461,12 +486,10 @@ public class CompositeFigure extends AbstractFigureContainer {
     /** Translate this figure the given distance.
      * This method modifies the transform context with the transform.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         repaint();
         ShapeUtilities.translateModify(_cachedBounds, x, y);
-        _transformContext.translate(x,y);
+        _transformContext.translate(x, y);
         repaint();
     }
 }
-
-

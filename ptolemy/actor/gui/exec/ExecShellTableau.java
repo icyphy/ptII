@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui.exec;
 
 import java.awt.BorderLayout;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExecShellTableau
+
 /**
    A tableau that provides a Exec Shell for interacting with Ptjacl,
    a 100% Java implementation of Exec
@@ -60,9 +61,7 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class ExecShellTableau extends Tableau
-    implements ShellInterpreter {
-
+public class ExecShellTableau extends Tableau implements ShellInterpreter {
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
      *  and having the specified name.  The frame is not made visible
@@ -75,7 +74,7 @@ public class ExecShellTableau extends Tableau
      *   an entity with the specified name.
      */
     public ExecShellTableau(ExecShellEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _frame = new ExecShellFrame(this);
         setFrame(_frame);
@@ -84,7 +83,7 @@ public class ExecShellTableau extends Tableau
             _interpreter = Runtime.getRuntime().exec("bash -i");
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to create Process");
+                "Failed to create Process");
         }
     }
 
@@ -115,7 +114,8 @@ public class ExecShellTableau extends Tableau
     /** Append the text message to text area.
      *  The output automatically gets a trailing newline appended.
      */
-    public void stderr(/*final*/ String text) {
+    public void stderr( /*final*/
+        String text) {
         _frame._shellTextArea.appendJTextArea(text + "\n");
     }
 
@@ -128,17 +128,13 @@ public class ExecShellTableau extends Tableau
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     public ExecShellFrame _frame;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The Exec interpreter
     // FIXME: Perhaps the interpreter should be in its own thread?
     private Process _interpreter;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -146,7 +142,6 @@ public class ExecShellTableau extends Tableau
     /** The frame that is created by an instance of ExecShellTableau.
      */
     public class ExecShellFrame extends TableauFrame {
-
         /** Construct a frame to display the ExecShell window.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
@@ -159,7 +154,7 @@ public class ExecShellTableau extends Tableau
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public ExecShellFrame(Tableau tableau)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(tableau);
 
             JPanel component = new JPanel();
@@ -174,24 +169,22 @@ public class ExecShellTableau extends Tableau
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////
-
         protected void _help() {
             try {
-                URL doc = getClass().getClassLoader().getResource(
-                        "ptolemy/actor/gui/ptjacl/help.htm");
+                URL doc = getClass().getClassLoader().getResource("ptolemy/actor/gui/ptjacl/help.htm");
                 getConfiguration().openModel(null, doc, doc.toExternalForm());
             } catch (Exception ex) {
                 System.out.println("ExecShellTableau._help(): " + ex);
                 _about();
             }
         }
+
         public ShellTextArea _shellTextArea;
     }
 
     /** A factory that creates a control panel to display a Exec Shell
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -201,7 +194,7 @@ public class ExecShellTableau extends Tableau
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -221,9 +214,8 @@ public class ExecShellTableau extends Tableau
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?
             if (effigy instanceof ExecShellEffigy) {
-                return new ExecShellTableau(
-                        (ExecShellEffigy)effigy,
-                        "ExecShellTableau");
+                return new ExecShellTableau((ExecShellEffigy) effigy,
+                    "ExecShellTableau");
             } else {
                 return null;
             }
@@ -232,40 +224,37 @@ public class ExecShellTableau extends Tableau
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Execute the command.  Update the output with
     // the command being run and the output.
     private String _executeCommand(String command) {
-        if (command == null || command.length() == 0) {
+        if ((command == null) || (command.length() == 0)) {
             return "";
         }
+
         try {
             Runtime runtime = Runtime.getRuntime();
-            try {
 
+            try {
                 //if (_process != null) {
                 //    _process.destroy();
                 //}
-
-
                 // Preprocess by removing lines that begin with '#'
                 // and converting substrings that begin and end
                 // with double quotes into one array element.
-                final String [] commandTokens =
-                    StringUtilities
-                    .tokenizeForExec((String)command);
+                final String[] commandTokens = StringUtilities.tokenizeForExec((String) command);
 
                 //stdout("About to execute:\n");
                 StringBuffer statusCommand = new StringBuffer();
+
                 for (int i = 0; i < commandTokens.length; i++) {
                     //stdout("        " + commandTokens[i]);
-
                     // Accumulate the first 50 chars for use in
                     // the status buffer.
                     if (statusCommand.length() < 50) {
                         if (statusCommand.length() > 0) {
                             statusCommand.append(" ");
                         }
+
                         statusCommand.append(commandTokens[i]);
                     }
                 }
@@ -273,57 +262,54 @@ public class ExecShellTableau extends Tableau
                 if (statusCommand.length() >= 50) {
                     statusCommand.append(" . . .");
                 }
+
                 //updateStatusBar("Executing: "
                 //        + statusCommand.toString());
-
                 _interpreter = runtime.exec(commandTokens);
 
                 // Set up a Thread to read in any error messages
-                _StreamReaderThread errorGobbler = new
-                    _StreamReaderThread(_interpreter.getErrorStream(),
-                            "ERROR", this);
+                _StreamReaderThread errorGobbler = new _StreamReaderThread(_interpreter
+                        .getErrorStream(), "ERROR", this);
 
                 // Set up a Thread to read in any output messages
-                _StreamReaderThread outputGobbler = new
-                    _StreamReaderThread(_interpreter.getInputStream(),
-                            "OUTPUT", this);
+                _StreamReaderThread outputGobbler = new _StreamReaderThread(_interpreter
+                        .getInputStream(), "OUTPUT", this);
 
                 // Start up the Threads
                 errorGobbler.start();
                 outputGobbler.start();
 
-
                 try {
                     /*int processReturnCode = */ _interpreter.waitFor();
-                    synchronized(this) {
+
+                    synchronized (this) {
                         _interpreter = null;
                     }
+
                     //if (processReturnCode != 0) break;
                 } catch (InterruptedException interrupted) {
-                    stderr("InterruptedException: "
-                            + interrupted);
+                    stderr("InterruptedException: " + interrupted);
                     throw interrupted;
                 }
             } catch (final IOException io) {
-                stderr("IOException: " + ptolemy.kernel.util.KernelException.stackTraceToString(io));
+                stderr("IOException: "
+                    + ptolemy.kernel.util.KernelException.stackTraceToString(io));
             }
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             //_interpreter.destroy();
-            return "Interrupted";  // SwingWorker.get() returns this
+            return "Interrupted"; // SwingWorker.get() returns this
         }
-        return "All Done";         // or this
+
+        return "All Done"; // or this
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // Private class that reads a stream in a thread and updates the
     // JTextArea.
     private class _StreamReaderThread extends Thread {
-
         _StreamReaderThread(InputStream inputStream, String streamType,
-                ExecShellTableau execShellTableau) {
+            ExecShellTableau execShellTableau) {
             _inputStream = inputStream;
             _streamType = streamType;
             _execShellTableau = execShellTableau;
@@ -332,13 +318,13 @@ public class ExecShellTableau extends Tableau
         // Read lines from the _inputStream and output them.
         public void run() {
             try {
-                InputStreamReader inputStreamReader =
-                    new InputStreamReader(_inputStream);
-                BufferedReader bufferedReader =
-                    new BufferedReader(inputStreamReader);
+                InputStreamReader inputStreamReader = new InputStreamReader(_inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String line = null;
-                while ( (line = bufferedReader.readLine()) != null) {
-                    _execShellTableau.stdout(/*_streamType + ">" +*/ line);
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    _execShellTableau.stdout( /*_streamType + ">" +*/
+                        line);
                 }
             } catch (IOException ioe) {
                 _execShellTableau.stderr("IOException: " + ioe);
@@ -347,10 +333,9 @@ public class ExecShellTableau extends Tableau
 
         // Stream to read from.
         private InputStream _inputStream;
+
         // Description of the Stream that we print, usually "OUTPUT" or "ERROR"
         private String _streamType;
-
         private ExecShellTableau _execShellTableau;
     }
-
 }

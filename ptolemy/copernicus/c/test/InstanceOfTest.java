@@ -26,11 +26,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// InstanceOfTest
+
 /**
 
 A simple class for testing that the instanceof operator works.
@@ -42,10 +43,8 @@ A simple class for testing that the instanceof operator works.
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class  InstanceOfTest{
-
-    public static void main(String args[]) {
+public class InstanceOfTest {
+    public static void main(String[] args) {
         LinkedList list = new LinkedList();
         Object object = list;
         System.out.println(object instanceof LinkedList);

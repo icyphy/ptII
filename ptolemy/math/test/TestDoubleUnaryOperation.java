@@ -30,9 +30,10 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math.test;
+
 import ptolemy.math.DoubleUnaryOperation;
+
 
 /** A operation taking one argument of type double, and producing a value of
     type double. This interface attempts to mimic a first-class function of
@@ -45,7 +46,6 @@ import ptolemy.math.DoubleUnaryOperation;
     @Pt.AcceptedRating Red (ctsay)
 */
 public class TestDoubleUnaryOperation implements DoubleUnaryOperation {
-
     /** Operate on the operand, returning a value of the same type. */
     public double operate(double operand) {
         return -operand;

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.hsif.test;
 
 import java.io.BufferedReader;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StandardOutEffigy
+
 /**
    An effigy for a web browser.
 
@@ -56,13 +57,13 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class StandardOutEffigy extends Effigy {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
      */
     public StandardOutEffigy(Workspace workspace) {
         super(workspace);
+
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }
@@ -72,8 +73,9 @@ public class StandardOutEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public StandardOutEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }
@@ -96,9 +98,7 @@ public class StandardOutEffigy extends Effigy {
      *   is malformed in some way.
      */
     public static StandardOutEffigy newStandardOutEffigy(
-            CompositeEntity container, URL base, URL in)
-            throws Exception {
-
+        CompositeEntity container, URL base, URL in) throws Exception {
         // Create a new effigy.
         StandardOutEffigy effigy = new StandardOutEffigy(container,
                 container.uniqueName("standardOutEffigy"));
@@ -108,22 +108,24 @@ public class StandardOutEffigy extends Effigy {
         effigy.setModifiable(false);
 
         effigy.uri.setURL(in);
+
         if (in != null) {
             // A URL has been given.  Read it.
             BufferedReader reader = null;
 
             try {
                 InputStream inputStream = null;
+
                 try {
                     inputStream = in.openStream();
                 } catch (NullPointerException npe) {
                     throw new IOException("Failed to open '" + in
-                            + "', base: '" + base
-                            + "' : openStream() threw a "
-                            + "NullPointerException");
+                        + "', base: '" + base + "' : openStream() threw a "
+                        + "NullPointerException");
                 }
-                reader = new BufferedReader(
-                        new InputStreamReader(inputStream));
+
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
                 // openStream throws an IOException, not a
                 // FileNotFoundException
             } catch (IOException ex) {
@@ -132,10 +134,10 @@ public class StandardOutEffigy extends Effigy {
                     // view source on a .html file that is not in
                     // ptsupport.jar, then we may end up here,
                     // so we look for the file as a resource.
-                    URL jarURL = JNLPUtilities
-                        .jarURLEntryResource(in.toString());
-                    reader = new BufferedReader(
-                            new InputStreamReader(jarURL.openStream()));
+                    URL jarURL = JNLPUtilities.jarURLEntryResource(in.toString());
+                    reader = new BufferedReader(new InputStreamReader(
+                                jarURL.openStream()));
+
                     // We were able to open the URL, so update the
                     // original URL so that the title bar accurately
                     // reflects the location of the file.
@@ -148,28 +150,34 @@ public class StandardOutEffigy extends Effigy {
             }
 
             String line = reader.readLine();
+
             while (line != null) {
                 // Translate newlines to Java form.
                 System.out.println(line);
                 line = reader.readLine();
             }
+
             reader.close();
+
             // Check the URL to see whether it is a file,
             // and if so, whether it is writable.
             if (in.getProtocol().equals("file")) {
                 String filename = in.getFile();
                 File file = new File(filename);
+
                 if (!file.canWrite()) {
                     effigy.setModifiable(false);
                 }
             } else {
                 effigy.setModifiable(false);
             }
+
             effigy.uri.setURL(in);
         } else {
             // No document associated.  Allow modifications.
             effigy.setModifiable(true);
         }
+
         return effigy;
     }
 
@@ -188,7 +196,6 @@ public class StandardOutEffigy extends Effigy {
     /** A factory for creating new effigies.
      */
     public static class Factory extends EffigyFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -198,8 +205,9 @@ public class StandardOutEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
+
             // Record the latest factory for use by HTMLViewer.
             staticFactory = this;
         }
@@ -232,12 +240,12 @@ public class StandardOutEffigy extends Effigy {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
-        public Effigy createEffigy(
-                CompositeEntity container, URL base, URL in)
-                throws Exception {
+        public Effigy createEffigy(CompositeEntity container, URL base, URL in)
+            throws Exception {
             if (in == null) {
                 return null;
             }
+
             // Always return an effigy
             Effigy effigy = newStandardOutEffigy(container, base, in);
             return effigy;

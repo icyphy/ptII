@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib.test;
 
 import ptolemy.actor.Manager;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Time
+
 /* A simple test case for timing purposes
    @author Edward A. Lee, Lukito Muliadi
    @version $Id$
@@ -48,15 +49,15 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Time {
-
-    public static void main(String arg[]) throws IllegalActionException,
-            NameDuplicationException {
+    public static void main(String[] arg)
+        throws IllegalActionException, NameDuplicationException {
         Workspace w = new Workspace("w");
         TypedCompositeActor toplevel = new TypedCompositeActor(w);
         toplevel.setName("toplevel");
+
         DEDirector director = new DEDirector(toplevel, "director");
+
         // director.addDebugListener(new StreamListener());
         Manager manager = new Manager(w, "manager");
         toplevel.setManager(manager);
@@ -66,24 +67,24 @@ public class Time {
         // Create 20 clocks.
         for (int i = 1; i < 20; i++) {
             Clock clock = new Clock(toplevel, "clock" + i);
-            clock.period.setExpression("" + (i*2));
+            clock.period.setExpression("" + (i * 2));
             clock.values.setExpression("{" + i + ", " + i + "}");
             toplevel.connect(clock.output, merge.input);
         }
 
         Recorder recorder = new Recorder(toplevel, "recorder");
         recorder.capacity.setExpression("0");
+
         // TimedPlotter recorder = new TimedPlotter(toplevel, "recorder");
         // recorder.setPanel(null);
         // recorder.plot.setMarksStyle("dots");
         // recorder.plot.setConnected(false);
-
         toplevel.connect(merge.output, recorder.input);
 
         director.stopTime.setToken(new DoubleToken(1000.0));
         manager.run();
         manager.run();
         System.out.println("Total number of events seen by Recorder: "
-                + recorder.getCount());
+            + recorder.getCount());
     }
 }

@@ -31,12 +31,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
-    package ptolemy.math;
+package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// IntegerMatrixMath
+
 /**
    This class provides a library for mathematical operations on
    matrices of ints.
@@ -52,9 +52,9 @@ COPYRIGHTENDKEY
    @Pt.AcceptedRating Yellow (ctsay)
 */
 public class IntegerMatrixMath {
-
     // private constructor prevents construction of this class.
-    private IntegerMatrixMath() {}
+    private IntegerMatrixMath() {
+    }
 
     /** Return a new matrix that is constructed from the argument by
      *  adding the second argument to every element.
@@ -64,11 +64,13 @@ public class IntegerMatrixMath {
      */
     public static final int[][] add(int[][] matrix, int z) {
         int[][] returnValue = new int[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
                 returnValue[i][j] = matrix[i][j] + z;
             }
         }
+
         return returnValue;
     }
 
@@ -79,16 +81,17 @@ public class IntegerMatrixMath {
      *  @param matrix1 The first matrix of ints.
      *  @param matrix2 The second matrix of ints.
      *  @return A new matrix of ints.  */
-    public static final int[][] add(final int[][] matrix1,
-            final int[][] matrix2) {
+    public static final int[][] add(final int[][] matrix1, final int[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
         int[][] returnValue = new int[_rows(matrix1)][_columns(matrix1)];
+
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
                 returnValue[i][j] = matrix1[i][j] + matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -97,7 +100,7 @@ public class IntegerMatrixMath {
      *  @return A new matrix of ints.
      */
     public static final int[][] allocCopy(final int[][] matrix) {
-        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
+        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix));
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -106,16 +109,18 @@ public class IntegerMatrixMath {
      *  as the right operands (op.operate(z, matrix[i][j])).
      */
     public static final int[][] applyBinaryOperation(
-            IntegerBinaryOperation op, final int z, final int[][] matrix) {
+        IntegerBinaryOperation op, final int z, final int[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(z, matrix[i][j]);
             }
         }
+
         return returnValue;
     }
 
@@ -125,16 +130,18 @@ public class IntegerMatrixMath {
      *  operand in all cases (op.operate(matrix[i][j], z)).
      */
     public static final int[][] applyBinaryOperation(
-            IntegerBinaryOperation op, final int[][] matrix, final int z) {
+        IntegerBinaryOperation op, final int[][] matrix, final int z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix[i][j], z);
             }
         }
+
         return returnValue;
     }
 
@@ -147,19 +154,20 @@ public class IntegerMatrixMath {
      *  IllegalArgumentException.
      */
     public static final int[][] applyBinaryOperation(
-            IntegerBinaryOperation op, final int[][] matrix1,
-            final int[][] matrix2) {
+        IntegerBinaryOperation op, final int[][] matrix1, final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
             }
         }
+
         return returnValue;
     }
 
@@ -168,16 +176,18 @@ public class IntegerMatrixMath {
      *  (op.operate(matrix[i][j])).
      */
     public static final int[][] applyUnaryOperation(
-            final IntegerUnaryOperation op, final int[][] matrix) {
+        final IntegerUnaryOperation op, final int[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix[i][j]);
             }
         }
+
         return returnValue;
     }
 
@@ -205,7 +215,7 @@ public class IntegerMatrixMath {
      *  IllegalArgumentException.
      */
     public static final int[][] bitwiseAnd(final int[][] matrix1,
-            final int[][] matrix2) {
+        final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -218,6 +228,7 @@ public class IntegerMatrixMath {
                 returnValue[i][j] = matrix1[i][j] & matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -235,6 +246,7 @@ public class IntegerMatrixMath {
                 returnValue[i][j] = ~matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -263,7 +275,7 @@ public class IntegerMatrixMath {
      *  IllegalArgumentException.
      */
     public static final int[][] bitwiseOr(final int[][] matrix1,
-            final int[][] matrix2) {
+        final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -276,6 +288,7 @@ public class IntegerMatrixMath {
                 returnValue[i][j] = matrix1[i][j] | matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -303,7 +316,7 @@ public class IntegerMatrixMath {
      *  IllegalArgumentException.
      */
     public static final int[][] bitwiseXor(final int[][] matrix1,
-            final int[][] matrix2) {
+        final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -316,9 +329,9 @@ public class IntegerMatrixMath {
                 returnValue[i][j] = matrix1[i][j] ^ matrix2[i][j];
             }
         }
+
         return returnValue;
     }
-
 
     /** Return a new matrix that is a sub-matrix of the input
      *  matrix argument. The row and column from which to start
@@ -329,14 +342,15 @@ public class IntegerMatrixMath {
      *  @param rowSpan An int specifying how many rows to copy.
      *  @param colSpan An int specifying how many columns to copy.
      */
-    public static final int[][] crop(final int[][] matrix,
-            final int rowStart, final int colStart,
-            final int rowSpan, final int colSpan) {
+    public static final int[][] crop(final int[][] matrix, final int rowStart,
+        final int colStart, final int rowSpan, final int colSpan) {
         int[][] returnValue = new int[rowSpan][colSpan];
+
         for (int i = 0; i < rowSpan; i++) {
-            System.arraycopy(matrix[rowStart + i], colStart,
-                    returnValue[i], 0, colSpan);
+            System.arraycopy(matrix[rowStart + i], colStart, returnValue[i], 0,
+                colSpan);
         }
+
         return returnValue;
     }
 
@@ -352,7 +366,6 @@ public class IntegerMatrixMath {
         int[][] returnValue = new int[n][n];
 
         // Assume the matrix is zero-filled.
-
         for (int i = 0; i < n; i++) {
             returnValue[i][i] = array[i];
         }
@@ -368,11 +381,13 @@ public class IntegerMatrixMath {
      */
     public static final int[][] divide(int[][] matrix, int z) {
         int[][] returnValue = new int[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                returnValue[i][j] = matrix[i][j]/z;
+                returnValue[i][j] = matrix[i][j] / z;
             }
         }
+
         return returnValue;
     }
 
@@ -383,18 +398,20 @@ public class IntegerMatrixMath {
      *  throw an IllegalArgumentException.
      */
     public static final int[][] divideElements(final int[][] matrix1,
-            final int[][] matrix2) {
+        final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("divideElements", matrix1, matrix2);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] / matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -424,11 +441,13 @@ public class IntegerMatrixMath {
      *  @return A new array of ints.
      */
     public static final int[] fromMatrixToArray(final int[][] matrix,
-            int maxRow, int maxCol) {
+        int maxRow, int maxCol) {
         int[] returnValue = new int[maxRow * maxCol];
+
         for (int i = 0; i < maxRow; i++) {
             System.arraycopy(matrix[i], 0, returnValue, i * maxCol, maxCol);
         }
+
         return returnValue;
     }
 
@@ -437,10 +456,12 @@ public class IntegerMatrixMath {
      */
     public static final int[][] identity(final int dim) {
         int[][] returnValue = new int[dim][dim];
+
         // we rely on the fact Java fills the allocated matrix with 0's
         for (int i = 0; i < dim; i++) {
             returnValue[i][i] = 1;
         }
+
         return returnValue;
     }
 
@@ -458,9 +479,9 @@ public class IntegerMatrixMath {
      *  @param srcMatrix A matrix of ints, used as the source.
      */
     public static final void matrixCopy(final int[][] srcMatrix,
-            final int[][] destMatrix) {
+        final int[][] destMatrix) {
         matrixCopy(srcMatrix, 0, 0, destMatrix, 0, 0, _rows(srcMatrix),
-                _columns(srcMatrix));
+            _columns(srcMatrix));
     }
 
     /** Replace the first matrix argument's values, in the specified row
@@ -478,29 +499,28 @@ public class IntegerMatrixMath {
      *  @param colSpan An int specifying how many columns to copy.
      */
     public static final void matrixCopy(final int[][] srcMatrix,
-            final int srcRowStart, final int srcColStart,
-            final int[][] destMatrix,
-            final int destRowStart, final int destColStart,
-            final int rowSpan, final int colSpan) {
+        final int srcRowStart, final int srcColStart, final int[][] destMatrix,
+        final int destRowStart, final int destColStart, final int rowSpan,
+        final int colSpan) {
         // We should verify the parameters here
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
-                    destMatrix[destRowStart + i], destColStart,
-                    colSpan);
+                destMatrix[destRowStart + i], destColStart, colSpan);
         }
     }
 
     /** Return a new matrix that is constructed by computing the
      *  remainders between each element in the matrix and z.
      */
-    public static final int[][] modulo(final int[][] matrix,
-            final int z) {
+    public static final int[][] modulo(final int[][] matrix, final int z) {
         int[][] returnValue = new int[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
                 returnValue[i][j] = matrix[i][j] % z;
             }
         }
+
         return returnValue;
     }
 
@@ -511,18 +531,20 @@ public class IntegerMatrixMath {
      *  IllegalArgumentException.
      */
     public static final int[][] modulo(final int[][] matrix1,
-            final int[][] matrix2) {
+        final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("modulo", matrix1, matrix2);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] % matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -530,16 +552,18 @@ public class IntegerMatrixMath {
      *  by a scaleFactor.
      */
     public static final int[][] multiply(final int[][] matrix,
-            final int scaleFactor) {
+        final int scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix[i][j] * scaleFactor;
             }
         }
+
         return returnValue;
     }
 
@@ -549,27 +573,29 @@ public class IntegerMatrixMath {
      *  in the array. The returned array will have a length equal to the number
      *  of columns of the matrix.
      */
-    public static final int[] multiply(final int[][] matrix,
-            final int[] array) {
-
+    public static final int[] multiply(final int[][] matrix, final int[] array) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (rows != array.length) {
             throw new IllegalArgumentException(
-                    "preMultiply : array does not have the same number of " +
-                    "elements (" + array.length + ") as the number of rows " +
-                    "of the matrix (" + rows + ")");
+                "preMultiply : array does not have the same number of "
+                + "elements (" + array.length + ") as the number of rows "
+                + "of the matrix (" + rows + ")");
         }
 
         int[] returnValue = new int[columns];
+
         for (int i = 0; i < columns; i++) {
             int sum = 0;
+
             for (int j = 0; j < rows; j++) {
-                sum += matrix[j][i] * array[j];
+                sum += (matrix[j][i] * array[j]);
             }
+
             returnValue[i] = sum;
         }
+
         return returnValue;
     }
 
@@ -579,26 +605,29 @@ public class IntegerMatrixMath {
      *  in the array. The returned array will have a length equal to the number
      *  of rows of the matrix.
      */
-    public static final int[] multiply(final int[] array,
-            final int[][] matrix) {
+    public static final int[] multiply(final int[] array, final int[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (columns != array.length) {
             throw new IllegalArgumentException(
-                    "postMultiply() : array does not have the same number " +
-                    "of elements (" + array.length + ") as the number of " +
-                    "columns of the matrix (" + columns + ")");
+                "postMultiply() : array does not have the same number "
+                + "of elements (" + array.length + ") as the number of "
+                + "columns of the matrix (" + columns + ")");
         }
 
         int[] returnValue = new int[rows];
+
         for (int i = 0; i < rows; i++) {
             int sum = 0;
+
             for (int j = 0; j < columns; j++) {
-                sum += matrix[i][j] * array[j];
+                sum += (matrix[i][j] * array[j]);
             }
+
             returnValue[i] = sum;
         }
+
         return returnValue;
     }
 
@@ -619,18 +648,21 @@ public class IntegerMatrixMath {
      *  @param matrix2 The second matrix of ints.
      *  @return A new matrix of ints.
      */
-    public static final int[][] multiply(int[][] matrix1,
-            int[][] matrix2) {
+    public static final int[][] multiply(int[][] matrix1, int[][] matrix2) {
         int[][] returnValue = new int[_rows(matrix1)][matrix2[0].length];
+
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 int sum = 0;
+
                 for (int k = 0; k < matrix2.length; k++) {
-                    sum += matrix1[i][k] * matrix2[k][j];
+                    sum += (matrix1[i][k] * matrix2[k][j]);
                 }
+
                 returnValue[i][j] = sum;
             }
         }
+
         return returnValue;
     }
 
@@ -643,18 +675,20 @@ public class IntegerMatrixMath {
      *  matrix multiplication.
      */
     public static final int[][] multiplyElements(final int[][] matrix1,
-            final int[][] matrix2) {
+        final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("multiplyElements", matrix1, matrix2);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] * matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -666,11 +700,13 @@ public class IntegerMatrixMath {
         int columns = _columns(matrix);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = -matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -689,7 +725,7 @@ public class IntegerMatrixMath {
      *  @return A new matrix of ints.
      */
     public static final int[][] shiftArithmetic(final int[][] matrix,
-            final int shiftAmount) {
+        final int shiftAmount) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -727,7 +763,7 @@ public class IntegerMatrixMath {
      *  @return A new matrix of ints.
      */
     public static final int[][] shiftLogical(final int[][] matrix,
-            final int shiftAmount) {
+        final int shiftAmount) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -756,18 +792,20 @@ public class IntegerMatrixMath {
      *  IllegalArgumentException.
      */
     public static final int[][] subtract(final int[][] matrix1,
-            final int[][] matrix2) {
+        final int[][] matrix2) {
         _checkSameDimension("subtract", matrix1, matrix2);
 
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         int[][] returnValue = new int[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] - matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -776,11 +814,13 @@ public class IntegerMatrixMath {
      */
     public static final int sum(final int[][] matrix) {
         int sum = 0;
+
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
                 sum += matrix[i][j];
             }
         }
+
         return sum;
     }
 
@@ -800,9 +840,10 @@ public class IntegerMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = new Complex((double)matrix[i][j], 0.0);
+                returnValue[i][j] = new Complex((double) matrix[i][j], 0.0);
             }
         }
+
         return returnValue;
     }
 
@@ -822,6 +863,7 @@ public class IntegerMatrixMath {
                 returnValue[i][j] = (double) matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -841,6 +883,7 @@ public class IntegerMatrixMath {
                 returnValue[i][j] = (float) matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -860,6 +903,7 @@ public class IntegerMatrixMath {
                 returnValue[i][j] = (long) matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -875,11 +919,13 @@ public class IntegerMatrixMath {
      *  @return A new matrix of ints.
      */
     public static final int[][] toMatrixFromArray(int[] array, int rows,
-            int cols) {
+        int cols) {
         int[][] returnValue = new int[rows][cols];
+
         for (int i = 0; i < rows; i++) {
             System.arraycopy(array, i * cols, returnValue[i], 0, cols);
         }
+
         return returnValue;
     }
 
@@ -897,14 +943,14 @@ public class IntegerMatrixMath {
      *  format argument.
      */
     public static final String toString(final int[][] matrix,
-            String elementDelimiter, String matrixBegin, String matrixEnd,
-            String vectorBegin, String vectorDelimiter, String vectorEnd) {
+        String elementDelimiter, String matrixBegin, String matrixEnd,
+        String vectorBegin, String vectorDelimiter, String vectorEnd) {
         StringBuffer sb = new StringBuffer();
         sb.append(matrixBegin);
 
         for (int i = 0; i < _rows(matrix); i++) {
-
             sb.append(vectorBegin);
+
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(Integer.toString(matrix[i][j]));
 
@@ -937,6 +983,7 @@ public class IntegerMatrixMath {
         for (int i = 0; i < dim; i++) {
             sum += matrix[i][i];
         }
+
         return sum;
     }
 
@@ -949,11 +996,13 @@ public class IntegerMatrixMath {
         int columns = _columns(matrix);
 
         int[][] returnValue = new int[columns][rows];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[j][i] = matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -970,7 +1019,7 @@ public class IntegerMatrixMath {
      *  need not be declared explicitly.
      */
     public static final boolean within(final int[][] matrix1,
-            final int[][] matrix2, int distance) {
+        final int[][] matrix2, int distance) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -978,12 +1027,13 @@ public class IntegerMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (matrix1[i][j] > matrix2[i][j] + distance ||
-                        matrix1[i][j] < matrix2[i][j] - distance) {
+                if ((matrix1[i][j] > (matrix2[i][j] + distance))
+                        || (matrix1[i][j] < (matrix2[i][j] - distance))) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
@@ -1000,7 +1050,7 @@ public class IntegerMatrixMath {
      *  need not be declared explicitly.
      */
     public static final boolean within(final int[][] matrix1,
-            final int[][] matrix2, final int[][] errorMatrix) {
+        final int[][] matrix2, final int[][] errorMatrix) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1009,12 +1059,13 @@ public class IntegerMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j] ||
-                        matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
+                if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
+                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
@@ -1025,17 +1076,16 @@ public class IntegerMatrixMath {
      *  @param matrix2 A matrix of ints.
      */
     protected static final void _checkSameDimension(final String caller,
-            final int[][] matrix1, final int[][] matrix2) {
+        final int[][] matrix1, final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.IntegerMatrixMath." + caller
-                    + "() : one matrix "
-                    + _dimensionString(matrix1)
-                    + " is not the same size as another matrix "
-                    + _dimensionString(matrix2) + ".");
+                "ptolemy.math.IntegerMatrixMath." + caller + "() : one matrix "
+                + _dimensionString(matrix1)
+                + " is not the same size as another matrix "
+                + _dimensionString(matrix2) + ".");
         }
     }
 
@@ -1046,13 +1096,14 @@ public class IntegerMatrixMath {
      *  @return The dimension of the square matrix.
      */
     protected static final int _checkSquare(final String caller,
-            final int[][] matrix) {
+        final int[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.IntegerMatrixMath." + caller +
-                    "() : matrix argument " + _dimensionString(matrix) +
-                    " is not a square matrix.");
+                "ptolemy.math.IntegerMatrixMath." + caller
+                + "() : matrix argument " + _dimensionString(matrix)
+                + " is not a square matrix.");
         }
+
         return _rows(matrix);
     }
 

@@ -34,8 +34,10 @@ import java.util.List;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeCodeGenerator
+
 /**
    This class visits parse trees and generates soot instructions that evaluate the parse tree.
 
@@ -46,27 +48,24 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.data.expr.ASTPtRootNode
 */
-
 public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    public void  generateCode(ASTPtRootNode node)
-            throws IllegalActionException {
+    public void generateCode(ASTPtRootNode node) throws IllegalActionException {
         ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
         typeInference.inferTypes(node); // FIXME: scope?
+
         //    _scope = scope;
         _nodeToLocalName = new HashMap();
         _nodeNumber = 0;
         node.visit(this);
         _nodeToLocalName = null;
+
         //   _scope = null;
     }
 
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _generateAllChildren(node);
 
         String nodeName = "node" + _nodeNumber++;
@@ -76,24 +75,25 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _generateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
 
         _assert(numChildren > 0, node,
-                "The number of child nodes must be greater than zero");
+            "The number of child nodes must be greater than zero");
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
         // Make sure that exactly one of AND, OR, XOR is set.
         _assert(node.isBitwiseAnd() ^ node.isBitwiseOr() ^ node.isBitwiseXor(),
-                node, "Invalid operation");
+            node, "Invalid operation");
 
-        String statement = nodeName + " = " +
-            _nodeToLocalName.get(node.jjtGetChild(0));
-        for (int i = 1; i < numChildren; i++ ) {
+        String statement = nodeName + " = "
+            + _nodeToLocalName.get(node.jjtGetChild(0));
+
+        for (int i = 1; i < numChildren; i++) {
             if (node.isBitwiseAnd()) {
                 statement += "&";
             } else if (node.isBitwiseOr()) {
@@ -106,15 +106,17 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
             statement += _nodeToLocalName.get(node.jjtGetChild(i));
         }
+
         System.out.println(statement);
     }
 
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
         int numChildren = node.jjtGetNumChildren();
         int argCount = numChildren - 1;
+
         for (int i = 1; i < numChildren; i++) {
             _generateChild(node, i);
         }
@@ -130,85 +132,81 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             if (argCount == 1) {
                 // array..
                 System.out.println(nodeName + " = ");
-                System.out.println(_nodeToLocalName.get(node.jjtGetChild(0)) +
-                        "[" + _nodeToLocalName.get(node.jjtGetChild(1)) + "]");
-
+                System.out.println(_nodeToLocalName.get(node.jjtGetChild(0))
+                    + "[" + _nodeToLocalName.get(node.jjtGetChild(1)) + "]");
             } else if (argCount == 2) {
                 // matrix..
                 System.out.println(nodeName + " = ");
-                System.out.println(_nodeToLocalName.get(node.jjtGetChild(0)) +
-                        "[" + _nodeToLocalName.get(node.jjtGetChild(1)) +
-                        "," + _nodeToLocalName.get(node.jjtGetChild(1)) + "]");
-
+                System.out.println(_nodeToLocalName.get(node.jjtGetChild(0))
+                    + "[" + _nodeToLocalName.get(node.jjtGetChild(1)) + ","
+                    + _nodeToLocalName.get(node.jjtGetChild(1)) + "]");
             } else {
                 throw new IllegalActionException("Wrong number of indices "
-                        + "when referencing " + node.getFunctionName());
+                    + "when referencing " + node.getFunctionName());
             }
+
             return;
         }
 
         if (node.getFunctionName().compareTo("eval") == 0) {
-            throw new IllegalActionException(
-                    "unimplemented case");
+            throw new IllegalActionException("unimplemented case");
         }
 
         if (node.getFunctionName().compareTo("matlab") == 0) {
-            throw new IllegalActionException(
-                    "unimplemented case");
+            throw new IllegalActionException("unimplemented case");
         }
 
         // Otherwise, try to reflect the method name.
-
         // The array of token types that the method takes.
-        ptolemy.data.type.Type[] argTypes =
-            new ptolemy.data.type.Type[argCount];
+        ptolemy.data.type.Type[] argTypes = new ptolemy.data.type.Type[argCount];
+
         for (int i = 0; i < argCount; i++) {
-            argTypes[i] = ((ASTPtRootNode)node.jjtGetChild(i + 1)).getType();
+            argTypes[i] = ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
         }
 
         // Find the method...
-        CachedMethod cachedMethod =
-            CachedMethod.findMethod(node.getFunctionName(),
-                    argTypes, CachedMethod.FUNCTION);
+        CachedMethod cachedMethod = CachedMethod.findMethod(node
+                .getFunctionName(), argTypes, CachedMethod.FUNCTION);
 
         if (!cachedMethod.isValid()) {
-            throw new IllegalActionException("Function " + cachedMethod +
-                    " not found.");
+            throw new IllegalActionException("Function " + cachedMethod
+                + " not found.");
         }
 
-        if (cachedMethod instanceof CachedMethod.BaseConvertCachedMethod ||
-                cachedMethod instanceof CachedMethod.ArrayMapCachedMethod ||
-                cachedMethod instanceof CachedMethod.MatrixMapCachedMethod) {
+        if (cachedMethod instanceof CachedMethod.BaseConvertCachedMethod
+                || cachedMethod instanceof CachedMethod.ArrayMapCachedMethod
+                || cachedMethod instanceof CachedMethod.MatrixMapCachedMethod) {
             throw new IllegalActionException(
-                    "CodeGeneration not supported for " +
-                    cachedMethod.getClass());
+                "CodeGeneration not supported for " + cachedMethod.getClass());
         }
 
         Method method = cachedMethod.getMethod();
 
-        CachedMethod.ArgumentConversion[] conversions =
-            cachedMethod.getConversions();
+        CachedMethod.ArgumentConversion[] conversions = cachedMethod
+            .getConversions();
+
         for (int i = 0; i < argCount; i++) {
             // Insert the appropriate conversion.
-            String argName = (String)
-                _nodeToLocalName.get(node.jjtGetChild(i + 1));
+            String argName = (String) _nodeToLocalName.get(node.jjtGetChild(i
+                        + 1));
 
             // _convertTokenArgToJavaArg(
             //    tokenLocal, argTypes[i], conversions[i]);
             //            args.add(argLocal);
         }
 
-        System.out.println(nodeName + " = FIXME:method invocation of " + method.getName());
+        System.out.println(nodeName + " = FIXME:method invocation of "
+            + method.getName());
 
         // Convert the result back to a token.
         String convertedReturnName = "FIXME"; //_convertJavaResultToToken(returnLocal, returnType);
         _nodeToLocalName.put(node, convertedReturnName);
-
     }
 
     // Add code to the method being generated to convert the given
     // returnLocal, with the given returnType to a token type.  Return
     // the new token local.
+
     /*private Local _convertJavaResultToToken(
       Local returnLocal, Type returnType)
       throws IllegalActionException {
@@ -654,10 +652,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
       }
     */
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException {
-        throw new IllegalActionException("Cannot generate code" +
-                " for functional if!");
+        throws IllegalActionException {
+        throw new IllegalActionException("Cannot generate code"
+            + " for functional if!");
+
         // Note that we take care to have short-circuit evaluation here.
+
         /* _generateChild(node, 0);
 
         Local conditionTokenLocal =
@@ -727,14 +727,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
 
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
-        throw new IllegalActionException("Cannot generate code" +
-                " for function definitions!");
+        throws IllegalActionException {
+        throw new IllegalActionException("Cannot generate code"
+            + " for function definitions!");
     }
 
-    public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException {
-
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
@@ -743,12 +741,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             return;
         }
 
-        System.out.println(nodeName + " = " +
-                _getLocalNameForName(node.getName()));
+        System.out.println(nodeName + " = "
+            + _getLocalNameForName(node.getName()));
     }
 
     public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _generateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
@@ -757,9 +755,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _nodeToLocalName.put(node, nodeName);
 
         // Note: doesn't ensure short circuit
-        String statement = nodeName + " = " +
-            _nodeToLocalName.get(node.jjtGetChild(0));
-        for (int i = 1; i < numChildren; i++ ) {
+        String statement = nodeName + " = "
+            + _nodeToLocalName.get(node.jjtGetChild(0));
+
+        for (int i = 1; i < numChildren; i++) {
             if (node.isLogicalAnd()) {
                 statement += "&&";
             } else if (node.isLogicalOr()) {
@@ -770,11 +769,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
             statement += _nodeToLocalName.get(node.jjtGetChild(i));
         }
+
         System.out.println(statement);
     }
 
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _generateAllChildren(node);
 
         String nodeName = "node" + _nodeNumber++;
@@ -782,8 +782,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         System.out.println(nodeName + " = FIXME:Matrix");
     }
+
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _generateAllChildren(node);
 
         String nodeName = "node" + _nodeNumber++;
@@ -1033,46 +1034,50 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _nodeToLocal.put(node, tokenLocal);
         */
     }
-    public void visitPowerNode(ASTPtPowerNode node)
-            throws IllegalActionException {
 
+    public void visitPowerNode(ASTPtPowerNode node)
+        throws IllegalActionException {
         _generateAllChildren(node);
+
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
-                "The number of child nodes must be greater than zero");
+            "The number of child nodes must be greater than zero");
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = " +
-            _nodeToLocalName.get(node.jjtGetChild(0));
+        String statement = nodeName + " = "
+            + _nodeToLocalName.get(node.jjtGetChild(0));
 
         for (int i = 1; i < numChildren; i++) {
-            statement += "^" + _nodeToLocalName.get(node.jjtGetChild(i));
+            statement += ("^" + _nodeToLocalName.get(node.jjtGetChild(i)));
         }
+
         System.out.println(statement);
     }
-    public void visitProductNode(ASTPtProductNode node)
-            throws IllegalActionException {
 
+    public void visitProductNode(ASTPtProductNode node)
+        throws IllegalActionException {
         _generateAllChildren(node);
 
         List lexicalTokenList = node.getLexicalTokenList();
         int numChildren = node.jjtGetNumChildren();
 
         _assert(numChildren > 0, node,
-                "The number of child nodes must be greater than zero");
-        _assert(numChildren == lexicalTokenList.size() + 1, node,
-                "The number of child nodes is " +
-                "not equal to number of operators plus one");
+            "The number of child nodes must be greater than zero");
+        _assert(numChildren == (lexicalTokenList.size() + 1), node,
+            "The number of child nodes is "
+            + "not equal to number of operators plus one");
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = " +
-            _nodeToLocalName.get(node.jjtGetChild(0));
+        String statement = nodeName + " = "
+            + _nodeToLocalName.get(node.jjtGetChild(0));
+
         for (int i = 1; i < numChildren; i++) {
-            Token operator = (Token)lexicalTokenList.get(i - 1);
+            Token operator = (Token) lexicalTokenList.get(i - 1);
+
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 statement += "*";
             } else if (operator.kind == PtParserConstants.DIVIDE) {
@@ -1082,30 +1087,34 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             } else {
                 _assert(false, node, "Invalid operation");
             }
+
             statement += _nodeToLocalName.get(node.jjtGetChild(i));
         }
+
         System.out.println(statement);
     }
+
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-            throws IllegalActionException {
-        throw new IllegalActionException("Cannot generate code" +
-                " for records!");
+        throws IllegalActionException {
+        throw new IllegalActionException("Cannot generate code"
+            + " for records!");
     }
+
     public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _generateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
-        _assert(numChildren == 2, node,
-                "The number of child nodes must be two");
+        _assert(numChildren == 2, node, "The number of child nodes must be two");
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        Token operator = (Token)node.getOperator();
+        Token operator = (Token) node.getOperator();
 
-        String statement = nodeName + " = " +
-            _nodeToLocalName.get(node.jjtGetChild(0));
+        String statement = nodeName + " = "
+            + _nodeToLocalName.get(node.jjtGetChild(0));
+
         if (operator.kind == PtParserConstants.EQUALS) {
             statement += "==";
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
@@ -1119,27 +1128,29 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         } else if (operator.kind == PtParserConstants.LT) {
             statement += "<";
         } else {
-            throw new IllegalActionException(
-                    "Invalid operation " + operator.image);
+            throw new IllegalActionException("Invalid operation "
+                + operator.image);
         }
+
         statement += _nodeToLocalName.get(node.jjtGetChild(1));
         System.out.println(statement);
     }
+
     public void visitShiftNode(ASTPtShiftNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _generateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
-        _assert(numChildren == 2, node,
-                "The number of child nodes must be two");
+        _assert(numChildren == 2, node, "The number of child nodes must be two");
 
-        Token operator = (Token)node.getOperator();
+        Token operator = (Token) node.getOperator();
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = " +
-            _nodeToLocalName.get(node.jjtGetChild(0));
+        String statement = nodeName + " = "
+            + _nodeToLocalName.get(node.jjtGetChild(0));
+
         if (operator.kind == PtParserConstants.SHL) {
             statement += "<<";
         } else if (operator.kind == PtParserConstants.SHR) {
@@ -1149,29 +1160,32 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         } else {
             _assert(false, node, "Invalid operation");
         }
+
         statement += _nodeToLocalName.get(node.jjtGetChild(1));
         System.out.println(statement);
     }
-    public void visitSumNode(ASTPtSumNode node)
-            throws IllegalActionException {
+
+    public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _generateAllChildren(node);
 
         List lexicalTokenList = node.getLexicalTokenList();
         int numChildren = node.jjtGetNumChildren();
 
         _assert(numChildren > 0, node,
-                "The number of child nodes must be greater than zero");
-        _assert(numChildren == lexicalTokenList.size() + 1, node,
-                "The number of child nodes is " +
-                "not equal to number of operators plus one");
+            "The number of child nodes must be greater than zero");
+        _assert(numChildren == (lexicalTokenList.size() + 1), node,
+            "The number of child nodes is "
+            + "not equal to number of operators plus one");
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = " +
-            _nodeToLocalName.get(node.jjtGetChild(0));
+        String statement = nodeName + " = "
+            + _nodeToLocalName.get(node.jjtGetChild(0));
+
         for (int i = 1; i < numChildren; i++) {
-            Token operator = (Token)lexicalTokenList.get(i - 1);
+            Token operator = (Token) lexicalTokenList.get(i - 1);
+
             if (operator.kind == PtParserConstants.PLUS) {
                 statement += "+";
             } else if (operator.kind == PtParserConstants.MINUS) {
@@ -1179,15 +1193,18 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             } else {
                 _assert(false, node, "Invalid operation");
             }
+
             statement += _nodeToLocalName.get(node.jjtGetChild(i));
         }
+
         System.out.println(statement);
     }
+
     public void visitUnaryNode(ASTPtUnaryNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _generateAllChildren(node);
         _assert(node.jjtGetNumChildren() == 1, node,
-                "Unary node must have exactly one child!");
+            "Unary node must have exactly one child!");
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
@@ -1196,14 +1213,15 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         if (node.isMinus()) {
             // Note: not quite ptolemy semantics.
-            statement += "-" + _nodeToLocalName.get(node.jjtGetChild(0));
+            statement += ("-" + _nodeToLocalName.get(node.jjtGetChild(0)));
         } else if (node.isNot()) {
-            statement += "!" + _nodeToLocalName.get(node.jjtGetChild(0));
+            statement += ("!" + _nodeToLocalName.get(node.jjtGetChild(0)));
         } else if (node.isBitwiseNot()) {
-            statement += "~" + _nodeToLocalName.get(node.jjtGetChild(0));
+            statement += ("~" + _nodeToLocalName.get(node.jjtGetChild(0)));
         } else {
             _assert(false, node, "Unrecognized unary node");
         }
+
         System.out.println(statement);
     }
 
@@ -1227,8 +1245,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  value to be determined.
      */
     protected void _generateAllChildren(ASTPtRootNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
+
         for (int i = 0; i < numChildren; i++) {
             _generateChild(node, i);
         }
@@ -1238,22 +1257,20 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  This is usually called while visiting the given node.
      */
     protected void _generateChild(ASTPtRootNode node, int i)
-            throws IllegalActionException {
-        ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+        throws IllegalActionException {
+        ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
         child.visit(this);
     }
 
     protected String _getLocalNameForName(String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         //   if (_scope != null) {
         //             return "FIXME";
         //         }
-        throw new IllegalActionException(
-                "The ID " + name + " is undefined.");
+        throw new IllegalActionException("The ID " + name + " is undefined.");
     }
 
-    protected boolean _isValidName(String name)
-            throws IllegalActionException {
+    protected boolean _isValidName(String name) throws IllegalActionException {
         //    if (_scope != null) {
         //             try {
         //                 return (_scope.getType(name) != null);
@@ -1262,8 +1279,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         //             }
         //         } else {
         return false;
+
         //        }
     }
+
     protected HashMap _nodeToLocalName;
     protected int _nodeNumber;
 }

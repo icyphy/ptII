@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.io.IOException;
@@ -40,8 +39,10 @@ import diva.util.java2d.PaintedObject;
 import diva.util.java2d.PaintedString;
 import diva.util.xml.XmlElement;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GraphicElement
+
 /**
    An GraphicElement is an atomic piece of a graphical representation.
    i.e. a line, box, textbox, etc.
@@ -105,11 +106,12 @@ public class GraphicElement {
     public PaintedObject getPaintedObject() {
         String type = getType();
         String label = getLabel();
-        PaintedObject paintedObject =
-            GraphicsParser.createPaintedObject(type, _attributes, label);
+        PaintedObject paintedObject = GraphicsParser.createPaintedObject(type,
+                _attributes, label);
 
-        if (paintedObject == null)
+        if (paintedObject == null) {
             return GraphicElement._errorObject;
+        }
 
         return paintedObject;
     }
@@ -147,16 +149,18 @@ public class GraphicElement {
      */
     public String toString() {
         String result = "{";
-        result += getClass().getName() + " {" + _type + "}";
+        result += (getClass().getName() + " {" + _type + "}");
         result += " attributes {";
+
         Set attributeSet = attributeNameSet();
         Iterator names = attributeSet.iterator();
+
         while (names.hasNext()) {
             String p = (String) names.next();
-            result += " {" + p + "=" + getAttribute(p) + "}";
+            result += (" {" + p + "=" + getAttribute(p) + "}");
         }
 
-        result += "} label {" + getLabel() + "}}";
+        result += ("} label {" + getLabel() + "}}");
 
         return result;
     }
@@ -164,16 +168,15 @@ public class GraphicElement {
     /**
      * Write the GraphicElement in XML format to the given writer.
      */
-    public void exportMoML(Writer out, String prefix)
-            throws IOException {
+    public void exportMoML(Writer out, String prefix) throws IOException {
         XmlElement element = new XmlElement(_type, _attributes);
         element.setPCData(_label);
         element.writeXML(out, prefix);
     }
 
     // The painted object that is returned if an error occurs.
-    private static final PaintedString _errorObject =
-    new PaintedString("ERROR!");
+    private static final PaintedString _errorObject = new PaintedString(
+            "ERROR!");
 
     // The attributes of this graphic element.
     private Map _attributes;

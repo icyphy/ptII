@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.lib;
 
 import java.awt.Font;
@@ -52,6 +51,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TextString3D
 
@@ -74,7 +74,6 @@ The rest of the parameters are described in the base class.
 @Pt.AcceptedRating Green (liuxj)
 */
 public class TextString3D extends GRShadedShape {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -84,8 +83,7 @@ public class TextString3D extends GRShadedShape {
      *   actor with this name.
      */
     public TextString3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         text = new PortParameter(this, "text");
         text.setStringMode(true);
@@ -93,14 +91,15 @@ public class TextString3D extends GRShadedShape {
 
         fontFamily = new StringParameter(this, "fontFamily");
         fontFamily.setExpression("SansSerif");
+
         // Get font family names from the Font class in Java.
         // This includes logical font names, per Font class in Java:
         // Dialog, DialogInput, Monospaced, Serif, SansSerif, or Symbol.
-        String[] families = GraphicsEnvironment
-            .getLocalGraphicsEnvironment()
-            .getAvailableFontFamilyNames();
+        String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                               .getAvailableFontFamilyNames();
+
         for (int i = 0; i < families.length; i++) {
-                fontFamily.addChoice(families[i]);
+            fontFamily.addChoice(families[i]);
         }
 
         extrusionDepth = new Parameter(this, "extrusionDepth");
@@ -162,43 +161,48 @@ public class TextString3D extends GRShadedShape {
      *  @param attribute The attribute.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-            if (attribute == text && _textGeometry != null) {
+        throws IllegalActionException {
+        if ((attribute == text) && (_textGeometry != null)) {
             String textValue = ((StringToken) text.getToken()).stringValue();
             _textGeometry.setString(textValue);
-        } else if ((attribute == fontFamily
-                || attribute == extrusionDepth)
-                && _textGeometry != null
-                && _changesAllowedNow) {
+        } else if (((attribute == fontFamily) || (attribute == extrusionDepth))
+                && (_textGeometry != null) && _changesAllowedNow) {
             String fontFamilyValue = fontFamily.stringValue();
 
             // NOTE: The extrusion can, in principle, follow a more complicated
             // path. However, it's not clear what user interface to provide for this.
-            double depth = ((DoubleToken)extrusionDepth.getToken()).doubleValue();
-            FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0, 0.0, depth, 0.0));
+            double depth = ((DoubleToken) extrusionDepth.getToken())
+                .doubleValue();
+            FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0,
+                        0.0, depth, 0.0));
 
-            Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1), extrusion);
+            Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1),
+                    extrusion);
             _textGeometry.setFont3D(font3D);
-        } else if (attribute == alignment && _textGeometry != null && _changesAllowedNow) {
+        } else if ((attribute == alignment) && (_textGeometry != null)
+                && _changesAllowedNow) {
             String alignmentValue = alignment.stringValue();
             int align = Text3D.ALIGN_CENTER;
+
             if (alignmentValue.equals("first")) {
                 align = Text3D.ALIGN_FIRST;
             } else if (alignmentValue.equals("last")) {
                 align = Text3D.ALIGN_LAST;
             }
+
             _textGeometry.setAlignment(align);
         } else if (attribute == fontSize) {
             if (_scaleTransform != null) {
-                float size = (float)(((DoubleToken)
-                        fontSize.getToken()).doubleValue());
+                float size = (float) (((DoubleToken) fontSize.getToken())
+                    .doubleValue());
                 _scaleTransform.setScale(new Vector3d(size, size, 1.0f));
+
                 // The following seems to be needed so the new scale
                 // takes effect.
-                ((TransformGroup)_containedNode).setTransform(_scaleTransform);
+                ((TransformGroup) _containedNode).setTransform(_scaleTransform);
             }
         } else {
-                super.attributeChanged(attribute);
+            super.attributeChanged(attribute);
         }
     }
 
@@ -223,25 +227,31 @@ public class TextString3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
+
         String textValue = ((StringToken) text.getToken()).stringValue();
         String fontFamilyValue = fontFamily.stringValue();
+
         // NOTE: The extrusion can, in principle, follow a more complicated
         // path. However, it's not clear what user interface to provide for this.
-        double depth = ((DoubleToken)extrusionDepth.getToken()).doubleValue();
-        FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0, 0.0, depth, 0.0));
+        double depth = ((DoubleToken) extrusionDepth.getToken()).doubleValue();
+        FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0, 0.0,
+                    depth, 0.0));
 
-        Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1), extrusion);
+        Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1),
+                extrusion);
 
         _textGeometry = new Text3D(font3D, new String(textValue));
         _textGeometry.setCapability(Text3D.ALLOW_STRING_WRITE);
 
         String alignmentValue = alignment.stringValue();
         int align = Text3D.ALIGN_CENTER;
+
         if (alignmentValue.equals("first")) {
-                align = Text3D.ALIGN_FIRST;
+            align = Text3D.ALIGN_FIRST;
         } else if (alignmentValue.equals("last")) {
             align = Text3D.ALIGN_LAST;
         }
+
         _textGeometry.setAlignment(align);
 
         Shape3D shape = new Shape3D();
@@ -251,10 +261,9 @@ public class TextString3D extends GRShadedShape {
         TransformGroup scaler = new TransformGroup();
         scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         _scaleTransform = new Transform3D();
-        float size = (float)(((DoubleToken)
-                fontSize.getToken()).doubleValue());
-        _scaleTransform.setScale(
-                new Vector3d(size, size, 1.0f));
+
+        float size = (float) (((DoubleToken) fontSize.getToken()).doubleValue());
+        _scaleTransform.setScale(new Vector3d(size, size, 1.0f));
         scaler.setTransform(_scaleTransform);
         scaler.addChild(shape);
         _containedNode = scaler;

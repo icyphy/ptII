@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Font;
@@ -46,8 +45,10 @@ import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AttributeValueIcon
+
 /**
    An icon that displays the value of an attribute of the container.
    The attribute is assumed to be an instance of Settable, and its name
@@ -61,7 +62,6 @@ import diva.canvas.toolbox.LabelFigure;
    @Pt.AcceptedRating Red (johnr)
 */
 public class AttributeValueIcon extends XMLIcon {
-
     /** Create a new icon with the given name in the given container.
      *  The container is required to implement Settable, or an exception
      *  will be thrown.
@@ -69,7 +69,7 @@ public class AttributeValueIcon extends XMLIcon {
      *  @param name The name of this attribute.
      */
     public AttributeValueIcon(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -98,16 +98,17 @@ public class AttributeValueIcon extends XMLIcon {
      *  @return A new CompositeFigure consisting of the label.
      */
     public Figure createFigure() {
-        CompositeFigure result = (CompositeFigure)super.createFigure();
+        CompositeFigure result = (CompositeFigure) super.createFigure();
         String truncated = _displayString();
+
         // If there is no string to display now, then create a string
         // with a single blank.
         if (truncated == null) {
             truncated = " ";
         }
 
-        LabelFigure label = new LabelFigure(truncated,
-                _labelFont, 1.0, SwingConstants.CENTER);
+        LabelFigure label = new LabelFigure(truncated, _labelFont, 1.0,
+                SwingConstants.CENTER);
         Rectangle2D backBounds = result.getBackgroundFigure().getBounds();
         label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
         result.add(label);
@@ -128,27 +129,34 @@ public class AttributeValueIcon extends XMLIcon {
      *  @return The string to display, or null if none is found.
      */
     protected String _displayString() {
-        NamedObj container = (NamedObj)getContainer();
+        NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
-            Attribute associatedAttribute = container.getAttribute(
-                    attributeName.getExpression());
+            Attribute associatedAttribute = container.getAttribute(attributeName
+                    .getExpression());
+
             if (associatedAttribute instanceof Settable) {
-                String value = ((Settable)associatedAttribute).getExpression();
+                String value = ((Settable) associatedAttribute).getExpression();
                 String truncated = value;
+
                 try {
-                    int width = ((IntToken)displayWidth.getToken()).intValue();
+                    int width = ((IntToken) displayWidth.getToken()).intValue();
+
                     if (value.length() > width) {
                         truncated = value.substring(0, width) + "...";
                     }
                 } catch (IllegalActionException ex) {
                     // Ignore... use whole string.
                 }
+
                 if (truncated.length() == 0) {
                     truncated = " ";
                 }
+
                 return truncated;
             }
         }
+
         return " ";
     }
 

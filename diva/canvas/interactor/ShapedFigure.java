@@ -29,6 +29,7 @@ import java.awt.Shape;
 
 import diva.canvas.Figure;
 
+
 /**
  * An interface that defines the setShape() method. This method must
  * be implemented by any figure that can have a PathManipulator
@@ -42,7 +43,5 @@ public interface ShapedFigure extends Figure {
      * Set the shape of this figure. This method is used by
      * PathManipulators to implement reshaping of figures.
      */
-    public void setShape (Shape s);
+    public void setShape(Shape s);
 }
-
-

@@ -27,8 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CmdLineArgException
+
 /**
    Exception thrown by plot classes if there are format
    problems with the data to be plotted.
@@ -40,6 +42,11 @@ package ptolemy.plot;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class CmdLineArgException extends Exception {
-    public CmdLineArgException() { super(); }
-    public CmdLineArgException(String s) { super(s); }
+    public CmdLineArgException() {
+        super();
+    }
+
+    public CmdLineArgException(String s) {
+        super(s);
+    }
 }

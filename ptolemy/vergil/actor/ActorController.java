@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
@@ -81,8 +80,10 @@ import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.AbstractGlobalLayout;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ActorController
+
 /**
    This class provides interaction with nodes that represent Ptolemy II
    entities.  It provides a double click binding and context menu
@@ -108,7 +109,6 @@ import diva.gui.GUIUtilities;
    @see ClassDefinitionController
 */
 public abstract class ActorController extends AttributeController {
-
     /** Create an entity controller associated with the specified graph
      *  controller with full access.
      *  @param controller The associated graph controller.
@@ -131,54 +131,50 @@ public abstract class ActorController extends AttributeController {
         if (access == FULL) {
             // Add to the context menu.
             _portDialogFactory = new PortDialogFactory();
-            _menuFactory.addMenuItemFactory(
-                    _portDialogFactory);
+            _menuFactory.addMenuItemFactory(_portDialogFactory);
         }
 
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _lookInsideAction));
+
             if (access == FULL) {
                 _editIconAction.setConfiguration(_configuration);
-                _menuFactory.addMenuItemFactory(
-                        new MenuActionFactory(_editIconAction));
+                _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                        _editIconAction));
                 _removeIconAction.setConfiguration(_configuration);
-                _menuFactory.addMenuItemFactory(
-                        new MenuActionFactory(_removeIconAction));
+                _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                        _removeIconAction));
             }
         }
 
         // NOTE: This requires that the configuration be non null, or it
         // will report an error.
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new SaveInLibraryAction()));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                new SaveInLibraryAction()));
+
         /* The following proves not so useful since atomic actors
          * do not typically have suitable constructors (that take
          * only a Workspace argument) to be usable at the top level.
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new SaveInFileAction()));
          */
-
-        _listenToActorAction = new ListenToActorAction(
-                (BasicGraphController)getController());
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(_listenToActorAction));
+        _listenToActorAction = new ListenToActorAction((BasicGraphController) getController());
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                _listenToActorAction));
         _listenToActorAction.setConfiguration(_configuration);
 
         // "Set Breakpoints"
         if (access == FULL) {
             // Add to the context menu.
-
             // FIXME: does this work outside of SDF?  Should
             // we check to see if the director is an SDF director?
             // We should use reflection to check this so that
             // this class does not require SDFDirector.
             // See $PTII/doc/coding/debugging.htm
-
-            _breakpointDialogFactory = new BreakpointDialogFactory(
-                    (BasicGraphController)getController());
+            _breakpointDialogFactory = new BreakpointDialogFactory((BasicGraphController) getController());
             _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
         }
     }
@@ -193,10 +189,8 @@ public abstract class ActorController extends AttributeController {
     public void addMenuItemFactory(MenuItemFactory menuItemFactory) {
         // This method is called by jni.ThalesGraphFrame to add a context
         // menu.
-
         if (_access == FULL) {
-            _menuFactory
-                .addMenuItemFactory(menuItemFactory);
+            _menuFactory.addMenuItemFactory(menuItemFactory);
         }
     }
 
@@ -205,24 +199,28 @@ public abstract class ActorController extends AttributeController {
      */
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
+
         if (_portDialogFactory != null) {
             _portDialogFactory.setConfiguration(configuration);
         }
+
         if (_listenToActorAction != null) {
             _listenToActorAction.setConfiguration(_configuration);
         }
+
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _lookInsideAction));
+
             if (_access == FULL) {
                 _editIconAction.setConfiguration(_configuration);
-                _menuFactory.addMenuItemFactory(
-                        new MenuActionFactory(_editIconAction));
+                _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                        _editIconAction));
                 _removeIconAction.setConfiguration(_configuration);
-                _menuFactory.addMenuItemFactory(
-                        new MenuActionFactory(_removeIconAction));
+                _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                        _removeIconAction));
             }
         }
     }
@@ -244,71 +242,70 @@ public abstract class ActorController extends AttributeController {
     /** The action that handles removing a custom icon. */
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
 
-    private LabelFigure _createPortLabelFigure(
-            String string, Font font, double x, double y, int direction) {
+    private LabelFigure _createPortLabelFigure(String string, Font font,
+        double x, double y, int direction) {
         LabelFigure label;
+
         if (direction == SwingConstants.SOUTH) {
             // The 1.0 argument is the padding.
-            label = new LabelFigure(
-                    string, font, 1.0, SwingConstants.SOUTH_WEST);
+            label = new LabelFigure(string, font, 1.0, SwingConstants.SOUTH_WEST);
+
             // Shift the label down so it doesn't
             // collide with ports.
             label.translateTo(x, y + 5);
+
             // Rotate the label.
-            AffineTransform rotate = AffineTransform
-                .getRotateInstance(Math.PI/2.0, x, y + 5);
+            AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2.0,
+                    x, y + 5);
             label.transform(rotate);
         } else if (direction == SwingConstants.EAST) {
             // The 1.0 argument is the padding.
-            label = new LabelFigure(
-                    string, font, 1.0, SwingConstants.SOUTH_WEST);
+            label = new LabelFigure(string, font, 1.0, SwingConstants.SOUTH_WEST);
+
             // Shift the label right so it doesn't
             // collide with ports.
             label.translateTo(x + 5, y);
         } else if (direction == SwingConstants.WEST) {
             // The 1.0 argument is the padding.
-            label = new LabelFigure(
-                    string, font, 1.0, SwingConstants.SOUTH_EAST);
+            label = new LabelFigure(string, font, 1.0, SwingConstants.SOUTH_EAST);
+
             // Shift the label left so it doesn't
             // collide with ports.
             label.translateTo(x - 5, y);
         } else { // Must be north.
+
             // The 1.0 argument is the padding.
-            label = new LabelFigure(
-                    string, font, 1.0, SwingConstants.SOUTH_WEST);
+            label = new LabelFigure(string, font, 1.0, SwingConstants.SOUTH_WEST);
+
             // Shift the label right so it doesn't
             // collide with ports.  It will probably
             // collide with the actor name.
             label.translateTo(x, y - 5);
+
             // Rotate the label.
-            AffineTransform rotate = AffineTransform
-                .getRotateInstance(-Math.PI/2.0, x, y - 5);
+            AffineTransform rotate = AffineTransform.getRotateInstance(-Math.PI / 2.0,
+                    x, y - 5);
             label.transform(rotate);
         }
+
         return label;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private BreakpointDialogFactory _breakpointDialogFactory;
 
     // Error message used when we can't find the inside definition.
-    private static String _CANNOT_FIND_MESSAGE
-    = "Cannot find inside definition. "
-    + "Perhaps source code is not installed? "
-    + "You can obtain source code for Berkeley actors at: "
-    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
-
+    private static String _CANNOT_FIND_MESSAGE = "Cannot find inside definition. "
+        + "Perhaps source code is not installed? "
+        + "You can obtain source code for Berkeley actors at: "
+        + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
     private ListenToActorAction _listenToActorAction;
-
     private PortDialogFactory _portDialogFactory;
-
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// EntityLayout
 
@@ -316,7 +313,6 @@ public abstract class ActorController extends AttributeController {
      *  within an entity.
      */
     public class EntityLayout extends AbstractGlobalLayout {
-
         /** Create a new layout manager. */
         public EntityLayout() {
             super(new BasicLayoutTarget(getController()));
@@ -330,24 +326,26 @@ public abstract class ActorController extends AttributeController {
          */
         public void layout(Object node) {
             GraphModel model = getController().getGraphModel();
+
             // System.out.println("layout = " + node);
             //        new Exception().printStackTrace();
             Iterator nodes = model.nodes(node);
-            Vector westPorts = new Vector ();
-            Vector eastPorts = new Vector ();
-            Vector southPorts = new Vector ();
-            Vector northPorts = new Vector ();
+            Vector westPorts = new Vector();
+            Vector eastPorts = new Vector();
+            Vector southPorts = new Vector();
+            Vector northPorts = new Vector();
 
             while (nodes.hasNext()) {
                 Port port = (Port) nodes.next();
-                StringAttribute cardinal =
-                    (StringAttribute)port.getAttribute("_cardinal");
+                StringAttribute cardinal = (StringAttribute) port.getAttribute(
+                        "_cardinal");
 
                 if (cardinal == null) {
                     if (!(port instanceof IOPort)) {
                         southPorts.add(port);
                     } else {
                         IOPort ioport = (IOPort) port;
+
                         if (ioport.isInput() && ioport.isOutput()) {
                             southPorts.add(port);
                         } else if (ioport.isInput()) {
@@ -358,113 +356,116 @@ public abstract class ActorController extends AttributeController {
                             southPorts.add(port);
                         }
                     }
-                }
-                else {
+                } else {
                     if (!(port instanceof IOPort)) {
                         southPorts.add(port);
                     } else {
                         String value = cardinal.getExpression();
                         IOPort ioport = (IOPort) port;
-                        if ( value.equalsIgnoreCase("SOUTH") ) {
+
+                        if (value.equalsIgnoreCase("SOUTH")) {
                             southPorts.add(port);
-                        } else if ( value.equalsIgnoreCase("WEST") ) {
+                        } else if (value.equalsIgnoreCase("WEST")) {
                             westPorts.add(port);
-                        } else if ( value.equalsIgnoreCase("EAST") ) {
+                        } else if (value.equalsIgnoreCase("EAST")) {
                             eastPorts.add(port);
-                        } else if ( value.equalsIgnoreCase("NORTH") ) {
-                            northPorts.add( port );
+                        } else if (value.equalsIgnoreCase("NORTH")) {
+                            northPorts.add(port);
                         } else {
                             southPorts.add(port);
                         }
                     }
                 }
             }
-            CompositeFigure figure =
-                (CompositeFigure)getLayoutTarget().getVisualObject(node);
 
-            _reOrderPorts( westPorts );
-            _placePortFigures(figure, westPorts,
-                    SwingConstants.WEST);
-            _reOrderPorts( eastPorts );
-            _placePortFigures(figure, eastPorts,
-                    SwingConstants.EAST);
-            _reOrderPorts( southPorts );
-            _placePortFigures(figure, southPorts,
-                    SwingConstants.SOUTH);
-            _reOrderPorts( northPorts );
-            _placePortFigures(figure, northPorts,
-                    SwingConstants.NORTH);
+            CompositeFigure figure = (CompositeFigure) getLayoutTarget()
+                                                           .getVisualObject(node);
+
+            _reOrderPorts(westPorts);
+            _placePortFigures(figure, westPorts, SwingConstants.WEST);
+            _reOrderPorts(eastPorts);
+            _placePortFigures(figure, eastPorts, SwingConstants.EAST);
+            _reOrderPorts(southPorts);
+            _placePortFigures(figure, southPorts, SwingConstants.SOUTH);
+            _reOrderPorts(northPorts);
+            _placePortFigures(figure, northPorts, SwingConstants.NORTH);
         }
 
         ///////////////////////////////////////////////////////////////
         ////                     private methods                   ////
-
         // re-order the ports according to _ordinal property
-        private void _reOrderPorts( Vector ports ) {
+        private void _reOrderPorts(Vector ports) {
             int size = ports.size();
             Enumeration enumeration = ports.elements();
             Port port;
             StringAttribute ordinal = null;
             int number = 0;
-            int index  = 0;
+            int index = 0;
 
-            while ( enumeration.hasMoreElements() ) {
-                port = (Port)enumeration.nextElement();
-                ordinal = (StringAttribute)port.getAttribute("_ordinal");
+            while (enumeration.hasMoreElements()) {
+                port = (Port) enumeration.nextElement();
+                ordinal = (StringAttribute) port.getAttribute("_ordinal");
 
-                if ( ordinal != null ) {
-                    number = Integer.parseInt( ordinal.getExpression() ) ;
-                    if ( number >= size ) {
-                        ports.remove( index );
+                if (ordinal != null) {
+                    number = Integer.parseInt(ordinal.getExpression());
+
+                    if (number >= size) {
+                        ports.remove(index);
+
                         try {
-                            ordinal.setExpression( Integer.toString( size -1 ) );
-                        } catch ( Exception e ) {
-                            MessageHandler.error("Error setting ordinal property", e);
+                            ordinal.setExpression(Integer.toString(size - 1));
+                        } catch (Exception e) {
+                            MessageHandler.error("Error setting ordinal property",
+                                e);
                         }
-                        ports.add( port );
-                    }
-                    else if ( number < 0 ) {
-                        ports.remove( index );
-                        try {
-                            ordinal.setExpression( Integer.toString( 0 ) );
-                        } catch ( Exception e ) {
-                            MessageHandler.error("Error setting ordinal property", e);
-                        }
-                        ports.add( 0, port );
-                    }
-                    else if ( number != index ) {
-                        ports.remove( index );
-                        ports.add( number, port );
-                    }
 
+                        ports.add(port);
+                    } else if (number < 0) {
+                        ports.remove(index);
+
+                        try {
+                            ordinal.setExpression(Integer.toString(0));
+                        } catch (Exception e) {
+                            MessageHandler.error("Error setting ordinal property",
+                                e);
+                        }
+
+                        ports.add(0, port);
+                    } else if (number != index) {
+                        ports.remove(index);
+                        ports.add(number, port);
+                    }
                 }
+
                 index++;
             }
         }
 
         // Place the ports.
-        private void _placePortFigures(
-                CompositeFigure figure, List portList, int direction) {
+        private void _placePortFigures(CompositeFigure figure, List portList,
+            int direction) {
             Iterator ports = portList.iterator();
             int number = 0;
             int count = portList.size();
+
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
+                Port port = (Port) ports.next();
                 Figure portFigure = getController().getFigure(port);
+
                 // If there is no figure, then ignore this port.  This may
                 // happen if the port hasn't been rendered yet.
-                if (portFigure == null) continue;
+                if (portFigure == null) {
+                    continue;
+                }
+
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
-                PortSite site = new PortSite(
-                        figure.getBackgroundFigure(),
-                        port,
-                        number,
-                        count);
-                number ++;
+                PortSite site = new PortSite(figure.getBackgroundFigure(),
+                        port, number, count);
+                number++;
+
                 // NOTE: previous expression for port location was:
                 //    100.0 * number / (count+1)
                 // But this leads to squished ports with uneven spacing.
-
                 // Note that we don't use CanvasUtilities.translateTo because
                 // we want to only get the bounds of the background of the
                 // port figure.
@@ -476,33 +477,41 @@ public abstract class ActorController extends AttributeController {
                 // with value true, then visualize the rate information.
                 // NOTE: Showing rates only makes sense for IOPorts.
                 Attribute showRateAttribute = port.getAttribute("_showRate");
-                if (port instanceof IOPort &&
-                        showRateAttribute instanceof Variable) {
+
+                if (port instanceof IOPort
+                        && showRateAttribute instanceof Variable) {
                     boolean showRate = false;
+
                     try {
-                        showRate = ((Variable)showRateAttribute).getToken().equals(BooleanToken.TRUE);
+                        showRate = ((Variable) showRateAttribute).getToken()
+                                    .equals(BooleanToken.TRUE);
                     } catch (Exception ex) {
                         // Ignore.
                     }
+
                     if (showRate) {
                         // Infer the rate.  See DFUtilities.
                         String rateString = "";
                         Variable rateParameter = null;
-                        if (((IOPort)port).isInput()) {
-                            rateParameter =
-                                (Variable)port.getAttribute("tokenConsumptionRate");
+
+                        if (((IOPort) port).isInput()) {
+                            rateParameter = (Variable) port.getAttribute(
+                                    "tokenConsumptionRate");
+
                             if (rateParameter == null) {
                                 String altName = "_tokenConsumptionRate";
-                                rateParameter = (Variable)port.getAttribute(altName);
+                                rateParameter = (Variable) port.getAttribute(altName);
                             }
-                        } else if (((IOPort)port).isOutput()) {
-                            rateParameter =
-                                (Variable)port.getAttribute("tokenProductionRate");
+                        } else if (((IOPort) port).isOutput()) {
+                            rateParameter = (Variable) port.getAttribute(
+                                    "tokenProductionRate");
+
                             if (rateParameter == null) {
                                 String altName = "_tokenProductionRate";
-                                rateParameter = (Variable)port.getAttribute(altName);
+                                rateParameter = (Variable) port.getAttribute(altName);
                             }
                         }
+
                         if (rateParameter != null) {
                             try {
                                 rateString = rateParameter.getToken().toString();
@@ -510,34 +519,38 @@ public abstract class ActorController extends AttributeController {
                                 // Ignore.
                             }
                         }
-                        LabelFigure labelFigure =
-                            _createPortLabelFigure(rateString,
-                                    _portLabelFont, x, y, direction);
+
+                        LabelFigure labelFigure = _createPortLabelFigure(rateString,
+                                _portLabelFont, x, y, direction);
                         labelFigure.setFillPaint(Color.BLUE);
                         figure.add(labelFigure);
                     }
                 }
+
                 // If the port contains an attribute named "_showName",
                 // then render the name of the port as well. If the
                 // attribute is a boolean-valued parameter, then
                 // show the name only if the value is true.
                 Attribute showAttribute = port.getAttribute("_showName");
+
                 if (showAttribute != null) {
                     boolean show = true;
+
                     if (showAttribute instanceof Parameter) {
                         try {
-                            Token token = ((Parameter)showAttribute).getToken();
+                            Token token = ((Parameter) showAttribute).getToken();
+
                             if (token instanceof BooleanToken) {
-                                show = ((BooleanToken)token).booleanValue();
+                                show = ((BooleanToken) token).booleanValue();
                             }
                         } catch (IllegalActionException e) {
                             // Ignore. Presence of the attribute will prevail.
                         }
                     }
+
                     if (show) {
-                        LabelFigure labelFigure =
-                            _createPortLabelFigure(port.getName(),
-                                    _portLabelFont, x, y, direction);
+                        LabelFigure labelFigure = _createPortLabelFigure(port
+                                .getName(), _portLabelFont, x, y, direction);
                         figure.add(labelFigure);
                     }
                 }
@@ -556,32 +569,37 @@ public abstract class ActorController extends AttributeController {
             super("Listen to Actor");
             _controller = controller;
         }
-        public ListenToActorAction(
-                NamedObj target, BasicGraphController controller) {
+
+        public ListenToActorAction(NamedObj target,
+            BasicGraphController controller) {
             super("Listen to Actor");
             _target = target;
             _controller = controller;
         }
+
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler.error(
-                        "Cannot listen to actor without a configuration.");
+                    "Cannot listen to actor without a configuration.");
                 return;
             }
 
             // Determine which entity was selected for the listen to
             // actor action.
             super.actionPerformed(event);
+
             NamedObj object = _target;
+
             if (object == null) {
                 object = getTarget();
             }
+
             try {
                 BasicGraphFrame frame = _controller.getFrame();
                 Tableau tableau = frame.getTableau();
 
                 // effigy is the whole model.
-                Effigy effigy = (Effigy)tableau.getContainer();
+                Effigy effigy = (Effigy) tableau.getContainer();
 
                 // We want to open a new window that behaves as a
                 // child of the model window.  So, we create a new text
@@ -590,15 +608,12 @@ public abstract class ActorController extends AttributeController {
                 Effigy textEffigy = new TextEffigy(effigy,
                         effigy.uniqueName("debugListener" + object.getName()));
 
-                DebugListenerTableau debugTableau =
-                    new DebugListenerTableau(textEffigy,
-                            textEffigy.uniqueName("debugListener"
-                                    + object.getName()));
+                DebugListenerTableau debugTableau = new DebugListenerTableau(textEffigy,
+                        textEffigy.uniqueName("debugListener"
+                            + object.getName()));
                 debugTableau.setDebuggable(object);
-            }
-            catch (KernelException ex) {
-                MessageHandler.error(
-                        "Failed to create debug listener.", ex);
+            } catch (KernelException ex) {
+                MessageHandler.error("Failed to create debug listener.", ex);
             }
         }
 
@@ -616,28 +631,28 @@ public abstract class ActorController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     //// LookInsideAction
-
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
-
         public LookInsideAction() {
             super("Look Inside");
+
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_L,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler.error(
-                        "Cannot look inside without a configuration.");
+                    "Cannot look inside without a configuration.");
                 return;
             }
 
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(event);
+
             NamedObj object = getTarget();
 
             // NOTE: Used to open source code here if the object
@@ -645,7 +660,6 @@ public abstract class ActorController extends AttributeController {
             // to associate a custom tableau with an atomic entity.
             // So now, the Configuration opens the source code as a
             // last resort.
-
             try {
                 _configuration.openModel(object);
             } catch (Exception ex) {
@@ -660,7 +674,6 @@ public abstract class ActorController extends AttributeController {
     /** An action to save this actor in a file.
      */
     private class SaveInFileAction extends FigureAction {
-
         /** Create a new action to save a model in a file.
          */
         public SaveInFileAction() {
@@ -674,11 +687,13 @@ public abstract class ActorController extends AttributeController {
         public void actionPerformed(ActionEvent event) {
             // Find the target.
             super.actionPerformed(event);
-            NamedObj object = getTarget();
-            if (object instanceof Entity) {
-                Entity entity = (Entity)object;
 
-                BasicGraphController controller = (BasicGraphController)getController();
+            NamedObj object = getTarget();
+
+            if (object instanceof Entity) {
+                Entity entity = (Entity) object;
+
+                BasicGraphController controller = (BasicGraphController) getController();
                 BasicGraphFrame frame = controller.getFrame();
 
                 try {
@@ -696,13 +711,12 @@ public abstract class ActorController extends AttributeController {
     /** An action to save this actor in the library.
      */
     private class SaveInLibraryAction extends FigureAction {
-
         /** Create a new action to save an actor in a library.
          */
         public SaveInLibraryAction() {
             super("Save Actor In Library");
             putValue("tooltip",
-                    "Save the actor as a component in the user library");
+                "Save the actor as a component in the user library");
         }
 
         /** Create a new instance of the current model in the actor library of
@@ -712,9 +726,11 @@ public abstract class ActorController extends AttributeController {
         public void actionPerformed(ActionEvent event) {
             // Find the target.
             super.actionPerformed(event);
+
             NamedObj object = getTarget();
+
             if (object instanceof Entity) {
-                Entity entity = (Entity)object;
+                Entity entity = (Entity) object;
                 BasicGraphFrame.saveComponentInLibrary(_configuration, entity);
             }
         }

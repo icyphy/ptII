@@ -54,6 +54,7 @@ import diva.gui.GUIUtilities;
 import diva.gui.View;
 import diva.resource.RelativeBundle;
 
+
 /**
  * A simple MDI text editor.  This application uses the MDIApplication base
  * class to provide a separate internal frame associated with each document.
@@ -70,19 +71,20 @@ import diva.resource.RelativeBundle;
  * @version $Id$
  */
 public class MDIApplicationTutorial extends MDIApplication {
-
     /** The listener for changing titles.  This listener will be attached
      *  to each document to reset the titles on the appropriate internal
      *  frame.
      */
+
     //FIXME    private PropertyChangeListener _titleChanger = new TitleChanger();
 
     /**
      * Construct a new instance of the Tutorial, running in a new
      * application context.
      */
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         AppContext context = new ApplicationContext();
+
         // This is an MDI application that uses a desktop context.
         new MDIApplicationTutorial(new DesktopContext(context));
     }
@@ -95,6 +97,7 @@ public class MDIApplicationTutorial extends MDIApplication {
         // Initialize the context.  DesktopContext already has a toolbar
         // and a menu bar.
         initializeMenuBar(context.getJMenuBar());
+
         JPanel toolBarPane = context.getToolBarPane();
         toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
         initializeToolBar(context.getJToolBar());
@@ -102,20 +105,22 @@ public class MDIApplicationTutorial extends MDIApplication {
         // Set the icon in the upper left corner of the context.
         Image iconImage = getResources().getImage("GraphIconImage");
         context.setIconImage(iconImage);
+
         // Set the icon for the internal frames of the desktop context.
         Icon icon = getResources().getImageIcon("GraphIconImage");
         context.setFrameIcon(icon);
 
         // Set the size of the context.
         context.makeComponent().setSize(800, 600);
+
         // and make it visible.
         context.setVisible(true);
     }
 
     /** Create a view on the given document.
      */
-    public View createView (Document d) {
-        return new TextView((TextDocument)d);
+    public View createView(Document d) {
+        return new TextView((TextDocument) d);
     }
 
     /** Get the title of this application
@@ -131,15 +136,18 @@ public class MDIApplicationTutorial extends MDIApplication {
         try {
             DefaultStoragePolicy storage = new DefaultStoragePolicy();
             setStoragePolicy(storage);
+
             FileFilter ff = new FileFilter() {
-                    public boolean accept (File file) {
-                        return GUIUtilities.getFileExtension(file).
-                            toLowerCase().equals("txt");
+                    public boolean accept(File file) {
+                        return GUIUtilities.getFileExtension(file).toLowerCase()
+                                           .equals("txt");
                     }
-                    public String getDescription () {
+
+                    public String getDescription() {
                         return "Text files";
                     }
                 };
+
             JFileChooser fc;
             fc = storage.getOpenFileChooser();
             fc.addChoosableFileFilter(ff);
@@ -169,36 +177,36 @@ public class MDIApplicationTutorial extends MDIApplication {
         action = DefaultActions.newAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'N',
-                "Create a new graph document");
+            "Create a new graph document");
 
         action = DefaultActions.openAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'O',
-                "Open a graph document");
+        GUIUtilities.addMenuItem(menuFile, action, 'O', "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'C',
-                "Close the current graph document");
+            "Close the current graph document");
 
         menuFile.addSeparator();
 
         action = DefaultActions.saveAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'S',
-                "Save the current graph document");
+            "Save the current graph document");
 
         action = DefaultActions.saveAsAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'A',
-                "Save the current graph document to a different file");
+            "Save the current graph document to a different file");
 
         menuFile.addSeparator();
 
         action = DefaultActions.exitAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'X',
-                "Exit from the graph editor");
+            "Exit from the graph editor");
+
         // Hook the exit action into the frame's close button, if we are
         // running in an ApplicationContext.
         getAppContext().setExitAction(action);
@@ -210,22 +218,22 @@ public class MDIApplicationTutorial extends MDIApplication {
      * -- if we did that, the icons would appear in the menus, which I
      * suppose is a neat trick but completely useless.
      */
-    public void initializeToolBar (JToolBar tb) {
+    public void initializeToolBar(JToolBar tb) {
         Action action;
         RelativeBundle resources = getResources();
 
         // Conventional new/open/save buttons
         action = getAction("New");
         GUIUtilities.addToolBarButton(tb, action, null,
-                resources.getImageIcon("NewImage"));
+            resources.getImageIcon("NewImage"));
 
         action = getAction("Open");
         GUIUtilities.addToolBarButton(tb, action, null,
-                resources.getImageIcon("OpenImage"));
+            resources.getImageIcon("OpenImage"));
 
         action = getAction("Save");
         GUIUtilities.addToolBarButton(tb, action, null,
-                resources.getImageIcon("SaveImage"));
+            resources.getImageIcon("SaveImage"));
     }
 
     /**
@@ -255,7 +263,3 @@ public class MDIApplicationTutorial extends MDIApplication {
      }
      }*/
 }
-
-
-
-

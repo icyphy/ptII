@@ -27,6 +27,7 @@ package diva.util;
 
 import java.util.Iterator;
 
+
 /**
  * An iterator over two iterators.
  *
@@ -42,7 +43,7 @@ public class CompoundIterator implements Iterator {
     /**
      * Create a new iterator
      */
-    public CompoundIterator (Iterator first, Iterator second) {
+    public CompoundIterator(Iterator first, Iterator second) {
         this._first = first;
         this._second = second;
     }
@@ -59,6 +60,7 @@ public class CompoundIterator implements Iterator {
             return (_second.hasNext());
         }
     }
+
     public Object next() {
         if (_onFirst) {
             if (_first.hasNext()) {
@@ -71,6 +73,7 @@ public class CompoundIterator implements Iterator {
             return (_second.next());
         }
     }
+
     public void remove() {
         if (_onFirst) {
             _first.remove();
@@ -79,5 +82,3 @@ public class CompoundIterator implements Iterator {
         }
     }
 }
-
-

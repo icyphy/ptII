@@ -29,6 +29,7 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+
 /**
  * A mouse listener that requests focus for the source of any
  * mouse event it receives.  Yes, I Know this is simple, but I think it
@@ -53,6 +54,7 @@ public class FocusMouseListener implements MouseListener {
      */
     public void mousePressed(MouseEvent event) {
         Component component = event.getComponent();
+
         if (!component.hasFocus()) {
             component.requestFocus();
         }
@@ -61,5 +63,3 @@ public class FocusMouseListener implements MouseListener {
     public void mouseClicked(MouseEvent event) {
     }
 }
-
-

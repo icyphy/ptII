@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm.ia;
 
 import ptolemy.actor.gui.Tableau;
@@ -35,8 +34,10 @@ import ptolemy.vergil.fsm.FSMGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphModel;
 import diva.graph.GraphPane;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonGraphFrame
+
 /**
    This is a graph editor frame for ptolemy InterfaceAutomaton models.
    Given a composite entity and a tableau, it creates an editor and populates
@@ -50,7 +51,6 @@ import diva.graph.GraphPane;
    @Pt.AcceptedRating Red (johnr)
 */
 public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
-
     /** Construct a frame associated with the specified model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -62,8 +62,7 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
-    public InterfaceAutomatonGraphFrame(
-            CompositeEntity entity, Tableau tableau) {
+    public InterfaceAutomatonGraphFrame(CompositeEntity entity, Tableau tableau) {
         this(entity, tableau, null);
     }
 
@@ -81,10 +80,8 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public InterfaceAutomatonGraphFrame(
-            CompositeEntity entity,
-            Tableau tableau,
-            LibraryAttribute defaultLibrary) {
+    public InterfaceAutomatonGraphFrame(CompositeEntity entity,
+        Tableau tableau, LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
     }
 
@@ -99,10 +96,10 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
         _controller = new InterfaceAutomatonGraphController(_directory);
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
+
         // NOTE: The cast is safe because the constructor accepts
         // only CompositeEntity.
-        final FSMGraphModel graphModel = new FSMGraphModel(
-                (CompositeEntity)getModel());
+        final FSMGraphModel graphModel = new FSMGraphModel((CompositeEntity) getModel());
         return new GraphPane(_controller, graphModel);
     }
 }

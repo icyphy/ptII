@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.AWTEvent;
@@ -35,24 +34,21 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-
-import javax.swing.JComponent;
-import javax.swing.event.ChangeListener;
-import javax.swing.DefaultBoundedRangeModel;
-import javax.swing.BoundedRangeModel;
-
-import java.util.Vector;
 import java.util.Iterator;
 
-import diva.util.java2d.ShapeUtilities;
+import javax.swing.BoundedRangeModel;
+import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.JComponent;
+
 import diva.canvas.event.LayerEvent;
+import diva.util.java2d.ShapeUtilities;
 
 
 /** The JCanvas class is the center-piece of this package.  The canvas
@@ -75,7 +71,6 @@ import diva.canvas.event.LayerEvent;
  * @Pt.AcceptedRating Yellow
  */
 public class JCanvas extends JComponent implements Printable {
-
     /** The off-screen image.
      * @serial
      */
@@ -88,13 +83,11 @@ public class JCanvas extends JComponent implements Printable {
 
     /** range model to control the horizontal movement of the model
      */
-    private DefaultBoundedRangeModel _horizontalRangeModel =
-      new DefaultBoundedRangeModel();
+    private DefaultBoundedRangeModel _horizontalRangeModel = new DefaultBoundedRangeModel();
 
-      /** range model to control the vertical movement of the model
-     */
-    private DefaultBoundedRangeModel _verticalRangeModel =
-      new DefaultBoundedRangeModel();
+    /** range model to control the vertical movement of the model
+    */
+    private DefaultBoundedRangeModel _verticalRangeModel = new DefaultBoundedRangeModel();
 
     /** A flag to tell us whether to work around the
      * clearRect bug in beta4
@@ -105,19 +98,20 @@ public class JCanvas extends JComponent implements Printable {
      * is the simplest way of using the JCanvas. Mouse events on the
      * canvas are enabled by default.
      */
-    public JCanvas ( ) {
+    public JCanvas() {
         this(new GraphicsPane());
     }
 
     /** Create a new canvas that contains the given CanvasPane. Mouse
      * events on the canvas are enabled by default.
      */
-    public JCanvas (CanvasPane pane) {
+    public JCanvas(CanvasPane pane) {
         super();
         setBackground(Color.white);
         setCanvasPane(pane);
         enableEvents(AWTEvent.MOUSE_EVENT_MASK
-                | AWTEvent.MOUSE_MOTION_EVENT_MASK );
+            | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+
         // We have to set this to something other than null, or else no
         // tool tips will appear!
         super.setToolTipText("");
@@ -125,7 +119,7 @@ public class JCanvas extends JComponent implements Printable {
 
     /** Get the canvas pane contained by this component.
      */
-    public final CanvasPane getCanvasPane () {
+    public final CanvasPane getCanvasPane() {
         return _canvasPane;
     }
 
@@ -146,15 +140,15 @@ public class JCanvas extends JComponent implements Printable {
 
         // Create a new event and transform layer coordinates if necessary
         layerevent = new LayerEvent(e);
-        AffineTransform at =
-            _canvasPane.getTransformContext().getInverseTransform();
+
+        AffineTransform at = _canvasPane.getTransformContext()
+                                        .getInverseTransform();
         layerevent.transform(at);
 
         // Process it on the pane
         String tip = _canvasPane.getToolTipText(layerevent);
         return tip;
     }
-
 
     /** Return whether or not focus should be traversable across this object.
      *  This must return true to allow keyboard events to be grabbed.  Return
@@ -175,27 +169,29 @@ public class JCanvas extends JComponent implements Printable {
      * posted by Jonathon Knudsen to the Java2D mailing list, May
      * 1998.
      */
-    public void paint (Graphics g) {
+    public void paint(Graphics g) {
         // It appears that Swing already sets the clip region when
         // we are ready to draw. So let's see if we are drawing the
         // whole canvas or not...
         Rectangle clip = g.getClipBounds();
         Dimension d = getSize();
+
         if (clip == null) {
             // This may happen if the component is not visible, for
             // instance if we are manually calling the paint method
             // to print.
             clip = new Rectangle(0, 0, d.width, d.height);
         }
-        boolean paintAll = (clip.x == 0 && clip.y == 0
-                && clip.width == d.width
-                && clip.height == d.height);
+
+        boolean paintAll = ((clip.x == 0) && (clip.y == 0)
+            && (clip.width == d.width) && (clip.height == d.height));
 
         if (!isDoubleBuffered()) {
             Graphics2D g2d = (Graphics2D) g;
 
             // Clear the clip region to the background color
             g2d.setBackground(getBackground());
+
             if (_workaroundClearRectBug) {
                 g2d.clearRect(0, 0, clip.width, clip.height);
             } else {
@@ -212,19 +208,18 @@ public class JCanvas extends JComponent implements Printable {
             // Get a new offscreen buffer if necessary. Clear the reference
             // to the off-screen buffer, so that the memory can be freed
             // if necessary by the GC and reallocated for the new buffer.
-            if (_offscreen == null ||
-                    _offscreen.getWidth() != clip.width ||
-                    _offscreen.getHeight() != clip.height) {
-                _offscreen = null;    // in case GC needs it
-                _offscreen = new BufferedImage(
-                        clip.width,
-                        clip.height,
+            if ((_offscreen == null) || (_offscreen.getWidth() != clip.width)
+                    || (_offscreen.getHeight() != clip.height)) {
+                _offscreen = null; // in case GC needs it
+                _offscreen = new BufferedImage(clip.width, clip.height,
                         BufferedImage.TYPE_INT_RGB);
             }
+
             Graphics2D g2d = _offscreen.createGraphics();
 
             // Clear the clip region to the background color
             g2d.setBackground(getBackground());
+
             if (_workaroundClearRectBug) {
                 g2d.clearRect(0, 0, clip.width, clip.height);
             } else {
@@ -236,7 +231,7 @@ public class JCanvas extends JComponent implements Printable {
                 _canvasPane.paint(g2d);
             } else {
                 // Translate drawing into the offscreen buffer
-                g2d.translate(-clip.x,-clip.y);
+                g2d.translate(-clip.x, -clip.y);
 
                 // Paint the root canvas pane in the clip region
                 _canvasPane.paint(g2d, clip);
@@ -259,13 +254,11 @@ public class JCanvas extends JComponent implements Printable {
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
-    public int print(Graphics graphics, PageFormat format,
-            int index) throws PrinterException {
-
+    public int print(Graphics graphics, PageFormat format, int index)
+        throws PrinterException {
         Dimension dimension = getSize();
-        Rectangle2D bounds = new Rectangle2D.Double (
-                0, 0,
-                dimension.width, dimension.height);
+        Rectangle2D bounds = new Rectangle2D.Double(0, 0, dimension.width,
+                dimension.height);
         return print(graphics, format, index, bounds);
     }
 
@@ -281,19 +274,18 @@ public class JCanvas extends JComponent implements Printable {
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
-    public int print(Graphics graphics, PageFormat format,
-            int index, Rectangle2D printRegion) throws PrinterException {
+    public int print(Graphics graphics, PageFormat format, int index,
+        Rectangle2D printRegion) throws PrinterException {
         // We only print on one page.
         if (index >= 1) {
             return Printable.NO_SUCH_PAGE;
         }
-        Rectangle2D pageBounds = new Rectangle2D.Double (
-                format.getImageableX(),
-                format.getImageableY(),
-                format.getImageableWidth(),
+
+        Rectangle2D pageBounds = new Rectangle2D.Double(format.getImageableX(),
+                format.getImageableY(), format.getImageableWidth(),
                 format.getImageableHeight());
         ((Graphics2D) graphics).transform(CanvasUtilities.computeFitTransform(
-                                                  printRegion, pageBounds));
+                printRegion, pageBounds));
         graphics.setClip(printRegion);
 
         paint(graphics);
@@ -304,7 +296,7 @@ public class JCanvas extends JComponent implements Printable {
      * in this canvas. Call the given damage region to generate
      * the appropriate calls to the Swing repaint manager.
      */
-    public void repaint (DamageRegion d) {
+    public void repaint(DamageRegion d) {
         d.apply(this);
     }
 
@@ -313,11 +305,13 @@ public class JCanvas extends JComponent implements Printable {
      * If the pane already is in a canvas, remove it from
      * that other canvas.
      */
-    public final void setCanvasPane (CanvasPane pane) {
+    public final void setCanvasPane(CanvasPane pane) {
         if (_canvasPane != null) {
             _canvasPane.setCanvas(null);
         }
+
         _canvasPane = pane;
+
         if (pane != null) {
             pane.setCanvas(this);
         }
@@ -327,8 +321,9 @@ public class JCanvas extends JComponent implements Printable {
      * This method overrides the inherited method to
      * delete the off-screen buffer.
      */
-    public void setDoubleBuffered (boolean flag) {
+    public void setDoubleBuffered(boolean flag) {
         super.setDoubleBuffered(flag);
+
         if (!isDoubleBuffered()) {
             _offscreen = null;
         }
@@ -337,7 +332,7 @@ public class JCanvas extends JComponent implements Printable {
     /** Set the preferred size of this JCanvas. In addition to calling
      * the superclass method, this calls setSize() on the contained pane.
      */
-    public void setPreferredSize (Dimension d) {
+    public void setPreferredSize(Dimension d) {
         super.setPreferredSize(d);
 
         if (_canvasPane != null) {
@@ -351,17 +346,15 @@ public class JCanvas extends JComponent implements Printable {
     /**
      * return the horizontal range model for this canvas
      */
-    public BoundedRangeModel getHorizontalRangeModel()
-    {
-      return _horizontalRangeModel;
+    public BoundedRangeModel getHorizontalRangeModel() {
+        return _horizontalRangeModel;
     }
 
     /**
      * return the vertical range model for this canvas
      */
-    public BoundedRangeModel getVerticalRangeModel()
-    {
-      return _verticalRangeModel;
+    public BoundedRangeModel getVerticalRangeModel() {
+        return _verticalRangeModel;
     }
 
     /**
@@ -370,10 +363,11 @@ public class JCanvas extends JComponent implements Printable {
      */
     public Rectangle2D getViewSize() {
         Rectangle2D viewRect = null;
-        for (Iterator layers = getCanvasPane().layers();
-             layers.hasNext();) {
-            CanvasLayer layer = (CanvasLayer)layers.next();
+
+        for (Iterator layers = getCanvasPane().layers(); layers.hasNext();) {
+            CanvasLayer layer = (CanvasLayer) layers.next();
             Rectangle2D rect = layer.getLayerBounds();
+
             if (!rect.isEmpty()) {
                 if (viewRect == null) {
                     viewRect = rect;
@@ -382,6 +376,7 @@ public class JCanvas extends JComponent implements Printable {
                 }
             }
         }
+
         if (viewRect == null) {
             // We can't actually return an empty rectangle, because then
             // we get a bad transform.
@@ -396,22 +391,21 @@ public class JCanvas extends JComponent implements Printable {
      *  coordinates.
      */
     public Rectangle2D getVisibleSize() {
-        AffineTransform current =
-            getCanvasPane().getTransformContext().getTransform();
+        AffineTransform current = getCanvasPane().getTransformContext()
+                                      .getTransform();
         AffineTransform inverse;
+
         try {
             inverse = current.createInverse();
-        }
-        catch (NoninvertibleTransformException e) {
+        } catch (NoninvertibleTransformException e) {
             throw new RuntimeException(e.toString());
         }
-        Dimension size = getSize();
-        Rectangle2D visibleRect = new Rectangle2D.Double(0, 0,
-                size.getWidth(), size.getHeight());
-        return ShapeUtilities.transformBounds(visibleRect,
-                inverse);
-    }
 
+        Dimension size = getSize();
+        Rectangle2D visibleRect = new Rectangle2D.Double(0, 0, size.getWidth(),
+                size.getHeight());
+        return ShapeUtilities.transformBounds(visibleRect, inverse);
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// protected methods
@@ -424,6 +418,7 @@ public class JCanvas extends JComponent implements Printable {
      */
     protected void processMouseEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
+
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it prevents popup menus from being created...
         if (!e.isConsumed()) {
@@ -439,6 +434,7 @@ public class JCanvas extends JComponent implements Printable {
      */
     protected void processMouseMotionEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
+
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it is probably necessary (see above).
         if (!e.isConsumed()) {
@@ -461,8 +457,9 @@ public class JCanvas extends JComponent implements Printable {
 
         // Create a new event and transform layer coordinates if necessary
         layerevent = new LayerEvent(e);
-        AffineTransform at =
-            _canvasPane.getTransformContext().getInverseTransform();
+
+        AffineTransform at = _canvasPane.getTransformContext()
+                                        .getInverseTransform();
         layerevent.transform(at);
 
         // Process it on the pane
@@ -474,7 +471,4 @@ public class JCanvas extends JComponent implements Printable {
     private boolean _checkForClearRectBug() {
         return System.getProperty("java.version").equals("1.2beta4");
     }
-
 }
-
-

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.kernel.test;
 
 import ptolemy.actor.Receiver;
@@ -40,6 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEPutToken
+
 /**
    DDEPutToken is a test class used for testing the production of tokens.
    DDEPutToken has a single, typed, output multiport. A DDEPutToken object
@@ -55,13 +55,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class DDEPutToken extends DDEPut {
-
     /**
      */
     public DDEPutToken(TypedCompositeActor cont, String name, int numTokens)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         _numTokens = numTokens;
@@ -76,19 +74,23 @@ public class DDEPutToken extends DDEPut {
      */
     public void fire() throws IllegalActionException {
         int cnt = 0;
+
         while (cnt < _numTokens) {
             Receiver[][] rcvrs = outputPort.getRemoteReceivers();
-            for ( int i = 0; i < rcvrs.length; i++ ) {
-                for ( int j = 0; j < rcvrs[i].length; j++ ) {
-                    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-                    if ( _oneArg ) {
-                        rcvr.put( _tokens[cnt] );
+
+            for (int i = 0; i < rcvrs.length; i++) {
+                for (int j = 0; j < rcvrs[i].length; j++) {
+                    DDEReceiver rcvr = (DDEReceiver) rcvrs[i][j];
+
+                    if (_oneArg) {
+                        rcvr.put(_tokens[cnt]);
                     } else {
-                        rcvr.put( _tokens[cnt],
-                            new Time(getDirector(), _times[cnt]) );
+                        rcvr.put(_tokens[cnt],
+                            new Time(getDirector(), _times[cnt]));
                     }
                 }
             }
+
             cnt++;
         }
     }
@@ -114,9 +116,7 @@ public class DDEPutToken extends DDEPut {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _numTokens;
-
     private Token[] _tokens = null;
     private double[] _times = null;
     private boolean _oneArg = false;

@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.modular;
+
 import java.util.Iterator;
+
 
 /**
  * A node is an object that is contained by a graph
@@ -53,6 +55,3 @@ public interface NodeModel {
      */
     public Object getParent(Object node);
 }
-
-
-

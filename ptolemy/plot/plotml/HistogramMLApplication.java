@@ -36,6 +36,7 @@ import javax.swing.JOptionPane;
 import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HistogramMLApplication
 
@@ -56,7 +57,6 @@ import ptolemy.plot.PlotBox;
    @see Histogram
 */
 public class HistogramMLApplication extends PlotMLApplication {
-
     /** Construct a histogram with no command-line arguments.
      *  It initially displays a sample plot.
      *  @exception Exception If command line arguments have problems.
@@ -69,7 +69,7 @@ public class HistogramMLApplication extends PlotMLApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public HistogramMLApplication(String args[]) throws Exception {
+    public HistogramMLApplication(String[] args) throws Exception {
         this(new Histogram(), args);
     }
 
@@ -79,8 +79,8 @@ public class HistogramMLApplication extends PlotMLApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public HistogramMLApplication(Histogram plot, String args[])
-            throws Exception {
+    public HistogramMLApplication(Histogram plot, String[] args)
+        throws Exception {
         super(plot, args);
         setTitle("Ptolemy Histogram");
     }
@@ -90,7 +90,7 @@ public class HistogramMLApplication extends PlotMLApplication {
 
     /** Create a new plot window and map it to the screen.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             new HistogramMLApplication(new Histogram(), args);
         } catch (Exception ex) {
@@ -102,9 +102,9 @@ public class HistogramMLApplication extends PlotMLApplication {
         if (_test) {
             try {
                 Thread.sleep(2000);
+            } catch (InterruptedException e) {
             }
-            catch (InterruptedException e) {
-            }
+
             System.exit(0);
         }
     }
@@ -116,30 +116,26 @@ public class HistogramMLApplication extends PlotMLApplication {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "HistogramMLApplication class\n" +
-                "By: Edward A. Lee " +
-                "and Christopher Hylands\n" +
-                "Version " + PlotBox.PTPLOT_RELEASE +
-                ", Build: $Id$\n\n"+
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
-                "Copyright (c) 1997-2005 " +
-                "The Regents of the University of California.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "HistogramMLApplication class\n" + "By: Edward A. Lee "
+            + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
+            + ", Build: $Id$\n\n"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+            + "Copyright (c) 1997-2005 "
+            + "The Regents of the University of California.",
+            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-                "HistogramMLApplication is a standalone plot " +
-                " application.\n" +
-                "  File formats understood: PlotML and Ptplot ASCII.\n" +
-                "  Left mouse button: Zooming.\n" +
-                "  Right mouse button: Editing data (use edit menu to select " +
-                "a dataset).\n\n" +
-                _usage(),
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "HistogramMLApplication is a standalone plot " + " application.\n"
+            + "  File formats understood: PlotML and Ptplot ASCII.\n"
+            + "  Left mouse button: Zooming.\n"
+            + "  Right mouse button: Editing data (use edit menu to select "
+            + "a dataset).\n\n" + _usage(), "About Ptolemy Plot",
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Create a new parser object for the application.  Derived classes can
@@ -147,6 +143,6 @@ public class HistogramMLApplication extends PlotMLApplication {
      *  @return A new parser.
      */
     protected PlotBoxMLParser _newParser() {
-        return new HistogramMLParser((Histogram)plot);
+        return new HistogramMLParser((Histogram) plot);
     }
 }

@@ -23,15 +23,16 @@
     ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
 
 import java.util.List;
 
 import ptolemy.graph.Node;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AllPairShortestPathAnalyzer
+
 /**
    An interface for all the analyzers that compute the all pair shortest path of
    a directed graph.
@@ -44,7 +45,6 @@ import ptolemy.graph.Node;
    @version $Id$
 */
 public interface AllPairShortestPathAnalyzer extends GraphAnalyzer {
-
     /** Return the nodes on the shortest path from the node
      *  "startNode" to the node "endNode" in the form of an ordered list.
      *

@@ -29,7 +29,6 @@
   COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -38,6 +37,7 @@ import java.util.LinkedList;
 
 import soot.SootClass;
 import soot.SootMethod;
+
 
 /** A class that extracts ordered lists of method declarations
     with an ordering convention that facilitates translation
@@ -93,10 +93,7 @@ import soot.SootMethod;
     @Pt.AcceptedRating Red (ssb)
 
 */
-
 public class MethodListGenerator {
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -107,8 +104,11 @@ public class MethodListGenerator {
      *  @since Ptolemy II 2.0
      */
     public static SootMethod getClassInitializer(SootClass source) {
-        if (!_classInitializerMap.containsKey(source)) _generate(source);
-        return (SootMethod)_classInitializerMap.get(source);
+        if (!_classInitializerMap.containsKey(source)) {
+            _generate(source);
+        }
+
+        return (SootMethod) _classInitializerMap.get(source);
     }
 
     /** Return the list of constructors for a given class.
@@ -116,8 +116,11 @@ public class MethodListGenerator {
      *  @return The list of constructors.
      */
     public static LinkedList getConstructors(SootClass source) {
-        if (!_constructorListMap.containsKey(source)) _generate(source);
-        return (LinkedList)_constructorListMap.get(source);
+        if (!_constructorListMap.containsKey(source)) {
+            _generate(source);
+        }
+
+        return (LinkedList) _constructorListMap.get(source);
     }
 
     /** Return the list of inherited methods for a given class.
@@ -125,8 +128,11 @@ public class MethodListGenerator {
      *  @return The list of inherited methods.
      */
     public static LinkedList getInheritedMethods(SootClass source) {
-        if (!_inheritedListMap.containsKey(source)) _generate(source);
-        return (LinkedList)_inheritedListMap.get(source);
+        if (!_inheritedListMap.containsKey(source)) {
+            _generate(source);
+        }
+
+        return (LinkedList) _inheritedListMap.get(source);
     }
 
     /** Return the list of new methods for a given class.
@@ -134,8 +140,11 @@ public class MethodListGenerator {
      *  @return The list of new methods.
      */
     public static LinkedList getNewMethods(SootClass source) {
-        if (!_newListMap.containsKey(source)) _generate(source);
-        return (LinkedList)_newListMap.get(source);
+        if (!_newListMap.containsKey(source)) {
+            _generate(source);
+        }
+
+        return (LinkedList) _newListMap.get(source);
     }
 
     /** Return the list of private methods for a given class.
@@ -143,8 +152,11 @@ public class MethodListGenerator {
      *  @return The list of private methods.
      */
     public static LinkedList getPrivateMethods(SootClass source) {
-        if (!_privateListMap.containsKey(source)) _generate(source);
-        return (LinkedList)_privateListMap.get(source);
+        if (!_privateListMap.containsKey(source)) {
+            _generate(source);
+        }
+
+        return (LinkedList) _privateListMap.get(source);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -171,62 +183,62 @@ public class MethodListGenerator {
         _classInitializerMap.put(source, null);
 
         Iterator methods = source.getMethods().iterator();
+
         while (methods.hasNext()) {
-            SootMethod method = (SootMethod)(methods.next());
+            SootMethod method = (SootMethod) (methods.next());
 
             String name;
+
             if ((name = method.getName()).indexOf('<') != -1) {
                 if (name.indexOf("clinit") != -1) {
                     // Static initializer for the class.
                     // Assume that there is at most one such initializer.
-                    SootMethod previousEntry =
-                        (SootMethod)(_classInitializerMap.get(source));
-                    if (previousEntry == null)  {
+                    SootMethod previousEntry = (SootMethod) (_classInitializerMap
+                        .get(source));
+
+                    if (previousEntry == null) {
                         _classInitializerMap.put(source, method);
-                    }
-                    else if (previousEntry != method) {
+                    } else if (previousEntry != method) {
                         throw new RuntimeException(
-                                "More than one class initializer "
-                                + "method found for " + source.getName()
-                                + ":\n" + previousEntry.getSubSignature()
-                                + ", and " + method.getSubSignature() + ".\n");
+                            "More than one class initializer "
+                            + "method found for " + source.getName() + ":\n"
+                            + previousEntry.getSubSignature() + ", and "
+                            + method.getSubSignature() + ".\n");
                     }
-                }
-                else if (name.indexOf("init") != -1) {
+                } else if (name.indexOf("init") != -1) {
                     // (Non-static) class constructor.
                     constructorList.add(method);
-                }
-                else {
+                } else {
                     // Unrecognized method with name that contains '<'
                     throw new RuntimeException(
-                            "Unknown type of special method: "
-                            + method.getSubSignature() + " in class "
-                            + source.getName());
+                        "Unknown type of special method: "
+                        + method.getSubSignature() + " in class "
+                        + source.getName());
                 }
-            }
-            else {
+            } else {
                 if (method.isPrivate()) {
                     privateList.add(method);
-                }
-                else {
+                } else {
                     Iterator inheritedMethods = inheritedList.iterator();
                     int inheritedMethodIndex = 0;
                     boolean found = false;
+
                     while (inheritedMethods.hasNext() && !found) {
-                        SootMethod inheritedMethod = (SootMethod)(
-                                inheritedMethods.next());
-                        if (method.getSubSignature().equals(
-                                    inheritedMethod.getSubSignature())) {
+                        SootMethod inheritedMethod = (SootMethod) (inheritedMethods
+                            .next());
+
+                        if (method.getSubSignature().equals(inheritedMethod
+                                    .getSubSignature())) {
                             found = true;
                         } else {
                             inheritedMethodIndex++;
                         }
                     }
+
                     if (found) {
                         // The method overrides a previously defined method
                         inheritedList.set(inheritedMethodIndex, method);
-                    }
-                    else {
+                    } else {
                         // New methods that are not required should be
                         // discarded. If the corresponding method in a
                         // subclass is required, it should be "new" for
@@ -243,7 +255,6 @@ public class MethodListGenerator {
         // JDK1.4.1 seems to have a number of methods that are inherited
         // from interfaces, but not implemented in the class. These methods
         // need to be inherited too.
-
         // First we create a list of the subSignatures of all inherited
         // methods.
         /*
@@ -277,7 +288,6 @@ public class MethodListGenerator {
           }
           }
         */
-
         _constructorListMap.put(source, constructorList);
         _inheritedListMap.put(source, inheritedList);
         _newListMap.put(source, newList);
@@ -290,7 +300,6 @@ public class MethodListGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Mapping from classes to lists of class initializer methods.
     // The keys are of type SootClass, and the values are either null
     // (indicating the absence of a class initializer method), or
@@ -316,5 +325,4 @@ public class MethodListGenerator {
     // The keys are of type SootClass, and the values are of type LinkedList.
     // Each element of each LinkedList is a SootMethod.
     private static HashMap _privateListMap = new HashMap();
-
 }

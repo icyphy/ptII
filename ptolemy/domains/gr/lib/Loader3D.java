@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.gr.lib;
 
 import java.io.FileNotFoundException;
@@ -42,6 +41,7 @@ import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.loaders.objectfile.ObjectFile;
 
+
 /**
    @author C. Fong
    @version $Id$
@@ -49,10 +49,8 @@ import com.sun.j3d.loaders.objectfile.ObjectFile;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Loader3D extends GRShadedShape {
-
     public Loader3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         filename = new Parameter(this, "filename",
                 new StringToken("chopper.obj"));
@@ -60,45 +58,40 @@ public class Loader3D extends GRShadedShape {
 
     public Parameter filename;
 
-
     public Node _getNodeObject() {
         return (Node) obj.getSceneGroup();
     }
 
     protected void _createModel() throws IllegalActionException {
-        String fileName =
-            (String) ((StringToken) filename.getToken()).stringValue();
+        String fileName = (String) ((StringToken) filename.getToken())
+            .stringValue();
 
         //Appearance ap = new Appearance();
         //ap.setColoringAttributes(new ColoringAttributes(_color.x,
         // _color.y, _color.z, ColoringAttributes.SHADE_GOURAUD));
-
         int flags = ObjectFile.RESIZE;
+
         //if (!noTriangulate) flags |= ObjectFile.TRIANGULATE;
         //if (!noStripify) flags |= ObjectFile.STRIPIFY;
         ObjectFile f = new ObjectFile(flags,
-                (float)(creaseAngle * Math.PI / 180.0));
+                (float) ((creaseAngle * Math.PI) / 180.0));
         Scene s = null;
+
         try {
             s = f.load(fileName);
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.err.println(e);
             throw new IllegalActionException("File not found!");
-        }
-        catch (ParsingErrorException e) {
+        } catch (ParsingErrorException e) {
+            System.err.println(e);
+            throw new IllegalActionException("File is not a valid 3D OBJ file");
+        } catch (IncorrectFormatException e) {
             System.err.println(e);
             throw new IllegalActionException("File is not a valid 3D OBJ file");
         }
-        catch (IncorrectFormatException e) {
-            System.err.println(e);
-            throw new IllegalActionException("File is not a valid 3D OBJ file");
-        }
+
         obj = s;
     }
-
-
-
 
     private double creaseAngle = 60.0;
     private Scene obj;

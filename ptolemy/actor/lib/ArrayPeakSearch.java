@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayPeakSearch
+
 /**
    This actor outputs the indices and values of peaks in an input array.
 
@@ -88,7 +89,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ArrayPeakSearch extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -98,7 +98,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrayPeakSearch(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set Parameters.
@@ -134,10 +134,8 @@ public class ArrayPeakSearch extends TypedAtomicActor {
         peakValues = new TypedIOPort(this, "peakValues", false, true);
         peakIndices = new TypedIOPort(this, "peakIndices", false, true);
 
-        (new SingletonParameter(peakValues, "_showName"))
-                .setToken(BooleanToken.TRUE);
-        (new SingletonParameter(peakIndices, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(peakValues, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(peakIndices, "_showName")).setToken(BooleanToken.TRUE);
 
         // Set Type Constraints.
         input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -223,9 +221,8 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ArrayPeakSearch newObject = (ArrayPeakSearch)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayPeakSearch newObject = (ArrayPeakSearch) super.clone(workspace);
         newObject.input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         newObject.peakValues.setTypeAtLeast(newObject.input);
         return newObject;
@@ -243,33 +240,41 @@ public class ArrayPeakSearch extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         startIndex.update();
         endIndex.update();
+
         if (input.hasToken(0)) {
             ArrayToken inputArray = (ArrayToken) input.get(0);
             int inputSize = inputArray.length();
+
             if (inputSize == 0) {
                 peakValues.send(0, inputArray);
                 peakIndices.send(0, inputArray);
                 return;
             }
-            int start = ((IntToken)startIndex.getToken()).intValue();
-            int end = ((IntToken)endIndex.getToken()).intValue();
-            int maxPeaks =
-                ((IntToken)maximumNumberOfPeaks.getToken()).intValue();
+
+            int start = ((IntToken) startIndex.getToken()).intValue();
+            int end = ((IntToken) endIndex.getToken()).intValue();
+            int maxPeaks = ((IntToken) maximumNumberOfPeaks.getToken())
+                .intValue();
 
             // Constrain start and end.
             if (end >= inputSize) {
                 end = inputSize - 1;
             }
+
             if (start >= inputSize) {
                 start = inputSize - 1;
             }
+
             if (end < 0) {
                 end = 0;
             }
+
             if (start < 0) {
                 start = 0;
             }
+
             int increment = 1;
+
             if (end < start) {
                 increment = -1;
             }
@@ -280,17 +285,16 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             int localMaxIndex = start;
             int localMinIndex = start;
 
-            double localMax =
-                ((DoubleToken)inputArray.getElement(start)).doubleValue();
+            double localMax = ((DoubleToken) inputArray.getElement(start))
+                .doubleValue();
             double localMin = localMax;
 
-            double dipValue = ((DoubleToken)dip.getToken()).doubleValue();
-            double squelchValue =
-                ((DoubleToken)squelch.getToken()).doubleValue();
+            double dipValue = ((DoubleToken) dip.getToken()).doubleValue();
+            double squelchValue = ((DoubleToken) squelch.getToken())
+                .doubleValue();
 
             // The following values change since they are relative to
             // most recently peaks or values.
-
             double dipThreshold = dipValue;
             double riseThreshold = dipValue;
 
@@ -298,16 +302,17 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
             // Index of what scale we are dealing with.
             int scaleIndicator = _ABSOLUTE;
-            if (!scaleValue.equals("absolute")) {
 
+            if (!scaleValue.equals("absolute")) {
                 // Scale is relative so we adjust the thresholds.
                 // Search for the global maximum value so squelch
                 // works properly.
-
                 double maxValue = localMax;
-                for (int i = 0; i <= inputSize - 1; i = i + increment) {
-                    double indata =
-                        ((DoubleToken)inputArray.getElement(i)).doubleValue();
+
+                for (int i = 0; i <= (inputSize - 1); i = i + increment) {
+                    double indata = ((DoubleToken) inputArray.getElement(i))
+                        .doubleValue();
+
                     if (indata > maxValue) {
                         maxValue = indata;
                     }
@@ -315,16 +320,16 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
                 if (scaleValue.equals("relative amplitude decibels")) {
                     scaleIndicator = _RELATIVE_DB;
-                    dipThreshold = localMax * Math.pow(10.0, (-dipValue/20));
-                    riseThreshold = localMin * Math.pow(10.0, (dipValue/20));
-                    squelchValue =
-                        maxValue * Math.pow(10.0, (-squelchValue/20));
+                    dipThreshold = localMax * Math.pow(10.0, (-dipValue / 20));
+                    riseThreshold = localMin * Math.pow(10.0, (dipValue / 20));
+                    squelchValue = maxValue * Math.pow(10.0,
+                            (-squelchValue / 20));
                 } else if (scaleValue.equals("relative power decibels")) {
                     scaleIndicator = _RELATIVE_DB_POWER;
-                    dipThreshold = localMax * Math.pow(10.0, (-dipValue/10));
-                    riseThreshold = localMin * Math.pow(10.0, (dipValue/10));
-                    squelchValue =
-                        maxValue * Math.pow(10.0, (-squelchValue/10));
+                    dipThreshold = localMax * Math.pow(10.0, (-dipValue / 10));
+                    riseThreshold = localMin * Math.pow(10.0, (dipValue / 10));
+                    squelchValue = maxValue * Math.pow(10.0,
+                            (-squelchValue / 10));
                 } else if (scaleValue.equals("relative linear")) {
                     scaleIndicator = _RELATIVE_LINEAR;
                     dipThreshold = localMax - dipValue;
@@ -337,117 +342,138 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             ArrayList resultPeaks = new ArrayList();
 
             for (int i = start; i <= end; i = i + increment) {
-                double indata =
-                    ((DoubleToken)inputArray.getElement(i)).doubleValue();
+                double indata = ((DoubleToken) inputArray.getElement(i))
+                    .doubleValue();
+
                 if (_debugging) {
-                    _debug("-- Checking input with value "
-                            + indata
-                            + " at index "
-                            + i);
+                    _debug("-- Checking input with value " + indata
+                        + " at index " + i);
                 }
+
                 if (searchValley) {
                     if (indata < localMin) {
                         localMin = indata;
-                        switch(scaleIndicator) {
+
+                        switch (scaleIndicator) {
                         case _RELATIVE_DB:
-                            riseThreshold =
-                                localMin * Math.pow(10.0, (dipValue/20));
+                            riseThreshold = localMin * Math.pow(10.0,
+                                    (dipValue / 20));
                             break;
+
                         case _RELATIVE_DB_POWER:
-                            riseThreshold =
-                                localMin * Math.pow(10.0, (dipValue/10));
+                            riseThreshold = localMin * Math.pow(10.0,
+                                    (dipValue / 10));
                             break;
+
                         case _RELATIVE_LINEAR:
                             riseThreshold = localMin + dipValue;
                             break;
                         }
+
                         localMinIndex = i;
                     }
+
                     if (_debugging) {
-                        _debug("-- Looking for a value above "
-                                + riseThreshold);
+                        _debug("-- Looking for a value above " + riseThreshold);
                     }
-                    if (indata > riseThreshold && indata > squelchValue) {
+
+                    if ((indata > riseThreshold) && (indata > squelchValue)) {
                         localMax = indata;
-                        switch(scaleIndicator) {
+
+                        switch (scaleIndicator) {
                         case _RELATIVE_DB:
-                            dipThreshold =
-                                localMax * Math.pow(10.0, (-dipValue/20));
+                            dipThreshold = localMax * Math.pow(10.0,
+                                    (-dipValue / 20));
                             break;
+
                         case _RELATIVE_DB_POWER:
-                            dipThreshold =
-                                localMax * Math.pow(10.0, (-dipValue/10));
+                            dipThreshold = localMax * Math.pow(10.0,
+                                    (-dipValue / 10));
                             break;
+
                         case _RELATIVE_LINEAR:
                             dipThreshold = localMax - dipValue;
                             break;
                         }
+
                         localMaxIndex = i;
                         searchValley = false;
                         searchPeak = true;
                     }
                 } else if (searchPeak) {
-                    if (indata > localMax && indata > squelchValue) {
+                    if ((indata > localMax) && (indata > squelchValue)) {
                         localMax = indata;
-                        switch(scaleIndicator) {
+
+                        switch (scaleIndicator) {
                         case _RELATIVE_DB:
-                            dipThreshold =
-                                localMax * Math.pow(10.0, (-dipValue/20));
+                            dipThreshold = localMax * Math.pow(10.0,
+                                    (-dipValue / 20));
                             break;
+
                         case _RELATIVE_DB_POWER:
-                            dipThreshold =
-                                localMax * Math.pow(10.0, (-dipValue/10));
+                            dipThreshold = localMax * Math.pow(10.0,
+                                    (-dipValue / 10));
                             break;
+
                         case _RELATIVE_LINEAR:
                             dipThreshold = localMax - dipValue;
                             break;
                         }
+
                         localMaxIndex = i;
                     }
+
                     if (_debugging) {
                         _debug("-- Looking for a value below " + dipThreshold);
                     }
-                    if (indata < dipThreshold && localMax > squelchValue) {
+
+                    if ((indata < dipThreshold) && (localMax > squelchValue)) {
                         if (_debugging) {
-                            _debug("** Found a peak with value "
-                                    + localMax
-                                    + " at index "
-                                    + localMaxIndex);
+                            _debug("** Found a peak with value " + localMax
+                                + " at index " + localMaxIndex);
                         }
+
                         resultIndices.add(new IntToken(localMaxIndex));
                         resultPeaks.add(new DoubleToken(localMax));
+
                         if (resultPeaks.size() > maxPeaks) {
                             break;
                         }
+
                         localMin = indata;
-                        switch(scaleIndicator) {
+
+                        switch (scaleIndicator) {
                         case _RELATIVE_DB:
-                            riseThreshold =
-                                localMin * Math.pow(10.0, (dipValue/20));
+                            riseThreshold = localMin * Math.pow(10.0,
+                                    (dipValue / 20));
                             break;
+
                         case _RELATIVE_DB_POWER:
-                            riseThreshold =
-                                localMin * Math.pow(10.0, (dipValue/10));
+                            riseThreshold = localMin * Math.pow(10.0,
+                                    (dipValue / 10));
                             break;
+
                         case _RELATIVE_LINEAR:
                             riseThreshold = localMin + dipValue;
                             break;
                         }
+
                         localMinIndex = i;
                         searchValley = true;
                         searchPeak = false;
                     }
                 }
             }
+
             if (resultPeaks.isEmpty()) {
                 resultPeaks.add(inputArray.getElement(start));
                 resultIndices.add(startIndex.getToken());
             }
 
-            Token[] resultPeaksArray = (Token[])resultPeaks
-                .toArray(new Token[resultPeaks.size()]);
-            Token[] resultIndicesArray = (Token[])resultIndices
-                .toArray(new Token[resultIndices.size()]);
+            Token[] resultPeaksArray = (Token[]) resultPeaks.toArray(new Token[resultPeaks
+                    .size()]);
+            Token[] resultIndicesArray = (Token[]) resultIndices.toArray(new Token[resultIndices
+                    .size()]);
 
             peakValues.send(0, new ArrayToken(resultPeaksArray));
             peakIndices.send(0, new ArrayToken(resultIndicesArray));
@@ -456,7 +482,6 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private static final int _ABSOLUTE = 0;
     private static final int _RELATIVE_DB = 1;
     private static final int _RELATIVE_DB_POWER = 2;

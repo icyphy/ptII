@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Frame;
@@ -48,8 +47,10 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditParametersDialog
+
 /**
    This class is a modal dialog box for editing the parameters of a
    target object, which is an instance of NamedObj. All attributes that
@@ -82,7 +83,6 @@ import ptolemy.util.StringUtilities;
 */
 public class EditParametersDialog extends ComponentDialog
     implements ChangeListener {
-
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -91,17 +91,16 @@ public class EditParametersDialog extends ComponentDialog
      *  @param target The object whose parameters are being edited.
      */
     public EditParametersDialog(Frame owner, NamedObj target) {
-        super(owner,
-                "Edit parameters for " + target.getName(),
-                new Configurer(target),
-                _moreButtons);
+        super(owner, "Edit parameters for " + target.getName(),
+            new Configurer(target), _moreButtons);
+
         // Once we get to here, the dialog has already been dismissed.
         _owner = owner;
         _target = target;
+
         if (buttonPressed().equals("Add")) {
             _openAddDialog(null, "", "", "ptolemy.data.expr.Parameter");
             _target.removeChangeListener(this);
-
         } else if (buttonPressed().equals("Remove")) {
             // Create a new dialog to remove a parameter, then open a new
             // EditParametersDialog.
@@ -112,8 +111,10 @@ public class EditParametersDialog extends ComponentDialog
             // Count visible attributes
             Iterator parameters = attributeList.iterator();
             int count = 0;
+
             while (parameters.hasNext()) {
-                Settable parameter = (Settable)parameters.next();
+                Settable parameter = (Settable) parameters.next();
+
                 if (Configurer.isVisible(target, parameter)) {
                     count++;
                 }
@@ -121,80 +122,79 @@ public class EditParametersDialog extends ComponentDialog
 
             String[] attributeNames = new String[count];
             parameters = attributeList.iterator();
+
             int index = 0;
+
             while (parameters.hasNext()) {
-                Settable parameter = (Settable)parameters.next();
+                Settable parameter = (Settable) parameters.next();
+
                 if (Configurer.isVisible(target, parameter)) {
-                    attributeNames[index++] = ((Attribute)parameter).getName();
+                    attributeNames[index++] = ((Attribute) parameter).getName();
                 }
             }
-            Query query = new Query();
-            query.addChoice("delete", "Parameter to delete",
-                    attributeNames, null, false);
 
-            ComponentDialog dialog = new ComponentDialog(
-                    _owner,
-                    "Delete a parameter for " + _target.getFullName(),
-                    query,
+            Query query = new Query();
+            query.addChoice("delete", "Parameter to delete", attributeNames,
+                null, false);
+
+            ComponentDialog dialog = new ComponentDialog(_owner,
+                    "Delete a parameter for " + _target.getFullName(), query,
                     null);
+
             // If the OK button was pressed, then queue a mutation
             // to delete the parameter.
             String deleteName = query.getStringValue("delete");
 
-            if (dialog.buttonPressed().equals("OK")
-                    && !deleteName.equals("")) {
-                String moml = "<deleteProperty name=\""
-                    + deleteName
-                    + "\"/>";
+            if (dialog.buttonPressed().equals("OK") && !deleteName.equals("")) {
+                String moml = "<deleteProperty name=\"" + deleteName + "\"/>";
                 _target.addChangeListener(this);
-                MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
-                        moml);
+
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        _target, moml);
                 request.setUndoable(true);
                 _target.requestChange(request);
             }
-
         } else if (buttonPressed().equals("Restore Defaults")) {
-            ((Configurer)contents).restoreToDefaults();
+            ((Configurer) contents).restoreToDefaults();
 
             // There is no (visible) change request to listen to,
             // so we have to
             _reOpen();
-
         } else if (buttonPressed().equals("Preferences")) {
             // Create a dialog for setting parameter styles.
             try {
                 StyleConfigurer panel = new StyleConfigurer(target);
-                ComponentDialog dialog = new ComponentDialog(
-                        _owner,
-                        "Edit preferences for " + target.getName(),
-                        panel);
+                ComponentDialog dialog = new ComponentDialog(_owner,
+                        "Edit preferences for " + target.getName(), panel);
+
                 if (!(dialog.buttonPressed().equals("OK"))) {
                     // Restore original parameter values.
                     panel.restore();
                 }
+
                 // There is no (visible) change request to listen to,
                 // so we have to
                 _reOpen();
-
             } catch (IllegalActionException ex) {
                 MessageHandler.error("Edit Parameter Styles failed", ex);
             }
-
         } else if (buttonPressed().equals("Help")) {
             try {
-                URL doc = getClass().getClassLoader().getResource(
-                        "doc/expressions.htm");
+                URL doc = getClass().getClassLoader().getResource("doc/expressions.htm");
+
                 // Try to use the configuration, if we can.
                 boolean success = false;
+
                 if (_owner instanceof TableauFrame) {
-                    Configuration configuration
-                        = ((TableauFrame)_owner).getConfiguration();
+                    Configuration configuration = ((TableauFrame) _owner)
+                        .getConfiguration();
+
                     if (configuration != null) {
-                        configuration.openModel(
-                                null, doc, doc.toExternalForm());
+                        configuration.openModel(null, doc, doc.toExternalForm());
                         success = true;
                     }
                 }
+
                 if (!success) {
                     // Just open an HTML page.
                     HTMLViewer viewer = new HTMLViewer();
@@ -222,7 +222,9 @@ public class EditParametersDialog extends ComponentDialog
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is not the originator.
-        if (change == null || change.getSource() != this) return;
+        if ((change == null) || (change.getSource() != this)) {
+            return;
+        }
 
         // Open a new dialog.
         // NOTE: this is ugly. It is necessary because the dialog
@@ -243,7 +245,9 @@ public class EditParametersDialog extends ComponentDialog
      */
     public void changeFailed(ChangeRequest change, final Exception exception) {
         // Ignore if this is not the originator.
-        if (change == null || change.getSource() != this) return;
+        if ((change == null) || (change.getSource() != this)) {
+            return;
+        }
 
         _target.removeChangeListener(this);
 
@@ -251,6 +255,7 @@ public class EditParametersDialog extends ComponentDialog
             // Error has already been reported.
             return;
         }
+
         change.setErrorReported(true);
 
         // NOTE: Do this in the event thread, since this might be invoked
@@ -260,22 +265,25 @@ public class EditParametersDialog extends ComponentDialog
                     // When a parameter is removed, and something depends on
                     // it, this gets called when _query is null.
                     // FIXME: Is this the right thing to do?
-                    if (_query == null) return;
+                    if (_query == null) {
+                        return;
+                    }
+
                     String newName = _query.getStringValue("name");
-                    ComponentDialog dialog =
-                        _openAddDialog(exception.getMessage()
-                                + "\n\nPlease enter a new default value:",
-                                newName,
-                                _query.getStringValue("default"),
-                                _query.getStringValue("class"));
+                    ComponentDialog dialog = _openAddDialog(exception
+                            .getMessage()
+                            + "\n\nPlease enter a new default value:", newName,
+                            _query.getStringValue("default"),
+                            _query.getStringValue("class"));
                     _target.removeChangeListener(EditParametersDialog.this);
+
                     if (!dialog.buttonPressed().equals("OK")) {
                         // Remove the parameter, since it seems to be erroneous
                         // and the user hit cancel or close.
-                        String moml =
-                            "<deleteProperty name=\"" + newName + "\"/>";
-                        MoMLChangeRequest request =
-                            new MoMLChangeRequest(this, _target, moml);
+                        String moml = "<deleteProperty name=\"" + newName
+                            + "\"/>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                _target, moml);
                         request.setUndoable(true);
                         _target.requestChange(request);
                     }
@@ -291,13 +299,13 @@ public class EditParametersDialog extends ComponentDialog
      */
     protected void _handleClosing() {
         super._handleClosing();
-        if (!buttonPressed().equals("Commit")
-                && !buttonPressed().equals("Add")
+
+        if (!buttonPressed().equals("Commit") && !buttonPressed().equals("Add")
                 && !buttonPressed().equals("Preferences")
                 && !buttonPressed().equals("Help")
                 && !buttonPressed().equals("Remove")) {
             // Restore original parameter values.
-            ((Configurer)contents).restore();
+            ((Configurer) contents).restore();
         }
     }
 
@@ -311,44 +319,44 @@ public class EditParametersDialog extends ComponentDialog
      *  @param className The default class name.
      *  @return The dialog that is created.
      */
-    private ComponentDialog _openAddDialog(
-            String message, String name, String defValue, String className) {
+    private ComponentDialog _openAddDialog(String message, String name,
+        String defValue, String className) {
         // Create a new dialog to add a parameter, then open a new
         // EditParametersDialog.
         _query = new Query();
-        if (message != null) _query.setMessage(message);
+
+        if (message != null) {
+            _query.setMessage(message);
+        }
+
         _query.addLine("name", "Name", name);
         _query.addLine("default", "Default value", defValue);
         _query.addLine("class", "Class", className);
-        ComponentDialog dialog = new ComponentDialog(
-                _owner,
-                "Add a new parameter to " + _target.getFullName(),
-                _query,
-                null);
+
+        ComponentDialog dialog = new ComponentDialog(_owner,
+                "Add a new parameter to " + _target.getFullName(), _query, null);
+
         // If the OK button was pressed, then queue a mutation
         // to create the parameter.
         // A blank property name is interpreted as a cancel.
         String newName = _query.getStringValue("name");
 
         // Need to escape quotes in default value.
-        String newDefValue = StringUtilities.escapeForXML(
-                _query.getStringValue("default"));
-
+        String newDefValue = StringUtilities.escapeForXML(_query.getStringValue(
+                    "default"));
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
-            String moml = "<property name=\""
-                + newName
-                + "\" value=\""
-                + newDefValue.toString()
-                + "\" class=\""
-                + _query.getStringValue("class")
-                + "\"/>";
+            String moml = "<property name=\"" + newName + "\" value=\""
+                + newDefValue.toString() + "\" class=\""
+                + _query.getStringValue("class") + "\"/>";
             _target.addChangeListener(this);
+
             MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
                     moml);
             request.setUndoable(true);
             _target.requestChange(request);
         }
+
         return dialog;
     }
 
@@ -358,25 +366,27 @@ public class EditParametersDialog extends ComponentDialog
      *  of an edit change.
      */
     private void _reOpen() {
-        ChangeRequest reOpen = new ChangeRequest(
-                this, "Re-open configure dialog") {
-            protected void _execute() throws Exception {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        new EditParametersDialog(_owner, _target);
-                    }
-                });
-            }
-        };
+        ChangeRequest reOpen = new ChangeRequest(this,
+                "Re-open configure dialog") {
+                protected void _execute() throws Exception {
+                    SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                new EditParametersDialog(_owner, _target);
+                            }
+                        });
+                }
+            };
+
         _target.requestChange(reOpen);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Button labels.
-    private static String[] _moreButtons
-    = {"Commit", "Add", "Remove", "Restore Defaults", "Preferences", "Help", "Cancel"};
+    private static String[] _moreButtons = {
+            "Commit", "Add", "Remove", "Restore Defaults", "Preferences", "Help",
+            "Cancel"
+        };
 
     // The owner window.
     private Frame _owner;

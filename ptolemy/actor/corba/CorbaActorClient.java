@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red (liuj)
 @AcceptedRating Red (moderator)
 */
-
 package ptolemy.actor.corba;
 
 import java.util.Iterator;
@@ -58,8 +57,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CorbaActorClient
+
 /**
    This actor delegate all its executions to a remote actor via
    CORBA. The remote actor can be anything that implements the
@@ -96,9 +97,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu
    @version $Id$
 */
-
 public class CorbaActorClient extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  It has neither input port, nor output port.
      *  @param container The container.
@@ -109,10 +108,10 @@ public class CorbaActorClient extends TypedAtomicActor {
      *   actor with this name.
      */
     public CorbaActorClient(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ORBInitProperties  = new Parameter(this, "ORBInit");
+        ORBInitProperties = new Parameter(this, "ORBInit");
         ORBInitProperties.setToken(new StringToken(""));
         remoteActorName = new Parameter(this, "RemoteActorName");
         remoteActorName.setToken(new StringToken(""));
@@ -181,95 +180,105 @@ public class CorbaActorClient extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(
-                ((StringToken)ORBInitProperties.getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
+                .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
+
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
             _debug("ORB initial argument: " + args[i]);
             i++;
         }
+
         try {
             try {
                 // start the ORB
                 ORB orb = ORB.init(args, null);
                 _debug(getName(), " ORB initialized");
+
                 //get the root naming context
                 org.omg.CORBA.Object objRef = orb.resolve_initial_references(
                         "NameService");
                 NamingContext ncRef = NamingContextHelper.narrow(objRef);
+
                 if (ncRef != null) {
                     _debug(getName(), "found name service.");
                 }
+
                 //resolve the remote actor reference in Naming
-                NameComponent namecomp = new NameComponent(
-                        ((StringToken)remoteActorName.getToken()).
-                        stringValue(), "");
+                NameComponent namecomp = new NameComponent(((StringToken) remoteActorName
+                        .getToken()).stringValue(), "");
                 _debug(getName(), " looking for name: ",
-                        (remoteActorName.getToken()).toString());
-                NameComponent path[] = {namecomp};
+                    (remoteActorName.getToken()).toString());
+
+                NameComponent[] path = { namecomp };
+
                 // locate the remote actor
-                _remoteActor =
-                    ptolemy.actor.corba.util.CorbaActorHelper.narrow(
-                            ncRef.resolve(path));
+                _remoteActor = ptolemy.actor.corba.util.CorbaActorHelper.narrow(ncRef
+                        .resolve(path));
+
                 if (_remoteActor == null) {
                     throw new IllegalActionException(this,
-                            " can not find the remote actor.");
+                        " can not find the remote actor.");
                 }
             } catch (UserException ex) {
                 throw new IllegalActionException(this,
-                        " initialize ORB failed." + ex.getMessage());
+                    " initialize ORB failed." + ex.getMessage());
             }
+
             //check the corespondence of parameters and ports.
             Iterator attributes = attributeList().iterator();
+
             while (attributes.hasNext()) {
-                Attribute att = (Attribute)attributes.next();
-                if ((att != ORBInitProperties) && (att != remoteActorName) &&
-                        (att instanceof Parameter)) {
-                    _debug(getName(),
-                            " check remote parameter: ", att.getName());
+                Attribute att = (Attribute) attributes.next();
+
+                if ((att != ORBInitProperties) && (att != remoteActorName)
+                        && (att instanceof Parameter)) {
+                    _debug(getName(), " check remote parameter: ", att.getName());
+
                     if (!_remoteActor.hasParameter(att.getName())) {
                         throw new IllegalActionException(this,
-                                "Parameter: " + att.getName() +
-                                " not found on the remote side.");
+                            "Parameter: " + att.getName()
+                            + " not found on the remote side.");
                     }
                 }
             }
+
             Iterator ports = portList().iterator();
+
             while (ports.hasNext()) {
-                IOPort p = (IOPort)ports.next();
+                IOPort p = (IOPort) ports.next();
                 _debug(getName(), " check remote port: ", p.getName());
-                if (!_remoteActor.hasPort(p.getName(),
-                            p.isInput(), p.isOutput(), p.isMultiport())) {
-                    _debug(
-                            "Port: " + p.getName() +
-                            " not found on the remote side" +
-                            " or has wrong type.");
+
+                if (!_remoteActor.hasPort(p.getName(), p.isInput(),
+                            p.isOutput(), p.isMultiport())) {
+                    _debug("Port: " + p.getName()
+                        + " not found on the remote side"
+                        + " or has wrong type.");
                     throw new IllegalActionException(this,
-                            "Port: " + p.getName() +
-                            " not found on the remote side" +
-                            " or has wrong type.");
-                }
-                try {
-                    _remoteActor.setPortWidth(p.getName(),
-                            (short)p.getWidth());
-                } catch (UserException ex) {
-                    _debug(
-                            "Port: " + p.getName() +
-                            " does not support width");
-                    throw new IllegalActionException(this,
-                            "Port: " + p.getName() +
-                            " does not support width " + p.getWidth());
+                        "Port: " + p.getName()
+                        + " not found on the remote side"
+                        + " or has wrong type.");
                 }
 
+                try {
+                    _remoteActor.setPortWidth(p.getName(), (short) p.getWidth());
+                } catch (UserException ex) {
+                    _debug("Port: " + p.getName() + " does not support width");
+                    throw new IllegalActionException(this,
+                        "Port: " + p.getName() + " does not support width "
+                        + p.getWidth());
+                }
             }
         } catch (SystemException ex) {
             _debug(getName(), " CORBA set up failed " + ex.getMessage());
             throw new IllegalActionException(this,
-                    "CORBA set up faliar"+ex.getMessage());
+                "CORBA set up faliar" + ex.getMessage());
         }
+
         _debug("Finished initializing " + getName());
     }
 
@@ -280,22 +289,26 @@ public class CorbaActorClient extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Director dir = getDirector();
+
         if (dir == null) {
             throw new IllegalActionException(this, "No director!");
         }
+
         try {
             _transferInputs();
+
             try {
                 _remoteActor.fire();
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
-                        "remote actor throws IllegalActionException"
-                        + ex.getMessage());
+                    "remote actor throws IllegalActionException"
+                    + ex.getMessage());
             }
+
             _transferOutputs();
         } catch (SystemException ex) {
             throw new InvalidStateException(this,
-                    "Comminication Failiar."+ex.getMessage());
+                "Comminication Failiar." + ex.getMessage());
         }
     }
 
@@ -306,24 +319,29 @@ public class CorbaActorClient extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         Director dir = getDirector();
+
         if (dir == null) {
             throw new IllegalActionException(this, "No director!");
         }
+
         // boolean result;
         try {
             _transferInputs();
+
             try {
                 /* result =*/ _remoteActor.postfire();
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
-                        "remote actor throws IllegalActionException"
-                        + ex.getMessage());
+                    "remote actor throws IllegalActionException"
+                    + ex.getMessage());
             }
+
             _transferOutputs();
         } catch (SystemException ex) {
             throw new InvalidStateException(this,
-                    "Comminication Failiar."+ex.getMessage());
+                "Comminication Failiar." + ex.getMessage());
         }
+
         // FIXME: Why don't we return the return value from the parent?
         return true;
     }
@@ -335,24 +353,30 @@ public class CorbaActorClient extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         Director dir = getDirector();
+
         if (dir == null) {
             throw new IllegalActionException(this, "No director!");
         }
+
         boolean result;
+
         try {
             _transferInputs();
+
             try {
                 result = _remoteActor.prefire();
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
-                        "remote actor throws IllegalActionException"
-                        + ex.getMessage());
+                    "remote actor throws IllegalActionException"
+                    + ex.getMessage());
             }
+
             _transferOutputs();
         } catch (SystemException ex) {
             throw new InvalidStateException(this,
-                    "Comminication Failiar."+ex.getMessage());
+                "Comminication Failiar." + ex.getMessage());
         }
+
         return result;
     }
 
@@ -367,11 +391,10 @@ public class CorbaActorClient extends TypedAtomicActor {
             }
         } catch (CorbaIllegalActionException ex) {
             throw new IllegalActionException(this,
-                    "remote actor throws IllegalActionException"
-                    + ex.getMessage());
+                "remote actor throws IllegalActionException" + ex.getMessage());
         } catch (SystemException ex) {
             throw new InvalidStateException(this,
-                    "Comminication Failiar."+ex.getMessage());
+                "Comminication Failiar." + ex.getMessage());
         }
     }
 
@@ -389,34 +412,34 @@ public class CorbaActorClient extends TypedAtomicActor {
      */
     protected void _transferInputs() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)(inputPorts.next());
+            IOPort port = (IOPort) (inputPorts.next());
             String inputName = port.getName();
+
             for (short i = 0; i < port.getWidth(); i++) {
                 if (port.hasToken(i)) {
                     Token inputToken = port.get(0);
+
                     try {
-                        _remoteActor.transferInput(
-                                inputName, i, inputToken.toString());
+                        _remoteActor.transferInput(inputName, i,
+                            inputToken.toString());
                     } catch (SystemException ex) {
                         throw new InvalidStateException(this,
-                                "Communication failiar." + ex.getMessage());
+                            "Communication failiar." + ex.getMessage());
                     } catch (CorbaIllegalActionException ex1) {
                         throw new IllegalActionException(this,
-                                "Illegal Action on remote actor. "
-                                + ex1.getMessage());
+                            "Illegal Action on remote actor. "
+                            + ex1.getMessage());
                     } catch (CorbaUnknownPortException ex2) {
                         throw new IllegalActionException(this,
-                                "Wrong port name. "
-                                + ex2.getMessage());
+                            "Wrong port name. " + ex2.getMessage());
                     } catch (CorbaIndexOutofBoundException ex3) {
                         throw new IllegalActionException(this, port,
-                                "Channel index out of bound. "
-                                + ex3.getMessage());
+                            "Channel index out of bound. " + ex3.getMessage());
                     } catch (CorbaIllegalValueException ex4) {
                         throw new IllegalActionException(port,
-                                "contains illegal token value. "
-                                + ex4.getMessage());
+                            "contains illegal token value. " + ex4.getMessage());
                     }
                 }
             }
@@ -435,33 +458,33 @@ public class CorbaActorClient extends TypedAtomicActor {
      */
     protected void _transferOutputs() throws IllegalActionException {
         Iterator outputPorts = outputPortList().iterator();
+
         while (outputPorts.hasNext()) {
-            IOPort port = (IOPort)(outputPorts.next());
+            IOPort port = (IOPort) (outputPorts.next());
             String portName = port.getName();
+
             for (short i = 0; i < port.getWidth(); i++) {
                 try {
                     if (_remoteActor.hasData(portName, i)) {
-                        String returndata = _remoteActor.transferOutput(
-                                portName, i);
+                        String returndata = _remoteActor.transferOutput(portName,
+                                i);
+
                         //FIXME: type?
                         DoubleToken outputToken = new DoubleToken(returndata);
                         port.send(i, outputToken);
                     }
                 } catch (SystemException ex) {
                     throw new InvalidStateException(this,
-                            "Communication failiar." + ex.getMessage());
+                        "Communication failiar." + ex.getMessage());
                 } catch (CorbaIllegalActionException ex1) {
                     throw new IllegalActionException(this,
-                            "Illegal Action on remote actor. "
-                            + ex1.getMessage());
+                        "Illegal Action on remote actor. " + ex1.getMessage());
                 } catch (CorbaUnknownPortException ex2) {
                     throw new IllegalActionException(this,
-                            "Unknow port name" + portName +
-                            ex2.getMessage());
+                        "Unknow port name" + portName + ex2.getMessage());
                 } catch (CorbaIndexOutofBoundException ex3) {
                     throw new IllegalActionException(this, port,
-                            "channel index out of bound. " +
-                            ex3.getMessage());
+                        "channel index out of bound. " + ex3.getMessage());
                 }
             }
         }
@@ -469,6 +492,5 @@ public class CorbaActorClient extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private CorbaActor _remoteActor;
 }

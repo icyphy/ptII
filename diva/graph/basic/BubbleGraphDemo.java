@@ -23,7 +23,6 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 */
-
 package diva.graph.basic;
 
 import java.awt.event.ActionListener;
@@ -36,6 +35,7 @@ import diva.graph.JGraph;
 import diva.graph.toolbox.DeletionListener;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
+
 
 /**
  * Another graph demo.  This uses a different rendering strategy for
@@ -52,7 +52,7 @@ public class BubbleGraphDemo {
      * Construct a new instance of graph demo, which does the work of
      * setting up the graphs and displaying itself.
      */
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         new BubbleGraphDemo(new BasicFrame("Bubble Graph Demo"));
     }
 
@@ -62,18 +62,11 @@ public class BubbleGraphDemo {
 
         ActionListener deletionListener = new DeletionListener();
         jg.registerKeyboardAction(deletionListener, "Delete",
-                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
+            KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+            JComponent.WHEN_IN_FOCUSED_WINDOW);
         jg.setRequestFocusEnabled(true);
 
         context.setSize(600, 400);
         context.setVisible(true);
     }
 }
-
-
-
-
-
-
-

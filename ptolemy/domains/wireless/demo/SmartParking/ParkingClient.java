@@ -21,29 +21,29 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 package ptolemy.domains.wireless.demo.SmartParking;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Random;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
-import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public class ParkingClient extends TypedAtomicActor{
 
+public class ParkingClient extends TypedAtomicActor {
     public ParkingClient(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         carArrival = new TypedIOPort(this, "carArrival", true, false);
         parkingTo = new TypedIOPort(this, "parkingTo", false, true);
@@ -85,16 +85,18 @@ public class ParkingClient extends TypedAtomicActor{
      *  consumes the messge.
      */
     public void fire() throws IllegalActionException {
-
         super.fire();
-        if(carArrival.getWidth() >0) {
-            if(carArrival.hasToken(0)) {
+
+        if (carArrival.getWidth() > 0) {
+            if (carArrival.hasToken(0)) {
                 carArrival.get(0);
-                HashSet lots =_parkingManager.getAvailable();
-                if(lots.size()>0) {
+
+                HashSet lots = _parkingManager.getAvailable();
+
+                if (lots.size() > 0) {
                     Object[] lotsArray = lots.toArray();
                     int index = _getRandom(lots.size());
-                    parkingTo.send(0, new StringToken((String)lotsArray[index]));
+                    parkingTo.send(0, new StringToken((String) lotsArray[index]));
                 } else {
                     leave.send(0, new IntToken(_LEAVE));
                 }
@@ -116,22 +118,22 @@ public class ParkingClient extends TypedAtomicActor{
         double randomValue = _random.nextDouble();
         double cdf = 0.0;
         int value = 0;
+
         for (int i = 0; i < size; i++) {
-            cdf += 1.0/size;
+            cdf += (1.0 / size);
+
             if (randomValue <= cdf) {
                 value = i;
                 break;
             }
         }
+
         return value;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private ParkingManager _parkingManager;
-
     private Random _random;
-
     private static int _LEAVE = 1;
 }

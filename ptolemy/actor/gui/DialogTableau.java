@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Frame;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DialogTableau
+
 /**
    A tableau representing a Dialog in a toplevel window.
    <p>
@@ -66,7 +67,6 @@ import ptolemy.util.MessageHandler;
    @see Effigy
 */
 public class DialogTableau extends Tableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  Use setFrame() to specify the Dialog after construction.
      *  @param container The container.
@@ -79,11 +79,12 @@ public class DialogTableau extends Tableau {
     public DialogTableau(Effigy container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container.workspace());
+
         if (!(container instanceof Effigy)) {
-            throw new IllegalActionException(
-                this,
+            throw new IllegalActionException(this,
                 "Effigy for Dialog must be an instance of " + "Effigy.");
         }
+
         setName(name);
         setContainer(container);
     }
@@ -100,45 +101,43 @@ public class DialogTableau extends Tableau {
      *  @param target The entity that needs the Dialog
      *  @return DialogTableau
      */
-    public static DialogTableau createDialog(
-        Frame parent,
-        Configuration configuration,
-        Effigy effigy,
-        Class dialogClass,
+    public static DialogTableau createDialog(Frame parent,
+        Configuration configuration, Effigy effigy, Class dialogClass,
         Entity target) {
-
         if (PtolemyDialog.class.isAssignableFrom(dialogClass)) {
             // First see whether the effigy already contains a dialog of
             // dialogClas on this entity.
             if (effigy instanceof Effigy) {
-                Iterator dialogs =
-                    effigy.entityList(DialogTableau.class).iterator();
+                Iterator dialogs = effigy.entityList(DialogTableau.class)
+                                         .iterator();
+
                 while (dialogs.hasNext()) {
-                    DialogTableau dialogTableau =
-                        (DialogTableau) dialogs.next();
-                    PtolemyDialog existingDialog =
-                        ((PtolemyDialog) (dialogTableau.getFrame()));
-                    if (existingDialog != null
-                        && (existingDialog.getClass() == dialogClass)
-                        && (dialogTableau.hasTarget(target))) {
+                    DialogTableau dialogTableau = (DialogTableau) dialogs.next();
+                    PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
+                        .getFrame()));
+
+                    if ((existingDialog != null)
+                            && (existingDialog.getClass() == dialogClass)
+                            && (dialogTableau.hasTarget(target))) {
                         return dialogTableau;
                     }
                 }
             }
+
             // Now, do the same test on the container of the effigy.
             NamedObj container = (NamedObj) (effigy.getContainer());
+
             if ((container != null) && (container instanceof PtolemyEffigy)) {
-                Iterator dialogs =
-                    ((PtolemyEffigy) container)
-                        .entityList(DialogTableau.class)
-                        .iterator();
+                Iterator dialogs = ((PtolemyEffigy) container).entityList(DialogTableau.class)
+                                    .iterator();
+
                 while (dialogs.hasNext()) {
-                    DialogTableau dialogTableau =
-                        (DialogTableau) dialogs.next();
-                    PtolemyDialog existingDialog =
-                        ((PtolemyDialog) (dialogTableau.getFrame()));
+                    DialogTableau dialogTableau = (DialogTableau) dialogs.next();
+                    PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
+                        .getFrame()));
+
                     if ((existingDialog.getClass() == dialogClass)
-                        && (dialogTableau.hasTarget(target))) {
+                            && (dialogTableau.hasTarget(target))) {
                         return dialogTableau;
                     }
                 }
@@ -147,44 +146,48 @@ public class DialogTableau extends Tableau {
 
         // A DialogTableau doesn't exist, so create one.
         DialogTableau newDialogTableau;
+
         try {
-            newDialogTableau =
-                new DialogTableau(effigy, effigy.uniqueName("dialog"));
+            newDialogTableau = new DialogTableau(effigy,
+                    effigy.uniqueName("dialog"));
+
             PtolemyDialog dialog = null;
             Constructor[] constructors = dialogClass.getConstructors();
             Constructor constructor = null;
+
             for (int i = 0; i < constructors.length; i++) {
-                Class pType[] = constructors[i].getParameterTypes();
-                if (pType.length == 4
-                    && pType[0] == DialogTableau.class
-                    && pType[1] == Frame.class
-                    && pType[2] == Entity.class
-                    && pType[3] == Configuration.class) {
+                Class[] pType = constructors[i].getParameterTypes();
+
+                if ((pType.length == 4) && (pType[0] == DialogTableau.class)
+                        && (pType[1] == Frame.class)
+                        && (pType[2] == Entity.class)
+                        && (pType[3] == Configuration.class)) {
                     constructor = constructors[i];
                     break;
                 }
             }
+
             if (constructor != null) {
-                Object args[] = new Object[4];
+                Object[] args = new Object[4];
                 args[0] = newDialogTableau;
                 args[1] = parent;
                 args[2] = target;
                 args[3] = configuration;
                 dialog = (PtolemyDialog) constructor.newInstance(args);
             }
+
             if (dialog == null) {
-                throw new KernelException(
-                    target,
-                    null,
+                throw new KernelException(target, null,
                     "Can't create a " + dialogClass);
             }
 
             newDialogTableau.setFrame(dialog);
             return newDialogTableau;
         } catch (Exception ex) {
-            MessageHandler.error(
-                "Failed to create a DialogTableau for " + target.getFullName(), ex);
+            MessageHandler.error("Failed to create a DialogTableau for "
+                + target.getFullName(), ex);
         }
+
         return null;
     }
 
@@ -194,10 +197,12 @@ public class DialogTableau extends Tableau {
      */
     public Entity getTarget() {
         JFrame dialogJFrame = getFrame();
+
         if (dialogJFrame instanceof PtolemyDialog) {
             PtolemyDialog dialog = (PtolemyDialog) dialogJFrame;
             return dialog.getTarget();
         }
+
         return null;
     }
 
@@ -207,9 +212,11 @@ public class DialogTableau extends Tableau {
      */
     public boolean hasTarget(Entity entity) {
         Entity target = getTarget();
-        if (target != null && target == entity)
+
+        if ((target != null) && (target == entity)) {
             return true;
+        }
+
         return false;
     }
-
 }

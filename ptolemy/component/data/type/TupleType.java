@@ -27,9 +27,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.component.data.type;
 
+import ptolemy.component.data.TupleToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
-import ptolemy.component.data.TupleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;
 import ptolemy.data.type.Type;

@@ -22,13 +22,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import ptolemy.graph.Graph;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FloydWarshallAnalysis
+
 /**
    Base class for all the analysis based on a floyd-warshall like computation.
    This is an abstract class and cannot be instantiated.
@@ -39,9 +40,7 @@ import ptolemy.graph.Graph;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 abstract public class FloydWarshallStrategy extends CachedStrategy {
-
     /** Construct an FloydWarshallStrategy.
      */
     public FloydWarshallStrategy(Graph graph) {
@@ -50,7 +49,6 @@ abstract public class FloydWarshallStrategy extends CachedStrategy {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /** Basic computation performed by all the analysis implementing a
      *  floyd-warshall like analysis on a given graph.
@@ -62,18 +60,18 @@ abstract public class FloydWarshallStrategy extends CachedStrategy {
     protected Object _compute() {
         int n = graph().nodeCount();
         Object floydWarshallResult = null;
+
         // Warshall's algorithm
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    _floydWarshallComputation(k,i,j);
-
+                    _floydWarshallComputation(k, i, j);
                 }
             }
         }
+
         return floydWarshallResult;
     }
-
 
     /** Derived classed need to override the _floydWarshallComputation method
      *  of this class to provide the correct functionality.

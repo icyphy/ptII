@@ -27,6 +27,7 @@ package diva.util;
 
 import java.util.NoSuchElementException;
 
+
 /**
  * An iterator over a single object.
  *
@@ -55,5 +56,3 @@ public class UnitIterator extends IteratorAdapter {
         }
     }
 }
-
-

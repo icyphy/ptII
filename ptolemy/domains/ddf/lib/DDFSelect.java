@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ddf.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -42,6 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+
 
 /**
    A type polymorphic select, which routes specified input channels to
@@ -63,9 +63,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (zgang)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class DDFSelect extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -76,7 +74,7 @@ public class DDFSelect extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public DDFSelect(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -86,19 +84,18 @@ public class DDFSelect extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(input);
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
 
-        control_tokenConsumptionRate =
-            new Parameter(control, "tokenConsumptionRate");
+        control_tokenConsumptionRate = new Parameter(control,
+                "tokenConsumptionRate");
         control_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         control_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal
-            = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
@@ -108,16 +105,20 @@ public class DDFSelect extends TypedAtomicActor {
     /** The input port.  The type can be anything.
      */
     public TypedIOPort input;
+
     /** Input port for control tokens, which specify the input channel
      *  to read token from.  The type is int.
      */
     public TypedIOPort control;
+
     /** The output port.  The type is at least the type of input.
      */
     public TypedIOPort output;
+
     /** This parameter provides token consumption rate for input.
      */
     public Parameter input_tokenConsumptionRate;
+
     /** This parameter provides token consumption rate for control.
      */
     public Parameter control_tokenConsumptionRate;
@@ -132,9 +133,8 @@ public class DDFSelect extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        DDFSelect newObject = (DDFSelect)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DDFSelect newObject = (DDFSelect) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -155,13 +155,15 @@ public class DDFSelect extends TypedAtomicActor {
             output.send(0, input.get(_control));
             _isControlRead = false;
         } else {
-            _control = ((IntToken)control.get(0)).intValue();
-            if (_control >= 0 && _control < input.getWidth())
+            _control = ((IntToken) control.get(0)).intValue();
+
+            if ((_control >= 0) && (_control < input.getWidth())) {
                 _isControlRead = true;
-            else
+            } else {
                 // If the received control token is out of range,
                 // re-read from control port in next iteration.
                 _isControlRead = false;
+            }
         }
     }
 
@@ -172,10 +174,13 @@ public class DDFSelect extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _isControlRead = false;
+
         Token[] rates = new IntToken[input.getWidth()];
+
         for (int i = 0; i < input.getWidth(); i++) {
             rates[i] = new IntToken(0);
         }
+
         input_tokenConsumptionRate.setToken(new ArrayToken(rates));
         control_tokenConsumptionRate.setToken(new IntToken(1));
     }
@@ -188,20 +193,25 @@ public class DDFSelect extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         if (_isControlRead) {
             Token[] rates = new IntToken[input.getWidth()];
+
             for (int i = 0; i < input.getWidth(); i++) {
                 rates[i] = new IntToken(0);
             }
+
             rates[_control] = new IntToken(1);
             input_tokenConsumptionRate.setToken(new ArrayToken(rates));
             control_tokenConsumptionRate.setToken(new IntToken(0));
         } else {
             Token[] rates = new IntToken[input.getWidth()];
+
             for (int i = 0; i < input.getWidth(); i++) {
                 rates[i] = new IntToken(0);
             }
+
             input_tokenConsumptionRate.setToken(new ArrayToken(rates));
             control_tokenConsumptionRate.setToken(new IntToken(1));
         }
+
         return super.postfire();
     }
 
@@ -222,12 +232,12 @@ public class DDFSelect extends TypedAtomicActor {
                 return false;
             }
         }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The most recently read control token.
     private int _control;
 

@@ -27,6 +27,7 @@ package diva.graph.basic;
 
 import diva.graph.GraphPane;
 
+
 /**
  * A pane containing a bubble-and-arc editor.
  *
@@ -38,12 +39,10 @@ public class BubblePane extends GraphPane {
     /**
      * Create a BubblePane
      */
-    public BubblePane () {
+    public BubblePane() {
         super(new BubbleGraphController(), new BasicGraphModel());
 
         // More halo
         getForegroundLayer().setPickHalo(4.0);
     }
 }
-
-

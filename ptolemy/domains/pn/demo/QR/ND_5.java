@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.demo.QR;
 
 import java.util.Vector;
@@ -39,6 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ND_5
@@ -58,9 +58,7 @@ matrices is involved; they may change in future releases.
 @Pt.ProposedRating Red (kienhuis)
 @Pt.AcceptedRating Red (kienhuis)
 */
-
 public class ND_5 extends TypedAtomicActor {
-
     /** Construct an actor that is an SBF object with the given container
      *  and name.
      *  @param container The container.
@@ -71,9 +69,7 @@ public class ND_5 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_5(CompositeEntity aContainer, String aName)
-            throws IllegalActionException, NameDuplicationException
-    {
-
+        throws IllegalActionException, NameDuplicationException {
         super(aContainer, aName);
 
         RP_11 = new TypedIOPort(this, "RP_11", true, false);
@@ -89,14 +85,12 @@ public class ND_5 extends TypedAtomicActor {
 
         // The Type of these Parameters is set by the First
         // Token placed in the parameters when created.
-        parameter_N = new Parameter(this, "N" , new IntToken(6));
-        parameter_K = new Parameter(this, "K" , new IntToken(6));
-
+        parameter_N = new Parameter(this, "N", new IntToken(6));
+        parameter_K = new Parameter(this, "K", new IntToken(6));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     // -- Part of the Actor
     public TypedIOPort RP_11;
     public TypedIOPort RP_12;
@@ -127,25 +121,24 @@ public class ND_5 extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-
-        for ( int j = 1 ; j <= 1*N ; j += 1 ) {
-            for ( int i = 1*j ; i <= 1*N ; i += 1 ) {
-                if ( -i + j == 0 ) {
-                    r_2.add( new Double(((DoubleToken) RP_11.get(0)).
-                                     doubleValue() ) );
-                    in_0 = ((Double)r_2.elementAt(w_r_2++)).doubleValue();
-                }
-                if ( i - j - 1 >= 0 ) {
-                    r_3.add( new Double(((DoubleToken) RP_12.get(0)).
-                                     doubleValue() ) );
-                    in_0 = ((Double)r_3.elementAt(w_r_3++)).doubleValue();
+        for (int j = 1; j <= (1 * N); j += 1) {
+            for (int i = 1 * j; i <= (1 * N); i += 1) {
+                if ((-i + j) == 0) {
+                    r_2.add(new Double(
+                            ((DoubleToken) RP_11.get(0)).doubleValue()));
+                    in_0 = ((Double) r_2.elementAt(w_r_2++)).doubleValue();
                 }
 
-                _debug(" Broadcast from ND_5: " + in_0 );
+                if ((i - j - 1) >= 0) {
+                    r_3.add(new Double(
+                            ((DoubleToken) RP_12.get(0)).doubleValue()));
+                    in_0 = ((Double) r_3.elementAt(w_r_3++)).doubleValue();
+                }
+
+                _debug(" Broadcast from ND_5: " + in_0);
 
                 // Manually added
-                out.broadcast(new DoubleToken( in_0 ));
-
+                out.broadcast(new DoubleToken(in_0));
             }
         }
     }
@@ -160,20 +153,14 @@ public class ND_5 extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // -- Get private copies of the parameters
     private int N;
     private int K;
-
     private double in_0;
     private double out_0;
-
     private Vector r_2 = new Vector();
     private Vector r_3 = new Vector();
-
     private int w_r_2 = 0;
     private int w_r_3 = 0;
-
     private boolean _returnValue = true;
-
 }

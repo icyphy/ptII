@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data.type;
 
 import java.io.Serializable;
@@ -36,8 +35,10 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FixType
+
 /**
    This class represents the type of fix point token objects.  Generally the
    type of a fix point token includes the precision of the token, along with
@@ -49,14 +50,10 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.ProposedRating Red (neuendor)
    @Pt.AcceptedRating Red
 */
-
-public class FixType extends StructuredType
-    implements Serializable {
-
+public class FixType extends StructuredType implements Serializable {
     /** Construct a new fix type.
      */
     private FixType() {
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -76,14 +73,13 @@ public class FixType extends StructuredType
      *  @exception IllegalActionException If lossless conversion cannot
      *   be done.
      */
-    public Token convert(Token token)
-            throws IllegalActionException {
+    public Token convert(Token token) throws IllegalActionException {
         if (token instanceof FixToken) {
             return token;
         }
 
-        throw new IllegalActionException(
-                Token.notSupportedConversionMessage(token, toString()));
+        throw new IllegalActionException(Token.notSupportedConversionMessage(
+                token, toString()));
     }
 
     /** Determine if the argument represents the same FixType as this
@@ -95,6 +91,7 @@ public class FixType extends StructuredType
         if (!(object instanceof FixType)) {
             return false;
         }
+
         return true;
     }
 
@@ -130,7 +127,7 @@ public class FixType extends StructuredType
      */
     public boolean isCompatible(Type type) {
         int typeInfo = TypeLattice.compare(this, type);
-        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+        return ((typeInfo == CPO.SAME) || (typeInfo == CPO.HIGHER));
     }
 
     /** Test if this Type is a constant. A Type is a constant if it
@@ -155,8 +152,7 @@ public class FixType extends StructuredType
      */
     public boolean isSubstitutionInstance(Type type) {
         if (type instanceof StructuredType) {
-            return (((StructuredType)type)._getRepresentative()
-                    == _getRepresentative());
+            return (((StructuredType) type)._getRepresentative() == _getRepresentative());
         } else {
             return false;
         }
@@ -178,17 +174,16 @@ public class FixType extends StructuredType
      *   different structure.
      */
     public void updateType(StructuredType newType)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
-                    "UnsizedMatrixType.updateType: Cannot " +
-                    "updateType the element type to " + newType + ".");
+                "UnsizedMatrixType.updateType: Cannot "
+                + "updateType the element type to " + newType + ".");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                           public fields                   ////
-
     public static final FixType BOTTOM = new FixType();
 
     ///////////////////////////////////////////////////////////////////
@@ -209,6 +204,7 @@ public class FixType extends StructuredType
      */
     protected int _compare(StructuredType type) {
         return CPO.SAME;
+
         //         if (equals(type)) {
         //             return CPO.SAME;
         //         } else {
@@ -246,6 +242,7 @@ public class FixType extends StructuredType
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
         return this;
+
         //         if (equals(type)) {
         //             return this;
         //         } else {
@@ -255,7 +252,6 @@ public class FixType extends StructuredType
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     //  private Precision _precision;
     //  private Quantization _quantization;
     //  private Rounding _rounding;

@@ -28,8 +28,8 @@
 
 */
 
-
 /// NestedExceptions
+
 /*** A simple program to test nested exceptions.
      The code tests nested exceptions.
      The program should catch the resulting exception.
@@ -42,7 +42,6 @@
      @Pt.ProposedRating Red (ankush)
      @Pt.AcceptedRating Red (ankush)
 */
-
 public class NestedExceptions {
     /** Outputs the messages and caught exceptions.
      *  @param args Application arguments.
@@ -50,22 +49,18 @@ public class NestedExceptions {
     public static void main(String[] args) {
         // Outer Exception.
         try {
-
             // Inner Exception.
             try {
                 throw new Exception();
             }
-
             catch (Exception e) {
                 System.out.println("Caught First Exception.");
             }
 
             throw new Exception();
         }
-
         catch (Exception e) {
             System.out.println("Caught Second Exception.");
         }
-
     }
 }

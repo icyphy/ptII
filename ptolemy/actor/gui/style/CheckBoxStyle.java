@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CheckBoxStyle
+
 /**
    This attribute annotates user settable attributes to specify
    a checkbox style for configuring the containing attribute.
@@ -55,9 +56,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class CheckBoxStyle extends ParameterEditorStyle {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -89,7 +88,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public CheckBoxStyle(Parameter container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -102,9 +101,13 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *  boolean token.
      */
     public boolean acceptable(Settable param) {
-        if (!(param instanceof Parameter)) return false;
+        if (!(param instanceof Parameter)) {
+            return false;
+        }
+
         try {
-            Token current = ((Parameter)param).getToken();
+            Token current = ((Parameter) param).getToken();
+
             if (current instanceof BooleanToken) {
                 return true;
             } else {
@@ -125,19 +128,23 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      */
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
         String name = getContainer().getName();
+
         if (!(getContainer() instanceof Parameter)) {
             throw new IllegalActionException(getContainer(),
-                    "CheckBoxStyle can only be "
-                    + "contained by instances of Parameter.");
+                "CheckBoxStyle can only be "
+                + "contained by instances of Parameter.");
         }
-        Parameter param = (Parameter)getContainer();
+
+        Parameter param = (Parameter) getContainer();
         Token current = param.getToken();
+
         if (!(current instanceof BooleanToken)) {
             throw new IllegalActionException(getContainer(),
-                    "CheckBoxStyle can only be "
-                    + "used for boolean-valued parameters");
+                "CheckBoxStyle can only be "
+                + "used for boolean-valued parameters");
         }
-        query.addCheckBox(name, name, ((BooleanToken)current).booleanValue());
+
+        query.addCheckBox(name, name, ((BooleanToken) current).booleanValue());
         query.attachParameter(param, name);
     }
 
@@ -152,11 +159,12 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-        if (container != null && !(container instanceof Parameter)) {
+        throws IllegalActionException, NameDuplicationException {
+        if ((container != null) && !(container instanceof Parameter)) {
             throw new IllegalActionException(this, container,
-                    "CheckBoxStyle can only be contained by a Parameter.");
+                "CheckBoxStyle can only be contained by a Parameter.");
         }
+
         super.setContainer(container);
     }
 }

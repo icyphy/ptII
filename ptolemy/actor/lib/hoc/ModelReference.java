@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.lib.hoc;
 
 import java.io.File;
@@ -61,8 +60,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ModelReference
+
 /**
    This is an atomic actor that can execute a model specified by
    a file or URL. This can be used to define an actor whose firing behavior
@@ -174,10 +175,8 @@ import ptolemy.moml.MoMLParser;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (eal)
 */
-public class ModelReference
-    extends TypedAtomicActor
+public class ModelReference extends TypedAtomicActor
     implements ExecutionListener {
-
     /** Construct a ModelReference with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -195,7 +194,7 @@ public class ModelReference
      *   an actor already in the container.
      */
     public ModelReference(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // FIXME: Need a way to specify a filter for the file browser.
@@ -272,24 +271,29 @@ public class ModelReference
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == modelFileOrURL) {
             if (_debugging) {
-                    _debug("Setting modelFileOrURL to: " + modelFileOrURL.getExpression());
+                _debug("Setting modelFileOrURL to: "
+                    + modelFileOrURL.getExpression());
             }
+
             // Open the file and read the MoML to create a model.
             URL url = modelFileOrURL.asURL();
+
             if (url != null) {
                 // If the protocol is that of a file,
                 // make sure it is in fact a file, and not
                 // a directory.
                 if (url.getProtocol().equals("file")) {
                     File asFile = modelFileOrURL.asFile();
+
                     if (!asFile.isFile()) {
                         throw new IllegalActionException(this,
-                                "Not a file: " + url);
+                            "Not a file: " + url);
                     }
                 }
+
                 // By specifying no workspace argument to the parser, we
                 // are asking it to create a new workspace for the referenced
                 // model.  This is necessary because the execution of that
@@ -300,19 +304,19 @@ public class ModelReference
                 // inappropriate to grant write access on the workspace
                 // of this actor.
                 MoMLParser parser = new MoMLParser();
+
                 try {
                     _model = parser.parse(null, url);
                 } catch (Exception ex) {
-                    throw new IllegalActionException(
-                            this,
-                            ex,
-                            "Failed to read model from: "
-                            + url);
+                    throw new IllegalActionException(this, ex,
+                        "Failed to read model from: " + url);
                 }
+
                 // Create a manager, if appropriate.
                 if (_model instanceof CompositeActor) {
                     _manager = new Manager(_model.workspace(), "Manager");
-                    ((CompositeActor)_model).setManager(_manager);
+                    ((CompositeActor) _model).setManager(_manager);
+
                     if (_debugging) {
                         _debug("** Created new manager.");
                     }
@@ -325,6 +329,7 @@ public class ModelReference
             }
         } else if (attribute == executionOnFiring) {
             String executionOnFiringValue = executionOnFiring.stringValue();
+
             if (executionOnFiringValue.equals("run in calling thread")) {
                 _executionOnFiringValue = _RUN_IN_CALLING_THREAD;
             } else if (executionOnFiringValue.equals("run in a new thread")) {
@@ -333,17 +338,20 @@ public class ModelReference
                 _executionOnFiringValue = _DO_NOTHING;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized option for executionOnFiring: " + executionOnFiringValue);
+                    "Unrecognized option for executionOnFiring: "
+                    + executionOnFiringValue);
             }
         } else if (attribute == postfireAction) {
             String postfireActionValue = postfireAction.stringValue();
+
             if (postfireActionValue.equals("do nothing")) {
                 _postfireActionValue = _DO_NOTHING;
             } else if (postfireActionValue.equals("stop executing")) {
                 _postfireActionValue = _STOP_EXECUTING;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized value for postfireAction: " + postfireActionValue);
+                    "Unrecognized value for postfireAction: "
+                    + postfireActionValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -353,8 +361,7 @@ public class ModelReference
     /** Override the base class to ensure that private variables are reset to null.
      *  @return A new instance of ModelReference.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelReference newActor = (ModelReference) super.clone(workspace);
         newActor._manager = null;
         newActor._model = null;
@@ -371,11 +378,10 @@ public class ModelReference
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
-    public synchronized void executionError(
-            Manager manager,
-            Throwable throwable) {
+    public synchronized void executionError(Manager manager, Throwable throwable) {
         _throwable = throwable;
         _executing = false;
+
         // NOTE: Can't remove these now!  The list is being
         // currently used to notify me!
         // manager.removeExecutionListener(this);
@@ -394,6 +400,7 @@ public class ModelReference
      */
     public synchronized void executionFinished(Manager manager) {
         _executing = false;
+
         // NOTE: Can't remove these now!  The list is being
         // currently used to notify me!
         // manager.removeExecutionListener(this);
@@ -423,36 +430,42 @@ public class ModelReference
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         if (_throwable != null) {
             Throwable throwable = _throwable;
             _throwable = null;
-            throw new IllegalActionException(
-                    this,
-                    throwable,
-                    "Run in a new thread threw an exception "
-                    + "on the previous firing.");
+            throw new IllegalActionException(this, throwable,
+                "Run in a new thread threw an exception "
+                + "on the previous firing.");
         }
 
         if (_model instanceof CompositeActor) {
             CompositeActor executable = (CompositeActor) _model;
 
             _manager = executable.getManager();
+
             if (_manager == null) {
                 throw new InternalErrorException("No manager!");
             }
+
             if (_debugging) {
                 _manager.addDebugListener(this);
+
                 Director director = executable.getDirector();
+
                 if (director != null) {
                     director.addDebugListener(this);
                 }
             } else {
                 _manager.removeDebugListener(this);
+
                 Director director = executable.getDirector();
+
                 if (director != null) {
                     director.removeDebugListener(this);
                 }
             }
+
             // If there is a previous execution, then wait for it to finish.
             // Avoid the synchronize block if possible.
             if (_executing) {
@@ -460,8 +473,10 @@ public class ModelReference
                     while (_executing) {
                         try {
                             if (_debugging) {
-                                _debug("** Waiting for previous execution to finish.");
+                                _debug(
+                                    "** Waiting for previous execution to finish.");
                             }
+
                             // Use workspace version of wait to release
                             // read permission on the workspace.
                             workspace().wait(this);
@@ -471,11 +486,13 @@ public class ModelReference
                             return;
                         }
                     }
+
                     if (_debugging) {
                         _debug("** Previous execution has finished.");
                     }
                 }
             }
+
             // Derived classes may need to read inputs earlier in their
             // fire() method, before calling this class, in which case
             // they are expected to set this flag to true.
@@ -484,18 +501,22 @@ public class ModelReference
                 // the referenced model parameters.
                 _readInputs();
             }
+
             _alreadyReadInputs = false;
 
             if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {
                 if (_debugging) {
-                    _debug("** Executing referenced model in the calling thread.");
+                    _debug(
+                        "** Executing referenced model in the calling thread.");
                 }
+
                 try {
                     _manager.execute();
                 } catch (KernelException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Execution failed.");
+                        "Execution failed.");
                 }
+
                 _writeOutputs();
             } else if (_executionOnFiringValue == _RUN_IN_A_NEW_THREAD) {
                 // Listen for exceptions. The listener is
@@ -504,16 +525,17 @@ public class ModelReference
                 if (_debugging) {
                     _debug("** Creating a new thread to execute the model.");
                 }
+
                 _manager.addExecutionListener(this);
 
                 // Create a thread.  Can't directly use _manager.startRun()
                 // because we need to write outputs upon completion.
                 if (_manager.getState() != Manager.IDLE) {
                     throw new IllegalActionException(this,
-                            "Cannot start an execution. "
-                            + "Referenced model is "
-                            + _manager.getState().getDescription());
+                        "Cannot start an execution. " + "Referenced model is "
+                        + _manager.getState().getDescription());
                 }
+
                 // NOTE: There is a possible race condition. We would like to
                 // set this within the calling thread to avoid race conditions
                 // where finish() might be called before the spawned thread
@@ -523,14 +545,17 @@ public class ModelReference
                         public void run() {
                             try {
                                 if (_debugging) {
-                                    _debug("** Executing model in a new thread.");
+                                    _debug(
+                                        "** Executing model in a new thread.");
                                 }
+
                                 _manager.execute();
                                 _writeOutputs();
                             } catch (Throwable throwable) {
                                 // If running tried to load in some native code using JNI
                                 // then we may get an Error here
                                 _manager.notifyListenersOfThrowable(throwable);
+
                                 // } finally {
                                 // NOTE: Race condition!  postfire() sets _manager to null.
                                 // So now we do this in postfire.
@@ -538,17 +563,22 @@ public class ModelReference
                             }
                         }
                     };
+
                 // Priority set to the minimum to get responsive UI during execution.
                 thread.setPriority(Thread.MIN_PRIORITY);
                 thread.start();
             }
-            long lingerTimeValue =
-                ((LongToken) lingerTime.getToken()).longValue();
+
+            long lingerTimeValue = ((LongToken) lingerTime.getToken())
+                .longValue();
+
             if (lingerTimeValue > 0L) {
                 try {
                     if (_debugging) {
-                        _debug("** Lingering for " + lingerTimeValue + " milliseconds.");
+                        _debug("** Lingering for " + lingerTimeValue
+                            + " milliseconds.");
                     }
+
                     _lingeringThread = Thread.currentThread();
                     Thread.sleep(lingerTimeValue);
                 } catch (InterruptedException ex) {
@@ -577,16 +607,19 @@ public class ModelReference
      *  @exception IllegalActionException Thrown if a parent class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_postfireActionValue == _STOP_EXECUTING
-                && _manager != null) {
+        if ((_postfireActionValue == _STOP_EXECUTING) && (_manager != null)) {
             if (_debugging) {
-                _debug("** Calling finish() on the Manager to request termination.");
+                _debug(
+                    "** Calling finish() on the Manager to request termination.");
             }
+
             _manager.finish();
+
             // Wait for the finish.
             if (_debugging) {
                 _debug("** Waiting for completion of execution.");
             }
+
             _manager.waitForCompletion();
         }
 
@@ -606,11 +639,13 @@ public class ModelReference
      */
     public void stop() {
         if (_model instanceof Executable) {
-            ((Executable)_model).stop();
+            ((Executable) _model).stop();
         }
+
         if (_lingeringThread != null) {
             _lingeringThread.interrupt();
         }
+
         super.stop();
     }
 
@@ -618,11 +653,13 @@ public class ModelReference
      */
     public void stopFire() {
         if (_model instanceof Executable) {
-            ((Executable)_model).stopFire();
+            ((Executable) _model).stopFire();
         }
+
         if (_lingeringThread != null) {
             _lingeringThread.interrupt();
         }
+
         super.stopFire();
     }
 
@@ -630,8 +667,9 @@ public class ModelReference
      */
     public void terminate() {
         if (_model instanceof Executable) {
-            ((Executable)_model).terminate();
+            ((Executable) _model).terminate();
         }
+
         super.terminate();
     }
 
@@ -642,13 +680,12 @@ public class ModelReference
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _alreadyReadInputs = false;
+
         if (_throwable != null) {
             Throwable throwable = _throwable;
             _throwable = null;
-            throw new IllegalActionException(
-                    this,
-                    throwable,
-                    "Background run threw an exception");
+            throw new IllegalActionException(this, throwable,
+                "Background run threw an exception");
         }
     }
 
@@ -675,30 +712,41 @@ public class ModelReference
         if (_debugging) {
             _debug("** Reading inputs (if any).");
         }
+
         Iterator ports = inputPortList().iterator();
+
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
+
             if (port instanceof ParameterPort) {
-                PortParameter parameter = ((ParameterPort)port).getParameter();
+                PortParameter parameter = ((ParameterPort) port).getParameter();
+
                 if (_debugging) {
                     _debug("** Updating PortParameter: " + port.getName());
                 }
+
                 parameter.update();
                 continue;
             }
-            if (port.getWidth() > 0 && port.hasToken(0)) {
+
+            if ((port.getWidth() > 0) && port.hasToken(0)) {
                 Token token = port.get(0);
                 Attribute attribute = _model.getAttribute(port.getName());
+
                 // Use the token directly rather than a string if possible.
                 if (attribute instanceof Variable) {
                     if (_debugging) {
-                        _debug("** Transferring input to parameter: " + port.getName());
+                        _debug("** Transferring input to parameter: "
+                            + port.getName());
                     }
+
                     ((Variable) attribute).setToken(token);
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
-                        _debug("** Transferring input as string to parameter: " + port.getName());
+                        _debug("** Transferring input as string to parameter: "
+                            + port.getName());
                     }
+
                     ((Settable) attribute).setExpression(token.toString());
                 }
             }
@@ -719,26 +767,33 @@ public class ModelReference
         if (_debugging) {
             _debug("** Writing outputs (if any).");
         }
+
         Iterator ports = outputPortList().iterator();
+
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
+
             // Only write if the port has a connected channel.
             if (port.getWidth() > 0) {
                 Attribute attribute = _model.getAttribute(port.getName());
+
                 // Use the token directly rather than a string if possible.
                 if (attribute instanceof Variable) {
                     if (_debugging) {
-                        _debug("** Transferring parameter to output: " + port.getName());
+                        _debug("** Transferring parameter to output: "
+                            + port.getName());
                     }
+
                     port.send(0, ((Variable) attribute).getToken());
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
-                        _debug("** Transferring parameter as string to output: " + port.getName());
+                        _debug(
+                            "** Transferring parameter as string to output: "
+                            + port.getName());
                     }
-                    port.send(
-                            0,
-                            new StringToken(
-                                    ((Settable) attribute).getExpression()));
+
+                    port.send(0,
+                        new StringToken(((Settable) attribute).getExpression()));
                 }
             }
         }
@@ -752,7 +807,6 @@ public class ModelReference
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Possible values for executionOnFiring.
     private static int _DO_NOTHING = 0;
     private static int _RUN_IN_CALLING_THREAD = 1;

@@ -25,8 +25,10 @@
 */
 package diva.graph;
 
+
 //import diva.graph.layout.LayoutTarget;
 import diva.canvas.GraphicsPane;
+
 
 /**
  * The display part of the JGraph user-level widget.
@@ -48,14 +50,14 @@ public class GraphPane extends GraphicsPane {
 
     /** Create a new graph pane with a view on the given model.
      */
-    public GraphPane (GraphModel model) {
+    public GraphPane(GraphModel model) {
         // Set up the controller
         _model = model;
     }
 
     /** Create a new graph pane with the given controller and model.
      */
-    public GraphPane (GraphController controller, GraphModel model) {
+    public GraphPane(GraphController controller, GraphModel model) {
         // Set up the controller
         this(model);
         _controller = controller;
@@ -65,7 +67,7 @@ public class GraphPane extends GraphicsPane {
 
     /** Get the graph controller
      */
-    public GraphController getGraphController () {
+    public GraphController getGraphController() {
         return _controller;
     }
 
@@ -76,6 +78,3 @@ public class GraphPane extends GraphicsPane {
         return _model;
     }
 }
-
-
-

@@ -26,9 +26,7 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor;
-
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -39,8 +37,10 @@ import ptolemy.actor.util.FIFOQueue;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// QueueReceiver
+
 /**
    A first-in, first-out (FIFO) queue receiver with variable capacity and
    optional history. Tokens are put into the receiver with the put() method,
@@ -59,7 +59,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.actor.util.FIFOQueue
 */
 public class QueueReceiver extends AbstractReceiver {
-
     /** Construct an empty receiver with no container.
      */
     public QueueReceiver() {
@@ -107,13 +106,15 @@ public class QueueReceiver extends AbstractReceiver {
      */
     public Token get() {
         Token t = null;
+
         try {
-            t = (Token)_queue.take();
+            t = (Token) _queue.take();
         } catch (NoSuchElementException ex) {
             // The queue is empty.
             throw new NoTokenException(getContainer(),
-                    "Attempt to get token from an empty QueueReceiver.");
+                "Attempt to get token from an empty QueueReceiver.");
         }
+
         return t;
     }
 
@@ -137,12 +138,12 @@ public class QueueReceiver extends AbstractReceiver {
      */
     public Token get(int offset) {
         try {
-            return (Token)_queue.get(offset);
+            return (Token) _queue.get(offset);
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
-                    "Offset " + offset + " out of range with " + _queue.size()
-                    + " tokens in the receiver and " + _queue.historySize()
-                    + " in history.");
+                "Offset " + offset + " out of range with " + _queue.size()
+                + " tokens in the receiver and " + _queue.historySize()
+                + " in history.");
         }
     }
 
@@ -179,9 +180,11 @@ public class QueueReceiver extends AbstractReceiver {
      *   be explicitly declared by the caller.
      */
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
-        if (numberOfTokens < 1)
+        if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "The number of tokens must be greater than 0");
+                "The number of tokens must be greater than 0");
+        }
+
         return (_queue.size() + numberOfTokens) < _queue.getCapacity();
     }
 
@@ -201,11 +204,12 @@ public class QueueReceiver extends AbstractReceiver {
      *   than one.  This is a runtime exception, and hence does not need to
      *   be explicitly declared by the caller.
      */
-    public boolean hasToken(int numberOfTokens)
-            throws IllegalArgumentException {
-        if (numberOfTokens < 1)
+    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+        if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "The number of tokens must be greater than 0");
+                "The number of tokens must be greater than 0");
+        }
+
         return _queue.size() >= numberOfTokens;
     }
 
@@ -250,7 +254,7 @@ public class QueueReceiver extends AbstractReceiver {
     public void put(Token token) {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
-                    "Queue is at capacity. Cannot put a token.");
+                "Queue is at capacity. Cannot put a token.");
         }
     }
 
@@ -266,7 +270,7 @@ public class QueueReceiver extends AbstractReceiver {
             _queue.setCapacity(capacity);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(getContainer(), ex,
-                    "Failed to set capacity to " + capacity);
+                "Failed to set capacity to " + capacity);
         }
     }
 
@@ -280,13 +284,12 @@ public class QueueReceiver extends AbstractReceiver {
      *  @param capacity The desired history capacity.
      *  @exception IllegalActionException If the desired capacity is illegal.
      */
-    public void setHistoryCapacity(int capacity)
-            throws IllegalActionException {
+    public void setHistoryCapacity(int capacity) throws IllegalActionException {
         try {
             _queue.setHistoryCapacity(capacity);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(getContainer(), ex,
-                    "Failed to setHistoryCapacity to " + capacity);
+                "Failed to setHistoryCapacity to " + capacity);
         }
     }
 
@@ -302,8 +305,7 @@ public class QueueReceiver extends AbstractReceiver {
 
     /** Used to indicate that the size of this queue receiver is infinite.
      */
-    public static final int INFINITE_CAPACITY =
-        FIFOQueue.INFINITE_CAPACITY;
+    public static final int INFINITE_CAPACITY = FIFOQueue.INFINITE_CAPACITY;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

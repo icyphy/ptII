@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.HashSet;
@@ -37,8 +36,10 @@ import java.util.Set;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NestedScope
+
 /**
    An implementation of ParserScope that consists of a list of nested scopes.
    A lookup starts from the first scope in the list, and proceeds through the
@@ -50,9 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Red (liuxj)
    @Pt.AcceptedRating Red (liuxj)
 */
-
 public class NestedScope implements ParserScope {
-
     /** Construct a new scope that consists of the given list of scopes.
      */
     public NestedScope(List scopeList) {
@@ -70,12 +69,16 @@ public class NestedScope implements ParserScope {
      */
     public ptolemy.data.Token get(String name) throws IllegalActionException {
         Iterator scopes = _scopeList.iterator();
+
         while (scopes.hasNext()) {
-            ParserScope scope = (ParserScope)scopes.next();
+            ParserScope scope = (ParserScope) scopes.next();
             ptolemy.data.Token result = scope.get(name);
-            if (result != null)
+
+            if (result != null) {
                 return result;
+            }
         }
+
         return null;
     }
 
@@ -87,14 +90,18 @@ public class NestedScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.data.type.Type getType(String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Iterator scopes = _scopeList.iterator();
+
         while (scopes.hasNext()) {
-            ParserScope scope = (ParserScope)scopes.next();
+            ParserScope scope = (ParserScope) scopes.next();
             ptolemy.data.type.Type result = scope.getType(name);
-            if (result != null)
+
+            if (result != null) {
                 return result;
+            }
         }
+
         return null;
     }
 
@@ -107,14 +114,18 @@ public class NestedScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Iterator scopes = _scopeList.iterator();
+
         while (scopes.hasNext()) {
-            ParserScope scope = (ParserScope)scopes.next();
+            ParserScope scope = (ParserScope) scopes.next();
             InequalityTerm result = scope.getTypeTerm(name);
-            if (result != null)
+
+            if (result != null) {
                 return result;
+            }
         }
+
         return null;
     }
 
@@ -125,14 +136,14 @@ public class NestedScope implements ParserScope {
      */
     public Set identifierSet() throws IllegalActionException {
         Set set = new HashSet();
-        for (Iterator scopes = _scopeList.iterator();
-             scopes.hasNext();) {
+
+        for (Iterator scopes = _scopeList.iterator(); scopes.hasNext();) {
             ParserScope scope = (ParserScope) scopes.next();
             set.addAll(scope.identifierSet());
         }
+
         return set;
     }
 
     private List _scopeList;
 }
-

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.dt.kernel.test;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 /**
   @author C. Fong
   @version $Id$
@@ -44,7 +44,6 @@ import ptolemy.kernel.util.NameDuplicationException;
   @Pt.AcceptedRating Red (cxh)
 */
 public class FakePlotter extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -54,7 +53,7 @@ public class FakePlotter extends TypedAtomicActor {
      *   actor with this name.
      */
     public FakePlotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.
@@ -62,11 +61,11 @@ public class FakePlotter extends TypedAtomicActor {
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
 
-        outVal = new TypedIOPort(this,"outVal");
+        outVal = new TypedIOPort(this, "outVal");
         outVal.setOutput(true);
         outVal.setTypeEquals(BaseType.DOUBLE);
 
-        outTime = new TypedIOPort(this,"outTime");
+        outTime = new TypedIOPort(this, "outTime");
         outTime.setOutput(true);
         outTime.setTypeEquals(BaseType.DOUBLE);
     }
@@ -76,7 +75,6 @@ public class FakePlotter extends TypedAtomicActor {
 
     /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
-
     public TypedIOPort outVal;
     public TypedIOPort outTime;
 
@@ -98,19 +96,21 @@ public class FakePlotter extends TypedAtomicActor {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-
         Time currentTime;
         int width = input.getWidth();
+
         //int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 currentTime = input.getModelTime(i);
-                DoubleToken currentToken = (DoubleToken)input.get(i);
+
+                DoubleToken currentToken = (DoubleToken) input.get(i);
                 double currentValue = currentToken.doubleValue();
-                outVal.send(0,new DoubleToken(currentValue));
-                outTime.send(0,new DoubleToken(currentTime.getDoubleValue()));
+                outVal.send(0, new DoubleToken(currentValue));
+                outTime.send(0, new DoubleToken(currentTime.getDoubleValue()));
             }
         }
+
         return super.postfire();
     }
 }

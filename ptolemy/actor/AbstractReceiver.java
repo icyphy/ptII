@@ -26,15 +26,16 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor;
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AbstractReceiver
+
 /**
    An abstract implementation of the Receiver interface.
    The container methods and some of the more esoteric
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.actor.Receiver
 */
 public abstract class AbstractReceiver implements Receiver {
-
     /** Construct an empty receiver with no container.
      */
     public AbstractReceiver() {
@@ -77,8 +77,8 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public void clear() throws IllegalActionException {
         throw new IllegalActionException(getContainer(),
-                "Receiver class " + getClass().getName() +
-                " does not support clear().");
+            "Receiver class " + getClass().getName()
+            + " does not support clear().");
     }
 
     /** Get a token from this receiver.
@@ -124,13 +124,15 @@ public abstract class AbstractReceiver implements Receiver {
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
         // Check whether we need to reallocate the cached
         // token array.
-        if (_tokenCache == null || numberOfTokens != _tokenCache.length) {
+        if ((_tokenCache == null) || (numberOfTokens != _tokenCache.length)) {
             // Reallocate the token array.
             _tokenCache = new Token[numberOfTokens];
         }
+
         for (int i = 0; i < numberOfTokens; i++) {
             _tokenCache[i] = get();
         }
+
         return _tokenCache;
     }
 
@@ -246,7 +248,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception NoRoomException If the token array cannot be put.
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
-            throws NoRoomException {
+        throws NoRoomException {
         for (int i = 0; i < numberOfTokens; i++) {
             put(tokenArray[i]);
         }
@@ -264,7 +266,6 @@ public abstract class AbstractReceiver implements Receiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The container.
     private IOPort _container;
 

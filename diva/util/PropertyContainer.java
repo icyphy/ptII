@@ -27,6 +27,7 @@ package diva.util;
 
 import java.util.Iterator;
 
+
 /**
  * An object that can be annotated with arbitrary
  * objects whose keys are strings.

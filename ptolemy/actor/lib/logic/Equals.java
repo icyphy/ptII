@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.logic;
 
 import ptolemy.actor.lib.Transformer;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Equals
+
 /**
    A logical equals operator.  This operator has one input
    multiport and one output port that is not a multiport. It will consume
@@ -57,9 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (johnli)
 */
-
 public class Equals extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -70,18 +69,16 @@ public class Equals extends Transformer {
      *   an actor already in the container.
      */
     public Equals(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" "
-                + "style=\"fill:white\"/>\n"
-                + "<text x=\"-14\" y=\"8\""
-                + "style=\"font-size:24\">==</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-14\" y=\"8\"" + "style=\"font-size:24\">==</text>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,15 +95,25 @@ public class Equals extends Transformer {
         BooleanToken result = BooleanToken.TRUE;
         Token reference = null;
         boolean foundOne = false;
+
         for (int i = 0; i < input.getWidth(); i++) {
-            if (!input.hasToken(i)) continue;
+            if (!input.hasToken(i)) {
+                continue;
+            }
+
             foundOne = true;
+
             Token next = input.get(i);
-            if (reference == null) reference = next;
-            else if (!(next.isEqualTo(reference)).booleanValue()) {
+
+            if (reference == null) {
+                reference = next;
+            } else if (!(next.isEqualTo(reference)).booleanValue()) {
                 result = BooleanToken.FALSE;
             }
         }
-        if (foundOne) output.send(0, result);
+
+        if (foundOne) {
+            output.send(0, result);
+        }
     }
 }

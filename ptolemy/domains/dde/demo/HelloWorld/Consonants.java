@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.domains.dde.demo.HelloWorld;
 
 import java.util.LinkedList;
@@ -36,8 +35,10 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Consonants
+
 /**
    A demo actor that outputs a StringToken for each real token
    that it consumes.
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Consonants extends StringOut {
-
     /** Construct a Consonants actor with the specified container and
      *  name.
      * @param container The container of this actor.
@@ -61,7 +61,7 @@ public class Consonants extends StringOut {
      *  superclass throws a NameDuplicationException .
      */
     public Consonants(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _consonants = new LinkedList();
     }
@@ -72,55 +72,52 @@ public class Consonants extends StringOut {
     /** Set up the string values that this actor will output.
      */
     public LinkedList setUpStrings() {
+        _consonants.addLast("H");
 
-        _consonants.addLast( "H" );
+        _consonants.addLast("l");
 
-        _consonants.addLast( "l" );
+        _consonants.addLast("l");
 
-        _consonants.addLast( "l" );
+        _consonants.addLast("T");
 
-        _consonants.addLast( "T" );
+        _consonants.addLast("h");
 
-        _consonants.addLast( "h" );
+        _consonants.addLast("P");
 
-        _consonants.addLast( "P" );
+        _consonants.addLast("t");
 
-        _consonants.addLast( "t" );
+        _consonants.addLast("l");
 
-        _consonants.addLast( "l" );
+        _consonants.addLast("m");
 
-        _consonants.addLast( "m" );
+        _consonants.addLast("y");
 
-        _consonants.addLast( "y" );
+        _consonants.addLast("D");
 
-        _consonants.addLast( "D" );
+        _consonants.addLast("D");
 
-        _consonants.addLast( "D" );
+        _consonants.addLast("D");
 
-        _consonants.addLast( "D" );
+        _consonants.addLast("m");
 
-        _consonants.addLast( "m" );
+        _consonants.addLast("n");
 
-        _consonants.addLast( "n" );
+        _consonants.addLast("s");
 
-        _consonants.addLast( "s" );
+        _consonants.addLast("c");
 
-        _consonants.addLast( "c" );
+        _consonants.addLast("m");
 
-        _consonants.addLast( "m" );
+        _consonants.addLast("p");
 
-        _consonants.addLast( "p" );
+        _consonants.addLast("l");
 
-        _consonants.addLast( "l" );
-
-        _consonants.addLast( "t" );
+        _consonants.addLast("t");
 
         return _consonants;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private LinkedList _consonants;
-
 }

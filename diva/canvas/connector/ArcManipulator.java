@@ -31,6 +31,7 @@ import diva.canvas.interactor.BasicGrabHandleFactory;
 import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.GrabHandleFactory;
 
+
 /**
  * A manipulator for arc connectors. In addition to the grab handles
  * at the ends of the connector, it attaches a handle in the center
@@ -41,7 +42,6 @@ import diva.canvas.interactor.GrabHandleFactory;
  * @version $Id$
  */
 public class ArcManipulator extends ConnectorManipulator {
-
     /** The handle at the midpoint of the arc.
      */
     private GrabHandle _midpointHandle;
@@ -49,7 +49,7 @@ public class ArcManipulator extends ConnectorManipulator {
     /**
      * Construct a new manipulator that uses rectangular grab-handles.
      */
-    public ArcManipulator () {
+    public ArcManipulator() {
         this(new BasicGrabHandleFactory());
     }
 
@@ -58,6 +58,7 @@ public class ArcManipulator extends ConnectorManipulator {
      */
     public ArcManipulator(GrabHandleFactory f) {
         super(f);
+
         // Override the interactor set in the base class with a new one.
         setHandleInteractor(new ArcInteractor(this));
     }
@@ -66,7 +67,7 @@ public class ArcManipulator extends ConnectorManipulator {
      * instance will have the same grab handle, and interactor
      * for grab-handles, as this one.
      */
-    public FigureDecorator newInstance (Figure f) {
+    public FigureDecorator newInstance(Figure f) {
         ArcManipulator m = new ArcManipulator();
         m.setGrabHandleFactory(this.getGrabHandleFactory());
         m.setHandleInteractor(this.getHandleInteractor());
@@ -80,13 +81,15 @@ public class ArcManipulator extends ConnectorManipulator {
      */
     protected void _createGrabHandles(Connector connector) {
         super._createGrabHandles(connector);
+
         if (!(connector instanceof ArcConnector)) {
             throw new IllegalArgumentException(
-                    "ArcConnector required by ArcManipulator");
+                "ArcConnector required by ArcManipulator");
         }
+
         GrabHandleFactory factory = getGrabHandleFactory();
-        _midpointHandle = factory.createGrabHandle(
-                ((ArcConnector)connector).getMidpointSite());
+        _midpointHandle = factory.createGrabHandle(((ArcConnector) connector)
+                .getMidpointSite());
         _midpointHandle.setParent(this);
         _midpointHandle.setInteractor(getHandleInteractor());
         addGrabHandle(_midpointHandle);

@@ -30,7 +30,6 @@ is probably not right if there are outstanding read or write permissions.
 -- eal
 
 */
-
 package ptolemy.kernel.util;
 
 import java.io.Serializable;
@@ -41,8 +40,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Workspace
+
 /**
    An instance of Workspace is used for synchronization and version tracking
    of interdependent groups of objects.  These objects are said to be in the
@@ -104,9 +105,7 @@ import java.util.List;
    @Pt.ProposedRating Green (liuxj)
    @Pt.AcceptedRating Green (liuxj)
 */
-
 public final class Workspace implements Nameable, Serializable {
-
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 
@@ -141,22 +140,24 @@ public final class Workspace implements Nameable, Serializable {
      *  @exception IllegalActionException If the item has a container, is
      *   already in the directory, or is not in this workspace.
      */
-    public synchronized void add(NamedObj item)
-            throws IllegalActionException {
+    public synchronized void add(NamedObj item) throws IllegalActionException {
         if (item.workspace() != this) {
             throw new IllegalActionException(this, item,
-                    "Cannot add an item to the directory of a workspace " +
-                    "that it is not in.");
+                "Cannot add an item to the directory of a workspace "
+                + "that it is not in.");
         }
+
         if (item.getContainer() != null) {
             throw new IllegalActionException(this, item,
-                    "Cannot add an object with a container to a workspace " +
-                    "directory.");
+                "Cannot add an object with a container to a workspace "
+                + "directory.");
         }
+
         if (_directory.indexOf(item) >= 0) {
             throw new IllegalActionException(this, item,
-                    "Object is already listed in the workspace directory.");
+                "Object is already listed in the workspace directory.");
         }
+
         _directory.add(item);
         incrVersion();
     }
@@ -216,9 +217,9 @@ public final class Workspace implements Nameable, Serializable {
      *   before a corresponding call to getReadAccess() by the same thread.
      */
     public final synchronized void doneReading() {
-
         Thread current = Thread.currentThread();
         AccessRecord record = null;
+
         if (current == _lastReader) {
             record = _lastReaderRecord;
         } else {
@@ -227,15 +228,17 @@ public final class Workspace implements Nameable, Serializable {
 
         if (record == null) {
             throw new InvalidStateException(this,
-                    "Workspace: doneReading() called without a prior "
-                    + "matching call to getReadAccess()!");
+                "Workspace: doneReading() called without a prior "
+                + "matching call to getReadAccess()!");
         }
 
         if (record.readDepth > 0) {
             record.readDepth--;
+
             if (record.readDepth == 0) {
                 // the current thread is no longer a reader
                 _numReaders--;
+
                 // notify waiting writers
                 // these writers may have read access, so this notification
                 // cannot be conditioned on _numReaders == 0
@@ -246,10 +249,9 @@ public final class Workspace implements Nameable, Serializable {
             record.failedReadAttempts--;
         } else {
             throw new InvalidStateException(this,
-                    "Workspace: doneReading() called without a prior "
-                    + "matching call to getReadAccess()!");
+                "Workspace: doneReading() called without a prior "
+                + "matching call to getReadAccess()!");
         }
-
     }
 
     /** Indicate that the calling thread is finished writing.
@@ -262,9 +264,9 @@ public final class Workspace implements Nameable, Serializable {
      *   a corresponding call to getWriteAccess() by the same thread.
      */
     public final synchronized void doneWriting() {
-
         Thread current = Thread.currentThread();
         AccessRecord record = null;
+
         if (current == _lastReader) {
             record = _lastReaderRecord;
         } else {
@@ -274,27 +276,27 @@ public final class Workspace implements Nameable, Serializable {
         incrVersion();
 
         if (current != _writer) {
-            if (record != null && record.failedWriteAttempts > 0) {
+            if ((record != null) && (record.failedWriteAttempts > 0)) {
                 record.failedWriteAttempts--;
             } else {
                 throw new InvalidStateException(this,
-                        "Workspace: doneWriting called without a prior "
-                        + "matching call to getWriteAccess().");
+                    "Workspace: doneWriting called without a prior "
+                    + "matching call to getWriteAccess().");
             }
         } else {
             if (_writeDepth > 0) {
                 _writeDepth--;
+
                 if (_writeDepth == 0) {
                     _writer = null;
                     notifyAll();
                 }
             } else {
                 throw new InvalidStateException(this,
-                        "Workspace: doneWriting called without a prior "
-                        + "matching call to getWriteAccess().");
+                    "Workspace: doneWriting called without a prior "
+                    + "matching call to getWriteAccess().");
             }
         }
-
     }
 
     /** Get the container.  Always return null since a workspace
@@ -348,15 +350,14 @@ public final class Workspace implements Nameable, Serializable {
      *  @see #doneReading()
      */
     public final synchronized void getReadAccess() {
-
         // This method should throw an InterruptedException when the
         // calling thread is interrupted. InterruptedException is a
         // checked exception, so changing this will lead to changes
         // everywhere this method is called, which is a huge amount
         // of work.
-
         Thread current = Thread.currentThread();
         AccessRecord record = null;
+
         if (current == _lastReader) {
             record = _lastReaderRecord;
         } else {
@@ -370,6 +371,7 @@ public final class Workspace implements Nameable, Serializable {
             return;
         } else if (current == _writer) {
             record.readDepth++;
+
             // The current thread has write permission, so we grant
             // read permission.
             // This is a new reader, so we increment the number
@@ -387,24 +389,25 @@ public final class Workspace implements Nameable, Serializable {
         // Go into a loop, and at each iteration check whether the current
         // thread can get read access. If not then do a wait() on the
         // workspace. Otherwise, exit the loop.
-        while (_waitingWriteRequests != 0 || _writer != null) {
+        while ((_waitingWriteRequests != 0) || (_writer != null)) {
             try {
                 wait();
             } catch (InterruptedException ex) {
                 throw new InternalErrorException(current.getName()
-                        + " - thread interrupted while waiting to get "
-                        + "read access: " + ex.getMessage());
+                    + " - thread interrupted while waiting to get "
+                    + "read access: " + ex.getMessage());
             }
         }
 
         record.failedReadAttempts--;
+
         // Now there is no writer, and no thread waiting to get write access.
         record.readDepth++;
+
         // This is a new reader, so we increment the number
         // of readers.
         _numReaders++;
         return;
-
     }
 
     /** Get the version number.  The version number is incremented on
@@ -436,14 +439,13 @@ public final class Workspace implements Nameable, Serializable {
      *  @see #doneWriting()
      */
     public final synchronized void getWriteAccess() {
-
         // This method should throw an InterruptedException when the
         // calling thread is interrupted. InterruptedException is a
         // checked exception, so changing this will lead to changes
         // everywhere this method is called, which is a huge amount
         // of work.
-
         Thread current = Thread.currentThread();
+
         if (current == _writer) {
             // Already have write permission.
             _writeDepth++;
@@ -451,6 +453,7 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         AccessRecord record = null;
+
         if (current == _lastReader) {
             record = _lastReaderRecord;
         } else {
@@ -468,13 +471,12 @@ public final class Workspace implements Nameable, Serializable {
         // Go into an infinite 'while (true)' loop and check if this thread
         // can get a write access. If yes, then return, if not then perform
         // a wait() on the workspace.
-
         try {
             while (true) {
                 if (_writer == null) {
                     // There are no writers. Are there any readers?
-                    if (_numReaders == 0
-                            || _numReaders == 1 && record.readDepth > 0) {
+                    if ((_numReaders == 0)
+                            || ((_numReaders == 1) && (record.readDepth > 0))) {
                         // No readers
                         // or the only reader is the current thread
                         _writer = current;
@@ -488,11 +490,12 @@ public final class Workspace implements Nameable, Serializable {
             }
         } catch (InterruptedException ex) {
             throw new InternalErrorException(current.getName()
-                    + " - thread interrupted while waiting to get "
-                    + "write access: " + ex.getMessage());
+                + " - thread interrupted while waiting to get "
+                + "write access: " + ex.getMessage());
         } finally {
             _waitingWriteRequests--;
-            if (_waitingWriteRequests == 0 && _writer == null) {
+
+            if ((_waitingWriteRequests == 0) && (_writer == null)) {
                 // Notify waiting readers.
                 notifyAll();
             }
@@ -507,10 +510,8 @@ public final class Workspace implements Nameable, Serializable {
      *   as an argument is always thrown.
      *  @since Ptolemy II 2.1
      */
-    public boolean handleModelError(
-            NamedObj context,
-            IllegalActionException exception)
-            throws IllegalActionException {
+    public boolean handleModelError(NamedObj context,
+        IllegalActionException exception) throws IllegalActionException {
         throw exception;
     }
 
@@ -552,6 +553,7 @@ public final class Workspace implements Nameable, Serializable {
         if (name == null) {
             name = "";
         }
+
         _name = name;
         incrVersion();
     }
@@ -560,7 +562,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @return The class name and name.
      */
     public String toString() {
-        return getClass().getName() + " {" + getFullName()+ "}";
+        return getClass().getName() + " {" + getFullName() + "}";
     }
 
     /** Release all the read accesses held by the current thread and suspend
@@ -583,8 +585,9 @@ public final class Workspace implements Nameable, Serializable {
     public void wait(Object obj) throws InterruptedException {
         int depth = 0;
         depth = _releaseAllReadPermissions();
+
         try {
-            synchronized(obj) {
+            synchronized (obj) {
                 obj.wait();
             }
         } finally {
@@ -610,72 +613,86 @@ public final class Workspace implements Nameable, Serializable {
      *  @return A description of the workspace.
      */
     protected synchronized String _description(int detail, int indent,
-            int bracket) {
+        int bracket) {
         String result = NamedObj._getIndentPrefix(indent);
-        if (bracket == 1 || bracket == 2) result += "{";
+
+        if ((bracket == 1) || (bracket == 2)) {
+            result += "{";
+        }
+
         if ((detail & NamedObj.CLASSNAME) != 0) {
             result += getClass().getName();
+
             if ((detail & NamedObj.FULLNAME) != 0) {
                 result += " ";
             }
         }
+
         if ((detail & NamedObj.FULLNAME) != 0) {
-            result += "{" + getFullName() + "}";
+            result += ("{" + getFullName() + "}");
         }
+
         if ((detail & NamedObj.CONTENTS) != 0) {
             if ((detail & (NamedObj.CLASSNAME | NamedObj.FULLNAME)) != 0) {
                 result += " ";
             }
+
             result += "directory {\n";
+
             Enumeration enumeration = directory();
+
             while (enumeration.hasMoreElements()) {
-                NamedObj obj = (NamedObj)enumeration.nextElement();
+                NamedObj obj = (NamedObj) enumeration.nextElement();
+
                 // If deep is not set, then zero-out the contents flag
                 // for the next round.
                 if ((detail & NamedObj.DEEP) == 0) {
                     detail &= ~NamedObj.CONTENTS;
                 }
-                result += obj._description(detail, indent+1, 2) + "\n";
+
+                result += (obj._description(detail, indent + 1, 2) + "\n");
             }
+
             result += "}";
         }
-        if (bracket == 2) result += "}";
+
+        if (bracket == 2) {
+            result += "}";
+        }
+
         return result;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Return the AccessRecord object for the current thread.
     // If the flag createNew is true and the current thread does not
     // have an access record, then create a new one and return it.
     // Set _lastReaderRecord to be the record returned.
     private final AccessRecord _getAccessRecord(Thread current,
-            boolean createNew) {
-
+        boolean createNew) {
         //System.out.println("-- look up access record for "
         //   + current.getName());
-
         // If this object has been serialized and deserialized, then
         // _readerRecords could be null.
         if (_readerRecords == null) {
             _readerRecords = new HashMap();
         }
 
-        AccessRecord record = (AccessRecord)_readerRecords.get(current);
+        AccessRecord record = (AccessRecord) _readerRecords.get(current);
 
         if (record == null) {
-
             // delete any record that contains no history information
             // AND is not the last reader's record
             Iterator records = _readerRecords.values().iterator();
+
             while (records.hasNext()) {
-                AccessRecord aRecord = (AccessRecord)records.next();
-                if (aRecord.failedReadAttempts == 0 &&
-                        aRecord.failedWriteAttempts == 0 &&
-                        aRecord.readDepth == 0 &&
-                        aRecord != _lastReaderRecord) {
+                AccessRecord aRecord = (AccessRecord) records.next();
+
+                if ((aRecord.failedReadAttempts == 0)
+                        && (aRecord.failedWriteAttempts == 0)
+                        && (aRecord.readDepth == 0)
+                        && (aRecord != _lastReaderRecord)) {
                     //System.out.println("-- delete record for thread "
                     //        + aRecord.thread
                     //        + " in " + current.getName());
@@ -687,7 +704,6 @@ public final class Workspace implements Nameable, Serializable {
                 record = new AccessRecord();
                 _readerRecords.put(current, record);
             }
-
         }
 
         if (record != null) {
@@ -696,7 +712,6 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         return record;
-
     }
 
     // Obtain permissions to read objects in the workspace. This obtains
@@ -711,24 +726,26 @@ public final class Workspace implements Nameable, Serializable {
     // @exception InternalErrorException If the calling thread is interrupted
     //  while waiting to re-acquire read permissions.
     private synchronized void _reacquireReadPermissions(int count) {
-
         // If the count argument is equal to zero, which means we would like
         // the current thread to has read depth equal to 0, i.e. not a reader,
         // then it's already trivially done, since this method call is always
         // preceded by _releaseAllReadPermissions.
-        if (count == 0) return;
+        if (count == 0) {
+            return;
+        }
 
         Thread current = Thread.currentThread();
         AccessRecord record = null;
+
         if (current == _lastReader) {
             record = _lastReaderRecord;
         } else {
             record = _getAccessRecord(current, false);
         }
 
-        if (record == null || count > record.failedReadAttempts) {
-            throw new InvalidStateException(this, "Trying to reacquire "
-                    + "read permission not in record.");
+        if ((record == null) || (count > record.failedReadAttempts)) {
+            throw new InvalidStateException(this,
+                "Trying to reacquire " + "read permission not in record.");
         }
 
         // Go into an infinite 'while (true)' loop, and each time through
@@ -737,11 +754,10 @@ public final class Workspace implements Nameable, Serializable {
         // re-awakening, iterate in the loop again to check if the condition
         // is now satisfied.
         while (true) {
-
             // If the current thread has write permission, or if there
             // are no pending write requests, then grant read permission.
-            if (current == _writer
-                    || (_waitingWriteRequests == 0 && _writer == null)) {
+            if ((current == _writer)
+                    || ((_waitingWriteRequests == 0) && (_writer == null))) {
                 _numReaders++;
                 record.failedReadAttempts -= count;
                 record.readDepth = count;
@@ -750,14 +766,12 @@ public final class Workspace implements Nameable, Serializable {
 
             try {
                 wait();
-            } catch(InterruptedException ex) {
+            } catch (InterruptedException ex) {
                 throw new InternalErrorException(
-                        "Thread interrupted while waiting for read access!"
-                        + ex.getMessage());
+                    "Thread interrupted while waiting for read access!"
+                    + ex.getMessage());
             }
-
         }
-
     }
 
     /** Frees the thread of all the readAccesses on the workspace. The method
@@ -767,28 +781,28 @@ public final class Workspace implements Nameable, Serializable {
      *  workspace
      */
     private synchronized int _releaseAllReadPermissions() {
-
         // Find the current thread.
         Thread current = Thread.currentThread();
         AccessRecord record = null;
+
         if (current == _lastReader) {
             record = _lastReaderRecord;
         } else {
             record = _getAccessRecord(current, false);
         }
 
-        if (record == null || record.readDepth == 0) {
+        if ((record == null) || (record.readDepth == 0)) {
             // current thread is not a reader
             return 0;
         } else {
             _numReaders--;
             notifyAll();
+
             int result = record.readDepth;
             record.failedReadAttempts += result;
             record.readDepth = 0;
             return result;
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -830,14 +844,15 @@ public final class Workspace implements Nameable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private final class AccessRecord {
         // the number of failed calls to getReadAccess() performed
         // by a thread and not yet matched by a call to doneReading()
         public int failedReadAttempts = 0;
+
         // the number of failed calls to getWriteAccess() performed
         // by a thread and not yet matched by a call to doneWriting()
         public int failedWriteAttempts = 0;
+
         // the number of successful calls to getReadAccess() performed
         // by a thread and not yet matched by a call to doneReading()
         public int readDepth = 0;
@@ -845,5 +860,4 @@ public final class Workspace implements Nameable, Serializable {
         //public Thread thread = null;
         //public boolean inUse;
     }
-
 }

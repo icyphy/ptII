@@ -30,7 +30,6 @@
 package ptolemy.caltrop.ddi;
 
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.caltrop.actors.CalInterpreter;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ast.Actor;
 import caltrop.interpreter.environment.Environment;

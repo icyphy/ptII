@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
 
 import java.util.List;
@@ -34,8 +33,10 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitChangeContext
+
 /**
    An entity that implements an explicit change context declares a
    change context, in which parameters are modified.  If the
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.Nameable;
    @see ptolemy.actor.util.ConstVariableModelAnalysis
 */
 public interface ExplicitChangeContext extends Nameable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

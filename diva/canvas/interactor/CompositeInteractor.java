@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import diva.canvas.event.LayerEvent;
 
+
 /**
  * An interactor that forwards events to other interactors.
  *
@@ -38,7 +39,6 @@ import diva.canvas.event.LayerEvent;
  * @author John Reekie
  */
 public class CompositeInteractor extends AbstractInteractor {
-
     /** The list of attached interactors
      */
     private ArrayList _interactors = new ArrayList();
@@ -51,7 +51,7 @@ public class CompositeInteractor extends AbstractInteractor {
      * is currently not true: By default, composite
      * interactors do not consume events.]
      */
-    public CompositeInteractor () {
+    public CompositeInteractor() {
         //// FIXME: why was this set false? SelectionInteraction
         //// needs is to be true, shouldn't it always be true?
         //// setConsuming(false);
@@ -60,12 +60,13 @@ public class CompositeInteractor extends AbstractInteractor {
     /**
      * Accept an event if any attached interactor will accept it.
      */
-    public boolean accept (LayerEvent e) {
-        for (Iterator i = interactors(); i.hasNext(); ) {
+    public boolean accept(LayerEvent e) {
+        for (Iterator i = interactors(); i.hasNext();) {
             if (((Interactor) i.next()).accept(e)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -73,26 +74,27 @@ public class CompositeInteractor extends AbstractInteractor {
      * Add an interactor to this interactor. The added interactor
      * will have events forwarded to it if it accepts the event.
      */
-    public void addInteractor (Interactor i) {
+    public void addInteractor(Interactor i) {
         _interactors.add(i);
     }
 
     /**
      * Return an interactor over the attached interactors.
      */
-    public Iterator interactors () {
+    public Iterator interactors() {
         return _interactors.iterator();
     }
 
     /**
      * Return true if any contained interactor is motion enabled.
      */
-    public boolean isMotionEnabled () {
-        for (Iterator i = interactors(); i.hasNext(); ) {
+    public boolean isMotionEnabled() {
+        for (Iterator i = interactors(); i.hasNext();) {
             if (((Interactor) i.next()).isMotionEnabled()) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -100,13 +102,15 @@ public class CompositeInteractor extends AbstractInteractor {
      * Handle a mouse drag event. If there's a current interactor
      * receiving events, pass the event to it.
      */
-    public void mouseDragged (LayerEvent event) {
+    public void mouseDragged(LayerEvent event) {
         if (!isEnabled()) {
             return;
         }
+
         if (_currentInteractor != null) {
             _currentInteractor.mouseDragged(event);
         }
+
         if (isConsuming()) {
             event.consume();
         }
@@ -118,19 +122,23 @@ public class CompositeInteractor extends AbstractInteractor {
      * it will accept the event, and if it will, pass this event and
      * the subsequent motion and exited events to it.
      */
-    public void mouseEntered (LayerEvent event) {
+    public void mouseEntered(LayerEvent event) {
         if (!isMotionEnabled()) {
             return;
         }
+
         Iterator i = _interactors.iterator();
+
         while (i.hasNext()) {
             Interactor interactor = (Interactor) i.next();
+
             if (interactor.accept(event)) {
                 _currentInteractor = interactor;
                 _currentInteractor.mouseEntered(event);
                 break;
             }
         }
+
         if (isConsuming()) {
             event.consume();
         }
@@ -141,16 +149,19 @@ public class CompositeInteractor extends AbstractInteractor {
      * interactor receiving motion events, pass the event
      * to it.
      */
-    public void mouseExited (LayerEvent event) {
+    public void mouseExited(LayerEvent event) {
         if (!isMotionEnabled()) {
             return;
         }
+
         if (_currentInteractor != null) {
             _currentInteractor.mouseExited(event);
         }
+
         if (isConsuming()) {
             event.consume();
         }
+
         _currentInteractor = null;
     }
 
@@ -159,13 +170,15 @@ public class CompositeInteractor extends AbstractInteractor {
      * interactor receiving motion events, pass the event
      * to it.
      */
-    public void mouseMoved (LayerEvent event) {
+    public void mouseMoved(LayerEvent event) {
         if (!isMotionEnabled()) {
             return;
         }
+
         if (_currentInteractor != null) {
             _currentInteractor.mouseMoved(event);
         }
+
         if (isConsuming()) {
             event.consume();
         }
@@ -179,22 +192,27 @@ public class CompositeInteractor extends AbstractInteractor {
      * to.  Continue this process for all attached interactors until the
      * event is consumed.
      */
-    public void mousePressed (LayerEvent event) {
+    public void mousePressed(LayerEvent event) {
         if (!isEnabled()) {
             return;
         }
+
         Iterator i = _interactors.iterator();
         Interactor interactor;
+
         while (i.hasNext()) {
             interactor = (Interactor) i.next();
+
             if (interactor.accept(event)) {
                 _currentInteractor = interactor;
                 _currentInteractor.mousePressed(event);
+
                 if (event.isConsumed()) {
                     break;
                 }
             }
         }
+
         if (isConsuming()) {
             event.consume();
         }
@@ -204,25 +222,26 @@ public class CompositeInteractor extends AbstractInteractor {
      * Handle a mouse released event. If there's a current interactor
      * receiving events, pass the event to it.
      */
-    public void mouseReleased (LayerEvent event) {
+    public void mouseReleased(LayerEvent event) {
         if (!isEnabled()) {
             return;
         }
+
         if (_currentInteractor != null) {
             _currentInteractor.mouseReleased(event);
         }
+
         if (isConsuming()) {
             event.consume();
         }
+
         _currentInteractor = null;
     }
 
     /**
      * Remove the given interactor from this interactor.
      */
-    public void removeInteractor (Interactor i) {
+    public void removeInteractor(Interactor i) {
         _interactors.remove(i);
     }
 }
-
-

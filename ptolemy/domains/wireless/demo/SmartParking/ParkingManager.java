@@ -21,23 +21,23 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
 package ptolemy.domains.wireless.demo.SmartParking;
 
-import java.util.*;
+import java.util.HashSet;
 
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 
-public class ParkingManager {
 
+public class ParkingManager {
     public static HashSet AvailableLots = new HashSet();
-    public static HashSet ParkedLots= new HashSet();
+    public static HashSet ParkedLots = new HashSet();
 
     public ParkingManager() {
     }
@@ -50,6 +50,7 @@ public class ParkingManager {
     public synchronized void update(RecordToken updateMsg) {
         String lot = ((StringToken) updateMsg.get("lot")).stringValue();
         int state = ((IntToken) updateMsg.get("state")).intValue();
+
         if (state == 0) { //use 0 to represent the lot is free.
             AvailableLots.add(lot);
             ParkedLots.remove(lot);
@@ -60,6 +61,6 @@ public class ParkingManager {
     }
 
     public HashSet getAvailable() {
-         return AvailableLots;
+        return AvailableLots;
     }
 }

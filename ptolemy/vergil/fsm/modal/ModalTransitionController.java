@@ -28,7 +28,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm.modal;
 
 import java.awt.event.ActionEvent;
@@ -59,8 +58,10 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ModalTransitionController
+
 /**
    This class provides interaction with relations that contain general purpose
    refinements that are fired on state transitions in an FSM graph. It's
@@ -73,7 +74,6 @@ import diva.graph.GraphController;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ModalTransitionController extends TransitionController {
-
     /** Create a transition controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
@@ -81,10 +81,10 @@ public class ModalTransitionController extends TransitionController {
     public ModalTransitionController(final GraphController controller) {
         super(controller);
 
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new AddRefinementAction()));
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new RemoveRefinementAction()));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                new AddRefinementAction()));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                new RemoveRefinementAction()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,23 +96,30 @@ public class ModalTransitionController extends TransitionController {
         public AddRefinementAction() {
             super("Add Refinement");
         }
+
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
+
             NamedObj target = getTarget();
+
             if (!(target instanceof Transition)) {
                 MessageHandler.error("Can only add refinements to transitions.");
                 return;
             }
-            Transition transition = (Transition)target;
+
+            Transition transition = (Transition) target;
 
             // Check that all these containers exist.
             Nameable immediateContainer = transition.getContainer();
+
             if (immediateContainer == null) {
                 MessageHandler.error("Transition has no container!");
                 return;
             }
-            final CompositeEntity container
-                = (CompositeEntity)immediateContainer.getContainer();
+
+            final CompositeEntity container = (CompositeEntity) immediateContainer
+                .getContainer();
+
             if (container == null) {
                 MessageHandler.error("Transition container has no container!");
                 return;
@@ -124,88 +131,88 @@ public class ModalTransitionController extends TransitionController {
             query.addLine("Name", "Name", defaultName);
 
             // See whether the configuration offers transition refinements.
-            Configuration configuration
-                = ((FSMGraphController)getController()).getConfiguration();
-            Entity refinements
-                = configuration.getEntity("_transitionRefinements");
+            Configuration configuration = ((FSMGraphController) getController())
+                .getConfiguration();
+            Entity refinements = configuration.getEntity(
+                    "_transitionRefinements");
 
             // Default choices.
-            String[] choiceClasses
-                = {"ptolemy.domains.fsm.modal.TransitionRefinement" };
-            String[] choiceNames = {"Default Refinement"};
+            String[] choiceClasses = {
+                    "ptolemy.domains.fsm.modal.TransitionRefinement"
+                };
+            String[] choiceNames = { "Default Refinement" };
 
             // Check the configuration to see whether the default is overridden.
             if (refinements instanceof CompositeEntity) {
                 // There is a specification.
-                List refinementList
-                    = ((CompositeEntity)refinements).entityList();
+                List refinementList = ((CompositeEntity) refinements)
+                    .entityList();
                 choiceNames = new String[refinementList.size()];
                 choiceClasses = new String[refinementList.size()];
+
                 Iterator iterator = refinementList.iterator();
                 int count = 0;
+
                 while (iterator.hasNext()) {
-                    Entity entity = (Entity)iterator.next();
+                    Entity entity = (Entity) iterator.next();
                     choiceNames[count] = entity.getName();
                     choiceClasses[count++] = entity.getClass().getName();
                 }
             }
-            query.addChoice(
-                    "Class", "Class", choiceNames, choiceNames[0], true);
+
+            query.addChoice("Class", "Class", choiceNames, choiceNames[0], true);
 
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
             // will be a good start.
             ComponentDialog dialog = new ComponentDialog(null,
                     "Specify Refinement", query);
+
             if (!dialog.buttonPressed().equals("OK")) {
                 return;
             }
 
             final String newName = query.getStringValue("Name");
+
             if (container.getEntity(newName) != null) {
                 MessageHandler.error("There is already a refinement with name "
-                        + newName + ".");
+                    + newName + ".");
                 return;
             }
+
             int choiceIndex = query.getIntValue("Class");
             String newClass = choiceClasses[choiceIndex];
 
-            String currentRefinements
-                = transition.refinementName.getExpression();
-            if (currentRefinements == null || currentRefinements.equals("")) {
+            String currentRefinements = transition.refinementName.getExpression();
+
+            if ((currentRefinements == null) || currentRefinements.equals("")) {
                 currentRefinements = newName;
             } else {
                 currentRefinements = currentRefinements.trim() + ", " + newName;
             }
+
             String moml;
+
             // The MoML we create depends on whether the configuration
             // specified a set of prototype refinements.
             if (refinements instanceof CompositeEntity) {
                 String choiceName = choiceNames[choiceIndex];
-                Entity template = ((CompositeEntity)refinements)
-                    .getEntity(choiceName);
+                Entity template = ((CompositeEntity) refinements).getEntity(choiceName);
                 String templateDescription = template.exportMoML(newName);
-                moml = "<group>"
-                    + templateDescription
-                    + "<relation name=\""
+                moml = "<group>" + templateDescription + "<relation name=\""
                     + transition.getName(container)
                     + "\"><property name=\"refinementName\" value=\""
-                    + currentRefinements
-                    + "\"/></relation></group>";
+                    + currentRefinements + "\"/></relation></group>";
             } else {
-                moml = "<group><entity name=\""
-                    + newName
-                    + "\" class=\""
-                    + newClass
-                    + "\"/>"
-                    + "<relation name=\""
+                moml = "<group><entity name=\"" + newName + "\" class=\""
+                    + newClass + "\"/>" + "<relation name=\""
                     + transition.getName(container)
                     + "\"><property name=\"refinementName\" value=\""
-                    + currentRefinements
-                    + "\"/></relation></group>";
+                    + currentRefinements + "\"/></relation></group>";
             }
-            MoMLChangeRequest change = new MoMLChangeRequest(
-                    this, container, moml)  {
+
+            MoMLChangeRequest change = new MoMLChangeRequest(this, container,
+                    moml) {
                     protected void _execute() throws Exception {
                         super._execute();
 
@@ -218,33 +225,40 @@ public class ModalTransitionController extends TransitionController {
 
                         // Get the initial port configuration from the container.
                         Iterator ports = container.portList().iterator();
+
                         while (ports.hasNext()) {
-                            Port port = (Port)ports.next();
+                            Port port = (Port) ports.next();
+
                             try {
                                 // NOTE: This is awkward.
                                 if (entity instanceof Refinement) {
-                                    ((Refinement)entity).setMirrorDisable(true);
+                                    ((Refinement) entity).setMirrorDisable(true);
                                 } else if (entity instanceof ModalController) {
-                                    ((ModalController)entity).setMirrorDisable(true);
+                                    ((ModalController) entity).setMirrorDisable(true);
                                 }
+
                                 Port newPort = entity.newPort(port.getName());
+
                                 if (newPort instanceof RefinementPort
                                         && port instanceof IOPort) {
                                     try {
-                                        ((RefinementPort)newPort)
-                                            .setMirrorDisable(true);
-                                        if (((IOPort)port).isInput()) {
-                                            ((RefinementPort)newPort)
-                                                .setInput(true);
+                                        ((RefinementPort) newPort)
+                                        .setMirrorDisable(true);
+
+                                        if (((IOPort) port).isInput()) {
+                                            ((RefinementPort) newPort).setInput(true);
                                         }
-                                        if (((IOPort)port).isOutput()) {
-                                            ((RefinementPort)newPort)
-                                                .setOutput(true);
+
+                                        if (((IOPort) port).isOutput()) {
+                                            ((RefinementPort) newPort)
+                                            .setOutput(true);
                                         }
-                                        if (((IOPort)port).isMultiport()) {
-                                            ((RefinementPort)newPort)
-                                                .setMultiport(true);
+
+                                        if (((IOPort) port).isMultiport()) {
+                                            ((RefinementPort) newPort)
+                                            .setMultiport(true);
                                         }
+
                                         /* No longer needed since Yuhong modified
                                          * the type system to allow UNKNOWN. EAL
                                          if (port instanceof TypedIOPort
@@ -254,26 +268,27 @@ public class ModalTransitionController extends TransitionController {
                                          }
                                         */
                                     } finally {
-                                        ((RefinementPort)newPort)
-                                            .setMirrorDisable(false);
+                                        ((RefinementPort) newPort)
+                                        .setMirrorDisable(false);
                                     }
                                 }
                             } finally {
                                 // NOTE: This is awkward.
                                 if (entity instanceof Refinement) {
-                                    ((Refinement)entity).setMirrorDisable(false);
+                                    ((Refinement) entity).setMirrorDisable(false);
                                 } else if (entity instanceof ModalController) {
-                                    ((ModalController)entity)
-                                        .setMirrorDisable(false);
+                                    ((ModalController) entity).setMirrorDisable(false);
                                 }
                             }
                         }
+
                         if (_configuration != null) {
                             // Look inside.
                             _configuration.openModel(entity);
                         }
                     }
                 };
+
             container.requestChange(change);
         }
     }
@@ -283,118 +298,157 @@ public class ModalTransitionController extends TransitionController {
         public RemoveRefinementAction() {
             super("Remove Refinement");
         }
+
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
+
             NamedObj target = getTarget();
+
             if (!(target instanceof Transition)) {
                 MessageHandler.error(
-                        "Can only remove refinements from transitions.");
+                    "Can only remove refinements from transitions.");
                 return;
             }
-            Transition transition = (Transition)target;
+
+            Transition transition = (Transition) target;
 
             // Check that all these containers exist.
-            CompositeEntity immediateContainer = (CompositeEntity)
-                transition.getContainer();
+            CompositeEntity immediateContainer = (CompositeEntity) transition
+                .getContainer();
+
             if (immediateContainer == null) {
                 MessageHandler.error("Transition has no container!");
                 return;
             }
-            final CompositeEntity container
-                = (CompositeEntity)immediateContainer.getContainer();
+
+            final CompositeEntity container = (CompositeEntity) immediateContainer
+                .getContainer();
+
             if (container == null) {
                 MessageHandler.error("Transition container has no container!");
                 return;
             }
 
             TypedActor[] refinements;
+
             try {
                 refinements = transition.getRefinement();
             } catch (Exception ex) {
                 MessageHandler.error("Invalid refinements.", ex);
                 return;
             }
-            if (refinements == null || refinements.length < 1) {
+
+            if ((refinements == null) || (refinements.length < 1)) {
                 MessageHandler.error("No refinements to remove.");
                 return;
             }
+
             String[] choices = new String[refinements.length];
-            for (int i = 0; i<refinements.length; i++) {
-                choices[i] = ((Nameable)refinements[i]).getName();
+
+            for (int i = 0; i < refinements.length; i++) {
+                choices[i] = ((Nameable) refinements[i]).getName();
             }
 
             // Open a dialog to get the refinement name and class.
             Query query = new Query();
-            query.addChoice("Refinement", "Refinement", choices,
-                    choices[0], false);
+            query.addChoice("Refinement", "Refinement", choices, choices[0],
+                false);
+
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
             // will be a good start.
             ComponentDialog dialog = new ComponentDialog(null,
                     "Specify Refinement", query);
+
             if (!dialog.buttonPressed().equals("OK")) {
                 return;
             }
 
             String refinementName = query.getStringValue("Refinement");
             StringBuffer newRefinements = new StringBuffer();
-            String currentRefinements
-                = transition.refinementName.getExpression();
-            StringTokenizer tokenizer
-                = new StringTokenizer(currentRefinements, ",");
+            String currentRefinements = transition.refinementName.getExpression();
+            StringTokenizer tokenizer = new StringTokenizer(currentRefinements,
+                    ",");
+
             while (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
+
                 if (!token.trim().equals(refinementName)) {
                     if (newRefinements.length() > 0) {
                         newRefinements.append(", ");
                     }
+
                     newRefinements.append(token.trim());
                 }
             }
+
             // Check to see whether any other transition has
             // this refinment, and if not, remove it from its container.
-            Iterator transitions =
-                immediateContainer.relationList().iterator();
+            Iterator transitions = immediateContainer.relationList().iterator();
             boolean foundOne = false;
+
             while (transitions.hasNext()) {
-                NamedObj other = (NamedObj)transitions.next();
-                if (other != transition && other instanceof Transition) {
-                    String refinementList = ((Transition)other)
-                        .refinementName.getExpression();
-                    if (refinementList == null) continue;
+                NamedObj other = (NamedObj) transitions.next();
+
+                if ((other != transition) && other instanceof Transition) {
+                    String refinementList = ((Transition) other).refinementName
+                        .getExpression();
+
+                    if (refinementList == null) {
+                        continue;
+                    }
+
                     tokenizer = new StringTokenizer(refinementList, ",");
+
                     while (tokenizer.hasMoreTokens()) {
                         String token = tokenizer.nextToken();
+
                         if (token.equals(refinementName)) {
                             foundOne = true;
                             break;
                         }
                     }
-                    if (foundOne) break;
+
+                    if (foundOne) {
+                        break;
+                    }
                 }
             }
+
             if (!foundOne) {
-                Iterator states =
-                    immediateContainer.entityList().iterator();
+                Iterator states = immediateContainer.entityList().iterator();
+
                 while (states.hasNext()) {
-                    NamedObj other = (NamedObj)states.next();
+                    NamedObj other = (NamedObj) states.next();
+
                     if (other instanceof State) {
-                        String refinementList = ((State)other)
-                            .refinementName.getExpression();
-                        if (refinementList == null) continue;
+                        String refinementList = ((State) other).refinementName
+                            .getExpression();
+
+                        if (refinementList == null) {
+                            continue;
+                        }
+
                         tokenizer = new StringTokenizer(refinementList, ",");
+
                         while (tokenizer.hasMoreTokens()) {
                             String token = tokenizer.nextToken();
+
                             if (token.equals(refinementName)) {
                                 foundOne = true;
                                 break;
                             }
                         }
-                        if (foundOne) break;
+
+                        if (foundOne) {
+                            break;
+                        }
                     }
                 }
             }
+
             String removal = "";
+
             if (!foundOne) {
                 removal = "<deleteEntity name=\"" + refinementName + "\"/>";
             }
@@ -402,12 +456,10 @@ public class ModalTransitionController extends TransitionController {
             String moml = "<group><relation name=\""
                 + transition.getName(container)
                 + "\"><property name=\"refinementName\" value=\""
-                + newRefinements.toString()
-                + "\"/></relation>"
-                + removal
+                + newRefinements.toString() + "\"/></relation>" + removal
                 + "</group>";
-            MoMLChangeRequest change = new MoMLChangeRequest(
-                    this, container, moml);
+            MoMLChangeRequest change = new MoMLChangeRequest(this, container,
+                    moml);
             container.requestChange(change);
         }
     }

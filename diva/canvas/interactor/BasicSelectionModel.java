@@ -32,6 +32,7 @@ import javax.swing.event.EventListenerList;
 
 import diva.canvas.Figure;
 
+
 /**
  * A basic implementation of the SelectionModel interface.
  * This model requires that each object in the selection be
@@ -91,8 +92,8 @@ public class BasicSelectionModel implements SelectionModel {
      * selection, the current selection is cleared.
      */
     public void addSelection(Object sel) {
-        Object []additions = null;
-        Object []removals = null;
+        Object[] additions = null;
+        Object[] removals = null;
 
         if (getSelectionMode() == SINGLE_SELECTION) {
             removals = _selection.toArray();
@@ -107,6 +108,7 @@ public class BasicSelectionModel implements SelectionModel {
             additions = new Object[1];
             additions[0] = sel;
         }
+
         _selEvent.set(additions, removals, getFirstSelection());
         dispatchSelectionEvent(_selEvent);
     }
@@ -118,13 +120,13 @@ public class BasicSelectionModel implements SelectionModel {
     public void addSelections(Object[] sels) {
         if (getSelectionMode() == SINGLE_SELECTION) {
             //only add the last selection
-            addSelection(sels[sels.length-1]);
-        }
-        else {
+            addSelection(sels[sels.length - 1]);
+        } else {
             for (int i = 0; i < sels.length; i++) {
                 _selection.add(sels[i]);
                 renderSelected(sels[i]);
             }
+
             _selEvent.set(sels, null, getFirstSelection());
             dispatchSelectionEvent(_selEvent);
         }
@@ -137,9 +139,11 @@ public class BasicSelectionModel implements SelectionModel {
     public void clearSelection() {
         Object[] removals = _selection.toArray();
         _selection.clear();
+
         for (int i = 0; i < removals.length; i++) {
             renderDeselected(removals[i]);
         }
+
         _selEvent.set(null, removals, getFirstSelection());
         dispatchSelectionEvent(_selEvent);
     }
@@ -155,9 +159,10 @@ public class BasicSelectionModel implements SelectionModel {
      */
     public void dispatchSelectionEvent(SelectionEvent e) {
         Object[] listeners = _listeners.getListenerList();
-        for (int i = listeners.length-2; i>=0; i-=2) {
+
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == SelectionListener.class) {
-                ((SelectionListener)listeners[i+1]).selectionChanged(e);
+                ((SelectionListener) listeners[i + 1]).selectionChanged(e);
             }
         }
     }
@@ -169,6 +174,7 @@ public class BasicSelectionModel implements SelectionModel {
         if (_selection.size() == 0) {
             return null;
         }
+
         return _selection.get(0);
     }
 
@@ -179,7 +185,8 @@ public class BasicSelectionModel implements SelectionModel {
         if (_selection.size() == 0) {
             return null;
         }
-        return _selection.get(_selection.size()-1);
+
+        return _selection.get(_selection.size() - 1);
     }
 
     /**
@@ -239,12 +246,14 @@ public class BasicSelectionModel implements SelectionModel {
      * This works only if it is an instance of Figure,
      * and it has a SelectionInteractor attached to it.
      */
-    private void renderDeselected (Object o) {
+    private void renderDeselected(Object o) {
         if (o instanceof Figure) {
             Interactor ir = ((Figure) o).getInteractor();
+
             if (ir instanceof SelectionInteractor) {
-                SelectionRenderer sr
-                    = ((SelectionInteractor) ir).getSelectionRenderer();
+                SelectionRenderer sr = ((SelectionInteractor) ir)
+                    .getSelectionRenderer();
+
                 if (sr != null) {
                     sr.renderDeselected((Figure) o);
                 }
@@ -256,12 +265,14 @@ public class BasicSelectionModel implements SelectionModel {
      * This works only if it is an instance of Figure,
      * and it has a SelectionInteractor.
      */
-    private void renderSelected (Object o) {
+    private void renderSelected(Object o) {
         if (o instanceof Figure) {
             Interactor ir = ((Figure) o).getInteractor();
+
             if (ir instanceof SelectionInteractor) {
-                SelectionRenderer sr
-                    = ((SelectionInteractor) ir).getSelectionRenderer();
+                SelectionRenderer sr = ((SelectionInteractor) ir)
+                    .getSelectionRenderer();
+
                 if (sr != null) {
                     sr.renderSelected((Figure) o);
                 }
@@ -277,5 +288,3 @@ public class BasicSelectionModel implements SelectionModel {
         _mode = mode;
     }
 }
-
-

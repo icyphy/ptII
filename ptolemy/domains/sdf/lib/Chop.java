@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.BooleanToken;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Chop
+
 /**
    This actor reads a sequence of input tokens of any type, and writes a
    sequence of tokens constructed from the input sequence (possibly
@@ -121,9 +122,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class Chop extends SDFTransformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -134,7 +133,7 @@ public class Chop extends SDFTransformer {
      *   an actor already in the container.
      */
     public Chop(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         numberToRead = new Parameter(this, "numberToRead");
@@ -190,47 +189,51 @@ public class Chop extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Note: it is important that none of these sections depend on
         // eachother.
         if (attribute == numberToRead) {
-            _numberToRead = ((IntToken)numberToRead.getToken()).intValue();
+            _numberToRead = ((IntToken) numberToRead.getToken()).intValue();
+
             if (_numberToRead <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid numberToRead: " + _numberToRead);
+                    "Invalid numberToRead: " + _numberToRead);
             }
         } else if (attribute == numberToWrite) {
-            _numberToWrite = ((IntToken)numberToWrite.getToken()).intValue();
+            _numberToWrite = ((IntToken) numberToWrite.getToken()).intValue();
+
             if (_numberToWrite <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid numberToWrite: " + _numberToRead);
+                    "Invalid numberToWrite: " + _numberToRead);
             }
+
             _buffer = new Token[_numberToWrite];
         } else if (attribute == offset) {
-            _offsetValue = ((IntToken)offset.getToken()).intValue();
+            _offsetValue = ((IntToken) offset.getToken()).intValue();
         } else if (attribute == usePastInputs) {
-            _usePast = ((BooleanToken)usePastInputs.getToken()).booleanValue();
+            _usePast = ((BooleanToken) usePastInputs.getToken()).booleanValue();
         }
 
-        if (attribute == offset || attribute == usePastInputs) {
+        if ((attribute == offset) || (attribute == usePastInputs)) {
             if (_offsetValue > 0) {
                 _pastBuffer = new Token[_offsetValue];
                 _pastNeedsInitializing = true;
             }
         }
 
-        if (attribute == numberToRead ||
-                attribute == numberToWrite ||
-                attribute == offset ||
-                attribute == usePastInputs) {
+        if ((attribute == numberToRead) || (attribute == numberToWrite)
+                || (attribute == offset) || (attribute == usePastInputs)) {
             // NOTE: The following computation gets repeated when each of
             // these gets set, but it's a simple calculation, so we live
             // with it.
             // The variables _highLimit and _lowLimit indicate the range of
             // output indexes that come directly from the input block
             // that is read.
-            _highLimit = _offsetValue + _numberToRead - 1;
-            if (_highLimit >= _numberToWrite) _highLimit = _numberToWrite - 1;
+            _highLimit = (_offsetValue + _numberToRead) - 1;
+
+            if (_highLimit >= _numberToWrite) {
+                _highLimit = _numberToWrite - 1;
+            }
 
             if (_offsetValue >= 0) {
                 _lowLimit = _offsetValue;
@@ -250,10 +253,12 @@ public class Chop extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         int inputIndex = _inputIndex;
         int pastBufferIndex = 0;
         Token[] inBuffer = input.get(0, _numberToRead);
         Token zero = inBuffer[0].zero();
+
         for (int i = 0; i < _numberToWrite; i++) {
             if (i > _highLimit) {
                 _buffer[i] = zero;
@@ -264,8 +269,10 @@ public class Chop extends SDFTransformer {
                         for (int j = 0; j < _pastBuffer.length; j++) {
                             _pastBuffer[j] = zero;
                         }
+
                         _pastNeedsInitializing = false;
                     }
+
                     _buffer[i] = _pastBuffer[pastBufferIndex++];
                 } else {
                     _buffer[i] = zero;
@@ -276,32 +283,47 @@ public class Chop extends SDFTransformer {
                 inputIndex++;
             }
         }
-        if (_usePast && _offsetValue > 0) {
+
+        if (_usePast && (_offsetValue > 0)) {
             // Copy input buffer into past buffer.  Have to be careful
             // here because the buffer might be longer than the
             // input window.
             int startCopy = _numberToRead - _offsetValue;
             int length = _pastBuffer.length;
             int destination = 0;
+
             if (startCopy < 0) {
                 // Shift older data.
                 destination = _pastBuffer.length - _numberToRead;
-                System.arraycopy(_pastBuffer, _numberToRead,
-                        _pastBuffer, 0, destination);
+                System.arraycopy(_pastBuffer, _numberToRead, _pastBuffer, 0,
+                    destination);
                 startCopy = 0;
                 length = _numberToRead;
             }
-            System.arraycopy(inBuffer, startCopy, _pastBuffer,
-                    destination, length);
+
+            System.arraycopy(inBuffer, startCopy, _pastBuffer, destination,
+                length);
         }
+
         output.send(0, _buffer, _numberToWrite);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+    private int _highLimit;
 
-    private int _highLimit, _inputIndex, _lowLimit;
-    private int _numberToRead, _numberToWrite, _offsetValue;
-    private Token[] _buffer, _pastBuffer;
-    private boolean _usePast, _pastNeedsInitializing;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+    private int _inputIndex;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+    private int _lowLimit;
+    private int _numberToRead;
+    private int _numberToWrite;
+    private int _offsetValue;
+    private Token[] _buffer;
+    private Token[] _pastBuffer;
+    private boolean _usePast;
+    private boolean _pastNeedsInitializing;
 }

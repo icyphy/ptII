@@ -26,20 +26,18 @@
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
-
-
 package ptolemy.copernicus.java;
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import soot.*;
-import soot.jimple.*;
 
 import java.util.Map;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.kernel.util.IllegalActionException;
+import soot.SootClass;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// DirectorInliner
+
 /**
 
 @author Stephen Neuendorffer
@@ -47,8 +45,6 @@ import java.util.Map;
 @since Ptolemy II 2.0
 */
 public interface DirectorInliner {
-
     public void inlineDirector(CompositeActor model, SootClass modelClass,
-            String phaseName, Map options) throws IllegalActionException;
-
+        String phaseName, Map options) throws IllegalActionException;
 }

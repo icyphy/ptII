@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PhaseUnwrap
+
 /**
 
 This actor unwraps a phase plot, removing discontinuities of
@@ -52,9 +53,7 @@ the job.
 @Pt.ProposedRating Yellow (celaine)
 @Pt.AcceptedRating Yellow (celaine)
 */
-
 public class PhaseUnwrap extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -64,7 +63,7 @@ public class PhaseUnwrap extends Transformer {
      *   actor with this name.
      */
     public PhaseUnwrap(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);
@@ -82,11 +81,19 @@ public class PhaseUnwrap extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            double newPhase = ((DoubleToken)input.get(0)).doubleValue();
+            double newPhase = ((DoubleToken) input.get(0)).doubleValue();
+
             // compute the phase change and check for wraparound
             double phaseChange = newPhase - _previousPhaseInput;
-            if (phaseChange < -Math.PI) phaseChange += 2*Math.PI;
-            if (phaseChange > Math.PI) phaseChange -= 2*Math.PI;
+
+            if (phaseChange < -Math.PI) {
+                phaseChange += (2 * Math.PI);
+            }
+
+            if (phaseChange > Math.PI) {
+                phaseChange -= (2 * Math.PI);
+            }
+
             _tempPreviousPhaseOutput = _previousPhaseOutput + phaseChange;
             _tempPreviousPhaseInput = newPhase;
             output.send(0, new DoubleToken(_tempPreviousPhaseOutput));
@@ -115,10 +122,8 @@ public class PhaseUnwrap extends Transformer {
         return super.postfire();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The value of the input in the previous phase.  Needed to work
     // in the CT domain.
     private double _previousPhaseInput = 0.0;

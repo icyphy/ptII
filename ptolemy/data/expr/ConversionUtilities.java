@@ -29,7 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Created : May 1998
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.data.ArrayToken;
@@ -57,8 +56,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConversionUtilities
+
 /**
    This class contains a series of static methods that facilitate the
    runtime conversion of tokens to and from Java representations that are
@@ -109,7 +110,6 @@ import ptolemy.math.FixPoint;
    @see java.lang.Math
 */
 public class ConversionUtilities {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -127,91 +127,104 @@ public class ConversionUtilities {
      * @return A new token.
      */
     public static ptolemy.data.Token convertJavaTypeToToken(Object object)
-            throws ptolemy.kernel.util.IllegalActionException {
+        throws ptolemy.kernel.util.IllegalActionException {
         ptolemy.data.Token returnValue = null;
+
         if (object instanceof ptolemy.data.Token) {
-            returnValue = (ptolemy.data.Token)object;
+            returnValue = (ptolemy.data.Token) object;
         } else if (object instanceof ptolemy.data.Token[]) {
-            returnValue = new ArrayToken((ptolemy.data.Token[])object);
+            returnValue = new ArrayToken((ptolemy.data.Token[]) object);
         } else if (object instanceof Boolean) {
-            returnValue = new BooleanToken(((Boolean)object).booleanValue());
+            returnValue = new BooleanToken(((Boolean) object).booleanValue());
         } else if (object instanceof Byte) {
             // Note: This is technically not quite right, because of
             // the sign involved...  In lieu of a signed byte token,
             // we assume that methods that return byte should be
             // interpreted unsigned.
-            returnValue = new UnsignedByteToken(((Byte)object).byteValue());
+            returnValue = new UnsignedByteToken(((Byte) object).byteValue());
         } else if (object instanceof Integer) {
-            returnValue = new IntToken(((Integer)object).intValue());
+            returnValue = new IntToken(((Integer) object).intValue());
         } else if (object instanceof Long) {
-            returnValue = new LongToken(((Long)object).longValue());
+            returnValue = new LongToken(((Long) object).longValue());
         } else if (object instanceof Double) {
-            returnValue = new DoubleToken(((Double)object).doubleValue());
+            returnValue = new DoubleToken(((Double) object).doubleValue());
         } else if (object instanceof Float) {
             // Note that we lose some information here..  oh well.
-            returnValue = new DoubleToken(((Float)object).floatValue());
+            returnValue = new DoubleToken(((Float) object).floatValue());
         } else if (object instanceof Complex) {
-            returnValue = new ComplexToken((Complex)object);
+            returnValue = new ComplexToken((Complex) object);
         } else if (object instanceof FixPoint) {
-            returnValue = new FixToken((FixPoint)object);
+            returnValue = new FixToken((FixPoint) object);
         } else if (object instanceof String) {
-            returnValue = new StringToken((String)object);
+            returnValue = new StringToken((String) object);
         } else if (object instanceof boolean[][]) {
-            returnValue = new BooleanMatrixToken((boolean[][])object);
+            returnValue = new BooleanMatrixToken((boolean[][]) object);
         } else if (object instanceof int[][]) {
-            returnValue = new IntMatrixToken((int[][])object);
+            returnValue = new IntMatrixToken((int[][]) object);
         } else if (object instanceof long[][]) {
-            returnValue = new LongMatrixToken((long[][])object);
+            returnValue = new LongMatrixToken((long[][]) object);
         } else if (object instanceof double[][]) {
-            returnValue = new DoubleMatrixToken((double[][])object);
+            returnValue = new DoubleMatrixToken((double[][]) object);
         } else if (object instanceof Complex[][]) {
-            returnValue = new ComplexMatrixToken((Complex[][])object);
+            returnValue = new ComplexMatrixToken((Complex[][]) object);
         } else if (object instanceof FixPoint[][]) {
-            returnValue = new FixMatrixToken((FixPoint[][])object);
+            returnValue = new FixMatrixToken((FixPoint[][]) object);
         } else if (object instanceof double[]) {
-            DoubleToken[] temp = new DoubleToken
-                [((double[])object).length];
+            DoubleToken[] temp = new DoubleToken[((double[]) object).length];
+
             for (int j = 0; j < temp.length; j++) {
-                temp[j] = new DoubleToken(((double[])object)[j]);
+                temp[j] = new DoubleToken(((double[]) object)[j]);
             }
+
             returnValue = new ArrayToken(temp);
         } else if (object instanceof Complex[]) {
-            ComplexToken[] temp = new ComplexToken
-                [((Complex[])object).length];
+            ComplexToken[] temp = new ComplexToken[((Complex[]) object).length];
+
             for (int j = 0; j < temp.length; j++) {
-                temp[j] = new ComplexToken(((Complex[])object)[j]);
+                temp[j] = new ComplexToken(((Complex[]) object)[j]);
             }
+
             returnValue = new ArrayToken(temp);
         } else if (object instanceof int[]) {
-            IntToken[] temp = new IntToken[((int[])object).length];
+            IntToken[] temp = new IntToken[((int[]) object).length];
+
             for (int j = 0; j < temp.length; j++) {
-                temp[j] = new IntToken(((int[])object)[j]);
+                temp[j] = new IntToken(((int[]) object)[j]);
             }
+
             returnValue = new ArrayToken(temp);
         } else if (object instanceof long[]) {
-            LongToken[] temp = new LongToken[((long[])object).length];
+            LongToken[] temp = new LongToken[((long[]) object).length];
+
             for (int j = 0; j < temp.length; j++) {
-                temp[j] = new LongToken(((long[])object)[j]);
+                temp[j] = new LongToken(((long[]) object)[j]);
             }
+
             returnValue = new ArrayToken(temp);
         } else if (object instanceof boolean[]) {
-            BooleanToken[] temp = new BooleanToken[((long[])object).length];
+            BooleanToken[] temp = new BooleanToken[((long[]) object).length];
+
             for (int j = 0; j < temp.length; j++) {
-                temp[j] = new BooleanToken(((boolean[])object)[j]);
+                temp[j] = new BooleanToken(((boolean[]) object)[j]);
             }
+
             returnValue = new ArrayToken(temp);
         } else if (object instanceof String[]) {
-            StringToken[] temp = new StringToken[((String[])object).length];
+            StringToken[] temp = new StringToken[((String[]) object).length];
+
             for (int j = 0; j < temp.length; j++) {
-                temp[j] = new StringToken(((String[])object)[j]);
+                temp[j] = new StringToken(((String[]) object)[j]);
             }
+
             returnValue = new ArrayToken(temp);
         } else if (object instanceof FixPoint[]) {
             // Create back an ArrayToken containing FixTokens
-            FixToken[] temp = new FixToken[((FixPoint[])object).length];
+            FixToken[] temp = new FixToken[((FixPoint[]) object).length];
+
             for (int j = 0; j < temp.length; j++) {
-                temp[j] = new FixToken((FixPoint)((FixPoint[])object)[j]);
+                temp[j] = new FixToken((FixPoint) ((FixPoint[]) object)[j]);
             }
+
             returnValue = new ArrayToken(temp);
         } else if (object instanceof Object) {
             // Package into an ObjectToken.
@@ -220,9 +233,10 @@ public class ConversionUtilities {
             // This should really never happen, since every class
             // should be caught by "instanceof Object" above, but I
             // don't like the dangling else if.
-            throw new InternalErrorException(
-                    "object type not recognized: " + object);
+            throw new InternalErrorException("object type not recognized: "
+                + object);
         }
+
         return returnValue;
     }
 
@@ -233,42 +247,44 @@ public class ConversionUtilities {
      *  recognized, or creating the type fails.
      */
     public static Type convertJavaTypeToTokenType(Class tokenClass)
-            throws ptolemy.kernel.util.IllegalActionException {
+        throws ptolemy.kernel.util.IllegalActionException {
         try {
             if (tokenClass.equals(ptolemy.data.Token.class)) {
                 return BaseType.GENERAL;
             } else if (ptolemy.data.ArrayToken.class.isAssignableFrom(
-                               tokenClass)) {
+                        tokenClass)) {
                 Type type = new ArrayType(BaseType.GENERAL);
                 return type;
             } else if (ptolemy.data.RecordToken.class.isAssignableFrom(
-                               tokenClass)) {
+                        tokenClass)) {
                 Type type = new RecordType(new String[0], new Type[0]);
                 return type;
             } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
                 Type type = BaseType.forClassName(tokenClass.getName());
+
                 if (type == null) {
                     throw new IllegalActionException(
-                            "Could not return type for class " + tokenClass);
+                        "Could not return type for class " + tokenClass);
                 }
+
                 return type;
-            } else if (tokenClass.equals(Boolean.class) ||
-                    tokenClass.equals(Boolean.TYPE)) {
+            } else if (tokenClass.equals(Boolean.class)
+                    || tokenClass.equals(Boolean.TYPE)) {
                 return BaseType.BOOLEAN;
-            } else if (tokenClass.equals(Byte.class) ||
-                    tokenClass.equals(Byte.TYPE)) {
+            } else if (tokenClass.equals(Byte.class)
+                    || tokenClass.equals(Byte.TYPE)) {
                 return BaseType.UNSIGNED_BYTE;
-            } else if (tokenClass.equals(Integer.class) ||
-                    tokenClass.equals(Integer.TYPE)) {
+            } else if (tokenClass.equals(Integer.class)
+                    || tokenClass.equals(Integer.TYPE)) {
                 return BaseType.INT;
-            } else if (tokenClass.equals(Long.class) ||
-                    tokenClass.equals(Long.TYPE)) {
+            } else if (tokenClass.equals(Long.class)
+                    || tokenClass.equals(Long.TYPE)) {
                 return BaseType.LONG;
-            } else if (tokenClass.equals(Double.class) ||
-                    tokenClass.equals(Double.TYPE)) {
+            } else if (tokenClass.equals(Double.class)
+                    || tokenClass.equals(Double.TYPE)) {
                 return BaseType.DOUBLE;
-            } else if (tokenClass.equals(Float.class) ||
-                    tokenClass.equals(Float.TYPE)) {
+            } else if (tokenClass.equals(Float.class)
+                    || tokenClass.equals(Float.TYPE)) {
                 // Note that we lose some information here..  oh well.
                 return BaseType.DOUBLE;
             } else if (tokenClass.equals(Complex.class)) {
@@ -285,28 +301,27 @@ public class ConversionUtilities {
                 return BaseType.LONG_MATRIX;
             } else if (tokenClass.equals(Class.forName("[[D"))) {
                 return BaseType.DOUBLE_MATRIX;
-            } else if (tokenClass.equals(
-                               Class.forName("[[Lptolemy.math.Complex;"))) {
+            } else if (tokenClass.equals(Class.forName(
+                            "[[Lptolemy.math.Complex;"))) {
                 return BaseType.COMPLEX_MATRIX;
-            }  else if (tokenClass.equals(
-                                Class.forName("[[Lptolemy.math.FixPoint;"))) {
+            } else if (tokenClass.equals(Class.forName(
+                            "[[Lptolemy.math.FixPoint;"))) {
                 return BaseType.FIX_MATRIX;
             } else if (tokenClass.isArray()) {
                 return new ArrayType(convertJavaTypeToTokenType(
-                                             tokenClass.getComponentType()));
-
+                        tokenClass.getComponentType()));
             } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
                 return BaseType.OBJECT;
             } else {
                 // This should really never happen, since every class
                 // should be caught by the isAssignable test above,
                 // but I don't like the dangling else if.
-                throw new InternalErrorException(
-                        "type not found: " + tokenClass);
+                throw new InternalErrorException("type not found: "
+                    + tokenClass);
             }
-        } catch(ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             throw new IllegalActionException(null, ex,
-                    "Could not find Class '" + tokenClass + "'");
+                "Could not find Class '" + tokenClass + "'");
         }
     }
 
@@ -325,7 +340,7 @@ public class ConversionUtilities {
      * of ptolemy.data.Token.
      */
     public static Object convertTokenToJavaType(ptolemy.data.Token token)
-            throws ptolemy.kernel.util.IllegalActionException {
+        throws ptolemy.kernel.util.IllegalActionException {
         // Design note: it is arguable that this could be moved to the
         // token interface for better object-oriented design, and to
         // more easily support token types not explicitly listed here.
@@ -334,108 +349,111 @@ public class ConversionUtilities {
         // nature.  Hopefully this will also keep both conversions
         // consistent as well.
         Object returnValue;
+
         if (token instanceof DoubleToken) {
-            returnValue = new Double(((DoubleToken)token).doubleValue());
+            returnValue = new Double(((DoubleToken) token).doubleValue());
         } else if (token instanceof IntToken) {
-            returnValue = new Integer(((IntToken)token).intValue());
+            returnValue = new Integer(((IntToken) token).intValue());
         } else if (token instanceof UnsignedByteToken) {
-            returnValue = new Byte(((UnsignedByteToken)token).byteValue());
+            returnValue = new Byte(((UnsignedByteToken) token).byteValue());
         } else if (token instanceof LongToken) {
-            returnValue = new Long(((LongToken)token).longValue());
+            returnValue = new Long(((LongToken) token).longValue());
         } else if (token instanceof StringToken) {
-            returnValue = new String(((StringToken)token).stringValue());
+            returnValue = new String(((StringToken) token).stringValue());
         } else if (token instanceof BooleanToken) {
-            returnValue =
-                new Boolean(((BooleanToken)token).booleanValue());
+            returnValue = new Boolean(((BooleanToken) token).booleanValue());
         } else if (token instanceof ComplexToken) {
-            returnValue = ((ComplexToken)token).complexValue();
+            returnValue = ((ComplexToken) token).complexValue();
         } else if (token instanceof FixToken) {
-            returnValue = ((FixToken)token).fixValue();
+            returnValue = ((FixToken) token).fixValue();
         } else if (token instanceof FixMatrixToken) {
-            returnValue = ((FixMatrixToken)token).fixMatrix();
+            returnValue = ((FixMatrixToken) token).fixMatrix();
         } else if (token instanceof IntMatrixToken) {
-            returnValue = ((IntMatrixToken)token).intMatrix();
+            returnValue = ((IntMatrixToken) token).intMatrix();
         } else if (token instanceof DoubleMatrixToken) {
-            returnValue = ((DoubleMatrixToken)token).doubleMatrix();
+            returnValue = ((DoubleMatrixToken) token).doubleMatrix();
         } else if (token instanceof ComplexMatrixToken) {
-            returnValue = ((ComplexMatrixToken)token).complexMatrix();
+            returnValue = ((ComplexMatrixToken) token).complexMatrix();
         } else if (token instanceof LongMatrixToken) {
-            returnValue = ((LongMatrixToken)token).longMatrix();
+            returnValue = ((LongMatrixToken) token).longMatrix();
         } else if (token instanceof BooleanMatrixToken) {
-            returnValue = ((BooleanMatrixToken)token).booleanMatrix();
+            returnValue = ((BooleanMatrixToken) token).booleanMatrix();
         } else if (token instanceof ArrayToken) {
             // This is frustrating... It would be nice if there
             // was a Token.getValue() that would return the
             // token element value in a polymorphic way...
-            if (((ArrayToken)token).getElement(0)
-                    instanceof FixToken) {
-                FixPoint[] array = new FixPoint
-                    [((ArrayToken)token).length()];
+            if (((ArrayToken) token).getElement(0) instanceof FixToken) {
+                FixPoint[] array = new FixPoint[((ArrayToken) token).length()];
+
                 for (int j = 0; j < array.length; j++) {
-                    array[j] = ((FixToken)((ArrayToken)token)
-                            .getElement(j)).fixValue();
+                    array[j] = ((FixToken) ((ArrayToken) token).getElement(j))
+                        .fixValue();
                 }
+
                 returnValue = array;
-            } else if (((ArrayToken)token).getElement(0)
-                    instanceof IntToken) {
-                int[] array = new int[((ArrayToken)token).length()];
+            } else if (((ArrayToken) token).getElement(0) instanceof IntToken) {
+                int[] array = new int[((ArrayToken) token).length()];
+
                 for (int j = 0; j < array.length; j++) {
-                    array[j] = ((IntToken)((ArrayToken)token)
-                            .getElement(j)).intValue();
+                    array[j] = ((IntToken) ((ArrayToken) token).getElement(j))
+                        .intValue();
                 }
+
                 returnValue = array;
-            } else if (((ArrayToken)token).getElement(0)
-                    instanceof LongToken) {
-                long[] array = new long[((ArrayToken)token).length()];
+            } else if (((ArrayToken) token).getElement(0) instanceof LongToken) {
+                long[] array = new long[((ArrayToken) token).length()];
+
                 for (int j = 0; j < array.length; j++) {
-                    array[j] = ((LongToken)((ArrayToken)token)
-                            .getElement(j)).longValue();
+                    array[j] = ((LongToken) ((ArrayToken) token).getElement(j))
+                        .longValue();
                 }
+
                 returnValue = array;
-            } else if (((ArrayToken)token).getElement(0)
-                    instanceof DoubleToken) {
-                double[] array = new double
-                    [((ArrayToken)token).length()];
+            } else if (((ArrayToken) token).getElement(0) instanceof DoubleToken) {
+                double[] array = new double[((ArrayToken) token).length()];
+
                 for (int j = 0; j < array.length; j++) {
-                    array[j] = ((DoubleToken)((ArrayToken)token)
-                            .getElement(j)).doubleValue();
+                    array[j] = ((DoubleToken) ((ArrayToken) token).getElement(j))
+                        .doubleValue();
                 }
+
                 returnValue = array;
-            } else if (((ArrayToken)token).getElement(0)
-                    instanceof ComplexToken) {
-                Complex[] array = new Complex
-                    [((ArrayToken)token).length()];
+            } else if (((ArrayToken) token).getElement(0) instanceof ComplexToken) {
+                Complex[] array = new Complex[((ArrayToken) token).length()];
+
                 for (int j = 0; j < array.length; j++) {
-                    array[j] = ((ComplexToken)((ArrayToken)token)
-                            .getElement(j)).complexValue();
+                    array[j] = ((ComplexToken) ((ArrayToken) token).getElement(j))
+                        .complexValue();
                 }
+
                 returnValue = array;
-            } else if (((ArrayToken)token).getElement(0)
-                    instanceof StringToken) {
-                String[] array = new String
-                    [((ArrayToken)token).length()];
+            } else if (((ArrayToken) token).getElement(0) instanceof StringToken) {
+                String[] array = new String[((ArrayToken) token).length()];
+
                 for (int j = 0; j < array.length; j++) {
-                    array[j] = ((StringToken)((ArrayToken)token)
-                            .getElement(j)).stringValue();
+                    array[j] = ((StringToken) ((ArrayToken) token).getElement(j))
+                        .stringValue();
                 }
+
                 returnValue = array;
-            } else if (((ArrayToken)token).getElement(0)
-                    instanceof BooleanToken) {
-                boolean[] array = new boolean
-                    [((ArrayToken)token).length()];
+            } else if (((ArrayToken) token).getElement(0) instanceof BooleanToken) {
+                boolean[] array = new boolean[((ArrayToken) token).length()];
+
                 for (int j = 0; j < array.length; j++) {
-                    array[j] = ((BooleanToken)((ArrayToken)token)
-                            .getElement(j)).booleanValue();
+                    array[j] = ((BooleanToken) ((ArrayToken) token).getElement(j))
+                        .booleanValue();
                 }
+
                 returnValue = array;
             } else {
-                throw new InternalErrorException(
-                        "token type not recognized: " + token);
+                throw new InternalErrorException("token type not recognized: "
+                    + token);
             }
         } else {
-            throw new InternalErrorException(
-                    "token type not recognized: " + token);
+            throw new InternalErrorException("token type not recognized: "
+                + token);
         }
+
         return returnValue;
     }
 
@@ -449,13 +467,13 @@ public class ConversionUtilities {
      *  recognized, or creating the type fails.
      */
     public static Class convertTokenTypeToJavaType(Type type)
-            throws ptolemy.kernel.util.IllegalActionException {
+        throws ptolemy.kernel.util.IllegalActionException {
         try {
             if (type.equals(BaseType.DOUBLE)) {
                 return Double.TYPE;
             } else if (type.equals(BaseType.UNSIGNED_BYTE)) {
                 return Byte.TYPE;
-            } else  if (type.equals(BaseType.INT)) {
+            } else if (type.equals(BaseType.INT)) {
                 return Integer.TYPE;
             } else if (type.equals(BaseType.LONG)) {
                 return Long.TYPE;
@@ -480,8 +498,9 @@ public class ConversionUtilities {
             } else if (type.equals(BaseType.BOOLEAN_MATRIX)) {
                 return Class.forName("[[Z");
             } else if (type instanceof ArrayType) {
-                ArrayType arrayType = (ArrayType)type;
+                ArrayType arrayType = (ArrayType) type;
                 Type elementType = arrayType.getElementType();
+
                 if (elementType.equals(BaseType.DOUBLE)) {
                     return Class.forName("[D");
                 } else if (elementType.equals(BaseType.INT)) {
@@ -491,20 +510,17 @@ public class ConversionUtilities {
                 } else if (elementType.equals(BaseType.BOOLEAN)) {
                     return Class.forName("[Z");
                 } else {
-                    return java.lang.reflect.Array.newInstance(
-                            convertTokenTypeToJavaType(
-                                    arrayType.getElementType()),
-                            0).getClass();
+                    return java.lang.reflect.Array.newInstance(convertTokenTypeToJavaType(
+                            arrayType.getElementType()), 0).getClass();
                 }
             } else {
                 // Bailout.  The type is not recognized, so defer to
                 // the type for some basic information.
                 return type.getTokenClass();
             }
-        } catch(ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             throw new IllegalActionException(null, ex,
-                    "Could not find Type '" + type + "'");
+                "Could not find Type '" + type + "'");
         }
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.util.Time;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimeGap
+
 /**
    This actor measures the time interval between arrivals of successive
    input tokens.
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class TimeGap extends DETransformer {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -61,7 +61,7 @@ public class TimeGap extends DETransformer {
      *   actor with this name.
      */
     public TimeGap(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
     }
@@ -80,11 +80,12 @@ public class TimeGap extends DETransformer {
         if (input.hasToken(0)) {
             input.get(0);
         }
+
         Time currentTime = getDirector().getModelTime();
+
         if (_previousTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
-            DoubleToken outToken =
-                new DoubleToken(currentTime.subtract(_previousTime)
-                        .getDoubleValue());
+            DoubleToken outToken = new DoubleToken(currentTime.subtract(
+                        _previousTime).getDoubleValue());
             output.send(0, outToken);
         }
     }
@@ -108,7 +109,6 @@ public class TimeGap extends DETransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The time when the previous input arrives.
     private Time _previousTime;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.lib;
 
 import ptolemy.actor.Receiver;
@@ -39,8 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DDESink
+
 /**
    DDESink is simple DDE actor that consumes real tokens. This actor
    has a parameter named 'numTokens' that specifies the number of
@@ -56,23 +57,20 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class DDESink extends TypedAtomicActor {
-
     /** Construct a DDESink with the specified container and name.
      * @param container The container of this actor.
      * @param name The name of this actor.
      */
     public DDESink(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(BaseType.GENERAL);
 
-        numTokens =
-            new Parameter(this, "numTokens", new IntToken(-1));
+        numTokens = new Parameter(this, "numTokens", new IntToken(-1));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,22 +99,26 @@ public class DDESink extends TypedAtomicActor {
      *  accessing the receivers of this actor.
      */
     public void fire() throws IllegalActionException {
-        int value = ((IntToken)numTokens.getToken()).intValue();
+        int value = ((IntToken) numTokens.getToken()).intValue();
 
-        if ( value >= 0 ) {
+        if (value >= 0) {
             _count++;
-            if ( _count > value ) {
+
+            if (_count > value) {
                 _continue = false;
                 return;
             }
         }
+
         Receiver[][] receivers = input.getReceivers();
-        for ( int i = 0; i < receivers.length; i++ ) {
-            for ( int j = 0; j < receivers[i].length; j++ ) {
-                DDEReceiver receiver = (DDEReceiver)receivers[i][j];
-                if ( !_continue ) {
+
+        for (int i = 0; i < receivers.length; i++) {
+            for (int j = 0; j < receivers[i].length; j++) {
+                DDEReceiver receiver = (DDEReceiver) receivers[i][j];
+
+                if (!_continue) {
                     return;
-                } else if ( receiver.hasToken() ) {
+                } else if (receiver.hasToken()) {
                     receiver.get();
                 }
             }
@@ -135,8 +137,6 @@ public class DDESink extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _count = 0;
     private boolean _continue = true;
-
 }

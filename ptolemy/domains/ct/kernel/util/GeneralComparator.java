@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.ct.kernel.util;
 
 import java.util.Comparator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GeneralComparator
+
 /**
    This class compares two comparable objects, object_1 and object_2,
    by calling <i>compare(object_1, object_2)</i>. This method returns
@@ -42,8 +43,7 @@ import java.util.Comparator;
    @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
-public class GeneralComparator implements Comparator{
-
+public class GeneralComparator implements Comparator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -57,6 +57,6 @@ public class GeneralComparator implements Comparator{
      *  @return The comparison result, -1, 0, or 1.
      */
     public int compare(Object first, Object second) {
-        return ((Comparable)first).compareTo((Comparable)second);
+        return ((Comparable) first).compareTo((Comparable) second);
     }
 }

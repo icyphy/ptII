@@ -33,8 +33,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.canvas.toolbox.BasicFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Ellipse2D
+
 /**
    An actor that creates an ellipse.  The initial size, position, and type of
    figure are specified in the parameter edit window and can be changed
@@ -47,9 +49,8 @@ import diva.canvas.toolbox.BasicFigure;
    @Pt.AcceptedRating Yellow (chf)
 */
 public class Ellipse2D extends RectangularFigure2D {
-
     public Ellipse2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -60,8 +61,7 @@ public class Ellipse2D extends RectangularFigure2D {
      *  @exception IllegalActionException If a parameter value is not valid.
      */
     protected BasicFigure _createFigure() throws IllegalActionException {
-        java.awt.geom.Ellipse2D.Double ellipse =
-            new java.awt.geom.Ellipse2D.Double();
+        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double();
         ellipse.setFrameFromCenter(_getCenterPoint(), _getCornerPoint());
         return new BasicFigure(ellipse);
     }
@@ -70,9 +70,8 @@ public class Ellipse2D extends RectangularFigure2D {
      *  the appropriate parameters.
      * @exception IllegalActionException If a parameter value is not valid.
      */
-    protected void _updateFigure() throws IllegalActionException{
-        java.awt.geom.Ellipse2D.Double ellipse =
-            new java.awt.geom.Ellipse2D.Double();
+    protected void _updateFigure() throws IllegalActionException {
+        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double();
         ellipse.setFrameFromCenter(_getCenterPoint(), _getCornerPoint());
         _figure.setPrototypeShape(ellipse);
     }

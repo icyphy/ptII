@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
 
 import java.util.Collection;
@@ -46,6 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependenceOfCompositeActor
@@ -82,7 +82,6 @@ import ptolemy.kernel.util.NameDuplicationException;
     @Pt.AcceptedRating Green (zhouye)
 */
 public class FunctionDependencyOfCompositeActor extends FunctionDependency {
-
     /** Construct a FunctionDependency for the given actor.
      *  @param compositeActor The composite actor with which this function
      *  dependency is associated.
@@ -112,6 +111,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      */
     public Object[] getCycleNodes() {
         _validate();
+
         // NOTE that this method actually returns an array of objects instead
         // of IOPorts. The reason is because the cycleNodes() method of the
         // DirectedGraph returns an array of objects.
@@ -141,31 +141,34 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     protected void _constructDependencyGraph() {
         // First, construct the detailed dependency graph
         _constructDetailedDependencyGraph();
+
         // get associated actor
-        Actor actor = (Actor)getContainer();
+        Actor actor = (Actor) getContainer();
 
         Attribute attribute = getContainer().getAttribute("Atomic");
+
         if (attribute != null) {
             super._constructDependencyGraph();
         } else {
             // Initialize the dependency graph
-            _dependencyGraph =
-                _constructDisconnectedDependencyGraph();
+            _dependencyGraph = _constructDisconnectedDependencyGraph();
+
             // add an edge from input to output
             // if the output depends on the input
             Iterator inputs = actor.inputPortList().listIterator();
+
             while (inputs.hasNext()) {
                 IOPort inputPort = (IOPort) inputs.next();
-                Collection reachableOutputs =
-                _detailedDependencyGraph.reachableNodes(
-                            _detailedDependencyGraph.node(inputPort));
+                Collection reachableOutputs = _detailedDependencyGraph
+                    .reachableNodes(_detailedDependencyGraph.node(inputPort));
                 Iterator outputs = actor.outputPortList().listIterator();
+
                 while (outputs.hasNext()) {
-                    IOPort outputPort = (IOPort)outputs.next();
-                    if (reachableOutputs.contains(
-                            _detailedDependencyGraph.node(outputPort))) {
-                                _dependencyGraph.addEdge(inputPort,
-                                    outputPort);
+                    IOPort outputPort = (IOPort) outputs.next();
+
+                    if (reachableOutputs.contains(_detailedDependencyGraph.node(
+                                    outputPort))) {
+                        _dependencyGraph.addEdge(inputPort, outputPort);
                     }
                 }
             }
@@ -180,18 +183,19 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      *  dependency.
      */
     protected List _getEntities() {
-        return ((CompositeActor)getContainer()).deepEntityList();
+        return ((CompositeActor) getContainer()).deepEntityList();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Categorize the given list of actors into three kinds: sinks, sources,
     // and transformers.
     private void _categorizeActors(List actorList) {
         Iterator actors = actorList.listIterator();
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
+
             if (actor instanceof AtomicActor) {
                 // Atomic actors have type.
                 if (actor instanceof Source) {
@@ -206,6 +210,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                 // on their ports
                 int numberOfInputs = actor.inputPortList().size();
                 int numberOfOutputs = actor.outputPortList().size();
+
                 if (numberOfInputs == 0) {
                     _sourceActors.add(actor);
                 } else if (numberOfOutputs == 0) {
@@ -223,24 +228,21 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     // deeply contained opaque actors.
     private void _constructDetailedDependencyGraph() {
         // get the actor
-        CompositeActor actor = (CompositeActor)getContainer();
+        CompositeActor actor = (CompositeActor) getContainer();
 
         // initialize the detailed dependency graph
-        _detailedDependencyGraph =
-            _constructDisconnectedDependencyGraph();
+        _detailedDependencyGraph = _constructDisconnectedDependencyGraph();
 
         // NOTE: for special domains, like Giotto, the inputs
         // and outputs are always independent if they are not
         // directly connected. Such domains have no use for
         // function dependency information.
-
         // Here we add constraints on which actors to be used to
         // construct graph. For example, in a composite actor, all
         // the contained atomic and composite actors are included
         // to construct the function dependency. While in a modal
         // model, only the refinement(s) of the current state is
         // considered.
-
         // FIXME: the situation that a state has multiple refinements
         // has to be considered.
         List embeddedActors = _getEntities();
@@ -248,8 +250,10 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         // initialize the list of actors
         // Sink actors
         _sinkActors = new LinkedList();
+
         // Source actors
         _sourceActors = new LinkedList();
+
         // Transformer actors.
         _transformers = new LinkedList();
 
@@ -259,7 +263,6 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         // Constuct the portsGraph according to the communication dependencies,
         // i.e., data go from source actors to transformers, and then to sink
         // actors.
-
         _mergeActorsGraph(_sourceActors);
         _mergeActorsGraph(_transformers);
         _mergeActorsGraph(_sinkActors);
@@ -275,21 +278,25 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         // actors
         List outputPorts = actor.outputPortList();
         Iterator embeddedActorsIterator = embeddedActors.iterator();
+
         // iterate all embedded actors (including opaque composite actors
         // and flattening transparent composite actors)
         while (embeddedActorsIterator.hasNext()) {
-            Actor embeddedActor = (Actor)embeddedActorsIterator.next();
+            Actor embeddedActor = (Actor) embeddedActorsIterator.next();
+
             // Find the successor of the output ports of current actor.
-            Iterator successors =
-                embeddedActor.outputPortList().iterator();
+            Iterator successors = embeddedActor.outputPortList().iterator();
+
             while (successors.hasNext()) {
                 IOPort outPort = (IOPort) successors.next();
+
                 // Find the inside ports connected to outPort.
                 // NOTE: sinkPortList() is an expensive operation,
                 // and it may return ports that are not physically
                 // connected (as in wireless ports).  Hence, we
                 // use getRemoteReceivers() here. EAL
                 Receiver[][] receivers = outPort.getRemoteReceivers();
+
                 for (int i = 0; i < receivers.length; i++) {
                     // FIXME: For ParameterPort, it is possible that
                     // the downstream receivers are null. It is a
@@ -297,12 +304,11 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                     // Port considering the lazy evaluation of variables.
                     if (receivers[i] != null) {
                         for (int j = 0; j < receivers[i].length; j++) {
-                            IOPort ioPort =
-                                receivers[i][j].getContainer();
+                            IOPort ioPort = receivers[i][j].getContainer();
+
                             if (embeddedActors.contains(ioPort.getContainer())
                                     || outputPorts.contains(ioPort)) {
-                                    _detailedDependencyGraph.addEdge(
-                                        outPort, ioPort);
+                                _detailedDependencyGraph.addEdge(outPort, ioPort);
                             }
                         }
                     }
@@ -313,25 +319,27 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         // Last, connect the container inputs to the inside
         // ports receiving tokens from these inputs.
         Iterator inputs = actor.inputPortList().listIterator();
+
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
+
             // Find the inside ports connected to this input port.
             // NOTE: insideSinkPortList() is an expensive operation,
             // and it may return ports that are not physically
             // connected (as in wireless ports).  Hence, we
             // use deepGetReceivers() here. EAL
             Receiver[][] receivers = inputPort.deepGetReceivers();
+
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    IOPort ioPort =
-                        receivers[i][j].getContainer();
-                    Actor ioPortContainer = (Actor)ioPort.getContainer();
+                    IOPort ioPort = receivers[i][j].getContainer();
+                    Actor ioPortContainer = (Actor) ioPort.getContainer();
+
                     // The receivers may belong to either the inputs of
                     // contained actors, or the outputs of the container.
-                    if (embeddedActors.contains(ioPortContainer) ||
-                        actor.equals(ioPortContainer)) {
-                            _detailedDependencyGraph.addEdge(inputPort,
-                                ioPort);
+                    if (embeddedActors.contains(ioPortContainer)
+                            || actor.equals(ioPortContainer)) {
+                        _detailedDependencyGraph.addEdge(inputPort, ioPort);
                     }
                 }
             }
@@ -342,31 +350,35 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     // the dependency graph of the actor.
     private void _mergeActorsGraph(List actorList) {
         Iterator actors = actorList.iterator();
+
         while (actors.hasNext()) {
-            Actor embeddedActor = (Actor)actors.next();
-            FunctionDependency functionDependency =
-                embeddedActor.getFunctionDependency();
+            Actor embeddedActor = (Actor) actors.next();
+            FunctionDependency functionDependency = embeddedActor
+                .getFunctionDependency();
+
             if (functionDependency != null) {
-                _detailedDependencyGraph.addGraph(
-                    functionDependency.getDependencyGraph());
+                _detailedDependencyGraph.addGraph(functionDependency
+                    .getDependencyGraph());
             } else {
                 throw new InternalErrorException("FunctionDependency can "
-                        + "not be null. Check all four types of function "
-                        + "dependencies. There must be something wrong.");
+                    + "not be null. Check all four types of function "
+                    + "dependencies. There must be something wrong.");
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The detailed dependency graph that includes both the ports of
     // this actor and the ports of all deeply contained opaque actors.
     private DirectedGraph _detailedDependencyGraph;
+
     // Sink actors
     private List _sinkActors;
+
     // Source actors
     private List _sourceActors;
+
     // Transformer actors.
     private List _transformers;
 }

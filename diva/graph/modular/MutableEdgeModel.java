@@ -25,6 +25,7 @@
 */
 package diva.graph.modular;
 
+
 /**
  * An edge is an object that is contained by a graph and connects
  * nodes.  An edge has a "head" and a "tail" as if it was directed,
@@ -69,4 +70,3 @@ public interface MutableEdgeModel extends EdgeModel {
      */
     public void setTail(Object edge, Object tail);
 }
-

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import java.io.IOException;
@@ -39,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Writer
+
 /**
    This actor reads tokens from any number of input channels and writes
    their string values to the specified writer.  A newline character
@@ -54,7 +54,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (mudit)
 */
 public class Writer extends Sink {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -64,12 +63,13 @@ public class Writer extends Sink {
      *   actor with this name.
      */
     public Writer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (_stdOut == null) {
             _stdOut = new OutputStreamWriter(System.out);
         }
+
         setWriter(_stdOut);
     }
 
@@ -85,13 +85,18 @@ public class Writer extends Sink {
     public boolean postfire() throws IllegalActionException {
         try {
             int width = input.getWidth();
+
             for (int i = 0; i < width; i++) {
-                if (i > 0) _writer.write("\t");
+                if (i > 0) {
+                    _writer.write("\t");
+                }
+
                 if (input.hasToken(i)) {
                     Token inputToken = input.get(i);
                     _writer.write(inputToken.toString());
                 }
             }
+
             _writer.write("\n");
             _writer.flush();
             return super.postfire();
@@ -107,13 +112,14 @@ public class Writer extends Sink {
      */
     public void setWriter(java.io.Writer writer) throws IllegalActionException {
         try {
-            if (_writer != null && _writer != _stdOut) {
+            if ((_writer != null) && (_writer != _stdOut)) {
                 _writer.close();
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "setWriter(" + writer + ") failed");
+                "setWriter(" + writer + ") failed");
         }
+
         if (writer != null) {
             _writer = writer;
         } else {
@@ -131,13 +137,12 @@ public class Writer extends Sink {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "wrapup(" + _writer + ") failed");
+                "wrapup(" + _writer + ") failed");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The writer to write to.
     private java.io.Writer _writer = null;
 

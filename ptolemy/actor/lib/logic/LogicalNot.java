@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.logic;
 
 import ptolemy.actor.lib.Transformer;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LogicalNot
+
 /**
    This actor implements a logical NOT operator.  It has one input and
    one output port, neither of which is a multiport, and both of which have
@@ -50,9 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (pwhitake)
    @Pt.AcceptedRating Green (pwhitake)
 */
-
 public class LogicalNot extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -63,23 +62,20 @@ public class LogicalNot extends Transformer {
      *   an actor already in the container.
      */
     public LogicalNot(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-15\" y=\"-15\" "
-                + "width=\"30\" height=\"30\" "
-                + "style=\"fill:white\"/>\n"
-                + "<text x=\"-4\" y=\"8\""
-                + "style=\"font-size:24\">!</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-15\" y=\"-15\" "
+            + "width=\"30\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-4\" y=\"8\"" + "style=\"font-size:24\">!</text>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Consume exactly one token from the input, negate it, and send
      *  it to the output.
@@ -87,7 +83,7 @@ public class LogicalNot extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            output.send(0, ((BooleanToken)input.get(0)).not());
+            output.send(0, ((BooleanToken) input.get(0)).not());
         }
     }
 }

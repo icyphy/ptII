@@ -24,9 +24,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui;
+
 import javax.swing.SwingUtilities;
+
 
 /**
    This is the 3rd version of SwingWorker (also known as
@@ -46,22 +47,22 @@ import javax.swing.SwingUtilities;
    @Pt.AcceptedRating Red (cxh)
 */
 public abstract class SwingWorker {
-
     /**
      * Start a thread that will call the <code>construct</code> method
      * and then exit.
      */
     public SwingWorker() {
         final Runnable doFinished = new Runnable() {
-                public void run() { finished(); }
+                public void run() {
+                    finished();
+                }
             };
 
         Runnable doConstruct = new Runnable() {
                 public void run() {
                     try {
                         setValue(construct());
-                    }
-                    finally {
+                    } finally {
                         _threadVar.clear();
                     }
 
@@ -72,7 +73,6 @@ public abstract class SwingWorker {
         Thread thread = new Thread(doConstruct);
         _threadVar = new ThreadVar(thread);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -99,13 +99,14 @@ public abstract class SwingWorker {
     public Object get() {
         while (true) {
             Thread thread = _threadVar.get();
+
             if (thread == null) {
                 return getValue();
             }
+
             try {
                 thread.join();
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); // propagate
                 return null;
             }
@@ -118,15 +119,18 @@ public abstract class SwingWorker {
      */
     public void interrupt() {
         Thread thread = _threadVar.get();
+
         if (thread != null) {
             thread.interrupt();
         }
+
         _threadVar.clear();
     }
 
     /** Start the worker thread. */
     public void start() {
         Thread thread = _threadVar.get();
+
         if (thread != null) {
             thread.start();
         }
@@ -164,22 +168,20 @@ public abstract class SwingWorker {
         ThreadVar(Thread thread) {
             _thread = thread;
         }
+
         synchronized Thread get() {
             return _thread;
         }
+
         synchronized void clear() {
             _thread = null;
         }
 
         private Thread _thread;
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
     private ThreadVar _threadVar;
-
-    private Object _value;  // see getValue(), setValue()
+    private Object _value; // see getValue(), setValue()
 }

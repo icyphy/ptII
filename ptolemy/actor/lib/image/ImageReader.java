@@ -26,7 +26,6 @@
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.image;
 
 import java.awt.Image;
@@ -42,10 +41,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageReader
+
 /**
    This actor reads an Image from a FileParameter, and outputs it as an
    AWTImageToken.
@@ -74,7 +74,7 @@ public class ImageReader extends Source {
      *   actor with this name.
      */
     public ImageReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the output port.
@@ -83,7 +83,6 @@ public class ImageReader extends Source {
 
         fileOrURL = new FileParameter(this, "fileOrURL");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -104,12 +103,13 @@ public class ImageReader extends Source {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileOrURL) {
             // Would it be worth checking to see if the URL exists and
             // is readable?
             _url = fileOrURL.asURL();
         }
+
         super.attributeChanged(attribute);
     }
 
@@ -134,20 +134,20 @@ public class ImageReader extends Source {
         if (_url == null) {
             throw new IllegalActionException("sourceURL was null");
         }
+
         _fileRoot = _url.getFile();
         _image = new ImageIcon(_fileRoot).getImage();
-        if (_image.getWidth(null) == -1
-                && _image.getHeight(null) == -1) {
+
+        if ((_image.getWidth(null) == -1) && (_image.getHeight(null) == -1)) {
             throw new IllegalActionException(this,
-                    "Image size is -1 x -1.  Failed to open '"
-                    + _fileRoot + "'");
+                "Image size is -1 x -1.  Failed to open '" + _fileRoot + "'");
         }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The URL as a string.
     private String _fileRoot;
 

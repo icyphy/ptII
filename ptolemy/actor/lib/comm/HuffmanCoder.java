@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.comm;
 
 import ptolemy.data.ArrayToken;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
+
 /**
    Given a probability distribution and alphabet, encode the input using
    Huffman code and send the result in booleans to the output port.
@@ -56,7 +57,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class HuffmanCoder extends HuffmanBasic {
-
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -67,11 +67,11 @@ public class HuffmanCoder extends HuffmanBasic {
      *   actor with this name.
      */
     public HuffmanCoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Declare port types.
-        ArrayType alphabetArrayType = (ArrayType)alphabet.getType();
+        ArrayType alphabetArrayType = (ArrayType) alphabet.getType();
         InequalityTerm elementTerm = alphabetArrayType.getElementTypeTerm();
         input.setTypeAtLeast(elementTerm);
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -88,9 +88,9 @@ public class HuffmanCoder extends HuffmanBasic {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HuffmanCoder newObject = (HuffmanCoder)super.clone(workspace);
-        InequalityTerm elementTerm
-            = ((ArrayType)newObject.alphabet.getType()).getElementTypeTerm();
+        HuffmanCoder newObject = (HuffmanCoder) super.clone(workspace);
+        InequalityTerm elementTerm = ((ArrayType) newObject.alphabet.getType())
+            .getElementTypeTerm();
         newObject.input.setTypeAtLeast(elementTerm);
         return newObject;
     }
@@ -100,32 +100,36 @@ public class HuffmanCoder extends HuffmanBasic {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        ArrayToken alphabetArrayToken = (ArrayToken)alphabet.getToken();
+
+        ArrayToken alphabetArrayToken = (ArrayToken) alphabet.getToken();
         Token[] alphabetTokens = new Token[_pmf.length];
-        for (int i = 0; i < _pmf.length; i ++) {
+
+        for (int i = 0; i < _pmf.length; i++) {
             alphabetTokens[i] = alphabetArrayToken.getElement(i);
         }
+
         // Get the input token. Ready for output.
-        Token inputToken = (Token)input.get(0);
+        Token inputToken = (Token) input.get(0);
 
         // Find the token in the alphabet;
         boolean validInput = false;
-        for (int i = 0; i < _pmf.length; i ++) {
+
+        for (int i = 0; i < _pmf.length; i++) {
             if (inputToken.equals(alphabetTokens[i])) {
                 validInput = true;
                 _sendBooleans(_codeBook[i]);
                 break;
             }
         }
+
         // FIXME: If the input is not found in the alphabet,
         // which means it's probability of occurence is zero,
         // we might want to ignore it (or give a warning message.)
         //if (!validInput) {
-          //  throw new IllegalActionException(this,
-            //    "Input is not matched to the alphabet");
+        //  throw new IllegalActionException(this,
+        //    "Input is not matched to the alphabet");
         //}
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -136,9 +140,8 @@ public class HuffmanCoder extends HuffmanBasic {
      * @param codeword The string of codeword.
      * @exception IllegalActionException If the output receiver throws it.
      */
-    private void _sendBooleans(String codeword)
-        throws IllegalActionException {
-        for (int i = 0; i < codeword.length(); i ++) {
+    private void _sendBooleans(String codeword) throws IllegalActionException {
+        for (int i = 0; i < codeword.length(); i++) {
             if (codeword.charAt(i) == '1') {
                 output.send(0, new BooleanToken(true));
             } else {
@@ -146,5 +149,4 @@ public class HuffmanCoder extends HuffmanBasic {
             }
         }
     }
-
 }

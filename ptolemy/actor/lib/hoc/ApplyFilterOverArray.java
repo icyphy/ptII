@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.lib.hoc;
 
 import java.net.URL;
@@ -59,8 +58,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ApplyFilterOverArray
+
 /**
    This is an atomic actor that filter an array received at its <i>inputArray</i>
    input port via applying a model specified by a file or URL. The specified model
@@ -91,10 +92,8 @@ import ptolemy.moml.MoMLParser;
    @Pt.ProposedRating Yellow (ellen_zh)
    @Pt.AcceptedRating Red (ellen_zh)
 */
-public class ApplyFilterOverArray
-    extends TypedAtomicActor
+public class ApplyFilterOverArray extends TypedAtomicActor
     implements ExecutionListener {
-
     /** Construct a ApplyFilterOverArray with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -107,7 +106,7 @@ public class ApplyFilterOverArray
      *   an actor already in the container.
      */
     public ApplyFilterOverArray(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         inputArray = new TypedIOPort(this, "inputArray", true, false);
@@ -123,6 +122,7 @@ public class ApplyFilterOverArray
 
     ///////////////////////////////////////////////////////////////////
     ////                       parameters                          ////
+
     /** The input port for an input array. It is an ArrayType.
      *
      */
@@ -140,6 +140,7 @@ public class ApplyFilterOverArray
     /** The file name or URL of the filter model.
      */
     public FileParameter modelFileOrURL;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -151,10 +152,11 @@ public class ApplyFilterOverArray
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == modelFileOrURL) {
             // Open the file and read the MoML to create a model.
             URL url = modelFileOrURL.asURL();
+
             if (url != null) {
                 // By specifying no workspace argument to the parser, we
                 // are asking it to create a new workspace for the referenced
@@ -166,18 +168,19 @@ public class ApplyFilterOverArray
                 // inappropriate to grant write access on the workspace
                 // of this actor.
                 MoMLParser parser = new MoMLParser();
+
                 try {
                     _model = parser.parse(null, url);
                 } catch (Exception ex) {
-                    throw new IllegalActionException(
-                            this,
-                            ex,
-                            "Failed to read model.");
+                    throw new IllegalActionException(this, ex,
+                        "Failed to read model.");
                 }
+
                 // Create a manager, if appropriate.
                 if (_model instanceof CompositeActor) {
                     _manager = new Manager(_model.workspace(), "Manager");
-                    ((CompositeActor)_model).setManager(_manager);
+                    ((CompositeActor) _model).setManager(_manager);
+
                     if (_debugging) {
                         _debug("** Created new manager.");
                     }
@@ -190,11 +193,12 @@ public class ApplyFilterOverArray
             }
         } else if (attribute == maxOutputLength) {
             IntToken length = (IntToken) maxOutputLength.getToken();
+
             if (length.intValue() > 0) {
                 _outputLength = length.intValue();
             } else {
                 throw new IllegalActionException(this,
-                        "output array length is less than or equal 0?!");
+                    "output array length is less than or equal 0?!");
             }
         } else {
             super.attributeChanged(attribute);
@@ -204,8 +208,7 @@ public class ApplyFilterOverArray
     /** Override the base class to ensure that private variables are reset to null.
      *  @return A new instance of ApplyFilterOverArray.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ApplyFilterOverArray newActor = (ApplyFilterOverArray) super.clone(workspace);
         newActor._manager = null;
         newActor._model = null;
@@ -222,10 +225,9 @@ public class ApplyFilterOverArray
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
-    public synchronized void executionError(
-            Manager manager,
-            Throwable throwable) {
+    public synchronized void executionError(Manager manager, Throwable throwable) {
         _throwable = throwable;
+
         //_executing = false;
         // NOTE: Can't remove these now!  The list is being
         // currently used to notify me!
@@ -271,53 +273,65 @@ public class ApplyFilterOverArray
             CompositeActor executable = (CompositeActor) _model;
 
             _manager = executable.getManager();
+
             if (_manager == null) {
                 throw new InternalErrorException("No manager!");
             }
+
             if (_debugging) {
                 _manager.addDebugListener(this);
+
                 Director director = executable.getDirector();
+
                 if (director != null) {
                     director.addDebugListener(this);
                 }
             } else {
                 _manager.removeDebugListener(this);
+
                 Director director = executable.getDirector();
+
                 if (director != null) {
                     director.removeDebugListener(this);
                 }
             }
+
             int i = 0;
             int j = 0;
             LinkedList list = new LinkedList();
             ArrayToken array = (ArrayToken) inputArray.get(0);
-            while (i < _outputLength && j < array.length()) {
+
+            while ((i < _outputLength) && (j < array.length())) {
                 Token t = (Token) array.getElement(j);
                 _updateParameter(t);
+
                 if (_debugging) {
                     _debug("** Executing filter model.");
                 }
+
                 try {
                     _manager.execute();
                 } catch (KernelException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Execution failed.");
+                        "Execution failed.");
                 }
+
                 if (_getResult()) {
                     i++;
                     list.add(t);
                 }
+
                 j++;
             }
 
             Token[] result = new Token[list.size()];
+
             for (i = 0; i < list.size(); i++) {
                 result[i] = (Token) list.get(i);
             }
 
             outputArray.send(0, new ArrayToken(result));
         }
-
     }
 
     /** Report in debugging statements that the manager state has changed.
@@ -352,8 +366,9 @@ public class ApplyFilterOverArray
      */
     public void stop() {
         if (_model instanceof Executable) {
-            ((Executable)_model).stop();
+            ((Executable) _model).stop();
         }
+
         super.stop();
     }
 
@@ -361,8 +376,9 @@ public class ApplyFilterOverArray
      */
     public void stopFire() {
         if (_model instanceof Executable) {
-            ((Executable)_model).stopFire();
+            ((Executable) _model).stopFire();
         }
+
         super.stopFire();
     }
 
@@ -370,8 +386,9 @@ public class ApplyFilterOverArray
      */
     public void terminate() {
         if (_model instanceof Executable) {
-            ((Executable)_model).terminate();
+            ((Executable) _model).terminate();
         }
+
         super.terminate();
     }
 
@@ -381,49 +398,49 @@ public class ApplyFilterOverArray
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
         if (_throwable != null) {
             Throwable throwable = _throwable;
             _throwable = null;
-            throw new IllegalActionException(
-                    this,
-                    throwable,
-                    "Background run threw an exception");
+            throw new IllegalActionException(this, throwable,
+                "Background run threw an exception");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-
     private void _updateParameter(Token t) throws IllegalActionException {
+        Attribute attribute = _model.getAttribute("inputArrayElement");
 
-                Attribute attribute = _model.getAttribute("inputArrayElement");
-                // Use the token directly rather than a string if possible.
-                if (attribute instanceof Variable) {
-                    if (_debugging) {
-                        _debug("** Transferring input to parameter inputArrayElement.");
-                    }
-                    ((Variable) attribute).setToken(t);
-                } else if (attribute instanceof Settable) {
-                    if (_debugging) {
-                        _debug("** Transferring input as string to inputArrayElement.");
-                    }
-                    ((Settable) attribute).setExpression(t.toString());
-                }
+        // Use the token directly rather than a string if possible.
+        if (attribute instanceof Variable) {
+            if (_debugging) {
+                _debug("** Transferring input to parameter inputArrayElement.");
+            }
+
+            ((Variable) attribute).setToken(t);
+        } else if (attribute instanceof Settable) {
+            if (_debugging) {
+                _debug("** Transferring input as string to inputArrayElement.");
+            }
+
+            ((Settable) attribute).setExpression(t.toString());
+        }
     }
 
     private boolean _getResult() throws IllegalActionException {
+        Attribute attribute = _model.getAttribute("evaluatedValue");
 
-                Attribute attribute = _model.getAttribute("evaluatedValue");
-                if (attribute instanceof Variable) {
-                    Token t = ((Variable) attribute).getToken();
-                    return ((BooleanToken)t).booleanValue();
-                }  else if (attribute instanceof Settable) {
-                    BooleanToken t = new BooleanToken(
-                            ((Settable) attribute).getExpression());
-                    return t.booleanValue();
-                }
-                return false;
+        if (attribute instanceof Variable) {
+            Token t = ((Variable) attribute).getToken();
+            return ((BooleanToken) t).booleanValue();
+        } else if (attribute instanceof Settable) {
+            BooleanToken t = new BooleanToken(((Settable) attribute)
+                    .getExpression());
+            return t.booleanValue();
+        }
+
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -438,9 +455,9 @@ public class ApplyFilterOverArray
     /** The manager currently managing execution. */
     private Manager _manager = null;
 
-   /** the output array length if there are enough elements satisfying
-    * the filter model.
-    */
+    /** the output array length if there are enough elements satisfying
+     * the filter model.
+     */
     private int _outputLength = 1;
 
     // Error from a previous run.

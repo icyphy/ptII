@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import java.util.LinkedList;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NonInterruptibleTimer
+
 /**
    A NonInterruptibleTimer actor works similar to the {@link Timer} actor,
    except that if a NonInterruptibleTimer actor has not finished processing
@@ -58,7 +59,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class NonInterruptibleTimer extends Timer {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +68,7 @@ public class NonInterruptibleTimer extends Timer {
      *   actor with this name.
      */
     public NonInterruptibleTimer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -91,10 +91,13 @@ public class NonInterruptibleTimer extends Timer {
      */
     public void fire() throws IllegalActionException {
         _delay = -1.0;
+
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
             _delayedInputTokensList.addLast(_currentInput);
-            double delayValue = ((DoubleToken)_currentInput).doubleValue();
+
+            double delayValue = ((DoubleToken) _currentInput).doubleValue();
+
             if (delayValue < 0) {
                 throw new IllegalActionException("Delay can not be negative.");
             } else {
@@ -103,24 +106,28 @@ public class NonInterruptibleTimer extends Timer {
         } else {
             _currentInput = null;
         }
+
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
+
         if (_delayedOutputTokens.size() > 0) {
             if (currentTime.compareTo(_nextTimeFree) == 0) {
-                TimedEvent earliestEvent
-                    = (TimedEvent)_delayedOutputTokens.get();
+                TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens
+                    .get();
                 Time eventTime = earliestEvent.timeStamp;
+
                 if (!eventTime.equals(currentTime)) {
-                    throw new InternalErrorException("Timer time is " +
-                            "reached, but output is not available.");
+                    throw new InternalErrorException("Timer time is "
+                        + "reached, but output is not available.");
                 }
-                _currentOutput = (Token)earliestEvent.contents;
+
+                _currentOutput = (Token) earliestEvent.contents;
                 output.send(0, _currentOutput);
                 return;
             } else {
                 // no tokens to be produced at the current time.
             }
-        } else if (_delay == 0.0 && _delayedInputTokensList.size() > 0) {
+        } else if ((_delay == 0.0) && (_delayedInputTokensList.size() > 0)) {
             _delayedInputTokensList.removeFirst();
             output.send(0, value.getToken());
             _currentInput = null;
@@ -150,6 +157,7 @@ public class NonInterruptibleTimer extends Timer {
         if (_currentOutput != null) {
             _delayedOutputTokens.take();
         }
+
         // If the delayedInputTokensList is not empty and the
         // delayedOutputTokens is empty (meaning the timer is ready to process
         // a new input), get the first input in the delayedInputTokensList,
@@ -157,23 +165,23 @@ public class NonInterruptibleTimer extends Timer {
         // Schedule a refiring to produce the corresponding
         // output at the time: current time + delay specified by the input
         // being processed.
-        if (_delayedInputTokensList.size() != 0
+        if ((_delayedInputTokensList.size() != 0)
                 && _delayedOutputTokens.isEmpty()) {
             // NOTE: the input has a fixed data type as double.
-            DoubleToken delayToken
-                = (DoubleToken)_delayedInputTokensList.removeFirst();
+            DoubleToken delayToken = (DoubleToken) _delayedInputTokensList
+                .removeFirst();
             double delay = delayToken.doubleValue();
             _nextTimeFree = currentTime.add(delay);
-            _delayedOutputTokens.put(
-                    new TimedEvent(_nextTimeFree, value.getToken()));
+            _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
+                    value.getToken()));
             getDirector().fireAt(this, _nextTimeFree);
         }
+
         return !_stopRequested;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Next time the server becomes free.
     private Time _nextTimeFree;
 

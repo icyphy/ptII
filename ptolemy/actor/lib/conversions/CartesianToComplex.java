@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 
+
 ///////////////////////////////////////////////////////////////
 /// CartesianToComplex
+
 /**
    Convert a Cartesian pair (represented as two double tokens) to a single
    complex token. At each firing of the actor, it will consume exactly one
@@ -53,9 +54,7 @@ import ptolemy.math.Complex;
    @Pt.ProposedRating Green (pwhitake)
    @Pt.AcceptedRating Green (pwhitake)
 */
-
 public class CartesianToComplex extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,7 +64,7 @@ public class CartesianToComplex extends TypedAtomicActor {
      *   actor with this name.
      */
     public CartesianToComplex(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         x = new TypedIOPort(this, "x", true, false);
@@ -77,10 +76,9 @@ public class CartesianToComplex extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,10 +106,9 @@ public class CartesianToComplex extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        double xValue = ((DoubleToken)x.get(0)).doubleValue();
-        double yValue = ((DoubleToken)y.get(0)).doubleValue();
-        ComplexToken token
-            = new ComplexToken (new Complex(xValue, yValue));
+        double xValue = ((DoubleToken) x.get(0)).doubleValue();
+        double yValue = ((DoubleToken) y.get(0)).doubleValue();
+        ComplexToken token = new ComplexToken(new Complex(xValue, yValue));
         output.send(0, token);
     }
 
@@ -120,9 +117,10 @@ public class CartesianToComplex extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if ( !x.hasToken(0) || !y.hasToken(0) ) {
+        if (!x.hasToken(0) || !y.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }

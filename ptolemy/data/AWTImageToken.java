@@ -31,8 +31,10 @@ import java.awt.Image;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AWTImageToken
+
 /**
    A token that contains a java.awt.Image.  This token is used in the
    standard image processing library.
@@ -43,9 +45,7 @@ import ptolemy.data.type.Type;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class AWTImageToken extends ImageToken {
-
     /** Construct a token with a specified java.awt.Image.
      */
     public AWTImageToken(Image value) {
@@ -83,9 +83,8 @@ public class AWTImageToken extends ImageToken {
      *  of a record.
      */
     public String toString() {
-        return "{type=\"" + getClass()
-            + "\" width=\"" + _value.getWidth(null)
-            + "\" height=\"" + _value.getHeight(null) + "\"}";
+        return "{type=\"" + getClass() + "\" width=\"" + _value.getWidth(null)
+        + "\" height=\"" + _value.getHeight(null) + "\"}";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,5 +93,3 @@ public class AWTImageToken extends ImageToken {
     /** The java.awt.Image */
     private Image _value;
 }
-
-

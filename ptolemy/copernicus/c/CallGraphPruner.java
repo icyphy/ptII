@@ -23,9 +23,7 @@
    ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.copernicus.c;
-
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -57,6 +55,7 @@ import soot.options.SparkOptions;
 
 //////////////////////////////////////////////////////////////////////////
 //// CallGraphPruner
+
 /**
    Class that uses the Soot Framework to find out which methods/classes
    are really needed for code generation.
@@ -67,9 +66,7 @@ import soot.options.SparkOptions;
 @Pt.ProposedRating Red (ankush)
 @Pt.AcceptedRating Red (ssb)
 */
-
 public class CallGraphPruner {
-
     /** Dummy constructor to allow inheritance.*/
     public CallGraphPruner() {
     }
@@ -82,6 +79,7 @@ public class CallGraphPruner {
         Scene.v().setMainClass(source);
 
         Map sootOptions = new Hashtable();
+
         //sootOptions.put("vta", "true");
         sootOptions.put("on-fly-cg", "true");
         sootOptions.put("simulate-natives", "false");
@@ -92,9 +90,10 @@ public class CallGraphPruner {
         sootOptions.put("set-impl", "double");
         sootOptions.put("double-set-old", "hybrid");
         sootOptions.put("double-set-new", "hybrid");
-        //CHATransformer.v().transform("cg.cha", sootOptions);
 
+        //CHATransformer.v().transform("cg.cha", sootOptions);
         SparkOptions sparkOptions = new SparkOptions(sootOptions);
+
         /*
           PAG analyzer = new PAG(sparkOptions);
 
@@ -113,14 +112,11 @@ public class CallGraphPruner {
         if (Options.v().getBoolean("reportEntities")) {
             System.out.println("\nReporting Entities ...");
 
-            System.out.println(_reachableClasses.size()
-                    + " classes generated.");
+            System.out.println(_reachableClasses.size() + " classes generated.");
 
-            System.out.println(_reachableMethods.size()
-                    + " methods generated.");
+            System.out.println(_reachableMethods.size() + " methods generated.");
 
-            System.out.println(_reachableFields.size()
-                    + " fields generated.");
+            System.out.println(_reachableFields.size() + " fields generated.");
         }
     }
 
@@ -148,18 +144,17 @@ public class CallGraphPruner {
         return _reachableMethods;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
     /** Adds a whole collection of classes/methods/fields to _gray.
      * @param nodes The collection of nodes to add.
      */
     protected void _add(Collection nodes) {
         Iterator i = nodes.iterator();
+
         while (i.hasNext()) {
             _add(i.next());
         }
@@ -176,19 +171,16 @@ public class CallGraphPruner {
                 if (!_reachableClasses.contains(node)) {
                     _gray.addLast(node);
                 }
-            }
-            else if (node instanceof SootMethod) {
+            } else if (node instanceof SootMethod) {
                 if (!_reachableMethods.contains(node)) {
                     _gray.addLast(node);
                 }
-            }
-            else if (node instanceof SootField) {
+            } else if (node instanceof SootField) {
                 if (!_reachableFields.contains(node)) {
                     _gray.addLast(node);
                 }
             }
         }
-
     }
 
     /** Adds a class, method or field  to the appropriate reachable list.
@@ -198,13 +190,12 @@ public class CallGraphPruner {
         if (_gray.contains(node)) {
             _gray.remove(node);
         }
+
         if (node instanceof SootClass) {
             _reachableClasses.add(node);
-        }
-        else if (node instanceof SootMethod) {
+        } else if (node instanceof SootMethod) {
             _reachableMethods.add(node);
-        }
-        else if (node instanceof SootField) {
+        } else if (node instanceof SootField) {
             _reachableFields.add(node);
         }
     }
@@ -222,8 +213,10 @@ public class CallGraphPruner {
 
         while (nodes.hasNext()) {
             Object node = nodes.next();
+
             if (node instanceof SootMethod) {
-                SootMethod method = (SootMethod)node;
+                SootMethod method = (SootMethod) node;
+
                 if (method.isConcrete()
                         && !OverriddenMethodGenerator.isOverridden(method)) {
                     entryPoints.add(method);
@@ -249,17 +242,19 @@ public class CallGraphPruner {
         // User-defined compulsory methods.
         compulsoryNodes.addAll(_getForcedCompulsoryMethods());
 
-
         // Add java.lang.String.String(char[]). Initializer
         SootClass source = Scene.v().getSootClass("java.lang.String");
         SootMethod method = source.getMethod("void <init>(char[])");
         compulsoryNodes.add(method);
+
         // Add java.lang.String.<clinit>.
         method = source.getMethodByName("<clinit>");
         compulsoryNodes.add(method);
+
         // java.lang.String.toString() is needed.
         method = source.getMethodByName("toString");
         compulsoryNodes.add(method);
+
         // All fields of String are required.
         compulsoryNodes.addAll(source.getFields());
 
@@ -267,13 +262,14 @@ public class CallGraphPruner {
         source = Scene.v().getSootClass("java.lang.System");
         method = source.getMethodByName("initializeSystemClass");
         compulsoryNodes.add(method);
+
         // System.out is required by initializeSystemClass
         SootField field = source.getFieldByName("out");
         compulsoryNodes.add(field);
+
         // System.err is required by initializeSystemClass
         field = source.getFieldByName("err");
         compulsoryNodes.add(field);
-
 
         // Printstream is required by the force-overridden version of
         // System.initializeSystemClass(), but it doesn't have a clinit.
@@ -304,32 +300,31 @@ public class CallGraphPruner {
      * @return The set of all methods of <i>classes</i> that may be
      * implementing a method in <i>methods </i>.
      */
-    protected HashSet _getMethodsRequiredByInheritance(Collection
-            classSet, Collection methodSet) {
+    protected HashSet _getMethodsRequiredByInheritance(Collection classSet,
+        Collection methodSet) {
         HashSet requiredMethodSet = new HashSet();
 
         Iterator classes = classSet.iterator();
+
         while (classes.hasNext()) {
-            SootClass source = (SootClass)classes.next();
+            SootClass source = (SootClass) classes.next();
             Iterator methods = methodSet.iterator();
             Hierarchy hierarchy = new Hierarchy();
 
             // Candidates for I. All superclasses and all implemented
             // interfaces.
-            Collection allParents = AnalysisUtilities
-                    .getAllInterfacesOf(source);
+            Collection allParents = AnalysisUtilities.getAllInterfacesOf(source);
 
             if (!source.isInterface()) {
                 allParents.addAll(hierarchy.getSuperclassesOf(source));
             }
 
             while (methods.hasNext()) {
-                SootMethod method = (SootMethod)methods.next();
+                SootMethod method = (SootMethod) methods.next();
                 String subSignature = method.getSubSignature();
 
                 if (source.declaresMethod(subSignature)
-                        && allParents.contains(method.getDeclaringClass())
-                    ) {
+                        && allParents.contains(method.getDeclaringClass())) {
                     requiredMethodSet.add(source.getMethod(subSignature));
                 }
             }
@@ -337,7 +332,6 @@ public class CallGraphPruner {
 
         return requiredMethodSet;
     }
-
 
     /** Returns a set of the nodes referenced in the body of a given
      * method. This includes:
@@ -357,27 +351,28 @@ public class CallGraphPruner {
         HashSet nodes = new HashSet();
         Scene.v().loadClassAndSupport(method.getDeclaringClass().getName());
 
-        if (method.isConcrete() && !OverriddenMethodGenerator
-                .isOverridden(method)) {
+        if (method.isConcrete()
+                && !OverriddenMethodGenerator.isOverridden(method)) {
             boolean leaf = _isLeaf(method);
 
-            Iterator units = method.retrieveActiveBody()
-                .getUnits().iterator();
+            Iterator units = method.retrieveActiveBody().getUnits().iterator();
+
             while (units.hasNext()) {
-                Unit unit = (Unit)units.next();
+                Unit unit = (Unit) units.next();
+
                 if (unit instanceof Stmt) {
-                    Stmt stmt = (Stmt)unit;
+                    Stmt stmt = (Stmt) unit;
 
                     // Add accessed fields.
                     if (stmt.containsFieldRef()) {
-                        FieldRef fieldRef = (FieldRef)stmt.getFieldRef();
+                        FieldRef fieldRef = (FieldRef) stmt.getFieldRef();
                         SootField field = fieldRef.getField();
                         nodes.add(field);
                     }
 
                     // Add directly called methods.
                     if (!leaf && stmt.containsInvokeExpr()) {
-                        SootMethod m = ((InvokeExpr)stmt.getInvokeExpr())
+                        SootMethod m = ((InvokeExpr) stmt.getInvokeExpr())
                             .getMethod();
                         nodes.add(m);
                         nodes.add(m.getDeclaringClass());
@@ -386,14 +381,17 @@ public class CallGraphPruner {
 
                 // Get all classes used in all "instanceof" expressions.
                 Iterator boxes = unit.getUseAndDefBoxes().iterator();
+
                 while (boxes.hasNext()) {
-                    ValueBox box = (ValueBox)boxes.next();
+                    ValueBox box = (ValueBox) boxes.next();
                     Value value = box.getValue();
+
                     if (value instanceof InstanceOfExpr) {
-                        InstanceOfExpr expr = (InstanceOfExpr)value;
+                        InstanceOfExpr expr = (InstanceOfExpr) value;
                         Type checkType = expr.getCheckType();
+
                         if (checkType instanceof RefType) {
-                            nodes.add(((RefType)checkType).getSootClass());
+                            nodes.add(((RefType) checkType).getSootClass());
                         }
                     }
                 }
@@ -424,33 +422,26 @@ public class CallGraphPruner {
      * @param source The class.
      */
     protected void _growTree(SootClass source) {
-
         // FIFO queue to store all nodes for processing.
         _gray.addAll(_getRoots(source));
 
-
         while (!_gray.isEmpty()) {
             while (!_gray.isEmpty()) {
-
                 Object node = _gray.getFirst();
+
                 if (node instanceof SootClass) {
-                    _processClass((SootClass)node);
-                }
-                else if (node instanceof SootMethod) {
-                    if (((SootMethod)node).isDeclared()) {
-                        _processMethod((SootMethod)node);
-                    }
-                    else {
+                    _processClass((SootClass) node);
+                } else if (node instanceof SootMethod) {
+                    if (((SootMethod) node).isDeclared()) {
+                        _processMethod((SootMethod) node);
+                    } else {
                         _gray.removeFirst();
-                        System.out.println(
-                                "CallGraphPruner._growTree: "
-                                + "Removed an undeclared method\n");
+                        System.out.println("CallGraphPruner._growTree: "
+                            + "Removed an undeclared method\n");
                     }
-                }
-                else if (node instanceof SootField) {
-                    _processField((SootField)node);
-                }
-                else {
+                } else if (node instanceof SootField) {
+                    _processField((SootField) node);
+                } else {
                     throw new RuntimeException("Invalid node type.");
                 }
             }
@@ -460,7 +451,6 @@ public class CallGraphPruner {
             //_add(_getMethodsRequiredByInheritance(_reachableClasses,
             //        _reachableMethods));
         }
-
     }
 
     /** Figures out if a the targets of a method need to be computed.
@@ -471,7 +461,7 @@ public class CallGraphPruner {
      */
     protected boolean _isLeaf(SootMethod method) {
         return (method.isNative()
-                || OverriddenMethodGenerator.isOverridden(method));
+        || OverriddenMethodGenerator.isOverridden(method));
     }
 
     /** Performs the appropriate operations for the discovery of a new
@@ -488,14 +478,15 @@ public class CallGraphPruner {
             if (node.declaresMethodByName("<clinit>")) {
                 _add(node.getMethodByName("<clinit>"));
             }
+
             // Add all superClasses.
             SootClass superclass = node;
+
             while (superclass.hasSuperclass()
                     && !_reachableClasses.contains(superclass)) {
                 superclass = superclass.getSuperclass();
                 _add(superclass);
             }
-
         }
 
         _done(node);
@@ -509,6 +500,7 @@ public class CallGraphPruner {
         if (_reachableFields.contains(field)) {
             return;
         }
+
         _add(AnalysisUtilities.classesRequiredBy(field));
         _done(field);
     }
@@ -530,8 +522,9 @@ public class CallGraphPruner {
             // by this method.
             CallGraph callGraph = Scene.v().getCallGraph();
             Iterator outEdges = callGraph.edgesOutOf(method);
+
             while (outEdges.hasNext()) {
-                Edge edge = (Edge)outEdges.next();
+                Edge edge = (Edge) outEdges.next();
                 SootMethod targetMethod = edge.tgt();
                 _add(targetMethod);
             }
@@ -546,14 +539,14 @@ public class CallGraphPruner {
             if (method.isConcrete()
                     && !OverriddenMethodGenerator.isOverridden(method)) {
                 Iterator traps = method.retrieveActiveBody().getTraps()
-                    .iterator();
+                                       .iterator();
+
                 while (traps.hasNext()) {
-                    Trap trap = (Trap)traps.next();
+                    Trap trap = (Trap) traps.next();
                     _add(trap.getException());
                 }
             }
         }
-
 
         // Add all exception classes that can be thrown by this method.
         _add(method.getExceptions());
@@ -570,10 +563,9 @@ public class CallGraphPruner {
         _done(method);
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected fields                    ////
+
     /** The list of all classes, methods, and fields discovered but not yet
      * processed.
      */
@@ -590,8 +582,6 @@ public class CallGraphPruner {
     /** The list of all reachable methods.
      */
     protected HashSet _reachableMethods = new HashSet();
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -611,16 +601,15 @@ public class CallGraphPruner {
         String[] names = optionString.split("; ?+");
 
         for (int i = 0; i < names.length; i++) {
-            String className, subSignature;
+            String className;
+            String subSignature;
 
             int parenthesisIndex = names[i].indexOf('(');
             int spaceIndex = names[i].indexOf(' ');
-            int classNameEndIndex = names[i]
-                    .lastIndexOf('.', parenthesisIndex);
+            int classNameEndIndex = names[i].lastIndexOf('.', parenthesisIndex);
 
-            subSignature = names[i].substring(0, spaceIndex)
-                        + " "
-                        + names[i].substring(classNameEndIndex + 1);
+            subSignature = names[i].substring(0, spaceIndex) + " "
+                + names[i].substring(classNameEndIndex + 1);
 
             className = names[i].substring(spaceIndex + 1, classNameEndIndex);
 
@@ -632,19 +621,16 @@ public class CallGraphPruner {
         return methods;
     }
 
-
-
     /** Set all classes in the Scene as library classes. */
     private void _setAllClassesAsLibrary() {
-
         if (_verbose) {
-            System.out.println(
-                    "Setting all classes to library classes ...");
+            System.out.println("Setting all classes to library classes ...");
         }
 
         Iterator classes = Scene.v().getClasses().iterator();
+
         while (classes.hasNext()) {
-            SootClass source = (SootClass)classes.next();
+            SootClass source = (SootClass) classes.next();
             source.setLibraryClass();
         }
     }
@@ -655,23 +641,23 @@ public class CallGraphPruner {
     private void _setUnOverriddenClassesAsLibrary() {
         if (_verbose) {
             System.out.println(
-                    "Setting all un-overridden classes to library classes ...");
+                "Setting all un-overridden classes to library classes ...");
         }
 
         Iterator classes = Scene.v().getClasses().iterator();
+
         while (classes.hasNext()) {
-            SootClass source = (SootClass)classes.next();
+            SootClass source = (SootClass) classes.next();
+
             if (OverriddenMethodGenerator.isOverridden(source)) {
                 source.setLibraryClass();
             }
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
     /** True if the "verbose" option is on. */
     private boolean _verbose;
-
 }

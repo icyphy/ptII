@@ -25,12 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// SingletonAttribute
+
 /**
    This class is an attribute that replaces any previously
    existing attribute in the container that has the same name.
@@ -41,9 +41,7 @@ package ptolemy.kernel.util;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (janneck)
 */
-
 public class SingletonAttribute extends Attribute implements Singleton {
-
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  workspace directory.
@@ -79,7 +77,7 @@ public class SingletonAttribute extends Attribute implements Singleton {
      *   SingletonAttribute.
      */
     public SingletonAttribute(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -115,14 +113,17 @@ public class SingletonAttribute extends Attribute implements Singleton {
      *   SingletonConfigurableAttribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
+
         if (container != null) {
             previous = container.getAttribute(getName());
+
             if (previous != null) {
                 previous.setContainer(null);
             }
         }
+
         try {
             super.setContainer(container);
         } catch (IllegalActionException ex) {
@@ -130,12 +131,14 @@ public class SingletonAttribute extends Attribute implements Singleton {
             if (previous != null) {
                 previous.setContainer(container);
             }
+
             throw ex;
         } catch (NameDuplicationException ex) {
             // Restore previous.
             if (previous != null) {
                 previous.setContainer(container);
             }
+
             throw ex;
         }
     }

@@ -46,6 +46,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import diva.gui.BasicFrame;
 
+
 /**
  * In the case of a small number of panes, a JTabbedPane or a JTreePane
  * is a good way of organizing them.  However, in the case of a large
@@ -104,23 +105,26 @@ public class JTreePane extends JSplitPane {
         super(JSplitPane.VERTICAL_SPLIT);
         _selectedTitle = "";
         _defaultPanel = new JPanel();
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(
-                new Entry(this, null, name, _defaultPanel));
+
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(new Entry(
+                    this, null, name, _defaultPanel));
         DefaultTreeModel model = new DefaultTreeModel(node);
         _tree = new JTree(model);
-        TreeNode nodePath[] = node.getPath();
+
+        TreeNode[] nodePath = node.getPath();
         TreePath path = new TreePath(nodePath);
         _tree.expandPath(path);
-        _tree.getSelectionModel().setSelectionMode
-            (TreeSelectionModel.SINGLE_TREE_SELECTION);
+        _tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         _tree.addTreeSelectionListener(new TreeSelectionListener() {
                 public void valueChanged(TreeSelectionEvent e) {
-                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode)
-                        _tree.getLastSelectedPathComponent();
+                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) _tree
+                        .getLastSelectedPathComponent();
 
-                    if (treeNode == null) return;
+                    if (treeNode == null) {
+                        return;
+                    }
 
-                    Entry entry = (Entry)treeNode.getUserObject();
+                    Entry entry = (Entry) treeNode.getUserObject();
                     setSelectedTitle(entry._title);
                     refresh();
                 }
@@ -133,6 +137,7 @@ public class JTreePane extends JSplitPane {
         setContinuousLayout(true);
         _scrollPane.setPreferredSize(_scrollPaneSize);
         refresh();
+
         //setSplitPosition(.5);
     }
 
@@ -140,7 +145,7 @@ public class JTreePane extends JSplitPane {
      * Adds a component represented by a title button with no icon.
      * Cover method for insertEntry().
      */
-    public void addEntry (String parent, String title, JComponent entry) {
+    public void addEntry(String parent, String title, JComponent entry) {
         addEntry(parent, title, null, entry);
     }
 
@@ -148,8 +153,8 @@ public class JTreePane extends JSplitPane {
      * Adds a component represented by a title and/or icon, either
      * of which can be null. Cover method for insertEntry().
      */
-    public void addEntry (String parent, String title, Icon icon,
-            JComponent entry) {
+    public void addEntry(String parent, String title, Icon icon,
+        JComponent entry) {
         insertEntry(parent, title, icon, entry, null);
     }
 
@@ -157,15 +162,15 @@ public class JTreePane extends JSplitPane {
      * Adds a component and tooltip represented by a title and/or icon,
      * either of which can be null. Cover method for insertEntry().
      */
-    public void addEntry (String parent, String title, Icon icon,
-            JComponent entry, String tip) {
+    public void addEntry(String parent, String title, Icon icon,
+        JComponent entry, String tip) {
         insertEntry(parent, title, icon, entry, tip);
     }
 
     /**
      * Return the selectedString.
      */
-    public String getSelectedTitle () {
+    public String getSelectedTitle() {
         return _selectedTitle;
     }
 
@@ -174,7 +179,7 @@ public class JTreePane extends JSplitPane {
      *
      * @see #setIconAt
      */
-    public Icon getIconAt (String title) {
+    public Icon getIconAt(String title) {
         return (_findEntry(title))._icon;
     }
 
@@ -183,21 +188,21 @@ public class JTreePane extends JSplitPane {
      *
      * @see #setDisabledIconAt
      */
-    public Icon getDisabledIconAt (String title) {
+    public Icon getDisabledIconAt(String title) {
         return (_findEntry(title))._icon;
     }
 
     /**
      * Returns the tree object.
      */
-    public JTree getTree () {
+    public JTree getTree() {
         return _tree;
     }
 
     /**
      * Returns the split pane object.
      */
-    public JSplitPane getSplitPane () {
+    public JSplitPane getSplitPane() {
         return this;
     }
 
@@ -207,14 +212,14 @@ public class JTreePane extends JSplitPane {
      *
      * @see #setEnabledAt
      */
-    public boolean isEnabledAt (String title) {
+    public boolean isEnabledAt(String title) {
         return (_findEntry(title))._enabled;
     }
 
     /**
      * Returns the component at the given index.
      */
-    public JComponent getComponentAt (String title) {
+    public JComponent getComponentAt(String title) {
         return (_findEntry(title))._component;
     }
 
@@ -223,9 +228,8 @@ public class JTreePane extends JSplitPane {
      * at the specified index.  Either the icon can
      * be null, but the title must be specified.
      */
-    public void insertEntry (String parent, String title, Icon icon,
-            JComponent component, String tip) {
-
+    public void insertEntry(String parent, String title, Icon icon,
+        JComponent component, String tip) {
         /*
           Icon disabledIcon = null;
           if (icon != null && icon instanceof ImageIcon) {
@@ -234,15 +238,17 @@ public class JTreePane extends JSplitPane {
           ((ImageIcon)icon).getImage()));
           }
         */
-
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode();
         newNode.setUserObject(new Entry(this, icon, title, component));
+
         DefaultMutableTreeNode parentNode = _findNode(parent);
+
         if (parentNode == null) {
             System.out.println("parent == null");
             throw new RuntimeException("Parent not found!");
         }
-        DefaultTreeModel model = (DefaultTreeModel)_tree.getModel();
+
+        DefaultTreeModel model = (DefaultTreeModel) _tree.getModel();
         model.insertNodeInto(newNode, parentNode, 0);
         refresh();
     }
@@ -250,30 +256,34 @@ public class JTreePane extends JSplitPane {
     /**
      * Refresh the layout.
      */
-    protected void refresh () {
+    protected void refresh() {
         _scrollPane.getSize(_scrollPaneSize);
         _scrollPane.setPreferredSize(_scrollPaneSize);
-        System.out.println("title = " + _selectedTitle + " size = " + _scrollPaneSize);
+        System.out.println("title = " + _selectedTitle + " size = "
+            + _scrollPaneSize);
+
         Entry entry = _findEntry(_selectedTitle);
-        if (entry == null || entry._component == null) {
+
+        if ((entry == null) || (entry._component == null)) {
             setBottomComponent(_defaultPanel);
         } else {
             setBottomComponent(entry._component);
+
             if (entry._component != null) {
                 entry._component.validate();
             }
         }
+
         validate();
         repaint();
     }
 
-
     /**
      * Remove all of the entrys.
      */
-    public void removeAll () {
-        DefaultTreeModel model = (DefaultTreeModel)_tree.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+    public void removeAll() {
+        DefaultTreeModel model = (DefaultTreeModel) _tree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();
         refresh();
     }
@@ -281,25 +291,25 @@ public class JTreePane extends JSplitPane {
     /**
      * Remove the entry at the given index.
      */
-    public void removeEntry (String title) {
+    public void removeEntry(String title) {
         Entry entry = _findEntry(title);
 
         refresh();
-
     }
 
     /**
      * Set the disabled icon for the button at the given index.
      */
-    public void setDisabledIconAt (String title, Icon icon) {
+    public void setDisabledIconAt(String title, Icon icon) {
         Entry p = _findEntry(title);
+
         //        p._button.setDisabledIcon(icon);
     }
 
     /**
      * Set the enabledness of the entry at the given index.
      */
-    public void setEnabledAt (String title, boolean enabled) {
+    public void setEnabledAt(String title, boolean enabled) {
         Entry p = _findEntry(title);
         p._enabled = enabled;
     }
@@ -307,7 +317,7 @@ public class JTreePane extends JSplitPane {
     /**
      * Set the disabled icon for the button at the given index.
      */
-    public void setIconAt (String title, Icon icon) {
+    public void setIconAt(String title, Icon icon) {
         Entry p = _findEntry(title);
         p._icon = icon;
     }
@@ -317,12 +327,13 @@ public class JTreePane extends JSplitPane {
      * causes the pane to refresh its display to show
      * the selected pane's component.
      */
-    public void setSelectedTitle (String title) {
-        if (title != _selectedTitle) {  //(index >= 0) &&
+    public void setSelectedTitle(String title) {
+        if (title != _selectedTitle) { //(index >= 0) &&
             _selectedTitle = title;
             System.out.println("SELECTING: " + _selectedTitle);
+
             DefaultMutableTreeNode node = _findNode(title);
-            TreeNode nodePath[] = node.getPath();
+            TreeNode[] nodePath = node.getPath();
             TreePath path = new TreePath(nodePath);
             _tree.setSelectionPath(path);
             refresh();
@@ -332,7 +343,7 @@ public class JTreePane extends JSplitPane {
     /**
      * Set the title string at the given index.
      */
-    public void setTitleAt (String title, String newTitle) {
+    public void setTitleAt(String title, String newTitle) {
         Entry p = _findEntry(title);
         p._title = newTitle;
     }
@@ -342,28 +353,37 @@ public class JTreePane extends JSplitPane {
      */
     private Entry _findEntry(String title) {
         DefaultMutableTreeNode node = _findNode(title);
-        if (node == null)
+
+        if (node == null) {
             return null;
-        else
-            return (Entry)(_findNode(title).getUserObject());
+        } else {
+            return (Entry) (_findNode(title).getUserObject());
+        }
     }
 
     /** Return the node with the given title. If the title is null, then
      *  return the root node.  If the node is not found, then return null.
      */
     private DefaultMutableTreeNode _findNode(String title) {
-        DefaultTreeModel model = (DefaultTreeModel)_tree.getModel();
+        DefaultTreeModel model = (DefaultTreeModel) _tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        if (title == null)
+
+        if (title == null) {
             return root;
-        Enumeration nodes = root.preorderEnumeration();
-        while (nodes.hasMoreElements()) {
-            DefaultMutableTreeNode node =
-                (DefaultMutableTreeNode) nodes.nextElement();
-            Entry entry = (Entry)node.getUserObject();
-            if ((entry != null)&&(entry._title.equals(title)))
-                return node;
         }
+
+        Enumeration nodes = root.preorderEnumeration();
+
+        while (nodes.hasMoreElements()) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) nodes
+                .nextElement();
+            Entry entry = (Entry) node.getUserObject();
+
+            if ((entry != null) && (entry._title.equals(title))) {
+                return node;
+            }
+        }
+
         return null;
     }
 
@@ -371,7 +391,6 @@ public class JTreePane extends JSplitPane {
      * Holds all the info about each entry.
      */
     private class Entry extends Object {
-
         JTreePane _parent;
         Icon _icon;
         String _title;
@@ -391,7 +410,7 @@ public class JTreePane extends JSplitPane {
         }
     }
 
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         final JTreePane sp = new JTreePane();
         sp.addEntry(null, "Foo", new JLabel("foo's component"));
         sp.addEntry(null, "Bar", new JLabel("bar's component"));
@@ -401,9 +420,7 @@ public class JTreePane extends JSplitPane {
         JFrame f = new BasicFrame("Entry test");
         f.getContentPane().add("Center", sp);
 
-        f.setSize(600,400);
+        f.setSize(600, 400);
         f.setVisible(true);
     }
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -45,8 +44,10 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.LabelFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ValueIcon
+
 /**
    An icon that displays a bullet, the name, and, if the container is
    an instance of settable, its value.
@@ -58,7 +59,6 @@ import diva.canvas.toolbox.LabelFigure;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ValueIcon extends XMLIcon {
-
     /** Create a new icon with the given name in the given container.
      *  The container is required to implement Settable, or an exception
      *  will be thrown.
@@ -66,7 +66,7 @@ public class ValueIcon extends XMLIcon {
      *  @param name The name of this attribute.
      */
     public ValueIcon(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -87,20 +87,21 @@ public class ValueIcon extends XMLIcon {
      *  @return A new CompositeFigure consisting of the label.
      */
     public Figure createFigure() {
-        CompositeFigure background = new CompositeFigure(
-                super.createBackgroundFigure());
+        CompositeFigure background = new CompositeFigure(super
+                .createBackgroundFigure());
         Nameable container = getContainer();
+
         if (container instanceof Settable) {
             String name = container.getName();
-            String value = ((Settable)container).getExpression();
+            String value = ((Settable) container).getExpression();
             LabelFigure label = new LabelFigure(name + ": " + value,
                     _labelFont, 1.0, SwingConstants.SOUTH_WEST);
             background.add(label);
             return background;
         } else {
             String name = container.getName();
-            LabelFigure label = new LabelFigure(name,
-                    _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+            LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                    SwingConstants.SOUTH_WEST);
             background.add(label);
             return background;
         }
@@ -115,15 +116,17 @@ public class ValueIcon extends XMLIcon {
     protected Figure _createDefaultBackgroundFigure() {
         Color color = Color.black;
         List colorAttributes = attributeList(ColorAttribute.class);
+
         if (colorAttributes.size() > 0) {
-            ColorAttribute colorAttribute = (ColorAttribute)colorAttributes.get(0);
+            ColorAttribute colorAttribute = (ColorAttribute) colorAttributes
+                .get(0);
             color = colorAttribute.asColor();
         }
+
         return new BasicEllipse(-10, -6, 6, 6, color, 1);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 }

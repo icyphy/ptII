@@ -31,6 +31,7 @@
 
 */
 package diva.graph.tutorial;
+
 import javax.swing.SwingUtilities;
 
 import diva.graph.GraphPane;
@@ -45,6 +46,7 @@ import diva.graph.modular.Edge;
 import diva.graph.modular.Node;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
+
 
 /**
  * This example shows three alternatives to display a prepopulated
@@ -64,7 +66,7 @@ import diva.gui.BasicFrame;
  * @Pt.AcceptedRating Red
  */
 public class NestedTutorial {
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         final AppContext context = new BasicFrame("Nested Tutorial");
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -88,27 +90,27 @@ public class NestedTutorial {
         CompositeNode c2 = model.createComposite("c2");
         Node d = model.createNode("d");
         Node d2 = model.createNode("d2");
-        model.addNode(this,a, model.getRoot());
-        model.addNode(this,c, model.getRoot());
-        model.addNode(this,b, model.getRoot());
-        model.addNode(this,c2, model.getRoot());
-        model.addNode(this,d, c);
-        model.addNode(this,d2, c);
+        model.addNode(this, a, model.getRoot());
+        model.addNode(this, c, model.getRoot());
+        model.addNode(this, b, model.getRoot());
+        model.addNode(this, c2, model.getRoot());
+        model.addNode(this, d, c);
+        model.addNode(this, d2, c);
+
         Edge e = model.createEdge("edge");
-        model.connectEdge(this,e,a,b);
+        model.connectEdge(this, e, a, b);
         e = model.createEdge("edge");
-        model.connectEdge(this,e,a,d);
+        model.connectEdge(this, e, a, d);
         e = model.createEdge("edge");
-        model.connectEdge(this,e,d2,d);
+        model.connectEdge(this, e, d2, d);
         e = model.createEdge("edge");
-        model.connectEdge(this,e,a,c);
+        model.connectEdge(this, e, a, c);
         e = model.createEdge("edge");
-        model.connectEdge(this,e,c2,c);
+        model.connectEdge(this, e, c2, c);
 
         try {
-            layoutPostDisplay(model,context);
-        }
-        catch(Exception ex) {
+            layoutPostDisplay(model, context);
+        } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(0);
         }
@@ -121,18 +123,15 @@ public class NestedTutorial {
      * this might be useful in some cases.
      */
     public void layoutPostDisplay(final MutableGraphModel model,
-            AppContext context) {
+        AppContext context) {
         final BasicGraphController bgc = new BasicGraphController();
-        context.getContentPane().add(
-                new JGraph(new GraphPane(bgc, model)));
+        context.getContentPane().add(new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    RandomLayout random =
-                        new RandomLayout(new BasicLayoutTarget(bgc));
+                    RandomLayout random = new RandomLayout(new BasicLayoutTarget(
+                                bgc));
                     random.layout(model.getRoot());
                 }
             });
     }
 }
-
-

@@ -25,10 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
-
-import java.util.Comparator;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.NotSchedulableException;
@@ -44,8 +41,12 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
+import java.util.Comparator;
+
+
 ///////////////////////////////////////////////////////////
 //// DFUtilities
+
 /**
    This class factors code out of the SDF domain, for use in different
    schedulers, so that they can be implemented in a consistent fashion.
@@ -60,7 +61,6 @@ import ptolemy.kernel.util.Settable;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class DFUtilities {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,11 +71,12 @@ public class DFUtilities {
      *  @param name The name of the variable.
      */
     public static Variable getRateVariable(Port port, String name)
-            throws IllegalActionException {
-        Variable parameter = (Variable)port.getAttribute(name);
+        throws IllegalActionException {
+        Variable parameter = (Variable) port.getAttribute(name);
+
         if (parameter == null) {
             String altName = "_" + name;
-            parameter = (Variable)port.getAttribute(altName);
+            parameter = (Variable) port.getAttribute(altName);
         }
 
         return parameter;
@@ -93,7 +94,7 @@ public class DFUtilities {
      *  parameter has an invalid expression.
      */
     public static int getTokenConsumptionRate(IOPort port)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!port.isInput()) {
             return 0;
         } else {
@@ -113,7 +114,7 @@ public class DFUtilities {
      *  parameter has an invalid expression.
      */
     public static int getTokenInitProduction(IOPort port)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!port.isOutput()) {
             return 0;
         } else {
@@ -133,7 +134,7 @@ public class DFUtilities {
      *   parameter has an invalid expression.
      */
     public static int getTokenProductionRate(IOPort port)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!port.isOutput()) {
             return 0;
         } else {
@@ -150,7 +151,7 @@ public class DFUtilities {
      *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenConsumptionRate(IOPort port, int rate)
-            throws IllegalActionException {
+        throws IllegalActionException {
         setRate(port, "tokenConsumptionRate", rate);
     }
 
@@ -163,7 +164,7 @@ public class DFUtilities {
      *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenInitProduction(IOPort port, int rate)
-            throws IllegalActionException {
+        throws IllegalActionException {
         setRate(port, "tokenInitProduction", rate);
     }
 
@@ -175,7 +176,7 @@ public class DFUtilities {
      *  @exception IllegalActionException If the rate is negative.
      */
     public static void setTokenProductionRate(IOPort port, int rate)
-            throws IllegalActionException {
+        throws IllegalActionException {
         setRate(port, "tokenProductionRate", rate);
     }
 
@@ -191,19 +192,19 @@ public class DFUtilities {
      *  valid expression.
      */
     public static int getRate(IOPort port)
-            throws NotSchedulableException, IllegalActionException {
+        throws NotSchedulableException, IllegalActionException {
         if (port.isInput() && port.isOutput()) {
             throw new NotSchedulableException(port,
-                    "Port is both an input and an output, which is not"
-                    + " allowed in SDF.");
+                "Port is both an input and an output, which is not"
+                + " allowed in SDF.");
         } else if (port.isInput()) {
             return getTokenConsumptionRate(port);
         } else if (port.isOutput()) {
             return getTokenProductionRate(port);
         } else {
             throw new NotSchedulableException(port,
-                    "Port is neither an input and an output, which is not"
-                    + " allowed in SDF.");
+                "Port is neither an input and an output, which is not"
+                + " allowed in SDF.");
         }
     }
 
@@ -215,25 +216,23 @@ public class DFUtilities {
      *  @param defaultValue The default value of the variable.
      *  @return A rate.
      */
-    public static int getRateVariableValue(
-            Port port, String name, int defaultValue)
-            throws IllegalActionException {
+    public static int getRateVariableValue(Port port, String name,
+        int defaultValue) throws IllegalActionException {
         Variable parameter = getRateVariable(port, name);
+
         if (parameter == null) {
             return defaultValue;
         }
+
         Token token = parameter.getToken();
 
         if (token instanceof IntToken) {
-            return ((IntToken)token).intValue();
+            return ((IntToken) token).intValue();
         } else {
             throw new IllegalActionException("Variable "
-                    + parameter.getFullName()
-                    + " was expected "
-                    + "to contain an IntToken, but instead "
-                    + "contained a "
-                    + token.getType()
-                    + ".");
+                + parameter.getFullName() + " was expected "
+                + "to contain an IntToken, but instead " + "contained a "
+                + token.getType() + ".");
         }
     }
 
@@ -246,17 +245,20 @@ public class DFUtilities {
      *  @param value The value.
      */
     public static void setIfNotDefined(Port port, String name, int value)
-            throws IllegalActionException {
-        Variable rateParameter = (Variable)port.getAttribute(name);
+        throws IllegalActionException {
+        Variable rateParameter = (Variable) port.getAttribute(name);
+
         if (rateParameter == null) {
             try {
                 String altName = "_" + name;
-                rateParameter = (Variable)port.getAttribute(altName);
+                rateParameter = (Variable) port.getAttribute(altName);
+
                 if (rateParameter == null) {
                     rateParameter = new Parameter(port, altName);
                     rateParameter.setVisibility(Settable.NOT_EDITABLE);
                     rateParameter.setPersistent(false);
                 }
+
                 rateParameter.setToken(new IntToken(value));
             } catch (KernelException ex) {
                 throw new InternalErrorException(port, ex, "Should not occur");
@@ -272,19 +274,21 @@ public class DFUtilities {
      *  @param name Name of the variable.
      *  @param value The value.
      */
-    public static void setExpressionIfNotDefined(
-            Port port, String name, String value)
-            throws IllegalActionException {
-        Variable rateParameter = (Variable)port.getAttribute(name);
+    public static void setExpressionIfNotDefined(Port port, String name,
+        String value) throws IllegalActionException {
+        Variable rateParameter = (Variable) port.getAttribute(name);
+
         if (rateParameter == null) {
             try {
                 String altName = "_" + name;
-                rateParameter = (Variable)port.getAttribute(altName);
+                rateParameter = (Variable) port.getAttribute(altName);
+
                 if (rateParameter == null) {
                     rateParameter = new Parameter(port, altName);
                     rateParameter.setVisibility(Settable.NOT_EDITABLE);
                     rateParameter.setPersistent(false);
                 }
+
                 rateParameter.setExpression(value);
             } catch (KernelException ex) {
                 throw new InternalErrorException(port, ex, "Should not occur");
@@ -302,9 +306,8 @@ public class DFUtilities {
      *  @param value The value.
      *  @exception If the variable exists and its value cannot be set.
      */
-    public static void setOrCreate(
-            NamedObj container, String name, int value)
-            throws IllegalActionException {
+    public static void setOrCreate(NamedObj container, String name, int value)
+        throws IllegalActionException {
         Variable variable = _getOrCreate(container, name);
         variable.setToken(new IntToken(value));
     }
@@ -319,9 +322,8 @@ public class DFUtilities {
      *  @param expression The expression.
      *  @exception If the variable exists and its value cannot be set.
      */
-    public static void setOrCreate(
-            NamedObj container, String name, String expression)
-            throws IllegalActionException {
+    public static void setOrCreate(NamedObj container, String name,
+        String expression) throws IllegalActionException {
         Variable variable = _getOrCreate(container, name);
         variable.setExpression(expression);
     }
@@ -333,12 +335,14 @@ public class DFUtilities {
      *  @param rate The rate value.
      */
     public static void setRate(Port port, String name, int rate)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (rate < 0) {
-            throw new IllegalActionException(
-                    "Negative rate is not allowed: " + rate);
+            throw new IllegalActionException("Negative rate is not allowed: "
+                + rate);
         }
-        Variable parameter = (Variable)port.getAttribute(name);
+
+        Variable parameter = (Variable) port.getAttribute(name);
+
         if (parameter != null) {
             parameter.setToken(new IntToken(rate));
         } else {
@@ -362,20 +366,22 @@ public class DFUtilities {
      *  @param flag The flag.
      */
     public static void showRate(Port port, boolean flag)
-            throws IllegalActionException {
+        throws IllegalActionException {
         String name = "_showRate";
+
         // Look for an existing parameter.
-        Variable variable = (Variable)port.getAttribute(name);
+        Variable variable = (Variable) port.getAttribute(name);
+
         if (variable == null) {
             try {
                 variable = new Parameter(port, name);
                 variable.setVisibility(Settable.EXPERT);
                 variable.setPersistent(false);
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        port, ex, "Should not occur");
+                throw new InternalErrorException(port, ex, "Should not occur");
             }
         }
+
         variable.setToken(BooleanToken.getInstance(flag));
     }
 
@@ -387,43 +393,50 @@ public class DFUtilities {
     public static class NamedObjComparator implements Comparator {
         // Note: This is rather slow, because getFullName is not cached.
         public int compare(Object object1, Object object2) {
-            if ((object1 instanceof NamedObj) &&
-                    (object2 instanceof NamedObj)) {
+            if ((object1 instanceof NamedObj) && (object2 instanceof NamedObj)) {
                 // Compare full names.
                 NamedObj namedObject1 = (NamedObj) object1;
                 NamedObj namedObject2 = (NamedObj) object2;
-                int compare = namedObject1.getFullName().compareTo(
-                        namedObject2.getFullName());
-                if (compare != 0) return compare;
+                int compare = namedObject1.getFullName().compareTo(namedObject2
+                        .getFullName());
+
+                if (compare != 0) {
+                    return compare;
+                }
+
                 // Compare class names.
                 Class class1 = namedObject1.getClass();
                 Class class2 = namedObject2.getClass();
                 compare = class1.getName().compareTo(class2.getName());
-                if (compare != 0) return compare;
+
+                if (compare != 0) {
+                    return compare;
+                }
+
                 if (object1.equals(object2)) {
                     return 0;
                 } else {
                     // FIXME This should never happen, hopefully.  Otherwise
                     // the comparator needs to be made more specific.
-                    throw new InternalErrorException("Comparator not " +
-                            "capable of comparing not equal objects.");
+                    throw new InternalErrorException("Comparator not "
+                        + "capable of comparing not equal objects.");
                 }
             } else {
-                throw new InternalErrorException("Arguments to comparator " +
-                        "must be instances of NamedObj: " + object1 + ", " +
-                        object2);
+                throw new InternalErrorException("Arguments to comparator "
+                    + "must be instances of NamedObj: " + object1 + ", "
+                    + object2);
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // If a variable exists with the given container and given name,
     // then return it. Otherwise, create the variable and return it.
     private static Variable _getOrCreate(NamedObj container, String name)
-            throws IllegalActionException {
-        Variable variable = (Variable)container.getAttribute(name);
+        throws IllegalActionException {
+        Variable variable = (Variable) container.getAttribute(name);
+
         if (variable == null) {
             try {
                 variable = new Variable(container, name);
@@ -431,9 +444,10 @@ public class DFUtilities {
                 variable.setPersistent(false);
             } catch (KernelException ex) {
                 throw new InternalErrorException(container, ex,
-                        "Should not occur");
+                    "Should not occur");
             }
         }
+
         return variable;
     }
 }

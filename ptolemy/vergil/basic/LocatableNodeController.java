@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
 import java.awt.BasicStroke;
@@ -49,8 +48,10 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeInteractor;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeController
+
 /**
    This node controller provides interaction techniques for nodes that are
    locations.   This is common when the node has some concept of its
@@ -69,12 +70,12 @@ import diva.graph.NodeInteractor;
    @Pt.AcceptedRating Red (johnr)
 */
 public class LocatableNodeController extends BasicNodeController {
-
     /** Create an instance associated with the specified graph controller.
      *  @param controller The graph controller.
      */
     public LocatableNodeController(GraphController controller) {
         super(controller);
+
         NodeInteractor nodeInteractor = (NodeInteractor) getNodeInteractor();
         _dragInteractor = new LocatableNodeDragInteractor(this);
         nodeInteractor.setDragInteractor(_dragInteractor);
@@ -105,8 +106,10 @@ public class LocatableNodeController extends BasicNodeController {
     public double[] getLocation(Object node) {
         if (hasLocation(node)) {
             return ((Locatable) node).getLocation();
-        } else throw new RuntimeException("The node " + node +
-                "does not have a desired location");
+        } else {
+            throw new RuntimeException("The node " + node
+                + "does not have a desired location");
+        }
     }
 
     /** Return true if the node is associated with a desired location.
@@ -117,10 +120,12 @@ public class LocatableNodeController extends BasicNodeController {
         if (node instanceof Locatable) {
             Locatable object = (Locatable) node;
             double[] location = object.getLocation();
-            if (location != null && location.length == 2) {
+
+            if ((location != null) && (location.length == 2)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -134,6 +139,7 @@ public class LocatableNodeController extends BasicNodeController {
      */
     public void locateFigure(Object node) {
         Figure nf = getController().getFigure(node);
+
         try {
             if (hasLocation(node)) {
                 double[] location = getLocation(node);
@@ -157,16 +163,18 @@ public class LocatableNodeController extends BasicNodeController {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void setLocation(Object node, double[] location)
-            throws IllegalActionException {
-        if (location != null &&
-                location.length != 2) {
-            throw new RuntimeException("The location " + location +
-                    " is not valid");
+        throws IllegalActionException {
+        if ((location != null) && (location.length != 2)) {
+            throw new RuntimeException("The location " + location
+                + " is not valid");
         }
+
         if (node instanceof Locatable) {
-            ((Locatable)node).setLocation(location);
-        } else throw new RuntimeException("The node " + node +
-                "cannot have a desired location");
+            ((Locatable) node).setLocation(location);
+        } else {
+            throw new RuntimeException("The node " + node
+                + "cannot have a desired location");
+        }
     }
 
     /** Specify the snap resolution. The default snap resolution is 5.0.
@@ -178,11 +186,10 @@ public class LocatableNodeController extends BasicNodeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // Fourth argument makes this highlight transluscent, which enables
     // combination with other highlights.
-    public static Color CLASS_ELEMENT_HIGHLIGHT_COLOR
-    = new Color(255, 64, 64, 200);
+    public static Color CLASS_ELEMENT_HIGHLIGHT_COLOR = new Color(255, 64, 64,
+            200);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -193,7 +200,9 @@ public class LocatableNodeController extends BasicNodeController {
      *  @param node The node with children to render.
      */
     protected void _drawChildren(java.lang.Object node) {
-        if (!_hide(node)) super._drawChildren(node);
+        if (!_hide(node)) {
+            super._drawChildren(node);
+        }
     }
 
     /** Render the specified node.  This overrides the base class to
@@ -204,7 +213,7 @@ public class LocatableNodeController extends BasicNodeController {
      *  @param node The node to render.
      */
     protected Figure _renderNode(java.lang.Object node) {
-        if (node == null || _hide(node)) {
+        if ((node == null) || _hide(node)) {
             // Return an empty figure.
             Figure newFigure = new CompositeFigure();
             newFigure.setInteractor(getNodeInteractor());
@@ -216,6 +225,7 @@ public class LocatableNodeController extends BasicNodeController {
             GraphModel model = getController().getGraphModel();
             Object object = model.getSemanticObject(node);
             CompositeFigure cf;
+
             // Try to get a composite figure that we can add the
             // annotation to.  This is complicated by the fact that
             // ExternalIOPortController wraps its figure in a
@@ -223,30 +233,31 @@ public class LocatableNodeController extends BasicNodeController {
             // that enforces that a CompositeFigure is returned.
             // *sigh*
             if (nf instanceof CompositeFigure) {
-                cf = (CompositeFigure)nf;
+                cf = (CompositeFigure) nf;
             } else if (nf instanceof TerminalFigure) {
-                Figure f = ((TerminalFigure)nf).getFigure();
+                Figure f = ((TerminalFigure) nf).getFigure();
+
                 if (f instanceof CompositeFigure) {
-                    cf = (CompositeFigure)f;
+                    cf = (CompositeFigure) f;
                 } else {
                     cf = null;
                 }
             } else {
                 cf = null;
             }
+
             if (object instanceof NamedObj
-                    && ((NamedObj)object).getDerivedLevel() < Integer.MAX_VALUE
-                    && cf != null) {
-                float[] dash = {2.0f, 5.0f};
-                Stroke stroke = new BasicStroke(
-                        2f,                     /* width */
+                    && (((NamedObj) object).getDerivedLevel() < Integer.MAX_VALUE)
+                    && (cf != null)) {
+                float[] dash = { 2.0f, 5.0f };
+                Stroke stroke = new BasicStroke(2f, /* width */
                         BasicStroke.CAP_SQUARE, /* cap   */
                         BasicStroke.JOIN_MITER, /* join  */
-                        10.0f,                  /* mitre limit */
-                        dash,                   /* dash  */
-                        0.0f);                  /* dash_phase  */
-                BasicFigure bf = new BasicFigure(
-                        cf.getBackgroundFigure().getBounds());
+                        10.0f, /* mitre limit */
+                        dash, /* dash  */
+                        0.0f); /* dash_phase  */
+                BasicFigure bf = new BasicFigure(cf.getBackgroundFigure()
+                                                   .getBounds());
                 bf.setStroke(stroke);
                 bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);
                 cf.add(bf);
@@ -264,15 +275,17 @@ public class LocatableNodeController extends BasicNodeController {
      */
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {
-            if (_isPropertySet(((Locatable)node).getContainer(), "_hide")) {
+            if (_isPropertySet(((Locatable) node).getContainer(), "_hide")) {
                 return true;
             }
         }
+
         if (node instanceof NamedObj) {
-            if (_isPropertySet((NamedObj)node, "_hide")) {
+            if (_isPropertySet((NamedObj) node, "_hide")) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -287,14 +300,17 @@ public class LocatableNodeController extends BasicNodeController {
      */
     protected boolean _isPropertySet(NamedObj object, String name) {
         Attribute attribute = object.getAttribute(name);
+
         if (attribute == null) {
             return false;
         }
+
         if (attribute instanceof Parameter) {
             try {
-                Token token = ((Parameter)attribute).getToken();
+                Token token = ((Parameter) attribute).getToken();
+
                 if (token instanceof BooleanToken) {
-                    if (!((BooleanToken)token).booleanValue()) {
+                    if (!((BooleanToken) token).booleanValue()) {
                         return false;
                     }
                 }
@@ -302,13 +318,12 @@ public class LocatableNodeController extends BasicNodeController {
                 // Ignore, using default of true.
             }
         }
+
         return true;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The drag interactor, which is remembered so we can change the
     // snap resolution.
     private LocatableNodeDragInteractor _dragInteractor;

@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Actor;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTStepSizeControlActor
+
 /**
    Interface for actors that control integration step sizes for handling
    unpredictable breakpoints or controlling local truncation error when
@@ -73,8 +74,7 @@ import ptolemy.actor.Actor;
    @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
-public interface CTStepSizeControlActor extends Actor{
-
+public interface CTStepSizeControlActor extends Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.math;
 
 
@@ -39,7 +38,6 @@ package ptolemy.math;
     @Pt.AcceptedRating Red (hyzheng)
 */
 public class Utilities {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -53,10 +51,8 @@ public class Utilities {
         // NOTE: when the value is too big, e.g. close to the
         // maximum double value, the following algorithm will
         // get overflow, which gives a wrong answer.
-        double newValue =
-            Math.round(value * Math.pow(10, precision))
-                / Math.pow(10, precision);
+        double newValue = Math.round(value * Math.pow(10, precision)) / Math
+            .pow(10, precision);
         return newValue;
     }
 }
-

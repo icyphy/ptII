@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -48,6 +47,7 @@ import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
+
 
 /** An example showing how to make figures draggable with interactors.
  *
@@ -93,7 +93,6 @@ import diva.gui.BasicFrame;
  * @version $Id$
  */
 public class DragTutorial {
-
     // The JCanvas
     private JCanvas canvas;
 
@@ -102,12 +101,12 @@ public class DragTutorial {
 
     /** Create a JCanvas and put it into a window.
      */
-    public DragTutorial () {
+    public DragTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         BasicFrame frame = new BasicFrame("Drag tutorial", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
     }
 
@@ -117,7 +116,7 @@ public class DragTutorial {
      * The interactor used to move them is an instance of
      * DragInteractor.
      */
-    public void createDraggableFigures () {
+    public void createDraggableFigures() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Create the interactor to do the work.
@@ -125,12 +124,12 @@ public class DragTutorial {
         dragger.setMouseFilter(MouseFilter.defaultFilter);
 
         // Create a rectangle and make it draggable
-        BasicFigure blue = new BasicRectangle(10.0,10.0,50.0,50.0,Color.blue);
+        BasicFigure blue = new BasicRectangle(10.0, 10.0, 50.0, 50.0, Color.blue);
         layer.add(blue);
         blue.setInteractor(dragger);
 
         // Create a circle and make it draggable
-        BasicFigure red = new BasicEllipse(200.0,200.0,50.0,50.0,Color.red);
+        BasicFigure red = new BasicEllipse(200.0, 200.0, 50.0, 50.0, Color.red);
         layer.add(red);
         red.setInteractor(dragger);
     }
@@ -139,11 +138,11 @@ public class DragTutorial {
      * a region of the canvas. This example uses an instance of
      * BoundedDragInteractor to move the object.
      */
-    public void createBoundedDraggableFigure () {
+    public void createBoundedDraggableFigure() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Create the interactor and set it up for a 200x200 rectangle
-        Rectangle2D bounds = new Rectangle2D.Double(100.0,100.0,200.0,200.0);
+        Rectangle2D bounds = new Rectangle2D.Double(100.0, 100.0, 200.0, 200.0);
         Interactor boundedDragger = new BoundedDragInteractor(bounds);
         boundedDragger.setMouseFilter(MouseFilter.defaultFilter);
 
@@ -151,16 +150,15 @@ public class DragTutorial {
         graphicsPane.getOverlayLayer().add(bounds);
 
         // Create a green rectangle that stays inside the boundary
-        BasicFigure green = new BasicFigure(
-                new Rectangle2D.Double(110.0,110.0,50.0,50.0),
-                Color.green);
+        BasicFigure green = new BasicFigure(new Rectangle2D.Double(110.0,
+                    110.0, 50.0, 50.0), Color.green);
         layer.add(green);
         green.setInteractor(boundedDragger);
     }
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -172,6 +170,3 @@ public class DragTutorial {
             });
     }
 }
-
-
-

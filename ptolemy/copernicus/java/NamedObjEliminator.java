@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.Collections;
@@ -68,6 +67,7 @@ import soot.toolkits.scalar.LocalSplitter;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjEliminator
+
 /**
 
 @author Stephen Neuendorffer
@@ -76,7 +76,8 @@ import soot.toolkits.scalar.LocalSplitter;
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */
-public class NamedObjEliminator extends SceneTransformer implements HasPhaseOptions {
+public class NamedObjEliminator extends SceneTransformer
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private NamedObjEliminator(CompositeActor model) {
@@ -106,48 +107,52 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
-        System.out.println("NamedObjEliminator.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("NamedObjEliminator.internalTransform(" + phaseName
+            + ", " + options + ")");
 
         // First remove most method invocations that are not
         // specialInvokes.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-
+                i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
+
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+                    methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
 
                 // System.out.println("method = " + method);
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
+                        units.hasNext();) {
+                    Stmt unit = (Stmt) units.next();
+
                     if (unit.containsFieldRef()) {
                         ValueBox box = unit.getFieldRefBox();
                         Value value = box.getValue();
+
                         if (value instanceof InstanceFieldRef) {
-                            InstanceFieldRef fieldRef = (InstanceFieldRef)value;
+                            InstanceFieldRef fieldRef = (InstanceFieldRef) value;
                             SootField field = fieldRef.getField();
+
                             // Turn off debugging..
-                            if (field.getSubSignature().equals(
-                                        PtolemyUtilities.debuggingField.getSubSignature())) {
+                            if (field.getSubSignature().equals(PtolemyUtilities.debuggingField
+                                        .getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
-                                    body.getUnits().insertBefore(
-                                            Jimple.v().newAssignStmt(
-                                                    ((AssignStmt)unit).getLeftOp(),
-                                                    IntConstant.v(0)),
-                                            unit);
+                                    body.getUnits().insertBefore(Jimple.v()
+                                                                       .newAssignStmt(((AssignStmt) unit)
+                                            .getLeftOp(), IntConstant.v(0)),
+                                        unit);
                                 }
+
                                 body.getUnits().remove(unit);
-                            } else if (field.getSubSignature().equals(
-                                               PtolemyUtilities.stopRequestedField.getSubSignature())) {
+                            } else if (field.getSubSignature().equals(PtolemyUtilities.stopRequestedField
+                                        .getSubSignature())) {
                                 // Assume stops are not requested..
-                                if (unit instanceof AssignStmt &&
-                                        box == ((AssignStmt)unit).getLeftOpBox()) {
+                                if (unit instanceof AssignStmt
+                                        && (box == ((AssignStmt) unit)
+                                        .getLeftOpBox())) {
                                     body.getUnits().remove(unit);
                                 } else {
                                     box.setValue(IntConstant.v(0));
@@ -158,19 +163,22 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
 
-                        if ((value instanceof InvokeExpr) &&
-                                !(value instanceof SpecialInvokeExpr)) {
+                        if ((value instanceof InvokeExpr)
+                                && !(value instanceof SpecialInvokeExpr)) {
                             // remove attachText
-                            InvokeExpr expr = (InvokeExpr)value;
-                            if (expr.getMethod().getSubSignature().equals(
-                                        PtolemyUtilities.attachTextMethod.getSubSignature())) {
+                            InvokeExpr expr = (InvokeExpr) value;
+
+                            if (expr.getMethod().getSubSignature().equals(PtolemyUtilities.attachTextMethod
+                                        .getSubSignature())) {
                                 body.getUnits().remove(unit);
-                            } else if (expr.getMethod().getSubSignature().equals(
-                                               PtolemyUtilities.setNameMethod.getSubSignature())) {
+                            } else if (expr.getMethod().getSubSignature()
+                                               .equals(PtolemyUtilities.setNameMethod
+                                        .getSubSignature())) {
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getName().equals("_debug")) {
                                 body.getUnits().remove(unit);
                             }
+
                             // Inline namedObj methods on the
                             // attribute.
                             // FIXME: This should do the
@@ -181,68 +189,72 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                             // on the object objects already.  See
                             // InlineParameterTransformer and
                             // InlinePortTransformer
-                            if (expr.getMethod().getSubSignature().equals(
-                                        PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                            if (expr.getMethod().getSubSignature().equals(PtolemyUtilities.getFullNameMethod
+                                        .getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
-                                    body.getUnits().insertBefore(
-                                            Jimple.v().newAssignStmt(
-                                                    ((AssignStmt)unit).getLeftOp(),
-                                                    StringConstant.v(
-                                                            _model.getFullName())),
-                                            unit);
+                                    body.getUnits().insertBefore(Jimple.v()
+                                                                       .newAssignStmt(((AssignStmt) unit)
+                                            .getLeftOp(),
+                                            StringConstant.v(
+                                                _model.getFullName())), unit);
                                 }
+
                                 body.getUnits().remove(unit);
-                            } else if (expr.getMethod().getSubSignature().equals(
-                                               PtolemyUtilities.getNameMethod.getSubSignature())) {
+                            } else if (expr.getMethod().getSubSignature()
+                                               .equals(PtolemyUtilities.getNameMethod
+                                        .getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
-                                    body.getUnits().insertBefore(
-                                            Jimple.v().newAssignStmt(
-                                                    ((AssignStmt)unit).getLeftOp(),
-                                                    StringConstant.v(
-                                                            _model.getName())),
-                                            unit);
-                                }
-                                body.getUnits().remove(unit);
-                            } else if (expr.getMethod().getSubSignature().equals(
-                                               PtolemyUtilities.findEffigyMethod.getSubSignature())) {
-                                if (unit instanceof AssignStmt) {
-                                    body.getUnits().insertBefore(
-                                            Jimple.v().newAssignStmt(
-                                                    ((AssignStmt)unit).getLeftOp(),
-                                                    NullConstant.v()),
-                                            unit);
-                                }
-                                body.getUnits().remove(unit);
-                            } else if (expr.getMethod().getSubSignature().equals(
-                                               PtolemyUtilities.getModelURIMethod.getSubSignature())) {
-                                if (unit instanceof AssignStmt) {
-                                    SootClass uriClass = Scene.v().loadClassAndSupport("java.net.URI");
-                                    RefType type = RefType.v(uriClass);
-                                    SootMethod initMethod =
-                                        uriClass.getMethod("void <init>(java.lang.String)");
-                                    Local local = (Local)((AssignStmt)unit).getLeftOp();
-                                    String uriString = URIAttribute.getModelURI(_model).toString();
-                                    body.getUnits().insertBefore(
-                                            Jimple.v().newAssignStmt(
-                                                    local,
-                                                    Jimple.v().newNewExpr(
-                                                            type)),
-                                            unit);
-                                    body.getUnits().insertBefore(
-                                            Jimple.v().newInvokeStmt(
-                                                    Jimple.v().newSpecialInvokeExpr(
-                                                            local,
-                                                            initMethod,
-                                                            StringConstant.v(uriString))),
-                                            unit);
-                                }
-                                body.getUnits().remove(unit);
-                            } else if (expr.getMethod().getSubSignature().equals(
-                                               PtolemyUtilities.handleModelErrorMethod.getSubSignature())) {
-                                // Replace handleModelError with a throw clause.
-                                body.getUnits().insertBefore(
-                                        Jimple.v().newThrowStmt(expr.getArg(1)),
+                                    body.getUnits().insertBefore(Jimple.v()
+                                                                       .newAssignStmt(((AssignStmt) unit)
+                                            .getLeftOp(),
+                                            StringConstant.v(_model.getName())),
                                         unit);
+                                }
+
+                                body.getUnits().remove(unit);
+                            } else if (expr.getMethod().getSubSignature()
+                                               .equals(PtolemyUtilities.findEffigyMethod
+                                        .getSubSignature())) {
+                                if (unit instanceof AssignStmt) {
+                                    body.getUnits().insertBefore(Jimple.v()
+                                                                       .newAssignStmt(((AssignStmt) unit)
+                                            .getLeftOp(), NullConstant.v()),
+                                        unit);
+                                }
+
+                                body.getUnits().remove(unit);
+                            } else if (expr.getMethod().getSubSignature()
+                                               .equals(PtolemyUtilities.getModelURIMethod
+                                        .getSubSignature())) {
+                                if (unit instanceof AssignStmt) {
+                                    SootClass uriClass = Scene.v()
+                                                              .loadClassAndSupport("java.net.URI");
+                                    RefType type = RefType.v(uriClass);
+                                    SootMethod initMethod = uriClass.getMethod(
+                                            "void <init>(java.lang.String)");
+                                    Local local = (Local) ((AssignStmt) unit)
+                                        .getLeftOp();
+                                    String uriString = URIAttribute.getModelURI(_model)
+                                                                   .toString();
+                                    body.getUnits().insertBefore(Jimple.v()
+                                                                       .newAssignStmt(local,
+                                            Jimple.v().newNewExpr(type)), unit);
+                                    body.getUnits().insertBefore(Jimple.v()
+                                                                       .newInvokeStmt(Jimple.v()
+                                                                                            .newSpecialInvokeExpr(local,
+                                                initMethod,
+                                                StringConstant.v(uriString))),
+                                        unit);
+                                }
+
+                                body.getUnits().remove(unit);
+                            } else if (expr.getMethod().getSubSignature()
+                                               .equals(PtolemyUtilities.handleModelErrorMethod
+                                        .getSubSignature())) {
+                                // Replace handleModelError with a throw clause.
+                                body.getUnits().insertBefore(Jimple.v()
+                                                                   .newThrowStmt(expr
+                                        .getArg(1)), unit);
                                 body.getUnits().remove(unit);
                             }
                         }
@@ -251,49 +263,50 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
             }
         }
 
-
         List modifiedConstructorClassList = new LinkedList();
 
         // Loop over all the classes
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-
+                i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
-            if (SootUtilities.derivesFrom(theClass,
-                        PtolemyUtilities.actorClass) ||
-                    SootUtilities.derivesFrom(theClass,
-                            PtolemyUtilities.compositeActorClass) ||
-                    SootUtilities.derivesFrom(theClass,
-                            PtolemyUtilities.attributeClass)) {
+
+            if (SootUtilities.derivesFrom(theClass, PtolemyUtilities.actorClass)
+                    || SootUtilities.derivesFrom(theClass,
+                        PtolemyUtilities.compositeActorClass)
+                    || SootUtilities.derivesFrom(theClass,
+                        PtolemyUtilities.attributeClass)) {
                 //    System.out.println("changing superclass for " + theClass);
                 theClass.setSuperclass(PtolemyUtilities.objectClass);
+
                 // Fix the constructor for the actor to take just a container argument, if it
                 // was a 2 arg constructor, or no arguments otherwise.
-
                 // FIXME: Here we assume that there is just one
                 // constructor.. This will throw an exception if there
                 // is more than one, in which case we need to improve
                 // this code.
                 SootMethod method = null;
+
                 try {
                     method = theClass.getMethodByName("<init>");
                 } catch (RuntimeException ex) {
                     System.out.println("Could not get method <init> by name "
-                            + "from class " + theClass );
+                        + "from class " + theClass);
                     System.out.println("Methods = " + theClass.getMethods());
                     throw ex;
                 }
+
                 if (method.getParameterCount() == 2) {
                     // Change the constructor so that it only takes the container.
-                    SootField containerField = theClass.getFieldByName(
-                            ModelTransformer.getContainerFieldName());
-                    RefType containerType = (RefType)containerField.getType();
+                    SootField containerField = theClass.getFieldByName(ModelTransformer
+                            .getContainerFieldName());
+                    RefType containerType = (RefType) containerField.getType();
                     List typeList = new LinkedList();
                     typeList.add(containerType);
                     method.setParameterTypes(typeList);
                 } else {
                     method.setParameterTypes(Collections.EMPTY_LIST);
                 }
+
                 // Keep track of the modification, so we know to
                 // modify invocations of that constructor.
                 modifiedConstructorClassList.add(theClass);
@@ -303,41 +316,45 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                 theClass.addMethod(method);
 
                 // System.out.println("method = " + method);
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
+                        units.hasNext();) {
+                    Stmt unit = (Stmt) units.next();
 
                     if (unit.containsInvokeExpr()) {
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
+
                         if (value instanceof SpecialInvokeExpr) {
                             // Fix super.<init> calls. constructor...
-                            SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-                            if (expr.getBase().equals(body.getThisLocal()) &&
-                                    expr.getMethod().getName().equals("<init>")) {
+                            SpecialInvokeExpr expr = (SpecialInvokeExpr) value;
+
+                            if (expr.getBase().equals(body.getThisLocal())
+                                    && expr.getMethod().getName().equals("<init>")) {
                                 //             System.out.println("replacing constructor = "
                                 //       + unit + " in method " + method);
-
                                 // Replace with zero arg object constructor.
-                                box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                                     (Local)expr.getBase(),
-                                                     PtolemyUtilities.objectConstructor,
-                                                     Collections.EMPTY_LIST));
+                                box.setValue(Jimple.v().newSpecialInvokeExpr((Local) expr
+                                        .getBase(),
+                                        PtolemyUtilities.objectConstructor,
+                                        Collections.EMPTY_LIST));
                             }
                         }
                     } else if (unit instanceof IdentityStmt) {
-                        IdentityStmt identityStmt = (IdentityStmt)unit;
+                        IdentityStmt identityStmt = (IdentityStmt) unit;
                         Value value = identityStmt.getRightOp();
+
                         if (value instanceof ParameterRef) {
-                            ParameterRef parameterRef = (ParameterRef)value;
-                            if (parameterRef.getIndex() == 0 &&
-                                    method.getParameterCount() == 1) {
+                            ParameterRef parameterRef = (ParameterRef) value;
+
+                            if ((parameterRef.getIndex() == 0)
+                                    && (method.getParameterCount() == 1)) {
                                 //       System.out.println("found = " + identityStmt);
                                 ValueBox box = identityStmt.getRightOpBox();
-                                box.setValue(Jimple.v().newParameterRef(
-                                                     method.getParameterType(0), 0));
+                                box.setValue(Jimple.v().newParameterRef(method
+                                        .getParameterType(0), 0));
+
                                 //    System.out.println("changed to: " + identityStmt);
                             } else {
                                 // Parameter values are null.  Note that
@@ -347,13 +364,13 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                 // super constructor will be implicitly
                                 // called.
                                 body.getUnits().remove(identityStmt);
-                                body.getUnits().insertBefore(
-                                        Jimple.v().newAssignStmt(
-                                                identityStmt.getLeftOp(),
-                                                NullConstant.v()),
-                                        body.getFirstNonIdentityStmt());
+                                body.getUnits().insertBefore(Jimple.v()
+                                                                   .newAssignStmt(identityStmt
+                                        .getLeftOp(), NullConstant.v()),
+                                    body.getFirstNonIdentityStmt());
                             }
-                        }//  else if (value instanceof ThisRef) {
+                        } //  else if (value instanceof ThisRef) {
+
                         //                             // Fix the type of thisRefs.
                         //                             ValueBox box = identityStmt.getRightOpBox();
                         //                             box.setValue(
@@ -371,20 +388,21 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
 
         // Fix the specialInvokes.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-
+                i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
+
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+                    methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
 
                 // System.out.println("method = " + method);
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
+                        units.hasNext();) {
+                    Stmt unit = (Stmt) units.next();
+
                     if (unit.containsInvokeExpr()) {
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
@@ -392,33 +410,32 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                         if (value instanceof SpecialInvokeExpr) {
                             // If we're constructing one of our actor classes,
                             // then switch to the modified constructor.
-                            SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-                            SootClass declaringClass =
-                                expr.getMethod().getDeclaringClass();
-                            if (expr.getMethod().getName().equals("<init>") &&
-                                    modifiedConstructorClassList.contains(
-                                            declaringClass)) {
+                            SpecialInvokeExpr expr = (SpecialInvokeExpr) value;
+                            SootClass declaringClass = expr.getMethod()
+                                                           .getDeclaringClass();
+
+                            if (expr.getMethod().getName().equals("<init>")
+                                    && modifiedConstructorClassList.contains(
+                                        declaringClass)) {
                                 // System.out.println(
                                 //                                         "replacing constructor invocation = "
                                 //                                         + unit + " in method " + method);
-                                SootMethod newConstructor =
-                                    declaringClass.getMethodByName("<init>");
+                                SootMethod newConstructor = declaringClass
+                                    .getMethodByName("<init>");
+
                                 if (newConstructor.getParameterCount() == 1) {
                                     // Replace with just container arg constructor.
                                     List args = new LinkedList();
                                     args.add(expr.getArg(0));
-                                    box.setValue(
-                                            Jimple.v().newSpecialInvokeExpr(
-                                                    (Local)expr.getBase(),
-                                                    newConstructor,
-                                                    args));
+                                    box.setValue(Jimple.v()
+                                                       .newSpecialInvokeExpr((Local) expr
+                                            .getBase(), newConstructor, args));
                                 } else {
                                     // Replace with zero arg constructor.
-                                    box.setValue(
-                                            Jimple.v().newSpecialInvokeExpr(
-                                                    (Local)expr.getBase(),
-                                                    newConstructor,
-                                                    Collections.EMPTY_LIST));
+                                    box.setValue(Jimple.v()
+                                                       .newSpecialInvokeExpr((Local) expr
+                                            .getBase(), newConstructor,
+                                            Collections.EMPTY_LIST));
                                 }
                             }
                         }
@@ -428,33 +445,30 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
         }
 
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-
+                i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+                    methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
 
                 // System.out.println("method = " + method);
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 // Infer types.
-                LocalSplitter.v().transform(
-                        body, "nee.ls");
-                TypeAssigner.v().transform(
-                        body, "nee.ta");
+                LocalSplitter.v().transform(body, "nee.ls");
+                TypeAssigner.v().transform(body, "nee.ta");
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
+                        units.hasNext();) {
+                    Stmt unit = (Stmt) units.next();
 
                     //        System.out.println("unit = " + unit);
                     // If any box is removable, then remove the statement.
                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-                         boxes.hasNext();) {
-                        ValueBox box = (ValueBox)boxes.next();
+                            boxes.hasNext();) {
+                        ValueBox box = (ValueBox) boxes.next();
 
                         Value value = box.getValue();
                         Type type = value.getType();
@@ -465,25 +479,30 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                             break;
                         }
                     }
+
                     // If any locals are removable, then remove them.
                     for (Iterator locals = body.getLocals().snapshotIterator();
-                         locals.hasNext();) {
-                        Local local = (Local)locals.next();
+                            locals.hasNext();) {
+                        Local local = (Local) locals.next();
                         Type type = local.getType();
+
                         if (_isRemovableType(type)) {
                             body.getLocals().remove(local);
                         }
                     }
                 }
+
                 // If any fields are removable, then remove them.
                 for (Iterator fields = theClass.getFields().snapshotIterator();
-                     fields.hasNext();) {
-                    SootField field = (SootField)fields.next();
+                        fields.hasNext();) {
+                    SootField field = (SootField) fields.next();
                     Type type = field.getType();
+
                     if (_isRemovableType(type)) {
                         theClass.getFields().remove(field);
                     }
                 }
+
                 // If any arguments are removable, then remove the method.
                 //   for (Iterator params = method.getParameterTypes().iterator();
                 //                      params.hasNext();) {
@@ -495,21 +514,22 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                 //                     }
                 //                 }
             }
-        }/*
-          */
-
+        } /*
+         */
         // Remove all the interfaces that it implements??
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
+                i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
-            for (Iterator interfaces = theClass.getInterfaces().snapshotIterator();
-                 interfaces.hasNext();) {
-                SootClass theInterface = (SootClass)interfaces.next();
-                if (theInterface.equals(
-                            PtolemyUtilities.inequalityTermClass)) {
+            for (Iterator interfaces = theClass.getInterfaces()
+                                               .snapshotIterator();
+                    interfaces.hasNext();) {
+                SootClass theInterface = (SootClass) interfaces.next();
+
+                if (theInterface.equals(PtolemyUtilities.inequalityTermClass)) {
                     theClass.getInterfaces().remove(theInterface);
                 }
+
                 if (theInterface.equals(
                             PtolemyUtilities.explicitChangeContextClass)) {
                     theClass.getInterfaces().remove(theInterface);
@@ -523,41 +543,29 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
     // subclasses.
     private static boolean _isRemovableType(Type type) {
         if (type instanceof RefType) {
-            RefType refType = (RefType)type;
+            RefType refType = (RefType) type;
             SootClass refClass = refType.getSootClass();
+
             if (SootUtilities.derivesFrom(refClass,
-                        PtolemyUtilities.attributeClass) ||
-                    SootUtilities.derivesFrom(refClass,
-                            PtolemyUtilities.managerClass) ||
-                    SootUtilities.derivesFrom(refClass,
-                            PtolemyUtilities.settableClass) ||
-                    SootUtilities.derivesFrom(refClass,
-                            PtolemyUtilities.relationClass) ||
-                    SootUtilities.derivesFrom(refClass,
-                            PtolemyUtilities.portClass) ||
-                    SootUtilities.derivesFrom(refClass,
-                            PtolemyUtilities.entityClass) ||
-                    SootUtilities.derivesFrom(refClass,
-                            PtolemyUtilities.inequalityTermClass)) {
+                        PtolemyUtilities.attributeClass)
+                    || SootUtilities.derivesFrom(refClass,
+                        PtolemyUtilities.managerClass)
+                    || SootUtilities.derivesFrom(refClass,
+                        PtolemyUtilities.settableClass)
+                    || SootUtilities.derivesFrom(refClass,
+                        PtolemyUtilities.relationClass)
+                    || SootUtilities.derivesFrom(refClass,
+                        PtolemyUtilities.portClass)
+                    || SootUtilities.derivesFrom(refClass,
+                        PtolemyUtilities.entityClass)
+                    || SootUtilities.derivesFrom(refClass,
+                        PtolemyUtilities.inequalityTermClass)) {
                 return true;
             }
         }
+
         return false;
     }
 
     private CompositeActor _model;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

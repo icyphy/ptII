@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.util.Time;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Clock
+
 /**
    This actor produces a periodic signal, a sequence of events at
    regularly spaced intervals. It can generate finite pulses by specifying
@@ -92,9 +93,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (yuhong)
 */
-
 public class Clock extends TimedSource {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -104,7 +103,7 @@ public class Clock extends TimedSource {
      *   actor with this name.
      */
     public Clock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         period = new Parameter(this, "period");
@@ -114,6 +113,7 @@ public class Clock extends TimedSource {
         offsets = new Parameter(this, "offsets");
         offsets.setExpression("{0.0, 1.0}");
         offsets.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 
@@ -123,7 +123,7 @@ public class Clock extends TimedSource {
         values.setExpression("{1, 0}");
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType)values.getType();
+        ArrayType valuesArrayType = (ArrayType) values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
 
@@ -131,7 +131,7 @@ public class Clock extends TimedSource {
         attributeChanged(values);
 
         // Set the numberOfCycles parameter.
-        numberOfCycles = new Parameter(this,"numberOfCycles");
+        numberOfCycles = new Parameter(this, "numberOfCycles");
         numberOfCycles.setTypeEquals(BaseType.INT);
         numberOfCycles.setExpression("-1");
 
@@ -139,12 +139,10 @@ public class Clock extends TimedSource {
         // that the outputs of this actor are discrete events.
         // NOTE: ContinuousClock, a subclass of this class overrides
         // the signal type to CONTINUOUS.
-        new Parameter(output, "signalType",
-                new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("DISCRETE"));
 
         // Set the trigger signal type as DISCRETE.
-        new Parameter(trigger, "signalType",
-                new StringToken("DISCRETE"));
+        new Parameter(trigger, "signalType", new StringToken("DISCRETE"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -185,29 +183,33 @@ public class Clock extends TimedSource {
      *   nondecreasing and nonnegative.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == offsets) {
-            ArrayToken offsetsValue = (ArrayToken)offsets.getToken();
+            ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
             _offsets = new double[offsetsValue.length()];
+
             double previous = 0.0;
+
             for (int i = 0; i < offsetsValue.length(); i++) {
-                _offsets[i] = ((DoubleToken)offsetsValue.getElement(i))
+                _offsets[i] = ((DoubleToken) offsetsValue.getElement(i))
                     .doubleValue();
+
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of offsets is not nondecreasing " +
-                            "and nonnegative.");
+                        "Value of offsets is not nondecreasing "
+                        + "and nonnegative.");
                 }
+
                 previous = _offsets[i];
             }
         } else if (attribute == period) {
-            double periodValue =
-                ((DoubleToken)period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Period is required to be positive.  " +
-                        "Period given: " + periodValue);
+                    "Period is required to be positive.  " + "Period given: "
+                    + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -222,10 +224,9 @@ public class Clock extends TimedSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Clock newObject = (Clock)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Clock newObject = (Clock) super.clone(workspace);
+        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
 
@@ -242,7 +243,7 @@ public class Clock extends TimedSource {
 
         // Get the current time and period.
         Time currentTime = getDirector().getModelTime();
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
         if (_debugging) {
             _debug("--- Firing at time " + currentTime + ".");
@@ -266,17 +267,14 @@ public class Clock extends TimedSource {
         // for some time, as might happen for example in a hybrid system).
         // But do not do this if we are before the first iteration.
         if (_tentativeCycleCount > 0) {
-            while (_tentativeCycleStartTime.add(periodValue)
-                .compareTo(currentTime) < 0) {
-                _tentativeCycleStartTime =
-                    _tentativeCycleStartTime.add(periodValue);
+            while (_tentativeCycleStartTime.add(periodValue).compareTo(currentTime) < 0) {
+                _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
             }
 
-            Time currentPhaseTime
-                = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+            Time currentPhaseTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+
             // Adjust the phase if time has moved beyond the current phase.
             if (currentTime.compareTo(currentPhaseTime) == 0) {
-
                 // Phase boundary.  Change the current value.
                 _tentativeCurrentValue = _getValue(_tentativePhase);
 
@@ -285,51 +283,57 @@ public class Clock extends TimedSource {
 
                 if (_tentativePhase >= _offsets.length) {
                     _tentativePhase = 0;
+
                     // Schedule the first firing in the next period.
-                    _tentativeCycleStartTime =
-                        _tentativeCycleStartTime.add(periodValue);
+                    _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+
                     // Indicate that the cycle count should increase.
                     _tentativeCycleCountIncrement++;
                 }
 
                 if (_offsets[_tentativePhase] >= periodValue) {
                     throw new IllegalActionException(this,
-                            "Offset number "
-                            + _tentativePhase
-                            + " with value "
-                            + _offsets[_tentativePhase]
-                            + " must be strictly less than the "
-                            + "period, which is "
-                            + periodValue);
+                        "Offset number " + _tentativePhase + " with value "
+                        + _offsets[_tentativePhase]
+                        + " must be strictly less than the "
+                        + "period, which is " + periodValue);
                 }
 
                 // Schedule the next firing in this period.
                 // NOTE: In the TM domain, this may not occur if we have
                 // missed a deadline.  As a consequence, the clock will stop.
-                _tentativeNextFiringTime
-                    = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+                _tentativeNextFiringTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
+
                 // If we are beyond the number of cycles requested, then
                 // change the output value to zero.
                 // FIXME: is this a desired behavior? why not simply stop the firing?
                 // NOTE: This actor is intended to be used in DE domain. If this actor
                 // serves as a source, when the cycle limit is reached, it should stop
                 // producing more events and consequently the model stops.
-                int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-                if (cycleLimit > 0 ) {
+                int cycleLimit = ((IntToken) numberOfCycles.getToken())
+                    .intValue();
+
+                if (cycleLimit > 0) {
                     Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
+
                     if (currentTime.compareTo(stopTime) >= 0) {
                         _tentativeCurrentValue = _tentativeCurrentValue.zero();
                     }
                 }
+
                 // Used to use any negative number here to indicate
                 // that no future firing should be scheduled.
                 // Now, we leave it up to the director, unless the value
                 // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
                 output.send(0, _tentativeCurrentValue);
-                if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
+
+                if (_debugging) {
+                    _debug("Output: " + _tentativeCurrentValue + ".");
+                }
             }
         }
     }
@@ -341,7 +345,10 @@ public class Clock extends TimedSource {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (_debugging)_debug("Initializing " + getFullName() + ".");
+
+        if (_debugging) {
+            _debug("Initializing " + getFullName() + ".");
+        }
 
         Time timeToStart = getDirector().getModelTime();
         _cycleStartTime = timeToStart;
@@ -357,9 +364,9 @@ public class Clock extends TimedSource {
         // Subclasseses may disable starting by setting _done to true.
         if (!_done) {
             if (_debugging) {
-                _debug("Requesting firing at time "
-                        + _startTime);
+                _debug("Requesting firing at time " + _startTime);
             }
+
             // This should be the last line, because in threaded domains,
             // it could execute immediately.
             getDirector().fireAt(this, _tentativeNextFiringTime);
@@ -372,10 +379,10 @@ public class Clock extends TimedSource {
      *   scheduling the next firing.
      */
     public boolean postfire() throws IllegalActionException {
-
         if (_debugging) {
             _debug("Postfiring at " + getDirector().getModelTime());
         }
+
         _updateStates();
         return super.postfire();
     }
@@ -386,13 +393,14 @@ public class Clock extends TimedSource {
      *   <i>offsets</i> parameters do not have the same length.
      */
     public boolean prefire() throws IllegalActionException {
-
         // FIXME: why put the check here???
-        ArrayToken val = (ArrayToken)(values.getToken());
+        ArrayToken val = (ArrayToken) (values.getToken());
+
         if (_offsets.length != val.length()) {
             throw new IllegalActionException(this,
-                    "Values and offsets vectors do not have the same length.");
+                "Values and offsets vectors do not have the same length.");
         }
+
         return super.prefire();
     }
 
@@ -407,11 +415,13 @@ public class Clock extends TimedSource {
      *  the values parameter.
      */
     protected Token _getValue(int index) throws IllegalActionException {
-        ArrayToken val = (ArrayToken)(values.getToken());
-        if (val == null || val.length() <= index) {
+        ArrayToken val = (ArrayToken) (values.getToken());
+
+        if ((val == null) || (val.length() <= index)) {
             throw new IllegalActionException(this,
-                    "Index out of range of the values parameter.");
+                "Index out of range of the values parameter.");
         }
+
         return val.getElement(index);
     }
 
@@ -432,8 +442,7 @@ public class Clock extends TimedSource {
      *  it.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected void _updateTentativeValues()
-            throws IllegalActionException {
+    protected void _updateTentativeValues() throws IllegalActionException {
         _tentativeCurrentValue = _currentValue;
         _tentativeCycleCount = _cycleCount;
         _tentativeCycleStartTime = _cycleStartTime;
@@ -455,34 +464,40 @@ public class Clock extends TimedSource {
         _done = _tentativeDone;
 
         _cycleCount += _tentativeCycleCountIncrement;
+
         if (_debugging) {
             _debug("Phase for next iteration: " + _phase);
         }
 
-        int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
+        int cycleLimit = ((IntToken) numberOfCycles.getToken()).intValue();
 
         // Used to use any negative number here to indicate
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-        if (!_done &&
-            _tentativeNextFiringTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
+        if (!_done
+                && (_tentativeNextFiringTime.compareTo(Time.NEGATIVE_INFINITY) != 0)) {
             getDirector().fireAt(this, _tentativeNextFiringTime);
-            if (_debugging)_debug("Requesting firing at: "
-                    + _tentativeNextFiringTime + ".");
+
+            if (_debugging) {
+                _debug("Requesting firing at: " + _tentativeNextFiringTime
+                    + ".");
+            }
         }
+
         // This should be computed after the above so that a firing
         // gets requested for the tail end of the output pulses.
-        _done = _done || (cycleLimit > 0
-                && _cycleCount > cycleLimit
-                && _phase == 0);
+        _done = _done
+            || ((cycleLimit > 0) && (_cycleCount > cycleLimit) && (_phase == 0));
 
         if (_done) {
             _cycleCount = 0;
+
             if (_debugging) {
                 _debug("Done with requested number of cycles.");
             }
         }
+
         if (_debugging) {
             _debug("Cycle count for next iteration: " + _cycleCount + ".");
         }
@@ -515,6 +530,7 @@ public class Clock extends TimedSource {
     protected transient Time _startTime;
 
     // Following variables recall data from the fire to the postfire method.
+
     /** The tentative current value of the clock output. */
     protected transient Token _tentativeCurrentValue;
 

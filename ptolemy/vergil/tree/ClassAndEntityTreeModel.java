@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.tree;
 
 import java.util.Collections;
@@ -34,8 +33,10 @@ import java.util.List;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ClassAndEntityTreeModel
+
 /**
    A tree model for Ptolemy II models that includes class definitions and
    entities. The indexes of the class definitions are 0 to a-1, where a is the
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ClassAndEntityTreeModel extends EntityTreeModel {
-
     /** Create a new tree model with the specified root.
      *  @param root The root of the tree.
      */
@@ -71,8 +71,7 @@ public class ClassAndEntityTreeModel extends EntityTreeModel {
         int numClasses = classes.size();
 
         if (index >= numClasses) {
-            return super.getChild(parent,
-                    index - numClasses);
+            return super.getChild(parent, index - numClasses);
         } else if (index >= 0) {
             return classes.get(index);
         } else {
@@ -99,20 +98,22 @@ public class ClassAndEntityTreeModel extends EntityTreeModel {
      *  @return The index of the specified child.
      */
     public int getIndexOfChild(Object parent, Object child) {
-
         List classes = _classes(parent);
 
         int index = classes.indexOf(child);
+
         if (index >= 0) {
             return index;
         } else {
             // Object is not a class definition. Defer to the base class.
             int numClasses = classes.size();
             index = super.getIndexOfChild(parent, child);
+
             if (index >= 0) {
                 return index + numClasses;
             }
         }
+
         return -1;
     }
 
@@ -123,8 +124,9 @@ public class ClassAndEntityTreeModel extends EntityTreeModel {
      */
     public boolean isLeaf(Object object) {
         // FIXME: Ignoring setFilter for now.
-
-        if (_classes(object).size() > 0) return false;
+        if (_classes(object).size() > 0) {
+            return false;
+        }
 
         return super.isLeaf(object);
     }
@@ -141,6 +143,7 @@ public class ClassAndEntityTreeModel extends EntityTreeModel {
         if (!(object instanceof CompositeEntity)) {
             return Collections.EMPTY_LIST;
         }
-        return ((CompositeEntity)object).classDefinitionList();
+
+        return ((CompositeEntity) object).classDefinitionList();
     }
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data.type;
 
 import java.io.Serializable;
@@ -36,8 +35,10 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TopMatrixType
+
 /**
    The least upper bound for all matrix types.
 
@@ -47,10 +48,7 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red
 */
-
-public class TopMatrixType extends StructuredType
-    implements Serializable {
-
+public class TopMatrixType extends StructuredType implements Serializable {
     /** Construct a new matrix type that represents the top element of all
      *  matrix types.
      */
@@ -79,8 +77,7 @@ public class TopMatrixType extends StructuredType
      *  @exception IllegalActionException If lossless conversion cannot
      *   be done.
      */
-    public Token convert(Token token)
-            throws IllegalActionException {
+    public Token convert(Token token) throws IllegalActionException {
         // Any matrix token is a valid instance of this type.
         // This is useful because there are some things like
         // the matrix visualizer that can meaningfully accept any token
@@ -88,8 +85,8 @@ public class TopMatrixType extends StructuredType
         if (token instanceof MatrixToken) {
             return token;
         } else {
-            throw new IllegalActionException("Cannot convert " + token +
-                    " to TopMatrixType");
+            throw new IllegalActionException("Cannot convert " + token
+                + " to TopMatrixType");
         }
     }
 
@@ -127,9 +124,8 @@ public class TopMatrixType extends StructuredType
      *  @param type A Type.
      */
     public void initialize(Type type) {
-        throw new InternalErrorException(
-                "TopMatrixType.initialize: Cannot " +
-                "initialize the element type to " + type + ".");
+        throw new InternalErrorException("TopMatrixType.initialize: Cannot "
+            + "initialize the element type to " + type + ".");
     }
 
     /** Test if the argument type is compatible with this type. The method
@@ -142,7 +138,7 @@ public class TopMatrixType extends StructuredType
      */
     public boolean isCompatible(Type type) {
         int typeInfo = TypeLattice.compare(this, type);
-        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+        return ((typeInfo == CPO.SAME) || (typeInfo == CPO.HIGHER));
     }
 
     /** Test if this Type is a constant. A Type is a constant if it
@@ -185,10 +181,9 @@ public class TopMatrixType extends StructuredType
      *   different structure.
      */
     public void updateType(StructuredType newType)
-            throws IllegalActionException {
-        throw new InternalErrorException(
-                "TopMatrixType.updateType: Cannot " +
-                "updateType the element type to " + newType + ".");
+        throws IllegalActionException {
+        throw new InternalErrorException("TopMatrixType.updateType: Cannot "
+            + "updateType the element type to " + newType + ".");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -253,8 +248,5 @@ public class TopMatrixType extends StructuredType
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
     private static TopMatrixType _instance = new TopMatrixType();
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditIconTableau
+
 /**
    This is an icon editor for ptolemy models.  It constructs an instance
    of EditIconFrame, which contains an editor pane based on diva.
@@ -54,12 +55,11 @@ import ptolemy.moml.LibraryAttribute;
    @Pt.AcceptedRating Red (johnr)
 */
 public class EditIconTableau extends Tableau {
-
     /** Create a tableau in the specified workspace.
      *  @param workspace The workspace.
      */
     public EditIconTableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -68,9 +68,8 @@ public class EditIconTableau extends Tableau {
      *  @param container The container.
      *  @param name The name.
      */
-    public EditIconTableau(PtolemyEffigy container,
-            String name)
-            throws IllegalActionException, NameDuplicationException {
+    public EditIconTableau(PtolemyEffigy container, String name)
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -80,31 +79,30 @@ public class EditIconTableau extends Tableau {
      *  @param name The name.
      *  @param defaultLibrary The default library, or null to not specify one.
      */
-    public EditIconTableau(
-            PtolemyEffigy container,
-            String name,
-            LibraryAttribute defaultLibrary)
-            throws IllegalActionException, NameDuplicationException {
-
+    public EditIconTableau(PtolemyEffigy container, String name,
+        LibraryAttribute defaultLibrary)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (container instanceof PtolemyEffigy) {
             NamedObj model = container.getModel();
+
             if (model == null) {
                 return;
             }
-            if (model instanceof EditorIcon) {
-                EditorIcon entity = (EditorIcon)model;
 
-                EditIconFrame frame = new EditIconFrame(
-                        entity, this, defaultLibrary);
+            if (model instanceof EditorIcon) {
+                EditorIcon entity = (EditorIcon) model;
+
+                EditIconFrame frame = new EditIconFrame(entity, this,
+                        defaultLibrary);
                 setFrame(frame);
                 frame.setBackground(BACKGROUND_COLOR);
                 return;
             } else {
                 throw new IllegalActionException(this,
-                        "Cannot edit an icon "
-                        + "that is not an instance of EditorIcon.");
+                    "Cannot edit an icon "
+                    + "that is not an instance of EditorIcon.");
             }
         }
     }
@@ -118,22 +116,25 @@ public class EditIconTableau extends Tableau {
      */
     public String getTitle() {
         NamedObj container = getContainer();
+
         if (container instanceof PtolemyEffigy) {
-            NamedObj model = ((PtolemyEffigy)container).getModel();
+            NamedObj model = ((PtolemyEffigy) container).getModel();
+
             if (model != null) {
                 NamedObj modelContainer = model.getContainer();
+
                 if (modelContainer != null) {
                     return "Icon editor for " + modelContainer.getName();
                 }
             }
         }
+
         // If anything goes wrong, just defer to the base class.
         return super.getTitle();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The background color.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
@@ -143,7 +144,6 @@ public class EditIconTableau extends Tableau {
     /** A factory that creates icon editing tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create an factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -153,7 +153,7 @@ public class EditIconTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -174,16 +174,18 @@ public class EditIconTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a graphTableau.
-                EditIconTableau tableau =
-                    (EditIconTableau)effigy.getEntity("editIconTableau");
+                EditIconTableau tableau = (EditIconTableau) effigy.getEntity(
+                        "editIconTableau");
+
                 if (tableau == null) {
                     // Check to see whether this factory contains a
                     // default library.
-                    LibraryAttribute library = (LibraryAttribute)getAttribute(
-                            "_library", LibraryAttribute.class);
-                    tableau = new EditIconTableau(
-                            (PtolemyEffigy)effigy, "editIconTableau", library);
+                    LibraryAttribute library = (LibraryAttribute) getAttribute("_library",
+                            LibraryAttribute.class);
+                    tableau = new EditIconTableau((PtolemyEffigy) effigy,
+                            "editIconTableau", library);
                 }
+
                 // Don't call show() here, it is called for us in
                 // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;

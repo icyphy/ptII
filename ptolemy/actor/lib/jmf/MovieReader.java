@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jmf;
 
 import java.net.URL;
@@ -56,8 +55,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MovieReader
+
 /**
    This actor loads a video file (MPEG, AVI, or Quicktime files only), and
    outputs each frame as a JMFImageToken.
@@ -71,9 +72,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class MovieReader extends Source implements ControllerListener {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -83,12 +82,12 @@ public class MovieReader extends Source implements ControllerListener {
      *   actor with this name.
      */
     public MovieReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
         fileOrURL.setExpression(
-                "$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
+            "$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,9 +110,10 @@ public class MovieReader extends Source implements ControllerListener {
      *  invalid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileOrURL) {
             URL url = fileOrURL.asURL();
+
             if (url == null) {
                 throw new IllegalActionException("URLToken was null");
             } else {
@@ -124,9 +124,8 @@ public class MovieReader extends Source implements ControllerListener {
                         // Web Start: javax.media.Manager.createDataSource()
                         // does not deal with jar urls because it cannot
                         // find a data source, so we copy the jar file.
-                        url = new URL(JNLPUtilities
-                                .saveJarURLAsTempFile(url.toString(),
-                                        "JMFMovieReader", null, null));
+                        url = new URL(JNLPUtilities.saveJarURLAsTempFile(
+                                    url.toString(), "JMFMovieReader", null, null));
                         _dataSource = Manager.createDataSource(url);
                     } catch (Exception ex2) {
                         // Ignore this exception, throw the original.
@@ -146,9 +145,9 @@ public class MovieReader extends Source implements ControllerListener {
      *  @param event The controller event.
      */
     public void controllerUpdate(ControllerEvent event) {
-        if (event instanceof ConfigureCompleteEvent ||
-                event instanceof RealizeCompleteEvent ||
-                event instanceof PrefetchCompleteEvent) {
+        if (event instanceof ConfigureCompleteEvent
+                || event instanceof RealizeCompleteEvent
+                || event instanceof PrefetchCompleteEvent) {
             synchronized (_waitSync) {
                 _stateTransitionEvent = event;
                 _stateTransitionOK = true;
@@ -184,15 +183,16 @@ public class MovieReader extends Source implements ControllerListener {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         try {
             _player = Manager.createPlayer(_dataSource);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to create a player for the data source. "
-                    + "Note that you may need to run jmfinit, which is found "
-                    + "in the JMF directory, for example c:/Program Files/"
-                    + "JMF2.1.1/bin.  The data source was: "
-                    + _dataSource.getLocator().toExternalForm());
+                "Failed to create a player for the data source. "
+                + "Note that you may need to run jmfinit, which is found "
+                + "in the JMF directory, for example c:/Program Files/"
+                + "JMF2.1.1/bin.  The data source was: "
+                + _dataSource.getLocator().toExternalForm());
         }
 
         _player.addControllerListener(this);
@@ -201,59 +201,47 @@ public class MovieReader extends Source implements ControllerListener {
 
         if (!_waitForState(Controller.Realized)) {
             throw new IllegalActionException(null,
-                    "Failed to realize player, last controller event was: "
-                    + _stateTransitionEvent
-                    + "\nThe data source was: "
-                    + _dataSource.getLocator().toExternalForm()
-                    + "\nNote that not all formats are supported, see:\n"
-                    + "http://java.sun.com/products/java-media/jmf/reference/faqs/index.html");
+                "Failed to realize player, last controller event was: "
+                + _stateTransitionEvent + "\nThe data source was: "
+                + _dataSource.getLocator().toExternalForm()
+                + "\nNote that not all formats are supported, see:\n"
+                + "http://java.sun.com/products/java-media/jmf/reference/faqs/index.html");
         }
 
-        String framePostioningControlName =
-            "javax.media.control.FramePositioningControl";
-        _framePositioningControl = (FramePositioningControl)_player
-            .getControl(framePostioningControlName);
+        String framePostioningControlName = "javax.media.control.FramePositioningControl";
+        _framePositioningControl = (FramePositioningControl) _player.getControl(framePostioningControlName);
 
         if (_framePositioningControl == null) {
             throw new IllegalActionException(this,
-                    "Failed to get Frame Positioning Control '"
-                    + framePostioningControlName
-                    + "' possible controls are:\n"
-                    + _controlNames()
-                    + "\nThe data source was: "
-                    + _dataSource.getLocator().toExternalForm());
+                "Failed to get Frame Positioning Control '"
+                + framePostioningControlName + "' possible controls are:\n"
+                + _controlNames() + "\nThe data source was: "
+                + _dataSource.getLocator().toExternalForm());
         }
 
-        String frameGrabbingControlName =
-            "javax.media.control.FrameGrabbingControl";
-        _frameGrabbingControl = (FrameGrabbingControl)_player
-            .getControl(frameGrabbingControlName);
+        String frameGrabbingControlName = "javax.media.control.FrameGrabbingControl";
+        _frameGrabbingControl = (FrameGrabbingControl) _player.getControl(frameGrabbingControlName);
 
         if (_frameGrabbingControl == null) {
             throw new IllegalActionException(this,
-                    "Failed to get Frame Grabbing Control '"
-                    + frameGrabbingControlName
-                    + "' possible controls are:\n"
-                    + _controlNames()
-                    + "\nThe data source was: "
-                    + _dataSource.getLocator().toExternalForm());
+                "Failed to get Frame Grabbing Control '"
+                + frameGrabbingControlName + "' possible controls are:\n"
+                + _controlNames() + "\nThe data source was: "
+                + _dataSource.getLocator().toExternalForm());
         }
 
         _player.prefetch();
 
         if (!_waitForState(Controller.Prefetched)) {
             throw new IllegalActionException(this,
-                    "Failed to prefetch player, last controller event was: "
-                    + _stateTransitionEvent
-                    + "\nThe data source was: "
-                    + _dataSource.getLocator().toExternalForm());
+                "Failed to prefetch player, last controller event was: "
+                + _stateTransitionEvent + "\nThe data source was: "
+                + _dataSource.getLocator().toExternalForm());
         }
 
         //load first frame
-
         _frame = _frameGrabbingControl.grabFrame();
         _framePositioningControl.skip(1);
-
     }
 
     /** If the player is no longer open, then disconnect the
@@ -282,38 +270,42 @@ public class MovieReader extends Source implements ControllerListener {
     protected boolean _waitForState(int state) throws IllegalActionException {
         synchronized (_waitSync) {
             try {
-                while (_player.getState() != state && _stateTransitionOK)
+                while ((_player.getState() != state) && _stateTransitionOK) {
                     _waitSync.wait();
+                }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed block the processor until it state"
-                        + " transition completed.");
+                    "Failed block the processor until it state"
+                    + " transition completed.");
             }
         }
+
         return _stateTransitionOK;
     }
 
     // Return a string containing the names of the possible controls
     private String _controlNames() {
         StringBuffer controlNames = new StringBuffer();
+
         try {
-            Control [] controls = _player.getControls();
+            Control[] controls = _player.getControls();
+
             for (int i = 0; i < controls.length; i++) {
                 controlNames.append(controls[i] + "\n");
             }
         } catch (Exception ex) {
-            controlNames.append("Could not get controls: "
-                    + ex);
+            controlNames.append("Could not get controls: " + ex);
         }
+
         if (controlNames.toString().length() == 0) {
             controlNames.append("None");
         }
+
         return controlNames.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The datasource that encapsulates the video file.
     private DataSource _dataSource;
 
@@ -344,9 +336,4 @@ public class MovieReader extends Source implements ControllerListener {
 
     // Object to allow synchronization in this actor.
     private Object _waitSync = new Object();
-
 }
-
-
-
-

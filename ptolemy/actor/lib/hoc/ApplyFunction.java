@@ -24,8 +24,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.hoc;
+
+import java.util.Iterator;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -38,10 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ApplyFunction
+
 /**
    This actor applies a function to its inputs and outputs the
    results. But rather than has the function specified statically,
@@ -57,8 +58,7 @@ import java.util.*;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-public class ApplyFunction extends TypedAtomicActor{
-
+public class ApplyFunction extends TypedAtomicActor {
     /** Construct a ApplyFunction in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -66,7 +66,7 @@ public class ApplyFunction extends TypedAtomicActor{
      *  @param workspace The workspace that will list the actor.
      */
     public ApplyFunction(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
@@ -83,7 +83,7 @@ public class ApplyFunction extends TypedAtomicActor{
      *   an actor already in the container.
      */
     public ApplyFunction(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
@@ -105,7 +105,6 @@ public class ApplyFunction extends TypedAtomicActor{
      */
     public TypedIOPort output;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -116,20 +115,25 @@ public class ApplyFunction extends TypedAtomicActor{
      *   the director's fire() method throws it, or if the actor is not
      *   opaque.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
+
         // Update the function parameterPort.
         function.update();
-        FunctionToken functionValue = (FunctionToken)function.getToken();
+
+        FunctionToken functionValue = (FunctionToken) function.getToken();
         Token[] arguments = new Token[inputPortList().size() - 1];
         int i = 0;
         Iterator ports = inputPortList().iterator();
+
         // Skip the function port.
         ports.next();
+
         while (ports.hasNext()) {
-            TypedIOPort port = (TypedIOPort)ports.next();
+            TypedIOPort port = (TypedIOPort) ports.next();
             arguments[i++] = port.get(0);
         }
+
         Token t = functionValue.apply(arguments);
         output.broadcast(t);
     }
@@ -139,15 +143,20 @@ public class ApplyFunction extends TypedAtomicActor{
      */
     public boolean prefire() throws IllegalActionException {
         super.prefire();
+
         Iterator ports = inputPortList().iterator();
+
         // Skip the function port.
         ports.next();
+
         while (ports.hasNext()) {
-            TypedIOPort port = (TypedIOPort)ports.next();
+            TypedIOPort port = (TypedIOPort) ports.next();
+
             if (!port.hasToken(0)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -156,7 +165,8 @@ public class ApplyFunction extends TypedAtomicActor{
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        FunctionType type = (FunctionType)function.getType();
+
+        FunctionType type = (FunctionType) function.getType();
         output.setTypeEquals(type.getReturnType());
     }
 }

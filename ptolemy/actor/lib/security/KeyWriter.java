@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.security;
 
 import java.io.FileOutputStream;
@@ -37,8 +36,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// KeyWriter
+
 /** Read in a Key from the input port and write it out to a KeyStore.
 
 <p>Keystores are ways to manage keys and certificates.
@@ -59,7 +60,6 @@ to a keystore.
 @Pt.AcceptedRating Red (cxh)
 */
 public class KeyWriter extends KeyStoreActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -69,14 +69,13 @@ public class KeyWriter extends KeyStoreActor {
      *   actor with this name.
      */
     public KeyWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(KeyToken.KEY);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,48 +100,51 @@ public class KeyWriter extends KeyStoreActor {
     public boolean postfire() throws IllegalActionException {
         // See io.LineWriter for an example of an actor that writes to a file.
         if (input.hasToken(0)) {
-            KeyToken keyToken = (KeyToken)input.get(0);
-            java.security.Key key = (java.security.Key)keyToken.getValue();
+            KeyToken keyToken = (KeyToken) input.get(0);
+            java.security.Key key = (java.security.Key) keyToken.getValue();
+
             if (key instanceof java.security.PrivateKey) {
                 throw new IllegalActionException(this,
-                        "Key is a PrivateKey, which is not supported because "
-                        + "it requires a certificate");
+                    "Key is a PrivateKey, which is not supported because "
+                    + "it requires a certificate");
             }
+
             // Now we add the key to the keystore, protected
             // by the password.
             try {
-                _keyStore.setKeyEntry(_alias, key,
-                        _keyPassword.toCharArray(),
-                        null /* No certificate */);
+                _keyStore.setKeyEntry(_alias, key, _keyPassword.toCharArray(),
+                    null /* No certificate */);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to set key '" + key + "' to alias '"
-                        + alias + "'");
+                    "Failed to set key '" + key + "' to alias '" + alias + "'");
             }
+
             try {
                 FileOutputStream keyStoreOutputStream = null;
+
                 try {
-                    keyStoreOutputStream =
-                        new FileOutputStream(fileOrURL.asFile());
+                    keyStoreOutputStream = new FileOutputStream(fileOrURL
+                            .asFile());
                     _keyStore.store(keyStoreOutputStream,
-                            _storePassword.toCharArray());
+                        _storePassword.toCharArray());
                     keyStoreOutputStream.close();
                 } finally {
                     try {
                         keyStoreOutputStream.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + fileOrURL.asFile());
+                            + "on " + fileOrURL.asFile());
                         throwable.printStackTrace();
                     }
                 }
+
                 output.broadcast(BooleanToken.TRUE);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to store "
-                        + fileOrURLDescription());
+                    "Failed to store " + fileOrURLDescription());
             }
         }
+
         return super.postfire();
     }
 }

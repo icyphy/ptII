@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.CompositeActor;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Stop
+
 /**
 
    An actor that stops execution of a model when it receives a true
@@ -86,9 +87,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (neuendor)
 */
-
 public class Stop extends Sink {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -99,20 +98,19 @@ public class Stop extends Sink {
      *   an actor already in the container.
      */
     public Stop(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);
 
         // Icon is a stop sign.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-8,-19 8,-19 19,-8 19,8 8,19 "
-                + "-8,19 -19,8 -19,-8\" "
-                + "style=\"fill:red\"/>\n"
-                + "<text x=\"-15\" y=\"4\""
-                + "style=\"font-size:11; fill:white; font-family:SansSerif\">"
-                + "STOP</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-8,-19 8,-19 19,-8 19,8 8,19 "
+            + "-8,19 -19,8 -19,-8\" " + "style=\"fill:red\"/>\n"
+            + "<text x=\"-15\" y=\"4\""
+            + "style=\"font-size:11; fill:white; font-family:SansSerif\">"
+            + "STOP</text>\n" + "</svg>\n");
+
         // Hide the name because the name is in the icon.
         _hideName = new SingletonParameter(this, "_hideName");
         _hideName.setToken(BooleanToken.TRUE);
@@ -141,35 +139,40 @@ public class Stop extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
+
         if (input.getWidth() == 0) {
             result = true;
         }
+
         // NOTE: We need to consume data on all channels that have data.
         // If we don't then DE will go into an infinite loop.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                if (((BooleanToken)input.get(i)).booleanValue()) {
+                if (((BooleanToken) input.get(i)).booleanValue()) {
                     result = true;
                 }
             }
         }
+
         if (result) {
             Nameable container = getContainer();
+
             if (container instanceof CompositeActor) {
-                Manager manager = ((CompositeActor)container).getManager();
+                Manager manager = ((CompositeActor) container).getManager();
+
                 if (manager != null) {
                     manager.finish();
                 } else {
                     throw new IllegalActionException(this,
-                            "Cannot stop without a Manager.");
+                        "Cannot stop without a Manager.");
                 }
             } else {
                 throw new IllegalActionException(this,
-                        "Cannot stop without a container that is a "
-                        + "CompositeActor.");
+                    "Cannot stop without a container that is a "
+                    + "CompositeActor.");
             }
         }
+
         return !result;
     }
 }
-

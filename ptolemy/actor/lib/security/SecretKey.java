@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.security;
-
 
 import java.security.Provider;
 import java.security.SecureRandom;
@@ -47,10 +45,12 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-//import javax.crypto.SecretKey;
 
+
+//import javax.crypto.SecretKey;
 //////////////////////////////////////////////////////////////////////////
 //// SecretKey
+
 /**
    Create a secret key and send it on the <i>output</i>.
 
@@ -76,7 +76,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class SecretKey extends Source {
-
     /** Construct an actor with the given container and name.
      *  The Java virtual machine is queried for algorithm and provider
      *  choices and these choices are added to the appropriate parameters.
@@ -88,26 +87,30 @@ public class SecretKey extends Source {
      *   actor with this name.
      */
     public SecretKey(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         algorithm = new StringParameter(this, "algorithm");
+
         Set algorithms = Security.getAlgorithms("KeyGenerator");
         Iterator algorithmsIterator = algorithms.iterator();
+
         for (int i = 0; algorithmsIterator.hasNext(); i++) {
-            String algorithmName = (String)algorithmsIterator.next();
+            String algorithmName = (String) algorithmsIterator.next();
 
             algorithm.addChoice(algorithmName);
         }
-        algorithm.setExpression("DES");
 
+        algorithm.setExpression("DES");
 
         output.setTypeEquals(KeyToken.KEY);
 
         provider = new StringParameter(this, "provider");
         provider.setExpression("SystemDefault");
         provider.addChoice("SystemDefault");
-        Provider [] providers = Security.getProviders();
+
+        Provider[] providers = Security.getProviders();
+
         for (int i = 0; i < providers.length; i++) {
             provider.addChoice(providers[i].getName());
         }
@@ -118,7 +121,6 @@ public class SecretKey extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
 
     /** Specify the algorithm to be used to process data.  The algorithm is
      *  specified as a string. The algorithms are limited to those
@@ -161,16 +163,16 @@ public class SecretKey extends Source {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == algorithm) {
             _updateSecretKeyNeeded = true;
-            _algorithm = ((StringToken)algorithm.getToken()).stringValue();
+            _algorithm = ((StringToken) algorithm.getToken()).stringValue();
         } else if (attribute == provider) {
             _updateSecretKeyNeeded = true;
-            _provider = ((StringToken)provider.getToken()).stringValue();
+            _provider = ((StringToken) provider.getToken()).stringValue();
         } else if (attribute == keySize) {
             _updateSecretKeyNeeded = true;
-            _keySize = ((IntToken)keySize.getToken()).intValue();
+            _keySize = ((IntToken) keySize.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -197,7 +199,6 @@ public class SecretKey extends Source {
         _updateSecretKey();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -210,7 +211,6 @@ public class SecretKey extends Source {
     /** The provider to be used for a provider specific implementation. */
     protected String _provider;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -222,18 +222,21 @@ public class SecretKey extends Source {
         if (_updateSecretKeyNeeded) {
             try {
                 KeyGenerator keyGen;
+
                 if (_provider.equalsIgnoreCase("SystemDefault")) {
                     keyGen = KeyGenerator.getInstance(_algorithm);
                 } else {
                     keyGen = KeyGenerator.getInstance(_algorithm, _provider);
                 }
+
                 keyGen.init(_keySize, new SecureRandom());
                 _secretKey = keyGen.generateKey();
                 _secretKeyToken = new KeyToken(_secretKey);
             } catch (Exception ex) {
-                throw new IllegalActionException (this, ex,
-                        "Failed to initialize Key.");
+                throw new IllegalActionException(this, ex,
+                    "Failed to initialize Key.");
             }
+
             _updateSecretKeyNeeded = false;
         }
     }
@@ -243,7 +246,6 @@ public class SecretKey extends Source {
 
     /* The public key to be used for asymmetric encryption. */
     private javax.crypto.SecretKey _secretKey = null;
-
     private KeyToken _secretKeyToken;
 
     // Set to true of we need to call _updateSecretKey.

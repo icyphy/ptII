@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Effigy
+
 /**
    An effigy represents model metadata, and is contained by the
    model directory or by another effigy. The effigy, for example,
@@ -98,13 +99,13 @@ import ptolemy.moml.MoMLParser;
    @see Tableau
 */
 public class Effigy extends CompositeEntity {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
      */
     public Effigy(Workspace workspace) {
         super(workspace);
+
         try {
             identifier = new StringAttribute(this, "identifier");
             identifier.setExpression("Unnamed");
@@ -123,7 +124,7 @@ public class Effigy extends CompositeEntity {
      *   an entity already in the container.
      */
     public Effigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         identifier = new StringAttribute(this, "identifier");
         identifier.setExpression("Unnamed");
@@ -149,20 +150,23 @@ public class Effigy extends CompositeEntity {
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == identifier) {
             Iterator tableaux = entityList(Tableau.class).iterator();
+
             while (tableaux.hasNext()) {
-                Tableau tableau = (Tableau)tableaux.next();
+                Tableau tableau = (Tableau) tableaux.next();
                 tableau.setTitle(identifier.getExpression());
             }
         } else if (attribute == uri) {
             URI uriValue = uri.getURI();
+
             if (uriValue == null) {
                 // A new model, with no URI, is by default modifiable.
                 _modifiableURI = true;
             } else {
                 String protocol = uriValue.getScheme();
+
                 if (!(protocol.equals("file"))) {
                     _modifiableURI = false;
                 } else {
@@ -173,10 +177,10 @@ public class Effigy extends CompositeEntity {
                     // new File(file:/C%7C/foo.txt#bar) will fail,
                     // so we add the path.
                     File file = new File(uriValue.getPath());
+
                     try {
                         _modifiableURI = file.canWrite();
-                    } catch (java.security.AccessControlException
-                            accessControl) {
+                    } catch (java.security.AccessControlException accessControl) {
                         // If we are running in a sandbox, then canWrite()
                         // may throw an AccessControlException.
                         _modifiableURI = false;
@@ -195,15 +199,25 @@ public class Effigy extends CompositeEntity {
      */
     public boolean closeTableaux() {
         Iterator effigies = entityList(Effigy.class).iterator();
+
         while (effigies.hasNext()) {
-            Effigy effigy = (Effigy)effigies.next();
-            if (!effigy.closeTableaux()) return false;
+            Effigy effigy = (Effigy) effigies.next();
+
+            if (!effigy.closeTableaux()) {
+                return false;
+            }
         }
+
         Iterator tableaux = entityList(Tableau.class).iterator();
+
         while (tableaux.hasNext()) {
-            Tableau tableau = (Tableau)tableaux.next();
-            if (!tableau.close()) return false;
+            Tableau tableau = (Tableau) tableaux.next();
+
+            if (!tableau.close()) {
+                return false;
+            }
         }
+
         return true;
     }
 
@@ -229,15 +243,19 @@ public class Effigy extends CompositeEntity {
     public File getWritableFile() {
         File result = null;
         URI fileURI = uri.getURI();
+
         if (fileURI != null) {
             String protocol = fileURI.getScheme();
+
             if (protocol.equals("file")) {
                 File tentativeResult = new File(fileURI);
+
                 if (tentativeResult.canWrite()) {
                     result = tentativeResult;
                 }
             }
         }
+
         return result;
     }
 
@@ -252,8 +270,12 @@ public class Effigy extends CompositeEntity {
      */
     public boolean isModifiable() {
         Effigy master = masterEffigy();
-        if (!master._modifiable) return false;
-        else return master._modifiableURI;
+
+        if (!master._modifiable) {
+            return false;
+        } else {
+            return master._modifiableURI;
+        }
     }
 
     /** Return the data associated with the master effigy (as
@@ -287,7 +309,7 @@ public class Effigy extends CompositeEntity {
      *  @return The effigy in charge of this effigy.
      */
     public Effigy masterEffigy() {
-            return topEffigy();
+        return topEffigy();
     }
 
     /** Return the total number of open tableau for this effigy
@@ -301,9 +323,11 @@ public class Effigy extends CompositeEntity {
 
         List containedEffigies = entityList(Effigy.class);
         Iterator effigies = containedEffigies.iterator();
+
         while (effigies.hasNext()) {
-            result += ((Effigy)effigies.next()).numberOfOpenTableaux();
+            result += ((Effigy) effigies.next()).numberOfOpenTableaux();
         }
+
         return result;
     }
 
@@ -321,21 +345,24 @@ public class Effigy extends CompositeEntity {
      *   an entity with the specified name.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (container == null) {
             // Remove all tableaux.
             Iterator tableaux = entityList(Tableau.class).iterator();
+
             while (tableaux.hasNext()) {
-                ComponentEntity tableau = (ComponentEntity)tableaux.next();
+                ComponentEntity tableau = (ComponentEntity) tableaux.next();
                 tableau.setContainer(null);
             }
 
             // Remove all contained effigies as well.
             Iterator effigies = entityList(Effigy.class).iterator();
+
             while (effigies.hasNext()) {
-                ComponentEntity effigy = (ComponentEntity)effigies.next();
+                ComponentEntity effigy = (ComponentEntity) effigies.next();
                 effigy.setContainer(null);
             }
+
             if (uri != null) {
                 try {
                     URL url = uri.getURL();
@@ -347,6 +374,7 @@ public class Effigy extends CompositeEntity {
                 }
             }
         }
+
         super.setContainer(container);
     }
 
@@ -387,7 +415,6 @@ public class Effigy extends CompositeEntity {
     public void setModified(boolean modified) {
         // NOTE: To see who is setting this true, uncomment this:
         // if (modified == true) (new Exception()).printStackTrace();
-
         masterEffigy()._modified = modified;
     }
 
@@ -416,22 +443,30 @@ public class Effigy extends CompositeEntity {
      */
     public Tableau showTableaux() {
         Iterator effigies = entityList(Effigy.class).iterator();
+
         while (effigies.hasNext()) {
-            Effigy effigy = (Effigy)effigies.next();
+            Effigy effigy = (Effigy) effigies.next();
             effigy.showTableaux();
         }
+
         Iterator tableaux = entityList(Tableau.class).iterator();
         Tableau result = null;
+
         while (tableaux.hasNext()) {
-            Tableau tableau = (Tableau)tableaux.next();
+            Tableau tableau = (Tableau) tableaux.next();
             tableau.show();
-            if (result == null) result = tableau;
+
+            if (result == null) {
+                result = tableau;
+            }
         }
+
         if (result == null) {
             // Create a new tableau.
-            Configuration configuration = (Configuration)toplevel();
+            Configuration configuration = (Configuration) toplevel();
             result = configuration.createPrimaryTableau(this);
         }
+
         return result;
     }
 
@@ -443,8 +478,9 @@ public class Effigy extends CompositeEntity {
      */
     public Effigy topEffigy() {
         Nameable container = getContainer();
+
         if (container instanceof Effigy) {
-            return ((Effigy)container).topEffigy();
+            return ((Effigy) container).topEffigy();
         } else {
             return this;
         }
@@ -472,13 +508,12 @@ public class Effigy extends CompositeEntity {
      *   an acceptable class.
      */
     protected void _checkContainer(CompositeEntity container)
-            throws IllegalActionException {
-        if (container != null
-                && !(container instanceof ModelDirectory)
+        throws IllegalActionException {
+        if ((container != null) && !(container instanceof ModelDirectory)
                 && !(container instanceof Effigy)) {
             throw new IllegalActionException(this, container,
-                    "The container can only be set to an " +
-                    "instance of ModelDirectory or Effigy.");
+                "The container can only be set to an "
+                + "instance of ModelDirectory or Effigy.");
         }
     }
 
@@ -490,19 +525,19 @@ public class Effigy extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
-        if (numberOfOpenTableaux() == 0 && !isSystemEffigy()) {
+
+        if ((numberOfOpenTableaux() == 0) && !isSystemEffigy()) {
             try {
                 setContainer(null);
             } catch (Exception ex) {
                 throw new InternalErrorException(this, ex,
-                        "Cannot remove effigy!");
+                    "Cannot remove effigy!");
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // A tableau factory offering multiple views.
     private TableauFactory _factory = null;
 

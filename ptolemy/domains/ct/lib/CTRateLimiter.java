@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.lib.Transformer;
@@ -38,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTRateLimiter
+
 /**
    This actor limits the first derivative of the input signal (u).
    The output (y) changes no faster than the specified limit. The derivative
@@ -82,7 +83,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 */
 public class CTRateLimiter extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -92,7 +92,7 @@ public class CTRateLimiter extends Transformer {
      *   actor with this name.
      */
     public CTRateLimiter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -101,11 +101,11 @@ public class CTRateLimiter extends Transformer {
                 new DoubleToken(1.0));
         fallingSlewRate = new Parameter(this, "fallingSlewRate",
                 new DoubleToken(-1.0));
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
     /** The rising slew rate.
      *  The parameter has type double and default value 1.0.
      */
@@ -129,7 +129,9 @@ public class CTRateLimiter extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             _newToken = input.get(0);
+
             Time currentTime = getDirector().getModelTime();
+
             if (currentTime.compareTo(_lastTime) == 0) {
                 // If the current time is the same as the last time,
                 // output the last token, because any change of the
@@ -141,24 +143,27 @@ public class CTRateLimiter extends Transformer {
                 if (_lastToken != null) {
                     _newToken = _lastToken;
                 }
+
                 output.send(0, _newToken);
             } else {
-                double valueDifference = ((DoubleToken)_newToken.subtract(
-                                                  _lastToken)).doubleValue();
-                double timeDifference =
-                    currentTime.subtract(_lastTime).getDoubleValue();
+                double valueDifference = ((DoubleToken) _newToken.subtract(_lastToken))
+                    .doubleValue();
+                double timeDifference = currentTime.subtract(_lastTime)
+                                                   .getDoubleValue();
                 double rate = valueDifference / timeDifference;
-                double risingRate = ((DoubleToken)risingSlewRate.getToken())
+                double risingRate = ((DoubleToken) risingSlewRate.getToken())
                     .doubleValue();
-                double fallingRate = ((DoubleToken)fallingSlewRate.getToken())
+                double fallingRate = ((DoubleToken) fallingSlewRate.getToken())
                     .doubleValue();
+
                 if (rate > risingRate) {
-                    _newToken = (new DoubleToken(timeDifference*
-                                         risingRate)).add(_lastToken);
+                    _newToken = (new DoubleToken(timeDifference * risingRate))
+                        .add(_lastToken);
                 } else if (rate < fallingRate) {
-                    _newToken = (new DoubleToken(timeDifference*
-                                         fallingRate)).add(_lastToken);
+                    _newToken = (new DoubleToken(timeDifference * fallingRate))
+                        .add(_lastToken);
                 }
+
                 output.send(0, _newToken);
             }
         }
@@ -197,5 +202,4 @@ public class CTRateLimiter extends Transformer {
 
     // Stored token.
     private Token _storedToken;
-
 }

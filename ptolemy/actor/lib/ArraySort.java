@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
@@ -40,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArraySort
+
 /**
    Sort the elements of an input array.  This actor reads an array from the
    <i>input</i> port and sends a sorted array to the <i>output</i> port.
@@ -56,9 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ArraySort extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +67,7 @@ public class ArraySort extends Transformer {
      *   actor with this name.
      */
     public ArraySort(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set Type Constraints.
@@ -77,7 +76,6 @@ public class ArraySort extends Transformer {
 
         // NOTE: Consider constraining input element types.
         // This is a bit complicated to do, however.
-
         // Set Parameters.
         allowDuplicates = new Parameter(this, "allowDuplicates");
         allowDuplicates.setExpression("true");
@@ -116,13 +114,16 @@ public class ArraySort extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken) input.get(0);
+
             if (token.length() == 0) {
                 output.send(0, token);
                 return;
             }
-            boolean ascendingValue =
-                ((BooleanToken) ascending.getToken()).booleanValue();
+
+            boolean ascendingValue = ((BooleanToken) ascending.getToken())
+                .booleanValue();
             ArrayToken result = null;
+
             try {
                 if (ascendingValue) {
                     result = UtilityFunctions.sort(token);
@@ -135,24 +136,30 @@ public class ArraySort extends Transformer {
                 // remap this to IllegalActionException.
                 throw new IllegalActionException(this, ex.getMessage());
             }
-            boolean allowDuplicatesValue =
-                ((BooleanToken) allowDuplicates.getToken()).booleanValue();
+
+            boolean allowDuplicatesValue = ((BooleanToken) allowDuplicates
+                .getToken()).booleanValue();
+
             if (!allowDuplicatesValue) {
                 // Strip out duplicates.
                 ArrayList list = new ArrayList();
                 Token previous = result.getElement(0);
                 list.add(previous);
+
                 for (int i = 1; i < result.length(); i++) {
                     Token next = result.getElement(i);
+
                     if (!next.isEqualTo(previous).booleanValue()) {
                         list.add(next);
                         previous = next;
                     }
                 }
+
                 // Dummy array to give the run-time type to toArray().
                 Token[] dummy = new Token[0];
-                result = new ArrayToken((Token[])list.toArray(dummy));
+                result = new ArrayToken((Token[]) list.toArray(dummy));
             }
+
             output.send(0, result);
         }
     }

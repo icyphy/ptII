@@ -27,12 +27,12 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// ExtendedMath
+
 /**
    ExtendedMath is a library of additional mathematical operations
    beyond those provided by the Java Math class.
@@ -44,7 +44,6 @@ package ptolemy.math;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ExtendedMath {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -58,27 +57,30 @@ public class ExtendedMath {
         // FIXME: Is the range of the argument correct?
         if (x < 1) {
             throw new IllegalArgumentException("ExtendedMath.acosh: Argument "
-                    + "is required to be greater than 1.  Got " + x);
+                + "is required to be greater than 1.  Got " + x);
         }
-        return Math.log( x+Math.sqrt(x*x-1) );
+
+        return Math.log(x + Math.sqrt((x * x) - 1));
     }
 
     /** Return the inverse hyperbolic sine of the argument.
      */
     public static final double asinh(final double x) {
         double result;
+
         if (x < 0) {
-            result = -Math.log( -x+Math.sqrt(x*x+1) );
+            result = -Math.log(-x + Math.sqrt((x * x) + 1));
         } else {
-            result = Math.log( x+Math.sqrt(x*x+1) );
+            result = Math.log(x + Math.sqrt((x * x) + 1));
         }
+
         return result;
     }
 
     /** Return the hyperbolic cosine of the argument.
      */
     public static final double cosh(final double x) {
-        return (Math.exp(x) + Math.exp(-x))/2;
+        return (Math.exp(x) + Math.exp(-x)) / 2;
     }
 
     /** Implement Euclid's method for finding the Greatest Common Divisor
@@ -88,14 +90,25 @@ public class ExtendedMath {
      */
     public static int gcd(int u, int v) {
         int t;
-        if (u < 0) u = -u;
-        if (v < 0) v = -v;
-        while (u > 0) {
-            if (u < v)
-                { t = u; u = v; v = t; }
-            else
-                { u = u % v; }
+
+        if (u < 0) {
+            u = -u;
         }
+
+        if (v < 0) {
+            v = -v;
+        }
+
+        while (u > 0) {
+            if (u < v) {
+                t = u;
+                u = v;
+                v = t;
+            } else {
+                u = u % v;
+            }
+        }
+
         return v;
     }
 
@@ -144,13 +157,16 @@ public class ExtendedMath {
      */
     public static final int roundToInt(final double x) {
         long returnValue = Math.round(x);
+
         if (returnValue >= Integer.MAX_VALUE) {
             return Integer.MAX_VALUE;
         }
+
         if (returnValue <= Integer.MIN_VALUE) {
             return Integer.MIN_VALUE;
         }
-        return (int)returnValue;
+
+        return (int) returnValue;
     }
 
     /** If the argument is less than zero, return -1, otherwise
@@ -167,13 +183,13 @@ public class ExtendedMath {
     /** Return the hyperbolic sine of the argument.
      */
     public static final double sinh(final double x) {
-        return (Math.exp(x) - Math.exp(-x))/2;
+        return (Math.exp(x) - Math.exp(-x)) / 2;
     }
 
     /** Return the hyperbolic tangent of the argument.
      */
     public static final double tanh(final double x) {
-        return (sinh(x)/cosh(x));
+        return (sinh(x) / cosh(x));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -193,7 +209,6 @@ public class ExtendedMath {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private static final double _ONEOVERLN2  = 1.0 / Math.log(2.0);
+    private static final double _ONEOVERLN2 = 1.0 / Math.log(2.0);
     private static final double _ONEOVERLN10 = 1.0 / Math.log(10.0);
 }

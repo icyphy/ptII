@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import ptolemy.graph.Graph;
@@ -31,8 +30,10 @@ import ptolemy.graph.analysis.analyzer.NegativeLengthCycleAnalyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallNegativeLengthCycleStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NegativeLengthCycleAnalysis
+
 /**
    Analysis to check if a cyclic directed graph has a negative-length cycle.
    A negative-length cycle is a cycle in which the sum of all the values associated
@@ -47,19 +48,15 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class NegativeLengthCycleAnalysis extends Analysis {
-
     /** Construct an instance of this class using a default analyzer.
      *  The default analyzer runs in O(N^3) in which N is the number of nodes.
      *
      *  @param graph The given graph.
      *  @param edgeLengths The lengths associated with the edges of the graph.
      */
-    public NegativeLengthCycleAnalysis(Graph graph,
-            ToDoubleMapping edgeLengths) {
-        super(new FloydWarshallNegativeLengthCycleStrategy
-                (graph, edgeLengths));
+    public NegativeLengthCycleAnalysis(Graph graph, ToDoubleMapping edgeLengths) {
+        super(new FloydWarshallNegativeLengthCycleStrategy(graph, edgeLengths));
     }
 
     /** Construct an instance of this class using a given analyzer.
@@ -78,8 +75,8 @@ public class NegativeLengthCycleAnalysis extends Analysis {
      *  @return True if the graph has a negative cycle.
      */
     public boolean hasNegativeLengthCycle() {
-        return ((NegativeLengthCycleAnalyzer)analyzer())
-            .hasNegativeLengthCycle();
+        return ((NegativeLengthCycleAnalyzer) analyzer())
+        .hasNegativeLengthCycle();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -88,7 +85,7 @@ public class NegativeLengthCycleAnalysis extends Analysis {
      */
     public String toString() {
         return "Negative-length cycle analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

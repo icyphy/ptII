@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.domains.dde.kernel.test;
 
 import ptolemy.actor.Receiver;
@@ -43,6 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TwoPut
+
 /**
    TwoPut is a test class with two output ports used to test token
    production AND consumption. It has a single typed, input multiport
@@ -58,13 +58,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class TwoPut extends TypedAtomicActor {
-
     /**
      */
     public TwoPut(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         _name = name;
 
@@ -87,13 +85,16 @@ public class TwoPut extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         Token token = null;
         Receiver[][] inRcvrs = input.getReceivers();
-        if ( inRcvrs.length == 0 ) {
+
+        if (inRcvrs.length == 0) {
             _continueIterations = false;
         }
-        for ( int i = 0; i < inRcvrs.length; i++ ) {
-            for ( int j = 0; j < inRcvrs[i].length; j++ ) {
-                DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
-                if ( inRcvr.hasToken() ) {
+
+        for (int i = 0; i < inRcvrs.length; i++) {
+            for (int j = 0; j < inRcvrs[i].length; j++) {
+                DDEReceiver inRcvr = (DDEReceiver) inRcvrs[i][j];
+
+                if (inRcvr.hasToken()) {
                     token = inRcvr.get();
                     output1.broadcast(token);
                 }
@@ -115,13 +116,10 @@ public class TwoPut extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     public TypedIOPort output1;
     public TypedIOPort output2;
     public TypedIOPort input;
     private int _outChannel = -1;
     private boolean _continueIterations = true;
-
     private String _name;
-
 }

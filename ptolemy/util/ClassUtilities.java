@@ -25,18 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.util;
 
-// Note that classes in ptolemy.util do not depend on any
-// other ptolemy packages.
-
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassUtilities
+
 /**
    A collection of utilities for manipulating classes
    These utilities do not depend on any other ptolemy.* packages.
@@ -49,7 +47,6 @@ import java.net.URL;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ClassUtilities {
-
     /** Instances of this class cannot be created.
      */
     private ClassUtilities() {
@@ -71,7 +68,8 @@ public class ClassUtilities {
      *   a URL.
      *  @see java.net.JarURLConnection
      */
-    public static URL jarURLEntryResource(String spec) throws IOException {
+    public static URL jarURLEntryResource(String spec)
+        throws IOException {
         // At first glance, it would appear that this method could appear
         // in specToURL(), but the problem is that specToURL() creates
         // a new URL with the spec, so it only does further checks if
@@ -81,12 +79,14 @@ public class ClassUtilities {
         // no resource by that name.  Probably specToURL() should return
         // the resource after calling new URL().
         int jarEntry = spec.indexOf("!/");
+
         if (jarEntry == -1) {
             return null;
         } else {
             try {
                 // !/ means that this could be in a jar file.
                 String entry = spec.substring(jarEntry + 2);
+
                 // We might be in the Swing Event thread, so
                 // Thread.currentThread().getContextClassLoader()
                 // .getResource(entry) probably will not work.
@@ -94,8 +94,7 @@ public class ClassUtilities {
                 URL entryURL = refClass.getClassLoader().getResource(entry);
                 return entryURL;
             } catch (Exception ex) {
-                throw new IOException("File not found: " + spec + ": "
-                        + ex);
+                throw new IOException("File not found: " + spec + ": " + ex);
             }
         }
     }
@@ -112,12 +111,11 @@ public class ClassUtilities {
         // This method is called from copernicus.kernel.GeneratorAttribute
         // and actor.lib.python.PythonScript.  We moved it here
         // to avoid dependencies
-        String necessaryResource =
-            StringUtilities.substitute(necessaryClass, ".", "/")
-            + ".class";
+        String necessaryResource = StringUtilities.substitute(necessaryClass,
+                ".", "/") + ".class";
 
-        URL necessaryURL = Thread.currentThread()
-            .getContextClassLoader().getResource(necessaryResource);
+        URL necessaryURL = Thread.currentThread().getContextClassLoader()
+                                 .getResource(necessaryResource);
 
         if (necessaryURL != null) {
             String resourceResults = necessaryURL.getFile();
@@ -130,9 +128,9 @@ public class ClassUtilities {
             // Strip off the name of the resource we were looking for
             // so that we are left with the directory or jar file
             // it is in
-            resourceResults =
-                resourceResults.substring(0, resourceResults.length()-
-                        necessaryResource.length());
+            resourceResults = resourceResults.substring(0,
+                    resourceResults.length() - necessaryResource.length());
+
             // Strip off the file:/
             if (resourceResults.startsWith("file:/")) {
                 resourceResults = resourceResults.substring(6);
@@ -140,9 +138,8 @@ public class ClassUtilities {
 
             // Strip off the trailing !/
             if (resourceResults.endsWith("!/")) {
-                resourceResults =
-                    resourceResults.substring(0,
-                            resourceResults.length()-2);
+                resourceResults = resourceResults.substring(0,
+                        resourceResults.length() - 2);
             }
 
             // Unfortunately, under Windows, URL.getFile() may
@@ -151,11 +148,11 @@ public class ClassUtilities {
             File resourceFile = new File(resourceResults);
 
             // Convert backslashes
-            String sanitizedResourceName =
-                StringUtilities.substitute(resourceFile.getPath(),
-                        "\\", "/");
+            String sanitizedResourceName = StringUtilities.substitute(resourceFile
+                    .getPath(), "\\", "/");
             return sanitizedResourceName;
         }
+
         return null;
     }
 }

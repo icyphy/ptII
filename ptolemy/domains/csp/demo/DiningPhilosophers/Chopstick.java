@@ -25,12 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
@@ -40,8 +40,10 @@ import ptolemy.domains.csp.kernel.ConditionalSend;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Chopstick
+
 /**
    Chopstick in the Dining Philosophers demo. Each Chopstick can only be
    used by one philosopher at a time. When it is not being used it can be
@@ -61,7 +63,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class Chopstick extends CSPActor {
     /** Construct a Chopstick in the default workspace with an empty string
      *  as its name.
@@ -77,8 +78,7 @@ public class Chopstick extends CSPActor {
      *   a port already in this actor, or if the parameter name coincides with
      *   a parameter already in this actor
      */
-    public Chopstick()
-            throws IllegalActionException, NameDuplicationException{
+    public Chopstick() throws IllegalActionException, NameDuplicationException {
         super();
         leftOut = new TypedIOPort(this, "leftOut", false, true);
         leftIn = new TypedIOPort(this, "leftIn", true, false);
@@ -108,7 +108,7 @@ public class Chopstick extends CSPActor {
      *   an entity already in the container.
      */
     public Chopstick(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         leftOut = new TypedIOPort(this, "leftOut", false, true);
         leftIn = new TypedIOPort(this, "leftIn", true, false);
@@ -165,6 +165,7 @@ public class Chopstick extends CSPActor {
             boolean continueCDO = true;
             ConditionalBranch[] branches = new ConditionalBranch[2];
             Token t = new IntToken(0);
+
             while (continueCDO) {
                 // step 1
                 branches[0] = new ConditionalSend(guard, leftOut, 0, 0, t);
@@ -184,14 +185,14 @@ public class Chopstick extends CSPActor {
                     // all guards false so exit CDO
                     continueCDO = false;
                 } else {
-                    throw new IllegalActionException(getName() + ": " +
-                            "invalid branch id returned during execution " +
-                            "of CDO.");
+                    throw new IllegalActionException(getName() + ": "
+                        + "invalid branch id returned during execution "
+                        + "of CDO.");
                 }
             }
         } catch (NoTokenException ex) {
-            throw new IllegalActionException(getName() + ": cannot " +
-                    "get token.");
+            throw new IllegalActionException(getName() + ": cannot "
+                + "get token.");
         }
     }
 }

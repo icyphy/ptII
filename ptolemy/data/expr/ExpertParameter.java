@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -34,8 +33,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExpertParameter
+
 /**
    This class is identical to Parameter except that its visibility
    is set to "expert" by default. The visibility is not represented
@@ -48,9 +49,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ExpertParameter extends Parameter {
-
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will use the
@@ -67,7 +66,7 @@ public class ExpertParameter extends Parameter {
      *   a parameter already in the container.
      */
     public ExpertParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.EXPERT);
     }

@@ -23,7 +23,6 @@
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import java.util.List;
@@ -35,8 +34,10 @@ import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
 import ptolemy.graph.analysis.strategy.AllEdgeSingleSourceLongestPathStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SingleSourceLongestPathAnalysis
+
 /**
    An analysis to find the longest path from a single source to all the other
    nodes in a directed graph. In a graph with multiple edges between two nodes the
@@ -49,9 +50,7 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class SingleSourceLongestPathAnalysis extends Analysis {
-
     /** Construct an instance of this class with a default analyzer.
      *  The default analyzer runs in O(E), in which E is the number of edges.
      *
@@ -62,9 +61,9 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  are going to be used to calculated the longest path.
      */
     public SingleSourceLongestPathAnalysis(Graph graph, Node startNode,
-            ToDoubleMapping edgeLengths) {
-        super(new AllEdgeSingleSourceLongestPathStrategy(graph,
-                      startNode, edgeLengths));
+        ToDoubleMapping edgeLengths) {
+        super(new AllEdgeSingleSourceLongestPathStrategy(graph, startNode,
+                edgeLengths));
     }
 
     /** Construct an instance of this class with a given analyzer.
@@ -72,7 +71,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  @param analyzer The given analyzer.
      */
     public SingleSourceLongestPathAnalysis(
-            SingleSourceLongestPathAnalyzer analyzer) {
+        SingleSourceLongestPathAnalyzer analyzer) {
         super(analyzer);
     }
 
@@ -89,7 +88,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  in the graph.
      */
     public double[] distance() {
-        return ((SingleSourceLongestPathAnalyzer)analyzer()).distance();
+        return ((SingleSourceLongestPathAnalyzer) analyzer()).distance();
     }
 
     /** Return the single source-node (start node) of this analyzer.
@@ -97,7 +96,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  @return Return the starting node of this analyzer.
      */
     public Node getStartNode() {
-        return ((SingleSourceLongestPathAnalyzer)analyzer()).getStartNode();
+        return ((SingleSourceLongestPathAnalyzer) analyzer()).getStartNode();
     }
 
     /** Return the longest path from node "startNode" to node "endNode" in the
@@ -106,7 +105,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  @param endNode The ending node of the path.
      */
     public List path(Node endNode) {
-        return ((SingleSourceLongestPathAnalyzer)analyzer()).path(endNode);
+        return ((SingleSourceLongestPathAnalyzer) analyzer()).path(endNode);
     }
 
     /** Return the length of the longest path from node "startNode"
@@ -116,8 +115,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  @param endNode The ending node of the path.
      */
     public double pathLength(Node endNode) {
-        return ((SingleSourceLongestPathAnalyzer)analyzer())
-            .pathLength(endNode);
+        return ((SingleSourceLongestPathAnalyzer) analyzer()).pathLength(endNode);
     }
 
     /** Set the start-node of this analysis to the given node.
@@ -125,7 +123,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  @param startNode The given node.
      */
     public void setStartNode(Node startNode) {
-        ((SingleSourceLongestPathAnalyzer)analyzer()).setStartNode(startNode);
+        ((SingleSourceLongestPathAnalyzer) analyzer()).setStartNode(startNode);
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -134,8 +132,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      */
     public String toString() {
         return "Single source longest path analysis using "
-            + "the following analyzer:\n"
-            + analyzer().toString();
+        + "the following analyzer:\n" + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

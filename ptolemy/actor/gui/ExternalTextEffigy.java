@@ -28,7 +28,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExternalTextEffigy
+
 /**
    An external EDITOR-based effigy for a text file (see {@link
    ExternalTextTableau}).
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class ExternalTextEffigy extends TextEffigy {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
@@ -69,7 +69,7 @@ public class ExternalTextEffigy extends TextEffigy {
      *  @param name The name of this effigy.
      */
     public ExternalTextEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -90,14 +90,17 @@ public class ExternalTextEffigy extends TextEffigy {
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Let Effigy handle it first
         super.attributeChanged(attribute);
+
         // Now do the external-text-specific stuff
         if (attribute == identifier) {
             URL url;
+
             try {
                 url = new URL(identifier.getExpression());
+
                 File file = new File(url.getFile());
                 String path = file.getAbsolutePath().replace('\\', '/');
                 showContent(path);
@@ -118,12 +121,12 @@ public class ExternalTextEffigy extends TextEffigy {
      *   contained by the specified container, or if the specified
      *   text cannot be inserted into the document.
      */
-    public static TextEffigy newTextEffigy(
-            CompositeEntity container, String text)
-            throws Exception {
+    public static TextEffigy newTextEffigy(CompositeEntity container,
+        String text) throws Exception {
         // Create a new effigy.
-        ExternalTextEffigy effigy = new ExternalTextEffigy
-            (container, container.uniqueName("effigy"));
+        ExternalTextEffigy effigy = new ExternalTextEffigy(container,
+                container.uniqueName("effigy"));
+
         // Cheat: we'll get the text off the container at
         // show(Content)-time. This get's around the problem of stale
         // text after the model is updated and answers YES to the
@@ -134,11 +137,11 @@ public class ExternalTextEffigy extends TextEffigy {
     }
 
     /** Create a new ExternalTextEffigy. */
-    public static TextEffigy newTextEffigy(
-            CompositeEntity container, URL base, URL in)
-            throws Exception {
+    public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
+        URL in) throws Exception {
         ExternalTextEffigy effigy = new ExternalTextEffigy(container,
                 container.uniqueName("effigy"));
+
         // A URL has been given.  Read it.
         // Note: Here the text editor would be given the in URL to
         // open. However, to simplify the interaction with the external
@@ -163,7 +166,6 @@ public class ExternalTextEffigy extends TextEffigy {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Set private useContainerMoML attribute
     private void setUseContainerMoML(boolean useContainerMoML) {
         _useContainerMoML = useContainerMoML;
@@ -173,34 +175,33 @@ public class ExternalTextEffigy extends TextEffigy {
         try {
             File tmpFile = null;
             String todo;
+
             if (_useContainerMoML) {
                 // Open the file from storage, erase the buffer, then set
                 // the current content from the MoML content of the
                 // container
-                String text = ((PtolemyEffigy)getContainer())
-                    .getModel().exportMoML();
-                tmpFile = File.createTempFile("effigy","");
-                String tmpFilePathName =
-                    tmpFile.getAbsolutePath().replace('\\', '/');
+                String text = ((PtolemyEffigy) getContainer()).getModel()
+                               .exportMoML();
+                tmpFile = File.createTempFile("effigy", "");
+
+                String tmpFilePathName = tmpFile.getAbsolutePath().replace('\\',
+                        '/');
                 FileWriter writer = new FileWriter(tmpFile);
                 writer.write(text);
                 writer.close();
-                todo =
-                    "gnudoit (find-file (symbol-name '"+ path + "))" +
-                    "(setq buffer-read-only nil)" +
-                    "(erase-buffer)" +
-                    "(insert-file-contents " +
-                    "    (symbol-name '"+tmpFilePathName+"))" +
-                    "(set-buffer-modified-p nil)" +
-                    "(setq buffer-read-only t)" +
-                    "(buffer-name)";
+                todo = "gnudoit (find-file (symbol-name '" + path + "))"
+                    + "(setq buffer-read-only nil)" + "(erase-buffer)"
+                    + "(insert-file-contents " + "    (symbol-name '"
+                    + tmpFilePathName + "))" + "(set-buffer-modified-p nil)"
+                    + "(setq buffer-read-only t)" + "(buffer-name)";
             } else {
                 // Reading file content from storage
-                todo =
-                    "gnudoit (find-file (symbol-name '" + path + "))" +
-                    "(buffer-name)";
+                todo = "gnudoit (find-file (symbol-name '" + path + "))"
+                    + "(buffer-name)";
             }
+
             Process process = Runtime.getRuntime().exec(todo);
+
             // After many simplifcations, at this point, _bufferName is
             // not really needed anymore, but I'll keep its code as a
             // comment of how to read gnudoit results back from emacs
@@ -210,7 +211,11 @@ public class ExternalTextEffigy extends TextEffigy {
             //- BufferedInputStream result =
             //-    new BufferedInputStream(process.getInputStream());
             process.waitFor();
-            if (tmpFile != null) tmpFile.delete();
+
+            if (tmpFile != null) {
+                tmpFile.delete();
+            }
+
             //- byte[] buffer = new byte[result.available()];
             //- result.read(buffer, 0, buffer.length);
             // Delete any linefeeds and carriage returns.
@@ -219,14 +224,12 @@ public class ExternalTextEffigy extends TextEffigy {
             //- _bufferName = new String(buffer, 0, i + 1);
             _pathName = path;
         } catch (Exception ex) {
-            throw new RuntimeException
-                (getFullName() + ": " + ex.toString());
+            throw new RuntimeException(getFullName() + ": " + ex.toString());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private String _pathName;
     private boolean _useContainerMoML;
 }

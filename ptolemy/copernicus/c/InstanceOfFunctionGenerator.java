@@ -23,15 +23,16 @@
    ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.Iterator;
 
 import soot.SootClass;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InstanceOfFunctionGenerator
+
 /**
    A class that generates code that performs lookup operations to implement
    the "instanceof" operator. It generates a function for each class C that
@@ -45,9 +46,9 @@ import soot.SootClass;
    @Pt.AcceptedRating Red (ssb)
 */
 public class InstanceOfFunctionGenerator {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Generate code for a method that looks up the number corresponding
      * to the given interface/class in a table and returns 1 if this class
      * is an instance of that interface/class, 0 otherwise. Essentially, it
@@ -63,58 +64,46 @@ public class InstanceOfFunctionGenerator {
         code.append(_generateMethodDeclaration(source));
         code.append("{\n");
 
-        code.append(_indent(1) + "switch (checkIndex)\n"
-                + _indent(1) + "{\n");
+        code.append(_indent(1) + "switch (checkIndex)\n" + _indent(1) + "{\n");
+
         // If its this class itself
         code.append(_indent(2) + _comment(source.getName()));
-        code.append(_indent(2) + "case "
-                + CNames.hashNumberOf(source) + ": "
-                + "return 1;\n\n");
+        code.append(_indent(2) + "case " + CNames.hashNumberOf(source) + ": "
+            + "return 1;\n\n");
 
         // Directly implemented interfaces.
         Iterator interfaces = source.getInterfaces().iterator();
+
         while (interfaces.hasNext()) {
-            SootClass thisInterface = (SootClass)interfaces.next();
+            SootClass thisInterface = (SootClass) interfaces.next();
             code.append(_indent(2) + _comment(thisInterface.toString()));
             code.append(_indent(2) + "case "
-                    + CNames.hashNumberOf(thisInterface) + ": "
-                    + "return 1;\n\n");
+                + CNames.hashNumberOf(thisInterface) + ": " + "return 1;\n\n");
         }
 
         code.append(_indent(2) + "default: return ");
+
         if (source.hasSuperclass()) {
-            code.append(
-                    "((PCCG_CLASS_PTR)thisClass->superclass)->instanceOf"
-                    + "((PCCG_CLASS_PTR)thisClass->superclass, checkIndex);\n");
-        }
-        else {
+            code.append("((PCCG_CLASS_PTR)thisClass->superclass)->instanceOf"
+                + "((PCCG_CLASS_PTR)thisClass->superclass, checkIndex);\n");
+        } else {
             code.append("0;\n");
         }
+
         code.append(_indent(1) + "}\n"); // End switch
 
         code.append("}\n\n");
         return code.toString();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected fields                    ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-
-
-
     // Wraps a given string in comment delimiters.
     private String _comment(String code) {
         return Utilities.comment(code);
@@ -124,13 +113,13 @@ public class InstanceOfFunctionGenerator {
     private String _generateMethodDeclaration(SootClass source) {
         StringBuffer code = new StringBuffer();
         code.append(_comment("Method that provides \"instanceof\" lookups for "
-                            + source.getName())
-                + _comment("Returns 1 if the given number corresponds "
-                        + "to an implemented interface or a superclass."));
+                + source.getName())
+            + _comment("Returns 1 if the given number corresponds "
+                + "to an implemented interface or a superclass."));
+
         String methodName = "instanceOf";
-        code.append("static short " + methodName
-                + "(PCCG_CLASS_PTR "
-                + "thisClass, long int checkIndex)\n");
+        code.append("static short " + methodName + "(PCCG_CLASS_PTR "
+            + "thisClass, long int checkIndex)\n");
         return code.toString();
     }
 
@@ -141,5 +130,4 @@ public class InstanceOfFunctionGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
 }

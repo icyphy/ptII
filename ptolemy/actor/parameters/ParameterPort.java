@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.parameters;
 
 import ptolemy.actor.TypedActor;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParameterPort
+
 /**
    A specialized port for use with PortParameter.  This port is created
    by an instance of PortParameter and provides values to a parameter.
@@ -57,7 +58,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (neuendor)
 */
 public class ParameterPort extends TypedIOPort {
-
     /** Construct a new input port in the specified container with the
      *  specified name. The specified container
      *  must implement the Actor interface, or an exception will be thrown.
@@ -70,14 +70,15 @@ public class ParameterPort extends TypedIOPort {
      *   a port already in the container.
      */
     public ParameterPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setInput(true);
         setMultiport(false);
+
         // Declare to the SDF scheduler that this port consumes one
         // token, despite not being connected on the inside.
-        Parameter tokenConsumptionRate =
-            new Parameter(this, "tokenConsumptionRate", new IntToken(1));
+        Parameter tokenConsumptionRate = new Parameter(this,
+                "tokenConsumptionRate", new IntToken(1));
         tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         tokenConsumptionRate.setPersistent(false);
     }
@@ -95,9 +96,9 @@ public class ParameterPort extends TypedIOPort {
      *  @see java.lang.Object#clone()
      *  @return The cloned port.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ParameterPort newObject = (ParameterPort)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ParameterPort newObject = (ParameterPort) super.clone(workspace);
+
         // Cannot establish an association with the cloned parameter until
         // that parameter is cloned and the container of both is set.
         newObject._parameter = null;
@@ -116,12 +117,13 @@ public class ParameterPort extends TypedIOPort {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public void setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
-        Entity previousContainer = (Entity)getContainer();
+        throws IllegalActionException, NameDuplicationException {
+        Entity previousContainer = (Entity) getContainer();
         super.setContainer(entity);
+
         // If there is an associated port, and the container has changed,
         // break the association.
-        if (_parameter != null && entity != previousContainer) {
+        if ((_parameter != null) && (entity != previousContainer)) {
             _parameter._port = null;
             _parameter = null;
         }
@@ -131,8 +133,10 @@ public class ParameterPort extends TypedIOPort {
         if (entity instanceof TypedActor) {
             // Establish association with the parameter.
             Attribute parameter = entity.getAttribute(getName());
+
             if (parameter instanceof PortParameter) {
-                _parameter = (PortParameter)parameter;
+                _parameter = (PortParameter) parameter;
+
                 if (_parameter._port == null) {
                     _parameter._port = this;
                     _setTypeConstraints();
@@ -159,8 +163,8 @@ public class ParameterPort extends TypedIOPort {
      *   contains an attribute with the proposed name.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
-        if (_settingName || _parameter == null) {
+        throws IllegalActionException, NameDuplicationException {
+        if (_settingName || (_parameter == null)) {
             super.setName(name);
         } else {
             try {

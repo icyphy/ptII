@@ -29,6 +29,7 @@ import java.awt.Shape;
 
 import diva.util.java2d.Polyline2D;
 
+
 /**
  * A manhattan router which does only incremental routing
  * and delegates static routing to another manhattan router
@@ -57,7 +58,7 @@ public class IncrManhattanRouter implements ManhattanRouter {
     /**
      * Reroute the given Shape, given that the head site moved.
      */
-    public void rerouteHead (Connector c, Shape s) {
+    public void rerouteHead(Connector c, Shape s) {
         Polyline2D line = (Polyline2D) s;
 
         line.setX(1, c.getHeadSite().getX());
@@ -67,7 +68,7 @@ public class IncrManhattanRouter implements ManhattanRouter {
     /**
      * Reroute the given Shape, given that the tail site moved.
      */
-    public void rerouteTail (Connector c, Shape s) {
+    public void rerouteTail(Connector c, Shape s) {
         Polyline2D line = (Polyline2D) s;
         line.setX(0, c.getHeadSite().getX());
         line.setY(0, c.getHeadSite().getY());
@@ -77,7 +78,7 @@ public class IncrManhattanRouter implements ManhattanRouter {
      * Reroute the given shape, given that both the head the tail
      * sites moved. The shape is modified by the router.
      */
-    public void reroute (Connector c, Shape s) {
+    public void reroute(Connector c, Shape s) {
         rerouteHead(c, s);
         rerouteTail(c, s);
     }
@@ -85,17 +86,14 @@ public class IncrManhattanRouter implements ManhattanRouter {
     /**
      * Delegate the static routing to the static router.
      */
-    public Shape route (Connector c) {
-        return _staticRouter.routeManhattan((ManhattanConnector)c);
+    public Shape route(Connector c) {
+        return _staticRouter.routeManhattan((ManhattanConnector) c);
     }
 
     /**
      * Delegate the static routing to the static router.
      */
-    public Polyline2D routeManhattan (ManhattanConnector c) {
+    public Polyline2D routeManhattan(ManhattanConnector c) {
         return _staticRouter.routeManhattan(c);
     }
 }
-
-
-

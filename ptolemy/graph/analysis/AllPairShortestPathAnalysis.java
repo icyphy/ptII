@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import java.util.List;
@@ -34,8 +33,10 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallAllPairShortestPathStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AllPairShortestPathAnalysis
+
 /**
    An analysis to compute of the all pair shortest path of a directed graph.
    The result is in the form of two dimensional array (matrix).
@@ -61,7 +62,6 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    @see ptolemy.graph.Graph#nodeLabel
 */
 public class AllPairShortestPathAnalysis extends Analysis {
-
     /** Construct an instance of this class with a default analyzer.
      *  The default analyzer runs in O(N^3) where N is the number of nodes.
      *
@@ -70,10 +70,8 @@ public class AllPairShortestPathAnalysis extends Analysis {
      *  which play the role of edge costs.
      *
      */
-    public AllPairShortestPathAnalysis(Graph graph,
-            ToDoubleMapping edgeLength) {
-        super(new FloydWarshallAllPairShortestPathStrategy(graph,
-                      edgeLength));
+    public AllPairShortestPathAnalysis(Graph graph, ToDoubleMapping edgeLength) {
+        super(new FloydWarshallAllPairShortestPathStrategy(graph, edgeLength));
     }
 
     /** Construct an instance of this class with a given analyzer.
@@ -96,8 +94,8 @@ public class AllPairShortestPathAnalysis extends Analysis {
      *  node "startNode" to the node "endNode" in the form of an ordered list.
      */
     public List shortestPath(Node startNode, Node endNode) {
-        return ((AllPairShortestPathAnalyzer)analyzer())
-            .shortestPath(startNode, endNode);
+        return ((AllPairShortestPathAnalyzer) analyzer()).shortestPath(startNode,
+            endNode);
     }
 
     /** Return the length of the shortest path from the node
@@ -109,8 +107,8 @@ public class AllPairShortestPathAnalysis extends Analysis {
      *  "startNode" to the node "endNode".
      */
     public double shortestPathLength(Node startNode, Node endNode) {
-        return ((AllPairShortestPathAnalyzer)analyzer())
-            .shortestPathLength(startNode, endNode);
+        return ((AllPairShortestPathAnalyzer) analyzer()).shortestPathLength(startNode,
+            endNode);
     }
 
     /** Return a matrix representing the result of the all pair shortest path
@@ -127,7 +125,7 @@ public class AllPairShortestPathAnalysis extends Analysis {
      *  path algorithm.
      */
     public double[][] shortestPathMatrix() {
-        return (((AllPairShortestPathAnalyzer)analyzer()).shortestPathMatrix());
+        return (((AllPairShortestPathAnalyzer) analyzer()).shortestPathMatrix());
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -136,7 +134,7 @@ public class AllPairShortestPathAnalysis extends Analysis {
      */
     public String toString() {
         return "All pair shortest path analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
-// Ptolemy imports
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtExecuteApplication
+
 /**
    This application executes Ptolemy II models specified on the
    command line.
@@ -83,13 +83,12 @@ import ptolemy.util.MessageHandler;
    @see RunTableau
 */
 public class PtExecuteApplication extends MoMLApplication {
-
     /** Parse the specified command-line arguments, creating models
      *  and running them.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PtExecuteApplication(String args[]) throws Exception {
+    public PtExecuteApplication(String[] args) throws Exception {
         // FIXME: Under JDK1.3.1_06, the MoMLApplication constructor
         // calls setLookAndFeel() which invokes getDefaultToolkit()
         // which may cause PtExecuteApplication to not exit.  See
@@ -106,7 +105,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  command-line arguments.
      *  @param args The command-line arguments.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             PtExecuteApplication application = new PtExecuteApplication(args);
             application.runModels();
@@ -123,6 +122,7 @@ public class PtExecuteApplication extends MoMLApplication {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
+
             System.exit(0);
         }
     }
@@ -137,14 +137,16 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
-    protected Configuration _createDefaultConfiguration() throws Exception {
+    protected Configuration _createDefaultConfiguration()
+        throws Exception {
         if (_configurationURL == null) {
-            _configurationURL =
-                specToURL("ptolemy/configs/runConfiguration.xml");
+            _configurationURL = specToURL(
+                    "ptolemy/configs/runConfiguration.xml");
         }
+
         MoMLParser parser = new MoMLParser();
-        _configuration =
-            (Configuration)parser.parse(_configurationURL, _configurationURL);
+        _configuration = (Configuration) parser.parse(_configurationURL,
+                _configurationURL);
         return _configuration;
     }
 
@@ -152,7 +154,8 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @return Does not return.
      *  @exception Exception Always thrown.
      */
-    protected Configuration _createEmptyConfiguration() throws Exception {
+    protected Configuration _createEmptyConfiguration()
+        throws Exception {
         throw new Exception("No model specified.");
     }
 
@@ -165,6 +168,7 @@ public class PtExecuteApplication extends MoMLApplication {
             _exit = true;
             return true;
         }
+
         return super._parseArg(arg);
     }
 
@@ -173,7 +177,8 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
-    protected synchronized void _parseArgs(String args[]) throws Exception {
+    protected synchronized void _parseArgs(String[] args)
+        throws Exception {
         _commandTemplate = "ptexecute [ options ] file ...";
 
         // PtExecuteApplication.super._parseArgs(args)
@@ -181,6 +186,7 @@ public class PtExecuteApplication extends MoMLApplication {
         // so delay calling it until we process
         // the arguments and possibly get a configuration.
         List processedArgsList = new LinkedList();
+
         for (int i = 0; i < args.length; i++) {
             // Parse any configuration specific args first so that we can
             // set up the configuration for later use by the parent class.
@@ -191,13 +197,13 @@ public class PtExecuteApplication extends MoMLApplication {
                 processedArgsList.add(args[i]);
             }
         }
+
         if (_expectingConfiguration) {
-            throw new IllegalActionException(
-                    "Missing configuration");
+            throw new IllegalActionException("Missing configuration");
         }
-        String [] processedArgs =
-            (String [])processedArgsList
-            .toArray(new String[processedArgsList.size()]);
+
+        String[] processedArgs = (String[]) processedArgsList.toArray(new String[processedArgsList
+                .size()]);
 
         super._parseArgs(processedArgs);
     }
@@ -206,27 +212,26 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @return A usage string.
      */
     protected String _usage() {
-        return _configurationUsage(_commandTemplate,
-                _localCommandOptions, _localCommandFlags );
+        return _configurationUsage(_commandTemplate, _localCommandOptions,
+            _localCommandFlags);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // _localCommandFlags and _commandOptions are static because
     // _usage() may be called from the constructor of the parent class,
     //  in which case non-static variables are null?
 
     /** The command-line options that are either present or not. */
-    protected static String _localCommandFlags[] = {
-        "-exit"
-    };
+    protected static String[] _localCommandFlags = { "-exit" };
 
     /** The command-line options that take arguments. */
-    protected static String _localCommandOptions[][] = {
-        {"-config",
-         "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>"},
-    };
+    protected static String[][] _localCommandOptions = {
+            {
+                "-config",
+                "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>"
+            },
+        };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -240,7 +245,8 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
-    private boolean _configurationParseArg(String arg) throws Exception {
+    private boolean _configurationParseArg(String arg)
+        throws Exception {
         if (arg.startsWith("-conf")) {
             _expectingConfiguration = true;
         } else if (arg.startsWith("-")) {
@@ -254,9 +260,10 @@ public class PtExecuteApplication extends MoMLApplication {
             // by the parent class.
             try {
                 _configurationSubdirectory = arg.substring(1);
-                String potentialConfiguration =
-                    "ptolemy/configs/" + _configurationSubdirectory
-                    + "/configuration.xml";
+
+                String potentialConfiguration = "ptolemy/configs/"
+                    + _configurationSubdirectory + "/configuration.xml";
+
                 // This will throw an Exception if we can't find the config.
                 _configurationURL = specToURL(potentialConfiguration);
             } catch (Exception ex) {
@@ -276,7 +283,6 @@ public class PtExecuteApplication extends MoMLApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The subdirectory (if any) of ptolemy/configs where the configuration
     // may be found.  For example if vergil was called with -ptiny,
     // then this variable will be set to "ptiny", and the configuration
@@ -296,5 +302,4 @@ public class PtExecuteApplication extends MoMLApplication {
 
     // Flag indicating that the previous argument was -conf
     private boolean _expectingConfiguration = false;
-
 }

@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.toolbox;
 
 import java.awt.AlphaComposite;
@@ -44,6 +43,7 @@ import diva.canvas.CanvasUtilities;
 import diva.canvas.interactor.ShapedFigure;
 import diva.util.java2d.ShapeUtilities;
 
+
 /** A BasicFigure is one that contains a single instance of Shape. The
  *  figure can have a fill with optional compositing (for
  *  translucency), and a stroke with a different fill. With this
@@ -57,7 +57,6 @@ import diva.util.java2d.ShapeUtilities;
  * @author      Nick Zamora
  */
 public class BasicFigure extends AbstractFigure implements ShapedFigure {
-
     /** Indicator of whether this figure should be centered on its origin.
      *  By default, this class is centered, like the superclass.
      */
@@ -92,7 +91,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  fill.  The given shape will be cloned to prevent the original
      *  from being modified.
      */
-    public BasicFigure (Shape shape) {
+    public BasicFigure(Shape shape) {
         this(shape, null, 1.0f);
     }
 
@@ -103,8 +102,8 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *
      * @deprecated  Use the float constructor instead.
      */
-    public BasicFigure (Shape shape, int lineWidth) {
-        this(shape, null, (float)lineWidth);
+    public BasicFigure(Shape shape, int lineWidth) {
+        this(shape, null, (float) lineWidth);
     }
 
     /** Create a new figure with the given shape and outline width.
@@ -112,7 +111,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * shape will be cloned to prevent the original from being
      * modified.
      */
-    public BasicFigure (Shape shape, float lineWidth) {
+    public BasicFigure(Shape shape, float lineWidth) {
         this(shape, null, lineWidth);
     }
 
@@ -120,7 +119,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  by default, has no stroke.  The given shape will be cloned to
      *  prevent the original from being modified.
      */
-    public BasicFigure (Shape shape, Paint fill) {
+    public BasicFigure(Shape shape, Paint fill) {
         this(shape, fill, 1.0f);
     }
 
@@ -128,7 +127,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  width.  The given shape will be cloned to prevent the original
      *  from being modified.
      */
-    public BasicFigure (Shape shape, Paint fill, float lineWidth) {
+    public BasicFigure(Shape shape, Paint fill, float lineWidth) {
         _shape = ShapeUtilities.cloneShape(shape);
         _fillPaint = fill;
         _stroke = ShapeUtilities.getStroke(lineWidth);
@@ -139,7 +138,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * the inherited method to take account of the thickness of
      * the stroke, if there is one.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         if (_stroke == null) {
             return _shape.getBounds2D();
         } else {
@@ -157,7 +156,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** Get the dash array. If the stroke is not a BasicStroke
      * then null will always be returned.
      */
-    public float[] getDashArray () {
+    public float[] getDashArray() {
         if (_stroke instanceof BasicStroke) {
             return ((BasicStroke) _stroke).getDashArray();
         } else {
@@ -175,7 +174,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** Get the line width. If the stroke is not a BasicStroke
      * then 1.0 will always be returned.
      */
-    public float getLineWidth () {
+    public float getLineWidth() {
         if (_stroke instanceof BasicStroke) {
             return ((BasicStroke) _stroke).getLineWidth();
         } else {
@@ -189,12 +188,13 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  shape if the figure is not centered.
      *  @return The origin of the figure.
      */
-    public Point2D getOrigin () {
+    public Point2D getOrigin() {
         Rectangle2D bounds = getBounds();
+
         if (_centered) {
             return super.getOrigin();
         } else {
-            Point2D point = new Point2D.Double(0,0);
+            Point2D point = new Point2D.Double(0, 0);
             _transform.transform(point, point);
             return point;
         }
@@ -202,13 +202,13 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
 
     /** Get the shape of this figure.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         return _shape;
     }
 
     /** Get the paint used to stroke this figure
      */
-    public Paint getStrokePaint () {
+    public Paint getStrokePaint() {
         return _strokePaint;
     }
 
@@ -221,17 +221,21 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * a stroke, then return false. If the figure is not visible,
      * always return false.
      */
-    public boolean hit (Rectangle2D r) {
+    public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
         }
+
         boolean hit = false;
+
         if (_fillPaint != null) {
             hit = _shape.intersects(r);
         }
-        if (!hit && _stroke != null && _strokePaint != null) {
+
+        if (!hit && (_stroke != null) && (_strokePaint != null)) {
             hit = hit || ShapeUtilities.intersectsOutline(r, _shape);
         }
+
         return hit;
     }
 
@@ -248,16 +252,18 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** Paint the figure. The figure is redrawn with the current
      *  shape, fill, and outline.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
         }
+
         if (_fillPaint != null) {
             g.setPaint(_fillPaint);
             g.setComposite(_composite);
             g.fill(_shape);
         }
-        if (_stroke != null && _strokePaint != null) {
+
+        if ((_stroke != null) && (_strokePaint != null)) {
             g.setStroke(_stroke);
             g.setPaint(_strokePaint);
             g.draw(_shape);
@@ -272,6 +278,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      */
     public void setCentered(boolean centered) {
         repaint();
+
         Point2D point = getOrigin();
         _centered = centered;
         CanvasUtilities.translateTo(this, point.getX(), point.getY());
@@ -279,7 +286,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
 
     /** Set the compositing operation for this figure.
      */
-    public void setComposite (AlphaComposite c) {
+    public void setComposite(AlphaComposite c) {
         _composite = c;
         repaint();
     }
@@ -287,25 +294,19 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** Set the dash array of the stroke. The existing stroke will
      * be removed, but the line width will be preserved if possible.
      */
-    public void setDashArray (float dashArray[]) {
+    public void setDashArray(float[] dashArray) {
         repaint();
+
         if (_stroke instanceof BasicStroke) {
-            _stroke = new BasicStroke(
-                    ((BasicStroke) _stroke).getLineWidth(),
+            _stroke = new BasicStroke(((BasicStroke) _stroke).getLineWidth(),
                     ((BasicStroke) _stroke).getEndCap(),
                     ((BasicStroke) _stroke).getLineJoin(),
-                    ((BasicStroke) _stroke).getMiterLimit(),
-                    dashArray,
-                    0.0f);
+                    ((BasicStroke) _stroke).getMiterLimit(), dashArray, 0.0f);
         } else {
-            _stroke = new BasicStroke(
-                    1.0f,
-                    BasicStroke.CAP_SQUARE,
-                    BasicStroke.JOIN_MITER,
-                    10.0f,
-                    dashArray,
-                    0.0f);
+            _stroke = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE,
+                    BasicStroke.JOIN_MITER, 10.0f, dashArray, 0.0f);
         }
+
         repaint();
     }
 
@@ -322,25 +323,20 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** Set the line width. The existing stroke will
      * be removed, but the dash array will be preserved if possible.
      */
-    public void setLineWidth (float lineWidth) {
+    public void setLineWidth(float lineWidth) {
         repaint();
+
         if (_stroke instanceof BasicStroke) {
-            _stroke = new BasicStroke(
-                    lineWidth,
+            _stroke = new BasicStroke(lineWidth,
                     ((BasicStroke) _stroke).getEndCap(),
                     ((BasicStroke) _stroke).getLineJoin(),
                     ((BasicStroke) _stroke).getMiterLimit(),
-                    ((BasicStroke) _stroke).getDashArray(),
-                    0.0f);
+                    ((BasicStroke) _stroke).getDashArray(), 0.0f);
         } else {
-            new BasicStroke(
-                    lineWidth,
-                    BasicStroke.CAP_SQUARE,
-                    BasicStroke.JOIN_MITER,
-                    10.0f,
-                    null,
-                    0.0f);
+            new BasicStroke(lineWidth, BasicStroke.CAP_SQUARE,
+                BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
         }
+
         repaint();
     }
 
@@ -350,7 +346,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  is created, this is most likely the method you want to call,
      *  as opposed to setShape().
      */
-    public void setPrototypeShape (Shape s) {
+    public void setPrototypeShape(Shape s) {
         repaint();
         _shape = _transform.createTransformedShape(s);
         repaint();
@@ -363,7 +359,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * the shape of the figure without moving the figure, use the
      * setPrototypeShape() method instead.
      */
-    public void setShape (Shape s) {
+    public void setShape(Shape s) {
         repaint();
         _shape = s;
         repaint();
@@ -395,7 +391,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * that loses the type of the shape, converting it into a
      * GeneralPath.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
         _transform.preConcatenate(at);
         _shape = ShapeUtilities.transformModify(_shape, at);

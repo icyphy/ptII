@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util.test;
 
 import java.util.Collections;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestDE
+
 /**
    Test for ChangeRequest in the DE domain.
 
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.kernel.util.ChangeRequest
 */
 public class TestDE {
-
     /** Constructor.
      */
     public TestDE() throws IllegalActionException, NameDuplicationException {
@@ -88,6 +88,7 @@ public class TestDE {
                     _clock.period.setExpression("2.0");
                 }
             };
+
         _top.requestChange(change);
     }
 
@@ -97,6 +98,7 @@ public class TestDE {
         while (_director.getModelTime().getDoubleValue() <= 10.0) {
             _manager.iterate();
         }
+
         _manager.wrapup();
         return Collections.enumeration(_rec.getTimeHistory());
     }
@@ -109,19 +111,23 @@ public class TestDE {
                 protected void _execute() throws Exception {
                     _clock.output.unlinkAll();
                     _rec.input.unlinkAll();
+
                     Clock clock2 = new Clock(_top, "clock2");
                     clock2.values.setExpression("{2.0}");
                     clock2.offsets.setExpression("{0.5}");
                     clock2.period.setExpression("2.0");
+
                     Merge merge = new Merge(_top, "merge");
                     _top.connect(_clock.output, merge.input);
                     _top.connect(clock2.output, merge.input);
                     _top.connect(merge.output, _rec.input);
+
                     // Any pre-existing input port whose connections
                     // are modified needs to have this method called.
                     _rec.input.createReceivers();
                 }
             };
+
         _top.requestChange(change);
     }
 
@@ -129,6 +135,7 @@ public class TestDE {
      */
     public void start() throws KernelException {
         _manager.initialize();
+
         // Process up to time 1.0
         while (_director.getModelTime().getDoubleValue() <= 1.0) {
             _manager.iterate();
@@ -137,7 +144,6 @@ public class TestDE {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Manager _manager;
     private Recorder _rec;
     private Clock _clock;

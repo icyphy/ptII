@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NoTokenException
+
 /**
    This exception is thrown when an attempt is made to get a token
    from a receiver that does not contain one.
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.Nameable;
    @see Receiver
 */
 public class NoTokenException extends KernelRuntimeException {
-
     /** Construct an exception with the given message.
      *  @param message The message.
      */

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.BooleanToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Bernoulli
+
 /**
    Produce a random sequence of booleans.  The output is of type BooleanToken.
    The values that are generated are independent and identically distributed,
@@ -53,9 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class Bernoulli extends RandomSource {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,7 +64,7 @@ public class Bernoulli extends RandomSource {
      *   actor with this name.
      */
     public Bernoulli(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -102,18 +101,18 @@ public class Bernoulli extends RandomSource {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_random.nextDouble() <
-                ((DoubleToken)(trueProbability.getToken())).doubleValue() ) {
+        if (_random.nextDouble() < ((DoubleToken) (trueProbability.getToken()))
+                .doubleValue()) {
             _current = true;
         } else {
             _current = false;
         }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The random boolean for the current iteration.
     private boolean _current;
 }

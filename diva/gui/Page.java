@@ -25,6 +25,7 @@
 */
 package diva.gui;
 
+
 /**
  * A multi-page document contains an ordered set of pages. A page
  * generally contains a single object, the "model," that contains part
@@ -52,5 +53,3 @@ public interface Page {
      */
     public void setTitle(String title);
 }
-
-

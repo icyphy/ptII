@@ -29,6 +29,7 @@
  */
 package thales.actor.gui;
 
+
 //import ptolemy.actor.gui.MoMLApplication;
 //
 //import java.io.FileNotFoundException;
@@ -60,7 +61,6 @@ a MoML file. Used to avoid MoMLparser bugs on older Ptolemy MoML files.</p>
  @Pt.AcceptedRating @AcceptedRating
  */
 public class ModelValidator {
-
     //    private DOMParser _parser;
     //    private URL _fileURL;
     //
@@ -154,5 +154,4 @@ public class ModelValidator {
     //            return new InputSource(url.openStream());
     //        }
     //    }
-
 }

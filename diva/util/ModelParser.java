@@ -27,6 +27,7 @@ package diva.util;
 
 import java.io.Reader;
 
+
 /**
  * ModelParser is an interface that should be extended by application
  * specified model parsers.  Its job is to parse data into an
@@ -42,5 +43,3 @@ public interface ModelParser {
      */
     public Object parse(Reader reader) throws java.lang.Exception;
 }
-
-

@@ -24,13 +24,13 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 
 /** A basic implementation of the figure z-list, provided for
  * initial implementations of figure containers. This implementation
@@ -46,7 +46,6 @@ import java.util.Iterator;
  * @Pt.AcceptedRating Yellow
  */
 public class BasicZList implements ZList {
-
     /* The list of elements.
      */
     private ArrayList _elements = new ArrayList();
@@ -54,14 +53,14 @@ public class BasicZList implements ZList {
     /** Add a figure to the container.  See the implemented method for
      * a detailed description.
      */
-    public void add (Figure f) {
+    public void add(Figure f) {
         _elements.add(f);
     }
 
     /** Insert a figure at the given position.  See the implemented
      * method for a detailed description.
      */
-    public void add (int index, Figure f) {
+    public void add(int index, Figure f) {
         _elements.add(_elements.size() - index, f);
     }
 
@@ -73,7 +72,7 @@ public class BasicZList implements ZList {
 
     /** Get the bounding box of all the figures in this list.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         return CanvasUtilities.computeCompositeBounds(figures());
     }
 
@@ -84,7 +83,7 @@ public class BasicZList implements ZList {
      * making this same test is to check if the parent of the figure
      * is the same object as this container.
      */
-    public boolean contains (Figure f) {
+    public boolean contains(Figure f) {
         return _elements.contains(f);
     }
 
@@ -93,7 +92,7 @@ public class BasicZList implements ZList {
      * is, from front to back. Clients must not rely on this, though,
      * and use figuresFromBack() if they require that order.
      */
-    public Iterator figures () {
+    public Iterator figures() {
         return _elements.iterator();
     }
 
@@ -102,7 +101,7 @@ public class BasicZList implements ZList {
      * figures should normally be painted, so that figures at lower
      * indexes are painted over the top of figures at higher indexes.
      */
-    public Iterator figuresFromBack () {
+    public Iterator figuresFromBack() {
         return _elements.iterator();
     }
 
@@ -110,39 +109,42 @@ public class BasicZList implements ZList {
      * lowest index to highest index. This is the order in which
      * events should normally be intercepted.
      */
-    public Iterator figuresFromFront () {
+    public Iterator figuresFromFront() {
         return new Iterator() {
                 int cursor = _elements.size();
+
                 public boolean hasNext() {
                     return cursor > 0;
                 }
+
                 public Object next() {
                     cursor--;
                     return _elements.get(cursor);
                 }
+
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Cannot delete figure from zlist");
+                        "Cannot delete figure from zlist");
                 }
             };
     }
 
     /** Get the figure at the given index.
      */
-    public Figure get (int index) {
-        return (Figure)_elements.get(_elements.size() - 1 - index);
+    public Figure get(int index) {
+        return (Figure) _elements.get(_elements.size() - 1 - index);
     }
 
     /** Return the number of figures in this list.
      */
-    public int getFigureCount () {
+    public int getFigureCount() {
         return _elements.size();
     }
 
     /** Get the figures that are entirely contained by the given
      * region.
      */
-    public GeometricSet getContainedFigures (Rectangle2D region) {
+    public GeometricSet getContainedFigures(Rectangle2D region) {
         return new EnclosedGSet(region);
     }
 
@@ -151,15 +153,16 @@ public class BasicZList implements ZList {
      * that do not intersect the region -- this method only
      * looks at the bounding boxes.
      */
-    public GeometricSet getIntersectedFigures (Rectangle2D region) {
+    public GeometricSet getIntersectedFigures(Rectangle2D region) {
         return new IntersectedGSet(region);
     }
 
     /** Return the index of the given figure in the Z-list.
      * See the implemented method for a detailed description.
      */
-    public int indexOf (Figure f) {
+    public int indexOf(Figure f) {
         int i = _elements.indexOf(f);
+
         if (i == -1) {
             return -1;
         } else {
@@ -170,30 +173,30 @@ public class BasicZList implements ZList {
     /** Remove the given figure from this container.
      * See the implemented method for a detailed description.
      */
-    public void remove (Figure f) {
+    public void remove(Figure f) {
         _elements.remove(f);
     }
 
     /** Remove the figure at the given position in the list.
      * See the implemented method for a detailed description.
      */
-    public void remove (int index) {
+    public void remove(int index) {
         _elements.remove(_elements.size() - 1 - index);
     }
 
     /** Replace the figure at the given index with the passed-in
      * figure.
      */
-    public void set (int index, Figure f) {
-        _elements.set(_elements.size() - 1 - index,f);
+    public void set(int index, Figure f) {
+        _elements.set(_elements.size() - 1 - index, f);
     }
 
     /** Set the index of the given figure.
      * See the implemented method for a detailed description.
      */
-    public void setIndex (int index, Figure f) {
+    public void setIndex(int index, Figure f) {
         _elements.remove(f);
-        _elements.add(_elements.size() - index,f);
+        _elements.add(_elements.size() - index, f);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -217,37 +220,40 @@ public class BasicZList implements ZList {
         /** Test if the given figure is within the bounds of this
          * region.
          */
-        public boolean contains (Figure f) {
+        public boolean contains(Figure f) {
             return _contains(f, _region);
         }
 
         /** Return the figures in undefined order.
          */
-        public Iterator figures () {
+        public Iterator figures() {
             return _currentFigures.iterator();
         }
 
         /** Return the figures from highest index to lowest index.
          */
-        public Iterator figuresFromBack () {
+        public Iterator figuresFromBack() {
             return _currentFigures.iterator();
         }
 
         /** Return the figures from lowest index to highest index.
          */
-        public Iterator figuresFromFront () {
+        public Iterator figuresFromFront() {
             return new Iterator() {
                     int cursor = _currentFigures.size();
+
                     public boolean hasNext() {
                         return cursor > 0;
                     }
+
                     public Object next() {
                         cursor--;
                         return _currentFigures.get(cursor);
                     }
+
                     public void remove() {
                         throw new UnsupportedOperationException(
-                                "Cannot delete figure from geometric set");
+                            "Cannot delete figure from geometric set");
                     }
                 };
         }
@@ -273,13 +279,12 @@ public class BasicZList implements ZList {
 
         /** Test if the given figure is within this set
          */
-        public abstract boolean _contains (Figure f, Rectangle2D region);
+        public abstract boolean _contains(Figure f, Rectangle2D region);
 
         /* Filter the figures into the given ArrayList
          */
-        protected abstract void _filter (ArrayList result,
-                Iterator i, Rectangle2D region);
-
+        protected abstract void _filter(ArrayList result, Iterator i,
+            Rectangle2D region);
     }
 
     /** The figures with intersecting bounding boxes
@@ -291,15 +296,16 @@ public class BasicZList implements ZList {
 
         /** Test if the given figure is within this set
          */
-        public boolean _contains (Figure f, Rectangle2D region) {
+        public boolean _contains(Figure f, Rectangle2D region) {
             return f.getBounds().intersects(region);
         }
 
         /* Filter the figures into the given ArrayList
          */
-        public void _filter (ArrayList result, Iterator i, Rectangle2D region) {
+        public void _filter(ArrayList result, Iterator i, Rectangle2D region) {
             while (i.hasNext()) {
                 Figure f = (Figure) i.next();
+
                 if (f.getBounds().intersects(region)) {
                     result.add(f);
                 }
@@ -316,15 +322,16 @@ public class BasicZList implements ZList {
 
         /** Test if the given figure is within this set
          */
-        public boolean _contains (Figure f, Rectangle2D region) {
+        public boolean _contains(Figure f, Rectangle2D region) {
             return region.contains(f.getBounds());
         }
 
         /* Filter the figures into the given ArrayList
          */
-        public void _filter (ArrayList result, Iterator i, Rectangle2D region) {
+        public void _filter(ArrayList result, Iterator i, Rectangle2D region) {
             while (i.hasNext()) {
                 Figure f = (Figure) i.next();
+
                 if (region.contains(f.getBounds())) {
                     result.add(f);
                 }
@@ -332,6 +339,3 @@ public class BasicZList implements ZList {
         }
     }
 }
-
-
-

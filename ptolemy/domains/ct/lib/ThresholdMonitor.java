@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ThresholdMonitor
+
 /**
    Output <i>true</i> if the input value is in the interval
    [<i>a</i>, <i>b</i>], which is centered at <i>thresholdCenter</i>
@@ -63,7 +64,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ThresholdMonitor extends TypedAtomicActor
     implements CTStepSizeControlActor {
     /** Construct an actor in the specified container with the specified
@@ -79,35 +79,33 @@ public class ThresholdMonitor extends TypedAtomicActor
      *   an entity already in the container.
      */
     public ThresholdMonitor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(false);
         input.setTypeEquals(BaseType.DOUBLE);
-        new Parameter(input, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
 
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(false);
         output.setTypeEquals(BaseType.BOOLEAN);
-        new Parameter(output, "signalType",
-                new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("DISCRETE"));
 
-        _thWidth = (double)1e-2;
+        _thWidth = (double) 1e-2;
         thresholdWidth = new Parameter(this, "thresholdWidth",
                 new DoubleToken(_thWidth));
 
-        _thCenter = (double)0.0;
+        _thCenter = (double) 0.0;
         thresholdCenter = new Parameter(this, "thresholdCenter",
                 new DoubleToken(_thCenter));
 
         _lowerBound = -5e-3;
         _upperBound = 5e-3;
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
     /** The input port, single port with type double.
      */
     public TypedIOPort input;
@@ -132,15 +130,14 @@ public class ThresholdMonitor extends TypedAtomicActor
      *  the attribute.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == thresholdCenter || attribute == thresholdWidth) {
-            _thCenter =
-                ((DoubleToken)thresholdCenter.getToken()).doubleValue();
-            _thWidth = Math.abs(
-                    ((DoubleToken)thresholdWidth.getToken()).doubleValue());
+        throws IllegalActionException {
+        if ((attribute == thresholdCenter) || (attribute == thresholdWidth)) {
+            _thCenter = ((DoubleToken) thresholdCenter.getToken()).doubleValue();
+            _thWidth = Math.abs(((DoubleToken) thresholdWidth.getToken())
+                    .doubleValue());
 
-            _lowerBound = _thCenter - _thWidth/(double)2.0;
-            _upperBound = _thCenter + _thWidth/(double)2.0;
+            _lowerBound = _thCenter - (_thWidth / (double) 2.0);
+            _upperBound = _thCenter + (_thWidth / (double) 2.0);
         } else {
             super.attributeChanged(attribute);
         }
@@ -153,6 +150,7 @@ public class ThresholdMonitor extends TypedAtomicActor
     public void fire() throws IllegalActionException {
         _debug("Monitor" + getFullName() + " fired.");
         _thisInput = ((DoubleToken) input.get(0)).doubleValue();
+
         if ((_thisInput <= _upperBound) && (_thisInput >= _lowerBound)) {
             output.send(0, new BooleanToken(true));
         } else {
@@ -182,14 +180,17 @@ public class ThresholdMonitor extends TypedAtomicActor
      */
     public boolean postfire() throws IllegalActionException {
         super.postfire();
+
         if (input.hasToken(0)) {
             _thisInput = ((DoubleToken) input.get(0)).doubleValue();
         }
+
         if ((_thisInput <= _upperBound) && (_thisInput >= _lowerBound)) {
             output.send(0, new BooleanToken(true));
         } else {
             output.send(0, new BooleanToken(false));
         }
+
         _lastInput = _thisInput;
         _first = false;
         return true;
@@ -208,17 +209,17 @@ public class ThresholdMonitor extends TypedAtomicActor
      *  @return Half of the current step size if the step is not accurate.
      */
     public double refinedStepSize() {
-        CTDirector dir = (CTDirector)getDirector();
+        CTDirector dir = (CTDirector) getDirector();
+
         if (!_accurate) {
-            return 0.5*dir.getCurrentStepSize();
+            return 0.5 * dir.getCurrentStepSize();
         }
+
         return dir.getCurrentStepSize();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // local copy of the threshold width
     private double _thWidth;
 
@@ -255,15 +256,16 @@ public class ThresholdMonitor extends TypedAtomicActor
      */
     public boolean isOutputAccurate() {
         if (!_first) {
-            if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound)) ||
-                    ((_lastInput <= _lowerBound) &&
-                            (_thisInput >= _upperBound))) {
-                _debug(getFullName() + "one step crosses the threshold" +
-                        "cutting the step size in half.");
+            if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound))
+                    || ((_lastInput <= _lowerBound)
+                    && (_thisInput >= _upperBound))) {
+                _debug(getFullName() + "one step crosses the threshold"
+                    + "cutting the step size in half.");
                 _accurate = false;
                 return false;
             }
         }
+
         _accurate = true;
         return true;
     }

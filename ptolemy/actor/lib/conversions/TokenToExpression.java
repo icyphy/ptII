@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.StringToken;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TokenToExpression
+
 /**
    This actor reads a token from the input port and outputs a string token
    whose value is an expression that can be parsed to yield the input token.
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (liuj)
 */
 public class TokenToExpression extends Converter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,7 +61,7 @@ public class TokenToExpression extends Converter {
      *   actor with this name.
      */
     public TokenToExpression(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.UNKNOWN);

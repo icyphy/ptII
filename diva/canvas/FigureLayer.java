@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.AWTEvent;
@@ -37,6 +36,7 @@ import diva.canvas.event.EventAcceptor;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.Interactor;
 import diva.util.Filter;
+
 
 /** A figure layer is a layer on which Figures can be drawn.  It
  * contains a z-list in which all the contained figures are held, and
@@ -54,8 +54,8 @@ import diva.util.Filter;
  * @author John Reekie
  * @Pt.AcceptedRating Yellow
  */
-public class FigureLayer extends CanvasLayer implements FigureContainer, EventAcceptor {
-
+public class FigureLayer extends CanvasLayer implements FigureContainer,
+    EventAcceptor {
     /** The figures contained in this layer.
      */
     private ZList _zlist = null;
@@ -90,14 +90,14 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * is strongly discouraged, as many of the geometry-related methods
      * expect to see a pane.
      */
-    public FigureLayer () {
+    public FigureLayer() {
         super();
         _zlist = new BasicZList();
     }
 
     /** Create a new figure layer within the given pane.
      */
-    public FigureLayer (CanvasPane pane) {
+    public FigureLayer(CanvasPane pane) {
         super(pane);
         _zlist = new BasicZList();
     }
@@ -105,7 +105,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     /** Create a new figure layer within the given pane and with
      * the given ZList to hold the figures it contains.
      */
-    public FigureLayer (CanvasPane pane, ZList zlist) {
+    public FigureLayer(CanvasPane pane, ZList zlist) {
         super(pane);
         this._zlist = zlist;
     }
@@ -115,7 +115,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * to create a more efficient z-list than the default,
      * which is an instance of BasicZList.
      */
-    public FigureLayer (ZList zlist) {
+    public FigureLayer(ZList zlist) {
         super();
         this._zlist = zlist;
     }
@@ -127,8 +127,8 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * check whether the figure is already in the layer -- clients
      * clients are therefore responsible for being bug-free.
      */
-    public void add (Figure f) {
-        _zlist.add(0,f);
+    public void add(Figure f) {
+        _zlist.add(0, f);
         f.setParent(this);
         repaint(f.getBounds());
     }
@@ -145,7 +145,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      *  does <i>not</i> check if the figure is already contained --
      *  clients are therefore responsible for being bug-free.
      */
-    public void add (int index, Figure f) {
+    public void add(int index, Figure f) {
         _zlist.add(index, f);
         f.setParent(this);
         repaint(f.getBounds());
@@ -163,21 +163,19 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * if the parent of the figure is the same object as this
      * layer.
      */
-    public boolean contains (Figure f) {
+    public boolean contains(Figure f) {
         return _zlist.contains(f);
     }
 
     /** Decorate a child figure, replacing the child figure with the
      * decorator.
      */
-    public void decorate (Figure child, FigureDecorator decorator) {
+    public void decorate(Figure child, FigureDecorator decorator) {
         if (child.getParent() != this) {
-            throw new IllegalArgumentException(
-                    "The object " +
-                    child +
-                    " is not a child of " +
-                    this);
+            throw new IllegalArgumentException("The object " + child
+                + " is not a child of " + this);
         }
+
         child.repaint();
         decorator.setParent(this);
         decorator.setChild(child);
@@ -193,34 +191,35 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * </b>processLayerMotionEvent</b>. Currently other events types
      * are not handled.
      */
-    public void dispatchEvent (AWTEvent event) {
+    public void dispatchEvent(AWTEvent event) {
         if (!isEnabled()) {
             return;
         }
-        switch(event.getID()) {
+
+        switch (event.getID()) {
         case MouseEvent.MOUSE_CLICKED:
         case MouseEvent.MOUSE_PRESSED:
         case MouseEvent.MOUSE_RELEASED:
         case MouseEvent.MOUSE_DRAGGED:
-            processLayerEvent((LayerEvent)event);
+            processLayerEvent((LayerEvent) event);
             break;
 
         case MouseEvent.MOUSE_ENTERED:
         case MouseEvent.MOUSE_EXITED:
         case MouseEvent.MOUSE_MOVED:
-            processLayerMotionEvent((LayerEvent)event);
+            processLayerMotionEvent((LayerEvent) event);
             break;
 
         default:
-            throw new IllegalArgumentException(
-                    "Unrecognized event type: " + event);
+            throw new IllegalArgumentException("Unrecognized event type: "
+                + event);
         }
     }
 
     /** Return an iteration of the figures in this container. The order
      * in which figures are iterated is <i>undefined</i>.
      */
-    public Iterator figures () {
+    public Iterator figures() {
         return _zlist.figures();
     }
 
@@ -228,7 +227,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * back to front. This is the order in which figures should
      * normally be painted.
      */
-    public Iterator figuresFromBack () {
+    public Iterator figuresFromBack() {
         return _zlist.figuresFromBack();
     }
 
@@ -236,7 +235,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * front to back. This is the order in which events should normally
      * be intercepted.
      */
-    public Iterator figuresFromFront () {
+    public Iterator figuresFromFront() {
         return _zlist.figuresFromFront();
     }
 
@@ -244,13 +243,13 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * zero to getFigureCount()-1, with figures at lower indexes
      * being displayed "on top of" figures with higher indexes.
      */
-    public Figure get (int index) {
+    public Figure get(int index) {
         return _zlist.get(index);
     }
 
     /** Return the number of figures in this layer.
      */
-    public int getFigureCount () {
+    public int getFigureCount() {
         return _zlist.getFigureCount();
     }
 
@@ -260,7 +259,8 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      */
     public Figure getCurrentFigure() {
         LayerEvent e = _lastLayerEvent;
-        if (e != null && e.getID() != MouseEvent.MOUSE_EXITED) {
+
+        if ((e != null) && (e.getID() != MouseEvent.MOUSE_EXITED)) {
             return getFigure(e);
         } else {
             return null;
@@ -270,14 +270,14 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     /** Get the internal z-list. Clients must <i>not</i> modify
      * the z-list, but can use it for making queries on its contents.
      */
-    public ZList getFigures () {
+    public ZList getFigures() {
         return _zlist;
     }
 
     /** Get the bounds of the shapes draw in this layer.  In this class,
      *  we return the bounds of all the figures in the z-list.
      */
-    public Rectangle2D getLayerBounds () {
+    public Rectangle2D getLayerBounds() {
         return _zlist.getBounds();
     }
 
@@ -285,7 +285,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * that an object can be from the mouse to be considered
      * hit.
      */
-    public final double getPickHalo () {
+    public final double getPickHalo() {
         return _pickHalo;
     }
 
@@ -301,12 +301,10 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      */
     public void grabPointer(LayerEvent e, Figure f) {
         if (e.getID() != MouseEvent.MOUSE_PRESSED) {
-            throw new IllegalArgumentException(
-                    "The event " +
-                    e +
-                    " is not a mouse pressed event.\n" +
-                    "Only mouse pressed events can grab the pointer" +
-                    " (for now)");
+            throw new IllegalArgumentException("The event " + e
+                + " is not a mouse pressed event.\n"
+                + "Only mouse pressed events can grab the pointer"
+                + " (for now)");
         }
 
         // Remember the grab
@@ -316,6 +314,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         if (f instanceof EventAcceptor) {
             ((EventAcceptor) f).dispatchEvent(e);
         }
+
         // If the event isn't consumed yet, scan up the tree to dispatch it
         if (!e.isConsumed()) {
             dispatchEventUpTree(f, e);
@@ -334,24 +333,31 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
 
         // Scan up the tree try to dispatch the event
         Figure f = getFigure(e);
+
         while (f != null) {
             tip = f.getToolTipText();
-            if (tip != null) break;
+
+            if (tip != null) {
+                break;
+            }
 
             // Move up to the parent
             CanvasComponent p = f.getParent();
-            if ( !(p instanceof Figure)) {
+
+            if (!(p instanceof Figure)) {
                 break;
             }
+
             f = (Figure) p;
         }
+
         return tip;
     }
 
     /** Return the index of the given figure. Figures
      *  with a higher index are drawn behind figures with a lower index.
      */
-    public int indexOf (Figure f) {
+    public int indexOf(Figure f) {
         return _zlist.indexOf(f);
     }
 
@@ -359,7 +365,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      *  does not indicate whether the layer is actually enabled,
      * as its pane or one if its ancestors may not be enabled.
      */
-    public final boolean isEnabled () {
+    public final boolean isEnabled() {
         return _enabled;
     }
 
@@ -367,7 +373,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      *  does not indicate whether the layer is actually visible on
      *  the screen, as its pane or one if its ancestors may not be visible.
      */
-    public final boolean isVisible () {
+    public final boolean isVisible() {
         return _visible;
     }
 
@@ -375,12 +381,14 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * is not visible, return immediately. Otherwise paint all figures
      * from back to front.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
         }
+
         Figure f;
         Iterator i = figuresFromBack();
+
         while (i.hasNext()) {
             f = (Figure) i.next();
             f.paint(g);
@@ -392,15 +400,17 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * immediately. Otherwise paint all figures that overlap the given
      * region, from back to front.
      */
-    public void paint (Graphics2D g, Rectangle2D region) {
+    public void paint(Graphics2D g, Rectangle2D region) {
         if (!isVisible()) {
             return;
         }
+
         Figure f;
         Iterator i = _zlist.getIntersectedFigures(region).figuresFromBack();
+
         while (i.hasNext()) {
             f = (Figure) i.next();
-            f.paint(g,region);
+            f.paint(g, region);
         }
     }
 
@@ -410,10 +420,9 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * can be implemented. If no figure is picked, return null.  The
      * region should not have zero size, or no figure will be hit.
      */
-    public Figure pick (Rectangle2D region) {
-        return CanvasUtilities.pick(
-                _zlist.getIntersectedFigures(region).figuresFromFront(),
-                region);
+    public Figure pick(Rectangle2D region) {
+        return CanvasUtilities.pick(_zlist.getIntersectedFigures(region)
+                                          .figuresFromFront(), region);
     }
 
     /** Get the picked figure. This method recursively traverses the
@@ -422,16 +431,16 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * can be implemented. If no figure is picked, return null.  The
      * region should not have zero size, or no figure will be hit.
      */
-    public Figure pick (Rectangle2D region, Filter filter) {
-        Iterator iterator =
-            _zlist.getIntersectedFigures(region).figuresFromFront();
+    public Figure pick(Rectangle2D region, Filter filter) {
+        Iterator iterator = _zlist.getIntersectedFigures(region)
+                                  .figuresFromFront();
         return CanvasUtilities.pick(iterator, region, filter);
     }
 
     /** Remove the given figure from this layer. The figure's
      * layer is set to null.
      */
-    public void remove (Figure f) {
+    public void remove(Figure f) {
         _zlist.remove(f);
         f.setParent(null);
         repaint(f.getBounds());
@@ -440,7 +449,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     /** Remove the figure at the given position in the list. The figure's
      * layer is set to null.
      */
-    public void remove (int index) {
+    public void remove(int index) {
         Figure f = _zlist.get(index);
         _zlist.remove(index);
         f.setParent(null);
@@ -449,15 +458,14 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
 
     /** Repaint all figures that intersect the given rectangle.
      */
-    public void repaint (Rectangle2D region) {
-        repaint(DamageRegion.createDamageRegion(
-                        getTransformContext(), region));
+    public void repaint(Rectangle2D region) {
+        repaint(DamageRegion.createDamageRegion(getTransformContext(), region));
     }
 
     /** Set the enabled flag of this layer. If the flag is false,
      * then the layer will not respond to user input events.
      */
-    public final void setEnabled (boolean flag) {
+    public final void setEnabled(boolean flag) {
         _enabled = flag;
     }
 
@@ -466,7 +474,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * hit by the mouse. By default, it it set to 0.5, meaning
      * that the hit detection rectangle is 1.0 along each side.
      */
-    public final void setPickHalo (double halo) {
+    public final void setPickHalo(double halo) {
         _pickHalo = halo;
     }
 
@@ -484,15 +492,15 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      *
      * @exception IndexOutOfBoundsException The new index is out of range.
      */
-    public void setIndex (int index, Figure f) {
-        _zlist.setIndex(index,f);
+    public void setIndex(int index, Figure f) {
+        _zlist.setIndex(index, f);
         repaint(f.getBounds());
     }
 
     /** Set the visibility flag of this layer. If the flag is false,
      * then the layer will not be drawn on the screen.
      */
-    public final void setVisible (boolean flag) {
+    public final void setVisible(boolean flag) {
         _visible = flag;
         repaint();
     }
@@ -500,17 +508,16 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     /** Remove a figure from the given decorator and add
      * it back into this container.
      */
-    public void undecorate (FigureDecorator decorator) {
+    public void undecorate(FigureDecorator decorator) {
         if (decorator.getParent() != this) {
-            throw new IllegalArgumentException(
-                    "The object " +
-                    decorator +
-                    "is not a child of " +
-                    this);
+            throw new IllegalArgumentException("The object " + decorator
+                + "is not a child of " + this);
         }
+
         decorator.repaint();
+
         Figure child = decorator.getChild();
-        _zlist.set(_zlist.indexOf(decorator),child);
+        _zlist.set(_zlist.indexOf(decorator), child);
         decorator.setChild(null);
         decorator.setParent(null);
         child.setParent(this); // This is needed
@@ -529,37 +536,45 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         // Scan up the tree try to dispatch the event
         while (f != null) {
             Interactor interactor = f.getInteractor();
+
             if (interactor != null) {
                 // Set the figure source
                 e.setFigureSource(f);
 
                 if (interactor.accept(e)) {
                     // Send the event to the interactor
-                    switch(e.getID()) {
+                    switch (e.getID()) {
                     case MouseEvent.MOUSE_DRAGGED:
                         interactor.mouseDragged(e);
                         break;
+
                     case MouseEvent.MOUSE_PRESSED:
                         interactor.mousePressed(e);
                         break;
+
                     case MouseEvent.MOUSE_RELEASED:
                         interactor.mouseReleased(e);
                         break;
+
                     case MouseEvent.MOUSE_CLICKED:
                         interactor.mouseClicked(e);
                         break;
                     }
                 }
             }
+
             // Break if the event was consumed
             if (e.isConsumed()) {
                 break;
             }
+
             // Move up to the parent
             CanvasComponent p = f.getParent();
-            if ( !(p instanceof Figure)) {
+
+            if (!(p instanceof Figure)) {
                 break;
             }
+
             f = (Figure) p;
         }
     }
@@ -575,30 +590,36 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         // Scan up the tree try to dispatch the event
         while (f != null) {
             Interactor interactor = f.getInteractor();
-            if (interactor != null && interactor.isMotionEnabled()) {
+
+            if ((interactor != null) && interactor.isMotionEnabled()) {
                 // Set the figure source
                 e.setFigureSource(f);
 
                 if (interactor.accept(e)) {
                     // Send the event to the interactor
-                    switch(e.getID()) {
+                    switch (e.getID()) {
                     case MouseEvent.MOUSE_MOVED:
                         interactor.mouseMoved(e);
                         break;
+
                     case MouseEvent.MOUSE_EXITED:
                         interactor.mouseExited(e);
                         break;
+
                     case MouseEvent.MOUSE_ENTERED:
                         interactor.mouseEntered(e);
                         break;
                     }
                 }
             }
+
             // Move up to the parent
             CanvasComponent p = f.getParent();
-            if ( !(p instanceof Figure)) {
+
+            if (!(p instanceof Figure)) {
                 break;
             }
+
             f = (Figure) p;
         }
     }
@@ -609,10 +630,8 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     protected final Figure getFigure(LayerEvent e) {
         // Get the figure that the mouse hit, if any
         double wh = _pickHalo * 2;
-        Rectangle2D region = new Rectangle2D.Double (
-                e.getLayerX() - _pickHalo,
-                e.getLayerY() - _pickHalo,
-                wh, wh);
+        Rectangle2D region = new Rectangle2D.Double(e.getLayerX() - _pickHalo,
+                e.getLayerY() - _pickHalo, wh, wh);
         return pick(region);
     }
 
@@ -646,7 +665,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         _lastLayerEvent = e;
         e.setLayerSource(this);
 
-        switch(id) {
+        switch (id) {
         case MouseEvent.MOUSE_PRESSED:
             f = getFigure(e);
 
@@ -659,13 +678,16 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
                 // forget the previous grab.
                 _pointerGrabber = null;
             }
+
             break;
 
         case MouseEvent.MOUSE_DRAGGED:
+
             if (_pointerGrabber == null) {
                 // Ignore the event if noone grabbed the pointer before
                 return;
             }
+
             // If the figure is prepared to handle events itself, let it
             if (_pointerGrabber instanceof EventAcceptor) {
                 ((EventAcceptor) _pointerGrabber).dispatchEvent(e);
@@ -676,13 +698,16 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
             if (!e.isConsumed()) {
                 dispatchEventUpTree(_pointerGrabber, e);
             }
+
             break;
 
         case MouseEvent.MOUSE_RELEASED:
+
             if (_pointerGrabber == null) {
                 // Ignore the event if noone grabbed the pointer before
                 return;
             }
+
             // If the figure is prepared to handle events itself, let it
             if (_pointerGrabber instanceof EventAcceptor) {
                 ((EventAcceptor) _pointerGrabber).dispatchEvent(e);
@@ -693,16 +718,18 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
             if (!e.isConsumed()) {
                 dispatchEventUpTree(_pointerGrabber, e);
             }
+
             // Clear the pointer grab
             _pointerGrabber = null;
             break;
 
-            // Process a click event only. This code ignores the
-            // grab, as it should have already been cleared by a
-            // preceding MOUSE_RELEASED event. I'm not entirely
-            // sure if this is actually correct or not.
-            //
+        // Process a click event only. This code ignores the
+        // grab, as it should have already been cleared by a
+        // preceding MOUSE_RELEASED event. I'm not entirely
+        // sure if this is actually correct or not.
+        //
         case MouseEvent.MOUSE_CLICKED:
+
             // Get the figure that the mouse hit, if any
             f = getFigure(e);
 
@@ -715,10 +742,12 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
             if (f instanceof EventAcceptor) {
                 ((EventAcceptor) f).dispatchEvent(e);
             }
+
             // If the event isn't consumed yet, scan up the tree to dispatch it
             if (!e.isConsumed()) {
                 dispatchEventUpTree(f, e);
             }
+
             break;
         }
     }
@@ -752,18 +781,15 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
         } else if (id == MouseEvent.MOUSE_MOVED) {
             // Get the figure that the mouse hit, if any.
             Figure figure = getFigure(e);
+
             if (figure != _pointerOver) {
                 LayerEvent event;
-                event = new LayerEvent(e,
-                        MouseEvent.MOUSE_EXITED);
+                event = new LayerEvent(e, MouseEvent.MOUSE_EXITED);
                 dispatchMotionEventUpTree(_pointerOver, event);
                 _pointerOver = figure;
-                event = new LayerEvent(e,
-                        MouseEvent.MOUSE_ENTERED);
+                event = new LayerEvent(e, MouseEvent.MOUSE_ENTERED);
                 dispatchMotionEventUpTree(_pointerOver, event);
             }
         }
     }
 }
-
-

@@ -43,8 +43,10 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluatorForGuardExpression
+
 /**
    A ParseTreeEvaluatorForGuardExpression contains a relation list which
    is used to indicate the value change of the relations embedded in a
@@ -99,9 +101,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @see RelationList
    @see ptolemy.data.expr.ParseTreeEvaluator
 */
-
 public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
-
     /** Construct a parse tree evaluator for guard expression. The relation
      *  list is used to store the information of the relation nodes and leaf
      *  nodes with boolean tokens. If the relation list is empty, the evaluator
@@ -109,13 +109,14 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @param relationList The relation list.
      *  @param errorTolerance The errorTolerance.
      */
-    public ParseTreeEvaluatorForGuardExpression(
-            RelationList relationList, double errorTolerance) {
+    public ParseTreeEvaluatorForGuardExpression(RelationList relationList,
+        double errorTolerance) {
         if (relationList.isEmpty()) {
             _constructingRelationList = true;
         } else {
             _constructingRelationList = false;
         }
+
         _relationList = relationList;
         _relationIndex = 0;
         _absentDiscreteVariables = new LinkedList();
@@ -134,9 +135,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public ptolemy.data.Token evaluateParseTree(
-            ASTPtRootNode node, ParserScope scope)
-            throws IllegalActionException {
+    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
+        ParserScope scope) throws IllegalActionException {
         _relationIndex = 0;
         return super.evaluateParseTree(node, scope);
     }
@@ -160,10 +160,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @exception IllegalActionException If the super class method
      *  visitLeafNode throws the IllegalActionException.
      */
-
-    public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException {
-
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         // FIXME: based on the *_isPresent variable, we figure out
         // the discrete variables and do not evaluate it when it is
         // not present.
@@ -173,8 +170,10 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // That is future work.
         String nodeName = node.getName();
         String discreteVariableName = "";
+
         if (nodeName != null) {
             int variableNameEndIndex = nodeName.indexOf("_isPresent");
+
             if (variableNameEndIndex != -1) {
                 discreteVariableName = nodeName.substring(0,
                         variableNameEndIndex);
@@ -193,7 +192,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
             // Only increment the relation index but do not update
             // the relation node.
-            _relationIndex ++;
+            _relationIndex++;
+
             if (_relationIndex >= _relationList.length()) {
                 _relationIndex -= _relationList.length();
             }
@@ -206,31 +206,36 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         ptolemy.data.Token result = _evaluatedChildToken;
 
-        if (!(result instanceof BooleanToken)) return;
+        if (!(result instanceof BooleanToken)) {
+            return;
+        }
 
         if (((BooleanToken) result).booleanValue()) {
             _relationType = 1;
+
             if (_absentDiscreteVariables.contains(discreteVariableName)) {
                 // remove the discrete variable from the absent discrete variables list
                 _absentDiscreteVariables.remove(discreteVariableName);
             }
         } else {
             _relationType = 2;
+
             if (!_absentDiscreteVariables.contains(discreteVariableName)) {
                 // add the discrete variable into the absent discrete variables list
                 _absentDiscreteVariables.add(discreteVariableName);
             }
         }
+
         _difference = 0.0;
 
         if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
         } else {
-            _relationList.setRelation(_relationIndex, _relationType,
-                    _difference);
+            _relationList.setRelation(_relationIndex, _relationType, _difference);
         }
 
-        _relationIndex ++;
+        _relationIndex++;
+
         if (_relationIndex >= _relationList.length()) {
             _relationIndex -= _relationList.length();
         }
@@ -243,7 +248,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitLogicalNode throws the IllegalActionException.
      */
     public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
@@ -251,41 +256,42 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // Note that we do evaluate all of the children...
         // We evaluate al the children in order until the final value is
         // determined.
-
         // FIXME: Discrete variables should be treated differently.
-
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
-                "The number of child nodes must be greater than zero");
+            "The number of child nodes must be greater than zero");
 
         ptolemy.data.Token result = _evaluateChild(node, 0);
 
         if (!(result instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot perform logical "
-                    + "operation on " + result + " which is a "
-                    + result.getClass().getName());
+                + "operation on " + result + " which is a "
+                + result.getClass().getName());
         }
 
         // Make sure that exactly one of AND or OR is set.
-        _assert(node.isLogicalAnd() ^ node.isLogicalOr(),
-                node, "Invalid operation");
+        _assert(node.isLogicalAnd() ^ node.isLogicalOr(), node,
+            "Invalid operation");
 
         boolean flag = node.isLogicalAnd();
+
         for (int i = 1; i < numChildren; i++) {
             // Evaluate the child
             ptolemy.data.Token nextToken = _evaluateChild(node, i);
 
             if (!(nextToken instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
-                        + "operation on " + nextToken + " which is a "
-                        + result.getClass().getName());
+                    + "operation on " + nextToken + " which is a "
+                    + result.getClass().getName());
             }
+
             if (flag) {
-                result = ((BooleanToken)nextToken).and((BooleanToken)result);
+                result = ((BooleanToken) nextToken).and((BooleanToken) result);
             } else {
-                result = ((BooleanToken)nextToken).or((BooleanToken)result);
+                result = ((BooleanToken) nextToken).or((BooleanToken) result);
             }
         }
+
         _evaluatedChildToken = result;
     }
 
@@ -299,19 +305,20 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitRelationNode throws the IllegalActionException.
      */
     public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
 
         // Check whether the relation node has some absent discrete variables.
         // If yes, skip the node, otherwise, evaluate (visit) the node.
-        Set variablesOfNode =
-            _variableCollector.collectFreeVariables(node);
-        Iterator absentDiscreteVariables = _absentDiscreteVariables.listIterator();
+        Set variablesOfNode = _variableCollector.collectFreeVariables(node);
+        Iterator absentDiscreteVariables = _absentDiscreteVariables
+            .listIterator();
+
         while (absentDiscreteVariables.hasNext()) {
             String variableName = (String) absentDiscreteVariables.next();
+
             if (variablesOfNode.contains(variableName)) {
                 // Set the result token to be false token
                 // because the variable is discrete and has no value.
@@ -321,10 +328,13 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 if (_constructingRelationList) {
                     _relationList.addRelation(0, 0.0);
                 }
+
                 _relationIndex++;
+
                 if (_relationIndex >= _relationList.length()) {
                     _relationIndex -= _relationList.length();
                 }
+
                 return;
             }
         }
@@ -332,40 +342,40 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
-        _assert(numChildren == 2, node,
-                "The number of child nodes must be two");
+        _assert(numChildren == 2, node, "The number of child nodes must be two");
 
-        ptolemy.data.expr.Token operator = (ptolemy.data.expr.Token)node.getOperator();
+        ptolemy.data.expr.Token operator = (ptolemy.data.expr.Token) node
+            .getOperator();
         ptolemy.data.Token leftToken = tokens[0];
         ptolemy.data.Token rightToken = tokens[1];
 
         ptolemy.data.Token result;
 
-        if (operator.kind == PtParserConstants.EQUALS ||
-                operator.kind == PtParserConstants.NOTEQUALS) {
+        if ((operator.kind == PtParserConstants.EQUALS)
+                || (operator.kind == PtParserConstants.NOTEQUALS)) {
             // If the operator is about equal or notEqual relations,
             if (operator.kind == PtParserConstants.EQUALS) {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance);
             } else {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance).not();
             }
+
             // If the left and right tokens are scalars.
-            if ((leftToken instanceof ScalarToken) &&
-                    (rightToken instanceof ScalarToken)) {
+            if ((leftToken instanceof ScalarToken)
+                    && (rightToken instanceof ScalarToken)) {
                 // handle the relations like x == 2.0
-                ScalarToken difference = (ScalarToken) leftToken.subtract(
-                        rightToken);
-                if ( ( (BooleanToken) result).booleanValue()) {
+                ScalarToken difference = (ScalarToken) leftToken.subtract(rightToken);
+
+                if (((BooleanToken) result).booleanValue()) {
                     _relationType = 3;
-                }
-                else {
+                } else {
                     if (difference.doubleValue() < 0) {
                         _relationType = 4;
-                    }
-                    else {
+                    } else {
                         _relationType = 5;
                     }
                 }
+
                 _difference = difference.doubleValue();
             } else {
                 // handle the relations like x == true or x == "string"
@@ -374,19 +384,19 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 } else {
                     _relationType = 2;
                 }
+
                 _difference = 0.0;
             }
         } else {
             // If the operator is neither about equal nor notEqual relations.
-            if (!((leftToken instanceof ScalarToken) &&
-                        (rightToken instanceof ScalarToken))) {
-                throw new IllegalActionException(
-                        "The " + operator.image +
-                        " operator can only be applied between scalars.");
+            if (!((leftToken instanceof ScalarToken)
+                    && (rightToken instanceof ScalarToken))) {
+                throw new IllegalActionException("The " + operator.image
+                    + " operator can only be applied between scalars.");
             }
 
-            ScalarToken leftScalar = (ScalarToken)leftToken;
-            ScalarToken rightScalar = (ScalarToken)rightToken;
+            ScalarToken leftScalar = (ScalarToken) leftToken;
+            ScalarToken rightScalar = (ScalarToken) rightToken;
 
             // A relation needs strictly satisfied.
             if (operator.kind == PtParserConstants.GTE) {
@@ -398,10 +408,10 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             } else if (operator.kind == PtParserConstants.LT) {
                 result = leftScalar.isLessThan(rightScalar);
             } else {
-                throw new IllegalActionException(
-                        "Invalid operation " + operator.image + " between " +
-                        leftToken.getClass().getName() + " and " +
-                        rightToken.getClass().getName());
+                throw new IllegalActionException("Invalid operation "
+                    + operator.image + " between "
+                    + leftToken.getClass().getName() + " and "
+                    + rightToken.getClass().getName());
             }
 
             if (((BooleanToken) result).booleanValue()) {
@@ -409,27 +419,30 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             } else {
                 _relationType = 2;
             }
-            _difference = ((ScalarToken)leftScalar.subtract(rightScalar)).doubleValue();
+
+            _difference = ((ScalarToken) leftScalar.subtract(rightScalar))
+                .doubleValue();
         }
+
         _evaluatedChildToken = result;
 
         if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
         } else {
-            _relationList.setRelation(_relationIndex, _relationType,
-                    _difference);
+            _relationList.setRelation(_relationIndex, _relationType, _difference);
         }
 
         _relationIndex++;
+
         if (_relationIndex >= _relationList.length()) {
             _relationIndex -= _relationList.length();
         }
+
         return;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The list of discrete variables without values.
     private LinkedList _absentDiscreteVariables;
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
@@ -33,8 +32,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditableChoiceStyle
+
 /**
    This attribute annotates user settable attributes to specify
    an editable combobox style for configuring the containing attribute.
@@ -58,9 +59,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class EditableChoiceStyle extends ChoiceStyle {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -81,7 +80,7 @@ public class EditableChoiceStyle extends ChoiceStyle {
      *   an attribute already in the container.
      */
     public EditableChoiceStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _isEditable = true;
     }

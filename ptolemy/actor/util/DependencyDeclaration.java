@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
 
 import java.util.List;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DependencyDeclaration
+
 /**
    An instance of DependencyDeclaration is an attribute that declares
    variable dependence information of a parameter.  This attribute is
@@ -58,7 +59,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.actor.util.ConstVariableModelAnalysis
 */
 public class DependencyDeclaration extends Attribute {
-
     /** Construct an DependencyDeclaration attribute in the given
      *  container with the given name. The container argument must not
      *  be null, or a NullPointerException will be thrown.  If the
@@ -74,7 +74,7 @@ public class DependencyDeclaration extends Attribute {
      *   an entity with the specified name.
      */
     public DependencyDeclaration(Variable container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }
@@ -99,13 +99,12 @@ public class DependencyDeclaration extends Attribute {
         if (dependents == null) {
             throw new RuntimeException("Attempt to set dependents to null!");
         }
+
         _dependents = dependents;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The declared dependents.
     private List _dependents;
-
 }

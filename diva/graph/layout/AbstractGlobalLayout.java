@@ -25,6 +25,7 @@
 */
 package diva.graph.layout;
 
+
 /**
  * An abstract implementation of the GlobalLayout interface.
  *
@@ -33,7 +34,6 @@ package diva.graph.layout;
  * @Pt.AcceptedRating Red
  */
 public abstract class AbstractGlobalLayout implements GlobalLayout {
-
     LayoutTarget _layoutTarget;
 
     /** Create a new global layout that uses the given layout target.
@@ -60,5 +60,3 @@ public abstract class AbstractGlobalLayout implements GlobalLayout {
      */
     public abstract void layout(Object composite);
 }
-
-

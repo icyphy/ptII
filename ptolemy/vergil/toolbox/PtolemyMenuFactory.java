@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.util.Collections;
@@ -39,8 +38,10 @@ import diva.graph.GraphController;
 import diva.gui.toolbox.JContextMenu;
 import diva.gui.toolbox.MenuFactory;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyMenuFactory
+
 /**
    A menu factory that contains a list of item factories.
    When asked to create a context menu, This class first
@@ -59,7 +60,6 @@ import diva.gui.toolbox.MenuFactory;
    @Pt.AcceptedRating Red (johnr)
 */
 public class PtolemyMenuFactory implements MenuFactory {
-
     /** Create a new menu factory that contains no menu item factories.
      */
     public PtolemyMenuFactory(GraphController controller) {
@@ -82,13 +82,19 @@ public class PtolemyMenuFactory implements MenuFactory {
      */
     public JContextMenu create(Figure figure) {
         NamedObj object = _getObjectFromFigure(figure);
-        if (object == null) return null;
+
+        if (object == null) {
+            return null;
+        }
+
         JContextMenu menu = new JContextMenu(object, object.getFullName());
         Iterator i = menuItemFactoryList().iterator();
+
         while (i.hasNext()) {
-            MenuItemFactory factory = (MenuItemFactory)i.next();
+            MenuItemFactory factory = (MenuItemFactory) i.next();
             factory.create(menu, object);
         }
+
         return menu;
     }
 
@@ -122,7 +128,7 @@ public class PtolemyMenuFactory implements MenuFactory {
      */
     protected NamedObj _getObjectFromFigure(Figure figure) {
         Object object = figure.getUserObject();
-        return (NamedObj)_controller.getGraphModel().getSemanticObject(object);
+        return (NamedObj) _controller.getGraphModel().getSemanticObject(object);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// InternalErrorException
+
 /**
    This exception should be thrown if an unexpected error is encountered
    other than one for which InvalidStateException would be appropriate.
@@ -44,7 +45,6 @@ package ptolemy.kernel.util;
    @Pt.AcceptedRating Green (cxh)
 */
 public class InternalErrorException extends KernelRuntimeException {
-
     /** Construct an exception with a detail message.
      *  @param detail The message.
      */
@@ -81,8 +81,8 @@ public class InternalErrorException extends KernelRuntimeException {
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
-    public InternalErrorException(Nameable object,
-            Throwable cause, String detail) {
+    public InternalErrorException(Nameable object, Throwable cause,
+        String detail) {
         super(object, null, cause, detail);
     }
 }

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Inhibit
+
 /**
    Output a received input token, unless the <i>inhibit</i> port receives a
    token at the same time.  If no token has been received on the <i>input</i>
@@ -66,9 +67,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (neuendor)
    @see ptolemy.domains.de.lib.Sampler
 */
-
 public class Inhibit extends DETransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,7 +77,7 @@ public class Inhibit extends DETransformer {
      *   actor with this name.
      */
     public Inhibit(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
@@ -106,9 +105,8 @@ public class Inhibit extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Inhibit newObject = (Inhibit)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Inhibit newObject = (Inhibit) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -126,6 +124,7 @@ public class Inhibit extends DETransformer {
         if (inhibit.hasToken(0)) {
             // Consume the inhibit token.
             inhibit.get(0);
+
             for (int i = 0; i < input.getWidth(); i++) {
                 while (input.hasToken(i)) {
                     input.get(i);

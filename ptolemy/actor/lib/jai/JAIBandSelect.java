@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIBandSelect
+
 /**
    Copy bands of an image to another image.  The number of bands to copy
    is indicated by the length of the array.  The band to copy is indicated
@@ -60,7 +61,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JAIBandSelect extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,11 +70,11 @@ public class JAIBandSelect extends Transformer {
      *   actor with this name.
      */
     public JAIBandSelect(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        bandIndices =
-            new Parameter(this, "bandIndices", new ArrayToken(_initialArray));
+        bandIndices = new Parameter(this, "bandIndices",
+                new ArrayToken(_initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,12 +92,13 @@ public class JAIBandSelect extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == bandIndices) {
-            Token data[] = ((ArrayToken)bandIndices.getToken()).arrayValue();
+            Token[] data = ((ArrayToken) bandIndices.getToken()).arrayValue();
             _indiceArray = new int[data.length];
+
             for (int i = 0; i < data.length; i++) {
-                _indiceArray[i] = ((IntToken)(data[i])).intValue();
+                _indiceArray[i] = ((IntToken) (data[i])).intValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -110,12 +111,14 @@ public class JAIBandSelect extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
 
         parameters.addSource(oldImage);
         parameters.add(_indiceArray);
+
         RenderedOp newImage = JAI.create("bandSelect", parameters);
         output.send(0, new JAIImageToken(newImage));
     }
@@ -124,10 +127,10 @@ public class JAIBandSelect extends Transformer {
     ////                         private variables                 ////
 
     /** The value of the indice array */
-    private int _indiceArray[];
+    private int[] _indiceArray;
 
     /** An initial array that simply copies a three banded image. */
-    private IntToken _initialArray[] = {new IntToken(0),
-                                        new IntToken(1),
-                                        new IntToken(2)};
+    private IntToken[] _initialArray = {
+            new IntToken(0), new IntToken(1), new IntToken(2)
+        };
 }

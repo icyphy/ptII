@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.data.BooleanToken;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EventFilter
+
 /**
    An actor that filters a stream of Boolean Tokens.  Every true input token
    that it receives is reproduced on the output port.
@@ -50,9 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class EventFilter extends DETransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,7 +61,7 @@ public class EventFilter extends DETransformer {
      *   actor with this name.
      */
     public EventFilter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
@@ -82,7 +81,8 @@ public class EventFilter extends DETransformer {
     public void fire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                BooleanToken token = (BooleanToken)input.get(i);
+                BooleanToken token = (BooleanToken) input.get(i);
+
                 if (token.booleanValue()) {
                     output.send(i, token);
                 }

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -38,8 +37,10 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootField;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FinalFieldUnfinalizer
+
 /**
    The code generator generates fields that are final.  These fields are
    used by the code generator to propagate final information, so that
@@ -55,11 +56,12 @@ import soot.SootField;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
-public class FinalFieldUnfinalizer extends SceneTransformer implements HasPhaseOptions {
+public class FinalFieldUnfinalizer extends SceneTransformer
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
-    private FinalFieldUnfinalizer() {}
+    private FinalFieldUnfinalizer() {
+    }
 
     /* Return the instance of this transformer.
      */
@@ -81,38 +83,24 @@ public class FinalFieldUnfinalizer extends SceneTransformer implements HasPhaseO
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("FinalFieldUnfinalizer.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-            SootClass theClass = (SootClass)i.next();
+                i.hasNext();) {
+            SootClass theClass = (SootClass) i.next();
 
             // Assume that any method that is part of an interface that this
             // object implements, is reachable.
             for (Iterator fields = theClass.getFields().iterator();
-                 fields.hasNext();) {
-                SootField field = (SootField)fields.next();
+                    fields.hasNext();) {
+                SootField field = (SootField) fields.next();
                 field.setModifiers(field.getModifiers() & ~Modifier.FINAL);
             }
         }
     }
 
-    private static FinalFieldUnfinalizer instance =
-    new FinalFieldUnfinalizer();
+    private static FinalFieldUnfinalizer instance = new FinalFieldUnfinalizer();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

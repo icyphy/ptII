@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -55,6 +54,7 @@ import soot.jimple.Stmt;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstructorSpecializer
+
 /**
 
 @author Stephen Neuendorffer
@@ -63,7 +63,8 @@ import soot.jimple.Stmt;
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */
-public class ConstructorSpecializer extends SceneTransformer implements HasPhaseOptions {
+public class ConstructorSpecializer extends SceneTransformer
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private ConstructorSpecializer(CompositeActor model) {
@@ -94,35 +95,34 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("ConstructorSpecializer.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         List modifiedConstructorClassList = new LinkedList();
 
         // Loop over all the classes
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-
+                i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
-            if (SootUtilities.derivesFrom(theClass,
-                        PtolemyUtilities.actorClass) ||
-                    SootUtilities.derivesFrom(theClass,
-                            PtolemyUtilities.compositeActorClass) ||
-                    SootUtilities.derivesFrom(theClass,
-                            PtolemyUtilities.attributeClass)) {
+
+            if (SootUtilities.derivesFrom(theClass, PtolemyUtilities.actorClass)
+                    || SootUtilities.derivesFrom(theClass,
+                        PtolemyUtilities.compositeActorClass)
+                    || SootUtilities.derivesFrom(theClass,
+                        PtolemyUtilities.attributeClass)) {
                 if (theClass.declaresFieldByName(
                             ModelTransformer.getContainerFieldName())) {
                     for (Iterator methods = theClass.getMethods().iterator();
-                         methods.hasNext();) {
-                        SootMethod method = (SootMethod)methods.next();
-                        if (method.getName().equals("<init>") &&
-                                method.getParameterCount() == 2) {
+                            methods.hasNext();) {
+                        SootMethod method = (SootMethod) methods.next();
+
+                        if (method.getName().equals("<init>")
+                                && (method.getParameterCount() == 2)) {
                             // Change the constructor so that it takes an
                             // appropriate container type.
-                            SootField containerField =
-                                theClass.getFieldByName(
-                                        ModelTransformer.getContainerFieldName());
-                            RefType containerType =
-                                (RefType)containerField.getType();
+                            SootField containerField = theClass.getFieldByName(ModelTransformer
+                                    .getContainerFieldName());
+                            RefType containerType = (RefType) containerField
+                                .getType();
                             List typeList = new LinkedList();
                             typeList.add(containerType);
                             typeList.add(RefType.v("java.lang.String"));
@@ -135,31 +135,37 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
 
                             // Replace the parameter refs so THEY have
                             // the right type, too..
-                            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                            JimpleBody body = (JimpleBody) method
+                                .retrieveActiveBody();
 
-                            for (Iterator units = body.getUnits().snapshotIterator();
-                                 units.hasNext();) {
-                                Stmt unit = (Stmt)units.next();
+                            for (Iterator units = body.getUnits()
+                                                      .snapshotIterator();
+                                    units.hasNext();) {
+                                Stmt unit = (Stmt) units.next();
 
                                 if (unit instanceof IdentityStmt) {
-                                    IdentityStmt identityStmt = (IdentityStmt)unit;
+                                    IdentityStmt identityStmt = (IdentityStmt) unit;
                                     Value value = identityStmt.getRightOp();
+
                                     if (value instanceof ParameterRef) {
-                                        ParameterRef parameterRef = (ParameterRef)value;
+                                        ParameterRef parameterRef = (ParameterRef) value;
+
                                         if (parameterRef.getIndex() == 0) {
-                                            ValueBox box = identityStmt.getRightOpBox();
-                                            box.setValue(Jimple.v().newParameterRef(
-                                                                 method.getParameterType(0), 0));
+                                            ValueBox box = identityStmt
+                                                .getRightOpBox();
+                                            box.setValue(Jimple.v()
+                                                               .newParameterRef(method
+                                                    .getParameterType(0), 0));
                                         }
                                     }
                                 }
                             }
                         }
                     }
+
                     // Keep track of the modification, so we know to
                     // modify invocations of that constructor.
                     modifiedConstructorClassList.add(theClass);
-
                 }
             }
         }
@@ -169,6 +175,7 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
         Scene.v().setFastHierarchy(new FastHierarchy());
 
         // Fix the specialInvokes.
+
         /* for (Iterator i = Scene.v().getApplicationClasses().iterator();
            i.hasNext();) {
 
@@ -227,19 +234,6 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
            }
         */
     }
+
     private CompositeActor _model;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

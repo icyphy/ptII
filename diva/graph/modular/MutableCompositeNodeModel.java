@@ -25,6 +25,7 @@
 */
 package diva.graph.modular;
 
+
 /**
  * A graph is an object that contains nodes and
  * edges.  Edges are accessed through the nodes that
@@ -35,6 +36,5 @@ package diva.graph.modular;
  * @Pt.AcceptedRating Red
  */
 public interface MutableCompositeNodeModel extends MutableNodeModel,
-                                                   CompositeModel {
+    CompositeModel {
 }
-

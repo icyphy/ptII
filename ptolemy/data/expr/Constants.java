@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.Hashtable;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Constants
+
 /**
    A table of named constants that are recognized by the expression parser.
    <p>
@@ -65,11 +66,10 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (liuxj)
    @see ptolemy.data.expr.PtParser
 */
-
 public class Constants {
-
     // There is no need to create an instance of this class.
-    private Constants() {}
+    private Constants() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -93,7 +93,6 @@ public class Constants {
     public static RecordToken constants() {
         // This should be called toString(), but we cannot have a static
         // toString() because Object.toString() is not static.
-
         // NOTE: Construct these arrays rather than using keySet()
         // and values() because we have no assurance that those will
         // return the contents in the same order.
@@ -102,12 +101,14 @@ public class Constants {
         ptolemy.data.Token[] values = new ptolemy.data.Token[size];
         Iterator keys = _table.keySet().iterator();
         int i = 0;
+
         while (keys.hasNext()) {
-            String key = (String)keys.next();
+            String key = (String) keys.next();
             names[i] = key;
-            values[i] = (ptolemy.data.Token)_table.get(key);
+            values[i] = (ptolemy.data.Token) _table.get(key);
             i++;
         }
+
         try {
             return new RecordToken(names, values);
         } catch (IllegalActionException ex) {
@@ -121,7 +122,7 @@ public class Constants {
      *   if there is no constant with the given name in the table.
      */
     public static ptolemy.data.Token get(String name) {
-        return (ptolemy.data.Token)_table.get(name);
+        return (ptolemy.data.Token) _table.get(name);
     }
 
     /** Remove the constant with the given name from the table.
@@ -135,13 +136,11 @@ public class Constants {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The hash table containing the named constants.
     private static Hashtable _table = new Hashtable();
 
     ///////////////////////////////////////////////////////////////////
     ////                         static initializer                ////
-
     // Add the default set of named constants to the table.
     static {
         DoubleToken token = new DoubleToken(java.lang.Math.PI);
@@ -150,6 +149,7 @@ public class Constants {
         token = new DoubleToken(java.lang.Math.E);
         _table.put("E", token);
         _table.put("e", token);
+
         ComplexToken i = new ComplexToken(new Complex(0.0, 1.0));
         _table.put("i", i);
         _table.put("j", i);
@@ -161,8 +161,7 @@ public class Constants {
         // but it deals with the fact that Java is not symmetric in how it
         // deals with getting files from the classpath (using getResource)
         // and getting files from the file system.
-        _table.put("CLASSPATH",
-                new StringToken("xxxxxxCLASSPATHxxxxxx"));
+        _table.put("CLASSPATH", new StringToken("xxxxxxCLASSPATHxxxxxx"));
 
         try {
             // StringToken.getProperty() specially handles user.dir.
@@ -174,11 +173,9 @@ public class Constants {
             // -Dptolemy.ptII.dir=${PTII} and
             // StringUtilities.getProperty() does some special munging
             // for ptolemy.ptII.dir
-
             _putProperty("PTII", "ptolemy.ptII.dir");
 
             // See also the ptolemy.ptII.dirAsURL property in StringUtilities.
-
             // Note that TMPDIR almost always ends with a \ or /
             // so usually we refer to it as ${TMPDIR}.
             _putProperty("TMPDIR", "java.io.tmpdir");
@@ -199,10 +196,8 @@ public class Constants {
         _table.put("MinLong", new LongToken(Long.MIN_VALUE));
         _table.put("MaxDouble", new DoubleToken(Double.MAX_VALUE));
         _table.put("MinDouble", new DoubleToken(Double.MIN_VALUE));
-        _table.put("PositiveInfinity",
-                new DoubleToken(Double.POSITIVE_INFINITY));
-        _table.put("NegativeInfinity",
-                new DoubleToken(Double.NEGATIVE_INFINITY));
+        _table.put("PositiveInfinity", new DoubleToken(Double.POSITIVE_INFINITY));
+        _table.put("NegativeInfinity", new DoubleToken(Double.NEGATIVE_INFINITY));
 
         // Type constants.
         _table.put("boolean", BooleanToken.FALSE);
@@ -223,19 +218,17 @@ public class Constants {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Look up a property and add it to the _table.
     // If the property is not available because of a securityException,
     // then ignore the securityException and do nothing.
     private static void _putProperty(String variableName, String property) {
         try {
-            _table.put(variableName, new StringToken(StringUtilities
-                               .getProperty(property)));
+            _table.put(variableName,
+                new StringToken(StringUtilities.getProperty(property)));
         } catch (SecurityException ex) {
             System.out.println("Warning: While trying to set '" + variableName
-                    + "', failed to read '" + property
-                    + "' property "
-                    + "(-sandbox always causes this)");
+                + "', failed to read '" + property + "' property "
+                + "(-sandbox always causes this)");
         }
     }
 }

@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CycleExistenceAnalyzer
+
 /**
    A common interface for all the cycle existence analyzers. Checks if
    the graph under analysis has at least one cycle.
@@ -38,8 +39,7 @@ package ptolemy.graph.analysis.analyzer;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-public interface CycleExistenceAnalyzer  extends GraphAnalyzer {
-
+public interface CycleExistenceAnalyzer extends GraphAnalyzer {
     /** Return true if the graph under analysis has at least one cycle.
      *
      *  @return True if the graph under analysis has at least one cycle.

@@ -36,21 +36,9 @@ import java.util.Map;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.caltrop.actors.CalInterpreter;
-import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ExprEvaluator;
-import caltrop.interpreter.InputPort;
-import caltrop.interpreter.InterpreterException;
-import caltrop.interpreter.SingleInputPort;
-import caltrop.interpreter.SingleOutputPort;
 import caltrop.interpreter.ast.Action;
 import caltrop.interpreter.ast.Actor;
 import caltrop.interpreter.ast.AttributeKeys;
@@ -58,10 +46,8 @@ import caltrop.interpreter.ast.Decl;
 import caltrop.interpreter.ast.Expression;
 import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.ast.OutputExpression;
-import caltrop.interpreter.ast.PortDecl;
 import caltrop.interpreter.environment.Environment;
 import caltrop.interpreter.util.PriorityUtil;
-import caltrop.interpreter.util.Utility;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFJava

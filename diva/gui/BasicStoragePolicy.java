@@ -30,6 +30,7 @@ import java.net.URL;
 
 import javax.swing.JFileChooser;
 
+
 /**
  * A StoragePolicy that doesn't really check for correct operation.
  * This is a simple policy that simply closes modified documents
@@ -39,12 +40,11 @@ import javax.swing.JFileChooser;
  * @version $Id$
  */
 public class BasicStoragePolicy extends AbstractStoragePolicy {
-
     /** Close the document. Forward the request to the document.  Do
      * nothing if the document is null. Always return true, unless an
      * I/O exception occurs.
      */
-    public boolean close (Document d) {
+    public boolean close(Document d) {
         if (d != null) {
             try {
                 d.close();
@@ -53,6 +53,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -61,13 +62,14 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
      * document if one was created, otherwise null.  If the file
      * exists, then remember it for the next call to getDirectory.
      */
-    public Document open (Application app) {
+    public Document open(Application app) {
         String dir = getDirectory();
         JFileChooser fc = new JFileChooser(dir);
         int result;
         Document doc;
 
         result = fc.showOpenDialog(app.getAppContext().makeComponent());
+
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 doc = this.open(fc.getSelectedFile(), app);
@@ -75,6 +77,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
                 app.showError("open", e);
                 return null;
             }
+
             return doc;
         } else {
             return null;
@@ -85,8 +88,9 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
      * document if one was created, otherwise null.  If the file
      * exists, then remember it for the next call to getDirectory.
      */
-    public Document open (File file, Application app) {
+    public Document open(File file, Application app) {
         Document doc;
+
         try {
             setDirectory(file);
             doc = app.getDocumentFactory().createDocument(app, file);
@@ -95,14 +99,16 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
             app.showError("open", e);
             return null;
         }
+
         return doc;
     }
 
     /** Open a URL and create a new document. Return the new document
      * if one was created, otherwise null.
      */
-    public Document open (URL url, Application app) {
+    public Document open(URL url, Application app) {
         Document doc;
+
         try {
             doc = app.getDocumentFactory().createDocument(app, url);
             doc.open();
@@ -110,6 +116,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
             app.showError("open", e);
             return null;
         }
+
         return doc;
     }
 
@@ -117,7 +124,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
      * nothing if the document is null. Always return true, unless an
      * I/O exception occurred.
      */
-    public boolean save (Document d) {
+    public boolean save(Document d) {
         if (d != null) {
             try {
                 d.save();
@@ -126,6 +133,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -134,7 +142,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
      * the document's file object.  Do nothing if the document is
      * null. Return true if successful, otherwise false.
      */
-    public boolean saveAs (Document d) {
+    public boolean saveAs(Document d) {
         if (d != null) {
             String dir = getDirectory();
             JFileChooser fc = new JFileChooser(dir);
@@ -142,6 +150,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
             Application app = d.getApplication();
 
             result = fc.showOpenDialog(app.getAppContext().makeComponent());
+
             if (result == JFileChooser.APPROVE_OPTION) {
                 try {
                     d.saveAs(fc.getSelectedFile());
@@ -150,13 +159,13 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
                     d.getApplication().showError("saveAs", e);
                     return false;
                 }
+
                 return true;
             } else {
                 return false;
             }
         }
+
         return true;
     }
 }
-
-

@@ -28,7 +28,6 @@
 
 
 */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -129,21 +128,21 @@ public class CompositeFigureTutorial {
 
     /** Create a JCanvas and put it into a window.
      */
-    public CompositeFigureTutorial () {
+    public CompositeFigureTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
         layer = graphicsPane.getForegroundLayer();
         controller = new BasicController(graphicsPane);
         defaultInteractor = controller.getSelectionInteractor();
 
         BasicFrame frame = new BasicFrame("Composite figure tutorial", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
     }
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -157,10 +156,9 @@ public class CompositeFigureTutorial {
 
     /** Create a composite figure that does not have a background
      */
-    public void createCompositeFigure () {
+    public void createCompositeFigure() {
         CompositeFigure tc = new CompositeFigure();
-        Figure bg = new BasicRectangle(100.0, 100.0, 100.0, 100.0,
-                Color.green);
+        Figure bg = new BasicRectangle(100.0, 100.0, 100.0, 100.0, Color.green);
         tc.add(bg);
         layer.add(tc);
         tc.setInteractor(defaultInteractor);
@@ -170,28 +168,30 @@ public class CompositeFigureTutorial {
     /** Create a composite figure that uses the background facility.
      * Generally, for figures of this nature, this is a better thing to do.
      */
-    public void createBackgroundedCompositeFigure () {
+    public void createBackgroundedCompositeFigure() {
         CompositeFigure tc = new CompositeFigure();
-        Figure bg = new BasicRectangle(100.0, 100.0, 100.0, 100.0,
-                Color.blue);
+        Figure bg = new BasicRectangle(100.0, 100.0, 100.0, 100.0, Color.blue);
         tc.setBackgroundFigure(bg);
         layer.add(tc);
         tc.setInteractor(defaultInteractor);
         addPorts(tc);
-        tc.translate(200.0,0);
+        tc.translate(200.0, 0);
     }
 
     /** Utility function to add the "ports" to the composite figure.
      */
-    public void addPorts (CompositeFigure tc) {
+    public void addPorts(CompositeFigure tc) {
         Figure p1 = new BasicEllipse(150.0, 100.0, 20.0, 20.0, Color.red);
-        p1.translate(-10,-10);
+        p1.translate(-10, -10);
+
         Figure p2 = new BasicEllipse(200.0, 150.0, 20.0, 20.0, Color.blue);
-        p2.translate(-10,-10);
+        p2.translate(-10, -10);
+
         Figure p3 = new BasicEllipse(150.0, 200.0, 20.0, 20.0, Color.yellow);
-        p3.translate(-10,-10);
+        p3.translate(-10, -10);
+
         Figure p4 = new BasicEllipse(100.0, 150.0, 20.0, 20.0, Color.magenta);
-        p4.translate(-10,-10);
+        p4.translate(-10, -10);
 
         tc.add(p1);
         tc.add(p2);
@@ -204,5 +204,3 @@ public class CompositeFigureTutorial {
         p4.setInteractor(defaultInteractor);
     }
 }
-
-

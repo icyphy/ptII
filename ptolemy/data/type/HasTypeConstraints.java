@@ -26,13 +26,14 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.type;
 
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HasTypeConstraints
+
 /**
    Interface for objects that have type constraints.  Type constraints
    are represented as inequalities between Typeable objects.
@@ -44,7 +45,6 @@ import java.util.List;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.graph.InequalityTerm
 */
-
 public interface HasTypeConstraints {
     /** Return the type constraints of this object.
      *  The constraints are a list of inequalities.

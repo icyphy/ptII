@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.Graphics2D;
@@ -34,6 +33,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import diva.canvas.interactor.Interactor;
+
 
 /** AbstractFigure is an abstract superclass implementing
  * the Figure interface. Each subclass is assumed to have some
@@ -47,7 +47,6 @@ import diva.canvas.interactor.Interactor;
  * @Pt.AcceptedRating Yellow
  */
 public abstract class AbstractFigure implements Figure {
-
     /** The interactor
      */
     private Interactor _interactor = null;
@@ -72,7 +71,7 @@ public abstract class AbstractFigure implements Figure {
      *  This default implementation
      *  tests using the figure's shape.
      */
-    public boolean contains (Point2D p) {
+    public boolean contains(Point2D p) {
         return getShape().contains(p);
     }
 
@@ -80,14 +79,14 @@ public abstract class AbstractFigure implements Figure {
      * implementation returns the bounding box of the figure's
      * outline shape.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         return getShape().getBounds2D();
     }
 
     /** Return the interactor of this figure. Return
      *  null if there isn't one.
      */
-    public Interactor getInteractor () {
+    public Interactor getInteractor() {
         return _interactor;
     }
 
@@ -95,7 +94,7 @@ public abstract class AbstractFigure implements Figure {
      * Returns null if this figure is not in a layer, either
      * directly or as one of its ancestors.
      */
-    public CanvasLayer getLayer () {
+    public CanvasLayer getLayer() {
         if (_parent == null) {
             return null;
         } else if (_parent instanceof CanvasLayer) {
@@ -113,7 +112,7 @@ public abstract class AbstractFigure implements Figure {
      *  @see #getBounds()
      *  @return The origin of the figure.
      */
-    public Point2D getOrigin () {
+    public Point2D getOrigin() {
         Rectangle2D bounds = getBounds();
         return new Point2D.Double(bounds.getCenterX(), bounds.getCenterY());
     }
@@ -123,7 +122,7 @@ public abstract class AbstractFigure implements Figure {
      *  can exist, but it will not be displayed, as it must be in a
      *  layer for the figure canvas to ever call its paint method.)
      */
-    public CanvasComponent getParent () {
+    public CanvasComponent getParent() {
         return _parent;
     }
 
@@ -132,14 +131,14 @@ public abstract class AbstractFigure implements Figure {
      * method, provided  here since a number of other concrete
      * methods use it.
      */
-    public abstract Shape getShape ();
+    public abstract Shape getShape();
 
     /** Return the transform context of the figure. This default
      * implementation assumes that the figure does not implement
      * a transform context, so just calls the same method on its
      * parent. If it has no parent, return null.
      */
-    public TransformContext getTransformContext () {
+    public TransformContext getTransformContext() {
         if (_parent == null) {
             return null;
         } else {
@@ -150,14 +149,14 @@ public abstract class AbstractFigure implements Figure {
     /** Return the tooltip string for this figure, or null if the figure
      *  does not have a tooltip.
      */
-    public String getToolTipText () {
+    public String getToolTipText() {
         return _toolTipText;
     }
 
     /** Get the user object of this figure. Return null if
      *  there is none.
      */
-    public Object getUserObject () {
+    public Object getUserObject() {
         return _userObject;
     }
 
@@ -168,17 +167,18 @@ public abstract class AbstractFigure implements Figure {
      *  This default implementation is the same as <b>intersects</b>
      *  if the figure is visible.
      */
-    public boolean hit (Rectangle2D r) {
+    public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
         }
+
         return intersects(r);
     }
 
     /** Test if this figure intersects the given rectangle. This default
      *  implementation uses the figure's outline shape.
      */
-    public boolean intersects (Rectangle2D r) {
+    public boolean intersects(Rectangle2D r) {
         return getShape().intersects(r);
     }
 
@@ -186,7 +186,7 @@ public abstract class AbstractFigure implements Figure {
      *  does not indicate whether the figure is actually visible on
      *  the screen, as one if its ancestors may not be visible.
      */
-    public boolean isVisible () {
+    public boolean isVisible() {
         return _visibility;
     }
 
@@ -201,14 +201,14 @@ public abstract class AbstractFigure implements Figure {
      *  the graphics context, such as the stroke and fill, do not need
      *  to be preserved.
      */
-    public abstract void paint (Graphics2D g);
+    public abstract void paint(Graphics2D g);
 
     /** Repaint the figure in the given rectangle. This default
      *  implementation repaints the whole figure. Subclasses should
      *  consider overriding this method to optimize redraw. See the
      *  documentation of the one-argument version of this method.
      */
-    public void paint (Graphics2D g, Rectangle2D r) {
+    public void paint(Graphics2D g, Rectangle2D r) {
         paint(g);
     }
 
@@ -220,11 +220,10 @@ public abstract class AbstractFigure implements Figure {
      * need to override this method if they need to damage a region that
      * is different from the bounding box.
      */
-    public void repaint () {
+    public void repaint() {
         if (_parent != null) {
             repaint(DamageRegion.createDamageRegion(
-                            _parent.getTransformContext(),
-                            getBounds()));
+                    _parent.getTransformContext(), getBounds()));
         }
     }
 
@@ -233,7 +232,7 @@ public abstract class AbstractFigure implements Figure {
      * forwards the damage region to this figure's parent. See the
      * nullary version of this method.
      */
-    public void repaint (DamageRegion d) {
+    public void repaint(DamageRegion d) {
         if (_parent != null) {
             _parent.repaint(d);
         }
@@ -243,7 +242,7 @@ public abstract class AbstractFigure implements Figure {
      *  interactor given to it, it will respond to events
      *  on the figure canvas.
      */
-    public void setInteractor (Interactor interactor) {
+    public void setInteractor(Interactor interactor) {
         _interactor = interactor;
     }
 
@@ -254,9 +253,11 @@ public abstract class AbstractFigure implements Figure {
      * reference of the figure if necessary. This method is intended only
      * for use by classes that implement FigureContainer.
      */
-    public void setParent (CanvasComponent fc) {
+    public void setParent(CanvasComponent fc) {
         _parent = fc;
+
         TransformContext c = getTransformContext();
+
         if (c != null) {
             c.invalidateCache();
         }
@@ -265,14 +266,14 @@ public abstract class AbstractFigure implements Figure {
     /** Set the user object. This object is intended for use as a
      * reference to the semantic model.
      */
-    public void setUserObject (Object o) {
+    public void setUserObject(Object o) {
         _userObject = o;
     }
 
     /** Set the tooltip string for this figure.  If the string is null, then
      *  the figure will not have a tooltip.
      */
-    public void setToolTipText (String s) {
+    public void setToolTipText(String s) {
         _toolTipText = s;
     }
 
@@ -280,7 +281,7 @@ public abstract class AbstractFigure implements Figure {
      *  then the figure will not be drawn on the screen and it will
      *  not respond to user input events.
      */
-    public void setVisible (boolean flag) {
+    public void setVisible(boolean flag) {
         _visibility = flag;
     }
 
@@ -288,16 +289,14 @@ public abstract class AbstractFigure implements Figure {
      * be used to perform arbitrary translation, scaling, shearing, and
      * rotation operations.
      */
-    public abstract void transform (AffineTransform at);
+    public abstract void transform(AffineTransform at);
 
     /** Move the figure the indicated distance. The default
      *  implementation uses the <b>transform</b> method, so
      *  most subclasses can probably implement this more
      *  efficiently.
      */
-    public void translate (double x, double y) {
-        transform(AffineTransform.getTranslateInstance(x,y));
+    public void translate(double x, double y) {
+        transform(AffineTransform.getTranslateInstance(x, y));
     }
 }
-
-

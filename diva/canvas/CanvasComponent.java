@@ -24,8 +24,8 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
+
 
 /** A CanvasComponent is an object that can be inserted into the
  * display tree of a JCanvas. The tree is rooted by an instance of
@@ -37,29 +37,26 @@ package diva.canvas;
  * @Pt.AcceptedRating Yellow
  */
 public interface CanvasComponent {
-
     /** Return the parent of this component. Return null if the component
      *  does not have a parent.
      */
-    public CanvasComponent getParent ();
+    public CanvasComponent getParent();
 
     /** Return the transform context of the component. If the component
      * has its own transform context, this method should return it,
      * otherwise it should return the transform context of its parent.
      */
-    public TransformContext getTransformContext ();
+    public TransformContext getTransformContext();
 
     /** Schedule a repaint of the component. This should be called after
      *  performing modifications on the component.
      */
-    public void repaint ();
+    public void repaint();
 
     /** Accept notification that a repaint has occurred somewhere
      * in the tree below this component. The component must
      * clear any cached data that depends on its children and
      * forward the notification upwards.
      */
-    public void repaint (DamageRegion d);
+    public void repaint(DamageRegion d);
 }
-
-

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.gui;
 
 import java.net.URL;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EffigyFactory
+
 /**
    A configuration contains an instance of this class, and uses it to create
    effigies from a URL, or to create blank effigies of a particular kind.
@@ -57,7 +58,6 @@ import ptolemy.kernel.util.Workspace;
    @see Effigy
 */
 public class EffigyFactory extends CompositeEntity {
-
     /** Create a factory in the specified workspace.
      *  @param workspace The workspace.
      */
@@ -74,7 +74,7 @@ public class EffigyFactory extends CompositeEntity {
      *   an entity already in the container.
      */
     public EffigyFactory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -90,10 +90,15 @@ public class EffigyFactory extends CompositeEntity {
      */
     public boolean canCreateBlankEffigy() {
         Iterator factories = entityList(EffigyFactory.class).iterator();
+
         while (factories.hasNext()) {
-            EffigyFactory factory = (EffigyFactory)factories.next();
-            if (factory.canCreateBlankEffigy()) return true;
+            EffigyFactory factory = (EffigyFactory) factories.next();
+
+            if (factory.canCreateBlankEffigy()) {
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -108,7 +113,8 @@ public class EffigyFactory extends CompositeEntity {
      *   factories is incompatible with the specified container, or a name
      *   duplication occurs.
      */
-    public Effigy createEffigy(CompositeEntity container) throws Exception {
+    public Effigy createEffigy(CompositeEntity container)
+        throws Exception {
         return createEffigy(container, null, null);
     }
 
@@ -129,13 +135,15 @@ public class EffigyFactory extends CompositeEntity {
      *   is malformed in some way.
      */
     public Effigy createEffigy(CompositeEntity container, URL base, URL in)
-            throws Exception {
+        throws Exception {
         Effigy effigy = null;
         Iterator factories = entityList(EffigyFactory.class).iterator();
-        while (factories.hasNext() && effigy == null) {
-            EffigyFactory factory = (EffigyFactory)factories.next();
+
+        while (factories.hasNext() && (effigy == null)) {
+            EffigyFactory factory = (EffigyFactory) factories.next();
             effigy = factory.createEffigy(container, base, in);
         }
+
         return effigy;
     }
 
@@ -150,9 +158,13 @@ public class EffigyFactory extends CompositeEntity {
     public static String getExtension(URL url) {
         String filename = url.getFile();
         int index = filename.lastIndexOf(".");
-        if (index < 0) return "";
+
+        if (index < 0) {
+            return "";
+        }
+
         try {
-            return filename.substring(index+1);
+            return filename.substring(index + 1);
         } catch (IndexOutOfBoundsException ex) {
             return "";
         }

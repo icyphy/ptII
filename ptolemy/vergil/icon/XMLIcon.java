@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.io.Reader;
@@ -50,8 +49,10 @@ import diva.util.xml.XmlDocument;
 import diva.util.xml.XmlElement;
 import diva.util.xml.XmlReader;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// XMLIcon
+
 /**
    An icon is a visual representation of an entity. Three such visual
    representations are supported here.  A background figure is returned
@@ -77,7 +78,6 @@ import diva.util.xml.XmlReader;
    @Pt.AcceptedRating Red (johnr)
 */
 public class XMLIcon extends DynamicEditorIcon implements ValueListener {
-
     /** Construct an icon in the specified workspace and name.
      *  This constructor is typically used in conjunction with
      *  setContainerToBe() and createFigure() to create an icon
@@ -92,8 +92,9 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *   a period.
      */
     public XMLIcon(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace, name);
+
         try {
             setName(name);
         } catch (NameDuplicationException ex) {
@@ -107,7 +108,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @param name The name of this attribute.
      */
     public XMLIcon(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _paintedList = null;
         _description = null;
@@ -124,9 +125,8 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        XMLIcon newObject = (XMLIcon)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        XMLIcon newObject = (XMLIcon) super.clone(workspace);
         newObject._paintedList = null;
         newObject._description = null;
         newObject._smallIconDescription = null;
@@ -138,12 +138,11 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @return A figure for this icon.
      */
     public Figure createBackgroundFigure() {
-
         // Get the description.
-        NamedObj container = (NamedObj)getContainerOrContainerToBe();
-        ConfigurableAttribute description =
-            (ConfigurableAttribute)container.getAttribute(
-                    "_iconDescription");
+        NamedObj container = (NamedObj) getContainerOrContainerToBe();
+        ConfigurableAttribute description = (ConfigurableAttribute) container
+            .getAttribute("_iconDescription");
+
         // If the description has changed...
         if (_description != description) {
             if (_description != null) {
@@ -188,16 +187,19 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         if (_iconCache != null) {
             return _iconCache;
         }
+
         // No cached object, so rerender the icon.
         // Get the description.
-        NamedObj container = (NamedObj)getContainerOrContainerToBe();
-        ConfigurableAttribute description =
-            (ConfigurableAttribute)container.getAttribute(
-                    "_smallIconDescription");
+        NamedObj container = (NamedObj) getContainerOrContainerToBe();
+        ConfigurableAttribute description = (ConfigurableAttribute) container
+            .getAttribute("_smallIconDescription");
+
         // If there is no separate small icon description, return
         // a scaled version of the background figure, as done by the base
         // class.
-        if (description == null) return super.createIcon();
+        if (description == null) {
+            return super.createIcon();
+        }
 
         // If the description has changed...
         if (_smallIconDescription != description) {
@@ -206,29 +208,35 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
                 // was a previous description.
                 _smallIconDescription.removeValueListener(this);
             }
+
             _smallIconDescription = description;
 
             // Listen for changes in value to the icon description.
             _smallIconDescription.addValueListener(this);
         }
+
         // clear the caches
         _recreateFigure();
 
         // Update the painted list, if necessary
         Figure figure;
+
         try {
             String text = _smallIconDescription.value();
             Reader in = new StringReader(text);
+
             // NOTE: Do we need a base here?
-            XmlDocument document = new XmlDocument((URL)null);
+            XmlDocument document = new XmlDocument((URL) null);
             XmlReader reader = new XmlReader();
             reader.parse(document, in);
+
             XmlElement root = document.getRoot();
             PaintedList paintedList = SVGParser.createPaintedList(root);
             figure = new PaintedFigure(paintedList);
         } catch (Exception ex) {
             return super.createIcon();
         }
+
         // NOTE: The size is hardwired here.  Should it be?
         // The second to last argument specifies the border.
         // The last says to turn anti-aliasing on.
@@ -244,6 +252,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         if (_paintedList == null) {
             _updatePaintedList();
         }
+
         return _paintedList;
     }
 
@@ -251,6 +260,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      */
     public String toString() {
         String str = super.toString() + "(";
+
         // FIXME: Something is missing here.
         return str + ")";
     }
@@ -261,7 +271,8 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @param settable The object that has changed value.
      */
     public void valueChanged(Settable settable) {
-        String name = ((Nameable)settable).getName();
+        String name = ((Nameable) settable).getName();
+
         if (name.equals("_iconDescription")
                 || name.equals("_smallIconDescription")) {
             _recreateFigure();
@@ -285,14 +296,20 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      */
     protected String _description(int detail, int indent, int bracket) {
         String result = "";
-        if (bracket == 0)
+
+        if (bracket == 0) {
             result += super._description(detail, indent, 0);
-        else
+        } else {
             result += super._description(detail, indent, 1);
+        }
+
         result += " graphics {\n";
         result += "FIXME";
-        result += _getIndentPrefix(indent) + "}";
-        if (bracket == 2) result += "}";
+        result += (_getIndentPrefix(indent) + "}");
+
+        if (bracket == 2) {
+            result += "}";
+        }
 
         return result;
     }
@@ -319,13 +336,16 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
             _paintedList = null;
             return;
         }
+
         try {
             String text = _description.value();
             Reader in = new StringReader(text);
+
             // FIXME: Do we need a base here?
-            XmlDocument document = new XmlDocument((URL)null);
+            XmlDocument document = new XmlDocument((URL) null);
             XmlReader reader = new XmlReader();
             reader.parse(document, in);
+
             XmlElement root = document.getRoot();
 
             _paintedList = SVGParser.createPaintedList(root);
@@ -337,7 +357,6 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The list of painted objects contained in this icon.
     private PaintedList _paintedList;
 

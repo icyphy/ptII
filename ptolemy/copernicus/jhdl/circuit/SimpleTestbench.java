@@ -24,29 +24,31 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
+
+import byucc.jhdl.Logic.*;
 
 import byucc.jhdl.base.Cell;
 import byucc.jhdl.base.HWSystem;
 import byucc.jhdl.base.TestBench;
-import byucc.jhdl.Logic.*;
 
-import java.util.*;
+import soot.*;
 
-import ptolemy.copernicus.jhdl.soot.*;
-import ptolemy.copernicus.jhdl.util.*;
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.*;
-import soot.jimple.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * A simple empty JHDL Testbench. Will be modified by JHDLActorTestbench.
  *
@@ -56,11 +58,8 @@ import soot.jimple.*;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class SimpleTestbench extends Logic implements TestBench {
-
     public SimpleTestbench(HWSystem parent, String name) {
-        super(parent,name);
+        super(parent, name);
     }
-
 }

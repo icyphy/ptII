@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.string;
-
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.parameters.PortParameter;
@@ -37,12 +35,13 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringSubstring
+
 /**
    Output a substring of the string provided at the input.  The position of the
    substring within the input string is determined by the <i>start</i> and
@@ -59,9 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Green (net)
 @Pt.AcceptedRating Green (net)
 */
-
 public class StringSubstring extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +68,7 @@ public class StringSubstring extends Transformer {
      *   actor with this name.
      */
     public StringSubstring(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create new parameters and ports.
@@ -79,14 +76,12 @@ public class StringSubstring extends Transformer {
         start = new PortParameter(this, "start");
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
-        (new SingletonParameter(start.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(start.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         stop = new PortParameter(this, "stop");
         stop.setExpression("0");
         stop.setTypeEquals(BaseType.INT);
-        (new SingletonParameter(start.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(start.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         input.setTypeEquals(BaseType.STRING);
         output.setTypeEquals(BaseType.STRING);
@@ -123,18 +118,20 @@ public class StringSubstring extends Transformer {
         super.fire();
         start.update();
         stop.update();
+
         if (input.hasToken(0)) {
-            StringToken inputToken = (StringToken)input.get(0);
+            StringToken inputToken = (StringToken) input.get(0);
             String value = inputToken.stringValue();
-            int startValue = ((IntToken)start.getToken()).intValue();
-            int stopValue = ((IntToken)stop.getToken()).intValue();
+            int startValue = ((IntToken) start.getToken()).intValue();
+            int stopValue = ((IntToken) stop.getToken()).intValue();
             String substringValue;
+
             if (stopValue == -1) {
                 substringValue = value.substring(startValue);
             } else {
-                substringValue = value.substring(startValue,
-                        stopValue);
+                substringValue = value.substring(startValue, stopValue);
             }
+
             output.send(0, new StringToken(substringValue));
         }
     }

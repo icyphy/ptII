@@ -30,8 +30,10 @@ import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeFreeVariableCollector
+
 /**
    This class visits parse trees and collects the set of free variables
    in the expression.  Generally speaking, free variables are any lone
@@ -45,9 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.data.expr.ASTPtRootNode
 */
-
 public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -56,12 +56,12 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
      *  @return A set of strings.
      */
     public Set collectFreeVariables(ASTPtRootNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         return collectFreeVariables(node, null);
     }
 
     public Set collectFreeVariables(ASTPtRootNode node, ParserScope scope)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Set set = new HashSet();
         _set = set;
         _scope = scope;
@@ -72,74 +72,85 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
     }
 
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
-        node.getExpressionTree().visit(this);
-        _set.removeAll(node.getArgumentNameList());
-    }
-    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
 
-    public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException {
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
+        throws IllegalActionException {
+        _visitAllChildren(node);
+    }
+
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+        throws IllegalActionException {
+        node.getExpressionTree().visit(this);
+        _set.removeAll(node.getArgumentNameList());
+    }
+
+    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
+        throws IllegalActionException {
+        _visitAllChildren(node);
+    }
+
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
+
         _set.add(node.getName());
     }
 
     public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
+
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
+
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
+
     public void visitPowerNode(ASTPtPowerNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
+
     public void visitProductNode(ASTPtProductNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
+
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
+
     public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
+
     public void visitShiftNode(ASTPtShiftNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
-    public void visitSumNode(ASTPtSumNode node)
-            throws IllegalActionException {
+
+    public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _visitAllChildren(node);
     }
+
     public void visitUnaryNode(ASTPtUnaryNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
     }
 
@@ -148,8 +159,7 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
 
     /** Test if the given identifier is valid.
      */
-    protected boolean _isValidName(String name)
-            throws IllegalActionException {
+    protected boolean _isValidName(String name) throws IllegalActionException {
         if (_scope != null) {
             try {
                 return (_scope.getType(name) != null);
@@ -166,8 +176,9 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
      *  value to be determined.
      */
     protected void _visitAllChildren(ASTPtRootNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
+
         for (int i = 0; i < numChildren; i++) {
             _visitChild(node, i);
         }
@@ -177,14 +188,13 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
      *  This is usually called while visiting the given node.
      */
     protected void _visitChild(ASTPtRootNode node, int i)
-            throws IllegalActionException {
-        ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+        throws IllegalActionException {
+        ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
         child.visit(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected ParserScope _scope;
     protected Set _set;
 }

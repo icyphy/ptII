@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParameterEditorStyle
+
 /**
    This attribute annotates user settable attributes to specify the style
    used for configuring the containing attribute.
@@ -54,9 +55,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public abstract class ParameterEditorStyle extends Attribute {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -87,7 +86,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *   an attribute already in the container.
      */
     public ParameterEditorStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -113,7 +112,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *   has a value that cannot be edited using this style.
      */
     public abstract void addEntry(PtolemyQuery query)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Override the base class to first check that the container is
      *  an instance of Settable.
@@ -127,8 +126,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         // We want this check, but here is not the place.
         //     if (container != null && !(container instanceof Settable)) {
         //    throw new IllegalActionException(this, container,

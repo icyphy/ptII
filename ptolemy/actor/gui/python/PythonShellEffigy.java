@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui.python;
 
 import java.net.URL;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PythonShellEffigy
+
 /**
    A representative of an Python expression shell.
 
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (janneck)
 */
 public class PythonShellEffigy extends Effigy {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
@@ -70,7 +70,7 @@ public class PythonShellEffigy extends Effigy {
      *   an entity already in the container.
      */
     public PythonShellEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -85,13 +85,13 @@ public class PythonShellEffigy extends Effigy {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        PythonShellEffigy newObject
-            = (PythonShellEffigy)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PythonShellEffigy newObject = (PythonShellEffigy) super.clone(workspace);
+
         if (_model != null) {
-            newObject._model = (NamedObj)_model.clone(new Workspace());
+            newObject._model = (NamedObj) _model.clone(new Workspace());
         }
+
         return newObject;
     }
 
@@ -104,10 +104,10 @@ public class PythonShellEffigy extends Effigy {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Initialization.
     private void _init() {
         _model = new NamedObj();
+
         try {
             _model.setName("Python");
             identifier.setExpression("Python Evaluator");
@@ -128,7 +128,6 @@ public class PythonShellEffigy extends Effigy {
     /** A factory for creating new Ptolemy effigies.
      */
     public static class ShellFactory extends PtolemyEffigy.Factory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -138,7 +137,7 @@ public class PythonShellEffigy extends Effigy {
          *   an entity already in the container.
          */
         public ShellFactory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -166,11 +165,10 @@ public class PythonShellEffigy extends Effigy {
          *  @exception Exception If there is some failure.
          *   is malformed in some way.
          */
-        public Effigy createEffigy(
-                CompositeEntity container, URL base, URL input)
-                throws Exception {
-            return new PythonShellEffigy(
-                    container, container.uniqueName("effigy"));
+        public Effigy createEffigy(CompositeEntity container, URL base,
+            URL input) throws Exception {
+            return new PythonShellEffigy(container,
+                container.uniqueName("effigy"));
         }
     }
 }

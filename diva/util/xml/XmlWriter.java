@@ -27,7 +27,6 @@
 // DtdDemo.java: demonstration application showing DTD queries.
 // NO WARRANTY! See README, and copyright below.
 // $Id$
-
 package diva.util.xml;
 
 import java.io.File;
@@ -41,6 +40,7 @@ import com.microstar.xml.XmlParser;
 
 import diva.util.LoggableOp;
 
+
 /**
  * Given a tree of XmlElements, an object of this class generates
  * the equivalent XML into an output stream.
@@ -51,7 +51,6 @@ import diva.util.LoggableOp;
  * @version $Id$
  */
 public class XmlWriter extends LoggableOp {
-
     // The version of XML we are writing -- currently 1.0 only
     private String _xmlVersion = "1.0";
 
@@ -61,7 +60,7 @@ public class XmlWriter extends LoggableOp {
 
     /** Set the XML version string. The default is 1.0.
      */
-    public void setXMLVersion (String v) {
+    public void setXMLVersion(String v) {
         _xmlVersion = v;
     }
 
@@ -69,29 +68,34 @@ public class XmlWriter extends LoggableOp {
      * the document cannot be opened for writing, then an IOException
      * will be thrown.
      */
-    public void write (XmlDocument document) throws IOException {
+    public void write(XmlDocument document) throws IOException {
         Writer out;
         URL url = document.getURL();
+
         if (url != null) {
             if (!url.getProtocol().equals("file")) {
                 throw new IOException("XmlWriter can only write to file:/ URLs");
             }
+
             out = new FileWriter(url.getFile());
         } else {
             File file = document.getFile();
+
             if (file != null) {
                 out = new FileWriter(file);
             } else {
                 throw new IOException("XmlDocument has no URL or File");
             }
         }
+
         write(document, out);
     }
 
     /** Write the given XmlDocument to a given Writer. If an error
      * occurs while writing, then an IOException will be thrown.
      */
-    public void write (XmlDocument document, Writer out) throws IOException {
+    public void write(XmlDocument document, Writer out)
+        throws IOException {
         out.write("<?xml version=\"" + _xmlVersion + "\" standalone=\"no\"?>");
         out.write("\n");
         out.write("<!DOCTYPE " + document.getRoot().getType());
@@ -112,6 +116,7 @@ public class XmlWriter extends LoggableOp {
         } else {
             out.write(" PUBLIC \"" + pubid + "\"\n\t\"" + sysid + "\"");
         }
+
         out.write(">\n\n");
         write(document.getRoot(), out, "");
         out.flush();
@@ -123,19 +128,22 @@ public class XmlWriter extends LoggableOp {
      * @deprecated Use XmlElement.writeXML instead.
      */
     public void write(XmlElement e, Writer out, String prefix)
-            throws IOException {
+        throws IOException {
         e.writeXML(out, prefix);
     }
 
     /** Write the DTD of the given XmlDocument to a given Writer. If an error
      * occurs while writing, then an IOException will be thrown.
      */
-    public void writeDTD (XmlDocument document, Writer out) throws IOException {
+    public void writeDTD(XmlDocument document, Writer out)
+        throws IOException {
         String dtd = document.getDTD();
+
         if (dtd != null) {
             out.write(dtd); // that was easy!
             return;
         }
+
         _parser = document._parser;
         writeDTDNotations(out);
         writeDTDEntities(out);
@@ -146,38 +154,36 @@ public class XmlWriter extends LoggableOp {
     /**
      * Produce normalised declarations for all notations.
      */
-    public void writeDTDNotations (Writer out) throws IOException {
+    public void writeDTDNotations(Writer out) throws IOException {
         Enumeration notationNames = _parser.declaredNotations();
         String nname;
         String extId;
 
         // Mark the beginning of a new section.
         // out.write("<-- Notation Declarations -->\n");
-
         // Loop through all declared notations.
         while (notationNames.hasMoreElements()) {
-            nname = (String)notationNames.nextElement();
-            extId =
-                makeExternalIdentifiers(_parser.getNotationPublicId(nname),
-                        _parser.getNotationSystemId(nname).toString());
-            out.write("<!NOTATION " + nname + + ' ' + extId + ">\n");
+            nname = (String) notationNames.nextElement();
+            extId = makeExternalIdentifiers(_parser.getNotationPublicId(nname),
+                    _parser.getNotationSystemId(nname).toString());
+            out.write("<!NOTATION " + nname + +' ' + extId + ">\n");
         }
     }
 
     /**
      * Produce normalised declarations for all general entities.
      */
-    public void writeDTDEntities (Writer out) throws IOException {
+    public void writeDTDEntities(Writer out) throws IOException {
         Enumeration entityNames = _parser.declaredEntities();
         String ename;
         String value;
 
         // Mark the beginning of a new section.
         // out.write("<-- Entity Declarations -->\n");
-
         // Loop through all the declared entities.
         while (entityNames.hasMoreElements()) {
-            ename = (String)entityNames.nextElement();
+            ename = (String) entityNames.nextElement();
+
             // Skip parameter entities.
             if (ename.startsWith("%")) {
                 continue;
@@ -185,25 +191,27 @@ public class XmlWriter extends LoggableOp {
 
             // Construct a value based on the class of entity.
             value = null;
+
             switch (_parser.getEntityType(ename)) {
-                // Internal text entity
+            // Internal text entity
             case XmlParser.ENTITY_INTERNAL:
                 value = makeLiteral(_parser.getEntityValue(ename));
                 break;
-                // External binary entity
+
+            // External binary entity
             case XmlParser.ENTITY_NDATA:
-                value =
-                    makeExternalIdentifiers(_parser.getEntityPublicId(ename),
-                            _parser.getEntitySystemId(ename).toString())
-                    + "NDATA " + _parser.getEntityNotationName(ename);
+                value = makeExternalIdentifiers(_parser.getEntityPublicId(ename),
+                        _parser.getEntitySystemId(ename).toString()) + "NDATA "
+                    + _parser.getEntityNotationName(ename);
                 break;
-                // External text entity
+
+            // External text entity
             case XmlParser.ENTITY_TEXT:
-                value =
-                    makeExternalIdentifiers(_parser.getEntityPublicId(ename),
-                            _parser.getEntitySystemId(ename).toString());
+                value = makeExternalIdentifiers(_parser.getEntityPublicId(ename),
+                        _parser.getEntitySystemId(ename).toString());
                 break;
             }
+
             // Print a normalised declaration.
             out.write("<!ENTITY " + ename + ' ' + value + ">\n");
         }
@@ -212,27 +220,28 @@ public class XmlWriter extends LoggableOp {
     /**
      * Produce normalised declarations for all elements.
      */
-    public void writeDTDElements (Writer out) throws IOException {
+    public void writeDTDElements(Writer out) throws IOException {
         Enumeration elementNames = _parser.declaredElements();
         String elname;
 
         // Mark the beginning of a new section.
         // out.write("<-- Element Type Declarations -->\n");
-
         // Loop through all of the declared elements.
         while (elementNames.hasMoreElements()) {
             String contentSpec = "ANY";
 
-            elname = (String)elementNames.nextElement();
+            elname = (String) elementNames.nextElement();
 
             // Construct a content spec based on the element's content type.
             switch (_parser.getElementContentType(elname)) {
             case XmlParser.CONTENT_EMPTY:
                 contentSpec = "EMPTY";
                 break;
+
             case XmlParser.CONTENT_ANY:
                 contentSpec = "ANY";
                 break;
+
             case XmlParser.CONTENT_ELEMENTS:
             case XmlParser.CONTENT_MIXED:
                 contentSpec = _parser.getElementContentModel(elname);
@@ -255,7 +264,8 @@ public class XmlWriter extends LoggableOp {
      * @see #makeAttributeType(String, String)
      * @see #makeAttributeValue(String, String)
      */
-    void writeDTDAttributes (String elname, Writer out) throws IOException {
+    void writeDTDAttributes(String elname, Writer out)
+        throws IOException {
         Enumeration attributeNames = _parser.declaredAttributes(elname);
         String aname;
         String type;
@@ -271,7 +281,7 @@ public class XmlWriter extends LoggableOp {
 
         // Loop through all of the declared attributes.
         while (attributeNames.hasMoreElements()) {
-            aname = (String)attributeNames.nextElement();
+            aname = (String) attributeNames.nextElement();
             type = makeAttributeType(elname, aname);
             value = makeAttributeValue(elname, aname);
 
@@ -283,35 +293,46 @@ public class XmlWriter extends LoggableOp {
         out.write(">\n");
     }
 
-
     /**
      * Generate the attribute type as a normalised string.
      */
-    String makeAttributeType (String elname, String aname) {
+    String makeAttributeType(String elname, String aname) {
         switch (_parser.getAttributeType(elname, aname)) {
         case XmlParser.ATTRIBUTE_CDATA:
             return "CDATA";
+
         case XmlParser.ATTRIBUTE_ID:
             return "ID";
+
         case XmlParser.ATTRIBUTE_IDREF:
             return "IDREF";
+
         case XmlParser.ATTRIBUTE_IDREFS:
             return "IDREFS";
+
         case XmlParser.ATTRIBUTE_ENTITY:
             return "ENTITY";
+
         case XmlParser.ATTRIBUTE_ENTITIES:
             return "ENTITIES";
+
         case XmlParser.ATTRIBUTE_NMTOKEN:
             return "NMTOKEN";
+
         case XmlParser.ATTRIBUTE_NMTOKENS:
             return "NMTOKENS";
+
         case XmlParser.ATTRIBUTE_ENUMERATED:
+
             // An enumeration.
             return _parser.getAttributeEnumeration(elname, aname);
+
         case XmlParser.ATTRIBUTE_NOTATION:
+
             // An enumeration of notations.
             return "NOTATION " + _parser.getAttributeEnumeration(elname, aname);
         }
+
         return null;
     }
 
@@ -319,19 +340,23 @@ public class XmlWriter extends LoggableOp {
      * Generate a full attribute default value.
      * @see #makeLiteral
      */
-    String makeAttributeValue (String elname, String aname) {
+    String makeAttributeValue(String elname, String aname) {
         // Generate a default value based on the type.
         switch (_parser.getAttributeDefaultValueType(elname, aname)) {
         case XmlParser.ATTRIBUTE_DEFAULT_IMPLIED:
             return "#IMPLIED";
+
         case XmlParser.ATTRIBUTE_DEFAULT_SPECIFIED:
             return makeLiteral(_parser.getAttributeDefaultValue(elname, aname));
+
         case XmlParser.ATTRIBUTE_DEFAULT_REQUIRED:
             return "#REQUIRED";
+
         case XmlParser.ATTRIBUTE_DEFAULT_FIXED:
-            return "#FIXED " +
-                makeLiteral(_parser.getAttributeDefaultValue(elname,aname));
+            return "#FIXED "
+            + makeLiteral(_parser.getAttributeDefaultValue(elname, aname));
         }
+
         return null;
     }
 
@@ -344,12 +369,14 @@ public class XmlWriter extends LoggableOp {
 
         if (pubid != null) {
             extId = "PUBLIC " + makeLiteral(pubid);
+
             if (sysid != null) {
                 extId = extId + ' ' + makeLiteral(sysid);
             }
         } else {
             extId = "SYSTEM " + makeLiteral(sysid);
         }
+
         return extId;
     }
 
@@ -357,24 +384,23 @@ public class XmlWriter extends LoggableOp {
      * Quote a literal, and escape any '"' or non-ASCII characters within it.
      */
     String makeLiteral(String data) {
-        char ch[] = data.toCharArray();
+        char[] ch = data.toCharArray();
         StringBuffer buf = new StringBuffer();
 
         buf.append('"');
+
         for (int i = 0; i < ch.length; i++) {
             if (ch[i] == '"') {
                 buf.append("&#22;");
-            } else if ((int)ch[i] > 0x7f) {
-                buf.append("&#" + (int)ch[i] + ";");
+            } else if ((int) ch[i] > 0x7f) {
+                buf.append("&#" + (int) ch[i] + ";");
             } else {
                 buf.append(ch[i]);
             }
         }
+
         buf.append('"');
 
         return buf.toString();
     }
 }
-
-
-

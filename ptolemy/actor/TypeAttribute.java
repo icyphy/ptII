@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor;
 
 import ptolemy.data.expr.Parameter;
@@ -33,8 +32,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypeAttribute
+
 /**
    An attribute for defining a data type for a port.
    Use setExpression() to define a data type, as in for example,
@@ -84,7 +85,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.data.expr.Constants
 */
 public class TypeAttribute extends Parameter {
-
     /** Construct a parameter in the specified workspace with an empty
      *  string as a name.
      *  If the workspace argument is null, then use the default workspace.
@@ -112,7 +112,7 @@ public class TypeAttribute extends Parameter {
      *   an attribute already in the container.
      */
     public TypeAttribute(TypedIOPort container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -126,11 +126,11 @@ public class TypeAttribute extends Parameter {
      *   TypedIOPort, or if the base class throws it.
      */
     protected void _checkContainer(NamedObj container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(container instanceof TypedIOPort) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "TypeAttribute can only be contained by instances " +
-                    "of TypedIOPort.");
+                "TypeAttribute can only be contained by instances "
+                + "of TypedIOPort.");
         }
     }
 }

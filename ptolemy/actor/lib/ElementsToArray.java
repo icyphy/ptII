@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.LinkedList;
@@ -42,8 +41,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ElementsToArray
+
 /**
    On each firing, this actor reads exactly one token from each channel
    of the input port and assemble the tokens into an ArrayToken. The
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ElementsToArray extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,7 +72,7 @@ public class ElementsToArray extends Transformer {
      *   already has an actor with this name.
      */
     public ElementsToArray(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // set the output type to be an ArrayType.
@@ -81,10 +80,9 @@ public class ElementsToArray extends Transformer {
         input.setMultiport(true);
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,8 +97,10 @@ public class ElementsToArray extends Transformer {
     public void fire() throws IllegalActionException {
         int size = input.getWidth();
         Token[] valueArray = new Token[size];
-        for (int i = 0; i < size; i++)
+
+        for (int i = 0; i < size; i++) {
             valueArray[i] = input.get(i);
+        }
 
         output.send(0, new ArrayToken(valueArray));
     }
@@ -119,6 +119,7 @@ public class ElementsToArray extends Transformer {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -127,7 +128,7 @@ public class ElementsToArray extends Transformer {
      *  @return A list of inequalities.
      */
     public List typeConstraintList() {
-        ArrayType outArrType = (ArrayType)output.getType();
+        ArrayType outArrType = (ArrayType) output.getType();
         InequalityTerm elementTerm = outArrType.getElementTypeTerm();
         Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
 

@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.io.IOException;
 import java.io.Writer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MoMLExportable
+
 /**
    This is an interface for objects that have persistent MoML representations.
    MoML is an XML schema used to represent Ptolemy II models.  The form of
@@ -73,9 +74,7 @@ import java.io.Writer;
    @Pt.AcceptedRating Green (neuendor)
    @see NamedObj
 */
-
 public interface MoMLExportable extends Nameable {
-
     /** Return a MoML description of this object.  This might be an empty string
      *  if there is no MoML description of this object or if this object is
      *  not persistent or if an implementor has some other reason that the
@@ -143,7 +142,8 @@ public interface MoMLExportable extends Nameable {
      *  @exception IOException If an I/O error occurs.
      *  @see #isPersistent()
      */
-    public void exportMoML(Writer output, int depth, String name) throws IOException;
+    public void exportMoML(Writer output, int depth, String name)
+        throws IOException;
 
     /** Return the class name.  This is either the name of the
      *  class of which this object is an instance, or if this

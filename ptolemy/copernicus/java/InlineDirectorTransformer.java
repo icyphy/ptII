@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -50,8 +49,10 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InlineDirectorTransformer
+
 /**
    A transformer that inlines an SDF director.  This transformer synthesizes
    methods that properly implement the executable interface inside the class
@@ -65,7 +66,8 @@ import soot.jimple.Stmt;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class InlineDirectorTransformer extends SceneTransformer implements HasPhaseOptions {
+public class InlineDirectorTransformer extends SceneTransformer
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private InlineDirectorTransformer(CompositeActor model) {
@@ -95,24 +97,23 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlineDirectorTransformer.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         SootClass modelClass = ModelTransformer.getModelClass();
         _inlineDirectorsIn(_model, modelClass, phaseName, options);
     }
 
     private void _inlineDirectorsIn(CompositeActor model, SootClass modelClass,
-            String phaseName, Map options) {
+        String phaseName, Map options) {
+        for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
+            Entity entity = (Entity) i.next();
 
-        for (Iterator i = model.deepEntityList().iterator();
-             i.hasNext();) {
-            Entity entity = (Entity)i.next();
             if (entity instanceof CompositeActor) {
-                String className =
-                    ModelTransformer.getInstanceClassName(entity, options);
+                String className = ModelTransformer.getInstanceClassName(entity,
+                        options);
                 SootClass compositeClass = Scene.v().getSootClass(className);
-                _inlineDirectorsIn((CompositeActor)entity, compositeClass,
-                        phaseName, options);
+                _inlineDirectorsIn((CompositeActor) entity, compositeClass,
+                    phaseName, options);
             }
         }
 
@@ -120,18 +121,20 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
         try {
             DirectorInliner inliner;
+
             if (model.getDirector() instanceof SDFDirector) {
                 inliner = new SDFDirectorInliner();
-            } else if (model.getDirector() instanceof HSDirector ||
-                    model.getDirector() instanceof FSMDirector) {
+            } else if (model.getDirector() instanceof HSDirector
+                    || model.getDirector() instanceof FSMDirector) {
                 inliner = new HSDirectorInliner();
             } else if (model.getDirector() instanceof GiottoDirector) {
                 inliner = new GiottoDirectorInliner();
             } else {
                 throw new RuntimeException("Inlining a director can not "
-                        + "be performed on a director of class "
-                        + model.getDirector().getClass().getName());
+                    + "be performed on a director of class "
+                    + model.getDirector().getClass().getName());
             }
+
             inliner.inlineDirector(model, modelClass, phaseName, options);
         } catch (Exception ex) {
             throw new RuntimeException("Inlining director failed", ex);
@@ -144,32 +147,32 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
         // First remove methods that are called on the director.
         // Loop over all the entity classes...
-        for (Iterator i = model.deepEntityList().iterator();
-             i.hasNext();) {
-            Entity entity = (Entity)i.next();
-            String className =
-                ModelTransformer.getInstanceClassName(entity, options);
-            SootClass theClass =
-                Scene.v().loadClassAndSupport(className);
+        for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
+            Entity entity = (Entity) i.next();
+            String className = ModelTransformer.getInstanceClassName(entity,
+                    options);
+            SootClass theClass = Scene.v().loadClassAndSupport(className);
 
             // Loop over all the methods...
             for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+                    methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
 
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 // Loop over all the statements.
                 for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
+                        units.hasNext();) {
+                    Stmt unit = (Stmt) units.next();
+
                     if (!unit.containsInvokeExpr()) {
                         continue;
                     }
-                    ValueBox box = (ValueBox)unit.getInvokeExprBox();
-                    InvokeExpr r = (InvokeExpr)box.getValue();
-                    if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.invalidateResolvedTypesMethod
+
+                    ValueBox box = (ValueBox) unit.getInvokeExprBox();
+                    InvokeExpr r = (InvokeExpr) box.getValue();
+
+                    if (r.getMethod().getSubSignature().equals(PtolemyUtilities.invalidateResolvedTypesMethod
                                 .getSubSignature())) {
                         // Remove calls to invalidateResolvedTypes()
                         body.getUnits().remove(unit);
@@ -181,17 +184,3 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
     private CompositeActor _model;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -34,6 +34,7 @@ import diva.canvas.Site;
 import diva.canvas.connector.CenterSite;
 import diva.canvas.event.LayerEvent;
 
+
 /**
  * A manipulator which attaches a grab handles to one of the bounds
  * of the child figure.  It renders the grab handle and gives it a
@@ -43,7 +44,6 @@ import diva.canvas.event.LayerEvent;
  * @version $Id$
  */
 public class CircleManipulator extends Manipulator {
-
     /** The geometry "helper"
      */
     private CircleGeometry _geometry;
@@ -69,7 +69,7 @@ public class CircleManipulator extends Manipulator {
 
     /** Return the geometry of this manipulator
      */
-    private CircleGeometry getGeometry () {
+    private CircleGeometry getGeometry() {
         return _geometry;
     }
 
@@ -77,7 +77,7 @@ public class CircleManipulator extends Manipulator {
      * instance will have the same grab handle, and interactor
      * for grab-handles, as this one.
      */
-    public FigureDecorator newInstance (Figure f) {
+    public FigureDecorator newInstance(Figure f) {
         CircleManipulator m = new CircleManipulator();
         m.setGrabHandleFactory(this.getGrabHandleFactory());
         m.setHandleInteractor(this.getHandleInteractor());
@@ -88,7 +88,7 @@ public class CircleManipulator extends Manipulator {
     /** Refresh the geometry. This adjusts the bounds of the geometry
      * to match the bounds of the child figure.
      */
-    public void refresh () {
+    public void refresh() {
         if (_geometry != null) {
             _geometry.setBounds(getChild().getBounds());
         }
@@ -98,7 +98,7 @@ public class CircleManipulator extends Manipulator {
      * Then get a rectangle geometry object and create a grab-handle
      * on one of its sites.
      */
-    public void setChild (Figure child) {
+    public void setChild(Figure child) {
         super.setChild(child);
         clearGrabHandles();
 
@@ -106,16 +106,19 @@ public class CircleManipulator extends Manipulator {
         if (child != null) {
             // Create the geometry defining the sites
             _geometry = new CircleGeometry(this, getChild().getBounds());
+
             Iterator i = _geometry.sites();
             GrabHandle g = null;
+
             while (i.hasNext()) {
                 // Create a grab handle and set up the interactor
-                Site site = (Site)i.next();
+                Site site = (Site) i.next();
                 g = getGrabHandleFactory().createGrabHandle(site);
                 g.setParent(this);
                 g.setInteractor(getHandleInteractor());
                 addGrabHandle(g);
             }
+
             // Add a center handle for dragging
             if (_dragInteractor != null) {
                 CenterSite center = new CenterSite(getChild());
@@ -130,8 +133,7 @@ public class CircleManipulator extends Manipulator {
 
             // Set the minimum size
             // FIXME: this is bogus: set it in the interactor instead!
-            _geometry.setMinimumSize(4*g.getSize());
-
+            _geometry.setMinimumSize(4 * g.getSize());
         }
     }
 
@@ -151,10 +153,9 @@ public class CircleManipulator extends Manipulator {
      * figure and triggers a repaint.
      */
     private static class Resizer extends DragInteractor {
-
         /** Translate the grab-handle
          */
-        public void translate (LayerEvent e, double x, double y) {
+        public void translate(LayerEvent e, double x, double y) {
             // Translate the grab-handle, resizing the geometry
             GrabHandle g = (GrabHandle) e.getFigureSource();
             g.translate(x, y);
@@ -164,9 +165,7 @@ public class CircleManipulator extends Manipulator {
             CircleGeometry geometry = parent.getGeometry();
 
             parent.getChild().transform(CanvasUtilities.computeTransform(
-                                                parent.getChild().getBounds(),
-                                                geometry.getBounds()));
+                    parent.getChild().getBounds(), geometry.getBounds()));
         }
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil;
 
 import java.awt.Component;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VergilErrorHandler
+
 /**
    This error handler attempts to replace any failed MoML elements with
    generic versions so that the parsing of the MoML can continue. The
@@ -55,7 +56,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class VergilErrorHandler implements ErrorHandler {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -74,6 +74,7 @@ public class VergilErrorHandler implements ErrorHandler {
      */
     public void enableErrorSkipping(boolean enable) {
         _skippingEnabled = enable;
+
         if (!enable) {
             _skipping = false;
         }
@@ -87,14 +88,11 @@ public class VergilErrorHandler implements ErrorHandler {
      *   of the XML, IGNORE to continue to process the XML as if nothing
      *   had happened, or RETHROW to request that the exception be rethrown.
      */
-    public int handleError(
-            String element,
-            NamedObj context,
-            Throwable exception) {
-
+    public int handleError(String element, NamedObj context, Throwable exception) {
         if (_skipping) {
             return CONTINUE;
         }
+
         // Get the context w.r.t. which the dialog should be iconified.
         // FIXME: This pattern window actually is never set.
         Component parentWindow = GraphicalMessageHandler.getContext();
@@ -102,98 +100,70 @@ public class VergilErrorHandler implements ErrorHandler {
         // If the element is longer than 80 characters, we split it
         // into shorter new line separated strings.
         String message = "Error encountered in:\n"
-            + StringUtilities.split(element)
-            + "\n"
-            + exception.getMessage();
+            + StringUtilities.split(element) + "\n" + exception.getMessage();
 
         Object[] messageArray = new Object[1];
-        messageArray[0] =
-            StringUtilities.ellipsis(message,
-                    StringUtilities.ELLIPSIS_LENGTH_LONG);
+        messageArray[0] = StringUtilities.ellipsis(message,
+                StringUtilities.ELLIPSIS_LENGTH_LONG);
 
         if (context == null) {
             // Top-level object, so continuing is not an option.
             messageArray[0] = messageArray[0]
                 + "\nThis is a top-level element, so cannot continue.";
-            Object[] options = {"Display stack trace",
-                                "Cancel"};
+
+            Object[] options = { "Display stack trace", "Cancel" };
 
             // Show the MODAL dialog
-            int selected = JOptionPane.showOptionDialog(
-                    parentWindow,
-                    messageArray,
-                    "Error",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.ERROR_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
+            int selected = JOptionPane.showOptionDialog(parentWindow,
+                    messageArray, "Error", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
             if (selected == 0) {
-                return _showStackTrace(parentWindow,
-                        false,
-                        false,
-                        exception,
-                        message);
+                return _showStackTrace(parentWindow, false, false, exception,
+                    message);
             }
+
             return CANCEL;
         } else {
             if (_skippingEnabled) {
                 Object[] options = {
-                    "Skip element",
-                    "Skip remaining errors",
-                    "Display stack trace",
-                    "Cancel"};
+                        "Skip element", "Skip remaining errors",
+                        "Display stack trace", "Cancel"
+                    };
 
                 // Show a MODAL dialog
-                int selected = JOptionPane.showOptionDialog(
-                        parentWindow,
-                        messageArray,
-                        "Error",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.ERROR_MESSAGE,
-                        null,
-                        options,
-                        options[0]);
+                int selected = JOptionPane.showOptionDialog(parentWindow,
+                        messageArray, "Error", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
                 if (selected == 3) {
                     return CANCEL;
                 } else if (selected == 2) {
-                    return _showStackTrace(parentWindow,
-                            true,
-                            _skippingEnabled,
-                            exception,
-                            message);
+                    return _showStackTrace(parentWindow, true,
+                        _skippingEnabled, exception, message);
                 } else if (selected == 1) {
                     _skipping = true;
                 }
+
                 return CONTINUE;
             } else {
                 // Skipping is not enabled.
-                Object[] options = {"Skip element",
-                                    "Display stack trace",
-                                    "Cancel"};
+                Object[] options = {
+                        "Skip element", "Display stack trace", "Cancel"
+                    };
 
                 // Show the MODAL dialog
-                int selected = JOptionPane.showOptionDialog(
-                        parentWindow,
-                        messageArray,
-                        "Error",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.ERROR_MESSAGE,
-                        null,
-                        options,
-                        options[0]);
+                int selected = JOptionPane.showOptionDialog(parentWindow,
+                        messageArray, "Error", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
                 if (selected == 1) {
-                    return _showStackTrace(parentWindow,
-                            false,
-                            _skippingEnabled,
-                            exception,
-                            message);
+                    return _showStackTrace(parentWindow, false,
+                        _skippingEnabled, exception, message);
                 } else if (selected == 2) {
                     return CANCEL;
                 }
+
                 return CONTINUE;
             }
         }
@@ -216,21 +186,15 @@ public class VergilErrorHandler implements ErrorHandler {
      *  @return CONTINUE to skip this element, CANCEL to abort processing
      *   of the XML.
      */
-    private int _showStackTrace(Component context,
-            boolean skipElement,
-            boolean skippingEnabled,
-            Throwable exception,
-            String info) {
+    private int _showStackTrace(Component context, boolean skipElement,
+        boolean skippingEnabled, Throwable exception, String info) {
         // FIXME: Eventually, the dialog should
         // be able to email us a bug report.
         // FIXME: The user should be able to click on the links and
         // jump to the line in the offending text.
-
         // Show the stack trace in a scrollable text area.
-
-        JTextArea text = new JTextArea(KernelException
-                .stackTraceToString(exception),
-                60, 80);
+        JTextArea text = new JTextArea(KernelException.stackTraceToString(
+                    exception), 60, 80);
         JScrollPane scrollPane = new JScrollPane(text);
         scrollPane.setPreferredSize(new Dimension(600, 300));
         text.setCaretPosition(0);
@@ -239,50 +203,51 @@ public class VergilErrorHandler implements ErrorHandler {
         // We want to stack the text area with another message
         Object[] message = new Object[2];
         String string;
+
         if (info != null) {
             string = info + "\n" + exception.getMessage();
         } else {
             string = exception.getMessage();
         }
-        message[0] =
-            StringUtilities.ellipsis(string,
-                    StringUtilities.ELLIPSIS_LENGTH_SHORT);
+
+        message[0] = StringUtilities.ellipsis(string,
+                StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
         message[1] = scrollPane;
 
-        Object[] options = null ;
+        Object[] options = null;
+
         if (skippingEnabled) {
-            options = new Object [] {"Skip element",
-                                     "Skip remaining errors", "Cancel"};
+            options = new Object[] {
+                    "Skip element", "Skip remaining errors", "Cancel"
+                };
         } else {
             if (skipElement) {
-                options = new Object [] {"Skip element", "Cancel"};
+                options = new Object[] { "Skip element", "Cancel" };
             } else {
-                options = new Object [] {"Cancel"};
+                options = new Object[] { "Cancel" };
             }
         }
+
         // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(context,
-                message,
-                "Stack trace",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                null,
-                options,
-                options[0]);
-        if (selected == options.length - 1 ) {
+        int selected = JOptionPane.showOptionDialog(context, message,
+                "Stack trace", JOptionPane.YES_NO_OPTION,
+                JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+
+        if (selected == (options.length - 1)) {
             // The last button is the Cancel button.
             return CANCEL;
         }
-        if (skippingEnabled && selected == 1) {
+
+        if (skippingEnabled && (selected == 1)) {
             _skipping = true;
         }
+
         return CONTINUE;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Enable skipping.
     private boolean _skippingEnabled = false;
 

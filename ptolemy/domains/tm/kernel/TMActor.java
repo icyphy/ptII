@@ -24,13 +24,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.kernel;
 
 import ptolemy.actor.Actor;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TMActor
+
 /**
    An interface that adds a method getExecutionTime() to the Actor interface.
    This allows actors to estimate its execution time on a per iteration basis,
@@ -43,7 +44,6 @@ import ptolemy.actor.Actor;
 
 */
 public interface TMActor extends Actor {
-
     /** Return the execution time for this iteration. This method
      *  will be called by the TMDirector after the prefire() method
      *  is called. The reason for this method is to allow the actor
@@ -52,8 +52,3 @@ public interface TMActor extends Actor {
      */
     public double getExecutionTime();
 }
-
-
-
-
-

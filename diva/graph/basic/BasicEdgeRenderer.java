@@ -24,6 +24,7 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.basic;
+
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.AbstractConnector;
@@ -32,6 +33,7 @@ import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.StraightConnector;
 import diva.graph.EdgeRenderer;
+
 
 /**
  * A basic implementation of the EdgeRenderer interface.
@@ -52,17 +54,15 @@ public class BasicEdgeRenderer implements EdgeRenderer {
         Figure hf = headSite.getFigure();
 
         //if the edge is a self loop, create an ArcConnector instead!
-        if ((tf != null)&&(hf != null)&&(tf == hf)) {
+        if ((tf != null) && (hf != null) && (tf == hf)) {
             c = new ArcConnector(tailSite, headSite);
-        }
-        else {
+        } else {
             c = new StraightConnector(tailSite, headSite);
         }
-        Arrowhead arrow = new Arrowhead(
-                headSite.getX(), headSite.getY(), headSite.getNormal());
+
+        Arrowhead arrow = new Arrowhead(headSite.getX(), headSite.getY(),
+                headSite.getNormal());
         c.setHeadEnd(arrow);
         return c;
     }
 }
-
-

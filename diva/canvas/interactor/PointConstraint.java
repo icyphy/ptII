@@ -28,6 +28,7 @@ package diva.canvas.interactor;
 
 import java.awt.geom.Point2D;
 
+
 /**
  * An interface implemented by classes that can constrain a point
  * to lie within a certain set of values.
@@ -36,7 +37,6 @@ import java.awt.geom.Point2D;
  * @author John Reekie
  */
 public interface PointConstraint {
-
     /** Ask the point constraint to constrain this point.
      * The constraint should directly modify the passed
      * point.
@@ -50,5 +50,3 @@ public interface PointConstraint {
      */
     public boolean snapped();
 }
-
-

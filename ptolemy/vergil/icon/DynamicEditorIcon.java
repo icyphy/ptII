@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.lang.ref.WeakReference;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DynamicEditorIcon
+
 /**
    An icon that provides for the possibility that figures may be
    dynamically updated.  While some icons are generally 'static' and it
@@ -67,7 +68,6 @@ import diva.canvas.Figure;
    @Pt.AcceptedRating Red (johnr)
 */
 public class DynamicEditorIcon extends EditorIcon {
-
     /** Construct an icon in the specified workspace and name.
      *  This constructor is typically used in conjunction with
      *  setContainerToBe() and createFigure() to create an icon
@@ -82,7 +82,7 @@ public class DynamicEditorIcon extends EditorIcon {
      *   a period.
      */
     public DynamicEditorIcon(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace, name);
     }
 
@@ -95,7 +95,7 @@ public class DynamicEditorIcon extends EditorIcon {
      *   an attribute already in the container.
      */
     public DynamicEditorIcon(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -110,10 +110,8 @@ public class DynamicEditorIcon extends EditorIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        DynamicEditorIcon newObject =
-            (DynamicEditorIcon)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DynamicEditorIcon newObject = (DynamicEditorIcon) super.clone(workspace);
         newObject._figures = new LinkedList();
         return newObject;
     }
@@ -143,36 +141,43 @@ public class DynamicEditorIcon extends EditorIcon {
                 public boolean hasNext() {
                     // Pull the next valid element out of the list of
                     // WeakReferences.
-                    while (_object == null && iterator.hasNext()) {
-                        _object = ((WeakReference)iterator.next()).get();
+                    while ((_object == null) && iterator.hasNext()) {
+                        _object = ((WeakReference) iterator.next()).get();
+
                         if (_object == null) {
                             iterator.remove();
                         }
                     }
+
                     return _object != null;
                 }
+
                 public Object next() throws NoSuchElementException {
                     // Just to make sure that someone wasn't stupid
                     // and didn't call hasNext();
-                    while (_object == null && iterator.hasNext()) {
-                        _object = ((WeakReference)iterator.next()).get();
+                    while ((_object == null) && iterator.hasNext()) {
+                        _object = ((WeakReference) iterator.next()).get();
+
                         if (_object == null) {
                             iterator.remove();
                         }
                     }
+
                     if (_object == null) {
                         throw new NoSuchElementException(
-                                "The iterator is empty.");
+                            "The iterator is empty.");
                     } else {
                         Object object = _object;
                         _object = null;
                         return object;
                     }
                 }
+
                 public void remove() throws UnsupportedOperationException {
                     throw new UnsupportedOperationException(
-                            "The remove() operation is unsupported.");
+                        "The remove() operation is unsupported.");
                 }
+
                 private Object _object;
             };
     }
@@ -182,8 +187,10 @@ public class DynamicEditorIcon extends EditorIcon {
      */
     protected void _trimLiveFigures() {
         ListIterator figures = _figures.listIterator();
+
         while (figures.hasNext()) {
-            Object figure = ((WeakReference)figures.next()).get();
+            Object figure = ((WeakReference) figures.next()).get();
+
             if (figure == null) {
                 // The figure has been garbage collected, so we
                 // remove it from the list.
@@ -194,7 +201,6 @@ public class DynamicEditorIcon extends EditorIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A list of weak references to figures that this has created.
     private List _figures = new LinkedList();
 }

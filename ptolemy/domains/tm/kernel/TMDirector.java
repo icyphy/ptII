@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.kernel;
 
 import java.util.HashSet;
@@ -59,8 +58,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TMDirector
+
 /**
    A director that implements a priority-driven multitasking
    model of computation. This model of computation is usually seen in
@@ -138,7 +139,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.domains.de.kernel.DEEvent
 */
 public class TMDirector extends Director implements TimedDirector {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -172,11 +172,10 @@ public class TMDirector extends Director implements TimedDirector {
      *   the name collides with a property in the container.
      */
     public TMDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
@@ -229,6 +228,7 @@ public class TMDirector extends Director implements TimedDirector {
                 return;
             }
         }
+
         _scheduleListeners.add(listener);
     }
 
@@ -241,33 +241,35 @@ public class TMDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If the parameter set is not valid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (_debugging) _debug("Updating TMDirector parameter",
-                attribute.getName());
+        throws IllegalActionException {
+        if (_debugging) {
+            _debug("Updating TMDirector parameter", attribute.getName());
+        }
+
         if (attribute == stopTime) {
-            double stopTimeValue =
-                ((DoubleToken)stopTime.getToken()).doubleValue();
+            double stopTimeValue = ((DoubleToken) stopTime.getToken())
+                .doubleValue();
+
             if (stopTimeValue < 0.0) {
                 throw new IllegalActionException(this,
-                        " stopTime cannot be less than 0.");
+                    " stopTime cannot be less than 0.");
             }
+
             _stopTime = new Time(this, stopTimeValue);
         } else if (attribute == startTime) {
-            double startTimeValue =
-                ((DoubleToken)startTime.getToken()).doubleValue();
+            double startTimeValue = ((DoubleToken) startTime.getToken())
+                .doubleValue();
             _startTime = new Time(this, startTimeValue);
         } else if (attribute == defaultTaskExecutionTime) {
-            if (((DoubleToken)defaultTaskExecutionTime.getToken())
-                    .doubleValue() < 0.0) {
+            if (((DoubleToken) defaultTaskExecutionTime.getToken()).doubleValue() < 0.0) {
                 throw new IllegalActionException(this,
-                        " task execution time cannot be less than 0.");
+                    " task execution time cannot be less than 0.");
             }
         } else if (attribute == preemptive) {
-            _preemptive = ((BooleanToken)preemptive.getToken()).booleanValue();
+            _preemptive = ((BooleanToken) preemptive.getToken()).booleanValue();
         } else if (attribute == synchronizeToRealTime) {
-            _synchronizeToRealTime =
-                ((BooleanToken)synchronizeToRealTime.getToken()).
-                booleanValue();
+            _synchronizeToRealTime = ((BooleanToken) synchronizeToRealTime
+                .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -288,25 +290,31 @@ public class TMDirector extends Director implements TimedDirector {
      *   or one of the execution methods of an actor throws it.
      */
     public void fire() throws IllegalActionException {
-        if (_debugging) _debug( "Fire: ");
+        if (_debugging) {
+            _debug("Fire: ");
+        }
+
         _nextIterationTime = _stopTime;
 
         // First look at interrupt events.
         while (!_interruptQueue.isEmpty()) {
-            DEEvent interruptEvent = (DEEvent)_interruptQueue.get();
+            DEEvent interruptEvent = (DEEvent) _interruptQueue.get();
             Time timeStamp = interruptEvent.timeStamp();
+
             if (timeStamp.compareTo(getModelTime()) < 0) {
                 // This should never happen.
                 throw new IllegalActionException(this,
-                        "external input in the past: "
-                        + "input time stamp is " + timeStamp
-                        + "current time in TM is " + getModelTime());
+                    "external input in the past: " + "input time stamp is "
+                    + timeStamp + "current time in TM is " + getModelTime());
             } else if (timeStamp == getModelTime()) {
                 _interruptQueue.take();
+
                 Actor actor = interruptEvent.actor();
+
                 if (actor != null) {
                     if (actor.prefire()) {
                         actor.fire();
+
                         if (!actor.postfire()) {
                             _disableActor(actor);
                         }
@@ -320,71 +328,84 @@ public class TMDirector extends Director implements TimedDirector {
                 break;
             }
         }
+
         // Then we process TM events.
         TMEvent event = null;
-        while (!_eventQueue.isEmpty()) {
-            event = (TMEvent)_eventQueue.get();
 
-            if (_debugging) _debug("The first event in the queue is ",
-                    event.toString());
+        while (!_eventQueue.isEmpty()) {
+            event = (TMEvent) _eventQueue.get();
+
+            if (_debugging) {
+                _debug("The first event in the queue is ", event.toString());
+            }
+
             // Notice that the first event in the queue
             // either has processing time > 0 or hasn't been started.
             if (!event.hasStarted()) {
-                if (_debugging) _debug(getName(),
-                        "put trigger event ",  event.toString(), " into "
-                        + ((NamedObj)event.actor()).getName()
+                if (_debugging) {
+                    _debug(getName(), "put trigger event ", event.toString(),
+                        " into " + ((NamedObj) event.actor()).getName()
                         + " and processing");
+                }
+
                 event.receiver()._triggerEvent(event.token());
+
                 // FIXME: What shall we do if there are events to
                 // the same actor with the same priority.
                 // Check if there are any events with equal priority
                 // for this actor. If so, make them available to the
                 // actor at the same time.
-
                 Actor actor = event.actor();
-                if (actor == getContainer() || !actor.prefire()) {
+
+                if ((actor == getContainer()) || !actor.prefire()) {
                     // If the actor is the container of this director,
                     // then the event is at the output boundary.
                     // Remove the event and look at the next event.
                     _eventQueue.take();
                     event = null;
+
                     // Return to the while loop.
                 } else {
                     // Determine the processing time.
-                    double processingTime = ((DoubleToken)
-                            defaultTaskExecutionTime.getToken()).doubleValue();
+                    double processingTime = ((DoubleToken) defaultTaskExecutionTime
+                        .getToken()).doubleValue();
+
                     if (actor instanceof TMActor) {
-                        processingTime = ((TMActor)actor).
-                            getExecutionTime();
+                        processingTime = ((TMActor) actor).getExecutionTime();
                     } else {
                         // Use the executionTime parameter from the port
                         // or the actor.
-                        Parameter executionTime = (Parameter)
-                            ((IOPort)event.receiver().getContainer()).
-                            getAttribute("executionTime");
-                        // Actor starts to execute
+                        Parameter executionTime = (Parameter) ((IOPort) event.receiver()
+                                                                             .getContainer())
+                            .getAttribute("executionTime");
 
+                        // Actor starts to execute
                         if (executionTime == null) {
-                            executionTime = (Parameter)((NamedObj)actor).
-                                getAttribute("executionTime");
+                            executionTime = (Parameter) ((NamedObj) actor)
+                                .getAttribute("executionTime");
                         }
+
                         if (executionTime != null) {
-                            processingTime = ((DoubleToken)executionTime.
-                                    getToken()).doubleValue();
+                            processingTime = ((DoubleToken) executionTime
+                                .getToken()).doubleValue();
                         }
                     }
+
                     if (processingTime == 0.0) {
-                        if (_debugging) _debug(getName(), event.toString(),
+                        if (_debugging) {
+                            _debug(getName(), event.toString(),
                                 " has processing time 0, so processed.");
+                        }
+
                         // This event  can be processed immediately.
                         _eventQueue.take();
 
                         actor.fire();
 
                         // Actor stops executing, i.e. finishing
-                        _displaySchedule(((Nameable)actor).getName(),
-                        getModelTime().getDoubleValue(),
-                                ScheduleListener.TASK_SLEEPING);
+                        _displaySchedule(((Nameable) actor).getName(),
+                            getModelTime().getDoubleValue(),
+                            ScheduleListener.TASK_SLEEPING);
                         _displaySchedule();
 
                         if (!actor.postfire()) {
@@ -394,16 +415,21 @@ public class TMDirector extends Director implements TimedDirector {
                         // Really start a task with non-zero processing
                         // time.
                         event.setProcessingTime(processingTime);
-                        if (_debugging) _debug("Set processing time ",
-                                event.toString());
+
+                        if (_debugging) {
+                            _debug("Set processing time ", event.toString());
+                        }
+
                         // Start a new task.
                         // Now the behavior depend on whether the
                         // execution is preemptive.
-                        _preemptive =
-                            ((BooleanToken)preemptive.getToken()).booleanValue();
+                        _preemptive = ((BooleanToken) preemptive.getToken())
+                            .booleanValue();
+
                         if (!_preemptive) {
-                            event = (TMEvent)_eventQueue.take();
+                            event = (TMEvent) _eventQueue.take();
                             event.startProcessing();
+
                             // Set it priority to 0 so it won't
                             // be preempted.
                             event.setPriority(0);
@@ -411,9 +437,13 @@ public class TMDirector extends Director implements TimedDirector {
                         } else {
                             event.startProcessing();
                         }
-                        if (_debugging) _debug("Start processing ",
-                                event.toString());
+
+                        if (_debugging) {
+                            _debug("Start processing ", event.toString());
+                        }
+
                         _displaySchedule();
+
                         // Start one real time task a time.
                         break;
                     }
@@ -422,21 +452,26 @@ public class TMDirector extends Director implements TimedDirector {
                 break;
             }
         }
+
         // The event may be null, when the prefire() of the actor
         // returns false for the last event in the queue.
         // The event may have processing time < 0, in which case
         // it is an event at the output boundary.
-        if (event != null && event.processingTime() > 0) {
+        if ((event != null) && (event.processingTime() > 0)) {
             // Check the finish processing time.
             Time finishTime = getModelTime().add(event.processingTime());
-            if (_debugging) _debug("finishing time = " + finishTime);
-            if ( finishTime.compareTo(_nextIterationTime) < 0) {
-                _nextIterationTime = finishTime;
+
+            if (_debugging) {
+                _debug("finishing time = " + finishTime);
             }
 
+            if (finishTime.compareTo(_nextIterationTime) < 0) {
+                _nextIterationTime = finishTime;
+            }
         }
-        if (_isEmbedded() &&
-            _nextIterationTime.compareTo(Time.POSITIVE_INFINITY) < 0) {
+
+        if (_isEmbedded()
+                && (_nextIterationTime.compareTo(Time.POSITIVE_INFINITY) < 0)) {
             _requestFiringAt(_nextIterationTime);
         }
     }
@@ -450,20 +485,19 @@ public class TMDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If requested time is in
      *  the past.
      */
-    public void fireAt(Actor actor, Time time)
-            throws IllegalActionException {
-
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
         // ignore requests that are later than the stop time.
         if (_debugging) {
-            _debug("+ requesting firing of "
-                    + ((Nameable)actor).getFullName()
-                    + " at time "
-                    + time);
+            _debug("+ requesting firing of " + ((Nameable) actor).getFullName()
+                + " at time " + time);
         }
+
         if (time.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this, ((NamedObj)actor).getName()
-                    + " request an interrupt in the past.");
+            throw new IllegalActionException(this,
+                ((NamedObj) actor).getName()
+                + " request an interrupt in the past.");
         }
+
         if (time.compareTo(_stopTime) <= 0) {
             // create an interrupt event.
             DEEvent interruptEvent = new DEEvent(actor, time, 0, 0);
@@ -480,21 +514,23 @@ public class TMDirector extends Director implements TimedDirector {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-
         if (_isEmbedded()) {
-            _outsideTime = ((CompositeActor)getContainer()).
-                getExecutiveDirector().getModelTime();
+            _outsideTime = ((CompositeActor) getContainer()).getExecutiveDirector()
+                            .getModelTime();
         } else {
             _outsideTime = new Time(this);
             _nextIterationTime = new Time(this);
         }
+
         super.initialize();
         _realStartTime = System.currentTimeMillis();
+
         if (_isEmbedded() && !_interruptQueue.isEmpty()) {
-            Time nextPureEventTime =
-                ((DEEvent)_interruptQueue.get()).timeStamp();
+            Time nextPureEventTime = ((DEEvent) _interruptQueue.get())
+                .timeStamp();
             _requestFiringAt(nextPureEventTime);
         }
+
         _displaySchedule("", 0.0, ScheduleListener.RESET_DISPLAY);
     }
 
@@ -502,10 +538,12 @@ public class TMDirector extends Director implements TimedDirector {
      *  @return a new TMReceiver.
      */
     public Receiver newReceiver() {
-        if (_debugging) _debug("Creating new TM receiver.");
+        if (_debugging) {
+            _debug("Creating new TM receiver.");
+        }
+
         return new TMReceiver();
     }
-
 
     /** Advance time to the next event time (or the outside time
      *  if this director is embedded in another domain); if there
@@ -521,30 +559,35 @@ public class TMDirector extends Director implements TimedDirector {
      */
     public boolean prefire() throws IllegalActionException {
         if (_isEmbedded()) {
-            _outsideTime = ((CompositeActor)getContainer())
-                .getExecutiveDirector().getModelTime();
+            _outsideTime = ((CompositeActor) getContainer()).getExecutiveDirector()
+                            .getModelTime();
         } else {
             // set outside time to the next iteration time, which
             // is the smaller one of the next interrupt event time and
             // the finishing time of processing the next TM event.
             _outsideTime = _nextIterationTime;
         }
-        if (_debugging) _debug("Prefire: outside time = " + _outsideTime,
+
+        if (_debugging) {
+            _debug("Prefire: outside time = " + _outsideTime,
                 " current time = " + getModelTime());
+        }
+
         if (!_isEmbedded() && _synchronizeToRealTime) {
             // Wait for real time to cache up.
-            long elapsedTime = System.currentTimeMillis()
-                - _realStartTime;
-            double elapsedTimeInSeconds = ((double)elapsedTime)/1000.0;
+            long elapsedTime = System.currentTimeMillis() - _realStartTime;
+            double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+
             if ((_outsideTime.getDoubleValue() - elapsedTimeInSeconds) > 1e-3) {
-                long timeToWait = (long)(_outsideTime.subtract(
-                    elapsedTimeInSeconds).getDoubleValue()*1000.0);
+                long timeToWait = (long) (_outsideTime.subtract(elapsedTimeInSeconds)
+                                                      .getDoubleValue() * 1000.0);
+
                 if (timeToWait > 0) {
                     if (_debugging) {
-                        _debug("Waiting for real time to pass: "
-                                + timeToWait);
+                        _debug("Waiting for real time to pass: " + timeToWait);
                     }
-                    synchronized(_eventQueue) {
+
+                    synchronized (_eventQueue) {
                         try {
                             _eventQueue.wait(timeToWait);
                         } catch (InterruptedException ex) {
@@ -567,63 +610,82 @@ public class TMDirector extends Director implements TimedDirector {
         }
 
         if (!_eventQueue.isEmpty()) {
-            TMEvent event = (TMEvent)_eventQueue.get();
+            TMEvent event = (TMEvent) _eventQueue.get();
+
             if (event.hasStarted()) {
-                if (_debugging) _debug("deduct "+ getModelTime()
-                    .subtract(cachedCurrentTime).getDoubleValue(),
-                        " from processing time of event",
-                        event.toString());
-                event.timeProgress(getModelTime()
-                    .subtract(cachedCurrentTime).getDoubleValue());
+                if (_debugging) {
+                    _debug("deduct "
+                        + getModelTime().subtract(cachedCurrentTime)
+                              .getDoubleValue(),
+                        " from processing time of event", event.toString());
+                }
+
+                event.timeProgress(getModelTime().subtract(cachedCurrentTime)
+                                       .getDoubleValue());
+
                 // Finish the tasks if it ends at this time.
                 // We do it here to ensure that it is done before
                 // the transfer input from composite actors.
                 // setCurrentTime(_outsideTime);
-                if (_debugging) _debug( "The remaining processing time is " + event.processingTime());
+                if (_debugging) {
+                    _debug("The remaining processing time is "
+                        + event.processingTime());
+                }
+
                 if (Math.abs(event.processingTime()) < 1e-10) {
-                    if (_debugging) _debug(getName(),
-                            "finish processing ", event.toString());
+                    if (_debugging) {
+                        _debug(getName(), "finish processing ", event.toString());
+                    }
+
                     _eventQueue.take();
+
                     Actor actor = event.actor();
                     actor.fire();
+
                     // Actor stops executing, i.e. finishing
-                    _displaySchedule(((Nameable)actor).getName(),
-                    getModelTime().getDoubleValue(),
-                            ScheduleListener.TASK_SLEEPING);
+                    _displaySchedule(((Nameable) actor).getName(),
+                        getModelTime().getDoubleValue(),
+                        ScheduleListener.TASK_SLEEPING);
                     _displaySchedule();
+
                     // Should handle dead actors.
                     if (!actor.postfire()) {
                         _disableActor(actor);
                     }
                 } else {
-                    if (_debugging) _debug(getName(),
-                            "still needs processing time as " + event.processingTime());
+                    if (_debugging) {
+                        _debug(getName(),
+                            "still needs processing time as "
+                            + event.processingTime());
+                    }
                 }
             }
         }
 
         // check the interupt queue:
         while (!_interruptQueue.isEmpty()) {
-            DEEvent interruptEvent = (DEEvent)_interruptQueue.get();
+            DEEvent interruptEvent = (DEEvent) _interruptQueue.get();
             Time timeStamp = interruptEvent.timeStamp();
+
             if (timeStamp.compareTo(_outsideTime) < 0) {
                 // This should never happen.
                 throw new IllegalActionException(this,
-                        "external input in the past: "
-                        + "input time stamp is " + timeStamp
-                        + "current time in TM is " + getModelTime());
+                    "external input in the past: " + "input time stamp is "
+                    + timeStamp + "current time in TM is " + getModelTime());
             } else if (timeStamp.compareTo(_outsideTime) == 0) {
                 _interruptQueue.take();
+
                 Actor actor = interruptEvent.actor();
+
                 if (actor != null) {
                     if (actor.prefire()) {
                         actor.fire();
+
                         if (!actor.postfire()) {
                             _disableActor(actor);
                         }
                     }
                 }
-
             } else {
                 // All interrupts are in the future.
                 // Get the time for the next interrupt.
@@ -631,7 +693,6 @@ public class TMDirector extends Director implements TimedDirector {
                 break;
             }
         }
-
 
         return true;
     }
@@ -642,19 +703,21 @@ public class TMDirector extends Director implements TimedDirector {
      */
     public void preinitialize() throws IllegalActionException {
         _eventQueue = new CalendarQueue(new TMEventComparator(), 16, 2);
-        _interruptQueue =  new DECQEventQueue(this, 2, 2, true);
+        _interruptQueue = new DECQEventQueue(this, 2, 2, true);
 
         _disabledActors = null;
-        //_noMoreActorsToFire = false;
 
+        //_noMoreActorsToFire = false;
         // Add debug listeners.
         if (_debugListeners != null) {
             Iterator listeners = _debugListeners.iterator();
+
             while (listeners.hasNext()) {
-                DebugListener listener = (DebugListener)listeners.next();
+                DebugListener listener = (DebugListener) listeners.next();
                 _interruptQueue.addDebugListener(listener);
             }
         }
+
         super.preinitialize();
     }
 
@@ -664,19 +727,22 @@ public class TMDirector extends Director implements TimedDirector {
      *  @return Whether the execution should continue.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_debugging) _debug("Finish one iteration at time:" +
-        getModelTime(),
+        if (_debugging) {
+            _debug("Finish one iteration at time:" + getModelTime(),
                 " Next iteration time = " + _nextIterationTime);
+        }
+
         if (!_isEmbedded()) {
             if (getModelTime().compareTo(_stopTime) >= 0) {
                 return false;
             }
+
             if (_eventQueue.isEmpty() && _interruptQueue.isEmpty()) {
                 return false;
             }
         }
-        return true;
 
+        return true;
     }
 
     /** Remove a schedule listener from this director.  If the listener is
@@ -684,11 +750,11 @@ public class TMDirector extends Director implements TimedDirector {
      *  @param listener The ScheduleListener to be removed.
      */
     public void removeScheduleListener(ScheduleListener listener) {
-        if (_scheduleListeners != null
-                && _scheduleListeners.contains(listener))
+        if ((_scheduleListeners != null)
+                && _scheduleListeners.contains(listener)) {
             _scheduleListeners.remove(listener);
+        }
     }
-
 
     /** Set the current time of this director. This method override the
      *  default implementation, since time is allowed to go backward.
@@ -708,11 +774,14 @@ public class TMDirector extends Director implements TimedDirector {
      */
     protected void _disableActor(Actor actor) {
         if (actor != null) {
-            if (_debugging) _debug("Actor ", ((Nameable)actor).getName(),
-                    " is disabled.");
+            if (_debugging) {
+                _debug("Actor ", ((Nameable) actor).getName(), " is disabled.");
+            }
+
             if (_disabledActors == null) {
                 _disabledActors = new HashSet();
             }
+
             _disabledActors.add(actor);
         }
     }
@@ -725,22 +794,24 @@ public class TMDirector extends Director implements TimedDirector {
     protected final void _displaySchedule() {
         if (_eventQueue != null) {
             Object[] events = _eventQueue.toArray();
+
             //System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
-            for (int i = events.length-1; i >= 0; i-- ) {
-                String actorName =
-                    ((Nameable)((TMEvent)events[i]).actor()).getName();
+            for (int i = events.length - 1; i >= 0; i--) {
+                String actorName = ((Nameable) ((TMEvent) events[i]).actor())
+                    .getName();
                 double timeValue = getModelTime().getDoubleValue();
                 int scheduleEvent = ScheduleListener.TASK_BLOCKED;
+
                 if (i == 0) {
                     scheduleEvent = ScheduleListener.TASK_RUNNING;
                 }
+
                 //System.out.println("EVENT: " + actorName + ", " +
                 //                  timeValue + ", " + scheduleEvent);
                 _displaySchedule(actorName, timeValue, scheduleEvent);
             }
         }
     }
-
 
     /** Send a debug message to all debug listeners that have registered.
      *  By convention, messages should not include a newline at the end.
@@ -749,33 +820,39 @@ public class TMDirector extends Director implements TimedDirector {
      *  @param time The time.
      *  @param scheduleEvent The schedule event.
      */
-    protected final void _displaySchedule(String actorName,
-            double time, int scheduleEvent) {
-        synchronized(this) {
+    protected final void _displaySchedule(String actorName, double time,
+        int scheduleEvent) {
+        synchronized (this) {
             if (_scheduleListeners != null) {
                 Iterator listeners = _scheduleListeners.iterator();
+
                 while (listeners.hasNext()) {
-                    ((ScheduleListener)listeners.next()).
-                        event(actorName, time, scheduleEvent);
+                    ((ScheduleListener) listeners.next()).event(actorName,
+                        time, scheduleEvent);
                 }
             }
         }
     }
-
 
     /** Put an event into the event queue with the specified destination
      *  receiver, token, and priority.
      *  @param event The event to be enqueued.
      */
     protected void _enqueueEvent(TMEvent event) {
-        if (_eventQueue == null) return;
+        if (_eventQueue == null) {
+            return;
+        }
+
         if (event.actor() == getContainer()) {
             // This is an event at the output boundary, so give it
             // the highest priority.
             event.setPriority(0);
         }
-        if (_debugging) _debug("enqueue event: to",
-                event.toString());
+
+        if (_debugging) {
+            _debug("enqueue event: to", event.toString());
+        }
+
         _eventQueue.put(event);
     }
 
@@ -787,12 +864,10 @@ public class TMDirector extends Director implements TimedDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Remove useless parameters inherited from DEDirector, and set
     // different defaults.
     private void _initParameters() {
         try {
-
             _startTime = new Time(this);
             _stopTime = new Time(this, Double.POSITIVE_INFINITY);
 
@@ -811,17 +886,16 @@ public class TMDirector extends Director implements TimedDirector {
             defaultTaskExecutionTime.setTypeEquals(BaseType.DOUBLE);
 
             synchronizeToRealTime = new Parameter(this,
-                    "synchronizeToRealTime",
-                    new BooleanToken(false));
+                    "synchronizeToRealTime", new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
             timePrecisionInDigits.setVisibility(Settable.FULL);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(getName() +
-                    "fail to initialize parameters.");
+            throw new InternalErrorException(getName()
+                + "fail to initialize parameters.");
         } catch (NameDuplicationException ex) {
-            throw new InternalErrorException(getName() +
-                    "fail to initialize parameters.");
+            throw new InternalErrorException(getName()
+                + "fail to initialize parameters.");
         }
     }
 
@@ -830,16 +904,18 @@ public class TMDirector extends Director implements TimedDirector {
     // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
     // If the queue is empty, then throw an InvalidStateException
     private void _requestFiringAt(Time time) throws IllegalActionException {
-        if (_debugging) _debug("Request refiring of composite actor.",
+        if (_debugging) {
+            _debug("Request refiring of composite actor.",
                 getContainer().getName(), "at " + time);
+        }
+
         // Enqueue a refire for the container of this director.
-        ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
-                (Actor)getContainer(), time);
+        ((CompositeActor) getContainer()).getExecutiveDirector().fireAt((Actor) getContainer(),
+            time);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The TM event queue.
     private CalendarQueue _eventQueue;
 
@@ -870,12 +946,3 @@ public class TMDirector extends Director implements TimedDirector {
     private Time _startTime;
     private Time _stopTime;
 }
-
-
-
-
-
-
-
-
-

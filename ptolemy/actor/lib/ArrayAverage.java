@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import java.util.Iterator;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayAverage
+
 /**
    Compute the average of the elements in an array.  This actor reads an
    array from the <i>input</i> port and sends the average of its elements
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ArrayAverage extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,12 +72,13 @@ public class ArrayAverage extends Transformer {
      *   actor with this name.
      */
     public ArrayAverage(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // set type constraints.
         input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType inputArrayType = (ArrayType)input.getType();
+
+        ArrayType inputArrayType = (ArrayType) input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
     }
@@ -92,11 +92,11 @@ public class ArrayAverage extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ArrayAverage newObject = (ArrayAverage)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayAverage newObject = (ArrayAverage) super.clone(workspace);
         newObject.input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType inputArrayType = (ArrayType)newObject.input.getType();
+
+        ArrayType inputArrayType = (ArrayType) newObject.input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
@@ -110,12 +110,18 @@ public class ArrayAverage extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ArrayToken token = (ArrayToken)input.get(0);
-            if (token.length() == 0) return;
-            Token sum = (Token)token.getElement(0);
-            for (int i = 1; i < token.length(); i++) {
-                sum = sum.add( token.getElement(i) );
+            ArrayToken token = (ArrayToken) input.get(0);
+
+            if (token.length() == 0) {
+                return;
             }
+
+            Token sum = (Token) token.getElement(0);
+
+            for (int i = 1; i < token.length(); i++) {
+                sum = sum.add(token.getElement(i));
+            }
+
             output.send(0, sum.divide(new IntToken(token.length())));
         }
     }
@@ -129,12 +135,13 @@ public class ArrayAverage extends Transformer {
      */
     public List typeConstraintList() {
         Type inputType = input.getType();
+
         if (inputType == BaseType.UNKNOWN) {
             input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        } else if ( !(inputType instanceof ArrayType)) {
+        } else if (!(inputType instanceof ArrayType)) {
             throw new IllegalStateException("ArrayElement.typeConstraintList: "
-                    + "The input type, " + inputType.toString() + " is not an "
-                    + "array type.");
+                + "The input type, " + inputType.toString() + " is not an "
+                + "array type.");
         }
 
         // NOTE: superclass will put in type constraints for
@@ -143,22 +150,23 @@ public class ArrayAverage extends Transformer {
 
         // collect constraints from contained Typeables
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            Typeable port = (Typeable)ports.next();
+            Typeable port = (Typeable) ports.next();
             result.addAll(port.typeConstraintList());
         }
 
         Iterator typeables = attributeList(Typeable.class).iterator();
+
         while (typeables.hasNext()) {
-            Typeable typeable = (Typeable)typeables.next();
+            Typeable typeable = (Typeable) typeables.next();
             result.addAll(typeable.typeConstraintList());
         }
 
         // Add type constraint for the input.
-        ArrayType inputArrayType = (ArrayType)input.getType();
+        ArrayType inputArrayType = (ArrayType) input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        Inequality inequality = new Inequality(elementTerm,
-                output.getTypeTerm());
+        Inequality inequality = new Inequality(elementTerm, output.getTypeTerm());
 
         result.add(inequality);
         return result;

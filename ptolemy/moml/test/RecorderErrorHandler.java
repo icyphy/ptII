@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml.test;
 
 import ptolemy.kernel.util.KernelException;
@@ -35,6 +34,7 @@ import ptolemy.moml.ErrorHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// RecorderErrorHandler
+
 /**
    Record MoML Errors and retrieve them later
 
@@ -46,14 +46,12 @@ import ptolemy.moml.ErrorHandler;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class RecorderErrorHandler implements ErrorHandler {
-
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
     /** Create an error handler
      */
     public RecorderErrorHandler() {
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,14 +76,9 @@ public class RecorderErrorHandler implements ErrorHandler {
      *  @param exception The exception that was thrown.
      *  @return CONTINUE to request skipping this element.
      */
-    public int handleError(
-            String element,
-            NamedObj context,
-            Throwable exception) {
+    public int handleError(String element, NamedObj context, Throwable exception) {
         _buffer.append("RecorderErrorHandler: Error encountered in:\n"
-                + element
-                + "\n"
-                + KernelException.stackTraceToString(exception));
+            + element + "\n" + KernelException.stackTraceToString(exception));
         return CONTINUE;
     }
 
@@ -97,6 +90,5 @@ public class RecorderErrorHandler implements ErrorHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private StringBuffer _buffer = new StringBuffer();
 }

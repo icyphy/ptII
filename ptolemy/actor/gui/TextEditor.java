@@ -25,11 +25,10 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 // FIXME: To do:
 //  - Fix printing.
-
 package ptolemy.actor.gui;
+
 
 // Java imports
 import java.awt.BorderLayout;
@@ -43,8 +42,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TextEditor
+
 /**
 
 TextEditor is a top-level window containing a simple text editor or viewer.
@@ -59,7 +60,6 @@ After creating this, it is necessary to call show() for it to appear.
 @Pt.AcceptedRating Red (eal)
 */
 public class TextEditor extends TableauFrame implements DocumentListener {
-
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -89,6 +89,7 @@ public class TextEditor extends TableauFrame implements DocumentListener {
         setTitle(title);
 
         text = new JTextArea(document);
+
         // Since the document may have been null, request it...
         document = text.getDocument();
         document.addDocumentListener(this);
@@ -137,8 +138,7 @@ public class TextEditor extends TableauFrame implements DocumentListener {
      */
     public void scrollToEnd() {
         // Song and dance to scroll to the new line.
-        text.scrollRectToVisible(new Rectangle(
-                                         new Point(0, text.getHeight())));
+        text.scrollRectToVisible(new Rectangle(new Point(0, text.getHeight())));
     }
 
     /** Set background color.  This overrides the base class to set the
@@ -147,11 +147,13 @@ public class TextEditor extends TableauFrame implements DocumentListener {
      */
     public void setBackground(Color background) {
         super.setBackground(background);
+
         // This seems to be called in a base class constructor, before
         // this variable has been set. Hence the test against null.
         if (_scrollPane != null) {
             _scrollPane.setBackground(background);
         }
+
         if (text != null) {
             // NOTE: Should the background always be white?
             text.setBackground(background);
@@ -191,7 +193,6 @@ public class TextEditor extends TableauFrame implements DocumentListener {
     }
 
     // FIXME: Listen for window closing.
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

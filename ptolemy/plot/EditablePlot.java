@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.plot;
 
 import java.awt.Color;
@@ -40,8 +39,10 @@ import java.util.Enumeration;
 import java.util.Stack;
 import java.util.Vector;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlot
+
 /**
    This extension of Plot permits interactive modification of plotted
    data, one dataset at a time.  By default, you can modify dataset
@@ -82,7 +83,6 @@ import java.util.Vector;
    @Pt.AcceptedRating Red (cxh)
 */
 public class EditablePlot extends Plot {
-
     /** Constructor.
      */
     public EditablePlot() {
@@ -107,6 +107,7 @@ public class EditablePlot extends Plot {
                 return;
             }
         }
+
         _editListeners.addElement(listener);
     }
 
@@ -118,14 +119,17 @@ public class EditablePlot extends Plot {
      */
     public double[][] getData(int dataset) {
         _checkDatasetIndex(dataset);
-        Vector pts = (Vector)_points.elementAt(dataset);
+
+        Vector pts = (Vector) _points.elementAt(dataset);
         int size = pts.size();
         double[][] result = new double[2][size];
+
         for (int i = 0; i < size; i++) {
-            PlotPoint pt = (PlotPoint)pts.elementAt(i);
+            PlotPoint pt = (PlotPoint) pts.elementAt(i);
             result[0][i] = pt.x;
             result[1][i] = pt.y;
         }
+
         return result;
     }
 
@@ -133,13 +137,18 @@ public class EditablePlot extends Plot {
      *  calling undo(), if there was one.  Otherwise, do nothing.
      */
     public void redo() {
-        if (_redoStack.empty()) return;
+        if (_redoStack.empty()) {
+            return;
+        }
+
         Object[] save = new Object[2];
         save[0] = new Integer(_dataset);
         save[1] = getData(_dataset);
         _undoStack.push(save);
-        Object[] saved = (Object[])_redoStack.pop();
-        _setData(((Integer)saved[0]).intValue(), (double[][])saved[1]);
+
+        Object[] saved = (Object[]) _redoStack.pop();
+        _setData(((Integer) saved[0]).intValue(), (double[][]) saved[1]);
+
         // Ensure replot of offscreen buffer.
         _plotImage = null;
         repaint();
@@ -155,6 +164,7 @@ public class EditablePlot extends Plot {
         if (_editListeners == null) {
             return;
         }
+
         _editListeners.removeElement(listener);
     }
 
@@ -167,6 +177,7 @@ public class EditablePlot extends Plot {
         if (dataset >= 0) {
             _checkDatasetIndex(dataset);
         }
+
         _dataset = dataset;
     }
 
@@ -174,13 +185,18 @@ public class EditablePlot extends Plot {
      *  Otherwise, do nothing.
      */
     public void undo() {
-        if (_undoStack.empty()) return;
+        if (_undoStack.empty()) {
+            return;
+        }
+
         Object[] save = new Object[2];
         save[0] = new Integer(_dataset);
         save[1] = getData(_dataset);
         _redoStack.push(save);
-        Object[] saved = (Object[])_undoStack.pop();
-        _setData(((Integer)saved[0]).intValue(), (double[][])saved[1]);
+
+        Object[] saved = (Object[]) _undoStack.pop();
+        _setData(((Integer) saved[0]).intValue(), (double[][]) saved[1]);
+
         // Ensure replot of offscreen buffer.
         _plotImage = null;
         repaint();
@@ -189,45 +205,69 @@ public class EditablePlot extends Plot {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Clear the editing spec and modify the dataset.
     private synchronized void _edit(int x, int y) {
-
-        if (_dataset < 0) return;
+        if (_dataset < 0) {
+            return;
+        }
 
         // Save for undo.
         Object[] save = new Object[2];
         save[0] = new Integer(_dataset);
         save[1] = getData(_dataset);
+
         // FIXME: Need a way to notify menus to enable items...
         _undoStack.push(save);
+
         // NOTE: the clear() method was added in jdk 1.2, so we don't
         // use it here for maximal compatibility...
         // _redoStack.clear();
-        while (!_redoStack.empty()) _redoStack.pop();
+        while (!_redoStack.empty()) {
+            _redoStack.pop();
+        }
 
         // constrain to be in range
-        if (y > _lry) y = _lry;
-        if (y < _uly) y = _uly;
-        if (x > _lrx) x = _lrx;
-        if (x < _ulx) x = _ulx;
+        if (y > _lry) {
+            y = _lry;
+        }
+
+        if (y < _uly) {
+            y = _uly;
+        }
+
+        if (x > _lrx) {
+            x = _lrx;
+        }
+
+        if (x < _ulx) {
+            x = _ulx;
+        }
+
         _editPoint(x, y);
 
         // Edit the points in the signal.
-        Vector pts = (Vector)_points.elementAt(_dataset);
+        Vector pts = (Vector) _points.elementAt(_dataset);
 
         for (int i = 0; i < pts.size(); i++) {
-            PlotPoint pt = (PlotPoint)pts.elementAt(i);
+            PlotPoint pt = (PlotPoint) pts.elementAt(i);
+
             // Only bother with points in visual range
             if ((pt.x >= _xMin) && (pt.x <= _xMax)) {
-                int index = (int)((pt.x - _xMin) * _xscale)
+                int index = (int) ((pt.x - _xMin) * _xscale)
                     - (_lrx - _ulx - _editSpecX.length);
-                if (index >= 0 && index < _editSpecX.length) {
+
+                if ((index >= 0) && (index < _editSpecX.length)) {
                     if (_editSpecSet[index]) {
-                        pt.y = _yMax - (_editSpecY[index]-_uly)/_yscale;
+                        pt.y = _yMax - ((_editSpecY[index] - _uly) / _yscale);
+
                         // For auto-ranging, keep track of min and max.
-                        if (pt.y < _yBottom) _yBottom = pt.y;
-                        if (pt.y > _yTop) _yTop = pt.y;
+                        if (pt.y < _yBottom) {
+                            _yBottom = pt.y;
+                        }
+
+                        if (pt.y > _yTop) {
+                            _yTop = pt.y;
+                        }
                     }
                 }
             }
@@ -247,32 +287,48 @@ public class EditablePlot extends Plot {
         //             }
         //         }
         //         graphics.setPaintMode();
-
         _notifyListeners(_dataset);
     }
 
     // Make a record of a new edit point.
     private synchronized void _editPoint(int x, int y) {
-
-        if (_dataset < 0) return;
+        if (_dataset < 0) {
+            return;
+        }
 
         Graphics graphics = getGraphics();
-        // constrain to be in range
-        if (y > _lry) y = _lry;
-        if (y < _uly) y = _uly;
-        if (x > _lrx) x = _lrx;
-        if (x < _ulx) x = _ulx;
 
-        if (x <= _currentEditX || x >= _lrx) {
+        // constrain to be in range
+        if (y > _lry) {
+            y = _lry;
+        }
+
+        if (y < _uly) {
+            y = _uly;
+        }
+
+        if (x > _lrx) {
+            x = _lrx;
+        }
+
+        if (x < _ulx) {
+            x = _ulx;
+        }
+
+        if ((x <= _currentEditX) || (x >= _lrx)) {
             // ignore
             return;
         }
+
         int step = _currentEditX;
+
         while (step <= x) {
-            int index = step-(_lrx-_editSpecX.length);
-            double proportion =
-                (step - _currentEditX)/(double)(x - _currentEditX);
-            int newY = (int)(_currentEditY + proportion*(y-_currentEditY));
+            int index = step - (_lrx - _editSpecX.length);
+            double proportion = (step - _currentEditX) / (double) (x
+                - _currentEditX);
+            int newY = (int) (_currentEditY
+                + (proportion * (y - _currentEditY)));
+
             if (!_editSpecSet[index]) {
                 _editSpecX[index] = step;
                 _editSpecY[index] = newY;
@@ -280,25 +336,39 @@ public class EditablePlot extends Plot {
 
                 // Draw point, linearly interpolated from previous point
                 graphics.setXORMode(_editColor);
-                graphics.drawLine(step, newY-1, step, newY+1);
+                graphics.drawLine(step, newY - 1, step, newY + 1);
                 graphics.setPaintMode();
             }
+
             step++;
         }
+
         _currentEditX = x;
         _currentEditY = y;
     }
 
     // Make a record of the starting x and y position of an edit.
     private synchronized void _editStart(int x, int y) {
-
-        if (_dataset < 0) return;
+        if (_dataset < 0) {
+            return;
+        }
 
         // constrain to be in range
-        if (y > _lry) y = _lry;
-        if (y < _uly) y = _uly;
-        if (x > _lrx) x = _lrx;
-        if (x < _ulx) x = _ulx;
+        if (y > _lry) {
+            y = _lry;
+        }
+
+        if (y < _uly) {
+            y = _uly;
+        }
+
+        if (x > _lrx) {
+            x = _lrx;
+        }
+
+        if (x < _ulx) {
+            x = _ulx;
+        }
 
         // Allocate a vector to store the points.
         int size = _lrx - x + 1;
@@ -314,9 +384,10 @@ public class EditablePlot extends Plot {
         _currentEditY = y;
 
         Graphics graphics = getGraphics();
+
         // Draw point (as a 3 pixel vertical line, for thickness)
         graphics.setXORMode(_editColor);
-        graphics.drawLine(x, y-1, x, y+1);
+        graphics.drawLine(x, y - 1, x, y + 1);
         graphics.setPaintMode();
     }
 
@@ -326,9 +397,10 @@ public class EditablePlot extends Plot {
             return;
         } else {
             Enumeration listeners = _editListeners.elements();
+
             while (listeners.hasMoreElements()) {
-                ((EditListener)listeners.nextElement()).
-                    editDataModified(this, dataset);
+                ((EditListener) listeners.nextElement()).editDataModified(this,
+                    dataset);
             }
         }
     }
@@ -337,11 +409,16 @@ public class EditablePlot extends Plot {
     // form returned by getData.
     private void _setData(int dataset, double[][] data) {
         _checkDatasetIndex(dataset);
-        Vector pts = (Vector)_points.elementAt(dataset);
+
+        Vector pts = (Vector) _points.elementAt(dataset);
         int size = pts.size();
-        if (data[0].length < size) size = data[0].length;
+
+        if (data[0].length < size) {
+            size = data[0].length;
+        }
+
         for (int i = 0; i < size; i++) {
-            PlotPoint pt = (PlotPoint)pts.elementAt(i);
+            PlotPoint pt = (PlotPoint) pts.elementAt(i);
             pt.x = data[0][i];
             pt.y = data[1][i];
         }
@@ -349,10 +426,14 @@ public class EditablePlot extends Plot {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    private int[] _editSpecX;
 
-    private int[] _editSpecX, _editSpecY;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private int[] _editSpecY;
     private boolean[] _editSpecSet;
-    private int _currentEditX, _currentEditY;
+    private int _currentEditX;
+    private int _currentEditY;
     private int _dataset = 0;
 
     // Call setXORMode with a hardwired color because
@@ -369,21 +450,24 @@ public class EditablePlot extends Plot {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     public class EditMouseListener implements MouseListener {
         public void mouseClicked(MouseEvent event) {
         }
+
         public void mouseEntered(MouseEvent event) {
         }
+
         public void mouseExited(MouseEvent event) {
         }
+
         public void mousePressed(MouseEvent event) {
-            if ((event.getModifiers() & InputEvent.BUTTON3_MASK)!= 0) {
+            if ((event.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 EditablePlot.this._editStart(event.getX(), event.getY());
             }
         }
+
         public void mouseReleased(MouseEvent event) {
-            if ((event.getModifiers() & InputEvent.BUTTON3_MASK)!= 0) {
+            if ((event.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 EditablePlot.this._edit(event.getX(), event.getY());
             }
         }
@@ -391,10 +475,11 @@ public class EditablePlot extends Plot {
 
     public class ModifyListener implements MouseMotionListener {
         public void mouseDragged(MouseEvent event) {
-            if ((event.getModifiers() & InputEvent.BUTTON3_MASK)!= 0) {
+            if ((event.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 EditablePlot.this._editPoint(event.getX(), event.getY());
             }
         }
+
         public void mouseMoved(MouseEvent event) {
         }
     }
@@ -402,30 +487,41 @@ public class EditablePlot extends Plot {
     public class UndoListener implements KeyListener {
         public void keyPressed(KeyEvent e) {
             int keycode = e.getKeyCode();
-            switch(keycode) {
+
+            switch (keycode) {
             case KeyEvent.VK_CONTROL:
                 _control = true;
                 break;
+
             case KeyEvent.VK_Z:
+
                 if (_control) {
                     undo();
                 }
+
                 break;
+
             case KeyEvent.VK_Y:
+
                 if (_control) {
                     redo();
                 }
+
                 break;
+
             default:
                 // None
             }
         }
+
         public void keyReleased(KeyEvent e) {
             int keycode = e.getKeyCode();
-            switch(keycode) {
+
+            switch (keycode) {
             case KeyEvent.VK_CONTROL:
                 _control = false;
                 break;
+
             default:
                 // None
             }

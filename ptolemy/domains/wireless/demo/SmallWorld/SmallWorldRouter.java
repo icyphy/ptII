@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.demo.SmallWorld;
 
 import java.util.HashMap;
@@ -52,13 +51,13 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// SmallWorldRouter
@@ -93,7 +92,6 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class SmallWorldRouter extends TypedAtomicActor {
-
     /** Construct a channel with the given name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown. If the name argument
@@ -105,7 +103,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *   a relation already in the container.
      */
     public SmallWorldRouter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure the parameters.
@@ -121,17 +119,17 @@ public class SmallWorldRouter extends TypedAtomicActor {
         // Create and configure the ports.
         input = new WirelessIOPort(this, "input", true, false);
         input.outsideChannel.setExpression("$inputChannelName");
+
         //FIXME: this type configuration doesn't work.
         //TypeAttribute inputPortType = new TypeAttribute(input, "type");
         //inputPortType.setExpression
         //    ("{data=double, destination=String, routeTo=String, hops=int}");
-
         output = new WirelessIOPort(this, "output", false, true);
         output.outsideChannel.setExpression("$outputChannelName");
+
         //TypeAttribute outputPortType = new TypeAttribute(output, "type");
         //outputPortType.setExpression
         //    ("{data=double, destination=String, routeTo=String, hops=int}");
-
         test = new WirelessIOPort(this, "test", false, true);
         test.outsideChannel.setExpression("$testChannelName");
         test.setTypeEquals(BaseType.INT);
@@ -288,64 +286,70 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *  change its icon back to white.
      */
     public void fire() throws IllegalActionException {
-
         if (input.hasToken(0)) {
-            RecordToken in = (RecordToken)input.get(0);
-            double data = ((DoubleToken)in.get("data")).doubleValue();
-            String destination = ((StringToken)in.get("destination"))
+            RecordToken in = (RecordToken) input.get(0);
+            double data = ((DoubleToken) in.get("data")).doubleValue();
+            String destination = ((StringToken) in.get("destination"))
                 .stringValue();
-            String routeTo = ((StringToken)in.get("routeTo")).stringValue();
-            int hops = ((IntToken)in.get("hops")).intValue();
+            String routeTo = ((StringToken) in.get("routeTo")).stringValue();
+            int hops = ((IntToken) in.get("hops")).intValue();
+
             /*System.out.println(getName() + " receive a event with : " + "\n"
               + "destination = " + destination + "\n"
               + "routeTo = " + routeTo + "\n"
               + "hops = " + hops);
             */
-
             if (getName().equals(destination)) {
                 // Change the color of the icon to red.
                 _circle2.fillColor.setToken("{1.0, 0.0, 0.1, 0.7}");
+
                 //_isRed = true;
-                test.send(0, new IntToken(hops+1));
+                test.send(0, new IntToken(hops + 1));
+
                 //Call fireAt to set the color back to white after the delay time.
                 Director director = getDirector();
-                double delayTime = ((DoubleToken)delay.getToken()).doubleValue();
+                double delayTime = ((DoubleToken) delay.getToken()).doubleValue();
                 Time time = director.getModelTime().add(delayTime);
                 director.fireAt(this, time);
-            } else if (getName().equals(routeTo) || hops == 0) {
+            } else if (getName().equals(routeTo) || (hops == 0)) {
                 // Change the color of the icon to green.
                 _circle2.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
-                CompositeEntity container = (CompositeEntity)getContainer();
-                Entity destNode = container.getEntity(destination);
-                Locatable destLocation = (Locatable)destNode.getAttribute(
-                        "_location", Locatable.class);
-                Locatable myLocation = (Locatable)this.getAttribute(
-                        "_location", Locatable.class);
-                if (destLocation == null || myLocation == null) {
-                    throw new IllegalActionException(
-                            "Cannot determine location for node "
-                            + destNode.getName()
-                            + ".");
 
+                CompositeEntity container = (CompositeEntity) getContainer();
+                Entity destNode = container.getEntity(destination);
+                Locatable destLocation = (Locatable) destNode.getAttribute("_location",
+                        Locatable.class);
+                Locatable myLocation = (Locatable) this.getAttribute("_location",
+                        Locatable.class);
+
+                if ((destLocation == null) || (myLocation == null)) {
+                    throw new IllegalActionException(
+                        "Cannot determine location for node "
+                        + destNode.getName() + ".");
                 }
+
                 Iterator nodes = _connectedNodes.iterator();
                 double minDistance = _distanceBetween(destLocation, myLocation);
                 String to = " ";
-                boolean multi = ((BooleanToken)doublePath.getToken()).booleanValue();
-                double nextMinDistance = _distanceBetween(destLocation, myLocation);
+                boolean multi = ((BooleanToken) doublePath.getToken())
+                    .booleanValue();
+                double nextMinDistance = _distanceBetween(destLocation,
+                        myLocation);
                 String to2 = " ";
+
                 while (nodes.hasNext()) {
                     Entity node = (Entity) nodes.next();
-                    Locatable location = (Locatable)node.getAttribute(
-                            "_location", Locatable.class);
+                    Locatable location = (Locatable) node.getAttribute("_location",
+                            Locatable.class);
+
                     if (location == null) {
                         throw new IllegalActionException(
-                                "Cannot determine location for node "
-                                + node.getName()
-                                + ".");
-
+                            "Cannot determine location for node "
+                            + node.getName() + ".");
                     }
+
                     double d = _distanceBetween(destLocation, location);
+
                     if (multi) {
                         if (d < minDistance) {
                             nextMinDistance = minDistance;
@@ -367,54 +371,63 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 // Request refiring after a certain amount of time specified
                 // by the <i>delay<i> parameter.
                 Director director = getDirector();
-                Token[] values = {new DoubleToken(data),
-                                  new StringToken(destination),
-                                  new StringToken(to),
-                                  new IntToken(hops+1)};
-                double delayTime = ((DoubleToken)delay.getToken()).doubleValue();
+                Token[] values = {
+                        new DoubleToken(data), new StringToken(destination),
+                        new StringToken(to), new IntToken(hops + 1)
+                    };
+                double delayTime = ((DoubleToken) delay.getToken()).doubleValue();
                 Time time = director.getModelTime().add(delayTime);
+
                 if (_receptions == null) {
                     _receptions = new HashMap();
                 }
+
                 Double timeDouble = new Double(time.getDoubleValue());
-                String[] labels = {"data", "destination", "routeTo", "hops"};
+                String[] labels = { "data", "destination", "routeTo", "hops" };
                 RecordToken result = new RecordToken(labels, values);
                 _receptions.put(timeDouble, result);
 
                 director.fireAt(this, time);
+
                 if (multi) {
-                    Token[] values2 = {new DoubleToken(data),
-                                       new StringToken(destination),
-                                       new StringToken(to2),
-                                       new IntToken(hops+1)};
+                    Token[] values2 = {
+                            new DoubleToken(data), new StringToken(destination),
+                            new StringToken(to2), new IntToken(hops + 1)
+                        };
+
                     if (_receptions == null) {
                         _receptions = new HashMap();
                     }
+
                     RecordToken result2 = new RecordToken(labels, values2);
                     _receptions.put(timeDouble, result2);
 
                     director.fireAt(this, time.add(delayTime));
                 }
+
                 //output.send(0, result);
             }
         } else {
             if (_receptions != null) {
                 // We may be getting fired because of an impending event.
-                double currentTimeValue =
-                    getDirector().getModelTime().getDoubleValue();
+                double currentTimeValue = getDirector().getModelTime()
+                                              .getDoubleValue();
                 Double timeDouble = new Double(currentTimeValue);
-                RecordToken reception = (RecordToken)_receptions.get(timeDouble);
+                RecordToken reception = (RecordToken) _receptions.get(timeDouble);
+
                 if (reception != null) {
                     // The time matches a pending reception.
                     _receptions.remove(reception);
+
                     // Use the superclass, not this class, or we just delay again.
                     output.send(0, reception);
-
                 }
             }
+
             //if (_isRed) {
             //Set color back to white.
             _circle2.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
+
             //_isRed = false;
             //}
         }
@@ -430,17 +443,21 @@ public class SmallWorldRouter extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        long seedValue = ((LongToken)(seed.getToken())).longValue();
-        if (seedValue != (long)0) {
+
+        long seedValue = ((LongToken) (seed.getToken())).longValue();
+
+        if (seedValue != (long) 0) {
             _random.setSeed(seedValue);
         } else {
             _random.setSeed(System.currentTimeMillis() + hashCode());
         }
+
         _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");
         _circle.lineColor.setToken("{0.0, 0.0, 1.0, 0.05}");
         _circle2.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
         _circle2.lineColor.setToken("{0.0, 0.5, 0.5, 1.0}");
         _connectedNodes = (LinkedList) nodesInRange(output);
+
         //_isRed = false;
         //_values = new Token[4];
     }
@@ -456,7 +473,6 @@ public class SmallWorldRouter extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /** Return the distance between two location.  This is a convenience
      *  method provided to make it easier to calculate the distance between
      *  two locations.
@@ -466,13 +482,12 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *  @exception IllegalActionException If the distance
      *   cannot be determined.
      */
-    protected double _distanceBetween(
-            Locatable location1, Locatable location2)
-            throws IllegalActionException {
+    protected double _distanceBetween(Locatable location1, Locatable location2)
+        throws IllegalActionException {
         double[] p1 = location1.getLocation();
         double[] p2 = location2.getLocation();
-        return Math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0])
-                + (p1[1] - p2[1])*(p1[1] - p2[1]));
+        return Math.sqrt(((p1[0] - p2[0]) * (p1[0] - p2[0]))
+            + ((p1[1] - p2[1]) * (p1[1] - p2[1])));
     }
 
     /** Return the list of nodes that can receive from the specified
@@ -482,33 +497,38 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *  @exception IllegalActionException If a location of a port cannot be
      *   evaluated.
      */
-    protected List nodesInRange(
-            WirelessIOPort sourcePort)
-            throws IllegalActionException {
+    protected List nodesInRange(WirelessIOPort sourcePort)
+        throws IllegalActionException {
         List nodesInRangeList = new LinkedList();
         CompositeEntity container = (CompositeEntity) getContainer();
         Iterator ports = ModelTopology.listeningInputPorts(container,
                 outputChannelName.stringValue()).iterator();
+
         while (ports.hasNext()) {
-            WirelessIOPort port = (WirelessIOPort)ports.next();
+            WirelessIOPort port = (WirelessIOPort) ports.next();
 
             // Skip ports contained by the same container as the source.
-            if (port.getContainer() == sourcePort.getContainer()) continue;
+            if (port.getContainer() == sourcePort.getContainer()) {
+                continue;
+            }
 
             double distance = ModelTopology.distanceBetween(sourcePort, port);
             _distance.setToken(new DoubleToken(distance));
 
             double experiment = _random.nextDouble();
-            double probability = ((DoubleToken)lossProbability.getToken())
+            double probability = ((DoubleToken) lossProbability.getToken())
                 .doubleValue();
+
             if (_debugging) {
                 _debug(" **** loss probability is: " + probability);
             }
+
             // Make sure a probability of 1.0 is truly a sure loss.
-            if (probability < 1.0 && experiment >= probability) {
+            if ((probability < 1.0) && (experiment >= probability)) {
                 nodesInRangeList.add(port.getContainer());
             }
         }
+
         return nodesInRangeList;
     }
 
@@ -531,6 +551,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /** Icon indicating the communication region. */
     private EllipseAttribute _circle;
 

@@ -24,9 +24,11 @@
   COPYRIGHTENDKEY
 */
 package diva.gui;
+
 import java.awt.datatransfer.Clipboard;
 
 import javax.swing.JComponent;
+
 
 /**
  * View is an interface that captures the notion of a view on a
@@ -46,27 +48,27 @@ public interface View {
      *
      * @exception Exception If the close operation fails.
      */
-    public void close () throws Exception;
+    public void close() throws Exception;
 
     /** Get the currently selected objects from this view, if any,
      * and place them on the given clipboard.  If the view does not
      * support such an operation, then do nothing.
      */
-    public void copy (Clipboard c);
+    public void copy(Clipboard c);
 
     /** Remove the currently selected objects from this view, if any,
      * and place them on the given clipboard.  If the view does not
      * support such an operation, then do nothing.
      */
-    public void cut (Clipboard c);
+    public void cut(Clipboard c);
 
     /** Return the component that implements the display of this view.
      */
-    public JComponent getComponent ();
+    public JComponent getComponent();
 
     /** Get the document that this view is viewing.
      */
-    public Document getDocument ();
+    public Document getDocument();
 
     /** Get the title of this document
      */
@@ -83,7 +85,5 @@ public interface View {
      * such an operation, then do nothing.  This method is responsible
      * for copying the data.
      */
-    public void paste (Clipboard c);
+    public void paste(Clipboard c);
 }
-
-

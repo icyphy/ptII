@@ -23,7 +23,6 @@
     ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -36,8 +35,10 @@ import soot.Modifier;
 import soot.SootClass;
 import soot.SootField;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ClassStructureGenerator
+
 /**
    A class that generates code for the C structure corresponding to an
    instance of a class (an Object).
@@ -48,8 +49,7 @@ import soot.SootField;
    @Pt.ProposedRating Red (<your email address>)
    @Pt.AcceptedRating Red (ssb)
 */
-public class  InstanceStructureGenerator extends CodeGenerator {
-
+public class InstanceStructureGenerator extends CodeGenerator {
     /** Default constructor.
      * @param context The context to use for the generated code.
      */
@@ -57,9 +57,9 @@ public class  InstanceStructureGenerator extends CodeGenerator {
         _context = context;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Generate the structure corresponding to a class instance (an
      * object).
      * @param source The class.
@@ -75,29 +75,28 @@ public class  InstanceStructureGenerator extends CodeGenerator {
         // Generate the type declaration header for the class instance
         // structure.
         code.append(_comment("Structure that implements instances of Class "
-                            + source.getName()));
+                + source.getName()));
         code.append("struct " + typeName + " {\n");
 
         // Pointer to common, class-specific information.
-        code.append("\n" + _indent(1) + CNames.classNameOf(source) +
-                " class;\n");
+        code.append("\n" + _indent(1) + CNames.classNameOf(source)
+            + " class;\n");
 
         // Extract the non-static fields, and insert them into the struct
         // that is declared to implement the class.
         Iterator superClasses = _getSuperClasses(source).iterator();
+
         while (superClasses.hasNext()) {
-            SootClass superClass = (SootClass)superClasses.next();
+            SootClass superClass = (SootClass) superClasses.next();
             code.append(_generateInheritedFields(source, superClass));
         }
 
         code.append(_generateFields(source));
 
-
         // Terminator for declared type for class instances.
         code.append("\n};\n\n");
 
         return code.toString();
-
     }
 
     /** Get the map of types required by the generated class.
@@ -110,19 +109,12 @@ public class  InstanceStructureGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected fields                    ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Generate a C declaration that corresponds to a class field.
     private String _generateField(SootField field) {
         if (RequiredFileGenerator.isRequired(field)) {
@@ -140,8 +132,7 @@ public class  InstanceStructureGenerator extends CodeGenerator {
             _doneFields.add(field.getName());
 
             return fieldCode.toString();
-        }
-        else {
+        } else {
             return new String();
         }
     }
@@ -154,36 +145,34 @@ public class  InstanceStructureGenerator extends CodeGenerator {
         Iterator fields = source.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1)
-            + "/* Public and protected fields for "
-            + source.getName() + " */\n";
-
+            + "/* Public and protected fields for " + source.getName()
+            + " */\n";
 
         // Generate public and protected fields
         while (fields.hasNext()) {
-            SootField field = (SootField)(fields.next());
+            SootField field = (SootField) (fields.next());
+
             if ((!field.isPrivate())
                     && (!Modifier.isStatic(field.getModifiers()))
                     && (RequiredFileGenerator.isRequired(field))
                     && (!_doneFields.contains(field.getName()))) {
-
                 if (insertedFields == 0) {
                     fieldCode.append(header);
                 }
 
                 fieldCode.append(_generateField(field));
                 insertedFields++;
-
             }
         }
 
         // Generate private fields
-        fieldCode.append("\n" + _indent(1)
-                + "/* Private Fields */\n");
+        fieldCode.append("\n" + _indent(1) + "/* Private Fields */\n");
         fields = source.getFields().iterator();
+
         while (fields.hasNext()) {
-            SootField field = (SootField)(fields.next());
-            if (field.isPrivate()
-                    && !(Modifier.isStatic(field.getModifiers()))
+            SootField field = (SootField) (fields.next());
+
+            if (field.isPrivate() && !(Modifier.isStatic(field.getModifiers()))
                     && (!_doneFields.contains(field.getName()))) {
                 if (insertedFields == 0) {
                     fieldCode.append(header);
@@ -206,28 +195,27 @@ public class  InstanceStructureGenerator extends CodeGenerator {
      *  "friendly" fields - visible in the same package.
      */
     private String _generateInheritedFields(SootClass source,
-            SootClass superClass) {
-
+        SootClass superClass) {
         StringBuffer fieldCode = new StringBuffer();
         Iterator fields = superClass.getFields().iterator();
         int insertedFields = 0;
-        String header = "\n" + _indent(1) +
-            _comment("Fields inherited from " + superClass.getName());
+        String header = "\n" + _indent(1)
+            + _comment("Fields inherited from " + superClass.getName());
 
         while (fields.hasNext()) {
-            SootField field = (SootField)(fields.next());
+            SootField field = (SootField) (fields.next());
 
             boolean stat = Modifier.isStatic(field.getModifiers());
             boolean priv = field.isPrivate();
-            boolean pub  = field.isPublic();
+            boolean pub = field.isPublic();
             boolean prot = field.isProtected();
-            boolean friendly = (!priv)&&(!pub)&&(!prot);
-            boolean samePack = (source.getPackageName().compareTo(
-                                        superClass.getPackageName()) == 0);
+            boolean friendly = (!priv) && (!pub) && (!prot);
+            boolean samePack = (source.getPackageName().compareTo(superClass
+                    .getPackageName()) == 0);
 
             // Whether this field should be visible to this class.
             boolean visible = (!stat)
-                && (pub || prot || (friendly && samePack)) ;
+                && (pub || prot || (friendly && samePack));
 
             // If a field has already been inherited from another class, it
             // need not be declared again.
@@ -235,10 +223,12 @@ public class  InstanceStructureGenerator extends CodeGenerator {
                 if (insertedFields == 0) {
                     fieldCode.append(header);
                 }
+
                 fieldCode.append(_generateField(field));
                 insertedFields++;
             }
         }
+
         return fieldCode.toString();
     }
 
@@ -246,17 +236,19 @@ public class  InstanceStructureGenerator extends CodeGenerator {
     // The list entries are ordered in decreasing (parents before children)
     // hierarchy order.
     private LinkedList _getSuperClasses(SootClass source) {
-        LinkedList classes = (LinkedList)(_superClasses.get(source));
-        if (classes  == null) {
+        LinkedList classes = (LinkedList) (_superClasses.get(source));
+
+        if (classes == null) {
             if (source.hasSuperclass()) {
-                classes = (LinkedList)
-                    (_getSuperClasses(source.getSuperclass()).clone());
+                classes = (LinkedList) (_getSuperClasses(source.getSuperclass())
+                                            .clone());
                 classes.add(source.getSuperclass());
                 _superClasses.put(source, classes);
             } else {
                 _superClasses.put(source, classes = new LinkedList());
             }
         }
+
         return classes;
     }
 
@@ -270,5 +262,4 @@ public class  InstanceStructureGenerator extends CodeGenerator {
 
     // Prevents declaration of fields already declared.
     private static HashSet _doneFields;
-
 }

@@ -24,13 +24,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.de.lib.test;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 /**
   @author Edward A. Lee, Haiyang Zheng
@@ -39,9 +39,8 @@ import ptolemy.kernel.util.NameDuplicationException;
   @Pt.AcceptedRating Red (cxh)
 */
 public class SimpleDelay extends TimedDelay {
-
     public SimpleDelay(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 }

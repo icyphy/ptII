@@ -41,8 +41,8 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
-import ptolemy.data.Token;
 import ptolemy.data.ImageToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -50,8 +50,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.media.Picture;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
+
 /**
    Display an image on the screen using the ptolemy.media.Picture
    class.  For a sequence of images that are all the same size, this class
@@ -67,13 +69,11 @@ import ptolemy.media.Picture;
    @Pt.AcceptedRating Red
 */
 public class ImageDisplay extends Sink implements Placeable {
-
     // FIXME:
     // This actor and sdf.lib.vq.ImageDisplay are very similar except that this
     // actor takes an Object token that wraps a java.awt.Image object.
     // That actor should be removed, and instead, we need an actor that
     // converts matrices to java.awt.Image.
-
     // FIXME: We need to create an ImageEffigy and ImageTableau,
     // similar to TokenEffigy and MatrixTokenTableau, and then associate
     // them with this class in ways similar to what MatrixViewer does.
@@ -87,8 +87,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *   actor with this name.
      */
     public ImageDisplay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -98,8 +97,8 @@ public class ImageDisplay extends Sink implements Placeable {
         _frame = null;
         _container = null;
 
-        _windowProperties = new WindowPropertiesAttribute(
-                this, "_windowProperties");
+        _windowProperties = new WindowPropertiesAttribute(this,
+                "_windowProperties");
 
         _paneSize = new SizeAttribute(this, "_paneSize");
     }
@@ -115,9 +114,8 @@ public class ImageDisplay extends Sink implements Placeable {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ImageDisplay newObject = (ImageDisplay)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ImageDisplay newObject = (ImageDisplay) super.clone(workspace);
 
         newObject._container = null;
         newObject._frame = null;
@@ -144,40 +142,48 @@ public class ImageDisplay extends Sink implements Placeable {
         if (_debugging) {
             _debug("ImageDisplay actor firing");
         }
+
         if (input.hasToken(0)) {
             //ObjectToken objectToken = (ObjectToken) input.get(0);
             Token token = input.get(0);
             ImageToken imageToken;
+
             try {
                 imageToken = (ImageToken) token;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to cast " + token.getClass()
-                        + " to an ImageToken.\nToken was: " + token);
+                    "Failed to cast " + token.getClass()
+                    + " to an ImageToken.\nToken was: " + token);
             }
+
             // If there is no place to display, we can return after
             // consuming the input token.
-            if (_container == null) return;
+            if (_container == null) {
+                return;
+            }
 
             //Image image = (Image) objectToken.getValue();
             Image image = imageToken.asAWTImage();
 
             if (image == null) {
                 throw new IllegalActionException(this,
-                        "ImageDisplay: input image was null!");
+                    "ImageDisplay: input image was null!");
             } else {
                 int xsize = image.getWidth(null);
                 int ysize = image.getHeight(null);
+
                 if ((_oldxsize != xsize) || (_oldysize != ysize)) {
                     if (_debugging) {
                         _debug("Image size has changed.");
                     }
+
                     _oldxsize = xsize;
                     _oldysize = ysize;
 
                     if (_picture != null) {
                         _container.remove(_picture);
                     }
+
                     _picture = new Picture(xsize, ysize);
                     _picture.setImage(image);
                     _picture.setBackground(null);
@@ -186,17 +192,19 @@ public class ImageDisplay extends Sink implements Placeable {
                     _container.invalidate();
                     _container.repaint();
                     _container.doLayout();
+
                     Container c = _container.getParent();
+
                     while (c.getParent() != null) {
                         c.invalidate();
                         c.validate();
                         c = c.getParent();
                     }
+
                     if (_frame != null) {
                         _frame.pack();
                     }
-                }
-                else {
+                } else {
                     _picture.setImage(image);
                 }
 
@@ -213,6 +221,7 @@ public class ImageDisplay extends Sink implements Placeable {
                             }
                         }
                     };
+
                 // Make sure the image gets updated.
                 SwingUtilities.invokeLater(painter);
                 Thread.yield();
@@ -235,31 +244,37 @@ public class ImageDisplay extends Sink implements Placeable {
 
         _oldxsize = 0;
         _oldysize = 0;
+
         if (_container == null) {
             _frame = new ImageWindow();
             _container = _frame.getContentPane();
         }
+
         if (_frame != null) {
             _frame.setVisible(true);
             _frame.toFront();
         }
     }
 
-
-
     /** Set the container that this actor should display data in.  If place
      * is not called, then the actor will create its own frame for display.
      */
     public void place(Container container) {
         _container = container;
+
         // FIXME: Need full support for a separate window.
-        if (container == null) return;
+        if (container == null) {
+            return;
+        }
+
         Container c = _container.getParent();
+
         while (c.getParent() != null) {
             c = c.getParent();
         }
+
         if (c instanceof JFrame) {
-            _frame = (JFrame)c;
+            _frame = (JFrame) c;
         }
     }
 
@@ -290,6 +305,7 @@ public class ImageDisplay extends Sink implements Placeable {
     private int _oldysize;
 
     // FIXME: Probably don't want to use Picture here.
+
     /** A panel that displays the image. */
     private Picture _picture;
 
@@ -303,7 +319,6 @@ public class ImageDisplay extends Sink implements Placeable {
      *  ImageDisplay upon closing, and also records the size of the display.
      */
     private class ImageWindow extends TableauFrame {
-
         /** Construct an empty window.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear
@@ -325,13 +340,16 @@ public class ImageDisplay extends Sink implements Placeable {
         protected boolean _close() {
             // Record the window properties before closing.
             _windowProperties.recordProperties(this);
+
             // Regrettably, have to also record the size of the contents
             // because in Swing, setSize() methods do not set the size.
             // Only the first component size is recorded.
             Component[] components = getContentPane().getComponents();
+
             if (components.length > 0) {
                 _paneSize.recordSize(components[0]);
             }
+
             super._close();
             place(null);
             return true;

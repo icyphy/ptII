@@ -21,7 +21,6 @@
  Created on 01 sept. 2003
 
 */
-
 package thales.actor.gui;
 
 import java.awt.Font;
@@ -31,6 +30,7 @@ import java.awt.Rectangle;
 
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
+
 
 /**
  <p>Titre : ShortTitleTabbedPaneUI</p>
@@ -44,66 +44,41 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
  @Pt.AcceptedRating Red (cxh)
  */
 public class ShortTitleTabbedPaneUI extends BasicTabbedPaneUI {
-
     private static final int TAB_MINIMUM_SIZE = 20;
 
     /* (non-Javadoc)
      * @see javax.swing.plaf.basic.BasicTabbedPaneUI#paintText(java.awt.Graphics, int, java.awt.Font, java.awt.FontMetrics, int, java.lang.String, java.awt.Rectangle, boolean)
      */
-    protected void paintText(
-            Graphics g,
-            int tabPlacement,
-            Font font,
-            FontMetrics metrics,
-            int tabIndex,
-            String title,
-            Rectangle textRect,
-            boolean isSelected) {
-
+    protected void paintText(Graphics g, int tabPlacement, Font font,
+        FontMetrics metrics, int tabIndex, String title, Rectangle textRect,
+        boolean isSelected) {
         if (title.length() > TAB_MINIMUM_SIZE) {
-            title =
-                "..."
-                + title.substring(
-                        title.length() - TAB_MINIMUM_SIZE + 3,
-                        title.length());
+            title = "..."
+                + title.substring(title.length() - TAB_MINIMUM_SIZE + 3,
+                    title.length());
             textRect.x += 4;
         }
 
-        super.paintText(
-                g,
-                tabPlacement,
-                font,
-                metrics,
-                tabIndex,
-                title,
-                textRect,
-                isSelected);
+        super.paintText(g, tabPlacement, font, metrics, tabIndex, title,
+            textRect, isSelected);
     }
 
     /* (non-Javadoc)
      * @see javax.swing.plaf.basic.BasicTabbedPaneUI#calculateTabWidth(int, int, java.awt.FontMetrics)
      */
-    protected int calculateTabWidth(
-            int tabPlacement,
-            int tabIndex,
-            FontMetrics metrics) {
-
+    protected int calculateTabWidth(int tabPlacement, int tabIndex,
+        FontMetrics metrics) {
         int taille = 0;
         String title = tabPane.getTitleAt(tabIndex);
+
         if (title.length() > TAB_MINIMUM_SIZE) {
-            taille =
-                SwingUtilities.computeStringWidth(
-                        metrics,
-                        (title
-                                .substring(
-                                        title.length() - TAB_MINIMUM_SIZE,
-                                        title.length())))
-                + 3;
+            taille = SwingUtilities.computeStringWidth(metrics,
+                    (title.substring(title.length() - TAB_MINIMUM_SIZE,
+                        title.length()))) + 3;
         } else {
             taille = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
         }
 
         return taille;
     }
-
 }

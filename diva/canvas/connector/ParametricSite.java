@@ -24,13 +24,13 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.connector;
 
 import java.awt.geom.Rectangle2D;
 
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
+
 
 /**
  * A site that locates itself in a figure at a location
@@ -82,14 +82,14 @@ public class ParametricSite extends AbstractSite {
     /**
      * Get the figure to which this site is attached.
      */
-    public Figure getFigure () {
+    public Figure getFigure() {
         return _parentFigure;
     }
 
     /**
      * Get the ID of this site.
      */
-    public int getID () {
+    public int getID() {
         return _id;
     }
 
@@ -98,9 +98,9 @@ public class ParametricSite extends AbstractSite {
      * is located at some percentage of the parent
      * figure's bounding width.
      */
-    public double getX () {
+    public double getX() {
         Rectangle2D bounds = _parentFigure.getBounds();
-        double x = bounds.getX() + _xt*bounds.getWidth();
+        double x = bounds.getX() + (_xt * bounds.getWidth());
         return x;
     }
 
@@ -109,11 +109,9 @@ public class ParametricSite extends AbstractSite {
      * is located at some percentage of the parent
      * figure's bounding height.
      */
-    public double getY () {
+    public double getY() {
         Rectangle2D bounds = _parentFigure.getBounds();
-        double y = bounds.getY() + _yt*bounds.getHeight();
+        double y = bounds.getY() + (_yt * bounds.getHeight());
         return y;
     }
 }
-
-

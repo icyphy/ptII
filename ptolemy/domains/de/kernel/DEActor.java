@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.TimedActor;
@@ -54,9 +53,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (hyzheng)
    @Pt.AcceptedRating Green (hyzheng)
 */
-public abstract class DEActor extends TypedAtomicActor
-    implements SequenceActor, TimedActor {
-
+public abstract class DEActor extends TypedAtomicActor implements SequenceActor,
+    TimedActor {
     /** Construct an actor with the specified container and name.
      *  This is protected because there is no reason to create an instance
      *  of this class, but derived classes will want to invoke the
@@ -69,8 +67,7 @@ public abstract class DEActor extends TypedAtomicActor
      *   actor with this name.
      */
     protected DEActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
-
 }

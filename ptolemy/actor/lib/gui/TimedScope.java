@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import ptolemy.data.DoubleToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimedScope
+
 /**
    A signal plotter that plots in an oscilloscope style, meaning that the
    horizontal axis is wrapped and that there is finite persistence.  This
@@ -63,7 +64,6 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Yellow (neuendor)
 */
 public class TimedScope extends TimedPlotter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,14 +73,13 @@ public class TimedScope extends TimedPlotter {
      *   actor with this name.
      */
     public TimedScope(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // set the parameters
         width = new Parameter(this, "width", new DoubleToken(10.0));
         width.setTypeEquals(BaseType.DOUBLE);
-        persistence = new Parameter(this, "persistence",
-                new DoubleToken(10.0));
+        persistence = new Parameter(this, "persistence", new DoubleToken(10.0));
         persistence.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -105,16 +104,16 @@ public class TimedScope extends TimedPlotter {
      *  attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == width && plot != null) {
-            double widthValue = ((DoubleToken)width.getToken()).doubleValue();
+        throws IllegalActionException {
+        if ((attribute == width) && (plot != null)) {
+            double widthValue = ((DoubleToken) width.getToken()).doubleValue();
             plot.setXRange(0.0, widthValue);
-        } else if (attribute == persistence && plot != null) {
-            double persValue =
-                ((DoubleToken)persistence.getToken()).doubleValue();
+        } else if ((attribute == persistence) && (plot != null)) {
+            double persValue = ((DoubleToken) persistence.getToken())
+                .doubleValue();
 
             // NOTE: We assume the superclass ensures this cast is safe.
-            ((Plot)plot).setXPersistence(persValue);
+            ((Plot) plot).setXPersistence(persValue);
         } else {
             super.attributeChanged(attribute);
         }
@@ -126,16 +125,20 @@ public class TimedScope extends TimedPlotter {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        double widthValue = ((DoubleToken)width.getToken()).doubleValue();
+
+        double widthValue = ((DoubleToken) width.getToken()).doubleValue();
         plot.setXRange(0.0, widthValue);
+
         // NOTE: We assume the superclass ensures this cast is safe.
-        ((Plot)plot).setWrap(true);
-        double persValue = ((DoubleToken)persistence.getToken()).doubleValue();
-        ((Plot)plot).setXPersistence(persValue);
+        ((Plot) plot).setWrap(true);
+
+        double persValue = ((DoubleToken) persistence.getToken()).doubleValue();
+        ((Plot) plot).setXPersistence(persValue);
         plot.repaint();
+
         // Override the default so that there are not gaps in the lines.
-        if (((Plot)plot).getMarksStyle().equals("none")) {
-            ((Plot)plot).setMarksStyle("pixels");
+        if (((Plot) plot).getMarksStyle().equals("none")) {
+            ((Plot) plot).setMarksStyle("pixels");
         }
     }
 

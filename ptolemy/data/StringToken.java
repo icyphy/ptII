@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
@@ -35,8 +34,10 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringToken
+
 /**
    A token that contains a string, or more specifically, a reference
    to an instance of String.  The reference is never null, although it may
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Yellow (wbwu)
 */
 public class StringToken extends AbstractConvertibleToken {
-
     /** Construct a token with an empty string.
      */
     public StringToken() {
@@ -68,6 +68,7 @@ public class StringToken extends AbstractConvertibleToken {
         } else {
             _value = new String("");
         }
+
         // If a String token is "has an embedded " quote", then
         // toString() should return "has an embedded \" quote"
         if (_value.indexOf('"') == -1) {
@@ -79,25 +80,19 @@ public class StringToken extends AbstractConvertibleToken {
                 // test your changes.  We used to use the
                 // StringUtilities.substitute() method, but this is
                 // much faster for large strings.
-                _toString = "\""
-                    + _value.replaceAll("\\\"", "\\\\\"")
-                    + "\"";
+                _toString = "\"" + _value.replaceAll("\\\"", "\\\\\"") + "\"";
             } else {
                 // The string already has a \" in it.
-
                 // 1. Substitute a special word for every instance of \"
-                String backslashed =
-                    _value.replaceAll("\\\\\"", "MaGiCBakSlash");
+                String backslashed = _value.replaceAll("\\\\\"", "MaGiCBakSlash");
 
                 // 2. Substitute \" for every remaining "
-                String backslashed2 =
-                    backslashed.replaceAll("\"", "\\\\\"");
+                String backslashed2 = backslashed.replaceAll("\"", "\\\\\"");
 
                 // 3. Add the leading and trailing " and substitute
                 //    \" for every instance of the special word
                 _toString = "\""
-                    + backslashed2.replaceAll("MaGiCBakSlash", "\\\\\"")
-                    + "\"";
+                    + backslashed2.replaceAll("MaGiCBakSlash", "\\\\\"") + "\"";
             }
         }
     }
@@ -119,28 +114,28 @@ public class StringToken extends AbstractConvertibleToken {
      *   be carried out.
      */
     public static StringToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof StringToken) {
             return (StringToken) token;
         }
 
         int compare = TypeLattice.compare(BaseType.STRING, token);
-        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(
-                            token, "string"));
+
+        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
+                    token, "string"));
         }
 
-        if (token instanceof MatrixToken || token instanceof ScalarToken ||
-                token instanceof BooleanToken) {
+        if (token instanceof MatrixToken || token instanceof ScalarToken
+                || token instanceof BooleanToken) {
             String str = token.toString();
             return new StringToken(str);
         }
 
         // The argument is below StringToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "string"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "string"));
     }
 
     /** Return true if the argument is an instance of StringToken with the
@@ -155,9 +150,10 @@ public class StringToken extends AbstractConvertibleToken {
             return false;
         }
 
-        if (((StringToken)object).stringValue().equals(_value)) {
+        if (((StringToken) object).stringValue().equals(_value)) {
             return true;
         }
+
         return false;
     }
 
@@ -216,9 +212,8 @@ public class StringToken extends AbstractConvertibleToken {
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected Token _add(Token rightArgument)
-            throws IllegalActionException {
-        String result = _value + ((StringToken)rightArgument).stringValue();
+    protected Token _add(Token rightArgument) throws IllegalActionException {
+        String result = _value + ((StringToken) rightArgument).stringValue();
         return new StringToken(result);
     }
 
@@ -231,10 +226,9 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A new Token containing the result that is of the same class
      *  as this token.
      */
-    protected Token _divide(Token rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("divide", this, rightArgument));
+    protected Token _divide(Token rightArgument) throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("divide", this,
+                rightArgument));
     }
 
     /** Test for closeness of the values of this Token and the argument
@@ -245,9 +239,8 @@ public class StringToken extends AbstractConvertibleToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isCloseTo(
-            Token rightArgument, double epsilon)
-            throws IllegalActionException {
+    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
+        throws IllegalActionException {
         return _isEqualTo(rightArgument);
     }
 
@@ -260,10 +253,10 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isEqualTo(Token rightArgument)
-            throws IllegalActionException {
-        StringToken convertedArgument = (StringToken)rightArgument;
-        return BooleanToken.getInstance(
-                toString().compareTo(convertedArgument.toString()) == 0);
+        throws IllegalActionException {
+        StringToken convertedArgument = (StringToken) rightArgument;
+        return BooleanToken.getInstance(toString().compareTo(convertedArgument
+                .toString()) == 0);
     }
 
     /** Return a new token whose value is the value of this token
@@ -275,10 +268,9 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A new Token containing the result that is of the same
      *  class as this token.
      */
-    protected Token _modulo(Token rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("modulo", this, rightArgument));
+    protected Token _modulo(Token rightArgument) throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("modulo", this,
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -292,9 +284,9 @@ public class StringToken extends AbstractConvertibleToken {
      *  as this token.
      */
     protected Token _multiply(Token rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("multiply", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("multiply", this,
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -307,16 +299,16 @@ public class StringToken extends AbstractConvertibleToken {
      *  as this token.
      */
     protected Token _subtract(Token rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("subtract", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("subtract", this,
+                rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The string contained in this token.
     private String _value;
+
     // The string contained in this token, with double quotes on either side.
     private String _toString;
 }

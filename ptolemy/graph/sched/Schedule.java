@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.graph.sched;
 
 import java.util.ArrayList;
@@ -38,8 +37,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// Schedule
+
 /**
    This class represents a static schedule of firing elements invocation.  An
    instance of this class is returned by the scheduler of a model to
@@ -109,17 +113,17 @@ import java.util.NoSuchElementException;
    @see ptolemy.graph.sched.Schedule
    @see ptolemy.graph.sched.ScheduleElement
 */
-
 public class Schedule extends ScheduleElement {
-
     /** Construct a schedule with iteration count of one and an
      *  empty schedule list. This constructor should be used when
      *  creating a root schedule.
      */
     public Schedule() {
         super();
+
         // This list will contain the schedule elements.
         _schedule = new LinkedList();
+
         //_firingIteratorVersion = 0;
         // Default tree depth to use for allocation state arrays
         // for the firingIterator() method. The arrays will be
@@ -140,8 +144,10 @@ public class Schedule extends ScheduleElement {
      */
     public Schedule(Class firingElementClass) {
         super(firingElementClass);
+
         // This list will contain the schedule elements.
         _schedule = new LinkedList();
+
         //_firingIteratorVersion = 0;
         // Default tree depth to use for allocation state arrays
         // for the firingIterator() method. The arrays will be
@@ -180,8 +186,9 @@ public class Schedule extends ScheduleElement {
         // notify this schedule (via _incrementVersions()) when
         // element is modified.
         if (this.firingElementClass() != null) {
-            Class firingElementClass =  this.firingElementClass();
+            Class firingElementClass = this.firingElementClass();
             Class elementClass = element.firingElementClass();
+
             if (elementClass != null) {
                 if (firingElementClass.isAssignableFrom(elementClass)) {
                     element.setParent(this);
@@ -189,11 +196,11 @@ public class Schedule extends ScheduleElement {
                     _schedule.add(index, element);
                 } else {
                     throw new RuntimeException("Attempt to add a non "
-                            + "authorized firing element");
+                        + "authorized firing element");
                 }
             } else {
                 throw new RuntimeException("Attempt to add a non "
-                        + "authorized firing element");
+                    + "authorized firing element");
             }
         } else {
             element.setParent(this);
@@ -262,14 +269,15 @@ public class Schedule extends ScheduleElement {
      *  @param firingElement The given firing element.
      *  @return A list of firings for the firing element.
      */
+
     //FIXME: It's probably suitable for 'protected' or 'private'.
     //FIXME: The returned type can be replaced with un-ordered
     //       collection, eg. Set, if the sequence of firings
     //       doesn't matter.
     public List firings(Object firingElement) {
         Map firingElementFiringsMap = _getFiringElementFiringsMap();
-        return Collections.unmodifiableList(
-                (List)firingElementFiringsMap.get(firingElement));
+        return Collections.unmodifiableList((List) firingElementFiringsMap.get(
+                firingElement));
     }
 
     /** Return the element at the specified position in the list.
@@ -278,7 +286,7 @@ public class Schedule extends ScheduleElement {
      * @return The element at the specified position in the list.
      */
     public ScheduleElement get(int index) {
-        return((ScheduleElement)_schedule.get(index));
+        return ((ScheduleElement) _schedule.get(index));
     }
 
     /** Return an iterator over the schedule elements of this schedule.
@@ -310,16 +318,20 @@ public class Schedule extends ScheduleElement {
     public List lexicalOrder() {
         List lexicalList = new ArrayList();
         Iterator firingInstances = _getFiringInstancesList().iterator();
+
         while (firingInstances.hasNext()) {
-            Firing firing = (Firing)firingInstances.next();
+            Firing firing = (Firing) firingInstances.next();
             Object firingElement = firing.getFiringElement();
+
             if (lexicalList.contains(firingElement)) {
                 throw new IllegalStateException(
-                        "Not a single appearance schedule to compute "
-                        + "the lexical order of nodes.");
-            } else
+                    "Not a single appearance schedule to compute "
+                    + "the lexical order of nodes.");
+            } else {
                 lexicalList.add(firingElement);
+            }
         }
+
         return Collections.unmodifiableList(lexicalList);
     }
 
@@ -330,13 +342,16 @@ public class Schedule extends ScheduleElement {
      */
     public int maxAppearanceCount() {
         int maxCount = 0;
-        Iterator firingLists =
-            _getFiringElementFiringsMap().values().iterator();
+        Iterator firingLists = _getFiringElementFiringsMap().values().iterator();
+
         while (firingLists.hasNext()) {
-            int firingListSize = ((List)firingLists.next()).size();
-            if (maxCount < firingListSize)
+            int firingListSize = ((List) firingLists.next()).size();
+
+            if (maxCount < firingListSize) {
                 maxCount = firingListSize;
+            }
         }
+
         return maxCount;
     }
 
@@ -348,7 +363,7 @@ public class Schedule extends ScheduleElement {
      */
     public ScheduleElement remove(int index) {
         _incrementVersion();
-        return((ScheduleElement)_schedule.remove(index));
+        return ((ScheduleElement) _schedule.remove(index));
     }
 
     /** Return the number of elements in this list.
@@ -356,7 +371,7 @@ public class Schedule extends ScheduleElement {
      *  @return The number of elements in this list.
      */
     public int size() {
-        return(_schedule.size());
+        return (_schedule.size());
     }
 
     /** Print the schedule in a nested parenthesis style. Please see
@@ -369,14 +384,19 @@ public class Schedule extends ScheduleElement {
     public String toParenthesisString(Map nameMap, String delimiter) {
         String result = new String() + "(";
         int iterations = getIterationCount();
-        if (iterations > 1)
+
+        if (iterations > 1) {
             result += iterations;
-        Iterator schedules = iterator();
-        while (schedules.hasNext()) {
-            ScheduleElement schedule = (ScheduleElement)schedules.next();
-            result += delimiter
-                + schedule.toParenthesisString(nameMap, delimiter);
         }
+
+        Iterator schedules = iterator();
+
+        while (schedules.hasNext()) {
+            ScheduleElement schedule = (ScheduleElement) schedules.next();
+            result += (delimiter
+            + schedule.toParenthesisString(nameMap, delimiter));
+        }
+
         result += ")";
         return result;
     }
@@ -388,13 +408,18 @@ public class Schedule extends ScheduleElement {
     public String toString() {
         String result = "Execute Schedule{\n";
         Iterator i = iterator();
+
         while (i.hasNext()) {
-            ScheduleElement e = (ScheduleElement)i.next();
-            result += e + "\n";
+            ScheduleElement e = (ScheduleElement) i.next();
+            result += (e + "\n");
         }
+
         result += "}";
-        if (getIterationCount() > 1)
-            result += " " + getIterationCount() + " times";
+
+        if (getIterationCount() > 1) {
+            result += (" " + getIterationCount() + " times");
+        }
+
         return result;
     }
 
@@ -424,13 +449,15 @@ public class Schedule extends ScheduleElement {
         public boolean hasNext() {
             if (_currentVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else if (_advance == true) {
                 boolean returnValue;
+
                 if (_currentFiring == null) {
                     returnValue = _firingIterator.hasNext();
+
                     if (returnValue == true) {
-                        _currentFiring = (Firing)_firingIterator.next();
+                        _currentFiring = (Firing) _firingIterator.next();
                         _currentFiringElement = _currentFiring.getFiringElement();
                         _currentIteration++;
                         _advance = false;
@@ -442,8 +469,7 @@ public class Schedule extends ScheduleElement {
                         return _lastHasNext;
                     }
                 } else {
-                    if (_currentIteration <
-                            _currentFiring.getIterationCount()) {
+                    if (_currentIteration < _currentFiring.getIterationCount()) {
                         _currentIteration++;
                         _advance = false;
                         _lastHasNext = true;
@@ -451,10 +477,11 @@ public class Schedule extends ScheduleElement {
                     } else {
                         _currentIteration = 0;
                         returnValue = _firingIterator.hasNext();
+
                         if (returnValue == true) {
-                            _currentFiring = (Firing)_firingIterator.next();
-                            _currentFiringElement =
-                                _currentFiring.getFiringElement();
+                            _currentFiring = (Firing) _firingIterator.next();
+                            _currentFiringElement = _currentFiring
+                                .getFiringElement();
                             _currentIteration++;
                             _advance = false;
                             _lastHasNext = true;
@@ -482,7 +509,7 @@ public class Schedule extends ScheduleElement {
                 throw new NoSuchElementException("No element to return.");
             } else if (_currentVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else {
                 _advance = true;
                 return _currentFiringElement;
@@ -520,13 +547,16 @@ public class Schedule extends ScheduleElement {
             // to the next node when invoked.
             _advance = true;
             _startingVersion = _getVersion();
+
             // state. This is the current position as we walk
             // the schedule tree.
             _currentNode = schedule;
+
             // The depth of _currentNode in the schedule tree.
             // Depth 0 corresponds to the level of the root node
             // of the tree.
             _currentDepth = 0;
+
             // These state arrays are dynamically increased
             // in size as we deeper into the tree. Their
             // length is equal to the number of nesting levels
@@ -548,13 +578,14 @@ public class Schedule extends ScheduleElement {
             // schedule tree.
             if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else if (_advance == true) {
                 // Try to go to the next firing node in the tree. Return
                 // false if we fail.
                 if (_currentNode instanceof Firing) {
                     Schedule scheduleNode = _backTrack(_currentNode);
                     _currentNode = _findLeafNode(scheduleNode);
+
                     if (_currentNode == null) {
                         // There are no more Firings in the tree.
                         _advance = false;
@@ -564,7 +595,8 @@ public class Schedule extends ScheduleElement {
                 } else if (_currentNode instanceof Schedule) {
                     // This condition should only happen for the first element
                     // in the iteration.
-                    _currentNode = _findLeafNode((Schedule)_currentNode);
+                    _currentNode = _findLeafNode((Schedule) _currentNode);
+
                     if (_currentNode == null) {
                         // There are no more Firings in the tree at all.
                         _advance = false;
@@ -574,10 +606,10 @@ public class Schedule extends ScheduleElement {
                 } else {
                     // Throw runtime exception.
                     throw new RuntimeException(
-                            "Encountered a ScheduleElement that "
-                            + "is not an instance "
-                            + "of Schedule or Firing.");
+                        "Encountered a ScheduleElement that "
+                        + "is not an instance " + "of Schedule or Firing.");
                 }
+
                 _advance = false;
                 _lastHasNext = true;
                 return _lastHasNext;
@@ -597,7 +629,7 @@ public class Schedule extends ScheduleElement {
                 throw new NoSuchElementException("No element to return.");
             } else if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else {
                 _advance = true;
                 return _currentNode;
@@ -630,21 +662,25 @@ public class Schedule extends ScheduleElement {
                 // Don't backtrack past the root node.
                 return null;
             }
+
             _currentDepth--;
-            Schedule node = (Schedule)firingNode.getParent();
+
+            Schedule node = (Schedule) firingNode.getParent();
+
             if (node == null) {
                 return null;
-            } else if (node.size() >
-                    (++_horizontalNodePosition[_currentDepth+1])) {
+            } else if (node.size() > (++_horizontalNodePosition[_currentDepth
+                    + 1])) {
                 return node;
-            } else if ((++_iterationCounts[_currentDepth]) <
-                    node.getIterationCount()) {
-                _horizontalNodePosition[_currentDepth+1] = 0;
+            } else if ((++_iterationCounts[_currentDepth]) < node
+                    .getIterationCount()) {
+                _horizontalNodePosition[_currentDepth + 1] = 0;
                 return node;
             }
-            _horizontalNodePosition[_currentDepth+1] = 0;
+
+            _horizontalNodePosition[_currentDepth + 1] = 0;
             _iterationCounts[_currentDepth] = 0;
-            return(_backTrack(node));
+            return (_backTrack(node));
         }
 
         /** Start at the specified node and move down the tree
@@ -657,62 +693,70 @@ public class Schedule extends ScheduleElement {
          */
         private ScheduleElement _findLeafNode(Schedule node) {
             // Check if we need to resize the arrays.
-            if ((_iterationCounts.length-1) <  (_currentDepth+2)) {
+            if ((_iterationCounts.length - 1) < (_currentDepth + 2)) {
                 // Need to resize.
-                int[] temp = new int[_currentDepth+2];
+                int[] temp = new int[_currentDepth + 2];
+
                 for (int i = 0; i < _iterationCounts.length; i++) {
                     temp[i] = _iterationCounts[i];
                 }
+
                 _iterationCounts = temp;
-                int[] temp2 = new int[_currentDepth+2];
+
+                int[] temp2 = new int[_currentDepth + 2];
+
                 for (int i = 0; i < _horizontalNodePosition.length; i++) {
                     temp2[i] = _horizontalNodePosition[i];
                 }
+
                 _horizontalNodePosition = temp2;
+
                 // Set new max tree depth. Any new iterators will
                 // create state arrays with this length to avoid
                 // needing to resize in the future (provide the
                 // schedule structure is not modified).
-                _treeDepth = _currentDepth+2;
+                _treeDepth = _currentDepth + 2;
             }
+
             if (node == null) {
                 return null;
-            } else if (node.size() >
-                    _horizontalNodePosition[_currentDepth + 1]) {
+            } else if (node.size() > _horizontalNodePosition[_currentDepth + 1]) {
                 _currentDepth++;
-                ScheduleElement nodeElement =
-                    node.get(_horizontalNodePosition[_currentDepth]);
+
+                ScheduleElement nodeElement = node.get(_horizontalNodePosition[_currentDepth]);
+
                 if (nodeElement instanceof Firing) {
                     return nodeElement;
                 } else {
-                    return _findLeafNode((Schedule)nodeElement);
+                    return _findLeafNode((Schedule) nodeElement);
                 }
             } else if (node.size() == 0) {
                 Schedule scheduleNode = _backTrack(_currentNode);
                 return _findLeafNode(scheduleNode);
-            } else if (_iterationCounts[_currentDepth] <
-                    node.getIterationCount()) {
+            } else if (_iterationCounts[_currentDepth] < node.getIterationCount()) {
                 ScheduleElement nodeElement = node.get(0);
                 _currentDepth++;
+
                 if (nodeElement instanceof Firing) {
                     return nodeElement;
                 } else {
-                    return _findLeafNode((Schedule)nodeElement);
+                    return _findLeafNode((Schedule) nodeElement);
                 }
-            }  else {
+            } else {
                 return null;
             }
         }
 
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
-
         private boolean _advance;
         private ScheduleElement _currentNode;
         private boolean _lastHasNext;
+
         // The current depth in the schedule tree.
         private int _currentDepth;
         private long _startingVersion;
+
         // This array contains the iteration counts of schedule elements
         // indexed by tree depth.
         // This array will grow to the depth of the schedule tree.
@@ -739,13 +783,18 @@ public class Schedule extends ScheduleElement {
          */
         if (_firingInstancesList == null) {
             _firingInstancesList = new ArrayList();
+
             Iterator originalFirings = firingIterator();
+
             while (originalFirings.hasNext()) {
                 Object firing = originalFirings.next();
-                if (!_firingInstancesList.contains(firing))
+
+                if (!_firingInstancesList.contains(firing)) {
                     _firingInstancesList.add(firing);
+                }
             }
         }
+
         return _firingInstancesList;
     }
 
@@ -763,27 +812,33 @@ public class Schedule extends ScheduleElement {
          */
         if (_firingElementFiringsMap == null) {
             _firingElementFiringsMap = new HashMap();
+
             Iterator firingInstances = _getFiringInstancesList().iterator();
+
             while (firingInstances.hasNext()) {
-                Firing firing = (Firing)firingInstances.next();
+                Firing firing = (Firing) firingInstances.next();
                 Object node = firing.getFiringElement();
                 List firingList = null;
+
                 if (!_firingElementFiringsMap.containsKey(node)) {
                     firingList = new ArrayList();
                     _firingElementFiringsMap.put(node, firingList);
-                } else
-                    firingList = (List)_firingElementFiringsMap.get(node);
+                } else {
+                    firingList = (List) _firingElementFiringsMap.get(node);
+                }
+
                 firingList.add(firing);
             }
         }
+
         return Collections.unmodifiableMap(_firingElementFiringsMap);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The list of schedule elements contained by this schedule.
     protected List _schedule;
+
     // The list of Firings for this schedule.
     //private List _firingList;
     // The current version of the firing iterator list.

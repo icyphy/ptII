@@ -34,6 +34,7 @@ import diva.canvas.Site;
 import diva.canvas.connector.CenterSite;
 import diva.canvas.event.LayerEvent;
 
+
 /**
  * A manipulator which attaches grab handles to the bounds
  * of the child figure.  It renders the grab handles and gives them a
@@ -44,7 +45,6 @@ import diva.canvas.event.LayerEvent;
  * @version        $Id$
  */
 public class BoundsManipulator extends Manipulator {
-
     /** The geometry "helper"
      */
     private BoundsGeometry _geometry;
@@ -76,7 +76,7 @@ public class BoundsManipulator extends Manipulator {
 
     /** Return the geometry of this manipulator
      */
-    public BoundsGeometry getGeometry () {
+    public BoundsGeometry getGeometry() {
         return _geometry;
     }
 
@@ -94,7 +94,7 @@ public class BoundsManipulator extends Manipulator {
      * instance will have the same grab handle, and interactor
      * for grab-handles.
      */
-    public FigureDecorator newInstance (Figure f) {
+    public FigureDecorator newInstance(Figure f) {
         BoundsManipulator m = new BoundsManipulator();
         m.setGrabHandleFactory(this.getGrabHandleFactory());
         m.setHandleInteractor(this.getHandleInteractor());
@@ -105,7 +105,7 @@ public class BoundsManipulator extends Manipulator {
     /** Refresh the geometry. This adjusts the bounds of the geometry
      * to match the bounds of the child figure.
      */
-    public void refresh () {
+    public void refresh() {
         if (_geometry != null) {
             _geometry.setBounds(getChild().getBounds());
         }
@@ -115,7 +115,7 @@ public class BoundsManipulator extends Manipulator {
      * Then get a rectangle geometry object and create grab-handles
      * on its sites.
      */
-    public void setChild (Figure child) {
+    public void setChild(Figure child) {
         super.setChild(child);
         clearGrabHandles();
 
@@ -123,16 +123,19 @@ public class BoundsManipulator extends Manipulator {
         if (child != null) {
             // Create the geometry defining the sites
             _geometry = new BoundsGeometry(this, getChild().getBounds());
+
             Iterator i = _geometry.sites();
             GrabHandle g = null;
+
             while (i.hasNext()) {
                 // Create a grab handle and set up the interactor
-                Site site = (Site)i.next();
+                Site site = (Site) i.next();
                 g = getGrabHandleFactory().createGrabHandle(site);
                 g.setParent(this);
                 g.setInteractor(getHandleInteractor());
                 addGrabHandle(g);
             }
+
             // Add a center handle for dragging
             if (_dragInteractor != null) {
                 CenterSite center = new CenterSite(getChild());
@@ -147,8 +150,7 @@ public class BoundsManipulator extends Manipulator {
 
             // Set the minimum size
             // FIXME: this is bogus: set it in the interactor instead!
-            _geometry.setMinimumSize(4*g.getSize());
-
+            _geometry.setMinimumSize(4 * g.getSize());
         }
     }
 
@@ -168,7 +170,6 @@ public class BoundsManipulator extends Manipulator {
      * figure and triggers a repaint.
      */
     private class Resizer extends DragInteractor {
-
         /** Override the base class to notify the enclosing BoundsInteractor.
          *  @param e The mouse event.
          */
@@ -179,7 +180,7 @@ public class BoundsManipulator extends Manipulator {
 
         /** Translate the grab-handle
          */
-        public void translate (LayerEvent e, double x, double y) {
+        public void translate(LayerEvent e, double x, double y) {
             // Translate the grab-handle, resizing the geometry
             GrabHandle g = (GrabHandle) e.getFigureSource();
             g.translate(x, y);
@@ -189,11 +190,7 @@ public class BoundsManipulator extends Manipulator {
             BoundsGeometry geometry = parent.getGeometry();
 
             parent.getChild().transform(CanvasUtilities.computeTransform(
-                                                parent.getChild().getBounds(),
-                                                geometry.getBounds()));
+                    parent.getChild().getBounds(), geometry.getBounds()));
         }
     }
 }
-
-
-

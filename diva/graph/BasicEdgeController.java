@@ -28,7 +28,6 @@
 */
 package diva.graph;
 
-import java.awt.event.InputEvent;
 import java.awt.geom.Rectangle2D;
 
 import diva.canvas.CanvasComponent;
@@ -50,6 +49,7 @@ import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionModel;
 
+
 /**
  * A basic implementation of EdgeController, which works with
  * graphs that have edges connecting simple nodes.
@@ -59,7 +59,6 @@ import diva.canvas.interactor.SelectionModel;
  * @Pt.AcceptedRating      Red
  */
 public class BasicEdgeController implements EdgeController {
-
     /** The selection interactor for drag-selecting nodes
      */
     private SelectionDragger _selectionDragger;
@@ -67,7 +66,6 @@ public class BasicEdgeController implements EdgeController {
     /** The connector target
      */
     private ConnectorTarget _connectorTarget;
-
     private Interactor _interactor;
     private EdgeRenderer _renderer;
     private GraphController _controller;
@@ -82,8 +80,9 @@ public class BasicEdgeController implements EdgeController {
      * generally attaches to the perimeter of nodes, except that it is
      * smart enough to properly handle terminals.
      */
-    public BasicEdgeController (GraphController controller) {
+    public BasicEdgeController(GraphController controller) {
         _controller = controller;
+
         SelectionModel sm = controller.getSelectionModel();
         _interactor = new EdgeInteractor(sm);
 
@@ -91,7 +90,7 @@ public class BasicEdgeController implements EdgeController {
         ConnectorManipulator manipulator = new ConnectorManipulator();
         manipulator.setSnapHalo(4.0);
         manipulator.addConnectorListener(new EdgeDropper());
-        ((EdgeInteractor)_interactor).setPrototypeDecorator(manipulator);
+        ((EdgeInteractor) _interactor).setPrototypeDecorator(manipulator);
 
         // The mouse filter needs to accept regular click or control click
         MouseFilter handleFilter = new MouseFilter(1, 0, 0);
@@ -100,29 +99,33 @@ public class BasicEdgeController implements EdgeController {
         // Create and set up the target for connectors
         PerimeterTarget ct = new PerimeterTarget() {
                 // Accept the head if the model graph model allows it.
-                public boolean acceptHead (Connector c, Figure f) {
+                public boolean acceptHead(Connector c, Figure f) {
                     Object node = f.getUserObject();
                     Object edge = c.getUserObject();
-                    MutableGraphModel model =
-                        (MutableGraphModel)_controller.getGraphModel();
-                    if (model.isNode(node) &&
-                            model.isEdge(edge) &&
-                            model.acceptHead(edge, node)) {
+                    MutableGraphModel model = (MutableGraphModel) _controller
+                        .getGraphModel();
+
+                    if (model.isNode(node) && model.isEdge(edge)
+                            && model.acceptHead(edge, node)) {
                         return super.acceptHead(c, f);
-                    } else return false;
+                    } else {
+                        return false;
+                    }
                 }
 
                 // Accept the tail if the model graph model allows it.
-                public boolean acceptTail (Connector c, Figure f) {
+                public boolean acceptTail(Connector c, Figure f) {
                     Object node = f.getUserObject();
                     Object edge = c.getUserObject();
-                    MutableGraphModel model =
-                        (MutableGraphModel)_controller.getGraphModel();
-                    if (model.isNode(node) &&
-                            model.isEdge(edge) &&
-                            model.acceptTail(edge, node)) {
+                    MutableGraphModel model = (MutableGraphModel) _controller
+                        .getGraphModel();
+
+                    if (model.isNode(node) && model.isEdge(edge)
+                            && model.acceptTail(edge, node)) {
                         return super.acceptTail(c, f);
-                    } else return false;
+                    } else {
+                        return false;
+                    }
                 }
 
                 /** If we have any terminals, then return the connection
@@ -130,13 +133,14 @@ public class BasicEdgeController implements EdgeController {
                  */
                 public Site getHeadSite(Figure f, double x, double y) {
                     if (f instanceof Terminal) {
-                        Site site = ((Terminal)f).getConnectSite();
+                        Site site = ((Terminal) f).getConnectSite();
                         return site;
                     } else {
                         return super.getHeadSite(f, x, y);
                     }
                 }
             };
+
         setConnectorTarget(ct);
     }
 
@@ -148,14 +152,12 @@ public class BasicEdgeController implements EdgeController {
      * @exception GraphException If the connector target cannot return a
      * valid site on the node's figure.
      */
-    public void addEdge(Object edge, Object node,
-            int end, double x, double y) {
-        MutableGraphModel model =
-            (MutableGraphModel)_controller.getGraphModel();
+    public void addEdge(Object edge, Object node, int end, double x, double y) {
+        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
         Figure nf = _controller.getFigure(node);
         FigureLayer layer = _controller.getGraphPane().getForegroundLayer();
-        Site headSite, tailSite;
-
+        Site headSite;
+        Site tailSite;
 
         // Temporary sites.  One of these will get blown away later.
         headSite = new AutonomousSite(layer, x, y);
@@ -168,18 +170,22 @@ public class BasicEdgeController implements EdgeController {
             //Attach the appropriate end of the edge to the node.
             if (end == ConnectorEvent.TAIL_END) {
                 tailSite = getConnectorTarget().getTailSite(c, nf, x, y);
+
                 if (tailSite == null) {
-                    throw new RuntimeException("Invalid connector target: " +
-                            "no valid site found for tail of new connector.");
+                    throw new RuntimeException("Invalid connector target: "
+                        + "no valid site found for tail of new connector.");
                 }
+
                 model.setEdgeTail(_controller, edge, node);
                 c.setTailSite(tailSite);
             } else {
                 headSite = getConnectorTarget().getHeadSite(c, nf, x, y);
+
                 if (headSite == null) {
-                    throw new RuntimeException("Invalid connector target: " +
-                            "no valid site found for head of new connector.");
+                    throw new RuntimeException("Invalid connector target: "
+                        + "no valid site found for head of new connector.");
                 }
+
                 model.setEdgeHead(_controller, edge, node);
                 c.setHeadSite(headSite);
             }
@@ -197,8 +203,7 @@ public class BasicEdgeController implements EdgeController {
      */
     public void addEdge(Object edge, Object tail, Object head) {
         // Connect the edge
-        MutableGraphModel model =
-            (MutableGraphModel)_controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
         model.connectEdge(_controller, edge, tail, head);
 
         drawEdge(edge);
@@ -210,14 +215,16 @@ public class BasicEdgeController implements EdgeController {
      */
     public void clearEdge(Object edge) {
         Figure f = _controller.getFigure(edge);
+
         if (f != null) {
             CanvasComponent container = f.getParent();
             f.setUserObject(null);
             _controller.setFigure(edge, null);
+
             if (container instanceof FigureLayer) {
-                ((FigureLayer)container).remove(f);
+                ((FigureLayer) container).remove(f);
             } else if (container instanceof CompositeFigure) {
-                ((CompositeFigure)container).remove(f);
+                ((CompositeFigure) container).remove(f);
             }
         }
     }
@@ -235,12 +242,13 @@ public class BasicEdgeController implements EdgeController {
         Object tail = model.getTail(edge);
         Object head = model.getHead(edge);
 
-        Connector connector = (Connector)_controller.getFigure(edge);
+        Connector connector = (Connector) _controller.getFigure(edge);
         Figure tailFigure = _controller.getFigure(tail);
         Figure headFigure = _controller.getFigure(head);
 
         Site tailSite;
         Site headSite;
+
         // If the tail is not attached,
         if (tailFigure == null) {
             // Then try to find the old tail site.
@@ -285,15 +293,14 @@ public class BasicEdgeController implements EdgeController {
         // Create the figure
         Connector c = render(edge, layer, tailSite, headSite);
         _controller.dispatch(new GraphViewEvent(this,
-                                     GraphViewEvent.EDGE_DRAWN,
-                                     edge));
+                GraphViewEvent.EDGE_DRAWN, edge));
         return c;
     }
 
     /**
      * Get the target used to find sites on nodes to connect to.
      */
-    public ConnectorTarget getConnectorTarget () {
+    public ConnectorTarget getConnectorTarget() {
         return _connectorTarget;
     }
 
@@ -307,7 +314,7 @@ public class BasicEdgeController implements EdgeController {
     /**
      * Get the interactor given to edge figures.
      */
-    public Interactor getEdgeInteractor () {
+    public Interactor getEdgeInteractor() {
         return _interactor;
     }
 
@@ -323,8 +330,8 @@ public class BasicEdgeController implements EdgeController {
      */
     public void removeEdge(Object edge) {
         clearEdge(edge);
-        MutableGraphModel model =
-            (MutableGraphModel)_controller.getGraphModel();
+
+        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
         model.setEdgeHead(_controller, edge, null);
         model.setEdgeTail(_controller, edge, null);
         _controller.getGraphPane().repaint();
@@ -336,22 +343,22 @@ public class BasicEdgeController implements EdgeController {
      * starting point of an edge) and the manipulator's connector target, which
      * is used after the connector is being dragged.
      */
-    public void setConnectorTarget (ConnectorTarget t) {
+    public void setConnectorTarget(ConnectorTarget t) {
         _connectorTarget = t;
 
         // FIXME: This is rather dangerous because it assumes a
         // basic selection renderer.
-        BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer)
-            ((EdgeInteractor)_interactor).getSelectionRenderer();
-        ConnectorManipulator manipulator = (ConnectorManipulator)
-            selectionRenderer.getDecorator();
+        BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer) ((EdgeInteractor) _interactor)
+            .getSelectionRenderer();
+        ConnectorManipulator manipulator = (ConnectorManipulator) selectionRenderer
+            .getDecorator();
         manipulator.setConnectorTarget(t);
     }
 
     /**
      * Set the interactor given to edge figures.
      */
-    public void setEdgeInteractor (Interactor interactor) {
+    public void setEdgeInteractor(Interactor interactor) {
         _interactor = interactor;
     }
 
@@ -364,8 +371,8 @@ public class BasicEdgeController implements EdgeController {
 
     /** Render the edge on the given layer between the two sites.
      */
-    public Connector render(Object edge, FigureLayer layer,
-            Site tailSite, Site headSite) {
+    public Connector render(Object edge, FigureLayer layer, Site tailSite,
+        Site headSite) {
         Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
         ef.setInteractor(getEdgeInteractor());
         ef.setUserObject(edge);
@@ -391,32 +398,34 @@ public class BasicEdgeController implements EdgeController {
             Figure f = evt.getTarget();
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
-            MutableGraphModel model =
-                (MutableGraphModel) _controller.getGraphModel();
+            MutableGraphModel model = (MutableGraphModel) _controller
+                .getGraphModel();
+
             try {
                 switch (evt.getEnd()) {
                 case ConnectorEvent.HEAD_END:
                     model.setEdgeHead(_controller, edge, node);
                     break;
+
                 case ConnectorEvent.TAIL_END:
                     model.setEdgeTail(_controller, edge, node);
                     break;
+
                 default:
                     throw new IllegalStateException(
-                            "Cannot handle both ends of an edge being dragged.");
+                        "Cannot handle both ends of an edge being dragged.");
                 }
             } catch (GraphException ex) {
-                SelectionModel selectionModel =
-                    _controller.getSelectionModel();
+                SelectionModel selectionModel = _controller.getSelectionModel();
+
                 // If it is illegal then blow away the edge.
                 if (selectionModel.containsSelection(c)) {
                     selectionModel.removeSelection(c);
                 }
+
                 removeEdge(edge);
                 throw ex;
             }
         }
     }
 }
-
-

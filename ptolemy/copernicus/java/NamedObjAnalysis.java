@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -45,8 +44,10 @@ import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
 import soot.jimple.JimpleBody;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjAnalysis
+
 /**
    An analysis that establishes a correspondence between each local
    variable that refers to a named obj in a method an the named object
@@ -62,51 +63,58 @@ import soot.jimple.JimpleBody;
 public class NamedObjAnalysis {
     public NamedObjAnalysis(SootMethod method, NamedObj thisBinding) {
         _errorObject = new NamedObj();
+
         try {
             _errorObject.setName("Error");
         } catch (Exception ex) {
             // Ignore..
         }
-        JimpleBody body = (JimpleBody)method.getActiveBody();
+
+        JimpleBody body = (JimpleBody) method.getActiveBody();
         _localToObject = new HashMap();
+
         if (method.isStatic()) {
             //           System.out.println("Ignoring this binding for static method: "
             //                     + method);
         } else {
             _set(body.getThisLocal(), thisBinding);
         }
+
         _notDone = true;
+
         while (_notDone) {
             _notDone = false;
-            for (Iterator units = body.getUnits().iterator();
-                 units.hasNext();) {
-                Unit unit = (Unit)units.next();
+
+            for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
+                Unit unit = (Unit) units.next();
+
                 if (unit instanceof DefinitionStmt) {
-                    DefinitionStmt stmt = (DefinitionStmt)unit;
-                    Value rightValue = (Value)stmt.getRightOp();
+                    DefinitionStmt stmt = (DefinitionStmt) unit;
+                    Value rightValue = (Value) stmt.getRightOp();
 
                     if (stmt.getLeftOp() instanceof Local) {
-                        Local local = (Local)stmt.getLeftOp();
+                        Local local = (Local) stmt.getLeftOp();
+
                         if (rightValue instanceof Local) {
-                            _update(local, (Local)rightValue);
+                            _update(local, (Local) rightValue);
                         } else if (rightValue instanceof CastExpr) {
-                            Value value = ((CastExpr)rightValue).getOp();
+                            Value value = ((CastExpr) rightValue).getOp();
+
                             if (value instanceof Local) {
-                                _update(local, (Local)value);
+                                _update(local, (Local) value);
                             }
                         } else if (rightValue instanceof FieldRef) {
-                            SootField field = ((FieldRef)rightValue).getField();
+                            SootField field = ((FieldRef) rightValue).getField();
                             _set(local, _getFieldObject(field));
                         }
                     } else if (stmt.getLeftOp() instanceof FieldRef) {
                         if (rightValue instanceof Local) {
-                            SootField field =
-                                ((FieldRef)stmt.getLeftOp()).getField();
-                            _set((Local)rightValue, _getFieldObject(field));
+                            SootField field = ((FieldRef) stmt.getLeftOp())
+                                .getField();
+                            _set((Local) rightValue, _getFieldObject(field));
                         }
                     } else {
                         // Ignore..  probably not a named obj anyway.
-
                     }
                 }
             }
@@ -115,13 +123,12 @@ public class NamedObjAnalysis {
 
     public NamedObj getObject(Local local) {
         Object current = _localToObject.get(local);
-        if (current != null &&
-                current.equals(_errorObject)) {
+
+        if ((current != null) && current.equals(_errorObject)) {
             throw new RuntimeException(
-                    "Could not determine the static value of "
-                    + local);
+                "Could not determine the static value of " + local);
         } else {
-            return (NamedObj)current;
+            return (NamedObj) current;
         }
     }
 
@@ -131,15 +138,16 @@ public class NamedObjAnalysis {
      *  return a unique namedObj.
      */
     private NamedObj _getFieldObject(SootField field) {
-        if (field.getType() instanceof RefType &&
-                SootUtilities.derivesFrom(
-                        ((RefType)field.getType()).getSootClass(),
-                        PtolemyUtilities.namedObjClass)) {
-            ValueTag tag = (ValueTag)field.getTag("_CGValue");
+        if (field.getType() instanceof RefType
+                && SootUtilities.derivesFrom(
+                    ((RefType) field.getType()).getSootClass(),
+                    PtolemyUtilities.namedObjClass)) {
+            ValueTag tag = (ValueTag) field.getTag("_CGValue");
+
             if (tag == null) {
                 return _errorObject;
             } else {
-                return (NamedObj)tag.getObject();
+                return (NamedObj) tag.getObject();
             }
         } else {
             return null;
@@ -147,21 +155,21 @@ public class NamedObjAnalysis {
     }
 
     private void _update(Local local, Local toLocal) {
-        _set(local, (NamedObj)_localToObject.get(toLocal));
-        _set(toLocal, (NamedObj)_localToObject.get(local));
+        _set(local, (NamedObj) _localToObject.get(toLocal));
+        _set(toLocal, (NamedObj) _localToObject.get(local));
     }
 
     private void _set(Local local, NamedObj object) {
         //         System.out.println("setting local " + local +
         //                 " to value of " + object);
         Object current = _localToObject.get(local);
+
         //         System.out.println("current = " + current);
         if (object == null) {
             // No new information.
             return;
         } else if (current != null) {
-            if (current.equals(_errorObject) ||
-                    current.equals(object)) {
+            if (current.equals(_errorObject) || current.equals(object)) {
                 return;
             } else {
                 _localToObject.put(local, _errorObject);

@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.BusContention;
 
-// Ptolemy imports.
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Controller
+
 /**
    A CSP actor that serves as a controller of a shared resource. This
    actor has four "informal" states that are cycled through in the
@@ -78,9 +77,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (davisj)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Controller extends CSPActor {
-
     /** Construct a Controller actor with the specified container
      *  and name.
      * @param cont The container of this actor.
@@ -91,7 +88,7 @@ public class Controller extends CSPActor {
      *  already has an actor with this name.
      */
     public Controller(CompositeEntity cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         requestOutput = new TypedIOPort(this, "requestOutput", false, true);
@@ -106,7 +103,6 @@ public class Controller extends CSPActor {
         requestInput.setTypeEquals(BaseType.INT);
         contendOutput.setTypeEquals(BaseType.GENERAL);
         contendInput.setTypeEquals(BaseType.GENERAL);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,12 +143,13 @@ public class Controller extends CSPActor {
      *  ports.
      */
     public void fire() throws IllegalActionException {
-
-        if ( _numRequestInChannels == -1 ) {
+        if (_numRequestInChannels == -1) {
             _numRequestInChannels = 0;
+
             Receiver[][] rcvrs = requestInput.getReceivers();
-            for ( int i = 0; i < rcvrs.length; i++ ) {
-                for ( int j = 0; j < rcvrs[i].length; j++ ) {
+
+            for (int i = 0; i < rcvrs.length; i++) {
+                for (int j = 0; j < rcvrs[i].length; j++) {
                     _numRequestInChannels++;
                 }
             }
@@ -160,90 +157,90 @@ public class Controller extends CSPActor {
 
         int br;
         int code;
-        BooleanToken posAck = new BooleanToken( true );
-        BooleanToken negAck = new BooleanToken( false );
+        BooleanToken posAck = new BooleanToken(true);
+        BooleanToken negAck = new BooleanToken(false);
 
         while (true) {
-
             //
             // State 1: Wait for 1st Request
             //
-            _debug( new ExecEvent( this, ExecEvent.WAITING) );
-            ConditionalBranch[] requiredBranches =
-                new ConditionalBranch[_numRequestInChannels];
-            for ( int i = 0; i < _numRequestInChannels; i++ ) {
-                requiredBranches[i] = new
-                    ConditionalReceive(true, requestInput, i, i);
+            _debug(new ExecEvent(this, ExecEvent.WAITING));
+
+            ConditionalBranch[] requiredBranches = new ConditionalBranch[_numRequestInChannels];
+
+            for (int i = 0; i < _numRequestInChannels; i++) {
+                requiredBranches[i] = new ConditionalReceive(true,
+                        requestInput, i, i);
             }
 
             br = chooseBranch(requiredBranches);
 
-            if ( br != -1 ) {
-                IntToken token = (IntToken)requiredBranches[br].getToken();
+            if (br != -1) {
+                IntToken token = (IntToken) requiredBranches[br].getToken();
                 code = token.intValue();
-                _winningPortChannelCode =
-                    new PortChannelCode(requestInput, br, code);
+                _winningPortChannelCode = new PortChannelCode(requestInput, br,
+                        code);
             }
-
 
             //
             // State 2: Notify Contention Alarm of 1st Request
             //
-            contendOutput.send(0, new Token() );
-
+            contendOutput.send(0, new Token());
 
             //
             // State 3: Wait for Contenders and Send Ack's
             //
-            _debug( new ExecEvent( this, ExecEvent.ACCESSING) );
+            _debug(new ExecEvent(this, ExecEvent.ACCESSING));
             _losingPortChannelCodes = new LinkedList();
+
             boolean continueCDO = true;
-            while ( continueCDO ) {
-                requiredBranches =
-                    new ConditionalBranch[_numRequestInChannels+1];
-                for ( int i = 0; i < _numRequestInChannels; i++ ) {
-                    requiredBranches[i] =
-                        new ConditionalReceive(true, requestInput, i, i);
+
+            while (continueCDO) {
+                requiredBranches = new ConditionalBranch[_numRequestInChannels
+                    + 1];
+
+                for (int i = 0; i < _numRequestInChannels; i++) {
+                    requiredBranches[i] = new ConditionalReceive(true,
+                            requestInput, i, i);
                 }
+
                 int j = _numRequestInChannels;
-                requiredBranches[j] =
-                    new ConditionalReceive(true, contendInput, 0, j);
+                requiredBranches[j] = new ConditionalReceive(true,
+                        contendInput, 0, j);
 
                 br = chooseBranch(requiredBranches);
 
-
                 // Contention Occurred...and might happen again
-                if ( br >= 0 && br < _numRequestInChannels ) {
-                    IntToken token = (IntToken)requiredBranches[br].getToken();
+                if ((br >= 0) && (br < _numRequestInChannels)) {
+                    IntToken token = (IntToken) requiredBranches[br].getToken();
                     code = token.intValue();
-                    if ( code > _winningPortChannelCode.getCode() ) {
-                        _losingPortChannelCodes.
-                            add(0, _winningPortChannelCode);
-                        _winningPortChannelCode =
-                            new PortChannelCode(requestInput, br, code);
+
+                    if (code > _winningPortChannelCode.getCode()) {
+                        _losingPortChannelCodes.add(0, _winningPortChannelCode);
+                        _winningPortChannelCode = new PortChannelCode(requestInput,
+                                br, code);
                     } else {
-                        _losingPortChannelCodes.add(0, new
-                                PortChannelCode(requestInput, br, code) );
+                        _losingPortChannelCodes.add(0,
+                            new PortChannelCode(requestInput, br, code));
                     }
-
-                } else if ( br == _numRequestInChannels ) {
-
+                } else if (br == _numRequestInChannels) {
                     //
                     // State 4: Contention is Over
                     //
-                    _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
+                    _debug(new ExecEvent(this, ExecEvent.BLOCKED));
 
                     requiredBranches[br].getToken();
 
                     // Send Positive Ack
-                    int ch =  _winningPortChannelCode.getChannel();
+                    int ch = _winningPortChannelCode.getChannel();
                     requestOutput.send(ch, posAck);
 
                     // Send Negative Ack
                     Iterator losingPorts = _losingPortChannelCodes.iterator();
                     PortChannelCode pcc = null;
-                    while ( losingPorts.hasNext() ) {
-                        pcc = (PortChannelCode)losingPorts.next();
+
+                    while (losingPorts.hasNext()) {
+                        pcc = (PortChannelCode) losingPorts.next();
                         ch = pcc.getChannel();
                         requestOutput.send(ch, negAck);
                     }
@@ -252,10 +249,7 @@ public class Controller extends CSPActor {
                     continueCDO = false;
                     _winningPortChannelCode = null;
                     _losingPortChannelCodes = null;
-
                 }
-
-
                 // All branches failed.
                 else {
                     continueCDO = false;
@@ -267,9 +261,7 @@ public class Controller extends CSPActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     private int _numRequestInChannels = -1;
-
     private PortChannelCode _winningPortChannelCode;
     private List _losingPortChannelCodes;
 }

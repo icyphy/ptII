@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.util.Iterator;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TokenTableau
+
 /**
    A tableau representing one or more tokens in a top-level window with
    a text editor.  Subclasses can be created to represent specific token
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.NamedObj;
    @see TokenEffigy
 */
 public class TokenTableau extends Tableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  This constructor creates a default editor frame, which is an instance
      *  of TextEditor.
@@ -62,7 +62,7 @@ public class TokenTableau extends Tableau {
      *   attribute already in the container.
      */
     public TokenTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         createFrame(null);
     }
@@ -78,7 +78,7 @@ public class TokenTableau extends Tableau {
      *   attribute already in the container.
      */
     public TokenTableau(Effigy container, String name, TableauFrame frame)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         createFrame(frame);
     }
@@ -103,6 +103,7 @@ public class TokenTableau extends Tableau {
     public void append(List list) {
         if (_editor != null) {
             Iterator tokens = list.iterator();
+
             while (tokens.hasNext()) {
                 _editor.text.append(tokens.next().toString());
             }
@@ -134,25 +135,29 @@ public class TokenTableau extends Tableau {
      *  @exception IllegalActionException If the frame cannot be created.
      */
     public void createFrame(TableauFrame frame) throws IllegalActionException {
-        TokenEffigy effigy = (TokenEffigy)getContainer();
+        TokenEffigy effigy = (TokenEffigy) getContainer();
+
         if (!(frame instanceof TextEditor)) {
             frame = new TextEditor("Token display");
         }
+
         setFrame(frame);
         frame.setTableau(this);
-        ((TextEditor)frame).text.setEditable(false);
+        ((TextEditor) frame).text.setEditable(false);
+
         // Display current data.
         Iterator tokens = effigy.getTokens().iterator();
+
         while (tokens.hasNext()) {
-            ((TextEditor)frame).text.append(tokens.next().toString());
-            ((TextEditor)frame).text.append("\n");
+            ((TextEditor) frame).text.append(tokens.next().toString());
+            ((TextEditor) frame).text.append("\n");
         }
-        _editor = (TextEditor)frame;
+
+        _editor = (TextEditor) frame;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The frame as a text editor.
     private TextEditor _editor;
 
@@ -162,7 +167,6 @@ public class TokenTableau extends Tableau {
     /** A factory that creates a token tableau.
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -172,7 +176,7 @@ public class TokenTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -198,17 +202,19 @@ public class TokenTableau extends Tableau {
             if (effigy instanceof TokenEffigy) {
                 // First see whether the effigy already contains an
                 // TokenTableau.
-                TokenTableau tableau =
-                    (TokenTableau)effigy.getEntity("tokenTableau");
+                TokenTableau tableau = (TokenTableau) effigy.getEntity(
+                        "tokenTableau");
+
                 if (tableau != null) {
                     return tableau;
                 }
+
                 // NOTE: Normally need to check effigy tokens for
                 // compatibility here, but they are always compatible,
                 // so we don't bother.
-                return new TokenTableau(
-                        (TokenEffigy)effigy, "tokenTableau");
+                return new TokenTableau((TokenEffigy) effigy, "tokenTableau");
             }
+
             return null;
         }
     }

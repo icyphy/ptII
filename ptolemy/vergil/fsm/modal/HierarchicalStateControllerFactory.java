@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm.modal;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -35,8 +34,10 @@ import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import diva.graph.GraphController;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HierarchicalStateControllerFactory
+
 /**
    This is attribute that produces a custom node controller for
    hierarchical states.  This class creates an instance of
@@ -50,7 +51,6 @@ import diva.graph.GraphController;
    @Pt.AcceptedRating Red (johnr)
 */
 public class HierarchicalStateControllerFactory extends NodeControllerFactory {
-
     /** Construct a new attribute with the given container and name.
      *  @param container The container.
      *  @param name The name.
@@ -60,7 +60,7 @@ public class HierarchicalStateControllerFactory extends NodeControllerFactory {
      *   attribute with this name.
      */
     public HierarchicalStateControllerFactory(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

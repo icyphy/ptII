@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.connector;
 
 import java.awt.BasicStroke;
@@ -41,6 +40,7 @@ import diva.canvas.Site;
 import diva.canvas.toolbox.LabelFigure;
 import diva.util.java2d.ShapeUtilities;
 
+
 /** An abstract implementation of Connector. The implementation
  * provides default implementations of all routing methods except
  * for route(). It also provides a set of methods for setting
@@ -53,8 +53,8 @@ import diva.util.java2d.ShapeUtilities;
  * @author  John Reekie
  * @author  Michael Shilman
  */
-public abstract class AbstractConnector extends AbstractFigure implements Connector {
-
+public abstract class AbstractConnector extends AbstractFigure
+    implements Connector {
     /** The head end
      */
     private ConnectorEnd _headEnd = null;
@@ -90,7 +90,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     /** Create a new connector between the given sites. The connector, by
      *  default, is stroked with a unit-width continuous black stroke.
      */
-    public AbstractConnector (Site tail, Site head) {
+    public AbstractConnector(Site tail, Site head) {
         _tailSite = tail;
         _headSite = head;
         _stroke = ShapeUtilities.getStroke(1);
@@ -99,25 +99,28 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
 
     /** Get the bounding box of this connector.
      */
-    public Rectangle2D getBounds () {
-        Rectangle2D bounds =
-            ShapeUtilities.computeStrokedBounds(_shape, _stroke);
+    public Rectangle2D getBounds() {
+        Rectangle2D bounds = ShapeUtilities.computeStrokedBounds(_shape, _stroke);
+
         if (_headEnd != null) {
             Rectangle2D.union(bounds, _headEnd.getBounds(), bounds);
         }
+
         if (_tailEnd != null) {
             Rectangle2D.union(bounds, _tailEnd.getBounds(), bounds);
         }
+
         if (_labelFigure != null) {
             Rectangle2D.union(bounds, _labelFigure.getBounds(), bounds);
         }
+
         return bounds;
     }
 
     /** Get the dash array. If the stroke is not a BasicStroke
      * then null will always be returned.
      */
-    public float[] getDashArray () {
+    public float[] getDashArray() {
         if (_stroke instanceof BasicStroke) {
             return ((BasicStroke) _stroke).getDashArray();
         } else {
@@ -128,27 +131,27 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     /** Get the object drawn at the head end of the connector, if there
      * is one.
      */
-    public ConnectorEnd getHeadEnd () {
+    public ConnectorEnd getHeadEnd() {
         return _headEnd;
     }
 
     /** Get the site that marks the "head" of the connector.
      */
-    public Site getHeadSite () {
+    public Site getHeadSite() {
         return _headSite;
     }
 
     /** Get the figure that display's this connector's label.
      * This may be null.
      */
-    public LabelFigure getLabelFigure () {
+    public LabelFigure getLabelFigure() {
         return _labelFigure;
     }
 
     /** Get the line width of this figure. If the stroke is not a BasicStroke
      * then 1.0 will always be returned.
      */
-    public float getLineWidth () {
+    public float getLineWidth() {
         if (_stroke instanceof BasicStroke) {
             return ((BasicStroke) _stroke).getLineWidth();
         } else {
@@ -159,38 +162,38 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     /** Get the object drawn at the tail end of the connector, if there
      * is one.
      */
-    public ConnectorEnd getTailEnd () {
+    public ConnectorEnd getTailEnd() {
         return _tailEnd;
     }
 
     /** Get the outline shape of this connector.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         return _shape;
     }
 
     /** Get the stroke of this connector.
      */
-    public Stroke getStroke () {
+    public Stroke getStroke() {
         return _stroke;
     }
 
     /** Get the stroke paint pattern of this connector.
      */
-    public Paint getStrokePaint () {
+    public Paint getStrokePaint() {
         return _paint;
     }
 
     /** Get the site that marks the "tail" of the connector.
      */
-    public Site getTailSite () {
+    public Site getTailSite() {
         return _tailSite;
     }
 
     /** Inform the connector that the head site has moved.
      * This default implementation simply calls reroute().
      */
-    public void headMoved () {
+    public void headMoved() {
         repaint();
         reroute();
         repaint();
@@ -201,12 +204,13 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
      * check to see if the rectangle intersects the path of the connector,
      * either of its ends, or the label.
      */
-    public boolean hit (Rectangle2D r) {
+    public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
         }
 
         boolean hit = ShapeUtilities.intersectsOutline(r, _shape);
+
         if (_labelFigure != null) {
             hit = hit || _labelFigure.hit(r);
         }
@@ -215,9 +219,11 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
         if (_headEnd != null) {
             hit = hit || r.intersects(_headEnd.getBounds());
         }
+
         if (_tailEnd != null) {
             hit = hit || r.intersects(_tailEnd.getBounds());
         }
+
         return hit;
     }
 
@@ -225,8 +231,9 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
      *  implementation checks to see if the rectangle intersects with the
      *  path of the connector, the label, or either of the connector ends.
      */
-    public boolean intersects (Rectangle2D r) {
+    public boolean intersects(Rectangle2D r) {
         boolean hit = ShapeUtilities.intersectsOutline(r, _shape);
+
         if (_labelFigure != null) {
             hit = hit || _labelFigure.intersects(r);
         }
@@ -235,24 +242,29 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
         if (_headEnd != null) {
             hit = hit || r.intersects(_headEnd.getBounds());
         }
+
         if (_tailEnd != null) {
             hit = hit || r.intersects(_tailEnd.getBounds());
         }
+
         return hit;
     }
 
     /** Paint the connector.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         g.setStroke(_stroke);
         g.setPaint(_paint);
         g.draw(_shape);
+
         if (_headEnd != null) {
             _headEnd.paint(g);
         }
+
         if (_tailEnd != null) {
             _tailEnd.paint(g);
         }
+
         if (_labelFigure != null) {
             _labelFigure.paint(g);
         }
@@ -263,50 +275,44 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
      * subclasses. In general, implementations of the routing
      * methods will also call this method.
      */
-    public abstract void repositionLabel ();
+    public abstract void repositionLabel();
 
     /** Tell the connector to re-route itself. This default implementation
      * simply calls route(). In general, this method should be overridden
      * to perform this more efficiently.
      */
-    public void reroute () {
+    public void reroute() {
         route();
     }
 
     /** Tell the connector to route itself completely,
      * using all available information.
      */
-    public abstract void route ();
+    public abstract void route();
 
     /** Set the dash array of the stroke. The existing stroke will
      * be removed, but the line width will be preserved if possible.
      */
-    public void setDashArray (float dashArray[]) {
+    public void setDashArray(float[] dashArray) {
         repaint();
+
         if (_stroke instanceof BasicStroke) {
-            _stroke = new BasicStroke(
-                    ((BasicStroke) _stroke).getLineWidth(),
+            _stroke = new BasicStroke(((BasicStroke) _stroke).getLineWidth(),
                     ((BasicStroke) _stroke).getEndCap(),
                     ((BasicStroke) _stroke).getLineJoin(),
-                    ((BasicStroke) _stroke).getMiterLimit(),
-                    dashArray,
-                    0.0f);
+                    ((BasicStroke) _stroke).getMiterLimit(), dashArray, 0.0f);
         } else {
-            _stroke = new BasicStroke(
-                    1.0f,
-                    BasicStroke.CAP_SQUARE,
-                    BasicStroke.JOIN_MITER,
-                    10.0f,
-                    dashArray,
-                    0.0f);
+            _stroke = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE,
+                    BasicStroke.JOIN_MITER, 10.0f, dashArray, 0.0f);
         }
+
         repaint();
     }
 
     /**
      * Set the object drawn at the head end of the connector.
      */
-    public void setHeadEnd (ConnectorEnd e) {
+    public void setHeadEnd(ConnectorEnd e) {
         // We can't just call reroute, because then route() doesn't have a
         // chance to set the normal of the end before painting it.
         repaint();
@@ -318,7 +324,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     /** Set the site that marks the "head" of the connector,
      * and call headMoved();
      */
-    public void setHeadSite (Site s) {
+    public void setHeadSite(Site s) {
         _headSite = s;
         headMoved();
     }
@@ -326,7 +332,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     /** Set the LabelFigure of this connector. If there is no label
      *  figure currently, one is created and placed on the connector.
      */
-    public void setLabelFigure (LabelFigure label) {
+    public void setLabelFigure(LabelFigure label) {
         _labelFigure = label;
         repositionLabel();
     }
@@ -334,37 +340,32 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     /** Set the line width. The existing stroke will
      * be removed, but the dash array will be preserved if possible.
      */
-    public void setLineWidth (float lineWidth) {
+    public void setLineWidth(float lineWidth) {
         repaint();
+
         if (_stroke instanceof BasicStroke) {
-            _stroke = new BasicStroke(
-                    lineWidth,
+            _stroke = new BasicStroke(lineWidth,
                     ((BasicStroke) _stroke).getEndCap(),
                     ((BasicStroke) _stroke).getLineJoin(),
                     ((BasicStroke) _stroke).getMiterLimit(),
-                    ((BasicStroke) _stroke).getDashArray(),
-                    0.0f);
+                    ((BasicStroke) _stroke).getDashArray(), 0.0f);
         } else {
-            new BasicStroke(
-                    lineWidth,
-                    BasicStroke.CAP_SQUARE,
-                    BasicStroke.JOIN_MITER,
-                    10.0f,
-                    null,
-                    0.0f);
+            new BasicStroke(lineWidth, BasicStroke.CAP_SQUARE,
+                BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
         }
+
         repaint();
     }
 
     /** Set the shape, for subclasses only.
      */
-    protected void setShape (Shape s) {
+    protected void setShape(Shape s) {
         _shape = s;
     }
 
     /** Set the stroke of this connector.
      */
-    public void setStroke (Stroke s) {
+    public void setStroke(Stroke s) {
         repaint();
         _stroke = s;
         repaint();
@@ -372,7 +373,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
 
     /** Set the stroke paint pattern of this connector.
      */
-    public void setStrokePaint (Paint p) {
+    public void setStrokePaint(Paint p) {
         repaint();
         _paint = p;
         repaint();
@@ -381,7 +382,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     /**
      * Set the object drawn at the tail end of the connector.
      */
-    public void setTailEnd (ConnectorEnd e) {
+    public void setTailEnd(ConnectorEnd e) {
         // We can't just call reroute, because then route() doesn't have a
         // chance to set the normal of the end before painting it.
         repaint();
@@ -392,7 +393,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
 
     /** Set the site that marks the "tail" of the connector.
      */
-    public void setTailSite (Site s) {
+    public void setTailSite(Site s) {
         _tailSite = s;
         tailMoved();
     }
@@ -400,7 +401,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     /** Inform the connector that the tail site has moved.
      * This default implementation simply calls reroute().
      */
-    public void tailMoved () {
+    public void tailMoved() {
         repaint();
         reroute();
         repaint();
@@ -409,7 +410,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     /** Transform the connector. This method is ignored, since
      * connectors are defined by the head and tail sites.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         // do nothing
     }
 
@@ -417,7 +418,5 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
      * controllers may wish to translate connectors when the
      * sites at both ends are moved the same distance.
      */
-    public abstract void translate (double x, double y);
+    public abstract void translate(double x, double y);
 }
-
-

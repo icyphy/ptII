@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.IntToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SequenceSource
+
 /**
    Base class for sequence sources.  A sequence source is
    a source where the output value is logically a sequence, independent
@@ -60,9 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class SequenceSource extends Source implements SequenceActor {
-
     /** Construct an actor with the given container and name.
      *  The <i>firingCountLimit</i> parameter is also constructed.
      *  @param container The container.
@@ -73,7 +72,7 @@ public class SequenceSource extends Source implements SequenceActor {
      *   actor with this name.
      */
     public SequenceSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         firingCountLimit = new Parameter(this, "firingCountLimit");
         firingCountLimit.setExpression("0");
@@ -98,10 +97,10 @@ public class SequenceSource extends Source implements SequenceActor {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == firingCountLimit) {
-            _firingCountLimit =
-                ((IntToken)firingCountLimit.getToken()).intValue();
+            _firingCountLimit = ((IntToken) firingCountLimit.getToken())
+                .intValue();
         }
     }
 
@@ -128,10 +127,12 @@ public class SequenceSource extends Source implements SequenceActor {
     public boolean postfire() throws IllegalActionException {
         if (_firingCountLimit != 0) {
             _iterationCount++;
+
             if (_iterationCount == _firingCountLimit) {
                 return false;
             }
         }
+
         return true;
     }
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib.test;
 
 import java.util.Iterator;
@@ -39,8 +38,10 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Iterations
+
 /* A test for iterations and microsteps.
    @author Edward A. Lee
    @version $Id$
@@ -48,16 +49,16 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Iterations {
-
     private Recorder _recorder;
 
     public Iterations() throws KernelException {
         Workspace w = new Workspace("w");
         TypedCompositeActor toplevel = new TypedCompositeActor(w);
         toplevel.setName("toplevel");
+
         DEDirector director = new DEDirector(toplevel, "director");
+
         //director.addDebugListener(new StreamListener());
         Manager manager = new Manager(w, "manager");
         toplevel.setManager(manager);
@@ -80,11 +81,17 @@ public class Iterations {
     public String getResult() {
         StringBuffer result = new StringBuffer();
         Iterator tokens = _recorder.getHistory(0).iterator();
+
         while (tokens.hasNext()) {
-            Token token = (Token)tokens.next();
-            if (result.length() > 0) result.append(", ");
+            Token token = (Token) tokens.next();
+
+            if (result.length() > 0) {
+                result.append(", ");
+            }
+
             result.append(token.toString());
         }
+
         return result.toString();
     }
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
 
 import java.util.Iterator;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
+
 ///////////////////////////////////////////////////////////////////
 //// CalendarQueue
+
 /**
 
 This class implements a fast priority queue. Entries are sorted with
@@ -141,9 +142,8 @@ public class CalendarQueue implements Debuggable {
      *  @param minNumBuckets The minimum number of buckets.
      *  @param binCountFactor The bin count factor.
      */
-    public CalendarQueue(CQComparator comparator,
-            int minNumBuckets,
-            int binCountFactor) {
+    public CalendarQueue(CQComparator comparator, int minNumBuckets,
+        int binCountFactor) {
         this(comparator);
         _minNumBuckets = minNumBuckets;
         _queueBinCountFactor = binCountFactor;
@@ -165,6 +165,7 @@ public class CalendarQueue implements Debuggable {
                 return;
             }
         }
+
         _debugListeners.add(listener);
         _debugging = true;
     }
@@ -192,6 +193,7 @@ public class CalendarQueue implements Debuggable {
         if (_queueSize == 0) {
             throw new InvalidStateException("Queue is empty.");
         }
+
         Object[] contents = toArray(1);
         return contents[0];
     }
@@ -202,7 +204,10 @@ public class CalendarQueue implements Debuggable {
      *  @return True if the specified entry is in the queue.
      */
     public boolean includes(Object entry) {
-        if (_queueSize == 0) return false;
+        if (_queueSize == 0) {
+            return false;
+        }
+
         return _bucket[_getBinIndex(entry)].includes(entry);
     }
 
@@ -236,7 +241,9 @@ public class CalendarQueue implements Debuggable {
      *   be compared by the associated comparator.
      */
     public boolean put(Object entry) {
-        if (_debugging) _debug("+++ putting in queue: " + entry);
+        if (_debugging) {
+            _debug("+++ putting in queue: " + entry);
+        }
 
         // If this is the first put since the queue creation,
         // then do initialization.
@@ -245,6 +252,7 @@ public class CalendarQueue implements Debuggable {
             _cqComparator.setBinWidth(null);
             _queueSize = 0;
             _localInit(_minNumBuckets, entry);
+
             // Indicate that we do not have enough samples redo width.
             _sampleValid = false;
         }
@@ -256,8 +264,8 @@ public class CalendarQueue implements Debuggable {
         // are put in the queue), or the queue size is zero,
         // or if the new entry is less than the current
         // smallest entry) then update the minimum entry of the queue.
-        if (_minimumEntry == null || _queueSize == 0 ||
-                _cqComparator.compare(entry, _minimumEntry) < 0) {
+        if ((_minimumEntry == null) || (_queueSize == 0)
+                || (_cqComparator.compare(entry, _minimumEntry) < 0)) {
             _minimumEntry = entry;
             _minVirtualBucket = _cqComparator.getVirtualBinNumber(entry);
             _minBucket = _getBinIndex(entry);
@@ -265,6 +273,7 @@ public class CalendarQueue implements Debuggable {
 
         // Insert the entry into bucket binNumber, which has a sorted list.
         _bucket[binNumber].insert(entry);
+
         // Indicate increased size.
         ++_queueSize;
 
@@ -290,11 +299,14 @@ public class CalendarQueue implements Debuggable {
         if (_queueSize == 0) {
             return false;
         }
+
         boolean result = _bucket[_getBinIndex(entry)].remove(entry);
+
         if (result) {
             _queueSize--;
             _resize(false);
         }
+
         return result;
     }
 
@@ -308,11 +320,14 @@ public class CalendarQueue implements Debuggable {
         if (_debugListeners == null) {
             return;
         }
+
         _debugListeners.remove(listener);
+
         if (_debugListeners.size() == 0) {
             _debugListeners = null;
             _debugging = false;
         }
+
         return;
     }
 
@@ -349,17 +364,22 @@ public class CalendarQueue implements Debuggable {
     public final Object take() throws InvalidStateException {
         // First check whether the queue is empty.
         if (_queueSize == 0) {
-            throw new InvalidStateException(
-                    "Cannot take from an empty queue.");
+            throw new InvalidStateException("Cannot take from an empty queue.");
         }
 
         // Search the buckets starting from the index given by _minBucket.
         // This is analogous to starting from the current page(month)
         // of the calendar.
-        int i = _minBucket, j = 0;
+        int i = _minBucket;
+
+        // Search the buckets starting from the index given by _minBucket.
+        // This is analogous to starting from the current page(month)
+        // of the calendar.
+        int j = 0;
         int indexOfMinimum = i;
         Object minSoFar = null;
         Object result = null;
+
         while (true) {
             // At each bucket, we first determine whether the bucket is empty.
             // If not, then we check whether the first entry in the
@@ -371,8 +391,9 @@ public class CalendarQueue implements Debuggable {
             if (!_bucket[i].isEmpty()) {
                 // The bucket is not empty.
                 Object minimumInBucket = _bucket[i].head.contents;
-                if (_cqComparator.getVirtualBinNumber(minimumInBucket)
-                        == _minVirtualBucket + j) {
+
+                if (_cqComparator.getVirtualBinNumber(minimumInBucket) == (_minVirtualBucket
+                        + j)) {
                     // The entry is in the current year. Return it.
                     result = _takeFromBucket(i);
                     break;
@@ -382,30 +403,40 @@ public class CalendarQueue implements Debuggable {
                     if (minSoFar == null) {
                         minSoFar = minimumInBucket;
                         indexOfMinimum = i;
-                    } else if (_cqComparator.compare(minimumInBucket,
-                                       minSoFar) < 0) {
+                    } else if (_cqComparator.compare(minimumInBucket, minSoFar) < 0) {
                         minSoFar = minimumInBucket;
                         indexOfMinimum = i;
                     }
                 }
             }
+
             // Prepare to check the next bucket
-            ++i; ++j;
-            if (i == _numberOfBuckets) i = 0;
+            ++i;
+            ++j;
+
+            if (i == _numberOfBuckets) {
+                i = 0;
+            }
 
             // If one round of search has already elapsed,
             // then return the minimum that we have found.
             if (i == _minBucket) {
                 if (minSoFar == null) {
                     throw new InternalErrorException(
-                            "Queue is empty, but size() is not zero!");
+                        "Queue is empty, but size() is not zero!");
                 }
+
                 result = _takeFromBucket(indexOfMinimum);
                 break;
             }
         }
+
         _collect(result);
-        if (_debugging) _debug("--- taking from queue: " + result);
+
+        if (_debugging) {
+            _debug("--- taking from queue: " + result);
+        }
+
         return result;
     }
 
@@ -425,15 +456,21 @@ public class CalendarQueue implements Debuggable {
      *  @return The entries currently in the queue.
      */
     public final Object[] toArray(int limit) {
-        if (limit > _queueSize) limit = _queueSize;
+        if (limit > _queueSize) {
+            limit = _queueSize;
+        }
+
         Object[] result = new Object[limit];
-        if (_queueSize == 0) return result;
+
+        if (_queueSize == 0) {
+            return result;
+        }
+
         int index = 0;
 
         // Iterate through the buckets collecting entries in order.
         // In each bucket, accept all entries in the current year
         // (with the right virtual bucket number).
-
         int currentBucket = _minBucket;
         long virtualBucket = _minVirtualBucket;
         long minimumNextVirtualBucket = Long.MAX_VALUE;
@@ -441,11 +478,12 @@ public class CalendarQueue implements Debuggable {
 
         // Keep track of where we are in each bucket.
         CQCell[] bucketHead = new CQCell[_bucket.length];
+
         for (int i = 0; i < _bucket.length; i++) {
             bucketHead[i] = _bucket[i].head;
         }
-        while (true) {
 
+        while (true) {
             // At each bucket, we first determine whether there are more
             // entries to look at in the bucket.
             // If so, then we check whether the next entry in the
@@ -458,36 +496,50 @@ public class CalendarQueue implements Debuggable {
             if (bucketHead[currentBucket] != null) {
                 // There are more entries in the bucket.
                 Object nextInBucket = bucketHead[currentBucket].contents;
-                while (_cqComparator.getVirtualBinNumber(nextInBucket)
-                        == virtualBucket) {
+
+                while (_cqComparator.getVirtualBinNumber(nextInBucket) == virtualBucket) {
                     // The entry is in the current year. Return it.
                     result[index] = nextInBucket;
                     index++;
-                    if (index == limit) return result;
+
+                    if (index == limit) {
+                        return result;
+                    }
+
                     bucketHead[currentBucket] = bucketHead[currentBucket].next;
-                    if (bucketHead[currentBucket] == null) break;
+
+                    if (bucketHead[currentBucket] == null) {
+                        break;
+                    }
+
                     nextInBucket = bucketHead[currentBucket].contents;
                 }
-                long nextVirtualBucket =
-                    _cqComparator.getVirtualBinNumber(nextInBucket);
+
+                long nextVirtualBucket = _cqComparator.getVirtualBinNumber(nextInBucket);
 
                 if (nextVirtualBucket < minimumNextVirtualBucket) {
                     minimumNextVirtualBucket = nextVirtualBucket;
                     nextStartBucket = currentBucket;
                 }
             }
+
             // Prepare to check the next bucket
-            ++currentBucket; ++virtualBucket;
-            if (currentBucket == _numberOfBuckets) currentBucket = 0;
+            ++currentBucket;
+            ++virtualBucket;
+
+            if (currentBucket == _numberOfBuckets) {
+                currentBucket = 0;
+            }
 
             // If one round of search has elapsed,
             // then increment the virtual bucket.
             if (currentBucket == nextStartBucket) {
                 if (minimumNextVirtualBucket == Long.MAX_VALUE) {
                     throw new InternalErrorException(
-                            "Queue is empty, but size() is not zero! It is: "
-                            + _queueSize);
+                        "Queue is empty, but size() is not zero! It is: "
+                        + _queueSize);
                 }
+
                 virtualBucket = minimumNextVirtualBucket;
                 minimumNextVirtualBucket = Long.MAX_VALUE;
             }
@@ -496,18 +548,19 @@ public class CalendarQueue implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Collect an entry for later use to recalculate bin widths.
     // The entry is collected only if it is strictly greater than the
     // previously collected entry.
     private void _collect(Object entry) {
-        if ((_previousTakenEntry == null) ||
-                (_cqComparator.compare(entry, _previousTakenEntry) > 0)) {
+        if ((_previousTakenEntry == null)
+                || (_cqComparator.compare(entry, _previousTakenEntry) > 0)) {
             _sampleEntries[_sampleEntryIndex++] = entry;
+
             if (_sampleEntryIndex == _SAMPLE_SIZE) {
                 _sampleEntryIndex = 0;
                 _sampleValid = true;
             }
+
             _previousTakenEntry = entry;
         }
     }
@@ -518,12 +571,13 @@ public class CalendarQueue implements Debuggable {
      *  @param message The message.
      */
     private final void _debug(String message) {
-        if (_debugListeners == null || !_debugging) {
+        if ((_debugListeners == null) || !_debugging) {
             return;
         } else {
             Iterator listeners = _debugListeners.iterator();
+
             while (listeners.hasNext()) {
-                ((DebugListener)listeners.next()).message(message);
+                ((DebugListener) listeners.next()).message(message);
             }
         }
     }
@@ -533,8 +587,12 @@ public class CalendarQueue implements Debuggable {
     private int _getBinIndex(Object entry) {
         long i = _cqComparator.getVirtualBinNumber(entry);
         i = i % _numberOfBuckets;
-        if (i < 0) i += _numberOfBuckets;
-        return (int)i;
+
+        if (i < 0) {
+            i += _numberOfBuckets;
+        }
+
+        return (int) i;
     }
 
     // Initialize the bucket array to the specified number of buckets
@@ -543,7 +601,6 @@ public class CalendarQueue implements Debuggable {
     // @param numberOfBuckets The number of buckets.
     // @param firstEntry: First entry of the new queue.
     private void _localInit(int numberOfBuckets, Object firstEntry) {
-
         _numberOfBuckets = numberOfBuckets;
         _bucket = new CQLinkedList[_numberOfBuckets];
 
@@ -559,8 +616,8 @@ public class CalendarQueue implements Debuggable {
         _minBucket = _getBinIndex(firstEntry);
 
         // Set the queue size change thresholds.
-        _bottomThreshold = _numberOfBuckets/_queueBinCountFactor;
-        _topThreshold = _numberOfBuckets*_queueBinCountFactor;
+        _bottomThreshold = _numberOfBuckets / _queueBinCountFactor;
+        _topThreshold = _numberOfBuckets * _queueBinCountFactor;
         _queueSizeOverThreshold = _queueSizeUnderThreshold = 0;
         _initialized = true;
     }
@@ -576,51 +633,72 @@ public class CalendarQueue implements Debuggable {
     // The argument indicates whether the queue just increased or decreased
     // in size.
     private void _resize(boolean increasing) {
-        if (!_resizeEnabled) return;
+        if (!_resizeEnabled) {
+            return;
+        }
+
         int newSize = _numberOfBuckets;
         boolean resize = false;
+
         if (increasing) {
-            if (_queueSize > _topThreshold) _queueSizeOverThreshold++;
+            if (_queueSize > _topThreshold) {
+                _queueSizeOverThreshold++;
+            }
+
             if (_queueSizeOverThreshold > _RESIZE_LAG) {
                 resize = true;
                 _queueSizeOverThreshold = 0;
-                newSize = (_numberOfBuckets*_queueBinCountFactor);
+                newSize = (_numberOfBuckets * _queueBinCountFactor);
+
                 if (_debugging) {
-                    _debug(">>>>>> increasing number of buckets to: "
-                            + newSize);
+                    _debug(">>>>>> increasing number of buckets to: " + newSize);
                 }
             }
         } else {
             // Queue has just decreased in size.
-            if (_queueSize < _bottomThreshold) _queueSizeUnderThreshold++;
+            if (_queueSize < _bottomThreshold) {
+                _queueSizeUnderThreshold++;
+            }
+
             if (_queueSizeUnderThreshold > _RESIZE_LAG) {
                 resize = true;
                 _queueSizeUnderThreshold = 0;
+
                 // If it is already minimum or close, do nothing.
-                if (_numberOfBuckets/_queueBinCountFactor > _minNumBuckets) {
-                    newSize = (_numberOfBuckets/_queueBinCountFactor);
+                if ((_numberOfBuckets / _queueBinCountFactor) > _minNumBuckets) {
+                    newSize = (_numberOfBuckets / _queueBinCountFactor);
+
                     if (_debugging) {
                         _debug(">>>>>> decreasing number of buckets to: "
-                                + newSize);
+                            + newSize);
                     }
                 }
             }
         }
-        if (!resize) return;
+
+        if (!resize) {
+            return;
+        }
 
         // Find new bucket width, if appropriate.
         if (_sampleValid) {
             // Have to copy samples into a new array to ensure that they
             // increasing...
             Object[] sampleCopy = new Object[_SAMPLE_SIZE];
+
             for (int i = 0; i < _SAMPLE_SIZE; i++) {
                 sampleCopy[i] = _sampleEntries[_sampleEntryIndex++];
+
                 if (_sampleEntryIndex == _SAMPLE_SIZE) {
                     _sampleEntryIndex = 0;
                 }
             }
+
             _cqComparator.setBinWidth(sampleCopy);
-            if (_debugging) _debug(">>> changing bin width.");
+
+            if (_debugging) {
+                _debug(">>> changing bin width.");
+            }
         }
 
         // Save location and size of the old calendar.
@@ -635,13 +713,16 @@ public class CalendarQueue implements Debuggable {
         // to the new queue. Disable debugging to not report these puts.
         boolean saveDebugging = _debugging;
         _debugging = false;
+
         boolean saveResizeEnabled = _resizeEnabled;
         _resizeEnabled = false;
+
         for (int i = 0; i < old_numberOfBuckets; i++) {
             while (!old_bucket[i].isEmpty()) {
                 put(old_bucket[i].take());
             }
         }
+
         _debugging = saveDebugging;
         _resizeEnabled = saveResizeEnabled;
     }
@@ -666,7 +747,6 @@ public class CalendarQueue implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
-
     // Specialized sorted list of objects.  This class is used
     // instead of Java's built-in collections in order to provide the
     // following features:
@@ -677,7 +757,6 @@ public class CalendarQueue implements Debuggable {
     // collections missing.
     //
     private class CQLinkedList {
-
         // Construct an empty list.
         public CQLinkedList() {
             head = null;
@@ -688,6 +767,7 @@ public class CalendarQueue implements Debuggable {
             if (isEmpty()) {
                 return false;
             }
+
             return (head.find(object) != null);
         }
 
@@ -699,7 +779,6 @@ public class CalendarQueue implements Debuggable {
         // If there are already objects of the same key, then this one
         // is positioned after those objects.
         public final void insert(Object object) {
-
             // Special case: linked list is empty.
             if (head == null) {
                 head = new CQCell(object, null);
@@ -710,7 +789,6 @@ public class CalendarQueue implements Debuggable {
             // LinkedList is not empty.
             // I assert that by construction, when head != null,
             // then tail != null as well.
-
             // Special case: Check if object is greater than or equal to tail.
             if (_cqComparator.compare(object, tail.contents) >= 0) {
                 // object becomes new tail.
@@ -721,7 +799,7 @@ public class CalendarQueue implements Debuggable {
             }
 
             // Check if head is strictly greater than object.
-            if ( _cqComparator.compare(head.contents, object) > 0) {
+            if (_cqComparator.compare(head.contents, object) > 0) {
                 // object becomes the new head
                 head = new CQCell(object, head);
                 return;
@@ -731,17 +809,19 @@ public class CalendarQueue implements Debuggable {
             // Iterate from head of queue.
             CQCell previousCell = head;
             CQCell currentCell = previousCell.next;
+
             // Note that this loop will always terminate via the return
             // statement. This is because tail is assured of being strictly
             // greater than object.
             do {
                 // check if currentCell is strictly greater than object
-                if ( _cqComparator.compare(currentCell.contents, object) > 0) {
+                if (_cqComparator.compare(currentCell.contents, object) > 0) {
                     // insert object between previousCell and currentCell
                     CQCell newCell = new CQCell(object, currentCell);
                     previousCell.next = newCell;
                     return;
                 }
+
                 previousCell = currentCell;
                 currentCell = previousCell.next;
             } while (currentCell != null);
@@ -754,7 +834,10 @@ public class CalendarQueue implements Debuggable {
         public final boolean remove(Object object) {
             // two special cases:
             // Case 1: list is empty: always return false.
-            if (head == null) return false;
+            if (head == null) {
+                return false;
+            }
+
             // Case 2: The element I want is at head of the list.
             if (head.contents.equals(object)) {
                 if (head != tail) {
@@ -765,12 +848,14 @@ public class CalendarQueue implements Debuggable {
                     head = null;
                     tail = null;
                 }
+
                 return true;
             }
 
             // Non-special case that requires looping:
             CQCell previousCell = head;
             CQCell currentCell = previousCell.next;
+
             do {
                 if (currentCell.contents.equals(object)) {
                     // Found a match.
@@ -778,9 +863,11 @@ public class CalendarQueue implements Debuggable {
                         // Removing the tail. Need to update.
                         tail = previousCell;
                     }
+
                     previousCell.next = currentCell.next;
                     return true;
                 }
+
                 previousCell = currentCell;
                 currentCell = currentCell.next;
             } while (currentCell != null);
@@ -794,9 +881,11 @@ public class CalendarQueue implements Debuggable {
             // remove the head
             CQCell oldHead = head;
             head = head.next;
+
             if (head == null) {
                 tail = null;
             }
+
             return oldHead.contents;
         }
 
@@ -811,7 +900,6 @@ public class CalendarQueue implements Debuggable {
     // Doug Lea's implementation in collections, but with most of the
     // functionality stripped out.
     private class CQCell {
-
         // Construct a cell with the specified contents, pointing to the
         // specified next cell.
         // @param contents The contents.
@@ -828,8 +916,11 @@ public class CalendarQueue implements Debuggable {
         // @return The cell containing the element, or null if there is none.
         public final CQCell find(Object element) {
             for (CQCell p = this; p != null; p = p.next) {
-                if (p.contents.equals(element)) return p;
+                if (p.contents.equals(element)) {
+                    return p;
+                }
             }
+
             return null;
         }
 

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jxta;
 
 import java.io.File;
@@ -44,8 +43,10 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleApplication
+
 /** A simple application that reads in a .xml file as a command
     line argument and modify it.
 
@@ -57,7 +58,6 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
     @Pt.AcceptedRating Red (eal)
 */
 public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
-
     /** A Nullary constructor is necessary so that we can extends this
      *  base class with a subclass
      *  @exception Exception Not thrown in this base class
@@ -73,7 +73,6 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
         // The test suite calls MoMLSimpleApplication multiple times,
         // and the list of filters is static, so we reset it each time
         // so as to avoid adding filters every time we run an auto test.
-
         // We set the list of MoMLFilters to handle Backward Compatibility.
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
@@ -85,7 +84,6 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
         // then the nightly build may fail to report MoML parse errors
         // as failed tests
         //parser.setErrorHandler(new StreamErrorHandler());
-
         // We use parse(URL, URL) here instead of parseFile(String)
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
@@ -93,14 +91,15 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
         toplevel = (CompositeActor) parser.parse(null,
                 new File(xmlFilename).toURL());
 
-        _manager =new Manager(toplevel.workspace(),
-                "MoMLSimpleApplication");
+        _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);
         toplevel.addChangeListener(this);
+
         //_manager.execute();
     }
 
     public CompositeActor toplevel;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -127,56 +126,58 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
         // If we do not implement ChangeListener, then ChangeRequest
         // will print any errors to stdout and continue.
         // This causes no end of trouble with the test suite
-
         // We can't throw and Exception here because this method in
         // the base class does not throw Exception.
-
         // In JDK1.4, we can construct exceptions from exceptions, but
         // not in JDK1.3.1
         //throw new RuntimeException(exception);
-
         throw new RuntimeException(exception.toString());
     }
 
     /** Create an instance of a single model and run it
      *  @param args The command-line arguments naming the .xml file to run
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
-            MoMLSimpleApplication simpleApplication =
-                new MoMLSimpleApplication(args[0]);
+            MoMLSimpleApplication simpleApplication = new MoMLSimpleApplication(args[0]);
             System.out.println("open a new simpleApplication");
-            StringBuffer moml = new StringBuffer("<group><entity  name=\"Const2\" class=\"ptolemy.actor.lib.Const\">");
-            moml.append("<property name=\"value\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">");
+
+            StringBuffer moml = new StringBuffer(
+                    "<group><entity  name=\"Const2\" class=\"ptolemy.actor.lib.Const\">");
+            moml.append(
+                "<property name=\"value\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">");
             moml.append("</property>");
-            moml.append("<port name=\"in\" class=\"ptolemy.actor.TypedIOPort\">");
+            moml.append(
+                "<port name=\"in\" class=\"ptolemy.actor.TypedIOPort\">");
             moml.append("<property name=\"input\"/>");
-            moml.append("</port>") ;
-            moml.append("<port name=\"out\" class=\"ptolemy.actor.TypedIOPort\">");
+            moml.append("</port>");
+            moml.append(
+                "<port name=\"out\" class=\"ptolemy.actor.TypedIOPort\">");
             moml.append("<property name=\"output\"/>");
             moml.append("</port>");
             moml.append("</entity></group>");
 
             System.out.println("consturct request change");
 
-            ChangeRequest request = new MoMLChangeRequest(
-                    simpleApplication,            // originator
-                    simpleApplication.toplevel,          // context
+            ChangeRequest request = new MoMLChangeRequest(simpleApplication, // originator
+                    simpleApplication.toplevel, // context
                     moml.toString(), // MoML code
-                    null);           // base
+                    null); // base
 
             System.out.println("consturct a moml change request");
 
             simpleApplication.toplevel.requestChange(request);
 
             StringWriter buffer = new StringWriter();
-            simpleApplication.toplevel.exportMoML(buffer) ;
+            simpleApplication.toplevel.exportMoML(buffer);
+
             // FIXME: hardwired path
-            String fileName =
-                "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/model.xml";
+            String fileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/model.xml";
             FileOutputStream file = null;
+
             try {
                 file = new FileOutputStream(fileName);
+
                 PrintStream out = new PrintStream(file);
                 out.println(buffer);
                 out.flush();
@@ -186,7 +187,7 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
                         file.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + fileName);
+                            + "on " + fileName);
                         throwable.printStackTrace();
                     }
                 }
@@ -205,8 +206,6 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Manager _manager = null;
-
     private NamedObj _context;
 }

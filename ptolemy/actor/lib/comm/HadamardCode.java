@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Source;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HadamardCode
+
 /**
    Produce a Hadamard codeword by selecting a row from a Hadamard matrix.
    The log base 2 of the matrix dimension is given by the <i>log2Length</i>
@@ -75,7 +76,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class HadamardCode extends Source {
-
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -86,7 +86,7 @@ public class HadamardCode extends Source {
      *   actor with this name.
      */
     public HadamardCode(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         index = new PortParameter(this, "index");
@@ -126,13 +126,15 @@ public class HadamardCode extends Source {
      *   or <i>log2Length</i> is not strictly positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == index) {
-            int indexValue = ((IntToken)index.getToken()).intValue();
+            int indexValue = ((IntToken) index.getToken()).intValue();
+
             if (indexValue < 0) {
                 throw new IllegalActionException(this,
-                        "index parameter is not permitted to be negative.");
+                    "index parameter is not permitted to be negative.");
             }
+
             // Set a flag indicating that the private variable _row
             // is invalid, but don't recompute the value until all
             // parameters have been set.
@@ -140,19 +142,21 @@ public class HadamardCode extends Source {
                 _rowValueInvalid = true;
             }
         } else if (attribute == log2Length) {
-            int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
+            int log2LengthValue = ((IntToken) log2Length.getToken()).intValue();
+
             if (log2LengthValue <= 0) {
                 throw new IllegalActionException(this,
-                        "log2Length parameter is required to be "
-                        + "strictly positive.");
+                    "log2Length parameter is required to be "
+                    + "strictly positive.");
             }
+
             // Assuming an int is 32 bits, our implementation will only
             // work if this is less than 32.
             if (log2LengthValue >= 32) {
                 throw new IllegalActionException(this,
-                        "log2Length parameter is required to be "
-                        + "less than 32.");
+                    "log2Length parameter is required to be " + "less than 32.");
             }
+
             // Set a flag indicating that the private variable _row
             // is invalid, but don't recompute the value until all
             // parameters have been set.
@@ -175,15 +179,19 @@ public class HadamardCode extends Source {
     public void fire() throws IllegalActionException {
         super.fire();
         index.update();
+
         if (_rowValueInvalid) {
-            _latestIndex = ((IntToken)index.getToken()).intValue();
-            int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
+            _latestIndex = ((IntToken) index.getToken()).intValue();
+
+            int log2LengthValue = ((IntToken) log2Length.getToken()).intValue();
+
             // Power of two calculated using a shift.
             int matrixDimension = 1 << log2LengthValue;
+
             if (_latestIndex >= matrixDimension) {
-                throw new IllegalActionException(this,
-                        "index is out of range.");
+                throw new IllegalActionException(this, "index is out of range.");
             }
+
             _row = _calculateRow(matrixDimension, _latestIndex);
             _rowValueInvalid = false;
 
@@ -191,9 +199,11 @@ public class HadamardCode extends Source {
             // new sequence.
             _index = 0;
         }
+
         output.broadcast(new BooleanToken(_row[_index]));
 
         _index++;
+
         if (_index >= _row.length) {
             _index = 0;
         }
@@ -205,6 +215,7 @@ public class HadamardCode extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // Since the actor should always compute the Hadamard
         // sequence when it fires for the first time, the _previousIndex
         // is set to a value that _latestIndex can never take.
@@ -233,7 +244,6 @@ public class HadamardCode extends Source {
         // because this is a private method, and the usage pattern
         // guarantees that matrixDimension is a power of 2 and that
         // index is in range.
-
         // NOTE: use <= in case a bug somewhere results in this
         // dropping to one or zero.  Shouldn't happen. In theory,
         // == is sufficient. However, such a bug would lead to
@@ -247,30 +257,31 @@ public class HadamardCode extends Source {
             }
         } else {
             boolean[] result = new boolean[matrixDimension];
-            int halfDimension = matrixDimension/2;
+            int halfDimension = matrixDimension / 2;
             int indexIntoHalfMatrix = index;
+
             if (index >= halfDimension) {
                 indexIntoHalfMatrix -= halfDimension;
             }
-            boolean[] halfRow =
-                _calculateRow(halfDimension, indexIntoHalfMatrix);
+
+            boolean[] halfRow = _calculateRow(halfDimension, indexIntoHalfMatrix);
             System.arraycopy(halfRow, 0, result, 0, halfDimension);
+
             if (index >= halfDimension) {
                 for (int i = 0; i < halfDimension; i++) {
-                    result[halfDimension+i] = !(halfRow[i]);
+                    result[halfDimension + i] = !(halfRow[i]);
                 }
             } else {
-                System.arraycopy(
-                        halfRow, 0, result, halfDimension, halfDimension);
+                System.arraycopy(halfRow, 0, result, halfDimension,
+                    halfDimension);
             }
+
             return result;
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////               private variable                     ////
-
     // Index of the element in the Hadamard row.
     private int _index;
 
@@ -284,10 +295,9 @@ public class HadamardCode extends Source {
     private boolean[] _row;
 
     // Rows of H<sub>1</sub>.
-    private static boolean[] _row0 = {true, true};
-    private static boolean[] _row1 = {true, false};
+    private static boolean[] _row0 = { true, true };
+    private static boolean[] _row1 = { true, false };
 
     // A flag indicating that the private variable _row is invalid.
     private transient boolean _rowValueInvalid = true;
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package jni;
 
 import java.util.HashSet;
@@ -39,8 +38,10 @@ import ptolemy.gui.QueryListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentConfigurer
+
 /**
    This class is an editor to configure the arguments of an object.
    It supports setting kind :input, output, in-output or return and a type
@@ -65,82 +66,88 @@ public class ArgumentConfigurer extends Query implements QueryListener {
         setTextWidth(15);
         setColumns(1);
         _object = object;
+
         Iterator arguments = _object.argumentsList().iterator();
+
         while (arguments.hasNext()) {
             Object candidate = arguments.next();
+
             if (candidate instanceof Argument) {
                 Argument argument = (Argument) candidate;
                 setColumns(1);
-                addLine(
-                        argument.getName() + "Name",
-                        argument.getName() + "Name",
-                        argument.getName());
-                addLine(
-                        argument.getName() + "CType",
-                        argument.getName() + "C or C++ Type",
-                        argument.getCType());
+                addLine(argument.getName() + "Name",
+                    argument.getName() + "Name", argument.getName());
+                addLine(argument.getName() + "CType",
+                    argument.getName() + "C or C++ Type", argument.getCType());
+
                 Set optionsDefault = new HashSet();
+
                 if (argument.isInput()) {
                     optionsDefault.add("input");
                 }
+
                 if (argument.isOutput()) {
                     optionsDefault.add("output");
                 }
+
                 if (argument.isReturn()) {
                     optionsDefault.add("return");
                 }
-                addSelectButtons(
-                        argument.getName() + "Kind",
-                        argument.getName() + "Kind:",
-                        _optionsArray,
-                        optionsDefault);
+
+                addSelectButtons(argument.getName() + "Kind",
+                    argument.getName() + "Kind:", _optionsArray, optionsDefault);
             }
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Apply the changes by configuring the arguments that have changed.
      */
     public void apply() {
         boolean foundOne = false;
         Iterator arguments = _object.argumentsList().iterator();
+
         while (arguments.hasNext()) {
             Object candidate = arguments.next();
+
             if (candidate instanceof Argument) {
                 Argument argument = (Argument) candidate;
                 String type = argument.getName() + "CType";
                 String name = argument.getName() + "Name";
                 String kind = argument.getName() + "Kind";
-                if (!type.equals(argument.getCType())&&
-                        !name.equals(argument.getName())&&
-                        !kind.equals(argument.getKind())) {
 
+                if (!type.equals(argument.getCType())
+                        && !name.equals(argument.getName())
+                        && !kind.equals(argument.getKind())) {
                     String newName = getStringValue(name);
+
                     try {
                         argument.setName(newName);
                     } catch (Exception e) {
-                        MessageHandler.error(
-                                "This name is already used ! : ",
-                                e);
+                        MessageHandler.error("This name is already used ! : ", e);
                         continue;
                     }
+
                     String newCType = getStringValue(type);
                     argument.setCType(newCType);
+
                     String newKind = getStringValue(kind);
                     argument.setKind(newKind);
                     argument._checkType();
                     foundOne = true;
                 }
+
                 if (foundOne) {
                     argument.setExpression();
 
                     _object = (GenericJNIActor) argument.getContainer();
+
                     try {
                         argument.validate();
                     } catch (IllegalActionException e) {
-                        MessageHandler.error(
-                                "TRT :No way to update MoML! : ",
-                                e);
+                        MessageHandler.error("TRT :No way to update MoML! : ", e);
                     }
                 }
             }
@@ -158,7 +165,6 @@ public class ArgumentConfigurer extends Query implements QueryListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The set of names of arguments that have changed.
     private Set _changed = new HashSet();
 

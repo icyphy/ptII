@@ -8,14 +8,12 @@ package ptolemy.actor.corba.CorbaIOUtil;
  * Wednesday, April 16, 2003 5:05:14 PM PDT
  */
 
-
 /* A CORBA compatible interface for a pull supplier.
  */
-public interface pullSupplierOperations
-{
-
+public interface pullSupplierOperations {
     /* this method is intended to be called remotely by a pull consumer
      * to request data from its supplier.
      */
-    org.omg.CORBA.Any pull () throws ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
+    org.omg.CORBA.Any pull()
+        throws ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
 } // interface pullSupplierOperations

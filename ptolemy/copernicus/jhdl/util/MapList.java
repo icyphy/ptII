@@ -24,14 +24,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.util;
 
 import java.util.List;
 import java.util.Map;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MapList
+
 /**
  *
  *
@@ -41,7 +42,6 @@ import java.util.Map;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 /**
  * This interface provides a mapping between Objects and lists.
  * The value of the key/value pair of the Map is a List object.
@@ -49,17 +49,22 @@ import java.util.Map;
  *
  **/
 public interface MapList extends Map {
-
     public void add(Object key, Object value);
+
     /** Get the Object at position <code>index</code>
      * associated with Object key **/
     public Object get(Object key, int index);
+
     /** Get the first object associated with Object key **/
     public Object getFirst(Object key);
+
     /** Get the last object associated with Object key **/
     public Object getLast(Object key);
+
     /** Get the List object associated with Object key **/
     public List getList(Object key);
+
     public void setList(Object key, List l);
+
     public Object clone();
 }

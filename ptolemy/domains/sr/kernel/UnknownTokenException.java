@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.kernel;
 
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnknownTokenException
+
 /**
    Thrown on an attempt to obtain information about an unknown token.
 
@@ -45,7 +46,6 @@ import ptolemy.kernel.util.Nameable;
    @see ptolemy.domains.sr.kernel.SRReceiver
 */
 public class UnknownTokenException extends KernelRuntimeException {
-
     /** Constructs an Exception with a detail message.
      *  @param detail The message.
      */
@@ -69,5 +69,4 @@ public class UnknownTokenException extends KernelRuntimeException {
     public UnknownTokenException(Nameable object, String detail) {
         super(object, detail);
     }
-
 }

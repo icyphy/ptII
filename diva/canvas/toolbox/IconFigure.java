@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.toolbox;
 
 import java.awt.Composite;
@@ -42,6 +41,7 @@ import diva.canvas.connector.Terminal;
 import diva.util.java2d.PaintedObject;
 import diva.util.java2d.ShapeUtilities;
 
+
 /** An IconFigure is a figure that contains a main background figure,
  * a PaintedObject to decorate that figure, a label, and an arbitrary
  * number of attached Terminal objects.
@@ -50,7 +50,6 @@ import diva.util.java2d.ShapeUtilities;
  * @author         John Reekie
  */
 public class IconFigure extends AbstractFigure {
-
     /** The composite of this icon and all its stuff
      */
     private Composite _composite;
@@ -83,7 +82,7 @@ public class IconFigure extends AbstractFigure {
     /** Create a new icon figure using the given figure as the "background"
      * figure.
      */
-    public IconFigure (Figure f) {
+    public IconFigure(Figure f) {
         _background = f;
         _background.setParent(this);
     }
@@ -91,7 +90,7 @@ public class IconFigure extends AbstractFigure {
     /** Create a new icon figure using the given figure as the
      * "background" figure and the given Painted object as its "graphic."
      */
-    public IconFigure (Figure f, PaintedObject g) {
+    public IconFigure(Figure f, PaintedObject g) {
         _background = f;
         _background.setParent(this);
         _graphic = g;
@@ -100,7 +99,7 @@ public class IconFigure extends AbstractFigure {
     /** Create a new icon figure using the given figure as the
      * "background" figure and with the given label.
      */
-    public IconFigure (Figure f, String label) {
+    public IconFigure(Figure f, String label) {
         _background = f;
         _background.setParent(this);
         setLabel(label);
@@ -110,7 +109,7 @@ public class IconFigure extends AbstractFigure {
      * "background" figure, the given Painted object as its "graphic,"
      * and the given string as a displayed label.
      */
-    public IconFigure (Figure f, PaintedObject g, String label) {
+    public IconFigure(Figure f, PaintedObject g, String label) {
         _background = f;
         _background.setParent(this);
         _graphic = g;
@@ -122,7 +121,7 @@ public class IconFigure extends AbstractFigure {
      * terminal attached to it. See the BoundsSite class for a
      * description if the <i>side</i> and <i>offset</i> arguments.
      */
-    public void addTerminal (Terminal t, int side, double offset) {
+    public void addTerminal(Terminal t, int side, double offset) {
         BoundsSite site = new BoundsSite(this, _sites.size(), side, offset);
         t.setAttachSite(site);
 
@@ -134,7 +133,7 @@ public class IconFigure extends AbstractFigure {
 
     /** Get the background figure of the icon.
      */
-    public Figure getBackground () {
+    public Figure getBackground() {
         return _background;
     }
 
@@ -144,73 +143,81 @@ public class IconFigure extends AbstractFigure {
      * whoever created the icon is assumed to check that the painted
      * objects are within bounds at creation time.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         Rectangle2D bounds = (Rectangle2D) _background.getBounds().clone();
-        bounds = (Rectangle2D)
-            ShapeUtilities.transformBounds(bounds, _transform);
-        for (Iterator i = _terminals.iterator(); i.hasNext(); ) {
+        bounds = (Rectangle2D) ShapeUtilities.transformBounds(bounds, _transform);
+
+        for (Iterator i = _terminals.iterator(); i.hasNext();) {
             Rectangle2D.union(bounds, ((Figure) i.next()).getBounds(), bounds);
         }
+
         return bounds;
     }
 
     /** Get the painted object that is drawn over the top
      * of the icon as its "graphic."
      */
-    public PaintedObject getGraphic () {
+    public PaintedObject getGraphic() {
         return _graphic;
     }
 
     /** Get the composite of this icon, or null if it doesn't
      * have one.
      */
-    public Composite getComposite () {
+    public Composite getComposite() {
         return _composite;
     }
 
     /** Get the shape of this figure. This is the shape of the background
      * figure.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         Shape s = ShapeUtilities.cloneShape(_background.getShape());
         return ShapeUtilities.transformModify(s, _transform);
     }
 
     /** Get the terminal at the given index
      */
-    public Terminal getTerminal (int index) {
-        return (Terminal)_terminals.get(index);
+    public Terminal getTerminal(int index) {
+        return (Terminal) _terminals.get(index);
     }
 
     /** Test if this figure intersects the given rectangle.
      */
-    public boolean intersects (Rectangle2D r) {
+    public boolean intersects(Rectangle2D r) {
         boolean result = getShape().intersects(r);
         Iterator i = _terminals.iterator();
+
         while (!result && i.hasNext()) {
             result = result || ((Figure) i.next()).intersects(r);
         }
+
         return result;
     }
 
     /** Paint the icon.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
         }
+
         if (_composite != null) {
             g.setComposite(_composite);
         }
-        for (Iterator i = _terminals.iterator(); i.hasNext(); ) {
+
+        for (Iterator i = _terminals.iterator(); i.hasNext();) {
             ((Figure) i.next()).paint(g);
         }
+
         AffineTransform savedTransform = g.getTransform();
         g.transform(_transform);
         _background.paint(g);
+
         if (_graphic != null) {
             _graphic.paint(g);
         }
+
         g.setTransform(savedTransform);
     }
 
@@ -221,24 +228,25 @@ public class IconFigure extends AbstractFigure {
      * that icons will be opaque. The default composite value
      * is null.
      */
-    public void setComposite (Composite c) {
+    public void setComposite(Composite c) {
         _composite = c;
         repaint();
     }
 
     /** Set the label of this figure.
      */
-    public void setLabel (String s) {
+    public void setLabel(String s) {
         if (_label == null) {
             _label = new LabelFigure(s);
         }
+
         // FIXME
         repaint();
     }
 
     /** Get an iterator over the terminals of this figure.
      */
-    public Iterator terminals () {
+    public Iterator terminals() {
         return _terminals.iterator();
     }
 
@@ -246,27 +254,28 @@ public class IconFigure extends AbstractFigure {
      * transforms the background figure and the graphic, but not
      * the label or the terminals.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
         _transform.preConcatenate(at);
-        for (Iterator i = _terminals.iterator(); i.hasNext(); ) {
+
+        for (Iterator i = _terminals.iterator(); i.hasNext();) {
             ((Terminal) i.next()).relocate();
         }
+
         repaint();
     }
 
     /** Translate the figure the given distance.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         repaint();
-        _transform.translate(
-                x / _transform.getScaleX(),
-                y / _transform.getScaleY());
-        for (Iterator i = _terminals.iterator(); i.hasNext(); ) {
+        _transform.translate(x / _transform.getScaleX(),
+            y / _transform.getScaleY());
+
+        for (Iterator i = _terminals.iterator(); i.hasNext();) {
             ((Terminal) i.next()).translate(x, y);
         }
+
         repaint();
     }
 }
-
-

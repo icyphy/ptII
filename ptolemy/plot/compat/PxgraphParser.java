@@ -48,6 +48,7 @@ import ptolemy.plot.CmdLineArgException;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PxgraphParser
 
@@ -399,7 +400,6 @@ import ptolemy.plot.PlotBox;
    @see PxgraphApplet
 */
 public class PxgraphParser {
-
     /** Construct a parser to configure the specified plot.
      *  @param plot The Plot object that is configured.
      */
@@ -419,8 +419,8 @@ public class PxgraphParser {
      *   found.
      *  @exception IOException If an error occurs reading an input file.
      */
-    public int parseArgs(String args[]) throws CmdLineArgException,
-            FileNotFoundException, IOException {
+    public int parseArgs(String[] args)
+        throws CmdLineArgException, FileNotFoundException, IOException {
         return parseArgs(args, null);
     }
 
@@ -436,39 +436,46 @@ public class PxgraphParser {
      *   found.
      *  @exception IOException If an error occurs reading an input file.
      */
-    public int parseArgs(String args[], URL base) throws CmdLineArgException,
-            FileNotFoundException, IOException {
-        int i = 0, j, argumentsRead = 0;
+    public int parseArgs(String[] args, URL base)
+        throws CmdLineArgException, FileNotFoundException, IOException {
+        int i = 0;
+        int j;
+        int argumentsRead = 0;
 
         // If we see both -nl and -bar, assume we do a stem plot.
-        boolean sawbararg = false;  // Saw -bar arg.
-        boolean sawnlarg = false;   // Saw -nl arg.
+        boolean sawbararg = false; // Saw -bar arg.
+        boolean sawnlarg = false; // Saw -nl arg.
         String savedmarks = "none"; // Save _marks in case we have -P -bar -nl.
-        _binary = false;     // Read a binary xgraph file.
+        _binary = false; // Read a binary xgraph file.
 
-        int width = 400, height = 400;
+        int width = 400;
+        int height = 400;
 
         String arg;
-        String unsupportedOptions[] = {
-            "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
-        };
+        String[] unsupportedOptions = {
+                "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
+            };
 
-        while ( args != null && i < args.length && (args[i].startsWith("-") ||
-                        args[i].startsWith("=")) ) {
+        while ((args != null) && (i < args.length)
+                && (args[i].startsWith("-") || args[i].startsWith("="))) {
             arg = args[i++];
 
             if (arg.startsWith("-")) {
                 // Search for unsupported options that take arguments
                 boolean badarg = false;
+
                 for (j = 0; j < unsupportedOptions.length; j++) {
                     if (arg.equals(unsupportedOptions[j])) {
-                        System.err.println("Warning: pxgraph: " + arg +
-                                " is not supported");
+                        System.err.println("Warning: pxgraph: " + arg
+                            + " is not supported");
                         i++;
                         badarg = true;
                     }
                 }
-                if (badarg) continue;
+
+                if (badarg) {
+                    continue;
+                }
 
                 if (arg.equals("-bb")) {
                     // We ignore -bb because the Java version of pxgraph plot
@@ -482,11 +489,13 @@ public class PxgraphParser {
                     // We default the baroffset to 0 here if the value does
                     // not include a comma.
                     double[] spec = _parseDoubles(args[i++]);
+
                     if (spec.length == 1) {
                         _plot.setBars(spec[0], 0);
                     } else {
                         _plot.setBars(spec[0], spec[1]);
                     }
+
                     continue;
                 } else if (arg.equals("-lf")) {
                     // -lf <labelfont>
@@ -494,25 +503,29 @@ public class PxgraphParser {
                     continue;
                 } else if (arg.equals("-lx")) {
                     double[] spec = _parseDoubles(args[i++]);
+
                     if (spec.length == 1) {
-                        throw new
-                            CmdLineArgException("Failed to parse `"+arg+"'");
+                        throw new CmdLineArgException("Failed to parse `" + arg
+                            + "'");
                     } else {
                         _plot.setXRange(spec[0], spec[1]);
                     }
+
                     continue;
                 } else if (arg.equals("-ly")) {
                     double[] spec = _parseDoubles(args[i++]);
+
                     if (spec.length == 1) {
-                        throw new
-                            CmdLineArgException("Failed to parse `"+arg+"'");
+                        throw new CmdLineArgException("Failed to parse `" + arg
+                            + "'");
                     } else {
                         _plot.setYRange(spec[0], spec[1]);
                     }
+
                     continue;
                 } else if (arg.equals("-t")) {
                     // -t <title> TitleText "An X Graph"
-                    String title =  args[i++];
+                    String title = args[i++];
                     _plot.setTitle(title);
                     continue;
                 } else if (arg.equals("-tf")) {
@@ -531,12 +544,14 @@ public class PxgraphParser {
                     //-bar BarGraph Bars: on Marks: none Lines: off
                     // If we saw the -nl arg, then assume impulses
                     sawbararg = true;
+
                     if (sawnlarg) {
                         _plot.setImpulses(true);
                     } else {
                         _plot.setBars(true);
                         _plot.setMarksStyle("none");
                     }
+
                     _plot.setConnected(false);
                     continue;
                 } else if (arg.equals("-binary")) {
@@ -556,7 +571,7 @@ public class PxgraphParser {
                     continue;
                 } else if (arg.equals("-debug")) {
                     // -debug is not in the original X11 pxgraph.
-                    _debug = (int)Integer.valueOf(args[i++]).intValue();
+                    _debug = (int) Integer.valueOf(args[i++]).intValue();
                     continue;
                 } else if (arg.equals("-fg")) {
                     _plot.setForeground(PlotBox.getColorByName(args[i++]));
@@ -590,12 +605,14 @@ public class PxgraphParser {
                     // -nl NoLines Lines: off
                     // If we saw the -bar arg, then assume impulses
                     sawnlarg = true;
+
                     if (sawbararg) {
                         // Restore the _marks in case we did -P -bar -nl
                         _plot.setMarksStyle(savedmarks);
                         _plot.setBars(false);
                         _plot.setImpulses(true);
                     }
+
                     _plot.setConnected(false);
                     continue;
                 } else if (arg.equals("-o")) {
@@ -631,57 +648,61 @@ public class PxgraphParser {
                     // -version is not in the original X11 pxgraph.
                     //_version();
                     continue;
-                } else if (arg.length() > 1  && arg.charAt(0) == '-') {
+                } else if ((arg.length() > 1) && (arg.charAt(0) == '-')) {
                     // Process '-<digit> <datasetname>'
                     try {
-                        Integer datasetnumberint = new
-                            Integer(arg.substring(1));
+                        Integer datasetnumberint = new Integer(arg.substring(1));
                         int datasetnumber = datasetnumberint.intValue();
+
                         if (datasetnumber >= 0) {
                             _plot.addLegend(datasetnumber, args[i++]);
                             continue;
                         }
-                    } catch (NumberFormatException e) {}
+                    } catch (NumberFormatException e) {
+                    }
                 }
             } else {
                 if (arg.startsWith("=")) {
                     // Process =WxH+X+Y
-                    width = (int)Integer.valueOf(arg.substring(1,
-                                                         arg.indexOf('x'))).intValue();
+                    width = (int) Integer.valueOf(arg.substring(1,
+                                arg.indexOf('x'))).intValue();
+
                     int plusIndex = arg.indexOf('+');
                     int minusIndex = arg.indexOf('-');
-                    if (plusIndex != -1 || minusIndex != -1) {
+
+                    if ((plusIndex != -1) || (minusIndex != -1)) {
                         // =WxH+X+Y, =WxH-X+Y, =WxH-X-Y, =WxH+X-Y
-                        if ( plusIndex != -1 && minusIndex != -1) {
+                        if ((plusIndex != -1) && (minusIndex != -1)) {
                             // =WxH-X+Y or =WxH+X-Y
                             int index = minusIndex;
+
                             if (plusIndex < minusIndex) {
                                 index = plusIndex;
                             }
-                            height = Integer.valueOf(arg.substring(
-                                                             arg.indexOf('x')+1,
-                                                             index)).intValue();
+
+                            height = Integer.valueOf(arg.substring(arg.indexOf(
+                                            'x') + 1, index)).intValue();
                         } else {
                             if (plusIndex != -1) {
                                 // =WxH+X+Y
-                                height = Integer.valueOf(arg.substring(
-                                                                 arg.indexOf('x')+1,
-                                                                 plusIndex)).intValue();
+                                height = Integer.valueOf(arg.substring(arg
+                                            .indexOf('x') + 1, plusIndex))
+                                                .intValue();
                             } else {
                                 // =WxH-X-Y
-                                height = Integer.valueOf(arg.substring(
-                                                                 arg.indexOf('x')+1,
-                                                                 minusIndex)).intValue();
+                                height = Integer.valueOf(arg.substring(arg
+                                            .indexOf('x') + 1, minusIndex))
+                                                .intValue();
                             }
                         }
                     } else {
                         if (arg.length() > arg.indexOf('x')) {
                             // =WxH
-                            height = Integer.valueOf(arg.substring(
-                                                             arg.indexOf('x')+1,
-                                                             arg.length())).intValue();
+                            height = Integer.valueOf(arg.substring(arg.indexOf(
+                                            'x') + 1, arg.length())).intValue();
                         }
                     }
+
                     // FIXME: it is unclear what X and Y in =WxH+X+Y mean
                     // in a non-toplevel window, so we don't process
                     // those here.  See Pxgraph.java for how to process
@@ -689,26 +710,29 @@ public class PxgraphParser {
                     continue;
                 }
             }
+
             // If we got to here, then we failed to parse the arg
-            throw new
-                CmdLineArgException("Failed to parse `" + arg + "'");
+            throw new CmdLineArgException("Failed to parse `" + arg + "'");
         }
+
         argumentsRead = i++;
 
         _plot.setSize(width, height);
 
         for (i = argumentsRead; i < args.length; i++) {
-
             // Have a filename.  First attempt to open it as a URL.
             InputStream instream;
+
             try {
                 URL inurl = new URL(base, args[i]);
                 instream = inurl.openStream();
             } catch (MalformedURLException ex) {
                 instream = new FileInputStream(args[i]);
             }
+
             read(instream);
         }
+
         return argumentsRead;
     }
 
@@ -728,12 +752,11 @@ public class PxgraphParser {
      *  @exception IOException If an error occurs reading an input file.
      */
     public int parsePxgraphargs(String pxgraphargs, URL base)
-            throws CmdLineArgException, FileNotFoundException, IOException {
+        throws CmdLineArgException, FileNotFoundException, IOException {
         // We convert the String to a Stream and then use a StreamTokenizer
         // to parse the arguments into a Vector and then copy
         // the vector into an array of Strings.  We use a Vector
         // so that we can handle an arbitrary number of arguments
-
         Vector argvector = new Vector();
         boolean prependdash = false; // true if we need to add a -
 
@@ -749,56 +772,70 @@ public class PxgraphParser {
             stoken.wordChars('(', '~');
             stoken.quoteChar('"');
             stoken.quoteChar('\'');
+
             int c;
             String partialarg = null;
-            out:
+out: 
             while (true) {
                 c = stoken.nextToken();
+
                 //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" ");
-                switch (stoken.ttype) {        // same as value of 'c'
+                switch (stoken.ttype) { // same as value of 'c'
                 case StreamTokenizer.TT_EOF:
                     break out;
+
                 case StreamTokenizer.TT_WORD:
+
                     //System.out.println("Word: " + stoken.sval);
                     if (prependdash) {
                         prependdash = false;
-                        if (partialarg == null)
-                            argvector.addElement(new String("-"+stoken.sval));
-                        else
-                            argvector.addElement(new String("-" + partialarg +
-                                                         stoken.sval));
+
+                        if (partialarg == null) {
+                            argvector.addElement(new String("-" + stoken.sval));
+                        } else {
+                            argvector.addElement(new String("-" + partialarg
+                                    + stoken.sval));
+                        }
                     } else {
-                        if (partialarg == null)
+                        if (partialarg == null) {
                             argvector.addElement(new String(stoken.sval));
-                        else
-                            argvector.addElement(new String(partialarg +
-                                                         stoken.sval));
+                        } else {
+                            argvector.addElement(new String(partialarg
+                                    + stoken.sval));
+                        }
                     }
+
                     partialarg = null;
                     break;
+
                 case '-':
                     prependdash = true;
                     break;
+
                 case '#':
                 case '$':
                 case '%':
                 case '&':
+
                     // The above chars can be part of a URL.  For example
                     // perl scripts use &.  However, we cannot include
                     // them in the wordChars() range of chars, since
                     // the single quote is between them and the rest of the
                     // chars. So we have to process them by hand.
-                    partialarg = ((String)argvector.lastElement()) + (char)c;
-                    argvector.removeElementAt(argvector.size()-1);
+                    partialarg = ((String) argvector.lastElement()) + (char) c;
+                    argvector.removeElementAt(argvector.size() - 1);
                     break;
+
                 case '"':
                 case '\'':
+
                     //System.out.println("String: " + stoken.sval);
                     argvector.addElement(new String(stoken.sval));
                     break;
+
                 default:
-                    throw new IOException("Failed to parse: '"+ (char)c +
-                            "' in `" + pxgraphargs + "'");
+                    throw new IOException("Failed to parse: '" + (char) c
+                        + "' in `" + pxgraphargs + "'");
                 }
             }
         } catch (IOException e) {
@@ -806,10 +843,12 @@ public class PxgraphParser {
         }
 
         // Create a array
-        String args[] = new String[argvector.size()];
+        String[] args = new String[argvector.size()];
+
         for (int i = 0; i < argvector.size(); i++) {
-            args[i] = (String)argvector.elementAt(i);
+            args[i] = (String) argvector.elementAt(i);
         }
+
         return parseArgs(args, base);
     }
 
@@ -818,43 +857,56 @@ public class PxgraphParser {
      *  @exception java.io.IOException If an I/O error occurs.
      */
     public void read(InputStream inputStream) throws IOException {
-        DataInputStream in = new DataInputStream(
-                new BufferedInputStream(inputStream));
+        DataInputStream in = new DataInputStream(new BufferedInputStream(
+                    inputStream));
+
         if (_binary) {
             int c;
-            float x = 0, y = 0, pointCount = 0;
+            float x = 0;
+            float y = 0;
+            float pointCount = 0;
             boolean byteSwapped = false;
             boolean connected = false;
-            byte input[] = new byte[4];
+            byte[] input = new byte[4];
 
-            if (_connected) connected = true;
+            if (_connected) {
+                connected = true;
+            }
+
             switch (_endian) {
             case _NATIVE_ENDIAN:
+
                 try {
-                    if ( System.getProperty("os.arch").equals("x86")) {
+                    if (System.getProperty("os.arch").equals("x86")) {
                         byteSwapped = true;
                     }
-                } catch (SecurityException e) {}
+                } catch (SecurityException e) {
+                }
+
                 break;
+
             case _BIG_ENDIAN:
                 break;
+
             case _LITTLE_ENDIAN:
                 byteSwapped = true;
                 break;
+
             default:
-                throw new IOException("Internal Error: Don't know about '"+
-                        _endian + "' style of endian");
+                throw new IOException("Internal Error: Don't know about '"
+                    + _endian + "' style of endian");
             }
 
             try {
                 // Flag that we are starting a new data set.
                 _firstInSet = true;
+
                 // Flag that we have not seen a DataSet line in this file.
                 _sawFirstDataset = false;
 
-
                 c = in.readByte();
-                if ( c != 'd') {
+
+                if (c != 'd') {
                     // Assume that the data is one data set, consisting
                     // of 4 byte floats.  None of the Ptolemy pxgraph
                     // binary format extensions apply.
@@ -863,7 +915,6 @@ public class PxgraphParser {
                     // be able to write binary data directly
                     // (However, they could use Java's mechanisms for
                     // writing binary files).
-
                     // Read 3 more bytes, create the x float.
                     int bits = c;
                     bits = bits << 8;
@@ -875,18 +926,24 @@ public class PxgraphParser {
 
                     x = Float.intBitsToFloat(bits);
                     y = in.readFloat();
+
                     // _addLegendIfNecessary might increment _currentdataset
                     connected = _addLegendIfNecessary(connected);
                     _plot.addPoint(_currentdataset, x, y, connected);
-                    if (_connected) connected = true;
 
+                    if (_connected) {
+                        connected = true;
+                    }
 
                     while (true) {
                         x = in.readFloat();
                         y = in.readFloat();
                         connected = _addLegendIfNecessary(connected);
                         _plot.addPoint(_currentdataset, x, y, connected);
-                        if (_connected) connected = true;
+
+                        if (_connected) {
+                            connected = true;
+                        }
                     }
                 } else {
                     // Assume that the data is in the pxgraph binary format.
@@ -899,64 +956,79 @@ public class PxgraphParser {
                         // e                             - End of a data set
                         // n <chars> \n           - New set name, ends in \n
                         // m                             - Move to a point
-
                         switch (c) {
                         case 'd':
+
                             // Data point.
                             if (byteSwapped) {
                                 in.readFully(input);
-                                x = Float.intBitsToFloat(
-                                        (( input[3] & 0xFF ) << 24) |
-                                        (( input[2] & 0xFF ) << 16) |
-                                        (( input[1] & 0xFF ) << 8) |
-                                        ( input[0] & 0xFF ));
+                                x = Float.intBitsToFloat(((input[3] & 0xFF) << 24)
+                                        | ((input[2] & 0xFF) << 16)
+                                        | ((input[1] & 0xFF) << 8)
+                                        | (input[0] & 0xFF));
                                 in.readFully(input);
-                                y = Float.intBitsToFloat(
-                                        (( input[3] & 0xFF ) << 24) |
-                                        (( input[2] & 0xFF ) << 16) |
-                                        (( input[1] & 0xFF ) << 8) |
-                                        ( input[0] & 0xFF ));
+                                y = Float.intBitsToFloat(((input[3] & 0xFF) << 24)
+                                        | ((input[2] & 0xFF) << 16)
+                                        | ((input[1] & 0xFF) << 8)
+                                        | (input[0] & 0xFF));
                             } else {
                                 x = in.readFloat();
                                 y = in.readFloat();
                             }
+
                             pointCount++;
                             connected = _addLegendIfNecessary(connected);
                             _plot.addPoint(_currentdataset, x, y, connected);
-                            if (_connected) connected = true;
+
+                            if (_connected) {
+                                connected = true;
+                            }
+
                             break;
+
                         case 'e':
+
                             // End of set name.
                             connected = false;
                             break;
+
                         case 'n':
                             _firstInSet = true;
                             _sawFirstDataset = true;
+
                             StringBuffer datasetname = new StringBuffer();
                             _currentdataset++;
+
                             // New set name, ends in \n.
-                            while (c != '\n')
+                            while (c != '\n') {
                                 datasetname.append(in.readChar());
+                            }
+
                             _plot.addLegend(_currentdataset,
-                                    datasetname.toString());
+                                datasetname.toString());
                             _plot.setConnected(true);
                             break;
+
                         case 'm':
+
                             // a disconnected point
                             connected = false;
                             break;
+
                         default:
-                            throw new IOException("Don't understand `" +
-                                    (char)c + "' character " +
-                                    "(decimal value = " + c +
-                                    ") in binary file.  Last point was (" + x +
-                                    "," + y + ").\nProcessed " + pointCount +
-                                    " points successfully");
+                            throw new IOException("Don't understand `"
+                                + (char) c + "' character "
+                                + "(decimal value = " + c
+                                + ") in binary file.  Last point was (" + x
+                                + "," + y + ").\nProcessed " + pointCount
+                                + " points successfully");
                         }
+
                         c = in.readByte();
                     }
                 }
-            } catch (EOFException e) {}
+            } catch (EOFException e) {
+            }
         } else {
             // Read ASCII files.
             // NOTE: These are not in xgraph format, but rather in the
@@ -976,35 +1048,37 @@ public class PxgraphParser {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Add a legend if necessary, return the value of the connected flag.
     private boolean _addLegendIfNecessary(boolean connected) {
-        if (! _sawFirstDataset  || _currentdataset < 0) {
+        if (!_sawFirstDataset || (_currentdataset < 0)) {
             // We did not set a DataSet line, but
             // we did get called with -<digit> args
             _sawFirstDataset = true;
             _currentdataset++;
         }
+
         if (_plot.getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
             // nor did we call addLegend().
             _firstInSet = true;
             _sawFirstDataset = true;
             _plot.addLegend(_currentdataset,
-                    new String("Set "+ _currentdataset));
+                new String("Set " + _currentdataset));
         }
+
         if (_firstInSet) {
             connected = false;
             _firstInSet = false;
         }
-        return connected;
 
+        return connected;
     }
 
     // Parse a string with a comma into two doubles.
     // If there is no comma, return a single double.
     private double[] _parseDoubles(String spec) {
         int comma = spec.indexOf(",");
+
         if (comma < 0) {
             double[] result = new double[1];
             result[0] = (Double.valueOf(spec)).doubleValue();
@@ -1013,7 +1087,8 @@ public class PxgraphParser {
             double[] result = new double[2];
             String spec1 = spec.substring(0, comma);
             result[0] = (Double.valueOf(spec1)).doubleValue();
-            String spec2 = spec.substring(comma+1);
+
+            String spec2 = spec.substring(comma + 1);
             result[1] = (Double.valueOf(spec2)).doubleValue();
             return result;
         }
@@ -1021,7 +1096,6 @@ public class PxgraphParser {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Check the osarch and use the appropriate endian.
     private static final int _NATIVE_ENDIAN = 0;
 
@@ -1033,7 +1107,6 @@ public class PxgraphParser {
 
     // Flag indicating whether the command specified that the format
     private boolean _binary = false;
-
     private boolean _connected = true;
 
     // For debugging, call with -db or -debug.

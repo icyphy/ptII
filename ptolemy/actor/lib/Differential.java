@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.Token;
@@ -33,8 +32,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Differential
+
 /**
    Output the current input minus the previous input, or if there
    has been no previous input, the current input itself.
@@ -45,9 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Differential extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -57,7 +56,7 @@ public class Differential extends Transformer {
      *   actor with this name.
      */
     public Differential(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -75,6 +74,7 @@ public class Differential extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
+
             if (_lastInput != null) {
                 output.broadcast(_currentInput.subtract(_lastInput));
             } else {
@@ -101,7 +101,6 @@ public class Differential extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private Token _currentInput;
     private Token _lastInput;
 }

@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.graph.test;
 
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestConstant
+
 /**
    A constant InequalityTerm.
    This class is for testing inequality related classes.
@@ -45,9 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class TestConstant implements InequalityTerm {
-
     /** Construct a constant InequalityTerm with a String value.
      *  @param value A String
      */
@@ -60,7 +59,8 @@ public class TestConstant implements InequalityTerm {
 
     /** Do nothing.
      */
-    public void fixValue() {}
+    public void fixValue() {
+    }
 
     /** Return the string value.
      *  @return A String
@@ -102,10 +102,9 @@ public class TestConstant implements InequalityTerm {
      *  @exception IllegalActionException Always thrown since this term is a
      *   constant.
      */
-    public void initialize(Object e)
-            throws IllegalActionException {
+    public void initialize(Object e) throws IllegalActionException {
         throw new IllegalActionException("TestConstant.initialize: This term "
-                + "is a constant.");
+            + "is a constant.");
     }
 
     /** Check whether the current value of this term is acceptable,
@@ -133,10 +132,9 @@ public class TestConstant implements InequalityTerm {
      *  @param e an Object. Ignored by this method.
      *  @exception IllegalActionException always thrown.
      */
-    public void setValue(Object e)
-            throws IllegalActionException {
-        throw new IllegalActionException("TestConstant.setValue: This term " +
-                "is a constant.");
+    public void setValue(Object e) throws IllegalActionException {
+        throw new IllegalActionException("TestConstant.setValue: This term "
+            + "is a constant.");
     }
 
     /** Override the base class to describe the constant.
@@ -148,11 +146,11 @@ public class TestConstant implements InequalityTerm {
 
     /** Do nothing.
      */
-    public void unfixValue() {}
+    public void unfixValue() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private String _name = "";
     private String _value = null;
 }

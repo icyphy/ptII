@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm;
 
 import ptolemy.kernel.ComponentRelation;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Arc
+
 /**
    Instances of this class represent an arc between two states in a state
    machine visualization.  To see how this class is used and links are made
@@ -45,7 +46,6 @@ import ptolemy.kernel.ComponentRelation;
    @see FSMGraphModel.ArcModel
 */
 public class Arc {
-
     /** Return the head of this link.   This will be the icon of a state.
      */
     public Object getHead() {
@@ -87,10 +87,7 @@ public class Arc {
     /** Return a string representation of this link.
      */
     public String toString() {
-        return "Arc("
-            + _head + ", "
-            + _tail + ", "
-            + _relation + ")";
+        return "Arc(" + _head + ", " + _tail + ", " + _relation + ")";
     }
 
     private Object _head;

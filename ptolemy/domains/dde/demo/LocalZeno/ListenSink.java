@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import ptolemy.domains.dde.lib.DDESink;
@@ -37,6 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ListenSink
+
 /**
    A DDESink actor that can notify an ExecEventListener of ExecEvents.
    In particular, the listener will be notified each time the prefire(),
@@ -56,15 +56,13 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.actor.gui.ExecEvent
    @see ptolemy.actor.gui.ExecEventListener
 */
-
 public class ListenSink extends DDESink {
-
     /** Construct a ListenSink with the specified container and name.
      * @params cont The container of this actor.
      * @params name The name of this actor.
      */
     public ListenSink(CompositeEntity cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }
 
@@ -81,13 +79,15 @@ public class ListenSink extends DDESink {
      *  with the thread activity of this method.
      */
     public boolean postfire() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+        _debug(new ExecEvent(this, ExecEvent.WAITING));
+
         try {
             Thread.sleep(100);
-        } catch(InterruptedException e) {
-            throw new IllegalActionException(this, "InternalError "
-                    + "exception during a sleeping thread.");
+        } catch (InterruptedException e) {
+            throw new IllegalActionException(this,
+                "InternalError " + "exception during a sleeping thread.");
         }
+
         return super.postfire();
     }
 
@@ -101,13 +101,15 @@ public class ListenSink extends DDESink {
      *  with the thread activity of this method.
      */
     public boolean prefire() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
+        _debug(new ExecEvent(this, ExecEvent.ACCESSING));
+
         try {
             Thread.sleep(100);
-        } catch(InterruptedException e) {
-            throw new IllegalActionException(this, "InternalError "
-                    + "exception during a sleeping thread.");
+        } catch (InterruptedException e) {
+            throw new IllegalActionException(this,
+                "InternalError " + "exception during a sleeping thread.");
         }
+
         return super.prefire();
     }
 
@@ -117,7 +119,7 @@ public class ListenSink extends DDESink {
      *  the execution of the wrapup method of this actor's superclass.
      */
     public void wrapup() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.BLOCKED) );
+        _debug(new ExecEvent(this, ExecEvent.BLOCKED));
         super.wrapup();
     }
 }

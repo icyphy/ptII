@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.gui;
 
 import javax.swing.JScrollPane;
@@ -37,8 +36,10 @@ import ptolemy.data.MatrixToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MatrixPane
+
 /**
    A graphical component that displays the values in a matrix.
    The data to display is supplied in the form of a MatrixToken.
@@ -54,9 +55,7 @@ import ptolemy.data.Token;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (eal)
 */
-
 public class MatrixPane extends JScrollPane {
-
     /** Construct an empty matrix pane.
      */
     public MatrixPane() {
@@ -117,7 +116,6 @@ public class MatrixPane extends JScrollPane {
      *  of Token, so all matrix types are supported.
      */
     private class MatrixAsTable extends AbstractTableModel {
-
         /** Construct a table for the specified matrix.
          *  @param matrix The matrix.
          */
@@ -139,7 +137,7 @@ public class MatrixPane extends JScrollPane {
          *  index as a string.
          *  @return The column index as a string.
          */
-        public String getColumnName(int columnIndex ) {
+        public String getColumnName(int columnIndex) {
             return Integer.toString(columnIndex);
         }
 
@@ -159,10 +157,11 @@ public class MatrixPane extends JScrollPane {
         public Object getValueAt(int row, int column) {
             // There is a bug in JTable, where it happily tries to access
             // rows and columns that are outside of range.
-            if (row >= _matrix.getRowCount()
-                    || column >= _matrix.getColumnCount()) {
+            if ((row >= _matrix.getRowCount())
+                    || (column >= _matrix.getColumnCount())) {
                 return (_emptyStringToken);
             }
+
             return (Object) (_matrix.getElementAsToken(row, column)).toString();
         }
 
@@ -178,7 +177,6 @@ public class MatrixPane extends JScrollPane {
      *  This is used to clear the display.
      */
     private static class EmptyTableModel extends AbstractTableModel {
-
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 

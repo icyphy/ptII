@@ -41,6 +41,7 @@ import diva.util.Filter;
 import diva.util.FilteredIterator;
 import diva.util.ProxyIterator;
 
+
 /**
  * The basic set of information necessary to layout a graph: a mapping
  * the graph data structure to aspects of its visual representation, a
@@ -79,7 +80,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * in the target's view.
      */
     public Rectangle2D getBounds(Object node) {
-        Figure f = (Figure)_controller.getFigure(node);
+        Figure f = (Figure) _controller.getFigure(node);
         return f.getBounds();
     }
 
@@ -122,29 +123,30 @@ public class BasicLayoutTarget implements LayoutTarget {
         return _controller.getGraphModel().getRoot();
     }
 
-
     /**
      * Return the viewport of the given graph as a rectangle
      * in logical coordinates.
      */
     public Rectangle2D getViewport(Object composite) {
         GraphModel model = _controller.getGraphModel();
+
         if (composite == getRootGraph()) {
             Point2D p = getGraphicsPane().getSize();
 
-            double borderPercentage = (1-getLayoutPercentage())/2;
-            double x = borderPercentage*p.getX();
-            double y = borderPercentage*p.getY();
-            double w = getLayoutPercentage()*p.getX();
-            double h = getLayoutPercentage()*p.getY();
+            double borderPercentage = (1 - getLayoutPercentage()) / 2;
+            double x = borderPercentage * p.getX();
+            double y = borderPercentage * p.getY();
+            double w = getLayoutPercentage() * p.getX();
+            double h = getLayoutPercentage() * p.getY();
             return new Rectangle2D.Double(x, y, w, h);
-        }
-        else if (model.isComposite(composite)) {
-            CompositeFigure cf = (CompositeFigure)_controller.getFigure(composite);
+        } else if (model.isComposite(composite)) {
+            CompositeFigure cf = (CompositeFigure) _controller.getFigure(composite);
+
             if (cf != null) {
                 return cf.getShape().getBounds2D();
             }
         }
+
         String err = "Unknown graph.  Cannot determine viewport.";
         throw new IllegalArgumentException(err);
     }
@@ -163,8 +165,8 @@ public class BasicLayoutTarget implements LayoutTarget {
      * visible in the view.
      */
     public boolean isNodeVisible(Object node) {
-        Figure nf = (Figure)_controller.getFigure(node);
-        return (nf != null && nf.isVisible() && nf.getParent() != null);
+        Figure nf = (Figure) _controller.getFigure(node);
+        return ((nf != null) && nf.isVisible() && (nf.getParent() != null));
     }
 
     /**
@@ -172,8 +174,8 @@ public class BasicLayoutTarget implements LayoutTarget {
      * visible in the view.
      */
     public boolean isEdgeVisible(Object edge) {
-        Connector ef = (Connector)_controller.getFigure(edge);
-        return (ef != null && ef.isVisible() && ef.getParent() != null);
+        Connector ef = (Connector) _controller.getFigure(edge);
+        return ((ef != null) && ef.isVisible() && (ef.getParent() != null));
     }
 
     /**
@@ -184,16 +186,17 @@ public class BasicLayoutTarget implements LayoutTarget {
         final GraphModel model = _controller.getGraphModel();
         ZList zlist = getGraphicsPane().getForegroundLayer().getFigures();
         Iterator i = zlist.getIntersectedFigures(r).figuresFromFront();
-        Iterator j = new FilteredIterator(i, new Filter() {
-                public boolean accept(Object o) {
-                    Figure f = (Figure)o;
-                    return (model.isNode(f.getUserObject()));
-                }
-            });
+        Iterator j = new FilteredIterator(i,
+                new Filter() {
+                    public boolean accept(Object o) {
+                        Figure f = (Figure) o;
+                        return (model.isNode(f.getUserObject()));
+                    }
+                });
 
         return new ProxyIterator(j) {
                 public Object next() {
-                    Figure nf = (Figure)super.next();
+                    Figure nf = (Figure) super.next();
                     return nf.getUserObject();
                 }
             };
@@ -206,14 +209,15 @@ public class BasicLayoutTarget implements LayoutTarget {
     public Iterator intersectingEdges(Rectangle2D r) {
         ZList zlist = getGraphicsPane().getForegroundLayer().getFigures();
         Iterator i = zlist.getIntersectedFigures(r).figuresFromFront();
-        Iterator j = new FilteredIterator(i, new Filter() {
-                public boolean accept(Object o) {
-                    return (o instanceof Connector);
-                }
-            });
+        Iterator j = new FilteredIterator(i,
+                new Filter() {
+                    public boolean accept(Object o) {
+                        return (o instanceof Connector);
+                    }
+                });
         return new ProxyIterator(j) {
                 public Object next() {
-                    Connector ef = (Connector)super.next();
+                    Connector ef = (Connector) super.next();
                     return ef.getUserObject();
                 }
             };
@@ -224,7 +228,8 @@ public class BasicLayoutTarget implements LayoutTarget {
      * the target's view.
      */
     public void route(Object edge) {
-        Connector ef = (Connector)_controller.getFigure(edge);
+        Connector ef = (Connector) _controller.getFigure(edge);
+
         // FIXME this should just call route(), but the way connectors
         // handle rerouting is kindof broken.  see fixme in
         // abstractconnector.reroute();
@@ -240,11 +245,10 @@ public class BasicLayoutTarget implements LayoutTarget {
      * @see #getViewport(Object)
      */
     public void setLayoutPercentage(double d) {
-        if ((d <= 0) || d > 1) {
+        if ((d <= 0) || (d > 1)) {
             String err = "Layout percentage must be between 0 and 1";
             throw new IllegalArgumentException(err);
-        }
-        else {
+        } else {
             _layoutPercentage = d;
         }
     }
@@ -254,9 +258,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * target's view by the given delta.
      */
     public void translate(Object node, double dx, double dy) {
-        Figure f = (Figure)_controller.getFigure(node);
-        f.translate(dx,dy);
+        Figure f = (Figure) _controller.getFigure(node);
+        f.translate(dx, dy);
     }
 }
-
-

@@ -24,7 +24,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.debugger;
 
 import java.util.Hashtable;
@@ -46,8 +45,10 @@ import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.kernel.DebugRenderer;
 import diva.canvas.Figure;
 
+
 ////////////////////////////////////////////////////////////////////////
 //// DebugController
+
 /**
    An execution listener that suspends execution based on breakpoints.
    Instances of this class should be contained by a director.  This class
@@ -64,7 +65,6 @@ import diva.canvas.Figure;
 */
 public class DebugController extends SingletonConfigurableAttribute
     implements DebugListener {
-
     /** Construct a debug listener with the given container and name.
      *  @param container The container.
      *  @param name The name.
@@ -74,7 +74,7 @@ public class DebugController extends SingletonConfigurableAttribute
      *   attribute already in the container.
      */
     public DebugController(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _toDebug = new Hashtable();
         setPersistent(false);
@@ -103,50 +103,49 @@ public class DebugController extends SingletonConfigurableAttribute
     public void event(DebugEvent debugEvent) {
         // FIXME: this method is called every time the director gets a
         // firing event for any actor...is this ok?
-
         // Ignore debug events that aren't firing events.
         if (debugEvent instanceof FiringEvent) {
             FiringEvent event = (FiringEvent) debugEvent;
 
-            NamedObj objToHighlight = (NamedObj)event.getActor();
+            NamedObj objToHighlight = (NamedObj) event.getActor();
 
             if (_toDebug.containsKey(objToHighlight)) {
                 // The actor associated with this firing event is in
                 // the set of actors to be debugged.
-
                 // If the object is not contained by the associated
                 // composite, then find an object above it in the hierarchy
                 // that is.
-                DebugProfile debugProfile =
-                    getDebugProfile((Executable)objToHighlight);
-                BasicGraphController graphController =
-                    debugProfile.getGraphController();
-                AbstractBasicGraphModel graphModel =
-                    (AbstractBasicGraphModel)graphController.getGraphModel();
+                DebugProfile debugProfile = getDebugProfile((Executable) objToHighlight);
+                BasicGraphController graphController = debugProfile
+                    .getGraphController();
+                AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) graphController
+                    .getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
 
-                while (objToHighlight != null
-                        && objToHighlight.getContainer() != toplevel) {
-                    objToHighlight = (NamedObj)objToHighlight.getContainer();
+                while ((objToHighlight != null)
+                        && (objToHighlight.getContainer() != toplevel)) {
+                    objToHighlight = (NamedObj) objToHighlight.getContainer();
                 }
+
                 if (objToHighlight == null) {
                     return;
                 }
+
                 Object location = objToHighlight.getAttribute("_location");
+
                 if (location != null) {
                     Figure figure = graphController.getFigure(location);
+
                     if (figure != null) {
                         // If the user has chosen to break on one of
                         // the firing events, highlight the actor and
                         // wait for the user to press the Resume
                         // button.
                         if (debugProfile.isListening(event.getType())) {
-                            String message =
-                                new String(objToHighlight.getName()
-                                        + " "
-                                        + event.getType().getName());
-                            Manager manager =
-                                ((Actor)objToHighlight).getManager();
+                            String message = new String(objToHighlight.getName()
+                                    + " " + event.getType().getName());
+                            Manager manager = ((Actor) objToHighlight)
+                                .getManager();
                             render(figure, manager, message);
                         }
                     }
@@ -160,7 +159,7 @@ public class DebugController extends SingletonConfigurableAttribute
      *  @return The profile for the actor.
      */
     public DebugProfile getDebugProfile(Executable actor) {
-        return (DebugProfile)_toDebug.get(actor);
+        return (DebugProfile) _toDebug.get(actor);
     }
 
     /** Determine whether debugging is enabled on the set of actors.
@@ -222,31 +221,29 @@ public class DebugController extends SingletonConfigurableAttribute
         // We don't want to call swing stuff in the execution thread,
         // so we make an anonymous inner class to handle it in a
         // different thread.
-        SwingUtilities.invokeLater(
-                new Runnable() {
-                    public void run() {
-                        _debugRenderer.renderSelected(figure);
-                    }
-                });
+        SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    _debugRenderer.renderSelected(figure);
+                }
+            });
 
         final Figure debugRendered = figure;
 
         // Wait for user to select Resume.
         manager.pauseOnBreakpoint(message);
+
         if (debugRendered != null) {
             // Unhighlight the actor after resuming execution.
-            SwingUtilities.invokeLater(
-                    new Runnable() {
-                        public void run() {
-                            _debugRenderer.renderDeselected(debugRendered);
-                        }
-                    });
+            SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        _debugRenderer.renderDeselected(debugRendered);
+                    }
+                });
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The _debugRenderer for _object.
     private DebugRenderer _debugRenderer = null;
 

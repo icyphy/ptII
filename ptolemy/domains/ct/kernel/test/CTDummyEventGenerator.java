@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package ptolemy.domains.ct.kernel.test;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -39,6 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyEventGenerator
+
 /**
    Dummy actor that implements the CTEventGenerator interface. SISO
    @author  Jie Liu
@@ -49,28 +51,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 */
 public class CTDummyEventGenerator extends TypedAtomicActor
-    implements CTEventGenerator{
+    implements CTEventGenerator {
     /** Constructor
      */
     public CTDummyEventGenerator(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
         input.setOutput(false);
         input.setTypeEquals(BaseType.DOUBLE);
-        new Parameter(input, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
         input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
-        new Parameter(output, "signalType",
-                new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("DISCRETE"));
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

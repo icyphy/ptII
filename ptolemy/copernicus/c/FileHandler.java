@@ -26,7 +26,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.io.BufferedReader;
@@ -40,6 +39,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 
+
 /** A class that takes care of common File I/O functions.
 
 @author Ankush Varma
@@ -48,18 +48,15 @@ import java.io.Serializable;
 @Pt.ProposedRating Red (ankush)
 @Pt.AcceptedRating Red (ankush)
 */
-
 public class FileHandler {
-
     /** Tells whether a file or directory with a given name exists.
      *  @param fileName A fileName.
      *  @return True if a file or directory with that name exists.
      */
     public static boolean exists(String fileName) {
         File f = new File(fileName);
-        return(f.exists());
+        return (f.exists());
     }
-
 
     /** Reads an object from a specified file.
      * @param fileName The file to read.
@@ -73,19 +70,15 @@ public class FileHandler {
             Object object = in.readObject();
             in.close();
             return object;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
+            throw new RuntimeException("IOException while reading object from "
+                + fileName + ": " + e.toString());
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(
-                    "IOException while reading object from "
-                    + fileName + ": " + e.toString());
-        }
-        catch (ClassNotFoundException e) {
-            throw new RuntimeException(
-                    "ClassNotFoundException while reading object from "
-                    + fileName + ": " + e.toString());
+                "ClassNotFoundException while reading object from " + fileName
+                + ": " + e.toString());
         }
     }
-
 
     /** Reads the contents of a text file and returns them as a String.
      *  Prints an error statement and returns an empty string if an IO
@@ -95,8 +88,8 @@ public class FileHandler {
      */
     public static String readStringFromFile(String fileName) {
         StringBuffer code = new StringBuffer();
-        // We assume that its reading code. It can read any kind of text.
 
+        // We assume that its reading code. It can read any kind of text.
         try {
             BufferedReader input = new BufferedReader(new FileReader(fileName));
             String line; // We read from the file one line at a time.
@@ -106,15 +99,13 @@ public class FileHandler {
             while ((line = input.readLine()) != null) {
                 code.append(line + "\n");
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.err.println("FileHandler.readStringFromFile(String):\n"
-                    + "ERROR!: Unable to access file " + fileName );
+                + "ERROR!: Unable to access file " + fileName);
         }
 
         return code.toString();
     }
-
 
     /** Write out the given string to a file.
      *  @param fileName The file to write to.
@@ -126,11 +117,10 @@ public class FileHandler {
             PrintWriter out = new PrintWriter(new FileOutputStream(fileName));
             out.println(code.toString());
             out.close();
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e.toString()
-                    + "\nFileHandler.write(String, String): "
-                    + "could not create file: " + fileName + "\n");
+                + "\nFileHandler.write(String, String): "
+                + "could not create file: " + fileName + "\n");
         }
     }
 
@@ -143,18 +133,12 @@ public class FileHandler {
             FileOutputStream file = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(file);
 
-            out.writeObject((Serializable)object);
+            out.writeObject((Serializable) object);
             out.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("IOException while writing object to "
-                    + fileName + ": " + e.toString()
-                    + "\nOBJECT: " + object.toString());
-
+                + fileName + ": " + e.toString() + "\nOBJECT: "
+                + object.toString());
         }
     }
-
-
 }
-
-

@@ -28,7 +28,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.fsm.modal;
 
 import ptolemy.actor.IOPort;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TransitionRefinementPort
+
 /**
    A port for transition refinements in modal models.  This port
    mirrors certain changes to it in the ports of the container of the container.
@@ -65,9 +66,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (liuxj)
 */
-
 public class TransitionRefinementPort extends RefinementPort {
-
     /** Construct a port with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
      *  must implement the TypedActor interface, or an exception will be
@@ -81,7 +80,7 @@ public class TransitionRefinementPort extends RefinementPort {
      *   a port already in the container.
      */
     public TransitionRefinementPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -99,6 +98,7 @@ public class TransitionRefinementPort extends RefinementPort {
         if (isInput() && _hasSibling && isLinked(relation)) {
             return;
         }
+
         super.link(relation);
     }
 
@@ -114,25 +114,33 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     public int moveDown() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveDown();
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveDown();
+                            ((IOPort) port).moveDown();
                             success = true;
                         }
                     }
                 }
+
                 // The mirror port(s), if there are any,
                 // will have called this method and achieved
                 // the moveDown. But if there are no mirror
@@ -141,6 +149,7 @@ public class TransitionRefinementPort extends RefinementPort {
                     result = super.moveDown();
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
@@ -160,25 +169,33 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     public int moveToFirst() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveToFirst();
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveToFirst();
+                            ((IOPort) port).moveToFirst();
                             success = true;
                         }
                     }
                 }
+
                 // The mirror port(s), if there are any,
                 // will have called this method and achieved
                 // the moveToFirst. But if there are no mirror
@@ -187,6 +204,7 @@ public class TransitionRefinementPort extends RefinementPort {
                     result = super.moveToFirst();
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
@@ -208,25 +226,33 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     public int moveToIndex(int index) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveToIndex(index);
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveToIndex(index);
+                            ((IOPort) port).moveToIndex(index);
                             success = true;
                         }
                     }
                 }
+
                 // The mirror port(s), if there are any,
                 // will have called this method and achieved
                 // the moveToIndex. But if there are no mirror
@@ -235,12 +261,12 @@ public class TransitionRefinementPort extends RefinementPort {
                     result = super.moveToIndex(index);
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
         }
-
     }
 
     /** Move this object to the last position in the list
@@ -255,29 +281,38 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     public int moveToLast() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveToLast();
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveToLast();
+                            ((IOPort) port).moveToLast();
                             success = true;
                         }
                     }
                 }
+
                 if (!success) {
                     result = super.moveToLast();
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
@@ -298,25 +333,33 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     public int moveUp() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveUp();
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveUp();
+                            ((IOPort) port).moveUp();
                             success = true;
                         }
                     }
                 }
+
                 // The mirror port(s), if there are any,
                 // will have called this method and achieved
                 // the moveUp. But if there are no mirror
@@ -325,6 +368,7 @@ public class TransitionRefinementPort extends RefinementPort {
                     result = super.moveUp();
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
@@ -344,25 +388,27 @@ public class TransitionRefinementPort extends RefinementPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
-        NamedObj oldContainer = (NamedObj)getContainer();
+        throws IllegalActionException, NameDuplicationException {
+        NamedObj oldContainer = (NamedObj) getContainer();
+
         if (container == oldContainer) {
             // Nothing to do.
             return;
         }
+
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
-                // process request for the sibling
-                if (_hasSibling && isOutput() && getContainer() != null) {
-                    TransitionRefinement transContainer =
-                        (TransitionRefinement) oldContainer;
-                    TransitionRefinementPort sibling =
-                        (TransitionRefinementPort)transContainer.getPort(
-                                getName() + "_in");
 
-                    sibling._mirrorDisable  = true;
+            if (_mirrorDisable || (getContainer() == null)) {
+                // process request for the sibling
+                if (_hasSibling && isOutput() && (getContainer() != null)) {
+                    TransitionRefinement transContainer = (TransitionRefinement) oldContainer;
+                    TransitionRefinementPort sibling = (TransitionRefinementPort) transContainer
+                        .getPort(getName() + "_in");
+
+                    sibling._mirrorDisable = true;
                     sibling.setContainer(container);
                     sibling._mirrorDisable = false;
                 }
@@ -370,13 +416,14 @@ public class TransitionRefinementPort extends RefinementPort {
                 // Have already called the super class.
                 // This time, process the request.
                 super.setContainer(container);
-
             } else {
                 // if this is the input port of a pair of siblings,
                 // then forward request to the output port of the pair
                 _mirrorDisable = true;
+
                 boolean success = false;
                 String portName = getName();
+
                 if (_hasSibling && isInput() && !isOutput()) {
                     // we are the input sibling, extract "real" port name
                     portName = getName().substring(0, getName().length() - 3);
@@ -384,15 +431,20 @@ public class TransitionRefinementPort extends RefinementPort {
 
                 if (oldContainer != null) {
                     Nameable modal = oldContainer.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(portName);
+                        Port port = ((ModalModel) modal).getPort(portName);
+
                         if (port != null) {
                             port.setContainer(null);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setContainer(container);
+
+                if (!success) {
+                    super.setContainer(container);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -414,27 +466,36 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     public void setInput(boolean isInput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Have already called the super class.
                 // This time, process the request.
                 super.setInput(isInput);
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).setInput(isInput);
+                            ((IOPort) port).setInput(isInput);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setInput(isInput);
+
+                if (!success) {
+                    super.setInput(isInput);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -456,21 +517,20 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Have already called the super class.
                 // This time, process the request.
-
                 // process request for the sibling
-                if (_hasSibling && isOutput() && getContainer() != null) {
-                    TransitionRefinement container =
-                        (TransitionRefinement) getContainer();
-                    TransitionRefinementPort sibling =
-                        (TransitionRefinementPort)container.getPort(
-                                getName() + "_in");
+                if (_hasSibling && isOutput() && (getContainer() != null)) {
+                    TransitionRefinement container = (TransitionRefinement) getContainer();
+                    TransitionRefinementPort sibling = (TransitionRefinementPort) container
+                        .getPort(getName() + "_in");
 
-                    sibling._mirrorDisable  = true;
+                    sibling._mirrorDisable = true;
                     sibling.setMultiport(isMultiport);
                     sibling._mirrorDisable = false;
                 }
@@ -478,19 +538,26 @@ public class TransitionRefinementPort extends RefinementPort {
                 super.setMultiport(isMultiport);
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).setMultiport(isMultiport);
+                            ((IOPort) port).setMultiport(isMultiport);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setMultiport(isMultiport);
+
+                if (!success) {
+                    super.setMultiport(isMultiport);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -507,43 +574,48 @@ public class TransitionRefinementPort extends RefinementPort {
      *   with the same name in the container.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 //change sibling
-                if (_hasSibling && isOutput() && getContainer() != null)
-                    {
-                        TransitionRefinement container =
-                            (TransitionRefinement) getContainer();
-                        TransitionRefinementPort sibling =
-                            (TransitionRefinementPort)container.getPort(
-                                    getName() + "_in");
-                        sibling._mirrorDisable = true;
-                        sibling.setName(name + "_in");
-                        sibling._mirrorDisable = false;
-                    }
+                if (_hasSibling && isOutput() && (getContainer() != null)) {
+                    TransitionRefinement container = (TransitionRefinement) getContainer();
+                    TransitionRefinementPort sibling = (TransitionRefinementPort) container
+                        .getPort(getName() + "_in");
+                    sibling._mirrorDisable = true;
+                    sibling.setName(name + "_in");
+                    sibling._mirrorDisable = false;
+                }
 
                 // Have already called the super class.
                 // This time, process the request.
                 super.setName(name);
-
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port != null) {
                             port.setName(name);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setName(name);
+
+                if (!success) {
+                    super.setName(name);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -569,21 +641,23 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     public void setOutput(boolean isOutput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         // check first that this isn't an input sibling port,
         // if it is then it *cannot* be set as an output too
-        if (_hasSibling && isInput() && !isOutput())
-            {
-                if (isOutput) {
-                    throw new InternalErrorException(
-                            "TransitionRefinementPort.setOutput:" +
-                            " cannot set input sibling port to be an output");
-                } else {
-                    return;
-                }
+        if (_hasSibling && isInput() && !isOutput()) {
+            if (isOutput) {
+                throw new InternalErrorException(
+                    "TransitionRefinementPort.setOutput:"
+                    + " cannot set input sibling port to be an output");
+            } else {
+                return;
             }
+        }
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Have already called the super class.
                 // This time, process the request.
                 super.setOutput(isOutput);
@@ -591,16 +665,14 @@ public class TransitionRefinementPort extends RefinementPort {
                 // now create a sibling if we
                 // don't otherwise have one
                 if (!_hasSibling && isOutput) {
-
                     try {
-                        TransitionRefinement container =
-                            (TransitionRefinement) getContainer();
-                        TransitionRefinementPort sibling =
-                            new TransitionRefinementPort(container,
-                                    getName() + "_in");
+                        TransitionRefinement container = (TransitionRefinement) getContainer();
+                        TransitionRefinementPort sibling = new TransitionRefinementPort(container,
+                                getName() + "_in");
 
                         sibling._hasSibling = true;
                         sibling._mirrorDisable = true;
+
                         // set attributes of sibling
                         sibling.setInput(true);
                         sibling.setMultiport(isMultiport());
@@ -612,36 +684,44 @@ public class TransitionRefinementPort extends RefinementPort {
                         String relationName = getName() + "Relation";
                         ModalModel model = (ModalModel) container.getContainer();
                         Relation relation = model.getRelation(relationName);
+
                         if (relation != null) {
                             sibling.link(relation);
                         }
+
                         _hasSibling = true;
                     } catch (IllegalActionException ex) {
                         throw new InternalErrorException(
-                                "TransitionRefinementPort.setOutput: Internal error: " +
-                                ex.getMessage());
+                            "TransitionRefinementPort.setOutput: Internal error: "
+                            + ex.getMessage());
                     } catch (NameDuplicationException ex) {
                         throw new InternalErrorException(
-                                "TransitionRefinementPort.setOutput: Internal error: " +
-                                ex.getMessage());
+                            "TransitionRefinementPort.setOutput: Internal error: "
+                            + ex.getMessage());
                     }
                 }
-
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).setOutput(isOutput);
+                            ((IOPort) port).setOutput(isOutput);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setOutput(isOutput);
+
+                if (!success) {
+                    super.setOutput(isOutput);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -657,5 +737,4 @@ public class TransitionRefinementPort extends RefinementPort {
      *  associated input port siblings.
      */
     protected boolean _hasSibling = false;
-
 }

@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Singleton
+
 /**
    This interface is used to indicate that an attribute is a singleton,
    meaning that when setContainer() is called, if there is a previous
@@ -41,5 +42,5 @@ package ptolemy.kernel.util;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (cxh)
 */
-
-public interface Singleton {}
+public interface Singleton {
+}

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LMSAdaptive
+
 /**
    An adaptive filter using the Least-Mean Square (LMS) algorithm, also
    known as the stochastic gradient algorithm.
@@ -93,7 +94,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (eal)
 */
 public class LMSAdaptive extends FIR {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -103,7 +103,7 @@ public class LMSAdaptive extends FIR {
      *   actor with this name.
      */
     public LMSAdaptive(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         interpolation.setVisibility(Settable.NONE);
@@ -123,6 +123,7 @@ public class LMSAdaptive extends FIR {
         // taps parameter of the base class.  Setting it will just
         // cause the base class to be set.
         initialTaps = new Parameter(this, "initialTaps");
+
         ArrayType tapTypes = new ArrayType(BaseType.UNKNOWN);
         initialTaps.setTypeEquals(tapTypes);
         initialTaps.setExpression("{1.0, 0.0, 0.0, 0.0}");
@@ -176,7 +177,7 @@ public class LMSAdaptive extends FIR {
      *  an invalid value or if the super method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == initialTaps) {
             taps.setToken(initialTaps.getToken());
         } else {
@@ -191,9 +192,8 @@ public class LMSAdaptive extends FIR {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        LMSAdaptive newObject = (LMSAdaptive)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        LMSAdaptive newObject = (LMSAdaptive) (super.clone(workspace));
 
         // set the type constraints
         newObject.error.setTypeSameAs(newObject.input);
@@ -210,19 +210,21 @@ public class LMSAdaptive extends FIR {
      */
     public void fire() throws IllegalActionException {
         // First update the taps
-        int errorDelayValue = ((IntToken)errorDelay.getToken()).intValue();
-        int decimationValue = ((IntToken)decimation.getToken()).intValue();
-        int decimationPhaseValue = ((IntToken)decimationPhase.getToken())
+        int errorDelayValue = ((IntToken) errorDelay.getToken()).intValue();
+        int decimationValue = ((IntToken) decimation.getToken()).intValue();
+        int decimationPhaseValue = ((IntToken) decimationPhase.getToken())
             .intValue();
-        int index = errorDelayValue * decimationValue + decimationPhaseValue;
+        int index = (errorDelayValue * decimationValue) + decimationPhaseValue;
         Token factor = error.get(0).multiply(stepSize.getToken());
+
         for (int i = 0; i < _taps.length; i++) {
             // The data item to use here should be "index" in the past,
             // where an index of zero would be the current input.
-            Token datum = _data[(_mostRecent + index - 1) % _data.length];
+            Token datum = _data[((_mostRecent + index) - 1) % _data.length];
             _taps[i] = _taps[i].add(factor.multiply(datum));
             index++;
         }
+
         // Update the tapValues output.
         // NOTE: This may be a relatively costly operation to be doing here.
         tapValues.send(0, new ArrayToken(_taps));
@@ -244,6 +246,7 @@ public class LMSAdaptive extends FIR {
             if (_debugging) {
                 _debug("Called prefire(), which returns false.");
             }
+
             return false;
         }
     }

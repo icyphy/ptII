@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.lib;
 
 import ptolemy.actor.Receiver;
@@ -40,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Wire
+
 /**
    Wire is a simple DDE actor with an input and output multiport. When
    executed, a Wire will simple consume a token from its input port
@@ -54,9 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class Wire extends TypedAtomicActor {
-
     /** Construct a Wire actor with the specified container
      *  and name.
      * @param container The TypedCompositeActor that contains this actor.
@@ -68,7 +67,7 @@ public class Wire extends TypedAtomicActor {
      *  instantiating and specifying the type of this actor's ports.
      */
     public Wire(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -101,25 +100,29 @@ public class Wire extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         Token token = null;
         Receiver[][] inputReceivers = input.getReceivers();
-        if ( inputReceivers.length == 0 ) {
+
+        if (inputReceivers.length == 0) {
             _continueIterations = false;
         }
-        for ( int i = 0; i < inputReceivers.length; i++ ) {
-            for ( int j = 0; j < inputReceivers[i].length; j++ ) {
-                DDEReceiver inputReceiver = (DDEReceiver)inputReceivers[i][j];
-                if ( inputReceiver.hasToken() ) {
+
+        for (int i = 0; i < inputReceivers.length; i++) {
+            for (int j = 0; j < inputReceivers[i].length; j++) {
+                DDEReceiver inputReceiver = (DDEReceiver) inputReceivers[i][j];
+
+                if (inputReceiver.hasToken()) {
                     token = inputReceiver.get();
+
                     Receiver[][] outReceivers = output.getRemoteReceivers();
-                    for ( int k = 0; k < outReceivers.length; k++ ) {
-                        for ( int l = 0; l < outReceivers[k].length; l++ ) {
-                            DDEReceiver outReceiver =
-                                (DDEReceiver)outReceivers[k][l];
+
+                    for (int k = 0; k < outReceivers.length; k++) {
+                        for (int l = 0; l < outReceivers[k].length; l++) {
+                            DDEReceiver outReceiver = (DDEReceiver) outReceivers[k][l];
                             Thread thread = Thread.currentThread();
-                            if ( thread instanceof DDEThread ) {
-                                TimeKeeper timeKeeper =
-                                    ((DDEThread)thread).getTimeKeeper();
-                                outReceiver.put(token,
-                                        timeKeeper.getModelTime());
+
+                            if (thread instanceof DDEThread) {
+                                TimeKeeper timeKeeper = ((DDEThread) thread)
+                                    .getTimeKeeper();
+                                outReceiver.put(token, timeKeeper.getModelTime());
                             }
                         }
                     }
@@ -139,6 +142,5 @@ public class Wire extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _continueIterations = true;
 }

@@ -24,17 +24,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
-
-import ptolemy.util.CancelException;
-import ptolemy.util.MessageHandler;
 
 import java.awt.Frame;
 import java.net.URL;
 
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// QueryUtilities
+
 /**
    This class contains utility methods for Ptolemy Query classes
    that access the configuration.
@@ -46,7 +47,6 @@ import java.net.URL;
    @Pt.AcceptedRating Red (cxh)
 */
 public class QueryUtilities {
-
     /** Instances of this class cannot be created.
      */
     private QueryUtilities() {
@@ -64,22 +64,24 @@ public class QueryUtilities {
         // knows nothing about configuration and PtolemyQuery is
         // misnamed, it is really a ParameterQuery.  We could make
         // this class extend Query and have other classes extend it
-
         try {
             // Note: call Thread.currentThread() so this works in Web Start
             URL doc = Thread.currentThread().getContextClassLoader()
-                .getResource(urlName);
+                            .getResource(urlName);
+
             // Try to use the configuration, if we can.
             boolean success = false;
+
             if (owner instanceof TableauFrame) {
-                Configuration configuration
-                    = ((TableauFrame)owner).getConfiguration();
+                Configuration configuration = ((TableauFrame) owner)
+                    .getConfiguration();
+
                 if (configuration != null) {
-                    configuration.openModel(
-                            null, doc, doc.toExternalForm());
+                    configuration.openModel(null, doc, doc.toExternalForm());
                     success = true;
                 }
             }
+
             if (!success) {
                 // Just open an HTML page.
                 HTMLViewer viewer = new HTMLViewer();
@@ -96,4 +98,3 @@ public class QueryUtilities {
         }
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CurrentTime
+
 /**
    Produce an output token on each firing with a value that is
    the current time. The output is of type double.
@@ -46,9 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class CurrentTime extends TimedSource {
-
     /** Construct an actor with the given container and name.
      *
      *  @param container The container.
@@ -59,8 +58,9 @@ public class CurrentTime extends TimedSource {
      *   actor with this name.
      */
     public CurrentTime(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         // set the type constraints.
         output.setTypeEquals(BaseType.DOUBLE);
     }
@@ -82,6 +82,7 @@ public class CurrentTime extends TimedSource {
         // returns the "start of iteration" time, whereas getCurrentTime()
         // on the channel returns the time of the current sample.
         double currentTimeValue = Double.POSITIVE_INFINITY;
+
         if (trigger.getWidth() > 0) {
             // Trigger port is connected.
             // If there is a token in a channel of the trigger port,
@@ -89,7 +90,8 @@ public class CurrentTime extends TimedSource {
             for (int i = 0; i < trigger.getWidth(); i++) {
                 if (trigger.hasToken(i)) {
                     currentTimeValue = Math.min(currentTimeValue,
-                        trigger.getCurrentTime(i));
+                            trigger.getCurrentTime(i));
+
                     // Do not consume the token... It will be consumed
                     // in the superclass fire().
                     // trigger.get(i);
@@ -101,6 +103,7 @@ public class CurrentTime extends TimedSource {
             currentTimeValue = getDirector().getModelTime().getDoubleValue();
             output.send(0, new DoubleToken(currentTimeValue));
         }
+
         super.fire();
     }
 }

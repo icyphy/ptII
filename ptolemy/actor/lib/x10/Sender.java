@@ -25,8 +25,9 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.x10;
+
+import x10.Command;
 
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
@@ -35,10 +36,11 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import x10.Command;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Sender
+
 /**
    Add broadcast functionality to the X10 interface. Derived classes need to
    implement logic for sending commands.
@@ -49,9 +51,7 @@ import x10.Command;
    @Pt.ProposedRating Green (ptolemy)
    @Pt.AcceptedRating Yellow (ptolemy)
 */
-
 public class Sender extends X10Interface {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,7 +62,7 @@ public class Sender extends X10Interface {
      *   actor with this name.
      */
     public Sender(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create input ports and port parameters.
@@ -115,15 +115,14 @@ public class Sender extends X10Interface {
      *  @return true if any channel on a given port has a true input; return
      *  false otherwise.
      */
-    protected boolean _hasTrueInput (TypedIOPort port)
-            throws NoTokenException, IllegalActionException{
-
+    protected boolean _hasTrueInput(TypedIOPort port)
+        throws NoTokenException, IllegalActionException {
         boolean hasTrue = false;
 
         if (port.getWidth() > 0) {
             for (int i = 0; i < port.getWidth(); i++) {
                 if (port.hasToken(i)) {
-                    if (((BooleanToken)port.get(i)).booleanValue() == true) {
+                    if (((BooleanToken) port.get(i)).booleanValue() == true) {
                         hasTrue = true;
                     }
                 }

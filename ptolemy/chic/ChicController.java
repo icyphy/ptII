@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.chic;
 
-// Diva imports
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -47,8 +45,10 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ChicController
+
 /**
    This class provides interaction with nodes that represent ChicInvoker
    visible attributes.  It provides a double click binding and context menu
@@ -66,7 +66,6 @@ import diva.gui.GUIUtilities;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ChicController extends AttributeController {
-
     /** Create a Chic controller associated with the specified graph
      *  controller with full access.
      *  @param controller The associated graph controller.
@@ -86,23 +85,23 @@ public class ChicController extends AttributeController {
         _access = access;
 
         // Add commands to invoke Chic
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new AsynchronousIOAction()));
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new SynchronousAGAction()));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                new AsynchronousIOAction()));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                new SynchronousAGAction()));
+
         //        _menuFactory.addMenuItemFactory(
         //                new MenuActionFactory(new BidirectionalSynAction()));
         //        _menuFactory.addMenuItemFactory(
         //                new MenuActionFactory(new StatelessSoftwareAction()));
         //        _menuFactory.addMenuItemFactory(
         //                new MenuActionFactory(new StatefulSoftwareAction()));
-
         // Add a command to look inside
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _lookInsideAction));
         }
     }
 
@@ -114,11 +113,12 @@ public class ChicController extends AttributeController {
      */
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
+
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _lookInsideAction));
         }
     }
 
@@ -132,15 +132,13 @@ public class ChicController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Access _access;
 
     // Error message used when we can't find the inside definition.
-    private static String _CANNOT_FIND_MESSAGE =
-    "Cannot find inside definition. "
-    + "Perhaps source code is not installed? "
-    + "You can obtain source code for Berkeley actors at: "
-    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
+    private static String _CANNOT_FIND_MESSAGE = "Cannot find inside definition. "
+        + "Perhaps source code is not installed? "
+        + "You can obtain source code for Berkeley actors at: "
+        + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -148,25 +146,25 @@ public class ChicController extends AttributeController {
     /** An action to invoke CHIC: Asynchronous I/O
      */
     private class AsynchronousIOAction extends FigureAction {
-
         public AsynchronousIOAction() {
             super("CHIC: Asynchronous I/O");
         }
 
         public void actionPerformed(ActionEvent e) {
-
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
+
             NamedObj object = getTarget();
+
             try {
-                ((ChicInvoker)object).checkInterfaceCompatibility(
-                        ChicInvoker.ASYNCHRONOUS_IO,
-                        false);
+                ((ChicInvoker) object).checkInterfaceCompatibility(ChicInvoker.ASYNCHRONOUS_IO,
+                    false);
             } catch (IllegalActionException ex) {
                 MessageHandler.error(ex.getMessage());
             } catch (NameDuplicationException ex) {
                 MessageHandler.error(ex.getMessage());
             }
+
             return;
         }
     }
@@ -200,43 +198,44 @@ public class ChicController extends AttributeController {
     /** An action to look inside the Chic visible attribute.
      */
     private class LookInsideAction extends FigureAction {
-
         public LookInsideAction() {
             super("Look Inside (Ctrl+L)");
+
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
-            putValue(
-                    GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+            putValue(GUIUtilities.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                        "Cannot look inside without a configuration.");
+                    "Cannot look inside without a configuration.");
                 return;
             }
 
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
+
             NamedObj object = getTarget();
 
             // Open the source code, if possible.
-            String filename =
-                object.getClass().getName().replace('.', '/') + ".java";
+            String filename = object.getClass().getName().replace('.', '/')
+                + ".java";
+
             try {
                 URL toRead = getClass().getClassLoader().getResource(filename);
+
                 if (toRead != null) {
-                    _configuration.openModel(
-                            null,
-                            toRead,
-                            toRead.toExternalForm());
+                    _configuration.openModel(null, toRead,
+                        toRead.toExternalForm());
                 } else {
                     MessageHandler.error(_CANNOT_FIND_MESSAGE);
                 }
             } catch (Exception ex) {
                 MessageHandler.error(_CANNOT_FIND_MESSAGE, ex);
             }
+
             return;
         }
     }
@@ -266,7 +265,6 @@ public class ChicController extends AttributeController {
     //            return;
     //        }
     //    }
-
     //    /** An action to invoke CHIC: Stateless Software
     //     */
     //    private class StatelessSoftwareAction extends FigureAction {
@@ -296,25 +294,25 @@ public class ChicController extends AttributeController {
     /** An action to invoke CHIC: Synchronous A/G
      */
     private class SynchronousAGAction extends FigureAction {
-
         public SynchronousAGAction() {
             super("CHIC: Synchronous A/G");
         }
 
         public void actionPerformed(ActionEvent e) {
-
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
+
             NamedObj object = getTarget();
+
             try {
-                ((ChicInvoker)object).checkInterfaceCompatibility(
-                        ChicInvoker.SYNCHRONOUS_AG,
-                        false);
+                ((ChicInvoker) object).checkInterfaceCompatibility(ChicInvoker.SYNCHRONOUS_AG,
+                    false);
             } catch (IllegalActionException ex) {
                 MessageHandler.error(ex.getMessage());
             } catch (NameDuplicationException ex) {
                 MessageHandler.error(ex.getMessage());
             }
+
             return;
         }
     }

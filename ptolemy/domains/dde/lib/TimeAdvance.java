@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.lib;
 
 import ptolemy.actor.Receiver;
@@ -38,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimeAdvance
+
 /**
    TimeAdvance is a simple DDE actor with an input and output multiport.
    When executed, a TimeAdvance will consume a token from its input port
@@ -55,9 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class TimeAdvance extends DDEActor {
-
     /** Construct a TimeAdvance actor with the specified container
      *  and name.
      * @param container The TypedCompositeActor that contains this actor.
@@ -69,7 +68,7 @@ public class TimeAdvance extends DDEActor {
      *  instantiating and specifying the type of this actor's ports.
      */
     public TimeAdvance(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -79,8 +78,7 @@ public class TimeAdvance extends DDEActor {
         input.setMultiport(true);
         input.setTypeEquals(BaseType.GENERAL);
 
-        outputValue = new
-            Parameter(this, "outputValue", new DoubleToken(0.0));
+        outputValue = new Parameter(this, "outputValue", new DoubleToken(0.0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,9 +107,10 @@ public class TimeAdvance extends DDEActor {
      *  the receivers of this actor.
      */
     public void fire() throws IllegalActionException {
-        DoubleToken token = ((DoubleToken)outputValue.getToken());
+        DoubleToken token = ((DoubleToken) outputValue.getToken());
         Receiver[][] inputReceivers = input.getReceivers();
-        if ( inputReceivers.length == 0 ) {
+
+        if (inputReceivers.length == 0) {
             _continueIterations = false;
         }
 
@@ -130,7 +129,5 @@ public class TimeAdvance extends DDEActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _continueIterations = true;
-
 }

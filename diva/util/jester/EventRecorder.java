@@ -34,6 +34,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
+
 /**
  * EventRecorder listens to all of the mouse and keyboard events
  * on a given component and records these into a sequence which
@@ -96,6 +97,7 @@ public class EventRecorder {
         _component.removeMouseListener(_mouseRecorder);
         _component.removeMouseMotionListener(_mouseMotionRecorder);
         _component.removeKeyListener(_keyRecorder);
+
         InputEvent[] out = new InputEvent[_events.size()];
         _events.toArray(out);
         return out;
@@ -108,18 +110,23 @@ public class EventRecorder {
         public void mouseClicked(MouseEvent e) {
             record(e);
         }
+
         public void mouseEntered(MouseEvent e) {
             record(e);
         }
+
         public void mouseExited(MouseEvent e) {
             record(e);
         }
+
         public void mousePressed(MouseEvent e) {
             record(e);
         }
+
         public void mouseReleased(MouseEvent e) {
             record(e);
         }
+
         private void record(MouseEvent e) {
             _events.add(e);
         }
@@ -132,9 +139,11 @@ public class EventRecorder {
         public void mouseDragged(MouseEvent e) {
             record(e);
         }
+
         public void mouseMoved(MouseEvent e) {
             record(e);
         }
+
         private void record(MouseEvent e) {
             _events.add(e);
         }
@@ -147,15 +156,17 @@ public class EventRecorder {
         public void keyPressed(KeyEvent e) {
             record(e);
         }
+
         public void keyReleased(KeyEvent e) {
             record(e);
         }
+
         public void keyTyped(KeyEvent e) {
             record(e);
         }
+
         private void record(KeyEvent e) {
             _events.add(e);
         }
     }
 }
-

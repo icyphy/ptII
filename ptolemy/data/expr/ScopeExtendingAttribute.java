@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 @AcceptedRating Red (liuxj)
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.Iterator;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ScopeExtendingAttribute
+
 /**
    A attribute that extends its container's scope. Any
    parameter contained by such an attribute has the same
@@ -50,11 +51,7 @@ import ptolemy.kernel.util.NamedObj;
    @version $Id$
    @see ptolemy.data.expr.Variable
 */
-
-public class ScopeExtendingAttribute extends Attribute
-    implements ScopeExtender {
-
-
+public class ScopeExtendingAttribute extends Attribute implements ScopeExtender {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -69,7 +66,7 @@ public class ScopeExtendingAttribute extends Attribute
      *   an attribute already in the container.
      */
     public ScopeExtendingAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -95,24 +92,25 @@ public class ScopeExtendingAttribute extends Attribute
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Nameable oldContainer = getContainer();
         super.setContainer(container);
+
         if (oldContainer != container) {
             // Every variable in the new scope that may be shadowed by
             // a variable inside this attribute must be invalidated.
             // This does not include variables inside the container itself,
             // which take precedence.
             if (container != null) {
-                _invalidateShadowedSettables(
-                        (NamedObj)container.getContainer());
+                _invalidateShadowedSettables((NamedObj) container.getContainer());
             }
 
             // Every variable inside this attribute, and anything that
             // had been depending on them, must still be valid.
             Iterator vars = attributeList(Variable.class).iterator();
+
             while (vars.hasNext()) {
-                Variable var = (Variable)vars.next();
+                Variable var = (Variable) vars.next();
                 var.validate();
             }
         }
@@ -120,38 +118,44 @@ public class ScopeExtendingAttribute extends Attribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _invalidateShadowedSettables(NamedObj object)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (object == null) {
             // Nothing to do.
             return;
         }
-        for (Iterator variables = object.attributeList(
-                     Variable.class).iterator();
-             variables.hasNext();) {
-            Variable variable = (Variable)variables.next();
+
+        for (Iterator variables = object.attributeList(Variable.class).iterator();
+                variables.hasNext();) {
+            Variable variable = (Variable) variables.next();
+
             if (getAttribute(variable.getName()) != null) {
                 variable.invalidate();
             }
         }
+
         // Also invalidate the variables inside any
         // scopeExtendingAttributes.
-        Iterator scopeAttributes = object.attributeList(
-                ScopeExtendingAttribute.class).iterator();
+        Iterator scopeAttributes = object.attributeList(ScopeExtendingAttribute.class)
+                                         .iterator();
+
         while (scopeAttributes.hasNext()) {
-            ScopeExtendingAttribute attribute =
-                (ScopeExtendingAttribute)scopeAttributes.next();
-            Iterator variables = attribute.attributeList(
-                    Variable.class).iterator();
+            ScopeExtendingAttribute attribute = (ScopeExtendingAttribute) scopeAttributes
+                .next();
+            Iterator variables = attribute.attributeList(Variable.class)
+                                          .iterator();
+
             while (variables.hasNext()) {
-                Variable variable = (Variable)variables.next();
+                Variable variable = (Variable) variables.next();
+
                 if (getAttribute(variable.getName()) != null) {
                     variable.invalidate();
                 }
             }
         }
-        NamedObj container = (NamedObj)object.getContainer();
+
+        NamedObj container = (NamedObj) object.getContainer();
+
         if (container != null) {
             _invalidateShadowedSettables(container);
         }

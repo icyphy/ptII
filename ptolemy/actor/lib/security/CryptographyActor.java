@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.security;
 
 import java.security.Provider;
@@ -50,6 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CryptographyActor
+
 /**
    A base class for cryptographic actors.
 
@@ -94,7 +94,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 abstract public class CryptographyActor extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  The Java virtual machine is queried for algorithm and provider
      *  choices and these choices are added to the appropriate parameters.
@@ -106,7 +105,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *   actor with this name.
      */
     public CryptographyActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -117,13 +116,17 @@ abstract public class CryptographyActor extends TypedAtomicActor {
 
         // Add the possible algorithm choices.
         algorithm = new StringParameter(this, "algorithm");
+
         Set algorithms = Security.getAlgorithms("Cipher");
         Iterator algorithmsIterator = algorithms.iterator();
+
         for (int i = 0; algorithmsIterator.hasNext(); i++) {
-            String algorithmName = (String)algorithmsIterator.next();
+            String algorithmName = (String) algorithmsIterator.next();
+
             if (i == 0) {
                 algorithm.setExpression(algorithmName);
             }
+
             algorithm.addChoice(algorithmName);
         }
 
@@ -131,7 +134,9 @@ abstract public class CryptographyActor extends TypedAtomicActor {
         provider = new StringParameter(this, "provider");
         provider.setExpression("SystemDefault");
         provider.addChoice("SystemDefault");
-        Provider [] providers = Security.getProviders();
+
+        Provider[] providers = Security.getProviders();
+
         for (int i = 0; i < providers.length; i++) {
             provider.addChoice(providers[i].getName());
         }
@@ -198,13 +203,13 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == algorithm) {
-            _algorithm = ((StringToken)algorithm.getToken()).stringValue();
+            _algorithm = ((StringToken) algorithm.getToken()).stringValue();
         } else if (attribute == keySize) {
-            _keySize = ((IntToken)keySize.getToken()).intValue();
+            _keySize = ((IntToken) keySize.getToken()).intValue();
         } else if (attribute == provider) {
-            _provider = ((StringToken)provider.getToken()).stringValue();
+            _provider = ((StringToken) provider.getToken()).stringValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -220,20 +225,18 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire(); // super.fire() will print out debugging messages.
+
         try {
             if (input.hasToken(0)) {
-                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
-                        (ArrayToken)input.get(0));
+                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray((ArrayToken) input
+                        .get(0));
                 dataBytes = _process(dataBytes);
                 output.send(0,
-                        ArrayToken.unsignedByteArrayToArrayToken(
-                                dataBytes));
+                    ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
             }
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Problem sending data");
+            throw new IllegalActionException(this, ex, "Problem sending data");
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -247,8 +250,8 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      * @return The processed data.
      * @exception IllegalActionException Not thrown in this base class
      */
-    abstract protected byte[] _process(byte [] dataBytes)
-            throws IllegalActionException;
+    abstract protected byte[] _process(byte[] dataBytes)
+        throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

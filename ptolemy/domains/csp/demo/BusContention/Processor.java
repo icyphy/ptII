@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.BusContention;
+
 
 // Ptolemy imports.
 import ptolemy.actor.TypedCompositeActor;
@@ -45,6 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Processor
+
 /**
    A CSP actor that contends for a shared resource. A Processor actor
    is granted access to the shared resource via a Controller actor.
@@ -79,9 +80,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (davisj)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Processor extends CSPActor {
-
     /** Construct a Processor actor with the specified container,
      *  name and priority code of this actor.
      * @param cont The container of this actor.
@@ -93,7 +92,7 @@ public class Processor extends CSPActor {
      *  already has an actor with this name.
      */
     public Processor(CompositeEntity cont, String name, int code)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         requestOutput = new TypedIOPort(this, "requestOutput", false, true);
@@ -107,7 +106,6 @@ public class Processor extends CSPActor {
         memoryInput.setTypeEquals(BaseType.GENERAL);
 
         _code = code;
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,53 +140,60 @@ public class Processor extends CSPActor {
      *  during communication through any of this actor's ports.
      */
     public void accessMemory(boolean read) throws IllegalActionException {
-
         // State 1
-        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+        _debug(new ExecEvent(this, ExecEvent.WAITING));
+
         double delayTime = java.lang.Math.random();
-        if ( delayTime < 0.25 ) {
+
+        if (delayTime < 0.25) {
             delayTime = 2.5;
-        } else if ( delayTime >= 0.25 && delayTime < 0.5 ) {
+        } else if ((delayTime >= 0.25) && (delayTime < 0.5)) {
             delayTime = 5.0;
-        } else if ( delayTime >= 0.5 && delayTime < 0.75 ) {
+        } else if ((delayTime >= 0.5) && (delayTime < 0.75)) {
             delayTime = 7.5;
         } else {
             delayTime = 10.0;
         }
-        delay( delayTime );
-        IntToken iToken = new IntToken( _code );
+
+        delay(delayTime);
+
+        IntToken iToken = new IntToken(_code);
         requestOutput.broadcast(iToken);
 
         // State 2
         try {
             Thread.sleep(300);
-        } catch( InterruptedException e ) {
+        } catch (InterruptedException e) {
             throw new TerminateProcessException(this, "Terminated");
         }
-        BooleanToken bToken = (BooleanToken)requestInput.get(0);
 
-        if ( bToken.booleanValue() ) {
+        BooleanToken bToken = (BooleanToken) requestInput.get(0);
+
+        if (bToken.booleanValue()) {
             // State 3
-            _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
+            _debug(new ExecEvent(this, ExecEvent.ACCESSING));
+
             try {
                 Thread.sleep(300);
-            } catch( InterruptedException e ) {
+            } catch (InterruptedException e) {
                 throw new TerminateProcessException(this, "Terminated");
             }
-            if ( read ) {
+
+            if (read) {
                 memoryInput.get(0);
-            }
-            else {
-                StringToken strToken = new StringToken( getName() );
+            } else {
+                StringToken strToken = new StringToken(getName());
                 memoryOutput.broadcast(strToken);
             }
+
             return;
         } else {
             // State 4
-            _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
+            _debug(new ExecEvent(this, ExecEvent.BLOCKED));
+
             try {
                 Thread.sleep(300);
-            } catch( InterruptedException e ) {
+            } catch (InterruptedException e) {
                 throw new TerminateProcessException(this, "Terminated");
             }
         }
@@ -203,9 +208,11 @@ public class Processor extends CSPActor {
      */
     public boolean endYet() {
         double time = _dir.getModelTime().getDoubleValue();
-        if ( time > 50.0 ) {
+
+        if (time > 50.0) {
             return true;
         }
+
         return false;
     }
 
@@ -216,12 +223,13 @@ public class Processor extends CSPActor {
      */
     public void fire() throws IllegalActionException {
         while (true) {
-            if ( performReadNext() ) {
+            if (performReadNext()) {
                 accessMemory(true);
             } else {
                 accessMemory(false);
             }
-            if ( endYet() ) {
+
+            if (endYet()) {
                 return;
             }
         }
@@ -234,8 +242,9 @@ public class Processor extends CSPActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        TypedCompositeActor ca = (TypedCompositeActor)getContainer();
-        _dir = (CSPDirector)ca.getDirector();
+
+        TypedCompositeActor ca = (TypedCompositeActor) getContainer();
+        _dir = (CSPDirector) ca.getDirector();
     }
 
     /** Return true if this actor has randomly determined to attempt
@@ -245,9 +254,10 @@ public class Processor extends CSPActor {
      *  shared resource; return false otherwise.
      */
     public boolean performReadNext() {
-        if ( java.lang.Math.random() < 0.5 ) {
+        if (java.lang.Math.random() < 0.5) {
             return true;
         }
+
         return false;
     }
 
@@ -260,12 +270,11 @@ public class Processor extends CSPActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+        _debug(new ExecEvent(this, ExecEvent.WAITING));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private int _code;
     private CSPDirector _dir;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.IntToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UpSample
+
 /**
    This actor upsamples an input stream by an integer factor by inserting
    tokens with value zero.  The upsample factor is given by the
@@ -68,9 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Yellow (eal)
 */
-
 public class UpSample extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -80,7 +79,7 @@ public class UpSample extends SDFTransformer {
      *   actor with this name.
      */
     public UpSample(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set parameters.
@@ -117,19 +116,20 @@ public class UpSample extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == factor) {
-            int factorValue = ((IntToken)factor.getToken()).intValue();
+            int factorValue = ((IntToken) factor.getToken()).intValue();
+
             if (factorValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid factor: " + factorValue);
+                    "Invalid factor: " + factorValue);
             }
-
         } else if (attribute == phase) {
-            int phaseValue = ((IntToken)phase.getToken()).intValue();
+            int phaseValue = ((IntToken) phase.getToken()).intValue();
+
             if (phaseValue < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid phase: " + phaseValue);
+                    "Invalid phase: " + phaseValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -146,16 +146,19 @@ public class UpSample extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         Token token = input.get(0);
-        int factorValue = ((IntToken)factor.getToken()).intValue();
-        int phaseValue = ((IntToken)phase.getToken()).intValue();
+        int factorValue = ((IntToken) factor.getToken()).intValue();
+        int phaseValue = ((IntToken) phase.getToken()).intValue();
+
         if (phaseValue >= factorValue) {
             throw new IllegalActionException(this,
-                    "Phase is out of range: " + phaseValue);
+                "Phase is out of range: " + phaseValue);
         }
 
         Token[] result = new Token[factorValue];
         Token zero = token.zero();
+
         for (int i = 0; i < factorValue; i++) {
             if (i == phaseValue) {
                 result[i] = token;
@@ -163,6 +166,7 @@ public class UpSample extends SDFTransformer {
                 result[i] = zero;
             }
         }
+
         output.send(0, result, factorValue);
     }
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PasswordStyle
+
 /**
    This attribute annotates user settable attributes to specify
    an arbitrary type-in password style for configuring the containing attribute.
@@ -50,9 +51,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public class PasswordStyle extends ParameterEditorStyle {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -84,7 +83,7 @@ public class PasswordStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public PasswordStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -107,16 +106,13 @@ public class PasswordStyle extends ParameterEditorStyle {
      *  @param query The query into which to add the entry.
      */
     public void addEntry(PtolemyQuery query) {
-        Settable container = (Settable)getContainer();
+        Settable container = (Settable) getContainer();
         String name = container.getName();
         String defaultValue = "";
         defaultValue = container.getExpression();
-        query.addPassword(
-                name,
-                name,
-                defaultValue,
-                PtolemyQuery.preferredBackgroundColor(container),
-                PtolemyQuery.preferredForegroundColor(container));
+        query.addPassword(name, name, defaultValue,
+            PtolemyQuery.preferredBackgroundColor(container),
+            PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
     }
 }

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -40,8 +39,10 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleApplication
+
 /** A simple application that reads in a .xml file as a command
     line argument and runs it.
 
@@ -62,9 +63,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (eal)
 */
-public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
-{
-
+public class MoMLSimpleApplication implements ChangeListener, ExecutionListener {
     /** A Nullary constructor is necessary so that we can extends this
      *  base class with a subclass
      *  @exception Exception Not thrown in this base class
@@ -85,7 +84,6 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
         // The test suite calls MoMLSimpleApplication multiple times,
         // and the list of filters is static, so we reset it each time
         // so as to avoid adding filters every time we run an auto test.
-
         // We set the list of MoMLFilters to handle Backward Compatibility.
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
@@ -97,7 +95,6 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
         // then the nightly build may fail to report MoML parse errors
         // as failed tests
         //parser.setErrorHandler(new StreamErrorHandler());
-
         // We use parse(URL, URL) here instead of parseFile(String)
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
@@ -105,8 +102,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
         CompositeActor toplevel = (CompositeActor) parser.parse(null,
                 new File(xmlFileName).toURL());
 
-        _manager = new Manager(toplevel.workspace(),
-                "MoMLSimpleApplication");
+        _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);
         toplevel.addChangeListener(this);
         _manager.addExecutionListener(this);
@@ -118,7 +114,6 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
         // PtExecuteApplication handles this by deferring the change
         // to the Swing event thread.  We don't have a Swing event thread,
         // so we are stuck with a busy loop.
-
         while (!_executionFinishedOrError) {
             Thread.yield();
         }
@@ -127,7 +122,6 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
             throw _sawThrowable;
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         Public methods                    ////
@@ -155,18 +149,16 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
         // If we do not implement ChangeListener, then ChangeRequest
         // will print any errors to stdout and continue.
         // This causes no end of trouble with the test suite
-
         // We can't throw an Exception here because this method in
         // the base class does not throw Exception.
-
         String description = "";
+
         if (change != null) {
             description = change.getDescription();
         }
 
         throw new RuntimeException("MoMLSimplApplication.changeFailed(): "
-                + description + " failed: ",
-                exception);
+            + description + " failed: ", exception);
     }
 
     /** Report an execution failure.   This method will be called
@@ -187,7 +179,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
         _executionFinishedOrError = true;
         _sawThrowable = throwable;
         throw new RuntimeException("Execution error "
-                + Thread.currentThread().getName(), throwable);
+            + Thread.currentThread().getName(), throwable);
     }
 
     /** Report that the current execution has finished and
@@ -213,7 +205,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
     /** Create an instance of a single model and run it
      *  @param args The command-line arguments naming the .xml file to run
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             new MoMLSimpleApplication(args[0]);
         } catch (Throwable ex) {
@@ -230,7 +222,6 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Manager _manager = null;
 
     // executionError() sets _sawThrowable to the exception.

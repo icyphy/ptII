@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleMatrixToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VectorAssembler
+
 /**
    On each firing, read exactly one token from each channel of the
    <i>input</i> port and assemble the tokens into a DoubleMatrixToken
@@ -57,9 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (celaine)
    @see VectorDisassembler
 */
-
 public class VectorAssembler extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -69,19 +68,17 @@ public class VectorAssembler extends Transformer {
      *   actor with this name.
      */
     public VectorAssembler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         input.setMultiport(true);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setMultiport(false);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"6\" " +
-                "height=\"40\" style=\"fill:blue\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+            + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,7 +94,7 @@ public class VectorAssembler extends Transformer {
         double[][] data = new double[size][1];
 
         for (int i = 0; i < size; i++) {
-            data[i][0] = ((DoubleToken)input.get(i)).doubleValue();
+            data[i][0] = ((DoubleToken) input.get(i)).doubleValue();
         }
 
         DoubleMatrixToken result = new DoubleMatrixToken(data);
@@ -114,11 +111,11 @@ public class VectorAssembler extends Transformer {
      */
     public boolean prefire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
-            if ( !input.hasToken(i)) {
+            if (!input.hasToken(i)) {
                 return false;
             }
         }
+
         return true;
     }
 }
-

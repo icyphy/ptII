@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui;
 
 import java.awt.Component;
@@ -44,8 +43,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ComponentDialog
+
 /**
 
 This class is a modal dialog box that contains an arbitrary component.
@@ -71,7 +72,6 @@ then that component is notified when this dialog closes.
 @Pt.AcceptedRating Yellow (janneck)
 */
 public class ComponentDialog extends JDialog {
-
     /** Construct a dialog with the specified owner, title, and component.
      *  An "OK" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -97,11 +97,8 @@ public class ComponentDialog extends JDialog {
      *  @param buttons An array of labels for buttons at the bottom
      *   of the dialog.
      */
-    public ComponentDialog(
-            Frame owner,
-            String title,
-            Component component,
-            String[] buttons) {
+    public ComponentDialog(Frame owner, String title, Component component,
+        String[] buttons) {
         this(owner, title, component, buttons, null);
     }
 
@@ -121,13 +118,8 @@ public class ComponentDialog extends JDialog {
      *  @param message A message to place above the component, or null
      *   if no message is needed.
      */
-    public ComponentDialog(
-            Frame owner,
-            String title,
-            Component component,
-            String[] buttons,
-            String message) {
-
+    public ComponentDialog(Frame owner, String title, Component component,
+        String[] buttons, String message) {
         super(owner, title, true);
 
         // Create a panel that contains the optional message
@@ -135,6 +127,7 @@ public class ComponentDialog extends JDialog {
         JPanel panel = new JPanel();
 
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
         if (message != null) {
             _messageArea = new JTextArea(message);
             _messageArea.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -142,11 +135,13 @@ public class ComponentDialog extends JDialog {
             _messageArea.setLineWrap(true);
             _messageArea.setWrapStyleWord(true);
             _messageArea.setBackground(getContentPane().getBackground());
+
             // Left Justify.
             _messageArea.setAlignmentX(0.0f);
             panel.add(_messageArea);
-            panel.add(Box.createRigidArea(new Dimension(0,10)));
+            panel.add(Box.createRigidArea(new Dimension(0, 10)));
         }
+
         panel.add(component);
         contents = component;
 
@@ -156,12 +151,8 @@ public class ComponentDialog extends JDialog {
             _buttons = _defaultButtons;
         }
 
-        _optionPane = new JOptionPane(panel,
-                JOptionPane.QUESTION_MESSAGE,
-                JOptionPane.YES_NO_OPTION,
-                null,
-                _buttons,
-                _buttons[0]);
+        _optionPane = new JOptionPane(panel, JOptionPane.QUESTION_MESSAGE,
+                JOptionPane.YES_NO_OPTION, null, _buttons, _buttons[0]);
 
         // The following code is based on Sun's CustomDialog example...
         _optionPane.addPropertyChangeListener(new PropertyChangeListener() {
@@ -170,15 +161,15 @@ public class ComponentDialog extends JDialog {
 
                     // PropertyChange is an extremely non-selective listener,
                     // so we have to filter...
-                    if (isVisible()
-                            && (e.getSource() == _optionPane)
+                    if (isVisible() && (e.getSource() == _optionPane)
                             && (prop.equals(JOptionPane.VALUE_PROPERTY)
-                                    ||  prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
-
+                            || prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
                         Object value = _optionPane.getValue();
 
                         // Ignore reset.
-                        if (value == JOptionPane.UNINITIALIZED_VALUE) return;
+                        if (value == JOptionPane.UNINITIALIZED_VALUE) {
+                            return;
+                        }
 
                         // Reset the JOptionPane's value.
                         // If you don't do this, then if the user
@@ -190,7 +181,7 @@ public class ComponentDialog extends JDialog {
 
                         if (value instanceof String) {
                             // A button was pressed...
-                            _buttonPressed = (String)value;
+                            _buttonPressed = (String) value;
                         }
 
                         // Close the window.
@@ -220,8 +211,8 @@ public class ComponentDialog extends JDialog {
             // passing null to setLocationRelationTo() _may_ result
             // in centering on the screen, but it is not required to.
             Toolkit tk = Toolkit.getDefaultToolkit();
-            setLocation((tk.getScreenSize().width - getSize().width)/2,
-                    (tk.getScreenSize().height - getSize().height)/2);
+            setLocation((tk.getScreenSize().width - getSize().width) / 2,
+                (tk.getScreenSize().height - getSize().height) / 2);
         }
 
         // NOTE: Java's AWT may yield random results if we do the following.
@@ -275,7 +266,7 @@ public class ComponentDialog extends JDialog {
     protected void _handleClosing() {
         if ((contents instanceof CloseListener) && !_doneHandleClosing) {
             _doneHandleClosing = true;
-            ((CloseListener)contents).windowClosed(this, _buttonPressed);
+            ((CloseListener) contents).windowClosed(this, _buttonPressed);
         }
     }
 
@@ -288,18 +279,16 @@ public class ComponentDialog extends JDialog {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // The label of the button pushed to dismiss the dialog.
     protected String _buttonPressed = "";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Button labels.
     private static String[] _buttons;
 
     // Default button labels.
-    private static String[] _defaultButtons = {"OK", "Cancel"};
+    private static String[] _defaultButtons = { "OK", "Cancel" };
 
     // Indicator that we have notified of window closing.
     private boolean _doneHandleClosing = false;

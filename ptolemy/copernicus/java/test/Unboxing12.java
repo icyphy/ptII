@@ -1,11 +1,11 @@
 package ptolemy.copernicus.java.test;
 
-import ptolemy.actor.lib.SequenceActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+
 
 public class Unboxing12 {
     private Token _stateToken;
@@ -18,6 +18,7 @@ public class Unboxing12 {
 
     public void initialize() throws IllegalActionException {
         _iterationCount = 0;
+
         BaseType.DoubleType doubletype = BaseType.DOUBLE;
         _stateToken = doubletype.convert(init_CGToken);
     }
@@ -31,11 +32,13 @@ public class Unboxing12 {
     public Unboxing12() throws IllegalActionException {
         _stateToken = null;
         _resultArray = new Token[1];
+
         IntToken inttoken = new IntToken(0);
         BaseType.IntType inttype = BaseType.INT;
         Token token = inttype.convert(inttoken);
         IntToken inttoken_0_ = (IntToken) token;
         firingCountLimit_CGToken = inttoken_0_;
+
         DoubleToken doubletoken = new DoubleToken(0.0);
         BaseType.DoubleType doubletype = BaseType.DOUBLE;
         Token token_1_ = doubletype.convert(doubletoken);
@@ -50,22 +53,27 @@ public class Unboxing12 {
 
     public boolean postfire() throws IllegalActionException {
         _stateToken = _stateToken.add(step_CGToken);
+
         int i = _firingCountLimit;
         boolean bool;
+
         do {
             if (i != 0) {
                 _iterationCount = _iterationCount + 1;
+
                 if (_iterationCount == i) {
                     bool = false;
                     break;
                 }
             }
+
             bool = true;
         } while (false);
+
         return bool;
     }
 
-    public static void main(String args[]) throws IllegalActionException {
+    public static void main(String[] args) throws IllegalActionException {
         Unboxing12 object = new Unboxing12();
         object.initialize();
         object.fire();

@@ -24,41 +24,43 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.soot;
 
-import ptolemy.copernicus.jhdl.*;
-
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Vector;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import ptolemy.graph.Edge;
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Node;
-import ptolemy.kernel.util.IllegalActionException;
-
 import soot.Body;
+import soot.SootMethod;
 import soot.Unit;
-import soot.jimple.IfStmt;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
+
 import soot.jimple.AssignStmt;
 import soot.jimple.GotoStmt;
 import soot.jimple.IdentityStmt;
-import soot.jimple.internal.JReturnVoidStmt;
-import soot.SootMethod;
-import soot.toolkits.graph.BriefBlockGraph;
-import soot.toolkits.graph.Block;
+import soot.jimple.IfStmt;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
 
+import soot.jimple.internal.JReturnVoidStmt;
+
+import soot.toolkits.graph.Block;
+import soot.toolkits.graph.BriefBlockGraph;
+
+import ptolemy.copernicus.jhdl.*;
 import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
+import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Edge;
+import ptolemy.graph.Node;
+import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectedAcyclicCFG
+
 /**
  * This class will take a Soot Body and create a DirectedAcyclicGraph
  * of the corresponding control-flow graph. The Nodes of this graph
@@ -76,9 +78,7 @@ import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class DirectedAcyclicCFG extends DirectedGraph {
-
     DirectedAcyclicCFG(SootMethod method) throws IllegalActionException {
         this(method.retrieveActiveBody());
     }
@@ -110,56 +110,66 @@ public class DirectedAcyclicCFG extends DirectedGraph {
      * create the topology of the graph.
      **/
     protected void _createGraph(BriefBlockGraph bbg)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         // Save Body
         _bbgraph = bbg;
 
         // create copy of graph
-        List blockList=_bbgraph.getBlocks();
+        List blockList = _bbgraph.getBlocks();
 
         // Add one Node for each Block in the graph. The
         // weight of the Node is the corresponding Block.
-        for (Iterator blocks=blockList.iterator(); blocks.hasNext();) {
-            Block block=(Block)blocks.next();
+        for (Iterator blocks = blockList.iterator(); blocks.hasNext();) {
+            Block block = (Block) blocks.next();
             addNodeWeight(block);
         }
 
         // Copy edges. Iterate through each Node in the graph and
         // copy edges to its successors.
         //
-        for (Iterator blocks=blockList.iterator(); blocks.hasNext();) {
-            Block block=(Block)blocks.next();
+        for (Iterator blocks = blockList.iterator(); blocks.hasNext();) {
+            Block block = (Block) blocks.next();
             Node nb = node(block);
 
             List succs = block.getSuccs();
+
             //Get successors to this block and add an edge to graph for
             //each one.
-            for (Iterator successors=succs.iterator(); successors.hasNext();) {
-                Block succ=(Block)successors.next();
-                addEdge(nb,node(succ));
+            for (Iterator successors = succs.iterator(); successors.hasNext();) {
+                Block succ = (Block) successors.next();
+                addEdge(nb, node(succ));
             }
         }
 
         // Identify single source and single sink
         Collection sources = sourceNodes();
-        if (sources.size() == 0)
+
+        if (sources.size() == 0) {
             throw new IllegalActionException("There is no source Node");
-        if (sources.size() > 1)
-            throw new IllegalActionException("There are more than one source nodes");
+        }
+
+        if (sources.size() > 1) {
+            throw new IllegalActionException(
+                "There are more than one source nodes");
+        }
+
         _source = (Node) sources.iterator().next();
 
         // Identify sink
         Collection sinks = sinkNodes();
-        if (sinks.size() == 0)
+
+        if (sinks.size() == 0) {
             throw new IllegalActionException("There are no sinks");
+        }
+
         if (sinks.size() == 1) {
             _sink = (Node) sinks.iterator().next();
         } else {
             _sink = addNodeWeight("sink");
-            for (Iterator i=sinks.iterator();i.hasNext();) {
+
+            for (Iterator i = sinks.iterator(); i.hasNext();) {
                 Node n = (Node) i.next();
-                addEdge(n,_sink);
+                addEdge(n, _sink);
             }
         }
     }
@@ -167,38 +177,45 @@ public class DirectedAcyclicCFG extends DirectedGraph {
     public String nodeString(Node n) {
         if (n.hasWeight()) {
             Object o = n.getWeight();
+
             if (o instanceof Block) {
                 return "B" + ((Block) o).getIndexInMethod();
             } else if (o instanceof String) {
                 return (String) o;
             }
-            return o.getClass().getName() + " " +o.toString();
+
+            return o.getClass().getName() + " " + o.toString();
         }
+
         return "";
     }
 
-    public static DirectedAcyclicCFG _main(String args[]) {
-        soot.SootMethod testMethod =
-            ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
-        DirectedAcyclicCFG _cfg=null;
+    public static DirectedAcyclicCFG _main(String[] args) {
+        soot.SootMethod testMethod = ptolemy.copernicus.jhdl.test.Test
+            .getSootMethod(args);
+        DirectedAcyclicCFG _cfg = null;
+
         try {
             ConditionalControlCompactor.compact(testMethod);
+
             soot.Body body = testMethod.retrieveActiveBody();
             BriefBlockGraph bbgraph = new BriefBlockGraph(body);
             BlockGraphToDotty toDotty = new BlockGraphToDotty();
+
             //toDotty.writeDotFile(".", "bbgraph", bbgraph);
             _cfg = new DirectedAcyclicCFG(bbgraph);
-            PtDirectedGraphToDotty dgToDotty =
-                new PtDirectedGraphToDotty();
+
+            PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
             dgToDotty.writeDotFile(".", testMethod.getName(), _cfg);
         } catch (IllegalActionException e) {
             System.err.println(e);
             System.exit(1);
         }
+
         return _cfg;
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         _main(args);
     }
 
@@ -216,5 +233,4 @@ public class DirectedAcyclicCFG extends DirectedGraph {
      * The single exit Node of the graph.
      **/
     protected Node _sink;
-
 }

@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
-// Java imports
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -65,6 +63,7 @@ import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplication
+
 /**
    This is an application that reads one or more
    files specified on the command line, or instantiates one or
@@ -124,13 +123,12 @@ import ptolemy.util.StringUtilities;
    @see Configuration
 */
 public class MoMLApplication implements ExecutionListener {
-
     /** Parse the specified command-line arguments, instanting classes
      *  and reading files that are specified.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public MoMLApplication(String args[]) throws Exception {
+    public MoMLApplication(String[] args) throws Exception {
         this("ptolemy/configs", args);
     }
 
@@ -142,8 +140,8 @@ public class MoMLApplication implements ExecutionListener {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public MoMLApplication(String basePath, String args[]) throws Exception {
-
+    public MoMLApplication(String basePath, String[] args)
+        throws Exception {
         _basePath = basePath;
 
         // The Java look & feel is pretty lame, so we use the native
@@ -151,8 +149,7 @@ public class MoMLApplication implements ExecutionListener {
         // NOTE: This creates the only dependence on Swing in this
         // class.  Should this be left to derived classes?
         try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
@@ -167,7 +164,6 @@ public class MoMLApplication implements ExecutionListener {
         // that if we get an error in parseArgs() we will get a graphical
         // stack trace.   Such an error could be caused by specifying a model
         // as a command line argument and the model has an invalid parameter.
-
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
         // Even if the user is set up for foreign locale, use the US locale.
@@ -199,6 +195,7 @@ public class MoMLApplication implements ExecutionListener {
             // Run if -run argument was specified.
             if (_run) {
                 runModels();
+
                 if (_exit) {
                     // In vergil, this gets called in the
                     // swing thread, which hangs everything
@@ -207,10 +204,11 @@ public class MoMLApplication implements ExecutionListener {
                     // do it.
                     Thread waitThread = new Thread() {
                             public void run() {
-                            waitForFinish();
-                            System.exit(0);
-                        }
-                    };
+                                waitForFinish();
+                                System.exit(0);
+                            }
+                        };
+
                     waitThread.start();
                 }
             }
@@ -219,19 +217,21 @@ public class MoMLApplication implements ExecutionListener {
             // problems parsing.  For example, "ptolemy -FOO bar bif.xml"
             // will crash if bar is not a variable.  Instead, use
             // "ptolemy -FOO \"bar\" bif.xml"
-
             // Accumulate the arguments into a StringBuffer
             StringBuffer argsStringBuffer = new StringBuffer();
+
             try {
                 for (int i = 0; i < args.length; i++) {
                     if (argsStringBuffer.length() > 0) {
                         argsStringBuffer.append(" ");
                     }
+
                     argsStringBuffer.append(args[i]);
                 }
             } catch (Exception ex2) {
                 //Ignored
             }
+
             String errorMessage = "Failed to parse \""
                 + argsStringBuffer.toString() + "\"";
 
@@ -248,9 +248,9 @@ public class MoMLApplication implements ExecutionListener {
      *  @param manager The manager calling this method.
      *  @param throwable The throwable being reported.
      */
-    public synchronized void executionError(Manager manager,
-            Throwable throwable) {
+    public synchronized void executionError(Manager manager, Throwable throwable) {
         _activeCount--;
+
         if (_activeCount == 0) {
             notifyAll();
         }
@@ -263,6 +263,7 @@ public class MoMLApplication implements ExecutionListener {
      */
     public synchronized void executionFinished(Manager manager) {
         _activeCount--;
+
         if (_activeCount == 0) {
             notifyAll();
         }
@@ -272,7 +273,7 @@ public class MoMLApplication implements ExecutionListener {
      *  command-line arguments.
      *  @param args The command-line arguments.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             MoMLApplication application = new MoMLApplication(args);
         } catch (Exception ex) {
@@ -286,6 +287,7 @@ public class MoMLApplication implements ExecutionListener {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
+
             System.exit(0);
         }
     }
@@ -302,17 +304,18 @@ public class MoMLApplication implements ExecutionListener {
      */
     public List models() {
         LinkedList result = new LinkedList();
-        ModelDirectory directory
-            = (ModelDirectory)_configuration
-            .getEntity(Configuration._DIRECTORY_NAME);
+        ModelDirectory directory = (ModelDirectory) _configuration.getEntity(Configuration._DIRECTORY_NAME);
         Iterator effigies = directory.entityList().iterator();
+
         while (effigies.hasNext()) {
-            Effigy effigy = (Effigy)effigies.next();
+            Effigy effigy = (Effigy) effigies.next();
+
             if (effigy instanceof PtolemyEffigy) {
-                NamedObj model = ((PtolemyEffigy)effigy).getModel();
+                NamedObj model = ((PtolemyEffigy) effigy).getModel();
                 result.add(model);
             }
         }
+
         return result;
     }
 
@@ -321,18 +324,24 @@ public class MoMLApplication implements ExecutionListener {
      */
     public void runModels() throws IllegalActionException {
         Iterator models = models().iterator();
+
         while (models.hasNext()) {
-            NamedObj model = (NamedObj)models.next();
+            NamedObj model = (NamedObj) models.next();
+
             if (model instanceof CompositeActor) {
-                CompositeActor actor = (CompositeActor)model;
+                CompositeActor actor = (CompositeActor) model;
+
                 // Create a manager if necessary.
                 Manager manager = actor.getManager();
+
                 if (manager == null) {
                     manager = new Manager(actor.workspace(), "manager");
                     actor.setManager(manager);
                 }
+
                 manager.addExecutionListener(this);
                 _activeCount++;
+
                 // Run the model in a new thread.
                 manager.startRun();
             }
@@ -359,11 +368,11 @@ public class MoMLApplication implements ExecutionListener {
         // is that we want to be sure that the URL is valid,
         // and if it is not, we check the local file system
         // and the classpath.
-
         // One solution would be to have a method that returned a
         // URLConnection because we can open a stream with a
         // URLConnection and still get the original URL if necessary
         URL specURL = null;
+
         try {
             // First argument is null because we are only
             // processing absolute URLs this way.  Relative
@@ -385,49 +394,47 @@ public class MoMLApplication implements ExecutionListener {
                 // http://forum.java.sun.com/thread.jsp?forum=31&thread=328939
                 // One hack is to convert to an absolute path first
                 File absoluteFile = file.getAbsoluteFile();
+
                 try {
                     if (!absoluteFile.exists()) {
                         throw new IOException("File '" + absoluteFile
-                                + "' does not exist." );
+                            + "' does not exist.");
                     }
                 } catch (java.security.AccessControlException accessControl) {
-                    IOException exception =
-                        new IOException("AccessControlException while "
-                                + "trying to read '" + absoluteFile + "'");
+                    IOException exception = new IOException(
+                            "AccessControlException while "
+                            + "trying to read '" + absoluteFile + "'");
+
                     // IOException does not have a cause argument constructor.
                     exception.initCause(accessControl);
                     throw exception;
                 }
+
                 specURL = absoluteFile.getCanonicalFile().toURL();
 
                 //InputStream urlStream = specURL.openStream();
                 //urlStream.close();
-
                 return specURL;
             } catch (Exception ex2) {
                 try {
                     // Try one last thing, using the classpath.
                     // Need a class context, and this is a static method, so...
                     // we can't use this.getClass().getClassLoader()
-
                     // NOTE: There doesn't seem to be any way to convert
                     // this a canonical name, so if a model is opened this
                     // way, and then later opened as a file, the model
                     // directory will think it has two different files.
-
                     //Class refClass = Class.forName(
                     //        "ptolemy.kernel.util.NamedObj");
                     //specURL = refClass.getClassLoader().getResource(spec);
-
                     // This works in Web Start, see
                     // http://java.sun.com/products/javawebstart/faq.html#54
-
-                    specURL = Thread.currentThread()
-                        .getContextClassLoader().getResource(spec);
+                    specURL = Thread.currentThread().getContextClassLoader()
+                                    .getResource(spec);
 
                     if (specURL == null) {
                         throw new Exception("getResource(\"" + spec
-                                + "\") returned null.");
+                            + "\") returned null.");
                     } else {
                         // If we have a jar URL, convert spaces to %20
                         // so as to avoid multiple windows with the
@@ -436,6 +443,7 @@ public class MoMLApplication implements ExecutionListener {
                         // spaces in the path, which is the default
                         // under Windows.
                         specURL = JNLPUtilities.canonicalizeJarURL(specURL);
+
                         // Verify that it can be opened
                         InputStream urlStream = specURL.openStream();
                         urlStream.close();
@@ -446,13 +454,10 @@ public class MoMLApplication implements ExecutionListener {
                     // the configuration fails under Web Start.
                     // Without this error message, users will
                     // have no hope of telling us why Web Start failed.
-                    IOException exception =
-                        new IOException("File not found: '" + spec
-                                + "'\n caused by:\n" + ex
-                                + "\n AND:\n"
-                                + ex2
-                                + "\n AND:\n"
-                                + ex3);
+                    IOException exception = new IOException("File not found: '"
+                            + spec + "'\n caused by:\n" + ex + "\n AND:\n"
+                            + ex2 + "\n AND:\n" + ex3);
+
                     // IOException does not have a cause argument
                     exception.initCause(ex3);
                     throw exception;
@@ -490,24 +495,24 @@ public class MoMLApplication implements ExecutionListener {
      *  @see ptolemy.util.StringUtilities#usageString(String, String [][], String [])
      */
     protected String _configurationUsage(String commandTemplate,
-            String [][] commandOptions,
-            String [] commandFlags) {
-        StringBuffer result = new StringBuffer(
-                "Usage: " + commandTemplate + "\n\n"
-                                + "Options that take values:\n");
+        String[][] commandOptions, String[] commandFlags) {
+        StringBuffer result = new StringBuffer("Usage: " + commandTemplate
+                + "\n\n" + "Options that take values:\n");
         int i;
+
         // Print any command options from this class first
         for (i = 0; i < _commandOptions.length; i++) {
-            result.append(" " + _commandOptions[i][0] +
-                " " + _commandOptions[i][1] + "\n");
+            result.append(" " + _commandOptions[i][0] + " "
+                + _commandOptions[i][1] + "\n");
         }
 
         for (i = 0; i < commandOptions.length; i++) {
-            result.append(" " + commandOptions[i][0] +
-                " " + commandOptions[i][1] + "\n");
+            result.append(" " + commandOptions[i][0] + " "
+                + commandOptions[i][1] + "\n");
         }
 
         result.append("\nFlags (do not take values):\n");
+
         // Print any command flags from this class first
         for (i = 0; i < _commandFlags.length; i++) {
             result.append(" " + _commandFlags[i] + "\n");
@@ -521,48 +526,43 @@ public class MoMLApplication implements ExecutionListener {
             // Look for configuration directories in _basePath
             // This will likely fail if ptolemy/configs is in a jar file
             // We use a URI here so that we cause call File(URI).
-            URI configurationURI =
-                new URI(specToURL(_basePath).toExternalForm());
+            URI configurationURI = new URI(specToURL(_basePath).toExternalForm());
             File configurationDirectory = new File(configurationURI);
-            ConfigurationFilenameFilter filter =
-                new ConfigurationFilenameFilter();
-            File [] configurationDirectories =
-                configurationDirectory.listFiles(filter);
+            ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
+            File[] configurationDirectories = configurationDirectory.listFiles(filter);
+
             if (configurationDirectories != null) {
-                result.append("\nThe following (mutually exclusive) flags " +
-                        "specify alternative configurations:\n");
+                result.append("\nThe following (mutually exclusive) flags "
+                    + "specify alternative configurations:\n");
+
                 for (i = 0; i < configurationDirectories.length; i++) {
-                    String configurationName = configurationDirectories[i].getName();
+                    String configurationName = configurationDirectories[i]
+                        .getName();
                     result.append(" -" + configurationName);
+
                     // Pad out to a fixed number of spaces to get good alignment.
                     for (int j = configurationName.length(); j < 20; j++) {
-                            result.append(" ");
+                        result.append(" ");
                     }
+
                     String configurationFileName = configurationDirectories[i]
-                        + File.separator
-                        + "configuration.xml";
+                        + File.separator + "configuration.xml";
                     boolean printDefaultConfigurationMessage = true;
+
                     try {
                         // Read the configuration and get the top level docs
-
                         // FIXME: this will not work if the configs are
                         // in jar files.
-
                         // FIXME: Skip jxta, since it starts up the jxta config
                         // tools.
                         if (!configurationName.equals("jxta")) {
-                            URL specificationURL =
-                                specToURL(configurationFileName);
-                            Configuration configuration =
-                                _readConfiguration(specificationURL);
-                            if (configuration != null
-                                    && configuration.getAttribute("_doc")
-                                    != null
-                                    && configuration.getAttribute("_doc")
-                                    instanceof Documentation
-                                ) {
-                                Documentation doc =
-                                    (Documentation)configuration
+                            URL specificationURL = specToURL(configurationFileName);
+                            Configuration configuration = _readConfiguration(specificationURL);
+
+                            if ((configuration != null)
+                                    && (configuration.getAttribute("_doc") != null)
+                                    && configuration.getAttribute("_doc") instanceof Documentation) {
+                                Documentation doc = (Documentation) configuration
                                     .getAttribute("_doc");
                                 result.append("\t\t" + doc.getValue() + "\n");
                                 printDefaultConfigurationMessage = false;
@@ -573,9 +573,10 @@ public class MoMLApplication implements ExecutionListener {
                         //    + "\n" + ex);
                         //ex.printStackTrace();
                     }
+
                     if (printDefaultConfigurationMessage) {
-                        result.append("\t\tuses "
-                            + configurationFileName + "\n");
+                        result.append("\t\tuses " + configurationFileName
+                            + "\n");
                     }
                 }
             }
@@ -583,6 +584,7 @@ public class MoMLApplication implements ExecutionListener {
             result.append("Warning: Failed to find configuration(s) in '"
                 + _basePath + "'" + ex);
         }
+
         return result.toString();
     }
 
@@ -595,7 +597,8 @@ public class MoMLApplication implements ExecutionListener {
      *  @exception Exception Thrown in derived classes if the default
      *   configuration cannot be opened.
      */
-    protected Configuration _createDefaultConfiguration() throws Exception {
+    protected Configuration _createDefaultConfiguration()
+        throws Exception {
         return null;
     }
 
@@ -606,7 +609,8 @@ public class MoMLApplication implements ExecutionListener {
      *  @exception Exception Thrown in derived classes if the empty
      *   configuration cannot be opened.
      */
-    protected Configuration _createEmptyConfiguration() throws Exception {
+    protected Configuration _createEmptyConfiguration()
+        throws Exception {
         return _createDefaultConfiguration();
     }
 
@@ -619,6 +623,7 @@ public class MoMLApplication implements ExecutionListener {
             _expectingClass = true;
         } else if (arg.equals("-help")) {
             System.out.println(_usage());
+
             // NOTE: This means the test suites cannot test -help
             System.exit(0);
         } else if (arg.equals("-run")) {
@@ -629,9 +634,9 @@ public class MoMLApplication implements ExecutionListener {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version "
-                    + VersionAttribute.CURRENT_VERSION
-                    + ", Build $Id$");
+            System.out.println("Version " + VersionAttribute.CURRENT_VERSION
+                + ", Build $Id$");
+
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
         } else if (arg.equals("")) {
@@ -650,36 +655,41 @@ public class MoMLApplication implements ExecutionListener {
                 // Get the constructor that takes a Workspace argument.
                 Class[] argTypes = new Class[1];
                 argTypes[0] = workspace.getClass();
+
                 Constructor constructor = newClass.getConstructor(argTypes);
 
-                Object args[] = new Object[1];
+                Object[] args = new Object[1];
                 args[0] = workspace;
-                NamedObj newModel = (NamedObj)constructor.newInstance(args);
+
+                NamedObj newModel = (NamedObj) constructor.newInstance(args);
 
                 // If there is a configuration, then create an effigy
                 // for the class, and enter it in the directory.
                 if (_configuration != null) {
-
                     // Create an effigy for the model.
-                    PtolemyEffigy effigy
-                        = new PtolemyEffigy(_configuration.workspace());
+                    PtolemyEffigy effigy = new PtolemyEffigy(_configuration
+                            .workspace());
                     effigy.setModel(newModel);
 
-                    ModelDirectory directory
-                        = (ModelDirectory)_configuration.getEntity("directory");
+                    ModelDirectory directory = (ModelDirectory) _configuration
+                        .getEntity("directory");
 
                     effigy.setName(arg);
+
                     if (directory != null) {
                         if (directory.getEntity(arg) != null) {
                             // Name is already taken.
                             int count = 2;
                             String newName = arg + " " + count;
+
                             while (directory.getEntity(newName) != null) {
                                 count++;
                             }
+
                             effigy.setName(newName);
                         }
                     }
+
                     effigy.setContainer(directory);
                 }
             } else {
@@ -697,46 +707,45 @@ public class MoMLApplication implements ExecutionListener {
                     // defer to it to read the model.  Otherwise,
                     // assume the file is an XML file.
                     if (_configuration != null) {
-                        ModelDirectory directory =
-                            (ModelDirectory)_configuration.getEntity("directory");
+                        ModelDirectory directory = (ModelDirectory) _configuration
+                            .getEntity("directory");
+
                         if (directory == null) {
                             throw new InternalErrorException(
-                                    "No model directory!");
+                                "No model directory!");
                         }
 
                         String key = inURL.toExternalForm();
 
                         //long startTime = (new Date()).getTime();
-
                         // Now defer to the model reader.
-                        Tableau tableau = _configuration.openModel(base, inURL, key);
+                        Tableau tableau = _configuration.openModel(base, inURL,
+                                key);
 
                         // FIXME: If the -run option was given, then start a run.
                         // FIXME: If the -fullscreen option was given, open full screen.
-
                         //System.out.println("Model open done: " +
                         //                   Manager.timeAndMemory(startTime));
-
                     } else {
                         // No configuration has been encountered.
                         // Assume this is a MoML file, and open it.
                         _parser.reset();
 
                         try {
-                            NamedObj toplevel =
-                                _parser.parse(base, inURL);
+                            NamedObj toplevel = _parser.parse(base, inURL);
+
                             if (toplevel instanceof Configuration) {
-                                _configuration = (Configuration)toplevel;
+                                _configuration = (Configuration) toplevel;
                             }
                         } catch (Exception ex) {
                             // Unfortunately, java.util.zip.ZipException
                             // does not include the file name.
-
                             // If inURL is a jarURL check for %20
                             String detailMessage = "";
+
                             try {
-                                if (inURL.toString().indexOf("!/") != -1
-                                        && inURL.toString().indexOf("%20") != -1) {
+                                if ((inURL.toString().indexOf("!/") != -1)
+                                        && (inURL.toString().indexOf("%20") != -1)) {
                                     detailMessage = " The URL contains "
                                         + "'!/', so it may be a jar "
                                         + "URL, and jar URLs cannot contain "
@@ -747,8 +756,9 @@ public class MoMLApplication implements ExecutionListener {
                             } catch (Exception ex2) {
                                 // Ignored
                             }
+
                             throw new Exception("Failed to parse '" + inURL
-                                    + "'" + detailMessage , ex);
+                                + "'" + detailMessage, ex);
                         }
                     }
                 } else {
@@ -757,6 +767,7 @@ public class MoMLApplication implements ExecutionListener {
                 }
             }
         }
+
         return true;
     }
 
@@ -764,22 +775,24 @@ public class MoMLApplication implements ExecutionListener {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
-    protected void _parseArgs(String args[]) throws Exception {
+    protected void _parseArgs(String[] args) throws Exception {
         if (args.length > 0) {
             _configuration = _createDefaultConfiguration();
         } else {
             _configuration = _createEmptyConfiguration();
         }
+
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
+
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
-                    if (i >= args.length - 1) {
-                        throw new IllegalActionException("Cannot set " +
-                            "parameter " + arg + " when no value is " +
-                            "given.");
-
+                    if (i >= (args.length - 1)) {
+                        throw new IllegalActionException("Cannot set "
+                            + "parameter " + arg + " when no value is "
+                            + "given.");
                     }
+
                     // Save in case this is a parameter name and value.
                     _parameterNames.add(arg.substring(1));
                     _parameterValues.add(args[i + 1]);
@@ -787,45 +800,53 @@ public class MoMLApplication implements ExecutionListener {
                 } else {
                     // Unrecognized option.
                     throw new IllegalActionException("Unrecognized option: "
-                            + arg);
+                        + arg);
                 }
             }
         }
+
         if (_expectingClass) {
             throw new IllegalActionException("Missing classname.");
         }
+
         // Check saved options to see whether any is setting an attribute.
         Iterator names = _parameterNames.iterator();
         Iterator values = _parameterValues.iterator();
+
         while (names.hasNext() && values.hasNext()) {
-            String name = (String)names.next();
-            String value = (String)values.next();
+            String name = (String) names.next();
+            String value = (String) values.next();
 
             boolean match = false;
-            ModelDirectory directory =
-                (ModelDirectory)_configuration.getEntity("directory");
+            ModelDirectory directory = (ModelDirectory) _configuration
+                .getEntity("directory");
+
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
             }
-            Iterator effigies
-                    = directory.entityList(Effigy.class).iterator();
+
+            Iterator effigies = directory.entityList(Effigy.class).iterator();
+
             while (effigies.hasNext()) {
-                Effigy effigy = (Effigy)effigies.next();
+                Effigy effigy = (Effigy) effigies.next();
+
                 if (effigy instanceof PtolemyEffigy) {
-                    NamedObj model = ((PtolemyEffigy)effigy).getModel();
+                    NamedObj model = ((PtolemyEffigy) effigy).getModel();
+
                     // System.out.println("model = " + model.getFullName());
                     Attribute attribute = model.getAttribute(name);
+
                     if (attribute instanceof Settable) {
                         match = true;
+
                         // Use a MoMLChangeRequest so that visual rendition (if
                         // any) is updated and listeners are notified.
-                        String moml = "<property name=\""
-                                + name
-                                + "\" value=\""
-                                + value
-                                + "\"/>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(this, model, moml);
+                        String moml = "<property name=\"" + name
+                            + "\" value=\"" + value + "\"/>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                model, moml);
                         model.requestChange(request);
+
                         /* Formerly (before the change request):
                         ((Settable)attribute).setExpression(value);
                         if (attribute instanceof Variable) {
@@ -834,22 +855,25 @@ public class MoMLApplication implements ExecutionListener {
                         }
                         */
                     }
+
                     if (model instanceof CompositeActor) {
-                        Director director
-                            = ((CompositeActor)model).getDirector();
+                        Director director = ((CompositeActor) model)
+                            .getDirector();
+
                         if (director != null) {
                             attribute = director.getAttribute(name);
+
                             if (attribute instanceof Settable) {
                                 match = true;
+
                                 // Use a MoMLChangeRequest so that visual rendition (if
                                 // any) is updated and listeners are notified.
-                                String moml = "<property name=\""
-                                        + name
-                                        + "\" value=\""
-                                        + value
-                                        + "\"/>";
-                                MoMLChangeRequest request = new MoMLChangeRequest(this, director, moml);
+                                String moml = "<property name=\"" + name
+                                    + "\" value=\"" + value + "\"/>";
+                                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                        director, moml);
                                 director.requestChange(request);
+
                                 /* Formerly (before change request):
                                 ((Settable)attribute).setExpression(value);
                                 if (attribute instanceof Variable) {
@@ -863,12 +887,14 @@ public class MoMLApplication implements ExecutionListener {
                     }
                 }
             }
+
             if (!match) {
                 // Unrecognized option.
-                throw new IllegalActionException("Unrecognized option: " +
-                        "No parameter exists with name " + name);
+                throw new IllegalActionException("Unrecognized option: "
+                    + "No parameter exists with name " + name);
             }
         }
+
         // If the default configuration contains any Tableaux,
         // then we show them now.  This is deferred until now because
         // how they are shown may depend on command-line arguments
@@ -876,6 +902,7 @@ public class MoMLApplication implements ExecutionListener {
         if (_configuration == null) {
             throw new IllegalActionException("No configuration provided.");
         }
+
         _configuration.showAll();
     }
 
@@ -889,24 +916,25 @@ public class MoMLApplication implements ExecutionListener {
      *   if the contents of the URL is not a configuration.
      */
     protected Configuration _readConfiguration(URL specificationURL)
-            throws Exception {
+        throws Exception {
         _parser.reset();
 
-        Configuration toplevel =
-            (Configuration) _parser.parse(specificationURL, specificationURL);
+        Configuration toplevel = (Configuration) _parser.parse(specificationURL,
+                specificationURL);
 
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
         // in the directory.
-        ComponentEntity directory
-            = ((Configuration)toplevel).getEntity("directory");
+        ComponentEntity directory = ((Configuration) toplevel).getEntity(
+                "directory");
+
         if (directory instanceof ModelDirectory) {
-            PtolemyEffigy effigy
-                = new PtolemyEffigy(
-                        (ModelDirectory)directory, toplevel.getName());
+            PtolemyEffigy effigy = new PtolemyEffigy((ModelDirectory) directory,
+                    toplevel.getName());
             effigy.setModel(toplevel);
             effigy.identifier.setExpression(specificationURL.toExternalForm());
         }
+
         return toplevel;
     }
 
@@ -915,8 +943,8 @@ public class MoMLApplication implements ExecutionListener {
      */
     protected String _usage() {
         // Call the static method that generates the usage strings.
-        return StringUtilities.usageString(_commandTemplate,
-                _commandOptions, _commandFlags);
+        return StringUtilities.usageString(_commandTemplate, _commandOptions,
+            _commandFlags);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -929,19 +957,15 @@ public class MoMLApplication implements ExecutionListener {
     protected String _basePath = "ptolemy/configs";
 
     /** The command-line options that are either present or not. */
-    protected String _commandFlags[] = {
-        "-help",
-        "-run",
-        "-runThenExit",
-        "-test",
-        "-version",
-    };
+    protected String[] _commandFlags = {
+            "-help", "-run", "-runThenExit", "-test", "-version",
+        };
 
     /** The command-line options that take arguments. */
-    protected  static String _commandOptions[][] = {
-        {"-class",  "<classname>"},
-        {"-<parameter name>", "<parameter value>"},
-    };
+    protected static String[][] _commandOptions = {
+            { "-class", "<classname>" },
+            { "-<parameter name>", "<parameter value>" },
+        };
 
     /** The form of the command line. */
     protected String _commandTemplate = "moml [ options ] [file ...]";
@@ -968,7 +992,6 @@ public class MoMLApplication implements ExecutionListener {
      *  and intro.htm.
      */
     class ConfigurationFilenameFilter implements FilenameFilter {
-
         /** Return true if the specified file names a directory
          *  that contains a file named configuration.xml
          *  and a file named intro.htm
@@ -978,30 +1001,31 @@ public class MoMLApplication implements ExecutionListener {
          *  @return true if the file is a directory that
          *  contains a file called configuration.xml
          */
-        public boolean accept(File directory, String name ) {
+        public boolean accept(File directory, String name) {
             try {
                 File configurationDirectory = new File(directory, name);
+
                 if (!configurationDirectory.isDirectory()) {
                     return false;
                 }
+
                 File configurationFile = new File(configurationDirectory,
                         "configuration.xml");
-                File introFile = new File(configurationDirectory,
-                        "intro.htm");
-                if (configurationFile.isFile()
-                        && introFile.isFile()) {
+                File introFile = new File(configurationDirectory, "intro.htm");
+
+                if (configurationFile.isFile() && introFile.isFile()) {
                     return true;
                 }
             } catch (Exception ex) {
                 return false;
             }
+
             return false;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The count of currently executing runs.
     private int _activeCount = 0;
 

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.data.StringToken;
@@ -34,8 +33,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringParameter
+
 /**
    This subclass of Parameter is almost identical to Parameter except that it
    sets itself to string mode in the constructor.
@@ -55,9 +56,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class StringParameter extends Parameter {
-
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will use the
@@ -74,7 +73,7 @@ public class StringParameter extends Parameter {
      *   a parameter already in the container.
      */
     public StringParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setStringMode(true);
     }
@@ -93,6 +92,6 @@ public class StringParameter extends Parameter {
      *   and there are variables that depend on this one.
      */
     public String stringValue() throws IllegalActionException {
-        return ((StringToken)getToken()).stringValue();
+        return ((StringToken) getToken()).stringValue();
     }
 }

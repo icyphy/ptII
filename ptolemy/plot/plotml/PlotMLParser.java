@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.plot.plotml;
+
 
 // Ptolemy imports.
 import ptolemy.plot.Plot;
@@ -36,6 +36,7 @@ import com.microstar.xml.XmlException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLParser
+
 /**
    This class constructs a plot from specifications
    in PlotML (Plot Markup Language), which is an XML language.
@@ -54,7 +55,6 @@ import com.microstar.xml.XmlException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class PlotMLParser extends PlotBoxMLParser {
-
     /** Construct an parser to parse commands for the specified plot object.
      *  @param plot The plot object to which to apply the commands.
      */
@@ -65,7 +65,8 @@ public class PlotMLParser extends PlotBoxMLParser {
     /** Protected constructor allows derived classes to set _plot
      *  differently.
      */
-    protected PlotMLParser() {}
+    protected PlotMLParser() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -81,7 +82,7 @@ public class PlotMLParser extends PlotBoxMLParser {
 
         if (elementName.equals("dataset")) {
             // Reset the default, in case it was changed for this dataset.
-            ((Plot)_plot).setConnected(_connected);
+            ((Plot) _plot).setConnected(_connected);
         }
     }
 
@@ -107,26 +108,24 @@ public class PlotMLParser extends PlotBoxMLParser {
     public void startElement(String elementName) throws XmlException {
         try {
             // NOTE: The elements are alphabetical below...
-
             if (elementName.equals("barGraph")) {
-                String widthSpec = (String)_attributes.get("width");
-                String offsetSpec = (String)_attributes.get("offset");
+                String widthSpec = (String) _attributes.get("width");
+                String offsetSpec = (String) _attributes.get("offset");
+
                 // NOTE: If only one of these is given, then the other
                 // is ignored.
-                if (widthSpec == null || offsetSpec == null) {
-                    ((Plot)_plot).setBars(true);
+                if ((widthSpec == null) || (offsetSpec == null)) {
+                    ((Plot) _plot).setBars(true);
                 } else {
                     double width = (Double.valueOf(widthSpec)).doubleValue();
                     double offset = (Double.valueOf(offsetSpec)).doubleValue();
-                    ((Plot)_plot).setBars(width, offset);
+                    ((Plot) _plot).setBars(width, offset);
                 }
-
             } else if (elementName.equals("dataset")) {
-                String name = (String)_attributes.get("name");
+                String name = (String) _attributes.get("name");
 
-                if (!((Plot)_plot).getReuseDatasets()
-                        || name == null
-                        || _currentDataset < 0 ) {
+                if (!((Plot) _plot).getReuseDatasets() || (name == null)
+                        || (_currentDataset < 0)) {
                     // reuseDatasets was not present or if it was,
                     // the current dataset does not have a name
                     // or we have not yet seen a dataset.
@@ -134,7 +133,8 @@ public class PlotMLParser extends PlotBoxMLParser {
                     _currentPointCount = 0.0;
                 } else {
                     // reuseDatasets was set to true and name is not null.
-                    int possibleDataset = ((Plot)_plot).getLegendDataset(name);
+                    int possibleDataset = ((Plot) _plot).getLegendDataset(name);
+
                     if (possibleDataset != -1) {
                         _currentDataset = possibleDataset;
                     } else {
@@ -145,87 +145,86 @@ public class PlotMLParser extends PlotBoxMLParser {
                 }
 
                 if (name != null) {
-                    ((Plot)_plot).addLegend(_currentDataset, name);
+                    ((Plot) _plot).addLegend(_currentDataset, name);
                 }
 
-                String connected = (String)_attributes.get("connected");
+                String connected = (String) _attributes.get("connected");
+
                 if (connected != null) {
                     if (connected.equals("no")) {
-                        ((Plot)_plot).setConnected(false, _currentDataset);
+                        ((Plot) _plot).setConnected(false, _currentDataset);
                     } else {
-                        ((Plot)_plot).setConnected(true, _currentDataset);
+                        ((Plot) _plot).setConnected(true, _currentDataset);
                     }
                 }
 
-                String marks = (String)_attributes.get("marks");
+                String marks = (String) _attributes.get("marks");
+
                 if (marks != null) {
-                    ((Plot)_plot).setMarksStyle(marks, _currentDataset);
+                    ((Plot) _plot).setMarksStyle(marks, _currentDataset);
                 }
 
-                String stems = (String)_attributes.get("stems");
+                String stems = (String) _attributes.get("stems");
+
                 if (stems != null) {
                     if (stems.equals("yes")) {
-                        ((Plot)_plot).setImpulses(true, _currentDataset);
+                        ((Plot) _plot).setImpulses(true, _currentDataset);
                     } else {
-                        ((Plot)_plot).setImpulses(false, _currentDataset);
+                        ((Plot) _plot).setImpulses(false, _currentDataset);
                     }
                 }
-
             } else if (elementName.equals("default")) {
+                String connected = (String) _attributes.get("connected");
 
-                String connected = (String)_attributes.get("connected");
                 if (connected.equals("yes")) {
-                    ((Plot)_plot).setConnected(true);
+                    ((Plot) _plot).setConnected(true);
                     _connected = true;
                 } else {
-                    ((Plot)_plot).setConnected(false);
+                    ((Plot) _plot).setConnected(false);
                     _connected = false;
                 }
 
-                String marks = (String)_attributes.get("marks");
+                String marks = (String) _attributes.get("marks");
+
                 if (marks != null) {
-                    ((Plot)_plot).setMarksStyle(marks);
+                    ((Plot) _plot).setMarksStyle(marks);
                 }
 
-                String stems = (String)_attributes.get("stems");
+                String stems = (String) _attributes.get("stems");
+
                 if (stems.equals("no")) {
-                    ((Plot)_plot).setImpulses(false);
+                    ((Plot) _plot).setImpulses(false);
                 } else {
-                    ((Plot)_plot).setImpulses(true);
+                    ((Plot) _plot).setImpulses(true);
                 }
-
             } else if (elementName.equals("m")) {
                 _addPoint(false, elementName);
-
             } else if (elementName.equals("move")) {
                 _addPoint(false, elementName);
-
             } else if (elementName.equals("p")) {
                 _addPoint(true, elementName);
-
             } else if (elementName.equals("point")) {
                 _addPoint(true, elementName);
-
             } else if (elementName.equals("reuseDatasets")) {
-                ((Plot)_plot).setReuseDatasets(true);
+                ((Plot) _plot).setReuseDatasets(true);
             } else {
                 super.startElement(elementName);
             }
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
-                throw (XmlException)ex;
+                throw (XmlException) ex;
             } else {
                 // FIXME: Temporary for debugging.
                 System.err.println(ex.toString());
                 ex.printStackTrace();
+
                 String msg = "XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.toString();
-                throw new XmlException(msg,
-                        _currentExternalEntity(),
-                        _parser.getLineNumber(),
-                        _parser.getColumnNumber());
+                throw new XmlException(msg, _currentExternalEntity(),
+                    _parser.getLineNumber(), _parser.getColumnNumber());
             }
         }
+
         // NOTE: if super is called, this gets done twice.
         // Any way to avoid it?
         _attributes.clear();
@@ -253,9 +252,10 @@ public class PlotMLParser extends PlotBoxMLParser {
      *  @param element The name of the element.
      */
     protected void _addPoint(boolean connected, String element)
-            throws Exception {
-        String xSpec = (String)_attributes.get("x");
+        throws Exception {
+        String xSpec = (String) _attributes.get("x");
         double x;
+
         if (xSpec == null) {
             // No x value given.  Use _currentPointCount.
             x = _currentPointCount;
@@ -266,29 +266,35 @@ public class PlotMLParser extends PlotBoxMLParser {
             x = (Double.valueOf(xSpec)).doubleValue();
         }
 
-        String ySpec = (String)_attributes.get("y");
+        String ySpec = (String) _attributes.get("y");
         _checkForNull(ySpec, "No y value for element \"" + element + "\"");
+
         // NOTE: Do not use parseDouble() to maintain Java 1.1 compatibility.
         double y = (Double.valueOf(ySpec)).doubleValue();
 
-        String lowSpec = (String)_attributes.get("lowErrorBar");
-        String highSpec = (String)_attributes.get("highErrorBar");
-        if (lowSpec == null && highSpec == null) {
-            ((Plot)_plot).addPoint(_currentDataset, x, y, connected);
+        String lowSpec = (String) _attributes.get("lowErrorBar");
+        String highSpec = (String) _attributes.get("highErrorBar");
+
+        if ((lowSpec == null) && (highSpec == null)) {
+            ((Plot) _plot).addPoint(_currentDataset, x, y, connected);
         } else {
-            double low, high;
+            double low;
+            double high;
+
             if (lowSpec != null) {
                 low = (Double.valueOf(lowSpec)).doubleValue();
             } else {
                 low = x;
             }
+
             if (highSpec != null) {
                 high = (Double.valueOf(highSpec)).doubleValue();
             } else {
                 high = x;
             }
-            ((Plot)_plot).addPointWithErrorBars(_currentDataset, x, y,
-                    low, high, connected);
+
+            ((Plot) _plot).addPointWithErrorBars(_currentDataset, x, y, low,
+                high, connected);
         }
     }
 }

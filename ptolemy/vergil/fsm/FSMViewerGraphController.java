@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm;
 
 import javax.swing.JMenu;
@@ -52,8 +51,10 @@ import diva.graph.GraphPane;
 import diva.graph.NodeController;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FSMViewerGraphController
+
 /**
    A graph controller for the Ptolemy II finite-state machine viewer.
    This controller allows states to be moved and context menus to be accessed,
@@ -67,7 +68,6 @@ import diva.gui.GUIUtilities;
    @Pt.AcceptedRating Red (johnr)
 */
 public class FSMViewerGraphController extends RunnableGraphController {
-
     /** Create a new controller with default port, state, and transition
      *  controllers.
      */
@@ -84,11 +84,12 @@ public class FSMViewerGraphController extends RunnableGraphController {
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
+
         // NOTE: The transition controller's LookInsideAction is designed
         // to handle both State and Transition.  We can't associate more
         // than one with the hot key, so that one handles both.
         GUIUtilities.addHotKey(getFrame().getJGraph(),
-                _transitionController._lookInsideAction);
+            _transitionController._lookInsideAction);
     }
 
     /** React to an event by highlighting the new state.
@@ -96,28 +97,35 @@ public class FSMViewerGraphController extends RunnableGraphController {
      */
     public void event(DebugEvent event) {
         if (event instanceof StateEvent) {
-            State state = ((StateEvent)event).getState();
+            State state = ((StateEvent) event).getState();
+
             if (state != null) {
                 Object location = state.getAttribute("_location");
+
                 if (location != null) {
                     Figure figure = getFigure(location);
+
                     if (figure != null) {
                         if (_animationRenderer == null) {
                             _animationRenderer = new AnimationRenderer();
                         }
+
                         if (_animated != figure) {
                             // Deselect previous one.
                             if (_animated != null) {
-                                _animationRenderer.renderDeselected(
-                                        _animated);
+                                _animationRenderer.renderDeselected(_animated);
                             }
+
                             _animationRenderer.renderSelected(figure);
                             _animated = figure;
+
                             long animationDelay = getAnimationDelay();
+
                             if (animationDelay > 0) {
                                 try {
                                     Thread.sleep(animationDelay);
-                                } catch (InterruptedException ex) {}
+                                } catch (InterruptedException ex) {
+                                }
                             }
                         }
                     }
@@ -131,6 +139,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
     public NodeController getNodeController(Object object) {
         // Defer to the superclass if it can provide a controller.
         NodeController result = super.getNodeController(object);
+
         if (result != null) {
             return result;
         }
@@ -138,6 +147,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
         // Superclass cannot provide a controller. Use defaults.
         if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
+
             if (semanticObject instanceof Entity) {
                 return _stateController;
             } else if (semanticObject instanceof Attribute) {
@@ -146,18 +156,17 @@ public class FSMViewerGraphController extends RunnableGraphController {
                 return _portController;
             }
         }
-        throw new RuntimeException(
-                "Node with unknown semantic object: " + object);
+
+        throw new RuntimeException("Node with unknown semantic object: "
+            + object);
     }
 
     /** Return the edge controller appropriate for the given node.
      */
     public EdgeController getEdgeController(Object edge) {
-        if ( ((FSMGraphModel)getGraphModel()).getPtolemyModel()
-                instanceof ModalController) {
+        if (((FSMGraphModel) getGraphModel()).getPtolemyModel() instanceof ModalController) {
             return _modalTransitionController;
-        }
-        else {
+        } else {
             return _transitionController;
         }
     }
@@ -188,8 +197,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
         super._createControllers();
         _attributeController = new AttributeController(this,
                 AttributeController.PARTIAL);
-        _stateController = new StateController(this,
-                AttributeController.PARTIAL);
+        _stateController = new StateController(this, AttributeController.PARTIAL);
         _modalTransitionController = new ModalTransitionController(this);
         _transitionController = new TransitionController(this);
     }
@@ -203,12 +211,12 @@ public class FSMViewerGraphController extends RunnableGraphController {
     protected void initializeInteraction() {
         // NOTE: This method name does not have a leading underscore
         // because it is a diva method.
-
         GraphPane pane = getGraphPane();
 
         // Create and set up the selection dragger
         _selectionDragger = new SelectionDragger(pane);
         _selectionDragger.addSelectionModel(getSelectionModel());
+
         // If the selectionDragger is consuming, then popup menus don't 
         // disappear properly.
         _selectionDragger.setConsuming(false);
@@ -233,7 +241,6 @@ public class FSMViewerGraphController extends RunnableGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
 }

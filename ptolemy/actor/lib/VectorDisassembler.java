@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleMatrixToken;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VectorDisassembler
+
 /**
    An actor that disassembles a DoubleMatrixToken to a multiport output.
    <p>On each firing, read one column vector (i.e. a DoubleMatrixToken with
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see VectorAssembler
 */
 public class VectorDisassembler extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +71,7 @@ public class VectorDisassembler extends Transformer {
      *   actor with this name.
      */
     public VectorDisassembler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
@@ -79,12 +79,10 @@ public class VectorDisassembler extends Transformer {
         output.setTypeEquals(BaseType.DOUBLE);
         output.setMultiport(true);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"6\" " +
-                "height=\"40\" style=\"fill:blue\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+            + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -102,13 +100,13 @@ public class VectorDisassembler extends Transformer {
      *  the input token has more than one column.
      */
     public void fire() throws IllegalActionException {
-
         if (input.hasToken(0)) {
-            DoubleMatrixToken vector = (DoubleMatrixToken)input.get(0);
+            DoubleMatrixToken vector = (DoubleMatrixToken) input.get(0);
 
             if (vector.getColumnCount() != 1) {
-                throw new IllegalActionException(this, "The input must "
-                        + "be a DoubleMatrixToken with one column.");
+                throw new IllegalActionException(this,
+                    "The input must "
+                    + "be a DoubleMatrixToken with one column.");
             }
 
             int min = Math.min(vector.getRowCount(), output.getWidth());
@@ -119,4 +117,3 @@ public class VectorDisassembler extends Transformer {
         }
     }
 }
-

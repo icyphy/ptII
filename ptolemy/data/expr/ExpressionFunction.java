@@ -37,8 +37,10 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionFunction
+
 /**
    An implementation of a function closure that encapsulates an
    expression tree.  Instances of this class are created during the
@@ -52,10 +54,9 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (neuendor)
    @see ptolemy.data.expr.ASTPtRootNode
 */
-
 public class ExpressionFunction implements Function {
     public ExpressionFunction(List argumentNames, Type[] argumentTypes,
-            ASTPtRootNode exprRoot) {
+        ASTPtRootNode exprRoot) {
         _argumentNames = new ArrayList(argumentNames);
         _argumentTypes = argumentTypes;
         _exprRoot = exprRoot;
@@ -72,24 +73,27 @@ public class ExpressionFunction implements Function {
      *   the function.
      */
     public ptolemy.data.Token apply(ptolemy.data.Token[] arguments)
-            throws IllegalActionException {
+        throws IllegalActionException {
         ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
+
         // construct a NamedConstantsScope that contains mappings from
         // argument names to the given argument values
         Map map = new HashMap();
+
         for (int i = 0; i < arguments.length; ++i) {
-            String name = (String)_argumentNames.get(i);
+            String name = (String) _argumentNames.get(i);
             ptolemy.data.Token argument = arguments[i];
             map.put(name, argument);
+
             // Below is technically correct, but it prevents well typed
             // recursive function definitions.  I'm sure there's a well
             // known solution to this, but I don't have the time to figure it
             // out at the moment.
             //      map.put(name, _argumentTypes[i].convert(argument));
         }
+
         NamedConstantsScope argumentsScope = new NamedConstantsScope(map);
-        return parseTreeEvaluator.evaluateParseTree(
-                _exprRoot, argumentsScope);
+        return parseTreeEvaluator.evaluateParseTree(_exprRoot, argumentsScope);
     }
 
     /** Return the number of arguments of the function.
@@ -144,18 +148,24 @@ public class ExpressionFunction implements Function {
     public String toString() {
         StringBuffer buffer = new StringBuffer("(function(");
         int n = _argumentNames.size();
+
         for (int i = 0; i < n; i++) {
             if (i > 0) {
                 buffer.append(", ");
             }
-            buffer.append((String)_argumentNames.get(i));
+
+            buffer.append((String) _argumentNames.get(i));
+
             Type type = _argumentTypes[i];
+
             if (type != BaseType.GENERAL) {
                 buffer.append(":");
                 buffer.append(type.toString());
             }
         }
+
         buffer.append(") ");
+
         ParseTreeWriter writer = new ParseTreeWriter();
         String string = writer.printParseTree(_exprRoot);
         buffer.append(string);
@@ -165,11 +175,12 @@ public class ExpressionFunction implements Function {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The root of the expression tree.
     private ASTPtRootNode _exprRoot;
+
     // The list of argument names that are bound in this function closure.
     private List _argumentNames;
+
     // The list of the (monomorphic) types of the arguments.
     private Type[] _argumentTypes;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.lib.Transformer;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ZeroOrderHold
+
 /**
    Convert discrete events at the input to a continuous-time
    signal at the output by holding the value of the discrete
@@ -53,10 +54,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (cxh)
 */
-
-public class ZeroOrderHold extends Transformer
-    implements CTWaveformGenerator {
-
+public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -70,24 +68,20 @@ public class ZeroOrderHold extends Transformer
      *   an entity already in the container.
      */
     public ZeroOrderHold(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        defaultValue = new Parameter(this, "defaultValue",
-                new IntToken(0));
+        defaultValue = new Parameter(this, "defaultValue", new IntToken(0));
         output.setTypeAtLeast(input);
         output.setTypeAtLeast(defaultValue);
-        new Parameter(input, "signalType",
-                new StringToken("DISCRETE"));
-        new Parameter(output, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(input, "signalType", new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"-25,10 -15,10 -15,-10 5,-10\"/>\n"
-                + "<polyline points=\"5,-10 5,0 15,0 15,10 25,10\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<polyline points=\"-25,10 -15,10 -15,-10 5,-10\"/>\n"
+            + "<polyline points=\"5,-10 5,0 15,0 15,10 25,10\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,9 +102,8 @@ public class ZeroOrderHold extends Transformer
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ZeroOrderHold newObject = (ZeroOrderHold)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ZeroOrderHold newObject = (ZeroOrderHold) super.clone(workspace);
         newObject.output.setTypeAtLeast(input);
         newObject.output.setTypeAtLeast(defaultValue);
         return newObject;
@@ -120,17 +113,20 @@ public class ZeroOrderHold extends Transformer
      *  call.
      *  @exception IllegalActionException If the token cannot be sent.
      */
-    public void fire() throws IllegalActionException{
-        CTDirector director = (CTDirector)getDirector();
+    public void fire() throws IllegalActionException {
+        CTDirector director = (CTDirector) getDirector();
+
         if (director.isDiscretePhase()) {
             if (input.hasToken(0)) {
                 _lastToken = input.get(0);
+
                 CTDirector dir = (CTDirector) getDirector();
-                _debug(getFullName() + " receives an event at: " +
-                        dir.getModelTime() +
-                        " with token " + _lastToken.toString());
+                _debug(getFullName() + " receives an event at: "
+                    + dir.getModelTime() + " with token "
+                    + _lastToken.toString());
             }
         }
+
         output.send(0, _lastToken);
     }
 
@@ -138,14 +134,13 @@ public class ZeroOrderHold extends Transformer
      *  a zero Double Token.
      *  @exception IllegalActionException If thrown by the super class.
      */
-    public void initialize() throws IllegalActionException{
+    public void initialize() throws IllegalActionException {
         super.initialize();
         _lastToken = defaultValue.getToken();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Saved token.
     private Token _lastToken;
 }

@@ -32,6 +32,7 @@ import diva.graph.JGraph;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
 
+
 /**
  * The graph demo demonstrates basic graph editing and layout
  * functionality, illustrates the key points of the graph
@@ -57,17 +58,15 @@ public class BasicGraphDemo {
      * Construct a new instance of graph demo, which does the work of
      * setting up the graphs and displaying itself.
      */
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         AppContext context = new BasicFrame("Basic Graph Demo");
         new BasicGraphDemo(context);
     }
 
     public BasicGraphDemo(AppContext context) {
         final BasicGraphModel model = new BasicGraphModel();
-        JGraph jg = new JGraph(new GraphPane(new BasicGraphController(),
-                                       model));
-        JGraph jg2 = new JGraph(new GraphPane(new BasicGraphController(),
-                                        model));
+        JGraph jg = new JGraph(new GraphPane(new BasicGraphController(), model));
+        JGraph jg2 = new JGraph(new GraphPane(new BasicGraphController(), model));
 
         context.getContentPane().setLayout(new GridLayout(2, 1));
         context.getContentPane().add(jg);
@@ -92,15 +91,7 @@ public class BasicGraphDemo {
           JComponent.WHEN_IN_FOCUSED_WINDOW);
           jg.setRequestFocusEnabled(true);
         */
-
         context.setSize(600, 400);
         context.setVisible(true);
     }
 }
-
-
-
-
-
-
-

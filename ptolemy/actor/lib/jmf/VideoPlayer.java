@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.jmf;
 
 import java.awt.BorderLayout;
@@ -49,8 +48,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VideoPlayer
+
 /** An actor that displays a AVI, Quicktime or MPEG video file.
 
 <p>This actor accepts an ObjectToken that contains a DataSource.  This
@@ -65,9 +66,7 @@ of playing, rate of playback, and volume control.
 @Pt.AcceptedRating Red (cxh)
 @see StreamLoader
 */
-
 public class VideoPlayer extends Sink implements ControllerListener {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,7 +76,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
      *   actor with this name.
      */
     public VideoPlayer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -100,31 +99,34 @@ public class VideoPlayer extends Sink implements ControllerListener {
     public boolean postfire() throws IllegalActionException {
         ObjectToken objectToken;
         Token token = input.get(0);
+
         try {
             objectToken = (ObjectToken) token;
         } catch (ClassCastException ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to cast " + token.getClass()
-                    + " to an ObjectToken.\n"
-                    + "The VideoPlayer actor expects to be connected to "
-                    + "actors like the StreamLoader.\n"
-                    + "Try connecting other actors to "
-                    + "actor.lib.image.ImageDisplay.");
+                "Failed to cast " + token.getClass() + " to an ObjectToken.\n"
+                + "The VideoPlayer actor expects to be connected to "
+                + "actors like the StreamLoader.\n"
+                + "Try connecting other actors to "
+                + "actor.lib.image.ImageDisplay.");
         }
+
         DataSource input = (DataSource) objectToken.getValue();
+
         if (_player != null) {
             _player.removeControllerListener(this);
         }
+
         try {
             _player = Manager.createRealizedPlayer(input);
             _player.addControllerListener(this);
             _player.prefetch();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot open file: " + input);
+                "Cannot open file: " + input);
         } catch (MediaException ex) {
             throw new IllegalActionException(this, ex,
-                    "Exception thrown by media framework on " + input);
+                "Exception thrown by media framework on " + input);
         }
 
         _player.setMediaTime(_startTime);
@@ -132,6 +134,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
         _frame = new JFrame();
         _container = _frame.getContentPane();
         _container.setLayout(new BorderLayout());
+
         Component controlPanel = _player.getControlPanelComponent();
         Component videoPanel = _player.getVisualComponent();
         _container.add(videoPanel, BorderLayout.CENTER);
@@ -143,7 +146,6 @@ public class VideoPlayer extends Sink implements ControllerListener {
         _player.start();
         return super.postfire();
     }
-
 
     /** The container that contains the control panel components. */
     private Container _container;

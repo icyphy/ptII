@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Lattice
+
 /**
    An FIR filter with a lattice structure.  The coefficients of such a
    filter are called "reflection coefficients."  Lattice filters are
@@ -103,9 +104,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class Lattice extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -115,16 +114,17 @@ public class Lattice extends Transformer {
      *   actor with this name.
      */
     public Lattice(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
         reflectionCoefficients = new Parameter(this, "reflectionCoefficients");
+
         // Note that setExpression() will call attributeChanged().
         reflectionCoefficients.setExpression(
-                "{0.804534, -0.820577, 0.521934, -0.205}");
+            "{0.804534, -0.820577, 0.521934, -0.205}");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -146,17 +146,19 @@ public class Lattice extends Transformer {
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == reflectionCoefficients) {
-            ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
+            ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
             _order = value.length();
-            if (_backward == null || _order != _backward.length) {
+
+            if ((_backward == null) || (_order != _backward.length)) {
                 // Need to reallocate the arrays.
                 _reallocate();
             }
+
             for (int i = 0; i < _order; i++) {
-                _reflectionCoefficients[i] =
-                    ((DoubleToken)value.getElement(i)).doubleValue();
+                _reflectionCoefficients[i] = ((DoubleToken) value.getElement(i))
+                    .doubleValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -169,13 +171,13 @@ public class Lattice extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            DoubleToken in = (DoubleToken)input.get(0);
+            DoubleToken in = (DoubleToken) input.get(0);
 
-            _forwardCache[0] = in.doubleValue();   // _forwardCache(0) = x(n)
+            _forwardCache[0] = in.doubleValue(); // _forwardCache(0) = x(n)
 
             _doFilter();
 
-            _backwardCache[0] = _forwardCache[0];   // _backwardCache[0] = x[n]
+            _backwardCache[0] = _forwardCache[0]; // _backwardCache[0] = x[n]
 
             // Send the forward residual.
             output.broadcast(new DoubleToken(_forwardCache[_order]));
@@ -185,7 +187,7 @@ public class Lattice extends Transformer {
     /** Initialize the state of the filter.
      */
     public void initialize() throws IllegalActionException {
-        for (int i = 0; i < _order + 1; i ++) {
+        for (int i = 0; i < (_order + 1); i++) {
             _forward[i] = 0;
             _backward[i] = 0;
         }
@@ -197,12 +199,8 @@ public class Lattice extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        System.arraycopy(_backwardCache, 0,
-                _backward, 0,
-                _order + 1);
-        System.arraycopy(_forwardCache, 0,
-                _forward, 0,
-                _order + 1);
+        System.arraycopy(_backwardCache, 0, _backward, 0, _order + 1);
+        System.arraycopy(_forwardCache, 0, _forward, 0, _order + 1);
         return super.postfire();
     }
 
@@ -211,37 +209,33 @@ public class Lattice extends Transformer {
      */
     public boolean prefire() throws IllegalActionException {
         // Get a copy of the current filter state that we can modify.
-        System.arraycopy(_backward, 0,
-                _backwardCache, 0,
-                _order + 1);
-        System.arraycopy(_forward, 0,
-                _forwardCache, 0,
-                _order + 1);
+        System.arraycopy(_backward, 0, _backwardCache, 0, _order + 1);
+        System.arraycopy(_forward, 0, _forwardCache, 0, _order + 1);
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     // Compute the filter, updating the caches, based on the current
     // values.
     protected void _doFilter() throws IllegalActionException {
         double k;
+
         // NOTE: The following code is ported from Ptolemy Classic.
         // Update forward errors.
         for (int i = 0; i < _order; i++) {
             k = _reflectionCoefficients[i];
-            _forwardCache[i+1] = -k * _backwardCache[i] + _forwardCache[i];
+            _forwardCache[i + 1] = (-k * _backwardCache[i]) + _forwardCache[i];
         }
 
         // Backward: Compute the weights for the next round Note:
         // strictly speaking, _backwardCache[_order] is not necessary
         // for computing the output.  It is computed for the use of
         // subclasses which adapt the reflection coefficients.
-        for (int i = _order; i > 0 ; i--) {
-            k = _reflectionCoefficients[i-1];
-            _backwardCache[i] = -k * _forwardCache[i-1]
-                + _backwardCache[i-1];
+        for (int i = _order; i > 0; i--) {
+            k = _reflectionCoefficients[i - 1];
+            _backwardCache[i] = (-k * _forwardCache[i - 1])
+                + _backwardCache[i - 1];
         }
     }
 

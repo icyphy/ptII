@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Actor;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTWaveformGenerator
+
 /**
    Interface for CT actors that generate continuous signals (waveforms) from
    discrete events. Typical implementations of waveform generators are
@@ -43,4 +44,5 @@ import ptolemy.actor.Actor;
    @Pt.ProposedRating Green (liuj)
    @Pt.AcceptedRating Green (yuhong)
 */
-public interface CTWaveformGenerator extends Actor{}
+public interface CTWaveformGenerator extends Actor {
+}

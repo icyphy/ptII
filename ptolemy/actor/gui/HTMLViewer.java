@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
@@ -50,8 +49,10 @@ import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewer
+
 /**
    This class is a toplevel frame that can view HTML documents.
    This class supports hyperlinks, and has a particular feature to
@@ -79,10 +80,8 @@ import ptolemy.util.MessageHandler;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
-public class HTMLViewer extends TableauFrame
-    implements Printable, HyperlinkListener {
-
+public class HTMLViewer extends TableauFrame implements Printable,
+    HyperlinkListener {
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
@@ -90,6 +89,7 @@ public class HTMLViewer extends TableauFrame
         pane.setEditable(false);
         pane.addHyperlinkListener(this);
         _scroller = new JScrollPane(pane);
+
         // Default, which can be overridden by calling setSize().
         _scroller.setPreferredSize(new Dimension(800, 600));
         getContentPane().add(_scroller);
@@ -131,11 +131,10 @@ public class HTMLViewer extends TableauFrame
             if (event.getDescription().startsWith("about:")) {
                 // Process "about:" hyperlinks
                 try {
-                    newURL = HTMLAbout.hyperlinkUpdate(event,
-                            getConfiguration());
+                    newURL = HTMLAbout.hyperlinkUpdate(event, getConfiguration());
                 } catch (Throwable throwable) {
                     MessageHandler.error("Problem processing '"
-                            + event.getDescription() + "'.", throwable);
+                        + event.getDescription() + "'.", throwable);
                 }
             }
 
@@ -146,14 +145,17 @@ public class HTMLViewer extends TableauFrame
             // use the "userInfo" part of the URL,
             // defined at http://www.ncsa.uiuc.edu/demoweb/url-primer.html
             boolean useBrowser = false;
+
             if (newURL != null) {
                 String ref = newURL.getRef();
+
                 if (ref != null) {
                     useBrowser = ref.equals("in_browser");
                 }
             }
 
             String protocol = newURL.getProtocol();
+
             if (protocol != null) {
                 // Suggested mailto: extension from Paul Lieverse
                 useBrowser |= protocol.equals("mailto");
@@ -163,26 +165,26 @@ public class HTMLViewer extends TableauFrame
                 // For some bizarre reason, when a link is within a frame,
                 // it needs to be handled differently than if its not in
                 // a frame.
-                HTMLFrameHyperlinkEvent frameHyperlinkEvent =
-                    (HTMLFrameHyperlinkEvent)event;
+                HTMLFrameHyperlinkEvent frameHyperlinkEvent = (HTMLFrameHyperlinkEvent) event;
                 String target = frameHyperlinkEvent.getTarget();
+
                 if (target.equals("_browser")) {
                     useBrowser = true;
-                } else if (!target.equals("_blank")
-                        && !target.equals("_top")) {
+                } else if (!target.equals("_blank") && !target.equals("_top")) {
                     // If the target is "_blank" or "_top", then we want to open
                     // in a new window, so we defer to the below.
+                    HTMLDocument doc = (HTMLDocument) pane.getDocument();
 
-                    HTMLDocument doc = (HTMLDocument)pane.getDocument();
                     try {
                         doc.processHTMLFrameHyperlinkEvent(frameHyperlinkEvent);
                     } catch (Exception ex) {
-                        MessageHandler.error(
-                                "Hyperlink reference failed", ex);
+                        MessageHandler.error("Hyperlink reference failed", ex);
                     }
+
                     return;
                 }
             }
+
             try {
                 // If the URL is the same as the one we are currently in,
                 // then we are dealing with a link within the same file,
@@ -192,6 +194,7 @@ public class HTMLViewer extends TableauFrame
                 } else {
                     // Attempt to open in a new window.
                     Configuration configuration = getConfiguration();
+
                     // FIXME: Should detect target == "_blank" and open
                     // in a new window, rather than always opening in a new
                     // window.  However, regrettably, there appears to be
@@ -204,15 +207,13 @@ public class HTMLViewer extends TableauFrame
                     // Nonetheless, it's perfectly doable if we can get the
                     // target...
                     if (configuration != null) {
-                        if (useBrowser && BrowserEffigy.staticFactory != null) {
-                            configuration.openModel(
-                                    newURL,
-                                    newURL,
-                                    newURL.toExternalForm(),
-                                    BrowserEffigy.staticFactory);
+                        if (useBrowser && (BrowserEffigy.staticFactory != null)) {
+                            configuration.openModel(newURL, newURL,
+                                newURL.toExternalForm(),
+                                BrowserEffigy.staticFactory);
                         } else {
-                            configuration.openModel(
-                                    newURL, newURL, newURL.toExternalForm());
+                            configuration.openModel(newURL, newURL,
+                                newURL.toExternalForm());
                         }
                     } else {
                         // If there is no configuration,
@@ -238,9 +239,8 @@ public class HTMLViewer extends TableauFrame
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
-    public int print(Graphics graphics, PageFormat format,
-            int index) throws PrinterException {
-
+    public int print(Graphics graphics, PageFormat format, int index)
+        throws PrinterException {
         Dimension dimension = pane.getSize();
 
         // How much do we have to scale the width?
@@ -252,9 +252,9 @@ public class HTMLViewer extends TableauFrame
         if (index > lastPage) {
             return Printable.NO_SUCH_PAGE;
         }
+
         AffineTransform at = new AffineTransform();
-        at.translate((int)format.getImageableX(),
-                (int)format.getImageableY());
+        at.translate((int) format.getImageableX(), (int) format.getImageableY());
         at.translate(0, -(format.getImageableHeight() * index));
         at.scale(scale, scale);
 
@@ -290,6 +290,7 @@ public class HTMLViewer extends TableauFrame
                     HTMLViewer.super.setSize(width, height);
                 }
             };
+
         Top.deferIfNecessary(doSet);
     }
 
@@ -313,11 +314,8 @@ public class HTMLViewer extends TableauFrame
         fileWriter.close();
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The scroll pane.
     private JScrollPane _scroller;
 }

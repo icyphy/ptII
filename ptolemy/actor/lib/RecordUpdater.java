@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.HashMap;
@@ -52,8 +51,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RecordUpdater
+
 /**
    On each firing, read one token from each input port and assemble them
    into a RecordToken that contains the union of the original input record
@@ -76,9 +77,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
    @see RecordAssembler
 */
-
 public class RecordUpdater extends TypedAtomicActor {
-
     /** Construct a RecordUpdater with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -88,16 +87,15 @@ public class RecordUpdater extends TypedAtomicActor {
      *   actor with this name.
      */
     public RecordUpdater(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"6\" " +
-                "height=\"40\" style=\"fill:red\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+            + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -119,9 +117,8 @@ public class RecordUpdater extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        RecordUpdater newObject = (RecordUpdater)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RecordUpdater newObject = (RecordUpdater) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.new FunctionTerm());
         return newObject;
     }
@@ -133,6 +130,7 @@ public class RecordUpdater extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Director director = getDirector();
+
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
@@ -141,18 +139,21 @@ public class RecordUpdater extends TypedAtomicActor {
         // the original record and all of the updating ports.
         HashMap outputMap = new HashMap();
 
-        RecordToken record = (RecordToken)input.get(0);
+        RecordToken record = (RecordToken) input.get(0);
         Set recordLabels = record.labelSet();
-        for (Iterator i = recordLabels.iterator(); i.hasNext(); ) {
-            String name = (String)i.next();
+
+        for (Iterator i = recordLabels.iterator(); i.hasNext();) {
+            String name = (String) i.next();
             Token value = record.get(name);
             outputMap.put(name, value);
         }
 
         List inputPorts = inputPortList();
         Iterator inputPortsIterator = inputPorts.iterator();
+
         while (inputPortsIterator.hasNext()) {
-            TypedIOPort inputPort = (TypedIOPort)inputPortsIterator.next();
+            TypedIOPort inputPort = (TypedIOPort) inputPortsIterator.next();
+
             if (inputPort != input) {
                 outputMap.put(inputPort.getName(), inputPort.get(0));
             }
@@ -164,10 +165,11 @@ public class RecordUpdater extends TypedAtomicActor {
         Token[] values = new Token[outputMap.size()];
 
         int j = 0;
-        for (Iterator i = outputMap.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry entry = (Map.Entry)i.next();
-            labels[j] = (String)entry.getKey();
-            values[j] = (Token)entry.getValue();
+
+        for (Iterator i = outputMap.entrySet().iterator(); i.hasNext();) {
+            Map.Entry entry = (Map.Entry) i.next();
+            labels[j] = (String) entry.getKey();
+            values[j] = (Token) entry.getValue();
             j++;
         }
 
@@ -184,12 +186,15 @@ public class RecordUpdater extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         Iterator ports = inputPortList().iterator();
+
         while (ports.hasNext()) {
-            IOPort port = (IOPort)ports.next();
-            if ( !port.hasToken(0)) {
+            IOPort port = (IOPort) ports.next();
+
+            if (!port.hasToken(0)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -210,8 +215,8 @@ public class RecordUpdater extends TypedAtomicActor {
 
         // Since the input port has a clone of the above RecordType, need to
         // get the type from the input port.
-        Inequality inequality =
-            new Inequality(new FunctionTerm(), output.getTypeTerm());
+        Inequality inequality = new Inequality(new FunctionTerm(),
+                output.getTypeTerm());
         constraints.add(inequality);
 
         return constraints;
@@ -219,7 +224,6 @@ public class RecordUpdater extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // This class implements a monotonic function of the input port
     // types. The value of the function is a record type that contains
     // all the labels in the input record, plus the names of the added
@@ -233,7 +237,6 @@ public class RecordUpdater extends TypedAtomicActor {
     // the type of this port is not bottom (it must be a record), the value
     // of the function is computed as described above.
     private class FunctionTerm extends MonotonicFunction {
-
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
 
@@ -242,24 +245,28 @@ public class RecordUpdater extends TypedAtomicActor {
          */
         public Object getValue() {
             Type inputType = input.getType();
+
             if (!(inputType instanceof RecordType)) {
                 return BaseType.UNKNOWN;
             }
 
-            RecordType recordType = (RecordType)inputType;
+            RecordType recordType = (RecordType) inputType;
             Map outputMap = new HashMap();
             Set recordLabels = recordType.labelSet();
             Iterator iterator = recordLabels.iterator();
+
             while (iterator.hasNext()) {
-                String label = (String)iterator.next();
+                String label = (String) iterator.next();
                 Type type = recordType.get(label);
                 outputMap.put(label, type);
             }
 
             List inputPorts = inputPortList();
             iterator = inputPorts.iterator();
+
             while (iterator.hasNext()) {
-                TypedIOPort port = (TypedIOPort)iterator.next();
+                TypedIOPort port = (TypedIOPort) iterator.next();
+
                 if (port != input) {
                     outputMap.put(port.getName(), port.getType());
                 }
@@ -271,8 +278,8 @@ public class RecordUpdater extends TypedAtomicActor {
             Type[] types = new Type[labelsObj.length];
 
             for (int i = 0; i < labels.length; i++) {
-                labels[i] = (String)labelsObj[i];
-                types[i] = (Type)outputMap.get(labels[i]);
+                labels[i] = (String) labelsObj[i];
+                types[i] = (Type) outputMap.get(labels[i]);
             }
 
             return new RecordType(labels, types);
@@ -287,11 +294,11 @@ public class RecordUpdater extends TypedAtomicActor {
             InequalityTerm[] variables = new InequalityTerm[portsObj.length];
 
             for (int i = 0; i < variables.length; i++) {
-                TypedIOPort port = (TypedIOPort)portsObj[i];
+                TypedIOPort port = (TypedIOPort) portsObj[i];
                 variables[i] = port.getTypeTerm();
             }
+
             return variables;
         }
     }
 }
-

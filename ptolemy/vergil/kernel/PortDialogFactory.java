@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel;
 
 import java.awt.Component;
@@ -43,12 +42,13 @@ import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.UnitConstraintsDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import diva.gui.toolbox.JContextMenu;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PortDialogFactory
+
 /**
    A factory that creates a dialog to configure, add, or remove ports
    from objects.
@@ -60,7 +60,6 @@ import diva.gui.toolbox.JContextMenu;
    @Pt.AcceptedRating Red (johnr)
 */
 public class PortDialogFactory implements MenuItemFactory {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -75,13 +74,16 @@ public class PortDialogFactory implements MenuItemFactory {
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
         JMenuItem retv = null;
+
         // Removed this method since it was never used. EAL
         // final NamedObj target = _getItemTargetFromMenuTarget(object);
         final NamedObj target = object;
 
         // ensure that we actually have a target, and that it's an Entity.
-        if (!(target instanceof Entity))
+        if (!(target instanceof Entity)) {
             return null;
+        }
+
         // Create a dialog for configuring the object.
         // First, identify the top parent frame.
         // Normally, this is a Frame, but just in case, we check.
@@ -90,49 +92,49 @@ public class PortDialogFactory implements MenuItemFactory {
         // when put in the background.
         // Note, this uses the "new" way of doing dialogs.
         Action configPortsAction = new AbstractAction(_configPorts) {
+                public void actionPerformed(ActionEvent e) {
+                    Component parent = menu.getInvoker();
 
-            public void actionPerformed(ActionEvent e) {
-                Component parent = menu.getInvoker();
-                while (parent.getParent() != null) {
-                    parent = parent.getParent();
-                }
-                if (parent instanceof Frame) {
-                    DialogTableau dialogTableau =
-                        DialogTableau.createDialog(
-                            (Frame) parent,
-                            _configuration,
-                            ((TableauFrame) parent).getEffigy(),
-                            PortConfigurerDialog.class,
-                            (Entity) target);
-                    if (dialogTableau != null) {
-                        dialogTableau.show();
+                    while (parent.getParent() != null) {
+                        parent = parent.getParent();
+                    }
+
+                    if (parent instanceof Frame) {
+                        DialogTableau dialogTableau = DialogTableau
+                            .createDialog((Frame) parent, _configuration,
+                                ((TableauFrame) parent).getEffigy(),
+                                PortConfigurerDialog.class, (Entity) target);
+
+                        if (dialogTableau != null) {
+                            dialogTableau.show();
+                        }
                     }
                 }
-            }
-        };
+            };
+
         retv = menu.add(configPortsAction, _configPorts);
 
         Action configUnitsAction = new AbstractAction(_configUnits) {
+                public void actionPerformed(ActionEvent e) {
+                    Component parent = menu.getInvoker();
 
-            public void actionPerformed(ActionEvent e) {
-                Component parent = menu.getInvoker();
-                while (parent.getParent() != null) {
-                    parent = parent.getParent();
-                }
-                if (parent instanceof Frame) {
-                    DialogTableau dialogTableau =
-                        DialogTableau.createDialog(
-                            (Frame) parent,
-                            _configuration,
-                            ((TableauFrame) parent).getEffigy(),
-                            UnitConstraintsDialog.class,
-                            (Entity) target);
-                    if (dialogTableau != null) {
-                        dialogTableau.show();
+                    while (parent.getParent() != null) {
+                        parent = parent.getParent();
+                    }
+
+                    if (parent instanceof Frame) {
+                        DialogTableau dialogTableau = DialogTableau
+                            .createDialog((Frame) parent, _configuration,
+                                ((TableauFrame) parent).getEffigy(),
+                                UnitConstraintsDialog.class, (Entity) target);
+
+                        if (dialogTableau != null) {
+                            dialogTableau.show();
+                        }
                     }
                 }
-            }
-        };
+            };
+
         retv = menu.add(configUnitsAction, _configUnits);
 
         return retv;
@@ -153,8 +155,6 @@ public class PortDialogFactory implements MenuItemFactory {
 
     /** The configuration. */
     private static String _configPorts = "Configure Ports";
-
     private static String _configUnits = "Configure Units";
-
     private Configuration _configuration;
 }

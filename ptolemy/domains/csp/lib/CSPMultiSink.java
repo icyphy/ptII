@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.lib;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -40,8 +39,10 @@ import ptolemy.domains.csp.kernel.ConditionalReceive;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSink
+
 /**
    A CSPMultiSink actor accepts a token from any channel connected to
    its input. It uses a conditional do (CDO) construct to always be
@@ -56,7 +57,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.domains.csp.kernel.CSPActor
 */
 public class CSPMultiSink extends CSPActor {
-
     /** Construct a CSPMultiSink in the default workspace with an
      *  empty string as its name. The actor is created with a single
      *  input port named "input".
@@ -77,7 +77,7 @@ public class CSPMultiSink extends CSPActor {
      *   with a port already in this actor.
      */
     public CSPMultiSink(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
@@ -103,46 +103,54 @@ public class CSPMultiSink extends CSPActor {
             int count = 0;
             int size = input.getWidth();
             _branchCount = new int[size];
+
             int i = 0;
             boolean[] guards = new boolean[size];
+
             for (i = 0; i < size; i++) {
                 _branchCount[i] = 0;
                 guards[i] = true;
             }
 
             boolean continueCDO = true;
-            while (continueCDO || (count < 25) ) {
+
+            while (continueCDO || (count < 25)) {
                 ConditionalBranch[] branches = new ConditionalBranch[size];
+
                 for (i = 0; i < size; i++) {
-                    branches[i] = new ConditionalReceive(guards[i],
-                            input, i, i);
+                    branches[i] = new ConditionalReceive(guards[i], input, i, i);
                 }
 
                 int successfulBranch = chooseBranch(branches);
 
                 _branchCount[successfulBranch]++;
+
                 boolean flag = false;
+
                 for (i = 0; i < size; i++) {
                     if (successfulBranch == i) {
                         Token t = branches[successfulBranch].getToken();
-                        System.out.println(getName() + ": received Token: " +
-                                t.toString() + " from receiver " + i);
+                        System.out.println(getName() + ": received Token: "
+                            + t.toString() + " from receiver " + i);
                         flag = true;
                     }
                 }
+
                 if (successfulBranch == -1) {
                     // all guards false so exit CDO
                     continueCDO = false;
                 } else if (!flag) {
-                    throw new TerminateProcessException(getName() + ": " +
-                            "branch id returned during execution of CDO.");
+                    throw new TerminateProcessException(getName() + ": "
+                        + "branch id returned during execution of CDO.");
                 }
+
                 count++;
             }
         } catch (IllegalActionException ex) {
-            throw new TerminateProcessException(getName() + ": Error: " +
-                    "could not create ConditionalReceive branch");
+            throw new TerminateProcessException(getName() + ": Error: "
+                + "could not create ConditionalReceive branch");
         }
+
         return;
     }
 
@@ -158,18 +166,17 @@ public class CSPMultiSink extends CSPActor {
     /** Discontinue the execution of this actor.
      */
     public void wrapup() {
-        System.out.println(Thread.currentThread().getName() +
-                ":Invoking wrapup of CSPMultiSink...\n");
+        System.out.println(Thread.currentThread().getName()
+            + ":Invoking wrapup of CSPMultiSink...\n");
+
         for (int i = 0; i < input.getWidth(); i++) {
-            System.out.println("MultiSink: Branch " + i +
-                    " successfully  rendezvoused " + _branchCount[i] +
-                    " times.");
+            System.out.println("MultiSink: Branch " + i
+                + " successfully  rendezvoused " + _branchCount[i] + " times.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Array storing the number of times each branch rendezvoused.
     private int[] _branchCount;
 }

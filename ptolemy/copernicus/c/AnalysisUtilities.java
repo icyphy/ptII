@@ -22,7 +22,6 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.HashSet;
@@ -32,14 +31,15 @@ import java.util.LinkedList;
 import soot.ArrayType;
 import soot.Local;
 import soot.RefType;
-import soot.RefLikeType;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AnalysisUtilities
+
 /**
    This class provides utilities for analyzing classes, methods and fields.
 
@@ -49,7 +49,7 @@ import soot.Type;
    @Pt.ProposedRating Red (ankush)
    @Pt.AcceptedRating Red (ssb)
 */
-public class AnalysisUtilities{
+public class AnalysisUtilities {
     /** Returns the set of classes needed by a field. These are the
      * declaring class of the field, and the type class (if any)  of the field.
      * @param field The field.
@@ -65,11 +65,12 @@ public class AnalysisUtilities{
         // This goes down and gets the base elements of arrays,
         // including multidimensional arrays.
         while (type instanceof ArrayType) {
-            type = ((ArrayType)type).getElementType();
+            type = ((ArrayType) type).getElementType();
         }
 
         if (type instanceof RefType) {
-            SootClass source = ((RefType)type).getSootClass();
+            SootClass source = ((RefType) type).getSootClass();
+
             if (!classes.contains(source)) {
                 classes.add(source);
             }
@@ -95,7 +96,6 @@ public class AnalysisUtilities{
         return interfaceSet;
     }
 
-
     /** Returns the list of classes in the arguments to a given method.
      * Also takes into account the return type of the method.
      * @param method The method to be analyzed.
@@ -108,15 +108,17 @@ public class AnalysisUtilities{
         typeSet.add(method.getReturnType());
 
         Iterator types = typeSet.iterator();
+
         while (types.hasNext()) {
-            Type type = (Type)types.next();
+            Type type = (Type) types.next();
 
             if (type instanceof ArrayType) {
-                type = ((ArrayType)type).getElementType();
+                type = ((ArrayType) type).getElementType();
             }
 
             if (type instanceof RefType) {
-                SootClass source = ((RefType)type).getSootClass();
+                SootClass source = ((RefType) type).getSootClass();
+
                 if (!classes.contains(source)) {
                     classes.add(source);
                 }
@@ -137,14 +139,13 @@ public class AnalysisUtilities{
 
         if (method.isConcrete()
                 && !OverriddenMethodGenerator.isOverridden(method)) {
-
-            Iterator locals = method.retrieveActiveBody().getLocals()
-                .iterator();
+            Iterator locals = method.retrieveActiveBody().getLocals().iterator();
 
             while (locals.hasNext()) {
                 Local local = (Local) locals.next();
+
                 if (local.getType() instanceof RefType) {
-                    RefType type = (RefType)local.getType();
+                    RefType type = (RefType) local.getType();
                     classes.add(type.getSootClass());
                 }
             }
@@ -165,18 +166,19 @@ public class AnalysisUtilities{
         gray.addAll(source.getInterfaces());
 
         while (!gray.isEmpty()) {
-            SootClass s = (SootClass)gray.getFirst();
+            SootClass s = (SootClass) gray.getFirst();
+
             if (s.isInterface()) {
                 Iterator classes = s.getInterfaces().iterator();
 
                 while (classes.hasNext()) {
                     SootClass superclass = (SootClass) classes.next();
-                    if (! interfaceSet.contains(superclass)
+
+                    if (!interfaceSet.contains(superclass)
                             && !gray.contains(superclass)) {
                         gray.addLast(superclass);
                     }
                 }
-
             }
 
             interfaceSet.add(s);
@@ -186,28 +188,16 @@ public class AnalysisUtilities{
         return interfaceSet;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected fields                    ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
 }

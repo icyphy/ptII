@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphTopologyException
+
 /**
    The exception thrown due to incorrect graph topology. This is for
    functions of graphs with required topologies. For example, acyclic property
@@ -40,13 +41,10 @@ package ptolemy.graph;
    @Pt.AcceptedRating Red (ssb)
 */
 public class GraphTopologyException extends GraphException {
-
     /** Constructor with an argument of text description.
      *  @param message The exception message.
      */
     public GraphTopologyException(String message) {
         super(message);
     }
-
 }
-

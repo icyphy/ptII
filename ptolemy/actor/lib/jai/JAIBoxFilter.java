@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIBoxFilter
+
 /**
    Convolve an image with a box filter.  A box filter is a filter where
    each value in the filter is the same.  In this actor, the value used is
@@ -55,9 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIBoxFilter extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,7 +66,7 @@ public class JAIBoxFilter extends Transformer {
      *   actor with this name.
      */
     public JAIBoxFilter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         width = new Parameter(this, "width", new IntToken(3));
@@ -94,11 +93,11 @@ public class JAIBoxFilter extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == width) {
-            _width = ((IntToken)width.getToken()).intValue();
+            _width = ((IntToken) width.getToken()).intValue();
         } else if (attribute == height) {
-            _height = ((IntToken)height.getToken()).intValue();
+            _height = ((IntToken) height.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -111,6 +110,7 @@ public class JAIBoxFilter extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
@@ -118,6 +118,7 @@ public class JAIBoxFilter extends Transformer {
         parameters.addSource(oldImage);
         parameters.add(_width);
         parameters.add(_height);
+
         RenderedOp newImage = JAI.create("boxfilter", parameters);
         output.send(0, new JAIImageToken(newImage));
     }

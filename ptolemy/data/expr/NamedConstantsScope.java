@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.HashSet;
@@ -35,9 +34,12 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.data.type.TypeConstant;
+import ptolemy.kernel.util.IllegalActionException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedConstantsScope
+
 /**
    An implementation of ParserScope that contains a map from names to value
    tokens.
@@ -48,9 +50,7 @@ import ptolemy.data.type.TypeConstant;
    @Pt.ProposedRating Red (liuxj)
    @Pt.AcceptedRating Red (liuxj)
 */
-
 public class NamedConstantsScope implements ParserScope {
-
     /** Construct a new scope that contains the given map from names to
      *  value tokens.
      */
@@ -63,7 +63,7 @@ public class NamedConstantsScope implements ParserScope {
      *  @return The token associated with the given name in the scope.
      */
     public ptolemy.data.Token get(String name) {
-        ptolemy.data.Token result = (ptolemy.data.Token)_map.get(name);
+        ptolemy.data.Token result = (ptolemy.data.Token) _map.get(name);
         return result;
     }
 
@@ -73,7 +73,8 @@ public class NamedConstantsScope implements ParserScope {
      *  @return The token associated with the given name in the scope.
      */
     public ptolemy.data.type.Type getType(String name) {
-        ptolemy.data.Token value = (ptolemy.data.Token)_map.get(name);
+        ptolemy.data.Token value = (ptolemy.data.Token) _map.get(name);
+
         if (value == null) {
             return null;
         } else {
@@ -90,7 +91,8 @@ public class NamedConstantsScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.graph.InequalityTerm getTypeTerm(String name) {
-        ptolemy.data.Token value = (ptolemy.data.Token)_map.get(name);
+        ptolemy.data.Token value = (ptolemy.data.Token) _map.get(name);
+
         if (value == null) {
             return null;
         } else {
@@ -109,4 +111,3 @@ public class NamedConstantsScope implements ParserScope {
 
     private Map _map;
 }
-

@@ -24,10 +24,10 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.util.Iterator;
+
 
 /** The FigureSet interface is the interface implemented by any
  * class that contain references to a set of figures. Some of the
@@ -40,7 +40,6 @@ import java.util.Iterator;
  * @Pt.AcceptedRating Yellow
  */
 public interface FigureSet {
-
     /** Test if this set contains the given figure. As a general
      * rule, the implementation of this method is not required to be
      * efficient -- O(n) in the length of the list is acceptable.
@@ -48,7 +47,7 @@ public interface FigureSet {
      * of making this same test is to check if the parent of the figure
      * is the same object as this set.
      */
-    boolean contains (Figure f);
+    boolean contains(Figure f);
 
     /** Return an iteration of the figures in this set, in an
      * undefined order. Generally, an implementor will return figures
@@ -56,20 +55,17 @@ public interface FigureSet {
      * efficient way of returning them, then the implementor can
      * use that.
      */
-    Iterator figures ();
-
+    Iterator figures();
 
     /** Return an iteration of the figures in this set, from
      * back to front. This is the order in which
      * figures should normally be painted.
      */
-    public Iterator figuresFromBack ();
+    public Iterator figuresFromBack();
 
     /** Return an iteration of the figures in this set, from back to
      * front. This is the order in which events should normally be
      * intercepted.
      */
-    public Iterator figuresFromFront ();
+    public Iterator figuresFromFront();
 }
-
-

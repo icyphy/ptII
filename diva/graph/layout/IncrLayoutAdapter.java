@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.layout;
+
 import diva.graph.GraphModel;
+
 
 /**
  * An adapter to make global layouts incremental.  This
@@ -67,6 +69,7 @@ public class IncrLayoutAdapter implements IncrementalLayout {
      */
     public void edgeDrawn(Object edge) {
         GraphModel model = _target.getGraphModel();
+
         // FIXME this is probably not quite right.
         Object root = model.getRoot();
         layout(root);
@@ -77,6 +80,7 @@ public class IncrLayoutAdapter implements IncrementalLayout {
      */
     public void edgeRouted(Object edge) {
         GraphModel model = _target.getGraphModel();
+
         // FIXME this is probably not quite right.
         Object root = model.getRoot();
         layout(root);
@@ -100,12 +104,9 @@ public class IncrLayoutAdapter implements IncrementalLayout {
     public void layout(Object composite) {
         try {
             _layout.layout(composite);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.err.println("Layout Failed: " + e.getMessage());
             e.printStackTrace();
         }
     }
 }
-
-

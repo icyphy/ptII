@@ -31,6 +31,7 @@ import javax.swing.event.ListDataListener;
 
 import diva.gui.toolbox.ListDataModel;
 
+
 /**
  * A document that contains a linear sequence of Pages.
  * This class is useful for documents which their data into logical
@@ -58,14 +59,14 @@ public class MultipageModel {
 
     /** Add a page to the document and notify page listeners.
      */
-    public void addPage (Page p) {
+    public void addPage(Page p) {
         _pages.addElement(p);
     }
 
     /** Add a page to the document at the given index (between 0
      * and getPageCount()-1) and notify page listeners.
      */
-    public void insertPage (Page p, int index) {
+    public void insertPage(Page p, int index) {
         _pages.insertElementAt(p, index);
     }
 
@@ -75,7 +76,7 @@ public class MultipageModel {
      * added or removed, and with a contentsChanged() event when the
      * current page is changed.
      */
-    public void addPageListener (ListDataListener listener) {
+    public void addPageListener(ListDataListener listener) {
         _pages.addListDataListener(listener);
     }
 
@@ -83,49 +84,51 @@ public class MultipageModel {
      * page, which, provided the Document is implemented correctly,
      * will only happen if the document contains no pages.
      */
-    public Page getCurrentPage () {
+    public Page getCurrentPage() {
         return (Page) _pages.getSelectedItem();
     }
 
     /** Get the page at the given index.
      */
-    public Page getPage (int index) {
+    public Page getPage(int index) {
         return (Page) _pages.getElementAt(index);
     }
 
     /** Get the page with the given title.
      */
-    public Page getPage (String title) {
-        for (Iterator i = pages(); i.hasNext(); ) {
+    public Page getPage(String title) {
+        for (Iterator i = pages(); i.hasNext();) {
             Page s = (Page) i.next();
+
             if (s.getTitle().equals(title)) {
                 return s;
             }
         }
+
         return null;
     }
 
     /** Get the number of pages in this document.
      */
-    public int getPageCount () {
+    public int getPageCount() {
         return _pages.getSize();
     }
 
     /** Return the title of this model
      */
-    public String getTitle () {
+    public String getTitle() {
         return _title;
     }
 
     /** Get the index of the given page. -1 if it is not known.
      */
-    public int indexOf (Page p) {
+    public int indexOf(Page p) {
         return _pages.getIndexOf(p);
     }
 
     /** Return an iterator over all pages
      */
-    public Iterator pages () {
+    public Iterator pages() {
         return _pages.iterator();
     }
 
@@ -135,13 +138,13 @@ public class MultipageModel {
      * case changed it to the one before, unless this was the last page,
      * in which case there is no selected page.
      */
-    public void removePage (Page p) {
+    public void removePage(Page p) {
         _pages.removeElement(p);
     }
 
     /** Remove a page listener from this document.
      */
-    public void removePageListener (ListDataListener listener) {
+    public void removePageListener(ListDataListener listener) {
         _pages.removeListDataListener(listener);
     }
 
@@ -149,15 +152,13 @@ public class MultipageModel {
      * contentsChanged() event. Throw an exception if the current
      * page is not in the document.
      */
-    public void setCurrentPage (Page p) {
+    public void setCurrentPage(Page p) {
         _pages.setSelectedItem(p);
     }
 
     /** Set the title of this model to the given title.
      */
-    public void setTitle (String title) {
+    public void setTitle(String title) {
         _title = title;
     }
 }
-
-

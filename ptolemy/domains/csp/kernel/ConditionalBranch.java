@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.IOPort;
@@ -34,8 +33,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranch
+
 /**
    Base class for classes representing guarded communication statements. A
    guarded communication statement is of the form
@@ -97,9 +98,7 @@ import ptolemy.kernel.util.Nameable;
    @Pt.ProposedRating Green (nsmyth)
    @Pt.AcceptedRating Green (kienhuis)
 */
-
 public abstract class ConditionalBranch {
-
     /** Create a guarded communication statement. This class contains
      *  all of the information necessary to carry out a guarded
      *  communication statement, with the exception of the type of
@@ -115,17 +114,19 @@ public abstract class ConditionalBranch {
      *   the port is not of type CSPActor.
      */
     public ConditionalBranch(boolean guard, IOPort port, int branchID)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Nameable tmp = port.getContainer();
+
         if (!(tmp instanceof ConditionalBranchActor)) {
             throw new IllegalActionException(port,
-                    "A conditional branch can only be created" +
-                    "with a port contained by ConditionalBranchActor");
+                "A conditional branch can only be created"
+                + "with a port contained by ConditionalBranchActor");
         }
+
         _branchID = branchID;
         _guard = guard;
-        _controller =
-            ((ConditionalBranchActor)tmp).getConditionalBranchController();
+        _controller = ((ConditionalBranchActor) tmp)
+            .getConditionalBranchController();
     }
 
     /** Create a guarded communication statement. This class contains
@@ -147,8 +148,8 @@ public abstract class ConditionalBranch {
      *  @exception IllegalActionException If the actor that contains
      *   the port is not of type CSPActor.
      */
-    public ConditionalBranch(boolean guard, IOPort port, int branchID, ConditionalBranchController cbc)
-            throws IllegalActionException {
+    public ConditionalBranch(boolean guard, IOPort port, int branchID,
+        ConditionalBranchController cbc) throws IllegalActionException {
         _branchID = branchID;
         _guard = guard;
         _controller = cbc;
@@ -241,16 +242,13 @@ public abstract class ConditionalBranch {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // The guard for this guarded communication statement.
     protected boolean _guard;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The identification number of this branch (according to its controller)
     private int _branchID;
 

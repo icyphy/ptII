@@ -36,8 +36,10 @@ import ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException;
 import ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException;
 import ptolemy.domains.ct.demo.Corba.util._CorbaActorImplBase;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NonlinearServant
+
 /**
    This is a stateless function that does a nonlinear transformation of the
    input data. This is a CORBA servant implement the
@@ -47,9 +49,7 @@ import ptolemy.domains.ct.demo.Corba.util._CorbaActorImplBase;
    @author Jie Liu
    @version $Id$
 */
-
 public class NonlinearServant extends _CorbaActorImplBase {
-
     /** Construct the servant.
      */
     public NonlinearServant() {
@@ -60,6 +60,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /**Implement
        <p>
        Operation: <b>::util::CorbaActor::fire</b>.
@@ -74,13 +75,12 @@ public class NonlinearServant extends _CorbaActorImplBase {
        </p>
        Compute the arctan of the input.
     */
-    public void fire( ) throws
-            CorbaIllegalActionException {
+    public void fire() throws CorbaIllegalActionException {
         if (_input == null) {
             _output = null;
-            throw new CorbaIllegalActionException(
-                    "No input data.");
+            throw new CorbaIllegalActionException("No input data.");
         }
+
         _output = new Double(Math.atan(_input.doubleValue()));
         _input = null;
     }
@@ -101,11 +101,8 @@ public class NonlinearServant extends _CorbaActorImplBase {
      </pre>
      </p>
     */
-    public java.lang.String getParameter(
-            java.lang.String paramName
-            ) throws
-            CorbaIllegalActionException,
-            CorbaUnknownParamException {
+    public java.lang.String getParameter(java.lang.String paramName)
+        throws CorbaIllegalActionException, CorbaUnknownParamException {
         throw new CorbaUnknownParamException();
     }
 
@@ -122,8 +119,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
         </pre>
         </p>
     */
-    public void initialize() throws
-            CorbaIllegalActionException {
+    public void initialize() throws CorbaIllegalActionException {
     }
 
     /** Return true if there's new data in the output port. Implement
@@ -146,23 +142,21 @@ public class NonlinearServant extends _CorbaActorImplBase {
         @exception CorbaIndexOutofBoundException If index is not 0.
         @exception CorbaUnknownPortException If port name is not known.
     */
-    public boolean hasData(
-            java.lang.String portName,
-            short portIndex
-            ) throws
-            CorbaIllegalActionException,
-            CorbaIndexOutofBoundException,
+    public boolean hasData(java.lang.String portName, short portIndex)
+        throws CorbaIllegalActionException, CorbaIndexOutofBoundException, 
             CorbaUnknownPortException {
         if (portName.equals("input")) {
-            throw new CorbaIllegalActionException(
-                    "port is an input");
+            throw new CorbaIllegalActionException("port is an input");
         }
+
         if (!portName.equals("output")) {
             throw new CorbaUnknownPortException();
         }
+
         if (portIndex != 0) {
             throw new CorbaIndexOutofBoundException(portIndex);
         }
+
         return (_output != null);
     }
 
@@ -177,9 +171,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </pre>
      *  </p>
      */
-    public boolean hasParameter(
-            java.lang.String paramName
-            ) {
+    public boolean hasParameter(java.lang.String paramName) {
         return false;
     }
 
@@ -199,16 +191,12 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </pre>
      *  </p>
      */
-    public boolean hasPort(
-            java.lang.String portName,
-            boolean isInput,
-            boolean isOutput,
-            boolean isMultiport
-            ) {
+    public boolean hasPort(java.lang.String portName, boolean isInput,
+        boolean isOutput, boolean isMultiport) {
         if (portName.equals("input") && isInput && !isOutput && !isMultiport) {
             return true;
-        }  else if (portName.equals("output") && !isInput &&
-                isOutput && !isMultiport) {
+        } else if (portName.equals("output") && !isInput && isOutput
+                && !isMultiport) {
             return true;
         } else {
             return false;
@@ -233,15 +221,11 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </p>
      *  @exception CorbaIllegalActionException Always thrown.
      */
-    public void setPortWidth(
-            java.lang.String portName,
-            short width
-            ) throws
-            CorbaIllegalActionException,
-            CorbaUnknownPortException {
+    public void setPortWidth(java.lang.String portName, short width)
+        throws CorbaIllegalActionException, CorbaUnknownPortException {
         if (width != 1) {
             throw new CorbaIllegalActionException(
-                    " The port width is immutable.");
+                " The port width is immutable.");
         }
     }
 
@@ -260,11 +244,11 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </p>
      *  @exception CorbaIllegalActionException Not thrown in this base class.
      */
-    public boolean postfire( ) throws
-            CorbaIllegalActionException {
+    public boolean postfire() throws CorbaIllegalActionException {
         if (_input != null) {
             fire();
         }
+
         return true;
     }
 
@@ -282,8 +266,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </pre>
      *  </p>
      */
-    public boolean prefire() throws
-            CorbaIllegalActionException {
+    public boolean prefire() throws CorbaIllegalActionException {
         return postfire();
     }
 
@@ -305,12 +288,9 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </pre>
      *  </p>
      */
-    public void setParameter(
-            java.lang.String paramName,
-            java.lang.String paramValue
-            ) throws
-            CorbaIllegalActionException,
-            CorbaUnknownParamException,
+    public void setParameter(java.lang.String paramName,
+        java.lang.String paramValue)
+        throws CorbaIllegalActionException, CorbaUnknownParamException, 
             CorbaIllegalValueException {
         //throw new CorbaIllegalActionException(
         //        " No parameter is allowed to set.");
@@ -329,8 +309,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </pre>
      *  </p>
      */
-    public void stopFire() throws
-            CorbaIllegalActionException {
+    public void stopFire() throws CorbaIllegalActionException {
     }
 
     /** Do nothing. Implements
@@ -346,8 +325,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </pre>
      *  </p>
      */
-    public void terminate() throws
-            CorbaIllegalActionException {
+    public void terminate() throws CorbaIllegalActionException {
     }
 
     /** Transfer the input data. The port name must be "input",
@@ -378,25 +356,23 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  @exception CorbaIllegalValueException If the tokenValue is not
      *    able to convert to double.
      */
-    public void transferInput(
-            java.lang.String portName,
-            short portIndex,
-            java.lang.String tokenValue
-            ) throws
-            CorbaIllegalActionException,
-            CorbaUnknownPortException,
-            CorbaIndexOutofBoundException,
-            CorbaIllegalValueException {
+    public void transferInput(java.lang.String portName, short portIndex,
+        java.lang.String tokenValue)
+        throws CorbaIllegalActionException, CorbaUnknownPortException, 
+            CorbaIndexOutofBoundException, CorbaIllegalValueException {
         if (portName.equals("output")) {
             throw new CorbaIllegalActionException(
-                    " Cannot transfer input to an output port");
+                " Cannot transfer input to an output port");
         }
+
         if (!portName.equals("input")) {
             throw new CorbaUnknownPortException();
         }
+
         if (portIndex != 0) {
             throw new CorbaIndexOutofBoundException(portIndex);
         }
+
         try {
             _input = new Double(tokenValue);
         } catch (NumberFormatException ex) {
@@ -429,27 +405,27 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *    "output" nor "input".
      *  @exception CorbaIndexOutofBoundException If the port index is not 0.
      */
-    public java.lang.String transferOutput(
-            java.lang.String portName,
-            short portIndex
-            ) throws
-            CorbaIllegalActionException,
-            CorbaUnknownPortException,
+    public java.lang.String transferOutput(java.lang.String portName,
+        short portIndex)
+        throws CorbaIllegalActionException, CorbaUnknownPortException, 
             CorbaIndexOutofBoundException {
         if (portName.equals("input")) {
             throw new CorbaIllegalActionException(
-                    " Cannot transfer output from an input port");
+                " Cannot transfer output from an input port");
         }
+
         if (_output == null) {
-            throw new CorbaIllegalActionException(
-                    " No output data to transfer");
+            throw new CorbaIllegalActionException(" No output data to transfer");
         }
+
         if (!portName.equals("output")) {
             throw new CorbaUnknownPortException();
         }
+
         if (portIndex != 0) {
             throw new CorbaIndexOutofBoundException(portIndex);
         }
+
         String outs = _output.toString();
         _output = null;
         return outs;
@@ -468,13 +444,11 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </pre>
      *  </p>
      */
-    public void wrapup() throws
-            CorbaIllegalActionException {
+    public void wrapup() throws CorbaIllegalActionException {
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Double _input;
     private Double _output;
 }

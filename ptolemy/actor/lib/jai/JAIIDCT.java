@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -40,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDCT
+
 /**
    Calculate the inverse discrete cosine transform of an image.  The output
    image data is of a high resolution (doubles), not suitable for
@@ -63,7 +64,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JAIIDCT extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,7 +73,7 @@ public class JAIIDCT extends Transformer {
      *   actor with this name.
      */
     public JAIIDCT(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -89,10 +89,12 @@ public class JAIIDCT extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock idctParameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
-        RenderedOp oldImage =  jaiImageToken.getValue();
+        RenderedOp oldImage = jaiImageToken.getValue();
         idctParameters.addSource(oldImage);
+
         RenderedOp newImage = JAI.create("idct", idctParameters);
         output.send(0, new JAIImageToken(newImage));
     }

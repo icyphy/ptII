@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// SequenceActor
+
 /**
    This is a marker interface for actors that operate on sequences.
    That is, logically, all signals observed or produced are sequences
@@ -45,7 +46,5 @@ package ptolemy.actor.lib;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
-public interface SequenceActor {}
-
-
+public interface SequenceActor {
+}

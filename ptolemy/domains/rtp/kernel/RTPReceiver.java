@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.rtp.kernel;
 
 import ptolemy.actor.AbstractReceiver;
@@ -38,8 +37,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RTPReceiver
+
 /**
    A receiver for the RTP domain.  FIXME: Description of how this works.
 
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.InvalidStateException;
    @Pt.AcceptedRating Red (liuj)
 */
 public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
-
     /** Construct an empty RTPReceiver with no container.
      */
     public RTPReceiver() {
@@ -70,7 +70,6 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Methods from the ProcessReceivers interface.
      */
-
     /** Clear this receiver of any contained tokens.
      */
     public void clear() {
@@ -122,7 +121,8 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
         // This implementation is borrowed from PN.
         // Set a flag.
         _terminate = true;
-        synchronized(_lock) {
+
+        synchronized (_lock) {
             // wake up any thread waiting to read from
             // this receiver
             _lock.notifyAll();
@@ -139,12 +139,12 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     public Token get(Branch controllingBranch) {
         throw new InvalidStateException(getContainer(),
-                "hierarchy not supported yet.");
+            "hierarchy not supported yet.");
     }
 
     public void put(Token token, Branch controllingBranch) {
         throw new InvalidStateException(getContainer(),
-                "hierarchy not supported yet.");
+            "hierarchy not supported yet.");
     }
 
     /** Blocking read on the token. This method will not return until
@@ -156,21 +156,24 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public Token get() throws NoTokenException {
         Token t;
-        synchronized(_lock) {
+
+        synchronized (_lock) {
             while (_token == null) {
                 try {
                     _lock.wait();
                 } catch (InterruptedException ex) {
                     // Ignore, keep waiting.
                 }
+
                 if (_terminate) {
-                    throw new
-                        TerminateProcessException("RTPReceiver stopped.");
+                    throw new TerminateProcessException("RTPReceiver stopped.");
                 }
             }
+
             t = _token;
             _token = null;
         }
+
         return t;
     }
 
@@ -212,9 +215,9 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public void put(Token token) throws NoRoomException {
         if (_terminate) {
-            throw new
-                TerminateProcessException("RTPReceiver stopped.");
+            throw new TerminateProcessException("RTPReceiver stopped.");
         }
+
         synchronized (_lock) {
             _token = token;
             _lock.notifyAll();
@@ -223,7 +226,6 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The token available for reading.
     private Token _token = null;
 
@@ -235,6 +237,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Class                        ////
+
     /** A null token indicating no token is available.
      */
     private class Lock extends Object {

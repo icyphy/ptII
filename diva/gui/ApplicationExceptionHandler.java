@@ -25,6 +25,7 @@
 */
 package diva.gui;
 
+
 /**
  * This class makes it easy for an application to trap exceptions in AWT
  * event handlers.  It makes use of an unpublished hook in the sun event
@@ -40,15 +41,16 @@ public class ApplicationExceptionHandler {
 
     public void handle(Throwable t) {
         if (t instanceof Exception) {
-            _application.showError("Exception Caught", (Exception)t);
+            _application.showError("Exception Caught", (Exception) t);
         }
     }
 
     public static void setApplication(Application application) {
         _application = application;
+
         try {
             System.setProperty("sun.awt.exception.handler",
-                    "diva.gui.ApplicationExceptionHandler");
+                "diva.gui.ApplicationExceptionHandler");
         } catch (Exception ex) {
             // Ignore an errors that we get here..  which mean that we
             // aren't allowed to set that property.  Applets will just have
@@ -60,5 +62,3 @@ public class ApplicationExceptionHandler {
         return _application;
     }
 }
-
-

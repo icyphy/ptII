@@ -30,9 +30,10 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math.test;
+
 import ptolemy.math.LongUnaryOperation;
+
 
 /** A operation taking one argument of type long, and producing a value of
     type long. This interface attempts to mimic a first-class function of
@@ -45,7 +46,6 @@ import ptolemy.math.LongUnaryOperation;
     @Pt.AcceptedRating Red (ctsay)
 */
 public class TestLongUnaryOperation implements LongUnaryOperation {
-
     /** Operate on the operand, returning a value of the same type. */
     public long operate(long operand) {
         return -operand;

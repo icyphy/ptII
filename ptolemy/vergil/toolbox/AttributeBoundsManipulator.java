@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.geom.Rectangle2D;
@@ -46,8 +45,10 @@ import diva.canvas.interactor.BoundsManipulator;
 import diva.canvas.interactor.DragInteractor;
 import diva.canvas.interactor.GrabHandle;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AttributeBoundsManipulator
+
 /**
    This is a bounds manipulator supporting resizable icons.
    It records the new size when the mouse is released, and supports
@@ -60,13 +61,13 @@ import diva.canvas.interactor.GrabHandle;
    @Pt.AcceptedRating Red (johnr)
 */
 public class AttributeBoundsManipulator extends BoundsManipulator {
-
     /** Construct a new bounds manipulator.
      *  @param container The container of the icon to be manipulated.
      */
     public AttributeBoundsManipulator(NamedObj container) {
         super();
         _container = container;
+
         // To get resizing to snap to grid, use a custom resizer,
         // rather than the one provided by the base class.
         _resizer = new Resizer();
@@ -81,12 +82,14 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
      */
     public void mouseReleased(LayerEvent e) {
         Figure child = getChild();
+
         // FIXME: Diva has a bug where this method is called on the
         // prototype rather than the instance that has a child.
         // We work around this by getting access to the instance.
-        if (child == null && _instanceDecorator != null) {
+        if ((child == null) && (_instanceDecorator != null)) {
             child = _instanceDecorator.getChild();
         }
+
         if (child != null) {
             // NOTE: Calling getBounds() on the child itself yields an
             // inaccurate bounds, for some reason.
@@ -97,15 +100,15 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
 
             // Use a MoMLChangeRequest here so that the resize can be
             // undone and so that a repaint occurs.
-
             Attribute widthParameter = _container.getAttribute("width");
             Attribute heightParameter = _container.getAttribute("height");
             Attribute locationParameter = _container.getAttribute("_location");
 
             // Proceed only if the container has these parameters.
-            if (widthParameter != null && heightParameter != null) {
-                StringBuffer command =
-                    new StringBuffer("<group><property name =\"width\" value=\"");
+            if ((widthParameter != null) && (heightParameter != null)) {
+                StringBuffer command = new StringBuffer(
+                        "<group><property name =\"width\" value=\"");
+
                 // FIXME: Force to integer values only. Is this a good idea?
                 command.append(Math.rint(bounds.getWidth()));
                 command.append("\"/><property name =\"height\" value=\"");
@@ -118,18 +121,17 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                     // these bounds.
                     double newX = childBounds.getX();
                     double newY = childBounds.getY();
+
                     // If the figure is centered, have to use the center
                     // instead.
                     try {
-                        Attribute centered =
-                            _container.getAttribute(
-                                    "centered",
-                                    Parameter.class);
+                        Attribute centered = _container.getAttribute("centered",
+                                Parameter.class);
+
                         if (centered != null) {
-                            boolean isCentered =
-                                ((BooleanToken) ((Parameter) centered)
-                                        .getToken())
-                                .booleanValue();
+                            boolean isCentered = ((BooleanToken) ((Parameter) centered)
+                                .getToken()).booleanValue();
+
                             if (isCentered) {
                                 newX = childBounds.getCenterX();
                                 newY = childBounds.getCenterY();
@@ -138,21 +140,25 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                     } catch (IllegalActionException ex) {
                         // Something went wrong. Use default.
                     }
+
                     command.append("<property name = \"_location\" value=\"");
+
                     // FIXME: Make locations only integral?
                     command.append(Math.rint(newX));
                     command.append(", ");
                     command.append(Math.rint(newY));
                     command.append("\"/>");
                 }
+
                 command.append("</group>");
 
-                MoMLChangeRequest request =
-                    new MoMLChangeRequest(this, _container, command.toString());
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        _container, command.toString());
                 _container.requestChange(request);
             }
         } else {
-            throw new InternalErrorException("No child figure for the manipulator!");
+            throw new InternalErrorException(
+                "No child figure for the manipulator!");
         }
     }
 
@@ -187,7 +193,6 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                         ////
-
     // FIXME: Instance used to work around Diva bug.
     private FigureDecorator _instanceDecorator;
 
@@ -204,7 +209,6 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
      * figure and triggers a repaint.
      */
     private class Resizer extends DragInteractor {
-
         /** Create a new resizer.
          */
         public Resizer() {
@@ -241,10 +245,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             BoundsManipulator parent = (BoundsManipulator) g.getParent();
             BoundsGeometry geometry = parent.getGeometry();
 
-            parent.getChild().transform(
-                    CanvasUtilities.computeTransform(
-                            parent.getChild().getBounds(),
-                            geometry.getBounds()));
+            parent.getChild().transform(CanvasUtilities.computeTransform(
+                    parent.getChild().getBounds(), geometry.getBounds()));
         }
 
         private SnapConstraint _snapConstraint;

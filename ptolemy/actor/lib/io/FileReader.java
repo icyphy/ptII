@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.io;
 
 import java.io.BufferedReader;
@@ -38,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FileReader
+
 /**
    This actor reads a file or URL and outputs the entire file
    as a single string.  The file or URL is specified using any form
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class FileReader extends Source {
-
     /** Construct an actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -67,7 +67,7 @@ public class FileReader extends Source {
      *   an actor already in the container.
      */
     public FileReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.STRING);
@@ -77,14 +77,12 @@ public class FileReader extends Source {
         fileOrURLPort = new TypedIOPort(this, "fileOrURL", true, false);
         fileOrURLPort.setTypeEquals(BaseType.STRING);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-25\" y=\"-20\" "
-                + "width=\"50\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
-                + " 15,-10 15,10, -15,10\" "
-                + "style=\"fill:red\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+            + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
+            + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,15 +106,15 @@ public class FileReader extends Source {
      *  @exception IllegalActionException If there is no director or
      *   if reading the file triggers an exception.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
 
         // If the fileOrURL input port is connected and has data, then
         // get the file name from there.
         if (fileOrURLPort.getWidth() > 0) {
             if (fileOrURLPort.hasToken(0)) {
-                String name =
-                    ((StringToken)fileOrURLPort.get(0)).stringValue();
+                String name = ((StringToken) fileOrURLPort.get(0)).stringValue();
+
                 // Using setExpression() rather than setToken() allows
                 // the string to refer to variables defined in the
                 // scope of this actor.
@@ -128,15 +126,21 @@ public class FileReader extends Source {
             BufferedReader reader = fileOrURL.openForReading();
             StringBuffer lineBuffer = new StringBuffer();
             String newline = System.getProperty("line.separator");
+
             while (true) {
                 String line = reader.readLine();
-                if (line == null) break;
+
+                if (line == null) {
+                    break;
+                }
+
                 lineBuffer = lineBuffer.append(line);
                 lineBuffer = lineBuffer.append(newline);
             }
+
             fileOrURL.close();
             output.broadcast(new StringToken(lineBuffer.toString()));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }
     }

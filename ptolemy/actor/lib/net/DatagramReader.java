@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.net;
 
 import java.io.IOException;
@@ -53,8 +52,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DatagramReader
+
 /**
    This actor reads datagram packets via a separate thread.  The thread
    responds to datagrams whenever they arrive, giving the actor the ability
@@ -192,7 +193,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (winthrop)
 */
 public class DatagramReader extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -202,7 +202,7 @@ public class DatagramReader extends TypedAtomicActor {
      *   actor with this name.
      */
     public DatagramReader(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // ports - Ordering here sets the order they show up in Vergil
@@ -235,8 +235,8 @@ public class DatagramReader extends TypedAtomicActor {
         platformBufferLength.setTypeEquals(BaseType.INT);
         platformBufferLength.setToken(new IntToken(64));
 
-        setPlatformBufferLength = new Parameter(
-                this, "setPlatformBufferLength", new BooleanToken(false));
+        setPlatformBufferLength = new Parameter(this,
+                "setPlatformBufferLength", new BooleanToken(false));
         setPlatformBufferLength.setTypeEquals(BaseType.BOOLEAN);
 
         overwrite = new Parameter(this, "overwrite", new BooleanToken(true));
@@ -280,7 +280,6 @@ public class DatagramReader extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     // Ports and parameters are in the same order hare as in the constructor.
 
     /** This port outputs the IP address portion of the received
@@ -440,79 +439,81 @@ public class DatagramReader extends TypedAtomicActor {
      *  at the same time maintaining consistency.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == defaultReturnAddress) {
-            synchronized(_syncDefaultOutputs) {
-                _defaultReturnAddress = ((StringToken)
-                        defaultReturnAddress.getToken()).stringValue();
+            synchronized (_syncDefaultOutputs) {
+                _defaultReturnAddress = ((StringToken) defaultReturnAddress
+                    .getToken()).stringValue();
+
                 //check whether is ip multicase datagram.
                 //multicast IP ranges from 224.0.0.1 to 239.255.255.255(inclusive).
                 //Note: don't use 224.0.0.1 ~ 224.255.255.255 when the live time
                 //of the socket is specified larger than 1.
-                if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
-                        _defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
+                if ((_defaultReturnAddress.compareTo("224.0.0.1") >= 0)
+                        && (_defaultReturnAddress.compareTo("239.255.255.255") <= 0)) {
                     _multiCast = true;
+
                     try {
                         _address = InetAddress.getByName(_defaultReturnAddress);
-                    }
-                    catch (UnknownHostException ex) {
+                    } catch (UnknownHostException ex) {
                         throw new IllegalActionException(this, ex,
-                                "The default remote "
-                                + "address specifies an unknown host");
+                            "The default remote "
+                            + "address specifies an unknown host");
                     }
+
                     if (_multicastSocket != null) {
                         try {
                             _multicastSocket.joinGroup(_address);
                         } catch (IOException exp) {
-                            throw new IllegalActionException("can't join the multicast group" + exp);
+                            throw new IllegalActionException(
+                                "can't join the multicast group" + exp);
                         }
                     }
                 } else {
                     //FIXME: what should it do when change from multicast to unicast...
                     _multiCast = false;
+
                     if (_multicastSocket != null) {
                         try {
                             _multicastSocket.leaveGroup(_address);
                         } catch (IOException exp) {
                             throw new IllegalActionException(this, exp,
-                                    "Disconnecting from the multicast group "
-                                    + "failed.");
+                                "Disconnecting from the multicast group "
+                                + "failed.");
                         }
                     }
                 }
             }
-
         } else if (attribute == defaultReturnSocketNumber) {
-            synchronized(_syncDefaultOutputs) {
-                _defaultReturnSocketNumber = ((IntToken)
-                        defaultReturnSocketNumber.getToken()).intValue();
+            synchronized (_syncDefaultOutputs) {
+                _defaultReturnSocketNumber = ((IntToken) defaultReturnSocketNumber
+                    .getToken()).intValue();
+            }
+        } else if (attribute == defaultOutput) {
+            synchronized (_syncDefaultOutputs) {
+                _defaultOutputToken = output.getType().convert(defaultOutput
+                        .getToken());
             }
 
-        } else if (attribute == defaultOutput) {
-            synchronized(_syncDefaultOutputs) {
-                _defaultOutputToken =
-                    output.getType().convert(defaultOutput.getToken());
-            }
             // In the case of <i>blockAwaitingDatagram</i> or <i>overwrite</i>,
             // notify potentially waiting fire() or thread respectively
             // that it might no longer need to wait.  Each will recheck its
             // conditions when notified, so extra notifications merely
             // waste a little CPU.
-
         } else if (attribute == overwrite) {
-            _overwrite = ((BooleanToken)
-                    (overwrite.getToken())).booleanValue();
+            _overwrite = ((BooleanToken) (overwrite.getToken())).booleanValue();
+
             if (_overwrite) {
-                synchronized(_syncFireAndThread) {
+                synchronized (_syncFireAndThread) {
                     _syncFireAndThread.notifyAll();
                 }
             }
-
         } else if (attribute == blockAwaitingDatagram) {
-            _blockAwaitingDatagram = ((BooleanToken)
-                    (blockAwaitingDatagram.getToken())).booleanValue();
+            _blockAwaitingDatagram = ((BooleanToken) (blockAwaitingDatagram
+                .getToken())).booleanValue();
+
             if (!_blockAwaitingDatagram) {
-                synchronized(_syncFireAndThread) {
+                synchronized (_syncFireAndThread) {
                     _syncFireAndThread.notifyAll();
                 }
             }
@@ -533,7 +534,6 @@ public class DatagramReader extends TypedAtomicActor {
             // page 3 of  file:///D%7C/Depot/j2sdk-1_3_1-doc/
             // docs/guide/misc/threadPrimitiveDeprecation.html
             // "What if a thread doesn't respond to Thread.interrupt?"
-
         } else if (attribute == localSocketNumber) {
             // FIXME-- Try again w/o sync(this):
             // Unlike other attributes, concurrent calls here
@@ -542,81 +542,88 @@ public class DatagramReader extends TypedAtomicActor {
             // socket so recently closed had not fully released
             // that socket number!)
             // Note: This synchronized block breaks codegen.
-            synchronized(this) {
+            synchronized (this) {
                 if (_multiCast == true) {
                 }
-                if (_socket != null || _multicastSocket != null) {
+
+                if ((_socket != null) || (_multicastSocket != null)) {
                     // Verify presence & health of the thread.
                     if (_socketReadingThread == null) {
-                        throw new IllegalActionException(this,
-                                "thread == null");
+                        throw new IllegalActionException(this, "thread == null");
                     } else if (!_socketReadingThread.isAlive()) {
                         throw new IllegalActionException(this,
-                                "thread is not Alive");
+                            "thread is not Alive");
                     }
-                    int newSocketNumber = ((IntToken)
-                            (localSocketNumber.getToken())).intValue();
-                    if (_multicastSocket != null &&
-                            newSocketNumber != _multicastSocket.getLocalPort()) {
-                        synchronized(_syncSocket) {
+
+                    int newSocketNumber = ((IntToken) (localSocketNumber
+                        .getToken())).intValue();
+
+                    if ((_multicastSocket != null)
+                            && (newSocketNumber != _multicastSocket
+                            .getLocalPort())) {
+                        synchronized (_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
                                 // does not take very long that is.
                                 try {
-                                    _syncSocket.wait((long)444);
+                                    _syncSocket.wait((long) 444);
                                 } catch (InterruptedException ex) {
                                     throw new IllegalActionException(this, ex,
-                                            "Interrupted while waiting");
+                                        "Interrupted while waiting");
                                 }
+
                                 // Either I've been notified that receive()
                                 // has completed, or the timeout has occurred.
                                 // It does not matter which.  Either way I am
                                 // now ready to close and re-open the socket.
                             }
+
                             _multicastSocket.close();
+
                             try {
                                 _multicastSocket = new MulticastSocket(newSocketNumber);
-                            }
-                            catch (Exception ex) {
+                            } catch (Exception ex) {
                                 throw new InternalErrorException(this, ex,
-                                        "Couldn't open new socket number "
-                                        + newSocketNumber);
-
+                                    "Couldn't open new socket number "
+                                    + newSocketNumber);
                             }
+
                             if (_address != null) {
                                 try {
                                     _multicastSocket.joinGroup(_address);
                                 } catch (IOException exp) {
-                                    throw new IllegalActionException("can't join the multicast group" + exp);
+                                    throw new IllegalActionException(
+                                        "can't join the multicast group" + exp);
                                 }
                             }
                         }
-                    } else if (_socket != null &&
-                            newSocketNumber != _socket.getLocalPort()) {
-                        synchronized(_syncSocket) {
+                    } else if ((_socket != null)
+                            && (newSocketNumber != _socket.getLocalPort())) {
+                        synchronized (_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
                                 // does not take very long that is.
                                 try {
-                                    _syncSocket.wait((long)444);
+                                    _syncSocket.wait((long) 444);
                                 } catch (InterruptedException ex) {
                                     throw new IllegalActionException(this, ex,
-                                            "Interrupted while waiting");
+                                        "Interrupted while waiting");
                                 }
+
                                 // Either I've been notified that receive()
                                 // has completed, or the timeout has occurred.
                                 // It does not matter which.  Either way I am
                                 // now ready to close and re-open the socket.
                             }
+
                             _socket.close();
+
                             try {
                                 _socket = new DatagramSocket(newSocketNumber);
-                            }
-                            catch (SocketException ex) {
+                            } catch (SocketException ex) {
                                 throw new InternalErrorException(this, ex,
-                                        "Couldn't open new socket number "
-                                        + newSocketNumber);
-
+                                    "Couldn't open new socket number "
+                                    + newSocketNumber);
                             }
                         }
                     }
@@ -632,11 +639,10 @@ public class DatagramReader extends TypedAtomicActor {
             // Synchronization ensures that the thread's test for a
             // change in this value and its use of the value access
             // the same thing.
-
         } else if (attribute == actorBufferLength) {
-            synchronized(_syncBufferLength) {
-                _actorBufferLength = ((IntToken)
-                        (actorBufferLength.getToken())).intValue();
+            synchronized (_syncBufferLength) {
+                _actorBufferLength = ((IntToken) (actorBufferLength.getToken()))
+                    .intValue();
             }
 
             // Just increment a flag here, so that before the next
@@ -645,11 +651,10 @@ public class DatagramReader extends TypedAtomicActor {
             // set the size and get the existing size both block if
             // the socket is being received on.  This flag is set to 1
             // in initialize().
-        } else if (attribute == platformBufferLength && _socket != null) {
-            synchronized(_syncBufferLength) {
+        } else if ((attribute == platformBufferLength) && (_socket != null)) {
+            synchronized (_syncBufferLength) {
                 _ChangeRequestedToPlatformBufferLength++;
             }
-
         } else {
             super.attributeChanged(attribute);
         }
@@ -668,7 +673,6 @@ public class DatagramReader extends TypedAtomicActor {
      *  of the output port.
      */
     public void fire() throws IllegalActionException {
-
         // Consume trigger input(s), otherwise model can hang.
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
@@ -677,10 +681,11 @@ public class DatagramReader extends TypedAtomicActor {
         }
 
         boolean useDefaultOutput;
+
         // The part dependent on the packet's contents must be synchronized
         // to ensure that the thread does mess with it while it is in use
         // here.
-        synchronized(_syncFireAndThread) {
+        synchronized (_syncFireAndThread) {
             int bytesAvailable = 0;
             byte[] dataBytes = new byte[0];
 
@@ -694,20 +699,24 @@ public class DatagramReader extends TypedAtomicActor {
             // latter case, there is always a packet waiting because
             // otherwise fireAtCurrentTime() would not have been
             // called.
-            while (_blockAwaitingDatagram &&
-                    _packetsAlreadyAwaitingFire == 0) {
+            while (_blockAwaitingDatagram && (_packetsAlreadyAwaitingFire == 0)) {
                 try {
                     _fireIsWaiting = true;
                     _syncFireAndThread.wait();
                     _fireIsWaiting = false;
                 } catch (InterruptedException ex) {
                     throw new InternalErrorException(this, ex,
-                            "!!fire()'s wait interrupted!!");
+                        "!!fire()'s wait interrupted!!");
+
                     // This finally block breaks Jode.
                 } finally {
                     if (_stopFire) {
                         _stopFire = false;
-                        if (_debugging) _debug("return due to stopFire");
+
+                        if (_debugging) {
+                            _debug("return due to stopFire");
+                        }
+
                         return;
                     }
                 }
@@ -715,14 +724,15 @@ public class DatagramReader extends TypedAtomicActor {
 
             if (_packetsAlreadyAwaitingFire != 0) {
                 bytesAvailable = _broadcastPacket.getLength();
+
                 if (bytesAvailable > 0) {
                     useDefaultOutput = false;
                 } else {
                     useDefaultOutput = true;
                 }
-                dataBytes = _broadcastPacket.getData();//The buffer, not copy.
-                _returnAddress = _broadcastPacket
-                    .getAddress().getHostAddress();
+
+                dataBytes = _broadcastPacket.getData(); //The buffer, not copy.
+                _returnAddress = _broadcastPacket.getAddress().getHostAddress();
                 _returnSocketNumber = _broadcastPacket.getPort();
                 _packetsAlreadyAwaitingFire--;
             } else {
@@ -731,11 +741,14 @@ public class DatagramReader extends TypedAtomicActor {
 
             if (!useDefaultOutput) {
                 Token[] dataTokens = new Token[bytesAvailable];
+
                 for (int j = 0; j < bytesAvailable; j++) {
-                    dataTokens[j] = new UnsignedByteToken(dataBytes[j]) ;
+                    dataTokens[j] = new UnsignedByteToken(dataBytes[j]);
                 }
+
                 _outputToken = new ArrayToken(dataTokens);
             }
+
             _syncFireAndThread.notifyAll();
         } // sync
 
@@ -750,29 +763,29 @@ public class DatagramReader extends TypedAtomicActor {
             //  repeat the most recent output instead
             //  of outputting the default, provided
             //  there is a previous output to repeat.)
-
             // _defaultOutputToken == null when user has entered blank
             // parameter.  Take this as a directive to not broadcast a
             // token in this case.
-
             if (_defaultOutputToken == null) {
-                if (_debugging) _debug(
-                        "DO NOT Broadcast ANY output (blank default)");
+                if (_debugging) {
+                    _debug("DO NOT Broadcast ANY output (blank default)");
+                }
             } else {
-                if (_debugging) _debug(
-                        "Broadcast default outputs");
-                synchronized(_syncDefaultOutputs) {
+                if (_debugging) {
+                    _debug("Broadcast default outputs");
+                }
+
+                synchronized (_syncDefaultOutputs) {
                     // Ensure that any change to the default output parameters
                     // occurs atomically with respect to its use here.
                     returnAddress.broadcast(new StringToken(
-                                                    _defaultReturnAddress));
+                            _defaultReturnAddress));
                     returnSocketNumber.broadcast(new IntToken(
-                                                         _defaultReturnSocketNumber));
+                            _defaultReturnSocketNumber));
                     output.broadcast(_defaultOutputToken);
                 }
             }
         }
-
     }
 
     /** Initialize this actor, including the creation of an evaluation
@@ -789,71 +802,82 @@ public class DatagramReader extends TypedAtomicActor {
 
         // Reset private variables
         _packetsAlreadyAwaitingFire = 0;
-        _defaultReturnAddress = ((StringToken)
-                defaultReturnAddress.getToken()).stringValue();
+        _defaultReturnAddress = ((StringToken) defaultReturnAddress.getToken())
+            .stringValue();
+
         //check whether is ip multicase datagram.
-        if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
-                _defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
+        if ((_defaultReturnAddress.compareTo("224.0.0.1") >= 0)
+                && (_defaultReturnAddress.compareTo("239.255.255.255") <= 0)) {
             _multiCast = true;
         } else {
             _multiCast = false;
         }
-        int portNumber = ((IntToken)(localSocketNumber.getToken())).intValue();
-        if (portNumber < 0 || portNumber > 65535) {
-            throw new IllegalActionException(this, localSocketNumber
-                    + " is outside the required 0..65535 range");
+
+        int portNumber = ((IntToken) (localSocketNumber.getToken())).intValue();
+
+        if ((portNumber < 0) || (portNumber > 65535)) {
+            throw new IllegalActionException(this,
+                localSocketNumber + " is outside the required 0..65535 range");
         }
-        if (_debugging) _debug(this + "portNumber = " + portNumber);
+
+        if (_debugging) {
+            _debug(this + "portNumber = " + portNumber);
+        }
 
         if (_multiCast == true) {
-
             // Allocate a new multicast socket.
             try {
                 if (_debugging) {
-                    _debug("Trying to create a new multicast socket on port " + portNumber);
+                    _debug("Trying to create a new multicast socket on port "
+                        + portNumber);
                 }
+
                 _multicastSocket = new MulticastSocket(portNumber);
+
                 if (_debugging) {
                     _debug("Multicast Socket created successfully!");
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to create a new multicast socket on port " + portNumber);
-
+                    "Failed to create a new multicast socket on port "
+                    + portNumber);
             }
-            String address =
-                ((StringToken)defaultReturnAddress.getToken()).stringValue();
+
+            String address = ((StringToken) defaultReturnAddress.getToken())
+                .stringValue();
+
             try {
                 _address = InetAddress.getByName(address);
-            }
-            catch (UnknownHostException ex) {
+            } catch (UnknownHostException ex) {
                 throw new IllegalActionException(this, ex,
-                        "The default remote "
-                        + "address specifies an unknown host");
+                    "The default remote " + "address specifies an unknown host");
             }
+
             try {
                 _multicastSocket.joinGroup(_address);
             } catch (IOException exp) {
-                throw new IllegalActionException("can't join the multicast group" + exp);
+                throw new IllegalActionException(
+                    "can't join the multicast group" + exp);
             }
         } else {
             // Allocate a new socket.
             try {
                 if (_debugging) {
-                    _debug("Trying to create a new socket on port " + portNumber);
+                    _debug("Trying to create a new socket on port "
+                        + portNumber);
                 }
+
                 _socket = new DatagramSocket(portNumber);
+
                 if (_debugging) {
                     _debug("Socket created successfully!");
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to create a new socket on port " + portNumber);
-
+                    "Failed to create a new socket on port " + portNumber);
             }
         }
+
         // Set flag so that thread will [Set and] get platform's buffer length.
         _ChangeRequestedToPlatformBufferLength = 1;
 
@@ -869,11 +893,12 @@ public class DatagramReader extends TypedAtomicActor {
      *  SocketReadingThread.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // FIXME: Is this necessary?
         if (container != getContainer()) {
             wrapup();
         }
+
         super.setContainer(container);
     }
 
@@ -966,7 +991,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  flag.  (Does it already and I just don't know about it?)
      */
     public void stopFire() {
-        synchronized(_syncFireAndThread) {
+        synchronized (_syncFireAndThread) {
             if (_fireIsWaiting) {
                 // stopFire() gets called a lot.  Including each time
                 // the program is started.  This caveat has proven
@@ -984,7 +1009,8 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public void stop() {
         super.stop();
-        synchronized(_syncFireAndThread) {
+
+        synchronized (_syncFireAndThread) {
             if (_fireIsWaiting) {
                 _syncFireAndThread.notifyAll();
             }
@@ -1005,7 +1031,6 @@ public class DatagramReader extends TypedAtomicActor {
      *  DatagramSocket null.  This signals the thread to terminate.
      */
     public void wrapup() throws IllegalActionException {
-
         // FIXME - Look into whether I ought to make it null first
         // and then interrupt it (having made a copy of the pointer
         // to it).  Examples all do it the latter way.  Why?
@@ -1021,11 +1046,10 @@ public class DatagramReader extends TypedAtomicActor {
         if (_socket != null) {
             _socket.close();
             _socket = null;
-        }else if (_multicastSocket != null) {
+        } else if (_multicastSocket != null) {
             _multicastSocket.close();
             _multicastSocket = null;
-        }
-        else {
+        } else {
             if (_debugging) {
                 _debug("Socket null at wrapup!?");
             }
@@ -1034,7 +1058,6 @@ public class DatagramReader extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Synchronization objects.  Used only for synchronization.
     private Object _syncFireAndThread = new Object();
     private Object _syncDefaultOutputs = new Object();
@@ -1098,9 +1121,7 @@ public class DatagramReader extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                        private inner class                ////
-
     private class SocketReadingThread extends Thread {
-
         /** Constructor.  Create a new thread to listen for packets
          *  at the socket opened by the actor's [pre]initialize method.
          */
@@ -1112,28 +1133,28 @@ public class DatagramReader extends TypedAtomicActor {
          */
         public void run() {
             while (true) {
-
                 // [Set and] get platform's buffer length.
-                synchronized(_syncBufferLength) {
+                synchronized (_syncBufferLength) {
                     if (_ChangeRequestedToPlatformBufferLength > 0) {
                         _ChangeRequestedToPlatformBufferLength = -1;
+
                         try {
                             // [Set].  If the setPlatformBufferLength
                             // parameter is true, then suggest the
                             // platform set its buffer size to the
                             // platformBufferLength parameter value
                             // (in bytes).
-                            if (((BooleanToken)setPlatformBufferLength.getToken()).booleanValue()) {
+                            if (((BooleanToken) setPlatformBufferLength
+                                    .getToken()).booleanValue()) {
                                 if (_multiCast) {
-                                    _multicastSocket.setReceiveBufferSize(
-                                            ((IntToken)platformBufferLength.getToken())
-                                            .intValue());
+                                    _multicastSocket.setReceiveBufferSize(((IntToken) platformBufferLength
+                                        .getToken()).intValue());
                                 } else {
-                                    _socket.setReceiveBufferSize(
-                                            ((IntToken)platformBufferLength.getToken())
-                                            .intValue());
+                                    _socket.setReceiveBufferSize(((IntToken) platformBufferLength
+                                        .getToken()).intValue());
                                 }
                             }
+
                             // Get.
                             // See what actual buffer size was allocated.
                             // Copy this into the platformBufferSize
@@ -1148,54 +1169,57 @@ public class DatagramReader extends TypedAtomicActor {
                             //                                     _socket.getReceiveBufferSize()));
                         } catch (SocketException ex) {
                             System.out.println("Socket Ex." + ex.toString());
+
                             // throw new IllegalActionException(this,
                             // ex.toString());
                         } catch (IllegalActionException ex) {
                             System.out.println("getToken or setToken failed"
-                                    + "on platformBufferSize" + ex.toString());
+                                + "on platformBufferSize" + ex.toString());
                         }
                     }
                 }
 
                 // Allocate or resize the packet buffers.
-                synchronized(_syncBufferLength) {
-                    if (_receivePacket == null ||
-                            _receiveAllocated != _actorBufferLength) {
-                        _receivePacket = new DatagramPacket(
-                                new byte[_actorBufferLength],
+                synchronized (_syncBufferLength) {
+                    if ((_receivePacket == null)
+                            || (_receiveAllocated != _actorBufferLength)) {
+                        _receivePacket = new DatagramPacket(new byte[_actorBufferLength],
                                 _actorBufferLength);
                         _receiveAllocated = _actorBufferLength;
                     }
                 }
+
                 if (_broadcastPacket == null) {
                     // If merely wrong length, fix it next time around
                     // when the buffers have swapped and it is called
                     // <i>_receivePacket</i>!  This code is here for
                     // when the thread is run for the first time.
                     // FIXME Maybe it is not necessary at all!
-                    synchronized(_syncBufferLength) {
-                        _broadcastPacket = new DatagramPacket(
-                                new byte[_actorBufferLength],
+                    synchronized (_syncBufferLength) {
+                        _broadcastPacket = new DatagramPacket(new byte[_actorBufferLength],
                                 _actorBufferLength);
                         _broadcastAllocated = _actorBufferLength;
                     }
                 }
 
                 // Attempt to receive a datagram packet!
-                synchronized(_syncSocket) {
+                synchronized (_syncSocket) {
                     _inReceive = true;
                 }
+
                 while (_inReceive) {
                     // Fluff the buffer back up to its allocated size.
                     // Otherwise, it forgets how big it is and can
                     // receive a datagram no bigger than the last one.
                     _receivePacket.setLength(_actorBufferLength);
+
                     if (_multiCast) {
                         try {
                             // NOTE: The following call may block.
                             _multicastSocket.receive(_receivePacket);
+
                             // A packet was successfully received!
-                            synchronized(_syncSocket) {
+                            synchronized (_syncSocket) {
                                 _inReceive = false;
                                 _syncSocket.notifyAll();
                             }
@@ -1204,14 +1228,16 @@ public class DatagramReader extends TypedAtomicActor {
                             // receive().  Don't retry, however, until
                             // attributeChanged() is done changing the
                             // <i>localSocketNumber</i>
-                            synchronized(_syncSocket) {
+                            synchronized (_syncSocket) {
                                 //   System.out.println("foo");
                             }
                         } catch (NullPointerException ex) {
                             if (_debugging) {
                                 _debug("--!!--" + (_socket == null));
                             }
+
                             return;
+
                             // -> --!!--true
                             //System.out.println(ex.toString());
                             // -> java.lang.NullPointerException
@@ -1219,12 +1245,13 @@ public class DatagramReader extends TypedAtomicActor {
                             // -> java.lang.RuntimeException: -null ptr-
                             //     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
                         }
-                    }else {
+                    } else {
                         try {
                             // NOTE: The following call may block.
                             _socket.receive(_receivePacket);
+
                             // A packet was successfully received!
-                            synchronized(_syncSocket) {
+                            synchronized (_syncSocket) {
                                 _inReceive = false;
                                 _syncSocket.notifyAll();
                             }
@@ -1233,14 +1260,16 @@ public class DatagramReader extends TypedAtomicActor {
                             // receive().  Don't retry, however, until
                             // attributeChanged() is done changing the
                             // <i>localSocketNumber</i>
-                            synchronized(_syncSocket) {
+                            synchronized (_syncSocket) {
                                 //   System.out.println("foo");
                             }
                         } catch (NullPointerException ex) {
                             if (_debugging) {
                                 _debug("--!!--" + (_socket == null));
                             }
+
                             return;
+
                             // -> --!!--true
                             //System.out.println(ex.toString());
                             // -> java.lang.NullPointerException
@@ -1252,22 +1281,18 @@ public class DatagramReader extends TypedAtomicActor {
                 }
 
                 // Transfer received the datagram to fire() for broadcast.
-
                 // There are 2 datagram packet buffers.
-
                 // If no data is already in the actor awaiting
                 // fire, then swap the buffers, increment the
                 // awaiting count, and either notify fire() if it
                 // is waiting, or call the director's
                 // fireAtCurrentTime() method to schedule a
                 // firing if fire() is not waiting.
-
                 // Else, data is already waiting.  I this case
                 // look to the overwrite parameter for guidance.
                 // If <i>overwrite</i> is true, then go ahead and
                 // swap anyway but do not increment the count and
                 // do not call fireAtCurrentTime() again.
-
                 // In either of the two cases above, receive()
                 // gets called again promptly.  However, if data
                 // is waiting AND <i>overwrite</i> is false, then
@@ -1278,14 +1303,13 @@ public class DatagramReader extends TypedAtomicActor {
                 // which swaps buffers, increments the count, and
                 // calls fireAtCurrentTime().  Then go back around
                 // finally to the socket.receive() call.
-
                 // Sync to avoid executing concurrently with actor's fire().
                 boolean fireAtWillBeCalled;
-                synchronized(_syncFireAndThread) {
 
+                synchronized (_syncFireAndThread) {
                     // Wait, if need be, for buffer space or overwrite
                     // permission
-                    while (_packetsAlreadyAwaitingFire != 0 && !_overwrite) {
+                    while ((_packetsAlreadyAwaitingFire != 0) && !_overwrite) {
                         try {
                             _syncFireAndThread.wait();
                         } catch (InterruptedException ex) {
@@ -1301,6 +1325,7 @@ public class DatagramReader extends TypedAtomicActor {
                     DatagramPacket tmp = _broadcastPacket;
                     _broadcastPacket = _receivePacket;
                     _receivePacket = tmp;
+
                     int tmpLength = _broadcastAllocated;
                     _broadcastAllocated = _receiveAllocated;
                     _receiveAllocated = tmpLength;
@@ -1329,20 +1354,16 @@ public class DatagramReader extends TypedAtomicActor {
                         _packetsAlreadyAwaitingFire++;
                     }
                 }
+
                 if (fireAtWillBeCalled) {
                     try {
-                        getDirector().fireAtCurrentTime(
-                                DatagramReader.this);
+                        getDirector().fireAtCurrentTime(DatagramReader.this);
                     } catch (IllegalActionException ex) {
                         throw new RuntimeException("fireAtCurrentTime() "
-                                + "threw an exception", ex);
+                            + "threw an exception", ex);
                     }
                 }
             }
         }
     }
 }
-
-
-
-

@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data;
+
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
@@ -41,8 +41,10 @@ import ptolemy.math.ComplexMatrixMath;
 import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToken
+
 /**
    A token that contains a 2-D double matrix.
 
@@ -54,7 +56,6 @@ import ptolemy.math.DoubleMatrixMath;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class DoubleMatrixToken extends MatrixToken {
-
     /** Construct an DoubleMatrixToken with a one by one matrix. The
      *  only element in the matrix has value 0.0
      */
@@ -73,7 +74,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *   is null.
      */
     public DoubleMatrixToken(double[] value, int rows, int columns)
-            throws IllegalActionException {
+        throws IllegalActionException {
         this(value, rows, columns, DO_COPY);
     }
 
@@ -89,13 +90,15 @@ public class DoubleMatrixToken extends MatrixToken {
      *   is null.
      */
     public DoubleMatrixToken(double[] value, int rows, int columns, int copy)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (value == null) {
-            throw new IllegalActionException("DoubleMatrixToken: The specified "
-                    + "matrix is null.");
+            throw new IllegalActionException(
+                "DoubleMatrixToken: The specified " + "matrix is null.");
         }
+
         _rowCount = rows;
         _columnCount = columns;
+
         if (copy == DO_COPY) {
             _value = DoubleArrayMath.allocCopy(value);
         } else {
@@ -110,8 +113,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public DoubleMatrixToken(double[][] value)
-            throws IllegalActionException {
+    public DoubleMatrixToken(double[][] value) throws IllegalActionException {
         this(value, DO_COPY);
     }
 
@@ -127,11 +129,12 @@ public class DoubleMatrixToken extends MatrixToken {
      *   is null.
      */
     public DoubleMatrixToken(double[][] value, int copy)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("DoubleMatrixToken: The "
-                    + "specified matrix is null.");
+                + "specified matrix is null.");
         }
+
         _initialize(value);
     }
 
@@ -144,12 +147,13 @@ public class DoubleMatrixToken extends MatrixToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+
         if (token instanceof DoubleMatrixToken) {
-            double[][] value = ((DoubleMatrixToken)token).doubleMatrix();
+            double[][] value = ((DoubleMatrixToken) token).doubleMatrix();
             _initialize(value);
         } else {
             throw new IllegalActionException("A matrix token cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -167,27 +171,32 @@ public class DoubleMatrixToken extends MatrixToken {
      *  of the array cannot be losslessly converted to an integer.
      */
     public DoubleMatrixToken(Token[] tokens, int rows, int columns)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int elements = rows * columns;
+
         if (tokens == null) {
             throw new IllegalActionException("DoubleMatrixToken: The specified"
-                    + " array is null.");
+                + " array is null.");
         }
-        if (tokens.length != rows * columns) {
+
+        if (tokens.length != (rows * columns)) {
             throw new IllegalActionException("DoubleMatrixToken: The specified"
-                    + " array is not of the correct length");
+                + " array is not of the correct length");
         }
+
         _rowCount = rows;
         _columnCount = columns;
         _value = new double[elements];
+
         for (int i = 0; i < elements; i++) {
             Token token = tokens[i];
+
             if (token instanceof ScalarToken) {
-                _value[i] = ((ScalarToken)token).doubleValue();
+                _value[i] = ((ScalarToken) token).doubleValue();
             } else {
                 throw new IllegalActionException("DoubleMatrixToken: Element "
-                        + i + " in the array with value " + token +
-                        " is not a ScalarToken");
+                    + i + " in the array with value " + token
+                    + " is not a ScalarToken");
             }
         }
     }
@@ -199,9 +208,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A 2-D Complex matrix
      */
     public final Complex[][] complexMatrix() {
-        return ComplexMatrixMath.toMatrixFromArray(
-                DoubleArrayMath.toComplexArray(_value),
-                _rowCount, _columnCount);
+        return ComplexMatrixMath.toMatrixFromArray(DoubleArrayMath
+            .toComplexArray(_value), _rowCount, _columnCount);
     }
 
     /** Convert the specified token into an instance of DoubleMatrixToken.
@@ -218,16 +226,16 @@ public class DoubleMatrixToken extends MatrixToken {
      *   be carried out.
      */
     public static DoubleMatrixToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof DoubleMatrixToken) {
-            return (DoubleMatrixToken)token;
+            return (DoubleMatrixToken) token;
         }
 
         int compare = TypeLattice.compare(BaseType.DOUBLE_MATRIX, token);
-        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(
-                            token, "[double]"));
+
+        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
+                    token, "[double]"));
         }
 
         // try double
@@ -238,10 +246,10 @@ public class DoubleMatrixToken extends MatrixToken {
         //             result[0][0] = tem.doubleValue();
         //             return new DoubleMatrixToken(result);
         //         }
-
         // try IntMatrix
         compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
-        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+
+        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             IntMatrixToken intMatrix = IntMatrixToken.convert(token);
             double[][] result = intMatrix.doubleMatrix();
             return new DoubleMatrixToken(result);
@@ -249,8 +257,8 @@ public class DoubleMatrixToken extends MatrixToken {
 
         // The argument is below DoubleMatrixToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "[double]"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "[double]"));
     }
 
     /** Return the content in the token as a 2-D double matrix.
@@ -259,8 +267,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A 2-D double matrix.
      */
     public final double[][] doubleMatrix() {
-        return DoubleMatrixMath.toMatrixFromArray(
-                _value, _rowCount, _columnCount);
+        return DoubleMatrixMath.toMatrixFromArray(_value, _rowCount,
+            _columnCount);
     }
 
     /** Return true if the argument is an instance of DoubleMatrixToken
@@ -277,16 +285,19 @@ public class DoubleMatrixToken extends MatrixToken {
             return false;
         }
 
-        DoubleMatrixToken matrixArgument = (DoubleMatrixToken)object;
+        DoubleMatrixToken matrixArgument = (DoubleMatrixToken) object;
+
         if (_rowCount != matrixArgument.getRowCount()) {
             return false;
         }
+
         if (_columnCount != matrixArgument.getColumnCount()) {
             return false;
         }
 
         double[] value = matrixArgument._value;
         int elements = _rowCount * _columnCount;
+
         for (int i = 0; i < elements; i++) {
             if (_value[i] != value[i]) {
                 return false;
@@ -312,8 +323,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public final Token getElementAsToken(final int row, final int column)
-            throws ArrayIndexOutOfBoundsException {
-        return new DoubleToken(_value[row * _columnCount + column]);
+        throws ArrayIndexOutOfBoundsException {
+        return new DoubleToken(_value[(row * _columnCount) + column]);
     }
 
     /** Return the element of the contained matrix at the specified
@@ -325,7 +336,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public final double getElementAt(final int row, final int column) {
-        return _value[row * _columnCount + column];
+        return _value[(row * _columnCount) + column];
     }
 
     /** Return the Type of the tokens contained in this matrix token.
@@ -357,11 +368,12 @@ public class DoubleMatrixToken extends MatrixToken {
     public int hashCode() {
         double code = 0.0;
         int elements = _rowCount * _columnCount;
+
         for (int i = 0; i < elements; i++) {
             code += _value[i];
         }
 
-        return (int)code;
+        return (int) code;
     }
 
     /** Return a new Token representing the left multiplicative
@@ -374,11 +386,11 @@ public class DoubleMatrixToken extends MatrixToken {
     public final Token one() {
         try {
             return new DoubleMatrixToken(DoubleMatrixMath.identity(_rowCount),
-                    DO_NOT_COPY);
+                DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("DoubleMatrixToken.one: "
-                    + "Cannot create identity matrix.");
+                + "Cannot create identity matrix.");
         }
     }
 
@@ -391,12 +403,12 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     public final Token oneRight() {
         try {
-            return new DoubleMatrixToken(
-                    DoubleMatrixMath.identity(_columnCount), DO_NOT_COPY);
+            return new DoubleMatrixToken(DoubleMatrixMath.identity(_columnCount),
+                DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("DoubleMatrixToken.oneRight: "
-                    + "Cannot create identity matrix.");
+                + "Cannot create identity matrix.");
         }
     }
 
@@ -409,11 +421,11 @@ public class DoubleMatrixToken extends MatrixToken {
     public final Token zero() {
         try {
             return new DoubleMatrixToken(new double[_rowCount * _columnCount],
-                    _rowCount, _columnCount, DO_NOT_COPY);
+                _rowCount, _columnCount, DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("DoubleMatrixToken.zero: "
-                    + "Cannot create zero matrix.");
+                + "Cannot create zero matrix.");
         }
     }
 
@@ -430,11 +442,12 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new DoubleMatrixToken containing the result.
      */
     protected MatrixToken _add(MatrixToken rightArgument)
-            throws IllegalActionException {
-        DoubleMatrixToken convertedArgument = (DoubleMatrixToken)rightArgument;
-        double[] result = DoubleArrayMath.add(
-                convertedArgument._getInternalDoubleArray(), _value);
-        return new DoubleMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        throws IllegalActionException {
+        DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
+        double[] result = DoubleArrayMath.add(convertedArgument
+                ._getInternalDoubleArray(), _value);
+        return new DoubleMatrixToken(result, _rowCount, _columnCount,
+            DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -447,10 +460,11 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _addElement(Token rightArgument)
-            throws IllegalActionException {
-        double scalar = ((DoubleToken)rightArgument).doubleValue();
+        throws IllegalActionException {
+        double scalar = ((DoubleToken) rightArgument).doubleValue();
         double[] result = DoubleArrayMath.add(_value, scalar);
-        return new DoubleMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new DoubleMatrixToken(result, _rowCount, _columnCount,
+            DO_NOT_COPY);
     }
 
     /** Return a new token whose elements are the result of dividing
@@ -463,12 +477,12 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _divideElement(Token rightArgument)
-            throws IllegalActionException {
-        double scalar = ((DoubleToken)rightArgument).doubleValue();
+        throws IllegalActionException {
+        double scalar = ((DoubleToken) rightArgument).doubleValue();
         double[] result = DoubleArrayMath.divide(_value, scalar);
-        return new DoubleMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new DoubleMatrixToken(result, _rowCount, _columnCount,
+            DO_NOT_COPY);
     }
-
 
     /** Return a reference to the internal 2-D matrix of doubles that
      *  represents this Token. Because no copying is done, the contents
@@ -489,10 +503,11 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _moduloElement(Token rightArgument)
-            throws IllegalActionException {
-        double scalar = ((DoubleToken)rightArgument).doubleValue();
+        throws IllegalActionException {
+        double scalar = ((DoubleToken) rightArgument).doubleValue();
         double[] result = DoubleArrayMath.modulo(_value, scalar);
-        return new DoubleMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new DoubleMatrixToken(result, _rowCount, _columnCount,
+            DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of this token
@@ -505,8 +520,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new DoubleMatrixToken containing the result.
      */
     protected MatrixToken _multiply(MatrixToken rightArgument)
-            throws IllegalActionException {
-        DoubleMatrixToken convertedArgument = (DoubleMatrixToken)rightArgument;
+        throws IllegalActionException {
+        DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
         double[] A = _value;
         double[] B = convertedArgument._getInternalDoubleArray();
         int m = _rowCount;
@@ -515,17 +530,22 @@ public class DoubleMatrixToken extends MatrixToken {
         double[] newMatrix = new double[m * p];
         int in = 0;
         int ta = 0;
+
         for (int i = 0; i < m; i++) {
             ta += n;
+
             for (int j = 0; j < p; j++) {
                 double sum = 0;
                 int ib = j;
+
                 for (int ia = i * n; ia < ta; ia++, ib += p) {
-                    sum += A[ia] * B[ib];
+                    sum += (A[ia] * B[ib]);
                 }
+
                 newMatrix[in++] = sum;
             }
         }
+
         return new DoubleMatrixToken(newMatrix, m, p, DO_NOT_COPY);
     }
 
@@ -539,10 +559,11 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new DoubleMatrixToken containing the result.
      */
     protected MatrixToken _multiplyElement(Token rightArgument)
-            throws IllegalActionException {
-        double scalar = ((DoubleToken)rightArgument).doubleValue();
+        throws IllegalActionException {
+        double scalar = ((DoubleToken) rightArgument).doubleValue();
         double[] result = DoubleArrayMath.multiply(_value, scalar);
-        return new DoubleMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new DoubleMatrixToken(result, _rowCount, _columnCount,
+            DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -555,11 +576,12 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new DoubleMatrixToken containing the result.
      */
     protected MatrixToken _subtract(MatrixToken rightArgument)
-            throws IllegalActionException {
-        DoubleMatrixToken convertedArgument = (DoubleMatrixToken)rightArgument;
+        throws IllegalActionException {
+        DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
         double[] result = DoubleArrayMath.subtract(_value,
                 convertedArgument._getInternalDoubleArray());
-        return new DoubleMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new DoubleMatrixToken(result, _rowCount, _columnCount,
+            DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -572,10 +594,11 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _subtractElement(Token rightArgument)
-            throws IllegalActionException {
-        double scalar = ((DoubleToken)rightArgument).doubleValue();
+        throws IllegalActionException {
+        double scalar = ((DoubleToken) rightArgument).doubleValue();
         double[] result = DoubleArrayMath.add(_value, -scalar);
-        return new DoubleMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new DoubleMatrixToken(result, _rowCount, _columnCount,
+            DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -588,16 +611,16 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _subtractElementReverse(Token rightArgument)
-            throws IllegalActionException {
-        double scalar = ((DoubleToken)rightArgument).doubleValue();
-        double[] result = DoubleArrayMath.negative(
-                DoubleArrayMath.add(_value, -scalar));
-        return new DoubleMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        throws IllegalActionException {
+        double scalar = ((DoubleToken) rightArgument).doubleValue();
+        double[] result = DoubleArrayMath.negative(DoubleArrayMath.add(_value,
+                    -scalar));
+        return new DoubleMatrixToken(result, _rowCount, _columnCount,
+            DO_NOT_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Initialize the row and column count and copy the specified
     // matrix. This method is used by the constructors.
     private void _initialize(double[][] value) {

@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.test;
 
 import ptolemy.kernel.CompositeEntity;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestCompositeEntity
+
 /**
    This class is used to test protected method(s) in CompositeEntity.java
 

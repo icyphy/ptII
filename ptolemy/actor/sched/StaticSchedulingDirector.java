@@ -36,11 +36,14 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StaticSchedulingDirector
+
 /**
    A director that uses static scheduling to govern the execution of the
    CompositeActor it belongs to. <p>
@@ -66,7 +69,6 @@ import ptolemy.kernel.util.Workspace;
    @see Schedule
 */
 public class StaticSchedulingDirector extends Director {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -99,7 +101,7 @@ public class StaticSchedulingDirector extends Director {
      *  an attribute that already exists in the given container.
      */
     public StaticSchedulingDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -112,7 +114,9 @@ public class StaticSchedulingDirector extends Director {
      */
     public synchronized void addDebugListener(DebugListener listener) {
         super.addDebugListener(listener);
+
         Scheduler scheduler = getScheduler();
+
         if (scheduler != null) {
             scheduler.addDebugListener(listener);
         }
@@ -140,35 +144,39 @@ public class StaticSchedulingDirector extends Director {
      */
     public void fire() throws IllegalActionException {
         Scheduler scheduler = getScheduler();
+
         if (scheduler == null) {
-            throw new IllegalActionException("Attempted to fire " +
-                    "system with no scheduler");
+            throw new IllegalActionException("Attempted to fire "
+                + "system with no scheduler");
         }
+
         // This will throw IllegalActionException if this director
         // does not have a container.
         Schedule schedule = scheduler.getSchedule();
         Iterator firings = schedule.firingIterator();
+
         while (firings.hasNext() && !_stopRequested) {
-            Firing firing = (Firing)firings.next();
-            Actor actor = (Actor)firing.getActor();
+            Firing firing = (Firing) firings.next();
+            Actor actor = (Actor) firing.getActor();
             int iterationCount = firing.getIterationCount();
 
             if (_debugging) {
-                _debug(new FiringEvent(this, actor,
-                               FiringEvent.BEFORE_ITERATE, iterationCount));
+                _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE,
+                        iterationCount));
             }
 
             int returnValue = actor.iterate(iterationCount);
+
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
             } else if (returnValue == NOT_READY) {
-                throw new IllegalActionException(this,
-                        (ComponentEntity) actor, "Actor " +
-                        "is not ready to fire.");
+                throw new IllegalActionException(this, (ComponentEntity) actor,
+                    "Actor " + "is not ready to fire.");
             }
+
             if (_debugging) {
-                _debug(new FiringEvent(this, actor,
-                               FiringEvent.AFTER_ITERATE, iterationCount));
+                _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE,
+                        iterationCount));
             }
         }
     }
@@ -197,6 +205,7 @@ public class StaticSchedulingDirector extends Director {
      */
     public void invalidateSchedule() {
         _debug("Invalidating schedule.");
+
         try {
             setScheduleValid(false);
         } catch (IllegalActionException ex) {
@@ -211,9 +220,9 @@ public class StaticSchedulingDirector extends Director {
      */
     public boolean isScheduleValid() throws IllegalActionException {
         if (_scheduler == null) {
-            throw new IllegalActionException(this,
-                    "has no scheduler.");
+            throw new IllegalActionException(this, "has no scheduler.");
         }
+
         return _scheduler.isValid();
     }
 
@@ -261,7 +270,9 @@ public class StaticSchedulingDirector extends Director {
      */
     public synchronized void removeDebugListener(DebugListener listener) {
         super.removeDebugListener(listener);
+
         Scheduler scheduler = getScheduler();
+
         if (scheduler != null) {
             scheduler.removeDebugListener(listener);
         }
@@ -277,17 +288,15 @@ public class StaticSchedulingDirector extends Director {
      *  @param valid True if the schedule is to be marked valid.
      *  @exception IllegalActionException If there's no scheduler.
      */
-    public void setScheduleValid(boolean valid)
-            throws IllegalActionException {
+    public void setScheduleValid(boolean valid) throws IllegalActionException {
         // FIXME: This should be protected.  Edward Added this
         // comment 5/99 r1.26
         // The only other place it is called is CTEmbeddedDirector,
         // which extends this class?
-
         if (_scheduler == null) {
-            throw new IllegalActionException(this,
-                    "has no scheduler.");
+            throw new IllegalActionException(this, "has no scheduler.");
         }
+
         _scheduler.setValid(valid);
     }
 
@@ -304,7 +313,7 @@ public class StaticSchedulingDirector extends Director {
      *   but derived classes may throw it if the scheduler is not compatible.
      */
     public void setScheduler(Scheduler scheduler)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (scheduler != null) {
             scheduler.setContainer(this);
         } else {
@@ -328,8 +337,7 @@ public class StaticSchedulingDirector extends Director {
      *   but derived classes may throw it if the scheduler is not compatible.
      */
     protected void _setScheduler(Scheduler scheduler)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         invalidateSchedule();
         _scheduler = scheduler;
         invalidateSchedule();
@@ -337,7 +345,6 @@ public class StaticSchedulingDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The scheduler.
     private Scheduler _scheduler;
 

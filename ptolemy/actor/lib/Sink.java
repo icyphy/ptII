@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sink
+
 /**
    Base class for simple data sinks.  This class provides an input port,
    exposed as a public variable, and a clone method that ensures that the
@@ -49,9 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public abstract class Sink extends TypedAtomicActor {
-
     /** Construct an actor with an input multiport.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,7 +60,7 @@ public abstract class Sink extends TypedAtomicActor {
      *   actor with this name.
      */
     public Sink(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);

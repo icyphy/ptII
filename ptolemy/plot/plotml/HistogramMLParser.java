@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.plot.plotml;
 
 import ptolemy.plot.Histogram;
 
 import com.microstar.xml.XmlException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HistogramMLParser
+
 /**
    This class constructs a histogram from specifications
    in PlotML (Plot Markup Language), which is an XML language.
@@ -52,7 +53,6 @@ import com.microstar.xml.XmlException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class HistogramMLParser extends PlotMLParser {
-
     /** Construct an parser to parse commands for the specified plot object.
      *  @param plot The plot object to which to apply the commands.
      */
@@ -70,7 +70,6 @@ public class HistogramMLParser extends PlotMLParser {
      *  @param elementName The element type name.
      */
     public void endElement(String elementName) throws Exception {
-
         if (elementName.equals("bars") || elementName.equals("dataset")) {
             // Ignore
         } else {
@@ -90,69 +89,64 @@ public class HistogramMLParser extends PlotMLParser {
     public void startElement(String elementName) throws XmlException {
         try {
             if (elementName.equals("barGraph")) {
-
                 // Override the base class to ignore things irrelevant
                 // to histograms...
+                String widthSpec = (String) _attributes.get("width");
+                String offsetSpec = (String) _attributes.get("offset");
 
-                String widthSpec = (String)_attributes.get("width");
-                String offsetSpec = (String)_attributes.get("offset");
                 // NOTE: If only one of these is given, then the other
                 // is ignored.
-                if (widthSpec != null && offsetSpec != null) {
+                if ((widthSpec != null) && (offsetSpec != null)) {
                     double width = (Double.valueOf(widthSpec)).doubleValue();
                     double offset = (Double.valueOf(offsetSpec)).doubleValue();
-                    ((Histogram)_plot).setBars(width, offset);
+                    ((Histogram) _plot).setBars(width, offset);
                 }
-
             } else if (elementName.equals("bin")) {
                 // Ignore if plot is not an instance of Histogram.
                 if (_plot instanceof Histogram) {
-                    Histogram histogram = (Histogram)_plot;
-                    String widthSpec = (String)_attributes.get("width");
-                    String offsetSpec = (String)_attributes.get("offset");
+                    Histogram histogram = (Histogram) _plot;
+                    String widthSpec = (String) _attributes.get("width");
+                    String offsetSpec = (String) _attributes.get("offset");
+
                     // NOTE: If only one of these is given, then the other
                     // is ignored.
-                    if (widthSpec != null && offsetSpec != null) {
-                        double width =
-                            (Double.valueOf(widthSpec)).doubleValue();
+                    if ((widthSpec != null) && (offsetSpec != null)) {
+                        double width = (Double.valueOf(widthSpec)).doubleValue();
                         histogram.setBinWidth(width);
-                        double offset =
-                            (Double.valueOf(offsetSpec)).doubleValue();
+
+                        double offset = (Double.valueOf(offsetSpec))
+                            .doubleValue();
                         histogram.setBinOffset(offset);
                     }
                 }
-
             } else if (elementName.equals("dataset")) {
                 // Override the base class to ignore things irrelevant
                 // to histograms...
                 _currentDataset++;
                 _currentPointCount = 0.0;
 
-                String name = (String)_attributes.get("name");
+                String name = (String) _attributes.get("name");
+
                 if (name != null) {
                     _plot.addLegend(_currentDataset, name);
                 }
-
             } else if (elementName.equals("default")) {
-
                 // Override the base class to ignore things irrelevant
                 // to histograms...
-
             } else {
                 super.startElement(elementName);
             }
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
-                throw (XmlException)ex;
+                throw (XmlException) ex;
             } else {
                 String msg = "XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.toString();
-                throw new XmlException(msg,
-                        _currentExternalEntity(),
-                        _parser.getLineNumber(),
-                        _parser.getColumnNumber());
+                throw new XmlException(msg, _currentExternalEntity(),
+                    _parser.getLineNumber(), _parser.getColumnNumber());
             }
         }
+
         // NOTE: if super is called, this gets done three times...
         // Any way to avoid it?
         _attributes.clear();
@@ -167,11 +161,12 @@ public class HistogramMLParser extends PlotMLParser {
      *  @param element The name of the element.
      */
     protected void _addPoint(boolean connected, String element)
-            throws Exception {
-        String ySpec = (String)_attributes.get("y");
+        throws Exception {
+        String ySpec = (String) _attributes.get("y");
         _checkForNull(ySpec, "No y value for element \"" + element + "\"");
+
         // NOTE: Do not use parseDouble() to maintain Java 1.1 compatibility.
         double y = (Double.valueOf(ySpec)).doubleValue();
-        ((Histogram)_plot).addPoint(_currentDataset, y);
+        ((Histogram) _plot).addPoint(_currentDataset, y);
     }
 }

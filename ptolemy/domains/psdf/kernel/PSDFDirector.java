@@ -24,20 +24,22 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.psdf.kernel;
 
-import ptolemy.domains.sdf.kernel.SDFDirector;
+import java.util.Iterator;
+
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PSDFDirector
+
 /**
    The Parameterized Synchronous Dataflow (PSDF) domain is an
    extension of the Synchronous Dataflow (SDF) domain that allows for
@@ -78,7 +80,6 @@ import java.util.*;
    @Pt.AcceptedRating Red (johnr)
 */
 public class PSDFDirector extends SDFDirector {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -86,7 +87,7 @@ public class PSDFDirector extends SDFDirector {
      *  The PSDFDirector will have a default scheduler of type PDFScheduler.
      */
     public PSDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -99,7 +100,7 @@ public class PSDFDirector extends SDFDirector {
      *  @param workspace The workspace for this object.
      */
     public PSDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -119,7 +120,7 @@ public class PSDFDirector extends SDFDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public PSDFDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -137,12 +138,15 @@ public class PSDFDirector extends SDFDirector {
         // Kill the firing counts, which may be invalid.  If we don't
         // kill them, then the manager might complain that they cannot
         // be evaluated.
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
+
         if (container != null) {
             for (Iterator entities = container.deepEntityList().iterator();
-                entities.hasNext();) {
-                Entity actor = (Entity)entities.next();
-                Variable parameter = (Variable)actor.getAttribute("firingCount");
+                    entities.hasNext();) {
+                Entity actor = (Entity) entities.next();
+                Variable parameter = (Variable) actor.getAttribute(
+                        "firingCount");
+
                 if (parameter != null) {
                     parameter.setExpression("0");
                 }
@@ -152,7 +156,6 @@ public class PSDFDirector extends SDFDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected boolean _postfirereturns = true;
 
     ///////////////////////////////////////////////////////////////////
@@ -162,8 +165,8 @@ public class PSDFDirector extends SDFDirector {
      *  default scheduler of the class PSDFScheduler.
      */
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
-        PSDFScheduler scheduler =
-            new PSDFScheduler(this, uniqueName("Scheduler"));
+        throws IllegalActionException, NameDuplicationException {
+        PSDFScheduler scheduler = new PSDFScheduler(this,
+                uniqueName("Scheduler"));
     }
 }

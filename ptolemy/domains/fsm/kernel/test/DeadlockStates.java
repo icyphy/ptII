@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel.test;
 
 import java.net.URL;
@@ -35,8 +34,10 @@ import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DeadlockStates
+
 /**
    Display the deadlock states.
    This class reads the MoML description of an interface automata,
@@ -52,9 +53,7 @@ import ptolemy.moml.MoMLParser;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-
 public class DeadlockStates {
-
     /** Write the names of the deadlock states of the specified interface
      *  automaton to stdout.
      *  @param moml The MoML file name for an InterfaceAutomaton.
@@ -70,14 +69,16 @@ public class DeadlockStates {
         // the same automaton will be returned the second time parse() is
         // called.
         MoMLParser parser = new MoMLParser();
-        InterfaceAutomaton automaton =
-            (InterfaceAutomaton)parser.parse(url, url);
+        InterfaceAutomaton automaton = (InterfaceAutomaton) parser.parse(url,
+                url);
         automaton.addPorts();
 
         System.out.println("Deadlock states:");
+
         Iterator deadlockStates = automaton.deadlockStates().iterator();
+
         while (deadlockStates.hasNext()) {
-            State state = (State)deadlockStates.next();
+            State state = (State) deadlockStates.next();
             System.out.println("    " + state.getFullName());
         }
     }
@@ -86,7 +87,7 @@ public class DeadlockStates {
      *  argument the name of a MoML file for an InterfaceAutomaton.
      *  @param args The command line arguments.
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         try {
             new DeadlockStates(args[0]);
         } catch (Exception exception) {
@@ -96,20 +97,14 @@ public class DeadlockStates {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 }

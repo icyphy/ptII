@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.process;
 
 import ptolemy.actor.Actor;
@@ -36,8 +35,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MailboxBoundaryReceiver
+
 /**
    A process receiver that stores tokens via a mailbox and can be used by
    composite actors. This receiver extends the functionality of the mailbox
@@ -75,9 +76,7 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.actor.process.BranchController
 
 */
-public class MailboxBoundaryReceiver extends Mailbox
-    implements ProcessReceiver {
-
+public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver {
     /** Construct an empty MailboxBoundaryReceiver with no container.
      */
     public MailboxBoundaryReceiver() {
@@ -91,7 +90,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *   this receiver.
      */
     public MailboxBoundaryReceiver(IOPort container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(container);
         _boundaryDetector = new BoundaryDetector(this);
     }
@@ -126,11 +125,13 @@ public class MailboxBoundaryReceiver extends Mailbox
     public Token get(Branch branch) {
         Workspace workspace = getContainer().workspace();
         Token result = null;
-        synchronized(this) {
-            if ( !_terminate && !hasToken() ) {
+
+        synchronized (this) {
+            if (!_terminate && !hasToken()) {
                 _readBlock = true;
                 prepareToBlock(branch);
-                while ( _readBlock && !_terminate ) {
+
+                while (_readBlock && !_terminate) {
                     try {
                         workspace.wait(this);
                     } catch (InterruptedException e) {
@@ -140,15 +141,17 @@ public class MailboxBoundaryReceiver extends Mailbox
                 }
             }
 
-            if ( _terminate ) {
+            if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
                 result = super.get();
-                if ( _writeBlock ) {
+
+                if (_writeBlock) {
                     wakeUpBlockedPartner();
                     _writeBlock = false;
                     notifyAll();
                 }
+
                 return result;
             }
         }
@@ -199,9 +202,10 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  @return True if this is a consumer receiver; return false otherwise.
      */
     public boolean isConsumerReceiver() {
-        if ( isConnectedToBoundary() ) {
+        if (isConnectedToBoundary()) {
             return true;
         }
+
         return false;
     }
 
@@ -240,9 +244,10 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  @return True if this is a producer receiver; return false otherwise.
      */
     public boolean isProducerReceiver() {
-        if ( isOutsideBoundary() || isInsideBoundary() ) {
+        if (isOutsideBoundary() || isInsideBoundary()) {
             return true;
         }
+
         return false;
     }
 
@@ -274,12 +279,13 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  @param branch The Branch managing execution of this method.
      */
     public synchronized void prepareToBlock(Branch branch) {
-        if ( branch != null ) {
+        if (branch != null) {
             branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
-            ProcessDirector director = ((ProcessDirector)((Actor)
-                                                (getContainer().getContainer())).getDirector());
+            ProcessDirector director = ((ProcessDirector) ((Actor) (getContainer()
+                                                                        .getContainer()))
+                .getDirector());
             director._actorBlocked(this);
             _otherBranch = branch;
         }
@@ -299,11 +305,13 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public void put(Token token, Branch branch) {
         Workspace workspace = getContainer().workspace();
-        synchronized(this) {
-            if ( !_terminate && !hasRoom() ) {
+
+        synchronized (this) {
+            if (!_terminate && !hasRoom()) {
                 _writeBlock = true;
                 prepareToBlock(branch);
-                while ( _writeBlock && !_terminate ) {
+
+                while (_writeBlock && !_terminate) {
                     try {
                         workspace.wait(this);
                     } catch (InterruptedException e) {
@@ -313,11 +321,12 @@ public class MailboxBoundaryReceiver extends Mailbox
                 }
             }
 
-            if ( _terminate ) {
+            if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
                 super.put(token);
-                if ( _readBlock ) {
+
+                if (_readBlock) {
                     wakeUpBlockedPartner();
                     _readBlock = false;
                     notifyAll();
@@ -363,25 +372,23 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  the new state with the blocked branch.
      */
     public synchronized void wakeUpBlockedPartner() {
-        if ( _otherBranch != null ) {
+        if (_otherBranch != null) {
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
-            ProcessDirector director = ((ProcessDirector)((Actor)
-                                                (getContainer().getContainer())).getDirector());
+            ProcessDirector director = ((ProcessDirector) ((Actor) (getContainer()
+                                                                        .getContainer()))
+                .getDirector());
             director._actorUnBlocked(this);
-
         }
+
         notifyAll();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private boolean _terminate = false;
     private boolean _readBlock = false;
     private boolean _writeBlock = false;
-
     private Branch _otherBranch = null;
     private BoundaryDetector _boundaryDetector;
-
 }

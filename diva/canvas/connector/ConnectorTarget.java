@@ -29,6 +29,7 @@ package diva.canvas.connector;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 
+
 /** An object that is used to get suitable "target" sites
  * for connectors. This class provides a way for connections
  * to be connected to figures without knowing too many specifics
@@ -41,7 +42,6 @@ import diva.canvas.Site;
  * @author John Reekie
  */
 public interface ConnectorTarget {
-
     /** Return a suitable site to connect a connector's head to,
      * based on this figure and location. Return null if there
      * is no suitable site.  In general, it is better to use the method that
@@ -49,7 +49,7 @@ public interface ConnectorTarget {
      * connection.  This method is primarily useful for manually
      * creating new figures.
      */
-    public Site getHeadSite (Figure f, double x, double y);
+    public Site getHeadSite(Figure f, double x, double y);
 
     /** Return a suitable site to connect a connector's tail to,
      * based on this figure and location. Return null if there
@@ -58,7 +58,7 @@ public interface ConnectorTarget {
      * connection.  This method is primarily useful for manually
      * creating new figures.
      */
-    public Site getTailSite (Figure f, double x, double y);
+    public Site getTailSite(Figure f, double x, double y);
 
     /** Return a suitable site to connect a connector's head to.
      * The passed site is usually taken to be a site that the
@@ -69,25 +69,25 @@ public interface ConnectorTarget {
      * passed site is the best one available.
      * @deprecated Use getHeadSite that takes a connector.
      */
-    public Site getHeadSite (Site s, double x, double y);
+    public Site getHeadSite(Site s, double x, double y);
 
     /** Return a suitable site to connect a connector's tail to.
      * See the description for getheadSite().
      * @deprecated Use getTailSite that takes a connector.
      */
-    public Site getTailSite (Site s, double x, double y);
+    public Site getTailSite(Site s, double x, double y);
 
     /** Return a suitable site to connect the given connector's head to,
      * based on this figure and location. Return null if there
      * is no suitable site.
      */
-    public Site getHeadSite (Connector c, Figure f, double x, double y);
+    public Site getHeadSite(Connector c, Figure f, double x, double y);
 
     /** Return a suitable site to connect the given connector's tail to,
      * based on this figure and location. Return null if there
      * is no suitable site.
      */
-    public Site getTailSite (Connector c, Figure f, double x, double y);
+    public Site getTailSite(Connector c, Figure f, double x, double y);
 
     /** Return a suitable site to connect a connector's head to.
      * The passed site is usually taken to be a site that the
@@ -97,12 +97,10 @@ public interface ConnectorTarget {
      * can be the same as the passed site, which signals that the
      * passed site is the best one available.
      */
-    public Site getHeadSite (Connector c, Site s, double x, double y);
+    public Site getHeadSite(Connector c, Site s, double x, double y);
 
     /** Return a suitable site to connect a connector's tail to.
      * See the description for getheadSite().
      */
-    public Site getTailSite (Connector c, Site s, double x, double y);
+    public Site getTailSite(Connector c, Site s, double x, double y);
 }
-
-

@@ -26,9 +26,7 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.string;
-
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -43,8 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringCompare
+
 /**
    Compare two strings specified either as inputs or parameters. The output
    is either true or false, depending on whether the comparison function is
@@ -67,9 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (kapokasa)
    @Pt.AcceptedRating Green (net)
 */
-
 public class StringCompare extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  Construct the two operand input PortParameters (initialized to "")
      *  and the output port which outputs the result of the various comparison
@@ -85,7 +83,7 @@ public class StringCompare extends TypedAtomicActor {
      *   actor with this name.
      */
     public StringCompare(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -115,11 +113,10 @@ public class StringCompare extends TypedAtomicActor {
         output.setOutput(true);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,11 +160,12 @@ public class StringCompare extends TypedAtomicActor {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == function) {
             // Use getToken() not getExpression() so that substitutions happen.
-            String functionName
-                = ((StringToken)function.getToken()).stringValue();
+            String functionName = ((StringToken) function.getToken())
+                .stringValue();
+
             if (functionName.equals("equals")) {
                 _function = _EQUALS;
             } else if (functionName.equals("startsWith")) {
@@ -178,9 +176,11 @@ public class StringCompare extends TypedAtomicActor {
                 _function = _CONTAINS;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized string function: " + functionName);
+                    "Unrecognized string function: " + functionName);
             }
-        } else super.attributeChanged(attribute);
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Consume exactly one input token from each input port, and compute the
@@ -216,33 +216,36 @@ public class StringCompare extends TypedAtomicActor {
      */
     private boolean _doFunction(String input1, String input2) {
         boolean result;
-        switch(_function) {
+
+        switch (_function) {
         case _EQUALS:
             result = input1.equals(input2);
             break;
+
         case _STARTSWITH:
             result = input1.startsWith(input2);
             break;
+
         case _ENDSWITH:
             result = input1.endsWith(input2);
             break;
+
         case _CONTAINS:
             result = input1.indexOf(input2) >= 0;
             break;
+
         default:
             throw new InternalErrorException(
-                    "Invalid value for _function private variable. "
-                    + "StringCompare actor (" + getFullName()
-                    + ")"
-                    + " on function type " + _function);
+                "Invalid value for _function private variable. "
+                + "StringCompare actor (" + getFullName() + ")"
+                + " on function type " + _function);
         }
+
         return result;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // An indicator for the function to compute.
     private int _function;
 

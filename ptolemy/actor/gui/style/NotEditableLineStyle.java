@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NotEditableLineStyle
+
 /**
    This attribute annotates user settable attributes to specify
    a version of the line style which is fixed and not editable.
@@ -51,9 +52,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public class NotEditableLineStyle extends ParameterEditorStyle {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -85,7 +84,7 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public NotEditableLineStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -108,7 +107,7 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
      *  @param query The query into which to add the entry.
      */
     public void addEntry(PtolemyQuery query) {
-        Settable container = (Settable)getContainer();
+        Settable container = (Settable) getContainer();
         String name = container.getName();
         String defaultValue = "";
         defaultValue = container.getExpression();

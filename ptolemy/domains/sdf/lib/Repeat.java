@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.IntToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Repeat
+
 /**
    An actor that repeats a block of input tokens the specified number of times
    on the output.  On each firing, it reads <i>blockSize</i> tokens
@@ -53,9 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class Repeat extends SDFTransformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -66,7 +65,7 @@ public class Repeat extends SDFTransformer {
      *   an actor already in the container.
      */
     public Repeat(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // parameters
@@ -102,20 +101,22 @@ public class Repeat extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == numberOfTimes || attribute == blockSize) {
-            int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
-            int count = ((IntToken)blockSize.getToken()).intValue();
-            if (repetitions < 1)
+        throws IllegalActionException {
+        if ((attribute == numberOfTimes) || (attribute == blockSize)) {
+            int repetitions = ((IntToken) numberOfTimes.getToken()).intValue();
+            int count = ((IntToken) blockSize.getToken()).intValue();
+
+            if (repetitions < 1) {
                 throw new IllegalActionException(numberOfTimes,
-                        "The value of numberOfTimes must be positive, but "
-                        + "was set to " + repetitions);
+                    "The value of numberOfTimes must be positive, but "
+                    + "was set to " + repetitions);
+            }
 
-            if (count < 1)
+            if (count < 1) {
                 throw new IllegalActionException(blockSize,
-                        "The value of blockSize must be positive, but "
-                        + "was set to " + count);
-
+                    "The value of blockSize must be positive, but "
+                    + "was set to " + count);
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -133,9 +134,11 @@ public class Repeat extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
-        int count = ((IntToken)blockSize.getToken()).intValue();
+
+        int repetitions = ((IntToken) numberOfTimes.getToken()).intValue();
+        int count = ((IntToken) blockSize.getToken()).intValue();
         Token[] inputBlock = input.get(0, count);
+
         for (int i = 0; i < repetitions; i += 1) {
             output.send(0, inputBlock, count);
         }

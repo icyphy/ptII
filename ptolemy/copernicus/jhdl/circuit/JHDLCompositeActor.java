@@ -24,27 +24,29 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
-import byucc.jhdl.base.Cell;
 import byucc.jhdl.Logic.*;
 
-import java.util.*;
+import byucc.jhdl.base.Cell;
 
-import ptolemy.copernicus.jhdl.soot.*;
-import ptolemy.copernicus.jhdl.util.*;
+import soot.*;
+
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.*;
-import soot.jimple.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * Represents a composite actor that can generate a JHDL circuit.
  * Provides methods for creating JHDLIORelations and JHDLIOPorts.
@@ -57,21 +59,18 @@ import soot.jimple.*;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
-public class JHDLCompositeActor
-    extends CompositeActor implements Resolve, ConstructJHDL {
-
+public class JHDLCompositeActor extends CompositeActor implements Resolve,
+    ConstructJHDL {
     public JHDLCompositeActor() {
         super();
     }
 
     public ComponentRelation newRelation(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         return new JHDLIORelation(this, name);
     }
 
-    public ComponentRelation newRelation()
-            throws IllegalActionException {
+    public ComponentRelation newRelation() throws IllegalActionException {
         try {
             return new JHDLIORelation(this);
         } catch (NameDuplicationException ex) {
@@ -79,8 +78,7 @@ public class JHDLCompositeActor
         }
     }
 
-    public Port newPort(String name)
-            throws NameDuplicationException {
+    public Port newPort(String name) throws NameDuplicationException {
         try {
             JHDLIOPort port = new JHDLIOPort(this, name);
             return port;
@@ -91,8 +89,8 @@ public class JHDLCompositeActor
 
     // Resolve bitwidths
     public boolean resolve() {
-
         boolean ok;
+
         // 1. Resolve top-level ports
         for (Iterator i = portList().iterator(); i.hasNext();) {
             JHDLIOPort port = (JHDLIOPort) i.next();
@@ -102,19 +100,24 @@ public class JHDLCompositeActor
 
         // 2. Iterate through all nodes until none need resolving
         Collection unresolvedNodes = entityList();
-        Vector resolvedNodes = new Vector();;
+        Vector resolvedNodes = new Vector();
+        ;
+
         do {
             resolvedNodes = new Vector(unresolvedNodes.size());
-            for (Iterator i = unresolvedNodes.iterator();i.hasNext();) {
+
+            for (Iterator i = unresolvedNodes.iterator(); i.hasNext();) {
                 Resolve r = (Resolve) i.next();
                 boolean resolved = r.resolve();
-                System.out.println("Resolving "+((NamedObj)r).getName()+
-                        " "+resolved);
+                System.out.println("Resolving " + ((NamedObj) r).getName()
+                    + " " + resolved);
+
                 if (resolved == true) {
                     resolvedNodes.add(r);
-                    System.out.println(resolved + " resolving "+r);
+                    System.out.println(resolved + " resolving " + r);
                 }
             }
+
             //} while (false);
         } while (resolvedNodes.size() < unresolvedNodes.size());
 
@@ -122,10 +125,9 @@ public class JHDLCompositeActor
     }
 
     public void build(Logic parent) {
-
         // 0. Add top-level Cell
-        Logic cell = new Logic(parent,getName());
-        System.out.println("Creating hardware for "+this+" cell="+cell);
+        Logic cell = new Logic(parent, getName());
+        System.out.println("Creating hardware for " + this + " cell=" + cell);
 
         // 1. Add top-level ports
         for (Iterator i = portList().iterator(); i.hasNext();) {
@@ -136,8 +138,10 @@ public class JHDLCompositeActor
         // 2. Create Wires for all internal relations
         for (Iterator i = relationList().iterator(); i.hasNext();) {
             JHDLIORelation r = (JHDLIORelation) i.next();
-            if (r.getJHDLWire() == null)
+
+            if (r.getJHDLWire() == null) {
                 r.buildJHDLWire(cell);
+            }
         }
 
         // 3. Create each cell instance
@@ -145,8 +149,8 @@ public class JHDLCompositeActor
             ConstructJHDL j = (ConstructJHDL) i.next();
             j.build(cell);
         }
-        System.out.println("Done building ");
 
+        System.out.println("Done building ");
     }
 
     // generate a structural view (in dot format) of the circuit
@@ -154,7 +158,7 @@ public class JHDLCompositeActor
         StringBuffer sb = new StringBuffer();
 
         sb.append("//Dotfile created for JHDLCompositeActor\r\n");
-        sb.append("digraph "+getName()+" {\r\n");
+        sb.append("digraph " + getName() + " {\r\n");
         sb.append("\tcompound=true;\r\n");
         sb.append("\t// Vertices\r\n");
 
@@ -162,7 +166,8 @@ public class JHDLCompositeActor
             Entity e = (Entity) i.next();
             String name;
 
-            sb.append("\t\""+e.getName()+"\"");
+            sb.append("\t\"" + e.getName() + "\"");
+
             /*
               if (source.hasWeight()) {
               sb.append(" [label=\""
@@ -174,29 +179,37 @@ public class JHDLCompositeActor
         }
 
         sb.append("\t// Edges\r\n");
-        for (Iterator i=relationList().iterator(); i.hasNext();) {
+
+        for (Iterator i = relationList().iterator(); i.hasNext();) {
             JHDLIORelation r = (JHDLIORelation) i.next();
             JHDLIOPort output = null;
+
             for (Iterator j = r.linkedPortList().iterator(); j.hasNext();) {
                 JHDLIOPort port = (JHDLIOPort) j.next();
-                if (port.isOutput())
+
+                if (port.isOutput()) {
                     output = port;
+                }
             }
+
             Entity outputNode = (Entity) output.getContainer();
+
             for (Iterator j = r.linkedPortList().iterator(); j.hasNext();) {
                 JHDLIOPort port = (JHDLIOPort) j.next();
-                if (port.isOutput())
+
+                if (port.isOutput()) {
                     continue;
+                }
+
                 Entity destNode = (Entity) port.getContainer();
-                sb.append("\t"+outputNode.getName());
+                sb.append("\t" + outputNode.getName());
                 sb.append(" -> ");
                 sb.append(destNode.getName());
                 sb.append(";\r\n");
             }
         }
+
         sb.append("}\r\n");
         return sb.toString();
-
     }
-
 }

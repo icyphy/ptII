@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.io.InputStream;
@@ -45,8 +44,10 @@ import ptolemy.plot.PlotBox;
 import ptolemy.plot.plotml.PlotMLParser;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotTableau
+
 /**
    A tableau representing a plot in a toplevel window.
    The URL that is viewed is given by the <i>uri</i> parameter, and
@@ -70,7 +71,6 @@ import ptolemy.util.MessageHandler;
    @see MoMLApplication#specToURL(String)
 */
 public class PlotTableau extends Tableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  Use setFrame() to specify the plot frame after construction.
      *  @param container The container.
@@ -81,7 +81,7 @@ public class PlotTableau extends Tableau {
      *   attribute already in the container.
      */
     public PlotTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         uri = new URIAttribute(this, "uri");
@@ -103,14 +103,14 @@ public class PlotTableau extends Tableau {
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == uri) {
             try {
                 URL toRead = new URL(uri.getURI().toString());
                 _parseURL(toRead);
             } catch (MalformedURLException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Invalid URL specification.");
+                    "Invalid URL specification.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -125,11 +125,12 @@ public class PlotTableau extends Tableau {
     public void setFrame(JFrame frame) throws IllegalActionException {
         if (!(frame instanceof PlotTableauFrame)) {
             throw new IllegalActionException(this,
-                    "Frame for PlotTableau must be an instance of "
-                    + "PlotTableauFrame.");
+                "Frame for PlotTableau must be an instance of "
+                + "PlotTableauFrame.");
         }
+
         super.setFrame(frame);
-        ((PlotTableauFrame)frame).setTableau(this);
+        ((PlotTableauFrame) frame).setTableau(this);
     }
 
     /** Make this tableau visible by calling setVisible(true), and
@@ -140,18 +141,22 @@ public class PlotTableau extends Tableau {
      */
     public void show() {
         JFrame frame = getFrame();
+
         if (frame == null) {
             PlotTableauFrame newFrame = new PlotTableauFrame(this);
             newFrame.plot.setButtons(true);
+
             try {
                 setFrame(newFrame);
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(ex);
             }
         }
+
         if (_toRead != null) {
             _parseURL(_toRead);
         }
+
         super.show();
     }
 
@@ -165,11 +170,12 @@ public class PlotTableau extends Tableau {
      */
     private void _parseURL(URL url) {
         try {
-            PlotTableauFrame frame = ((PlotTableauFrame)getFrame());
+            PlotTableauFrame frame = ((PlotTableauFrame) getFrame());
+
             if (frame != null) {
                 // FIXME: Should use a HistogramMLParser to get a histogram
                 // view... But how can we know that is what is wanted?
-                PlotMLParser parser = new PlotMLParser((Plot)frame.plot);
+                PlotMLParser parser = new PlotMLParser((Plot) frame.plot);
                 InputStream stream = url.openStream();
                 parser.parse(url, stream);
                 stream.close();
@@ -179,14 +185,13 @@ public class PlotTableau extends Tableau {
                 _toRead = url;
             }
         } catch (Exception ex) {
-            MessageHandler.error(
-                    "Failed to read plot data: " + url.toExternalForm(), ex);
+            MessageHandler.error("Failed to read plot data: "
+                + url.toExternalForm(), ex);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // URL of deferred read.
     private URL _toRead = null;
 
@@ -196,7 +201,6 @@ public class PlotTableau extends Tableau {
     /** A factory that creates a plot tableau for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -206,7 +210,7 @@ public class PlotTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -230,30 +234,34 @@ public class PlotTableau extends Tableau {
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PlotEffigy) {
-
                 // Indicate to the effigy that this factory contains effigies
                 // offering multiple views of the effigy data.
                 effigy.setTableauFactory(this);
 
                 // First see whether the effigy already contains an
                 // PlotTableau.
-                PlotTableau tableau =
-                    (PlotTableau)effigy.getEntity("plotTableau");
+                PlotTableau tableau = (PlotTableau) effigy.getEntity(
+                        "plotTableau");
+
                 if (tableau == null) {
-                    tableau = new PlotTableau(
-                            (PlotEffigy)effigy, "plotTableau");
+                    tableau = new PlotTableau((PlotEffigy) effigy, "plotTableau");
                 }
-                PlotBox plotBox = ((PlotEffigy)effigy).getPlot();
+
+                PlotBox plotBox = ((PlotEffigy) effigy).getPlot();
+
                 if (plotBox != null) {
                     // Hook into the existing plot.
-                    PlotTableauFrame plotterFrame =
-                        new PlotTableauFrame(tableau, plotBox);
+                    PlotTableauFrame plotterFrame = new PlotTableauFrame(tableau,
+                            plotBox);
                     tableau.setFrame(plotterFrame);
                 }
+
                 URI uri = effigy.uri.getURI();
+
                 if (uri != null) {
                     tableau.uri.setURI(uri);
                 }
+
                 // Don't call show() here.  If show() is called here,
                 // then you can't set the size of the window after
                 // createTableau() returns.  This will affect how

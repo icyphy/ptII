@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil;
 
 import java.awt.BorderLayout;
@@ -45,8 +44,10 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MoMLViewerApplet
+
 /**
    This applet displays a graph view of a specified MoML file.
    <p>
@@ -93,13 +94,10 @@ import diva.graph.JGraph;
    @Pt.AcceptedRating Red (eal)
 */
 public class MoMLViewerApplet extends MoMLApplet {
-
     // FIXME: this is a total hack as a placeholder for a general
     // implementation going through configurations.
-
     // FIXME: Perhaps the context menu
     // should have a run-model option?
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -107,9 +105,9 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String newinfo[][] = {
-            {"includeRunPanel", "", "Indicator to include run panel"},
-        };
+        String[][] newinfo = {
+                { "includeRunPanel", "", "Indicator to include run panel" },
+            };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
@@ -132,7 +130,7 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+        throws Exception {
         // Do not filter out graphical classes.
         return _createModel(workspace, false);
     }
@@ -142,47 +140,51 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  is not an instance of CompositeEntity, then do nothing.
      */
     protected void _createView() {
-        if (!(_toplevel instanceof CompositeEntity)) return;
+        if (!(_toplevel instanceof CompositeEntity)) {
+            return;
+        }
 
         // FIXME: Temporary hack so we can view FSMs properly.
         // This should be replaced with a proper tableau mechanism.
         GraphPane pane = null;
+
         if (_toplevel instanceof FSMActor) {
             FSMGraphController controller = new FSMGraphController();
-            FSMGraphModel graphModel = new FSMGraphModel((FSMActor)_toplevel);
+            FSMGraphModel graphModel = new FSMGraphModel((FSMActor) _toplevel);
+
             // FIXME: To get things like open documentation to work, have
             // to specify a configuration.  But currently, there isn't one.
             // controller.setConfiguration(getConfiguration());
-
             pane = new GraphPane(controller, graphModel);
         } else {
             // top level is not an FSM actor.
-
             ActorViewerGraphController controller = new ActorViewerGraphController();
+
             // FIXME: To get things like open documentation to work, have
             // to specify a configuration.  But currently, there isn't one.
             // controller.setConfiguration(getConfiguration());
-            GraphModel model = new ActorGraphModel(
-                    (CompositeEntity)_toplevel);
+            GraphModel model = new ActorGraphModel((CompositeEntity) _toplevel);
 
             pane = new GraphPane(controller, model);
         }
+
         JGraph modelViewer = new JGraph(pane);
 
         // Get dimensions from the model, if they are present.
         // Otherwise, use the same defaults used by vergil.
         boolean boundsSet = false;
+
         try {
-            SizeAttribute vergilBounds = (SizeAttribute)
-                _toplevel.getAttribute(
-                        "_vergilSize", SizeAttribute.class);
+            SizeAttribute vergilBounds = (SizeAttribute) _toplevel.getAttribute("_vergilSize",
+                    SizeAttribute.class);
             boundsSet = vergilBounds.setSize(modelViewer);
         } catch (Exception ex) {
             // Ignore and set to default.
         }
+
         if (!boundsSet) {
             // Set default size
-            Dimension size = new Dimension(400,300);
+            Dimension size = new Dimension(400, 300);
             modelViewer.setMinimumSize(size);
             modelViewer.setPreferredSize(size);
         }
@@ -195,13 +197,13 @@ public class MoMLViewerApplet extends MoMLApplet {
         // JScrollPane scrollPane = new JScrollPane(modelViewer);
         // getContentPane().add(scrollPane, BorderLayout.NORTH);
         // scrollPane.setBackground(getBackground());
-
         getContentPane().add(modelViewer, BorderLayout.NORTH);
 
         // Call the superclass here to get a control panel
         // below the schematic.
         String panelFlag = getParameter("includeRunPanel");
-        if (panelFlag != null
+
+        if ((panelFlag != null)
                 && panelFlag.trim().toLowerCase().equals("true")) {
             // NOTE: We could create a separator between the schematic
             // and the control panel here.

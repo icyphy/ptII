@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Dimension;
@@ -50,8 +49,10 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.moml.MoMLChangeRequest;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnitConstraintsDialog
+
 /**
    @author Rowland R Johnson
    @version $Id$
@@ -59,10 +60,8 @@ import ptolemy.moml.MoMLChangeRequest;
    @Pt.ProposedRating Yellow (rowland)
    @Pt.AcceptedRating Red (rowland)
 */
-public class UnitConstraintsDialog
-    extends PtolemyDialog
+public class UnitConstraintsDialog extends PtolemyDialog
     implements ChangeListener {
-
     /**
      * Construct a dialog that presents Unit constraints as a table. Each row
      * of the table corresponds to one constraint. The user modifies the table
@@ -81,45 +80,43 @@ public class UnitConstraintsDialog
      *            The configuration to use to open the help screen (or null if
      *            help is not supported).
      */
-    public UnitConstraintsDialog(
-            DialogTableau tableau,
-            Frame owner,
-            Entity target,
-            Configuration configuration) {
-        super(
-                "Configure units for " + target.getName(),
-                tableau,
-                owner,
-                target,
-                configuration);
+    public UnitConstraintsDialog(DialogTableau tableau, Frame owner,
+        Entity target, Configuration configuration) {
+        super("Configure units for " + target.getName(), tableau, owner,
+            target, configuration);
+
         Vector _constraintExpression = new Vector();
-        UnitAttribute _unitConstraints =
-            (UnitAttribute) target.getAttribute("_unitConstraints");
+        UnitAttribute _unitConstraints = (UnitAttribute) target.getAttribute(
+                "_unitConstraints");
+
         if (_unitConstraints != null) {
-            Vector _constraintExpressions =
-                _unitConstraints.getUnitConstraints().getConstraints();
+            Vector _constraintExpressions = _unitConstraints.getUnitConstraints()
+                                                            .getConstraints();
+
             for (int i = 0; i < _constraintExpressions.size(); i++) {
-                UnitEquation uEq =
-                    (UnitEquation) (_constraintExpressions.get(i));
+                UnitEquation uEq = (UnitEquation) (_constraintExpressions.get(i));
                 String commonDesc = uEq.descriptiveForm();
                 System.out.println("_constraint " + commonDesc);
                 _constraintExpression.add(commonDesc);
             }
         }
+
         _unitsTable = new JTable();
         _unitsTable.setPreferredScrollableViewportSize(new Dimension(500, 70));
         setScrollableContents(_unitsTable);
+
         ListSelectionModel rowSM = _unitsTable.getSelectionModel();
         rowSM.addListSelectionListener(_rowSelectionListener);
+
         // Create the TableModel and set certain cell editors and renderers
         _setupTableModel(_constraintExpression);
         _unitsTable.setTableHeader(null);
         pack();
         setVisible(true);
     }
+
     // The table model for the table.
     class UnitsTableModel extends AbstractTableModel {
-
         Vector _unitsDataTable;
 
         public UnitsTableModel(Vector unitsExpression) {
@@ -144,6 +141,7 @@ public class UnitConstraintsDialog
 
         public void addNewConstraint() {
             _unitsDataTable.add("");
+
             // Now tell the GUI so that it can update itself.
             fireTableRowsInserted(getRowCount(), getRowCount());
         }
@@ -160,12 +158,15 @@ public class UnitConstraintsDialog
 
         public String toString() {
             StringBuffer retv = new StringBuffer("");
+
             if (_unitsDataTable.size() > 0) {
                 retv.append((String) (_unitsDataTable.elementAt(0)));
+
                 for (int i = 1; i < _unitsDataTable.size(); i++) {
                     retv.append(";" + (String) (_unitsDataTable.elementAt(i)));
                 }
             }
+
             return retv.toString();
         }
     }
@@ -196,16 +197,14 @@ public class UnitConstraintsDialog
      */
     protected void _apply() {
         String expr = _unitsTableModel.toString();
-        String moml =
-            "<property name=\"_unitConstraints\" "
-            + "class = \"ptolemy.data.unit.UnitAttribute\" "
-            + "value = \""
-            + expr
-            + "\"/>";
+        String moml = "<property name=\"_unitConstraints\" "
+            + "class = \"ptolemy.data.unit.UnitAttribute\" " + "value = \""
+            + expr + "\"/>";
 
-        MoMLChangeRequest request =
-            new MoMLChangeRequest(this, getTarget(), moml, null);
+        MoMLChangeRequest request = new MoMLChangeRequest(this, getTarget(),
+                moml, null);
         request.setUndoable(true);
+
         // NOTE: There is no need to listen for completion
         // or errors in this change request, since, in theory,
         // it will just work. Will someone report the error
@@ -235,9 +234,7 @@ public class UnitConstraintsDialog
     }
 
     protected URL _getHelpURL() {
-        URL helpURL =
-            getClass().getClassLoader().getResource(
-                    "ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
+        URL helpURL = getClass().getClassLoader().getResource("ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
         return helpURL;
     }
 
@@ -256,13 +253,14 @@ public class UnitConstraintsDialog
     private void _setupTableModel(Vector constraintExpressions) {
         _unitsTableModel = new UnitsTableModel(constraintExpressions);
         _unitsTable.setModel(_unitsTableModel);
-        TableColumn _constraintColumn =
-            ((TableColumn) (_unitsTable.getColumnModel().getColumn(0)));
+
+        TableColumn _constraintColumn = ((TableColumn) (_unitsTable.getColumnModel()
+                                                                   .getColumn(0)));
         JTextField textField = new JTextField();
-        final DefaultCellEditor constraintEditor =
-            new DefaultCellEditor(textField);
+        final DefaultCellEditor constraintEditor = new DefaultCellEditor(textField);
         constraintEditor.setClickCountToStart(1);
         _constraintColumn.setCellEditor(constraintEditor);
+
         //        textField.addFocusListener(new FocusAdapter() {
         //            public void focusLost(FocusEvent fe) {
         //                constraintEditor.stopCellEditing();
@@ -270,29 +268,44 @@ public class UnitConstraintsDialog
         //        });
         _enableApplyButton(false);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private JButton _addButton, _applyButton, _commitButton, _removeButton;
-    private ListSelectionListener _rowSelectionListener =
-    new ListSelectionListener() {
+    private JButton _addButton;
 
-        ///////////////////////////////////////////////////////////////////
-        //// inner class ////
-        public void valueChanged(ListSelectionEvent e) {
-            if (e.getValueIsAdjusting())
-                return;
-            //Ignore extra messages.
-            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-            if (lsm.isSelectionEmpty()) {
-                _removeButton.setText("Remove");
-                _removeButton.setEnabled(false);
-                _selectedRow = -1;
-            } else {
-                _selectedRow = lsm.getMinSelectionIndex();
-                _removeButton.setEnabled(true);
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private JButton _applyButton;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private JButton _commitButton;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private JButton _removeButton;
+    private ListSelectionListener _rowSelectionListener = new ListSelectionListener() {
+            ///////////////////////////////////////////////////////////////////
+            //// inner class ////
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+
+                //Ignore extra messages.
+                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+
+                if (lsm.isSelectionEmpty()) {
+                    _removeButton.setText("Remove");
+                    _removeButton.setEnabled(false);
+                    _selectedRow = -1;
+                } else {
+                    _selectedRow = lsm.getMinSelectionIndex();
+                    _removeButton.setEnabled(true);
+                }
             }
-        }
-    };
+        };
+
     private int _selectedRow = -1;
     private JTable _unitsTable;
     private UnitsTableModel _unitsTableModel;

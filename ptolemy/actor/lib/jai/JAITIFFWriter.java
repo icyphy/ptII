@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import ptolemy.data.BooleanToken;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.TIFFEncodeParam;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAITIFFWriter
+
 /**
    Write a javax.media.jai.RenderedOp to a specified TIFF file.
    <p>
@@ -62,9 +63,7 @@ import com.sun.media.jai.codec.TIFFEncodeParam;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAITIFFWriter extends JAIWriter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,7 +73,7 @@ public class JAITIFFWriter extends JAIWriter {
      *   actor with this name.
      */
     public JAITIFFWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileName.setExpression("file.tiff");
@@ -106,9 +105,10 @@ public class JAITIFFWriter extends JAIWriter {
      */
     public boolean postfire() throws IllegalActionException {
         _imageEncoderName = "TIFF";
+
         TIFFEncodeParam tiffEncodeParam = new TIFFEncodeParam();
-        tiffEncodeParam.setWriteTiled(
-                ((BooleanToken)writeTiled.getToken()).booleanValue());
+        tiffEncodeParam.setWriteTiled(((BooleanToken) writeTiled.getToken())
+            .booleanValue());
 
         _imageEncodeParam = tiffEncodeParam;
         return super.postfire();

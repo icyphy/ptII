@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Moveable
+
 /**
    This is an interface for objects that can be moved in a list of
    objects in a container.
@@ -40,9 +41,7 @@ package ptolemy.kernel.util;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (hyzheng)
 */
-
 public interface Moveable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

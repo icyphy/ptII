@@ -24,27 +24,29 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
 import byucc.jhdl.Logic.Logic;
+
 import byucc.jhdl.base.Wire;
 
-import java.util.*;
+import soot.*;
 
-import ptolemy.copernicus.jhdl.soot.*;
-import ptolemy.copernicus.jhdl.util.*;
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.*;
-import soot.jimple.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * This class represents a "Wire" in JHDL. It has a signal width and
  * provides signal width resolution functionality.
@@ -56,26 +58,24 @@ import soot.jimple.*;
  @Pt.AcceptedRating Red (cxh)
 */
 public class JHDLIORelation extends IORelation implements Signal {
-
     public JHDLIORelation(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        this(container,name, Signal.UNRESOLVED);
+        throws IllegalActionException, NameDuplicationException {
+        this(container, name, Signal.UNRESOLVED);
     }
 
     public JHDLIORelation(CompositeEntity container, int width)
-            throws IllegalActionException, NameDuplicationException {
-        this(container,container.uniqueName("R"), width);
+        throws IllegalActionException, NameDuplicationException {
+        this(container, container.uniqueName("R"), width);
     }
 
     public JHDLIORelation(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        this(container,container.uniqueName("R"), Signal.UNRESOLVED);
+        throws IllegalActionException, NameDuplicationException {
+        this(container, container.uniqueName("R"), Signal.UNRESOLVED);
     }
 
-    public JHDLIORelation(CompositeEntity container, String name,
-            int width)
-            throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+    public JHDLIORelation(CompositeEntity container, String name, int width)
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
         _portWidth = width;
     }
 
@@ -88,8 +88,10 @@ public class JHDLIORelation extends IORelation implements Signal {
     }
 
     public boolean isResolved() {
-        if (_portWidth != Signal.UNRESOLVED)
+        if (_portWidth != Signal.UNRESOLVED) {
             return true;
+        }
+
         return false;
     }
 
@@ -97,6 +99,7 @@ public class JHDLIORelation extends IORelation implements Signal {
     // - Output ports are resolved by the container
     // - Input ports are resolved by the container
     // - Relations are resolved bythe output ports
+
     /*
       public boolean resolve() {
 
@@ -114,15 +117,14 @@ public class JHDLIORelation extends IORelation implements Signal {
       return isResolved();
       }
     */
-
     public Wire getJHDLWire() {
         return _wire;
     }
 
     public Wire buildJHDLWire(Logic parent) {
-        _wire = parent.wire(getSignalWidth(),getName());
-        System.out.println("Creating JHDL Wire for relation "+this+" wire="+
-                _wire);
+        _wire = parent.wire(getSignalWidth(), getName());
+        System.out.println("Creating JHDL Wire for relation " + this + " wire="
+            + _wire);
         return _wire;
     }
 
@@ -131,11 +133,10 @@ public class JHDLIORelation extends IORelation implements Signal {
     }
 
     protected String _description(int detail, int indent, int bracket) {
-        return super._description(detail,indent,bracket) +
-            " { relationWidth="+  _portWidth+"}";
+        return super._description(detail, indent, bracket)
+        + " { relationWidth=" + _portWidth + "}";
     }
 
     protected int _portWidth;
     protected Wire _wire;
-
 }

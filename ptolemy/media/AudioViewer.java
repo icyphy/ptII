@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.media;
 
 import java.awt.Event;
@@ -49,8 +48,10 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
 import sun.audio.AudioPlayer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AudioViewer
+
 /**
    Display sound files.
 
@@ -62,7 +63,6 @@ import sun.audio.AudioPlayer;
    @Pt.AcceptedRating Red (cxh)
 */
 public class AudioViewer extends PlotApplication {
-
     /** Construct an audio plot with no command-line arguments.
      *  @exception Exception Not thrown in this base class.
      */
@@ -75,12 +75,14 @@ public class AudioViewer extends PlotApplication {
      *  PlotApplication.
      *  @exception Exception If the command-line arguments have problems.
      */
-    public AudioViewer(String args[]) throws Exception {
+    public AudioViewer(String[] args) throws Exception {
         super(args);
+
         JMenuItem play = new JMenuItem("Play", KeyEvent.VK_P);
-        play.setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+        play.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+                Event.CTRL_MASK));
         play.setActionCommand("Play");
+
         PlayListener playlistener = new PlayListener();
         play.addActionListener(playlistener);
         _specialMenu.add(play);
@@ -95,8 +97,8 @@ public class AudioViewer extends PlotApplication {
             try {
                 _dataInputStream.close();
             } catch (Throwable throwable) {
-                System.out.println("Ignoring failure to close stream "
-                        + "on '" + _dataInputStream + "'");
+                System.out.println("Ignoring failure to close stream " + "on '"
+                    + _dataInputStream + "'");
                 throwable.printStackTrace();
             }
         }
@@ -106,15 +108,16 @@ public class AudioViewer extends PlotApplication {
      *  @param args The command line arguments that are eventually
      *  passed to PlotApplication.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         AudioViewer plot = null;
+
         try {
             plot = new AudioViewer(args);
             plot.setTitle("Ptolemy Audio Viewer");
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
-        }  finally {
+        } finally {
             if (plot != null) {
                 plot.cleanup();
             }
@@ -124,9 +127,9 @@ public class AudioViewer extends PlotApplication {
         if (_test) {
             try {
                 Thread.sleep(2000);
+            } catch (InterruptedException e) {
             }
-            catch (InterruptedException e) {
-            }
+
             System.exit(0);
         }
     }
@@ -138,24 +141,19 @@ public class AudioViewer extends PlotApplication {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "Ptolemy AudioViewer (ptaudio program)\n" +
-                "By: Edward A. Lee\n" +
-                "Version 2.0, Build: " +
-                "$Id$" +
-                "\n\n"+
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot",
-                "About Ptolemy AudioViewer",
-                JOptionPane.INFORMATION_MESSAGE);
+            "Ptolemy AudioViewer (ptaudio program)\n" + "By: Edward A. Lee\n"
+            + "Version 2.0, Build: "
+            + "$Id$"
+            + "\n\n" + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
+            "About Ptolemy AudioViewer", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display some help.
      */
     protected void _help() {
-        JOptionPane.showMessageDialog(this,
-                "Use Control-P to play the sound",
-                "Usage of Ptolemy AudioViewer",
-                JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Use Control-P to play the sound",
+            "Usage of Ptolemy AudioViewer", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether
@@ -170,22 +168,28 @@ public class AudioViewer extends PlotApplication {
         try {
             _dataInputStream = new DataInputStream(in);
             _sound = new Audio(_dataInputStream);
+
             // Configure the plot.
-            Plot plt = (Plot)plot;
+            Plot plt = (Plot) plot;
             plt.clear(true);
-            plt.setXRange(0, (_sound.size - 1)/8000.0);
+            plt.setXRange(0, (_sound.size - 1) / 8000.0);
             plt.setXLabel("Time in seconds");
             plt.setYRange(-1.0, 1.0);
+
             double[] pltdata = _sound.toDouble(0);
+
             if (pltdata != null) {
                 plt.addPoint(0, 0, pltdata[0], false);
+
                 for (int i = 1; i < pltdata.length; i++) {
-                    plt.addPoint(0, i/8000.0, pltdata[i], true);
+                    plt.addPoint(0, i / 8000.0, pltdata[i], true);
                 }
             }
+
             plt.repaint();
         } catch (IOException ex) {
             cleanup();
+
             // FIXME: fill in stack trace?
             IOException newException = new IOException();
             newException.initCause(ex);
@@ -198,22 +202,22 @@ public class AudioViewer extends PlotApplication {
     protected void _play() {
         if (_instream == null) {
             // Fill the iobuffer with audio data.
-            ByteArrayOutputStream out =
-                new ByteArrayOutputStream(_sound.size);
+            ByteArrayOutputStream out = new ByteArrayOutputStream(_sound.size);
             DataOutputStream dataOutputStream = null;
+
             try {
                 dataOutputStream = new DataOutputStream(out);
                 _sound.writeRaw(dataOutputStream);
             } catch (IOException ex) {
                 throw new RuntimeException(
-                        "Failed to convert audio data to stream.");
+                    "Failed to convert audio data to stream.");
             } finally {
                 if (dataOutputStream != null) {
                     try {
                         dataOutputStream.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on '" + dataOutputStream + "'");
+                            + "on '" + dataOutputStream + "'");
                         throwable.printStackTrace();
                     }
                 }
@@ -222,6 +226,7 @@ public class AudioViewer extends PlotApplication {
             byte[] _iobuffer = out.toByteArray();
             _instream = new ByteArrayInputStream(_iobuffer);
         }
+
         _instream.reset();
         AudioPlayer.player.start(_instream);
     }
@@ -236,9 +241,8 @@ public class AudioViewer extends PlotApplication {
                 _sound.write(new DataOutputStream(fout));
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Error writing file: " + ex,
-                        "AudioViewer error",
-                        JOptionPane.ERROR_MESSAGE);
+                    "Error writing file: " + ex, "AudioViewer error",
+                    JOptionPane.ERROR_MESSAGE);
             }
         } else {
             _saveAs();
@@ -255,18 +259,17 @@ public class AudioViewer extends PlotApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private DataInputStream _dataInputStream;
     private Audio _sound;
     private ByteArrayInputStream _instream;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class PlayListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem)e.getSource();
+            JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
+
             if (actionCommand.equals("Play")) {
                 _play();
             }

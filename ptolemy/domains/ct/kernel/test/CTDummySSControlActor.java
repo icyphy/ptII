@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package ptolemy.domains.ct.kernel.test;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -37,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummySSControlActor
+
 /**
    Dummy actor for step size control. SISO.
    @author  Jie Liu
@@ -46,11 +48,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CTDummySSControlActor extends TypedAtomicActor
-    implements CTStepSizeControlActor{
+    implements CTStepSizeControlActor {
     /** Constructor
      */
     public CTDummySSControlActor(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
@@ -62,9 +64,9 @@ public class CTDummySSControlActor extends TypedAtomicActor
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Return true always.
      */
     public boolean isThisStepAccurate() {
@@ -84,6 +86,7 @@ public class CTDummySSControlActor extends TypedAtomicActor
     public double refinedStepSize() {
         return 0.0;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 

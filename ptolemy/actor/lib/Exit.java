@@ -26,15 +26,16 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Exit
+
 /**
    A simple sink actor that consumes and discards input tokens and
    then calls System.exit() in wrapup.
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Exit extends Sink {
-
     /** Construct an actor with an input multiport.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -57,7 +57,7 @@ public class Exit extends Sink {
      *   actor with this name.
      */
     public Exit(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

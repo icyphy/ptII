@@ -24,11 +24,11 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.connector;
 
 import diva.canvas.Figure;
 import diva.canvas.Site;
+
 
 /** A Terminal is a figure that provides a visible place for connectors
  * to connect to. In general, connectors are able to connect to
@@ -46,23 +46,20 @@ import diva.canvas.Site;
  * @author  John Reekie
  */
 public interface Terminal extends Figure {
-
     /** Get the site that the terminal is attached to.
      */
-    public Site getAttachSite ();
+    public Site getAttachSite();
 
     /** Get the site that a connector can connect to.
      */
-    public Site getConnectSite ();
+    public Site getConnectSite();
 
     /** Tell the terminal to relocate itself because the
      * attachment site (or the figure that owns it) has moved.
      */
-    public void relocate ();
+    public void relocate();
 
     /** Set the site that the terminal is attached to.
      */
-    public void setAttachSite (Site s);
+    public void setAttachSite(Site s);
 }
-
-

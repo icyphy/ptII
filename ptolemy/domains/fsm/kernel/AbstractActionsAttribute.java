@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Collections;
@@ -54,8 +53,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AbstractActionsAttribute
+
 /**
    A base class for actions with semicolon delimited lists of commands.
    <p>
@@ -94,7 +95,6 @@ import ptolemy.kernel.util.Workspace;
 */
 public abstract class AbstractActionsAttribute extends Action
     implements HasTypeConstraints {
-
     /** Construct an action in the specified workspace with an empty
      *  string as a name.
      *  The object is added to the directory of the workspace.
@@ -121,7 +121,7 @@ public abstract class AbstractActionsAttribute extends Action
      *   has an attribute with the name.
      */
     public AbstractActionsAttribute(Transition transition, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(transition, name);
     }
 
@@ -139,6 +139,7 @@ public abstract class AbstractActionsAttribute extends Action
         if (_destinationsListVersion != workspace().getVersion()) {
             _updateDestinations();
         }
+
         if (_parseTreeEvaluator == null) {
             _parseTreeEvaluator = new ParseTreeEvaluator();
         }
@@ -149,14 +150,14 @@ public abstract class AbstractActionsAttribute extends Action
      *  @exception IllegalActionException If the name does not refer to a
      *  port, or a channel has not been specified for the name.
      */
-    public int getChannel(String name)
-            throws IllegalActionException {
-        Integer integer = (Integer)_numbers.get(
-                _destinationNames.indexOf(name));
+    public int getChannel(String name) throws IllegalActionException {
+        Integer integer = (Integer) _numbers.get(_destinationNames.indexOf(name));
+
         if (integer == null) {
-            throw new IllegalActionException(
-                    "No channel was specified for " + name);
+            throw new IllegalActionException("No channel was specified for "
+                + name);
         }
+
         return integer.intValue();
     }
 
@@ -166,8 +167,7 @@ public abstract class AbstractActionsAttribute extends Action
      *  @exception IllegalActionException If the given name is not a valid
      *  destination for this action.
      */
-    public NamedObj getDestination(String name)
-            throws IllegalActionException {
+    public NamedObj getDestination(String name) throws IllegalActionException {
         return _getDestination(name);
     }
 
@@ -189,16 +189,15 @@ public abstract class AbstractActionsAttribute extends Action
      */
     public String getExpression(String name) {
         ParseTreeWriter writer = new ParseTreeWriter();
-        return writer.printParseTree((ASTPtRootNode)
-                _parseTrees.get(_destinationNames.indexOf(name)));
+        return writer.printParseTree((ASTPtRootNode) _parseTrees.get(
+                _destinationNames.indexOf(name)));
     }
 
     /** Test if a channel number is associated with the given name.
      *  @return true If a channel was specified.
      */
     public boolean isChannelSpecified(String name) {
-        Integer integer = (Integer)_numbers.get(
-                _destinationNames.indexOf(name));
+        Integer integer = (Integer) _numbers.get(_destinationNames.indexOf(name));
         return integer != null;
     }
 
@@ -210,14 +209,14 @@ public abstract class AbstractActionsAttribute extends Action
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container, or if the action is syntactically incorrect.
      */
-    public void setExpression(String expression)
-            throws IllegalActionException {
+    public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
 
         // This is important for InterfaceAutomata which extend from
         // this class.
-        if (expression == null ||
-                expression.trim().equals("")) return;
+        if ((expression == null) || expression.trim().equals("")) {
+            return;
+        }
 
         // Initialize the lists that store the commands to be executed.
         _destinationNames = new LinkedList();
@@ -231,33 +230,37 @@ public abstract class AbstractActionsAttribute extends Action
 
         PtParser parser = new PtParser();
         Map map = parser.generateAssignmentMap(expression);
-        for (Iterator names = map.keySet().iterator();
-             names.hasNext();) {
-            String name = (String)names.next();
-            ASTPtAssignmentNode node = (ASTPtAssignmentNode)map.get(name);
+
+        for (Iterator names = map.keySet().iterator(); names.hasNext();) {
+            String name = (String) names.next();
+            ASTPtAssignmentNode node = (ASTPtAssignmentNode) map.get(name);
 
             // Parse the destination specification first.
             String completeDestinationSpec = node.getIdentifier();
             int openParen = completeDestinationSpec.indexOf("(");
+
             if (openParen > 0) {
                 // A channel is being specified.
                 int closeParen = completeDestinationSpec.indexOf(")");
+
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
-                            "Malformed action: expected destination = "
-                            + "expression. Got: " + completeDestinationSpec);
+                        "Malformed action: expected destination = "
+                        + "expression. Got: " + completeDestinationSpec);
                 }
-                _destinationNames.add(
-                        completeDestinationSpec.substring(
-                                0, openParen).trim());
-                String channelSpec = completeDestinationSpec.substring(
-                        openParen + 1, closeParen);
+
+                _destinationNames.add(completeDestinationSpec.substring(0,
+                        openParen).trim());
+
+                String channelSpec = completeDestinationSpec.substring(openParen
+                        + 1, closeParen);
+
                 try {
                     _numbers.add(new Integer(channelSpec));
                 } catch (NumberFormatException ex) {
                     throw new IllegalActionException(this,
-                            "Malformed action: expected destination = "
-                            + "expression. Got: " + completeDestinationSpec);
+                        "Malformed action: expected destination = "
+                        + "expression. Got: " + completeDestinationSpec);
                 }
             } else {
                 // No channel is specified.
@@ -277,19 +280,23 @@ public abstract class AbstractActionsAttribute extends Action
      */
     public List typeConstraintList() {
         List list = new LinkedList();
+
         for (Iterator names = getDestinationNameList().iterator();
-             names.hasNext();) {
-            String name = (String)names.next();
+                names.hasNext();) {
+            String name = (String) names.next();
+
             try {
                 NamedObj object = getDestination(name);
+
                 if (object instanceof Typeable) {
-                    InequalityTerm term = ((Typeable)object).getTypeTerm();
+                    InequalityTerm term = ((Typeable) object).getTypeTerm();
                     list.add(new Inequality(new TypeFunction(name), term));
                 }
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         }
+
         return list;
     }
 
@@ -305,11 +312,10 @@ public abstract class AbstractActionsAttribute extends Action
      *   does not have a destination with the specified name.
      */
     protected abstract NamedObj _getDestination(String name)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // List of channels.
     protected List _numbers;
 
@@ -345,11 +351,14 @@ public abstract class AbstractActionsAttribute extends Action
     private void _updateDestinations() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+
             if (_destinationNames != null) {
                 _destinations = new LinkedList();
+
                 Iterator destinationNames = _destinationNames.iterator();
+
                 while (destinationNames.hasNext()) {
-                    String destinationName = (String)destinationNames.next();
+                    String destinationName = (String) destinationNames.next();
                     NamedObj destination = _getDestination(destinationName);
                     _destinations.add(destination);
                 }
@@ -391,27 +400,28 @@ public abstract class AbstractActionsAttribute extends Action
                 // (but not for UNKNOWN arguments), and to give good error
                 // messages when functions are not found.
                 InequalityTerm[] terms = getVariables();
+
                 for (int i = 0; i < terms.length; i++) {
                     InequalityTerm term = terms[i];
-                    if (term != this && term.getValue() == BaseType.UNKNOWN) {
+
+                    if ((term != this) && (term.getValue() == BaseType.UNKNOWN)) {
                         return BaseType.UNKNOWN;
                     }
                 }
 
-                ASTPtRootNode parseTree =
-                    (ASTPtRootNode)_parseTrees.get(
-                            _destinationNames.indexOf(_name));
+                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees.get(_destinationNames
+                        .indexOf(_name));
+
                 if (_scope == null) {
-                    FSMActor fsmActor =
-                        (FSMActor)getContainer().getContainer();
+                    FSMActor fsmActor = (FSMActor) getContainer().getContainer();
                     _scope = fsmActor.getPortScope();
                 }
+
                 Type type = _typeInference.inferTypes(parseTree, _scope);
                 return type;
             } catch (Exception ex) {
-                throw new IllegalActionException(
-                        AbstractActionsAttribute.this, ex,
-                        "An error occurred during expression type inference");
+                throw new IllegalActionException(AbstractActionsAttribute.this,
+                    ex, "An error occurred during expression type inference");
             }
         }
 
@@ -426,28 +436,29 @@ public abstract class AbstractActionsAttribute extends Action
             // inputs and all of the parameters that are free variables for
             // the expression.
             try {
-                ASTPtRootNode parseTree =
-                    (ASTPtRootNode)_parseTrees.get(
-                            _destinationNames.indexOf(_name));
+                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees.get(_destinationNames
+                        .indexOf(_name));
 
                 if (_scope == null) {
-                    FSMActor fsmActor =
-                        (FSMActor)getContainer().getContainer();
+                    FSMActor fsmActor = (FSMActor) getContainer().getContainer();
                     _scope = fsmActor.getPortScope();
                 }
-                Set set = _variableCollector.collectFreeVariables(
-                        parseTree, _scope);
+
+                Set set = _variableCollector.collectFreeVariables(parseTree,
+                        _scope);
                 List termList = new LinkedList();
-                for (Iterator elements = set.iterator();
-                     elements.hasNext();) {
-                    String name = (String)elements.next();
+
+                for (Iterator elements = set.iterator(); elements.hasNext();) {
+                    String name = (String) elements.next();
                     InequalityTerm term = _scope.getTypeTerm(name);
-                    if (term != null && term.isSettable()) {
+
+                    if ((term != null) && term.isSettable()) {
                         termList.add(term);
                     }
                 }
-                return (InequalityTerm[])termList.toArray(
-                        new InequalityTerm[termList.size()]);
+
+                return (InequalityTerm[]) termList.toArray(new InequalityTerm[termList
+                    .size()]);
             } catch (IllegalActionException ex) {
                 return new InequalityTerm[0];
             }
@@ -462,13 +473,9 @@ public abstract class AbstractActionsAttribute extends Action
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-
         private String _name;
         private String _description;
-        private ParseTreeTypeInference _typeInference =
-        new ParseTreeTypeInference();
-        private ParseTreeFreeVariableCollector _variableCollector =
-        new ParseTreeFreeVariableCollector();
+        private ParseTreeTypeInference _typeInference = new ParseTreeTypeInference();
+        private ParseTreeFreeVariableCollector _variableCollector = new ParseTreeFreeVariableCollector();
     }
-
 }

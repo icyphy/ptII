@@ -57,6 +57,7 @@ import diva.gui.toolbox.ListDataModel;
 import diva.resource.DefaultBundle;
 import diva.resource.RelativeBundle;
 
+
 /**
  * An abstract implementation of the Application interface.  This
  * class implements the common elements of the Application
@@ -74,7 +75,6 @@ import diva.resource.RelativeBundle;
  * @Pt.AcceptedRating Red
  */
 public abstract class AbstractApplication implements Application {
-
     // This class used to be in the parent directory, but only the
     // tutorial needed it, so we moved it.
 
@@ -128,7 +128,7 @@ public abstract class AbstractApplication implements Application {
     /** Get an iterator over the names of the actions that are
      * contained by this application.
      */
-    public Iterator actions () {
+    public Iterator actions() {
         return _actions.keySet().iterator();
     }
 
@@ -136,7 +136,7 @@ public abstract class AbstractApplication implements Application {
      * the application should be added here so it can be retrieved and
      * invoked later.
      */
-    public void addAction (Action action) {
+    public void addAction(Action action) {
         _actions.put(action.getValue(Action.NAME), action);
     }
 
@@ -148,8 +148,8 @@ public abstract class AbstractApplication implements Application {
      * action's name and is enabled by default.
      * @deprecated Use method in GUIUtilities instead.
      */
-    public JMenuItem addMenuItem (JMenu menu, Action action,
-            int mnemonic, String tooltip) {
+    public JMenuItem addMenuItem(JMenu menu, Action action, int mnemonic,
+        String tooltip) {
         return GUIUtilities.addMenuItem(menu, action, mnemonic, tooltip);
     }
 
@@ -161,10 +161,10 @@ public abstract class AbstractApplication implements Application {
      * and is disabled or enabled according to "isEnabled."
      * @deprecated Use method in GUIUtilities instead.
      */
-    public JMenuItem addMenuItem (JMenu menu, String label, Action action,
-            int mnemonic, String tooltip, boolean isEnabled) {
-        return GUIUtilities.addMenuItem(menu, label, action,
-                mnemonic, tooltip, isEnabled);
+    public JMenuItem addMenuItem(JMenu menu, String label, Action action,
+        int mnemonic, String tooltip, boolean isEnabled) {
+        return GUIUtilities.addMenuItem(menu, label, action, mnemonic, tooltip,
+            isEnabled);
     }
 
     /** Add an action to the toolbar.  If the tool tip is null, use
@@ -174,8 +174,8 @@ public abstract class AbstractApplication implements Application {
      * default.
      * @deprecated Use method in GUIUtilities instead.
      */
-    public JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon) {
+    public JButton addToolBarButton(JToolBar toolbar, Action action,
+        String tooltip, Icon icon) {
         return GUIUtilities.addToolBarButton(toolbar, action, tooltip, icon);
     }
 
@@ -185,20 +185,21 @@ public abstract class AbstractApplication implements Application {
      * as the "toolButton" property.
      * @deprecated Use method in GUIUtilities instead.
      */
-    public JButton addToolBarButton (JToolBar toolbar, Action action,
-            String tooltip, Icon icon, boolean isEnabled) {
-        return GUIUtilities.addToolBarButton(toolbar, action, tooltip,
-                icon, isEnabled);
+    public JButton addToolBarButton(JToolBar toolbar, Action action,
+        String tooltip, Icon icon, boolean isEnabled) {
+        return GUIUtilities.addToolBarButton(toolbar, action, tooltip, icon,
+            isEnabled);
     }
 
     /** Add a property change listener to this application. Changes to
      * certain elements of the state will cause all registered
      * property listeners to be notified.
      */
-    public void addPropertyChangeListener (PropertyChangeListener listener) {
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
         if (_propertyChangeSupport == null) {
             _propertyChangeSupport = new PropertyChangeSupport(this);
         }
+
         _propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
@@ -207,12 +208,12 @@ public abstract class AbstractApplication implements Application {
      * listeners. Throw an exception if the document is already
      * in the list of documents.
      */
-    public void addDocument (Document d) {
+    public void addDocument(Document d) {
         if (_documents.contains(d)) {
-            throw new IllegalArgumentException(
-                    "Document " + d
-                    + " is already known by application " + this);
+            throw new IllegalArgumentException("Document " + d
+                + " is already known by application " + this);
         }
+
         _documents.addElement(d);
     }
 
@@ -221,17 +222,19 @@ public abstract class AbstractApplication implements Application {
      * listeners. Throw an exception if the view is already
      * in the list of views.
      */
-    public void addView (View v) {
+    public void addView(View v) {
         if (_views.contains(v)) {
-            throw new IllegalArgumentException(
-                    "View " + v
-                    + " is already known by application " + this);
+            throw new IllegalArgumentException("View " + v
+                + " is already known by application " + this);
         }
-        List l = (List)_documentMap.get(v.getDocument());
+
+        List l = (List) _documentMap.get(v.getDocument());
+
         if (l == null) {
             l = new LinkedList();
             _documentMap.put(v.getDocument(), l);
         }
+
         l.add(v);
         _views.addElement(v);
     }
@@ -242,7 +245,7 @@ public abstract class AbstractApplication implements Application {
      * documents are added or removed, and with a contentsChanged()
      * event when the current document is changed.
      */
-    public void addDocumentListener (ListDataListener listener) {
+    public void addDocumentListener(ListDataListener listener) {
         _documents.addListDataListener(listener);
     }
 
@@ -252,7 +255,7 @@ public abstract class AbstractApplication implements Application {
      * views are added or removed, and with a contentsChanged()
      * event when the current view is changed.
      */
-    public void addViewListener (ListDataListener listener) {
+    public void addViewListener(ListDataListener listener) {
         _views.addListDataListener(listener);
     }
 
@@ -268,11 +271,13 @@ public abstract class AbstractApplication implements Application {
      * Try to close the given view using the storage policy.
      */
     public boolean closeView(View v) {
-        List views = (List)_documentMap.get(v.getDocument());
-        if (views.size() > 0 || closeDocument(v.getDocument())) {
+        List views = (List) _documentMap.get(v.getDocument());
+
+        if ((views.size() > 0) || closeDocument(v.getDocument())) {
             removeView(v);
             return true;
         }
+
         return false;
     }
 
@@ -281,55 +286,55 @@ public abstract class AbstractApplication implements Application {
      * method, most callers should set this view to be the current
      * view.
      */
-    public abstract View createView (Document d);
+    public abstract View createView(Document d);
 
     /** Get list of all document objects known by this
      * application.
      */
-    public List documentList () {
+    public List documentList() {
         return _documents.getList();
     }
 
     /** Get an action by name.
      */
-    public Action getAction (String name) {
-        return (Action)_actions.get(name);
+    public Action getAction(String name) {
+        return (Action) _actions.get(name);
     }
 
     /** Get the frame that this application draws itself in.
      */
-    public AppContext getAppContext () {
+    public AppContext getAppContext() {
         return _appContext;
     }
 
     /** Get the clipboard object for this application.
      */
-    public Clipboard getClipboard () {
+    public Clipboard getClipboard() {
         return _clipboard;
     }
 
     /** Get the current view. Generally, this will be the one that
      * is displayed in the window that is top-most in the display.
      */
-    public View getCurrentView () {
+    public View getCurrentView() {
         return (View) _views.getSelectedItem();
     }
 
     /** Get the factory that creates new documents
      */
-    public DocumentFactory getDocumentFactory () {
+    public DocumentFactory getDocumentFactory() {
         return _documentFactory;
     }
 
     /** Get the resources object.
      */
-    public RelativeBundle getResources () {
+    public RelativeBundle getResources() {
         return _resources;
     }
 
     /** Get the storage policy of this application.
      */
-    public StoragePolicy getStoragePolicy () {
+    public StoragePolicy getStoragePolicy() {
         return _storagePolicy;
     }
 
@@ -341,7 +346,7 @@ public abstract class AbstractApplication implements Application {
      * Return false if the application has no frame or
      * if the frame is not visible.
      */
-    public boolean isVisible () {
+    public boolean isVisible() {
         if (getAppContext() == null) {
             return false;
         } else {
@@ -355,19 +360,22 @@ public abstract class AbstractApplication implements Application {
      * document listeners.  Throw an exception if the document is
      * not known.
      */
-    public void removeDocument (Document d) {
+    public void removeDocument(Document d) {
         if (!_documents.contains(d)) {
-            throw new IllegalArgumentException(
-                    "Document " + d
-                    + " is not known by application " + this);
+            throw new IllegalArgumentException("Document " + d
+                + " is not known by application " + this);
         }
+
         _documents.removeElement(d);
-        List views = (List)_documentMap.get(d);
-        for (Iterator i = views.iterator(); i.hasNext(); ) {
-            View v = (View)i.next();
+
+        List views = (List) _documentMap.get(d);
+
+        for (Iterator i = views.iterator(); i.hasNext();) {
+            View v = (View) i.next();
             i.remove();
             removeView(v);
         }
+
         _documentMap.remove(d);
     }
 
@@ -377,14 +385,16 @@ public abstract class AbstractApplication implements Application {
      * the application to decide which view to display next. Throw an
      * exception if the view is not known.
      */
-    public void removeView (View v) {
+    public void removeView(View v) {
         if (!_views.contains(v)) {
-            throw new IllegalArgumentException(
-                    "View " + v
-                    + " is not known by application " + this);
+            throw new IllegalArgumentException("View " + v
+                + " is not known by application " + this);
         }
+
         _views.removeElement(v);
-        List views = (List)_documentMap.get(v.getDocument());
+
+        List views = (List) _documentMap.get(v.getDocument());
+
         if (views != null) {
             views.remove(v);
         }
@@ -392,19 +402,19 @@ public abstract class AbstractApplication implements Application {
 
     /** Remove a document list listener from this application.
      */
-    public void removeDocumentListener (ListDataListener listener) {
+    public void removeDocumentListener(ListDataListener listener) {
         _documents.removeListDataListener(listener);
     }
 
     /** Remove a view list listener from this application.
      */
-    public void removeViewListener (ListDataListener listener) {
+    public void removeViewListener(ListDataListener listener) {
         _views.removeListDataListener(listener);
     }
 
     /** Remove a property change listener from this application.
      */
-    public void removePropertyChangeListener (PropertyChangeListener listener) {
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
         _propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
@@ -421,12 +431,12 @@ public abstract class AbstractApplication implements Application {
      * contentsChanged() event to registered view listeners.
      * Throw an exception if the view is not known.
      */
-    public void setCurrentView (View v) {
-        if (v != null && !_views.contains(v)) {
-            throw new IllegalArgumentException(
-                    "View " + v
-                    + " is not known by application " + this);
+    public void setCurrentView(View v) {
+        if ((v != null) && !_views.contains(v)) {
+            throw new IllegalArgumentException("View " + v
+                + " is not known by application " + this);
         }
+
         _views.setSelectedItem(v);
     }
 
@@ -446,18 +456,17 @@ public abstract class AbstractApplication implements Application {
 
     /** Set the visibility of the application's frame
      */
-    public void setVisible (boolean visible) {
+    public void setVisible(boolean visible) {
         if (getAppContext() != null) {
             getAppContext().setVisible(visible);
         }
     }
 
-
     /** Show an error in a dialog box with stack trace.
      */
     public void showError(String op, Exception e) {
         GUIUtilities.showStackTrace(getAppContext().makeComponent(), e,
-                "Please submit a bug report.\n\n" + op);
+            "Please submit a bug report.\n\n" + op);
     }
 
     /** Set the app context that this application draws itself in. For use
@@ -470,19 +479,20 @@ public abstract class AbstractApplication implements Application {
     /** Get a list of all view objects known by this
      * application.
      */
-    public List viewList () {
+    public List viewList() {
         return _views.getList();
     }
 
     /** Get a list of all view objects known by this
      * application.
      */
-    public List viewList (Document d) {
-        List list = (List)_documentMap.get(d);
-        if (list == null)
+    public List viewList(Document d) {
+        List list = (List) _documentMap.get(d);
+
+        if (list == null) {
             list = new LinkedList();
+        }
+
         return list;
     }
 }
-
-

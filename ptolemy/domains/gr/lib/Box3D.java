@@ -46,6 +46,7 @@ import ptolemy.kernel.util.Settable;
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Primitive;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Box3D
 
@@ -63,7 +64,6 @@ import com.sun.j3d.utils.geometry.Primitive;
     @Pt.AcceptedRating Green (liuxj)
 */
 public class Box3D extends GRShadedShape {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,7 +73,7 @@ public class Box3D extends GRShadedShape {
      *   actor with this name.
      */
     public Box3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xLength = new Parameter(this, "xLength");
@@ -120,29 +120,29 @@ public class Box3D extends GRShadedShape {
     /** If the dimensions change, then update the box.
      */
     public void attributeChanged(Attribute attribute)
-                    throws IllegalActionException {
-            // Check that a box has been previously created.
-            if (_changesAllowedNow
-                && (attribute == xLength
-                || attribute == yHeight
-                || attribute == zWidth)) {
+        throws IllegalActionException {
+        // Check that a box has been previously created.
+        if (_changesAllowedNow
+                && ((attribute == xLength) || (attribute == yHeight)
+                || (attribute == zWidth))) {
             if (_scaleTransform != null) {
-                float height = (float)(((DoubleToken)
-                        yHeight.getToken()).doubleValue()/2.0);
+                float height = (float) (((DoubleToken) yHeight.getToken())
+                    .doubleValue() / 2.0);
 
-                float length = (float)(((DoubleToken)
-                        xLength.getToken()).doubleValue()/2.0);
+                float length = (float) (((DoubleToken) xLength.getToken())
+                    .doubleValue() / 2.0);
 
-                float width = (float)(((DoubleToken)
-                        zWidth.getToken()).doubleValue()/2.0);
+                float width = (float) (((DoubleToken) zWidth.getToken())
+                    .doubleValue() / 2.0);
 
                 _scaleTransform.setScale(new Vector3d(length, height, width));
+
                 // The following seems to be needed so the new scale
                 // takes effect.
-                ((TransformGroup)_containedNode).setTransform(_scaleTransform);
+                ((TransformGroup) _containedNode).setTransform(_scaleTransform);
             }
         } else {
-                super.attributeChanged(attribute);
+            super.attributeChanged(attribute);
         }
     }
 
@@ -159,9 +159,9 @@ public class Box3D extends GRShadedShape {
         _createBox();
     }
 
-        /** Return the Java3D box.
-     *  @return The Java3D box.
-     */
+    /** Return the Java3D box.
+    *  @return The Java3D box.
+    */
     protected Node _getNodeObject() {
         return _containedNode;
     }
@@ -172,48 +172,45 @@ public class Box3D extends GRShadedShape {
     /** Create a box with the current parameter values.
          *  @exception IllegalActionException If the parameters are malformed.
          */
-        private void _createBox() throws IllegalActionException {
-                int primitiveFlags = Primitive.GENERATE_NORMALS;
+    private void _createBox() throws IllegalActionException {
+        int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
-        if (textureURL != null || _changesAllowedNow) {
+
+        if ((textureURL != null) || _changesAllowedNow) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
+
         if (_changesAllowedNow) {
-                // Sharing the geometry leads to artifacts when changes
-                // are made at run time.
-                primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
+            // Sharing the geometry leads to artifacts when changes
+            // are made at run time.
+            primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
         }
 
         // Although it is completely undocument in Java3D, the "dimension"
         // parameters of the box are more like radii than like width,
         // length, and height. So we have to divide by two.
-        float height = (float)(((DoubleToken)
-                yHeight.getToken()).doubleValue()/2.0);
+        float height = (float) (((DoubleToken) yHeight.getToken()).doubleValue() / 2.0);
 
-        float length = (float)(((DoubleToken)
-                xLength.getToken()).doubleValue()/2.0);
+        float length = (float) (((DoubleToken) xLength.getToken()).doubleValue() / 2.0);
 
-        float width = (float)(((DoubleToken)
-                zWidth.getToken()).doubleValue()/2.0);
+        float width = (float) (((DoubleToken) zWidth.getToken()).doubleValue() / 2.0);
 
         if (_changesAllowedNow) {
-            Box box = new Box(1.0f, 1.0f, 1.0f,
-                    primitiveFlags, _appearance);
+            Box box = new Box(1.0f, 1.0f, 1.0f, primitiveFlags, _appearance);
 
             TransformGroup scaler = new TransformGroup();
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();
-            _scaleTransform.setScale(
-                    new Vector3d(length, height, width));
+            _scaleTransform.setScale(new Vector3d(length, height, width));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(box);
             _containedNode = scaler;
         } else {
-            _containedNode = new Box(length, height, width,
-                    primitiveFlags, _appearance);
+            _containedNode = new Box(length, height, width, primitiveFlags,
+                    _appearance);
             _scaleTransform = null;
         }
-        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

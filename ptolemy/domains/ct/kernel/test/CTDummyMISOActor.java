@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package ptolemy.domains.ct.kernel.test;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -36,6 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyMISOActor
+
 /**
    Description of the class
    @author Jie Liu
@@ -44,11 +46,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class CTDummyMISOActor extends TypedAtomicActor{
+public class CTDummyMISOActor extends TypedAtomicActor {
     /** Constructor
      */
     public CTDummyMISOActor(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel.solver;
 
 import ptolemy.actor.util.Time;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitRK23Solver
+
 /**
    This class implements the Explicit Runge-Kutta 2(3) ODE solving method.
    For an ODE of the form:
@@ -75,7 +76,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public class ExplicitRK23Solver extends ODESolver {
-
     /** Construct a solver in the default workspace.
      *  The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -95,6 +95,7 @@ public class ExplicitRK23Solver extends ODESolver {
      */
     public ExplicitRK23Solver(Workspace workspace) {
         super(workspace);
+
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
@@ -116,17 +117,17 @@ public class ExplicitRK23Solver extends ODESolver {
      */
     public void fireDynamicActors() throws IllegalActionException {
         super.fireDynamicActors();
-        CTDirector director = (CTDirector)getContainer();
+
+        CTDirector director = (CTDirector) getContainer();
+
         // NOTE: why is the current model time changed here?
         // Some state transition actors may be some functions
         // defined on the current time, such as the CurrentTime actor.
         Time iterationBeginTime = director.getIterationBeginTime();
         double currentStepSize = director.getCurrentStepSize();
-        director.setModelTime(
-                iterationBeginTime.add(currentStepSize
-                        * _timeInc[_getRoundCount()]));
+        director.setModelTime(iterationBeginTime.add(
+                currentStepSize * _timeInc[_getRoundCount()]));
     }
-
 
     /** Fire state transition actors. Increment the round count.
      *  If the current round is the third round, set converged flag to
@@ -137,6 +138,7 @@ public class ExplicitRK23Solver extends ODESolver {
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();
         _incrementRoundCount();
+
         if (_getRoundCount() == _timeInc.length) {
             _resetRoundCount();
             _setConverged(true);
@@ -166,36 +168,44 @@ public class ExplicitRK23Solver extends ODESolver {
      *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
-        CTDirector director = (CTDirector)getContainer();
+        throws IllegalActionException {
+        CTDirector director = (CTDirector) getContainer();
         int r = _getRoundCount();
-        double xn =  integrator.getState();
+        double xn = integrator.getState();
         double outvalue;
         double h = director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
+
         switch (r) {
         case 0:
+
             // Get the derivative at t;
             double k0 = integrator.getDerivative();
             integrator.setAuxVariables(0, k0);
-            outvalue = xn + h * k0 *_B[0][0];
+            outvalue = xn + (h * k0 * _B[0][0]);
             break;
+
         case 1:
-            double k1 = ((DoubleToken)integrator.input.get(0)).doubleValue();
+
+            double k1 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(1, k1);
-            outvalue = xn + h * (k[0]*_B[1][0] + k1 *_B[1][1]);
+            outvalue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
             break;
+
         case 2:
-            double k2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
+
+            double k2 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(2, k2);
-            outvalue = xn + h * (k[0]*_B[2][0] + k[1]*_B[2][1]
-                    + k2*_B[2][2]);
+            outvalue = xn
+                + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) + (k2 * _B[2][2])));
             integrator.setTentativeState(outvalue);
             break;
+
         default:
             throw new InvalidStateException(this,
-                    "execution sequence out of range.");
+                "execution sequence out of range.");
         }
+
         integrator.output.broadcast(new DoubleToken(outvalue));
     }
 
@@ -208,31 +218,34 @@ public class ExplicitRK23Solver extends ODESolver {
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         try {
-            CTDirector director = (CTDirector)getContainer();
+            CTDirector director = (CTDirector) getContainer();
             double tolerance = director.getErrorTolerance();
             double h = director.getCurrentStepSize();
-            double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
+            double f = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setTentativeDerivative(f);
+
             double[] k = integrator.getAuxVariables();
-            double error = h * Math.abs(k[0]*_E[0] + k[1]*_E[1]
-                    + k[2]*_E[2] + f* _E[3]);
+            double error = h * Math.abs((k[0] * _E[0]) + (k[1] * _E[1])
+                    + (k[2] * _E[2]) + (f * _E[3]));
+
             //k[3] is Local Truncation Error
             integrator.setAuxVariables(3, error);
-            _debug("Integrator: "+ integrator.getName() +
-                    " local truncation error = " + error);
+            _debug("Integrator: " + integrator.getName()
+                + " local truncation error = " + error);
+
             if (error < tolerance) {
-                _debug("Integrator: " + integrator.getName() +
-                        " report a success.");
+                _debug("Integrator: " + integrator.getName()
+                    + " report a success.");
                 return true;
             } else {
-                _debug("Integrator: " + integrator.getName() +
-                        " reports a failure.");
+                _debug("Integrator: " + integrator.getName()
+                    + " reports a failure.");
                 return false;
             }
         } catch (IllegalActionException e) {
             //should never happen.
-            throw new InternalErrorException(integrator.getName() +
-                    " can't read input." + e.getMessage());
+            throw new InternalErrorException(integrator.getName()
+                + " can't read input." + e.getMessage());
         }
     }
 
@@ -245,38 +258,42 @@ public class ExplicitRK23Solver extends ODESolver {
      *  @return The next step size suggested by the given integrator.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
-        CTDirector director = (CTDirector)getContainer();
+        CTDirector director = (CTDirector) getContainer();
         double error = (integrator.getAuxVariables())[3];
         double h = director.getCurrentStepSize();
         double tolerance = director.getErrorTolerance();
-        double newh = 5.0*h;
+        double newh = 5.0 * h;
+
         if (error > director.getValueResolution()) {
-            newh = h*
-                Math.max(0.5, 0.8*Math.pow((tolerance/error), 1.0/_order));
+            newh = h * Math.max(0.5,
+                    0.8 * Math.pow((tolerance / error), 1.0 / _order));
         }
-        _debug("integrator: " + integrator.getName() +
-                " suggests next step size = " + newh);
+
+        _debug("integrator: " + integrator.getName()
+            + " suggests next step size = " + newh);
         return newh;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The name of the solver
     private static final String _DEFAULT_NAME = "CT_Runge_Kutta_2_3_Solver";
 
     // The ratio of time increments within one integration step.
-    private static final double[] _timeInc = {0.5, 0.75, 1.0};
+    private static final double[] _timeInc = { 0.5, 0.75, 1.0 };
 
     // B coefficients
-    private static final double[][] _B = {{0.5},
-                                          {0, 0.75},
-                                          {2.0/9.0, 1.0/3.0, 4.0/9.0}};
+    private static final double[][] _B = {
+            { 0.5 },
+            { 0, 0.75 },
+            { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 }
+        };
+
     // E coefficients
-    private static final double[] _E =
-    {-5.0/72.0, 1.0/12.0, 1.0/9.0, -1.0/8.0};
+    private static final double[] _E = {
+            -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0, -1.0 / 8.0
+        };
 
     // The order of the algorithm.
     private static final double _order = 3;
-
 }

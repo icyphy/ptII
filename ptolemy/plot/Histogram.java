@@ -36,8 +36,10 @@ import java.util.Hashtable;
 import java.util.Random;
 import java.util.Vector;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Histogram
+
 /**
    A histogram plotter.  The plot can be configured and data can
    be provided either through a file with commands or through direct
@@ -119,7 +121,6 @@ import java.util.Vector;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class Histogram extends PlotBox {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -158,6 +159,7 @@ public class Histogram extends PlotBox {
                     _addPoint(dataset, value);
                 }
             };
+
         deferIfNecessary(doAddPoint);
     }
 
@@ -171,7 +173,7 @@ public class Histogram extends PlotBox {
      *  @param connected Ignored
      */
     public synchronized void addPoint(int dataset, double x, double y,
-            boolean connected) {
+        boolean connected) {
         addPoint(dataset, y);
     }
 
@@ -196,6 +198,7 @@ public class Histogram extends PlotBox {
                     _clear(format);
                 }
             };
+
         deferIfNecessary(doClear);
     }
 
@@ -210,49 +213,49 @@ public class Histogram extends PlotBox {
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
             output.println(
-                    "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+                "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
             output.println(
-                    "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
+                "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
         }
+
         output.println("<plot>");
         output.println("<!-- Ptolemy plot, version " + PTPLOT_RELEASE
-                + " , PlotML format. Exported from Histogram. -->");
+            + " , PlotML format. Exported from Histogram. -->");
 
         super.writeFormat(output);
-        output.println(
-                "<barGraph width=\""
-                + (_barwidth * _binWidth)
-                + "\" offset=\""
-                + (_baroffset * _binWidth)
-                + "\"/>");
+        output.println("<barGraph width=\"" + (_barwidth * _binWidth)
+            + "\" offset=\"" + (_baroffset * _binWidth) + "\"/>");
+
         for (int dataset = 0; dataset < _points.size(); dataset++) {
             // Write the dataset directive
             String legend = getLegend(dataset);
+
             if (legend != null) {
-                output.println("<dataset name=\""
-                        + legend
-                        + "\" connected=\"no\">");
+                output.println("<dataset name=\"" + legend
+                    + "\" connected=\"no\">");
             } else {
                 output.println("<dataset connected=\"no\">");
             }
-            Hashtable data = (Hashtable)_histogram.elementAt(dataset);
+
+            Hashtable data = (Hashtable) _histogram.elementAt(dataset);
             Enumeration keys = data.keys();
+
             while (keys.hasMoreElements()) {
-                Integer bin = (Integer)keys.nextElement();
-                Integer count = (Integer)data.get(bin);
+                Integer bin = (Integer) keys.nextElement();
+                Integer count = (Integer) data.get(bin);
+
                 // The X axis value is a bit complex to get.
-                int xValue = (int)(bin.intValue() * _binWidth + _binOffset);
-                output.println("<p x=\""
-                        + xValue
-                        + "\" y=\""
-                        + count.intValue()
-                        + "\"/>");
+                int xValue = (int) ((bin.intValue() * _binWidth) + _binOffset);
+                output.println("<p x=\"" + xValue + "\" y=\""
+                    + count.intValue() + "\"/>");
             }
+
             output.println("</dataset>");
         }
+
         output.println("</plot>");
         output.flush();
     }
@@ -274,13 +277,13 @@ public class Histogram extends PlotBox {
                     _fillPlot();
                 }
             };
+
         deferIfNecessary(doFill);
     }
 
     /** Create a sample plot.
      */
     public synchronized void samplePlot() {
-
         // Create a sample plot.
         clear(true);
 
@@ -289,11 +292,13 @@ public class Histogram extends PlotBox {
         setYLabel("count");
 
         Random random = new Random();
+
         for (int i = 0; i <= 1000; i++) {
-            this.addPoint(0, 5.0 * Math.cos(Math.PI * ((double)i)/500.0));
-            this.addPoint(1, 10.0 * random.nextDouble() - 5.0);
+            this.addPoint(0, 5.0 * Math.cos((Math.PI * ((double) i)) / 500.0));
+            this.addPoint(1, (10.0 * random.nextDouble()) - 5.0);
             this.addPoint(2, 2.0 * random.nextGaussian());
         }
+
         this.repaint();
     }
 
@@ -362,22 +367,25 @@ public class Histogram extends PlotBox {
      */
     public synchronized void writeData(PrintWriter output) {
         super.writeData(output);
+
         for (int dataset = 0; dataset < _points.size(); dataset++) {
             // Write the dataset directive
             String legend = getLegend(dataset);
+
             if (legend != null) {
-                output.println("<dataset name=\""
-                        + legend
-                        + "\">");
+                output.println("<dataset name=\"" + legend + "\">");
             } else {
                 output.println("<dataset>");
             }
+
             // Write the data
-            Vector pts = (Vector)_points.elementAt(dataset);
+            Vector pts = (Vector) _points.elementAt(dataset);
+
             for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
-                Double pt = (Double)pts.elementAt(pointnum);
+                Double pt = (Double) pts.elementAt(pointnum);
                 output.println("<p y=\"" + pt.doubleValue() + "\"/>");
             }
+
             output.println("</dataset>");
         }
     }
@@ -387,28 +395,21 @@ public class Histogram extends PlotBox {
      */
     public synchronized void writeFormat(PrintWriter output) {
         super.writeFormat(output);
+
         // NOTE: Regrettably, the meaning of the barGraph data is
         // different for a histogram than for a normal plot.
         // In a histogram, it is proportional to the bin width.
         // Thus, this is not the same as the corresponding line
         // in exportToPlot().
-        output.println(
-                "<barGraph width=\""
-                + _barwidth
-                + "\" offset=\""
-                + _baroffset
-                + "\"/>");
+        output.println("<barGraph width=\"" + _barwidth + "\" offset=\""
+            + _baroffset + "\"/>");
 
-        output.println("<bin width=\""
-                + _binWidth
-                + "\" offset=\""
-                + _binOffset
-                + "\"/>");
+        output.println("<bin width=\"" + _binWidth + "\" offset=\""
+            + _binOffset + "\"/>");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /** Check the argument to ensure that it is a valid data set index.
      *  If it is less than zero, throw an IllegalArgumentException (which
@@ -420,9 +421,11 @@ public class Histogram extends PlotBox {
      */
     protected void _checkDatasetIndex(int dataset) {
         if (dataset < 0) {
-            throw new IllegalArgumentException("Plot._checkDatasetIndex: Cannot"
-                    + " give a negative number for the data set index.");
+            throw new IllegalArgumentException(
+                "Plot._checkDatasetIndex: Cannot"
+                + " give a negative number for the data set index.");
         }
+
         while (dataset >= _points.size()) {
             _points.addElement(new Vector());
             _histogram.addElement(new Hashtable());
@@ -441,36 +444,56 @@ public class Histogram extends PlotBox {
      *  @param ypos The y position.
      *  @param clip If true, then do not draw outside the range.
      */
-    protected void _drawBar(Graphics graphics, int dataset,
-            long xpos, long ypos, boolean clip) {
+    protected void _drawBar(Graphics graphics, int dataset, long xpos,
+        long ypos, boolean clip) {
         if (clip) {
             if (ypos < _uly) {
                 ypos = _uly;
-            } if (ypos > _lry) {
+            }
+
+            if (ypos > _lry) {
                 ypos = _lry;
             }
         }
-        if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
-            // left x position of bar.
-            int barlx = (int)(xpos - _barwidth *_binWidth * _xscale/2 +
-                    dataset * _baroffset *_binWidth * _xscale);
-            // right x position of bar
-            int barrx = (int)(barlx + _barwidth *_binWidth * _xscale);
-            if (barlx < _ulx) barlx = _ulx;
-            if (barrx > _lrx) barrx = _lrx;
-            // Make sure that a bar is always at least one pixel wide.
-            if (barlx >= barrx) barrx = barlx+1;
-            // The y position of the zero line.
-            long zeroypos = _lry - (long) ((0-_yMin) * _yscale);
-            if (_lry < zeroypos) zeroypos = _lry;
-            if (_uly > zeroypos) zeroypos = _uly;
 
-            if (_yMin >= 0 || ypos <= zeroypos) {
-                graphics.fillRect(barlx, (int)ypos,
-                        barrx - barlx, (int)(zeroypos - ypos));
+        if ((ypos <= _lry) && (xpos <= _lrx) && (xpos >= _ulx)) {
+            // left x position of bar.
+            int barlx = (int) (xpos - ((_barwidth * _binWidth * _xscale) / 2)
+                + (dataset * _baroffset * _binWidth * _xscale));
+
+            // right x position of bar
+            int barrx = (int) (barlx + (_barwidth * _binWidth * _xscale));
+
+            if (barlx < _ulx) {
+                barlx = _ulx;
+            }
+
+            if (barrx > _lrx) {
+                barrx = _lrx;
+            }
+
+            // Make sure that a bar is always at least one pixel wide.
+            if (barlx >= barrx) {
+                barrx = barlx + 1;
+            }
+
+            // The y position of the zero line.
+            long zeroypos = _lry - (long) ((0 - _yMin) * _yscale);
+
+            if (_lry < zeroypos) {
+                zeroypos = _lry;
+            }
+
+            if (_uly > zeroypos) {
+                zeroypos = _uly;
+            }
+
+            if ((_yMin >= 0) || (ypos <= zeroypos)) {
+                graphics.fillRect(barlx, (int) ypos, barrx - barlx,
+                    (int) (zeroypos - ypos));
             } else {
-                graphics.fillRect(barlx, (int)zeroypos,
-                        barrx - barlx, (int)(ypos - zeroypos));
+                graphics.fillRect(barlx, (int) zeroypos, barrx - barlx,
+                    (int) (ypos - zeroypos));
             }
         }
     }
@@ -488,8 +511,7 @@ public class Histogram extends PlotBox {
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
-    protected synchronized void _drawPlot(Graphics graphics,
-            boolean clearfirst) {
+    protected synchronized void _drawPlot(Graphics graphics, boolean clearfirst) {
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst);
@@ -498,14 +520,15 @@ public class Histogram extends PlotBox {
 
         // Plot the histograms in reverse order so that the first colors
         // appear on top.
-        for (int dataset = _points.size() - 1; dataset >= 0 ; dataset--) {
-            Hashtable data = (Hashtable)_histogram.elementAt(dataset);
+        for (int dataset = _points.size() - 1; dataset >= 0; dataset--) {
+            Hashtable data = (Hashtable) _histogram.elementAt(dataset);
             Enumeration keys = data.keys();
+
             while (keys.hasMoreElements()) {
-                Integer bin = (Integer)keys.nextElement();
-                Integer count = (Integer)data.get(bin);
-                _drawPlotPoint(graphics, dataset,
-                        bin.intValue(), count.intValue());
+                Integer bin = (Integer) keys.nextElement();
+                Integer count = (Integer) data.get(bin);
+                _drawPlotPoint(graphics, dataset, bin.intValue(),
+                    count.intValue());
             }
         }
     }
@@ -524,57 +547,70 @@ public class Histogram extends PlotBox {
             // We convert the line to lower case so that the command
             // names are case insensitive
             String lcLine = new String(line.toLowerCase());
+
             if (lcLine.startsWith("dataset:")) {
                 // new data set
                 _currentdataset++;
+
                 if (lcLine.length() > 0) {
                     String legend = (line.substring(8)).trim();
-                    if (legend != null && legend.length() > 0) {
+
+                    if ((legend != null) && (legend.length() > 0)) {
                         addLegend(_currentdataset, legend);
                     }
                 }
+
                 return true;
-            } else if (lcLine.startsWith("bars:") ||
-                    lcLine.startsWith("bargraph:")) {
+            } else if (lcLine.startsWith("bars:")
+                    || lcLine.startsWith("bargraph:")) {
                 // The PlotML code uses barGraph, but the older style
                 // uses bars
                 int comma = line.indexOf(",", 5);
                 String barwidth;
                 String baroffset = null;
+
                 if (comma > 0) {
                     barwidth = (line.substring(5, comma)).trim();
-                    baroffset = (line.substring(comma+1)).trim();
+                    baroffset = (line.substring(comma + 1)).trim();
                 } else {
                     barwidth = (line.substring(5)).trim();
                 }
+
                 try {
                     Double bwidth = new Double(barwidth);
                     double boffset = _baroffset;
+
                     if (baroffset != null) {
                         boffset = (new Double(baroffset)).doubleValue();
                     }
+
                     setBars(bwidth.doubleValue(), boffset);
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
                 }
+
                 return true;
             } else if (lcLine.startsWith("binwidth:")) {
                 String binwidth = (line.substring(9)).trim();
+
                 try {
                     Double bwidth = new Double(binwidth);
                     setBinWidth(bwidth.doubleValue());
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
                 }
+
                 return true;
             } else if (lcLine.startsWith("binoffset:")) {
                 String binoffset = (line.substring(10)).trim();
+
                 try {
                     Double boffset = new Double(binoffset);
                     setBinOffset(boffset.doubleValue());
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
                 }
+
                 return true;
             } else if (lcLine.startsWith("numsets:")) {
                 // Obsolete field... ignore.
@@ -592,15 +628,18 @@ public class Histogram extends PlotBox {
                 // a connected point, if connect is enabled.
                 line = line.substring(4, line.length()).trim();
             }
+
             line = line.trim();
 
             // Handle Plot formats
             int fieldsplit = line.indexOf(",");
+
             if (fieldsplit == -1) {
                 fieldsplit = line.indexOf(" ");
             }
+
             if (fieldsplit == -1) {
-                fieldsplit = line.indexOf("\t");  // a tab
+                fieldsplit = line.indexOf("\t"); // a tab
             }
 
             if (fieldsplit == -1) {
@@ -613,7 +652,8 @@ public class Histogram extends PlotBox {
                     // ignore if format is bogus.
                 }
             } else {
-                String y = (line.substring(fieldsplit+1)).trim();
+                String y = (line.substring(fieldsplit + 1)).trim();
+
                 try {
                     Double ypt = new Double(y);
                     addPoint(_currentdataset, ypt.doubleValue());
@@ -623,6 +663,7 @@ public class Histogram extends PlotBox {
                 }
             }
         }
+
         return false;
     }
 
@@ -662,15 +703,16 @@ public class Histogram extends PlotBox {
         _checkDatasetIndex(dataset);
 
         // Calculate the bin number.
-        int bin = (int)(Math.round((value-_binOffset)/_binWidth));
+        int bin = (int) (Math.round((value - _binOffset) / _binWidth));
         Integer binobj = new Integer(bin);
 
         // Add to the appropriate bin
-        Hashtable bins = (Hashtable)_histogram.elementAt(dataset);
+        Hashtable bins = (Hashtable) _histogram.elementAt(dataset);
         int count;
+
         if (bins.containsKey(binobj)) {
             // increase the count
-            count = 1 + ((Integer)bins.get(binobj)).intValue();
+            count = 1 + ((Integer) bins.get(binobj)).intValue();
             bins.put(binobj, new Integer(count));
         } else {
             // start a new entry.
@@ -679,25 +721,39 @@ public class Histogram extends PlotBox {
         }
 
         // For auto-ranging, keep track of min and max.
-        double x = bin*_binWidth + _binOffset;
-        if (x < _xBottom) _xBottom = x;
-        double xtop = x + _binWidth/2.0;
-        if (xtop > _xTop) _xTop = xtop;
-        if ((double)count > _yTop) _yTop = (double)count;
+        double x = (bin * _binWidth) + _binOffset;
+
+        if (x < _xBottom) {
+            _xBottom = x;
+        }
+
+        double xtop = x + (_binWidth / 2.0);
+
+        if (xtop > _xTop) {
+            _xTop = xtop;
+        }
+
+        if ((double) count > _yTop) {
+            _yTop = (double) count;
+        }
+
         _yBottom = 0.0;
-        Vector pts = (Vector)_points.elementAt(dataset);
+
+        Vector pts = (Vector) _points.elementAt(dataset);
         pts.addElement(new Double(value));
 
         // Draw the point on the screen only if the plot is showing.
         // Need to check that graphics is not null because plot may have
         // been dismissed.
         Graphics graphics = getGraphics();
-        if (_showing  && graphics != null) {
+
+        if (_showing && (graphics != null)) {
             // In swing, updates to showing graphics must be done in the
             // event thread, not here.  Thus, we have to queue the request.
             final int pendingDataset = dataset;
             final int pendingBin = bin;
             final int pendingCount = count;
+
             // We are in the event thread, so this is safe...
             _drawPlotPoint(graphics, pendingDataset, pendingBin, pendingCount);
         }
@@ -740,8 +796,8 @@ public class Histogram extends PlotBox {
      * Moreover this method should always be called from the event thread
      * when being used to write to the screen.
      */
-    private void _drawPlotPoint(Graphics graphics,
-            int dataset, int bin, int count) {
+    private void _drawPlotPoint(Graphics graphics, int dataset, int bin,
+        int count) {
         // Set the color
         if (_usecolor) {
             int color = dataset % _colors.length;
@@ -750,32 +806,33 @@ public class Histogram extends PlotBox {
             graphics.setColor(_foreground);
         }
 
-        double y = (double)count;
-        double x = _binWidth*bin + _binOffset;
+        double y = (double) count;
+        double x = (_binWidth * bin) + _binOffset;
 
         if (_xlog) {
             if (x <= 0.0) {
-                System.err.println("Can't plot non-positive X values "+
-                        "when the logarithmic X axis value is specified: " +
-                        x);
+                System.err.println("Can't plot non-positive X values "
+                    + "when the logarithmic X axis value is specified: " + x);
                 return;
             }
-            x = Math.log(x)*_LOG10SCALE;
+
+            x = Math.log(x) * _LOG10SCALE;
         }
+
         if (_ylog) {
             if (y <= 0.0) {
-                System.err.println("Can't plot non-positive Y values "+
-                        "when the logarithmic Y axis value is specified: " +
-                        y);
+                System.err.println("Can't plot non-positive Y values "
+                    + "when the logarithmic Y axis value is specified: " + y);
                 return;
             }
-            y = Math.log(y)*_LOG10SCALE;
+
+            y = Math.log(y) * _LOG10SCALE;
         }
 
         // Use long here because these numbers can be quite large
         // (when we are zoomed out a lot).
-        long ypos = _lry - (long)((y - _yMin) * _yscale);
-        long xpos = _ulx + (long)((x - _xMin) * _xscale);
+        long ypos = _lry - (long) ((y - _yMin) * _yscale);
+        long xpos = _ulx + (long) ((x - _xMin) * _xscale);
 
         _drawBar(graphics, dataset, xpos, ypos, true);
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml.filter;
 
 import java.util.Iterator;
@@ -34,8 +33,10 @@ import java.util.List;
 
 import ptolemy.moml.MoMLFilter;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BackwardCompatibility
+
 /** Return a list where each element is a backward compatibility filter
     to be applied by the MoMLParser.
 
@@ -70,16 +71,16 @@ public class BackwardCompatibility {
         // BackwardCompatibility.allFilters(), we add the individual filters
         // so when we iterate through the filters and call toString, we never
         // actually call BackwardCompatibility.toString().
-
         // Ideally, we would like to make toString() static, but we
         // can't do that because Object.toString() is not static
-
-        StringBuffer results =
-            new StringBuffer("This filter contains the following filters:\n");
+        StringBuffer results = new StringBuffer(
+                "This filter contains the following filters:\n");
         Iterator filters = _filterList.iterator();
+
         while (filters.hasNext()) {
-            results.append(((MoMLFilter)filters.next()).toString() + "\n");
+            results.append(((MoMLFilter) filters.next()).toString() + "\n");
         }
+
         return results.toString();
     }
 

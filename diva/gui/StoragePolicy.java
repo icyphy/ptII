@@ -28,6 +28,7 @@ package diva.gui;
 import java.io.File;
 import java.net.URL;
 
+
 /**
  * StoragePolicy captures the notion of <i>how</i> an application
  * deals with persistent storage. For example, suppose a user selects
@@ -52,20 +53,19 @@ import java.net.URL;
  * @version $Id$
  */
 public interface StoragePolicy {
-
     /** Close the document. Depending on the policy, this method will
      * probably check whether the document has been edited and annoy
      * the user with dialog boxes. If the document is null, do
      * nothing. Return true if the document closed, otherwise false.
      */
-    public boolean close (Document d);
+    public boolean close(Document d);
 
     /** Open a new document. This method will generally prompt the
      * user for a location to open. If a new Document is created,
      * return it, otherwise return null. (Note that if an existing
      * document is re-opened, null is still returned.)
      */
-    public Document open (Application app);
+    public Document open(Application app);
 
     /** Open a file and create a new document. Depending on the
      * policy, this method may choose to check whether the file has
@@ -75,7 +75,7 @@ public interface StoragePolicy {
      * return it, otherwise return null. (Note that if an existing
      * document is re-opened, null is still returned.)
      */
-    public Document open (File file, Application app);
+    public Document open(File file, Application app);
 
     /** Open a URL and create a new document. Depending on the policy,
      * this method may choose to check whether the URL has already
@@ -85,7 +85,7 @@ public interface StoragePolicy {
      * null. (Note that if an existing document is re-opened, null is
      * still returned.)
      */
-    public Document open (URL url, Application app);
+    public Document open(URL url, Application app);
 
     /** Save the document. Most policies will just save the file if it
      * is possible to do so, but different policies may take different
@@ -93,7 +93,7 @@ public interface StoragePolicy {
      * nothing if the document is null. Return true if the file saved,
      * otherwise false.
      */
-    public boolean save (Document d);
+    public boolean save(Document d);
 
     /** Save the document to a user-specified location. Depending on
      * the policy, this may prompt the user for the file or URL
@@ -101,7 +101,5 @@ public interface StoragePolicy {
      * document to the new location. Do nothing if the document is
      * null.  Return true if the file saved, otherwise false.
      */
-    public boolean saveAs (Document d);
+    public boolean saveAs(Document d);
 }
-
-

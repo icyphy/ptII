@@ -28,8 +28,10 @@ package ptolemy.data.unit;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnitTerm
+
 /** UnitTerm represents a term in a Unit Expression.
     A UnitTerm has 1) an exponent and 2) an element.
     The element
@@ -44,7 +46,6 @@ import ptolemy.kernel.util.IllegalActionException;
     @Pt.AcceptedRating Red (rowland)
 */
 public class UnitTerm implements UnitPresentation {
-
     /**
      * Construct a UnitTerm with no element.
      *
@@ -83,26 +84,28 @@ public class UnitTerm implements UnitPresentation {
      */
     public String descriptiveForm() {
         String retv = null;
+
         switch (_type) {
-        case _VARIABLE :
-            {
-                retv = "$" + _variable;
-                break;
-            }
-        case _UNIT :
-            {
-                retv = _unit.descriptiveForm();
-                break;
-            }
-        case _UNITEXPR :
-            {
-                retv = "(" + _unitExpr.descriptiveForm() + ")";
-                break;
-            }
+        case _VARIABLE: {
+            retv = "$" + _variable;
+            break;
         }
+
+        case _UNIT: {
+            retv = _unit.descriptiveForm();
+            break;
+        }
+
+        case _UNITEXPR: {
+            retv = "(" + _unitExpr.descriptiveForm() + ")";
+            break;
+        }
+        }
+
         if (getExponent() != 1) {
-            retv += "^" + getExponent();
+            retv += ("^" + getExponent());
         }
+
         return retv;
     }
 
@@ -117,8 +120,10 @@ public class UnitTerm implements UnitPresentation {
      * @return The Unit if the element is a Unit, otherwise null.
      */
     public Unit getUnit() {
-        if (_type == _UNIT)
+        if (_type == _UNIT) {
             return _unit;
+        }
+
         return null;
     }
 
@@ -126,8 +131,10 @@ public class UnitTerm implements UnitPresentation {
      * @return The UnitExpr if the element is a UnitExpr, otherwise null.
      */
     public UnitExpr getUnitExpr() {
-        if (_type == _UNITEXPR)
+        if (_type == _UNITEXPR) {
             return _unitExpr;
+        }
+
         return null;
     }
 
@@ -135,8 +142,10 @@ public class UnitTerm implements UnitPresentation {
      * @return The variable if the element is a variable, null otherwise.
      */
     public String getVariable() {
-        if (_type == _VARIABLE)
+        if (_type == _VARIABLE) {
             return _variable;
+        }
+
         return null;
     }
 
@@ -145,19 +154,20 @@ public class UnitTerm implements UnitPresentation {
      */
     public UnitTerm invert() {
         UnitTerm retv = copy();
+
         switch (_type) {
-        case _VARIABLE :
-        case _UNIT :
-            {
-                retv.setExponent(-getExponent());
-                break;
-            }
-        case _UNITEXPR :
-            {
-                retv.setUnitExpr(_unitExpr.invert());
-                break;
-            }
+        case _VARIABLE:
+        case _UNIT: {
+            retv.setExponent(-getExponent());
+            break;
         }
+
+        case _UNITEXPR: {
+            retv.setUnitExpr(_unitExpr.invert());
+            break;
+        }
+        }
+
         return retv;
     }
 
@@ -220,26 +230,28 @@ public class UnitTerm implements UnitPresentation {
      */
     public String toString() {
         String retv = null;
+
         switch (_type) {
-        case _VARIABLE :
-            {
-                retv = _variable;
-                break;
-            }
-        case _UNIT :
-            {
-                retv = _unit.toString();
-                break;
-            }
-        case _UNITEXPR :
-            {
-                retv = "(" + _unitExpr.toString() + ")";
-                break;
-            }
+        case _VARIABLE: {
+            retv = _variable;
+            break;
         }
+
+        case _UNIT: {
+            retv = _unit.toString();
+            break;
+        }
+
+        case _UNITEXPR: {
+            retv = "(" + _unitExpr.toString() + ")";
+            break;
+        }
+        }
+
         if (getExponent() != 1) {
-            retv += "^" + getExponent();
+            retv += ("^" + getExponent());
         }
+
         return retv;
     }
 
@@ -247,8 +259,7 @@ public class UnitTerm implements UnitPresentation {
      * @param visitor The visitor.
      * @return The result of visiting the UnitTerm.
      */
-    public Object visit(EquationVisitor visitor)
-            throws IllegalActionException {
+    public Object visit(EquationVisitor visitor) throws IllegalActionException {
         return visitor._visitUnitTerm(this);
     }
 
@@ -261,6 +272,7 @@ public class UnitTerm implements UnitPresentation {
     protected void _setType(int type) {
         _type = type;
     } ///////////////////////////////////////////////////////////////////
+
     ////                         private variables                 ////
     private static final int _UNIT = 1;
     private static final int _UNITEXPR = 2;

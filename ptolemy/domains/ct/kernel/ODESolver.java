@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import java.util.Iterator;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver
+
 /**
    Abstract base class for ODE solvers. The key methods for the class
    are {@link #fireDynamicActors} and {@link
@@ -94,7 +95,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public abstract class ODESolver extends NamedObj {
-
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -125,7 +125,7 @@ public abstract class ODESolver extends NamedObj {
      *  @exception IllegalActionException If the name has a period.
      */
     public ODESolver(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace, name);
     }
 
@@ -141,14 +141,17 @@ public abstract class ODESolver extends NamedObj {
         if (_debugging) {
             _debug(getFullName() + " firing dynamic actors ...");
         }
+
         CTSchedule schedule = _getSchedule();
-        Iterator actors =
-            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+
         while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
+            Actor next = (Actor) actors.next();
+
             if (_debugging) {
-                _debug("  firing..." + ((Nameable)next).getFullName());
+                _debug("  firing..." + ((Nameable) next).getFullName());
             }
+
             next.fire();
         }
     }
@@ -162,15 +165,19 @@ public abstract class ODESolver extends NamedObj {
         if (_debugging) {
             _debug(getFullName() + " firing state transition actors ...");
         }
+
         CTSchedule schedule = _getSchedule();
-        Iterator actors = schedule.get(
-                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
+        Iterator actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS)
+                                  .actorIterator();
+
         while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
+            Actor next = (Actor) actors.next();
             _prefireIfNecessary(next);
+
             if (_debugging) {
-                _debug("  firing..." + ((Nameable)next).getFullName());
+                _debug("  firing..." + ((Nameable) next).getFullName());
             }
+
             next.fire();
         }
     }
@@ -207,7 +214,7 @@ public abstract class ODESolver extends NamedObj {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public abstract void integratorFire(CTBaseIntegrator integrator)
-            throws  IllegalActionException;
+        throws IllegalActionException;
 
     /** Return true if the current integration step is accurate from the
      *  argument integrator's point of view. The isThisStepAccurate() method
@@ -216,8 +223,7 @@ public abstract class ODESolver extends NamedObj {
      *  @param integrator The integrator that calls this method.
      *  @return True if the integrator finds the step accurate.
      */
-    public abstract boolean integratorIsAccurate(CTBaseIntegrator
-            integrator);
+    public abstract boolean integratorIsAccurate(CTBaseIntegrator integrator);
 
     /** The predictedStepSize() method of the integrator delegates to this
      *  method. Derived classes need to implement the details.
@@ -225,7 +231,7 @@ public abstract class ODESolver extends NamedObj {
      *  @return The suggested next step size by the given integrator.
      */
     public abstract double integratorPredictedStepSize(
-            CTBaseIntegrator integrator);
+        CTBaseIntegrator integrator);
 
     /** Return true if the states of the system have been resolved
      *  successfully.
@@ -254,17 +260,20 @@ public abstract class ODESolver extends NamedObj {
      *  a CT director, or the director does not have a scheduler.
      */
     protected CTSchedule _getSchedule() throws IllegalActionException {
-        CTDirector director = (CTDirector)getContainer();
+        CTDirector director = (CTDirector) getContainer();
+
         if (director == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
+            throw new IllegalActionException(this, " must have a CT director.");
         }
-        CTScheduler scheduler = (CTScheduler)director.getScheduler();
+
+        CTScheduler scheduler = (CTScheduler) director.getScheduler();
+
         if (scheduler == null) {
-            throw new IllegalActionException( director,
-                    " does not contain a valid scheduler.");
+            throw new IllegalActionException(director,
+                " does not contain a valid scheduler.");
         }
-        return (CTSchedule)scheduler.getSchedule();
+
+        return (CTSchedule) scheduler.getSchedule();
     }
 
     /** Increase the round counter by one. In general, the round counter
@@ -290,6 +299,7 @@ public abstract class ODESolver extends NamedObj {
      */
     protected void _makeSolverOf(CTDirector director) {
         _director = director;
+
         if (director != null) {
             workspace().remove(this);
         }
@@ -302,20 +312,22 @@ public abstract class ODESolver extends NamedObj {
      *  prefire method.
      */
     protected void _prefireIfNecessary(Actor actor)
-            throws IllegalActionException {
-        CTDirector director = (CTDirector)getContainer();
+        throws IllegalActionException {
+        CTDirector director = (CTDirector) getContainer();
+
         if (!director.isPrefireComplete(actor)) {
             if (_debugging) {
-                _debug(getFullName()
-                        + " is prefiring: "
-                        + ((Nameable)actor).getName());
+                _debug(getFullName() + " is prefiring: "
+                    + ((Nameable) actor).getName());
             }
+
             if (!actor.prefire()) {
-                throw new IllegalActionException((Nameable)actor,
-                        "Expected prefire() to return true!\n"
-                        + "Perhaps a continuous input is being driven by a "
-                        + "discrete output?");
+                throw new IllegalActionException((Nameable) actor,
+                    "Expected prefire() to return true!\n"
+                    + "Perhaps a continuous input is being driven by a "
+                    + "discrete output?");
             }
+
             director.setPrefireComplete(actor);
         }
     }
@@ -359,12 +371,13 @@ public abstract class ODESolver extends NamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The CT director that contains this solver.
     private CTDirector _director = null;
+
     // The flag indicating whether the fixed point of states has been reached.
     // The default value is false.
     private boolean _isConverged = false;
+
     // The round counter.
     private int _roundCount = 0;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import java.util.List;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Pre
+
 /**
  * When the input is present, the output is the previously received input. When
  * the input is absent, the output is absent. The first time the input is
@@ -59,9 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */
-
 public class Pre extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -72,7 +71,7 @@ public class Pre extends Transformer {
      *   an actor already in the container.
      */
     public Pre(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         initialValue = new Parameter(this, "initialValue");
     }
@@ -95,7 +94,7 @@ public class Pre extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-                   if (_currentToken != null) {
+            if (_currentToken != null) {
                 output.send(0, _currentToken);
             } else {
                 output.sendClear(0);
@@ -119,8 +118,9 @@ public class Pre extends Transformer {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-                _currentToken = input.get(0);
+            _currentToken = input.get(0);
         }
+
         return super.postfire();
     }
 
@@ -151,7 +151,6 @@ public class Pre extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The most recent token received on the current iteration to be
     // output on the next iteration.
     private Token _currentToken;

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.shallow;
 
 import ptolemy.copernicus.kernel.ClassWriter;
@@ -41,8 +40,10 @@ import soot.PackManager;
 import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.scalar.LocalSplitter;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Main
+
 /**
    Read in a MoML model and generate a Java class that creates the
    same model.  (i.e. shallow code generation)
@@ -57,8 +58,6 @@ import soot.toolkits.scalar.LocalSplitter;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Main extends KernelMain {
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -70,29 +69,22 @@ public class Main extends KernelMain {
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
-        addTransform(pack, "wjtp.watchDog",
-                WatchDogTimer.v());
+        addTransform(pack, "wjtp.watchDog", WatchDogTimer.v());
 
         // Generate the makefile files in outDir
-        addTransform(pack, "wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel),
-                "_generatorAttributeFileName:" + _generatorAttributeFileName +
-                " targetPackage:" + _targetPackage +
-                " templateDirectory:" + _templateDirectory +
-                " outDir:" + _outputDirectory);
+        addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
+            "_generatorAttributeFileName:" + _generatorAttributeFileName
+            + " targetPackage:" + _targetPackage + " templateDirectory:"
+            + _templateDirectory + " outDir:" + _outputDirectory);
 
         // Create a class for the composite actor of the model
-        addTransform(pack, "wjtp.mt",
-                ShallowModelTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+        addTransform(pack, "wjtp.mt", ShallowModelTransformer.v(_toplevel),
+            "targetPackage:" + _targetPackage);
 
-        addTransform(pack, "wjtp.ls7",
-                new TransformerAdapter(LocalSplitter.v()));
+        addTransform(pack, "wjtp.ls7", new TransformerAdapter(LocalSplitter.v()));
 
-        addTransform(pack, "wjtp.ta5",
-                new TransformerAdapter(TypeAssigner.v()));
-        addTransform(pack, "wjtp.ib3",
-                InvocationBinder.v());
+        addTransform(pack, "wjtp.ta5", new TransformerAdapter(TypeAssigner.v()));
+        addTransform(pack, "wjtp.ib3", InvocationBinder.v());
 
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can
@@ -100,32 +92,32 @@ public class Main extends KernelMain {
         addStandardOptimizations(pack, 1);
 
         // Convert to grimp.
-        addTransform(pack, "wjtp.gt",
-                GrimpTransformer.v());
+        addTransform(pack, "wjtp.gt", GrimpTransformer.v());
+
         /*   */
+
         // This snapshot should be last...
-        addTransform(pack, "wjtp.finalSnapshotJimple",
-                JimpleWriter.v(),
-                "outDir:" + _outputDirectory);
-        addTransform(pack, "wjtp.finalSnapshot",
-                ClassWriter.v(),
-                "outDir:" + _outputDirectory);
+        addTransform(pack, "wjtp.finalSnapshotJimple", JimpleWriter.v(),
+            "outDir:" + _outputDirectory);
+        addTransform(pack, "wjtp.finalSnapshot", ClassWriter.v(),
+            "outDir:" + _outputDirectory);
 
         // Disable the watch dog timer
-        addTransform(pack, "wjtp.watchDogCancel",
-                WatchDogTimer.v(), "cancel:true");
+        addTransform(pack, "wjtp.watchDogCancel", WatchDogTimer.v(),
+            "cancel:true");
     }
 
     /** Parse any code generator specific arguments.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-            throws Exception {
+        throws Exception {
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");
         _outputDirectory = attribute.getParameter("outputDirectory");
-        _generatorAttributeFileName =
-            attribute.getParameter("generatorAttributeFileName");
+        _generatorAttributeFileName = attribute.getParameter(
+                "generatorAttributeFileName");
+
         //String sootArgs = attribute.getParameter("sootArgs");
         return new String[1];
     }
@@ -136,16 +128,3 @@ public class Main extends KernelMain {
     private static String _templateDirectory = "ptolemy/copernicus/shallow";
     private static String _outputDirectory = "unsetParameter";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import java.util.ArrayList;
@@ -35,8 +34,10 @@ import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.SourceNodeAnalyzer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SourceNodeAnalysis
+
 /**
    Computation of source nodes in a graph.
    The collection returned cannot be modified.
@@ -51,10 +52,8 @@ import ptolemy.graph.analysis.analyzer.SourceNodeAnalyzer;
    @author Ming Yung Ko, Shahrooz Shahparnia
    @version $Id$
 */
-
-public class  SourceNodeStrategy extends CachedStrategy
+public class SourceNodeStrategy extends CachedStrategy
     implements SourceNodeAnalyzer {
-
     /** Construct an instance of this strategy for a given graph.
      *
      *  @param graph The given graph.
@@ -72,7 +71,7 @@ public class  SourceNodeStrategy extends CachedStrategy
      *  @return The source nodes.
      */
     public List nodes() {
-        return (List)_result();
+        return (List) _result();
     }
 
     /** Return a description of the analyzer.
@@ -104,12 +103,15 @@ public class  SourceNodeStrategy extends CachedStrategy
     protected Object _compute() {
         ArrayList sourceNodes = new ArrayList();
         Iterator nodes = graph().nodes().iterator();
+
         while (nodes.hasNext()) {
-            Node node = (Node)nodes.next();
-            if (((DirectedGraph)graph()).inputEdgeCount(node) == 0) {
+            Node node = (Node) nodes.next();
+
+            if (((DirectedGraph) graph()).inputEdgeCount(node) == 0) {
                 sourceNodes.add(node);
             }
         }
+
         return sourceNodes;
     }
 
@@ -119,6 +121,6 @@ public class  SourceNodeStrategy extends CachedStrategy
      *  @return The analysis result in unmodifiable form.
      */
     protected Object _convertResult() {
-        return Collections.unmodifiableList((List)_result());
+        return Collections.unmodifiableList((List) _result());
     }
 }

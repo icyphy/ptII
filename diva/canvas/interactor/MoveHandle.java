@@ -31,6 +31,7 @@ import java.awt.geom.Rectangle2D;
 import diva.canvas.Site;
 import diva.canvas.toolbox.BasicRectangle;
 
+
 /**
  * A grab-handle that is intended for acting as a "move me"
  * handle.
@@ -63,7 +64,7 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
      */
     public MoveHandle(Site s) {
         // Can't reference variable until superclass is called...
-        super(0,0,0,0, java.awt.Color.red);
+        super(0, 0, 0, 0, java.awt.Color.red);
         setSize(_size);
         _site = s;
     }
@@ -79,17 +80,18 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
      * Get the "size" of the grab-handle. The size is half the
      * length of each side. The default is 4.0.
      */
-    public float getSize () {
+    public float getSize() {
         return _size;
     }
 
     /**
      * Reposition the grab-handle if necessary
      */
-    public void relocate () {
+    public void relocate() {
         // BIG FIXME This doesn't work for hierarchical figures because we
         // need to take the transformcontext into account.
         // FIXME.  OK, we hacked it, but what about nested panes?
+
         /*
           TransformContext tc = getTransformContext();
           while (tc.getParent() != null) {
@@ -101,18 +103,18 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
         double x = p.getX();
         double y = p.getY();
 
-        if (x != _x || y != _y) {
+        if ((x != _x) || (y != _y)) {
             _x = x;
             _y = y;
-            ((Rectangle2D)getShape()).setFrame(
-                    x - _size, y - _size, _size*2, _size*2);
+            ((Rectangle2D) getShape()).setFrame(x - _size, y - _size,
+                _size * 2, _size * 2);
         }
     }
 
     /**
      * Set the set to which this grab-handle is attached.
      */
-    public void setSite (Site s) {
+    public void setSite(Site s) {
         _site = s;
         relocate();
     }
@@ -121,19 +123,17 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
      * Set the "size" of the grab-handle.  The size is half the
      * length of each side.
      */
-    public void setSize (float size) {
+    public void setSize(float size) {
         this._size = size;
-        ((Rectangle2D)getShape()).setFrame(
-                _x - _size, _y - _size, _size*2, _size*2);
+        ((Rectangle2D) getShape()).setFrame(_x - _size, _y - _size, _size * 2,
+            _size * 2);
     }
 
     /**
      * Translating a grab-handle moves its parent object, but _doesn't_
      * move the grab-handle itself.
      */
-    public void translate (double x, double y) {
-        _site.getFigure().translate(x,y);
+    public void translate(double x, double y) {
+        _site.getFigure().translate(x, y);
     }
 }
-
-

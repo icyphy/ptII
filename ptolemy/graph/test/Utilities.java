@@ -24,15 +24,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.graph.test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Utilities
+
 /**
    Utilities for testing graphs.
    This class provides utilities, in the form of static methods, for testing
@@ -44,9 +45,7 @@ import java.util.Iterator;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Utilities {
-
     // Private constructor to prevent instantiation.
     private Utilities() {
     }
@@ -66,24 +65,32 @@ public class Utilities {
      *  collections should be recursively converted to sorted strings.
      *  @return The string representation.
      */
-    public static String toSortedString(Collection collection,
-            boolean recursive) {
+    public static String toSortedString(Collection collection, boolean recursive) {
         ArrayList result = new ArrayList(collection.size());
         Iterator elements = collection.iterator();
+
         while (elements.hasNext()) {
             Object element = elements.next();
             String elementString;
+
             if ((element instanceof Collection) && recursive) {
-                elementString = toSortedString((Collection)element, recursive);
+                elementString = toSortedString((Collection) element, recursive);
             } else {
                 elementString = element.toString();
             }
+
             int i;
-            for (i = 0; (i < result.size()) &&
-                     (((String)result.get(i)).compareTo(elementString) < 0);
-                 i++);
+
+            for (i = 0;
+                    (i < result.size())
+                    && (((String) result.get(i)).compareTo(elementString) < 0);
+                    i++) {
+                ;
+            }
+
             result.add(i, elementString);
         }
+
         return result.toString();
     }
 }

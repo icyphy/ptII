@@ -30,6 +30,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.SwingConstants;
 
+
 /**
  * Keep a point within one of the four quadrants relative to some
  * reference point.
@@ -38,7 +39,6 @@ import javax.swing.SwingConstants;
  * @author John Reekie
  */
 public class QuadrantConstraint implements PointConstraint {
-
     /** The point
      */
     private Point2D _origin;
@@ -52,7 +52,7 @@ public class QuadrantConstraint implements PointConstraint {
     /** Create a new QuadrantConstraint with the given origin and
      * quadrant.
      */
-    public QuadrantConstraint (Point2D origin, int quadrant) {
+    public QuadrantConstraint(Point2D origin, int quadrant) {
         setOrigin(origin);
         setQuadrant(quadrant);
     }
@@ -67,15 +67,20 @@ public class QuadrantConstraint implements PointConstraint {
         switch (_quadrant) {
         case SwingConstants.NORTH_EAST:
         case SwingConstants.SOUTH_EAST:
+
             if (x < _originX) {
                 x = _originX;
             }
+
             break;
+
         case SwingConstants.NORTH_WEST:
         case SwingConstants.SOUTH_WEST:
+
             if (x > _originX) {
                 x = _originX;
             }
+
             break;
         }
 
@@ -83,35 +88,41 @@ public class QuadrantConstraint implements PointConstraint {
         switch (_quadrant) {
         case SwingConstants.NORTH_EAST:
         case SwingConstants.NORTH_WEST:
+
             if (y > _originY) {
                 y = _originY;
             }
+
             break;
+
         case SwingConstants.SOUTH_EAST:
         case SwingConstants.SOUTH_WEST:
+
             if (y < _originY) {
                 y = _originY;
             }
+
             break;
         }
-        point.setLocation(x,y);
+
+        point.setLocation(x, y);
     }
 
     /** Get the origin
      */
-    public Point2D getOrigin () {
+    public Point2D getOrigin() {
         return _origin;
     }
 
     /** Get the quadrant
      */
-    public int getQuadrant () {
+    public int getQuadrant() {
         return _quadrant;
     }
 
     /** Set the origin
      */
-    public void setOrigin (Point2D origin) {
+    public void setOrigin(Point2D origin) {
         this._origin = origin;
         _originX = origin.getX();
         _originY = origin.getY();
@@ -119,20 +130,19 @@ public class QuadrantConstraint implements PointConstraint {
 
     /** Set the quadrant
      */
-    public void setQuadrant (int quadrant) {
-        if (quadrant < SwingConstants.NORTH_EAST
-                || quadrant > SwingConstants.SOUTH_WEST) {
-            throw new IllegalArgumentException(
-                    "Quadrant " + quadrant + " not legal");
+    public void setQuadrant(int quadrant) {
+        if ((quadrant < SwingConstants.NORTH_EAST)
+                || (quadrant > SwingConstants.SOUTH_WEST)) {
+            throw new IllegalArgumentException("Quadrant " + quadrant
+                + " not legal");
         }
+
         this._quadrant = quadrant;
     }
 
     /** Return false. This constraint never snaps.
      */
-    public boolean snapped () {
+    public boolean snapped() {
         return false;
     }
 }
-
-

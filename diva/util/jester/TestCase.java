@@ -65,7 +65,7 @@ public abstract class TestCase {
      * method, and for each, call fail() if the produced data does
      * not conform to the expected result.
      */
-    public abstract void check () throws TestFailedException;
+    public abstract void check() throws TestFailedException;
 
     /**
      * Make an assertion, and fail the test if it isn't satisfied.
@@ -73,7 +73,8 @@ public abstract class TestCase {
      * second argument is a string, which should generally be a copy
      * of the expression that produced the first argument.
      */
-    public void assertExpr (boolean passed, String msg) throws TestFailedException {
+    public void assertExpr(boolean passed, String msg)
+        throws TestFailedException {
         if (!passed) {
             throw new TestFailedException(msg);
         }
@@ -89,10 +90,10 @@ public abstract class TestCase {
      * something like "foo == bar".
      *
      */
-    public void assertEquals (Object first, Object second, String msg)
-            throws TestFailedException {
+    public void assertEquals(Object first, Object second, String msg)
+        throws TestFailedException {
         if (!first.equals(second)) {
-            throw new TestFailedException(msg,first,second);
+            throw new TestFailedException(msg, first, second);
         }
     }
 
@@ -102,7 +103,7 @@ public abstract class TestCase {
      * part of the messages. It is intended as a simple convenience
      * method to make it easier to write test cases.
      */
-    public void fail (String msg) throws TestFailedException {
+    public void fail(String msg) throws TestFailedException {
         throw new TestFailedException(msg);
     }
 
@@ -110,9 +111,10 @@ public abstract class TestCase {
      * Get the execution time of this test case. If the time is
      * zero (and the timers were called) then return 1.
      */
-    public int getExecutionTime () {
-        int diff =  (int) (_stopTime - _startTime);
-        if (_startTime != 0 && diff == 0) {
+    public int getExecutionTime() {
+        int diff = (int) (_stopTime - _startTime);
+
+        if ((_startTime != 0) && (diff == 0)) {
             return 1;
         } else {
             return diff;
@@ -122,7 +124,7 @@ public abstract class TestCase {
     /**
      * Get the name of this test case
      */
-    public String getName () {
+    public String getName() {
         return _name;
     }
 
@@ -135,7 +137,7 @@ public abstract class TestCase {
      * that override init() to create an object or set of objects
      * that will be used in multiple tests.
      */
-    public void init () throws Exception {
+    public void init() throws Exception {
         // do nothing
     }
 
@@ -146,23 +148,21 @@ public abstract class TestCase {
      * general Exception class, since this method can contain
      * arbitrary code.
      */
-    public abstract void run () throws Exception;
+    public abstract void run() throws Exception;
 
     /** Start the execution timer. This can be called only once in
      * the execution of the test case. If it is called (and the
      * stopTimer() method id also called), the execution time is
      * printed by the test harness.
      */
-    public void startTimer () {
+    public void startTimer() {
         _startTime = System.currentTimeMillis();
     }
 
     /** Stop the execution timer. The difference between the start and
      * stop times will be reported by the test harness.
      */
-    public void stopTimer () {
+    public void stopTimer() {
         _stopTime = System.currentTimeMillis();
     }
 }
-
-

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.interpreted;
 
 import ptolemy.copernicus.kernel.GeneratorAttribute;
@@ -33,8 +32,10 @@ import ptolemy.copernicus.kernel.MakefileWriter;
 import soot.Pack;
 import soot.PackManager;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Main
+
 /**
    Read in a MoML model and generate a .xml file
    that will run the model as in standard interpreted mode.
@@ -46,10 +47,8 @@ import soot.PackManager;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Main extends KernelMain {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Add transforms to the Scene.
      */
@@ -57,29 +56,27 @@ public class Main extends KernelMain {
         Pack pack = PackManager.v().getPack("wjtp");
 
         // Generate the makefile files in outDir
-        addTransform(pack, "wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel),
-                "_generatorAttributeFileName:" + _generatorAttributeFileName +
-                " targetPackage:" + _targetPackage +
-                " templateDirectory:" + _templateDirectory +
-                " outDir:" + _outputDirectory);
+        addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
+            "_generatorAttributeFileName:" + _generatorAttributeFileName
+            + " targetPackage:" + _targetPackage + " templateDirectory:"
+            + _templateDirectory + " outDir:" + _outputDirectory);
 
         // Generate the interpreted files in outDir
         addTransform(pack, "wjtp.interpretedWriter",
-                InterpretedWriter.v(_toplevel),
-                " outDir:" + _outputDirectory);
-
+            InterpretedWriter.v(_toplevel), " outDir:" + _outputDirectory);
     }
+
     /** Parse any code generator specific arguments.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-            throws Exception {
+        throws Exception {
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");
         _outputDirectory = attribute.getParameter("outputDirectory");
-        _generatorAttributeFileName =
-            attribute.getParameter("generatorAttributeFileName");
+        _generatorAttributeFileName = attribute.getParameter(
+                "generatorAttributeFileName");
+
         //String sootArgs = attribute.getParameter("sootArgs");
         return new String[1];
     }
@@ -90,16 +87,3 @@ public class Main extends KernelMain {
     private static String _templateDirectory = "ptolemy/copernicus/interpreted";
     private static String _outputDirectory = "unsetParameter";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

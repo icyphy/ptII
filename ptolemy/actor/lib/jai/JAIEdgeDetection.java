@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.jai;
 
 import javax.media.jai.JAI;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIEdgeDetection
+
 /**
    An actor that does edge detection on a image.  This is done by taking
    the image and separately convolving it with two different masks.  The
@@ -57,7 +58,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JAIEdgeDetection extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,27 +67,23 @@ public class JAIEdgeDetection extends Transformer {
      *   actor with this name.
      */
     public JAIEdgeDetection(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
 
-        firstMask =
-            new StringAttribute(this, "firstMask");
+        firstMask = new StringAttribute(this, "firstMask");
         firstMask.setExpression("Sobel Horizontal");
         _firstMask = _SOBEL_HORIZONTAL;
 
-        secondMask =
-            new StringAttribute(this, "secondMask");
+        secondMask = new StringAttribute(this, "secondMask");
         secondMask.setExpression("Sobel Vertical");
         _secondMask = _SOBEL_VERTICAL;
 
-        specifiedFirstMask =
-            new Parameter(this, "userSpecifiedFirstMask",
-                    new DoubleMatrixToken(_initialMatrix));
-        specifiedSecondMask =
-            new Parameter(this, "userSpecifiedSecondMask",
-                    new DoubleMatrixToken(_initialMatrix));
+        specifiedFirstMask = new Parameter(this, "userSpecifiedFirstMask",
+                new DoubleMatrixToken(_initialMatrix));
+        specifiedSecondMask = new Parameter(this, "userSpecifiedSecondMask",
+                new DoubleMatrixToken(_initialMatrix));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,6 +122,7 @@ public class JAIEdgeDetection extends Transformer {
      *  and the default x and y dimensions is 3.
      */
     public Parameter specifiedFirstMask;
+
     //public Parameter specifiedFirstXDim;
     //public Parameter specifiedFirstYDim;
 
@@ -134,9 +131,9 @@ public class JAIEdgeDetection extends Transformer {
      *  and the default x and y dimensions is 3.
      */
     public Parameter specifiedSecondMask;
+
     //public Parameter specifiedSecondXDim;
     //public Parameter specifiedSecondYDim;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -147,7 +144,7 @@ public class JAIEdgeDetection extends Transformer {
      *  or if a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == firstMask) {
             String firstName = firstMask.getExpression();
             _firstMask = _maskNumberer(firstName);
@@ -155,11 +152,9 @@ public class JAIEdgeDetection extends Transformer {
             String secondName = secondMask.getExpression();
             _secondMask = _maskNumberer(secondName);
         } else if (attribute == specifiedFirstMask) {
-            _firstMaskData
-                = ((DoubleMatrixToken)specifiedFirstMask.getToken());
+            _firstMaskData = ((DoubleMatrixToken) specifiedFirstMask.getToken());
         } else if (attribute == specifiedSecondMask) {
-            _secondMaskData
-                = ((DoubleMatrixToken)specifiedSecondMask.getToken());
+            _secondMaskData = ((DoubleMatrixToken) specifiedSecondMask.getToken());
         } else {
             super.attributeChanged(attribute);
         }
@@ -172,20 +167,22 @@ public class JAIEdgeDetection extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
+
         if (_firstMask == _USER_SPECIFIED) {
-            _firstKernelJAI =
-                _maskFiller(_firstMaskData);
+            _firstKernelJAI = _maskFiller(_firstMaskData);
         } else {
             _firstKernelJAI = _filterAssigner(_firstMask);
         }
+
         if (_secondMask == _USER_SPECIFIED) {
-            _secondKernelJAI =
-                _maskFiller(_secondMaskData);
+            _secondKernelJAI = _maskFiller(_secondMaskData);
         } else {
             _secondKernelJAI = _filterAssigner(_secondMask);
         }
+
         RenderedOp newImage = JAI.create("gradientmagnitude", oldImage,
                 _firstKernelJAI, _secondKernelJAI);
         output.send(0, new JAIImageToken(newImage));
@@ -200,33 +197,44 @@ public class JAIEdgeDetection extends Transformer {
      *  @exception IllegalActionException If the choice value is out of
      *  range.
      */
-    private KernelJAI _filterAssigner(int choice)
-            throws IllegalActionException {
+    private KernelJAI _filterAssigner(int choice) throws IllegalActionException {
         switch (choice) {
         case _BACKDIAGONAL:
             return new KernelJAI(3, 3, _backDiagonalFilter);
+
         case _DIAGONAL:
             return new KernelJAI(3, 3, _diagonalFilter);
+
         case _FREICHEN_HORIZONTAL:
             return new KernelJAI(3, 3, _freiAndChenHorizontalFilter);
+
         case _FREICHEN_VERTICAL:
             return new KernelJAI(3, 3, _freiAndChenVerticalFilter);
+
         case _PREWITT_HORIZONTAL:
             return new KernelJAI(3, 3, _prewittHorizontalFilter);
+
         case _PREWITT_VERTICAL:
             return new KernelJAI(3, 3, _prewittVerticalFilter);
+
         case _ROBERTS_HORIZONTAL:
             return new KernelJAI(3, 3, _robertsHorizontalFilter);
+
         case _ROBERTS_VERTICAL:
             return new KernelJAI(3, 3, _robertsVerticalFilter);
+
         case _SOBEL_HORIZONTAL:
             return new KernelJAI(3, 3, _sobelHorizontalFilter);
+
         case _SOBEL_VERTICAL:
             return new KernelJAI(3, 3, _sobelVerticalFilter);
+
         case _TRANSPARENT:
             return new KernelJAI(3, 3, _transparentFilter);
+
         case _ZERO_FILTER:
             return new KernelJAI(3, 3, _zeroFilter);
+
         default:
             throw new IllegalActionException("Could not assign filter");
         }
@@ -239,20 +247,21 @@ public class JAIEdgeDetection extends Transformer {
         double[][] matrixValue = matrix.doubleMatrix();
         int height = matrix.getRowCount();
         int width = matrix.getColumnCount();
-        float[] floatArray = new float[width*height];
+        float[] floatArray = new float[width * height];
         int count = 0;
-        for (int i = 0; i < height; i = i+1) {
-            for (int j = 0; j < width; j = j+1) {
-                floatArray[count] = (float)matrixValue[i][j];
+
+        for (int i = 0; i < height; i = i + 1) {
+            for (int j = 0; j < width; j = j + 1) {
+                floatArray[count] = (float) matrixValue[i][j];
                 count = count + 1;
             }
         }
+
         return new KernelJAI(width, height, floatArray);
     }
 
     /** A convenience method to help in assinging masks.*/
-    private int _maskNumberer(String maskName)
-            throws IllegalActionException {
+    private int _maskNumberer(String maskName) throws IllegalActionException {
         if (maskName.equals("Backdiagonal")) {
             return _BACKDIAGONAL;
         } else if (maskName.equals("Diagonal")) {
@@ -281,7 +290,7 @@ public class JAIEdgeDetection extends Transformer {
             return _ZERO_FILTER;
         } else {
             throw new IllegalActionException(this,
-                    "Unrecognized Mask type: " + maskName);
+                "Unrecognized Mask type: " + maskName);
         }
     }
 
@@ -301,59 +310,49 @@ public class JAIEdgeDetection extends Transformer {
     /** The choice of mask. */
     private int _firstMask;
     private int _secondMask;
-
-    private double[][] _initialMatrix = {{0.0F, 0.0F, 0.0F},
-                                         {0.0F, 0.707F, 0.0F},
-                                         {0.0F, 0.0F, 0.0F}};
+    private double[][] _initialMatrix = {
+            { 0.0F, 0.0F, 0.0F },
+            { 0.0F, 0.707F, 0.0F },
+            { 0.0F, 0.0F, 0.0F }
+        };
 
     /** Prespecified masks that the user may use */
-    private final float _sobelHorizontalFilter[] = {1.0F, 0.0F, -1.0F,
-                                                    2.0F, 0.0F, -2.0F,
-                                                    1.0F, 0.0F, -1.0F};
-
-    private final float _sobelVerticalFilter[] = {-1.0F, -2.0F, -1.0F,
-                                                  0.0F, 0.0F, 0.0F,
-                                                  1.0F, 2.0F, 1.0F};
-
-    private final float _robertsHorizontalFilter[] = {0.0F, 0.0F, -1.0F,
-                                                      0.0F, 1.0F, 0.0F,
-                                                      0.0F, 0.0F, 0.0F};
-
-    private final float _robertsVerticalFilter[] = {-1.0F, 0.0F, 0.0F,
-                                                    0.0F, 1.0F, 0.0F,
-                                                    0.0F, 0.0F, 0.0F};
-
-    private final float _prewittHorizontalFilter[] = {1.0F, 0.0F, -1.0F,
-                                                      1.0F, 0.0F, -1.0F,
-                                                      1.0F, 0.0F, -1.0F};
-
-    private final float _prewittVerticalFilter[] = {-1.0F, -1.0F, -1.0F,
-                                                    0.0F, 0.0F, 0.0F,
-                                                    1.0F, 1.0F, 1.0F};
-
-    private final float _freiAndChenHorizontalFilter[] = {1.0F, 0.0F, -1.0F,
-                                                          1.414F, 0.0F, -1.414F,
-                                                          1.0F, 0.0F, -1.0F};
-
-    private final float _freiAndChenVerticalFilter[] = {-1.0F, -1.414F, -1.0F,
-                                                        0.0F, 0.0F, 0.0F,
-                                                        1.0F, 1.414F, 1.0F};
-
-    private final float _transparentFilter[] = {0.0F, 0.0F, 0.0F,
-                                                0.0F, 0.707F, 0.0F,
-                                                0.0F, 0.0F, 0.0F};
-
-    private final float _zeroFilter[] = {0.0F, 0.0F, 0.0F,
-                                         0.0F, 0.0F, 0.0F,
-                                         0.0F, 0.0F, 0.0F};
-
-    private final float _diagonalFilter[] = {1.0F, 1.0F, 0.0F,
-                                             1.0F, 0.0F, -1.0F,
-                                             0.0F, -1.0F, -1.0F};
-
-    private final float _backDiagonalFilter[] = {0.0F, 1.0F, 1.0F,
-                                                 -1.0F, 0.0F, 1.0F,
-                                                 -1.0F, -1.0F, 0.0F};
+    private final float[] _sobelHorizontalFilter = {
+            1.0F, 0.0F, -1.0F, 2.0F, 0.0F, -2.0F, 1.0F, 0.0F, -1.0F
+        };
+    private final float[] _sobelVerticalFilter = {
+            -1.0F, -2.0F, -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F
+        };
+    private final float[] _robertsHorizontalFilter = {
+            0.0F, 0.0F, -1.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F
+        };
+    private final float[] _robertsVerticalFilter = {
+            -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F
+        };
+    private final float[] _prewittHorizontalFilter = {
+            1.0F, 0.0F, -1.0F, 1.0F, 0.0F, -1.0F, 1.0F, 0.0F, -1.0F
+        };
+    private final float[] _prewittVerticalFilter = {
+            -1.0F, -1.0F, -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F
+        };
+    private final float[] _freiAndChenHorizontalFilter = {
+            1.0F, 0.0F, -1.0F, 1.414F, 0.0F, -1.414F, 1.0F, 0.0F, -1.0F
+        };
+    private final float[] _freiAndChenVerticalFilter = {
+            -1.0F, -1.414F, -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.414F, 1.0F
+        };
+    private final float[] _transparentFilter = {
+            0.0F, 0.0F, 0.0F, 0.0F, 0.707F, 0.0F, 0.0F, 0.0F, 0.0F
+        };
+    private final float[] _zeroFilter = {
+            0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F
+        };
+    private final float[] _diagonalFilter = {
+            1.0F, 1.0F, 0.0F, 1.0F, 0.0F, -1.0F, 0.0F, -1.0F, -1.0F
+        };
+    private final float[] _backDiagonalFilter = {
+            0.0F, 1.0F, 1.0F, -1.0F, 0.0F, 1.0F, -1.0F, -1.0F, 0.0F
+        };
 
     //Constants used for more efficient execution
     private final int _BACKDIAGONAL = 0;

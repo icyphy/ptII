@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel.util;
 
 import java.util.Collections;
@@ -35,8 +34,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TotallyOrderedSet
+
 /**
    An object of this class is a totally ordered set with an increasing order.
    The order between any two elements in the set can be checked by calling the
@@ -52,9 +53,7 @@ import java.util.List;
    @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public class TotallyOrderedSet {
-
     /** Construct a set with the given comparator.
      *  @param comparator The Comparator to compare elements.  Note that
      *  the comparator cannot be changed after this TotallyOrderedSet
@@ -93,17 +92,21 @@ public class TotallyOrderedSet {
     public boolean contains(Object object) {
         boolean result = false;
         Iterator elements = _set.iterator();
+
         while (elements.hasNext()) {
             Object next = elements.next();
             int comparator = _comparator.compare(object, next);
+
             if (comparator == 0) {
                 result = true;
                 break;
             }
+
             if (comparator < 0) {
                 break;
             }
         }
+
         return result;
     }
 
@@ -111,7 +114,7 @@ public class TotallyOrderedSet {
      *  @return The list of all the elements.
      */
     public List elementList() {
-        return  _set;
+        return _set;
     }
 
     /** Return an enumeration of all the elements.
@@ -119,7 +122,7 @@ public class TotallyOrderedSet {
      *  @deprecated Use elementList() instead.
      */
     public Enumeration elements() {
-        return  Collections.enumeration(_set);
+        return Collections.enumeration(_set);
     }
 
     /** Return the first element, ie. the <i>smallest</i> element.
@@ -130,6 +133,7 @@ public class TotallyOrderedSet {
         if (isEmpty()) {
             return null;
         }
+
         return _set.getFirst();
     }
 
@@ -159,18 +163,23 @@ public class TotallyOrderedSet {
     public void insert(Object obj) {
         int count = 0;
         Iterator elements = _set.iterator();
+
         while (elements.hasNext()) {
             Object next = elements.next();
             int com = _comparator.compare(obj, next);
+
             if (com == 0) {
                 return;
             }
+
             if (com < 0) {
                 _set.add(count, obj);
                 return;
             }
-            count ++;
+
+            count++;
         }
+
         _set.addLast(obj);
     }
 
@@ -191,9 +200,11 @@ public class TotallyOrderedSet {
         if (_set == null) {
             return;
         }
+
         while (!isEmpty()) {
             Object first = first();
             int com = _comparator.compare(obj, first);
+
             if (com <= 0) {
                 return;
             } else {
@@ -242,15 +253,16 @@ public class TotallyOrderedSet {
     public String toString() {
         String result = new String();
         Iterator elements = elementList().iterator();
+
         while (elements.hasNext()) {
             result = result + (elements.next()).toString() + " ";
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The comparator for the order.  The comparator is a blank final
     // field that can't be changed after creation.
     private final Comparator _comparator;

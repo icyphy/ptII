@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.attributes;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RequireVersion
+
 /**
    An attribute that requires a particular version of Ptolemy II.
    When the value of this attribute is set (via setExpression()),
@@ -48,7 +49,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class RequireVersion extends VersionAttribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -63,7 +63,7 @@ public class RequireVersion extends VersionAttribute {
      *   an attribute already in the container.
      */
     public RequireVersion(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setExpression(CURRENT_VERSION.getExpression());
     }
@@ -81,16 +81,14 @@ public class RequireVersion extends VersionAttribute {
      *   space, which violates the JNLP Version format specification,
      *   and if the specified version is newer than the executing version.
      */
-    public void setExpression(String expression)
-            throws IllegalActionException {
+    public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
+
         if (CURRENT_VERSION.isLessThan(this)) {
             throw new IllegalActionException(this,
-                    "Current version of Ptolemy II is "
-                    + CURRENT_VERSION.getExpression()
-                    + ", but required version is "
-                    + expression
-                    + ".");
+                "Current version of Ptolemy II is "
+                + CURRENT_VERSION.getExpression()
+                + ", but required version is " + expression + ".");
         }
     }
 }

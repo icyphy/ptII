@@ -24,54 +24,52 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.soot;
 
-import ptolemy.copernicus.jhdl.util.*;
-import ptolemy.copernicus.jhdl.soot.*;
+import soot.Body;
+import soot.PatchingChain;
+import soot.SootMethod;
+import soot.Unit;
+import soot.Value;
+
+import soot.jimple.AssignStmt;
+import soot.jimple.BinopExpr;
+import soot.jimple.ConditionExpr;
+import soot.jimple.GotoStmt;
+import soot.jimple.IfStmt;
+import soot.jimple.IntConstant;
+import soot.jimple.NeExpr;
+
+import soot.jimple.internal.JAssignStmt;
+
+import soot.toolkits.graph.Block;
+import soot.toolkits.graph.BlockGraph;
+import soot.toolkits.graph.BriefBlockGraph;
+
 import ptolemy.copernicus.jhdl.*;
-
-import java.util.Iterator;
-import java.util.Collection;
-import java.util.List;
-import java.util.Vector;
-import java.util.ListIterator;
-import java.util.LinkedList;
-
-import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
-import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
-import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
-
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.soot.CompoundAndExpression;
 import ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression;
 import ptolemy.copernicus.jhdl.soot.CompoundOrExpression;
-import ptolemy.copernicus.jhdl.soot.CompoundAndExpression;
-
+import ptolemy.copernicus.jhdl.util.*;
+import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
+import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
+import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
-import soot.jimple.IfStmt;
-import soot.jimple.GotoStmt;
-import soot.jimple.NeExpr;
-import soot.jimple.ConditionExpr;
-import soot.jimple.IntConstant;
-import soot.jimple.AssignStmt;
-import soot.jimple.BinopExpr;
-import soot.jimple.AssignStmt;
-import soot.jimple.internal.JAssignStmt;
-
-import soot.SootMethod;
-import soot.Unit;
-import soot.Body;
-import soot.Value;
-import soot.PatchingChain;
-import soot.toolkits.graph.BriefBlockGraph;
-import soot.toolkits.graph.BlockGraph;
-import soot.toolkits.graph.Block;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Vector;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanNotCompactor
+
 /**
  *
  * A Not expression in Java (i.e. the ! operator) is implemented as
@@ -90,20 +88,19 @@ import soot.toolkits.graph.Block;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class BooleanNotCompactor {
-
-    public static void compact(SootMethod method)
-            throws IllegalActionException {
+    public static void compact(SootMethod method) throws IllegalActionException {
         Body mbody = method.retrieveActiveBody();
         PatchingChain chain = mbody.getUnits();
 
         for (Unit current = (Unit) chain.snapshotIterator().next();
-             current != null;) {
+                current != null;) {
+            Unit u = mergeBooleanAssign(chain, current);
 
-            Unit u = mergeBooleanAssign(chain,current);
-            if (u == null)
+            if (u == null) {
                 current = (Unit) chain.getSuccOf(current);
-            else
+            } else {
                 current = (Unit) chain.getSuccOf(u);
+            }
         }
     }
 
@@ -118,103 +115,116 @@ public class BooleanNotCompactor {
      *   (true assignment statement constant must = 0)
      * - Assignment statements must converge to same statement
      **/
-    protected static Unit mergeBooleanAssign(PatchingChain chain,
-            Unit root) {
-
+    protected static Unit mergeBooleanAssign(PatchingChain chain, Unit root) {
         // 0 Unit must be an IfStmt statment
-        if (!(root instanceof IfStmt))
+        if (!(root instanceof IfStmt)) {
             return null;
+        }
+
         IfStmt rootIfStmt = (IfStmt) root;
 
         // 1. successor must be an assignment statment
         Unit successor = (Unit) chain.getSuccOf(rootIfStmt);
-        if (!(successor instanceof AssignStmt))
+
+        if (!(successor instanceof AssignStmt)) {
             return null;
+        }
 
         // 2. target must be an assignment statment
         Unit target = rootIfStmt.getTarget();
-        if (!(target instanceof AssignStmt))
+
+        if (!(target instanceof AssignStmt)) {
             return null;
+        }
 
         //System.out.println("Dual Assignment Targets");
-
         // 3. Assignment statements must be to the same value
         // TODO: fieldrefs?
         Value falseAssignValue = ((AssignStmt) successor).getLeftOp();
         Value trueAssignValue = ((AssignStmt) target).getLeftOp();
-        if (falseAssignValue != trueAssignValue)
+
+        if (falseAssignValue != trueAssignValue) {
             return null;
+        }
 
         //System.out.println("Target same value");
-
         // 4. Values being assigned must be a constant
         Value falseValue = ((AssignStmt) successor).getRightOp();
         Value trueValue = ((AssignStmt) target).getRightOp();
-        if (!(falseValue instanceof IntConstant) ||
-                !(trueValue instanceof IntConstant))
+
+        if (!(falseValue instanceof IntConstant)
+                || !(trueValue instanceof IntConstant)) {
             return null;
+        }
 
         // 5. falseInt must be not trueInt
         int falseInt = ((IntConstant) falseValue).value;
         int trueInt = ((IntConstant) trueValue).value;
+
         //          if ((falseInt ^ trueInt) != 1)
         //              return null;
-        if (falseInt != 1 || trueInt != 0)
+        if ((falseInt != 1) || (trueInt != 0)) {
             return null;
+        }
 
         // 6. Each block must converge
         Unit falseSuccessor = (Unit) chain.getSuccOf(successor);
         Unit trueSuccessor = (Unit) chain.getSuccOf(target);
-        if ( !(falseSuccessor instanceof GotoStmt) )
-            return null;
-        if ( ((GotoStmt) falseSuccessor).getTarget() != trueSuccessor)
-            return null;
 
+        if (!(falseSuccessor instanceof GotoStmt)) {
+            return null;
+        }
 
+        if (((GotoStmt) falseSuccessor).getTarget() != trueSuccessor) {
+            return null;
+        }
 
         // Create new unit
         ConditionExpr ifCondition = (ConditionExpr) rootIfStmt.getCondition();
-        System.out.println("if="+ifCondition);
+        System.out.println("if=" + ifCondition);
+
         Value v = null;
-        if (ifCondition instanceof CompoundBooleanExpression)
-            v = new BooleanNotExpr( ifCondition );
-        else
+
+        if (ifCondition instanceof CompoundBooleanExpression) {
+            v = new BooleanNotExpr(ifCondition);
+        } else {
             v = new BooleanNotExpr(ifCondition.getOp1());
-        AssignStmt a = new JAssignStmt(falseAssignValue,v);
+        }
+
+        AssignStmt a = new JAssignStmt(falseAssignValue, v);
         System.out.println(a);
+
         Unit preceeding = (Unit) chain.getPredOf(root);
-        chain.insertAfter(a,preceeding);
+        chain.insertAfter(a, preceeding);
 
         // Remove units
         chain.remove(root);
         chain.remove(successor);
         chain.remove(falseSuccessor);
         chain.remove(target);
-        //        chain.remove();
 
+        //        chain.remove();
         return a;
     }
 
-    public static void main(String args[]) {
-
-        soot.SootMethod testMethod =
-            ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
+    public static void main(String[] args) {
+        soot.SootMethod testMethod = ptolemy.copernicus.jhdl.test.Test
+            .getSootMethod(args);
 
         soot.Body body = testMethod.retrieveActiveBody();
-        soot.toolkits.graph.CompleteUnitGraph unitGraph =
-            new soot.toolkits.graph.CompleteUnitGraph(body);
+        soot.toolkits.graph.CompleteUnitGraph unitGraph = new soot.toolkits.graph.CompleteUnitGraph(body);
         BriefBlockGraph bbgraph = new BriefBlockGraph(body);
         BlockGraphToDotty toDotty = new BlockGraphToDotty();
         toDotty.writeDotFile(".", "beforegraph", bbgraph);
+
         try {
             ConditionalControlCompactor.compact(testMethod);
             compact(testMethod);
         } catch (IllegalActionException e) {
             System.err.println(e);
         }
+
         bbgraph = new BriefBlockGraph(body);
         toDotty.writeDotFile(".", "aftergraph", bbgraph);
-
     }
-
 }

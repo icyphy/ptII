@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.demo.PersonalAreaNetwork;
 
 import ptolemy.actor.TypeAttribute;
@@ -50,6 +49,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BluetoothNode
 
@@ -63,7 +63,6 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class BluetoothNode extends TypedAtomicActor {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -73,7 +72,7 @@ public class BluetoothNode extends TypedAtomicActor {
      *   actor with this name.
      */
     public BluetoothNode(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create and configure the parameters.
@@ -100,6 +99,7 @@ public class BluetoothNode extends TypedAtomicActor {
 
         output = new WirelessIOPort(this, "output", false, true);
         output.outsideChannel.setExpression("$outputChannelName");
+
         // Since this actor sources the data at this port, we have to
         // declare the type.
         TypeAttribute portType = new TypeAttribute(output, "type");
@@ -132,12 +132,9 @@ public class BluetoothNode extends TypedAtomicActor {
         hide.setVisibility(Settable.EXPERT);
 
         // Hide the ports.
-        (new SingletonParameter(output, "_hide")).setToken(
-                BooleanToken.TRUE);
-        (new SingletonParameter(input, "_hide")).setToken(
-                BooleanToken.TRUE);
-        (new SingletonParameter(signal, "_hide")).setToken(
-                BooleanToken.TRUE);
+        (new SingletonParameter(output, "_hide")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(input, "_hide")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(signal, "_hide")).setToken(BooleanToken.TRUE);
     }
 
     /** Override the base class to declare that the <i>output</i>
@@ -188,9 +185,6 @@ public class BluetoothNode extends TypedAtomicActor {
      */
     public Parameter range;
 
-
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -209,38 +203,39 @@ public class BluetoothNode extends TypedAtomicActor {
      *  consumes the messge.
      */
     public void fire() throws IllegalActionException {
-
-
-
         double incRange = 100.0;
         super.fire();
 
         if (BluetoothChannel.increaseRange) {
+            incRange = (((DoubleToken) (range.getToken())).doubleValue());
 
-            incRange = (((DoubleToken)(range.getToken())).doubleValue());
+            incRange = incRange + (incRange * .10);
 
-            incRange = incRange + incRange*.10;
             if (incRange <= 55.0) {
                 range.setToken("55");
                 _circle.width.setToken("range*2");
                 _circle.height.setToken("range*2");
             }
-            if (incRange >= 60.5 && incRange <= 61.0) {
+
+            if ((incRange >= 60.5) && (incRange <= 61.0)) {
                 range.setToken("60.5");
                 _circle.width.setToken("range*2");
                 _circle.height.setToken("range*2");
             }
-            if (incRange >= 66.55 && incRange <= 67.0) {
+
+            if ((incRange >= 66.55) && (incRange <= 67.0)) {
                 range.setToken("66.55");
                 _circle.width.setToken("range*2");
                 _circle.height.setToken("range*2");
             }
-            if (incRange > 66.55 ) {
+
+            if (incRange > 66.55) {
                 range.setToken("100");
                 _circle.width.setToken("range*2");
                 _circle.height.setToken("range*2");
             }
         }
+
         if (!BluetoothChannel.increaseRange) {
             range.setToken("50");
             _circle.width.setToken("range*2");
@@ -249,40 +244,43 @@ public class BluetoothNode extends TypedAtomicActor {
 
         if (signal.hasToken(0)) {
             String signalValue = ((StringToken) signal.get(0)).stringValue();
+
             if (_debugging) {
                 _debug("signal token received: " + signalValue);
             }
+
             //FIXME: Assumes the pursure uses "SPIDER" in its signal header.
             if (!signalValue.equals("SPIDER")) {
                 //detect the envader, set this to be the root node in the
                 //spanning tree.
-                String[] labels = {"location", "time", "depth"};
+                String[] labels = { "location", "time", "depth" };
+
                 // Get the location and wrap each coordinate in a token.
                 double[] location = _getLocation();
                 Token[] locationArray = new Token[location.length];
+
                 for (int i = 0; i < location.length; i++) {
                     locationArray[i] = new DoubleToken(location[i]);
                 }
 
                 double timeValue = getDirector().getModelTime().getDoubleValue();
                 Token[] values = {
-                    new ArrayToken(locationArray),
-                    new DoubleToken(timeValue),
-                    new IntToken(0)
-                };
+                        new ArrayToken(locationArray),
+                        new DoubleToken(timeValue), new IntToken(0)
+                    };
                 Token result = new RecordToken(labels, values);
 
                 output.send(0, result);
             } else {
                 // It is the pursuer. Send its parent info to the pursuer.
                 if (_timeValue > 0.0) {
-                    String[] labels = {"location", "time", "depth"};
+                    String[] labels = { "location", "time", "depth" };
 
                     Token[] values = {
-                        new ArrayToken(_parentLocation),
-                        new DoubleToken(_timeValue),
-                        new IntToken(_parentDepth)
-                    };
+                            new ArrayToken(_parentLocation),
+                            new DoubleToken(_timeValue),
+                            new IntToken(_parentDepth)
+                        };
                     Token result = new RecordToken(labels, values);
 
                     output.send(0, result);
@@ -292,26 +290,27 @@ public class BluetoothNode extends TypedAtomicActor {
 
         if (input.hasToken(0)) {
             //receive message for updating the spanning tree.
-            RecordToken inputToken = (RecordToken)input.get(0);
+            RecordToken inputToken = (RecordToken) input.get(0);
+
             if (_debugging) {
                 _debug("message token received: ");
             }
-
-
         }
     }
-
 
     /** Initialize the private varialbles of the sensor node.
      *  @exception IllegalActionException If thrown by the base class.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         double[] location = _getLocation();
         DoubleToken[] _parentLocation = new DoubleToken[location.length];
+
         for (int i = 0; i < location.length; i++) {
             _parentLocation[i] = new DoubleToken(location[i]);
         }
+
         _parentDepth = 0;
         _timeValue = 0.0;
     }
@@ -331,12 +330,14 @@ public class BluetoothNode extends TypedAtomicActor {
      */
     protected double[] _getLocation() throws IllegalActionException {
         //Entity container = (Entity)this.getContainer();
-        Location locationAttribute = (Location)getAttribute(
-                "_location", Location.class);
+        Location locationAttribute = (Location) getAttribute("_location",
+                Location.class);
+
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-                    "Cannot find a _location attribute of class Location.");
+                "Cannot find a _location attribute of class Location.");
         }
+
         return locationAttribute.getLocation();
     }
 
@@ -358,8 +359,4 @@ public class BluetoothNode extends TypedAtomicActor {
 
     /** Icon of this actor. */
     private EllipseAttribute _circle2;
-
-
-
 }
-

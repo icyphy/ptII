@@ -43,8 +43,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.IntegerMatrixMath;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VQDecode
+
 /**
    This actor decompresses a vector quantized signal.   This operation is simply
    a table lookup into the codebook.
@@ -57,6 +59,7 @@ import ptolemy.math.IntegerMatrixMath;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red
 */
+
 // FIXME This should be generalized to a Table-lookup actor.
 public class VQDecode extends Transformer {
     /** Construct an actor in the specified container with the specified
@@ -69,8 +72,7 @@ public class VQDecode extends Transformer {
      *   an actor already in the container.
      */
     public VQDecode(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT);
@@ -78,28 +80,24 @@ public class VQDecode extends Transformer {
         output.setTypeEquals(BaseType.INT_MATRIX);
 
         codeBook = new Parameter(this, "codeBook",
-                new StringToken("/ptolemy/domains/sdf" +
-                        "/lib/vq/data/usc_hvq_s5.dat"));
+                new StringToken("/ptolemy/domains/sdf"
+                    + "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
 
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
         blockCount.setTypeEquals(BaseType.INT);
 
-        blockWidth =
-            new Parameter(this, "blockWidth", new IntToken("4"));
+        blockWidth = new Parameter(this, "blockWidth", new IntToken("4"));
         blockWidth.setTypeEquals(BaseType.INT);
 
-        blockHeight =
-            new Parameter(this, "blockHeight", new IntToken("2"));
+        blockHeight = new Parameter(this, "blockHeight", new IntToken("2"));
         blockHeight.setTypeEquals(BaseType.INT);
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setExpression("blockCount");
 
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression("blockCount");
     }
@@ -152,9 +150,8 @@ public class VQDecode extends Transformer {
         _codewords = input.get(0, _blockCount);
 
         for (j = 0; j < _blockCount; j++) {
-            _blocks[j] =
-                new IntMatrixToken(
-                        _codebook[stage][((IntToken)_codewords[j]).intValue()]);
+            _blocks[j] = new IntMatrixToken(_codebook[stage][((IntToken) _codewords[j])
+                    .intValue()]);
         }
 
         output.send(0, _blocks, _blocks.length);
@@ -172,14 +169,15 @@ public class VQDecode extends Transformer {
 
         InputStream source = null;
 
-        _blockCount = ((IntToken)blockCount.getToken()).intValue();
-        _blockWidth = ((IntToken)blockWidth.getToken()).intValue();
-        _blockHeight = ((IntToken)blockHeight.getToken()).intValue();
+        _blockCount = ((IntToken) blockCount.getToken()).intValue();
+        _blockWidth = ((IntToken) blockWidth.getToken()).intValue();
+        _blockHeight = ((IntToken) blockHeight.getToken()).intValue();
 
-        _codewords =  new ptolemy.data.Token[_blockCount];
+        _codewords = new ptolemy.data.Token[_blockCount];
         _blocks = new IntMatrixToken[_blockCount];
 
-        String filename = ((StringToken)codeBook.getToken()).stringValue();
+        String filename = ((StringToken) codeBook.getToken()).stringValue();
+
         try {
             if (filename != null) {
                 try {
@@ -191,53 +189,63 @@ public class VQDecode extends Transformer {
                 } catch (FileNotFoundException e) {
                     System.err.println("File not found: " + e);
                 } catch (IOException e) {
-                    throw new IllegalActionException(
-                            "Error reading" +
-                            " input file: " + e.getMessage());
+                    throw new IllegalActionException("Error reading"
+                        + " input file: " + e.getMessage());
                 }
             }
 
-            int i, j, y, x, size = 1;
-            byte temp[];
-            int intTemp[];
-            int rows = 1, columns = 1;
+            int i;
+            int j;
+            int y;
+            int x;
+            int size = 1;
+            byte[] temp;
+            int[] intTemp;
+            int rows = 1;
+            int columns = 1;
+
             for (i = 0; i < 5; i++) {
                 size = size * 2;
-                if (i % 2 == 0) {
+
+                if ((i % 2) == 0) {
                     columns = columns * 2;
                 } else {
                     rows = rows * 2;
                 }
+
                 temp = new byte[size];
                 intTemp = new int[size];
+
                 for (j = 0; j < 256; j++) {
-                    if (_fullRead(source, temp) != size)
-                        throw new IllegalActionException("Error reading " +
-                                "codebook file!");
-                    for (x = 0; x < size; x++)
+                    if (_fullRead(source, temp) != size) {
+                        throw new IllegalActionException("Error reading "
+                            + "codebook file!");
+                    }
+
+                    for (x = 0; x < size; x++) {
                         intTemp[x] = temp[x] & 255;
-                    _codebook[i][j] = IntegerMatrixMath.toMatrixFromArray(
-                            intTemp, rows, columns);
+                    }
+
+                    _codebook[i][j] = IntegerMatrixMath.toMatrixFromArray(intTemp,
+                            rows, columns);
                 }
 
                 // skip over the lookup tables.
-
                 temp = new byte[65536];
+
                 // read in the lookup table.
-                if (_fullRead(source, temp) != 65536)
-                    throw new IllegalActionException("Error reading " +
-                            "codebook file!");
+                if (_fullRead(source, temp) != 65536) {
+                    throw new IllegalActionException("Error reading "
+                        + "codebook file!");
+                }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalActionException(e.getMessage());
-        }
-        finally {
+        } finally {
             if (source != null) {
                 try {
                     source.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                 }
             }
         }
@@ -245,19 +253,22 @@ public class VQDecode extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    private int _fullRead(InputStream s, byte b[]) throws IOException {
+    private int _fullRead(InputStream s, byte[] b) throws IOException {
         int length = 0;
         int remaining = b.length;
         int bytesRead = 0;
+
         while (remaining > 0) {
             bytesRead = s.read(b, length, remaining);
+
             if (bytesRead == -1) {
                 throw new IOException("Unexpected EOF");
             }
+
             remaining -= bytesRead;
             length += bytesRead;
         }
+
         return length;
     }
 
@@ -267,22 +278,23 @@ public class VQDecode extends Transformer {
      */
     private int _stages(int length) {
         int x = 0;
+
         if (length < 2) {
-            throw new RuntimeException(
-                    "Vector length of " + length +
-                    "must be greater than 1");
+            throw new RuntimeException("Vector length of " + length
+                + "must be greater than 1");
         }
+
         while (length > 2) {
             length = length >> 1;
             x++;
         }
+
         return x;
     }
 
-    private int _codebook[][][][] = new int[6][256][][];
-    private ptolemy.data.Token _codewords[];
-    private IntMatrixToken _blocks[];
-
+    private int[][][][] _codebook = new int[6][256][][];
+    private ptolemy.data.Token[] _codewords;
+    private IntMatrixToken[] _blocks;
     private int _blockCount;
     private int _blockWidth;
     private int _blockHeight;

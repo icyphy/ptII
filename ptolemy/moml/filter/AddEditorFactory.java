@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml.filter;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -36,6 +35,7 @@ import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// AddEditorFactory
+
 /** Add a VisibleParameterEditorFactory named _editorFactory to certain
     Parameters.
 
@@ -46,7 +46,6 @@ import ptolemy.moml.MoMLParser;
     @Pt.AcceptedRating Red (cxh)
 */
 public class AddEditorFactory implements MoMLFilter {
-
     /**  Identify Parameters that need a VisibleParameterEditorFactory
      *   named _editorFactory added.
      *
@@ -57,14 +56,12 @@ public class AddEditorFactory implements MoMLFilter {
      *  @param attributeValue The value of the attribute.
      *  @return the value of the attributeValue argument.
      */
-    public String filterAttributeValue(NamedObj container,
-            String element, String attributeName, String attributeValue) {
-
+    public String filterAttributeValue(NamedObj container, String element,
+        String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
         // are not making the same comparison more than once.
-
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first
@@ -74,12 +71,12 @@ public class AddEditorFactory implements MoMLFilter {
         if (attributeName.equals("name")) {
             // Save the name of the for later use if we see a "class"
             _lastNameSeen = attributeValue;
+
             if (_currentlyProcessingActorThatMayNeedAnEditorFactory) {
                 if (attributeValue.equals("_editorFactory")) {
                     // We are processing a Parameter that already has a
                     // _editorFactory
-                    _currentlyProcessingActorThatMayNeedAnEditorFactory =
-                        false;
+                    _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
                     _currentAttributeHasLocation = false;
                 } else if (attributeValue.equals("_location")) {
                     // We only add _editorFactory to parameters that
@@ -89,36 +86,32 @@ public class AddEditorFactory implements MoMLFilter {
             }
         }
 
-
         // If you change this class, you should run before and after
         // timing tests on large moml files, a good command to run
         // is:
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
-
         if (attributeName.equals("class")) {
-            if (attributeValue
-                    .equals("ptolemy.data.expr.Parameter")) {
+            if (attributeValue.equals("ptolemy.data.expr.Parameter")) {
                 _currentlyProcessingActorThatMayNeedAnEditorFactory = true;
-                if (container != null ) {
-                    _currentActorFullName = container.getFullName()
-                        + "." + _lastNameSeen;
+
+                if (container != null) {
+                    _currentActorFullName = container.getFullName() + "."
+                        + _lastNameSeen;
                 } else {
                     _currentActorFullName = "." + _lastNameSeen;
                 }
-            } else if ( _currentlyProcessingActorThatMayNeedAnEditorFactory
-                    && container != null
-                    && !container.getFullName()
-                    .equals(_currentActorFullName)
-                    && !container.getFullName()
-                    .startsWith(_currentActorFullName)) {
+            } else if (_currentlyProcessingActorThatMayNeedAnEditorFactory
+                    && (container != null)
+                    && !container.getFullName().equals(_currentActorFullName)
+                    && !container.getFullName().startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
-                _currentlyProcessingActorThatMayNeedAnEditorFactory =
-                    false;
+                _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
                 _currentAttributeHasLocation = false;
             }
         }
+
         return attributeValue;
     }
 
@@ -128,15 +121,12 @@ public class AddEditorFactory implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
+        throws Exception {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return;
-        } else if ( _currentAttributeHasLocation
-                && elementName != null
-                && elementName.equals("property")
-                && container != null
-                && container.getFullName()
-                .equals(_currentActorFullName)) {
+        } else if (_currentAttributeHasLocation && (elementName != null)
+                && elementName.equals("property") && (container != null)
+                && container.getFullName().equals(_currentActorFullName)) {
             _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
             _currentAttributeHasLocation = false;
 
@@ -146,16 +136,17 @@ public class AddEditorFactory implements MoMLFilter {
             //
             // VisibleParameterEditorFactor _editorFactory =
             //        new VisibleParameterEditorFactory(container, "_editorFactory");
-
             if (_parser == null) {
                 _parser = new MoMLParser();
             }
+
             // setContext calls parser.reset()
             _parser.setContext(container);
+
             String moml = "<property name=\"_editorFactory\""
                 + "class=\"ptolemy.vergil.toolbox."
-                + "VisibleParameterEditorFactory\">"
-                + "</property>";
+                + "VisibleParameterEditorFactory\">" + "</property>";
+
             try {
                 // Do not call parse(moml) here, since that method
                 // will fail if we are in an applet because it tries
@@ -163,8 +154,8 @@ public class AddEditorFactory implements MoMLFilter {
                 _parser.parse(null, moml);
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
-                throw new IllegalActionException(null, ex, "Failed to parse\n"
-                        + moml);
+                throw new IllegalActionException(null, ex,
+                    "Failed to parse\n" + moml);
             }
         }
     }
@@ -174,13 +165,12 @@ public class AddEditorFactory implements MoMLFilter {
      */
     public String toString() {
         return getClass().getName()
-            + ": If a parameter has a _location, then\n"
-            + "add a VisibleParameterEditorFactory named _editorFactory.\n";
+        + ": If a parameter has a _location, then\n"
+        + "add a VisibleParameterEditorFactory named _editorFactory.\n";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The the full name of the actor we are currently processing
     private static String _currentActorFullName;
 
@@ -191,8 +181,7 @@ public class AddEditorFactory implements MoMLFilter {
 
     // Set to true if we are currently processing an actor that may
     // need _editorFactory added, set to false when we are done.
-    private boolean
-    _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
+    private boolean _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
 
     // Last "name" value seen, for use if we see a "class".
     private static String _lastNameSeen;

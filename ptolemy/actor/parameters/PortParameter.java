@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.parameters;
 
 import ptolemy.actor.TypedActor;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PortParameter
+
 /**
    This parameter creates an associated port that can be used to update
    the current value of the parameter. This parameter has two values,
@@ -121,7 +122,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (neuendor)
 */
 public class PortParameter extends Parameter {
-
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -134,12 +134,13 @@ public class PortParameter extends Parameter {
      *   a parameter already in the container.
      */
     public PortParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         if (container instanceof TypedActor) {
             // If we get to here, we know the container is a ComponentEntity,
             // so the cast is safe.
-            _port = new ParameterPort((ComponentEntity)container, name);
+            _port = new ParameterPort((ComponentEntity) container, name);
         }
     }
 
@@ -162,9 +163,9 @@ public class PortParameter extends Parameter {
      *  @exception NameDuplicationException If the name coincides with
      *   an parameter already in the container.
      */
-    public PortParameter(
-            NamedObj container, String name, ptolemy.data.Token token)
-            throws IllegalActionException, NameDuplicationException {
+    public PortParameter(NamedObj container, String name,
+        ptolemy.data.Token token)
+        throws IllegalActionException, NameDuplicationException {
         this(container, name);
         setToken(token);
     }
@@ -181,22 +182,25 @@ public class PortParameter extends Parameter {
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute instanceof Locatable) {
-            Locatable location = (Locatable)attribute;
+            Locatable location = (Locatable) attribute;
+
             if (_port != null) {
                 Attribute portAttribute = _port.getAttribute("_location");
                 Locatable portLocation = null;
+
                 if (portAttribute instanceof Locatable) {
-                    portLocation = (Locatable)portAttribute;
+                    portLocation = (Locatable) portAttribute;
                 } else {
                     try {
                         portLocation = new Location(_port, "_location");
-                        ((NamedObj)portLocation).propagateExistence();
+                        ((NamedObj) portLocation).propagateExistence();
                     } catch (KernelException ex) {
                         throw new InternalErrorException(ex);
                     }
                 }
+
                 double[] locationValues = location.getLocation();
                 double[] portLocationValues = new double[2];
                 portLocationValues[0] = locationValues[0] - 20.0;
@@ -228,9 +232,9 @@ public class PortParameter extends Parameter {
      *  @see java.lang.Object#clone()
      *  @return The cloned parameter.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        PortParameter newObject = (PortParameter)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PortParameter newObject = (PortParameter) super.clone(workspace);
+
         // Cannot establish an association with the cloned port until
         // that port is cloned and the container of both is set.
         newObject._port = null;
@@ -249,12 +253,13 @@ public class PortParameter extends Parameter {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public void setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
-        Entity previousContainer = (Entity)getContainer();
+        throws IllegalActionException, NameDuplicationException {
+        Entity previousContainer = (Entity) getContainer();
         super.setContainer(entity);
+
         // If there is an associated port, and the container has changed,
         // break the association.
-        if (_port != null && entity != previousContainer) {
+        if ((_port != null) && (entity != previousContainer)) {
             _port._parameter = null;
             _port = null;
         }
@@ -264,13 +269,16 @@ public class PortParameter extends Parameter {
         if (entity instanceof TypedActor) {
             // Establish association with the port.
             Port port = entity.getPort(getName());
+
             if (port instanceof ParameterPort) {
-                _port = (ParameterPort)port;
+                _port = (ParameterPort) port;
+
                 if (_port._parameter == null) {
                     _port._parameter = this;
                     _port.setTypeSameAs(this);
                 }
             }
+
             // NOTE: Do not create an instance of the port.
             // This is called when this object is cloned, and
             // the port will be cloned too. If we create a new
@@ -299,10 +307,11 @@ public class PortParameter extends Parameter {
      *   container rejects the change.
      */
     public void setCurrentValue(ptolemy.data.Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_debugging) {
             _debug("setCurrentValue: " + token);
         }
+
         _setTokenAndNotify(token);
         setUnknown(false);
     }
@@ -318,11 +327,16 @@ public class PortParameter extends Parameter {
      *   contains an attribute with the proposed name.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
-        if (_settingName) return;
+        throws IllegalActionException, NameDuplicationException {
+        if (_settingName) {
+            return;
+        }
+
         super.setName(name);
+
         if (_port != null) {
             String oldName = getName();
+
             try {
                 _settingName = true;
                 _port._settingName = true;
@@ -349,13 +363,13 @@ public class PortParameter extends Parameter {
      */
     public void update() throws IllegalActionException {
         ParameterPort port = _port;
-        if (port != null
-                && port.getWidth() > 0
-                && port.hasToken(0)) {
+
+        if ((port != null) && (port.getWidth() > 0) && port.hasToken(0)) {
             Token token = port.get(0);
             setCurrentValue(token);
+
             if (_debugging) {
-                    _debug("Updated parameter value to: " + token);
+                _debug("Updated parameter value to: " + token);
             }
         }
     }
@@ -370,10 +384,10 @@ public class PortParameter extends Parameter {
      *   instance of Entity.
      */
     protected void _checkContainer(Entity container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(container instanceof Entity)) {
             throw new IllegalActionException(this,
-                    "PortParameter can only be used in an instance of Entity.");
+                "PortParameter can only be used in an instance of Entity.");
         }
     }
 
@@ -385,7 +399,6 @@ public class PortParameter extends Parameter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Indicator that we are in the midst of setting the name.
     private boolean _settingName = false;
 }

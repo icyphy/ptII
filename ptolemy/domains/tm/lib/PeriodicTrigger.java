@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.lib;
 
 import ptolemy.actor.Actor;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PeriodicTrigger
+
 /**
    This actor produces a ramp at 2 Hz.
    @author Edward A. Lee
@@ -55,15 +56,13 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (eal)
 */
 public class PeriodicTrigger extends TypedAtomicActor {
-
     public PeriodicTrigger(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.GENERAL);
         period = new Parameter(this, "period", new LongToken(1000));
         period.setTypeEquals(BaseType.LONG);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -88,28 +87,31 @@ public class PeriodicTrigger extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        PeriodicTrigger newObject = (PeriodicTrigger)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PeriodicTrigger newObject = (PeriodicTrigger) super.clone(workspace);
+
         try {
             newObject.period.setTypeEquals(BaseType.LONG);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() + ": clone failed.");
         }
+
         return newObject;
     }
 
     /** Once the period is updated, calculate the execution period.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == period) {
-            long periodValue = ((LongToken)period.getToken()).longValue();
+            long periodValue = ((LongToken) period.getToken()).longValue();
+
             if (periodValue < 100) {
                 throw new IllegalActionException(this,
-                        "does not support period lower than 100, value was:"
-                        + periodValue);
+                    "does not support period lower than 100, value was:"
+                    + periodValue);
             }
+
             _period = periodValue;
         }
     }
@@ -132,10 +134,8 @@ public class PeriodicTrigger extends TypedAtomicActor {
         }
     }
 
-
     // Inner class
     public class Trigger implements Runnable {
-
         public Trigger(Actor container) {
             _container = container;
         }
@@ -147,11 +147,12 @@ public class PeriodicTrigger extends TypedAtomicActor {
                 } catch (InterruptedException ex) {
                     break;
                 }
+
                 try {
                     _container.iterate(1);
                 } catch (IllegalActionException ex) {
-                    throw new InvalidStateException((NamedObj)_container,
-                            "IllegalActionException at execution" + ex.getMessage());
+                    throw new InvalidStateException((NamedObj) _container,
+                        "IllegalActionException at execution" + ex.getMessage());
                 }
             }
         }

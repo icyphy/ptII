@@ -26,12 +26,13 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.media.javasound.demo.Sines;
 
 import ptolemy.media.javasound.SoundPlayback;
 
+
 ////////////////////////////////////////////////////
+
 /** A simple application that demonstrates the use of SoundPlayback.
     This application synthesizes and plays a simple harmonic
     signal, using simple additive synthesis. The signal
@@ -44,7 +45,6 @@ import ptolemy.media.javasound.SoundPlayback;
 */
 public class Sines {
     public static void main(String[] args) {
-
         // The pitch of the signal to synthesize.
         double fundamental_Hz = 220;
 
@@ -61,10 +61,7 @@ public class Sines {
         // Construct a sound playback object that plays audio
         //through the computer's speaker.
         SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
-                sampleSizeInBits,
-                channels,
-                outBufferSize,
-                putSamplesSize);
+                sampleSizeInBits, channels, outBufferSize, putSamplesSize);
 
         // Initialize and begin playback.
         try {
@@ -73,28 +70,24 @@ public class Sines {
             System.err.println(ex);
         }
 
-        double[][] samplesArray =
-            new double[channels][putSamplesSize];
+        double[][] samplesArray = new double[channels][putSamplesSize];
+
         // keep track of time, used in calculating the sine wave values.
         double[] samples = new double[channels];
 
         try {
             // Loop forever.
             while (true) {
-                for (int j=0; j< channels; j++) {
-                    for (int i=0; i< putSamplesSize; i++) {
+                for (int j = 0; j < channels; j++) {
+                    for (int i = 0; i < putSamplesSize; i++) {
                         // Generate a harmonic signal.
-                        samplesArray[j][i] =
-                            java.lang.Math.sin(fundamental_Hz*2*
-                                    java.lang.Math.PI*samples[j])*0.4 +
-                            java.lang.Math.sin(2*fundamental_Hz*2*
-                                    java.lang.Math.PI*samples[j])*0.3 +
-                            java.lang.Math.sin(3*fundamental_Hz*2*
-                                    java.lang.Math.PI*samples[j])*0.25 +
-                            java.lang.Math.sin(4*fundamental_Hz*2*
-                                    java.lang.Math.PI*samples[j])*0.2;
+                        samplesArray[j][i] = (java.lang.Math.sin(fundamental_Hz * 2 * java.lang.Math.PI * samples[j]) * 0.4)
+                            + (java.lang.Math.sin(2 * fundamental_Hz * 2 * java.lang.Math.PI * samples[j]) * 0.3)
+                            + (java.lang.Math.sin(3 * fundamental_Hz * 2 * java.lang.Math.PI * samples[j]) * 0.25)
+                            + (java.lang.Math.sin(4 * fundamental_Hz * 2 * java.lang.Math.PI * samples[j]) * 0.2);
+
                         // Increment time.
-                        samples[j] = samples[j] + 1.0/sampleRate;
+                        samples[j] = samples[j] + (1.0 / sampleRate);
                     }
                 }
 
@@ -105,5 +98,4 @@ public class Sines {
             System.err.println(ex);
         }
     }
-
 }

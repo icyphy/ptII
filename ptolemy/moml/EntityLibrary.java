@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import java.io.IOException;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EntityLibrary
+
 /**
    This class provides a hierarchical library of components specified
    in MoML.  The contents are typically specified via the configure()
@@ -146,10 +147,7 @@ import ptolemy.util.MessageHandler;
 */
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.
-
-public class EntityLibrary
-    extends CompositeEntity implements Configurable {
-
+public class EntityLibrary extends CompositeEntity implements Configurable {
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
      *  workspace directory.
@@ -157,6 +155,7 @@ public class EntityLibrary
      */
     public EntityLibrary() {
         super();
+
         try {
             // NOTE: Used to call uniqueName() here to choose the name for the
             // marker.  This is a bad idea.  This calls getEntity(), which
@@ -177,6 +176,7 @@ public class EntityLibrary
      */
     public EntityLibrary(Workspace workspace) {
         super(workspace);
+
         try {
             // NOTE: Used to call uniqueName() here to choose the name for the
             // marker.  This is a bad idea.  This calls getEntity(), which
@@ -197,8 +197,9 @@ public class EntityLibrary
      *   actor with this name.
      */
     public EntityLibrary(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         // NOTE: Used to call uniqueName() here to choose the name for the
         // marker.  This is a bad idea.  This calls getEntity(), which
         // triggers populate() on the library, defeating deferred
@@ -245,12 +246,12 @@ public class EntityLibrary
      *   or if one of the attributes cannot be cloned.
      *  @return A new EntityLibrary.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         // To prevent populating during cloning, we set a flag.
         _cloning = true;
+
         try {
-            EntityLibrary result = (EntityLibrary)super.clone(workspace);
+            EntityLibrary result = (EntityLibrary) super.clone(workspace);
             result._cloning = false;
             return result;
         } finally {
@@ -400,16 +401,21 @@ public class EntityLibrary
         try {
             StringWriter stringWriter = new StringWriter();
             stringWriter.write("<group>\n");
+
             Iterator classes = classDefinitionList().iterator();
+
             while (classes.hasNext()) {
-                ComponentEntity entity = (ComponentEntity)classes.next();
+                ComponentEntity entity = (ComponentEntity) classes.next();
                 entity.exportMoML(stringWriter, 1);
             }
+
             Iterator entities = entityList().iterator();
+
             while (entities.hasNext()) {
-                ComponentEntity entity = (ComponentEntity)entities.next();
+                ComponentEntity entity = (ComponentEntity) entities.next();
                 entity.exportMoML(stringWriter, 1);
             }
+
             stringWriter.write("</group>");
             return stringWriter.toString();
         } catch (IOException ex) {
@@ -454,20 +460,23 @@ public class EntityLibrary
      */
     public void populate() throws InvalidStateException {
         try {
-            if (_populating) return;
+            if (_populating) {
+                return;
+            }
 
             // Avoid populating during cloning.
-            if (_cloning) return;
+            if (_cloning) {
+                return;
+            }
+
             _populating = true;
 
             if (!_configureDone) {
-
                 // NOTE: If you suspect this is being called prematurely,
                 // the uncomment the following to see who is doing the
                 // calling.
                 // System.out.println("-----------------------");
                 // (new Exception()).printStackTrace();
-
                 // NOTE: Set this early to prevent repeated attempts to
                 // evaluate if an exception occurs.  This way, it will
                 // be possible to examine a partially populated entity.
@@ -475,26 +484,30 @@ public class EntityLibrary
 
                 // NOTE: This does not seem like the right thing to do!
                 // removeAllEntities();
-
                 MoMLParser parser = new MoMLParser(workspace());
 
                 parser.setContext(this);
-                if (_configureSource != null && !_configureSource.equals("")) {
+
+                if ((_configureSource != null) && !_configureSource.equals("")) {
                     URL xmlFile = new URL(_base, _configureSource);
                     parser.parse(xmlFile, xmlFile);
                 }
-                if (_configureText != null && !_configureText.equals("")) {
+
+                if ((_configureText != null) && !_configureText.equals("")) {
                     // NOTE: Regrettably, the XML parser we are using cannot
                     // deal with having a single processing instruction at the
                     // outer level.  Thus, we have to strip it.
                     String trimmed = _configureText.trim();
+
                     if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
                         trimmed = trimmed.substring(2, trimmed.length() - 2)
-                            .trim();
+                                         .trim();
+
                         if (trimmed.startsWith("moml")) {
                             trimmed = trimmed.substring(4).trim();
                             parser.parse(_base, trimmed);
                         }
+
                         // If it's not a moml processing instruction, ignore.
                     } else {
                         // Data is not enclosed in a processing instruction.
@@ -505,6 +518,7 @@ public class EntityLibrary
             }
         } catch (Exception ex) {
             MessageHandler.error("Failed to populate library.", ex);
+
             // Oddly, under JDK1.3.1, we may see the line
             // "Exception occurred during event dispatching:"
             // in the console window, but there is no stack trace.
@@ -514,7 +528,7 @@ public class EntityLibrary
             // Note that under JDK1.4, the stack trace is printed in
             // both cases.
             throw new InvalidStateException(this, ex,
-                    "Failed to populate Library");
+                "Failed to populate Library");
         } finally {
             _populating = false;
         }
@@ -533,11 +547,11 @@ public class EntityLibrary
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         output.write(_getIndentPrefix(depth) + "<configure>\n");
-        output.write(_getIndentPrefix(depth+1) + "<group>\n");
-        super._exportMoMLContents(output, depth+2);
-        output.write(_getIndentPrefix(depth+1) + "</group>\n");
+        output.write(_getIndentPrefix(depth + 1) + "<group>\n");
+        super._exportMoMLContents(output, depth + 2);
+        output.write(_getIndentPrefix(depth + 1) + "</group>\n");
         output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
@@ -551,13 +565,12 @@ public class EntityLibrary
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
-            ((Configurable)destination).configure(
-                    _base, _configureSource, _configureText);
+            ((Configurable) destination).configure(_base, _configureSource,
+                _configureText);
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Propagation failed.");
+            throw new IllegalActionException(this, ex, "Propagation failed.");
         }
     }
 

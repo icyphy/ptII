@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red
 @AcceptedRating Red (cxh)
 */
-
 package ptolemy.domains.ct.demo.Corba;
 
 import ptolemy.actor.IORelation;
@@ -51,6 +50,7 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// NonlinearClient
+
 /**
    The square wave response of a second order CT system with a CORBA
    actor in the feedback. . This simple
@@ -61,7 +61,6 @@ import ptolemy.kernel.util.Workspace;
    @version $Id$
 */
 public class NonlinearClientApplication {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,48 +70,54 @@ public class NonlinearClientApplication {
         CTMultiSolverDirector _dir;
         TypedCompositeActor _toplevel;
         CorbaActorClient _client;
+
         try {
             Workspace workspace = new Workspace("NonlinearClient");
             _toplevel = new TypedCompositeActor(workspace);
-            _toplevel.setName( "system");
+            _toplevel.setName("system");
+
             Manager man = new Manager(workspace, "Manager");
             _toplevel.setManager(man);
-            _dir = new CTMultiSolverDirector(
-                    _toplevel, "DIR");
+            _dir = new CTMultiSolverDirector(_toplevel, "DIR");
+
             //man.addDebugListener(new StreamListener());
             //_dir.addDebugListener(new StreamListener());
             Clock sqwv = new Clock(_toplevel, "SQWV");
-            AddSubtract add1 = new AddSubtract( _toplevel, "Add1");
+            AddSubtract add1 = new AddSubtract(_toplevel, "Add1");
             Integrator intgl1 = new Integrator(_toplevel, "Integrator1");
             Integrator intgl2 = new Integrator(_toplevel, "Integrator2");
-            Scale gain1 = new Scale( _toplevel, "Gain1");
-            Scale gain2 = new Scale( _toplevel, "Gain2");
-            Scale gain3 = new Scale( _toplevel, "Gain3");
-            _client = new CorbaActorClient( _toplevel, "NonliearClient");
+            Scale gain1 = new Scale(_toplevel, "Gain1");
+            Scale gain2 = new Scale(_toplevel, "Gain2");
+            Scale gain3 = new Scale(_toplevel, "Gain3");
+            _client = new CorbaActorClient(_toplevel, "NonliearClient");
+
             //_client.addDebugListener(new StreamListener());
             TypedIOPort cin = new TypedIOPort(_client, "input", true, false);
             cin.setMultiport(false);
+
             TypedIOPort cout = new TypedIOPort(_client, "output", false, true);
             cout.setMultiport(false);
 
-            TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
+            TimedPlotter myplot = new TimedPlotter(_toplevel, "Sink");
 
             myplot.place(null);
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(0.0, 6.0);
             myplot.plot.setYRange(-2.0, 2.0);
             myplot.plot.setSize(600, 400);
-            myplot.plot.addLegend(0,"response");
+            myplot.plot.addLegend(0, "response");
 
-            IORelation r1 = (IORelation)
-                _toplevel.connect(sqwv.output, gain1.input, "R1");
+            IORelation r1 = (IORelation) _toplevel.connect(sqwv.output,
+                    gain1.input, "R1");
             _toplevel.connect(gain1.output, add1.plus, "R2");
             _toplevel.connect(add1.output, intgl1.input, "R3");
-            IORelation r4 = (IORelation)
-                _toplevel.connect(intgl1.output, intgl2.input, "R4");
+
+            IORelation r4 = (IORelation) _toplevel.connect(intgl1.output,
+                    intgl2.input, "R4");
             _toplevel.connect(intgl2.output, cin, "R5");
-            IORelation r5a = (IORelation)
-                _toplevel.connect(cout, myplot.input, "R5a");
+
+            IORelation r5a = (IORelation) _toplevel.connect(cout, myplot.input,
+                    "R5a");
             gain2.input.link(r4);
             gain3.input.link(r5a);
             _toplevel.connect(gain2.output, add1.plus, "R6");
@@ -138,9 +143,11 @@ public class NonlinearClientApplication {
             gain3.factor.setToken(new DoubleToken(-1000.0));
 
             String orbinit = new String("");
+
             for (int i = 0; i < args.length; i++) {
                 orbinit = orbinit + args[i] + " ";
             }
+
             _client.ORBInitProperties.setToken(new StringToken(orbinit));
             _client.remoteActorName.setToken(new StringToken("Nonlinear"));
 
@@ -148,13 +155,10 @@ public class NonlinearClientApplication {
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException("NameDuplication");
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("IllegalAction:"+
-                    ex.getMessage());
+            throw new InternalErrorException("IllegalAction:" + ex.getMessage());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
 }

@@ -23,7 +23,6 @@
     ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -39,8 +38,10 @@ import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ClassStructureGenerator
+
 /**
    A file that generates code for the C structure corresponding to a class.
 
@@ -50,8 +51,7 @@ import soot.Type;
    @Pt.ProposedRating Red (<your email address>)
    @Pt.AcceptedRating Red (ssb)
 */
-public class  ClassStructureGenerator extends CodeGenerator {
-
+public class ClassStructureGenerator extends CodeGenerator {
     /** Default constructor.
      * @param context The context to use for the generated code.
      */
@@ -59,9 +59,9 @@ public class  ClassStructureGenerator extends CodeGenerator {
         _context = context;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Generate the structure corresponding to a class.
      * @param source The class.
      * @return The code for the C structure corresponding to this class.
@@ -71,10 +71,8 @@ public class  ClassStructureGenerator extends CodeGenerator {
         String className = source.getName();
 
         // Structure that implements the class.
-        code.append(_comment("Structure that implements Class " +
-                            className));
-        code.append("struct " + CNames.classNameOf(source) +
-                "{\n\n");
+        code.append(_comment("Structure that implements Class " + className));
+        code.append("struct " + CNames.classNameOf(source) + "{\n\n");
 
         // These are fields that are declared first because they must be
         // present in every class.
@@ -85,22 +83,20 @@ public class  ClassStructureGenerator extends CodeGenerator {
         if (Context.getSingleClassMode()) {
             _context.setDisableImports();
         }
-        String inheritedMethods = _generateMethodPointers(
-                MethodListGenerator.getInheritedMethods(source),
-                "Inherited/overridden methods");
+
+        String inheritedMethods = _generateMethodPointers(MethodListGenerator
+                .getInheritedMethods(source), "Inherited/overridden methods");
         _context.clearDisableImports();
-        String introducedMethods =
-            _generateMethodPointers(
-                    MethodListGenerator.getNewMethods(source),
-                    "New public and protected methods")
-            + _generateMethodPointers(
-                    MethodListGenerator.getConstructors(source),
-                    "Constructors")
-            + _generateMethodPointers(
-                    MethodListGenerator.getPrivateMethods(source),
-                    "Private methods");
-        if (((_context.getSingleClassMode()) || inheritedMethods.equals("")) &&
-                introducedMethods.equals("")) {
+
+        String introducedMethods = _generateMethodPointers(MethodListGenerator
+                .getNewMethods(source), "New public and protected methods")
+            + _generateMethodPointers(MethodListGenerator.getConstructors(
+                    source), "Constructors")
+            + _generateMethodPointers(MethodListGenerator.getPrivateMethods(
+                    source), "Private methods");
+
+        if (((_context.getSingleClassMode()) || inheritedMethods.equals(""))
+                && introducedMethods.equals("")) {
             code.append(_comment("Empty method table"));
         } else {
             code.append(_indent(1) + "struct {\n");
@@ -122,7 +118,6 @@ public class  ClassStructureGenerator extends CodeGenerator {
         code.append("\n};\n\n");
 
         return code.toString();
-
     }
 
     /** Get the set of Array instances required by the generated class.
@@ -140,17 +135,13 @@ public class  ClassStructureGenerator extends CodeGenerator {
         return _requiredTypeMap;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected fields                    ////
+
     /** Generate the data is is needed by all classes.
      * @param source The class for which these fields are to be generated.
      * @return The code corresponding to fields in the class structure that
@@ -166,13 +157,13 @@ public class  ClassStructureGenerator extends CodeGenerator {
         // The size of a instances of this class. This needed for cloning
         // objects of this class.
         code.append(_indent(1)
-                +_comment("The memory needed by instances of this class."));
+            + _comment("The memory needed by instances of this class."));
         code.append(_indent(1) + "long instance_size;\n\n");
 
         // Pointer to superclass structure.
         code.append(_indent(1));
-        if (source.hasSuperclass()
-                && !Context.getSingleClassMode()
+
+        if (source.hasSuperclass() && !Context.getSingleClassMode()
                 && RequiredFileGenerator.isRequired(source.getSuperclass())) {
             code.append(_comment("Pointer to superclass structure"));
             code.append(_indent(1));
@@ -180,10 +171,11 @@ public class  ClassStructureGenerator extends CodeGenerator {
             code.append(" ");
         } else {
             code.append(_comment("Placeholder for pointer to superclass"
-                                + " structure"));
+                    + " structure"));
             code.append(_indent(1));
             code.append("void *");
         }
+
         code.append(CNames.superclassPointerName() + ";\n\n");
 
         // Pointer to array class. This is initialized to null here,
@@ -195,15 +187,19 @@ public class  ClassStructureGenerator extends CodeGenerator {
         // The pointer declaration is commented out if we are in single
         // class mode.
         code.append(_indent(1) + _comment("Pointer to array class"));
+
         if (Context.getSingleClassMode()) {
             code.append(_indent(1) + _openComment);
         }
-        code.append(_indent(1) + CNames.classNameOf(
-                            Scene.v().getSootClass("java.lang.Object")) +
-                " array_class;\n");
+
+        code.append(_indent(1)
+            + CNames.classNameOf(Scene.v().getSootClass("java.lang.Object"))
+            + " array_class;\n");
+
         if (Context.getSingleClassMode()) {
             code.append(_indent(1) + _closeComment);
         }
+
         code.append("\n");
 
         // Generate lookup method for diambiguation of interface calls.
@@ -211,16 +207,14 @@ public class  ClassStructureGenerator extends CodeGenerator {
         code.append(_indent(1) + "void* (*lookup)(long int);\n\n");
 
         // Generate function that resolves the "instanceof" operator.
-        code.append(_indent(1) + _comment("Function for handling the "
-                            + "\"instanceof\" operator."));
+        code.append(_indent(1)
+            + _comment("Function for handling the "
+                + "\"instanceof\" operator."));
         code.append(_indent(1) + "short (*instanceOf)"
-                + "(PCCG_CLASS_PTR, long int);\n\n");
+            + "(PCCG_CLASS_PTR, long int);\n\n");
 
         return code.toString();
     }
-
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -239,8 +233,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
             fieldCode.append(";\n");
 
             return fieldCode.toString();
-        }
-        else {
+        } else {
             return new String();
         }
     }
@@ -265,13 +258,14 @@ public class  ClassStructureGenerator extends CodeGenerator {
         final String indent = _indent(2);
         Iterator methods = methodList.iterator();
         int insertedMethods = 0;
-        while (methods.hasNext()) {
-            SootMethod method = (SootMethod)(methods.next());
 
-            if (!method.isStatic()
-                    && _isDeclarable(method)) {
+        while (methods.hasNext()) {
+            SootMethod method = (SootMethod) (methods.next());
+
+            if (!method.isStatic() && _isDeclarable(method)) {
                 if (insertedMethods == 0) {
                     methodCode.append("\n" + indent + _comment(comment));
+
                     // If importing of referenced include files in
                     // disabled, then place the method table in
                     // comments.
@@ -279,10 +273,10 @@ public class  ClassStructureGenerator extends CodeGenerator {
                         methodCode.append(_indent(2) + _openComment);
                     }
                 }
+
                 methodCode.append(indent);
 
-                methodCode.append(CNames.typeNameOf(method
-                                          .getReturnType()));
+                methodCode.append(CNames.typeNameOf(method.getReturnType()));
 
                 methodCode.append(" (*");
                 methodCode.append(CNames.methodNameOf(method));
@@ -294,11 +288,9 @@ public class  ClassStructureGenerator extends CodeGenerator {
                 _updateRequiredTypes(method.getReturnType());
 
                 // The type of the class that declares this method.
-                Type declaringClassType = method.getDeclaringClass()
-                    .getType();
+                Type declaringClassType = method.getDeclaringClass().getType();
 
-                if (RequiredFileGenerator
-                        .isRequired(declaringClassType)) {
+                if (RequiredFileGenerator.isRequired(declaringClassType)) {
                     _updateRequiredTypes(declaringClassType);
                 }
 
@@ -307,14 +299,16 @@ public class  ClassStructureGenerator extends CodeGenerator {
                 // Add the method's return type to the context as a
                 // required type if it is an array.
                 if (method.getReturnType() instanceof ArrayType) {
-                    _context.addArrayInstance(
-                            CNames.typeNameOf(method.getReturnType()));
+                    _context.addArrayInstance(CNames.typeNameOf(
+                            method.getReturnType()));
                 }
-
             }
         }
-        if ((insertedMethods > 0) && _context.getDisableImports())
+
+        if ((insertedMethods > 0) && _context.getDisableImports()) {
             methodCode.append(_indent(2) + _closeComment);
+        }
+
         return methodCode.toString();
     }
 
@@ -323,18 +317,19 @@ public class  ClassStructureGenerator extends CodeGenerator {
         StringBuffer fieldCode = new StringBuffer();
         Iterator fields = source.getFields().iterator();
         int insertedFields = 0;
+
         while (fields.hasNext()) {
-            SootField field = (SootField)(fields.next());
+            SootField field = (SootField) (fields.next());
+
             if (Modifier.isStatic(field.getModifiers())
                     && RequiredFileGenerator.isRequired(field)) {
                 fieldCode.append(_indent(1) + _generateField(field));
                 insertedFields++;
             }
         }
+
         return fieldCode.toString();
     }
-
-
 
     /** Checks whether a given method should be declared in the class
      * structure. A method should be declared if it is a required method,
@@ -348,10 +343,13 @@ public class  ClassStructureGenerator extends CodeGenerator {
         }
 
         SootClass source = method.getDeclaringClass();
+
         while (source.hasSuperclass()) {
             source = source.getSuperclass();
+
             if (source.declaresMethod(method.getSubSignature())) {
                 SootMethod m = source.getMethod(method.getSubSignature());
+
                 if (RequiredFileGenerator.isRequired(m)) {
                     return true;
                 }
@@ -363,7 +361,6 @@ public class  ClassStructureGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
     // Characters that end a comment.
     private static final String _commentEnd = "*/";
 
@@ -373,13 +370,11 @@ public class  ClassStructureGenerator extends CodeGenerator {
     // The end of a comment for generated code that is to be
     // commented-out.
     private static final String _closeComment =
-    "**********************************" + _commentEnd + "\n";
+        "**********************************" + _commentEnd + "\n";
 
     // The beginning of a comment for generated code that is to be
     // The beginning of a comment for generated code that is to be
     // commented-out.
-    private static final String _openComment =
-    _commentStart + "**********************************\n";
-
-
+    private static final String _openComment = _commentStart
+        + "**********************************\n";
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.parameters;
 
 import ptolemy.data.DoubleToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DoubleRangeParameter
+
 /**
    This is a parameter with type double with a limited range and
    limited precision.
@@ -59,7 +60,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class DoubleRangeParameter extends Parameter {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -74,7 +74,7 @@ public class DoubleRangeParameter extends Parameter {
      *   an attribute already in the container.
      */
     public DoubleRangeParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         min = new Parameter(this, "min");
@@ -94,17 +94,13 @@ public class DoubleRangeParameter extends Parameter {
         // but this may be out of range for a particular
         // application.
         // setExpression("0.5");
-
         setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-2\" "
-                + "width=\"60\" height=\"4\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"15\" y=\"-10\" "
-                + "width=\"4\" height=\"20\" "
-                + "style=\"fill:grey\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-2\" "
+            + "width=\"60\" height=\"4\" " + "style=\"fill:white\"/>\n"
+            + "<rect x=\"15\" y=\"-10\" " + "width=\"4\" height=\"20\" "
+            + "style=\"fill:grey\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -131,23 +127,27 @@ public class DoubleRangeParameter extends Parameter {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == max && !_inCheck) {
+        throws IllegalActionException {
+        if ((attribute == max) && !_inCheck) {
             try {
                 _inCheck = true;
-                double maxValue = ((DoubleToken)max.getToken()).doubleValue();
-                double value = ((DoubleToken)getToken()).doubleValue();
+
+                double maxValue = ((DoubleToken) max.getToken()).doubleValue();
+                double value = ((DoubleToken) getToken()).doubleValue();
+
                 if (value > maxValue) {
                     setToken(max.getToken());
                 }
             } finally {
                 _inCheck = false;
             }
-        } else if (attribute == min  && !_inCheck) {
+        } else if ((attribute == min) && !_inCheck) {
             try {
                 _inCheck = true;
-                double minValue = ((DoubleToken)min.getToken()).doubleValue();
-                double value = ((DoubleToken)getToken()).doubleValue();
+
+                double minValue = ((DoubleToken) min.getToken()).doubleValue();
+                double value = ((DoubleToken) getToken()).doubleValue();
+
                 if (value < minValue) {
                     setToken(min.getToken());
                 }
@@ -175,34 +175,36 @@ public class DoubleRangeParameter extends Parameter {
      *   or its value is out of range.
      */
     protected void _setTokenAndNotify(Token newToken)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_inCheck) {
             super._setTokenAndNotify(newToken);
             return;
         }
+
         if (newToken instanceof DoubleToken) {
             try {
                 _inCheck = true;
-                double minValue = ((DoubleToken)min.getToken()).doubleValue();
-                double maxValue = ((DoubleToken)max.getToken()).doubleValue();
-                double currentValue = ((DoubleToken)newToken).doubleValue();
-                if (minValue <= currentValue && currentValue <= maxValue) {
+
+                double minValue = ((DoubleToken) min.getToken()).doubleValue();
+                double maxValue = ((DoubleToken) max.getToken()).doubleValue();
+                double currentValue = ((DoubleToken) newToken).doubleValue();
+
+                if ((minValue <= currentValue) && (currentValue <= maxValue)) {
                     // All is OK.
                     super._setTokenAndNotify(newToken);
                     return;
                 }
+
                 throw new IllegalActionException(this,
-                        "Value is required to lie between "
-                        + min
-                        + " and "
-                        + max
-                        + ".");
+                    "Value is required to lie between " + min + " and " + max
+                    + ".");
             } finally {
                 _inCheck = false;
             }
         }
+
         throw new IllegalActionException(this,
-                "Value is required to be a double token.");
+            "Value is required to be a double token.");
     }
 
     ///////////////////////////////////////////////////////////////////

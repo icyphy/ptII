@@ -24,8 +24,8 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.event;
+
 
 /** An adapter for layer motion listeners. The methods in this class
  * are empty -- the class is provided to make it easier to
@@ -35,19 +35,18 @@ package diva.canvas.event;
  * @author         John Reekie
  */
 public class LayerMotionAdapter implements LayerMotionListener {
-
     /** Invoked when the mouse enters a layer or figure.
      */
-    public void mouseEntered (LayerEvent e) {}
+    public void mouseEntered(LayerEvent e) {
+    }
 
     /** Invoked when the mouse exits a layer or figure.
      */
-    public void mouseExited (LayerEvent e) {}
+    public void mouseExited(LayerEvent e) {
+    }
 
     /** Invoked when the mouse moves while over a layer or figure.
      */
-    public void mouseMoved (LayerEvent e) {}
+    public void mouseMoved(LayerEvent e) {
+    }
 }
-
-
-

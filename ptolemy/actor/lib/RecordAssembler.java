@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.Iterator;
@@ -46,8 +45,10 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RecordAssembler
+
 /**
    On each firing, read one token from each input port and assemble them
    into a RecordToken. The labels for the RecordToken are the names of the
@@ -63,9 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
    @see RecordDisassembler
 */
-
 public class RecordAssembler extends TypedAtomicActor {
-
     /** Construct a RecordAssembler with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,15 +74,14 @@ public class RecordAssembler extends TypedAtomicActor {
      *   actor with this name.
      */
     public RecordAssembler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"6\" " +
-                "height=\"40\" style=\"fill:red\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+            + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,7 +106,7 @@ public class RecordAssembler extends TypedAtomicActor {
         Token[] values = new Token[size];
 
         for (int i = 0; i < size; i++) {
-            IOPort port = (IOPort)portArray[i];
+            IOPort port = (IOPort) portArray[i];
             labels[i] = port.getName();
             values[i] = port.get(0);
         }
@@ -127,9 +125,11 @@ public class RecordAssembler extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         Iterator ports = inputPortList().iterator();
+
         while (ports.hasNext()) {
-            IOPort port = (IOPort)ports.next();
-            if ( !port.hasToken(0)) {
+            IOPort port = (IOPort) ports.next();
+
+            if (!port.hasToken(0)) {
                 return false;
             }
         }
@@ -150,22 +150,25 @@ public class RecordAssembler extends TypedAtomicActor {
 
         // form the declared type for the output port
         for (int i = 0; i < size; i++) {
-            labels[i] = ((Port)portArray[i]).getName();
+            labels[i] = ((Port) portArray[i]).getName();
             types[i] = BaseType.UNKNOWN;
         }
+
         RecordType declaredType = new RecordType(labels, types);
 
         output.setTypeEquals(declaredType);
 
         // set the constraints between record fields and input ports
         List constraints = new LinkedList();
+
         // since the output port has a clone of the above RecordType, need to
         // get the type from the output port.
-        RecordType outputType = (RecordType)output.getType();
+        RecordType outputType = (RecordType) output.getType();
 
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            TypedIOPort inputPort = (TypedIOPort)inputPorts.next();
+            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
             String label = inputPort.getName();
             Inequality inequality = new Inequality(inputPort.getTypeTerm(),
                     outputType.getTypeTerm(label));
@@ -175,4 +178,3 @@ public class RecordAssembler extends TypedAtomicActor {
         return constraints;
     }
 }
-

@@ -34,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.canvas.toolbox.BasicFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Box2D
+
 /** A class that represents a 2D rectangle in a GR model.
 
 @author Steve Neuendorffer
@@ -45,7 +47,6 @@ import diva.canvas.toolbox.BasicFigure;
 @Pt.AcceptedRating Red (chf)
 */
 public class Box2D extends GRShape2D {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -55,13 +56,12 @@ public class Box2D extends GRShape2D {
      *   actor with this name.
      */
     public Box2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
     // size.
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -71,8 +71,8 @@ public class Box2D extends GRShape2D {
      *  @exception IllegalActionException If a parameter is not valid.
      */
     protected BasicFigure _createFigure() throws IllegalActionException {
-        BasicFigure figure =
-            new BasicFigure(new Rectangle2D.Double(10.0, 10.0, 10.0, 10.0));
+        BasicFigure figure = new BasicFigure(new Rectangle2D.Double(10.0, 10.0,
+                    10.0, 10.0));
         return figure;
     }
 }

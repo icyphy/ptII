@@ -40,8 +40,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.util.StringUtilities;
 
+
 ///////////////////////////////////////////////////////////////////////////
 //// UnitAttribute
+
 /**
    This class is used to implement the Unit Attribute. A
    UnitsAttribute is either a UnitExpr, or a vector of
@@ -54,7 +56,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (rowland)
 */
 public class UnitAttribute extends AbstractSettableAttribute {
-
     /** Construct a UnitsAttribute with no specific name, or container.
      *  @exception IllegalActionException If the attribute is not of an
      *  acceptable class for the container, or if the name contains a period.
@@ -62,7 +63,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  an attribute already in the container.
      */
     public UnitAttribute()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -75,7 +76,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  an attribute already in the container.
      */
     public UnitAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -90,6 +91,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
         }
+
         if (!_valueListeners.contains(listener)) {
             _valueListeners.add(listener);
         }
@@ -104,24 +106,17 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  @see ptolemy.kernel.util.NamedObj#exportMoML(Writer, int, String)
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         String value = getExpression();
         String valueTerm = "";
-        if (value != null && !value.equals("")) {
-            valueTerm =
-                " value=\"" + StringUtilities.escapeForXML(value) + "\"";
 
-            output.write(
-                    _getIndentPrefix(depth)
-                    + "<"
-                    + _elementName
-                    + " name=\""
-                    + name
-                    + "\" class=\""
-                    + getClassName()
-                    + "\""
-                    + valueTerm
-                    + ">\n");
+        if ((value != null) && !value.equals("")) {
+            valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
+                + "\"";
+
+            output.write(_getIndentPrefix(depth) + "<" + _elementName
+                + " name=\"" + name + "\" class=\"" + getClassName() + "\""
+                + valueTerm + ">\n");
             _exportMoMLContents(output, depth + 1);
             output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
         }
@@ -133,19 +128,23 @@ public class UnitAttribute extends AbstractSettableAttribute {
      */
     public String getExpression() {
         switch (_type) {
-            case _EXPRESSION :
-                {
-                    if (_unitExpr == null)
-                        return "";
-                    return _unitExpr.descriptiveForm();
-                }
-            case _CONSTRAINTS :
-                {
-                    if (_unitConstraints == null)
-                        return "";
-                    return getUnitConstraints().descriptiveForm();
-                }
+        case _EXPRESSION: {
+            if (_unitExpr == null) {
+                return "";
+            }
+
+            return _unitExpr.descriptiveForm();
         }
+
+        case _CONSTRAINTS: {
+            if (_unitConstraints == null) {
+                return "";
+            }
+
+            return getUnitConstraints().descriptiveForm();
+        }
+        }
+
         return null;
     }
 
@@ -190,30 +189,30 @@ public class UnitAttribute extends AbstractSettableAttribute {
      * or a UnitEquation.
      * @see ptolemy.kernel.util.Settable#setExpression(java.lang.String)
      */
-    public void setExpression(String expression)
-            throws IllegalActionException {
+    public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
+
         try {
             if (getName().equals("_unitConstraints")) {
-                Vector uEquations =
-                    UnitLibrary.getParser().parseEquations(expression);
+                Vector uEquations = UnitLibrary.getParser().parseEquations(expression);
                 UnitConstraints uConstraints = new UnitConstraints();
+
                 for (int i = 0; i < uEquations.size(); i++) {
-                    uConstraints.addConstraint(
-                            (UnitEquation) (uEquations.elementAt(i)));
+                    uConstraints.addConstraint((UnitEquation) (uEquations
+                        .elementAt(i)));
                 }
+
                 setUnitConstraints(uConstraints);
             }
+
             if (getName().equals("_units")) {
                 UnitExpr uExpr;
                 uExpr = UnitLibrary.getParser().parseUnitExpr(expression);
                 setUnitExpr(uExpr);
             }
         } catch (ParseException ex) {
-            throw new IllegalActionException(
-                    this,
-                    ex,
-                    "Can't parse the expression " + expression);
+            throw new IllegalActionException(this, ex,
+                "Can't parse the expression " + expression);
         }
     }
 
@@ -262,14 +261,14 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
-        ((Settable)destination).setExpression(getExpression());
+        throws IllegalActionException {
+        ((Settable) destination).setExpression(getExpression());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     Visibility _visibility = Settable.NONE;
+
     // Listeners for changes in value.
     private List _valueListeners;
     private UnitExpr _unitExpr = null;

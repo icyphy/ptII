@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -44,8 +43,10 @@ import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CopyCatIcon
+
 /**
    This is an icon that copies the icon of the last entity contained by
    the same container, if there is one, and behaves like the base class
@@ -58,7 +59,6 @@ import diva.canvas.toolbox.BasicRectangle;
    @Pt.AcceptedRating Red (eal)
 */
 public class CopyCatIcon extends XMLIcon {
-
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
      *  @param name The name of the attribute.
@@ -68,7 +68,7 @@ public class CopyCatIcon extends XMLIcon {
      *   an attribute already in the container.
      */
     public CopyCatIcon(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -83,9 +83,8 @@ public class CopyCatIcon extends XMLIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CopyCatIcon newObject = (CopyCatIcon)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CopyCatIcon newObject = (CopyCatIcon) super.clone(workspace);
         newObject._originalDescription = null;
         return newObject;
     }
@@ -97,40 +96,44 @@ public class CopyCatIcon extends XMLIcon {
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
-
         Figure result = null;
         Nameable container = getContainer();
+
         if (container instanceof CompositeEntity) {
-            CompositeEntity myContainer = ((CompositeEntity)container);
+            CompositeEntity myContainer = ((CompositeEntity) container);
             ComponentEntity entity = null;
             Iterator entities = myContainer.entityList().iterator();
+
             while (entities.hasNext()) {
-                entity = (ComponentEntity)entities.next();
+                entity = (ComponentEntity) entities.next();
             }
+
             try {
                 if (entity != null) {
                     // Look for an icon within the entity.
                     EditorIcon icon = null;
-                    Iterator icons =
-                        entity.attributeList(EditorIcon.class).iterator();
+                    Iterator icons = entity.attributeList(EditorIcon.class)
+                                           .iterator();
+
                     while (icons.hasNext()) {
-                        icon = (EditorIcon)icons.next();
+                        icon = (EditorIcon) icons.next();
                     }
+
                     if (icon != null) {
                         result = icon.createBackgroundFigure();
                     } else {
                         // If there is no icon, then maybe there is an
                         // _iconDescription attribute.
-                        SingletonConfigurableAttribute description
-                            = (SingletonConfigurableAttribute)
-                            entity.getAttribute("_iconDescription",
-                                    SingletonConfigurableAttribute.class);
+                        SingletonConfigurableAttribute description = (SingletonConfigurableAttribute) entity
+                            .getAttribute("_iconDescription",
+                                SingletonConfigurableAttribute.class);
+
                         if (description != null) {
                             // Look for an icon description in my container.
-                            SingletonConfigurableAttribute myDescription
-                                = (SingletonConfigurableAttribute)
-                                myContainer.getAttribute("_iconDescription",
-                                        SingletonConfigurableAttribute.class);
+                            SingletonConfigurableAttribute myDescription = (SingletonConfigurableAttribute) myContainer
+                                .getAttribute("_iconDescription",
+                                    SingletonConfigurableAttribute.class);
+
                             if (myDescription != null) {
                                 // Save my original description, in case I go
                                 // back to having nothing inside.
@@ -138,28 +141,25 @@ public class CopyCatIcon extends XMLIcon {
                                     _originalDescription = myDescription
                                         .getConfigureText();
                                 }
-                                myDescription.configure(
-                                        null,
-                                        null,
-                                        description.getConfigureText());
+
+                                myDescription.configure(null, null,
+                                    description.getConfigureText());
                             }
                         }
                     }
                 } else {
                     // Restore the original description if we don't have
                     // one now.
-                    if (result == null && _originalDescription != null) {
+                    if ((result == null) && (_originalDescription != null)) {
                         // Restore the original icon description.
                         // Look for an icon description in my container.
-                        SingletonConfigurableAttribute myDescription
-                            = (SingletonConfigurableAttribute)
-                            myContainer.getAttribute("_iconDescription",
-                                    SingletonConfigurableAttribute.class);
+                        SingletonConfigurableAttribute myDescription = (SingletonConfigurableAttribute) myContainer
+                            .getAttribute("_iconDescription",
+                                SingletonConfigurableAttribute.class);
+
                         if (myDescription != null) {
-                            myDescription.configure(
-                                    null,
-                                    null,
-                                    _originalDescription);
+                            myDescription.configure(null, null,
+                                _originalDescription);
                         }
                     }
                 }
@@ -167,34 +167,29 @@ public class CopyCatIcon extends XMLIcon {
                 // Ignore and use default icon.
             }
         }
+
         // If all else fails, behave like the superclass.
         if (result == null) {
             result = super.createBackgroundFigure();
         }
+
         // Wrap in a CompositeFigure with echos of the bounding box.
         // Note that the bounds here are actually bigger than the
         // bounding box, which may be OK in this case.
         Rectangle2D bounds = result.getBounds();
         CompositeFigure composite = new CompositeFigure();
-        BasicRectangle rectangle = new BasicRectangle(
-                bounds.getX() + 10.0,
-                bounds.getY() + 10.0,
-                bounds.getWidth(),
-                bounds.getHeight(),
+        BasicRectangle rectangle = new BasicRectangle(bounds.getX() + 10.0,
+                bounds.getY() + 10.0, bounds.getWidth(), bounds.getHeight(),
                 Color.white);
         composite.add(rectangle);
-        BasicRectangle rectangle2 = new BasicRectangle(
-                bounds.getX() + 5.0,
-                bounds.getY() + 5.0,
-                bounds.getWidth(),
-                bounds.getHeight(),
+
+        BasicRectangle rectangle2 = new BasicRectangle(bounds.getX() + 5.0,
+                bounds.getY() + 5.0, bounds.getWidth(), bounds.getHeight(),
                 Color.white);
         composite.add(rectangle2);
-        BasicRectangle rectangle3 = new BasicRectangle(
-                bounds.getX(),
-                bounds.getY(),
-                bounds.getWidth(),
-                bounds.getHeight(),
+
+        BasicRectangle rectangle3 = new BasicRectangle(bounds.getX(),
+                bounds.getY(), bounds.getWidth(), bounds.getHeight(),
                 Color.white);
         composite.add(rectangle3);
         composite.add(result);
@@ -203,7 +198,6 @@ public class CopyCatIcon extends XMLIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Original description of the icon.
     private String _originalDescription = null;
 }

@@ -29,8 +29,10 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeVisitor
+
 /**
    This class implements the visitor pattern for parse trees in the
    expression language.
@@ -42,45 +44,55 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.data.expr.ASTPtRootNode
 */
-
 public interface ParseTreeVisitor {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-            throws IllegalActionException;
-    public void visitAssignmentNode(ASTPtAssignmentNode node)
-            throws IllegalActionException;
-    public void visitBitwiseNode(ASTPtBitwiseNode node)
-            throws IllegalActionException;
-    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-            throws IllegalActionException;
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException;
-    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException;
-    public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException;
-    public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException;
-    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-            throws IllegalActionException;
-    public void visitMethodCallNode(ASTPtMethodCallNode node)
-            throws IllegalActionException;
-    public void visitPowerNode(ASTPtPowerNode node)
-            throws IllegalActionException;
-    public void visitProductNode(ASTPtProductNode node)
-            throws IllegalActionException;
-    public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-            throws IllegalActionException;
-    public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException;
-    public void visitShiftNode(ASTPtShiftNode node)
-            throws IllegalActionException;
-    public void visitSumNode(ASTPtSumNode node)
-            throws IllegalActionException;
-    public void visitUnaryNode(ASTPtUnaryNode node)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
+    public void visitAssignmentNode(ASTPtAssignmentNode node)
+        throws IllegalActionException;
+
+    public void visitBitwiseNode(ASTPtBitwiseNode node)
+        throws IllegalActionException;
+
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
+        throws IllegalActionException;
+
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+        throws IllegalActionException;
+
+    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
+        throws IllegalActionException;
+
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException;
+
+    public void visitLogicalNode(ASTPtLogicalNode node)
+        throws IllegalActionException;
+
+    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
+        throws IllegalActionException;
+
+    public void visitMethodCallNode(ASTPtMethodCallNode node)
+        throws IllegalActionException;
+
+    public void visitPowerNode(ASTPtPowerNode node)
+        throws IllegalActionException;
+
+    public void visitProductNode(ASTPtProductNode node)
+        throws IllegalActionException;
+
+    public void visitRecordConstructNode(ASTPtRecordConstructNode node)
+        throws IllegalActionException;
+
+    public void visitRelationalNode(ASTPtRelationalNode node)
+        throws IllegalActionException;
+
+    public void visitShiftNode(ASTPtShiftNode node)
+        throws IllegalActionException;
+
+    public void visitSumNode(ASTPtSumNode node) throws IllegalActionException;
+
+    public void visitUnaryNode(ASTPtUnaryNode node)
+        throws IllegalActionException;
 }

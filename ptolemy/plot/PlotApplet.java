@@ -41,8 +41,10 @@ import java.net.URL;
 
 import javax.swing.JApplet;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplet
+
 /**
    An Applet that can plot data from a URL.
    The URL should be specified using the dataurl applet parameter.
@@ -59,7 +61,6 @@ import javax.swing.JApplet;
    @see Plot
 */
 public class PlotApplet extends JApplet {
-
     /** Construct a Plot applet */
     public PlotApplet() {
         if (_mutex == null) {
@@ -71,11 +72,9 @@ public class PlotApplet extends JApplet {
      *  @return A string describing the applet.
      */
     public String getAppletInfo() {
-        return "PlotApplet " + PlotBox.PTPLOT_RELEASE +
-            ": A data plotter.\n" +
-            "By: Edward A. Lee and\n " +
-            "Christopher Hylands\n" +
-            "($Id$)";
+        return "PlotApplet " + PlotBox.PTPLOT_RELEASE + ": A data plotter.\n"
+        + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
+        + "($Id$)";
     }
 
     /** Return information about parameters.
@@ -83,13 +82,13 @@ public class PlotApplet extends JApplet {
      *   and the default value or description.
      */
     public String[][] getParameterInfo() {
-        String pinfo[][] = {
-            {"background", "hexcolor value", "background color"},
-            {"foreground", "hexcolor value", "foreground color"},
-            {"dataurl",   "url",     "the URL of the data to plot"},
-            {"height", "integer", "100"},
-            {"width", "integer", "100"},
-        };
+        String[][] pinfo = {
+                { "background", "hexcolor value", "background color" },
+                { "foreground", "hexcolor value", "foreground color" },
+                { "dataurl", "url", "the URL of the data to plot" },
+                { "height", "integer", "100" },
+                { "width", "integer", "100" },
+            };
         return pinfo;
     }
 
@@ -102,17 +101,29 @@ public class PlotApplet extends JApplet {
             if (_plot == null) {
                 _plot = newPlot();
             }
+
             getContentPane().add(plot(), BorderLayout.NORTH);
 
             // Process the width and height applet parameters
-            int width, height;
+            int width;
+
+            // Process the width and height applet parameters
+            int height;
             String widthspec = getParameter("width");
-            if (widthspec != null) width = Integer.parseInt(widthspec);
-            else width = 400;
+
+            if (widthspec != null) {
+                width = Integer.parseInt(widthspec);
+            } else {
+                width = 400;
+            }
 
             String heightspec = getParameter("height");
-            if (heightspec != null) height = Integer.parseInt(heightspec);
-            else height = 400;
+
+            if (heightspec != null) {
+                height = Integer.parseInt(heightspec);
+            } else {
+                height = 400;
+            }
 
             _setPlotSize(width, height);
             plot().setButtons(true);
@@ -120,7 +131,11 @@ public class PlotApplet extends JApplet {
             // Process the background parameter.
             Color background = Color.white;
             String colorspec = getParameter("background");
-            if (colorspec != null) background = PlotBox.getColorByName(colorspec);
+
+            if (colorspec != null) {
+                background = PlotBox.getColorByName(colorspec);
+            }
+
             setBackground(background);
             plot().setBackground(background);
             getContentPane().setBackground(background);
@@ -128,16 +143,22 @@ public class PlotApplet extends JApplet {
             // Process the foreground parameter.
             Color foreground = Color.black;
             colorspec = getParameter("foreground");
-            if (colorspec != null) foreground = PlotBox.getColorByName(colorspec);
+
+            if (colorspec != null) {
+                foreground = PlotBox.getColorByName(colorspec);
+            }
+
             setForeground(foreground);
             plot().setForeground(foreground);
             plot().setVisible(true);
 
             // Process the dataurl parameter.
             String dataurlspec = getParameter("dataurl");
+
             if (dataurlspec != null) {
                 try {
                     showStatus("Reading data");
+
                     URL dataurl = new URL(getDocumentBase(), dataurlspec);
                     InputStream in = dataurl.openStream();
                     _read(in);
@@ -145,9 +166,10 @@ public class PlotApplet extends JApplet {
                 } catch (MalformedURLException e) {
                     System.err.println(e.toString());
                 } catch (FileNotFoundException e) {
-                    System.err.println("PlotApplet: file not found: " +e);
+                    System.err.println("PlotApplet: file not found: " + e);
                 } catch (IOException e) {
-                    System.err.println("PlotApplet: error reading input file: " +e);
+                    System.err.println("PlotApplet: error reading input file: "
+                        + e);
                 }
             }
         }
@@ -202,7 +224,6 @@ public class PlotApplet extends JApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Work around problem in Java 1.3.1_08 where if we create
     // 6 instances of a Plot applet then navigate forward then
     // back - IE and Navigator hang. (Roger Robins)

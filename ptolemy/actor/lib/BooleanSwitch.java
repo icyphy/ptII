@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 This is similar to Switch and could be design/code reviewed at the same time.
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BooleanSwitch
+
 /**
    A type polymorphic switch with boolean valued control.  In an
    iteration, if an input token is available at the <i>control</i> input,
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Red (neuendor)
 */
-
 public class BooleanSwitch extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -74,7 +73,7 @@ public class BooleanSwitch extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public BooleanSwitch(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -86,8 +85,8 @@ public class BooleanSwitch extends TypedAtomicActor {
         falseOutput.setTypeAtLeast(input);
 
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal
-                = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
@@ -98,13 +97,16 @@ public class BooleanSwitch extends TypedAtomicActor {
      *  BooleanToken.
      */
     public TypedIOPort control;
+
     /** The input port.  The type can be anything.
      */
     public TypedIOPort input;
+
     /** Output for tokens on the true path.  The type is at least the
      *  type of the input.
      */
     public TypedIOPort trueOutput;
+
     /** Output for tokens on the false path.  The type is at least the
      *  type of the input.
      */
@@ -122,10 +124,12 @@ public class BooleanSwitch extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         if (control.hasToken(0)) {
-            _control = ((BooleanToken)control.get(0)).booleanValue();
+            _control = ((BooleanToken) control.get(0)).booleanValue();
         }
+
         if (input.hasToken(0)) {
             Token token = input.get(0);
+
             if (_control) {
                 trueOutput.send(0, token);
             } else {
@@ -145,8 +149,6 @@ public class BooleanSwitch extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The most recently read control token.
     private boolean _control = false;
 }
-

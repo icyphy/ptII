@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.event.ActionEvent;
@@ -37,8 +36,10 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConfigureAction
+
 /** Action to remove a custom icon.
    @author Edward A. Lee
    @version $Id$
@@ -47,7 +48,6 @@ import ptolemy.vergil.icon.XMLIcon;
    @Pt.AcceptedRating Red (johnr)
  */
 public class RemoveIconAction extends FigureAction {
-
     public RemoveIconAction() {
         super("Remove Custom Icon");
     }
@@ -59,23 +59,24 @@ public class RemoveIconAction extends FigureAction {
      *  @param e The event.
      */
     public void actionPerformed(ActionEvent e) {
-
         // Determine which entity was selected for the look inside action.
         super.actionPerformed(e);
+
         NamedObj object = getTarget();
 
         // In theory, there should be only one.
         // But just in case, we remove all.
         Iterator icons = object.attributeList(EditorIcon.class).iterator();
+
         while (icons.hasNext()) {
-            EditorIcon icon = (EditorIcon)icons.next();
+            EditorIcon icon = (EditorIcon) icons.next();
+
             // An XMLIcon is not a custom icon, so don't remove it.
             if (!(icon instanceof XMLIcon)) {
-                String moml = "<deleteProperty name=\""
-                        + icon.getName()
-                        + "\"/>";
-                MoMLChangeRequest request
-                    = new MoMLChangeRequest(this, object, moml);
+                String moml = "<deleteProperty name=\"" + icon.getName()
+                    + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this, object,
+                        moml);
                 object.requestChange(request);
             }
         }
@@ -90,7 +91,6 @@ public class RemoveIconAction extends FigureAction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The configuration.
     private Configuration _configuration;
 }

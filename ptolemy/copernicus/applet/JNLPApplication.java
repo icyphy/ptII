@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.applet;
 
 import ptolemy.actor.gui.PtExecuteApplication;
@@ -33,8 +32,10 @@ import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JNLPApplication
+
 /** A wrapper class that calls eventually calls
     ptolemy.actor.gui.PtExecuteApplication for use with Java Network
     Launching Protocol (JNLP) aka Web Start.
@@ -58,13 +59,12 @@ import ptolemy.util.StringUtilities;
     @Pt.AcceptedRating Red (cxh)
 */
 public class JNLPApplication {
-
     /** Execute one or more models.
      *  @param args The arguments to pass to
      * {@link ptolemy.actor.gui.PtExecuteApplication}.
      *  Typically the argument names a MoML file.
      */
-    public static void main(final String [] args) {
+    public static void main(final String[] args) {
         // See the class comment of MenuApplication
         // about why we set the security manager to null.
         System.setSecurityManager(null);
@@ -74,22 +74,20 @@ public class JNLPApplication {
         // somewhere odd, so set the current working directory (the
         // user.dir property) to the home directory of the user (the
         // user.home property)
-
         // Note that Java has a very poor notion of the current
         // directory and that changing user.dir will not necessarily
         // change the current directory for all aspects of Java.
         // In particular, the File class does not seems to always respect
         // the value of user.dir.  In general, changing user.dir
         // is frowned upon, but we do what we can here.
-
         if (_invokedFromAMenu()) {
             try {
                 System.setProperty("user.dir",
-                        StringUtilities.getProperty("user.home"));
+                    StringUtilities.getProperty("user.home"));
             } catch (Exception ex) {
                 // Don't crash here, just print a message and move on
                 System.out.println("Warning, could not get user.home property "
-                        + "or set user.dir property:");
+                    + "or set user.dir property:");
                 ex.printStackTrace();
             }
         }
@@ -111,7 +109,6 @@ public class JNLPApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Print out an error message and stack trace on stderr and then
     // display a dialog box.  This method is used as a fail safe
     // in case there are problems with the configuration
@@ -119,16 +116,17 @@ public class JNLPApplication {
     // we might get an Error or and Exception. For example, if we
     // are using JNI, then we might get a java.lang.UnsatistifiedLineError,
     // which is an Error, not and Exception.
-    private static void _errorAndExit(String message,
-            String [] args, Throwable throwable) {
-        StringBuffer argsBuffer =
-            new StringBuffer("Command failed");
+    private static void _errorAndExit(String message, String[] args,
+        Throwable throwable) {
+        StringBuffer argsBuffer = new StringBuffer("Command failed");
 
         if (args.length > 0) {
             argsBuffer.append("\nArguments: " + args[0]);
+
             for (int i = 1; i < args.length; i++) {
                 argsBuffer.append(" " + args[i]);
             }
+
             argsBuffer.append("\n");
         }
 
@@ -145,7 +143,6 @@ public class JNLPApplication {
         // so we do so now so that we are sure
         // the user can see the message.
         // One way to test this is to run vergil -conf foo
-
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
         MessageHandler.error(argsBuffer.toString(), throwable);
@@ -159,11 +156,13 @@ public class JNLPApplication {
         if (StringUtilities.getProperty("javawebstart.version").length() > 0) {
             return true;
         }
+
         if (StringUtilities.getProperty("lax.user.dir").length() > 0) {
             // If we are running under ZeroG's InstallAnywhere, then this
             // property will be present.
             return true;
         }
+
         return false;
     }
 }

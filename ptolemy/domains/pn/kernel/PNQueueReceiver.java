@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.kernel;
 
 import ptolemy.actor.Actor;
@@ -41,8 +40,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PNQueueReceiver
+
 /**
 
 A receiver with a FIFO queue that blocks the calling process on a read if the
@@ -80,7 +81,6 @@ process has been received.
 @see ptolemy.actor.QueueReceiver
 */
 public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
-
     /** Construct an empty receiver with no container
      */
     public PNQueueReceiver() {
@@ -111,8 +111,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // NOTE: This used to be synchronized on this object, but
         // since it calls director methods that are synchronized,
         // that would cause deadlock.
-        synchronized(_director) {
-            if ( branch != null ) {
+        synchronized (_director) {
+            if (branch != null) {
                 branch.registerReceiverBlocked(this);
                 _otherBranch = branch;
             } else {
@@ -130,9 +130,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *   is not an instance of PNDirector.
      */
     public void setContainer(IOPort port) throws IllegalActionException {
-            super.setContainer(port);
+        super.setContainer(port);
+
         Actor actor = (Actor) port.getContainer();
         Director director;
+
         // For a composite actor,
         // the receiver type of an inpu port is decided by
         // the executive director.
@@ -144,12 +146,14 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         } else {
             director = actor.getDirector();
         }
+
         if (!(director instanceof PNDirector)) {
-                throw new IllegalActionException(port,
-                    "Cannot use an instance of PNQueueReceiver " +
-                    "since the director is not a PNDirector.");
+            throw new IllegalActionException(port,
+                "Cannot use an instance of PNQueueReceiver "
+                + "since the director is not a PNDirector.");
         }
-        _director = (PNDirector)director;
+
+        _director = (PNDirector) director;
     }
 
     /** Unblock this receiver and register this new state with
@@ -162,12 +166,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // NOTE: This method used to be synchronized on this
         // receiver, but since it calls synchronized methods in
         // the director, that can cause deadlock.
-        synchronized(_director) {
-            if ( _otherBranch != null ) {
+        synchronized (_director) {
+            if (_otherBranch != null) {
                 _otherBranch.registerReceiverUnBlocked(this);
             } else {
                 _director._actorUnBlocked(this);
             }
+
             _director.notifyAll();
         }
     }
@@ -202,6 +207,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     public Token get(Branch branch) {
         Workspace workspace = getContainer().workspace();
         Token result = null;
+
         // NOTE: This method used to be synchronized on this
         // receiver, but since it calls synchronized methods in
         // the director, that can cause deadlock.
@@ -209,6 +215,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             while (!_terminate && !super.hasToken()) {
                 _readBlocked = true;
                 prepareToBlock(branch);
+
                 while (_readBlocked && !_terminate) {
                     try {
                         workspace.wait(_director);
@@ -218,16 +225,19 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     }
                 }
             }
+
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
                 result = super.get();
+
                 //Check if pending write to the Queue;
                 if (_writeBlocked) {
                     wakeUpBlockedPartner();
                     _writeBlocked = false;
                 }
             }
+
             return result;
         }
     }
@@ -315,6 +325,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         if (isConnectedToBoundary()) {
             return true;
         }
+
         return false;
     }
 
@@ -348,9 +359,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return True if this receiver is at a boundary.
      */
     public boolean isProducerReceiver() {
-        if ( isOutsideBoundary() || isInsideBoundary() ) {
+        if (isOutsideBoundary() || isInsideBoundary()) {
             return true;
         }
+
         return false;
     }
 
@@ -364,7 +376,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // receiver, but since it is called by synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-                return _readBlocked;
+            return _readBlocked;
         }
     }
 
@@ -412,14 +424,16 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void put(Token token, Branch branch) {
         Workspace workspace = getContainer().workspace();
+
         // NOTE: This used to synchronize on this, but since it calls
         // director methods that are synchronized on the director,
         // this can cause deadlock.
-        synchronized(_director) {
+        synchronized (_director) {
             while (!_terminate && !super.hasRoom()) {
                 _writeBlocked = true;
                 prepareToBlock(branch);
-                while (_writeBlocked && !_terminate ) {
+
+                while (_writeBlocked && !_terminate) {
                     try {
                         workspace.wait(_director);
                     } catch (InterruptedException e) {
@@ -428,11 +442,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     }
                 }
             }
+
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
                 //token can be put in the queue;
                 super.put(token);
+
                 //Check if pending write to the Queue;
                 if (_readBlocked) {
                     wakeUpBlockedPartner();
@@ -498,11 +514,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** The director in charge of this receiver. */
     private PNDirector _director;
-
     private boolean _readBlocked = false;
     private boolean _writeBlocked = false;
     private boolean _terminate = false;
-
     private Branch _otherBranch = null;
     private BoundaryDetector _boundaryDetector;
 }

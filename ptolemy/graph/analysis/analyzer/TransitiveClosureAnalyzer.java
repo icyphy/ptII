@@ -23,13 +23,14 @@
    ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
 
 import ptolemy.graph.Node;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TransitiveClosureAnalyzer
+
 /**
    An interface to the analyzers for the computation of transitive closure
    of a directed graph.
@@ -42,7 +43,6 @@ import ptolemy.graph.Node;
    @version $Id$
 */
 public interface TransitiveClosureAnalyzer extends GraphAnalyzer {
-
     /** Check if there exist a path between a starting node "startNode" and an
      *  ending node "endNode" on the graph under analysis.
      *

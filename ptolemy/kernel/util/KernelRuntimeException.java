@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// KernelRuntimeException
+
 /**
    Base class for runtime exceptions.  This class extends the basic
    Java RuntimeException with a constructor that can take a Nameable as
@@ -62,7 +63,6 @@ import java.util.Collection;
    @Pt.AcceptedRating Green (cxh)
 */
 public class KernelRuntimeException extends RuntimeException {
-
     /** Construct an exception with no specific detail message. */
     public KernelRuntimeException() {
         this(null, null, null, null);
@@ -108,9 +108,9 @@ public class KernelRuntimeException extends RuntimeException {
      *  @param detail The message.
      */
     public KernelRuntimeException(Nameable object1, Nameable object2,
-            Throwable cause, String detail) {
-        _setMessage(KernelException.generateMessage(
-                            object1, object2, cause, detail));
+        Throwable cause, String detail) {
+        _setMessage(KernelException.generateMessage(object1, object2, cause,
+                detail));
         _setCause(cause);
     }
 
@@ -120,8 +120,8 @@ public class KernelRuntimeException extends RuntimeException {
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
-    public KernelRuntimeException(Collection objects,
-            Throwable cause, String detail) {
+    public KernelRuntimeException(Collection objects, Throwable cause,
+        String detail) {
         _setMessage(KernelException.generateMessage(objects, cause, detail));
         _setCause(cause);
     }
@@ -160,11 +160,9 @@ public class KernelRuntimeException extends RuntimeException {
         // documentation states that it is not necessary to overwrite
         // printStackTrace, but this is only the case when we have a JDK1.4
         // JVM.
-
         // We could try to factor out the printStackTrace() methods
         // and call package friendly methods in KernelException,
         // but these methods are so short, so why bother.
-
         printStackTrace(new PrintWriter(System.err));
     }
 
@@ -186,13 +184,14 @@ public class KernelRuntimeException extends RuntimeException {
      */
     public void printStackTrace(PrintWriter printWriter) {
         super.printStackTrace(printWriter);
+
         if (_cause != null) {
             printWriter.print("Caused by: ");
             _cause.printStackTrace(printWriter);
         }
+
         printWriter.flush();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -221,7 +220,6 @@ public class KernelRuntimeException extends RuntimeException {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The detail message.
     private String _message;
 

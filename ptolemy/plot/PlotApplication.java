@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.plot;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -39,8 +39,10 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplication
+
 /**
    PlotApplication is a versatile two-dimensional data plotter application.
    It can read files compatible with the Ptolemy plot
@@ -107,7 +109,6 @@ import javax.swing.UIManager;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class PlotApplication extends PlotFrame {
-
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
      *  @exception Exception Not thrown in this base class.
@@ -120,7 +121,7 @@ public class PlotApplication extends PlotFrame {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotApplication(String args[]) throws Exception {
+    public PlotApplication(String[] args) throws Exception {
         this(new Plot(), args);
     }
 
@@ -131,8 +132,8 @@ public class PlotApplication extends PlotFrame {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotApplication(PlotBox plot, String args[]) throws Exception {
-
+    public PlotApplication(PlotBox plot, String[] args)
+        throws Exception {
         // invoke the base class constructor and pass in the argument a Plot
         // object. This makes sure that the plot field is an instance of
         // Plot class.
@@ -151,16 +152,17 @@ public class PlotApplication extends PlotFrame {
         // The Java look & feel is pretty lame, so we use the native
         // look and feel of the platform we are running on.
         try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
 
         _parseArgs(args);
-        if (args == null || args.length == 0) {
+
+        if ((args == null) || (args.length == 0)) {
             samplePlot();
         }
+
         setVisible(true);
     }
 
@@ -170,7 +172,6 @@ public class PlotApplication extends PlotFrame {
      *  @param plot The instance of Plot to display.
      */
     public PlotApplication(PlotBox plot) {
-
         // Invoke the base class constructor and pass in the argument a Plot
         // object. This makes sure that the plot field is an instance of
         // Plot class.
@@ -189,8 +190,7 @@ public class PlotApplication extends PlotFrame {
         // The Java look & feel is pretty lame, so we use the native
         // look and feel of the platform we are running on.
         try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
@@ -203,7 +203,7 @@ public class PlotApplication extends PlotFrame {
 
     /** Create a new plot window and map it to the screen.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             new PlotApplication(new Plot(), args);
         } catch (Exception ex) {
@@ -211,33 +211,29 @@ public class PlotApplication extends PlotFrame {
             ex.printStackTrace();
         }
 
-
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
             try {
                 Thread.sleep(2000);
+            } catch (InterruptedException e) {
             }
-            catch (InterruptedException e) {
-            }
+
             System.exit(0);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "PlotApplication class\n" +
-                "By: Edward A. Lee " +
-                "and Christopher Hylands\n" +
-                "Version " + PlotBox.PTPLOT_RELEASE +
-                ", Build: $Id$\n\n"+
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
-                "Copyright (c) 1997-2005, " +
-                "The Regents of the University of California.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "PlotApplication class\n" + "By: Edward A. Lee "
+            + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
+            + ", Build: $Id$\n\n"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+            + "Copyright (c) 1997-2005, "
+            + "The Regents of the University of California.",
+            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Exit the application.
@@ -250,12 +246,10 @@ public class PlotApplication extends PlotFrame {
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-                "PlotApplication is a standalone plot " +
-                " application.\n" +
-                "  File formats understood: Ptplot ASCII.\n" +
-                "  Left mouse button: Zooming.\n\n" +
-                _usage(),
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "PlotApplication is a standalone plot " + " application.\n"
+            + "  File formats understood: Ptplot ASCII.\n"
+            + "  Left mouse button: Zooming.\n\n" + _usage(),
+            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse the command-line
@@ -266,23 +260,25 @@ public class PlotApplication extends PlotFrame {
      *  @exception FileNotFoundException If an input file cannot be found.
      *  @exception IOException If there is a problem reading an input.
      */
-    protected int _parseArgs(String args[]) throws CmdLineArgException,
-            FileNotFoundException, IOException {
-        int i = 0, argumentsRead;
+    protected int _parseArgs(String[] args)
+        throws CmdLineArgException, FileNotFoundException, IOException {
+        int i = 0;
+        int argumentsRead;
         String arg;
         String title = "Ptolemy plot";
 
-        int width = 500;      // Default width of the graph
-        int height = 300;     // Default height of the graph
+        int width = 500; // Default width of the graph
+        int height = 300; // Default height of the graph
 
-        while (args != null && i < args.length) {
+        while ((args != null) && (i < args.length)) {
             arg = args[i++];
 
             if (arg.equals("-height")) {
-                if (i > args.length - 1) {
+                if (i > (args.length - 1)) {
                     throw new CmdLineArgException(_usage());
                 }
-                height = (int)Integer.valueOf(args[i++]).intValue();
+
+                height = (int) Integer.valueOf(args[i++]).intValue();
                 continue;
             } else if (arg.equals("-help")) {
                 System.out.println(_usage());
@@ -293,27 +289,28 @@ public class PlotApplication extends PlotFrame {
                 continue;
             } else if (arg.equals("-version")) {
                 System.out.println("Version " + PlotBox.PTPLOT_RELEASE
-                        + ", Build $Id$");
+                    + ", Build $Id$");
                 System.exit(0);
                 continue;
             } else if (arg.equals("-width")) {
-                if (i > args.length - 1) {
+                if (i > (args.length - 1)) {
                     throw new CmdLineArgException(
-                            "-width requires an integer argument");
+                        "-width requires an integer argument");
                 }
 
-                width = (int)Integer.valueOf(args[i++]).intValue();
+                width = (int) Integer.valueOf(args[i++]).intValue();
                 continue;
             } else if (arg.equals("")) {
                 // Ignore blank argument.
             } else if (arg.equals("-")) {
                 // read from standard input
-                URL base = new URL("file", null,"standard input");
+                URL base = new URL("file", null, "standard input");
                 _read(base, System.in);
             } else if (!arg.startsWith("-")) {
                 // Have a filename.  First attempt to open it as a URL.
                 InputStream instream;
                 URL base;
+
                 try {
                     // First argument is null because we are only
                     // processing absolute URLs this way.  Relative
@@ -329,6 +326,7 @@ public class PlotApplication extends PlotFrame {
                     _directory = _file.getParentFile();
                     base = new URL("file", null, _directory.getAbsolutePath());
                 }
+
                 _read(base, instream);
             } else {
                 // Unrecognized option.
@@ -357,29 +355,28 @@ public class PlotApplication extends PlotFrame {
         // White     - The default (not supported at this time)
         // "(Unsupported)" - The string that is printed to indicate if
         //                   a option is unsupported.
-        String commandOptions[][] = {
-            {"-height",  "<pixels>"},
-            {"-width",  "<pixels>"},
-        };
+        String[][] commandOptions = {
+                { "-height", "<pixels>" },
+                { "-width", "<pixels>" },
+            };
 
-        String commandFlags[] = {
-            "-help",
-            "-test",
-            "-version",
-            "-",
-        };
+        String[] commandFlags = { "-help", "-test", "-version", "-", };
         String result = "Usage: ptplot [ options ] [file ...]\n\n"
             + "Options that take values:\n";
 
         int i;
+
         for (i = 0; i < commandOptions.length; i++) {
-            result += " " + commandOptions[i][0] +
-                " " + commandOptions[i][1] + "\n";
+            result += (" " + commandOptions[i][0] + " " + commandOptions[i][1]
+            + "\n");
         }
+
         result += "\nBoolean flags:\n";
+
         for (i = 0; i < commandFlags.length; i++) {
-            result += " " + commandFlags[i];
+            result += (" " + commandFlags[i]);
         }
+
         return result;
     }
 

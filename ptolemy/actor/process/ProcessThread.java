@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.process;
 
 import java.io.InterruptedIOException;
@@ -37,6 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessThread
@@ -74,7 +74,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (mudit)
 */
 public class ProcessThread extends PtolemyThread {
-
     /** Construct a thread to be used for the execution of the
      *  iteration methods of the actor. This increases the count of active
      *  actors in the director.
@@ -102,6 +101,7 @@ public class ProcessThread extends PtolemyThread {
         } else {
             _name = "Unnamed";
         }
+
         // Set the name of the thread to the full name of the actor.
         setName(_name);
     }
@@ -122,17 +122,18 @@ public class ProcessThread extends PtolemyThread {
      */
     public void run() {
         _debug("-- Starting thread.");
+
         Workspace workspace = _director.workspace();
         boolean iterate = true;
         Throwable thrownWhenIterate = null;
         Throwable thrownWhenWrapup = null;
+
         try {
             // Initialize the actor.
             _actor.initialize();
 
             // While postfire() returns true and stop() is not called.
             while (iterate) {
-
                 // NOTE: Possible race condition... actor.stop()
                 // might be called before we get to this.
                 // This will cause postfire() on the actor
@@ -140,6 +141,7 @@ public class ProcessThread extends PtolemyThread {
                 if (_director.isStopFireRequested()) {
                     // And wait until the flag has been cleared.
                     _debug("-- Thread pause requested. Get lock on director.");
+
                     synchronized (_director) {
                         // Tell the director we're stopped (necessary
                         // for deadlock detection).
@@ -150,19 +152,26 @@ public class ProcessThread extends PtolemyThread {
                             // to a stopFire, then stop execution
                             // altogether and skip to wrapup().
                             if (_director.isStopRequested()) {
-                                _debug("-- Thread stop requested, so cancel iteration.");
+                                _debug(
+                                    "-- Thread stop requested, so cancel iteration.");
                                 break;
                             }
-                            _debug("-- Thread waiting for canceled pause request.");
+
+                            _debug(
+                                "-- Thread waiting for canceled pause request.");
+
                             try {
                                 workspace.wait(_director);
                             } catch (InterruptedException ex) {
-                                _debug("-- Thread interrupted, so cancel iteration.");
+                                _debug(
+                                    "-- Thread interrupted, so cancel iteration.");
                                 break;
                             }
                         }
-                         _director._actorHasRestarted();
+
+                        _director._actorHasRestarted();
                     }
+
                     _debug("-- Thread resuming.");
                 }
 
@@ -186,33 +195,31 @@ public class ProcessThread extends PtolemyThread {
                 // let the director know that this thread stopped
                 _director._decreaseActiveCount();
                 _debug("-- Thread stopped.");
+
                 boolean rethrow = false;
+
                 if (thrownWhenIterate instanceof TerminateProcessException) {
                     // Process was terminated.
-                    _debug("-- Blocked Receiver call threw TerminateProcessException.");
+                    _debug(
+                        "-- Blocked Receiver call threw TerminateProcessException.");
                 } else if (thrownWhenIterate instanceof InterruptedException) {
                     // Process was terminated by call to stop();
                     _debug("-- Thread was interrupted: " + thrownWhenIterate);
-                } else if (
-                    thrownWhenIterate instanceof InterruptedIOException
-                    || (thrownWhenIterate != null &&
-                        thrownWhenIterate.getCause() instanceof
-                        InterruptedIOException)
-                ) {
+                } else if (thrownWhenIterate instanceof InterruptedIOException
+                        || ((thrownWhenIterate != null)
+                        && thrownWhenIterate.getCause() instanceof InterruptedIOException)) {
                     // PSDF has problems here when run with JavaScope
                     _debug("-- IO was interrupted: " + thrownWhenIterate);
-
                 } else if (thrownWhenIterate instanceof IllegalActionException) {
                     _debug("-- Exception: " + thrownWhenIterate);
-                    _manager.notifyListenersOfException(
-                            (IllegalActionException)thrownWhenIterate);
+                    _manager.notifyListenersOfException((IllegalActionException) thrownWhenIterate);
                 } else if (thrownWhenIterate != null) {
                     rethrow = true;
                 }
+
                 if (thrownWhenWrapup instanceof IllegalActionException) {
                     _debug("-- Exception: " + thrownWhenWrapup);
-                    _manager.notifyListenersOfException(
-                            (IllegalActionException)thrownWhenWrapup);
+                    _manager.notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
                 } else if (thrownWhenWrapup != null) {
                     // Must be a runtime exception.
                     // Call notifyListenerOfThrowable() here so that
@@ -239,7 +246,6 @@ public class ProcessThread extends PtolemyThread {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Actor _actor;
     private ProcessDirector _director;
     private Manager _manager;

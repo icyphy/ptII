@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import java.util.HashMap;
@@ -43,6 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DelayChannel
@@ -72,7 +72,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class DelayChannel extends ErasureChannel {
-
     /** Construct a channel with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This relation will use the
@@ -87,7 +86,7 @@ public class DelayChannel extends ErasureChannel {
      *   a relation already in the container.
      */
     public DelayChannel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         propagationSpeed = new Parameter(this, "propagationSpeed");
         propagationSpeed.setTypeEquals(BaseType.DOUBLE);
@@ -114,13 +113,14 @@ public class DelayChannel extends ErasureChannel {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == propagationSpeed) {
-            double speed = ((DoubleToken)propagationSpeed.getToken())
+            double speed = ((DoubleToken) propagationSpeed.getToken())
                 .doubleValue();
+
             if (speed <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Invalid value for propagationSpeed: " + speed);
+                    "Invalid value for propagationSpeed: " + speed);
             }
         } else {
             super.attributeChanged(attribute);
@@ -137,17 +137,20 @@ public class DelayChannel extends ErasureChannel {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         if (_receptions != null) {
             // We may be getting fired because of an impending event.
             Time currentTime = getDirector().getModelTime();
             Double timeDouble = new Double(currentTime.getDoubleValue());
-            Reception reception = (Reception)_receptions.get(timeDouble);
+            Reception reception = (Reception) _receptions.get(timeDouble);
+
             if (reception != null) {
                 // The time matches a pending reception.
                 _receptions.remove(timeDouble);
+
                 // Use the superclass, not this class, or we just delay again.
                 super._transmitTo(reception.token, reception.sender,
-                        reception.receiver, reception.properties);
+                    reception.receiver, reception.properties);
             }
         }
     }
@@ -183,18 +186,16 @@ public class DelayChannel extends ErasureChannel {
      *   or if the token argument is null and the destination receiver
      *   does not support clear.
      */
-    protected void _transmitTo(
-            Token token,
-            WirelessIOPort sender,
-            WirelessReceiver receiver,
-            RecordToken properties)
-            throws IllegalActionException {
-        double speed = ((DoubleToken)propagationSpeed.getToken())
-            .doubleValue();
+    protected void _transmitTo(Token token, WirelessIOPort sender,
+        WirelessReceiver receiver, RecordToken properties)
+        throws IllegalActionException {
+        double speed = ((DoubleToken) propagationSpeed.getToken()).doubleValue();
+
         if (speed == Double.POSITIVE_INFINITY) {
             super._transmitTo(token, sender, receiver, properties);
         } else {
             Director director = getDirector();
+
             // FIXME: This isn't right because the receiver
             // may have moved during propagation.  Maybe
             // register a ValueListener to the _location attributes
@@ -206,14 +207,14 @@ public class DelayChannel extends ErasureChannel {
             // conclusion of the propagation, whereas this method is
             // called only if the receiver is in range at the
             // initiation of the transmission.
-            WirelessIOPort destination
-                = (WirelessIOPort)receiver.getContainer();
+            WirelessIOPort destination = (WirelessIOPort) receiver.getContainer();
             double distance = _distanceBetween(sender, destination);
-            Time time = director.getModelTime().add(distance/speed);
+            Time time = director.getModelTime().add(distance / speed);
 
             if (_receptions == null) {
                 _receptions = new HashMap();
             }
+
             Double timeDouble = new Double(time.getDoubleValue());
             Reception reception = new Reception();
             reception.token = token;
@@ -228,13 +229,11 @@ public class DelayChannel extends ErasureChannel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Record of scheduled receptions, indexed by time.
     private HashMap _receptions;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class Reception {
         public Token token;
         public WirelessIOPort sender;

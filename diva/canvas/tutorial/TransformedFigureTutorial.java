@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.AlphaComposite;
@@ -51,6 +50,7 @@ import diva.canvas.interactor.DragInteractor;
 import diva.canvas.interactor.Interactor;
 import diva.gui.BasicFrame;
 import diva.util.java2d.ShapeUtilities;
+
 
 /** This tutorial shows how to make custom figures that contain
  * their own TransformContext.
@@ -160,7 +160,6 @@ import diva.util.java2d.ShapeUtilities;
  * @version $Id$
  */
 public class TransformedFigureTutorial {
-
     // The JCanvas
     private JCanvas canvas;
 
@@ -169,12 +168,12 @@ public class TransformedFigureTutorial {
 
     /** Create a JCanvas and put it into a window.
      */
-    public TransformedFigureTutorial () {
+    public TransformedFigureTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         BasicFrame frame = new BasicFrame("Figure tutorial", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
     }
 
@@ -182,14 +181,14 @@ public class TransformedFigureTutorial {
      * in this file. To make the demo a little more interesting,
      * make them draggable.
      */
-    public void createFigures () {
+    public void createFigures() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Create an interactor to do the work.
         Interactor dragger = new DragInteractor();
 
         // Create the figure
-        Figure one = new CloudFigure(10.0,10.0,80.0,80.0);
+        Figure one = new CloudFigure(10.0, 10.0, 80.0, 80.0);
         layer.add(one);
         one.setInteractor(dragger);
 
@@ -200,7 +199,7 @@ public class TransformedFigureTutorial {
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -245,16 +244,14 @@ public class TransformedFigureTutorial {
          * implements constructive area geometry, and join a bunch
          * of circles into a single shape.
          */
-        public CloudFigure (
-                double x, double y,
-                double width, double height ) {
-
+        public CloudFigure(double x, double y, double width, double height) {
             // Create the transform context and initialize it
             // so that the figure is drawn at the requested coordinates
             _transformContext = new TransformContext(this);
+
             AffineTransform at = _transformContext.getTransform();
-            at.translate(x,y);
-            at.scale(width/100, height/100);
+            at.translate(x, y);
+            at.scale(width / 100, height / 100);
             _transformContext.invalidateCache();
 
             // Create the shape we will use to draw the figure
@@ -279,12 +276,12 @@ public class TransformedFigureTutorial {
             // Watch it -- don't modify the main transform!
             Shape c = ShapeUtilities.createCloudShape();
             at = new AffineTransform();
-            at.setToTranslation(20,20);
-            at.scale(0.25,0.25);
+            at.setToTranslation(20, 20);
+            at.scale(0.25, 0.25);
             _cloud1 = at.createTransformedShape(c);
 
-            at.setToTranslation(50,40);
-            at.scale(0.4,0.4);
+            at.setToTranslation(50, 40);
+            at.scale(0.4, 0.4);
             _cloud2 = at.createTransformedShape(c);
         }
 
@@ -294,10 +291,11 @@ public class TransformedFigureTutorial {
          * we use a previously-cached copy of the transformed bounds
          * if there is one.
          */
-        public Rectangle2D getBounds () {
+        public Rectangle2D getBounds() {
             if (_cachedBounds == null) {
                 _cachedBounds = getShape().getBounds2D();
             }
+
             return _cachedBounds;
         }
 
@@ -307,18 +305,19 @@ public class TransformedFigureTutorial {
          * we use a previously-cached copy of the transformed shape
          * if there is one.
          */
-        public Shape getShape () {
+        public Shape getShape() {
             if (_cachedShape == null) {
                 AffineTransform at = _transformContext.getTransform();
                 _cachedShape = at.createTransformedShape(_shape);
             }
+
             return _cachedShape;
         }
 
         /** Get the transform context. This method must be overridden
          * since this figure defined its own context.
          */
-        public TransformContext getTransformContext () {
+        public TransformContext getTransformContext() {
             return _transformContext;
         }
 
@@ -331,13 +330,13 @@ public class TransformedFigureTutorial {
          * inefficient.) Finally, we "pop" the transform context off
          * the stack.
          */
-        public void paint (Graphics2D g) {
+        public void paint(Graphics2D g) {
             // Push the context
             _transformContext.push(g);
 
             // Paint the big cloud
-            AlphaComposite c = AlphaComposite.getInstance(
-                    AlphaComposite.SRC_OVER,0.3f);
+            AlphaComposite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                    0.3f);
             g.setComposite(c);
             g.setPaint(Color.magenta);
             g.fill(_shape);
@@ -361,7 +360,7 @@ public class TransformedFigureTutorial {
          * We also must be sure to invalidate the cached
          * geometry objects that depend on the transform.
          */
-        public void transform (AffineTransform at) {
+        public void transform(AffineTransform at) {
             repaint();
             _cachedShape = null;
             _cachedBounds = null;
@@ -370,5 +369,3 @@ public class TransformedFigureTutorial {
         }
     }
 }
-
-

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -33,8 +32,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Action
+
 /**
    An Action is contained by a Transition in an FSMActor.
    <p>
@@ -63,7 +64,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.data.expr.Variable
 */
 public abstract class Action extends StringAttribute {
-
     /** Construct an action in the specified workspace with an empty
      *  string as a name.
      *  The object is added to the directory of the workspace.
@@ -90,7 +90,7 @@ public abstract class Action extends StringAttribute {
      *   has an attribute with the name.
      */
     public Action(Transition transition, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(transition, name);
     }
 
@@ -117,14 +117,12 @@ public abstract class Action extends StringAttribute {
      *   an attribute with the name of this action.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof Transition) &&
-                (container != null)) {
+        throws IllegalActionException, NameDuplicationException {
+        if (!(container instanceof Transition) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "Action can only be contained by instances of " +
-                    "Transition.");
+                "Action can only be contained by instances of " + "Transition.");
         }
+
         super.setContainer(container);
     }
-
 }

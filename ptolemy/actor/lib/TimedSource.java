@@ -25,11 +25,10 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
-import ptolemy.actor.*;
 import ptolemy.actor.Director;
+import ptolemy.actor.TimedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimedSource
+
 /**
    Base class for time-based sources.  A time-based source is
    a source where the output value is a function of current time.
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class TimedSource extends Source implements TimedActor {
-
     /** Construct an actor with the given container and name.
      *  The <i>stopTime</i> parameter is also constructed.
      *  @param container The container.
@@ -74,25 +73,23 @@ public class TimedSource extends Source implements TimedActor {
      *   actor with this name.
      */
     public TimedSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         stopTime = new Parameter(this, "stopTime");
         stopTime.setExpression("Infinity");
         stopTime.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n"
-                + "<circle cx=\"0\" cy=\"0\" r=\"17\""
-                + "style=\"fill:white\"/>\n"
-                + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"
-                + "<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\"/>\n"
-                + "<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\"/>\n"
-                + "<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\"/>\n"
-                + "<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\"/>\n"
-                + "<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<circle cx=\"0\" cy=\"0\" r=\"17\"" + "style=\"fill:white\"/>\n"
+            + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"
+            + "<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\"/>\n"
+            + "<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\"/>\n"
+            + "<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\"/>\n"
+            + "<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\"/>\n"
+            + "<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,23 +111,27 @@ public class TimedSource extends Source implements TimedActor {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == stopTime) {
-            double newStopTimeValue =
-                ((DoubleToken)stopTime.getToken()).doubleValue();
+            double newStopTimeValue = ((DoubleToken) stopTime.getToken())
+                .doubleValue();
+
             if (_executing) {
                 Time newStopTime = new Time(getDirector(), newStopTimeValue);
                 Director director = getDirector();
+
                 if (director != null) {
                     Time currentTime = director.getModelTime();
+
                     if (newStopTime.compareTo(currentTime) > 0) {
                         director.fireAt(this, newStopTime);
                     } else {
                         throw new IllegalActionException(this,
-                            "The stop time " +
-                            "is earlier than the current time.");
+                            "The stop time "
+                            + "is earlier than the current time.");
                     }
                 }
+
                 _stopTime = newStopTime;
             }
         } else {
@@ -160,14 +161,18 @@ public class TimedSource extends Source implements TimedActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         Director director = getDirector();
+
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
-        double stopTimeValue =
-            ((DoubleToken)stopTime.getToken()).doubleValue();
+
+        double stopTimeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
         _stopTime = new Time(getDirector(), stopTimeValue);
+
         Time currentTime = director.getModelTime();
+
         if (_stopTime.compareTo(currentTime) > 0) {
             director.fireAt(this, _stopTime);
             _executing = true;
@@ -183,9 +188,11 @@ public class TimedSource extends Source implements TimedActor {
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
+
         if (currentTime.compareTo(_stopTime) >= 0) {
             return false;
         }
+
         return true;
     }
 
@@ -202,7 +209,6 @@ public class TimedSource extends Source implements TimedActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Flag indicating that the model is running.
     private boolean _executing = false;
 

@@ -27,11 +27,12 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// NameDuplicationException
+
 /** Thrown on an attempt to add a named object to a collection that
     requires unique names, and finding that there already is an object
     by that name in the collection.
@@ -53,7 +54,6 @@ package ptolemy.kernel.util;
     @Pt.AcceptedRating Green (cxh)
 */
 public class NameDuplicationException extends KernelException {
-
     /** Construct an exception with a detail message that includes the
      *  name of the first argument.  If one or more of the parameters
      *  are null, then the message of the exception is adjusted
@@ -61,8 +61,7 @@ public class NameDuplicationException extends KernelException {
      *  @param container The would be container.
      *  @param detail The message.
      */
-    public NameDuplicationException(Nameable container,
-            String detail) {
+    public NameDuplicationException(Nameable container, String detail) {
         super(container, null, detail);
     }
 
@@ -74,7 +73,7 @@ public class NameDuplicationException extends KernelException {
      *  @param container The would be container.
      */
     public NameDuplicationException(Nameable container,
-            Nameable wouldBeContainee) {
+        Nameable wouldBeContainee) {
         this(container, wouldBeContainee, null);
     }
 
@@ -88,29 +87,23 @@ public class NameDuplicationException extends KernelException {
      *  @param detail A message.
      */
     public NameDuplicationException(Nameable container,
-            Nameable wouldBeContainee, String detail) {
+        Nameable wouldBeContainee, String detail) {
         if (getFullName(container).equals("")) {
-
             // Note that if wouldBeContainee is null, then we get
             // the 'Attempt to insert object named "" into a'.
             // Note that if wouldBeContainee is the empty string, then we get
             // the 'Attempt to insert object named "<Unnamed Object>" into a'.
-
-            _setMessage("Attempt to insert object named \"" +
-                    getName(wouldBeContainee) +
-                    "\" into a container that already contains" +
-                    " an object with that name." +
-                    (detail == null ? "" : (" " + detail))
-                        );
+            _setMessage("Attempt to insert object named \""
+                + getName(wouldBeContainee)
+                + "\" into a container that already contains"
+                + " an object with that name."
+                + ((detail == null) ? "" : (" " + detail)));
         } else {
-            _setMessage("Attempt to insert object named \"" +
-                    getName(wouldBeContainee) +
-                    "\" into container named \"" +
-                    getFullName(container) +
-                    "\", which already contains an object with that name." +
-                    (detail == null ? "" : (" " + detail))
-                        );
-
+            _setMessage("Attempt to insert object named \""
+                + getName(wouldBeContainee) + "\" into container named \""
+                + getFullName(container)
+                + "\", which already contains an object with that name."
+                + ((detail == null) ? "" : (" " + detail)));
         }
     }
 }

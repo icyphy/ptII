@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj)
 @AcceptedRating Yellow (janneck)
 */
-
 package ptolemy.actor.corba;
 
 import java.util.StringTokenizer;
@@ -42,7 +41,6 @@ import ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
 import ptolemy.actor.corba.CorbaIOUtil._pushConsumerImplBase;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -52,8 +50,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PushConsumer
+
 /**
    An actor that receives data from a remote publisher.
    Specify the ORB initial property with the<i>ORBInitProperties<i>
@@ -74,9 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 1.0
 */
-
 public class PushConsumer extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -86,10 +84,10 @@ public class PushConsumer extends Source {
      *   actor with this name.
      */
     public PushConsumer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         consumerName = new Parameter(this, "consumerName");
         consumerName.setToken(new StringToken(""));
@@ -105,6 +103,7 @@ public class PushConsumer extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
     /** the ORB initial property. for example:
      * "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
      */
@@ -131,7 +130,6 @@ public class PushConsumer extends Source {
      */
     public Parameter defaultToken;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -142,9 +140,9 @@ public class PushConsumer extends Source {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == blocking) {
-            _blocking = ((BooleanToken)blocking.getToken()).booleanValue();
+            _blocking = ((BooleanToken) blocking.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -158,16 +156,19 @@ public class PushConsumer extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(
-                ((StringToken)ORBInitProperties.getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
+                .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
+
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
             _debug("ORB initial argument: " + args[i]);
             i++;
         }
+
         _orb = null;
         _initORB(args);
         _debug("Finished initializing " + getName());
@@ -175,7 +176,6 @@ public class PushConsumer extends Source {
         _fireIsWaiting = false;
         _defaultToken = defaultToken.getToken();
     }
-
 
     /** Read the received data if there is any and send to the output.
      *  If no data received, then wait if <i>blocking<i> is true, or
@@ -194,24 +194,25 @@ public class PushConsumer extends Source {
         if (_blocking) {
             if (_lastReadToken == null) {
                 try {
-
                     synchronized (_lock) {
                         if (_debugging) {
                             _debug(getName(), " is waiting.");
                         }
+
                         _fireIsWaiting = true;
                         _lock.wait();
                         _fireIsWaiting = false;
+
                         if (_debugging) {
                             _debug(getName(), " wake up.");
                         }
                     }
                 } catch (InterruptedException e) {
                     throw new IllegalActionException(this,
-                            "blocking interrupted." +
-                            e.getMessage());
+                        "blocking interrupted." + e.getMessage());
                 }
             }
+
             if (_lastReadToken != null) {
                 output.send(0, _lastReadToken);
                 _defaultToken = _lastReadToken;
@@ -220,20 +221,20 @@ public class PushConsumer extends Source {
         } else {
             output.send(0, _defaultToken);
         }
-
     }
 
     /** Request that execution of the current iteration stop as soon
      *  as possible. Wake up the waiting if there is any.
      */
     public void stop() {
-
         if (_fireIsWaiting) {
-            synchronized( _lock) {
+            synchronized (_lock) {
                 _lock.notifyAll();
             }
+
             _fireIsWaiting = false;
         }
+
         super.stop();
     }
 
@@ -241,42 +242,43 @@ public class PushConsumer extends Source {
     ////                         private methods                   ////
     //use a private method to deal with necessary CORBA operations.
     // @exception IllegalActionException If ORB initialize failed.
-    private void _initORB(String[] args) throws IllegalActionException{
+    private void _initORB(String[] args) throws IllegalActionException {
         try {
             // start the ORB
             _orb = ORB.init(args, null);
             _debug(getName(), " ORB initialized");
+
             //get the root naming context
             org.omg.CORBA.Object objRef = _orb.resolve_initial_references(
                     "NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
+
             if (ncRef != null) {
                 _debug(getName(), "found name service.");
             }
+
             _consumer = new pushConsumer();
             _orb.connect(_consumer);
+
             //registe the consumer with the given name
-            NameComponent namecomp = new NameComponent(
-                    ((StringToken)consumerName.getToken()).
-                    stringValue(), "");
+            NameComponent namecomp = new NameComponent(((StringToken) consumerName
+                    .getToken()).stringValue(), "");
             _debug(getName(), " register the consumer with name: ",
-                    (consumerName.getToken()).toString());
-            NameComponent path[] = {namecomp};
+                (consumerName.getToken()).toString());
+
+            NameComponent[] path = { namecomp };
             ncRef.rebind(path, _consumer);
         } catch (UserException ex) {
             throw new IllegalActionException(this,
-                    " initialize ORB failed. Please make sure the " +
-                    "naming server has already started and the " +
-                    "ORBInitProperty parameter is configured correctly. " +
-                    "the error message is: " + ex.getMessage());
+                " initialize ORB failed. Please make sure the "
+                + "naming server has already started and the "
+                + "ORBInitProperty parameter is configured correctly. "
+                + "the error message is: " + ex.getMessage());
         }
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private ORB _orb;
 
     //An instance of pushConsumer this actor create and registered.
@@ -297,11 +299,9 @@ public class PushConsumer extends Source {
     //The flag indicates wheather the fire() method is waiting.
     private boolean _fireIsWaiting;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
-    private class pushConsumer extends _pushConsumerImplBase{
+    private class pushConsumer extends _pushConsumerImplBase {
         /**
          * Construct a pushConsumer.
          */
@@ -316,39 +316,43 @@ public class PushConsumer extends Source {
          * for new data, then wake up fire(), otherwise call fireAt.
          * //FIXME: need to deal with overwrite if the old data is not consumed.
          */
-        public void push( org.omg.CORBA.Any data) throws CorbaIllegalActionException
-        {
+        public void push(org.omg.CORBA.Any data)
+            throws CorbaIllegalActionException {
             if (_debugging) {
                 _debug("got pushed data");
             }
+
             //try {
-            synchronized(_lock) {
+            synchronized (_lock) {
                 // Variable variable = new Variable();
                 if (_debugging) {
                     _debug("got pushed data:\n" + data.extract_string());
                 }
+
                 //FIXME: This was designed to be able to receive
                 //differnt kinds of tokens. But after some change was
                 //made in StringUtil, the string seems not substituted
                 //properly, and it gets error when call variable.getToken.
                 //So I modified it here to only deal with sting tokens
                 //and use it to receive moml strings for the mobile model.
-
                 //variable.setExpression( data.extract_string());
                 ////String string = variable.getExpression();
                 //_lastReadToken = variable.getToken();
                 _lastReadToken = new StringToken(data.extract_string());
+
                 if (_debugging) {
-                    _debug(getName(), " receive data:\n" + _lastReadToken.toString());
+                    _debug(getName(),
+                        " receive data:\n" + _lastReadToken.toString());
                 }
+
                 if (_fireIsWaiting) {
                     _lock.notifyAll();
-                }else {
+                } else {
                     try {
-                        getDirector().fireAtCurrentTime(
-                                PushConsumer.this);
+                        getDirector().fireAtCurrentTime(PushConsumer.this);
                     } catch (IllegalActionException ex) {
-                        throw new CorbaIllegalActionException("failed in dealing with director.");
+                        throw new CorbaIllegalActionException(
+                            "failed in dealing with director.");
                     }
                 }
             }
@@ -358,6 +362,4 @@ public class PushConsumer extends Source {
             //}
         }
     }
-
 }
-

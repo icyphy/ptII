@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.demo.Sketch;
 
 import ptolemy.actor.CompositeActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.plot.EditListener;
 import ptolemy.plot.EditablePlot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SketchApplet
+
 /**
    This applet demonstrates the use of the SketchSource actor,
    and in particular, how to share the same plot display between
@@ -53,7 +54,6 @@ import ptolemy.plot.EditablePlot;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class SketchApplet extends MoMLApplet implements EditListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -78,15 +78,16 @@ public class SketchApplet extends MoMLApplet implements EditListener {
      */
     public void _createView() {
         super._createView();
+
         try {
             // Find out how many iterations the director expects to run for.
-            CompositeActor toplevel = (CompositeActor)_toplevel;
-            SDFDirector director = (SDFDirector)toplevel.getDirector();
-            int iterations =
-                ((IntToken)(director.iterations.getToken())).intValue();
+            CompositeActor toplevel = (CompositeActor) _toplevel;
+            SDFDirector director = (SDFDirector) toplevel.getDirector();
+            int iterations = ((IntToken) (director.iterations.getToken()))
+                .intValue();
 
-            _sketchedSource = (SketchedSource)
-                toplevel.getEntity("SketchedSource");
+            _sketchedSource = (SketchedSource) toplevel.getEntity(
+                    "SketchedSource");
 
             // Note: The order of the following is important.
             // First, specify how long the sketched plot should be.

@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.ct.kernel.util;
 
 import java.util.Comparator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FuzzyDoubleComparator
+
 /**
    Compare two Double objects with respect to a fuzzy threshold.
    The threshold is set by setThreshold(). If the difference of the
@@ -47,8 +48,7 @@ import java.util.Comparator;
    @Pt.ProposedRating Yellow (liuj)
    @Pt.AcceptedRating Red (johnr)
 */
-public class FuzzyDoubleComparator implements Comparator{
-
+public class FuzzyDoubleComparator implements Comparator {
     /** Construct a FuzzyDoubleComparator. The compare threshold is
      *  1e-10
      */
@@ -77,11 +77,12 @@ public class FuzzyDoubleComparator implements Comparator{
      *  @return The comparison result, -1, 0, or 1.
      */
     public int compare(Object first, Object second) {
-        double firstValue = ((Double)first).doubleValue();
-        double secondValue = ((Double)second).doubleValue();
-        if (firstValue < secondValue - _threshold/2.0) {
+        double firstValue = ((Double) first).doubleValue();
+        double secondValue = ((Double) second).doubleValue();
+
+        if (firstValue < (secondValue - (_threshold / 2.0))) {
             return -1;
-        } else if (firstValue > secondValue + _threshold/2.0) {
+        } else if (firstValue > (secondValue + (_threshold / 2.0))) {
             return 1;
         } else {
             return 0;
@@ -107,7 +108,6 @@ public class FuzzyDoubleComparator implements Comparator{
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The threshold that controls the fuzziness. Default value 1e-10.
     private double _threshold;
 }

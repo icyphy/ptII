@@ -28,9 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.component.test;
 
-import ptolemy.component.data.TupleToken;
 import ptolemy.component.AtomicComponent;
 import ptolemy.component.MethodCallPort;
+import ptolemy.component.data.TupleToken;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

@@ -31,6 +31,7 @@
 
 */
 package diva.graph.tutorial;
+
 import java.awt.GridLayout;
 
 import javax.swing.SwingUtilities;
@@ -51,6 +52,7 @@ import diva.graph.modular.Node;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
 
+
 /**
  * This example shows three alternatives to display a prepopulated
  * graph model in a window.  Prepopulated means that there are
@@ -69,7 +71,7 @@ import diva.gui.BasicFrame;
  * @Pt.AcceptedRating Red
  */
 public class PrepopulatedTutorial {
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         final AppContext context = new BasicFrame("Prepopulated Tutorial");
         context.setSize(300, 600);
 
@@ -89,13 +91,14 @@ public class PrepopulatedTutorial {
         //      B   C
         //
         BasicGraphModel model = new BasicGraphModel();
-        CompositeNode root = (CompositeNode)model.getRoot();
+        CompositeNode root = (CompositeNode) model.getRoot();
         Node a = model.createNode("a");
         Node b = model.createNode("b");
         Node c = model.createNode("c");
         model.addNode(this, a, root);
         model.addNode(this, b, root);
         model.addNode(this, c, root);
+
         Edge x = model.createEdge("x");
         Edge y = model.createEdge("y");
         model.connectEdge(this, x, a, b);
@@ -109,8 +112,7 @@ public class PrepopulatedTutorial {
             bogusLayout(model, context);
             layoutPostDisplay(model, context);
             setModelPostDisplay(model, context);
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(0);
         }
@@ -124,13 +126,11 @@ public class PrepopulatedTutorial {
      * and are all clustered in the upper-left corner.  This
      * is remedied in the other techiques given below.
      */
-    public void bogusLayout(MutableGraphModel model,
-            AppContext context) {
+    public void bogusLayout(MutableGraphModel model, AppContext context) {
         BasicGraphController gc = new BasicGraphController();
-        context.getContentPane().add(
-                new JGraph(new GraphPane(gc, model)));
-        RandomLayout random =
-            new RandomLayout(new BasicLayoutTarget(gc));
+        context.getContentPane().add(new JGraph(new GraphPane(gc, model)));
+
+        RandomLayout random = new RandomLayout(new BasicLayoutTarget(gc));
         random.layout(model.getRoot());
     }
 
@@ -142,16 +142,14 @@ public class PrepopulatedTutorial {
      * be useful in some cases.
      */
     public void layoutPostDisplay(final MutableGraphModel model,
-            AppContext context) {
+        AppContext context) {
         final BasicGraphController bgc = new BasicGraphController();
-        context.getContentPane().add(
-                new JGraph(new GraphPane(bgc, model)));
+        context.getContentPane().add(new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    RandomLayout random =
-                        new RandomLayout(new BasicLayoutTarget(bgc));
+                    RandomLayout random = new RandomLayout(new BasicLayoutTarget(
+                                bgc));
                     random.layout(model.getRoot());
-
                 }
             });
     }
@@ -161,15 +159,11 @@ public class PrepopulatedTutorial {
      * the default constructor (giving it an empty graph),
      * and then set the model once the window is showing.
      */
-    public void setModelPostDisplay(MutableGraphModel model,
-            AppContext context) {
+    public void setModelPostDisplay(MutableGraphModel model, AppContext context) {
         BasicGraphController gc = new BasicGraphController();
         gc.addGraphViewListener(new IncrementalLayoutListener(
-                                        new IncrLayoutAdapter(new LevelLayout(
-                                                                      new BasicLayoutTarget(gc))), null));
-        context.getContentPane().add(
-                new JGraph(new GraphPane(gc, model)));
+                new IncrLayoutAdapter(
+                    new LevelLayout(new BasicLayoutTarget(gc))), null));
+        context.getContentPane().add(new JGraph(new GraphPane(gc, model)));
     }
 }
-
-

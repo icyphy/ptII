@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.test;
 
 import java.util.Enumeration;
@@ -36,8 +35,10 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestComponentPort
+
 /**
    This class is used to test protected method(s) in ComponentPort
 
@@ -57,7 +58,7 @@ public class TestComponentPort extends ComponentPort {
      *   a port already in the container.
      */
     public TestComponentPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

@@ -26,7 +26,6 @@
     COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.demo.QR;
 
 import ptolemy.actor.lib.Transformer;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StreamToMatrix
+
 /**
 
 Convert a stream of Double Tokens into a Matrix. The Matrix is
@@ -53,9 +54,7 @@ considered to be an Upper triangular Matrix.
 @Pt.AcceptedRating Red (cxh)
 Exp $
 */
-
 public class StreamToMatrix extends Transformer {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -68,17 +67,15 @@ public class StreamToMatrix extends Transformer {
      *   actor with this name.
      */
     public StreamToMatrix(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException
-    {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        dimension = new Parameter(this, "dimension", new IntToken( 6 ));
+        dimension = new Parameter(this, "dimension", new IntToken(6));
 
         // Initialize the dimension
-        attributeChanged( dimension );
-
+        attributeChanged(dimension);
     }
 
     /** If the argument is the dimension parameter, update the
@@ -87,10 +84,10 @@ public class StreamToMatrix extends Transformer {
      *        be obtained from the dimension parameter.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == dimension) {
-            _rows = ((IntToken)dimension.getToken()).intValue();
-            _columns = ((IntToken)dimension.getToken()).intValue();
+            _rows = ((IntToken) dimension.getToken()).intValue();
+            _columns = ((IntToken) dimension.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -103,16 +100,19 @@ public class StreamToMatrix extends Transformer {
     public void fire() throws IllegalActionException {
         int runL = 0;
         double[][] image = new double[_rows][_columns];
+
         for (int i = 0; i < _rows; i++) {
             for (int j = 0; j < _columns; j++) {
-                if ( j >= runL ) {
-                    image[i][j] = ((DoubleToken)input.get(0)).doubleValue();
+                if (j >= runL) {
+                    image[i][j] = ((DoubleToken) input.get(0)).doubleValue();
                 } else {
                     image[i][j] = 0.0;
                 }
             }
+
             runL++;
         }
+
         output.broadcast(new DoubleMatrixToken(image));
     }
 
@@ -123,11 +123,9 @@ public class StreamToMatrix extends Transformer {
         super.initialize();
 
         // Get the correct value from the parameters
-        _rows = ((IntToken)dimension.getToken()).intValue();
-        _columns = ((IntToken)dimension.getToken()).intValue();
-
+        _rows = ((IntToken) dimension.getToken()).intValue();
+        _columns = ((IntToken) dimension.getToken()).intValue();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -138,8 +136,6 @@ public class StreamToMatrix extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private int _rows    = 6;
+    private int _rows = 6;
     private int _columns = 6;
-
 }

@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.kernel;
 
 import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DEEventQueue
+
 /**
    This interface defines an event queue used by DE directors to sort and
    manage DE events.
@@ -60,7 +61,6 @@ import ptolemy.kernel.util.InvalidStateException;
    @see DEEvent
 */
 public interface DEEventQueue extends Debuggable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Rician
+
 /**
    Produce a random sequence with a Rician distribution.
    A Rician random variable is defined as follows:
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class Rician extends RandomSource {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,7 +72,7 @@ public class Rician extends RandomSource {
      *   actor with this name.
      */
     public Rician(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -125,24 +124,21 @@ public class Rician extends RandomSource {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-        double xMeanValue = ((DoubleToken)(xMean.getToken())).doubleValue();
-        double yMeanValue = ((DoubleToken)(yMean.getToken())).doubleValue();
-        double standardDeviationValue =
-            ((DoubleToken)(standardDeviation.getToken())).doubleValue();
+        double xMeanValue = ((DoubleToken) (xMean.getToken())).doubleValue();
+        double yMeanValue = ((DoubleToken) (yMean.getToken())).doubleValue();
+        double standardDeviationValue = ((DoubleToken) (standardDeviation
+            .getToken())).doubleValue();
         double xRawNum = _random.nextGaussian();
         double yRawNum = _random.nextGaussian();
-        _current = java.lang.Math.sqrt(
-                java.lang.Math.pow(
-                        xRawNum*standardDeviationValue + xMeanValue, 2)
-                + java.lang.Math.pow(
-                        yRawNum*standardDeviationValue + yMeanValue, 2));
+        _current = java.lang.Math.sqrt(java.lang.Math.pow((xRawNum * standardDeviationValue)
+                    + xMeanValue, 2)
+                + java.lang.Math.pow((yRawNum * standardDeviationValue)
+                    + yMeanValue, 2));
         return super.prefire();
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The random number for the current iteration.
     private double _current;
 }

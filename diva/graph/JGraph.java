@@ -23,10 +23,10 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 */
-
 package diva.graph;
 
 import diva.canvas.JCanvas;
+
 
 /**
  * A graph widget analagous to java.swing.JTree.
@@ -41,8 +41,6 @@ import diva.canvas.JCanvas;
  * @version        $Id$
  */
 public class JGraph extends JCanvas {
-
-
     /**
      * Construct a new JGraph with the given graph pane.
      */
@@ -55,7 +53,7 @@ public class JGraph extends JCanvas {
      * GraphPane.
      */
     public GraphPane getGraphPane() {
-        return (GraphPane)getCanvasPane();
+        return (GraphPane) getCanvasPane();
     }
 
     /**
@@ -65,5 +63,3 @@ public class JGraph extends JCanvas {
         setCanvasPane(p);
     }
 }
-
-

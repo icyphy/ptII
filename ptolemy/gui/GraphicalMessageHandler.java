@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui;
 
 import java.awt.Component;
@@ -44,6 +43,7 @@ import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphicalMessageHandler
+
 /**
    This is a message handler that reports errors in a graphical dialog box.
    When an applet or application starts up, it should call setContext()
@@ -76,7 +76,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class GraphicalMessageHandler extends MessageHandler {
-
     /** Get the component set by a call to setContext(), or null if none.
      *  @see #setContext(Component)
      *  @return The component with respect to which the display window
@@ -86,7 +85,8 @@ public class GraphicalMessageHandler extends MessageHandler {
         if (_context == null) {
             return null;
         }
-        return (Component)_context.get();
+
+        return (Component) _context.get();
     }
 
     /** Set the component with respect to which the display window
@@ -121,20 +121,15 @@ public class GraphicalMessageHandler extends MessageHandler {
                     message[0] = StringUtilities.ellipsis(string,
                             StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
-                    Object[] options = {"Dismiss"};
+                    Object[] options = { "Dismiss" };
 
                     // Show the MODAL dialog
-                    JOptionPane.showOptionDialog(
-                            getContext(),
-                            message,
-                            "Error",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.ERROR_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
+                    JOptionPane.showOptionDialog(getContext(), message,
+                        "Error", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE, null, options, options[0]);
                 }
             };
+
         Top.deferIfNecessary(doMessage);
     }
 
@@ -153,41 +148,41 @@ public class GraphicalMessageHandler extends MessageHandler {
     protected void _error(final String info, final Throwable throwable) {
         Runnable doMessage = new Runnable() {
                 public void run() {
-                    if (throwable instanceof ptolemy.util.CancelException) return;
+                    if (throwable instanceof ptolemy.util.CancelException) {
+                        return;
+                    }
 
                     // Sometimes you find that errors are reported multiple times.
                     // To find out who is calling this method, uncomment the following.
                     // System.out.println("------ reporting error:");
                     // (new Throwable()).printStackTrace();
-
                     Object[] message = new Object[1];
                     String string;
+
                     if (info != null) {
                         string = info + "\n" + throwable.getMessage();
                     } else {
                         string = throwable.getMessage();
                     }
+
                     message[0] = StringUtilities.ellipsis(string,
                             StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
-                    Object[] options = {"Dismiss", "Display Stack Trace"};
+                    Object[] options = { "Dismiss", "Display Stack Trace" };
 
                     // Show the MODAL dialog
-                    int selected = JOptionPane.showOptionDialog(
-                            getContext(),
+                    int selected = JOptionPane.showOptionDialog(getContext(),
                             message,
                             MessageHandler.shortDescription(throwable),
                             JOptionPane.YES_NO_OPTION,
-                            JOptionPane.ERROR_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
+                            JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
                     if (selected == 1) {
                         _showStackTrace(throwable, info);
                     }
                 }
             };
+
         Top.deferIfNecessary(doMessage);
     }
 
@@ -203,20 +198,16 @@ public class GraphicalMessageHandler extends MessageHandler {
                     message[0] = StringUtilities.ellipsis(info,
                             StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-                    Object[] options = {"OK"};
+                    Object[] options = { "OK" };
 
                     // Show the MODAL dialog
-                    JOptionPane.showOptionDialog(
-                            getContext(),
-                            message,
-                            "Message",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.INFORMATION_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
+                    JOptionPane.showOptionDialog(getContext(), message,
+                        "Message", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, options,
+                        options[0]);
                 }
             };
+
         Top.deferIfNecessary(doMessage);
     }
 
@@ -235,13 +226,12 @@ public class GraphicalMessageHandler extends MessageHandler {
      * "Cancel" button.
      */
     protected void _warning(final String info)
-            throws ptolemy.util.CancelException {
-
+        throws ptolemy.util.CancelException {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, defer.
         if (EventQueue.isDispatchThread()) {
-            Object[] options = {"OK", "Cancel"};
+            Object[] options = { "OK", "Cancel" };
             Object[] message = new Object[1];
 
             // If the message lines are longer than 80 characters, we split it
@@ -252,15 +242,9 @@ public class GraphicalMessageHandler extends MessageHandler {
                     StringUtilities.ELLIPSIS_LENGTH_LONG);
 
             // Show the MODAL dialog
-            int selected = JOptionPane.showOptionDialog(
-                    getContext(),
-                    message,
-                    "Warning",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
+            int selected = JOptionPane.showOptionDialog(getContext(), message,
+                    "Warning", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
             if (selected == 1) {
                 throw new ptolemy.util.CancelException();
@@ -268,7 +252,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         } else {
             Runnable doWarning = new Runnable() {
                     public void run() {
-                        Object[] options = {"OK"};
+                        Object[] options = { "OK" };
                         Object[] message = new Object[1];
 
                         // If the message lines are longer than 80 characters, we split it
@@ -279,17 +263,13 @@ public class GraphicalMessageHandler extends MessageHandler {
                                 StringUtilities.ELLIPSIS_LENGTH_LONG);
 
                         // Show the MODAL dialog
-                        int selected = JOptionPane.showOptionDialog(
-                                getContext(),
-                                message,
-                                "Warning",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.WARNING_MESSAGE,
-                                null,
-                                options,
+                        int selected = JOptionPane.showOptionDialog(getContext(),
+                                message, "Warning", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE, null, options,
                                 options[0]);
                     }
                 };
+
             Top.deferIfNecessary(doWarning);
         }
     }
@@ -314,7 +294,7 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  "Cancel" button.
      */
     protected void _warning(final String info, final Throwable throwable)
-            throws ptolemy.util.CancelException {
+        throws ptolemy.util.CancelException {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, defer.
@@ -322,18 +302,13 @@ public class GraphicalMessageHandler extends MessageHandler {
             Object[] message = new Object[1];
             message[0] = StringUtilities.ellipsis(info,
                     StringUtilities.ELLIPSIS_LENGTH_LONG);
-            Object[] options = {"OK", "Display Stack Trace", "Cancel"};
+
+            Object[] options = { "OK", "Display Stack Trace", "Cancel" };
 
             // Show the MODAL dialog
-            int selected = JOptionPane.showOptionDialog(
-                    getContext(),
-                    message,
-                    "Warning",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
+            int selected = JOptionPane.showOptionDialog(getContext(), message,
+                    "Warning", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
             if (selected == 1) {
                 _showStackTrace(throwable, info);
@@ -346,17 +321,13 @@ public class GraphicalMessageHandler extends MessageHandler {
                         Object[] message = new Object[1];
                         message[0] = StringUtilities.ellipsis(info,
                                 StringUtilities.ELLIPSIS_LENGTH_LONG);
-                        Object[] options = {"OK", "Display Stack Trace"};
+
+                        Object[] options = { "OK", "Display Stack Trace" };
 
                         // Show the MODAL dialog
-                        int selected = JOptionPane.showOptionDialog(
-                                getContext(),
-                                message,
-                                "Warning",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.WARNING_MESSAGE,
-                                null,
-                                options,
+                        int selected = JOptionPane.showOptionDialog(getContext(),
+                                message, "Warning", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE, null, options,
                                 options[0]);
 
                         if (selected == 1) {
@@ -364,6 +335,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                         }
                     }
                 };
+
             Top.deferIfNecessary(doWarning);
         }
     }
@@ -379,18 +351,13 @@ public class GraphicalMessageHandler extends MessageHandler {
         Object[] message = new Object[1];
         message[0] = StringUtilities.ellipsis(question,
                 StringUtilities.ELLIPSIS_LENGTH_LONG);
-        Object[] options = {"Yes", "No"};
+
+        Object[] options = { "Yes", "No" };
 
         // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                getContext(),
-                message,
-                "Warning",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
-                null,
-                options,
-                options[0]);
+        int selected = JOptionPane.showOptionDialog(getContext(), message,
+                "Warning", JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
         if (selected == 0) {
             return true;
@@ -401,7 +368,6 @@ public class GraphicalMessageHandler extends MessageHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // The context.
     protected static WeakReference _context = null;
 
@@ -421,6 +387,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         throwable.printStackTrace(pw);
+
         JTextArea text = new JTextArea(sw.toString(), 60, 80);
         JScrollPane stext = new JScrollPane(text);
         stext.setPreferredSize(new Dimension(600, 300));
@@ -430,20 +397,19 @@ public class GraphicalMessageHandler extends MessageHandler {
         // We want to stack the text area with another message
         Object[] message = new Object[2];
         String string;
+
         if (info != null) {
             string = info + "\n" + throwable.getMessage();
         } else {
             string = throwable.getMessage();
         }
+
         message[0] = StringUtilities.ellipsis(string,
                 StringUtilities.ELLIPSIS_LENGTH_LONG);
         message[1] = stext;
 
         // Show the MODAL dialog
-        JOptionPane.showMessageDialog(
-                getContext(),
-                message,
-                "Stack trace",
-                JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(getContext(), message, "Stack trace",
+            JOptionPane.ERROR_MESSAGE);
     }
 }

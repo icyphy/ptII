@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.test;
 
 import ptolemy.actor.TypeEvent;
 import ptolemy.actor.TypeListener;
 import ptolemy.data.type.Type;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestTypeListener
+
 /**
    This dummy type listener implements the TypeListener interface.
    It keeps the last type change event information in a String
@@ -47,7 +48,6 @@ import ptolemy.data.type.Type;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestTypeListener implements TypeListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -72,7 +72,7 @@ public class TestTypeListener implements TypeListener {
         _message = event.getSource().getFullName() + "/";
 
         Type oldtype = event.getOldType();
-        _message += oldtype.toString() + "/";
+        _message += (oldtype.toString() + "/");
 
         Type newtype = event.getNewType();
         _message += newtype.toString();
@@ -80,6 +80,5 @@ public class TestTypeListener implements TypeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private String _message = "";
 }

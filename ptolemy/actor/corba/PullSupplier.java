@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj)
 @AcceptedRating Yellow (janneck)
 */
-
 package ptolemy.actor.corba;
 
 import java.util.StringTokenizer;
@@ -49,8 +48,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PullPublisher
+
 /**
    An actor that send data to a remote consumer when there is pull request.
 
@@ -72,9 +73,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 1.0
 */
-
 public class PullSupplier extends Sink {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -84,10 +83,10 @@ public class PullSupplier extends Sink {
      *   actor with this name.
      */
     public PullSupplier(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         supplierName = new Parameter(this, "supplierName");
         supplierName.setToken(new StringToken(""));
@@ -95,7 +94,6 @@ public class PullSupplier extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     public Parameter ORBInitProperties;
 
     /** The name of the supplier. The type of the Parameter
@@ -114,16 +112,19 @@ public class PullSupplier extends Sink {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(
-                ((StringToken)ORBInitProperties.getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
+                .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
+
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
             _debug("ORB initial argument: " + args[i]);
             i++;
         }
+
         _orb = null;
         _initORB(args);
         _debug("Finished initializing " + getName());
@@ -131,7 +132,6 @@ public class PullSupplier extends Sink {
         _pullIsWaiting = false;
         _prefireIsWaiting = false;
     }
-
 
     /** Read one input token, if there is one, from the input
      *  and notify the thread that is pulling for data.
@@ -142,7 +142,8 @@ public class PullSupplier extends Sink {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             _lastReadToken = input.get(0);
-            synchronized(_pullThread) {
+
+            synchronized (_pullThread) {
                 _pullThread.notifyAll();
             }
         }
@@ -160,29 +161,35 @@ public class PullSupplier extends Sink {
                     if (_debugging) {
                         _debug(getName(), " is waiting.");
                     }
+
                     _prefireIsWaiting = true;
                     _lock.wait();
                     _prefireIsWaiting = false;
+
                     if (_debugging) {
                         _debug(getName(), " wake up.");
                     }
                 }
             } catch (InterruptedException e) {
                 throw new IllegalActionException(this,
-                        "blocking interrupted." +
-                        e.getMessage());
+                    "blocking interrupted." + e.getMessage());
             }
         }
+
         if (_debugging) {
             _debug(getName(), "_pullIsWaiting = " + _pullIsWaiting);
         }
+
         if (_pullIsWaiting) {
             boolean b = input.hasToken(0);
+
             if (_debugging) {
                 _debug(getName(), "hasToken = " + b);
             }
+
             return b;
         }
+
         return false;
     }
 
@@ -191,17 +198,21 @@ public class PullSupplier extends Sink {
      */
     public void stop() {
         if (_prefireIsWaiting) {
-            synchronized( _lock) {
+            synchronized (_lock) {
                 _lock.notifyAll();
             }
+
             _prefireIsWaiting = false;
         }
+
         if (_pullIsWaiting) {
-            synchronized(_pullThread) {
+            synchronized (_pullThread) {
                 _pullThread.notifyAll();
             }
+
             _pullIsWaiting = false;
         }
+
         super.stop();
     }
 
@@ -209,42 +220,43 @@ public class PullSupplier extends Sink {
     ////                         private methods                   ////
     //use a private method to deal with necessary CORBA operations.
     // @exception IllegalActionException If ORB initialize failed.
-    private void _initORB(String[] args) throws IllegalActionException{
+    private void _initORB(String[] args) throws IllegalActionException {
         try {
             // start the ORB
             _orb = ORB.init(args, null);
             _debug(getName(), " ORB initialized");
+
             //get the root naming context
             org.omg.CORBA.Object objRef = _orb.resolve_initial_references(
                     "NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
+
             if (ncRef != null) {
                 _debug(getName(), "found name service.");
             }
+
             _supplier = new pullSupplier();
             _orb.connect(_supplier);
+
             //registe the consumer with the given name
-            NameComponent namecomp = new NameComponent(
-                    ((StringToken)supplierName.getToken()).
-                    stringValue(), "");
+            NameComponent namecomp = new NameComponent(((StringToken) supplierName
+                    .getToken()).stringValue(), "");
             _debug(getName(), " register the consumer with name: ",
-                    (supplierName.getToken()).toString());
-            NameComponent path[] = {namecomp};
+                (supplierName.getToken()).toString());
+
+            NameComponent[] path = { namecomp };
             ncRef.rebind(path, _supplier);
         } catch (UserException ex) {
             throw new IllegalActionException(this,
-                    " initialize ORB failed. Please make sure the " +
-                    "naming server has already started and the " +
-                    "ORBInitProperty parameter is configured correctly. " +
-                    "the error message is: " + ex.getMessage());
+                " initialize ORB failed. Please make sure the "
+                + "naming server has already started and the "
+                + "ORBInitProperty parameter is configured correctly. "
+                + "the error message is: " + ex.getMessage());
         }
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private ORB _orb;
 
     //An instance of pullSupplier this actor create and registered.
@@ -259,6 +271,7 @@ public class PullSupplier extends Sink {
     // The lock that monitors the pullinging thread and the
     // prefire() of this actor.
     private Object _lock = new Object();
+
     // The lock that monitors the pullinging thread and the
     // fire() of this actor.
     private Object _pullThread = new Object();
@@ -266,12 +279,9 @@ public class PullSupplier extends Sink {
     //// The flag for indicating whether prefire() is waiting.
     private boolean _prefireIsWaiting;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
-    private class pullSupplier extends _pullSupplierImplBase{
-
+    private class pullSupplier extends _pullSupplierImplBase {
         /**
          * Construct a pullSupplier.
          */
@@ -286,53 +296,61 @@ public class PullSupplier extends Sink {
          * thread will wait until there is data returned.
          *
          */
-        public org.omg.CORBA.Any pull() throws CorbaIllegalActionException
-        {
+        public org.omg.CORBA.Any pull() throws CorbaIllegalActionException {
             try {
-
                 if (_lastReadToken == null) {
                     if (_debugging) {
-                        _debug(getName(), "no token to return, so pull will wait.");
+                        _debug(getName(),
+                            "no token to return, so pull will wait.");
                     }
-                    synchronized(_pullThread) {
+
+                    synchronized (_pullThread) {
                         if (_debugging) {
                             _debug(getName(), "pull() is waiting.");
                         }
+
                         _pullIsWaiting = true;
+
                         if (_prefireIsWaiting) {
                             if (_debugging) {
-                                _debug(getName(), "pull for data and wake up prefire().");
+                                _debug(getName(),
+                                    "pull for data and wake up prefire().");
                             }
-                            synchronized( _lock) {
+
+                            synchronized (_lock) {
                                 if (_debugging) {
                                     _debug(getName(), "notify prefire().");
                                 }
+
                                 _lock.notifyAll();
                             }
                         }
+
                         _pullThread.wait();
-                        _pullIsWaiting= false;
+                        _pullIsWaiting = false;
+
                         if (_debugging) {
                             _debug(getName(), "pull() wake up.");
                         }
                     }
                 }
+
                 if (_lastReadToken != null) {
                     if (_debugging) {
                         _debug(getName(), "return requested data.");
                     }
+
                     org.omg.CORBA.Any event = _orb.create_any();
                     event.insert_string(_lastReadToken.toString());
                     _lastReadToken = null;
                     return event;
                 }
-                return null;
 
+                return null;
             } catch (InterruptedException e) {
-                throw new InternalErrorException("pull method interrupted." + e.getMessage());
+                throw new InternalErrorException("pull method interrupted."
+                    + e.getMessage());
             }
         }
     }
-
 }
-

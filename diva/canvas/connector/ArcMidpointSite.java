@@ -24,11 +24,11 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.connector;
 
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
+
 
 /** A concrete implementation of Site that is located in the
  * center of the bounding box of a figure. This is a utility class
@@ -39,7 +39,6 @@ import diva.canvas.Figure;
  * @author         John Reekie
  */
 public class ArcMidpointSite extends AbstractSite {
-
     /** The id
      */
     private int _id;
@@ -52,20 +51,20 @@ public class ArcMidpointSite extends AbstractSite {
      *  @param connector The arc connector.
      *  @param id The id.
      */
-    public ArcMidpointSite (ArcConnector connector, int id) {
+    public ArcMidpointSite(ArcConnector connector, int id) {
         this._id = id;
         this._parentFigure = connector;
     }
 
     /** Get the figure to which this site is attached.
      */
-    public Figure getFigure () {
+    public Figure getFigure() {
         return _parentFigure;
     }
 
     /** Get the ID of this site.
      */
-    public int getID () {
+    public int getID() {
         return _id;
     }
 
@@ -73,7 +72,7 @@ public class ArcMidpointSite extends AbstractSite {
      * is located in the center of the parent figure's bounding
      * box.
      */
-    public double getX () {
+    public double getX() {
         return _parentFigure.getArcMidpoint().getX();
     }
 
@@ -81,7 +80,7 @@ public class ArcMidpointSite extends AbstractSite {
      * is located in the center of the parent figure's bounding
      * box.
      */
-    public double getY () {
+    public double getY() {
         return _parentFigure.getArcMidpoint().getY();
     }
 }

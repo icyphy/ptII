@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.util.ArrayList;
@@ -33,8 +32,10 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InvalidStateException
+
 /**
    Some object or set of objects has a state that is not
    permitted. E.g., a NamedObj has a null name. Or a topology has
@@ -50,8 +51,6 @@ import java.util.List;
    @Pt.AcceptedRating Green (cxh)
 */
 public class InvalidStateException extends KernelRuntimeException {
-
-
     /** Construct an exception with only a detail message.
      *  @param detail The message.
      */
@@ -65,8 +64,7 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
-    public InvalidStateException(Nameable object,
-            Throwable cause, String detail) {
+    public InvalidStateException(Nameable object, Throwable cause, String detail) {
         super(object, null, cause, detail);
     }
 
@@ -86,7 +84,7 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(Nameable object1, Nameable object2,
-            String detail) {
+        String detail) {
         this(object1, object2, null, detail);
     }
 
@@ -98,7 +96,7 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(Nameable object1, Nameable object2,
-            Throwable cause, String detail) {
+        Throwable cause, String detail) {
         super(object1, object2, cause, detail);
     }
 
@@ -128,14 +126,13 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
-    public InvalidStateException(Collection objects,
-            Throwable cause, String detail) {
+    public InvalidStateException(Collection objects, Throwable cause,
+        String detail) {
         super(objects, cause, detail);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Convert from an Enumeration to a List.
     //
     // JDK1.4 has a Collections.list(Enumeration) method
@@ -145,9 +142,11 @@ public class InvalidStateException extends KernelRuntimeException {
     // http://java.sun.com/docs/books/tutorial/collections/interoperability/compatibility.html
     private static List _list(Enumeration objects) {
         List list = new ArrayList();
+
         while (objects.hasMoreElements()) {
             list.add(objects.nextElement());
         }
+
         return list;
     }
 }

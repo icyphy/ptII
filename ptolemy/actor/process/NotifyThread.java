@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.process;
 
 import java.util.Iterator;
@@ -36,6 +35,7 @@ import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// NotifyThread
+
 /**
    Helper thread for calling notifyAll() on a single lock or a LinkedList
    of locks. Since this is a new thread without any locks, calling notifyAll
@@ -52,16 +52,16 @@ import java.util.LinkedList;
    @Pt.AcceptedRating Yellow (mudit)
 
 */
-
 public class NotifyThread extends Thread {
-
     /** Construct a thread to be used call notifyAll() on a set of locks.
      *  @param locks The set of locks to call notifyAll() on.
      */
     public NotifyThread(LinkedList locks) {
         _locks = new LinkedList();
+
         Iterator e = locks.iterator();
-        while (e.hasNext() ) {
+
+        while (e.hasNext()) {
             _locks.addLast(e.next());
         }
     }
@@ -82,14 +82,16 @@ public class NotifyThread extends Thread {
     public void run() {
         if (_locks != null) {
             Iterator objects = _locks.iterator();
+
             while (objects.hasNext()) {
                 Object nextObj = objects.next();
-                synchronized(nextObj) {
+
+                synchronized (nextObj) {
                     nextObj.notifyAll();
                 }
             }
         } else {
-            synchronized(_lock) {
+            synchronized (_lock) {
                 _lock.notifyAll();
             }
         }
@@ -97,7 +99,6 @@ public class NotifyThread extends Thread {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The locks to call notifyAll() on.
     private LinkedList _locks = null;
 

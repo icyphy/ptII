@@ -27,19 +27,20 @@ package diva.util;
 
 import java.util.List;
 
+
 /**
  * A reverse-order iterator over a List.
  *
  * @author John Reekie
  * @version $Id$
  */
-public class ReverseIterator extends  IteratorAdapter {
+public class ReverseIterator extends IteratorAdapter {
     private List _list;
     private int _cursor;
 
     /** Construct a reverse iterator on the given list.
      */
-    public ReverseIterator (List list) {
+    public ReverseIterator(List list) {
         this._list = list;
         _cursor = list.size();
     }
@@ -57,6 +58,3 @@ public class ReverseIterator extends  IteratorAdapter {
         return _list.get(_cursor);
     }
 }
-
-
-

@@ -26,7 +26,6 @@
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.sr.lib;
 
 import java.awt.Color;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ButtonTime
+
 /**
    Output the current wall clock time in response to a click of a button.
 
@@ -60,7 +61,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (pwhitake)
 */
 public class ButtonTime extends WallClockTime implements Placeable {
-
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,7 +70,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
      *   actor with this name.
      */
     public ButtonTime(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         text = new StringAttribute(this, "text");
@@ -110,9 +110,11 @@ public class ButtonTime extends WallClockTime implements Placeable {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _buttonPressed = false;
+
         if (_button == null) {
             place(_container);
         }
+
         if (_frame != null) {
             _frame.setVisible(true);
             _frame.toFront();
@@ -128,13 +130,16 @@ public class ButtonTime extends WallClockTime implements Placeable {
         _container = container;
         _button = new JButton(text.getExpression());
         _button.addActionListener(new ButtonListener());
+
         if (_container == null) {
             System.out.println("Container is null");
+
             // place the button in its own frame.
             JFrame _frame = new JFrame(getFullName());
             _frame.getContentPane().add(_button);
         } else {
             _container.add(_button);
+
             //_button.setBackground(Color.red);
         }
     }
@@ -147,6 +152,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
         if (_buttonPressed) {
             _buttonPressed = false;
         }
+
         return super.postfire();
     }
 
@@ -162,8 +168,9 @@ public class ButtonTime extends WallClockTime implements Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
+
         if (container == null) {
             _remove();
         }
@@ -192,7 +199,6 @@ public class ButtonTime extends WallClockTime implements Placeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The button.
     private JButton _button;
 
@@ -208,15 +214,12 @@ public class ButtonTime extends WallClockTime implements Placeable {
 
     // Flag indicating that the place() method has been called at least once.
     private boolean _placeCalled = false;
-
     private ButtonTime _self;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-
             try {
                 _buttonPressed = true;
 
@@ -224,7 +227,6 @@ public class ButtonTime extends WallClockTime implements Placeable {
 
                 // JDK1.2 bug: WallClockTime._getCurrentTime() is
                 // protected, but not accessible here.
-
                 // Note, WallClockTime._getCurrentTime() returns a double,
                 // which we are going to compare against model time,
                 // so we create a Time object that accounts for the
@@ -232,6 +234,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
                 Time firingTime = new Time(director, _getCurrentTime());
 
                 Time currentTime = director.getModelTime();
+
                 if (firingTime.compareTo(currentTime) < 0) {
                     // This shouldn't happen, but it will prevent us
                     // from enqueuing events in the past
@@ -239,13 +242,10 @@ public class ButtonTime extends WallClockTime implements Placeable {
                 }
 
                 director.fireAt(_self, firingTime);
-
             } catch (IllegalActionException ex) {
                 // Should never happen
                 throw new InternalErrorException(ex.getMessage());
             }
         }
     }
-
 }
-

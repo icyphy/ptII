@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.kernel;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DDEActor
+
 /**
    An optional base class for DDE actors. DDEActors are intended to
    execute as autonomous processes that maintain a distributed notion
@@ -68,7 +69,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.domains.dde.kernel.NullToken
 */
 public class DDEActor extends TypedAtomicActor {
-
     /** Construct a DDEActor with no container and a name that
      *  is an empty string.
      */
@@ -95,7 +95,7 @@ public class DDEActor extends TypedAtomicActor {
      *  superclass throws a NameDuplicationException .
      */
     public DDEActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -124,9 +124,11 @@ public class DDEActor extends TypedAtomicActor {
      */
     public Token getNextToken() throws IllegalActionException {
         Token token = _getNextInput();
-        if ( token instanceof NullToken ) {
+
+        if (token instanceof NullToken) {
             return getNextToken();
         }
+
         return token;
     }
 
@@ -156,26 +158,26 @@ public class DDEActor extends TypedAtomicActor {
      */
     Token _getNextInput() throws IllegalActionException {
         Thread thread = Thread.currentThread();
-        if ( thread instanceof DDEThread ) {
-            TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-            DDEReceiver lowestReceiver =
-                (DDEReceiver)timeKeeper.getFirstReceiver();
 
-            if ( lowestReceiver.hasToken() ) {
-                _lastPort = (TypedIOPort)lowestReceiver.getContainer();
+        if (thread instanceof DDEThread) {
+            TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
+            DDEReceiver lowestReceiver = (DDEReceiver) timeKeeper
+                .getFirstReceiver();
+
+            if (lowestReceiver.hasToken()) {
+                _lastPort = (TypedIOPort) lowestReceiver.getContainer();
                 return lowestReceiver.get();
             } else {
                 return _getNextInput();
             }
         } else {
-            throw new IllegalActionException(this, "Illegal attempt "
-                    + "to execute a DDEActor by a non-DDEThread.");
+            throw new IllegalActionException(this,
+                "Illegal attempt "
+                + "to execute a DDEActor by a non-DDEThread.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private TypedIOPort _lastPort = null;
-
 }

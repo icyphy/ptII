@@ -28,8 +28,8 @@
 
 */
 
-
 /// NestedExceptions
+
 /***
     A simple program to exceptions across methods.
 
@@ -39,29 +39,22 @@
     @Pt.ProposedRating Red (ankush)
     @Pt.AcceptedRating Red (ankush)
 */
-
-public class GlobalExceptions
-{
-    public static void main(String[] args)
-    {
+public class GlobalExceptions {
+    public static void main(String[] args) {
         System.out.println(1);
 
-        try
-            {
-                System.out.println(2);
-                // This will throw an exception.
-                a();
-            }
-        catch(Exception e)
-            {
-                System.out.println(4);
-            }
+        try {
+            System.out.println(2);
+
+            // This will throw an exception.
+            a();
+        } catch (Exception e) {
+            System.out.println(4);
+        }
     }
 
-    protected static void a() throws Exception
-    {
+    protected static void a() throws Exception {
         System.out.println(3);
         throw new Exception();
     }
 }
-

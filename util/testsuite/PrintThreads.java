@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 /* This code was originally found at
    http://www.fsg.com/tech/threadmon.htm
    and is
@@ -38,13 +37,14 @@ COPYRIGHTENDKEY
    Fax: +1-212-376-6320
    E-mail: threadmon@fsg.com
 */
-
 package util.testsuite;
 
 import javax.swing.SwingUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PrintThreads
+
 /** PrintThreads prints all the Threads in the current JVM.
     This class will work in both applications and applets.
     When run in an applet, this class attempts to gracefully handle
@@ -60,7 +60,6 @@ import javax.swing.SwingUtilities;
     @Pt.AcceptedRating Red (cxh)
 */
 public class PrintThreads {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -70,9 +69,11 @@ public class PrintThreads {
      * @return The root thread group.
      */
     public static ThreadGroup rootThreadGroup() {
-        ThreadGroup parent, rootGroup;
+        ThreadGroup parent;
+        ThreadGroup rootGroup;
 
         parent = Thread.currentThread().getThreadGroup();
+
         do {
             rootGroup = parent;
             parent = parent.getParent();
@@ -93,8 +94,7 @@ public class PrintThreads {
 
         results.append(rootGroup.toString());
 
-        ThreadGroup threadGroups[]
-            = new ThreadGroup[rootGroup.activeGroupCount()];
+        ThreadGroup[] threadGroups = new ThreadGroup[rootGroup.activeGroupCount()];
         rootGroup.enumerate(threadGroups);
 
         for (int i = 0; i < threadGroups.length; i++) {
@@ -111,8 +111,9 @@ public class PrintThreads {
      *  which thread is the Swing Event Dispatch Thread.
      *  @return A string naming all the threads.
      */
-    public static String allThreads(boolean indicateEventDispatchThread ) {
+    public static String allThreads(boolean indicateEventDispatchThread) {
         ThreadGroup rootGroup = null;
+
         try {
             rootGroup = rootThreadGroup();
         } catch (Exception e) {
@@ -126,19 +127,20 @@ public class PrintThreads {
 
         if (indicateEventDispatchThread) {
             results.append("Current Thread (*) "
-                    + (SwingUtilities.isEventDispatchThread() ?
-                            "_is_" : "_is not_")
-                    + " the Swing Event Dispatch Thread\n");
+                + (SwingUtilities.isEventDispatchThread() ? "_is_" : "_is not_")
+                + " the Swing Event Dispatch Thread\n");
         }
+
         results.append(_getHeader());
 
-        Thread threads[] = new Thread[rootGroup.activeCount()];
+        Thread[] threads = new Thread[rootGroup.activeCount()];
         rootGroup.enumerate(threads);
 
-        for (int i = 0; i < threads.length; i++ ) {
+        for (int i = 0; i < threads.length; i++) {
             Thread thread = threads[i];
             results.append(toThreadDescription(thread) + "\n");
         }
+
         return results.toString();
     }
 
@@ -150,67 +152,64 @@ public class PrintThreads {
     public static String toThreadDescription(Thread thread) {
         String name = "Unnamed thread";
         String group = "Unnamed group";
+
         try {
             if (thread == null) {
-                return new String("PrintThreads.toThreadDescription(): " +
-                        "thread argument == null\n   " +
-                        "This can happen if the thread was " +
-                        "killed while PrintThreads was called");
+                return new String("PrintThreads.toThreadDescription(): "
+                    + "thread argument == null\n   "
+                    + "This can happen if the thread was "
+                    + "killed while PrintThreads was called");
             }
+
             if (thread.getName() != null) {
                 name = thread.getName();
             }
+
             if ((thread.getThreadGroup() != null)
                     && (thread.getThreadGroup().getName() != null)) {
                 group = thread.getThreadGroup().getName();
             }
 
-            return _stringFormat(name, 35) + " " +
-                _stringFormat(group, 20) + " "  +
-                _stringFormat(Integer.toString(thread.getPriority()), 3) +
-                " " +
-                _stringFormat(new Boolean(thread.isDaemon()).toString(), 6) +
-                " " +
-                _stringFormat(new Boolean(thread.isAlive()).toString(), 5) +
-                (Thread.currentThread().equals(thread) ? " *": "  ");
+            return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
+            + " " + _stringFormat(Integer.toString(thread.getPriority()), 3)
+            + " " + _stringFormat(new Boolean(thread.isDaemon()).toString(), 6)
+            + " " + _stringFormat(new Boolean(thread.isAlive()).toString(), 5)
+            + (Thread.currentThread().equals(thread) ? " *" : "  ");
         } catch (Exception e) {
-            return _stringFormat(name, 35) + " " +
-                _stringFormat(group, 20) + " "  +
-                "PrintThread.toThreadDescription(): Bad State!: " + e;
+            return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
+            + " " + "PrintThread.toThreadDescription(): Bad State!: " + e;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /* Return a header string corresponding to the names of the fields in
      * the strings maintained by the dispString property of this class
      */
     private final static String _getHeader() {
-        return _stringFormat("Name", 35)
-            + " " + _stringFormat("Group", 20) + " Pri Daemon Alive Curr\n";
+        return _stringFormat("Name", 35) + " " + _stringFormat("Group", 20)
+        + " Pri Daemon Alive Curr\n";
     }
 
     /* Pads inputString out with spaces to width length.
      */
     private final static String _stringFormat(String inputString, int length) {
-        if (inputString == null)
+        if (inputString == null) {
             inputString = " ";
+        }
 
         // Pad string out to constant width
         int stringLength = inputString.length();
 
         if (stringLength < length) {
-            for (int i = 0; i < length - stringLength; i++) {
+            for (int i = 0; i < (length - stringLength); i++) {
                 inputString = inputString + " ";
             }
-        }
-        else if (inputString.length() > length) {
+        } else if (inputString.length() > length) {
             inputString = inputString.substring(0, length);
         }
+
         return inputString;
     }
 }
-
-

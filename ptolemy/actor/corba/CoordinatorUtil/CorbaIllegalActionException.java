@@ -7,27 +7,21 @@ package ptolemy.actor.corba.CoordinatorUtil;
  * from Coordinator.idl
  *
  */
-
-public final class CorbaIllegalActionException extends org.omg.CORBA.UserException
-{
+public final class CorbaIllegalActionException
+    extends org.omg.CORBA.UserException {
     public String message = null;
 
-    public CorbaIllegalActionException ()
-    {
+    public CorbaIllegalActionException() {
         super(CorbaIllegalActionExceptionHelper.id());
     } // ctor
 
-    public CorbaIllegalActionException (String _message)
-    {
+    public CorbaIllegalActionException(String _message) {
         super(CorbaIllegalActionExceptionHelper.id());
         message = _message;
     } // ctor
 
-
-    public CorbaIllegalActionException (String $reason, String _message)
-    {
+    public CorbaIllegalActionException(String $reason, String _message) {
         super(CorbaIllegalActionExceptionHelper.id() + "  " + $reason);
         message = _message;
     } // ctor
-
 } // class CorbaIllegalActionException

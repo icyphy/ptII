@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.kernel.test;
+
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -37,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSystem
+
 /**
    ExampleSystem constructs a hierarchal graph as shown in
    Ptolemy II design document, Figure 8.
@@ -54,7 +56,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red
 */
 public class ExampleSystem implements Serializable {
-
     /** Construct the graph.
      *  @exception NameDuplicationException if the example system cannot
      *  be built because of a duplicate name
@@ -62,12 +63,10 @@ public class ExampleSystem implements Serializable {
      *  be built.
      */
     public ExampleSystem()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
 
-
         // Create composite entities
-
         e0 = new CompositeEntity();
         e0.setName("E0");
         e3 = new CompositeEntity(e0, "E3");
@@ -117,7 +116,6 @@ public class ExampleSystem implements Serializable {
         r11 = e10.connect(p12, p13, "R11");
         r12 = e10.connect(p14, p13, "R12");
         p11.link(r7);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,67 +123,34 @@ public class ExampleSystem implements Serializable {
 
     /** Return the results as a String. */
     public String toString() {
-        return ("----Methods of ComponentRelation----\n" +
-                "linkedPorts:\n" +
-                printLinkedPorts(r1) +
-                printLinkedPorts(r2) +
-                printLinkedPorts(r3) +
-                printLinkedPorts(r4) +
-                printLinkedPorts(r5) +
-                printLinkedPorts(r6) +
-                printLinkedPorts(r7) +
-                printLinkedPorts(r8) +
-                printLinkedPorts(r9) +
-                printLinkedPorts(r10) +
-                printLinkedPorts(r11) +
-                printLinkedPorts(r12) +
-                "\ndeepLinkedPorts:\n" +
-                printDeepLinkedPorts(r1) +
-                printDeepLinkedPorts(r2) +
-                printDeepLinkedPorts(r3) +
-                printDeepLinkedPorts(r4) +
-                printDeepLinkedPorts(r5) +
-                printDeepLinkedPorts(r6) +
-                printDeepLinkedPorts(r7) +
-                printDeepLinkedPorts(r8) +
-                printDeepLinkedPorts(r9) +
-                printDeepLinkedPorts(r10) +
-                printDeepLinkedPorts(r11) +
-                printDeepLinkedPorts(r12) +
-                "\n----Methods of ComponentPort----\n" +
-                "connectedPorts:\n" +
-                printConnectedPorts(p0) +
-                printConnectedPorts(p1) +
-                printConnectedPorts(p2) +
-                printConnectedPorts(p3) +
-                printConnectedPorts(p4) +
-                printConnectedPorts(p5) +
-                printConnectedPorts(p6) +
-                printConnectedPorts(p7) +
-                printConnectedPorts(p8) +
-                printConnectedPorts(p9) +
-                printConnectedPorts(p10) +
-                printConnectedPorts(p11) +
-                printConnectedPorts(p12) +
-                printConnectedPorts(p13) +
-                printConnectedPorts(p14) +
-                "\ndeepConnectedPorts:\n" +
-                printDeepConnectedPorts(p0) +
-                printDeepConnectedPorts(p1) +
-                printDeepConnectedPorts(p2) +
-                printDeepConnectedPorts(p3) +
-                printDeepConnectedPorts(p4) +
-                printDeepConnectedPorts(p5) +
-                printDeepConnectedPorts(p6) +
-                printDeepConnectedPorts(p7) +
-                printDeepConnectedPorts(p8) +
-                printDeepConnectedPorts(p9) +
-                printDeepConnectedPorts(p10) +
-                printDeepConnectedPorts(p11) +
-                printDeepConnectedPorts(p12) +
-                printDeepConnectedPorts(p13) +
-                printDeepConnectedPorts(p14));
-
+        return ("----Methods of ComponentRelation----\n" + "linkedPorts:\n"
+        + printLinkedPorts(r1) + printLinkedPorts(r2) + printLinkedPorts(r3)
+        + printLinkedPorts(r4) + printLinkedPorts(r5) + printLinkedPorts(r6)
+        + printLinkedPorts(r7) + printLinkedPorts(r8) + printLinkedPorts(r9)
+        + printLinkedPorts(r10) + printLinkedPorts(r11) + printLinkedPorts(r12)
+        + "\ndeepLinkedPorts:\n" + printDeepLinkedPorts(r1)
+        + printDeepLinkedPorts(r2) + printDeepLinkedPorts(r3)
+        + printDeepLinkedPorts(r4) + printDeepLinkedPorts(r5)
+        + printDeepLinkedPorts(r6) + printDeepLinkedPorts(r7)
+        + printDeepLinkedPorts(r8) + printDeepLinkedPorts(r9)
+        + printDeepLinkedPorts(r10) + printDeepLinkedPorts(r11)
+        + printDeepLinkedPorts(r12) + "\n----Methods of ComponentPort----\n"
+        + "connectedPorts:\n" + printConnectedPorts(p0)
+        + printConnectedPorts(p1) + printConnectedPorts(p2)
+        + printConnectedPorts(p3) + printConnectedPorts(p4)
+        + printConnectedPorts(p5) + printConnectedPorts(p6)
+        + printConnectedPorts(p7) + printConnectedPorts(p8)
+        + printConnectedPorts(p9) + printConnectedPorts(p10)
+        + printConnectedPorts(p11) + printConnectedPorts(p12)
+        + printConnectedPorts(p13) + printConnectedPorts(p14)
+        + "\ndeepConnectedPorts:\n" + printDeepConnectedPorts(p0)
+        + printDeepConnectedPorts(p1) + printDeepConnectedPorts(p2)
+        + printDeepConnectedPorts(p3) + printDeepConnectedPorts(p4)
+        + printDeepConnectedPorts(p5) + printDeepConnectedPorts(p6)
+        + printDeepConnectedPorts(p7) + printDeepConnectedPorts(p8)
+        + printDeepConnectedPorts(p9) + printDeepConnectedPorts(p10)
+        + printDeepConnectedPorts(p11) + printDeepConnectedPorts(p12)
+        + printDeepConnectedPorts(p13) + printDeepConnectedPorts(p14));
     }
 
     /** Print the linked ports for a given ComponentRelation. The ports
@@ -197,11 +162,13 @@ public class ExampleSystem implements Serializable {
         String st = r.getName() + ": ";
         ComponentPort po;
         Enumeration ports = r.linkedPorts();
+
         while (ports.hasMoreElements()) {
             po = (ComponentPort) ports.nextElement();
-            st += po.getName() + " ";
+            st += (po.getName() + " ");
         }
-        return(st+"\n");
+
+        return (st + "\n");
     }
 
     /** Print the deeply linked ports for a given
@@ -215,11 +182,13 @@ public class ExampleSystem implements Serializable {
         String st = r.getName() + ": ";
         ComponentPort po;
         Iterator ports = r.deepLinkedPortList().iterator();
+
         while (ports.hasNext()) {
             po = (ComponentPort) ports.next();
-            st += po.getName() + " ";
+            st += (po.getName() + " ");
         }
-        return(st+"\n");
+
+        return (st + "\n");
     }
 
     /** Print the connected ports for a given ComponentPort.  Restricted
@@ -231,11 +200,13 @@ public class ExampleSystem implements Serializable {
         String st = p.getName() + ": ";
         ComponentPort po;
         Iterator ports = p.connectedPortList().iterator();
+
         while (ports.hasNext()) {
             po = (ComponentPort) ports.next();
-            st += po.getName() + " ";
+            st += (po.getName() + " ");
         }
-        return(st+"\n");
+
+        return (st + "\n");
     }
 
     /** Print the deeply connected ports for a given
@@ -248,11 +219,13 @@ public class ExampleSystem implements Serializable {
         String st = p.getName() + ": ";
         ComponentPort po;
         Iterator ports = p.deepConnectedPortList().iterator();
+
         while (ports.hasNext()) {
             po = (ComponentPort) ports.next();
-            st += po.getName() + " ";
+            st += (po.getName() + " ");
         }
-        return(st+"\n");
+
+        return (st + "\n");
     }
 
     /** Create an Example System, then print it out.
@@ -261,28 +234,143 @@ public class ExampleSystem implements Serializable {
      *  @exception IllegalActionException if the example system cannot
      *  be built.
      */
-    public static void main(String args[])
-            throws NameDuplicationException, IllegalActionException {
+    public static void main(String[] args)
+        throws NameDuplicationException, IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
         System.out.println(exsys.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Components of the system.
 
     /** @serial Composite Entities that make up the Example System. */
-    public CompositeEntity e0, e3, e4, e7, e10;
+    public CompositeEntity e0;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    // Components of the system.
+
+    /** @serial Composite Entities that make up the Example System. */
+    public CompositeEntity e3;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    // Components of the system.
+
+    /** @serial Composite Entities that make up the Example System. */
+    public CompositeEntity e4;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    // Components of the system.
+
+    /** @serial Composite Entities that make up the Example System. */
+    public CompositeEntity e7;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    // Components of the system.
+
+    /** @serial Composite Entities that make up the Example System. */
+    public CompositeEntity e10;
 
     /** @serial Component Entities that make up the Example System. */
-    public ComponentEntity e1, e2, e5, e6, e8, e9;
+    public ComponentEntity e1;
+
+    /** @serial Component Entities that make up the Example System. */
+    public ComponentEntity e2;
+
+    /** @serial Component Entities that make up the Example System. */
+    public ComponentEntity e5;
+
+    /** @serial Component Entities that make up the Example System. */
+    public ComponentEntity e6;
+
+    /** @serial Component Entities that make up the Example System. */
+    public ComponentEntity e8;
+
+    /** @serial Component Entities that make up the Example System. */
+    public ComponentEntity e9;
 
     /** @serial Component Ports that make up the Example System. */
-    public ComponentPort p0, p1, p2, p3, p4, p5, p6, p7, p8, p9,
-        p10, p11, p12, p13, p14;
+    public ComponentPort p0;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p1;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p2;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p3;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p4;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p5;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p6;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p7;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p8;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p9;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p10;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p11;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p12;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p13;
+
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p14;
 
     /** @serial Component Relations that make up the Example System. */
-    public ComponentRelation r1, r2, r3, r4, r5, r6, r7, r8, r9,
-        r10, r11, r12;
+    public ComponentRelation r1;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r2;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r3;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r4;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r5;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r6;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r7;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r8;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r9;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r10;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r11;
+
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r12;
 }

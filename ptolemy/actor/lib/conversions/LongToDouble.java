@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.DoubleToken;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LongToDouble
+
 /**
    This actor converts a LongToken into a DoubleToken.
    <p>
@@ -52,9 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.data.DoubleToken
    @see ptolemy.data.LongToken
 */
-
 public class LongToDouble extends Converter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -64,7 +63,7 @@ public class LongToDouble extends Converter {
      *   actor with this name.
      */
     public LongToDouble(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.LONG);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -78,7 +77,7 @@ public class LongToDouble extends Converter {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        LongToken inputToken = (LongToken)input.get(0);
+        LongToken inputToken = (LongToken) input.get(0);
         Long inputValue = new Long(inputToken.longValue());
         DoubleToken result = new DoubleToken(inputValue.doubleValue());
 
@@ -93,7 +92,7 @@ public class LongToDouble extends Converter {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-

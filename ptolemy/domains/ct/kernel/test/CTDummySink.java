@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package ptolemy.domains.ct.kernel.test;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -33,8 +34,10 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTDummySink
+
 /**
    Dummy actor for sink. Multi-input, no output.
    @author  Jie Liu
@@ -44,11 +47,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (reviewmoderator)
 
 */
-public class CTDummySink extends TypedAtomicActor{
+public class CTDummySink extends TypedAtomicActor {
     /** Constructor
      */
     public CTDummySink(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
@@ -56,7 +59,6 @@ public class CTDummySink extends TypedAtomicActor{
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

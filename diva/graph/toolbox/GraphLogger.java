@@ -24,11 +24,13 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.toolbox;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import diva.graph.GraphEvent;
 import diva.graph.GraphListener;
+
 
 /**
  * A logger of graph events.  Every event that is sent
@@ -48,27 +50,37 @@ public class GraphLogger implements GraphListener {
     /**
      * Add this event to the log.
      */
-    public void edgeHeadChanged(GraphEvent e) { _log.add(e); }
+    public void edgeHeadChanged(GraphEvent e) {
+        _log.add(e);
+    }
 
     /**
      * Add this event to the log.
      */
-    public void edgeTailChanged(GraphEvent e) { _log.add(e); }
+    public void edgeTailChanged(GraphEvent e) {
+        _log.add(e);
+    }
 
     /**
      * Add this event to the log.
      */
-    public void nodeAdded(GraphEvent e) { _log.add(e); }
+    public void nodeAdded(GraphEvent e) {
+        _log.add(e);
+    }
 
     /**
      * Add this event to the log.
      */
-    public void nodeRemoved(GraphEvent e) { _log.add(e); }
+    public void nodeRemoved(GraphEvent e) {
+        _log.add(e);
+    }
 
     /**
      * Add this event to the log.
      */
-    public void structureChanged(GraphEvent e) { _log.add(e); }
+    public void structureChanged(GraphEvent e) {
+        _log.add(e);
+    }
 
     /**
      * Return a sequentially-sorted iterator over the GraphEvent
@@ -83,11 +95,11 @@ public class GraphLogger implements GraphListener {
      */
     public String toString() {
         String ret = "LOG: \n";
-        for (Iterator i = iterator(); i.hasNext(); ) {
+
+        for (Iterator i = iterator(); i.hasNext();) {
             ret = ret + "\t" + i.next() + "\n";
         }
+
         return ret;
     }
 }
-
-

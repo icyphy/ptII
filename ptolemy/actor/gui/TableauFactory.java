@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.gui;
 
 import java.util.Iterator;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TableauFactory
+
 /**
    This class is an attribute that creates a tableau to view a specified effigy.
    When a model is opened, if the top-level of that model contains this
@@ -76,7 +77,6 @@ import ptolemy.kernel.util.NamedObj;
    @see Tableau
 */
 public class TableauFactory extends Attribute {
-
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -86,7 +86,7 @@ public class TableauFactory extends Attribute {
      *   an attribute already in the container.
      */
     public TableauFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -117,10 +117,12 @@ public class TableauFactory extends Attribute {
     public Tableau createTableau(Effigy effigy) throws Exception {
         Tableau tableau = null;
         Iterator factories = attributeList(TableauFactory.class).iterator();
-        while (factories.hasNext() && tableau == null) {
-            TableauFactory factory = (TableauFactory)factories.next();
+
+        while (factories.hasNext() && (tableau == null)) {
+            TableauFactory factory = (TableauFactory) factories.next();
             tableau = factory.createTableau(effigy);
         }
+
         return tableau;
     }
 }

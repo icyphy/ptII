@@ -24,14 +24,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 // FIXME: To do:
 //  - Fix printing.
 //  - Handle file changes (warn when discarding modified models).
-
 package ptolemy.actor.gui;
 
-// Ptolemy imports
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -43,8 +40,10 @@ import ptolemy.actor.Manager;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Documentation;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ModelFrame
+
 /**
    ModelFrame is a top-level window containing a Ptolemy II model control panel.
    It contains a ModelPane, and has a menu bar and a status bar for
@@ -59,7 +58,6 @@ import ptolemy.moml.Documentation;
    @Pt.AcceptedRating Yellow (janneck)
 */
 public class ModelFrame extends PtolemyFrame implements ExecutionListener {
-
     // FIXME: Possibly this class could also handle atomic actors.
     // This might be useful for code generation.
 
@@ -110,6 +108,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         getContentPane().add(_pane, BorderLayout.CENTER);
 
         Manager manager = model.getManager();
+
         if (manager != null) {
             manager.addExecutionListener(this);
         }
@@ -145,6 +144,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      */
     public void managerStateChanged(Manager manager) {
         Manager.State newState = manager.getState();
+
         if (newState != _previousState) {
             report(manager.getState().getDescription());
             _previousState = newState;
@@ -167,6 +167,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     public void setBackground(Color background) {
         super.setBackground(background);
         getContentPane().setBackground(background);
+
         // This seems to be called in a base class constructor, before
         // this variable has been set. Hence the test against null.
         if (_pane != null) {
@@ -181,11 +182,14 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      */
     public void setModel(CompositeActor model) {
         super.setModel(model);
+
         if (model != null) {
             if (_pane != null) {
                 _pane.setModel(model);
             }
+
             Manager manager = model.getManager();
+
             if (manager != null) {
                 manager.addExecutionListener(this);
             }
@@ -219,21 +223,27 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      */
     protected boolean _close() {
         boolean result = super._close();
+
         // FIXME: Shouldn't the following only be done if the
         // above returns true.
         NamedObj model = getModel();
+
         if (model instanceof CompositeActor) {
-            Manager manager = ((CompositeActor)model).getManager();
+            Manager manager = ((CompositeActor) model).getManager();
+
             if (manager != null) {
                 manager.removeExecutionListener(this);
             }
         }
+
         if (_pane != null) {
             _pane.stopRun();
+
             // The second argument is supposed to be a button name, but there
             // is no button that would have triggered this.
             _pane.windowClosed(this, "");
         }
+
         return result;
     }
 
@@ -245,19 +255,21 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     protected void _help() {
         String message = "Ptolemy II model.";
         NamedObj model = getModel();
+
         if (model != null) {
             String tip = Documentation.consolidate(model);
+
             if (tip != null) {
                 message = "Ptolemy II model:\n" + tip;
             }
         }
-        JOptionPane.showMessageDialog(this, message,
-                "About " + getTitle(), JOptionPane.INFORMATION_MESSAGE);
+
+        JOptionPane.showMessageDialog(this, message, "About " + getTitle(),
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The pane in which the model data is displayed.
     private ModelPane _pane;
 

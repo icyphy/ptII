@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.BusContention;
 
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExecEvent
+
 /**
    An event that indicates that an actor is in a particular state.
    The event contains two pieces of information:  the actor that
@@ -52,9 +53,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (davisj)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ExecEvent implements DebugEvent {
-
     /** Create an ExecEvent with the specified actor and state.
      *  @param actor The actor that generated the event.
      *  @param actor The state of the actor when the event is
@@ -92,20 +91,16 @@ public class ExecEvent implements DebugEvent {
         public String getName() {
             return _name;
         }
+
         private String _name;
     }
 
-    public static ExecEventType BLOCKED =
-    new ExecEventType("blocked");
-    public static ExecEventType ACCESSING =
-    new ExecEventType("accessing");
-    public static ExecEventType WAITING =
-    new ExecEventType("waiting");
+    public static ExecEventType BLOCKED = new ExecEventType("blocked");
+    public static ExecEventType ACCESSING = new ExecEventType("accessing");
+    public static ExecEventType WAITING = new ExecEventType("waiting");
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                 /////
-
     private ExecEventType _state;
     private NamedObj _actor;
-
 }

@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import java.util.Collection;
@@ -33,8 +32,10 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
 import ptolemy.graph.analysis.strategy.ClusterNodesTransformerStrategy;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ClusterNodesAnalysis
+
 /**
    Given a collection of nodes in a graph, replace the subgraph induced by
    the nodes with a single node N. Each edge that connects a node Z
@@ -51,9 +52,7 @@ import ptolemy.graph.analysis.strategy.ClusterNodesTransformerStrategy;
    Ming-Yung Ko
    @see ptolemy.graph.Graph
 */
-
 public class ClusterNodesAnalysis extends Analysis {
-
     /** Construct an instance of this class for a given graph.
      *  Given a collection of nodes in a graph, replace the subgraph induced by
      *  the nodes with a single node N. Each edge that connects a node Z
@@ -66,9 +65,9 @@ public class ClusterNodesAnalysis extends Analysis {
      *  @param superNode The node that replaces the subgraph.
      */
     public ClusterNodesAnalysis(Graph graph, Collection nodeCollection,
-            Node superNode) {
+        Node superNode) {
         super(new ClusterNodesTransformerStrategy(graph, nodeCollection,
-                      superNode));
+                superNode));
     }
 
     /** Construct an instance of this class with a given analyzer.
@@ -76,7 +75,8 @@ public class ClusterNodesAnalysis extends Analysis {
      *  @param analyzer The default Analyzer.
      */
     public ClusterNodesAnalysis(ClusterNodesTransformer analyzer) {
-        super(analyzer);;
+        super(analyzer);
+        ;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,7 +87,7 @@ public class ClusterNodesAnalysis extends Analysis {
      *  @return Return the clustered Graph.
      */
     public Graph clusterNodes() {
-        return ((ClusterNodesTransformer)analyzer()).clusterNodes();
+        return ((ClusterNodesTransformer) analyzer()).clusterNodes();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -96,7 +96,7 @@ public class ClusterNodesAnalysis extends Analysis {
      */
     public String toString() {
         return "Cluster node analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

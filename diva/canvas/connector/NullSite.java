@@ -24,11 +24,11 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.connector;
 
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
+
 
 /** A site that doesn't do anything useful. Sometimes this is
  * needed as a placeholder for objects that expect sites, but
@@ -39,30 +39,27 @@ import diva.canvas.Figure;
  * @author         John Reekie
  */
 public class NullSite extends AbstractSite {
-
     /** Return null
      */
-    public Figure getFigure () {
+    public Figure getFigure() {
         return null;
     }
 
     /** Return 0
      */
-    public int getID () {
+    public int getID() {
         return 0;
     }
 
     /** Return 0.0.
      */
-    public double getX () {
+    public double getX() {
         return 0.0;
     }
 
     /** Return 0.0.
      */
-    public double getY () {
+    public double getY() {
         return 0.0;
     }
 }
-
-

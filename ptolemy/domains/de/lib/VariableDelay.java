@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VariableDelay
+
 /**
    This actor delays its inputs by a variable delay.
    It works in a similar way as the TimedDelay actor except that the
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class VariableDelay extends TimedDelay {
-
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
@@ -61,7 +61,7 @@ public class VariableDelay extends TimedDelay {
      *   actor with this name.
      */
     public VariableDelay(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -83,12 +83,14 @@ public class VariableDelay extends TimedDelay {
      */
     public void fire() throws IllegalActionException {
         delay.update();
-        _delay = ((DoubleToken)delay.getToken()).doubleValue();
+        _delay = ((DoubleToken) delay.getToken()).doubleValue();
+
         if (_delay < 0) {
-            throw new IllegalActionException("Can not have a " +
-                    "negative delay: " + _delay + ". " +
-                    "Check whether overflow happens.");
+            throw new IllegalActionException("Can not have a "
+                + "negative delay: " + _delay + ". "
+                + "Check whether overflow happens.");
         }
+
         // NOTE: _delay may be 0.0, which may change
         // the causality property of the model.
         // We leave the model designers to decide whether the
@@ -112,7 +114,7 @@ public class VariableDelay extends TimedDelay {
      *  parameter values.
      */
     protected void _init()
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);

@@ -24,7 +24,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.hdf.kernel;
 
 import java.util.ArrayList;
@@ -40,12 +39,12 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
-import ptolemy.actor.util.DFUtilities;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -55,8 +54,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 ////////////////////////////////////////////////////////////////////
 //// HDFDirector
+
 /**
    The heterochronous dataflow (HDF) domain implements the HDF model
    of computation [1]. The HDF model of computation is a generalization
@@ -108,14 +109,13 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class HDFDirector extends SDFDirector {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      *
      */
     public HDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -126,7 +126,7 @@ public class HDFDirector extends SDFDirector {
      *  @param workspace The workspace for this object.
      */
     public HDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -146,7 +146,7 @@ public class HDFDirector extends SDFDirector {
      *  CompositeActor and the name collides with an entity in the container.
      */
     public HDFDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -179,58 +179,67 @@ public class HDFDirector extends SDFDirector {
      *  @exception IllegalActionException If there is a problem getting
      *   the schedule.
      */
-    public Schedule getSchedule() throws IllegalActionException{
+    public Schedule getSchedule() throws IllegalActionException {
         Scheduler scheduler = getScheduler();
         Schedule schedule;
+
         if (isScheduleValid()) {
             // This will return a the current schedule.
-            schedule = ((SDFScheduler)scheduler).getSchedule();
+            schedule = ((SDFScheduler) scheduler).getSchedule();
         } else {
             // The schedule is no longer valid, so check the schedule
             // cache.
             if (_inputPortList == null) {
                 _inputPortList = _getInputPortList();
             }
+
             if (_outputPortList == null) {
                 _outputPortList = _getOutputPortList();
             }
+
             Iterator inputPorts = _inputPortList.iterator();
             String rates = new String();
+
             while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort)inputPorts.next();
-                int rate =
-                    DFUtilities.getTokenConsumptionRate(inputPort);
+                IOPort inputPort = (IOPort) inputPorts.next();
+                int rate = DFUtilities.getTokenConsumptionRate(inputPort);
                 rates = rates + String.valueOf(rate);
             }
+
             Iterator outputPorts = _outputPortList.iterator();
+
             while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort)outputPorts.next();
-                int rate =
-                    DFUtilities.getTokenProductionRate(outputPort);
+                IOPort outputPort = (IOPort) outputPorts.next();
+                int rate = DFUtilities.getTokenProductionRate(outputPort);
                 rates = rates + String.valueOf(rate);
-                int initRate =
-                    DFUtilities.getTokenInitProduction(outputPort);
+
+                int initRate = DFUtilities.getTokenInitProduction(outputPort);
                 rates = rates + String.valueOf(rate);
             }
+
             String rateKey = rates;
-            int cacheSize =
-                ((IntToken)(scheduleCacheSize.getToken())).intValue();
+            int cacheSize = ((IntToken) (scheduleCacheSize.getToken()))
+                .intValue();
+
             if (cacheSize != _cacheSize) {
                 // cache size has changed. reset the cache.
                 _scheduleCache = new HashMap();
                 _scheduleKeyList = new ArrayList(cacheSize);
                 _cacheSize = cacheSize;
+
                 // When using a schedule from the cache, the external
                 // Rates also need to be updated. So we also need to
                 // cache the external rates.
                 _externalRatesCache = new TreeMap();
                 _externalRatesKeyList = new ArrayList(cacheSize);
             }
+
             if (rateKey == _mostRecentRates) {
-                schedule = ((SDFScheduler)scheduler).getSchedule();
+                schedule = ((SDFScheduler) scheduler).getSchedule();
             } else if (_scheduleCache.containsKey(rateKey)) {
                 // cache hit.
                 _mostRecentRates = rateKey;
+
                 if (cacheSize > 0) {
                     // Remove the key from its old position in
                     // the list and add it to the head of the list.
@@ -239,12 +248,15 @@ public class HDFDirector extends SDFDirector {
                     _scheduleKeyList.add(0, rateKey);
                     _externalRatesKeyList.add(0, rateKey);
                 }
-                schedule = (Schedule)_scheduleCache.get(rateKey);
-                Map externalRates = (Map)_externalRatesCache.get(rateKey);
-                ((SDFScheduler)scheduler).setContainerRates(externalRates);
+
+                schedule = (Schedule) _scheduleCache.get(rateKey);
+
+                Map externalRates = (Map) _externalRatesCache.get(rateKey);
+                ((SDFScheduler) scheduler).setContainerRates(externalRates);
             } else {
                 // cache miss.
                 _mostRecentRates = rateKey;
+
                 if (cacheSize > 0) {
                     while (_scheduleKeyList.size() >= cacheSize) {
                         // Cache is  full. Remove tail of list.
@@ -254,18 +266,21 @@ public class HDFDirector extends SDFDirector {
                         _scheduleCache.remove(object);
                         _externalRatesCache.remove(object);
                     }
+
                     // Add key to head of list.
                     _scheduleKeyList.add(0, rateKey);
                     _externalRatesKeyList.add(0, rateKey);
                 }
+
                 // Add key/schedule to the schedule map.
-                schedule = ((SDFScheduler)scheduler).getSchedule();
-                Map externalRates =
-                    ((SDFScheduler)scheduler).getExternalRates();
+                schedule = ((SDFScheduler) scheduler).getSchedule();
+
+                Map externalRates = ((SDFScheduler) scheduler).getExternalRates();
                 _externalRatesCache.put(rateKey, externalRates);
                 _scheduleCache.put(rateKey, schedule);
             }
         }
+
         return schedule;
     }
 
@@ -280,13 +295,13 @@ public class HDFDirector extends SDFDirector {
         // The sub-controller may change modes but the upper controller
         // will not be aware of it. Use SDF instead of HDF where
         // everything has fixed port rates. This is more efficient.
-        CompositeActor container = (CompositeActor)getContainer();
-        ChangeRequest request =
-            new ChangeRequest(this, "reschedule") {
+        CompositeActor container = (CompositeActor) getContainer();
+        ChangeRequest request = new ChangeRequest(this, "reschedule") {
                 protected void _execute() throws KernelException {
                     getSchedule();
                 }
             };
+
         request.setPersistent(false);
         container.requestChange(request);
         return super.postfire();
@@ -312,22 +327,25 @@ public class HDFDirector extends SDFDirector {
      *  @return The list of input ports.
      */
     private List _getInputPortList() {
-        CompositeActor container =  (CompositeActor)getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
         List actors = container.deepEntityList();
         Iterator actorIterator = actors.iterator();
-        List inputPortList = new LinkedList();;
+        List inputPortList = new LinkedList();
+        ;
+
         List inputPortRateList = new LinkedList();
+
         while (actorIterator.hasNext()) {
-            Actor containedActor = (Actor)actorIterator.next();
-            List temporaryInputPortList =
-                containedActor.inputPortList();
-            Iterator inputPortIterator =
-                temporaryInputPortList.iterator();
+            Actor containedActor = (Actor) actorIterator.next();
+            List temporaryInputPortList = containedActor.inputPortList();
+            Iterator inputPortIterator = temporaryInputPortList.iterator();
+
             while (inputPortIterator.hasNext()) {
-                IOPort inputPort = (IOPort)inputPortIterator.next();
+                IOPort inputPort = (IOPort) inputPortIterator.next();
                 inputPortList.add(inputPort);
             }
         }
+
         return inputPortList;
     }
 
@@ -336,22 +354,25 @@ public class HDFDirector extends SDFDirector {
      *  @return The list of output ports.
      */
     private List _getOutputPortList() {
-        CompositeActor container =  (CompositeActor)getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
         List actors = container.deepEntityList();
         Iterator actorIterator2 = actors.iterator();
-        List outputPortList = new LinkedList();;
+        List outputPortList = new LinkedList();
+        ;
+
         List outputPortRateList = new LinkedList();
+
         while (actorIterator2.hasNext()) {
-            Actor containedActor = (Actor)actorIterator2.next();
-            List temporaryOutputPortList =
-                containedActor.outputPortList();
-            Iterator outputPortIterator =
-                temporaryOutputPortList.iterator();
+            Actor containedActor = (Actor) actorIterator2.next();
+            List temporaryOutputPortList = containedActor.outputPortList();
+            Iterator outputPortIterator = temporaryOutputPortList.iterator();
+
             while (outputPortIterator.hasNext()) {
-                IOPort outputPort = (IOPort)outputPortIterator.next();
+                IOPort outputPort = (IOPort) outputPortIterator.next();
                 outputPortList.add(outputPort);
             }
         }
+
         return outputPortList;
     }
 
@@ -362,24 +383,23 @@ public class HDFDirector extends SDFDirector {
      *  default scheduler of the class HDFScheduler.
      */
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
-            SDFScheduler scheduler =
-                new SDFScheduler(this, uniqueName("Scheduler"));
+            SDFScheduler scheduler = new SDFScheduler(this,
+                    uniqueName("Scheduler"));
             setScheduler(scheduler);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // if setScheduler fails, then we should just set it to Null.
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
             throw new InternalErrorException(
-                    "Could not create Default Scheduler:\n" +
-                    e.getMessage());
+                "Could not create Default Scheduler:\n" + e.getMessage());
         }
+
         int cacheSize = 100;
         _cacheSize = cacheSize;
-        scheduleCacheSize = new Parameter(this,
-                "scheduleCacheSize", new IntToken(cacheSize));
+        scheduleCacheSize = new Parameter(this, "scheduleCacheSize",
+                new IntToken(cacheSize));
 
         _scheduleCache = new HashMap();
         _scheduleKeyList = new ArrayList(cacheSize);
@@ -400,10 +420,9 @@ public class HDFDirector extends SDFDirector {
     private List _inputPortList;
     private List _outputPortList;
     private int _cacheSize = 100;
-
     private boolean _debugInfo = false;
+
     // Number of firings per global iteration
     // of the current director.
     private int _directorFiringsPerIteration = 1;
-
 }

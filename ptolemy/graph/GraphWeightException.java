@@ -22,12 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphWeightException
+
 /** Exception for unweighted graphs or graphs with improper weights.
     This exception can also be thrown due to accessing elements with
     incorrect weights.
@@ -39,7 +39,6 @@ package ptolemy.graph;
     @Pt.AcceptedRating Red (ssb)
 */
 public class GraphWeightException extends GraphException {
-
     /** Constructor for a given message.
      *  @param message The message.
      */
@@ -60,8 +59,8 @@ public class GraphWeightException extends GraphException {
      *  @param graph The graph accessed.
      *  @param message The exception message.
      */
-    public GraphWeightException(
-            Object weight, Element element, Graph graph, String message) {
+    public GraphWeightException(Object weight, Element element, Graph graph,
+        String message) {
         super(_argumentsToString(weight, element, graph, message));
     }
 
@@ -75,14 +74,16 @@ public class GraphWeightException extends GraphException {
      *  @param message The exception message given by users.
      *  @return The desired exception message.
      */
-    static private String _argumentsToString(
-            Object weight, Element element, Graph graph, String message) {
+    static private String _argumentsToString(Object weight, Element element,
+        Graph graph, String message) {
         String outputMessage = new String() + message + weightDump(weight);
-        if (element != null)
+
+        if (element != null) {
             outputMessage += elementDump(element, graph);
-        else
+        } else {
             outputMessage += graphDump(graph);
+        }
+
         return outputMessage;
     }
 }
-

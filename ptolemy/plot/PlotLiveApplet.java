@@ -29,8 +29,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveApplet
+
 /**
    An Applet for the PlotLive class.  Derived classes should redefine
    newPlot() to return a concrete instance of PlotLive.
@@ -42,27 +44,25 @@ package ptolemy.plot;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class PlotLiveApplet extends PlotApplet {
-
     /** Return a string describing this applet.
      *  @return A description of the applet.
      */
     public String getAppletInfo() {
-        return "PlotLiveApplet " + PlotBox.PTPLOT_RELEASE +
-            " : Demo of PlotLive.\n" +
-            "By: Edward A. Lee\n" +
-            "    Christopher Hylands\n" +
-            "($Id$)";
+        return "PlotLiveApplet " + PlotBox.PTPLOT_RELEASE
+        + " : Demo of PlotLive.\n" + "By: Edward A. Lee\n"
+        + "    Christopher Hylands\n"
+        + "($Id$)";
     }
 
     /** Start the plot thread.
      */
     public void start() {
-        ((PlotLive)plot()).start();
+        ((PlotLive) plot()).start();
     }
 
     /** Stop the plot thread.
      */
     public void stop() {
-        ((PlotLive)plot()).stop();
+        ((PlotLive) plot()).stop();
     }
 }

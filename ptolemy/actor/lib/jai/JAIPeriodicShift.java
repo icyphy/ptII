@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIPeriodicShift
+
 /**
    An actor that computes the periodic translation of an image.  The
    output is clamped version of the infinitely periodic image with the
@@ -56,9 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIPeriodicShift extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +67,7 @@ public class JAIPeriodicShift extends Transformer {
      *   actor with this name.
      */
     public JAIPeriodicShift(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xShift = new Parameter(this, "xShift", new IntToken(0));
@@ -99,11 +98,11 @@ public class JAIPeriodicShift extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == xShift) {
-            _xShift = ((IntToken)xShift.getToken()).intValue();
+            _xShift = ((IntToken) xShift.getToken()).intValue();
         } else if (attribute == yShift) {
-            _yShift = ((IntToken)yShift.getToken()).intValue();
+            _yShift = ((IntToken) yShift.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -116,6 +115,7 @@ public class JAIPeriodicShift extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
@@ -123,6 +123,7 @@ public class JAIPeriodicShift extends Transformer {
         parameters.addSource(oldImage);
         parameters.add(_xShift);
         parameters.add(_yShift);
+
         RenderedOp newImage = JAI.create("PeriodicShift", parameters);
         output.send(0, new JAIImageToken(newImage));
     }

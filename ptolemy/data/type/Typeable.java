@@ -26,14 +26,15 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.type;
 
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Typeable
+
 /**
    Interface for objects with types. This interface defines methods for
    setting and getting types and type constraints. Type constraints are
@@ -46,7 +47,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.graph.InequalityTerm
 */
-
 public interface Typeable extends HasTypeConstraints {
     /** Return the type of this object. An exception is thrown if the type
      *  cannot be determined. This can happen if the type of this object

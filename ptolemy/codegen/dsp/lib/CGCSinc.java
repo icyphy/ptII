@@ -8,17 +8,19 @@
 */
 package ptolemy.codegen.lib;
 
+import ptolemy.codegen.kernel.ClassicCGCActor;
+import ptolemy.codegen.kernel.ClassicPort;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.codegen.kernel.ClassicCGCActor;
-import ptolemy.codegen.kernel.ClassicPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CGCSinc
+
 /**
    This star computes the sinc of its input given in radians.
    The sinc function is defined as sin(x)/x, with value 1.0 when x = 0.
@@ -55,7 +57,7 @@ public class CGCSinc extends ClassicCGCActor {
      *   an actor already in the container.
      */
     public CGCSinc(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new ClassicPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -65,6 +67,7 @@ public class CGCSinc extends ClassicCGCActor {
         /*
          */
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -83,20 +86,19 @@ public class CGCSinc extends ClassicCGCActor {
 
     /**
      */
-    public void  generatePreinitializeCode() {
+    public void generatePreinitializeCode() {
         //# line 47 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl"
         addModuleFromLibrary("ptdspSinc", "src/utils/libptdsp", "ptdsp");
     }
 
     /**
      */
-    public void  generateFireCode() {
+    public void generateFireCode() {
         //# line 50 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl"
         addCode(sinc);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
-
-    public String sinc =
-    "                $ref(output) = Ptdsp_Sinc((double)$ref(input));\n";
+    public String sinc = "                $ref(output) = Ptdsp_Sinc((double)$ref(input));\n";
 }

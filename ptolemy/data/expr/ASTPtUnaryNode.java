@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.Map;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtUnaryNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents unary operator(!, -, ~)
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ASTPtUnaryNode extends ASTPtRootNode {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public ASTPtUnaryNode(int id) {
         super(id);
     }
@@ -86,9 +86,11 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
         if (!super.isCongruent(node, renaming)) {
             return false;
         }
-        if (_lexicalToken.kind != ((ASTPtUnaryNode)node)._lexicalToken.kind) {
+
+        if (_lexicalToken.kind != ((ASTPtUnaryNode) node)._lexicalToken.kind) {
             return false;
         }
+
         return true;
     }
 
@@ -108,14 +110,12 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitUnaryNode(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected boolean _isMinus = false;
     protected boolean _isNot = false;
     protected boolean _isBitwiseNot = false;

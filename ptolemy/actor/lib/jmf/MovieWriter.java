@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jmf;
 
 import java.awt.Image;
@@ -68,23 +67,23 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.MessageHandler;
+
 
 //FIXME: This actor only works properly when a model containing this actor
 //       is run for the first time.  Vergil has to be reloaded each time
 //       for this actor to work.
-
 //FIXME: MPEG isn't working.  It's not letting the processor configure
 //       with the MPEG file descriptor.
-
 //////////////////////////////////////////////////////////////////////////
 //// MovieWriter
+
 /**
    This actor writes a video file (MPEG, AVI, or Quicktime).  It receives
    JMFImageTokens at the input, and queues them up for writing.
@@ -104,10 +103,8 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
-public class MovieWriter extends Sink
-    implements ControllerListener, DataSinkListener {
-
+public class MovieWriter extends Sink implements ControllerListener,
+    DataSinkListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -117,7 +114,7 @@ public class MovieWriter extends Sink
      *   actor with this name.
      */
     public MovieWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
 
@@ -165,19 +162,21 @@ public class MovieWriter extends Sink
      *  invalid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileOrURL) {
             _file = fileOrURL.asFile();
+
             try {
                 _fileRoot = _file.toURL().toString();
             } catch (MalformedURLException ex) {
                 throw new IllegalActionException(this, ex, "URL malformed");
             }
         } else if (attribute == confirmOverwrite) {
-            _confirmOverwrite =
-                ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
+            _confirmOverwrite = ((BooleanToken) confirmOverwrite.getToken())
+                .booleanValue();
         } else if (attribute == fileType) {
             String typeName = fileType.getExpression();
+
             if (typeName.equals("AVI")) {
                 _fileType = _AVI;
             } else if (typeName.equals("MPEG")) {
@@ -186,8 +185,8 @@ public class MovieWriter extends Sink
                 _fileType = _QUICKTIME;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized file type: " + typeName + ", must be "
-                        + "on of AVI, MPEG, or QUICKTIME");
+                    "Unrecognized file type: " + typeName + ", must be "
+                    + "on of AVI, MPEG, or QUICKTIME");
             }
         } else {
             super.attributeChanged(attribute);
@@ -199,9 +198,9 @@ public class MovieWriter extends Sink
      *  @param event The controller event.
      */
     public void controllerUpdate(ControllerEvent event) {
-        if (event instanceof ConfigureCompleteEvent ||
-                event instanceof RealizeCompleteEvent ||
-                event instanceof PrefetchCompleteEvent) {
+        if (event instanceof ConfigureCompleteEvent
+                || event instanceof RealizeCompleteEvent
+                || event instanceof PrefetchCompleteEvent) {
             synchronized (_waitSync) {
                 _stateTransitionOK = true;
                 _waitSync.notifyAll();
@@ -257,24 +256,30 @@ public class MovieWriter extends Sink
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token token = input.get(0);
+
             try {
                 _jmfImageToken = (JMFImageToken) token;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to cast " + token.getClass()
-                        + " to a JMFImageToken.\nToken was: " + token);
+                    "Failed to cast " + token.getClass()
+                    + " to a JMFImageToken.\nToken was: " + token);
             }
+
             if (_debugging) {
                 _debug("MoveWriter.postfire(): read in " + _jmfImageToken);
             }
+
             Buffer buffer;
             buffer = _jmfImageToken.getValue();
+
             if (!_bufferArrayList.add(buffer)) {
                 throw new IllegalActionException("Could not add buffer "
-                        + "to the array list");
+                    + "to the array list");
             }
+
             _dimensionSet = true;
         }
+
         return super.postfire();
     }
 
@@ -283,43 +288,45 @@ public class MovieWriter extends Sink
      */
     public void wrapup() throws IllegalActionException {
         _bufferIterator = _bufferArrayList.iterator();
+
         if (_file.exists()) {
             if (_debugging) {
                 _debug("file exists!");
             }
+
             if (_confirmOverwrite) {
-                if (!MessageHandler.yesNoQuestion(
-                            "OK to overwrite " + _file + "?")) {
+                if (!MessageHandler.yesNoQuestion("OK to overwrite " + _file
+                            + "?")) {
                     throw new IllegalActionException(this,
-                            "Please select another file name.");
+                        "Please select another file name.");
                 }
             }
         }
 
         MediaLocator mediaLocator = new MediaLocator(_fileRoot);
+
         if (mediaLocator == null) {
             throw new IllegalActionException("Could not create "
-                    + "MediaLocator from the given URL: " + _fileRoot);
+                + "MediaLocator from the given URL: " + _fileRoot);
         }
 
         // Get dimensions
         if (_jmfImageToken == null) {
             throw new IllegalActionException(this,
-                    "In MovieWriter.wrapup(), _jmfImageToken is "
-                    + "null, perhaps this actor never read any input?");
+                "In MovieWriter.wrapup(), _jmfImageToken is "
+                + "null, perhaps this actor never read any input?");
         } else {
             Image image = _jmfImageToken.asAWTImage();
             int width = image.getWidth(null);
             int height = image.getHeight(null);
-            ImageDataSource imageDataSource =
-                new ImageDataSource(width, height);
+            ImageDataSource imageDataSource = new ImageDataSource(width, height);
             Processor processor;
 
             try {
                 processor = Manager.createProcessor(imageDataSource);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Can't create processor");
+                    "Can't create processor");
             }
 
             processor.addControllerListener(this);
@@ -327,30 +334,29 @@ public class MovieWriter extends Sink
             processor.configure();
 
             if (!_waitForState(processor, Processor.Configured)) {
-                throw new IllegalActionException("Failed to configure processor.");
+                throw new IllegalActionException(
+                    "Failed to configure processor.");
             }
 
             if (_fileType == _QUICKTIME) {
-                processor.setContentDescriptor(new ContentDescriptor
-                        (FileTypeDescriptor.QUICKTIME));
+                processor.setContentDescriptor(new ContentDescriptor(
+                        FileTypeDescriptor.QUICKTIME));
             } else if (_fileType == _AVI) {
-                processor.setContentDescriptor(new ContentDescriptor
-                        (FileTypeDescriptor.MSVIDEO));
+                processor.setContentDescriptor(new ContentDescriptor(
+                        FileTypeDescriptor.MSVIDEO));
             } else if (_fileType == _MPEG) {
-                processor.setContentDescriptor(new ContentDescriptor
-                        (FileTypeDescriptor.MPEG));
+                processor.setContentDescriptor(new ContentDescriptor(
+                        FileTypeDescriptor.MPEG));
             } else {
-                throw new InternalErrorException(
-                        "type = " + _fileType + ", which is not one of "
-                        + _QUICKTIME + "(QUICKTIME), "
-                        + _AVI + "(AVI) or "
-                        + _MPEG + "(MPEG).");
+                throw new InternalErrorException("type = " + _fileType
+                    + ", which is not one of " + _QUICKTIME + "(QUICKTIME), "
+                    + _AVI + "(AVI) or " + _MPEG + "(MPEG).");
             }
 
-            TrackControl trackControl[] = processor.getTrackControls();
-            Format format[] = trackControl[0].getSupportedFormats();
+            TrackControl[] trackControl = processor.getTrackControls();
+            Format[] format = trackControl[0].getSupportedFormats();
 
-            if (format == null || format.length <= 0) {
+            if ((format == null) || (format.length <= 0)) {
                 throw new IllegalActionException("Cannot support input format");
             }
 
@@ -363,14 +369,16 @@ public class MovieWriter extends Sink
             }
 
             DataSource dataSource = processor.getDataOutput();
+
             if (dataSource == null) {
                 throw new IllegalActionException("Processor does not have "
-                        + "output DataSource");
+                    + "output DataSource");
             }
 
             if (_debugging) {
                 _debug(_fileRoot);
             }
+
             DataSink dataSink;
 
             try {
@@ -378,7 +386,7 @@ public class MovieWriter extends Sink
                 dataSink.open();
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Couldn't create the data sink");
+                    "Couldn't create the data sink");
             }
 
             dataSink.addDataSinkListener(this);
@@ -388,7 +396,7 @@ public class MovieWriter extends Sink
                 dataSink.start();
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Could not start processor and datasink");
+                    "Could not start processor and datasink");
             }
 
             if (!_waitForFileDone()) {
@@ -399,8 +407,9 @@ public class MovieWriter extends Sink
                 dataSink.close();
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "can't close data sink");
+                    "can't close data sink");
             }
+
             processor.stop();
             processor.removeControllerListener(this);
             dataSink.removeDataSinkListener(this);
@@ -411,19 +420,19 @@ public class MovieWriter extends Sink
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     protected boolean _waitForFileDone() throws IllegalActionException {
-        synchronized(_waitFileSync) {
+        synchronized (_waitFileSync) {
             try {
                 while (!_fileDone) {
                     _waitFileSync.wait();
                 }
             } catch (Exception e) {
                 throw new IllegalActionException(null, e,
-                        "Failed block the processor until it state"
-                        + " transition completed.");
+                    "Failed block the processor until it state"
+                    + " transition completed.");
             }
         }
+
         return _fileSuccess;
     }
 
@@ -431,28 +440,29 @@ public class MovieWriter extends Sink
      *  @return false if the transition failed.
      */
     protected boolean _waitForState(Processor processor, int state)
-            throws IllegalActionException {
+        throws IllegalActionException {
         synchronized (_waitSync) {
             try {
-                while (processor.getState() < state && _stateTransitionOK)
+                while ((processor.getState() < state) && _stateTransitionOK) {
                     _waitSync.wait();
+                }
             } catch (Exception e) {
                 throw new IllegalActionException(null, e,
-                        "Failed block the processor until it state"
-                        + " transition completed.");
+                    "Failed block the processor until it state"
+                    + " transition completed.");
             }
         }
+
         return _stateTransitionOK;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                       public inner class              ////
-
     private class ImageDataSource extends PullBufferDataSource {
         public ImageDataSource(int width, int height) {
             _imageSourceStream[0] = new ImageSourceStream(width, height);
         }
+
         public void connect() {
         }
 
@@ -500,7 +510,7 @@ public class MovieWriter extends Sink
             //                      Format.NOT_SPECIFIED,
             //                      Format.byteArray,
             //                      (float)_frameRate);
-            _videoFormat = (VideoFormat)(_jmfImageToken.getValue()).getFormat();
+            _videoFormat = (VideoFormat) (_jmfImageToken.getValue()).getFormat();
         }
 
         public boolean endOfStream() {
@@ -534,13 +544,14 @@ public class MovieWriter extends Sink
                 if (_debugging) {
                     _debug("I about to write 1 frame of data");
                 }
-                buffer.setData(((Buffer)_bufferIterator.next()).getData());
+
+                buffer.setData(((Buffer) _bufferIterator.next()).getData());
                 _bufferIterator.remove();
-            }
-            else {
+            } else {
                 if (_debugging) {
                     _debug("I am about to write the eom!");
                 }
+
                 buffer.setEOM(true);
                 buffer.setOffset(0);
                 buffer.setLength(0);
@@ -552,41 +563,27 @@ public class MovieWriter extends Sink
             return false;
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     //private Buffer _buffer;
-
     private ArrayList _bufferArrayList;
-
     private Iterator _bufferIterator;
-
     private boolean _confirmOverwrite;
-
     private boolean _dimensionSet;
-
     private boolean _ended = false;
-
     private File _file;
-
     private boolean _fileDone = false;
-
     private String _fileRoot;
-
     private boolean _fileSuccess = true;
-
     private int _fileType;
-
     private ImageSourceStream[] _imageSourceStream = new ImageSourceStream[1];
-
     private JMFImageToken _jmfImageToken;
 
     // Boolean that keeps track of whether the player initialization
     // has gone through smoothly.
     private boolean _stateTransitionOK = true;
-
     private VideoFormat _videoFormat;
-
     private Object _waitFileSync = new Object();
 
     // Object to allow synchronization in this actor.

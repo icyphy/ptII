@@ -26,8 +26,9 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.x10;
+
+import x10.Command;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -36,10 +37,11 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import x10.Command;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ApplianceController
+
 /**
  * This x10 actor will broadcast appliance-module commands to the X10 network.
  * An appliance module is an X10 device that can turn an appliance on and off.
@@ -55,9 +57,7 @@ import x10.Command;
 @Pt.ProposedRating Green (ptolemy)
 @Pt.AcceptedRating Yellow (ptolemy)
  */
-
 public class ApplianceController extends Sender {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,7 +67,7 @@ public class ApplianceController extends Sender {
      *   actor with this name.
      */
     public ApplianceController(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create input ports, each one is a multiport.
@@ -117,6 +117,7 @@ public class ApplianceController extends Sender {
         if (isOn) {
             _transmit(new Command((_destination), x10.Command.ON));
         }
+
         if (isOff) {
             _transmit(new Command((_destination), x10.Command.OFF));
         }

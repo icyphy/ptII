@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -68,6 +67,7 @@ import soot.toolkits.scalar.UnitValueBoxPair;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjEqualityEliminator
+
 /**
 
 
@@ -77,7 +77,8 @@ import soot.toolkits.scalar.UnitValueBoxPair;
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */
-public class NamedObjEqualityEliminator extends SceneTransformer implements HasPhaseOptions {
+public class NamedObjEqualityEliminator extends SceneTransformer
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private NamedObjEqualityEliminator(CompositeActor model) {
@@ -107,34 +108,32 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("NamedObjEqualityEliminator.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         _options = options;
         _debug = PhaseOptions.getBoolean(options, "debug");
 
         _eliminateAllComparisons(_model);
-
     }
 
     private void _eliminateAllComparisons(CompositeActor model) {
         // Loop over all the actor instance classes.
         for (Iterator entities = model.deepEntityList().iterator();
-             entities.hasNext();) {
-            Entity entity = (Entity)entities.next();
-            String className =
-                ModelTransformer.getInstanceClassName(entity, _options);
-            SootClass entityClass =
-                Scene.v().loadClassAndSupport(className);
+                entities.hasNext();) {
+            Entity entity = (Entity) entities.next();
+            String className = ModelTransformer.getInstanceClassName(entity,
+                    _options);
+            SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
             for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+                    methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
                 eliminateNamedObjComparisons(method, _debug);
             }
 
             // Recurse
             if (entity instanceof CompositeActor) {
-                _eliminateAllComparisons((CompositeActor)entity);
+                _eliminateAllComparisons((CompositeActor) entity);
             }
         }
     }
@@ -142,43 +141,49 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
     /** Remove comparisons between equal objects in the given method.
      */
     public static boolean eliminateNamedObjComparisons(SootMethod method,
-            boolean debug) {
+        boolean debug) {
         boolean doneSomething = false;
-        if (debug) System.out.println("Removing object comparisons in " +
-                method);
+
+        if (debug) {
+            System.out.println("Removing object comparisons in " + method);
+        }
 
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
         for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
-            Stmt stmt = (Stmt)units.next();
+                units.hasNext();) {
+            Stmt stmt = (Stmt) units.next();
+
             for (Iterator boxes = stmt.getUseBoxes().iterator();
-                 boxes.hasNext();) {
-                ValueBox box = (ValueBox)boxes.next();
+                    boxes.hasNext();) {
+                ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
                 if (value instanceof BinopExpr) {
-                    BinopExpr binop = (BinopExpr)value;
+                    BinopExpr binop = (BinopExpr) value;
                     Value left = binop.getOp1();
                     Value right = binop.getOp2();
+
                     // handle nulls
                     NamedObj leftObject = null;
                     NamedObj rightObject = null;
+
                     if (left.getType() instanceof NullType) {
                         leftObject = null;
                     } else if (left.getType() instanceof RefType) {
-                        RefType leftType = (RefType)left.getType();
+                        RefType leftType = (RefType) left.getType();
                         SootClass leftClass = leftType.getSootClass();
+
                         if (SootUtilities.derivesFrom(leftClass,
                                     PtolemyUtilities.namedObjClass)) {
                             try {
-                                leftObject =
-                                    getNamedObjValue(method, (Local)left,
-                                            stmt, localDefs, localUses);
+                                leftObject = getNamedObjValue(method,
+                                        (Local) left, stmt, localDefs, localUses);
                             } catch (Exception ex) {
                                 // Ignore... We cannot determine the
                                 // value of the object.
@@ -190,17 +195,19 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
                     } else {
                         continue;
                     }
+
                     if (right.getType() instanceof NullType) {
                         rightObject = null;
                     } else if (right.getType() instanceof RefType) {
-                        RefType rightType = (RefType)right.getType();
+                        RefType rightType = (RefType) right.getType();
                         SootClass rightClass = rightType.getSootClass();
+
                         if (SootUtilities.derivesFrom(rightClass,
                                     PtolemyUtilities.namedObjClass)) {
                             try {
-                                rightObject =
-                                    getNamedObjValue(method, (Local)right,
-                                            stmt, localDefs, localUses);
+                                rightObject = getNamedObjValue(method,
+                                        (Local) right, stmt, localDefs,
+                                        localUses);
                             } catch (Exception ex) {
                                 // Ignore... We cannot determine the
                                 // value of the object.
@@ -212,20 +219,17 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
                     } else {
                         continue;
                     }
+
                     //   System.out.println("leftObject = "
                     //          + leftObject);
                     //  System.out.println("rightObject = "
                     //        + rightObject);
                     if (leftObject == rightObject) {
-                        binop.getOp1Box().setValue(
-                                IntConstant.v(0));
-                        binop.getOp2Box().setValue(
-                                IntConstant.v(0));
+                        binop.getOp1Box().setValue(IntConstant.v(0));
+                        binop.getOp2Box().setValue(IntConstant.v(0));
                     } else {
-                        binop.getOp1Box().setValue(
-                                IntConstant.v(0));
-                        binop.getOp2Box().setValue(
-                                IntConstant.v(1));
+                        binop.getOp1Box().setValue(IntConstant.v(0));
+                        binop.getOp2Box().setValue(IntConstant.v(1));
                     }
                 }
             }
@@ -242,68 +246,74 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
      *  otherwise throw an exception
      */
     public static NamedObj getNamedObjValue(SootMethod method, Local local,
-            Unit location, LocalDefs localDefs, LocalUses localUses) {
+        Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
+
         if (definitionList.size() == 1) {
-            DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
-            Value value = (Value)stmt.getRightOp();
+            DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
+            Value value = (Value) stmt.getRightOp();
+
             if (value instanceof Local) {
-                return getNamedObjValue(method,
-                        (Local)value,
-                        stmt, localDefs, localUses);
+                return getNamedObjValue(method, (Local) value, stmt, localDefs,
+                    localUses);
             } else if (value instanceof CastExpr) {
                 return getNamedObjValue(method,
-                        (Local)((CastExpr)value).getOp(),
-                        stmt, localDefs, localUses);
+                    (Local) ((CastExpr) value).getOp(), stmt, localDefs,
+                    localUses);
             } else if (value instanceof FieldRef) {
-                SootField field = ((FieldRef)value).getField();
-                ValueTag tag = (ValueTag)field.getTag("_CGValue");
+                SootField field = ((FieldRef) value).getField();
+                ValueTag tag = (ValueTag) field.getTag("_CGValue");
+
                 if (tag == null) {
                     // return null;
                     throw new RuntimeException(
-                            "Could not determine the static value of "
-                            + local + " in " + method);
+                        "Could not determine the static value of " + local
+                        + " in " + method);
                 } else {
-                    return (NamedObj)tag.getObject();
+                    return (NamedObj) tag.getObject();
                 }
             } else if (value instanceof NewExpr) {
                 // If we get to an object creation, then try
                 // to figure out where the variable is stored into a field.
                 Iterator pairs = localUses.getUsesOf(stmt).iterator();
+
                 while (pairs.hasNext()) {
-                    UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
+                    UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
+
                     if (pair.getUnit() instanceof DefinitionStmt) {
-                        DefinitionStmt useStmt =
-                            (DefinitionStmt)pair.getUnit();
+                        DefinitionStmt useStmt = (DefinitionStmt) pair.getUnit();
+
                         if (useStmt.getLeftOp() instanceof FieldRef) {
-                            SootField field =
-                                ((FieldRef)useStmt.getLeftOp()).getField();
-                            ValueTag tag = (ValueTag)field.getTag("_CGValue");
+                            SootField field = ((FieldRef) useStmt.getLeftOp())
+                                .getField();
+                            ValueTag tag = (ValueTag) field.getTag("_CGValue");
+
                             if (tag == null) {
-                                System.out.println("Failed usage: " +
-                                        useStmt);
+                                System.out.println("Failed usage: " + useStmt);
                             } else {
-                                return (NamedObj)tag.getObject();
+                                return (NamedObj) tag.getObject();
                             }
                         }
                     }
                 }
-                throw new RuntimeException("Could not determine the " +
-                        " static value of" + local + " in " + method);
+
+                throw new RuntimeException("Could not determine the "
+                    + " static value of" + local + " in " + method);
             } else if (value instanceof NullConstant) {
                 // If we get to an assignment from null, then the
                 // attribute statically evaluates to null.
                 return null;
             } else {
-                throw new RuntimeException("Unknown type of value: "
-                        + value + " in " + method);
+                throw new RuntimeException("Unknown type of value: " + value
+                    + " in " + method);
             }
         } else {
             String string = "More than one definition of = " + local + "\n";
-            for (Iterator i = definitionList.iterator();
-                 i.hasNext();) {
-                string += "Definition = " + i.next().toString();
+
+            for (Iterator i = definitionList.iterator(); i.hasNext();) {
+                string += ("Definition = " + i.next().toString());
             }
+
             throw new RuntimeException(string);
         }
     }
@@ -312,17 +322,3 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
     private boolean _debug;
     private CompositeActor _model;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -28,7 +28,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.io.File;
@@ -65,12 +64,9 @@ import soot.Type;
     @Pt.AcceptedRating Red (ankush)
 */
 public class NativeMethodGenerator {
-
     /** The location of the native library methods.
      */
     public static final String nativeLib = "natives/";
-
-
 
     /** Return the name of the file where the C code for a native method
      *  should be.
@@ -78,12 +74,10 @@ public class NativeMethodGenerator {
      *  @return The name of the file.
      */
     public static String fileContainingCodeFor(SootMethod method) {
-        String fileName = CNames.functionNameOf(method)
-            + ".c";
+        String fileName = CNames.functionNameOf(method) + ".c";
 
         return fileName;
     }
-
 
     /** Generates a stub file for the given native method.
      *  @param method The method for which a stub is needed.
@@ -91,17 +85,14 @@ public class NativeMethodGenerator {
     public static void generateStub(SootMethod method) {
         if (!method.isNative()) {
             System.err.println(
-                    "NativeMethodGenerator.generateStub(SootMethod):"
-                    + "\n\tWARNING: "
-                    + method.toString()
-                    + " is not native.\n");
+                "NativeMethodGenerator.generateStub(SootMethod):"
+                + "\n\tWARNING: " + method.toString() + " is not native.\n");
         }
 
         // Leading Comment.
         StringBuffer code = new StringBuffer(
                 "/* PCCG: Function that implements native method\n"
-                + method.getSignature() + "\n"
-                + "*/\n");
+                + method.getSignature() + "\n" + "*/\n");
 
         code.append(_getStubHeader(method) + " {\n");
 
@@ -109,12 +100,9 @@ public class NativeMethodGenerator {
 
         // Add a #include if the method body exists.
         if (FileHandler.exists(Options.v().get("runtimeDir")
-                    + "/native_bodies/"
-                    + fileContainingCodeFor(method))) {
-
+                    + "/native_bodies/" + fileContainingCodeFor(method))) {
             code.append(_indent(1) + "#include \"native_bodies/"
-                    + fileContainingCodeFor(method)
-                    + "\"\n");
+                + fileContainingCodeFor(method) + "\"\n");
         }
         // Otherwise declare and return a dummy variable of the appropriate
         // type if the method is not void.
@@ -123,12 +111,12 @@ public class NativeMethodGenerator {
 
             if (!cReturnType.equals("void")) {
                 code.append(_indent(1) + cReturnType + " dummy;\n");
+
                 Type returnType = method.getReturnType();
 
                 if (returnType instanceof RefLikeType) {
                     code.append(_indent(1) + "dummy = NULL;\n");
-                }
-                else {
+                } else {
                     code.append(_indent(1) + "dummy = 0;\n");
                 }
 
@@ -147,12 +135,12 @@ public class NativeMethodGenerator {
 
         // Write out to the File with the appropriate name.
         // Make sure an existing file is never overwritten.
-        String fileName =  nativeLib + fileContainingCodeFor(method);
+        String fileName = nativeLib + fileContainingCodeFor(method);
+
         if (!FileHandler.exists(fileName)) {
             FileHandler.write(fileName, code.toString());
         }
     }
-
 
     /** Reads the corresponding file for the native method code and returns
      * it. The file containing the method code may or may not be a stub.
@@ -178,20 +166,17 @@ public class NativeMethodGenerator {
     /** Returns the location of the hand-coded native library method bodies.
      */
     public static String getNativeBodyLib() {
-        return  Options.v().get("runtimeDir") + "/native_bodies/";
+        return Options.v().get("runtimeDir") + "/native_bodies/";
     }
-
 
     /** Returns the first line of the stub for the given method.
      *  @param method The method for which the stub header is needed.
      *  @return The code for the head of the stub.
      */
     private static String _getStubHeader(SootMethod method) {
-
         StringBuffer code = new StringBuffer();
         Type returnType = method.getReturnType();
         int numParameters = method.getParameterCount();
-
 
         code.append(CNames.typeNameOf(returnType) + " ");
         code.append(CNames.functionNameOf(method));
@@ -202,7 +187,7 @@ public class NativeMethodGenerator {
         // method belongs to, if the method is non-static.
         if (!method.isStatic()) {
             code.append(CNames.instanceNameOf(method.getDeclaringClass())
-                    + " instance");
+                + " instance");
 
             // Put a comma if there are more parameters.
             if (numParameters > 0) {
@@ -213,24 +198,24 @@ public class NativeMethodGenerator {
         Iterator i = method.getParameterTypes().iterator();
         int parameterIndex = 0;
         Type parameterType;
+
         while (i.hasNext()) {
-            parameterType = (Type)i.next();
+            parameterType = (Type) i.next();
             code.append(CNames.typeNameOf(parameterType));
             code.append(" n" + parameterIndex);
-            // The dummy names of the parameters are n0, n1 ... etc.
 
-            if (parameterIndex < numParameters -1) {
-                code.append(", ");// Separators.
+            // The dummy names of the parameters are n0, n1 ... etc.
+            if (parameterIndex < (numParameters - 1)) {
+                code.append(", "); // Separators.
             }
 
             parameterIndex++;
         }
+
         code.append(")");
 
         return code.toString();
     }
-
-
 
     /** Return a string that generates an indentation string (a sequence
      *  of spaces) for the given indentation level. Each indentation
@@ -242,6 +227,4 @@ public class NativeMethodGenerator {
     private static String _indent(int level) {
         return Utilities.indent(level);
     }
-
-
 }

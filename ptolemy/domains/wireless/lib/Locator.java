@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypeAttribute;
@@ -40,6 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Locator
@@ -65,7 +65,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class Locator extends TypedAtomicActor {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -75,7 +74,7 @@ public class Locator extends TypedAtomicActor {
      *   actor with this name.
      */
     public Locator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create and configure the parameters.
@@ -91,6 +90,7 @@ public class Locator extends TypedAtomicActor {
 
         output = new WirelessIOPort(this, "output", false, true);
         output.outsideChannel.setExpression("$outputChannelName");
+
         // Since this actor sources the data at this port, we have to
         // declare the type.
         TypeAttribute portType = new TypeAttribute(output, "type");
@@ -129,30 +129,30 @@ public class Locator extends TypedAtomicActor {
      *  port.  The value of the input is ignored.
      */
     public void fire() throws IllegalActionException {
-
         super.fire();
 
         if (input.hasToken(0)) {
             Token inputValue = input.get(0);
+
             if (_debugging) {
                 _debug("Input signal received: " + inputValue.toString());
             }
 
             // Construct the message about the input signal detected.
-            String[] labels = {"location", "time"};
+            String[] labels = { "location", "time" };
 
             // Get the location and wrap each coordinate in a token.
             double[] location = _getLocation();
             Token[] locationArray = new Token[location.length];
+
             for (int i = 0; i < location.length; i++) {
                 locationArray[i] = new DoubleToken(location[i]);
             }
 
             double timeValue = getDirector().getModelTime().getDoubleValue();
             Token[] values = {
-                new ArrayToken(locationArray),
-                new DoubleToken(timeValue)
-            };
+                    new ArrayToken(locationArray), new DoubleToken(timeValue)
+                };
             Token result = new RecordToken(labels, values);
 
             output.send(0, result);
@@ -174,12 +174,14 @@ public class Locator extends TypedAtomicActor {
      */
     protected double[] _getLocation() throws IllegalActionException {
         Token[] result = new Token[2];
-        Location locationAttribute = (Location)getAttribute(
-                "_location", Location.class);
+        Location locationAttribute = (Location) getAttribute("_location",
+                Location.class);
+
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-                    "Cannot find a _location attribute of class Location.");
+                "Cannot find a _location attribute of class Location.");
         }
+
         return locationAttribute.getLocation();
     }
 }

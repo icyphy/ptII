@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.kernel;
 
 import java.util.Iterator;
@@ -39,6 +38,7 @@ import soot.grimp.Grimp;
 
 //////////////////////////////////////////////////////////////////////////
 //// GrimpTransformer
+
 /**
    A Transformer that creates a GrimpBody from the active body.
    GrimpBodies are better to create class files from because they have
@@ -52,7 +52,6 @@ import soot.grimp.Grimp;
 
 */
 public class GrimpTransformer extends SceneTransformer {
-
     /** Return an instance of this transformer that will operate on
      *  the given model.
      */
@@ -62,36 +61,25 @@ public class GrimpTransformer extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
-        System.out.println("GrimpTransformer.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("GrimpTransformer.internalTransform(" + phaseName
+            + ", " + options + ")");
 
         // Loop through all the methods and kill all the used fields.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-            SootClass entityClass = (SootClass)i.next();
+                i.hasNext();) {
+            SootClass entityClass = (SootClass) i.next();
+
             for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+                    methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
+
                 if (method.isConcrete()) {
-                    method.setActiveBody(
-                            Grimp.v().newBody(method.retrieveActiveBody(), "gb"));
+                    method.setActiveBody(Grimp.v().newBody(method
+                            .retrieveActiveBody(), "gb"));
                 }
             }
         }
     }
+
     private static GrimpTransformer _instance = new GrimpTransformer();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

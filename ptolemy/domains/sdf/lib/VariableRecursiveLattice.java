@@ -25,8 +25,10 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.RecursiveLattice;
@@ -43,10 +45,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// VariableRecursiveLattice
+
 /**
    This actor implements a recursive (all-pole) filter with a lattice
    structure where the reflection coefficients are supplied at an input port.
@@ -65,7 +67,6 @@ import java.util.*;
 */
 public class VariableRecursiveLattice extends RecursiveLattice
     implements ExplicitChangeContext {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,7 +76,7 @@ public class VariableRecursiveLattice extends RecursiveLattice
      *   actor with this name.
      */
     public VariableRecursiveLattice(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         blockSize = new Parameter(this, "blockSize");
@@ -87,13 +88,11 @@ public class VariableRecursiveLattice extends RecursiveLattice
 
         output.setTypeSameAs(input);
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setExpression("blockSize");
 
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression("blockSize");
 
@@ -132,16 +131,17 @@ public class VariableRecursiveLattice extends RecursiveLattice
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == blockSize) {
-            IntToken blockSizeToken = (IntToken)(blockSize.getToken());
+            IntToken blockSizeToken = (IntToken) (blockSize.getToken());
             _blockSizeValue = blockSizeToken.intValue();
+
             if (_blockSizeValue < 1) {
                 throw new IllegalActionException(this,
-                        "Invalid blockSize: " + _blockSizeValue);
+                    "Invalid blockSize: " + _blockSizeValue);
             }
-
         }
+
         super.attributeChanged(attribute);
     }
 
@@ -152,13 +152,12 @@ public class VariableRecursiveLattice extends RecursiveLattice
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        VariableRecursiveLattice newObject
-            = (VariableRecursiveLattice)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        VariableRecursiveLattice newObject = (VariableRecursiveLattice) (super
+            .clone(workspace));
 
-        newObject.newCoefficients.setTypeSameAs(
-                newObject.reflectionCoefficients);
+        newObject.newCoefficients.setTypeSameAs(newObject.reflectionCoefficients);
+
         // FIXME: Is this needed?  If so, shouldn't it be in the base class?
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;
@@ -170,10 +169,10 @@ public class VariableRecursiveLattice extends RecursiveLattice
      */
     public void fire() throws IllegalActionException {
         if (newCoefficients.hasToken(0)) {
-            ArrayToken coefficientsToken =
-                (ArrayToken)(newCoefficients.get(0));
+            ArrayToken coefficientsToken = (ArrayToken) (newCoefficients.get(0));
             reflectionCoefficients.setToken(coefficientsToken);
         }
+
         for (int i = 0; i < _blockSizeValue; i++) {
             super.fire();
         }
@@ -209,13 +208,14 @@ public class VariableRecursiveLattice extends RecursiveLattice
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        if (input.hasToken(0, _blockSizeValue)
-                && newCoefficients.hasToken(0)) return super.prefire();
-        else return false;
+        if (input.hasToken(0, _blockSizeValue) && newCoefficients.hasToken(0)) {
+            return super.prefire();
+        } else {
+            return false;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _blockSizeValue = 1;
 }

@@ -25,6 +25,7 @@
 */
 package diva.graph.layout;
 
+
 /**
  * A proxy layout which forwards all events to a given incremental
  * layout delegate.  This class implements the proxy design pattern,
@@ -96,5 +97,3 @@ public class ProxyIncrLayout implements IncrementalLayout {
         _delegate.layout(composite);
     }
 }
-
-

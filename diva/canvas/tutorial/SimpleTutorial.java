@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -45,6 +44,7 @@ import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
 import diva.util.java2d.Polyline2D;
+
 
 /**
  * <p> This tutorial shows how to construct a JCanvas and place
@@ -103,7 +103,6 @@ import diva.util.java2d.Polyline2D;
  * @author John Reekie
  * @version $Id$ */
 public class SimpleTutorial {
-
     // The JCanvas
     private JCanvas canvas;
 
@@ -112,12 +111,12 @@ public class SimpleTutorial {
 
     /** Create a JCanvas and put it into a window
      */
-    public SimpleTutorial () {
+    public SimpleTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         BasicFrame frame = new BasicFrame("Simple canvas tutorial", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
     }
 
@@ -126,9 +125,9 @@ public class SimpleTutorial {
      * other useful predefined figure classes, is contained in the
      * package <b>diva.canvas.toolbox</b>.
      */
-    public void createBasicRectangle () {
+    public void createBasicRectangle() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
-        Figure rectangle = new BasicRectangle(50,50,80,80,Color.blue);
+        Figure rectangle = new BasicRectangle(50, 50, 80, 80, Color.blue);
         layer.add(rectangle);
     }
 
@@ -137,13 +136,14 @@ public class SimpleTutorial {
      * of the Java2D interface, <b>java.awt.Shape</b>. In this example,
      * we use an instance of GeneralPath.
      */
-    public void createBasicFigure () {
+    public void createBasicFigure() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
         GeneralPath path = new GeneralPath();
-        path.moveTo(120,240);
-        path.lineTo(240,240);
-        path.quadTo(180,120,120,240);
+        path.moveTo(120, 240);
+        path.lineTo(240, 240);
+        path.quadTo(180, 120, 120, 240);
         path.closePath();
+
         Figure semi = new BasicFigure(path, Color.green);
         layer.add(semi);
     }
@@ -151,23 +151,24 @@ public class SimpleTutorial {
     /** Create a polyline. Again, this uses the BasicFigure class,
      * but this time the shape is an instance of <b>diva.util.Polyline2D</b>.
      */
-    public void createPolyline () {
+    public void createPolyline() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
         Polyline2D path = new Polyline2D.Double();
-        path.moveTo(240,120);
-        path.lineTo(280,140);
-        path.lineTo(240,160);
-        path.lineTo(280,180);
-        path.lineTo(240,200);
-        path.lineTo(280,220);
-        path.lineTo(240,240);
+        path.moveTo(240, 120);
+        path.lineTo(280, 140);
+        path.lineTo(240, 160);
+        path.lineTo(280, 180);
+        path.lineTo(240, 200);
+        path.lineTo(280, 220);
+        path.lineTo(240, 240);
+
         Figure line = new BasicFigure(path);
         layer.add(line);
     }
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -179,5 +180,3 @@ public class SimpleTutorial {
             });
     }
 }
-
-

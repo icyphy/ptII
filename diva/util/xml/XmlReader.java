@@ -41,6 +41,7 @@ import com.microstar.xml.XmlParser;
 import diva.resource.DefaultBundle;
 import diva.util.LoggableOp;
 
+
 /**
  * An XmlReader reads a character stream and constructs the internal
  * data of an XmlDocument. Internally, it contains an implementation
@@ -72,7 +73,6 @@ import diva.util.LoggableOp;
  * @version $Id$
  */
 public class XmlReader extends LoggableOp {
-
     /** The current Aelfred parser
      */
     private XmlParser _parser = null;
@@ -87,7 +87,7 @@ public class XmlReader extends LoggableOp {
 
     /** Get the current line number.
      */
-    public int getLineNumber () {
+    public int getLineNumber() {
         return _parser.getLineNumber();
     }
 
@@ -105,16 +105,20 @@ public class XmlReader extends LoggableOp {
      * @exception Exception If the parser fails internally. This indicates
      * a severe error, such as an I/O error, not an XML error.
      */
-    public void parse (XmlDocument document) throws Exception {
+    public void parse(XmlDocument document) throws Exception {
         URL url = document.getURL();
+
         if (url != null) {
             parse(document, url, null, null, null, null);
         } else {
             // Parse from a file
             File file = document.getFile();
+
             if (file == null) {
-                throw new XmlException("Document contains no URL or File", "", 0, 0);
+                throw new XmlException("Document contains no URL or File", "",
+                    0, 0);
             }
+
             FileReader in = new FileReader(file);
             parse(document, in);
         }
@@ -128,7 +132,8 @@ public class XmlReader extends LoggableOp {
      * @exception Exception If the parser fails internally. This indicates
      * a severe error, such as an I/O error, not an XML error.
      */
-    public void parse (XmlDocument document, InputStream in) throws Exception {
+    public void parse(XmlDocument document, InputStream in)
+        throws Exception {
         URL url = document.getURL();
         parse(document, url, null, null, in, null);
     }
@@ -141,7 +146,8 @@ public class XmlReader extends LoggableOp {
      * @exception Exception If the parser fails internally. This indicates
      * a severe error, such as an I/O error, not an XML error.
      */
-    public void parse (XmlDocument document, Reader in) throws Exception {
+    public void parse(XmlDocument document, Reader in)
+        throws Exception {
         URL url = document.getURL();
         parse(document, url, null, in, null, null);
     }
@@ -149,17 +155,22 @@ public class XmlReader extends LoggableOp {
     /**
      * Print the type of an entity.
      */
-    public String printEntityType (String name) {
+    public String printEntityType(String name) {
         int type = _parser.getEntityType(name);
+
         switch (type) {
         case XmlParser.ENTITY_INTERNAL:
             return "ENTITY_INTERNAL";
+
         case XmlParser.ENTITY_NDATA:
             return "ENTITY_NDATA";
+
         case XmlParser.ENTITY_TEXT:
             return "ENTITY_TEXT";
+
         case XmlParser.ENTITY_UNDECLARED:
             return "ENTITY_DECLARED";
+
         default:
             return "Unknown entity type";
         }
@@ -170,22 +181,24 @@ public class XmlReader extends LoggableOp {
      * messing around to figure out which version of parse to call in
      * the Aelfred parser.
      */
-    private void parse (XmlDocument document,
-            URL systemId, URL publicId,
-            Reader reader, InputStream stream,
-            String encoding) throws Exception {
+    private void parse(XmlDocument document, URL systemId, URL publicId,
+        Reader reader, InputStream stream, String encoding)
+        throws Exception {
+        String pubString;
+        String sysString;
 
-        String pubString, sysString;
         if (systemId != null) {
             sysString = systemId.toString();
         } else {
             sysString = "";
         }
+
         if (publicId != null) {
             pubString = publicId.toString();
         } else {
             pubString = "";
         }
+
         _document = document;
         _root = null;
         _parser = new XmlParser();
@@ -194,6 +207,7 @@ public class XmlReader extends LoggableOp {
 
         try {
             _parser.setHandler(new Handler());
+
             if (reader != null) {
                 _parser.parse(sysString, pubString, reader);
             } else if (stream != null) {
@@ -201,8 +215,7 @@ public class XmlReader extends LoggableOp {
             } else {
                 _parser.parse(sysString, pubString, encoding);
             }
-        }
-        finally {
+        } finally {
             /* Who knows, maybe something was parsed at this point,
              * so allow the application to decide by setting everything
              * up here.
@@ -248,10 +261,11 @@ public class XmlReader extends LoggableOp {
          *  @exception XmlException If the name or value is null.
          */
         public void attribute(String name, String value, boolean specified)
-                throws Exception {
+            throws Exception {
             if (isVerbose()) {
                 logInfo("attr", name + "=\"" + value + "\" (" + specified + ")");
             }
+
             if (name == null) {
                 logError("Attribute has no name");
             } else {
@@ -263,18 +277,22 @@ public class XmlReader extends LoggableOp {
          * Append the given character bytes to the character data of
          * the current XML element.
          */
-        public void charData(char c[], int offset, int length)
-                throws Exception {
+        public void charData(char[] c, int offset, int length)
+            throws Exception {
             String s = new String(c, offset, length);
+
             if (isVerbose()) {
                 String x;
+
                 if (s.length() > 40) {
-                    x = s.substring(0,40) + "...";
+                    x = s.substring(0, 40) + "...";
                 } else {
                     x = s;
                 }
+
                 logInfo("cdata", "[" + offset + "," + length + "] " + s);
             }
+
             _currentElement.appendPCData(s);
         }
 
@@ -282,11 +300,13 @@ public class XmlReader extends LoggableOp {
          * Handle a document type declaration. This sets the DTD external
          * identifiers in the XmlDocument.
          */
-        public void doctypeDecl (String name, String publicId, String systemId)
-                throws java.lang.Exception {
+        public void doctypeDecl(String name, String publicId, String systemId)
+            throws java.lang.Exception {
             if (isVerbose()) {
-                logInfo("doctype", name + " \"" + publicId + "\" \"" + systemId + "\"");
+                logInfo("doctype",
+                    name + " \"" + publicId + "\" \"" + systemId + "\"");
             }
+
             _document.setDocType(name);
             _document.setDTDPublicID(publicId);
             _document.setDTDSystemID(systemId);
@@ -301,6 +321,7 @@ public class XmlReader extends LoggableOp {
                 unindent();
                 logInfo("end", "");
             }
+
             // This never gets called anyway -- Alfred catches it
             //if (_currentElement != _root) {
             //    logError("Document tags do not match");
@@ -315,6 +336,7 @@ public class XmlReader extends LoggableOp {
                 unindent();
                 logInfo("end", "</" + name + ">");
             }
+
             XmlElement parent = _currentElement.getParent();
             _currentElement = parent;
         }
@@ -329,6 +351,7 @@ public class XmlReader extends LoggableOp {
             if (isVerbose()) {
                 logInfo("end ext", URI);
             }
+
             // The doesn't work because of a bug in Aelfred that
             // appears if you resolve the external entity to an input stream
             //String _currentElement = _currentExternalEntity();
@@ -341,8 +364,8 @@ public class XmlReader extends LoggableOp {
         /**
          * Print an error message to the error stream.
          */
-        public void error(String message, String sysid,
-                int line, int column) throws Exception {
+        public void error(String message, String sysid, int line, int column)
+            throws Exception {
             if (sysid != null) {
                 logError("[" + sysid + "] " + message);
             } else {
@@ -356,9 +379,8 @@ public class XmlReader extends LoggableOp {
          * @see com.microstar.xml.XmlHandler#ignorableWhitespace
          * @exception java.lang.Exception Derived methods may throw exceptions.
          */
-        public void ignorableWhitespace (char ch[], int start, int length)
-                throws java.lang.Exception
-        {
+        public void ignorableWhitespace(char[] ch, int start, int length)
+            throws java.lang.Exception {
         }
 
         /**
@@ -367,8 +389,8 @@ public class XmlReader extends LoggableOp {
          * @see com.microstar.xml.XmlHandler#processingInstruction
          * @exception java.lang.Exception Derived methods may throw exceptions.
          */
-        public void processingInstruction (String target, String data)
-                throws java.lang.Exception {
+        public void processingInstruction(String target, String data)
+            throws java.lang.Exception {
             ; // ?
         }
 
@@ -380,28 +402,33 @@ public class XmlReader extends LoggableOp {
          * Otherwise, non-null public DTD's are looked up in the
          * default resource bundle, diva/resource/Defaults.properties.
          */
-        public Object resolveEntity (String pubID, String sysID)
-                throws Exception {
+        public Object resolveEntity(String pubID, String sysID)
+            throws Exception {
             if (isVerbose()) {
                 logInfo("resolve", "\"" + pubID + "\" \"" + sysID + "\"");
             }
 
             // By default, the result is the System ID
             Object result = sysID;
-            if (pubID != null && pubID.equals(_document.getDTDPublicID())) {
+
+            if ((pubID != null) && pubID.equals(_document.getDTDPublicID())) {
                 String dtd = _document.getDTD();
+
                 if (dtd != null) {
                     return new java.io.StringReader(dtd);
                 }
             }
-            if (pubID != null && !pubID.equals("")) {
+
+            if ((pubID != null) && !pubID.equals("")) {
                 /* To find the DTD from the public ID, create a DefaultBundle
                  * and look up the ID in that. If it is not null, then it
                  * is an input stream that the parser can use.
                  */
                 DefaultBundle resources = new DefaultBundle();
+
                 try {
                     Object str = resources.getResourceAsStream(pubID);
+
                     if (str != null) {
                         result = str;
                     }
@@ -409,9 +436,11 @@ public class XmlReader extends LoggableOp {
                     // if the resource is not found, then ignore.
                 }
             }
+
             if (isVerbose()) {
                 logInfo("resolve", "=> " + result);
             }
+
             return result;
         }
 
@@ -426,6 +455,7 @@ public class XmlReader extends LoggableOp {
                 logInfo("start", "");
                 indent();
             }
+
             _attributes.clear();
             _root = null;
         }
@@ -448,15 +478,20 @@ public class XmlReader extends LoggableOp {
          */
         public void startElement(String name) {
             if (isVerbose()) {
-                logInfo("start", "<" + name + "> (" + printEntityType(name) + ")");
+                logInfo("start",
+                    "<" + name + "> (" + printEntityType(name) + ")");
                 indent();
             }
+
             XmlElement e = new XmlElement(name, _attributes);
             e.setParent(_currentElement);
-            if (_currentElement == null)
+
+            if (_currentElement == null) {
                 _root = e;
-            else
+            } else {
                 _currentElement.addElement(e);
+            }
+
             _currentElement = e;
             _attributes.clear();
         }
@@ -468,6 +503,7 @@ public class XmlReader extends LoggableOp {
             if (isVerbose()) {
                 logInfo("start ext", URI);
             }
+
             _externalEntities.add(0, URI);
         }
 
@@ -475,9 +511,7 @@ public class XmlReader extends LoggableOp {
             //if (isVerbose())
             //    System.out.println("currentExternalEntity: URI=\"" +
             //            (String)_externalEntities.get(0) + "\"\n");
-            return (String)_externalEntities.get(0);
+            return (String) _externalEntities.get(0);
         }
     }
 }
-
-

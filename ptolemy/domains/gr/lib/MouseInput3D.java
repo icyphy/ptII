@@ -46,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 /**  An actor that listens for mouse clicks on the viewscreen
 
 @author C. Fong
@@ -55,10 +56,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (chf)
 */
 public class MouseInput3D extends GRActor3D {
-
     public MouseInput3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         x = new TypedIOPort(this, "x");
@@ -67,24 +66,23 @@ public class MouseInput3D extends GRActor3D {
         y = new TypedIOPort(this, "y");
         y.setOutput(true);
         y.setTypeEquals(BaseType.INT);
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
     public TypedIOPort x;
     public TypedIOPort y;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
+
         if (_hasData) {
             x.send(0, new IntToken(_xClicked));
             y.send(0, new IntToken(_yClicked));
             _hasData = false;
+
             //System.out.println("clicked location -> " + _xClicked
             // + " " + _yClicked);
         }
@@ -101,24 +99,22 @@ public class MouseInput3D extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     protected Node _getNodeObject() {
         return (Node) _containedNode;
     }
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_viewScreen == null) {
-            throw new IllegalActionException(
-                    "GR error: no ViewScreen actor");
+            throw new IllegalActionException("GR error: no ViewScreen actor");
         } else {
             _viewScreen.addChild(_getNodeObject());
         }
+
         // It would be nice if we did this..
         //sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }
 
     private class React extends Behavior {
-
         public void initialize() {
             this.wakeupOn(new WakeupOnAWTEvent(MouseEvent.MOUSE_PRESSED));
         }
@@ -130,16 +126,19 @@ public class MouseInput3D extends GRActor3D {
 
             while (criteria.hasMoreElements()) {
                 wakeup = (WakeupCriterion) criteria.nextElement();
-                event = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
+                event = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
+
                 for (int i = 0; i < event.length; i++) {
                     eventId = event[i].getID();
+
                     if (eventId == MouseEvent.MOUSE_PRESSED) {
-                        _xClicked = ((MouseEvent)event[i]).getX();
-                        _yClicked = ((MouseEvent)event[i]).getY();
+                        _xClicked = ((MouseEvent) event[i]).getX();
+                        _yClicked = ((MouseEvent) event[i]).getY();
                         _hasData = true;
                     }
                 }
             }
+
             this.wakeupOn(new WakeupOnAWTEvent(MouseEvent.MOUSE_PRESSED));
         }
     }
@@ -148,8 +147,6 @@ public class MouseInput3D extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
     private React _react;
     private boolean _hasData;
     private int _xClicked;

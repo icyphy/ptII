@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -40,11 +39,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
-
 //////////////////////////////////////////////////////////////////////////
 //// MathFunction
+
 /**
    Produce an output token on each firing with a value that is
    equal to the specified math function of the input.
@@ -89,7 +89,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    Use UnaryMathFunction instead.
 */
 public class MathFunction extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -99,7 +98,7 @@ public class MathFunction extends TypedAtomicActor {
      *   actor with this name.
      */
     public MathFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -116,7 +115,6 @@ public class MathFunction extends TypedAtomicActor {
         // Ports
         // secondOperand port is not allocated in the constructor
         // instead it will allocated dynamically during run-time
-
         firstOperand = new TypedIOPort(this, "firstOperand");
         firstOperand.setInput(true);
         output = new TypedIOPort(this, "output");
@@ -124,11 +122,10 @@ public class MathFunction extends TypedAtomicActor {
         firstOperand.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,24 +154,26 @@ public class MathFunction extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws  IllegalActionException {
+        throws IllegalActionException {
         try {
             if (attribute == function) {
                 String functionName = function.stringValue();
+
                 if (functionName.equals("exp")) {
                     _function = _EXP;
+
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
                 } else if (functionName.equals("log")) {
                     _function = _LOG;
+
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
@@ -183,29 +182,32 @@ public class MathFunction extends TypedAtomicActor {
                     _createSecondPort();
                 } else if (functionName.equals("sign")) {
                     _function = _SIGN;
+
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
                 } else if (functionName.equals("square")) {
                     _function = _SQUARE;
+
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
                 } else if (functionName.equals("sqrt")) {
                     _function = _SQRT;
+
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
                 } else {
                     throw new IllegalActionException(this,
-                            "Unrecognized math function: " + functionName);
+                        "Unrecognized math function: " + functionName);
                 }
             } else {
                 super.attributeChanged(attribute);
             }
         } catch (NameDuplicationException nameDuplication) {
             throw new InternalErrorException(this, nameDuplication,
-                    "Unexpected name duplication");
+                "Unexpected name duplication");
         }
     }
 
@@ -218,12 +220,13 @@ public class MathFunction extends TypedAtomicActor {
         if (firstOperand.hasToken(0)) {
             double input1 = ((DoubleToken) firstOperand.get(0)).doubleValue();
             double input2 = 1.0;
+
             if (_function == _MODULO) {
                 if (secondOperand.hasToken(0)) {
-                    input2 =
-                        ((DoubleToken) secondOperand.get(0)).doubleValue();
+                    input2 = ((DoubleToken) secondOperand.get(0)).doubleValue();
                 }
             }
+
             output.send(0, new DoubleToken(_doFunction(input1, input2)));
         }
     }
@@ -246,7 +249,6 @@ public class MathFunction extends TypedAtomicActor {
      */
     public int iterate(int count) throws IllegalActionException {
         // Check whether we need to reallocate the output token array.
-
         Token[] inArray1;
         Token[] inArray2;
 
@@ -259,14 +261,16 @@ public class MathFunction extends TypedAtomicActor {
                 if (secondOperand.hasToken(0, count)) {
                     inArray1 = firstOperand.get(0, count);
                     inArray2 = secondOperand.get(0, count);
+
                     for (int i = 0; i < count; i++) {
-                        double input1 =
-                            ((DoubleToken)(inArray1[i])).doubleValue();
-                        double input2 =
-                            ((DoubleToken)(inArray2[i])).doubleValue();
-                        _resultArray[i] =
-                            new DoubleToken(_doFunction(input1, input2));
+                        double input1 = ((DoubleToken) (inArray1[i]))
+                            .doubleValue();
+                        double input2 = ((DoubleToken) (inArray2[i]))
+                            .doubleValue();
+                        _resultArray[i] = new DoubleToken(_doFunction(input1,
+                                    input2));
                     }
+
                     output.send(0, _resultArray, count);
                     return COMPLETED;
                 } else {
@@ -274,16 +278,19 @@ public class MathFunction extends TypedAtomicActor {
                 }
             } else {
                 inArray1 = firstOperand.get(0, count);
-                for (int i = 0; i < count ; i++) {
-                    double input1 = ((DoubleToken)(inArray1[i])).doubleValue();
+
+                for (int i = 0; i < count; i++) {
+                    double input1 = ((DoubleToken) (inArray1[i])).doubleValue();
                     _resultArray[i] = new DoubleToken(_doFunction(input1, 0));
                 }
+
                 output.send(0, _resultArray, count);
                 return COMPLETED;
             }
         } else {
             return NOT_READY;
         }
+
         // Note: constants COMPLETED and NOT_READY are defined in
         // ptolemy.actor.Executable
     }
@@ -294,16 +301,18 @@ public class MathFunction extends TypedAtomicActor {
     /** Create the second port needed by modulo function
      */
     private void _createSecondPort()
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         // Go looking for the port in case somebody else created the port
         // already.  For example, this might
         // happen in shallow code generation.
-        secondOperand = (TypedIOPort)getPort("secondOperand");
+        secondOperand = (TypedIOPort) getPort("secondOperand");
+
         if (secondOperand == null) {
             secondOperand = new TypedIOPort(this, "secondOperand", true, false);
         } else if (secondOperand.getContainer() == null) {
             secondOperand.setContainer(this);
         }
+
         secondOperand.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -314,17 +323,22 @@ public class MathFunction extends TypedAtomicActor {
      */
     private double _doFunction(double input1, double input2) {
         double result;
-        switch(_function) {
+
+        switch (_function) {
         case _EXP:
             result = Math.exp(input1);
             break;
+
         case _LOG:
             result = Math.log(input1);
             break;
+
         case _MODULO:
             result = input1 % input2;
             break;
+
         case _SIGN:
+
             if (input1 > 0) {
                 result = 1.0;
             } else if (input1 < 0) {
@@ -332,26 +346,29 @@ public class MathFunction extends TypedAtomicActor {
             } else {
                 result = 0.0;
             }
+
             break;
+
         case _SQUARE:
             result = input1 * input1;
             break;
+
         case _SQRT:
             result = Math.sqrt(input1);
             break;
+
         default:
             throw new InternalErrorException(
-                    "Invalid value for _function private variable. "
-                    + "MathFunction actor (" + getFullName()
-                    + ")"
-                    + " on function type " + _function);
+                "Invalid value for _function private variable. "
+                + "MathFunction actor (" + getFullName() + ")"
+                + " on function type " + _function);
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private DoubleToken[] _resultArray = new DoubleToken[0];
 
     // An indicator for the function to compute.
@@ -365,4 +382,3 @@ public class MathFunction extends TypedAtomicActor {
     private static final int _SQUARE = 4;
     private static final int _SQRT = 5;
 }
-

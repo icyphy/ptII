@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.util;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JHDLUnsupportedException
+
 /**
  *
  *
@@ -41,11 +42,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class JHDLUnsupportedException extends IllegalActionException {
-
     public JHDLUnsupportedException(String detail) {
         super(detail);
     }
-
 }

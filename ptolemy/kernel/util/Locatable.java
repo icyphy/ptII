@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Locatable
+
 /**
    An interface for objects storing a location.
 
@@ -45,7 +46,6 @@ package ptolemy.kernel.util;
    @see Location
 */
 public interface Locatable extends Settable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

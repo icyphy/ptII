@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.BooleanToken;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ThrowException
+
 /**
    An actor that throws an IllegalActionException when it receives a true token
    on any input channel.  The message reported in the exception is
@@ -50,9 +51,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Green (neuendor)
    @see ThrowModelError
 */
-
 public class ThrowException extends Sink {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -63,7 +62,7 @@ public class ThrowException extends Sink {
      *   an actor already in the container.
      */
     public ThrowException(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -90,19 +89,21 @@ public class ThrowException extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
+
         // NOTE: We need to consume data on all channels that have data.
         // If we don't then DE will go into an infinite loop.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                if (((BooleanToken)input.get(i)).booleanValue()) {
+                if (((BooleanToken) input.get(i)).booleanValue()) {
                     result = true;
                 }
             }
         }
+
         if (result) {
             throw new IllegalActionException(this, message.getExpression());
         }
+
         return super.postfire();
     }
 }
-

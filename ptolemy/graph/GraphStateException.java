@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphStateException
+
 /**
    The exception of computing a function of graph with wrong states.
    In some cases, a proper input graph is required to evaluate functions of
@@ -42,13 +43,10 @@ package ptolemy.graph;
    @Pt.AcceptedRating Red (ssb)
 */
 public class GraphStateException extends GraphException {
-
     /** Constructor with an argument of text description.
      *  @param message The exception message.
      */
     public GraphStateException(String message) {
         super(message);
     }
-
 }
-

@@ -35,6 +35,7 @@ import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.toolbox.LabelFigure;
 
+
 /** A Connector that draws itself in an arc. The connector
  * draws itself approximately through the center of the figures
  * that own the sites to which it is connected. The curvature of the
@@ -65,7 +66,6 @@ import diva.canvas.toolbox.LabelFigure;
  * @Pt.AcceptedRating  Red
  */
 public class ArcConnector extends AbstractConnector {
-
     // The minimum exit angle that a self-loop can take
     private static double MINSELFLOOPANGLE = Math.PI * 0.6;
 
@@ -113,6 +113,7 @@ public class ArcConnector extends AbstractConnector {
 
     /** The arc displacement
      */
+
     //// private double _displacement = 20.0;
 
     /** Create a new arc connector between the given
@@ -120,16 +121,16 @@ public class ArcConnector extends AbstractConnector {
      * and in black, and at the default incident angle of
      * 45 degrees (PI/4 radians).
      */
-    public ArcConnector (Site tail, Site head) {
+    public ArcConnector(Site tail, Site head) {
         super(tail, head);
-        _arc =  new Arc2D.Double();
+        _arc = new Arc2D.Double();
         setShape(_arc);
         route();
     }
 
     /** Get the angle at which the arc leaves the tail figure.
      */
-    public double getAngle () {
+    public double getAngle() {
         return _exitAngle;
     }
 
@@ -137,7 +138,7 @@ public class ArcConnector extends AbstractConnector {
      * self-loop. This method should be used when saving an arc
      * to an external representation, if the arc is a self-loop.
      */
-    public double getGamma () {
+    public double getGamma() {
         return _gamma;
     }
 
@@ -146,38 +147,42 @@ public class ArcConnector extends AbstractConnector {
      */
     public Point2D getArcMidpoint() {
         // Hm... I don't know why I need the PI/2 here -- johnr
-        return new Point2D.Double(
-                _centerX + _radius
-                * Math.sin(_startAngle + _extentAngle/2 + Math.PI/2),
-                _centerY + _radius
-                * Math.cos(_startAngle + _extentAngle/2 + Math.PI/2));
+        return new Point2D.Double(_centerX
+            + (_radius * Math.sin(_startAngle + (_extentAngle / 2)
+                + (Math.PI / 2))),
+            _centerY
+            + (_radius * Math.cos(_startAngle + (_extentAngle / 2)
+                + (Math.PI / 2))));
     }
 
     /** Get the site that marks the midpoint of the connector.
      *  @return A site representing the midpoint of the arc.
      */
-    public Site getMidpointSite () {
+    public Site getMidpointSite() {
         if (_midpointSite == null) {
             // The 0 is an ID.  What role does this serve? EAL
             _midpointSite = new ArcMidpointSite(this, 0);
         }
+
         return _midpointSite;
     }
 
     /** Get the flag saying whether this arc is to be drawn as a self-loop
      */
-    public boolean getSelfLoop () {
+    public boolean getSelfLoop() {
         return _selfloop;
     }
 
     /** Tell the connector to reposition its label if it has one.
      * The label is currently only positioned at the center of the arc.
      */
-    public void repositionLabel () {
+    public void repositionLabel() {
         LabelFigure label = getLabelFigure();
+
         if (label != null) {
             Point2D pt = getArcMidpoint();
             label.translateTo(pt);
+
             // FIXME: Need a way to override the positioning.
             label.autoAnchor(_arc);
         }
@@ -186,7 +191,7 @@ public class ArcConnector extends AbstractConnector {
     /** Tell the connector to route itself between the
      * current positions of the head and tail sites.
      */
-    public void route () {
+    public void route() {
         repaint();
 
         TransformContext currentContext = getTransformContext();
@@ -195,7 +200,8 @@ public class ArcConnector extends AbstractConnector {
         Figure tailFigure = tailSite.getFigure();
         Figure headFigure = headSite.getFigure();
 
-        Point2D headPt, tailPt;
+        Point2D headPt;
+        Point2D tailPt;
 
         // Get the transformed head and tail points. Sometimes
         // people will call this before the connector is added
@@ -209,23 +215,32 @@ public class ArcConnector extends AbstractConnector {
         }
 
         // Figure out the centers of the attached figures
-        Point2D tailCenter, headCenter;
+        Point2D tailCenter;
+
+        // Figure out the centers of the attached figures
+        Point2D headCenter;
+
         if (tailFigure != null) {
-            tailCenter = CanvasUtilities.getCenterPoint(tailFigure, currentContext);
+            tailCenter = CanvasUtilities.getCenterPoint(tailFigure,
+                    currentContext);
         } else {
             tailCenter = tailPt;
         }
+
         if (headFigure != null) {
-            headCenter = CanvasUtilities.getCenterPoint(headFigure, currentContext);
+            headCenter = CanvasUtilities.getCenterPoint(headFigure,
+                    currentContext);
         } else {
             headCenter = headPt;
         }
 
         // Change self-loop mode if necessary
         boolean selfloop = _selfloop;
-        if (tailFigure != null && headFigure != null) {
+
+        if ((tailFigure != null) && (headFigure != null)) {
             selfloop = (tailFigure == headFigure);
         }
+
         if (selfloop && !_selfloop) {
             setSelfLoop(true);
         } else if (!selfloop && _selfloop) {
@@ -237,6 +252,7 @@ public class ArcConnector extends AbstractConnector {
         double gamma;
         double x = headCenter.getX() - tailCenter.getX();
         double y = headCenter.getY() - tailCenter.getY();
+
         if (_selfloop) {
             gamma = _gamma;
         } else {
@@ -245,7 +261,7 @@ public class ArcConnector extends AbstractConnector {
 
         // Tell the sites to adjust their positions
         double alpha = _exitAngle;
-        double beta = Math.PI / 2.0 - alpha;
+        double beta = (Math.PI / 2.0) - alpha;
         double headNormal = gamma - alpha - Math.PI;
         double tailNormal = gamma + alpha;
         tailSite.setNormal(tailNormal);
@@ -266,6 +282,7 @@ public class ArcConnector extends AbstractConnector {
             getHeadEnd().setOrigin(headPt.getX(), headPt.getY());
             getHeadEnd().getConnection(headPt);
         }
+
         if (getTailEnd() != null) {
             getTailEnd().setNormal(tailNormal);
             getTailEnd().setOrigin(tailPt.getX(), tailPt.getY());
@@ -276,7 +293,7 @@ public class ArcConnector extends AbstractConnector {
         x = headPt.getX() - tailPt.getX();
         y = headPt.getY() - tailPt.getY();
 
-        if (_selfloop && tailFigure != null && headFigure != null) {
+        if (_selfloop && (tailFigure != null) && (headFigure != null)) {
             // In this case, don't remember the modified gamma!
             this._gamma = gamma;
             gamma = Math.atan2(y, x);
@@ -289,24 +306,24 @@ public class ArcConnector extends AbstractConnector {
         // tail of the connector, figure out what the center
         // of the arc is. First, compute assuming that gamma is
         // zero.
-        double dx = Math.sqrt(x*x + y*y) / 2.0;
+        double dx = Math.sqrt((x * x) + (y * y)) / 2.0;
         double dy = -dx * Math.tan(beta);
 
         // That's the offset from the tail point to the center
         // of the arc's circle. Rotate it through gamma.
-        double dxdash = dx * Math.cos(gamma) - dy * Math.sin(gamma);
-        double dydash = dx * Math.sin(gamma) + dy * Math.cos(gamma);
+        double dxdash = (dx * Math.cos(gamma)) - (dy * Math.sin(gamma));
+        double dydash = (dx * Math.sin(gamma)) + (dy * Math.cos(gamma));
 
         // Get the center
         double centerX = tailPt.getX() + dxdash;
         double centerY = tailPt.getY() + dydash;
-        double radius = Math.sqrt(dx*dx + dy*dy);
+        double radius = Math.sqrt((dx * dx) + (dy * dy));
 
         // Remember some parameters for later use
         this._centerX = centerX;
         this._centerY = centerY;
         this._radius = radius;
-        this._startAngle = 3*Math.PI/2 - alpha - gamma;
+        this._startAngle = ((3 * Math.PI) / 2) - alpha - gamma;
 
         // NOTE: I don't know why I need to do this, I screwed
         // up the math somewhere... -- hjr
@@ -317,19 +334,18 @@ public class ArcConnector extends AbstractConnector {
         // Draw self loops correctly.
         if (false && _selfloop) {
             if (alpha < 0.0) {
-                _extentAngle = (2.0 * alpha) + 2 * Math.PI;
+                _extentAngle = (2.0 * alpha) + (2 * Math.PI);
             } else {
-                _extentAngle = (2.0 * alpha) - 2 * Math.PI;
+                _extentAngle = (2.0 * alpha) - (2 * Math.PI);
             }
         } else {
             _extentAngle = (2.0 * alpha);
         }
+
         // Set the arc
-        _arc.setArcByCenter(
-                centerX, centerY, radius,
-                _startAngle / Math.PI * 180,
-                _extentAngle / Math.PI * 180,
-                Arc2D.OPEN);
+        _arc.setArcByCenter(centerX, centerY, radius,
+            _startAngle / Math.PI * 180, _extentAngle / Math.PI * 180,
+            Arc2D.OPEN);
 
         // Move the label
         repositionLabel();
@@ -347,13 +363,15 @@ public class ArcConnector extends AbstractConnector {
      *  general maximum figure.  If the angle is outside the range -PI
      *  to PI, then it is corrected to lie within that range.
      */
-    public void setAngle (double angle) {
+    public void setAngle(double angle) {
         while (angle > Math.PI) {
-            angle -= 2.0*Math.PI;
+            angle -= (2.0 * Math.PI);
         }
+
         while (angle < -Math.PI) {
-            angle += 2.0*Math.PI;
+            angle += (2.0 * Math.PI);
         }
+
         _exitAngle = angle;
     }
 
@@ -362,7 +380,7 @@ public class ArcConnector extends AbstractConnector {
      * loop at it's mid-point. This method is only intended for use
      * when creating self-loop arcs from a saved representation.
      */
-    public void setGamma (double gamma) {
+    public void setGamma(double gamma) {
         _gamma = gamma;
     }
 
@@ -376,15 +394,16 @@ public class ArcConnector extends AbstractConnector {
      * arc changes, otherwise manipulation won't work properly. Use
      * getSelfLoop() to test the current state of this flag.
      */
-    public void setSelfLoop (boolean selfloop) {
+    public void setSelfLoop(boolean selfloop) {
         // If becoming a self-loop, use the current angle if it is
         // wide enough, otherwise use the minimum angle or the
         // previous record angle, whichever is largest.
         double temp = _exitAngle;
+
         if (selfloop) {
-            if (_exitAngle > 0 && _exitAngle < MINSELFLOOPANGLE) {
+            if ((_exitAngle > 0) && (_exitAngle < MINSELFLOOPANGLE)) {
                 setAngle(Math.max(_previousAngle, MINSELFLOOPANGLE));
-            } else if (_exitAngle < 0 && _exitAngle > -MINSELFLOOPANGLE) {
+            } else if ((_exitAngle < 0) && (_exitAngle > -MINSELFLOOPANGLE)) {
                 setAngle(Math.min(-_previousAngle, -MINSELFLOOPANGLE));
             }
         } else {
@@ -394,6 +413,7 @@ public class ArcConnector extends AbstractConnector {
                 setAngle(_previousAngle);
             }
         }
+
         _previousAngle = temp;
         _selfloop = selfloop;
     }
@@ -402,14 +422,16 @@ public class ArcConnector extends AbstractConnector {
      * controllers may wish to translate connectors when the
      * sites at both ends are moved the same distance.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         Rectangle2D bounds = _arc.getBounds();
         repaint();
-        _arc.setFrame(bounds.getX() + x, bounds.getY() + y,
-                bounds.getWidth(), bounds.getHeight());
+        _arc.setFrame(bounds.getX() + x, bounds.getY() + y, bounds.getWidth(),
+            bounds.getHeight());
+
         if (getLabelFigure() != null) {
             getLabelFigure().translate(x, y);
         }
+
         repaint();
     }
 
@@ -425,7 +447,8 @@ public class ArcConnector extends AbstractConnector {
         Figure tailFigure = tailSite.getFigure();
         Figure headFigure = headSite.getFigure();
 
-        Point2D headPt, tailPt;
+        Point2D headPt;
+        Point2D tailPt;
 
         // Get the transformed head and tail points
         if (currentContext != null) {
@@ -437,14 +460,21 @@ public class ArcConnector extends AbstractConnector {
         }
 
         // Figure out the centers of the attached figures
-        Point2D tailCenter, headCenter;
+        Point2D tailCenter;
+
+        // Figure out the centers of the attached figures
+        Point2D headCenter;
+
         if (tailFigure != null) {
-            tailCenter = CanvasUtilities.getCenterPoint(tailFigure, currentContext);
+            tailCenter = CanvasUtilities.getCenterPoint(tailFigure,
+                    currentContext);
         } else {
             tailCenter = tailPt;
         }
+
         if (headFigure != null) {
-            headCenter = CanvasUtilities.getCenterPoint(headFigure, currentContext);
+            headCenter = CanvasUtilities.getCenterPoint(headFigure,
+                    currentContext);
         } else {
             headCenter = headPt;
         }
@@ -453,6 +483,7 @@ public class ArcConnector extends AbstractConnector {
         double x = headCenter.getX() - tailCenter.getX();
         double y = headCenter.getY() - tailCenter.getY();
         double gamma;
+
         if (_selfloop) {
             gamma = _gamma;
         } else {
@@ -461,7 +492,7 @@ public class ArcConnector extends AbstractConnector {
 
         // Project the displacement onto the normal of the chord.
         double beta = Math.atan2(dy, dx);
-        double magnitude = Math.sqrt(dx*dx + dy*dy);
+        double magnitude = Math.sqrt((dx * dx) + (dy * dy));
         double shift = -magnitude * Math.sin(gamma - beta);
         double rotate = magnitude * Math.cos(gamma - beta);
 
@@ -469,44 +500,49 @@ public class ArcConnector extends AbstractConnector {
         double delta;
         double absangle = Math.abs(_exitAngle);
         double newangle;
-        if (!_selfloop) {
-            if (absangle < Math.PI / 4) {
-                delta = shift/75.0;
-            } else if (absangle < Math.PI / 2) {
-                delta = shift/120.0;
-            } else if (absangle < Math.PI * 0.65) {
-                delta = shift/400.0;
-            } else if (absangle < Math.PI * 0.80) {
-                delta = shift/1000.0;
-            } else if (absangle < Math.PI * 0.90) {
-                delta = shift/4000.0;
-            } else {
-                delta = shift/10000.0;
-            }
-            newangle = _exitAngle + delta;
 
+        if (!_selfloop) {
+            if (absangle < (Math.PI / 4)) {
+                delta = shift / 75.0;
+            } else if (absangle < (Math.PI / 2)) {
+                delta = shift / 120.0;
+            } else if (absangle < (Math.PI * 0.65)) {
+                delta = shift / 400.0;
+            } else if (absangle < (Math.PI * 0.80)) {
+                delta = shift / 1000.0;
+            } else if (absangle < (Math.PI * 0.90)) {
+                delta = shift / 4000.0;
+            } else {
+                delta = shift / 10000.0;
+            }
+
+            newangle = _exitAngle + delta;
         } else {
-            if (absangle < Math.PI * 0.75) {
-                delta = shift/100.0;
-            } else if (absangle < Math.PI * 0.85) {
-                delta = shift/300.0;
-            } else if (absangle < Math.PI * 0.90) {
-                delta = shift/1000.0;
-            } else if (absangle < Math.PI * 0.95) {
-                delta = shift/4000.0;
+            if (absangle < (Math.PI * 0.75)) {
+                delta = shift / 100.0;
+            } else if (absangle < (Math.PI * 0.85)) {
+                delta = shift / 300.0;
+            } else if (absangle < (Math.PI * 0.90)) {
+                delta = shift / 1000.0;
+            } else if (absangle < (Math.PI * 0.95)) {
+                delta = shift / 4000.0;
             } else {
                 delta = shift / 10000;
             }
+
             newangle = _exitAngle + delta;
-            if (newangle > 0 && newangle < Math.PI * 0.6) {
+
+            if ((newangle > 0) && (newangle < (Math.PI * 0.6))) {
                 newangle = Math.PI * 0.6;
-            } else if (newangle < 0 && newangle > -Math.PI * 0.6) {
-                newangle = - Math.PI * 0.6;
+            } else if ((newangle < 0) && (newangle > (-Math.PI * 0.6))) {
+                newangle = -Math.PI * 0.6;
             }
+
             // That was for changing the size of the self-loop. This next
             // part is for changing the exit angle.
-            if (tailFigure != null && headFigure != null) {
+            if ((tailFigure != null) && (headFigure != null)) {
                 double phi = rotate / _radius / 2.0;
+
                 if (newangle < 0) {
                     _gamma += phi;
                 } else {
@@ -514,6 +550,7 @@ public class ArcConnector extends AbstractConnector {
                 }
             }
         }
+
         setAngle(newangle);
     }
 }

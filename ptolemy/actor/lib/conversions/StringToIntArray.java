@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -39,6 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 ///////////////////////////////////////////////////////////////
 /// StringToIntArray
@@ -59,9 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (winthrop)
    @Pt.AcceptedRating Red (winthrop)
 */
-
 public class StringToIntArray extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +69,7 @@ public class StringToIntArray extends TypedAtomicActor {
      *   actor with this name.
      */
     public StringToIntArray(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -80,10 +78,9 @@ public class StringToIntArray extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.INT));
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,22 +107,22 @@ public class StringToIntArray extends TypedAtomicActor {
      *  FIXME: Does this method actually check if there is a director?
      */
     public void fire() throws IllegalActionException {
-
-        String inputValue = ((StringToken)(input.get(0))).stringValue();
+        String inputValue = ((StringToken) (input.get(0))).stringValue();
 
         // DO THE CONVERSION:
         byte[] dataBytes = inputValue.getBytes(); //(Creates a new copy)
+
         // FIXME The following line assumes one byte per char.
         // True for out platform, but not all, under Java.
         // Replace with length of the created byte array.
         int bytesAvailable = inputValue.length();
         Token[] dataIntTokens = new Token[bytesAvailable];
+
         for (int j = 0; j < bytesAvailable; j++) {
             dataIntTokens[j] = new IntToken(dataBytes[j]);
         }
 
         output.send(0, new ArrayToken(dataIntTokens));
-
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -136,25 +133,7 @@ public class StringToIntArray extends TypedAtomicActor {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

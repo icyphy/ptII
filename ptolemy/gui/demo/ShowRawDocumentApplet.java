@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.gui.demo;
 
 import java.io.BufferedReader;
@@ -42,8 +41,10 @@ import javax.swing.JTextArea;
 
 import ptolemy.gui.BasicJApplet;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ShowRawDocumentApplet
+
 /**
    Applet to display raw text from a URL in a TextArea.
 
@@ -74,23 +75,31 @@ public class ShowRawDocumentApplet extends BasicJApplet {
         super.init();
 
         // Process the rows and columns applet parameters
-        int rows, columns;
+        int rows;
+
+        // Process the rows and columns applet parameters
+        int columns;
         String rowsString = getParameter("rows");
-        if (rowsString != null)
+
+        if (rowsString != null) {
             rows = Integer.parseInt(rowsString);
-        else
+        } else {
             rows = 10;
+        }
 
         String columnsString = getParameter("columns");
-        if (columnsString != null)
+
+        if (columnsString != null) {
             columns = Integer.parseInt(columnsString);
-        else
+        } else {
             columns = 40;
+        }
 
         // Get the source applet parameter before we create the
         // _jTextArea in case there are problems with the parameter.
         String sourceURLString = getParameter("source");
         URL sourceURL = null;
+
         if (sourceURLString != null) {
             try {
                 showStatus("Reading data . . .");
@@ -101,24 +110,28 @@ public class ShowRawDocumentApplet extends BasicJApplet {
         }
 
         /*JFrame _frame = */ new JFrame();
-        _jTextArea = new JTextArea(rows,columns);
+        _jTextArea = new JTextArea(rows, columns);
         _jTextArea.setEditable(false);
         _scrollPane = new JScrollPane(_jTextArea);
         getContentPane().add(_scrollPane);
 
         String newline = System.getProperty("line.separator");
+
         // Read in the data one line at a time.
         try {
             InputStream in = sourceURL.openStream();
             _bufferedReader = new BufferedReader(new InputStreamReader(in));
+
             String line = _bufferedReader.readLine();
+
             while (line != null) {
                 _jTextArea.append(line + newline);
                 line = _bufferedReader.readLine();
             }
+
             showStatus("Done");
         } catch (FileNotFoundException e) {
-            System.err.println("File not found: " +e);
+            System.err.println("File not found: " + e);
         } catch (IOException e) {
             System.err.println("Error reading input file: " + e);
         }
@@ -133,17 +146,16 @@ public class ShowRawDocumentApplet extends BasicJApplet {
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String newinfo[][] = {
-            {"columns", "integer", "40"},
-            {"rows", "integer", "10"},
-            {"source", "", "URL of the file to be displayed"},
-        };
+        String[][] newinfo = {
+                { "columns", "integer", "40" },
+                { "rows", "integer", "10" },
+                { "source", "", "URL of the file to be displayed" },
+            };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private BufferedReader _bufferedReader;
     private JTextArea _jTextArea;
     private JScrollPane _scrollPane;

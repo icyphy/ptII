@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -44,8 +43,10 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
 import diva.gui.toolbox.FigureIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TextIcon
+
 /**
    An icon that displays specified text.
 
@@ -56,7 +57,6 @@ import diva.gui.toolbox.FigureIcon;
    @Pt.AcceptedRating Red (johnr)
 */
 public class TextIcon extends DynamicEditorIcon {
-
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
      *  @param name The name of the attribute.
@@ -66,7 +66,7 @@ public class TextIcon extends DynamicEditorIcon {
      *   an attribute already in the container.
      */
     public TextIcon(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -81,9 +81,8 @@ public class TextIcon extends DynamicEditorIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        TextIcon newObject = (TextIcon)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        TextIcon newObject = (TextIcon) super.clone(workspace);
         return newObject;
     }
 
@@ -98,7 +97,6 @@ public class TextIcon extends DynamicEditorIcon {
         // repainted, which seems excessive to me.  This will happen
         // every time there is a modification to the model that is
         // carried out by a MoMLChangeRequest.
-
         // The Diva graph package implements a model-view-controller
         // architecture, which implies that this needs to return a new
         // figure each time it is called.  The reason is that the figure
@@ -110,11 +108,13 @@ public class TextIcon extends DynamicEditorIcon {
         // references, so that this class does not interfere with garbage
         // collection of the figure when the view is destroyed.
         LabelFigure newFigure;
+
         if (_text != null) {
             newFigure = new LabelFigure(_text, _font);
         } else {
             newFigure = new LabelFigure(_DEFAULT_TEXT, _font);
         }
+
         // By default, the origin should be the upper left.
         newFigure.setAnchor(SwingConstants.NORTH_WEST);
         newFigure.setFillPaint(_textColor);
@@ -133,6 +133,7 @@ public class TextIcon extends DynamicEditorIcon {
         if (_iconCache != null) {
             return _iconCache;
         }
+
         // No cached object, so rerender the icon.
         LabelFigure figure = new LabelFigure(_ICON_TEXT, _font);
         figure.setFillPaint(_textColor);
@@ -155,12 +156,14 @@ public class TextIcon extends DynamicEditorIcon {
         Runnable doSet = new Runnable() {
                 public void run() {
                     Iterator figures = _liveFigureIterator();
+
                     while (figures.hasNext()) {
                         Object figure = figures.next();
-                        ((LabelFigure)figure).setFillPaint(_textColor);
+                        ((LabelFigure) figure).setFillPaint(_textColor);
                     }
                 }
             };
+
         SwingUtilities.invokeLater(doSet);
     }
 
@@ -180,12 +183,14 @@ public class TextIcon extends DynamicEditorIcon {
         Runnable doSet = new Runnable() {
                 public void run() {
                     Iterator figures = _liveFigureIterator();
+
                     while (figures.hasNext()) {
                         Object figure = figures.next();
-                        ((LabelFigure)figure).setFont(_font);
+                        ((LabelFigure) figure).setFont(_font);
                     }
                 }
             };
+
         SwingUtilities.invokeLater(doSet);
     }
 
@@ -205,18 +210,19 @@ public class TextIcon extends DynamicEditorIcon {
         Runnable doSet = new Runnable() {
                 public void run() {
                     Iterator figures = _liveFigureIterator();
+
                     while (figures.hasNext()) {
                         Object figure = figures.next();
-                        ((LabelFigure)figure).setString(_text);
+                        ((LabelFigure) figure).setString(_text);
                     }
                 }
             };
+
         Top.deferIfNecessary(doSet);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Default text.
     private String _DEFAULT_TEXT = "Double click to edit text.";
 

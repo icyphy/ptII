@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.Image;
@@ -43,8 +42,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageToJAI
+
 /**
    This actor takes any ImageToken and converts it into a JAIImageToken.
    This is useful if you have an ImageToken and want to use some of the
@@ -56,9 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ImageToJAI extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +67,7 @@ public class ImageToJAI extends Transformer {
      *   actor with this name.
      */
     public ImageToJAI(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -81,12 +80,13 @@ public class ImageToJAI extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         ImageToken imageToken = (ImageToken) input.get(0);
         Image awtImage = (Image) imageToken.asAWTImage();
         parameters.add(awtImage);
+
         RenderedOp jaiImage = JAI.create("awtImage", parameters);
         output.send(0, new JAIImageToken(jaiImage));
     }
 }
-

@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -77,6 +77,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 /**
  * @author liuxj, Yang
  *
@@ -87,17 +88,19 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  * Use a timer task for peer discovery, and actor query.
  */
-public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryListener {
-
+public class Peer extends TypedAtomicActor implements QueryHandler,
+    DiscoveryListener {
     public Peer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         trigQuery = new TypedIOPort(this, "trigQuery", true, false);
         trigQuery.setTypeEquals(BaseType.GENERAL);
         queryResult = new TypedIOPort(this, "queryResult", false, true);
         queryResult.setTypeEquals(BaseType.STRING);
+
         //trigResult = new TypedIOPort(this, "trigResult", true, false);
         //trigResult.setTypeEquals(BaseType.GENERAL);
+
         /*configDir = new Parameter(this, "configDir",
           new StringToken(""));
           configDir.setTypeEquals(BaseType.STRING);
@@ -106,7 +109,6 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
           actorList.setTypeEquals(BaseType.STRING);
         */
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -120,96 +122,103 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
     /** The output port with.
      */
     public TypedIOPort queryResult;
-
     public Parameter configDir;
-
     public Parameter actorList;
-
-
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         PropertyConfigurator.configure(System.getProperties());
+
         //if (configDir.hasToken()) {
         //String Dir = ((StringToken)configDir.getToken()).stringValue();
         //} else {
         String Dir = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta";
+
         //}
         //if (actorList.hasToken()) {
         //String _actorListFileName = ((StringToken)actorList.getToken()).stringValue();
         //} else {
         String _actorListFileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/actors.xml";
-        //}
 
+        //}
         _properties = new Properties(System.getProperties());
+
         InputStream configProperties = null;
+
         try {
-                configProperties = new FileInputStream(_CONFIG_FILE);
-                _properties.load(configProperties);
-        } catch( IOException e) {
-                System.out.println( "Warning: Can't find configuration propertiees file. ' " + e.getMessage() + "'");
+            configProperties = new FileInputStream(_CONFIG_FILE);
+            _properties.load(configProperties);
+        } catch (IOException e) {
+            System.out.println(
+                "Warning: Can't find configuration propertiees file. ' "
+                + e.getMessage() + "'");
         } finally {
             if (configProperties != null) {
                 try {
                     configProperties.close();
                 } catch (Throwable throwable) {
-                      System.out.println("Ignoring failure to close stream "
-                            + "on '" + _CONFIG_FILE + "'");
-                      throwable.printStackTrace();
+                    System.out.println("Ignoring failure to close stream "
+                        + "on '" + _CONFIG_FILE + "'");
+                    throwable.printStackTrace();
                 }
             }
         }
 
         PeerGroup netPeerGroup = null;
+
         try {
             netPeerGroup = PeerGroupFactory.newNetPeerGroup();
         } catch (PeerGroupException ex) {
             System.out.println("Error: cannot locate net peer group.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         }
 
         // load the peer group adv for actor exchange
         String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
+
         if (groupAdvFileName == null) {
-            System.out.println("Error: property undefined - GroupAdvFileName.\n");
+            System.out.println(
+                "Error: property undefined - GroupAdvFileName.\n");
         }
+
         PeerGroupAdvertisement groupAdv = null;
+
         try {
-            groupAdv = (PeerGroupAdvertisement)
-                AdvertisementFactory.newAdvertisement(
-                        XML_MIME_TYPE,
-                        new FileInputStream(Dir + "/" + groupAdvFileName));
+            groupAdv = (PeerGroupAdvertisement) AdvertisementFactory
+                .newAdvertisement(XML_MIME_TYPE,
+                    new FileInputStream(Dir + "/" + groupAdvFileName));
         } catch (FileNotFoundException ex) {
             System.out.println("Error: cannot find group adv file.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("Error: reading group adv file.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         }
+
         System.out.println("peer groupAdv: " + groupAdvFileName);
         System.out.println("success before instantiate peer group");
+
         // instantiate the peer group for actor exchange
         try {
             _group = netPeerGroup.newGroup(groupAdv);
         } catch (PeerGroupException ex) {
             System.out.println("Error: cannot instantiate peer group.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         }
 
         // join the peer group for actor exchange
         // no authentication is done here
         // modeled after JoinDemo from JXTA Examples
         StructuredDocument identityInfo = null;
+
         try {
-            AuthenticationCredential authCred =
-                new AuthenticationCredential(_group, null, identityInfo);
+            AuthenticationCredential authCred = new AuthenticationCredential(_group,
+                    null, identityInfo);
             MembershipService membershipService = _group.getMembershipService();
             _authenticator = membershipService.apply(authCred);
+
             if (_authenticator.isReadyForJoin()) {
                 _credential = membershipService.join(_authenticator);
                 System.out.println("Info: join group successful.");
@@ -219,80 +228,87 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
             }
         } catch (Exception ex) {
             System.out.println("Error: failure in authentication.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         }
+
         _discoveryService = _group.getDiscoveryService();
         _discoveryService.addDiscoveryListener(this);
 
         _resolverService = _group.getResolverService();
+
         // register this as a query handler
         _resolverService.registerHandler(_ACTOR_QUERY_HANDLER_NAME, this);
 
         // construct the actor query message
-        StringBuffer queryTextBuffer = new StringBuffer("<?xml version=\"1.0\"?>\n\n");
+        StringBuffer queryTextBuffer = new StringBuffer(
+                "<?xml version=\"1.0\"?>\n\n");
         queryTextBuffer = queryTextBuffer.append("<ActorQuery>\n");
-        queryTextBuffer = queryTextBuffer.append(
-                "What actors do you have?");
+        queryTextBuffer = queryTextBuffer.append("What actors do you have?");
         queryTextBuffer = queryTextBuffer.append("\n</ActorQuery>\n");
-        _actorQueryMessage = new ResolverQuery(_ACTOR_QUERY_HANDLER_NAME,
-                null, null, queryTextBuffer.toString(), 0);
+        _actorQueryMessage = new ResolverQuery(_ACTOR_QUERY_HANDLER_NAME, null,
+                null, queryTextBuffer.toString(), 0);
         _actorQueryMessage.setSrc(_group.getPeerID().toString());
 
         // construct the actor query response message
         if (_actorListFileName != null) {
             StringBuffer actorListText = new StringBuffer();
+
             try {
-                BufferedReader fileReader =
-                    new BufferedReader(new FileReader(_actorListFileName));
+                BufferedReader fileReader = new BufferedReader(new FileReader(
+                            _actorListFileName));
                 String newline = System.getProperty("line.separator");
+
                 while (true) {
                     String line = fileReader.readLine();
-                    if (line == null) break;
+
+                    if (line == null) {
+                        break;
+                    }
+
                     actorListText = actorListText.append(line);
                     actorListText = actorListText.append(newline);
                 }
-                _actorQueryResponse = new ResolverResponse(
-                        _ACTOR_QUERY_HANDLER_NAME,
+
+                _actorQueryResponse = new ResolverResponse(_ACTOR_QUERY_HANDLER_NAME,
                         null, 0, actorListText.toString());
             } catch (IOException ex) {
                 System.out.println("Warning: error reading actor list file.\n"
-                        + ex.getMessage());
+                    + ex.getMessage());
             }
         }
     }
 
-
     public void fire() throws IllegalActionException {
         super.fire();
+
         try {
-            if ( trigQuery.hasToken(0)) {
+            if (trigQuery.hasToken(0)) {
                 Token token = trigQuery.get(0);
 
                 System.out.println("Send peer discovery message...");
+
                 // send a query message that is
                 // - propagated within the group
                 // - for peer discovery
                 // - no attribute/value matching
                 // - each response contains at most 5 peers
                 _discoveryService.getRemoteAdvertisements(null,
-                        DiscoveryService.PEER, null, null, 5);
+                    DiscoveryService.PEER, null, null, 5);
 
                 System.out.println("Send actor query message...");
-                _actorQueryMessage.setQueryId(_actorQueryMessage.getQueryId() + 1);
+                _actorQueryMessage.setQueryId(_actorQueryMessage.getQueryId()
+                    + 1);
                 _resolverService.sendQuery(null, _actorQueryMessage);
-
             }
 
-            if ( _inToken != null) {
+            if (_inToken != null) {
                 queryResult.send(0, _inToken);
                 _inToken = null;
-                System.out.println( "send data ");
+                System.out.println("send data ");
             }
+        } catch (Exception e) {
+            System.out.println("Error : " + e);
         }
-        catch (Exception e)
-            {
-                System.out.println("Error : " + e);
-            }
     }
 
     /** Record the most recent output count as the actual count.
@@ -308,17 +324,16 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-            throws
-            NoResponseException,
-            ResendQueryException,
-            DiscardQueryException,
+        throws NoResponseException, ResendQueryException, DiscardQueryException, 
             IOException {
-        System.out.println("Got query from " + query.getSrc()
-                + " " + query.getQueryId());
+        System.out.println("Got query from " + query.getSrc() + " "
+            + query.getQueryId());
         System.out.println("Query is:\n" + query.getQuery());
+
         if (_actorQueryResponse == null) {
             throw new DiscardQueryException();
         }
+
         System.out.println("Send query response...");
         _actorQueryResponse.setQueryId(query.getQueryId());
         return _actorQueryResponse;
@@ -346,60 +361,59 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
         String responderAdvString = response.getPeerAdv();
 
         InputStream is = null;
+
         try {
             // create a peer advertisement
             is = new ByteArrayInputStream(responderAdvString.getBytes());
-            PeerAdvertisement responderAdv = (PeerAdvertisement)
-                AdvertisementFactory.newAdvertisement(
-                        XML_MIME_TYPE, is);
+
+            PeerAdvertisement responderAdv = (PeerAdvertisement) AdvertisementFactory
+                .newAdvertisement(XML_MIME_TYPE, is);
             System.out.println(" [  Got a Discovery Response ["
-                    + response.getResponseCount() + " elements] from peer: "
-                    + responderAdv.getName() + " ]");
+                + response.getResponseCount() + " elements] from peer: "
+                + responderAdv.getName() + " ]");
         } catch (java.io.IOException e) {
             // bogus peer, skip this message alltogether.
-            System.out.println("Warning: cannot parse remote peer's advertisement.\n"
-                    + e.getMessage());
+            System.out.println(
+                "Warning: cannot parse remote peer's advertisement.\n"
+                + e.getMessage());
             return;
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (Throwable throwable) {
-                      System.out.println("Ignoring failure to close stream "
-                            + "on remote peer's advertisement");
-                      throwable.printStackTrace();
+                    System.out.println("Ignoring failure to close stream "
+                        + "on remote peer's advertisement");
+                    throwable.printStackTrace();
                 }
             }
         }
-
 
         // now print out each discovered peer
         PeerAdvertisement newAdv = null;
 
         Enumeration responses = response.getResponses();
+
         while (responses.hasMoreElements()) {
             try {
-                String responseString = (String)responses.nextElement();
+                String responseString = (String) responses.nextElement();
 
                 // create an advertisement object from each element
-                newAdv = (PeerAdvertisement)
-                    AdvertisementFactory.newAdvertisement(
-                            XML_MIME_TYPE,
-                            new ByteArrayInputStream(
-                                    responseString.getBytes()));
+                newAdv = (PeerAdvertisement) AdvertisementFactory
+                    .newAdvertisement(XML_MIME_TYPE,
+                        new ByteArrayInputStream(responseString.getBytes()));
                 System.out.println(" Peer name = " + newAdv.getName());
             } catch (java.io.IOException e) {
                 // got a bad response. continue to the next response
                 System.out.println("Warning: cannot parse response element.\n"
-                        + e.getMessage());
+                    + e.getMessage());
                 continue;
             }
-
         } // end while
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private Properties _properties;
     private PeerGroup _group;
     private DiscoveryService _discoveryService;
@@ -414,8 +428,5 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
     private String _actorListFileName;
     private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
     private MimeMediaType XML_MIME_TYPE = new MimeMediaType("text/xml");
-
     private ptolemy.data.Token _inToken = null;
-
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import java.util.Random;
@@ -43,6 +42,7 @@ import ptolemy.domains.wireless.kernel.WirelessReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ErasureChannel
@@ -78,7 +78,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class ErasureChannel extends AtomicWirelessChannel {
-
     /** Construct a channel with the given name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown. If the name argument
@@ -90,7 +89,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *   a relation already in the container.
      */
     public ErasureChannel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         lossProbability = new Parameter(this, "lossProbability");
@@ -134,7 +133,6 @@ public class ErasureChannel extends AtomicWirelessChannel {
      */
     public Variable distance;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -144,8 +142,10 @@ public class ErasureChannel extends AtomicWirelessChannel {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        long seedValue = ((LongToken)(seed.getToken())).longValue();
-        if (seedValue != (long)0) {
+
+        long seedValue = ((LongToken) (seed.getToken())).longValue();
+
+        if (seedValue != (long) 0) {
             _random.setSeed(seedValue);
         } else {
             _random.setSeed(System.currentTimeMillis() + hashCode());
@@ -175,30 +175,29 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *   or if the token argument is null and the destination receiver
      *   does not support clear.
      */
-    protected void _transmitTo(
-            Token token,
-            WirelessIOPort sender,
-            WirelessReceiver receiver,
-            RecordToken properties)
-            throws IllegalActionException {
+    protected void _transmitTo(Token token, WirelessIOPort sender,
+        WirelessReceiver receiver, RecordToken properties)
+        throws IllegalActionException {
         // Get the distance and set the "distance" variable.
-        WirelessIOPort destination = (WirelessIOPort)receiver.getContainer();
+        WirelessIOPort destination = (WirelessIOPort) receiver.getContainer();
         double d = _distanceBetween(sender, destination);
         distance.setToken(new DoubleToken(d));
 
         double experiment = _random.nextDouble();
-        double probability = ((DoubleToken)lossProbability.getToken())
+        double probability = ((DoubleToken) lossProbability.getToken())
             .doubleValue();
+
         if (_debugging) {
             _debug(" **** loss probability is: " + probability);
         }
+
         // Make sure a probability of 1.0 is truly a sure loss.
-        if (probability < 1.0 && experiment >= probability) {
+        if ((probability < 1.0) && (experiment >= probability)) {
             super._transmitTo(token, sender, receiver, properties);
         } else {
             if (_debugging) {
                 _debug(" * discarding token to: "
-                        + receiver.getContainer().getFullName());
+                    + receiver.getContainer().getFullName());
             }
         }
     }

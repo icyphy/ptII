@@ -27,7 +27,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 ///////////////////////////////////////////////////////////////////
 //// GradientAdaptiveLattice
+
 /**
    An adaptive FIR filter with a lattice structure.  This class extends
    the base class to dynamically adapt the reflection coefficients to
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class GradientAdaptiveLattice extends Lattice {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,9 +70,8 @@ public class GradientAdaptiveLattice extends Lattice {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public GradientAdaptiveLattice(
-            CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+    public GradientAdaptiveLattice(CompositeEntity container, String name)
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -84,8 +83,8 @@ public class GradientAdaptiveLattice extends Lattice {
         // The currently adapted reflection coefficients
         adaptedReflectionCoefficients = new TypedIOPort(this,
                 "adaptedReflectionCoefficients", false, true);
-        adaptedReflectionCoefficients.setTypeEquals(
-                new ArrayType(BaseType.DOUBLE));
+        adaptedReflectionCoefficients.setTypeEquals(new ArrayType(
+                BaseType.DOUBLE));
 
         output.setTypeAtLeast(input);
     }
@@ -115,12 +114,12 @@ public class GradientAdaptiveLattice extends Lattice {
      *   with an unrecognized parameter.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == timeConstant) {
-            double timeConstantValue =
-                ((DoubleToken)timeConstant.getToken()).doubleValue();
-            _oneMinusAlpha =
-                ((timeConstantValue - 1.0) / (timeConstantValue + 1.0));
+            double timeConstantValue = ((DoubleToken) timeConstant.getToken())
+                .doubleValue();
+            _oneMinusAlpha = ((timeConstantValue - 1.0) / (timeConstantValue
+                + 1.0));
             _alpha = 1.0 - _oneMinusAlpha;
         }
 
@@ -134,10 +133,9 @@ public class GradientAdaptiveLattice extends Lattice {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        GradientAdaptiveLattice newObject =
-            (GradientAdaptiveLattice)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        GradientAdaptiveLattice newObject = (GradientAdaptiveLattice) super
+            .clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -146,7 +144,8 @@ public class GradientAdaptiveLattice extends Lattice {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        for (int i = 0; i <= _order; i ++) {
+
+        for (int i = 0; i <= _order; i++) {
             _estimatedErrorPowerCache[i] = 0;
         }
     }
@@ -156,27 +155,25 @@ public class GradientAdaptiveLattice extends Lattice {
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        System.arraycopy(_estimatedErrorPowerCache, 0,
-                _estimatedErrorPower, 0,
-                _order + 1);
+        System.arraycopy(_estimatedErrorPowerCache, 0, _estimatedErrorPower, 0,
+            _order + 1);
         System.arraycopy(_reflectionCoefficientsCache, 0,
-                _reflectionCoefficients, 0,
-                _order);
+            _reflectionCoefficients, 0, _order);
         return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     // Compute the filter, updating the caches, based on the current
     // values.  Extend the base class to adapt the reflection coefficients
     protected void _doFilter() throws IllegalActionException {
         double k;
+
         // NOTE: The following code is ported from Ptolemy Classic.
         // Update forward errors.
         for (int i = 0; i < _order; i++) {
             k = _reflectionCoefficients[i];
-            _forwardCache[i+1] = -k * _backwardCache[i] + _forwardCache[i];
+            _forwardCache[i + 1] = (-k * _backwardCache[i]) + _forwardCache[i];
         }
 
         Token[] outputArray = new Token[_order];
@@ -185,29 +182,30 @@ public class GradientAdaptiveLattice extends Lattice {
         // strictly speaking, _backwardCache[_order] is not necessary
         // for computing the output.  It is computed for the use of
         // subclasses which adapt the reflection coefficients.
-        for (int i = _order; i > 0 ; i--) {
-            k = _reflectionCoefficients[i-1];
-            _backwardCache[i] = -k * _forwardCache[i-1]
-                + _backwardCache[i-1];
+        for (int i = _order; i > 0; i--) {
+            k = _reflectionCoefficients[i - 1];
+            _backwardCache[i] = (-k * _forwardCache[i - 1])
+                + _backwardCache[i - 1];
 
             double fe_i = _forwardCache[i];
             double be_i = _backwardCache[i];
-            double fe_ip = _forwardCache[i-1];
-            double be_ip = _backwardCache[i-1];
+            double fe_ip = _forwardCache[i - 1];
+            double be_ip = _backwardCache[i - 1];
 
-            double newError =
-                _estimatedErrorPower[i] * _oneMinusAlpha +
-                _alpha * ( fe_ip * fe_ip + be_ip * be_ip);
-            double newCoefficient = _reflectionCoefficients[i-1];
+            double newError = (_estimatedErrorPower[i] * _oneMinusAlpha)
+                + (_alpha * ((fe_ip * fe_ip) + (be_ip * be_ip)));
+            double newCoefficient = _reflectionCoefficients[i - 1];
+
             if (newError != 0.0) {
-                newCoefficient +=
-                    _alpha * (fe_i * be_ip + be_i * fe_ip) / newError;
+                newCoefficient += ((_alpha * ((fe_i * be_ip) + (be_i * fe_ip))) / newError);
+
                 if (newCoefficient > 1.0) {
                     newCoefficient = 1.0;
                 } else if (newCoefficient < -1.0) {
                     newCoefficient = -1.0;
                 }
             }
+
             outputArray[i - 1] = new DoubleToken(newCoefficient);
             _reflectionCoefficientsCache[i - 1] = newCoefficient;
             _estimatedErrorPowerCache[i] = newError;
@@ -227,7 +225,6 @@ public class GradientAdaptiveLattice extends Lattice {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private double _alpha = 0.0;
     private double _oneMinusAlpha = 1.0;
 
@@ -240,4 +237,3 @@ public class GradientAdaptiveLattice extends Lattice {
     // Cache of the reflection coefficients.  The length is _order;
     private double[] _reflectionCoefficientsCache;
 }
-

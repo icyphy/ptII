@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayExtract
+
 /**
    Extract a subarray from an array.  This actor reads an array from the
    <i>input</i> port and sends a subarray to the <i>output</i>
@@ -59,9 +60,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (celaine)
    @Pt.AcceptedRating Green (cxh)
 */
-
 public class ArrayExtract extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +70,7 @@ public class ArrayExtract extends Transformer {
      *   actor with this name.
      */
     public ArrayExtract(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set type constraints.
@@ -128,9 +127,8 @@ public class ArrayExtract extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ArrayExtract newObject = (ArrayExtract)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayExtract newObject = (ArrayExtract) (super.clone(workspace));
 
         // Set the type constraints.
         newObject.output.setTypeAtLeast(newObject.input);
@@ -148,35 +146,40 @@ public class ArrayExtract extends Transformer {
         extractLength.update();
         destinationPosition.update();
         outputArrayLength.update();
+
         if (input.hasToken(0)) {
-            Token[] inputArray = ((ArrayToken)input.get(0)).arrayValue();
-            int sourcePositionValue = ((IntToken)sourcePosition
-                    .getToken()).intValue();
-            int extractLengthValue = ((IntToken)extractLength
-                    .getToken()).intValue();
-            int destinationPositionValue = ((IntToken)destinationPosition
-                    .getToken()).intValue();
-            int outputArrayLengthValue = ((IntToken)outputArrayLength
-                    .getToken()).intValue();
+            Token[] inputArray = ((ArrayToken) input.get(0)).arrayValue();
+            int sourcePositionValue = ((IntToken) sourcePosition.getToken())
+                .intValue();
+            int extractLengthValue = ((IntToken) extractLength.getToken())
+                .intValue();
+            int destinationPositionValue = ((IntToken) destinationPosition
+                .getToken()).intValue();
+            int outputArrayLengthValue = ((IntToken) outputArrayLength.getToken())
+                .intValue();
+
             try {
                 Token[] outputArray = new Token[outputArrayLengthValue];
 
                 Token zero = inputArray[0].zero();
+
                 for (int i = 0; i < destinationPositionValue; i++) {
                     outputArray[i] = zero;
                 }
-                System.arraycopy(inputArray, sourcePositionValue,
-                        outputArray, destinationPositionValue,
-                        extractLengthValue);
+
+                System.arraycopy(inputArray, sourcePositionValue, outputArray,
+                    destinationPositionValue, extractLengthValue);
+
                 for (int i = destinationPositionValue + extractLengthValue;
-                     i < outputArrayLengthValue; i++) {
+                        i < outputArrayLengthValue; i++) {
                     outputArray[i] = zero;
                 }
+
                 output.send(0, new ArrayToken(outputArray));
             } catch (IndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
-                        "Parameter values out of range for the array supplied."
-                        + "inputArray has length" + inputArray.length);
+                    "Parameter values out of range for the array supplied."
+                    + "inputArray has length" + inputArray.length);
             }
         }
     }

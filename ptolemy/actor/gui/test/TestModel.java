@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.test;
 
 import java.util.List;
@@ -36,8 +35,10 @@ import ptolemy.actor.lib.Recorder;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestModel
+
 /**
 
 @author Edward A. Lee
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.Workspace;
 @Pt.AcceptedRating Red (cxh)
 */
 public class TestModel extends TypedCompositeActor {
-
     public TestModel(Workspace workspace) throws Exception {
         super(workspace);
 
@@ -63,13 +63,11 @@ public class TestModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public List getResults() {
         return _rec.getHistory(0);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Recorder _rec;
 }

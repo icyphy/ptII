@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RemoveGraphicalClasses
+
 /** When this class is registered with the MoMLParser.setMoMLFilter()
     method, it will cause MoMLParser to filter out graphical classes.
 
@@ -50,9 +51,7 @@ import ptolemy.moml.MoMLParser;
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxh)
 */
-
 public class RemoveGraphicalClasses implements MoMLFilter {
-
     /** Clear the map of graphical classes to be removed.
      */
     public void clear() {
@@ -75,22 +74,21 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      *  @param attributeValue The value of the attribute.
      *  @return the filtered attributeValue.
      */
-    public String filterAttributeValue(NamedObj container,
-            String element, String attributeName, String attributeValue) {
-
+    public String filterAttributeValue(NamedObj container, String element,
+        String attributeName, String attributeValue) {
         // If the nightly build is failing with messages like:
         // " X connection to foo:0 broken (explicit kill or server shutdown)."
         // Try uncommenting the next lines to see what is being
         // expanding before the error:
         // System.out.println("filterAttributeValue: " + container + "\t"
         //   +  attributeName + "\t" + attributeValue);
-
         if (attributeValue == null) {
             return null;
         } else if (_graphicalClasses.containsKey(attributeValue)) {
             MoMLParser.setModified(true);
             return (String) _graphicalClasses.get(attributeValue);
         }
+
         return attributeValue;
     }
 
@@ -99,7 +97,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {}
+        throws Exception {
+    }
 
     /** Remove a class to be filtered
      *  @param className The name of the class to be filtered
@@ -135,25 +134,26 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-        StringBuffer results =
-            new StringBuffer(getClass().getName()
-                    + ": Remove or replace classes that are graphical.\n"
-                    + "This filter is used by the nightly build, and\n"
-                    + "can be used to run applets so that files like\n"
-                    + "diva.jar do not need to be downloaded.\n"
-                    + "The following actors are affected:\n"
-                             );
+        StringBuffer results = new StringBuffer(getClass().getName()
+                + ": Remove or replace classes that are graphical.\n"
+                + "This filter is used by the nightly build, and\n"
+                + "can be used to run applets so that files like\n"
+                + "diva.jar do not need to be downloaded.\n"
+                + "The following actors are affected:\n");
         Iterator classNames = _graphicalClasses.keySet().iterator();
+
         while (classNames.hasNext()) {
-            String oldClassName = (String)classNames.next();
+            String oldClassName = (String) classNames.next();
             String newClassName = (String) _graphicalClasses.get(oldClassName);
+
             if (newClassName == null) {
                 results.append(oldClassName + " will be removed\n");
             } else {
                 results.append(oldClassName + " will be replaced by "
-                        + newClassName +"\n");
+                    + newClassName + "\n");
             }
         }
+
         return results.toString();
     }
 
@@ -168,100 +168,79 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
     static {
         _graphicalClasses = new HashMap();
-        // Alphabetical by key class
 
+        // Alphabetical by key class
         // It would be nice if we could substitute in Discard actors
         // when we see the plotter or the display.
         //_graphicalClasses.put("ptolemy.actor.lib.gui.Display",
         //        "ptolemy.actor.lib.Discard");
-
         // Generated applet from moml/demo/modulation.xml
         // fails to run if substitute Attribute for NodeControllerFactory
         // so we set it to null instead.
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
-                "ptolemy.kernel.util.Attribute");
+            "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.toolbox.VisibleParameterEditorFactory",
-                "ptolemy.kernel.util.Attribute");
+            "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
-                "ptolemy.kernel.util.Attribute");
+            "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
-                "ptolemy.kernel.util.Attribute");
+            "ptolemy.kernel.util.Attribute");
 
         // 4/04 BooleanSwitch uses EditorIcon
-        _graphicalClasses.put(
-                "ptolemy.vergil.icon.EditorIcon",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon", null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.EllipseAttribute",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.EllipseAttribute",
+            null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.FilledShapeAttribute",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.FilledShapeAttribute",
+            null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.IDAttribute",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.IDAttribute",
+            null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.ImageAttribute",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ImageAttribute",
+            null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.LineAttribute",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.LineAttribute",
+            null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.ShapeAttribute",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ShapeAttribute",
+            null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute",
+            null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.RectangleAttribute",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.RectangleAttribute",
+            null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.TextAttribute",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.TextAttribute",
+            null);
 
-        _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
-                null);
-        _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
-                null);
-        _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon",
-                null);
-        _graphicalClasses.put("ptolemy.vergil.icon.CopyCatIcon",
-                null);
-        _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon",
-                null);
-        _graphicalClasses.put("ptolemy.vergil.icon.XMLIcon",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory", null);
+        _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.icon.CopyCatIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.icon.XMLIcon", null);
+
         // ptolemy/actor/lib/test/auto/StopSDF.xml has a MonitorValue actor,
         // so remove the UpdatedValueIcon.
-        _graphicalClasses.put("ptolemy.vergil.icon.UpdatedValueIcon",
-                null);
+        _graphicalClasses.put("ptolemy.vergil.icon.UpdatedValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
-                "ptolemy.kernel.util.Attribute");
+            "ptolemy.kernel.util.Attribute");
+
         // Generated applet from moml/demo/modulation.xml
         // fails to run if substitute Attribute for AnnotationEditorFactory
         // so we set it to null instead.
-
         //_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
         //        "ptolemy.kernel.util.Attribute");
-
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
-                null);
+            null);
         _graphicalClasses.put("ptolemy.vergil.toolbox"
-                + ".VisibleParameterEditorFactory",
-                "ptolemy.kernel.util.Attribute");
+            + ".VisibleParameterEditorFactory", "ptolemy.kernel.util.Attribute");
 
         // Shallow CG of actor/lib/test/auto/URLDirectoryReader3.xml fails
         // unless we remove CheckBoxStyle
         _graphicalClasses.put("ptolemy.actor.gui.style.CheckBoxStyle", null);
     }
 }
-

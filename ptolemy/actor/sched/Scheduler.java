@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 FIXME: Caching should move into StaticSchedulingDirector.
 */
-
 package ptolemy.actor.sched;
 
 import java.util.Iterator;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
+
 /**
    The base class for schedulers. A scheduler schedules the execution
    order of the containees of a CompositeActor.  <p>
@@ -78,7 +79,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (neuendor)
    @see ptolemy.actor.sched.Schedule
 */
-
 public class Scheduler extends Attribute {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
@@ -86,6 +86,7 @@ public class Scheduler extends Attribute {
      */
     public Scheduler() {
         super();
+
         try {
             setName(_DEFAULT_SCHEDULER_NAME);
         } catch (KernelException ex) {
@@ -103,6 +104,7 @@ public class Scheduler extends Attribute {
      */
     public Scheduler(Workspace workspace) {
         super(workspace);
+
         try {
             setName(_DEFAULT_SCHEDULER_NAME);
         } catch (KernelException ex) {
@@ -125,7 +127,7 @@ public class Scheduler extends Attribute {
      *   an attribute already in the container.
      */
     public Scheduler(Director container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -141,8 +143,7 @@ public class Scheduler extends Attribute {
      *   cannot be cloned.
      *  @return The new Scheduler.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Scheduler newObject = (Scheduler) super.clone(workspace);
         newObject._container = null;
         newObject._valid = false;
@@ -166,24 +167,29 @@ public class Scheduler extends Attribute {
      *  by the derived schedulers.
      */
     public Schedule getSchedule()
-            throws IllegalActionException, NotSchedulableException {
+        throws IllegalActionException, NotSchedulableException {
         try {
             workspace().getReadAccess();
-            StaticSchedulingDirector director =
-                (StaticSchedulingDirector)getContainer();
+
+            StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
+
             if (director == null) {
                 throw new IllegalActionException(this,
-                        "Scheduler has no director.");
+                    "Scheduler has no director.");
             }
-            CompositeActor compositeActor =
-                (CompositeActor)(director.getContainer());
+
+            CompositeActor compositeActor = (CompositeActor) (director
+                .getContainer());
+
             if (compositeActor == null) {
                 throw new IllegalActionException(this,
-                        "Director has no container.");
+                    "Director has no container.");
             }
-            if (!isValid() || _cachedGetSchedule == null) {
+
+            if (!isValid() || (_cachedGetSchedule == null)) {
                 _cachedGetSchedule = _getSchedule();
             }
+
             return _cachedGetSchedule;
         } finally {
             workspace().doneReading();
@@ -231,23 +237,25 @@ public class Scheduler extends Attribute {
      *   CompositeActor.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+
             Nameable oldContainer = getContainer();
-            if (oldContainer instanceof Director
-                    && oldContainer != container) {
+
+            if (oldContainer instanceof Director && (oldContainer != container)) {
                 // Need to remove this scheduler as the active one of the
                 // old container. Search for another scheduler contained
                 // by the composite.  If it contains more than one,
                 // use the most recently added one.
                 Scheduler previous = null;
-                StaticSchedulingDirector castContainer =
-                    (StaticSchedulingDirector)oldContainer;
-                Iterator schedulers =
-                    castContainer.attributeList(Scheduler.class).iterator();
+                StaticSchedulingDirector castContainer = (StaticSchedulingDirector) oldContainer;
+                Iterator schedulers = castContainer.attributeList(Scheduler.class)
+                                                   .iterator();
+
                 while (schedulers.hasNext()) {
-                    Scheduler altScheduler = (Scheduler)schedulers.next();
+                    Scheduler altScheduler = (Scheduler) schedulers.next();
+
                     // Since we haven't yet removed this director, we have
                     // to be sure to not just set it to the active
                     // director again.
@@ -255,6 +263,7 @@ public class Scheduler extends Attribute {
                         previous = altScheduler;
                     }
                 }
+
                 castContainer._setScheduler(previous);
             }
 
@@ -262,7 +271,7 @@ public class Scheduler extends Attribute {
 
             if (container instanceof StaticSchedulingDirector) {
                 // Set cached value in director
-                ((StaticSchedulingDirector)container)._setScheduler(this);
+                ((StaticSchedulingDirector) container)._setScheduler(this);
             }
         } finally {
             _workspace.doneWriting();
@@ -278,6 +287,7 @@ public class Scheduler extends Attribute {
      */
     public void setValid(boolean valid) {
         _valid = valid;
+
         if (valid == false) {
             _cachedGetSchedule = null;
         }
@@ -314,30 +324,31 @@ public class Scheduler extends Attribute {
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      */
     protected Schedule _getSchedule()
-            throws IllegalActionException, NotSchedulableException {
-        StaticSchedulingDirector director =
-            (StaticSchedulingDirector)getContainer();
-        CompositeActor compositeActor =
-            (CompositeActor)(director.getContainer());
+        throws IllegalActionException, NotSchedulableException {
+        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
+        CompositeActor compositeActor = (CompositeActor) (director.getContainer());
         List actors = compositeActor.deepEntityList();
         Schedule schedule = new Schedule();
         Iterator actorIterator = actors.iterator();
+
         while (actorIterator.hasNext()) {
-            Actor actor = (Actor)actorIterator.next();
+            Actor actor = (Actor) actorIterator.next();
             Firing firing = new Firing();
             firing.setActor(actor);
             schedule.add(firing);
         }
+
         return schedule;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The container
     private StaticSchedulingDirector _container = null;
+
     // The flag that indicate whether the current schedule is valid.
     private boolean _valid = false;
+
     // The cached schedule for getSchedule().
     private Schedule _cachedGetSchedule = null;
 }

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.plot.demo;
 
 import java.awt.event.WindowAdapter;
@@ -35,8 +34,10 @@ import javax.swing.JFrame;
 
 import ptolemy.plot.PlotLive;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemo
+
 /**
    Dynamically plot a test signal, illustrating how to use the
    PlotLive class.
@@ -48,7 +49,6 @@ import ptolemy.plot.PlotLive;
    @Pt.AcceptedRating red (cxh)
 */
 public class PlotLiveDemo extends PlotLive {
-
     /** Construct a plot for live, animated signal display.
      *  Configure the title, axes, points style, and persistence.
      */
@@ -69,29 +69,32 @@ public class PlotLiveDemo extends PlotLive {
         // You could plot multiple points at a time here
         // for faster response, but in our case, we really need
         // to slow down the response for visual aesthetics.
-        addPoint(0, Math.sin(Math.PI*_count/25),
-                Math.cos(Math.PI * _count/100), false);
-        addPoint(0, Math.sin(Math.PI*_count/45),
-                Math.cos(Math.PI * _count/70), true);
-        addPoint(1, Math.sin(Math.PI*_count/45),
-                Math.cos(Math.PI * _count/70), false);
-        addPoint(2, Math.sin(Math.PI*_count/20),
-                Math.cos(Math.PI * _count/100), false);
-        addPoint(3, Math.sin(Math.PI*_count/50),
-                Math.cos(Math.PI * _count/70), false);
+        addPoint(0, Math.sin((Math.PI * _count) / 25),
+            Math.cos((Math.PI * _count) / 100), false);
+        addPoint(0, Math.sin((Math.PI * _count) / 45),
+            Math.cos((Math.PI * _count) / 70), true);
+        addPoint(1, Math.sin((Math.PI * _count) / 45),
+            Math.cos((Math.PI * _count) / 70), false);
+        addPoint(2, Math.sin((Math.PI * _count) / 20),
+            Math.cos((Math.PI * _count) / 100), false);
+        addPoint(3, Math.sin((Math.PI * _count) / 50),
+            Math.cos((Math.PI * _count) / 70), false);
         _count += 1.0;
+
         try {
             Thread.sleep(5);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+        }
     }
 
     /** Run the demo as an application.
      *        This is very useful for debugging.  The command to run would be
      * java -classpath $PTII ptolemy.plot.demo.PlotLiveDemo
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         final PlotLiveDemo plotLiveDemo = new PlotLiveDemo();
         System.runFinalizersOnExit(true);
+
         JFrame frame = new JFrame("PlotLiveDemo");
         frame.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent event) {
@@ -105,8 +108,6 @@ public class PlotLiveDemo extends PlotLive {
         plotLiveDemo.start();
         frame.pack();
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

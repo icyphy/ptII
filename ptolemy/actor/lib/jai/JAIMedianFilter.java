@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIMedianFilter
+
 /**
    An actor that median filter an image.  Median filtering is a useful
    tool when there are noise spikes in the image.  This filter is
@@ -58,9 +59,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIMedianFilter extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,7 +69,7 @@ public class JAIMedianFilter extends Transformer {
      *   actor with this name.
      */
     public JAIMedianFilter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         shape = new StringAttribute(this, "shape");
@@ -121,25 +120,24 @@ public class JAIMedianFilter extends Transformer {
      *  or if a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == shape) {
             String name = shape.getExpression();
+
             if (name.equals("Square")) {
-                _shape =
-                    MedianFilterDescriptor.MEDIAN_MASK_SQUARE;
+                _shape = MedianFilterDescriptor.MEDIAN_MASK_SQUARE;
             } else if (name.equals("Separable Square")) {
-                _shape =
-                    MedianFilterDescriptor.MEDIAN_MASK_SQUARE_SEPARABLE;
+                _shape = MedianFilterDescriptor.MEDIAN_MASK_SQUARE_SEPARABLE;
             } else if (name.equals("Plus")) {
                 _shape = MedianFilterDescriptor.MEDIAN_MASK_PLUS;
             } else if (name.equals("X")) {
                 _shape = MedianFilterDescriptor.MEDIAN_MASK_X;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized Shape Name: " + name);
+                    "Unrecognized Shape Name: " + name);
             }
         } else if (attribute == size) {
-            _size = ((IntToken)size.getToken()).intValue();
+            _size = ((IntToken) size.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -152,6 +150,7 @@ public class JAIMedianFilter extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
@@ -159,6 +158,7 @@ public class JAIMedianFilter extends Transformer {
         parameters.addSource(oldImage);
         parameters.add(_shape);
         parameters.add(_size);
+
         RenderedOp newImage = JAI.create("medianfilter", parameters);
         output.send(0, new JAIImageToken(newImage));
     }

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.util;
 
 import java.util.Collections;
@@ -42,8 +41,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FreeVariableModelAnalysis
+
 /**
    An analysis that traverses a model to determine all the free variables
    in a hierarchical model.  The free variables in a model are defined to
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Yellow (neuendor)
 */
 public class FreeVariableModelAnalysis {
-
     /** Analyze the given model to return a set of names which must
      *  be defined externally for the model to be completely specified.
      *  In addition, store the intermediate results for contained actors
@@ -71,7 +71,7 @@ public class FreeVariableModelAnalysis {
      *  during analysis.
      */
     public FreeVariableModelAnalysis(Entity model)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _entityToFreeVariableNameSet = new HashMap();
         _freeVariables(model);
     }
@@ -83,41 +83,41 @@ public class FreeVariableModelAnalysis {
      *  entity have not already been computed.
      */
     public Set getFreeVariables(Entity entity) {
-        Set freeVariables = (Set)_entityToFreeVariableNameSet.get(entity);
+        Set freeVariables = (Set) _entityToFreeVariableNameSet.get(entity);
+
         if (freeVariables == null) {
-            throw new RuntimeException("Entity " + entity.getFullName() +
-                    " has not been analyzed.");
+            throw new RuntimeException("Entity " + entity.getFullName()
+                + " has not been analyzed.");
         }
 
         return Collections.unmodifiableSet(freeVariables);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Recursively compute the set of free variables for all actors
     // deeply contained in the given model.
     private Set _freeVariables(Entity model) throws IllegalActionException {
         // First get the free variables of contained actors.
         Set set = new HashSet();
+
         if (model instanceof CompositeEntity) {
-            for (Iterator entities =
-                     ((CompositeEntity)model).entityList().iterator();
-                 entities.hasNext();) {
-                Entity entity = (Entity)entities.next();
+            for (Iterator entities = ((CompositeEntity) model).entityList()
+                                      .iterator(); entities.hasNext();) {
+                Entity entity = (Entity) entities.next();
                 set.addAll(_freeVariables(entity));
             }
         }
 
         // Next, compute the set of variable names defined in this container.
         Set variableNames = new HashSet();
-        for (Iterator variables =
-                 model.attributeList(Variable.class).iterator();
-             variables.hasNext();) {
-            Variable variable = (Variable)variables.next();
+
+        for (Iterator variables = model.attributeList(Variable.class).iterator();
+                variables.hasNext();) {
+            Variable variable = (Variable) variables.next();
             variableNames.add(variable.getName());
         }
+
         variableNames = Collections.unmodifiableSet(variableNames);
 
         // Free variables of contained actors that are defined in this
@@ -127,21 +127,22 @@ public class FreeVariableModelAnalysis {
         // Iterate over all the variables of this container, and add in
         // any free variables they reference.
         PtParser parser = new PtParser();
-        ParseTreeFreeVariableCollector collector =
-            new ParseTreeFreeVariableCollector();
-        for (Iterator variables =
-                 model.attributeList(Variable.class).iterator();
-             variables.hasNext();) {
-            Variable variable = (Variable)variables.next();
+        ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
+
+        for (Iterator variables = model.attributeList(Variable.class).iterator();
+                variables.hasNext();) {
+            Variable variable = (Variable) variables.next();
             String expression = variable.getExpression();
             ASTPtRootNode root;
+
             if (variable.isStringMode()) {
                 root = parser.generateStringParseTree(expression);
             } else {
                 root = parser.generateParseTree(expression);
             }
-            Set freeIdentifiers =
-                new HashSet(collector.collectFreeVariables(root));
+
+            Set freeIdentifiers = new HashSet(collector.collectFreeVariables(
+                        root));
 
             // Identifiers that reference other variables in the same container
             // are bound, not free.
@@ -158,7 +159,6 @@ public class FreeVariableModelAnalysis {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private HashMap _entityToFreeVariableNameSet;
     private CompositeActor _model;
 }

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import java.util.LinkedList;
@@ -34,8 +33,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RelationList
+
 /**
 
 A RelationList contains a list of relations of a guard expression.  It
@@ -71,7 +72,6 @@ _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList);
 @see ptolemy.domains.fsm.kernel.Transition
 */
 public class RelationList extends Attribute {
-
     /** Construct a relation list with the given name contained by
      *  the specified transition. The transition argument must not be
      *  null, or a NullPointerException will be thrown. This action
@@ -90,7 +90,7 @@ public class RelationList extends Attribute {
      *   has an attribute with the name.
      */
     public RelationList(Transition transition, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(transition, name);
         setPersistent(false);
         _relationList = new LinkedList();
@@ -113,8 +113,9 @@ public class RelationList extends Attribute {
      */
     public void clearRelationList() {
         ListIterator relations = _relationList.listIterator();
+
         while (relations.hasNext()) {
-            ((RelationNode)relations.next()).clear();
+            ((RelationNode) relations.next()).clear();
         }
     }
 
@@ -122,8 +123,9 @@ public class RelationList extends Attribute {
      */
     public void commitRelationValues() {
         ListIterator relations = _relationList.listIterator();
+
         while (relations.hasNext()) {
-            ((RelationNode)relations.next()).commit();
+            ((RelationNode) relations.next()).commit();
         }
     }
 
@@ -138,8 +140,8 @@ public class RelationList extends Attribute {
      *  @return The former distance of a relation.
      */
     public double getPreviousMaximumDistance() {
-        return ((RelationNode) _relationList.get(
-                        _maximumDifferenceIndex)).gePreviousDifference();
+        return ((RelationNode) _relationList.get(_maximumDifferenceIndex))
+        .gePreviousDifference();
     }
 
     /** Return true if there is some event caused by some relation
@@ -149,12 +151,15 @@ public class RelationList extends Attribute {
     public boolean hasEvent() {
         boolean result = false;
         ListIterator relations = _relationList.listIterator();
+
         while (relations.hasNext() && !result) {
-            result = result || ((RelationNode)relations.next()).hasEvent();
+            result = result || ((RelationNode) relations.next()).hasEvent();
         }
+
         if (result && _debugging) {
             _debug("Detected event!");
         }
+
         return result;
     }
 
@@ -181,16 +186,21 @@ public class RelationList extends Attribute {
         double difference = 0.0;
         int index = 0;
         _maximumDifferenceIndex = 0;
+
         ListIterator relations = _relationList.listIterator();
+
         while (relations.hasNext()) {
-            RelationNode relation = ((RelationNode)relations.next());
+            RelationNode relation = ((RelationNode) relations.next());
             difference = Math.abs(relation.getDifference());
-            if (relation.typeChanged() && difference > maxDifference) {
+
+            if (relation.typeChanged() && (difference > maxDifference)) {
                 maxDifference = difference;
                 _maximumDifferenceIndex = index;
             }
+
             index++;
         }
+
         return maxDifference;
     }
 
@@ -212,17 +222,16 @@ public class RelationList extends Attribute {
      *  @param difference The current difference of the relation.
      */
     public void setRelation(int relationIndex, int type, double difference) {
-        RelationNode relationNode = (RelationNode)
-            _relationList.get(relationIndex);
+        RelationNode relationNode = (RelationNode) _relationList.get(relationIndex);
         relationNode.setValue(type);
         relationNode.setDifference(difference);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
     // The index for the relation with the maximum current difference.
     private int _maximumDifferenceIndex;
+
     // The relation list.
     private LinkedList _relationList;
 
@@ -234,7 +243,6 @@ public class RelationList extends Attribute {
      *  also the former one.
      */
     private class RelationNode {
-
         /** Constructor to construct a relation node with given type and
          *  difference information.
          */
@@ -289,8 +297,9 @@ public class RelationList extends Attribute {
          */
         public boolean hasEvent() {
             if (typeChanged()) {
-                return  (_formerType * _currentType == 20);
+                return ((_formerType * _currentType) == 20);
             }
+
             return false;
         }
 
@@ -313,10 +322,10 @@ public class RelationList extends Attribute {
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner fields            ////
-
         private int _currentType;
         private double _difference;
         private double _previousDifference;
+
         // the relations have five integer values with meanings:
         // 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
         private int _formerType;

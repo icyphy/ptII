@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.lib;
 
 import java.util.Iterator;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.PtolemyThread;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TMCompositeFacade
+
 /**
    A facade for a composite actor that creates and executes its internal
    model a background process
@@ -59,25 +60,20 @@ import ptolemy.kernel.util.PtolemyThread;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (liuj)
 */
-public class TMCompositeFacade extends TypedCompositeActor
-    implements TMActor {
-
+public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     /** Construct an actor with the specified container and name.
      *  There is one parameter which is the full class name of
      *  a Ptolemy actor. No ports.
      */
     public TMCompositeFacade(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        priority = new Parameter(this, "priority",
-                new IntToken(10));
+        priority = new Parameter(this, "priority", new IntToken(10));
         priority.setTypeEquals(BaseType.INT);
         executionTime = new Parameter(this, "executionTime",
                 new DoubleToken(0.0));
         executionTime.setTypeEquals(BaseType.DOUBLE);
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -96,17 +92,18 @@ public class TMCompositeFacade extends TypedCompositeActor
     /** update local cache of executionTime.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == executionTime) {
-            double time = ((DoubleToken)executionTime.getToken()).
-                doubleValue();
+            double time = ((DoubleToken) executionTime.getToken()).doubleValue();
+
             if (time < 0.0) {
                 throw new IllegalActionException(this,
-                        " execution time cannot be less than 0.");
+                    " execution time cannot be less than 0.");
             }
+
             _executionTime = time;
         } else if (attribute == priority) {
-            _priority = ((IntToken)priority.getToken()).intValue();
+            _priority = ((IntToken) priority.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -116,15 +113,14 @@ public class TMCompositeFacade extends TypedCompositeActor
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _directorThread = new PtolemyThread(
-                new RunnableDirector());
+        _directorThread = new PtolemyThread(new RunnableDirector());
     }
-
 
     public boolean prefire() throws IllegalActionException {
         if (!_idle) {
             return false;
         }
+
         // Notice that prefire returns false will prevent this
         // actor to be further executed. But the event has already
         // been delivered to the input receiver.
@@ -145,6 +141,7 @@ public class TMCompositeFacade extends TypedCompositeActor
             _transferOutputs();
         } else {
             System.out.println("fire: Missed deadline.");
+
             // FIXME: Kill the thread?
         }
     }
@@ -154,29 +151,31 @@ public class TMCompositeFacade extends TypedCompositeActor
             return super.postfire();
         } else {
             System.out.println("postfire: Missed deadline.");
+
             // FIXME: Kill the thread?
             return true;
         }
     }
 
-
-    protected synchronized void _transferInputs()
-            throws IllegalActionException {
+    protected synchronized void _transferInputs() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)inputPorts.next();
+            IOPort port = (IOPort) inputPorts.next();
             getDirector().transferInputs(port);
         }
     }
 
     protected synchronized void _transferOutputs()
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Use the executive director to transfer outputs.
         Director executiveDirector = getExecutiveDirector();
+
         if (executiveDirector != null) {
             Iterator outports = outputPortList().iterator();
+
             while (outports.hasNext()) {
-                IOPort p = (IOPort)outports.next();
+                IOPort p = (IOPort) outports.next();
                 executiveDirector.transferOutputs(p);
             }
         }
@@ -186,33 +185,27 @@ public class TMCompositeFacade extends TypedCompositeActor
         return _executionTime;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Indicating whether the execution of the internal model is idle.
     private boolean _idle = true;
-
     private double _executionTime;
-
     private PtolemyThread _directorThread;
-
     private int _priority;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     private class RunnableDirector implements Runnable {
         public void run() {
             _idle = false;
+
             try {
                 getDirector().fire();
             } catch (IllegalActionException ex) {
                 throw new InvalidStateException(ex.getMessage());
             }
+
             _idle = true;
         }
-
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.string;
 
 import ptolemy.actor.lib.Transformer;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringLength
+
 /**
    Output the length of a string provided at the input.
 
@@ -47,9 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Green (eal)
 @Pt.AcceptedRating Green (net)
 */
-
 public class StringLength extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -59,7 +58,7 @@ public class StringLength extends Transformer {
      *   actor with this name.
      */
     public StringLength(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set the types of the ports.
@@ -78,8 +77,9 @@ public class StringLength extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         if (input.hasToken(0)) {
-            StringToken inputToken = (StringToken)input.get(0);
+            StringToken inputToken = (StringToken) input.get(0);
             String value = inputToken.stringValue();
             int length = value.length();
             output.send(0, new IntToken(length));

@@ -8,24 +8,22 @@ package ptolemy.actor.corba.CoordinatorUtil;
  *
  */
 
-
 /* A CORBA compatible interface for a consumer.
  */
-public interface ClientOperations
-{
-
+public interface ClientOperations {
     /* this method is intended to be called remotely to
      * send data to it.
      */
-    void push (org.omg.CORBA.Any data) throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException;
+    void push(org.omg.CORBA.Any data)
+        throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException;
 
     /* this method is intended to be called remotely to start the application
      * for the consumer.
      */
-    void start ();
+    void start();
 
     /* this method is intended to be called remotely to stop the application
      * for the consumer.
      */
-    void stop ();
+    void stop();
 } // interface ClientOperations

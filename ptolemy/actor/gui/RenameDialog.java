@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Frame;
@@ -32,8 +31,10 @@ import java.awt.Frame;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RenameDialog
+
 /**
    This class is a modal dialog box for renaming an object.
    The dialog is modal, so the statement that creates the dialog will
@@ -46,7 +47,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (eal)
 */
 public class RenameDialog extends ComponentDialog {
-
     /** Construct a dialog with the specified owner and target.
      *  The dialog is placed relative to the owner.
      *  @param owner The object that, per the user, appears to be
@@ -54,10 +54,8 @@ public class RenameDialog extends ComponentDialog {
      *  @param target The object being renamed.
      */
     public RenameDialog(Frame owner, NamedObj target) {
-        super(owner,
-                "Rename " + target.getName(),
-                new RenameConfigurer(target),
-                _buttons);
+        super(owner, "Rename " + target.getName(),
+            new RenameConfigurer(target), _buttons);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -67,14 +65,14 @@ public class RenameDialog extends ComponentDialog {
      */
     protected void _handleClosing() {
         super._handleClosing();
+
         if (!buttonPressed().equals("Cancel")) {
-            ((RenameConfigurer)contents).apply();
+            ((RenameConfigurer) contents).apply();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Button labels.
-    private static String[] _buttons = {"Commit", "Cancel"};
+    private static String[] _buttons = { "Commit", "Cancel" };
 }

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red (cxh)
 @AcceptedRating Red (cxh)
 */
-
 package ptolemy.domains.dt.kernel.test;
 
 import java.awt.Container;
@@ -44,13 +43,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 public class TimedDisplay extends Display implements Placeable, SequenceActor {
-
     public TimedDisplay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         rowsDisplayed.setToken(new IntToken(20));
     }
-
 
     public void place(Container container) {
         super.place(container);
@@ -58,26 +55,30 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
 
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
+
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 // Read a token, but don't use the value
                 input.get(i);
+
                 Director director = getDirector();
                 String value = " ";
 
                 if (director != null) {
-                    value = ""+director.getModelTime();
+                    value = "" + director.getModelTime();
                 }
 
                 //String value = (director.getCurrentTime()).toString();
                 textArea.append(value);
 
                 // Append a tab character.
-                if (width > i + 1) textArea.append("\t");
+                if (width > (i + 1)) {
+                    textArea.append("\t");
+                }
 
                 try {
-                    int lineOffset = textArea
-                        .getLineStartOffset(textArea.getLineCount() - 1);
+                    int lineOffset = textArea.getLineStartOffset(textArea
+                            .getLineCount() - 1);
                     textArea.setCaretPosition(lineOffset);
                 } catch (BadLocationException ex) {
                     // Ignore ... worst case is that the scrollbar
@@ -85,8 +86,8 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
                 }
             }
         }
+
         textArea.append("\n");
         return true;
     }
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.demo.QR;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -57,9 +56,7 @@ matrices is involved; they may change in future releases.
 @Pt.ProposedRating Red (kienhuis)
 @Pt.AcceptedRating Red (kienhuis)
 */
-
 public class ND_2 extends TypedAtomicActor {
-
     /** Construct an actor that is an SBF object with the given container
      *  and name.
      *  @param container The container.
@@ -70,9 +67,7 @@ public class ND_2 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_2(CompositeEntity aContainer, String aName)
-            throws IllegalActionException, NameDuplicationException
-    {
-
+        throws IllegalActionException, NameDuplicationException {
         super(aContainer, aName);
 
         WP_4 = new TypedIOPort(this, "WP_4", false, true);
@@ -83,18 +78,15 @@ public class ND_2 extends TypedAtomicActor {
 
         // The Type of these Parameters is set by the First
         // Token placed in the parameters when created.
-        parameter_N = new Parameter(this, "N" , new IntToken(6));
-        parameter_K = new Parameter(this, "K" , new IntToken(6));
+        parameter_N = new Parameter(this, "N", new IntToken(6));
+        parameter_K = new Parameter(this, "K", new IntToken(6));
 
-        x_1.ReadMatrix( "U_1000x16" );
-
+        x_1.ReadMatrix("U_1000x16");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     // -- Part of the Actor
-
     public TypedIOPort WP_4;
     public TypedIOPort WP_8;
 
@@ -104,7 +96,6 @@ public class ND_2 extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Initialize the PN actor.
      *  @exception IllegalActionException If the parent class throws it.
@@ -122,16 +113,17 @@ public class ND_2 extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        for (int k = 1; k <= (1 * K); k += 1) {
+            for (int j = 1; j <= (1 * N); j += 1) {
+                out_0 = x_1.retrieve(x_1.atKey(k, j));
+                _debug(" Broadcast from ND_2: " + out_0);
 
-        for ( int k = 1 ; k <= 1*K ; k += 1 ) {
-            for ( int j = 1 ; j <= 1*N ; j += 1 ) {
-                out_0 = x_1.retrieve( x_1.atKey(k, j) );
-                _debug(" Broadcast from ND_2: " + out_0 );
-                if ( j - 1 == 0 ) {
-                    WP_4.broadcast( new DoubleToken( out_0 ) );
+                if ((j - 1) == 0) {
+                    WP_4.broadcast(new DoubleToken(out_0));
                 }
-                if ( j - 2 >= 0 ) {
-                    WP_8.broadcast( new DoubleToken( out_0 ) );
+
+                if ((j - 2) >= 0) {
+                    WP_8.broadcast(new DoubleToken(out_0));
                 }
             }
         }
@@ -147,16 +139,10 @@ public class ND_2 extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // -- Get private copies of the parameters
     private int N;
     private int K;
-
     private double out_0;
-
     private ArrayIndex x_1 = new ArrayIndex();
-
-
     private boolean _returnValue = true;
-
 }

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.process;
 
 import java.util.Iterator;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CompositeProcessDirector
+
 /**
    A baseclass for directors in process oriented domains that incorporate
    hierarchical heterogeneity. As with ProcessDirector
@@ -123,7 +124,6 @@ import ptolemy.kernel.util.Workspace;
    @see Director
 */
 public class CompositeProcessDirector extends ProcessDirector {
-
     /** Construct a director in the default workspace with an empty
      *  string as its name. The director is added to the list of
      *  objects in the workspace. Increment the version number of
@@ -156,7 +156,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public CompositeProcessDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -173,10 +173,9 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   cannot be cloned.
      *  @return The new ProcessDirector.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CompositeProcessDirector newObj =
-            (CompositeProcessDirector)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CompositeProcessDirector newObj = (CompositeProcessDirector) super
+            .clone(workspace);
         newObj._onFirstIteration = true;
         newObj._inputBranchController = null;
         newObj._outputBranchController = null;
@@ -194,18 +193,22 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   not opaque.
      */
     public void createBranchController(Iterator ports)
-            throws IllegalActionException {
+        throws IllegalActionException {
         IOPort port = null;
-        while ( ports.hasNext() ) {
-            port = (IOPort)ports.next();
+
+        while (ports.hasNext()) {
+            port = (IOPort) ports.next();
+
             if (!port.isOpaque()) {
                 throw new IllegalActionException(this, port,
-                        "port argument is not an opaque port.");
+                    "port argument is not an opaque port.");
             }
-            if ( port.isInput() ) {
+
+            if (port.isInput()) {
                 _inputBranchController.addBranches(port);
             }
-            if ( port.isOutput() ) {
+
+            if (port.isOutput()) {
                 _outputBranchController.addBranches(port);
             }
         }
@@ -240,17 +243,20 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   of one of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
+        CompositeActor container = ((CompositeActor) getContainer());
+
         if (container != null) {
-            CompositeActor containersContainer =
-                (CompositeActor)container.getContainer();
-            if ( containersContainer == null ) {
+            CompositeActor containersContainer = (CompositeActor) container
+                .getContainer();
+
+            if (containersContainer == null) {
                 // Use the overridden setCurrentTime() method
                 // to set time backwards.
                 setModelTime(new Time(this));
             } else {
-                Time currentTime =
-                    containersContainer.getDirector().getModelTime();
+                Time currentTime = containersContainer.getDirector()
+                                                      .getModelTime();
+
                 // Use the overridden setCurrentTime() method
                 // to set time backwards.
                 setModelTime(currentTime);
@@ -263,9 +269,10 @@ public class CompositeProcessDirector extends ProcessDirector {
         _outputBranchController = new BranchController(container);
 
         // Instantiate Input/Output Branch Controllers
-        if ( container != null ) {
+        if (container != null) {
             Iterator inPorts = container.inputPortList().iterator();
             createBranchController(inPorts);
+
             Iterator outports = container.outputPortList().iterator();
             createBranchController(outports);
         }
@@ -294,20 +301,23 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @return True.
      *  @exception IllegalActionException If a derived class throws it.
      */
-    public boolean prefire() throws IllegalActionException  {
+    public boolean prefire() throws IllegalActionException {
         super.prefire();
 
         Thread thread = null;
+
         // FIXME: This will not support dynamically changing
         // connections on the outside of a composite.
-        if ( _inputBranchController.hasBranches() && _onFirstIteration ) {
+        if (_inputBranchController.hasBranches() && _onFirstIteration) {
             thread = new Thread(_inputBranchController);
             thread.start();
         }
-        if ( _outputBranchController.hasBranches() && _onFirstIteration ) {
+
+        if (_outputBranchController.hasBranches() && _onFirstIteration) {
             thread = new Thread(_outputBranchController);
             thread.start();
         }
+
         _onFirstIteration = false;
         return true;
     }
@@ -318,11 +328,11 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  The new time may be earlier than the current time.
      *  @param newTime The new current simulation time.
      */
-    public void setModelTime(Time newTime)
-        throws IllegalActionException {
+    public void setModelTime(Time newTime) throws IllegalActionException {
         if (_debugging) {
             _debug("----- Setting current time to " + newTime);
         }
+
         _currentTime = newTime;
     }
 
@@ -333,14 +343,18 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public void stopInputBranchController() {
         Workspace workspace = workspace();
-        if ( _inputBranchController == null ) {
+
+        if (_inputBranchController == null) {
             // This happens under DDE Zeno under IE 5 with Java Plug-in 1.3
             return;
         }
-        if ( !_inputBranchController.hasBranches() ) {
+
+        if (!_inputBranchController.hasBranches()) {
             return;
         }
+
         _inputBranchController.deactivateBranches();
+
         while (!_inputBranchController.isBlocked()) {
             try {
                 workspace.wait(this);
@@ -359,14 +373,18 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public void stopOutputBranchController() {
         Workspace workspace = workspace();
-        if ( _outputBranchController == null) {
+
+        if (_outputBranchController == null) {
             return;
         }
-        if ( !_outputBranchController.hasBranches() ) {
+
+        if (!_outputBranchController.hasBranches()) {
             return;
         }
+
         _outputBranchController.deactivateBranches();
-        while ( !_outputBranchController.isBlocked() ) {
+
+        while (!_outputBranchController.isBlocked()) {
             try {
                 workspace.wait(this);
             } catch (InterruptedException e) {
@@ -396,7 +414,7 @@ public class CompositeProcessDirector extends ProcessDirector {
         stopInputBranchController();
         stopOutputBranchController();
 
-        if ( _debugging ) {
+        if (_debugging) {
             _debug("Finished deactivating branches.");
         }
 
@@ -426,9 +444,10 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @param receivers The receivers whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(LinkedList receivers) {
-        if ( receivers == _blockedReceivers ) {
+        if (receivers == _blockedReceivers) {
             return;
         }
+
         _blockedReceivers.addAll(receivers);
         super._actorBlocked(receivers);
     }
@@ -456,10 +475,12 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     protected synchronized void _actorUnBlocked(LinkedList receivers) {
         Iterator receiverIterator = receivers.iterator();
-        while ( receiverIterator.hasNext() ) {
-            ProcessReceiver receiver = (ProcessReceiver)receiverIterator.next();
+
+        while (receiverIterator.hasNext()) {
+            ProcessReceiver receiver = (ProcessReceiver) receiverIterator.next();
             _blockedReceivers.remove(receiver);
         }
+
         super._actorUnBlocked(receivers);
     }
 
@@ -477,11 +498,12 @@ public class CompositeProcessDirector extends ProcessDirector {
         if (_debugging) {
             _debug("Checking for deadlock:");
             _debug("There are " + _getBlockedActorsCount()
-                    + " Blocked actors, " + _getStoppedActorsCount()
-                    + " Stopped actors, and " + _getActiveActorsCount()
-                    + " active actors.");
+                + " Blocked actors, " + _getStoppedActorsCount()
+                + " Stopped actors, and " + _getActiveActorsCount()
+                + " active actors.");
         }
-        if ( _getBlockedActorsCount() >= _getActiveActorsCount() ) {
+
+        if (_getBlockedActorsCount() >= _getActiveActorsCount()) {
             return true;
         } else {
             return false;
@@ -500,13 +522,15 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     protected boolean _areActorsExternallyBlocked() {
         Iterator blockedReceivers = _blockedReceivers.iterator();
-        while ( blockedReceivers.hasNext() ) {
-            ProcessReceiver receiver =
-                (ProcessReceiver)blockedReceivers.next();
-            if ( receiver.isConnectedToBoundaryInside() ) {
+
+        while (blockedReceivers.hasNext()) {
+            ProcessReceiver receiver = (ProcessReceiver) blockedReceivers.next();
+
+            if (receiver.isConnectedToBoundaryInside()) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -520,14 +544,15 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @param controller The controller for which registration of a
      *   blocked state will occur.
      */
-    protected synchronized void _controllerBlocked(
-            BranchController controller) {
-        if ( controller == _inputBranchController ) {
+    protected synchronized void _controllerBlocked(BranchController controller) {
+        if (controller == _inputBranchController) {
             _inputControllerIsBlocked = controller.isBlocked();
         }
-        if ( controller == _outputBranchController ) {
+
+        if (controller == _outputBranchController) {
             _outputControllerIsBlocked = controller.isBlocked();
         }
+
         notifyAll();
     }
 
@@ -542,11 +567,12 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   unblocked state will occur.
      */
     protected void _controllerUnBlocked(BranchController controller) {
-        synchronized(_branchControllerLock) {
-            if ( controller == _inputBranchController ) {
+        synchronized (_branchControllerLock) {
+            if (controller == _inputBranchController) {
                 _inputControllerIsBlocked = controller.isBlocked();
             }
-            if ( controller == _outputBranchController ) {
+
+            if (controller == _outputBranchController) {
                 _outputControllerIsBlocked = controller.isBlocked();
             }
         }
@@ -583,23 +609,21 @@ public class CompositeProcessDirector extends ProcessDirector {
     protected boolean _registerBlockedReceiversWithExecutive() {
         Workspace workspace = workspace();
         LinkedList blockedReceivers = new LinkedList();
-        blockedReceivers.addAll(
-                _outputBranchController.getBlockedReceivers() );
-        blockedReceivers.addAll(
-                _inputBranchController.getBlockedReceivers() );
+        blockedReceivers.addAll(_outputBranchController.getBlockedReceivers());
+        blockedReceivers.addAll(_inputBranchController.getBlockedReceivers());
 
         int originalCount = blockedReceivers.size();
 
-        Director execDir = ((Actor)getContainer()).getExecutiveDirector();
-        ((CompositeProcessDirector)execDir)._actorBlocked(blockedReceivers);
+        Director execDir = ((Actor) getContainer()).getExecutiveDirector();
+        ((CompositeProcessDirector) execDir)._actorBlocked(blockedReceivers);
 
-        while ( blockedReceivers.size() >= originalCount ) {
+        while (blockedReceivers.size() >= originalCount) {
             try {
                 workspace.wait(this);
             } catch (InterruptedException e) {
                 //TODO: determine best way to handle the exception
                 throw new InternalErrorException(this.getFullName()
-                        + "interrupted.");
+                    + "interrupted.");
             }
         }
 
@@ -636,44 +660,48 @@ public class CompositeProcessDirector extends ProcessDirector {
         if (_debugging) {
             _debug("Resolving Deadlock");
         }
-        Director execDir = ((Actor)getContainer()).getExecutiveDirector();
+
+        Director execDir = ((Actor) getContainer()).getExecutiveDirector();
         Workspace workspace = workspace();
-        if ( _areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
-            if ( _inputBranchController.isBlocked() ) {
-                while ( !_outputBranchController.isBlocked() ) {
+
+        if (_areActorsExternallyBlocked() && _areActorsDeadlocked()) {
+            if (_inputBranchController.isBlocked()) {
+                while (!_outputBranchController.isBlocked()) {
                     try {
                         workspace.wait(this);
                     } catch (InterruptedException e) {
                         //TODO: determine best way to handle the exception
-                        throw new IllegalActionException(this,
-                                "Interrupted.");
+                        throw new IllegalActionException(this, "Interrupted.");
                     }
                 }
+
                 stopInputBranchController();
                 stopOutputBranchController();
-                if ( execDir == null ) {
+
+                if (execDir == null) {
                     // This is the top level director - problem!!!
-                    throw new IllegalActionException( this,
-                            "No executive director exists yet this " +
-                            "director's composite actor is externally " +
-                            "deadlocked.");
-                } else if ( execDir instanceof CompositeProcessDirector ) {
+                    throw new IllegalActionException(this,
+                        "No executive director exists yet this "
+                        + "director's composite actor is externally "
+                        + "deadlocked.");
+                } else if (execDir instanceof CompositeProcessDirector) {
                     // This is contained by a process-oriented MoC
                     return _registerBlockedReceiversWithExecutive();
                 } else {
                     // This is contained by a schedule-oriented MoC
                     return true;
                 }
-            } else if ( _outputBranchController.isBlocked() ) {
+            } else if (_outputBranchController.isBlocked()) {
                 stopInputBranchController();
                 stopOutputBranchController();
-                if ( execDir == null ) {
+
+                if (execDir == null) {
                     // This is the top level director - problem!!!
-                    throw new IllegalActionException( this,
-                            "No executive director exists yet this " +
-                            "director's composite actor is externally " +
-                            "deadlocked.");
-                } else if ( execDir instanceof CompositeProcessDirector ) {
+                    throw new IllegalActionException(this,
+                        "No executive director exists yet this "
+                        + "director's composite actor is externally "
+                        + "deadlocked.");
+                } else if (execDir instanceof CompositeProcessDirector) {
                     // This is contained by a process-oriented MoC
                     return _registerBlockedReceiversWithExecutive();
                 } else {
@@ -683,34 +711,34 @@ public class CompositeProcessDirector extends ProcessDirector {
             }
         }
 
-        if ( !_areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
-            if ( _inputBranchController.isBlocked() ) {
-                while ( !_outputBranchController.isBlocked() ) {
+        if (!_areActorsExternallyBlocked() && _areActorsDeadlocked()) {
+            if (_inputBranchController.isBlocked()) {
+                while (!_outputBranchController.isBlocked()) {
                     try {
                         workspace.wait(this);
                     } catch (InterruptedException e) {
                         //TODO: determine best way to handle the exception
-                        throw new IllegalActionException(this,
-                                "Interrupted.");
+                        throw new IllegalActionException(this, "Interrupted.");
                     }
                 }
+
                 stopInputBranchController();
                 stopOutputBranchController();
                 return _resolveInternalDeadlock();
-            } else if ( _outputBranchController.isBlocked() ) {
+            } else if (_outputBranchController.isBlocked()) {
                 stopInputBranchController();
                 stopOutputBranchController();
                 return _resolveInternalDeadlock();
             } else {
-                while ( !_outputBranchController.isBlocked() ) {
+                while (!_outputBranchController.isBlocked()) {
                     try {
                         workspace.wait(this);
                     } catch (InterruptedException e) {
                         //TODO: determine best way to handle the exception
-                        throw new IllegalActionException(this,
-                                "Interrupted.");
+                        throw new IllegalActionException(this, "Interrupted.");
                     }
                 }
+
                 stopInputBranchController();
                 stopOutputBranchController();
                 return _resolveInternalDeadlock();
@@ -733,29 +761,23 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   resolved.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected boolean _resolveInternalDeadlock() throws
-            IllegalActionException {
+    protected boolean _resolveInternalDeadlock() throws IllegalActionException {
         if (_debugging) {
             _debug("Failed To Resolve Internal Deadlock: stopping");
         }
+
         return false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _onFirstIteration = true;
-
     private BranchController _inputBranchController;
     private BranchController _outputBranchController;
-
     private boolean _inputControllerIsBlocked = true;
     private boolean _outputControllerIsBlocked = true;
-
     private LinkedList _blockedReceivers = new LinkedList();
-
     private Object _branchControllerLock = new Object();
 }

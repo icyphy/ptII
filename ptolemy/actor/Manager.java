@@ -29,7 +29,6 @@ requestInitialization is pickier about what actors are initialized.
 added preinitialization analyses (i.e. constVariableModelAnalysis)
 Look over exitAfterWrapup().
 */
-
 package ptolemy.actor;
 
 import java.lang.ref.WeakReference;
@@ -50,8 +49,10 @@ import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Manager
+
 /**
    A Manager governs the execution of a model in a domain-independent way.
    Its methods are designed to be called by a GUI, an applet, a command-line
@@ -134,9 +135,7 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class Manager extends NamedObj implements Runnable {
-
     /** Construct a manager in the default workspace with an empty string
      *  as its name. The manager is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -167,13 +166,12 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception IllegalActionException If the name has a period.
      */
     public Manager(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // NOTE: The following names of states should fit into the sentence:
     // "The model is ... "
 
@@ -212,8 +210,8 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Indicator that the execution is throwing a throwable.
      */
-    public final static State THROWING_A_THROWABLE =
-         new State("throwing a throwable");
+    public final static State THROWING_A_THROWABLE = new State(
+            "throwing a throwable");
 
     /** Indicator that the execution is in the wrapup phase.
      */
@@ -245,6 +243,7 @@ public class Manager extends NamedObj implements Runnable {
         if (_nameToAnalysis == null) {
             _nameToAnalysis = new HashMap();
         }
+
         _nameToAnalysis.put(name, analysis);
     }
 
@@ -252,10 +251,14 @@ public class Manager extends NamedObj implements Runnable {
      *  @param listener The listener.
      */
     public void addExecutionListener(ExecutionListener listener) {
-        if (listener == null) return;
+        if (listener == null) {
+            return;
+        }
+
         if (_executionListeners == null) {
             _executionListeners = new LinkedList();
         }
+
         _executionListeners.add(new WeakReference(listener));
     }
 
@@ -277,20 +280,19 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception IllegalActionException If the model is already running, or
      *   if there is no container.
      */
-    public void execute()
-            throws KernelException, IllegalActionException {
-
+    public void execute() throws KernelException, IllegalActionException {
         // NOTE: This method used to be synchronized, but holding the
         // lock on the Manager for the duration of an execution creates
         // endless possibilities for deadlock.  So instead, we put
         // a small barrier here and throw an exception if the model
         // is already running.
-        synchronized(this) {
+        synchronized (this) {
             if (_state != IDLE) {
                 throw new IllegalActionException(this,
-                        "Model is already running.");
+                    "Model is already running.");
             }
         }
+
         // Make a record of the time execution starts.
         long startTime = (new Date()).getTime();
 
@@ -304,20 +306,26 @@ public class Manager extends NamedObj implements Runnable {
         // If we throw an throwable, we save it until after the
         // finally clauses.
         Throwable initialThrowable = null;
+
         try {
             try {
                 initialize();
+
                 // Call iterate() until finish() is called or postfire()
                 // returns false.
                 _debug("-- Manager beginning to iterate.");
 
                 while (!_finishRequested) {
-                    if (!iterate()) break;
+                    if (!iterate()) {
+                        break;
+                    }
+
                     if (_pauseRequested) {
                         // Have to synchronize on this to be able to wait
                         // during the pause.
-                        synchronized(this) {
+                        synchronized (this) {
                             _setState(PAUSED);
+
                             while (_pauseRequested && !_finishRequested) {
                                 try {
                                     wait();
@@ -328,12 +336,12 @@ public class Manager extends NamedObj implements Runnable {
                         }
                     }
                 }
+
                 completedSuccessfully = true;
             } catch (Throwable throwable) {
                 // Catch anything that can be throw (Error, Exception etc.)
                 // Catching just KernelException will not work, since
                 // we want to be sure to rethrow things like LinkErrors.
-
                 // We use THROWING_A_THROWABLE in NonStrictTest.wrapup()
                 // so we be sure the actor fires and reads enough inputs.
                 _setState(THROWING_A_THROWABLE);
@@ -346,6 +354,7 @@ public class Manager extends NamedObj implements Runnable {
                 // Indicate that it is now safe to execute
                 // change requests when they are requested.
                 setDeferringChangeRequests(false);
+
                 // Reset this for the next run.
                 _finishRequested = false;
 
@@ -354,23 +363,26 @@ public class Manager extends NamedObj implements Runnable {
                 if (_state != IDLE) {
                     _setState(IDLE);
                 }
+
                 if (completedSuccessfully) {
                     _notifyListenersOfCompletion();
                 }
+
                 if (initialThrowable != null) {
                     if (initialThrowable instanceof KernelException) {
                         // Since this class is declared to throw
                         // KernelException, if we have one, we throw it.
-                        throw (KernelException)initialThrowable;
+                        throw (KernelException) initialThrowable;
                     } else {
                         // Ok, it is not a KernelException, so we
                         // rethrow it as the cause of a KernelException
                         throw new IllegalActionException(this,
-                                initialThrowable, null);
+                            initialThrowable, null);
                     }
                 }
             }
         }
+
         System.out.println(timeAndMemory(startTime));
     }
 
@@ -397,28 +409,33 @@ public class Manager extends NamedObj implements Runnable {
      *  @see Executable#stop
      */
     public void finish() {
-
         // Set this regardless of whether the model is running to
         // avoid race conditions.  The model may not have gotten around
         // to starting when finish is requested.
         _finishRequested = true;
+
         if (_debugging) {
             _debug("finish() has been called.");
         }
-        if (_state == IDLE) return;
+
+        if (_state == IDLE) {
+            return;
+        }
 
         Nameable container = getContainer();
+
         if (!(container instanceof CompositeActor)) {
             throw new InternalErrorException(
-                    "Attempted to call finish() on an executing manager " +
-                    "with no associated CompositeActor model");
+                "Attempted to call finish() on an executing manager "
+                + "with no associated CompositeActor model");
         }
+
         // Used to just call stopFire() here, but this does not set
         // the flag in the director so that isStopRequested() returns
         // true. We have to set that flag or the actor threads in
         // threaded domains will not know that a stop has been requested
         // (vs. a pause).
-        ((CompositeActor)container).stop();
+        ((CompositeActor) container).stop();
 
         Thread unpauser = new Thread() {
                 public void run() {
@@ -428,11 +445,12 @@ public class Manager extends NamedObj implements Runnable {
                     // and the ProcessDirector is waiting for threads
                     // to end, then these unpausers
                     // can't run, and the processes can't end.
-                    synchronized(Manager.this) {
+                    synchronized (Manager.this) {
                         Manager.this.notifyAll();
                     }
                 }
             };
+
         unpauser.start();
     }
 
@@ -481,7 +499,7 @@ public class Manager extends NamedObj implements Runnable {
      *   if there is no container.
      */
     public synchronized void initialize()
-            throws KernelException, IllegalActionException {
+        throws KernelException, IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -530,10 +548,11 @@ public class Manager extends NamedObj implements Runnable {
      */
     public boolean iterate() throws KernelException {
         if (_container == null) {
-            throw new IllegalActionException(this,
-                    "No model to execute!");
+            throw new IllegalActionException(this, "No model to execute!");
         }
+
         boolean result = true;
+
         try {
             _workspace.getReadAccess();
             executeChangeRequests();
@@ -541,16 +560,19 @@ public class Manager extends NamedObj implements Runnable {
             // Pre-initialize actors that have been added.
             if (_actorsToInitialize.size() > 0) {
                 Iterator actors = _actorsToInitialize.iterator();
+
                 while (actors.hasNext()) {
-                    Actor actor = (Actor)actors.next();
+                    Actor actor = (Actor) actors.next();
                     actor.preinitialize();
+
                     // NOTE: To see why this is needed, see the comment
                     // above for the call to validateSettables().
                     if (actor instanceof NamedObj) {
-                        ((NamedObj)actor).validateSettables();
+                        ((NamedObj) actor).validateSettables();
                     }
                 }
             }
+
             if (!_typesResolved) {
                 resolveTypes();
                 _typesResolved = true;
@@ -562,12 +584,15 @@ public class Manager extends NamedObj implements Runnable {
             // Perform domain-specific initialization on the actor.
             if (_actorsToInitialize.size() > 0) {
                 Iterator actors = _actorsToInitialize.iterator();
+
                 while (actors.hasNext()) {
-                    Actor actor = (Actor)actors.next();
+                    Actor actor = (Actor) actors.next();
                     actor.getExecutiveDirector().initialize(actor);
                 }
+
                 _actorsToInitialize.clear();
             }
+
             if (_container.prefire()) {
                 _container.fire();
                 result = _container.postfire();
@@ -575,6 +600,7 @@ public class Manager extends NamedObj implements Runnable {
         } finally {
             _workspace.doneReading();
         }
+
         return result;
     }
 
@@ -603,19 +629,20 @@ public class Manager extends NamedObj implements Runnable {
     public synchronized void notifyListenersOfThrowable(Throwable throwable) {
         // We use Throwables instead of Exceptions so that we can catch
         // Errors like java.lang.UnsatisfiedLink.
-        String errorMessage = shortDescription(throwable)
-            + " occurred: " + throwable.getClass()
-            + "(" + throwable.getMessage() + ")";
+        String errorMessage = shortDescription(throwable) + " occurred: "
+            + throwable.getClass() + "(" + throwable.getMessage() + ")";
         _debug("-- Manager notifying listeners of exception: " + throwable);
+
         if (_executionListeners == null) {
             System.err.println(errorMessage);
             throwable.printStackTrace();
         } else {
             ListIterator listeners = _executionListeners.listIterator();
+
             while (listeners.hasNext()) {
-                WeakReference reference = (WeakReference)listeners.next();
-                ExecutionListener listener =
-                    (ExecutionListener)reference.get();
+                WeakReference reference = (WeakReference) listeners.next();
+                ExecutionListener listener = (ExecutionListener) reference.get();
+
                 if (listener != null) {
                     listener.executionError(this, throwable);
                 } else {
@@ -640,15 +667,17 @@ public class Manager extends NamedObj implements Runnable {
      */
     public void pause() {
         _pauseRequested = true;
+
         Nameable container = getContainer();
+
         if (!(container instanceof CompositeActor)) {
             throw new InternalErrorException(
-                    "Attempted to call pause() on an executing manager " +
-                    "with no associated CompositeActor model");
+                "Attempted to call pause() on an executing manager "
+                + "with no associated CompositeActor model");
         }
-        ((CompositeActor)container).stopFire();
-    }
 
+        ((CompositeActor) container).stopFire();
+    }
 
     /** The thread that calls this method will wait until resume() has
      *  been called.
@@ -668,14 +697,13 @@ public class Manager extends NamedObj implements Runnable {
             if (_state == ITERATING) {
                 // This will deadlock if called from, say, the UI
                 // thread, because execute() holds the lock.
-                synchronized(this) {
+                synchronized (this) {
                     if (_state == ITERATING) {
                         // Set the new state to show that execution is paused
                         // on a breakpoint.
                         PAUSED_ON_BREAKPOINT.setDescription(
-                                "pausing on breakpoint: "
-                                + breakpointMessage
-                                + ".  Click Resume to continue.");
+                            "pausing on breakpoint: " + breakpointMessage
+                            + ".  Click Resume to continue.");
                         _setState(PAUSED_ON_BREAKPOINT);
 
                         _resumeNotifyWaiting = true;
@@ -690,16 +718,16 @@ public class Manager extends NamedObj implements Runnable {
                         _setState(ITERATING);
                     } else { //if (_state == ITERATING) {
                         throw new InternalErrorException("State was changed "
-                                + "while pauseOnBreakpoint was called.");
+                            + "while pauseOnBreakpoint was called.");
                     }
                 } //synchronized(this) {
             } else { //if (_state == ITERATING) {
                 throw new InternalErrorException("pauseOnBreakpoint occurred "
-                        + "while not iterating the model.");
+                    + "while not iterating the model.");
             }
         } catch (InterruptedException error) {
             throw new InternalErrorException("Interrupted while trying to "
-                    + "wait for resume() method to be called.");
+                + "wait for resume() method to be called.");
         }
     }
 
@@ -715,17 +743,19 @@ public class Manager extends NamedObj implements Runnable {
      *   if there is no container.
      */
     public synchronized void preinitializeAndResolveTypes()
-            throws KernelException {
+        throws KernelException {
         try {
             _workspace.getReadAccess();
+
             if (_state != IDLE) {
                 throw new IllegalActionException(this,
-                        "The model is already running.");
+                    "The model is already running.");
             }
+
             if (_container == null) {
-                throw new IllegalActionException(this,
-                        "No model to run!");
+                throw new IllegalActionException(this, "No model to run!");
             }
+
             _setState(PREINITIALIZING);
 
             _pauseRequested = false;
@@ -768,6 +798,7 @@ public class Manager extends NamedObj implements Runnable {
                 _nameToAnalysis.clear();
                 _nameToAnalysis = null;
             }
+
             _workspace.doneReading();
         }
     }
@@ -778,10 +809,15 @@ public class Manager extends NamedObj implements Runnable {
      *  @param listener The listener to remove.
      */
     public void removeExecutionListener(ExecutionListener listener) {
-        if (listener == null || _executionListeners == null) return;
+        if ((listener == null) || (_executionListeners == null)) {
+            return;
+        }
+
         ListIterator listeners = _executionListeners.listIterator();
+
         while (listeners.hasNext()) {
-            WeakReference reference = (WeakReference)listeners.next();
+            WeakReference reference = (WeakReference) listeners.next();
+
             if (reference.get() == listener) {
                 _executionListeners.remove(listener);
             }
@@ -805,33 +841,38 @@ public class Manager extends NamedObj implements Runnable {
         // actor twice when it is added as part of a container that is
         // being added.
         {
-            NamedObj container = (NamedObj)((NamedObj)actor).getContainer();
+            NamedObj container = (NamedObj) ((NamedObj) actor).getContainer();
+
             while (container != null) {
                 if (_actorsToInitialize.contains(container)) {
                     return;
                 }
-                container = (NamedObj)container.getContainer();
+
+                container = (NamedObj) container.getContainer();
             }
         }
+
         // OK, then we need to initialize this actor.  However, we
         // don't need to initialize any actors contained by this
         // actor.
         List list = new LinkedList(_actorsToInitialize);
-        for (Iterator actors = list.iterator();
-             actors.hasNext();) {
-            NamedObj otherActor = (NamedObj)actors.next();
-            NamedObj otherActorContainer = (NamedObj)otherActor.getContainer();
+
+        for (Iterator actors = list.iterator(); actors.hasNext();) {
+            NamedObj otherActor = (NamedObj) actors.next();
+            NamedObj otherActorContainer = (NamedObj) otherActor.getContainer();
+
             while (otherActorContainer != null) {
                 // If otherActor is contained by actor, then remove it.
                 if (otherActorContainer == actor) {
                     _actorsToInitialize.remove(otherActor);
                     otherActorContainer = null;
                 } else {
-                    otherActorContainer =
-                        (NamedObj)otherActorContainer.getContainer();
+                    otherActorContainer = (NamedObj) otherActorContainer
+                        .getContainer();
                 }
             }
         }
+
         // Lastly, add this actor to the actors to initialize.
         _actorsToInitialize.add(actor);
     }
@@ -844,14 +885,15 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception TypeConflictException If a type conflict is detected.
      */
     public void resolveTypes() throws TypeConflictException {
-        if ( !(_container instanceof TypedCompositeActor)) {
+        if (!(_container instanceof TypedCompositeActor)) {
             return;
         }
+
         try {
             _workspace.getWriteAccess();
             _setState(RESOLVING_TYPES);
 
-            TypedCompositeActor.resolveTypes((TypedCompositeActor)_container);
+            TypedCompositeActor.resolveTypes((TypedCompositeActor) _container);
         } finally {
             _workspace.doneWriting();
         }
@@ -866,18 +908,18 @@ public class Manager extends NamedObj implements Runnable {
         // Avoid the case when the director is not actually paused causing the
         // swing thread to block.
         if (_state == PAUSED) {
-            synchronized(this) {
+            synchronized (this) {
                 if (_state == PAUSED) {
                     _pauseRequested = false;
                     notifyAll();
                 } else {
                     throw new InternalErrorException("resume() should be the "
-                            + "only method that goes from "
-                            + "PAUSED to not paused");
+                        + "only method that goes from "
+                        + "PAUSED to not paused");
                 }
             }
         } else if (_state == PAUSED_ON_BREAKPOINT) {
-            synchronized(this) {
+            synchronized (this) {
                 if (_state == PAUSED_ON_BREAKPOINT) {
                     // Notify all threads waiting to know whether resume() has
                     // been called (threads that called waitForResume()).
@@ -922,6 +964,7 @@ public class Manager extends NamedObj implements Runnable {
         // FIXME: This code is a duplicate of MessageHandler.shortDescription()
         // but we don't want to import ptolemy.actor.gui.MessageHandler here.
         String throwableType = null;
+
         if (throwable instanceof Exception) {
             throwableType = "Exception";
         } else if (throwable instanceof Error) {
@@ -929,6 +972,7 @@ public class Manager extends NamedObj implements Runnable {
         } else {
             throwableType = "Throwable";
         }
+
         return throwableType;
     }
 
@@ -941,19 +985,21 @@ public class Manager extends NamedObj implements Runnable {
     public void startRun() throws IllegalActionException {
         if (_state != IDLE) {
             throw new IllegalActionException(this,
-                    "Model is " + _state.getDescription());
+                "Model is " + _state.getDescription());
         }
+
         // Set this within the calling thread to avoid race conditions
         // where finish() might be called before the spawned thread
         // actually starts up.
         _finishRequested = false;
         _thread = new PtolemyThread(this) {
-                public void run() {
-                    // The run() method will set _thread to null
-                    // upon completion of the run.
-                    Manager.this.run();
-                }
-            };
+                    public void run() {
+                        // The run() method will set _thread to null
+                        // upon completion of the run.
+                        Manager.this.run();
+                    }
+                };
+
         // Priority set to the minimum to get responsive UI during execution.
         _thread.setPriority(Thread.MIN_PRIORITY);
         _thread.start();
@@ -999,16 +1045,18 @@ public class Manager extends NamedObj implements Runnable {
         if (_thread != null) {
             // NOTE:  stop() in java.lang.Thread has been deprecated
             _thread.stop();
+
             try {
                 _thread.join();
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 // This will usually get thrown, since we are
                 // forcibly terminating
                 // the thread.   We just ignore it.
             }
+
             _thread = null;
         }
+
         // Terminate the entire hierarchy as best we can.
         _container.terminate();
         _setState(CORRUPTED);
@@ -1019,22 +1067,20 @@ public class Manager extends NamedObj implements Runnable {
      */
     public static String timeAndMemory(long startTime) {
         Runtime runtime = Runtime.getRuntime();
-        long totalMemory = runtime.totalMemory()/1024;
-        long freeMemory = runtime.freeMemory()/1024;
+        long totalMemory = runtime.totalMemory() / 1024;
+        long freeMemory = runtime.freeMemory() / 1024;
         return timeAndMemory(startTime, totalMemory, freeMemory);
     }
 
     /** Return a string with the elapsed time since startTime,
      *  and the amount of memory used.
      */
-    public static String timeAndMemory(long startTime,
-            long totalMemory, long freeMemory) {
-        return System.currentTimeMillis() - startTime
-            + " ms. Memory: "
-            + totalMemory + "K Free: " + freeMemory + "K ("
-            + Math.round( (((double)freeMemory)/((double)totalMemory))
-                    * 100.0)
-            + "%)";
+    public static String timeAndMemory(long startTime, long totalMemory,
+        long freeMemory) {
+        return System.currentTimeMillis() - startTime + " ms. Memory: "
+        + totalMemory + "K Free: " + freeMemory + "K ("
+        + Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
+        + "%)";
     }
 
     /** If there is an active thread created by startRun(), then wait
@@ -1056,8 +1102,8 @@ public class Manager extends NamedObj implements Runnable {
             // Result: This would almost certainly deadlock if called
             // from a thread apart from the executing thread because execute()
             // is synchronized, so the running thread holds the lock!
-            synchronized(this) {
-                while (getState() != IDLE && getState() != CORRUPTED) {
+            synchronized (this) {
+                while ((getState() != IDLE) && (getState() != CORRUPTED)) {
                     try {
                         workspace().wait(this);
                     } catch (InterruptedException ex) {
@@ -1075,22 +1121,22 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception IllegalActionException If the model is idle or already
      *   wrapping up, or if there is no container.
      */
-    public void wrapup()
-            throws KernelException, IllegalActionException {
+    public void wrapup() throws KernelException, IllegalActionException {
         // NOTE: This method used to be synchronized, but we cannot
         // hold the lock on the director during wrapup because it
         // will cause deadlock. Instead, we use a small barrier
         // here to check and set the state.
-        synchronized(this) {
-            if (_state == IDLE || _state == WRAPPING_UP) {
+        synchronized (this) {
+            if ((_state == IDLE) || (_state == WRAPPING_UP)) {
                 throw new IllegalActionException(this,
-                        "Cannot wrap up. The current state is: "
-                        + _state.getDescription());
+                    "Cannot wrap up. The current state is: "
+                    + _state.getDescription());
             }
+
             if (_container == null) {
-                throw new IllegalActionException(this,
-                        "No model to run!");
+                throw new IllegalActionException(this, "No model to run!");
             }
+
             _setState(WRAPPING_UP);
         }
 
@@ -1111,20 +1157,20 @@ public class Manager extends NamedObj implements Runnable {
         if (_exitAfterWrapup) {
             // $PTII/util/testsuite/testDefs.tcl sets
             // ptolemy.ptII.exitAfterWrapup
-            if (StringUtilities
-                    .getProperty("ptolemy.ptII.exitAfterWrapup")
-                    .length() > 0) {
-                throw new KernelRuntimeException(this, "Normally, we would "
-                        + "exit here because Manager.exitAfterWrapup() "
-                        + "was called.  However, because the "
-                        + "ptolemy.ptII.exitAfterWrapup property "
-                        + "is set, we throw this exception instead.");
+            if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
+                                   .length() > 0) {
+                throw new KernelRuntimeException(this,
+                    "Normally, we would "
+                    + "exit here because Manager.exitAfterWrapup() "
+                    + "was called.  However, because the "
+                    + "ptolemy.ptII.exitAfterWrapup property "
+                    + "is set, we throw this exception instead.");
             } else {
                 // Non-zero indicates a problem.
                 System.exit(0);
             }
-
         }
+
         // Wrapup completed successfully
         _setState(IDLE);
     }
@@ -1145,6 +1191,7 @@ public class Manager extends NamedObj implements Runnable {
         if (compositeActor != null) {
             _workspace.remove(this);
         }
+
         _container = compositeActor;
     }
 
@@ -1158,6 +1205,7 @@ public class Manager extends NamedObj implements Runnable {
         if (_writeAccessVersion == _workspace.getVersion()) {
             return _writeAccessNeeded;
         }
+
         _writeAccessNeeded = _container.getDirector().needWriteAccess();
         _writeAccessVersion = _workspace.getVersion();
         return _writeAccessNeeded;
@@ -1167,16 +1215,17 @@ public class Manager extends NamedObj implements Runnable {
      */
     protected synchronized void _notifyListenersOfCompletion() {
         if (_debugging) {
-            _debug("-- Manager completed execution with "
-                    + _iterationCount
-                    + " iterations");
+            _debug("-- Manager completed execution with " + _iterationCount
+                + " iterations");
         }
+
         if (_executionListeners != null) {
             ListIterator listeners = _executionListeners.listIterator();
+
             while (listeners.hasNext()) {
-                WeakReference reference = (WeakReference)listeners.next();
-                ExecutionListener listener =
-                    (ExecutionListener)reference.get();
+                WeakReference reference = (WeakReference) listeners.next();
+                ExecutionListener listener = (ExecutionListener) reference.get();
+
                 if (listener != null) {
                     listener.executionFinished(this);
                 } else {
@@ -1192,12 +1241,14 @@ public class Manager extends NamedObj implements Runnable {
         if (_debugging) {
             _debug("-- Manager state is now: " + _state.getDescription());
         }
+
         if (_executionListeners != null) {
             ListIterator listeners = _executionListeners.listIterator();
+
             while (listeners.hasNext()) {
-                WeakReference reference = (WeakReference)listeners.next();
-                ExecutionListener listener =
-                    (ExecutionListener)reference.get();
+                WeakReference reference = (WeakReference) listeners.next();
+                ExecutionListener listener = (ExecutionListener) reference.get();
+
                 if (listener != null) {
                     listener.managerStateChanged(this);
                 } else {
@@ -1221,7 +1272,6 @@ public class Manager extends NamedObj implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A list of actors with pending initialization.
     private List _actorsToInitialize = new LinkedList();
 
@@ -1271,7 +1321,6 @@ public class Manager extends NamedObj implements Runnable {
      *  state of the manager.
      */
     public static class State {
-
         // Constructor is private because only Manager instantiates this class.
         private State(String description) {
             _description = description;

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.util;
 
 import java.util.Collections;
@@ -38,8 +37,10 @@ import java.util.NoSuchElementException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FIFOQueue
+
 /**
    A first-in, first-out (FIFO) queue with variable capacity and optional
    history. Objects are appended to the queue with the put() method,
@@ -58,7 +59,6 @@ import ptolemy.kernel.util.Nameable;
    @Pt.AcceptedRating Green (liuj)
 */
 public class FIFOQueue implements Cloneable {
-
     /** Construct an empty queue with no container.
      */
     public FIFOQueue() {
@@ -83,9 +83,10 @@ public class FIFOQueue implements Cloneable {
      */
     public FIFOQueue(FIFOQueue model) {
         this();
-        synchronized(model) {
-            _queueList.addAll( model.elementList() );
-            _historyList.addAll( model.historyElementList());
+
+        synchronized (model) {
+            _queueList.addAll(model.elementList());
+            _historyList.addAll(model.historyElementList());
         }
     }
 
@@ -122,7 +123,7 @@ public class FIFOQueue implements Cloneable {
      *  @deprecated Used elementList() instead.
      */
     public Enumeration elements() {
-        return Collections.enumeration( _queueList );
+        return Collections.enumeration(_queueList);
     }
 
     /** Return an object in the queue or history. The object is not
@@ -143,20 +144,24 @@ public class FIFOQueue implements Cloneable {
      */
     public Object get(int offset) throws NoSuchElementException {
         Object resultObject = null;
+
         try {
             if (offset >= 0) {
                 resultObject = _queueList.get(offset);
             } else {
-                resultObject = _historyList.get(historySize()+offset);
+                resultObject = _historyList.get(historySize() + offset);
             }
         } catch (IndexOutOfBoundsException ex) {
             String str = ".";
+
             if (_container != null) {
                 str = " contained by " + _container.getFullName();
             }
-            throw new NoSuchElementException("No object at offset "
-                    + offset + " in the FIFOQueue" + str);
+
+            throw new NoSuchElementException("No object at offset " + offset
+                + " in the FIFOQueue" + str);
         }
+
         return resultObject;
     }
 
@@ -203,7 +208,7 @@ public class FIFOQueue implements Cloneable {
      *  @deprecated Use historyElementList() instead.
      */
     public Enumeration historyElements() {
-        return Collections.enumeration( _historyList );
+        return Collections.enumeration(_historyList);
     }
 
     /** Return the number of objects in the history.
@@ -228,8 +233,8 @@ public class FIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean put(Object element) {
-        if (_queueCapacity == INFINITE_CAPACITY ||
-                _queueCapacity > _queueList.size()) {
+        if ((_queueCapacity == INFINITE_CAPACITY)
+                || (_queueCapacity > _queueList.size())) {
             _queueList.addLast(element);
             return true;
         } else {
@@ -245,16 +250,17 @@ public class FIFOQueue implements Cloneable {
      *   objects than the proposed capacity or the proposed capacity
      *   is illegal.
      */
-    public void setCapacity(int capacity)
-            throws IllegalActionException {
-        if (capacity < 0 && capacity != INFINITE_CAPACITY) {
+    public void setCapacity(int capacity) throws IllegalActionException {
+        if ((capacity < 0) && (capacity != INFINITE_CAPACITY)) {
             throw new IllegalActionException(_container,
-                    "Cannot set queue capacity to " + capacity);
+                "Cannot set queue capacity to " + capacity);
         }
-        if (capacity != INFINITE_CAPACITY && size() > capacity) {
+
+        if ((capacity != INFINITE_CAPACITY) && (size() > capacity)) {
             throw new IllegalActionException(_container,
-                    "Queue contains more elements than the proposed capacity.");
+                "Queue contains more elements than the proposed capacity.");
         }
+
         _queueCapacity = capacity;
     }
 
@@ -277,8 +283,7 @@ public class FIFOQueue implements Cloneable {
      *  @exception IllegalActionException If the desired capacity
      *   is illegal.
      */
-    public void setHistoryCapacity(int capacity)
-            throws IllegalActionException {
+    public void setHistoryCapacity(int capacity) throws IllegalActionException {
         if (capacity > 0) {
             while (_historyList.size() > capacity) {
                 _historyList.removeFirst();
@@ -287,8 +292,9 @@ public class FIFOQueue implements Cloneable {
             _historyList.clear();
         } else if (capacity != INFINITE_CAPACITY) {
             throw new IllegalActionException(_container,
-                    "Cannot set history capacity to " + capacity);
+                "Cannot set history capacity to " + capacity);
         }
+
         _historyCapacity = capacity;
     }
 
@@ -310,23 +316,28 @@ public class FIFOQueue implements Cloneable {
      */
     public Object take() throws NoSuchElementException {
         Object resultObject = null;
+
         try {
             resultObject = _queueList.removeFirst();
         } catch (NoSuchElementException ex) {
             String str = "";
+
             if (_container != null) {
                 str = " contained by " + _container.getFullName();
             }
+
             throw new NoSuchElementException("The FIFOQueue" + str
-                    + " is empty!");
+                + " is empty!");
         }
 
         if (_historyCapacity != 0) {
             if (_historyCapacity == _historyList.size()) {
                 _historyList.removeFirst();
             }
+
             _historyList.addLast(resultObject);
         }
+
         return resultObject;
     }
 
@@ -340,7 +351,6 @@ public class FIFOQueue implements Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The container, if there is one.
     private Nameable _container = null;
 
@@ -355,5 +365,4 @@ public class FIFOQueue implements Cloneable {
 
     // The list of objects recently removed from the queue.
     private LinkedList _historyList = null;
-
 }

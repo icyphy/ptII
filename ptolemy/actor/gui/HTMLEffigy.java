@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
@@ -32,8 +31,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HTMLEffigy
+
 /**
    An effigy for an HTML file.
 
@@ -44,13 +45,13 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class HTMLEffigy extends Effigy {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
      */
     public HTMLEffigy(Workspace workspace) {
         super(workspace);
+
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }
@@ -60,8 +61,9 @@ public class HTMLEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public HTMLEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }

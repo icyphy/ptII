@@ -24,11 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CommitAction
+
 /**
    An action implementing this interface is a commit action. When an FSMActor
    is postfired, the chosen transition of the latest firing of the actor is
@@ -45,4 +46,5 @@ package ptolemy.domains.fsm.kernel;
    @see Transition
    @see FSMActor
 */
-public interface CommitAction {}
+public interface CommitAction {
+}

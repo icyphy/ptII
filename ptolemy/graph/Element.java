@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
+
 
 ////////////////////////////////////////////////////////////////////////// //
 //Element
+
 /**
    A base class for graph elements (nodes and edges).
    A graph element consists of an optional <i>weight</i> (an arbitrary
@@ -44,7 +45,6 @@ package ptolemy.graph;
    @see ptolemy.graph.Node
 */
 public abstract class Element {
-
     /** Construct an unweighted element.
      */
     public Element() {
@@ -77,8 +77,8 @@ public abstract class Element {
     public final Object getWeight() {
         if (!hasWeight()) {
             throw new IllegalStateException("Attempt to access the weight "
-                    + "of the following unweighted " + descriptor() + ": "
-                    + this + "\n");
+                + "of the following unweighted " + descriptor() + ": " + this
+                + "\n");
         } else {
             return _weight;
         }
@@ -118,8 +118,8 @@ public abstract class Element {
         // FIXME: add @see Graph#validateWeight(Edge)
         if (weight == null) {
             throw new IllegalArgumentException("Attempt to assign a null "
-                    + "weight to the following " + descriptor() + ": "
-                    + this + "\n");
+                + "weight to the following " + descriptor() + ": " + this
+                + "\n");
         } else {
             _weight = weight;
         }
@@ -127,7 +127,6 @@ public abstract class Element {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -136,5 +135,4 @@ public abstract class Element {
      *  field is null.
      */
     protected Object _weight;
-
 }

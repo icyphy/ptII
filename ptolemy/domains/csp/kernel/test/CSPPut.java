@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.csp.kernel.test;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -36,8 +35,10 @@ import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CSPPut
+
 /**
 
 @author John S. Davis II
@@ -47,13 +48,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class CSPPut extends CSPActor {
-
     /**
      */
     public CSPPut(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         outputPort = new TypedIOPort(this, "output", false, true);
@@ -63,9 +62,7 @@ public class CSPPut extends CSPActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     public TypedIOPort outputPort;
 }

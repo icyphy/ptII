@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.demo.QR;
 
 import java.util.Vector;
@@ -39,6 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ND_4
@@ -58,9 +58,7 @@ matrices is involved; they may change in future releases.
 @Pt.ProposedRating Red (kienhuis)
 @Pt.AcceptedRating Red (kienhuis)
 */
-
 public class ND_4 extends TypedAtomicActor {
-
     /** Construct an actor that is an SBF object with the given container
      *  and name.
      *  @param container The container.
@@ -71,8 +69,7 @@ public class ND_4 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_4(CompositeEntity aContainer, String aName)
-            throws IllegalActionException, NameDuplicationException   {
-
+        throws IllegalActionException, NameDuplicationException {
         super(aContainer, aName);
 
         RP_5 = new TypedIOPort(this, "RP_5", true, false);
@@ -103,13 +100,12 @@ public class ND_4 extends TypedAtomicActor {
 
         // The Type of these Parameters is set by the First
         // Token placed in the parameters when created.
-        parameter_N = new Parameter(this, "N" , new IntToken(6));
-        parameter_K = new Parameter(this, "K" , new IntToken(6));
+        parameter_N = new Parameter(this, "N", new IntToken(6));
+        parameter_K = new Parameter(this, "K", new IntToken(6));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     // -- Part of the Actor
     public TypedIOPort RP_5;
     public TypedIOPort RP_6;
@@ -117,7 +113,6 @@ public class ND_4 extends TypedAtomicActor {
     public TypedIOPort RP_8;
     public TypedIOPort RP_9;
     public TypedIOPort RP_10;
-
     public TypedIOPort WP_5;
     public TypedIOPort WP_12;
     public TypedIOPort WP_3;
@@ -127,7 +122,6 @@ public class ND_4 extends TypedAtomicActor {
     // -- Public interface of the Actor
     public Parameter parameter_N;
     public Parameter parameter_K;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -148,39 +142,43 @@ public class ND_4 extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        for (int k = 1; k <= (1 * K); k += 1) {
+            for (int j = 1; j <= ((1 * N) + -1); j += 1) {
+                for (int i = (1 * j) + 1; i <= (1 * N); i += 1) {
+                    if ((k - 2) >= 0) {
+                        r_3.add(new Double(
+                                ((DoubleToken) RP_5.get(0)).doubleValue()));
+                        in_0 = ((Double) r_3.elementAt(w_r_3++)).doubleValue();
+                    }
 
-        for ( int k = 1 ; k <= 1*K ; k += 1 ) {
-            for ( int j = 1 ; j <= 1*N + -1 ; j += 1 ) {
-                for ( int i = 1*j + 1 ; i <= 1*N ; i += 1 ) {
-                    if ( k - 2 >= 0 ) {
-                        r_3.add( new Double(((DoubleToken) RP_5.get(0)).
-                                         doubleValue() ) );
-                        in_0 = ((Double)r_3.elementAt(w_r_3++)).doubleValue();
+                    if ((k - 1) == 0) {
+                        r_1.add(new Double(
+                                ((DoubleToken) RP_6.get(0)).doubleValue()));
+                        in_0 = ((Double) r_1.elementAt(w_r_1++)).doubleValue();
                     }
-                    if ( k - 1 == 0 ) {
-                        r_1.add( new Double(((DoubleToken) RP_6.get(0)).
-                                         doubleValue() ) );
-                        in_0 = ((Double)r_1.elementAt(w_r_1++)).doubleValue();
+
+                    if ((j - 2) >= 0) {
+                        x_3.add(new Double(
+                                ((DoubleToken) RP_7.get(0)).doubleValue()));
+                        in_1 = ((Double) x_3.elementAt(w_x_3++)).doubleValue();
                     }
-                    if ( j - 2 >= 0 ) {
-                        x_3.add( new Double(((DoubleToken) RP_7.get(0)).
-                                         doubleValue() ) );
-                        in_1 = ((Double)x_3.elementAt(w_x_3++)).doubleValue();
+
+                    if ((j - 1) == 0) {
+                        x_1.add(new Double(
+                                ((DoubleToken) RP_8.get(0)).doubleValue()));
+                        in_1 = ((Double) x_1.elementAt(w_x_1++)).doubleValue();
                     }
-                    if ( j - 1 == 0 ) {
-                        x_1.add( new Double(((DoubleToken) RP_8.get(0)).
-                                         doubleValue() ) );
-                        in_1 = ((Double)x_1.elementAt(w_x_1++)).doubleValue();
+
+                    if ((i - j - 2) >= 0) {
+                        t_2.add(new Double(
+                                ((DoubleToken) RP_9.get(0)).doubleValue()));
+                        in_2 = ((Double) t_2.elementAt(w_t_2++)).doubleValue();
                     }
-                    if ( i - j - 2 >= 0 ) {
-                        t_2.add( new Double(((DoubleToken) RP_9.get(0)).
-                                         doubleValue() ) );
-                        in_2 = ((Double)t_2.elementAt(w_t_2++)).doubleValue();
-                    }
-                    if ( -i + j + 1 == 0 ) {
-                        t_1.add( new Double(((DoubleToken) RP_10.get(0)).
-                                         doubleValue() ) );
-                        in_2 = ((Double)t_1.elementAt(w_t_1++)).doubleValue();
+
+                    if ((-i + j + 1) == 0) {
+                        t_1.add(new Double(
+                                ((DoubleToken) RP_10.get(0)).doubleValue()));
+                        in_2 = ((Double) t_1.elementAt(w_t_1++)).doubleValue();
                     }
 
                     _Rotate(in_0, in_1, in_2);
@@ -188,21 +186,24 @@ public class ND_4 extends TypedAtomicActor {
                     out_1 = _argOut1;
                     out_2 = _argOut2;
 
+                    if ((K - k - 1) >= 0) {
+                        WP_5.broadcast(new DoubleToken(out_0));
+                    }
 
-                    if ( K - k - 1 >= 0 ) {
-                        WP_5.broadcast( new DoubleToken( out_0 ) );
+                    if ((-K + k) == 0) {
+                        WP_12.broadcast(new DoubleToken(out_0));
                     }
-                    if ( -K + k == 0 ) {
-                        WP_12.broadcast( new DoubleToken( out_0 ) );
+
+                    if ((-i + j + 1) == 0) {
+                        WP_3.broadcast(new DoubleToken(out_1));
                     }
-                    if ( -i + j + 1 == 0 ) {
-                        WP_3.broadcast( new DoubleToken( out_1 ) );
+
+                    if ((i - j - 2) >= 0) {
+                        WP_7.broadcast(new DoubleToken(out_1));
                     }
-                    if ( i - j - 2 >= 0 ) {
-                        WP_7.broadcast( new DoubleToken( out_1 ) );
-                    }
-                    if ( N - i - 1 >= 0 ) {
-                        WP_9.broadcast( new DoubleToken( out_2 ) );
+
+                    if ((N - i - 1) >= 0) {
+                        WP_9.broadcast(new DoubleToken(out_2));
                     }
                 }
             }
@@ -219,20 +220,17 @@ public class ND_4 extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _Rotate(double arg0, double arg1, double arg2) {
-        _argOut0 = Math.cos(arg2) * arg0   -   Math.sin(arg2) * arg1;
-        _argOut1 = Math.sin(arg2) * arg0   +   Math.cos(arg2) * arg1;
+        _argOut0 = (Math.cos(arg2) * arg0) - (Math.sin(arg2) * arg1);
+        _argOut1 = (Math.sin(arg2) * arg0) + (Math.cos(arg2) * arg1);
         _argOut2 = arg2;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // -- Get private copies of the parameters
     private int N;
     private int K;
-
     private double in_0;
     private double in_1;
     private double in_2;
@@ -244,21 +242,17 @@ public class ND_4 extends TypedAtomicActor {
     private double _argOut0;
     private double _argOut1;
     private double _argOut2;
-
     private Vector r_3 = new Vector();
     private Vector r_1 = new Vector();
     private Vector x_3 = new Vector();
     private Vector x_1 = new Vector();
     private Vector t_2 = new Vector();
     private Vector t_1 = new Vector();
-
     private int w_r_3 = 0;
     private int w_r_1 = 0;
     private int w_x_3 = 0;
     private int w_x_1 = 0;
     private int w_t_2 = 0;
     private int w_t_1 = 0;
-
     private boolean _returnValue = true;
-
 }

@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 added truncatedUnsignedByteValue.  Note that this needs to be greatly
 extended to be made useful.
 */
-
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
@@ -37,8 +36,10 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
+
 /**
    A token that contains a signed 64-bit long integer.  Generally, this
    class handles overflow the same way that overflow for Java native
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Yellow (neuendor)
 */
 public class LongToken extends ScalarToken {
-
     /** Construct a token with long integer 0.
      */
     public LongToken() {
@@ -73,9 +73,11 @@ public class LongToken extends ScalarToken {
     public LongToken(String init) throws IllegalActionException {
         // Throw away the ending L or l, if necessary.
         init = init.trim();
+
         if (init.endsWith("L") || init.endsWith("l")) {
             init = init.substring(0, init.length() - 1);
         }
+
         try {
             _value = Long.parseLong(init);
         } catch (NumberFormatException e) {
@@ -100,30 +102,29 @@ public class LongToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static LongToken convert(Token token)
-            throws IllegalActionException {
+    public static LongToken convert(Token token) throws IllegalActionException {
         if (token instanceof LongToken) {
-            return (LongToken)token;
+            return (LongToken) token;
         }
 
         int compare = TypeLattice.compare(BaseType.LONG, token);
-        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(
-                            token, "long"));
+
+        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
+                    token, "long"));
         }
 
         compare = TypeLattice.compare(BaseType.INT, token);
-        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+
+        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             IntToken intToken = IntToken.convert(token);
             LongToken result = new LongToken(intToken.longValue());
-            result._unitCategoryExponents =
-                intToken._copyOfCategoryExponents();
+            result._unitCategoryExponents = intToken._copyOfCategoryExponents();
             return result;
         }
 
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "long"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "long"));
     }
 
     /**  Return true if the argument's class is LongToken and it has the
@@ -138,9 +139,10 @@ public class LongToken extends ScalarToken {
             return false;
         }
 
-        if (((LongToken)object).longValue() == _value) {
+        if (((LongToken) object).longValue() == _value) {
             return true;
         }
+
         return false;
     }
 
@@ -156,7 +158,7 @@ public class LongToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-        return (int)_value;
+        return (int) _value;
     }
 
     /** Returns a token representing the result of shifting the bits
@@ -184,7 +186,7 @@ public class LongToken extends ScalarToken {
     /** Return the value in the token as a long.
      */
     public long longValue() {
-        return (long)_value;
+        return (long) _value;
     }
 
     /** Returns a new LongToken with value 1.
@@ -218,12 +220,12 @@ public class LongToken extends ScalarToken {
      *  range of an unsigned byte.
      */
     public UnsignedByteToken truncatedUnsignedByteValue()
-            throws IllegalActionException {
-        if (_value < 0 || _value > 255) {
-            throw new IllegalActionException("Value cannot be represented" +
-                    " as an unsigned Byte");
+        throws IllegalActionException {
+        if ((_value < 0) || (_value > 255)) {
+            throw new IllegalActionException("Value cannot be represented"
+                + " as an unsigned Byte");
         } else {
-            return new UnsignedByteToken((int)_value);
+            return new UnsignedByteToken((int) _value);
         }
     }
 
@@ -246,11 +248,13 @@ public class LongToken extends ScalarToken {
      */
     protected ScalarToken _absolute() {
         LongToken result;
+
         if (_value >= 0) {
             result = this;
         } else {
             result = new LongToken(-_value);
         }
+
         return result;
     }
 
@@ -261,7 +265,7 @@ public class LongToken extends ScalarToken {
      *  @return A new LongToken containing the result.
      */
     protected ScalarToken _add(ScalarToken rightArgument) {
-        long sum = _value + ((LongToken)rightArgument).longValue();
+        long sum = _value + ((LongToken) rightArgument).longValue();
         return new LongToken(sum);
     }
 
@@ -271,7 +275,7 @@ public class LongToken extends ScalarToken {
      *  @return The bitwise AND.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
-        long sum = _value & ((LongToken)rightArgument).longValue();
+        long sum = _value & ((LongToken) rightArgument).longValue();
         return new LongToken(sum);
     }
 
@@ -290,7 +294,7 @@ public class LongToken extends ScalarToken {
      *  @return The bitwise OR.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
-        long sum = _value | ((LongToken)rightArgument).longValue();
+        long sum = _value | ((LongToken) rightArgument).longValue();
         return new LongToken(sum);
     }
 
@@ -300,7 +304,7 @@ public class LongToken extends ScalarToken {
      *  @return The bitwise XOR.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
-        long sum = _value ^ ((LongToken)rightArgument).longValue();
+        long sum = _value ^ ((LongToken) rightArgument).longValue();
         return new LongToken(sum);
     }
 
@@ -311,7 +315,7 @@ public class LongToken extends ScalarToken {
      *  @return A new LongToken containing the result.
      */
     protected ScalarToken _divide(ScalarToken rightArgument) {
-        long quotient = _value / ((LongToken)rightArgument).longValue();
+        long quotient = _value / ((LongToken) rightArgument).longValue();
         return new LongToken(quotient);
     }
 
@@ -323,18 +327,16 @@ public class LongToken extends ScalarToken {
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
-    protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon) {
-
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.LongMatrixMath.within(); if this
         // implementation changes, also change the corresponding
         // implementation there.
-
-        long right = ((LongToken)rightArgument).longValue();
+        long right = ((LongToken) rightArgument).longValue();
         long left = longValue();
         long distance = Math.round(Math.floor(epsilon));
-        if (right > left + distance || right < left - distance) {
+
+        if ((right > (left + distance)) || (right < (left - distance))) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;
@@ -349,10 +351,9 @@ public class LongToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-            throws IllegalActionException {
-        LongToken convertedArgument = (LongToken)rightArgument;
-        return BooleanToken.getInstance(
-                _value < convertedArgument.longValue());
+        throws IllegalActionException {
+        LongToken convertedArgument = (LongToken) rightArgument;
+        return BooleanToken.getInstance(_value < convertedArgument.longValue());
     }
 
     /** Return a new token whose value is the value of this token
@@ -362,7 +363,7 @@ public class LongToken extends ScalarToken {
      *  @return A new LongToken containing the result.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument) {
-        long remainder = _value % ((LongToken)rightArgument).longValue();
+        long remainder = _value % ((LongToken) rightArgument).longValue();
         return new LongToken(remainder);
     }
 
@@ -373,7 +374,7 @@ public class LongToken extends ScalarToken {
      *  @return A new LongToken containing the result.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        long product = _value * ((LongToken)rightArgument).longValue();
+        long product = _value * ((LongToken) rightArgument).longValue();
         return new LongToken(product);
     }
 
@@ -384,7 +385,7 @@ public class LongToken extends ScalarToken {
      *  @return A new LongToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        long difference = _value - ((LongToken)rightArgument).longValue();
+        long difference = _value - ((LongToken) rightArgument).longValue();
         return new LongToken(difference);
     }
 

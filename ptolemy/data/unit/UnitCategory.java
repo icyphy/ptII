@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.unit;
 
 import ptolemy.kernel.util.Attribute;
@@ -32,8 +31,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnitCategory
+
 /**
    A property that specifies the category of a base unit.  For example, in the
    International System of Units, the base unit meter has the category length.
@@ -46,7 +47,6 @@ import ptolemy.kernel.util.NamedObj;
    @see ptolemy.data.unit.BaseUnit
 */
 public class UnitCategory extends Attribute {
-
     /** Construct a unit category property with the given name contained by
      *  the specified
      *  entity. The container argument must not be null, or a
@@ -67,13 +67,13 @@ public class UnitCategory extends Attribute {
      *   an attribute already in the container.
      */
     public UnitCategory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        UnitUtilities.registerUnitCategory(
-                ((BaseUnit)this.getContainer()).getName());
+        UnitUtilities.registerUnitCategory(((BaseUnit) this.getContainer())
+            .getName());
     }
 
     public BaseUnit getBaseUnit() {
-        return (BaseUnit)(getContainer());
+        return (BaseUnit) (getContainer());
     }
 }

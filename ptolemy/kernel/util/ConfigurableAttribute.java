@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.io.BufferedReader;
@@ -38,8 +37,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConfigurableAttribute
+
 /**
    This class provides a simple way to get a long string into an attribute.
    It implements Configurable, so its value can be set using a configure MoML
@@ -59,10 +60,8 @@ import java.util.List;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (janneck)
 */
-
-public class ConfigurableAttribute
-    extends Attribute implements Configurable, Settable {
-
+public class ConfigurableAttribute extends Attribute implements Configurable,
+    Settable {
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  default workspace directory.
@@ -93,7 +92,7 @@ public class ConfigurableAttribute
      *   attribute with this name.
      */
     public ConfigurableAttribute(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -108,6 +107,7 @@ public class ConfigurableAttribute
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
         }
+
         if (!_valueListeners.contains(listener)) {
             _valueListeners.add(listener);
         }
@@ -119,10 +119,8 @@ public class ConfigurableAttribute
      *  @see java.lang.Object#clone()
      *  @return The cloned attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ConfigurableAttribute newObject =
-            (ConfigurableAttribute)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ConfigurableAttribute newObject = (ConfigurableAttribute) super.clone(workspace);
 
         // The clone has new value listeners.
         newObject._valueListeners = null;
@@ -142,7 +140,7 @@ public class ConfigurableAttribute
      *  @exception Exception Not thrown in this base class.
      */
     public void configure(URL base, String source, String text)
-            throws Exception {
+        throws Exception {
         if (_defaultText == null) {
             _defaultText = _configureText;
         }
@@ -194,13 +192,15 @@ public class ConfigurableAttribute
     public String getDefaultExpression() {
         try {
             List prototypeList = getPrototypeList();
+
             if (prototypeList.size() > 0) {
-                return ((Settable)prototypeList.get(0)).getExpression();
+                return ((Settable) prototypeList.get(0)).getExpression();
             }
         } catch (IllegalActionException e) {
             // This should not occur.
             throw new InternalErrorException(e);
         }
+
         return _defaultText;
     }
 
@@ -271,19 +271,24 @@ public class ConfigurableAttribute
     public void validate() throws IllegalActionException {
         // Validate contained attributes, if any.
         Iterator attributes = attributeList(Settable.class).iterator();
+
         while (attributes.hasNext()) {
-            Settable attribute = (Settable)attributes.next();
+            Settable attribute = (Settable) attributes.next();
             attribute.validate();
         }
+
         // Notify the container that the attribute has changed.
-        NamedObj container = (NamedObj)getContainer();
+        NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             container.attributeChanged(this);
         }
+
         if (_valueListeners != null) {
             Iterator listeners = _valueListeners.iterator();
+
             while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
+                ValueListener listener = (ValueListener) listeners.next();
                 listener.valueChanged(this);
             }
         }
@@ -300,25 +305,31 @@ public class ConfigurableAttribute
      */
     public String value() throws IOException {
         StringBuffer value = new StringBuffer();
+
         // If a source is given, read its data.
-        if (_configureSource != null && !_configureSource.trim().equals("")) {
+        if ((_configureSource != null) && !_configureSource.trim().equals("")) {
             URL textFile = new URL(_configureSource);
             InputStream stream = textFile.openStream();
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(stream));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                        stream));
             String line = reader.readLine();
+
             while (line != null) {
                 value.append(line);
                 value.append("\n");
                 line = reader.readLine();
             }
+
             reader.close();
+
             // NOTE: Do we need to close both?  Java docs don't say.
             stream.close();
         }
+
         if (_configureText != null) {
             value.append(_configureText);
         }
+
         return value.toString();
     }
 
@@ -334,21 +345,23 @@ public class ConfigurableAttribute
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         super._exportMoMLContents(output, depth);
+
         String sourceSpec = "";
-        if (_configureSource != null && !_configureSource.trim().equals("")) {
+
+        if ((_configureSource != null) && !_configureSource.trim().equals("")) {
             sourceSpec = " source=\"" + _configureSource + "\"";
+
             if (_configureText == null) {
-                output.write(_getIndentPrefix(depth)
-                        + "<configure" + sourceSpec + "/>\n");
+                output.write(_getIndentPrefix(depth) + "<configure"
+                    + sourceSpec + "/>\n");
             }
         }
+
         if (_configureText != null) {
-            output.write(_getIndentPrefix(depth)
-                    + "<configure" + sourceSpec + ">"
-                    + _configureText
-                    + "</configure>\n");
+            output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec
+                + ">" + _configureText + "</configure>\n");
         }
     }
 
@@ -362,19 +375,17 @@ public class ConfigurableAttribute
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
-            ((Configurable)destination).configure(
-                    _base, _configureSource, _configureText);
+            ((Configurable) destination).configure(_base, _configureSource,
+                _configureText);
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Propagation failed.");
+            throw new IllegalActionException(this, ex, "Propagation failed.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The base specified in the configure() method.
     private URL _base;
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
@@ -57,8 +56,10 @@ import diva.graph.layout.IncrementalLayoutListener;
 import diva.gui.GUIUtilities;
 import diva.util.Filter;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ClassDefinitionController
+
 /**
    This class provides interaction with nodes that represent Ptolemy II
    classes.  This extends the base class by providing mechanisms in the
@@ -79,7 +80,6 @@ import diva.util.Filter;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ClassDefinitionController extends ActorController {
-
     /** Create an actor instance controller associated with the
      *  specified graph controller with full access.
      *  @param controller The associated graph controller.
@@ -93,20 +93,19 @@ public class ClassDefinitionController extends ActorController {
      *  @param controller The associated graph controller.
      *  @param access The access level, one of FULL or PARTIAL.
      */
-    public ClassDefinitionController(
-            GraphController controller, Access access) {
+    public ClassDefinitionController(GraphController controller, Access access) {
         super(controller, access);
 
         if (access == FULL) {
             // The following do not require a configuration.
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_createInstanceAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _createInstanceAction));
 
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_createSubclassAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _createSubclassAction));
 
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_convertToInstanceAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _convertToInstanceAction));
         }
 
         // Set up a listener to lay out the ports when graph changes.
@@ -116,7 +115,6 @@ public class ClassDefinitionController extends ActorController {
         // ports will be laid out more than once. This manifests itself
         // as a bug where port names are rendered twice, and for some
         // inexplicable reason, are rendered in two different places!
-
         // The filter for the layout algorithm of the ports within this
         // entity. This returns true only if the candidate object is
         // an instance of Locatable and the semantic object associated
@@ -125,9 +123,10 @@ public class ClassDefinitionController extends ActorController {
                 public boolean accept(Object candidate) {
                     GraphModel model = getController().getGraphModel();
                     Object semanticObject = model.getSemanticObject(candidate);
+
                     if (candidate instanceof Locatable
                             && semanticObject instanceof Entity
-                            && ((Entity)semanticObject).isClassDefinition()) {
+                            && ((Entity) semanticObject).isClassDefinition()) {
                         return true;
                     } else {
                         return false;
@@ -138,13 +137,12 @@ public class ClassDefinitionController extends ActorController {
         // Anytime we add a port to an entity, we want to layout all the
         // ports within that entity.
         GlobalLayout layout = new EntityLayout();
-        controller.addGraphViewListener(
-                new IncrementalLayoutListener(
-                        new IncrLayoutAdapter(layout) {
-                            public void nodeDrawn(Object node) {
-                                layout(node);
-                            }
-                        }, portFilter));
+        controller.addGraphViewListener(new IncrementalLayoutListener(
+                new IncrLayoutAdapter(layout) {
+                public void nodeDrawn(Object node) {
+                    layout(node);
+                }
+            }, portFilter));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -155,19 +153,23 @@ public class ClassDefinitionController extends ActorController {
      */
     protected Figure _renderNode(Object node) {
         Figure nf = super._renderNode(node);
+
         if (nf instanceof CompositeFigure) {
             // This cast should be safe...
-            CompositeFigure cf = (CompositeFigure)nf;
+            CompositeFigure cf = (CompositeFigure) nf;
             Figure backgroundFigure = cf.getBackgroundFigure();
+
             // This might be null because the node is hidden.
             if (backgroundFigure != null) {
-                BasicFigure bf =
-                    new BasicFigure(backgroundFigure.getBounds(), 4.0f);
+                BasicFigure bf = new BasicFigure(backgroundFigure.getBounds(),
+                        4.0f);
                 bf.setStrokePaint(_HIGHLIGHT_COLOR);
                 cf.add(bf);
             }
+
             return cf;
         }
+
         return nf;
     }
 
@@ -176,18 +178,18 @@ public class ClassDefinitionController extends ActorController {
 
     /** The action that handles converting a class to an instance.
      */
-    protected ConvertToInstanceAction _convertToInstanceAction
-    = new ConvertToInstanceAction("Convert to Instance");
+    protected ConvertToInstanceAction _convertToInstanceAction = new ConvertToInstanceAction(
+            "Convert to Instance");
 
     /** The action that handles creating an instance from a class.
      */
-    protected CreateInstanceAction _createInstanceAction
-    = new CreateInstanceAction("Create Instance");
+    protected CreateInstanceAction _createInstanceAction = new CreateInstanceAction(
+            "Create Instance");
 
     /** The action that handles creating a subclass from a class.
      */
-    protected CreateSubclassAction _createSubclassAction
-    = new CreateSubclassAction("Create Subclass");
+    protected CreateSubclassAction _createSubclassAction = new CreateSubclassAction(
+            "Create Subclass");
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -199,55 +201,45 @@ public class ClassDefinitionController extends ActorController {
      *   an instance.
      */
     private void _createChangeRequest(NamedObj object, boolean subclass) {
-
-        NamedObj container = (NamedObj)object.getContainer();
+        NamedObj container = (NamedObj) object.getContainer();
         StringBuffer moml = new StringBuffer();
         moml.append("<group name=\"auto\">");
+
         // FIXME: Can we adjust the location here?
         // NOTE: This controller is expected to be used
         // only for class definitions, which must be instances
         // of InstantiableNamedObj, so this cast should be safe.
         // However, the key bindings are active even if it's not
         // a class, so if it's not a class, we just do nothing here.
-        if (((InstantiableNamedObj)object).isClassDefinition()) {
+        if (((InstantiableNamedObj) object).isClassDefinition()) {
             if (subclass) {
-                moml.append("<class name=\""
-                        + "SubclassOf"
-                        + object.getName()
-                        + "\" extends=\""
-                        + object.getName()
-                        + "\"/>");
+                moml.append("<class name=\"" + "SubclassOf" + object.getName()
+                    + "\" extends=\"" + object.getName() + "\"/>");
             } else {
-                moml.append("<entity name=\""
-                        + "InstanceOf"
-                        + object.getName()
-                        + "\" class=\""
-                        + object.getName()
-                        + "\"/>");
+                moml.append("<entity name=\"" + "InstanceOf" + object.getName()
+                    + "\" class=\"" + object.getName() + "\"/>");
             }
+
             moml.append("</group>");
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this, container, moml.toString());
+
+            MoMLChangeRequest request = new MoMLChangeRequest(this, container,
+                    moml.toString());
             container.requestChange(request);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Fourth argument makes this highlight transluscent, which enables
     // combination with other highlights.
     private static Color _HIGHLIGHT_COLOR = new Color(0, 0, 255, 64);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// ConvertToInstanceAction
-
     // An action to convert a class to an instance.
     private class ConvertToInstanceAction extends FigureAction {
-
         public ConvertToInstanceAction(String commandName) {
             super(commandName);
         }
@@ -263,60 +255,65 @@ public class ClassDefinitionController extends ActorController {
 
             // NOTE: This cast should be safe because this controller is
             // used for actors.
-            InstantiableNamedObj object = (InstantiableNamedObj)getTarget();
-            NamedObj container = (NamedObj)object.getContainer();
+            InstantiableNamedObj object = (InstantiableNamedObj) getTarget();
+            NamedObj container = (NamedObj) object.getContainer();
+
             // Assumes MoML parser will convert to instance.
             if (!object.isClassDefinition()) {
                 // Object is already an instance. Do nothing.
                 return;
             }
+
             // If the class has objects that defer to it, then
             // refuse to convert.
             boolean hasDeferrals = false;
             List deferred = object.getChildren();
             StringBuffer names = new StringBuffer();
+
             if (deferred != null) {
                 // List contains weak references, so it's not
                 // sufficient to just check the length.
                 Iterator deferrers = deferred.iterator();
+
                 while (deferrers.hasNext()) {
-                    WeakReference deferrer = (WeakReference)deferrers.next();
-                    NamedObj deferrerObject = (NamedObj)deferrer.get();
+                    WeakReference deferrer = (WeakReference) deferrers.next();
+                    NamedObj deferrerObject = (NamedObj) deferrer.get();
+
                     if (deferrerObject != null) {
                         hasDeferrals = true;
+
                         if (names.length() > 0) {
                             names.append(", ");
                         }
+
                         names.append(deferrerObject.getFullName());
                     }
                 }
             }
+
             if (hasDeferrals) {
-                MessageHandler.error("Cannot convert to instance because " +
-                        "there are instances and/or subclasses:\n" +
-                        names.toString());
+                MessageHandler.error("Cannot convert to instance because "
+                    + "there are instances and/or subclasses:\n"
+                    + names.toString());
                 return;
             }
-            String moml = "<entity name=\""
-                + object.getName()
-                + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this, container, moml);
+
+            String moml = "<entity name=\"" + object.getName() + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this, container,
+                    moml);
             container.requestChange(request);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     //// CreateInstanceAction
-
     // An action to instantiate a class.
     private class CreateInstanceAction extends FigureAction {
-
         public CreateInstanceAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_N,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_N,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -324,8 +321,10 @@ public class ClassDefinitionController extends ActorController {
             if (_access != FULL) {
                 return;
             }
+
             // Determine which entity was selected for the create instance action.
             super.actionPerformed(e);
+
             NamedObj object = getTarget();
             _createChangeRequest(object, false);
         }
@@ -333,15 +332,13 @@ public class ClassDefinitionController extends ActorController {
 
     ///////////////////////////////////////////////////////////////////
     //// CreateSubclassAction
-
     // An action to subclass a class.
     private class CreateSubclassAction extends FigureAction {
-
         public CreateSubclassAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_U,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_U,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -349,9 +346,11 @@ public class ClassDefinitionController extends ActorController {
             if (_access != FULL) {
                 return;
             }
+
             // Determine which entity was selected for the
             // create subclass action.
             super.actionPerformed(e);
+
             NamedObj object = getTarget();
             _createChangeRequest(object, true);
         }

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red (liuj)
 @AcceptedRating Red (liuj)
 */
-
 package ptolemy.domains.rtp.kernel;
 
 import ptolemy.actor.Actor;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RTPDirector
+
 /**
 
 FIXME: document this.
@@ -56,15 +57,13 @@ FIXME: How to stop a model???
 @author  Jie Liu
 @version $Id$
 */
-public class RTPDirector extends ProcessDirector
-    implements TimedDirector {
-
+public class RTPDirector extends ProcessDirector implements TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
     public RTPDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -75,7 +74,7 @@ public class RTPDirector extends ProcessDirector
      *  @param workspace The workspace for this object.
      */
     public RTPDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -94,7 +93,7 @@ public class RTPDirector extends ProcessDirector
      *   "iterations" parameter (which it should not).
      */
     public RTPDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -129,8 +128,8 @@ public class RTPDirector extends ProcessDirector
      *  @return The current computer time.
      */
     public Time getModelTime() {
-        double currentTime =
-            (double)(System.currentTimeMillis()-_realStartTime);
+        double currentTime = (double) (System.currentTimeMillis()
+            - _realStartTime);
         return new Time(this, currentTime);
     }
 
@@ -146,17 +145,27 @@ public class RTPDirector extends ProcessDirector
 
     /** Sleep for the amount of time specified.
      */
-    public void fireAt(Actor actor, Time time)
-            throws IllegalActionException {
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
         Time timeNow = getModelTime();
+
         if (time.compareTo(timeNow) > 0) {
             long delay = (long) (time.subtract(timeNow)).getDoubleValue();
+
             try {
-                if (_debugging) _debug("Sleep " + delay);
-                Thread.sleep(delay+ 5);
-                if (_debugging) _debug("Wake up at " + getModelTime());
+                if (_debugging) {
+                    _debug("Sleep " + delay);
+                }
+
+                Thread.sleep(delay + 5);
+
+                if (_debugging) {
+                    _debug("Wake up at " + getModelTime());
+                }
             } catch (InterruptedException ex) {
-                if (_debugging) _debug("interrupted.");
+                if (_debugging) {
+                    _debug("interrupted.");
+                }
+
                 // ignore...
             }
         }
@@ -166,7 +175,10 @@ public class RTPDirector extends ProcessDirector
      *  @exception IllegalActionException If any of the actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        if (_debugging) _debug("Start threads.");
+        if (_debugging) {
+            _debug("Start threads.");
+        }
+
         _realStartTime = System.currentTimeMillis();
         super.initialize();
     }
@@ -175,7 +187,10 @@ public class RTPDirector extends ProcessDirector
      *  @return A new RTPReceiver.
      */
     public Receiver newReceiver() {
-        if (_debugging) _debug("creates a new rtp receiver.");
+        if (_debugging) {
+            _debug("creates a new rtp receiver.");
+        }
+
         return new RTPReceiver();
     }
 
@@ -185,10 +200,14 @@ public class RTPDirector extends ProcessDirector
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
-        long duration = ((LongToken)executionDuration.getToken()).longValue();
-        if (duration>0) {
+        long duration = ((LongToken) executionDuration.getToken()).longValue();
+
+        if (duration > 0) {
             try {
-                if (_debugging) _debug(getName() + " sleep... " + duration);
+                if (_debugging) {
+                    _debug(getName() + " sleep... " + duration);
+                }
+
                 Thread.sleep(duration);
                 stopFire();
                 Thread.sleep(100);
@@ -202,9 +221,11 @@ public class RTPDirector extends ProcessDirector
 
     public void wrapup() throws IllegalActionException {
         stop();
+
         synchronized (this) {
             notifyAll();
         }
+
         super.wrapup();
     }
 
@@ -226,24 +247,23 @@ public class RTPDirector extends ProcessDirector
      *  parameter.
      */
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
-        executionDuration = new Parameter
-            (this, "executionDuration", new LongToken(10000));
+        throws IllegalActionException, NameDuplicationException {
+        executionDuration = new Parameter(this, "executionDuration",
+                new LongToken(10000));
         executionDuration.setTypeEquals(BaseType.LONG);
 
         timePrecisionInDigits.setVisibility(Settable.FULL);
+
         //addDebugListener(new StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The real start time
     private long _realStartTime;
 
     // The anded result of the values returned by actors' postfire().
     // private boolean _postFireReturns = true;
-
     // List of all receivers this director has created.
     // private LinkedList _receivers = new LinkedList();
 }

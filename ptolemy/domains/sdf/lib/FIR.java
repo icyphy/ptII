@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.ArrayToken;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FIR
+
 /**
    This actor implements a type polymorphic finite-impulse response
    filter with multirate capability. Since this filter operates on
@@ -103,7 +104,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.data.Token
 */
 public class FIR extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -113,7 +113,7 @@ public class FIR extends SDFTransformer {
      *   actor with this name.
      */
     public FIR(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         decimation = new Parameter(this, "decimation");
@@ -136,7 +136,7 @@ public class FIR extends SDFTransformer {
         output_tokenProductionRate.setExpression("interpolation");
 
         // Set type constraints.
-        ArrayType paramType = (ArrayType)taps.getType();
+        ArrayType paramType = (ArrayType) taps.getType();
         InequalityTerm elementTerm = paramType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
         output.setTypeAtLeast(input);
@@ -176,38 +176,42 @@ public class FIR extends SDFTransformer {
      *  an invalid value or if the super method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == interpolation) {
-            IntToken token = (IntToken)(interpolation.getToken());
+            IntToken token = (IntToken) (interpolation.getToken());
             _interpolationValue = token.intValue();
+
             if (_interpolationValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid interpolation: " + _interpolationValue
-                        + ". Must be positive.");
+                    "Invalid interpolation: " + _interpolationValue
+                    + ". Must be positive.");
             }
 
             _reinitializeNeeded = true;
         } else if (attribute == decimation) {
-            IntToken token = (IntToken)(decimation.getToken());
+            IntToken token = (IntToken) (decimation.getToken());
             _decimationValue = token.intValue();
+
             if (_decimationValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimation: " + _decimationValue
-                        + ". Must be positive.");
+                    "Invalid decimation: " + _decimationValue
+                    + ". Must be positive.");
             }
 
             _reinitializeNeeded = true;
         } else if (attribute == decimationPhase) {
-            IntToken token = (IntToken)(decimationPhase.getToken());
+            IntToken token = (IntToken) (decimationPhase.getToken());
             _decimationPhaseValue = token.intValue();
+
             if (_decimationPhaseValue < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimationPhase: " + _decimationPhaseValue
-                        + ". Must be nonnegative.");
+                    "Invalid decimationPhase: " + _decimationPhaseValue
+                    + ". Must be nonnegative.");
             }
+
             _reinitializeNeeded = true;
         } else if (attribute == taps) {
-            ArrayToken tapsToken = (ArrayToken)(taps.getToken());
+            ArrayToken tapsToken = (ArrayToken) (taps.getToken());
             _taps = tapsToken.arrayValue();
 
             // Get a token representing zero in the appropriate type.
@@ -226,12 +230,11 @@ public class FIR extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        FIR newObject = (FIR)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FIR newObject = (FIR) (super.clone(workspace));
 
         // Set the type constraints.
-        ArrayType paramType = (ArrayType)newObject.taps.getType();
+        ArrayType paramType = (ArrayType) newObject.taps.getType();
         InequalityTerm elementTerm = paramType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -253,7 +256,10 @@ public class FIR extends SDFTransformer {
 
         // Transfer _decimationValue inputs to _data[]
         for (int inC = 1; inC <= _decimationValue; inC++) {
-            if (--_mostRecent < 0) _mostRecent = _data.length - 1;
+            if (--_mostRecent < 0) {
+                _mostRecent = _data.length - 1;
+            }
+
             // Note explicit type conversion, which is required to generate
             // code.
             _data[_mostRecent] = output.getType().convert(input.get(0));
@@ -261,7 +267,6 @@ public class FIR extends SDFTransformer {
 
         // Interpolate once for each input consumed
         for (int inC = 1; inC <= _decimationValue; inC++) {
-
             // Produce however many outputs are required
             // for each input consumed
             while (phase < _interpolationValue) {
@@ -269,23 +274,24 @@ public class FIR extends SDFTransformer {
 
                 // Compute the inner product.
                 for (int i = 0; i < _phaseLength; i++) {
-                    int tapsIndex = i * _interpolationValue + phase;
+                    int tapsIndex = (i * _interpolationValue) + phase;
 
-                    int dataIndex =
-                        (_mostRecent + _decimationValue - inC + i)%(_data.length);
+                    int dataIndex = ((_mostRecent + _decimationValue) - inC + i) % (_data.length);
 
                     if (tapsIndex < _taps.length) {
                         _tapItem = _taps[tapsIndex];
                         _dataItem = _data[dataIndex];
-                        _dataItem = _tapItem.multiply( _dataItem );
-                        _outToken = _outToken.add( _dataItem );
+                        _dataItem = _tapItem.multiply(_dataItem);
+                        _outToken = _outToken.add(_dataItem);
                     }
+
                     // else assume tap is zero, so do nothing.
                 }
 
                 output.send(0, _outToken);
                 phase += _decimationValue;
             }
+
             phase -= _interpolationValue;
         }
     }
@@ -299,7 +305,9 @@ public class FIR extends SDFTransformer {
     public boolean prefire() throws IllegalActionException {
         // If an attribute has changed since the last fire(), or if
         // this is the first fire(), then reinitialize.
-        if (_reinitializeNeeded) _reinitialize();
+        if (_reinitializeNeeded) {
+            _reinitialize();
+        }
 
         if (input.hasToken(0, _decimationValue)) {
             return super.prefire();
@@ -307,6 +315,7 @@ public class FIR extends SDFTransformer {
             if (_debugging) {
                 _debug("Called prefire(), which returns false.");
             }
+
             return false;
         }
     }
@@ -320,6 +329,7 @@ public class FIR extends SDFTransformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // Must be sure to throw away the old data buffer.
         _data = null;
         _reinitializeNeeded = true;
@@ -334,14 +344,15 @@ public class FIR extends SDFTransformer {
     protected void _reinitialize() throws IllegalActionException {
         if (_decimationPhaseValue >= _decimationValue) {
             throw new IllegalActionException(this,
-                    "Invalid decimationPhase: "
-                    + _decimationPhaseValue
-                    + ". Must be less than decimation: "
-                    + _decimationValue
-                    + ".");
+                "Invalid decimationPhase: " + _decimationPhaseValue
+                + ". Must be less than decimation: " + _decimationValue + ".");
         }
-        _phaseLength = (int)(_taps.length / _interpolationValue);
-        if ((_taps.length % _interpolationValue) != 0) _phaseLength++;
+
+        _phaseLength = (int) (_taps.length / _interpolationValue);
+
+        if ((_taps.length % _interpolationValue) != 0) {
+            _phaseLength++;
+        }
 
         // Create new data array and initialize index into it.
         // Avoid losing the data if possible.
@@ -349,24 +360,30 @@ public class FIR extends SDFTransformer {
         // to correctly initialize the delay line to contain previously
         // seen data, because that data has not been saved.
         int length = _phaseLength + _decimationValue;
+
         if (_data == null) {
             _data = new Token[length];
-            for (int i = 0; i < length; i++ ) {
+
+            for (int i = 0; i < length; i++) {
                 _data[i] = _zero;
             }
+
             _mostRecent = _phaseLength;
         } else if (_data.length != length) {
             Token[] _oldData = _data;
             _data = new Token[length];
-            for (int i = 0; i < length; i++ ) {
+
+            for (int i = 0; i < length; i++) {
                 if (i < _oldData.length) {
                     _data[i] = _oldData[i];
                 } else {
                     _data[i] = _zero;
                 }
             }
+
             _mostRecent = _phaseLength;
         }
+
         _reinitializeNeeded = false;
     }
 
@@ -406,7 +423,6 @@ public class FIR extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The tokens needed in FIR
     private Token _outToken;
     private Token _tapItem;

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
 
 import java.math.BigDecimal;
@@ -36,6 +35,7 @@ import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Time
+
 /**
    An object of the Time class represents model time in a model. It is
    different from the real time of the physical world. This object is
@@ -106,7 +106,6 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class Time implements Comparable {
-
     // FIXME: added a double representation for time values to compare the
     // performance penalties introduced by using BigDecimal.
 
@@ -117,12 +116,12 @@ public class Time implements Comparable {
      */
     public Time(Director director) {
         _director = director;
+
         if (_usingDouble) {
             _timeDoubleValue = 0.0;
         } else {
             _timeValue = _quantizeTimeValue(new BigDecimal(0));
         }
-
     }
 
     /** Construct a Time object with the specified double value as its
@@ -135,10 +134,14 @@ public class Time implements Comparable {
      */
     public Time(Director director, double timeValue) {
         _director = director;
-        if (Double.isNaN(timeValue))
+
+        if (Double.isNaN(timeValue)) {
             throw new NumberFormatException("Time value can not be NaN.");
+        }
+
         if (Double.isInfinite(timeValue)) {
             _timeValue = null;
+
             if (timeValue < 0) {
                 _isNegativeInfinite = true;
             } else {
@@ -149,6 +152,7 @@ public class Time implements Comparable {
                 _timeValue = _quantizeTimeValue(new BigDecimal(timeValue));
             }
         }
+
         _timeDoubleValue = timeValue;
     }
 
@@ -163,6 +167,7 @@ public class Time implements Comparable {
      */
     private Time(Director director, BigDecimal timeValue) {
         _director = director;
+
         if (_usingDouble) {
             _timeDoubleValue = 0.0;
         } else {
@@ -175,15 +180,16 @@ public class Time implements Comparable {
     // NOTE: BigDecimal does not support infinity.
     // NOTE: For the following constants, the director argument is null
     // because these constants are invariant to any time resolution.
+
     /** A static and final time constant holding a negative infinity.
      */
-    public static final Time NEGATIVE_INFINITY
-        = new Time(null, Double.NEGATIVE_INFINITY);
+    public static final Time NEGATIVE_INFINITY = new Time(null,
+            Double.NEGATIVE_INFINITY);
 
     /** A static and final time constant holding a positive infinity.
      */
-    public static final Time POSITIVE_INFINITY
-        = new Time(null, Double.POSITIVE_INFINITY);
+    public static final Time POSITIVE_INFINITY = new Time(null,
+            Double.POSITIVE_INFINITY);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -199,15 +205,17 @@ public class Time implements Comparable {
     public Time add(double timeValue) {
         // NOTE: a double time value can be either positive infinite,
         // negative infinite, or a NaN.
-        if (Double.isNaN(timeValue))
+        if (Double.isNaN(timeValue)) {
             throw new InternalErrorException("Time value can not be a NaN.");
+        }
+
         if (Double.isInfinite(timeValue)) {
             if (timeValue < 0) {
                 // time value is a negative infinity
                 if (isPositiveInfinite()) {
                     throw new InternalErrorException(
-                            "Adding a positive infinity to a negative " +
-                            "infinity yields a NaN.");
+                        "Adding a positive infinity to a negative "
+                        + "infinity yields a NaN.");
                 } else {
                     return NEGATIVE_INFINITY;
                 }
@@ -215,8 +223,8 @@ public class Time implements Comparable {
                 // time value is a positive infinity
                 if (isNegativeInfinite()) {
                     throw new InternalErrorException(
-                            "Adding a negative infinity to a positive " +
-                            "infinity yields a NaN.");
+                        "Adding a negative infinity to a positive "
+                        + "infinity yields a NaN.");
                 } else {
                     return POSITIVE_INFINITY;
                 }
@@ -225,8 +233,8 @@ public class Time implements Comparable {
             if (isInfinite()) {
                 return this;
             } else if (_usingDouble) {
-                double newValue =
-                    _quantizeTimeValue(_timeDoubleValue + timeValue);
+                double newValue = _quantizeTimeValue(_timeDoubleValue
+                        + timeValue);
                 return new Time(_director, newValue);
             } else {
                 return _add(new BigDecimal(timeValue));
@@ -247,8 +255,8 @@ public class Time implements Comparable {
             // the time object has a negative infinity time value
             if (isPositiveInfinite()) {
                 throw new InternalErrorException(
-                        "Adding a positive infinity to a negative " +
-                        "infinity yields a NaN.");
+                    "Adding a positive infinity to a negative "
+                    + "infinity yields a NaN.");
             } else {
                 return NEGATIVE_INFINITY;
             }
@@ -256,8 +264,8 @@ public class Time implements Comparable {
             // the time object has a positive infinity time value
             if (isNegativeInfinite()) {
                 throw new InternalErrorException(
-                        "Adding a negative infinity to a positive " +
-                        "infinity yields a NaN.");
+                    "Adding a negative infinity to a positive "
+                    + "infinity yields a NaN.");
             } else {
                 return POSITIVE_INFINITY;
             }
@@ -279,7 +287,8 @@ public class Time implements Comparable {
     public int compareTo(Object time) {
         // NOTE: a time object may contain infinite time values, which can
         // not be quantized.
-        Time castedTime = (Time)time;
+        Time castedTime = (Time) time;
+
         // If at least one of the time objects has an infinite time value,
         if (castedTime.isInfinite() || isInfinite()) {
             if (castedTime.isNegativeInfinite()) {
@@ -307,8 +316,8 @@ public class Time implements Comparable {
             }
         } else {
             if (_usingDouble) {
-                return Double.compare(
-                        _timeDoubleValue, castedTime.getDoubleValue());
+                return Double.compare(_timeDoubleValue,
+                    castedTime.getDoubleValue());
             } else {
                 return _timeValue.compareTo(castedTime._getBigDecimalValue());
             }
@@ -407,7 +416,7 @@ public class Time implements Comparable {
      *  @return A new time object with time value decremented.
      */
     public Time subtract(double timeValue) {
-        return add(-1*timeValue);
+        return add(-1 * timeValue);
     }
 
     /** Return a new time object whose time value is decreased by the
@@ -423,8 +432,8 @@ public class Time implements Comparable {
             // the time object has a negative infinity time value
             if (isNegativeInfinite()) {
                 throw new InternalErrorException(
-                        "Subtracting a negative infinity from a negative " +
-                        "infinity yields a NaN.");
+                    "Subtracting a negative infinity from a negative "
+                    + "infinity yields a NaN.");
             } else {
                 return POSITIVE_INFINITY;
             }
@@ -432,14 +441,14 @@ public class Time implements Comparable {
             // the time object has a positive infinity time value
             if (isPositiveInfinite()) {
                 throw new InternalErrorException(
-                        "Subtracting a positive infinity from a positive " +
-                        "infinity yields a NaN.");
+                    "Subtracting a positive infinity from a positive "
+                    + "infinity yields a NaN.");
             } else {
                 return NEGATIVE_INFINITY;
             }
         } else {
             if (_usingDouble) {
-                return add(-1*time.getDoubleValue());
+                return add(-1 * time.getDoubleValue());
             } else {
                 return _add(time._getBigDecimalValue().negate());
             }
@@ -495,9 +504,9 @@ public class Time implements Comparable {
      */
     private BigDecimal _getBigDecimalValue() {
         if (isInfinite()) {
-            throw new InternalErrorException("The getBigDecimalValue method " +
-                    "can not be applied on time objects with infinite " +
-                    "time values.");
+            throw new InternalErrorException("The getBigDecimalValue method "
+                + "can not be applied on time objects with infinite "
+                + "time values.");
         } else {
             return _timeValue;
         }
@@ -505,14 +514,13 @@ public class Time implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Get the timePrecisionInDigits of the container director.
     // This method is only called when quantization happens.
     private int _getTimePrecisionInDigits() {
         if (_director == null) {
-            throw new InternalErrorException("Director is null. Cannot " +
-                "quantize the time value of a Time object without having " +
-                "a director providing a time resolution.");
+            throw new InternalErrorException("Director is null. Cannot "
+                + "quantize the time value of a Time object without having "
+                + "a director providing a time resolution.");
         } else {
             return _director.getTimePrecisionInDigits();
         }
@@ -525,12 +533,12 @@ public class Time implements Comparable {
         if (isInfinite()) {
             // This should not happen. Otherwise, there is a bug of using
             // this method.
-            throw new InternalErrorException("Quantization can not " +
-                    "be performed on time objects with infinite time " +
-                    "values.");
+            throw new InternalErrorException("Quantization can not "
+                + "be performed on time objects with infinite time "
+                + "values.");
         } else {
-            return originalTimeValue.setScale(
-                _getTimePrecisionInDigits(), BigDecimal.ROUND_HALF_EVEN);
+            return originalTimeValue.setScale(_getTimePrecisionInDigits(),
+                BigDecimal.ROUND_HALF_EVEN);
         }
     }
 
@@ -539,9 +547,8 @@ public class Time implements Comparable {
         // maximum double value, the following algorithm will
         // get overflow, which gives a wrong answer.
         int precision = _getTimePrecisionInDigits();
-        double newValue =
-            Math.round(originalTimeValue * Math.pow(10, precision))
-                / Math.pow(10, precision);
+        double newValue = Math.round(originalTimeValue * Math.pow(10, precision)) / Math
+            .pow(10, precision);
         return newValue;
     }
 
@@ -557,19 +564,23 @@ public class Time implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The director that this time object is associated with.
     private Director _director;
+
     // A boolean variable is true if the time value is a positive infinity.
     // By default, it is false.
     private boolean _isPositiveInfinite = false;
+
     // A boolean variable is true if the time value is a negative infinity.
     // By default, it is false.
     private boolean _isNegativeInfinite = false;
+
     // A double representation of the time value.
     private double _timeDoubleValue = 0.0;
+
     // The time value, which is quantized.
     private BigDecimal _timeValue = null;
+
     // A boolean value that choose different representation of time values
     // for performance comparison.
     private boolean _usingDouble = false;

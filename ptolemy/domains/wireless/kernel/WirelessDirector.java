@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.kernel;
 
 import ptolemy.actor.Receiver;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// WirelessDirector
+
 /**
    Director for the wireless model of computation.
    This director is nearly identical to the DE director with the
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see DEDirector
 */
 public class WirelessDirector extends DEDirector {
-
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -63,8 +63,7 @@ public class WirelessDirector extends DEDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public WirelessDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -75,7 +74,10 @@ public class WirelessDirector extends DEDirector {
      *  @return A new WirelessReceiver.
      */
     public Receiver newReceiver() {
-        if (_debugging) _debug("Creating new WirelessReceiver.");
+        if (_debugging) {
+            _debug("Creating new WirelessReceiver.");
+        }
+
         return new WirelessReceiver();
     }
 }

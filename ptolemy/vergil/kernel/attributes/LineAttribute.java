@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Shape;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LineAttribute
+
 /**
    This is an attribute that is rendered as a line.
    <p>
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class LineAttribute extends ShapeAttribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -66,7 +66,7 @@ public class LineAttribute extends ShapeAttribute {
      *   an attribute already in the container.
      */
     public LineAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         x = new Parameter(this, "x");
@@ -105,14 +105,11 @@ public class LineAttribute extends ShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == x || attribute == y) {
-            double xValue
-                = ((DoubleToken)x.getToken()).doubleValue();
-            double yValue
-                = ((DoubleToken)y.getToken()).doubleValue();
-            _icon.setShape(new Line2D.Double(
-                                   0.0, 0.0, xValue, yValue));
+        throws IllegalActionException {
+        if ((attribute == x) || (attribute == y)) {
+            double xValue = ((DoubleToken) x.getToken()).doubleValue();
+            double yValue = ((DoubleToken) y.getToken()).doubleValue();
+            _icon.setShape(new Line2D.Double(0.0, 0.0, xValue, yValue));
         } else {
             super.attributeChanged(attribute);
         }

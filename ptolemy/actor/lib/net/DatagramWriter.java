@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.net;
 
 import java.io.IOException;
@@ -50,8 +49,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DatagramWriter
+
 /**
    This actor sends its input as a Datagram over the network using the
    UDP protocol.  Before being sent, the data is optionally encoded as a
@@ -82,7 +83,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (winthrop)
 */
 public class DatagramWriter extends TypedAtomicActor {
-
     /** Construct a DatagramWriter actor with given name in the given
      *  container.  Set up ports, parameters and default values.  Two
      *  of the parameters, <i>defaultRemoteAddress</i> and
@@ -103,11 +103,10 @@ public class DatagramWriter extends TypedAtomicActor {
      *   this container.
      */
     public DatagramWriter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Ports
-
         remoteAddress = new TypedIOPort(this, "remoteAddress");
         remoteAddress.setInput(true);
         remoteAddress.setMultiport(true);
@@ -123,19 +122,17 @@ public class DatagramWriter extends TypedAtomicActor {
         data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
         // Parameters that are default values for ports
-
         //defaultRemoteAddress =
         //        new StringAttribute(this, "defaultRemoteAddress");
         //defaultRemoteAddress.setExpression("localhost");
-
         // Above way was set w/o quotes vs constant which is set with them.
         // This has been confusing, so I've switched to the approach below.
         defaultRemoteAddress = new Parameter(this, "defaultRemoteAddress");
         defaultRemoteAddress.setTypeEquals(BaseType.STRING);
         defaultRemoteAddress.setToken(new StringToken("localhost"));
 
-        defaultRemoteSocketNumber =
-            new Parameter(this, "defaultRemoteSocketNumber");
+        defaultRemoteSocketNumber = new Parameter(this,
+                "defaultRemoteSocketNumber");
         defaultRemoteSocketNumber.setTypeEquals(BaseType.INT);
         defaultRemoteSocketNumber.setExpression("4004"); //setExpression works
 
@@ -147,6 +144,7 @@ public class DatagramWriter extends TypedAtomicActor {
         // Added for SDF usability.  Empty Token() is output, just a trigger.
         triggerOutput = new TypedIOPort(this, "triggerOutput");
         triggerOutput.setTypeEquals(BaseType.GENERAL);
+
         // 'INT' works too in place of 'GENERAL'.
         triggerOutput.setOutput(true);
     }
@@ -223,51 +221,56 @@ public class DatagramWriter extends TypedAtomicActor {
      *  @exception IllegalActionException If the socket cannot be created.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         if (attribute == localSocketNumber) {
-            synchronized(this) {
+            synchronized (this) {
                 if (_socket != null) {
-                    if (_debugging) _debug("Current socket port is "
+                    if (_debugging) {
+                        _debug("Current socket port is "
                             + _socket.getLocalPort());
+                    }
 
-                    _localSocketNumber =
-                        ((IntToken)(localSocketNumber.getToken())).intValue();
-                    if (_debugging) _debug("Socket number is "
-                            + _localSocketNumber);
+                    _localSocketNumber = ((IntToken) (localSocketNumber
+                        .getToken())).intValue();
+
+                    if (_debugging) {
+                        _debug("Socket number is " + _localSocketNumber);
+                    }
+
                     try {
-                        if (_debugging) _debug("Try create socket for port "
+                        if (_debugging) {
+                            _debug("Try create socket for port "
                                 + _localSocketNumber);
-                        DatagramSocket newSocket =
-                            new DatagramSocket(_localSocketNumber);
-                        if (_debugging) _debug("A socket is created!!");
+                        }
+
+                        DatagramSocket newSocket = new DatagramSocket(_localSocketNumber);
+
+                        if (_debugging) {
+                            _debug("A socket is created!!");
+                        }
+
                         _socket.close();
                         _socket = newSocket;
-                    }
-                    catch (SocketException ex) {
+                    } catch (SocketException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Cannot create socket on the given "
-                                + "local socket number.");
+                            "Cannot create socket on the given "
+                            + "local socket number.");
                     }
                 }
             }
-
         } else if (attribute == defaultRemoteAddress) {
-            String address =
-                ((StringToken)defaultRemoteAddress.getToken())
+            String address = ((StringToken) defaultRemoteAddress.getToken())
                 .stringValue();
+
             try {
                 _address = InetAddress.getByName(address);
             } catch (UnknownHostException ex) {
                 throw new IllegalActionException(this, ex,
-                        "The default remote "
-                        + "address specifies an unknown host");
+                    "The default remote " + "address specifies an unknown host");
             }
-
         } else if (attribute == defaultRemoteSocketNumber) {
-            _remoteSocketNumber =
-                ((IntToken)defaultRemoteSocketNumber.getToken())
-                .intValue();
+            _remoteSocketNumber = ((IntToken) defaultRemoteSocketNumber
+                .getToken()).intValue();
             _remoteSocketNumber &= 65535; // Truncate to 16 bits.
         } else {
             super.attributeChanged(attribute);
@@ -282,19 +285,19 @@ public class DatagramWriter extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         String address = null;
+
         for (int jj = 0; jj < remoteAddress.getWidth(); jj++) {
             if (remoteAddress.hasToken(jj)) {
-                address = ((StringToken)(remoteAddress.get(jj))).stringValue();
+                address = ((StringToken) (remoteAddress.get(jj))).stringValue();
             }
         }
+
         if (address != null) {
             try {
                 _address = InetAddress.getByName(address);
-            }
-            catch (UnknownHostException ex) {
+            } catch (UnknownHostException ex) {
                 throw new IllegalActionException(this, ex,
-                        "The input remote "
-                        + "address specifies an unknown host");
+                    "The input remote " + "address specifies an unknown host");
             }
         }
 
@@ -302,8 +305,8 @@ public class DatagramWriter extends TypedAtomicActor {
             if (remoteSocketNumber.hasToken(jj)) {
                 // Valid socket numbers are 0..65535,
                 // so keep only lower 16 bits.
-                _remoteSocketNumber = 65535 &
-                    ((IntToken)remoteSocketNumber.get(jj)).intValue();
+                _remoteSocketNumber = 65535
+                    & ((IntToken) remoteSocketNumber.get(jj)).intValue();
             }
         }
 
@@ -311,19 +314,19 @@ public class DatagramWriter extends TypedAtomicActor {
             ArrayToken dataArrayToken = (ArrayToken) data.get(0);
 
             byte[] dataBytes = new byte[dataArrayToken.length()];
+
             for (int j = 0; j < dataArrayToken.length(); j++) {
-                UnsignedByteToken token =
-                    (UnsignedByteToken)dataArrayToken.getElement(j);
-                dataBytes[j] = (byte)token.byteValue();
+                UnsignedByteToken token = (UnsignedByteToken) dataArrayToken
+                    .getElement(j);
+                dataBytes[j] = (byte) token.byteValue();
             }
 
-            DatagramPacket packet = new
-                DatagramPacket(dataBytes, dataBytes.length,
-                        _address, _remoteSocketNumber);
+            DatagramPacket packet = new DatagramPacket(dataBytes,
+                    dataBytes.length, _address, _remoteSocketNumber);
+
             try {
                 _socket.send(packet);
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 // ignore, UDP does not guarantee success
                 //throw new InternalErrorException("socket.send failed");
                 //FIXME  I don't believe that!  I think send guarantees that
@@ -332,6 +335,7 @@ public class DatagramWriter extends TypedAtomicActor {
                 //     then it threw it right away!? )
                 // Would TCP stall here awaiting reply??  I doubt it!
             }
+
             triggerOutput.broadcast(new Token());
         }
     }
@@ -349,45 +353,50 @@ public class DatagramWriter extends TypedAtomicActor {
      *  fails in the address lookup attempt.
      */
     public void initialize() throws IllegalActionException {
-
         super.initialize();
-        _localSocketNumber =
-            ((IntToken)(localSocketNumber.getToken())).intValue();
-        if (_localSocketNumber < 0 || _localSocketNumber > 65535) {
-            throw new IllegalActionException(this, "Local socket number "
-                    + _localSocketNumber
-                    + " must be between 0 and 65535.");
-        }
-        try {
-            if (_debugging) _debug("PI Try create socket number "
-                    + _localSocketNumber);
-            _socket = new DatagramSocket(_localSocketNumber);
-            if (_debugging) _debug("PI A socket is created!!");
-        }
-        catch (SocketException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot create socket on "
-                    + "the specified local socket number");
+        _localSocketNumber = ((IntToken) (localSocketNumber.getToken()))
+            .intValue();
+
+        if ((_localSocketNumber < 0) || (_localSocketNumber > 65535)) {
+            throw new IllegalActionException(this,
+                "Local socket number " + _localSocketNumber
+                + " must be between 0 and 65535.");
         }
 
-        String address =
-            ((StringToken)defaultRemoteAddress.getToken()).stringValue();
+        try {
+            if (_debugging) {
+                _debug("PI Try create socket number " + _localSocketNumber);
+            }
+
+            _socket = new DatagramSocket(_localSocketNumber);
+
+            if (_debugging) {
+                _debug("PI A socket is created!!");
+            }
+        } catch (SocketException ex) {
+            throw new IllegalActionException(this, ex,
+                "Cannot create socket on "
+                + "the specified local socket number");
+        }
+
+        String address = ((StringToken) defaultRemoteAddress.getToken())
+            .stringValue();
+
         try {
             _address = InetAddress.getByName(address);
-        }
-        catch (UnknownHostException ex) {
+        } catch (UnknownHostException ex) {
             throw new IllegalActionException(this, ex,
-                    "The default remote "
-                    + "address specifies an unknown host");
+                "The default remote " + "address specifies an unknown host");
         }
 
-        _remoteSocketNumber =
-            ((IntToken)defaultRemoteSocketNumber.getToken()).intValue();
-        if (_remoteSocketNumber < 0 || _remoteSocketNumber > 65535) {
+        _remoteSocketNumber = ((IntToken) defaultRemoteSocketNumber.getToken())
+            .intValue();
+
+        if ((_remoteSocketNumber < 0) || (_remoteSocketNumber > 65535)) {
             _remoteSocketNumber &= 65535; // Truncate to 16 bits.
-            throw new IllegalActionException(this, "defaultRemoteSocketNumber"
-                    + _remoteSocketNumber
-                    + " is out of range, must be between 0 and 65535.");
+            throw new IllegalActionException(this,
+                "defaultRemoteSocketNumber" + _remoteSocketNumber
+                + " is out of range, must be between 0 and 65535.");
         }
     }
 
@@ -398,10 +407,11 @@ public class DatagramWriter extends TypedAtomicActor {
      *  would never get called.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (container != getContainer()) {
             wrapup();
         }
+
         super.setContainer(container);
     }
 
@@ -409,7 +419,7 @@ public class DatagramWriter extends TypedAtomicActor {
      *  @exception IllegalActionException If the socket was already null.
      */
     public void wrapup() throws IllegalActionException {
-        synchronized(this) {
+        synchronized (this) {
             if (_socket != null) {
                 _socket.close();
                 _socket = null;
@@ -419,7 +429,6 @@ public class DatagramWriter extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Remote Address and socket number for construction of packet.
     private InetAddress _address;
     private int _remoteSocketNumber;

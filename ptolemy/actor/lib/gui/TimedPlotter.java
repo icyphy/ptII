@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.TimedActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimedPlotter
+
 /**
    A signal plotter.  This plotter contains an instance of the Plot class
    from the Ptolemy plot package as a public member.  Data at the input, which
@@ -54,7 +55,6 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Green (cxh)
 */
 public class TimedPlotter extends Plotter implements TimedActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -64,7 +64,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
      *   actor with this name.
      */
     public TimedPlotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.
@@ -90,20 +90,23 @@ public class TimedPlotter extends Plotter implements TimedActor {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-
         double currentTimeValue;
         int width = input.getWidth();
-        int offset = ((IntToken)startingDataset.getToken()).intValue();
+        int offset = ((IntToken) startingDataset.getToken()).intValue();
+
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 currentTimeValue = input.getModelTime(i).getDoubleValue();
-                DoubleToken currentToken = (DoubleToken)input.get(i);
+
+                DoubleToken currentToken = (DoubleToken) input.get(i);
                 double currentValue = currentToken.doubleValue();
+
                 // NOTE: We assume the superclass ensures this cast is safe.
-                ((Plot)plot).addPoint(
-                        i + offset, currentTimeValue, currentValue, true);
+                ((Plot) plot).addPoint(i + offset, currentTimeValue,
+                    currentValue, true);
             }
         }
+
         return super.postfire();
     }
 }

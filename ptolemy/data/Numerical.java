@@ -26,11 +26,12 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Numerical
+
 /**
    A marker interface used for representing the Numerical type in the
    type hierarchy.

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import java.io.IOException;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DoubleReader
+
 /**
    This actor reads tokens from an URL, and output them. Each entry in
    the file corresponds to one iteration. If there are multiple fires in
@@ -76,7 +77,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @deprecated Use ExpressionReader instead.
 */
 public class DoubleReader extends URLReader {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -86,7 +86,7 @@ public class DoubleReader extends URLReader {
      *   actor with this name.
      */
     public DoubleReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -95,6 +95,7 @@ public class DoubleReader extends URLReader {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         for (int i = 0; i < _dataSize; i++) {
             output.send(i, new DoubleToken(_data[i]));
         }
@@ -116,21 +117,28 @@ public class DoubleReader extends URLReader {
     public boolean prefire() throws IllegalActionException {
         try {
             _dataSize = output.getWidth();
+
             if (_data.length != _dataSize) {
                 _data = new double[_dataSize];
             }
+
             String oneRow = _reader.readLine();
+
             if (oneRow == null) {
                 return false;
             }
+
             StringTokenizer tokenizer = new StringTokenizer(oneRow);
             int columnCount = tokenizer.countTokens();
+
             if (_dataSize > columnCount) {
                 _dataSize = columnCount;
             }
+
             for (int i = 0; i < _dataSize; i++) {
                 _data[i] = Double.valueOf(tokenizer.nextToken()).doubleValue();
             }
+
             return super.prefire();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "prefire() failed");
@@ -139,7 +147,6 @@ public class DoubleReader extends URLReader {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Cache of one row.
     // FIXME: Should we clone this?
     private double[] _data;

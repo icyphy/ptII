@@ -26,13 +26,14 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Container;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Placeable
+
 /**
    Interface for objects that have UI components that can be placed in containers.
    These objects can be fairly tricky to write because of the fact that they
@@ -63,7 +64,6 @@ import java.awt.Container;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public interface Placeable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

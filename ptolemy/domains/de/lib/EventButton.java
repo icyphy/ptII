@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.de.lib;
 
 import java.awt.Color;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EventButton
+
 /**
    Output a Token in response to a click of a button. This class is closely
    related to the ButtonTime class in SR domain by Paul Whitaker.
@@ -60,7 +61,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (winthrop)
 */
 public class EventButton extends Source implements Placeable {
-
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,7 +70,7 @@ public class EventButton extends Source implements Placeable {
      *   actor with this name.
      */
     public EventButton(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         text = new StringAttribute(this, "text");
@@ -115,9 +115,11 @@ public class EventButton extends Source implements Placeable {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _buttonPressed = false;
+
         if (_button == null) {
             place(_container);
         }
+
         if (_frame != null) {
             _frame.setVisible(true);
             _frame.toFront();
@@ -133,13 +135,16 @@ public class EventButton extends Source implements Placeable {
         _container = container;
         _button = new JButton(text.getExpression());
         _button.addActionListener(new ButtonListener());
+
         if (_container == null) {
             System.out.println("Container is null");
+
             // place the button in its own frame.
             JFrame _frame = new JFrame(getFullName());
             _frame.getContentPane().add(_button);
         } else {
             _container.add(_button);
+
             //_button.setBackground(Color.red);
         }
     }
@@ -152,6 +157,7 @@ public class EventButton extends Source implements Placeable {
         if (_buttonPressed) {
             _buttonPressed = false;
         }
+
         return super.postfire();
     }
 
@@ -170,8 +176,9 @@ public class EventButton extends Source implements Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
+
         if (container == null) {
             _remove();
         }
@@ -200,7 +207,6 @@ public class EventButton extends Source implements Placeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The button.
     private JButton _button;
 
@@ -213,17 +219,12 @@ public class EventButton extends Source implements Placeable {
 
     // The frame into which to put the text widget, if any.
     private JFrame _frame;
-
-
-
     private EventButton _self;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-
             try {
                 _buttonPressed = true;
                 getDirector().fireAtCurrentTime(_self);
@@ -233,6 +234,4 @@ public class EventButton extends Source implements Placeable {
             }
         }
     }
-
 }
-

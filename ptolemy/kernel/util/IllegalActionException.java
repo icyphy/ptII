@@ -27,11 +27,12 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// IllegalActionException
+
 /**
    Thrown on an attempt to perform an action that would result in an
    inconsistent or contradictory data structure if it were allowed to
@@ -50,7 +51,6 @@ package ptolemy.kernel.util;
    @Pt.AcceptedRating Green (cxh)
 */
 public class IllegalActionException extends KernelException {
-
     /** Construct an exception with a detail message.
      *  @param detail The message.
      */
@@ -82,8 +82,8 @@ public class IllegalActionException extends KernelException {
      *  is not known or nonexistent.
      *  @param detail The message.
      */
-    public IllegalActionException(Nameable object,
-            Throwable cause, String detail) {
+    public IllegalActionException(Nameable object, Throwable cause,
+        String detail) {
         this(object, null, cause, detail);
     }
 
@@ -94,7 +94,7 @@ public class IllegalActionException extends KernelException {
      *  @param object1 The first object.
      *  @param object2 The second object.
      */
-    public IllegalActionException(Nameable object1, Nameable object2)  {
+    public IllegalActionException(Nameable object1, Nameable object2) {
         this(object1, object2, null, null);
     }
 
@@ -107,7 +107,7 @@ public class IllegalActionException extends KernelException {
      *  @param detail The message.
      */
     public IllegalActionException(Nameable object1, Nameable object2,
-            String detail) {
+        String detail) {
         this(object1, object2, null, detail);
     }
 
@@ -127,7 +127,7 @@ public class IllegalActionException extends KernelException {
      *  @param detail The message.
      */
     public IllegalActionException(Nameable object1, Nameable object2,
-            Throwable cause, String detail) {
+        Throwable cause, String detail) {
         super(object1, object2, cause, detail);
     }
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.comm;
 
 import ptolemy.data.type.ArrayType;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ViterbiDecoder
+
 /**
    The TrellisDecoder is a generalization of the ViterbiDecoder. It
    can handle trellis coding, which has non-antipodal constellation.
@@ -68,9 +69,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class TrellisDecoder extends ViterbiDecoder {
-
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -81,7 +80,7 @@ public class TrellisDecoder extends ViterbiDecoder {
      *   actor with this name.
      */
     public TrellisDecoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         softDecoding.setVisibility(Settable.NONE);

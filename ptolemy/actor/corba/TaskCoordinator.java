@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj)
 @AcceptedRating Yellow (janneck)
 */
-
 package ptolemy.actor.corba;
 
 import java.util.HashMap;
@@ -52,8 +51,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PushSupplier
+
 /**
    An actor that coordiantor a set of clients connecting to it to work together
    to finish some tasks.
@@ -75,9 +76,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version
    @since Ptolemy II 3.0
 */
-
 public class TaskCoordinator extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -87,10 +86,10 @@ public class TaskCoordinator extends Transformer {
      *   actor with this name.
      */
     public TaskCoordinator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         coordinatorName = new Parameter(this, "coordinatorName");
         coordinatorName.setToken(new StringToken("TaskCoordinator"));
@@ -98,6 +97,7 @@ public class TaskCoordinator extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
     /** the ORB initial property. for example:
      * "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
      */
@@ -124,21 +124,23 @@ public class TaskCoordinator extends Transformer {
         _lock1 = new Object();
         _lock2 = new Object();
         _fireIsWaiting = false;
+
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(
-                ((StringToken)ORBInitProperties.getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
+                .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
+
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
             _debug("ORB initial argument: " + args[i]);
             i++;
         }
+
         _orb = null;
         _initORB(args);
         _debug("Finished initializing " + getName());
     }
-
 
     /** Read one input token, if there is one, from the input
      *  and send it to the remote TaskReceiver by call the stub method.
@@ -154,57 +156,73 @@ public class TaskCoordinator extends Transformer {
                 if (input.hasToken(0)) {
                     Token token = input.get(0);
                     String data;
+
                     if (token instanceof StringToken) {
-                        data = ((StringToken)token).stringValue();
+                        data = ((StringToken) token).stringValue();
                     } else {
                         data = token.toString();
                     }
+
                     //prepare to send the token to task Receivers.
                     org.omg.CORBA.Any event = _orb.create_any();
                     event.insert_string(data);
+
                     Client selectedClient;
+
                     if (_availableClients.size() > 0) {
-                        synchronized(_lock2) {
-                            selectedClient = (Client)_availableClients.removeFirst();
+                        synchronized (_lock2) {
+                            selectedClient = (Client) _availableClients
+                                .removeFirst();
                         }
+
                         selectedClient.push(event);
+
                         if (_debugging) {
-                            _debug(getName(), "coordinator sends new task: " + data);
+                            _debug(getName(),
+                                "coordinator sends new task: " + data);
                         }
-                    }else {//no worker is availabe, so wait.
+                    } else { //no worker is availabe, so wait.
+
                         synchronized (_lock1) {
                             if (_debugging) {
                                 _debug(getName(), " is waiting.");
                             }
+
                             _fireIsWaiting = true;
                             _lock1.wait();
                             _fireIsWaiting = false;
+
                             if (_debugging) {
                                 _debug(getName(), " wake up.");
                             }
                         }
+
                         if (_availableClients.size() > 0) {
-                            synchronized(_lock2) {
-                                selectedClient = (Client)_availableClients.removeFirst();
+                            synchronized (_lock2) {
+                                selectedClient = (Client) _availableClients
+                                    .removeFirst();
                             }
+
                             selectedClient.push(event);
+
                             if (_debugging) {
-                                _debug(getName(), "coordinator sends new task: " + data);
+                                _debug(getName(),
+                                    "coordinator sends new task: " + data);
                             }
                         }
                     }
                 } else { // we enter fire due to receiving returned result from some client.
-                    _debug(getName(), "coordinator send out received task result.");
+                    _debug(getName(),
+                        "coordinator send out received task result.");
                     output.send(0, _resultToken);
                 }
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
-                        "remote actor throws IllegalActionException"
-                        + ex.getMessage());
+                    "remote actor throws IllegalActionException"
+                    + ex.getMessage());
             } catch (InterruptedException e) {
                 throw new IllegalActionException(this,
-                        "blocking interrupted." +
-                        e.getMessage());
+                    "blocking interrupted." + e.getMessage());
             }
         }
     }
@@ -214,11 +232,13 @@ public class TaskCoordinator extends Transformer {
      */
     public void stop() {
         if (_fireIsWaiting) {
-            synchronized( _lock1) {
+            synchronized (_lock1) {
                 _lock1.notifyAll();
             }
+
             _fireIsWaiting = false;
         }
+
         super.stop();
     }
 
@@ -226,53 +246,54 @@ public class TaskCoordinator extends Transformer {
     ////                         private methods                   ////
     //use a private method to deal with necessary CORBA operations.
     // @exception IllegalActionException If ORB initialize failed.
-    private void _initORB(String[] args) throws IllegalActionException{
+    private void _initORB(String[] args) throws IllegalActionException {
         try {
             // start the ORB
             _orb = ORB.init(args, null);
             _debug(getName(), " ORB initialized");
+
             //get the root naming context
             org.omg.CORBA.Object objRef = _orb.resolve_initial_references(
                     "NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
+
             if (ncRef != null) {
                 _debug(getName(), "found name service.");
             }
+
             //resolve the remote consumer reference in Naming
-            NameComponent namecomp = new NameComponent(
-                    ((StringToken)coordinatorName.getToken()).
-                    stringValue(), "Multi");
+            NameComponent namecomp = new NameComponent(((StringToken) coordinatorName
+                    .getToken()).stringValue(), "Multi");
             _debug(getName(), " looking for name: ",
-                    (coordinatorName.getToken()).toString());
-            NameComponent path[] = {namecomp};
+                (coordinatorName.getToken()).toString());
+
+            NameComponent[] path = { namecomp };
             Coordinator _coordinator = new Coordinator();
             _orb.connect(_coordinator);
             ncRef.rebind(path, _coordinator);
         } catch (UserException ex) {
             //ex.printStackTrace();
             throw new IllegalActionException(this,
-                    " initialize ORB failed. Please make sure the " +
-                    "naming server has already started and the " +
-                    "ORBInitProperty parameter is configured correctly. " +
-                    "the error message is: " + ex.getMessage());
+                " initialize ORB failed. Please make sure the "
+                + "naming server has already started and the "
+                + "ORBInitProperty parameter is configured correctly. "
+                + "the error message is: " + ex.getMessage());
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private ORB _orb;
     private HashMap _clientRefs = new HashMap();
     private LinkedList _availableClients = new LinkedList();
     private boolean _fireIsWaiting;
-    private Object _lock1, _lock2;
+    private Object _lock1;
+    private Object _lock2;
     private Token _resultToken;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
-    private class Coordinator extends _CoordinatorImplBase{
+    private class Coordinator extends _CoordinatorImplBase {
         /**
          * Construct a Coordinator.
          */
@@ -280,60 +301,66 @@ public class TaskCoordinator extends Transformer {
             super();
         }
 
-        public void register(String clientName, Client clientRef) throws CorbaIllegalActionException {
-            synchronized(_lock2) {
+        public void register(String clientName, Client clientRef)
+            throws CorbaIllegalActionException {
+            synchronized (_lock2) {
                 if (!_clientRefs.containsKey(clientName)) {
                     _clientRefs.put(clientName, clientRef);
                     _availableClients.add(clientRef);
+
                     if (_fireIsWaiting) {
-                        synchronized(_lock1) {
+                        synchronized (_lock1) {
                             _lock1.notifyAll();
                         }
                     }
                 }
             }
-
         }
 
-        public void result(String clientName, Any data) throws CorbaIllegalActionException {
+        public void result(String clientName, Any data)
+            throws CorbaIllegalActionException {
             //FIXME: this only works for string result data.
             _resultToken = new StringToken(data.extract_string());
+
             if (_debugging) {
                 _debug(getName(), " receive data:\n" + _resultToken.toString());
             }
-            synchronized(_lock2) {
+
+            synchronized (_lock2) {
                 _debug(getName(), "get synchronized object lock2.");
-                Client client = (Client)_clientRefs.get(clientName);
+
+                Client client = (Client) _clientRefs.get(clientName);
+
                 if (client != null) {
                     _availableClients.add(client);
                     _debug(getName(), "free the client back to be available.");
+
                     if (_fireIsWaiting) {
-                        synchronized(_lock1) {
+                        synchronized (_lock1) {
                             _debug(getName(), "get synchronized object lock1.");
                             _lock1.notifyAll();
                         }
                     }
                 }
             }
+
             try {
-                getDirector().fireAtCurrentTime(
-                        TaskCoordinator.this);
+                getDirector().fireAtCurrentTime(TaskCoordinator.this);
             } catch (IllegalActionException ex) {
-                throw new CorbaIllegalActionException("failed in dealing with director.");
+                throw new CorbaIllegalActionException(
+                    "failed in dealing with director.");
             }
         }
 
-        public void unregister(String clientName) throws CorbaIllegalActionException {
-            synchronized(_lock2) {
+        public void unregister(String clientName)
+            throws CorbaIllegalActionException {
+            synchronized (_lock2) {
                 if (_clientRefs.containsKey(clientName)) {
-                    Client client = (Client)_clientRefs.get(clientName);
+                    Client client = (Client) _clientRefs.get(clientName);
                     _availableClients.remove(client);
                     _clientRefs.remove(clientName);
                 }
             }
-
         }
     }
-
 }
-

@@ -24,17 +24,26 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java.test;
 
-import ptolemy.copernicus.kernel.*;
-import ptolemy.actor.*;
-import soot.*;
-import ptolemy.copernicus.java.*;
+import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.java.TokenToNativeTransformer;
+import ptolemy.copernicus.kernel.ClassWriter;
+import ptolemy.copernicus.kernel.GrimpTransformer;
+import ptolemy.copernicus.kernel.JimpleWriter;
+import ptolemy.copernicus.kernel.KernelMain;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.UnusedFieldRemover;
+import ptolemy.copernicus.kernel.WatchDogTimer;
+import soot.Pack;
+import soot.PackManager;
+import soot.Scene;
+import soot.SootClass;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// TestUnboxingMain
+
 /**
    Test for token unboxing.
 
@@ -45,15 +54,16 @@ import ptolemy.copernicus.java.*;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestUnboxingMain extends KernelMain {
-
     /** First argument is the output directory.
      *  Second argument is the class name.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         PtolemyUtilities.loadSootReferences();
+
         TestUnboxingMain main = new TestUnboxingMain();
         main.setOutputDirectory(args[0]);
         main.addTransforms();
+
         SootClass theClass = Scene.v().loadClassAndSupport(args[1]);
         theClass.setApplicationClass();
         main.generateCode(args);
@@ -61,7 +71,6 @@ public class TestUnboxingMain extends KernelMain {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public TestUnboxingMain() {
         _toplevel = new CompositeActor();
     }
@@ -70,18 +79,15 @@ public class TestUnboxingMain extends KernelMain {
      *  for optimizing efficiency.
      *  @param toplevel The composite actor we are generating code for.
      */
-    public static void addStandardTransforms(CompositeActor model)
-    {
+    public static void addStandardTransforms(CompositeActor model) {
         Pack pack = PackManager.v().getPack("wjtp");
-        addTransform(pack, "wjtp.watchDog",
-                WatchDogTimer.v(), "time:" + _watchDogTimeout);
-        addTransform(pack, "wjtp.ttn",
-                TokenToNativeTransformer.v(model));// "debug:true level:1");
+        addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
+            "time:" + _watchDogTimeout);
+        addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(model)); // "debug:true level:1");
 
         addStandardOptimizations(pack, 8);
 
-        addTransform(pack, "wjtp.ufr",
-                UnusedFieldRemover.v());
+        addTransform(pack, "wjtp.ufr", UnusedFieldRemover.v());
         addStandardOptimizations(pack, 10);
     }
 
@@ -92,12 +98,12 @@ public class TestUnboxingMain extends KernelMain {
 
         addStandardTransforms(_toplevel);
         addTransform(pack, "wjtp.gt", GrimpTransformer.v());
-        addTransform(pack, "wjtp.finalSnapshotJimple",
-                JimpleWriter.v(), "outDir:" + _outputDirectory);
-        addTransform(pack, "wjtp.finalSnapshot",
-                ClassWriter.v(), "outDir:" + _outputDirectory);
-        addTransform(pack, "wjtp.watchDogCancel",
-                WatchDogTimer.v(), "cancel:true");
+        addTransform(pack, "wjtp.finalSnapshotJimple", JimpleWriter.v(),
+            "outDir:" + _outputDirectory);
+        addTransform(pack, "wjtp.finalSnapshot", ClassWriter.v(),
+            "outDir:" + _outputDirectory);
+        addTransform(pack, "wjtp.watchDogCancel", WatchDogTimer.v(),
+            "cancel:true");
     }
 
     /** Set the watchdog timeout.
@@ -114,8 +120,6 @@ public class TestUnboxingMain extends KernelMain {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
     private static String _watchDogTimeout = "720000";
     private static String _outputDirectory = "test";
-
 }

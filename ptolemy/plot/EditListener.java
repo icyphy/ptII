@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.plot;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// EditListener
+
 /**
    Interface for listeners that are informed of plot edit events.
    These events are generated when a user modifies the plot data using
@@ -44,7 +45,6 @@ package ptolemy.plot;
 
 */
 public interface EditListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

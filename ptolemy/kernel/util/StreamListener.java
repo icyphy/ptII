@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StreamListener
+
 /**
    A debug listener that sends messages to a stream or to the standard output.
 
@@ -46,7 +47,6 @@ import java.io.PrintStream;
 
 */
 public class StreamListener implements DebugListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
@@ -55,7 +55,6 @@ public class StreamListener implements DebugListener {
     public StreamListener() {
         _output = System.out;
     }
-
 
     /** Create a debug listener that sends messages to the specified stream.
      */
@@ -83,6 +82,5 @@ public class StreamListener implements DebugListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private PrintStream _output;
 }

@@ -26,10 +26,8 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
-// Ptolemy imports.
 import java.awt.Component;
 import java.util.Iterator;
 
@@ -38,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InsideEntityEditorPaneFactory
+
 /**
    This is an attribute that can create a pane (called a "configuration
    widget") for interactively configuring an entity contained by its container.
@@ -60,9 +60,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public class InsideEntityEditorPaneFactory extends EditorPaneFactory {
-
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -72,7 +70,7 @@ public class InsideEntityEditorPaneFactory extends EditorPaneFactory {
      *   an attribute already in the container.
      */
     public InsideEntityEditorPaneFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -84,14 +82,17 @@ public class InsideEntityEditorPaneFactory extends EditorPaneFactory {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
-        NamedObj object = (NamedObj)getContainer();
+        NamedObj object = (NamedObj) getContainer();
 
         if (object instanceof CompositeEntity) {
-            Iterator entities = ((CompositeEntity)object).entityList().iterator();
+            Iterator entities = ((CompositeEntity) object).entityList()
+                                 .iterator();
+
             if (entities.hasNext()) {
-                object = (NamedObj)entities.next();
+                object = (NamedObj) entities.next();
             }
         }
+
         return super.createEditorPane(object);
     }
 }

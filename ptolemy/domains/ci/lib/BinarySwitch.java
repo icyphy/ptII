@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ci.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,8 +36,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BinarySwitch
+
 /**
    An actor that calls Thread.sleep() on the current thread the first
    time fire() is called.  The sleep delays the inputs for a certain
@@ -57,7 +58,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class BinarySwitch extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,13 +67,14 @@ public class BinarySwitch extends TypedAtomicActor {
      *   actor with this name.
      */
     public BinarySwitch(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         q1_len = new TypedIOPort(this, "q1_len", true, false);
         q1_len.setTypeEquals(BaseType.INT);
         q2_len = new TypedIOPort(this, "q2_len", true, false);
         q2_len.setTypeEquals(BaseType.INT);
         pkt_in = new TypedIOPort(this, "pkt_in", true, false);
+
         //pkt_in.setTypeEquals(BaseType.UNKNOWN);
         q1_out = new TypedIOPort(this, "q1_out", false, true);
         q1_out.setTypeEquals(pkt_in.getType());
@@ -83,12 +84,43 @@ public class BinarySwitch extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     // FIXME: What is the description of these ports
     // FIXME: ptk_in should be packet or packetIn
     // FIXME: q1_len should be q1Length, ditto with q2_len
     // FIXME: None of these should have underscores in them
-    public TypedIOPort q1_len, q2_len, pkt_in, q1_out, q2_out;
+    public TypedIOPort q1_len;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    // FIXME: What is the description of these ports
+    // FIXME: ptk_in should be packet or packetIn
+    // FIXME: q1_len should be q1Length, ditto with q2_len
+    // FIXME: None of these should have underscores in them
+    public TypedIOPort q2_len;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    // FIXME: What is the description of these ports
+    // FIXME: ptk_in should be packet or packetIn
+    // FIXME: q1_len should be q1Length, ditto with q2_len
+    // FIXME: None of these should have underscores in them
+    public TypedIOPort pkt_in;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    // FIXME: What is the description of these ports
+    // FIXME: ptk_in should be packet or packetIn
+    // FIXME: q1_len should be q1Length, ditto with q2_len
+    // FIXME: None of these should have underscores in them
+    public TypedIOPort q1_out;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    // FIXME: What is the description of these ports
+    // FIXME: ptk_in should be packet or packetIn
+    // FIXME: q1_len should be q1Length, ditto with q2_len
+    // FIXME: None of these should have underscores in them
+    public TypedIOPort q2_out;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -104,13 +136,16 @@ public class BinarySwitch extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
         if (q1_len.hasToken(0)) {
-            _q1len = ((IntToken)q1_len.get(0)).intValue();
+            _q1len = ((IntToken) q1_len.get(0)).intValue();
         }
+
         if (q2_len.hasToken(0)) {
-            _q2len = ((IntToken)q2_len.get(0)).intValue();
+            _q2len = ((IntToken) q2_len.get(0)).intValue();
         }
+
         if (pkt_in.hasToken(0)) {
             Token pkt = pkt_in.get(0);
+
             if (_q1len > _q2len) {
                 q2_out.broadcast(pkt);
             } else {
@@ -135,7 +170,6 @@ public class BinarySwitch extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // True if sleep was called in fire().  Sleep should only
     // be called once in fire().
     private int _q1len;

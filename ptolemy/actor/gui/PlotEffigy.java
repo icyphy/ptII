@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.PlotBox;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotEffigy
+
 /**
    An effigy for a plot file.
 
@@ -50,7 +51,6 @@ import ptolemy.plot.PlotBox;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class PlotEffigy extends Effigy {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
@@ -64,7 +64,7 @@ public class PlotEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public PlotEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -93,6 +93,7 @@ public class PlotEffigy extends Effigy {
     public void writeFile(File file) throws IOException {
         if (_plot != null) {
             FileOutputStream stream = null;
+
             try {
                 stream = new FileOutputStream(file);
                 _plot.write(stream);
@@ -102,7 +103,7 @@ public class PlotEffigy extends Effigy {
                         stream.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + file);
+                            + "on " + file);
                         throwable.printStackTrace();
                     }
                 }
@@ -112,7 +113,6 @@ public class PlotEffigy extends Effigy {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The plot associated with this effigy.
     private PlotBox _plot;
 
@@ -122,7 +122,6 @@ public class PlotEffigy extends Effigy {
     /** A factory for creating new effigies.
      */
     public static class Factory extends EffigyFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -132,7 +131,7 @@ public class PlotEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -164,11 +163,11 @@ public class PlotEffigy extends Effigy {
          *   does not have a recognized extension.
          *  @exception Exception If the URL cannot be read.
          */
-        public Effigy createEffigy(
-                CompositeEntity container, URL base, URL input)
-                throws Exception {
+        public Effigy createEffigy(CompositeEntity container, URL base,
+            URL input) throws Exception {
             if (input != null) {
                 String extension = getExtension(input);
+
                 if (extension.equals("plt") || extension.equals("plot")) {
                     PlotEffigy effigy = new PlotEffigy(container,
                             container.uniqueName("effigy"));
@@ -176,6 +175,7 @@ public class PlotEffigy extends Effigy {
                     return effigy;
                 }
             }
+
             return null;
         }
     }

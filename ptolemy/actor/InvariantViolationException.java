@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InvariantViolationException
+
 /**
    Thrown when an invariant is violated.
 
@@ -58,5 +59,4 @@ public class InvariantViolationException extends IllegalActionException {
     public InvariantViolationException(Nameable object, String detail) {
         super(object, null, null, detail);
     }
-
 }

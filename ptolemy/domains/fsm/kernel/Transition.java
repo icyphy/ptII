@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Iterator;
@@ -58,6 +57,7 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Transition
+
 /**
    A Transition has a source state and a destination state. A
    transition has a guard expression, which is evaluated to a boolean value.
@@ -144,7 +144,6 @@ import ptolemy.kernel.util.Workspace;
    @see OutputActionsAttribute
 */
 public class Transition extends ComponentRelation {
-
     /** Construct a transition in the given workspace with an empty string
      *  as a name.
      *  If the workspace argument is null, use the default workspace.
@@ -154,7 +153,7 @@ public class Transition extends ComponentRelation {
      *  tracking.
      */
     public Transition(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -172,7 +171,7 @@ public class Transition extends ComponentRelation {
      *   any relation already in the container.
      */
     public Transition(FSMActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -245,14 +244,16 @@ public class Transition extends ComponentRelation {
      *   does not evaluate to a boolean value.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.attributeChanged(attribute);
+
         if (attribute == preemptive) {
             // evaluate the parameter to make sure it is given a valid
             // expression
             preemptive.getToken();
             workspace().incrVersion();
         }
+
         // The guard and trigger expressions can only be evaluated at run
         // time, because the input variables they can reference are created
         // at run time. guardExpression and triggerExpression are string
@@ -262,21 +263,24 @@ public class Transition extends ComponentRelation {
             _guardParseTree = null;
             _guardVersion = -1;
         }
+
         if (attribute == triggerExpression) {
             _triggerParseTree = null;
         }
+
         if (attribute == refinementName) {
             _refinementVersion = -1;
         }
 
-        if (attribute == outputActions || attribute == setActions) {
+        if ((attribute == outputActions) || (attribute == setActions)) {
             _actionListsVersion = -1;
         }
 
-        if (attribute == outputActions && _debugging) {
+        if ((attribute == outputActions) && _debugging) {
             outputActions.addDebugListener(new StreamListener());
         }
-        if (attribute == setActions && _debugging) {
+
+        if ((attribute == setActions) && _debugging) {
             setActions.addDebugListener(new StreamListener());
         }
     }
@@ -288,6 +292,7 @@ public class Transition extends ComponentRelation {
         if (_actionListsVersion != workspace().getVersion()) {
             _updateActionLists();
         }
+
         return _choiceActionList;
     }
 
@@ -300,14 +305,14 @@ public class Transition extends ComponentRelation {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Transition newObject = (Transition)super.clone(workspace);
-        newObject.guardExpression =
-            (StringAttribute)newObject.getAttribute("guardExpression");
-        newObject.preemptive = (Parameter)newObject.getAttribute("preemptive");
-        newObject.triggerExpression =
-            (StringAttribute)newObject.getAttribute("triggerExpression");
-        newObject.refinementName =
-            (StringAttribute)newObject.getAttribute("refinementName");
+        Transition newObject = (Transition) super.clone(workspace);
+        newObject.guardExpression = (StringAttribute) newObject.getAttribute(
+                "guardExpression");
+        newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
+        newObject.triggerExpression = (StringAttribute) newObject.getAttribute(
+                "triggerExpression");
+        newObject.refinementName = (StringAttribute) newObject.getAttribute(
+                "refinementName");
         newObject._guardParseTree = null;
         newObject._triggerParseTree = null;
         newObject._actionListsVersion = -1;
@@ -325,6 +330,7 @@ public class Transition extends ComponentRelation {
         if (_actionListsVersion != workspace().getVersion()) {
             _updateActionLists();
         }
+
         return _commitActionList;
     }
 
@@ -335,6 +341,7 @@ public class Transition extends ComponentRelation {
         if (_stateVersion != workspace().getVersion()) {
             _checkConnectedStates();
         }
+
         return _destinationState;
     }
 
@@ -356,28 +363,38 @@ public class Transition extends ComponentRelation {
         StringBuffer buffer = new StringBuffer();
         boolean aLabel = false;
         String guard = getGuardExpression();
+
         if (guard != null) {
             buffer.append(guard);
             aLabel = true;
         }
+
         String action = null;
         String expression = outputActions.getExpression();
-        if (expression != null && !expression.trim().equals("")) {
+
+        if ((expression != null) && !expression.trim().equals("")) {
             action = expression;
         }
+
         expression = setActions.getExpression();
-        if (expression != null && !expression.trim().equals("")) {
+
+        if ((expression != null) && !expression.trim().equals("")) {
             if (action != null) {
                 action = action + "; " + expression;
             } else {
                 action = expression;
             }
         }
+
         if (action != null) {
-            if (aLabel) buffer.append("\n");
+            if (aLabel) {
+                buffer.append("\n");
+            }
+
             buffer.append(action);
             aLabel = true;
         }
+
         if (aLabel) {
             return buffer.toString();
         } else {
@@ -399,41 +416,53 @@ public class Transition extends ComponentRelation {
         if (_refinementVersion == workspace().getVersion()) {
             return _refinement;
         }
+
         try {
             workspace().getReadAccess();
+
             String names = refinementName.getExpression();
-            if (names == null || names.trim().equals("")) {
+
+            if ((names == null) || names.trim().equals("")) {
                 _refinementVersion = workspace().getVersion();
                 _refinement = null;
                 return null;
             }
+
             StringTokenizer tokenizer = new StringTokenizer(names, ",");
             int size = tokenizer.countTokens();
+
             if (size <= 0) {
                 _refinementVersion = workspace().getVersion();
                 _refinement = null;
                 return null;
             }
+
             _refinement = new TypedActor[size];
+
             Nameable container = getContainer();
-            TypedCompositeActor containerContainer =
-                (TypedCompositeActor)container.getContainer();
+            TypedCompositeActor containerContainer = (TypedCompositeActor) container
+                .getContainer();
             int index = 0;
+
             while (tokenizer.hasMoreTokens()) {
                 String name = tokenizer.nextToken().trim();
+
                 if (name.equals("")) {
                     throw new IllegalActionException(this,
-                            "Malformed list of refinements: " + names);
+                        "Malformed list of refinements: " + names);
                 }
-                TypedActor element =
-                    (TypedActor)containerContainer.getEntity(name);
+
+                TypedActor element = (TypedActor) containerContainer.getEntity(name);
+
                 if (element == null) {
-                    throw new IllegalActionException(this, "Cannot find "
-                            + "refinement with name \"" + name
-                            + "\" in " + containerContainer.getFullName());
+                    throw new IllegalActionException(this,
+                        "Cannot find " + "refinement with name \"" + name
+                        + "\" in " + containerContainer.getFullName());
                 }
+
                 _refinement[index++] = element;
             }
+
             _refinementVersion = workspace().getVersion();
             return _refinement;
         } finally {
@@ -449,6 +478,7 @@ public class Transition extends ComponentRelation {
         if (_guardVersion != workspace().getVersion()) {
             _updateRelationList();
         }
+
         return _relationList;
     }
 
@@ -469,31 +499,36 @@ public class Transition extends ComponentRelation {
         try {
             if (_exeDirectorIsHSDirector && !_relationList.isEmpty()) {
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                    .setConstructionMode(false);
+                .setConstructionMode(false);
             }
-            FSMActor fsmActor = (FSMActor)getContainer();
+
+            FSMActor fsmActor = (FSMActor) getContainer();
+
             if (_guardParseTree == null) {
                 String expr = getGuardExpression();
+
                 // Parse the guard expression.
                 PtParser parser = new PtParser();
                 _guardParseTree = parser.generateParseTree(expr);
             }
-            Token token = _parseTreeEvaluator.evaluateParseTree(
-                    _guardParseTree, fsmActor.getPortScope());
+
+            Token token = _parseTreeEvaluator.evaluateParseTree(_guardParseTree,
+                    fsmActor.getPortScope());
+
             if (token == null) {
                 // FIXME: when could this happen??
                 return false;
             }
+
             //FIXME: deal with continuous and discrete variables
             // using signalType.
-            boolean result = ((BooleanToken)token).booleanValue();
+            boolean result = ((BooleanToken) token).booleanValue();
             return result;
         } catch (UnknownResultException ex) {
             return false;
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(this, ex,
-                    "Error evaluating guard expression: "
-                    + getGuardExpression());
+                "Error evaluating guard expression: " + getGuardExpression());
         }
     }
 
@@ -503,11 +538,11 @@ public class Transition extends ComponentRelation {
      */
     public boolean isPreemptive() {
         try {
-            return ((BooleanToken)preemptive.getToken()).booleanValue();
+            return ((BooleanToken) preemptive.getToken()).booleanValue();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(preemptive.getFullName()
-                    + ": The parameter does not have a valid value, \""
-                    + preemptive.getExpression() + "\".");
+                + ": The parameter does not have a valid value, \""
+                + preemptive.getExpression() + "\".");
         }
     }
 
@@ -517,33 +552,39 @@ public class Transition extends ComponentRelation {
      *   trigger, or the trigger is true but the guard is false.
      */
     public boolean isTriggered() throws IllegalActionException {
-        FSMActor fsmActor = (FSMActor)getContainer();
+        FSMActor fsmActor = (FSMActor) getContainer();
 
         if (_triggerParseTree == null) {
             String expr = triggerExpression.getExpression();
+
             // Parse the guard expression.
             PtParser parser = new PtParser();
             _triggerParseTree = parser.generateParseTree(expr);
         }
-        Token triggerToken = _parseTreeEvaluator.evaluateParseTree(
-                _triggerParseTree, fsmActor.getPortScope());
-        boolean triggerValue = ((BooleanToken)triggerToken).booleanValue();
+
+        Token triggerToken = _parseTreeEvaluator.evaluateParseTree(_triggerParseTree,
+                fsmActor.getPortScope());
+        boolean triggerValue = ((BooleanToken) triggerToken).booleanValue();
 
         if (_guardParseTree == null) {
             String expr = guardExpression.getExpression();
+
             // Parse the guard expression.
             PtParser parser = new PtParser();
             _guardParseTree = parser.generateParseTree(expr);
         }
-        Token guardToken = _parseTreeEvaluator.evaluateParseTree(
-                _guardParseTree, fsmActor.getPortScope());
-        boolean guardValue = ((BooleanToken)guardToken).booleanValue();
 
-        if (triggerValue == true && guardValue == false) {
-            throw new IllegalActionException(this, "The trigger: "
-                    + getTriggerExpression() + " is true but the guard: "
-                    + getGuardExpression() + " is false.");
+        Token guardToken = _parseTreeEvaluator.evaluateParseTree(_guardParseTree,
+                fsmActor.getPortScope());
+        boolean guardValue = ((BooleanToken) guardToken).booleanValue();
+
+        if ((triggerValue == true) && (guardValue == false)) {
+            throw new IllegalActionException(this,
+                "The trigger: " + getTriggerExpression()
+                + " is true but the guard: " + getGuardExpression()
+                + " is false.");
         }
+
         return triggerValue;
     }
 
@@ -562,14 +603,15 @@ public class Transition extends ComponentRelation {
      *   an relation with the name of this transition.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (container != null) {
             if (!(container instanceof FSMActor)) {
                 throw new IllegalActionException(container, this,
-                        "Transition can only be contained by instances of "
-                        + "FSMActor.");
+                    "Transition can only be contained by instances of "
+                    + "FSMActor.");
             }
         }
+
         super.setContainer(container);
     }
 
@@ -583,7 +625,7 @@ public class Transition extends ComponentRelation {
             guardExpression.validate();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Error in setting the "
-                    + "guard expression of a transition.");
+                + "guard expression of a transition.");
         }
     }
 
@@ -597,7 +639,7 @@ public class Transition extends ComponentRelation {
             triggerExpression.validate();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Error in setting the "
-                    + "trigger expression of a transition.");
+                + "trigger expression of a transition.");
         }
     }
 
@@ -608,6 +650,7 @@ public class Transition extends ComponentRelation {
         if (_stateVersion != workspace().getVersion()) {
             _checkConnectedStates();
         }
+
         return _sourceState;
     }
 
@@ -624,54 +667,65 @@ public class Transition extends ComponentRelation {
      */
     protected void _checkPort(Port port) throws IllegalActionException {
         super._checkPort(port);
+
         if (!(port.getContainer() instanceof State)) {
             throw new IllegalActionException(this, port.getContainer(),
-                    "Transition can only connect to instances of State.");
+                "Transition can only connect to instances of State.");
         }
-        State st = (State)port.getContainer();
-        if (port != st.incomingPort && port != st.outgoingPort) {
+
+        State st = (State) port.getContainer();
+
+        if ((port != st.incomingPort) && (port != st.outgoingPort)) {
             throw new IllegalActionException(this, port.getContainer(),
-                    "Transition can only be linked to incoming or outgoing "
-                    + "port of State.");
+                "Transition can only be linked to incoming or outgoing "
+                + "port of State.");
         }
+
         if (numLinks() == 0) {
             return;
         }
+
         if (numLinks() >= 2) {
             throw new IllegalActionException(this,
-                    "Transition can only connect two States.");
+                "Transition can only connect two States.");
         }
+
         Iterator ports = linkedPortList().iterator();
-        Port pt = (Port)ports.next();
-        State s = (State)pt.getContainer();
-        if ((pt == s.incomingPort && port == st.incomingPort) ||
-                (pt == s.outgoingPort && port == st.outgoingPort)) {
+        Port pt = (Port) ports.next();
+        State s = (State) pt.getContainer();
+
+        if (((pt == s.incomingPort) && (port == st.incomingPort))
+                || ((pt == s.outgoingPort) && (port == st.outgoingPort))) {
             throw new IllegalActionException(this,
-                    "Transition can only have one source and one destination.");
+                "Transition can only have one source and one destination.");
         }
+
         return;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Check the states connected by this transition, cache the result.
     // This method is read-synchronized on the workspace.
     private void _checkConnectedStates() {
         try {
             workspace().getReadAccess();
+
             Iterator ports = linkedPortList().iterator();
             _sourceState = null;
             _destinationState = null;
+
             while (ports.hasNext()) {
-                Port p = (Port)ports.next();
-                State s = (State)p.getContainer();
+                Port p = (Port) ports.next();
+                State s = (State) p.getContainer();
+
                 if (p == s.incomingPort) {
                     _destinationState = s;
                 } else {
                     _sourceState = s;
                 }
             }
+
             _stateVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();
@@ -680,7 +734,7 @@ public class Transition extends ComponentRelation {
 
     // Initialize the variables of this transition.
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         guardExpression = new StringAttribute(this, "guardExpression");
         outputActions = new OutputActionsAttribute(this, "outputActions");
         setActions = new CommitActionsAttribute(this, "setActions");
@@ -721,16 +775,21 @@ public class Transition extends ComponentRelation {
             workspace().getReadAccess();
             _choiceActionList.clear();
             _commitActionList.clear();
+
             Iterator actions = attributeList(Action.class).iterator();
+
             while (actions.hasNext()) {
-                Action action = (Action)actions.next();
+                Action action = (Action) actions.next();
+
                 if (action instanceof ChoiceAction) {
                     _choiceActionList.add(action);
                 }
+
                 if (action instanceof CommitAction) {
                     _commitActionList.add(action);
                 }
             }
+
             _actionListsVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();
@@ -742,37 +801,43 @@ public class Transition extends ComponentRelation {
     private void _updateRelationList() {
         try {
             workspace().getReadAccess();
+
             CompositeEntity container = (CompositeEntity) getContainer();
+
             if (container != null) {
-                TypedCompositeActor modalModel =
-                    (TypedCompositeActor)container.getContainer();
-                if (modalModel != null
+                TypedCompositeActor modalModel = (TypedCompositeActor) container
+                    .getContainer();
+
+                if ((modalModel != null)
                         && modalModel.getDirector() instanceof HSDirector) {
                     _exeDirectorIsHSDirector = true;
                 } else {
                     _exeDirectorIsHSDirector = false;
                 }
             }
+
             if (_exeDirectorIsHSDirector) {
                 // associate the relation list with the
                 // ParseTreeEvaluatorForGuardExpression
-
                 // FIXME: how to get the error tolerance
                 // If we limite the HSDirector only works under CT model
                 // or Modal Models, we can use the error tolerance from
                 // the top level CT director.
                 // Add a getErrorTolerance() method to the CTGeneralDirector
                 // class.
-                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
-                        _relationList, 1e-4);
+                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList,
+                        1e-4);
+
                 // Invalid a relation list for the transition.
                 _relationList.destroy();
+
                 // Reconstruct the relation list.
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                    .setConstructionMode(true);
+                .setConstructionMode(true);
             } else {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
+
             _guardVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();
@@ -781,7 +846,6 @@ public class Transition extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Version of cached lists of actions.
     private long _actionListsVersion = -1;
 
@@ -826,5 +890,4 @@ public class Transition extends ComponentRelation {
 
     // The parse tree evaluator for the transition.
     private ParseTreeEvaluator _parseTreeEvaluator;
-
 }

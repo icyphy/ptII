@@ -8,17 +8,19 @@
 */
 package ptolemy.codegen.lib;
 
+import ptolemy.codegen.kernel.ClassicCGCActor;
+import ptolemy.codegen.kernel.ClassicPort;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.codegen.kernel.ClassicCGCActor;
-import ptolemy.codegen.kernel.ClassicPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CGCDirichlet
+
 /**
    This star computes the normalized Dirichlet kernel (also called the aliased
    sinc function):
@@ -53,7 +55,7 @@ public class CGCDirichlet extends ClassicCGCActor {
      *   an actor already in the container.
      */
     public CGCDirichlet(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new ClassicPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -67,6 +69,7 @@ public class CGCDirichlet extends ClassicCGCActor {
         /*
          */
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -90,33 +93,30 @@ public class CGCDirichlet extends ClassicCGCActor {
 
     /**
      */
-    public void  generatePreinitializeCode() {
+    public void generatePreinitializeCode() {
         //# line 51 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCDirichlet.pl"
         addInclude("<math.h>");
     }
 
     /**
      */
-    public void  generateFireCode() {
+    public void generateFireCode() {
         //# line 54 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCDirichlet.pl"
         addCode(dirichlet);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
-
-    public String dirichlet =
-    "                const double DELTA = 1.0e-9;\n"
-    + "                double x = $ref(input);\n"
-    + "                    double sinInDenom = sin(x/2);\n"
-    + "                double length = (double)$val(N);\n"
-    + "                double dirichletValue;\n"
-    + "\n"
-    + "                if ( ( -DELTA < sinInDenom ) && ( sinInDenom < DELTA ) )\n"
-    + "                  // Use L'Hopital's Rule when sin(x/2) is approx. 0\n"
-    + "                  dirichletValue = cos(length * x / 2) / cos(x / 2);\n"
-    + "                else\n"
-    + "                  // Otherwise, compute it using the definition\n"
-    + "                  dirichletValue = sin(length * x / 2) / (length * sinInDenom);\n"
-    + "\n"
-    + "                $ref(output) = dirichletValue;\n";
+    public String dirichlet = "                const double DELTA = 1.0e-9;\n"
+        + "                double x = $ref(input);\n"
+        + "                    double sinInDenom = sin(x/2);\n"
+        + "                double length = (double)$val(N);\n"
+        + "                double dirichletValue;\n" + "\n"
+        + "                if ( ( -DELTA < sinInDenom ) && ( sinInDenom < DELTA ) )\n"
+        + "                  // Use L'Hopital's Rule when sin(x/2) is approx. 0\n"
+        + "                  dirichletValue = cos(length * x / 2) / cos(x / 2);\n"
+        + "                else\n"
+        + "                  // Otherwise, compute it using the definition\n"
+        + "                  dirichletValue = sin(length * x / 2) / (length * sinInDenom);\n"
+        + "\n" + "                $ref(output) = dirichletValue;\n";
 }

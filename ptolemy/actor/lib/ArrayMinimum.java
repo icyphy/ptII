@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import java.util.Iterator;
@@ -45,8 +44,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayMinimum
+
 /**
    Extract the minimum element from an array.  This actor reads an array
    from the <i>input</i> port and sends the smallest of its elements to the
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ArrayMinimum extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,7 +72,7 @@ public class ArrayMinimum extends Transformer {
      *   actor with this name.
      */
     public ArrayMinimum(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create index port
@@ -100,18 +99,22 @@ public class ArrayMinimum extends Transformer {
      */
     public void fire() throws IllegalActionException {
         int indexValue = 0;
+
         if (input.hasToken(0)) {
-            ArrayToken token = (ArrayToken)input.get(0);
-            ScalarToken currentMin = (ScalarToken)token.getElement(indexValue);
+            ArrayToken token = (ArrayToken) input.get(0);
+            ScalarToken currentMin = (ScalarToken) token.getElement(indexValue);
             ScalarToken temp = null;
             int i;
-            for (i = indexValue+1; i < token.length(); i++) {
-                temp = (ScalarToken)token.getElement(i);
+
+            for (i = indexValue + 1; i < token.length(); i++) {
+                temp = (ScalarToken) token.getElement(i);
+
                 if (currentMin.isGreaterThan(temp).booleanValue() == true) {
                     indexValue = i;
                     currentMin = temp;
                 }
             }
+
             output.send(0, currentMin);
             index.broadcast(new IntToken(indexValue));
         }
@@ -126,12 +129,13 @@ public class ArrayMinimum extends Transformer {
      */
     public List typeConstraintList() {
         Type inputType = input.getType();
+
         if (inputType == BaseType.UNKNOWN) {
             input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        } else if ( !(inputType instanceof ArrayType)) {
+        } else if (!(inputType instanceof ArrayType)) {
             throw new IllegalStateException("ArrayElement.typeConstraintList: "
-                    + "The input type, " + inputType.toString() + " is not an "
-                    + "array type.");
+                + "The input type, " + inputType.toString() + " is not an "
+                + "array type.");
         }
 
         // NOTE: superclass will put in type constraints for
@@ -140,22 +144,23 @@ public class ArrayMinimum extends Transformer {
 
         // collect constraints from contained Typeables
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            Typeable port = (Typeable)ports.next();
+            Typeable port = (Typeable) ports.next();
             result.addAll(port.typeConstraintList());
         }
 
         Iterator typeables = attributeList(Typeable.class).iterator();
+
         while (typeables.hasNext()) {
-            Typeable typeable = (Typeable)typeables.next();
+            Typeable typeable = (Typeable) typeables.next();
             result.addAll(typeable.typeConstraintList());
         }
 
         // Add type constraint for the input.
-        ArrayType inputArrayType = (ArrayType)input.getType();
+        ArrayType inputArrayType = (ArrayType) input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        Inequality inequality = new Inequality(elementTerm,
-                output.getTypeTerm());
+        Inequality inequality = new Inequality(elementTerm, output.getTypeTerm());
 
         result.add(inequality);
         return result;

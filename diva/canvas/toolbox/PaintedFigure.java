@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.toolbox;
 
 import java.awt.AlphaComposite;
@@ -39,6 +38,7 @@ import diva.canvas.AbstractFigure;
 import diva.util.java2d.PaintedList;
 import diva.util.java2d.PaintedObject;
 import diva.util.java2d.ShapeUtilities;
+
 
 /**
  * A PaintedFigure is contains an arbitrary set of PaintedObjects
@@ -55,7 +55,6 @@ import diva.util.java2d.ShapeUtilities;
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public class PaintedFigure extends AbstractFigure {
-
     /** The color compositing operator
      */
     private Composite _composite = AlphaComposite.SrcOver; // opaque
@@ -70,14 +69,14 @@ public class PaintedFigure extends AbstractFigure {
 
     /** Create a new blank figure.
      */
-    public PaintedFigure () {
+    public PaintedFigure() {
         super();
         _paintedList = new PaintedList();
     }
 
     /** Create a new figure that paints itself using the given PaintedList.
      */
-    public PaintedFigure (PaintedList objects) {
+    public PaintedFigure(PaintedList objects) {
         super();
         _paintedList = objects;
     }
@@ -85,7 +84,7 @@ public class PaintedFigure extends AbstractFigure {
     /** Add a new painted object to the objects displayed
      * by this figure.
      */
-    public void add (PaintedObject po) {
+    public void add(PaintedObject po) {
         _paintedList.add(po);
         repaint();
     }
@@ -98,9 +97,9 @@ public class PaintedFigure extends AbstractFigure {
 
     /** Get the bounding box of this figure.
      */
-    public Rectangle2D getBounds () {
-        Rectangle2D bounds = (Rectangle2D) ShapeUtilities.transformModify(
-                _paintedList.getBounds(), _transform);
+    public Rectangle2D getBounds() {
+        Rectangle2D bounds = (Rectangle2D) ShapeUtilities.transformModify(_paintedList
+                .getBounds(), _transform);
         return bounds;
     }
 
@@ -108,33 +107,35 @@ public class PaintedFigure extends AbstractFigure {
      *  contained objects are drawn.
      *  @return The origin.
      */
-    public Point2D getOrigin () {
-        return new Point2D.Double(
-                _transform.getTranslateX(), _transform.getTranslateY());
+    public Point2D getOrigin() {
+        return new Point2D.Double(_transform.getTranslateX(),
+            _transform.getTranslateY());
     }
 
     /** Get the shape of this figure. This is the same as the
      * bounding box.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         return getBounds();
     }
 
     /** Get the color composition operator of this figure.
      */
-    public Composite getComposite () {
+    public Composite getComposite() {
         return _composite;
     }
 
     /** Paint the figure.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
         }
+
         if (_composite != null) {
             g.setComposite(_composite);
         }
+
         AffineTransform savedTransform = g.getTransform();
         g.transform(_transform);
         _paintedList.paint(g);
@@ -146,7 +147,7 @@ public class PaintedFigure extends AbstractFigure {
      * changed when the figure is painted. By default, the composite
      * is set to opaque.
      */
-    public void setComposite (Composite c) {
+    public void setComposite(Composite c) {
         _composite = c;
         repaint();
     }
@@ -155,14 +156,9 @@ public class PaintedFigure extends AbstractFigure {
      * used to perform arbitrary translation, scaling, shearing, and
      * rotation operations.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
         _transform.preConcatenate(at);
         repaint();
     }
 }
-
-
-
-
-

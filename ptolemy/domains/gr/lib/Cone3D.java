@@ -46,6 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import com.sun.j3d.utils.geometry.Cone;
 import com.sun.j3d.utils.geometry.Primitive;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Cone3D
 
@@ -62,7 +63,6 @@ import com.sun.j3d.utils.geometry.Primitive;
     @Pt.AcceptedRating Green (liuxj)
 */
 public class Cone3D extends GRShadedShape {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,8 +72,7 @@ public class Cone3D extends GRShadedShape {
      *   actor with this name.
      */
     public Cone3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         radius = new Parameter(this, "radius");
@@ -96,7 +95,7 @@ public class Cone3D extends GRShadedShape {
         circleDivisions.moveToFirst();
         height.moveToFirst();
         radius.moveToFirst();
-}
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -133,23 +132,23 @@ public class Cone3D extends GRShadedShape {
     /** If the dimensions change, then update the cone.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Check that a box has been previously created.
         if (_changesAllowedNow
-                && (attribute == radius
-                || attribute == height)) {
+                && ((attribute == radius) || (attribute == height))) {
             if (_scaleTransform != null) {
-                float radiusValue = (float)(((DoubleToken)
-                        radius.getToken()).doubleValue());
+                float radiusValue = (float) (((DoubleToken) radius.getToken())
+                    .doubleValue());
 
-                float heightValue = (float)(((DoubleToken)
-                        height.getToken()).doubleValue());
+                float heightValue = (float) (((DoubleToken) height.getToken())
+                    .doubleValue());
 
-                _scaleTransform.setScale(new Vector3d(
-                        radiusValue, heightValue, radiusValue));
+                _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
+                        radiusValue));
+
                 // The following seems to be needed so the new scale
                 // takes effect.
-                ((TransformGroup)_containedNode).setTransform(_scaleTransform);
+                ((TransformGroup) _containedNode).setTransform(_scaleTransform);
             }
         } else {
             super.attributeChanged(attribute);
@@ -168,45 +167,43 @@ public class Cone3D extends GRShadedShape {
 
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
+
         if (textureURL != null) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
+
         if (_changesAllowedNow) {
             // Sharing the geometry leads to artifacts when changes
             // are made at run time.
             primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
         }
 
-        int circleDivisionsValue
-                = ((IntToken)circleDivisions.getToken()).intValue();
-        int sideDivisionsValue
-                = ((IntToken)sideDivisions.getToken()).intValue();
+        int circleDivisionsValue = ((IntToken) circleDivisions.getToken())
+            .intValue();
+        int sideDivisionsValue = ((IntToken) sideDivisions.getToken()).intValue();
 
-        float heightValue
-                = (float)((DoubleToken) height.getToken()).doubleValue();
-        float radiusValue
-                = (float)((DoubleToken) radius.getToken()).doubleValue();
+        float heightValue = (float) ((DoubleToken) height.getToken())
+            .doubleValue();
+        float radiusValue = (float) ((DoubleToken) radius.getToken())
+            .doubleValue();
 
         if (_changesAllowedNow) {
-            Cone cone = new Cone(1.0f, 1.0f,
-                    primitiveFlags, circleDivisionsValue,
-                    sideDivisionsValue, _appearance);
+            Cone cone = new Cone(1.0f, 1.0f, primitiveFlags,
+                    circleDivisionsValue, sideDivisionsValue, _appearance);
 
             TransformGroup scaler = new TransformGroup();
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();
-            _scaleTransform.setScale(
-                    new Vector3d(radiusValue, heightValue, radiusValue));
+            _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
+                    radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(cone);
             _containedNode = scaler;
         } else {
-            _containedNode = new Cone(radiusValue, heightValue,
-                    primitiveFlags, circleDivisionsValue,
-                    sideDivisionsValue, _appearance);
+            _containedNode = new Cone(radiusValue, heightValue, primitiveFlags,
+                    circleDivisionsValue, sideDivisionsValue, _appearance);
             _scaleTransform = null;
         }
-
     }
 
     /** Return the cone.

@@ -25,10 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.giotto.kernel;
 
+
 // Ptolemy imports.
+import java.awt.Frame;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
@@ -45,10 +47,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-import java.awt.Frame;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoCodeGenerator
+
 /**
    This attribute is a visible attribute that when configured (by double
    clicking on it or by invoking Configure in the context menu) it generates
@@ -72,7 +74,6 @@ import java.awt.Frame;
    @Pt.AcceptedRating Red (johnr)
 */
 public class GiottoCodeGenerator extends Attribute {
-
     /** Construct a factory with the default workspace and "" as name.
      *  @exception IllegalActionException If the factory is not of an
      *   acceptable attribute for the container.
@@ -80,7 +81,7 @@ public class GiottoCodeGenerator extends Attribute {
      *   an attribute already in the container.
      */
     public GiottoCodeGenerator()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -94,24 +95,23 @@ public class GiottoCodeGenerator extends Attribute {
      *   an attribute already in the container.
      */
     public GiottoCodeGenerator(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Generate Giotto code for the given Giotto model.
      *  @param model The given Giotto model.
      *  @return The Giotto code.
      *  @exception IllegalActionException If code can not be generated.
      */
     public String generateGiottoCode(TypedCompositeActor model)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         return GiottoCodeGeneratorUtilities.generateGiottoCode(model);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -125,21 +125,20 @@ public class GiottoCodeGenerator extends Attribute {
      *  factory with the same name.
      */
     protected void _instantiateEditorFactoryClass()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         new GiottoEditorFactory(this, "_editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
-                + "style=\"fill:blue\"/>"
-                + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\ngenerate code.</text></svg>");
+        throws IllegalActionException, NameDuplicationException {
+        _attachText("_iconDescription",
+            "<svg>\n"
+            + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
+            + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
+            + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+            + "Double click to\ngenerate code.</text></svg>");
 
         _instantiateEditorFactoryClass();
 
@@ -154,7 +153,6 @@ public class GiottoCodeGenerator extends Attribute {
     /** An attribute that can create an Giotto code editor for a Giotto model.
      */
     protected class GiottoEditorFactory extends EditorFactory {
-
         /** Constructs a Giotto EditorFactory object for a Giotto model.
          *
          *  @param container The container, which is a Giotto model.
@@ -165,7 +163,7 @@ public class GiottoCodeGenerator extends Attribute {
          *  an attribute already in the container.
          */
         public GiottoEditorFactory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -176,28 +174,26 @@ public class GiottoCodeGenerator extends Attribute {
          */
         public void createEditor(NamedObj object, Frame parent) {
             try {
-                Configuration configuration
-                    = ((TableauFrame)parent).getConfiguration();
+                Configuration configuration = ((TableauFrame) parent)
+                    .getConfiguration();
 
                 // NamedObj container = (NamedObj)object.getContainer();
-
-                TypedCompositeActor model = (TypedCompositeActor)
-                    GiottoCodeGenerator.this.getContainer();
+                TypedCompositeActor model = (TypedCompositeActor) GiottoCodeGenerator.this
+                    .getContainer();
 
                 // Preinitialize and resolve types.
-                CompositeActor toplevel = (CompositeActor)model.toplevel();
+                CompositeActor toplevel = (CompositeActor) model.toplevel();
                 Manager manager = toplevel.getManager();
+
                 if (manager == null) {
-                    manager = new Manager(
-                            toplevel.workspace(), "manager");
+                    manager = new Manager(toplevel.workspace(), "manager");
                     toplevel.setManager(manager);
                 }
 
                 manager.preinitializeAndResolveTypes();
 
-                TextEffigy codeEffigy = TextEffigy.newTextEffigy(
-                        configuration.getDirectory(),
-                        generateGiottoCode(model));
+                TextEffigy codeEffigy = TextEffigy.newTextEffigy(configuration
+                        .getDirectory(), generateGiottoCode(model));
                 codeEffigy.setModified(true);
                 configuration.createPrimaryTableau(codeEffigy);
 
@@ -206,7 +202,7 @@ public class GiottoCodeGenerator extends Attribute {
                 manager.wrapup();
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
-                        "Cannot generate code. Perhaps outside Vergil?");
+                    "Cannot generate code. Perhaps outside Vergil?");
             }
         }
     }

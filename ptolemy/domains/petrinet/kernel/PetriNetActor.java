@@ -24,10 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.domains.petrinet.kernel;
-
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -39,8 +36,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PetrinetActor
+
 /**
    A Petri net Actor
 
@@ -62,8 +61,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (yukewang)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-public class PetriNetActor extends TypedCompositeActor  {
-
+public class PetriNetActor extends TypedCompositeActor {
     /** Construct a PetriNetActor in the default workspace with an empty string
      *  as its name. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
@@ -97,7 +95,7 @@ public class PetriNetActor extends TypedCompositeActor  {
      *   an entity already in the container.
      */
     public PetriNetActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setClassName("ptolemy.domains.petrinet.kernel.PetriNetActor");
     }
@@ -112,9 +110,8 @@ public class PetriNetActor extends TypedCompositeActor  {
      *   an attribute that cannot be cloned.
 
     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        PetriNetActor newObject = (PetriNetActor)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PetriNetActor newObject = (PetriNetActor) super.clone(workspace);
         return newObject;
     }
 
@@ -126,15 +123,11 @@ public class PetriNetActor extends TypedCompositeActor  {
      *
      */
     public void fire() throws IllegalActionException {
-
-        System.out.println("PetriNetActor.fire, the actors is "
-                + "  " + getFullName()  + " Container is "
-                + getContainer().getFullName());
-
+        System.out.println("PetriNetActor.fire, the actors is " + "  "
+            + getFullName() + " Container is " + getContainer().getFullName());
 
         PetriNetDirector director = (PetriNetDirector) getDirector();
         director.fire();
-
     }
 
     /** This method tests whether the PetriNetActor or its component
@@ -146,24 +139,24 @@ public class PetriNetActor extends TypedCompositeActor  {
      *  @return true or false, a PetriNetActor is ready to fire or not.
      */
     public boolean prefire() throws IllegalActionException {
-
         PetriNetDirector director = (PetriNetDirector) getDirector();
         TypedCompositeActor actor = (TypedCompositeActor) this;
 
         LinkedList componentList = director.findTransitions(actor);
         Iterator components = componentList.iterator();
+
         while (components.hasNext()) {
             Nameable componentActor = (Nameable) components.next();
+
             if (componentActor instanceof TypedCompositeActor) {
-                TypedCompositeActor transitionComponent
-                    = (TypedCompositeActor) componentActor;
+                TypedCompositeActor transitionComponent = (TypedCompositeActor) componentActor;
+
                 if (director.isTransitionReady(transitionComponent)) {
                     return true;
                 }
             }
         }
+
         return false;
     }
-
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ci.kernel;
 
 import java.util.Iterator;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ActiveActorManager
+
 /**
    An active actor manager iterates an active actor until its postfire()
    returns false, or the director is requested to stop. If the active
@@ -62,7 +63,6 @@ import ptolemy.kernel.util.PtolemyThread;
    @Pt.AcceptedRating Red (liuxj)
 */
 public class ActiveActorManager extends PtolemyThread {
-
     /** Construct an actor manager to iterate the actor.
      *  @param actor The actor that is managed.
      *  @param director The director of the actor.
@@ -71,8 +71,9 @@ public class ActiveActorManager extends PtolemyThread {
         super();
         _actor = actor;
         _director = director;
-        CompositeActor container =
-            (CompositeActor)((NamedObj)actor).getContainer();
+
+        CompositeActor container = (CompositeActor) ((NamedObj) actor)
+            .getContainer();
         _manager = container.getManager();
         _init();
         director._addActorManager(this);
@@ -86,6 +87,7 @@ public class ActiveActorManager extends PtolemyThread {
      */
     public void run() {
         boolean iterate = true;
+
         try {
             while (iterate && !_director._isStopRequested()) {
                 while (_director._pauseRequested) {
@@ -93,12 +95,14 @@ public class ActiveActorManager extends PtolemyThread {
                         _director.wait();
                     }
                 }
+
                 // container is checked for null to detect the
                 // deletion of the actor from the topology
-                if (((Entity)_actor).getContainer() != null) {
+                if (((Entity) _actor).getContainer() != null) {
                     if (_actor.prefire()) {
                         _actor.fire();
                         iterate = _actor.postfire();
+
                         if (_period > 0) {
                             sleep(_period);
                         }
@@ -131,43 +135,50 @@ public class ActiveActorManager extends PtolemyThread {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // check actor connection, and set the _isPushSource flag and _period
     // value, which are used in the run() method.
     private void _init() {
         boolean hasInput = false;
         boolean outputIsPush = false;
         Iterator inputPorts = _actor.inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)inputPorts.next();
+            IOPort port = (IOPort) inputPorts.next();
+
             if (port.getWidth() > 0) {
                 hasInput = true;
             }
         }
+
         Iterator outputPorts = _actor.outputPortList().iterator();
+
         while (outputPorts.hasNext()) {
-            IOPort port = (IOPort)outputPorts.next();
+            IOPort port = (IOPort) outputPorts.next();
+
             if (port.getWidth() > 0) {
                 outputIsPush |= CIDirector._isPushPort(port);
             }
         }
+
         _isPushSource = !hasInput && outputIsPush;
-        Parameter p = (Parameter)((Entity)_actor).getAttribute("period");
+
+        Parameter p = (Parameter) ((Entity) _actor).getAttribute("period");
+
         if (p != null) {
             _period = 0;
+
             try {
-                _period = ((IntToken)p.getToken()).intValue();
+                _period = ((IntToken) p.getToken()).intValue();
             } catch (Exception ex) {
                 // ignore, so period will have default value 0
             }
         } else {
-            _period = (int)_director._interval;
+            _period = (int) _director._interval;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The active actor being managed.
     private Actor _actor;
 
@@ -182,5 +193,4 @@ public class ActiveActorManager extends PtolemyThread {
 
     // The period of one iteration of the managed actor.
     private int _period = 0;
-
 }

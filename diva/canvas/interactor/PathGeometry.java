@@ -54,7 +54,6 @@ import diva.canvas.Site;
  * @author      Nick Zamora
  */
 public class PathGeometry implements Geometry {
-
     ///////////////////////////////////////////////////////////////////
     //// private fields
 
@@ -69,7 +68,7 @@ public class PathGeometry implements Geometry {
     /** The vertex sites. Other sites are referenced
      * by these sites
      */
-    private Vertex _vertices[];
+    private Vertex[] _vertices;
 
     /** A flag that says whether the geometry arrays are up-to-date
      */
@@ -108,7 +107,7 @@ public class PathGeometry implements Geometry {
     /** Create a new geometry object on the given figure and with the
      * given initial shape.
      */
-    public PathGeometry (Figure figure, Shape shape) {
+    public PathGeometry(Figure figure, Shape shape) {
         _parentFigure = figure;
         _path = shape;
     }
@@ -116,7 +115,7 @@ public class PathGeometry implements Geometry {
     /** Get the figure to which this geometry object is attached.
      * Returns null if there isn't one.
      */
-    public Figure getFigure () {
+    public Figure getFigure() {
         return _parentFigure;
     }
 
@@ -124,82 +123,93 @@ public class PathGeometry implements Geometry {
      * the sites have been translated since this shape was set, a
      * new shape will be produced and returned.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         if (_path == null) {
-            GeneralPath p = new GeneralPath(
-                    GeneralPath.WIND_NON_ZERO, _vertexCount+2);
+            GeneralPath p = new GeneralPath(GeneralPath.WIND_NON_ZERO,
+                    _vertexCount + 2);
             int c = 0;
+
             for (int i = 0; i < _vertexCount; i++) {
                 switch (_type[i]) {
                 case PathIterator.SEG_CLOSE:
                     p.closePath();
                     break;
+
                 case PathIterator.SEG_MOVETO:
-                    p.moveTo(_coordinate[c], _coordinate[c+1]);
+                    p.moveTo(_coordinate[c], _coordinate[c + 1]);
                     c += 2;
                     break;
+
                 case PathIterator.SEG_LINETO:
-                    p.lineTo(_coordinate[c], _coordinate[c+1]);
+                    p.lineTo(_coordinate[c], _coordinate[c + 1]);
                     c += 2;
                     break;
+
                 case PathIterator.SEG_QUADTO:
-                    p.quadTo(_coordinate[c], _coordinate[c+1],
-                            _coordinate[c+2], _coordinate[c+3]);
+                    p.quadTo(_coordinate[c], _coordinate[c + 1],
+                        _coordinate[c + 2], _coordinate[c + 3]);
                     c += 4;
                     break;
+
                 case PathIterator.SEG_CUBICTO:
-                    p.curveTo(_coordinate[c], _coordinate[c+1],
-                            _coordinate[c+2], _coordinate[c+3],
-                            _coordinate[c+4], _coordinate[c+5]);
+                    p.curveTo(_coordinate[c], _coordinate[c + 1],
+                        _coordinate[c + 2], _coordinate[c + 3],
+                        _coordinate[c + 4], _coordinate[c + 5]);
                     c += 6;
                     break;
                 }
             }
+
             _path = p;
         }
+
         return _path;
     }
 
     /** Get the site on the given vertex.
      */
-    public Site getVertex (int number) {
+    public Site getVertex(int number) {
         if (!_geometryValid) {
             updateGeometry();
         }
+
         if (_vertices[number] == null) {
-            if ( _type[number] == PathIterator.SEG_CLOSE ) {
+            if (_type[number] == PathIterator.SEG_CLOSE) {
                 _vertices[number] = new CloseSegment(number);
             } else {
                 _vertices[number] = new Vertex(number);
             }
         }
+
         return _vertices[number];
     }
 
     /** Get the number of vertices of this shape. This number includes
      * all "Close" segments.
      */
-    public int getVertexCount () {
+    public int getVertexCount() {
         if (!_geometryValid) {
             updateGeometry();
         }
+
         return _vertexCount;
     }
 
     /** Set the shape that defines this geometry object.
      */
-    public void setShape (Shape shape) {
+    public void setShape(Shape shape) {
         _path = shape;
         invalidateGeometry();
     }
 
     /** Translate the geometry object
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         if (!_geometryValid) {
             updateGeometry();
         }
-        for (int i = 0; i < _coordCount; ) {
+
+        for (int i = 0; i < _coordCount;) {
             _coordinate[i++] += x;
             _coordinate[i++] += y;
         }
@@ -207,62 +217,68 @@ public class PathGeometry implements Geometry {
 
     /** Return an iteration over the vertices in this geometry object.
      */
-    public Iterator vertices () {
+    public Iterator vertices() {
         if (!_geometryValid) {
             updateGeometry();
         }
+
         return new Iterator() {
                 // cursor is the current place in the iteration
                 int cursor = 0;
+
                 // control_point is an internal counter to cursor, needed if the segment is quadratic or cubic.
                 int control_point = 0;
+
                 public boolean hasNext() {
                     return cursor < _vertexCount;
                 }
+
                 // Get the next Vertex
                 public Object next() {
                     // The first time through, getVertex() needs to be called
                     if (_vertices[cursor] == null) {
                         getVertex(cursor);
                     }
+
                     // Depending on the type of segment
                     switch (_type[cursor]) {
-                        // If a cubic curve, then make sure to include the two control points
+                    // If a cubic curve, then make sure to include the two control points
                     case PathIterator.SEG_CUBICTO:
+
                         if (control_point == 0) {
                             control_point = 1;
                             return new Vertex(cursor, control_point);
-                        }
-                        else if (control_point == 1) {
+                        } else if (control_point == 1) {
                             control_point = 2;
                             return new Vertex(cursor, control_point);
-                        }
-                        else {
+                        } else {
                             control_point = 0;
                             return _vertices[cursor++];
                         }
-                        // If a quadratic curve, then make sure to include the one control point
+
+                    // If a quadratic curve, then make sure to include the one control point
                     case PathIterator.SEG_QUADTO:
+
                         if (control_point == 0) {
                             control_point = 1;
                             return new Vertex(cursor, control_point);
-                        }
-                        else {
+                        } else {
                             // Otherwise, there is no control points on the segment.
                             control_point = 0;
                             return _vertices[cursor++];
                         }
+
                     default:
                         return _vertices[cursor++];
                     }
                 }
+
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Vertex sites cannot be removed");
+                        "Vertex sites cannot be removed");
                 }
             };
     }
-
 
     ///////////////////////////////////////////////////////////////////
     //// Private methods
@@ -271,7 +287,7 @@ public class PathGeometry implements Geometry {
      * locations will be forced to recompute on next access. This
      * method is always called by setGeometryShape().
      */
-    private void invalidateGeometry () {
+    private void invalidateGeometry() {
         _geometryValid = false;
     }
 
@@ -285,21 +301,22 @@ public class PathGeometry implements Geometry {
         _vertices = null;
 
         // Iterate through the segments, constructing the internal data arrays
-        float segment[] = new float[6];
+        float[] segment = new float[6];
         PathIterator i = _path.getPathIterator(_unitTransform);
 
         while (!(i.isDone())) {
             // Stretch arrays if necessary
             if (_vertexCount == _type.length) {
-                int temp1[] = new int[_type.length * 2];
-                int temp2[] = new int[_type.length * 2];
+                int[] temp1 = new int[_type.length * 2];
+                int[] temp2 = new int[_type.length * 2];
                 System.arraycopy(_type, 0, temp1, 0, _vertexCount);
                 System.arraycopy(_index, 0, temp2, 0, _vertexCount);
                 _type = temp1;
                 _index = temp2;
             }
-            if (_coordCount + 6 > _coordinate.length) {
-                float temp[] = new float[_coordinate.length * 2];
+
+            if ((_coordCount + 6) > _coordinate.length) {
+                float[] temp = new float[_coordinate.length * 2];
                 System.arraycopy(_coordinate, 0, temp, 0, _coordCount);
                 _coordinate = temp;
             }
@@ -335,9 +352,11 @@ public class PathGeometry implements Geometry {
                 _coordinate[_coordCount++] = segment[5];
                 break;
             }
+
             _vertexCount++;
             i.next();
         }
+
         // Allocate data and set flags
         _vertices = new Vertex[_vertexCount];
         _geometryValid = true;
@@ -357,20 +376,22 @@ public class PathGeometry implements Geometry {
      * of the vertex if necessary.
      */
     public class Vertex extends AbstractSite {
-
         // The vertex number
         private int _id;
+
         // Used to keep track of the control points in the quadratic and cubic curves.
         private int _controlPoint;
+
         /** Create a new site with the given ID
          */
-        Vertex (int id) {
+        Vertex(int id) {
             this._id = id;
             _controlPoint = 0;
         }
+
         /** Create a new site with the given ID and control point
          */
-        Vertex (int id, int control_point) {
+        Vertex(int id, int control_point) {
             this._id = id;
             _controlPoint = control_point;
         }
@@ -397,10 +418,11 @@ public class PathGeometry implements Geometry {
         /** Get the x-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
-        public double getX () {
+        public double getX() {
             if (!_geometryValid) {
                 updateGeometry();
             }
+
             // If this vertex is not a control point of a segment, return the startpoint's x coordinate.
             if (_controlPoint == 0) {
                 return _coordinate[_index[_id]];
@@ -408,8 +430,7 @@ public class PathGeometry implements Geometry {
             // If this vertex is a control point of a segment, return that control point's x coordinate.
             else if (_controlPoint == 1) {
                 return _coordinate[_index[_id] + 2];
-            }
-            else {
+            } else {
                 return _coordinate[_index[_id] + 4];
             }
         }
@@ -417,10 +438,11 @@ public class PathGeometry implements Geometry {
         /** Get the y-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
-        public double getY () {
+        public double getY() {
             if (!_geometryValid) {
                 updateGeometry();
             }
+
             // If this vertex is not a control point of a segment, return the startpoint's y coordinate.
             if (_controlPoint == 0) {
                 return _coordinate[_index[_id] + 1];
@@ -428,16 +450,15 @@ public class PathGeometry implements Geometry {
             // If this vertex is a control point of a segment, return that control point's y coordinate.
             else if (_controlPoint == 1) {
                 return _coordinate[_index[_id] + 3];
-            }
-            else {
+            } else {
                 return _coordinate[_index[_id] + 5];
             }
         }
 
         /** Set the point location of the site
          */
-        public void setPoint (Point2D point) {
-            translate(point.getX()-getX(), point.getY() - getY());
+        public void setPoint(Point2D point) {
+            translate(point.getX() - getX(), point.getY() - getY());
         }
 
         /** Translate the site by the indicated distance. If this
@@ -446,10 +467,11 @@ public class PathGeometry implements Geometry {
          * this site is one end of a quadratic curve, move
          * the adjacent control points half of the distance.
          */
-        public void translate (double x, double y) {
+        public void translate(double x, double y) {
             if (!_geometryValid) {
                 updateGeometry();
             }
+
             int index = (_index[_id]);
 
             // Move it.  If this vertex is not a control point, move the startpoint.
@@ -461,19 +483,19 @@ public class PathGeometry implements Geometry {
             else if (_controlPoint == 1) {
                 _coordinate[index + 2] += x;
                 _coordinate[index + 3] += y;
-            }
-            else {
+            } else {
                 _coordinate[index + 4] += x;
                 _coordinate[index + 5] += y;
             }
+
             _path = null;
         }
 
         /** Describe this site
          */
-        public String toString () {
+        public String toString() {
             StringBuffer s = new StringBuffer(getClass().getName());
-            s.append(": vertex " +_id + " of " + _vertexCount);
+            s.append(": vertex " + _id + " of " + _vertexCount);
             s.append(", type ");
 
             switch (_type[_id]) {
@@ -497,10 +519,10 @@ public class PathGeometry implements Geometry {
                 s.append("cubic");
                 break;
             }
+
             return s.toString();
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     //// CloseSegment
@@ -513,48 +535,47 @@ public class PathGeometry implements Geometry {
      * generally this should not be used as it is inefficient.
      */
     public class CloseSegment extends Vertex {
-
         /** Create a new close segment with the given ID
          */
-        CloseSegment (int id) {
+        CloseSegment(int id) {
             super(id);
         }
 
         /** Get the x-coordinate of the site, in the local
          * coordinates of the containing pane
          */
-        public double getX () {
+        public double getX() {
             if (!_geometryValid) {
                 updateGeometry();
             }
+
             return _coordinate[_index[getID()]];
         }
 
         /** Get the y-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
-        public double getY () {
+        public double getY() {
             if (!_geometryValid) {
                 updateGeometry();
             }
-            return _coordinate[_index[getID()]+1];
+
+            return _coordinate[_index[getID()] + 1];
         }
 
         /** Set the point location of the site
          */
-        public void setPoint (Point2D point) {
-            translate(point.getX()-getX(), point.getY() - getY());
+        public void setPoint(Point2D point) {
+            translate(point.getX() - getX(), point.getY() - getY());
         }
 
         /** Translate the site by the indicated distance. This
          * is an illegal operation for close segments and throws an
          * exception.
          */
-        public void translate (double x, double y) {
-            throw new UnsupportedOperationException (
-                    "Cannot translate close segments of a path");
+        public void translate(double x, double y) {
+            throw new UnsupportedOperationException(
+                "Cannot translate close segments of a path");
         }
     }
 }
-
-

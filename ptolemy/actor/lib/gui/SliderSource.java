@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import java.awt.Color;
@@ -53,8 +52,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SliderSource
+
 /**
    The output of this actor is controlled by a slider in the run window.
    The range of the output is specified by two parameters, <i>minimum</i> and
@@ -67,7 +68,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (liuxj)
 */
 public class SliderSource extends Source implements ChangeListener, Placeable {
-
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,7 +77,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *   entity with this name.
      */
     public SliderSource(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the output port.
@@ -122,15 +122,18 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *   slider is invalid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == minimum || attribute == maximum) {
-            int min = ((IntToken)minimum.getToken()).intValue();
-            int max = ((IntToken)maximum.getToken()).intValue();
-            if (min > max && slider != null) {
-                throw new IllegalActionException(this, "The minimum value "
-                        + "of the slider cannot be larger than the maximum "
-                        + "value.");
+        throws IllegalActionException {
+        if ((attribute == minimum) || (attribute == maximum)) {
+            int min = ((IntToken) minimum.getToken()).intValue();
+            int max = ((IntToken) maximum.getToken()).intValue();
+
+            if ((min > max) && (slider != null)) {
+                throw new IllegalActionException(this,
+                    "The minimum value "
+                    + "of the slider cannot be larger than the maximum "
+                    + "value.");
             }
+
             if (slider != null) {
                 slider.setMaximum(max);
                 slider.setMinimum(min);
@@ -147,9 +150,8 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SliderSource newObject = (SliderSource)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SliderSource newObject = (SliderSource) super.clone(workspace);
         newObject.slider = null;
         newObject._frame = null;
         return newObject;
@@ -177,9 +179,11 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         if (slider == null) {
             place(_container);
         }
+
         if (_frame != null) {
             // Do not use show() as it overrides manual placement.
             // FIXME: So does setVisible()... But with neither one used,
@@ -203,15 +207,16 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
     public void place(Container container) {
         int min = -10;
         int max = 10;
+
         try {
-            min = ((IntToken)minimum.getToken()).intValue();
-            max = ((IntToken)maximum.getToken()).intValue();
+            min = ((IntToken) minimum.getToken()).intValue();
+            max = ((IntToken) maximum.getToken()).intValue();
         } catch (IllegalActionException ex) {
             // ignore
         }
 
         _container = container;
-        slider = new JSlider(JSlider.HORIZONTAL, min, max, (min+max)/2);
+        slider = new JSlider(JSlider.HORIZONTAL, min, max, (min + max) / 2);
         slider.addChangeListener(this);
         _panel = new JPanel();
         _panel.add(slider);
@@ -224,6 +229,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             _frame.getContentPane().add(_panel);
         } else {
             _container.add(_panel);
+
             // java.awt.Component.setBackground(color) says that
             // if the color "parameter is null then this component
             // will inherit the  background color of its parent."
@@ -233,7 +239,9 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             _panel.setBorder(new EmptyBorder(10, 10, 10, 10));
             _panel.setBorder(new LineBorder(Color.black));
         }
+
         String titleSpec = title.getExpression();
+
         if (!titleSpec.trim().equals("")) {
             _panel.setBorder(BorderFactory.createTitledBorder(titleSpec));
         }
@@ -269,8 +277,9 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
+
         if (container == null) {
             _remove();
         }
@@ -310,9 +319,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private Container _container;
-
     private int _val;
     private IntToken _outputVal;
 

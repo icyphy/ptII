@@ -25,8 +25,9 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.x10;
+
+import x10.Command;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -36,10 +37,11 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import x10.Command;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// LampController
+
 /**
  * This x10 actor will broadcast lamp module commands to the X10 network
  * based on the inputs that are provided when it fires.
@@ -59,7 +61,6 @@ import x10.Command;
 @Pt.AcceptedRating Yellow (ptolemy)
  */
 public class LampController extends Sender {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -69,7 +70,7 @@ public class LampController extends Sender {
      *   actor with this name.
      */
     public LampController(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         bright = new TypedIOPort(this, "bright", true, false);
@@ -78,14 +79,10 @@ public class LampController extends Sender {
         off = new TypedIOPort(this, "off", true, false);
 
         // Add attributes to indicate that names should be shown.
-        (new SingletonParameter(bright, "_showName"))
-                .setToken(BooleanToken.TRUE);
-        (new SingletonParameter(dim, "_showName"))
-                .setToken(BooleanToken.TRUE);
-        (new SingletonParameter(on, "_showName"))
-                .setToken(BooleanToken.TRUE);
-        (new SingletonParameter(off, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(bright, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(dim, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(on, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(off, "_showName")).setToken(BooleanToken.TRUE);
 
         bright.setTypeEquals(BaseType.INT);
         dim.setTypeEquals(BaseType.INT);
@@ -137,27 +134,31 @@ public class LampController extends Sender {
 
         int brightLevel = -1;
         int dimLevel = -1;
-        if (bright.getWidth() > 0 && bright.hasToken(0)) {
-            brightLevel = ((IntToken)bright.get(0)).intValue();
+
+        if ((bright.getWidth() > 0) && bright.hasToken(0)) {
+            brightLevel = ((IntToken) bright.get(0)).intValue();
         }
-        if (dim.getWidth() > 0 && dim.hasToken(0)) {
-            dimLevel = ((IntToken)dim.get(0)).intValue();
+
+        if ((dim.getWidth() > 0) && dim.hasToken(0)) {
+            dimLevel = ((IntToken) dim.get(0)).intValue();
         }
 
         boolean isOff = _hasTrueInput(off);
         boolean isOn = _hasTrueInput(on);
 
-        if (brightLevel >= 0 && brightLevel <= 100) {
+        if ((brightLevel >= 0) && (brightLevel <= 100)) {
             _transmit(new Command((_destination), x10.Command.BRIGHT,
-                              brightLevel));
+                    brightLevel));
         }
-        if (dimLevel >= 0 && dimLevel <= 100) {
-            _transmit(new Command((_destination), x10.Command.DIM,
-                              dimLevel));
+
+        if ((dimLevel >= 0) && (dimLevel <= 100)) {
+            _transmit(new Command((_destination), x10.Command.DIM, dimLevel));
         }
+
         if (isOn) {
             _transmit(new Command((_destination), x10.Command.ON));
         }
+
         if (isOff) {
             _transmit(new Command((_destination), x10.Command.OFF));
         }

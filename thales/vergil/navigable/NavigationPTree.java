@@ -22,7 +22,6 @@
  Created on 01 sept. 2003
 
 */
-
 package thales.vergil.navigable;
 
 import javax.swing.event.TreeExpansionEvent;
@@ -39,6 +38,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.tree.PTree;
 import thales.vergil.SingleWindowApplication;
 
+
 /**
  <p>Titre : NavigationPTree</p>
  <p>Description : A navigation tree to browse a Ptolemy model</p>
@@ -49,9 +49,7 @@ import thales.vergil.SingleWindowApplication;
  @Pt.ProposedRating Yellow (jerome.blanc)
  @Pt.AcceptedRating Red (cxh)
  */
-
 public class NavigationPTree extends PTree {
-
     /**
      * Most of the time, we use the tree of the ptolemy.vergil.tree package,
      * according to the chosen model, detail level can vary
@@ -62,6 +60,7 @@ public class NavigationPTree extends PTree {
         super(model);
         addTreeSelectionListener(new selectionListener(this));
         addTreeExpansionListener(new expandListener(this));
+
         if (model instanceof NavigationTreeModel) {
             NavigationTreeModel navModel = (NavigationTreeModel) model;
             navModel.register(this);
@@ -84,24 +83,20 @@ public class NavigationPTree extends PTree {
 
         public void valueChanged(TreeSelectionEvent e) {
             NamedObj obj = (((NamedObj) e.getPath().getLastPathComponent()));
-            if (obj != null && _jTree.getSelectionPath() != null) {
-                if (obj instanceof CompositeEntity)
+
+            if ((obj != null) && (_jTree.getSelectionPath() != null)) {
+                if (obj instanceof CompositeEntity) {
                     try {
-                        SingleWindowApplication
-                            ._mainFrame
-                            .getConfiguration()
-                            .openModel(
-                                    obj);
-                        (
-                                (NavigationTreeModel) _jTree
-                                .getModel())
-                            .setSelectedItem(
-                                    _jTree.getSelectionPath());
+                        SingleWindowApplication._mainFrame.getConfiguration()
+                                                          .openModel(obj);
+                        ((NavigationTreeModel) _jTree.getModel())
+                        .setSelectedItem(_jTree.getSelectionPath());
                     } catch (IllegalActionException e1) {
                         e1.printStackTrace();
                     } catch (NameDuplicationException e1) {
                         e1.printStackTrace();
                     }
+                }
             }
         }
     }
@@ -125,10 +120,9 @@ public class NavigationPTree extends PTree {
          */
         public void treeCollapsed(TreeExpansionEvent event) {
             TreePath aPath = event.getPath();
+
             if (aPath != null) {
-                ((NavigationTreeModel) _jTree.getModel()).expandPath(
-                        aPath,
-                        true);
+                ((NavigationTreeModel) _jTree.getModel()).expandPath(aPath, true);
             }
         }
 
@@ -137,12 +131,11 @@ public class NavigationPTree extends PTree {
          */
         public void treeExpanded(TreeExpansionEvent event) {
             TreePath aPath = event.getPath();
+
             if (aPath != null) {
-                ((NavigationTreeModel) _jTree.getModel()).expandPath(
-                        aPath,
-                        false);
+                ((NavigationTreeModel) _jTree.getModel()).expandPath(aPath,
+                    false);
             }
         }
-
     }
 }

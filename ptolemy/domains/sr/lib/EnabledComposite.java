@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import java.util.Iterator;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EnabledComposite
+
 /**
  * This composite actor, designed for use in the SR domain, will have
  * clock ticks only when provided with a true-valued token on the
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */
-
 public class EnabledComposite extends TypedCompositeActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -74,17 +73,20 @@ public class EnabledComposite extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public EnabledComposite(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // NOTE: this might be non-strict because it may
         // contain actors that are non-strict.
         new Attribute(this, "_nonStrictMarker");
 
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
-        StringAttribute controlCardinal
-                = new StringAttribute(enable, "_cardinal");
+
+        StringAttribute controlCardinal = new StringAttribute(enable,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
+
         Location location = new Location(enable, "_location");
         location.setExpression("[140.0, 35.0]");
 
@@ -115,22 +117,26 @@ public class EnabledComposite extends TypedCompositeActor {
         if (!enable.isKnown(0)) {
             // Do nothing, which will leave the outputs unknown.
             if (_debugging) {
-                _debug("enabled port status is not known: " +
-                        "prefire() returns false.");
+                _debug("enabled port status is not known: "
+                    + "prefire() returns false.");
             }
+
             return false;
         } else if (!enable.hasToken(0)
-                || !((BooleanToken)enable.get(0)).booleanValue()) {
+                || !((BooleanToken) enable.get(0)).booleanValue()) {
             // Not enabled. Clear outputs.
             if (_debugging) {
-                _debug("Not enabled: prefire() sets all outputs " +
-                        "to absent and returns false.");
+                _debug("Not enabled: prefire() sets all outputs "
+                    + "to absent and returns false.");
             }
+
             Iterator ports = outputPortList().iterator();
+
             while (ports.hasNext()) {
-                IOPort port = (IOPort)ports.next();
+                IOPort port = (IOPort) ports.next();
                 port.broadcastClear();
             }
+
             return false;
         } else {
             // Actor is enabled. Delegate to the superclass.

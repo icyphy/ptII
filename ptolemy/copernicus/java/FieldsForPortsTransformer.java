@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -70,8 +69,10 @@ import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForPortsTransformer
+
 /**
    A transformer that is responsible for replacing references to ports
    Any calls to the getPort() method are replaced with a field reference to
@@ -83,7 +84,8 @@ import soot.toolkits.scalar.SimpleLocalDefs;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class FieldsForPortsTransformer extends SceneTransformer implements HasPhaseOptions {
+public class FieldsForPortsTransformer extends SceneTransformer
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private FieldsForPortsTransformer(CompositeActor model) {
@@ -114,99 +116,97 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
     /** Return the field created that canonically points to the given port.
      */
     public static SootField getPortField(Port port) {
-        return (SootField)_portToFieldMap.get(port);
+        return (SootField) _portToFieldMap.get(port);
     }
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("FieldsForPortsTransformer.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         _options = options;
         _debug = PhaseOptions.getBoolean(_options, "debug");
         _portToFieldMap = new HashMap();
 
-        _indexExistingFields(ModelTransformer.getModelClass(),
-                _model);
+        _indexExistingFields(ModelTransformer.getModelClass(), _model);
 
-        _replacePortCalls(ModelTransformer.getModelClass(),
-                _model);
-
+        _replacePortCalls(ModelTransformer.getModelClass(), _model);
     }
 
-    private void _replacePortCalls(SootClass actorClass,
-            ComponentEntity actor) {
-
+    private void _replacePortCalls(SootClass actorClass, ComponentEntity actor) {
         // Loop through all the methods in the class.
         for (Iterator methods = actorClass.getMethods().iterator();
-             methods.hasNext();) {
-            SootMethod method = (SootMethod)methods.next();
+                methods.hasNext();) {
+            SootMethod method = (SootMethod) methods.next();
 
-            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
-            CompleteUnitGraph unitGraph =
-                new CompleteUnitGraph(body);
+            CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+
             // This will help us figure out where locals are defined.
-            SimpleLocalDefs localDefs =
-                new SimpleLocalDefs(unitGraph);
+            SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
 
             for (Iterator units = body.getUnits().snapshotIterator();
-                 units.hasNext();) {
-                Stmt unit = (Stmt)units.next();
+                    units.hasNext();) {
+                Stmt unit = (Stmt) units.next();
+
                 if (!unit.containsInvokeExpr()) {
                     continue;
                 }
 
-                ValueBox box = (ValueBox)unit.getInvokeExprBox();
+                ValueBox box = (ValueBox) unit.getInvokeExprBox();
                 Value value = box.getValue();
+
                 if (value instanceof InstanceInvokeExpr) {
-                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                    if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.getPortMethod.getSubSignature())) {
+                    InstanceInvokeExpr r = (InstanceInvokeExpr) value;
+
+                    if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getPortMethod
+                                .getSubSignature())) {
                         if (_debug) {
                             System.out.println("replacing getPort in " + unit);
                         }
+
                         // Inline calls to getPort(arg) when
                         // arg is a string that can be
                         // statically evaluated.
                         Value nameValue = r.getArg(0);
+
                         if (Evaluator.isValueConstantValued(nameValue)) {
-                            StringConstant nameConstant =
-                                (StringConstant)
-                                Evaluator.getConstantValueOf(nameValue);
+                            StringConstant nameConstant = (StringConstant) Evaluator
+                                .getConstantValueOf(nameValue);
                             String name = nameConstant.value;
+
                             // perform type analysis to determine what the
                             // type of the base is.
+                            Local baseLocal = (Local) r.getBase();
+                            Value newFieldRef = _createPortField(baseLocal,
+                                    name, unit, localDefs);
 
-                            Local baseLocal = (Local)r.getBase();
-                            Value newFieldRef = _createPortField(
-                                    baseLocal, name, unit, localDefs);
                             if (unit instanceof AssignStmt) {
                                 box.setValue(newFieldRef);
                             } else {
                                 body.getUnits().remove(unit);
                             }
                         } else {
-                            String string = "Port cannot be " +
-                                "statically determined";
+                            String string = "Port cannot be "
+                                + "statically determined";
                             throw new RuntimeException(string);
                         }
                     }
                 }
             }
         }
-        if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
-            CompositeEntity model = (CompositeEntity)actor;
-            // Loop over all the entity classes and replace getPort calls.
-            for (Iterator i = model.deepEntityList().iterator();
-                 i.hasNext();) {
-                ComponentEntity entity = (ComponentEntity)i.next();
-                String className =
-                    ModelTransformer.getInstanceClassName(entity, _options);
-                SootClass entityClass =
-                    Scene.v().loadClassAndSupport(className);
-                _replacePortCalls(entityClass, entity);
 
+        if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
+            CompositeEntity model = (CompositeEntity) actor;
+
+            // Loop over all the entity classes and replace getPort calls.
+            for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity) i.next();
+                String className = ModelTransformer.getInstanceClassName(entity,
+                        _options);
+                SootClass entityClass = Scene.v().loadClassAndSupport(className);
+                _replacePortCalls(entityClass, entity);
             }
         }
     }
@@ -214,41 +214,37 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
     // Given a local variable that refers to an entity, and the name
     // of an port in that object, return a new field ref that
     // refers to that port.  If no reference is found, then return null.
-    private Value _createPortField(Local baseLocal,
-            String name, Unit unit, LocalDefs localDefs) {
-
+    private Value _createPortField(Local baseLocal, String name, Unit unit,
+        LocalDefs localDefs) {
         // FIXME: This is not enough.
-        RefType type = (RefType)baseLocal.getType();
-        Entity entity = (Entity)
-            ModelTransformer.getObjectForClass(type.getSootClass());
+        RefType type = (RefType) baseLocal.getType();
+        Entity entity = (Entity) ModelTransformer.getObjectForClass(type
+                .getSootClass());
+
         if (entity != null) {
             // Then we are dealing with a getPort call on one of the
             // classes we are generating.
             Port port = entity.getPort(name);
-            SootField portField = (SootField)
-                _portToFieldMap.get(port);
+            SootField portField = (SootField) _portToFieldMap.get(port);
+
             if (portField != null) {
-                return Jimple.v().newInstanceFieldRef(
-                        baseLocal, portField);
+                return Jimple.v().newInstanceFieldRef(baseLocal, portField);
             } else {
                 return NullConstant.v();
             }
         } else {
             // Walk back and get the definition of the field.
-            DefinitionStmt definition =
-                _getFieldDef(baseLocal, unit, localDefs);
-            InstanceFieldRef fieldRef = (InstanceFieldRef)
-                definition.getRightOp();
+            DefinitionStmt definition = _getFieldDef(baseLocal, unit, localDefs);
+            InstanceFieldRef fieldRef = (InstanceFieldRef) definition
+                .getRightOp();
             SootField baseField = fieldRef.getField();
             System.out.println("baseField = " + baseField);
-            SootField portField =
-                baseField.getDeclaringClass().getFieldByName(
-                        baseField.getName() + "_" + name);
-            return Jimple.v().newInstanceFieldRef(
-                    baseLocal, portField);
+
+            SootField portField = baseField.getDeclaringClass().getFieldByName(baseField
+                    .getName() + "_" + name);
+            return Jimple.v().newInstanceFieldRef(baseLocal, portField);
         }
     }
-
 
     /** Attempt to determine the constant value of the given local,
      *  which is assumed to have a variable type.  Walk backwards
@@ -257,15 +253,17 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
      *  variable. If the value can be determined, then return it,
      *  otherwise return null.
      */
-    private static DefinitionStmt _getFieldDef(Local local,
-            Unit location, LocalDefs localDefs) {
+    private static DefinitionStmt _getFieldDef(Local local, Unit location,
+        LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
+
         if (definitionList.size() == 1) {
-            DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
-            Value value = (Value)stmt.getRightOp();
+            DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
+            Value value = (Value) stmt.getRightOp();
+
             if (value instanceof CastExpr) {
-                return _getFieldDef((Local)((CastExpr)value).getOp(),
-                        stmt, localDefs);
+                return _getFieldDef((Local) ((CastExpr) value).getOp(), stmt,
+                    localDefs);
             } else if (value instanceof FieldRef) {
                 return stmt;
             } else {
@@ -273,11 +271,12 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
             }
         } else {
             System.out.println("more than one definition of = " + local);
-            for (Iterator i = definitionList.iterator();
-                 i.hasNext();) {
+
+            for (Iterator i = definitionList.iterator(); i.hasNext();) {
                 System.out.println(i.next().toString());
             }
         }
+
         return null;
     }
 
@@ -285,15 +284,14 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
     // ports of the given object that are expected
     // to exist in the given class
     private void _getPortFields(SootClass theClass, Entity container,
-            Entity object) {
+        Entity object) {
+        for (Iterator ports = object.portList().iterator(); ports.hasNext();) {
+            Port port = (Port) ports.next();
 
-        for (Iterator ports = object.portList().iterator();
-             ports.hasNext();) {
-            Port port = (Port)ports.next();
-
-            String fieldName =
-                ModelTransformer.getFieldNameForPort(port, container);
+            String fieldName = ModelTransformer.getFieldNameForPort(port,
+                    container);
             SootField field;
+
             if (!theClass.declaresFieldByName(fieldName)) {
                 //                 throw new RuntimeException("Class " + theClass
                 //                         + " does not declare field "
@@ -305,30 +303,31 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
             field = theClass.getFieldByName(fieldName);
 
             Type type = field.getType();
+
             if (!(type instanceof RefType)) {
                 System.out.println("Class " + theClass
-                        + " declares field for port "
-                        + port.getFullName() + " but it has type "
-                        + type);
+                    + " declares field for port " + port.getFullName()
+                    + " but it has type " + type);
                 continue;
             } else {
-                SootClass fieldClass = ((RefType)type).getSootClass();
+                SootClass fieldClass = ((RefType) type).getSootClass();
+
                 if (!SootUtilities.derivesFrom(fieldClass,
                             PtolemyUtilities.componentPortClass)) {
                     System.out.println("Class " + theClass
-                            + " declares field for port "
-                            + port.getFullName() + " but it has type "
-                            + fieldClass.getName());
+                        + " declares field for port " + port.getFullName()
+                        + " but it has type " + fieldClass.getName());
                     continue;
                 }
             }
 
             // Make the field final and private.
-            field.setModifiers((field.getModifiers() & Modifier.STATIC) |
-                    Modifier.FINAL | Modifier.PUBLIC);// | Modifier.PRIVATE);
+            field.setModifiers((field.getModifiers() & Modifier.STATIC)
+                | Modifier.FINAL | Modifier.PUBLIC); // | Modifier.PRIVATE);
 
             field.addTag(new ValueTag(port));
             _portToFieldMap.put(port, field);
+
             // FIXME: call recursively
             // _getAttributeFields(theClass, container,
             //        attribute, attributeToFieldMap);
@@ -336,24 +335,22 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
     }
 
     private void _indexExistingFields(SootClass actorClass,
-            ComponentEntity actor) {
+        ComponentEntity actor) {
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
-        _getPortFields(actorClass, actor,
-                actor);
+        _getPortFields(actorClass, actor, actor);
 
         // Loop over all the actor instance classes and get
         // fields for ports.
         if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             // Then recurse
-            CompositeEntity model = (CompositeEntity)actor;
-            for (Iterator i = model.deepEntityList().iterator();
-                 i.hasNext();) {
-                ComponentEntity entity = (ComponentEntity)i.next();
-                String className =
-                    ModelTransformer.getInstanceClassName(entity, _options);
-                SootClass entityClass =
-                    Scene.v().loadClassAndSupport(className);
+            CompositeEntity model = (CompositeEntity) actor;
+
+            for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity) i.next();
+                String className = ModelTransformer.getInstanceClassName(entity,
+                        _options);
+                SootClass entityClass = Scene.v().loadClassAndSupport(className);
                 _indexExistingFields(entityClass, entity);
             }
         }
@@ -364,17 +361,3 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
     private boolean _debug;
     private static Map _portToFieldMap;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import ptolemy.graph.Graph;
@@ -31,8 +30,10 @@ import ptolemy.graph.analysis.analyzer.ZeroLengthCycleAnalyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallZeroLengthCycleStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ZeroLengthCycleAnalysis
+
 /**
    Analysis to check if a cyclic directed graph has a zero-length cycle.
    A zero-length cycle is a cycle in which the sum of all the values associated
@@ -44,19 +45,15 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class ZeroLengthCycleAnalysis extends Analysis {
-
     /** Construct an instance of this class using a default analyzer.
      *  The default analyzer runs in O(N^3) in which N is the number of nodes.
      *
      *  @param graph The given graph.
      *  @param edgeLengths The lengths associated with the edges of the graph.
      */
-    public ZeroLengthCycleAnalysis(Graph graph,
-            ToDoubleMapping edgeLengths) {
-        super(new FloydWarshallZeroLengthCycleStrategy
-                (graph, edgeLengths));
+    public ZeroLengthCycleAnalysis(Graph graph, ToDoubleMapping edgeLengths) {
+        super(new FloydWarshallZeroLengthCycleStrategy(graph, edgeLengths));
     }
 
     /** Construct an instance of this class using a given analyzer.
@@ -75,8 +72,7 @@ public class ZeroLengthCycleAnalysis extends Analysis {
      *  @return True if the graph has a zero length cycle.
      */
     public boolean hasZeroLengthCycle() {
-        return ((ZeroLengthCycleAnalyzer)analyzer())
-            .hasZeroLengthCycle();
+        return ((ZeroLengthCycleAnalyzer) analyzer()).hasZeroLengthCycle();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -85,7 +81,7 @@ public class ZeroLengthCycleAnalysis extends Analysis {
      */
     public String toString() {
         return "Zero-length cycle analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

@@ -30,6 +30,7 @@ import java.net.URL;
 
 import com.microstar.xml.XmlParser;
 
+
 /**
  * An XMLDocument is an in-memory representation of an XML document.
  * It contains an XML element as its root, and other information
@@ -45,7 +46,6 @@ import com.microstar.xml.XmlParser;
  * @version $Id$
  */
 public class XmlDocument {
-
     // This document's DTD, as a complete string
     String _dtd = null;
 
@@ -153,20 +153,20 @@ public class XmlDocument {
 
     /** Set the type of this document.
      */
-    public void setDocType (String dt) {
+    public void setDocType(String dt) {
         _docType = dt;
     }
 
     /** Set the DTD of this document by its public ID.
      */
-    public void setDTDPublicID (String id) {
+    public void setDTDPublicID(String id) {
         // FIXME
         _dtdPublicID = id;
     }
 
     /** Set the DTD of this document by its public ID.
      */
-    public void setDTDSystemID (String id) {
+    public void setDTDSystemID(String id) {
         // FIXME
         _dtdSystemID = id;
     }
@@ -174,7 +174,7 @@ public class XmlDocument {
     /** Set the root element of this document. This method replaces
      * any existing XML content in the document.
      */
-    public void setRoot (XmlElement root) {
+    public void setRoot(XmlElement root) {
         _root = root;
     }
 
@@ -197,5 +197,3 @@ public class XmlDocument {
         _url = url;
     }
 }
-
-

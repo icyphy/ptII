@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// NoSuchItemException
+
 /**
    Thrown on access (by name) to an item that doesn't exist.
    E.g., attempt to remove a port by name and no such port exists.
@@ -65,8 +66,7 @@ public class NoSuchItemException extends KernelException {
      *  is not known or nonexistent.
      *  @param detail The message.
      */
-    public NoSuchItemException(Nameable object,
-            Throwable cause, String detail) {
+    public NoSuchItemException(Nameable object, Throwable cause, String detail) {
         super(object, null, cause, detail);
     }
 }

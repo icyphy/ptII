@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.kernel;
 
 import java.awt.Color;
 
 import ptolemy.data.DoubleMatrixToken;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Utilities2D
+
 /**
    Utilities that are useful for building 2D GR actors.
 
@@ -45,8 +46,7 @@ import ptolemy.data.DoubleMatrixToken;
 */
 public class GRUtilities2D {
     public static Color makeColor(DoubleMatrixToken colorVector) {
-        Color color = new Color(
-                (float) colorVector.getElementAt(0, 0),
+        Color color = new Color((float) colorVector.getElementAt(0, 0),
                 (float) colorVector.getElementAt(0, 1),
                 (float) colorVector.getElementAt(0, 2));
         return color;

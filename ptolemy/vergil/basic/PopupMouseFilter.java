@@ -25,25 +25,17 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
-import ptolemy.vergil.toolbox.ConfigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
-import ptolemy.vergil.kernel.VergilUtilities;
-
-import diva.canvas.event.ExtendedMouseFilter;
-import diva.canvas.interactor.ActionInteractor;
-import diva.canvas.interactor.SelectionModel;
-import diva.graph.GraphController;
-import diva.graph.NodeInteractor;
-import diva.gui.toolbox.MenuCreator;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+
+import ptolemy.vergil.kernel.VergilUtilities;
+import diva.canvas.event.ExtendedMouseFilter;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PopupMouseFilter
+
 /**
    This class is a mouseFilter that recognizes popup events.
    Unfortunately, on because of the Diva event dispatch architecture,
@@ -60,7 +52,6 @@ import java.awt.event.MouseEvent;
    @Pt.AcceptedRating Red (johnr)
 */
 public class PopupMouseFilter extends ExtendedMouseFilter {
-
     /** Create an attribute controller associated with the specified graph
      *  controller.
      */

@@ -25,15 +25,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.image;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// Transform
+
 /**
 
 <p>Some of the code in this file is based on code from
@@ -47,7 +49,6 @@ import java.awt.image.BufferedImage;
 @Pt.AcceptedRating Red (cxh)
 */
 public class Transform {
-
     /** Rotate an Image.
      *  @param originalImage The java.awt.Image to rotate.
      *  @param rotate The number of degrees to rotate the originalImage
@@ -58,29 +59,29 @@ public class Transform {
         int height = originalImage.getHeight(null);
         int newWidth = width;
         int newHeight = height;
-        if (rotate == 90 || rotate == 270) {
+
+        if ((rotate == 90) || (rotate == 270)) {
             newWidth = height;
             newHeight = width;
         }
 
         // Create an image buffer in which to paint on.
-        BufferedImage outputImage =
-            new BufferedImage(newWidth, newHeight,
-                    BufferedImage.TYPE_INT_RGB);
+        BufferedImage outputImage = new BufferedImage(newWidth, newHeight,
+                BufferedImage.TYPE_INT_RGB);
 
         // Set the rotation
         AffineTransform rotateAffineTransform = new AffineTransform();
 
         // Convert rotate to radians.
-        rotateAffineTransform.rotate(rotate        * (Math.PI/180.0F),
-                width/2, height/2);
+        rotateAffineTransform.rotate(rotate * (Math.PI / 180.0F), width / 2,
+            height / 2);
 
-        rotateAffineTransform.translate(width/2-height/2,
-                width/2-height/2);
+        rotateAffineTransform.translate((width / 2) - (height / 2),
+            (width / 2) - (height / 2));
 
         // Paint image.
         Graphics2D graphics2d = outputImage.createGraphics();
-        graphics2d.drawImage((Image)originalImage, rotateAffineTransform, null);
+        graphics2d.drawImage((Image) originalImage, rotateAffineTransform, null);
         graphics2d.dispose();
 
         return outputImage;
@@ -93,27 +94,23 @@ public class Transform {
      *  @param maximumDimension The maximum x or y dimension
      *  @return The scaled Image.
      */
-    public static Image scale(Image originalImage,
-            int maximumDimension) {
+    public static Image scale(Image originalImage, int maximumDimension) {
         // Determine the scale.
-        double scale =
-            (double)maximumDimension
-            / (double)originalImage.getHeight(null);
+        double scale = (double) maximumDimension / (double) originalImage
+            .getHeight(null);
+
         if (originalImage.getWidth(null) > originalImage.getHeight(null)) {
-            scale =
-                (double)maximumDimension
-                / (double)originalImage.getWidth(null);
+            scale = (double) maximumDimension / (double) originalImage.getWidth(null);
         }
 
         // Determine size of new image.
         // One of them should equal maximumDimension.
-        int scaledWidth = (int)(scale * originalImage.getWidth(null));
-        int scaledHeight = (int)(scale * originalImage.getHeight(null));
+        int scaledWidth = (int) (scale * originalImage.getWidth(null));
+        int scaledHeight = (int) (scale * originalImage.getHeight(null));
 
         // Create an image buffer in which to paint on.
-        BufferedImage outputImage =
-            new BufferedImage(scaledWidth, scaledHeight,
-                    BufferedImage.TYPE_INT_RGB);
+        BufferedImage outputImage = new BufferedImage(scaledWidth,
+                scaledHeight, BufferedImage.TYPE_INT_RGB);
 
         // Set the scale.
         AffineTransform scaleAffineTransform = new AffineTransform();
@@ -122,8 +119,8 @@ public class Transform {
         // don't bother scaling.
         //if (scale < 1.0d) {
         scaleAffineTransform.scale(scale, scale);
-        //}
 
+        //}
         // Paint image.
         Graphics2D graphics2d = outputImage.createGraphics();
         graphics2d.drawImage(originalImage, scaleAffineTransform, null);

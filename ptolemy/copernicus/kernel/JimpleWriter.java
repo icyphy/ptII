@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.kernel;
 
 import java.io.File;
@@ -44,6 +42,7 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.util.EscapedWriter;
 
+
 /**
    A transformer that writes Jimple text.
    @author Stephen Neuendorffer, Christopher Hylands
@@ -54,7 +53,9 @@ import soot.util.EscapedWriter;
 */
 public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
     private static JimpleWriter instance = new JimpleWriter();
-    private JimpleWriter() {}
+
+    private JimpleWriter() {
+    }
 
     public static JimpleWriter v() {
         return instance;
@@ -83,51 +84,54 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
      *  <code>outdir</code> option to specify where the .jimple
      *  file should be written
      */
-    protected void internalTransform(String phaseName, Map options)
-    {
-        System.out.println("JimpleWriter.internalTransform("
-                + phaseName + ", " + options + ")");
+    protected void internalTransform(String phaseName, Map options) {
+        System.out.println("JimpleWriter.internalTransform(" + phaseName + ", "
+            + options + ")");
 
         String outDir = PhaseOptions.getString(options, "outDir");
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-             classes.hasNext();) {
-            SootClass theClass = (SootClass)classes.next();
+                classes.hasNext();) {
+            SootClass theClass = (SootClass) classes.next();
 
             String fileName;
 
             if (!outDir.equals("")) {
                 File outDirFile = new File(outDir);
+
                 if (!outDirFile.isDirectory()) {
                     outDirFile.mkdirs();
                 }
+
                 fileName = outDir + System.getProperty("file.separator");
             } else {
                 fileName = "";
             }
 
-            fileName += theClass.getName() + ".jimple";
+            fileName += (theClass.getName() + ".jimple");
 
             FileOutputStream streamOut = null;
             PrintWriter writerOut = null;
+
             try {
                 streamOut = new FileOutputStream(fileName);
                 writerOut = new PrintWriter(new EscapedWriter(
-                                                    new OutputStreamWriter(streamOut)));
+                            new OutputStreamWriter(streamOut)));
+
                 Printer printer = Printer.v();
                 printer.setOption(Integer.MAX_VALUE);
                 printer.printTo(theClass, new java.io.PrintWriter(writerOut));
+
                 //                theClass.printJimpleStyleTo(writerOut, 0);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("JimpleWriter.internalTransform(): "
-                        + "Failed to output jimple for file '"
-                        + fileName + "':" + e);
-            }
-            finally {
+                    + "Failed to output jimple for file '" + fileName + "':"
+                    + e);
+            } finally {
                 if (writerOut != null) {
                     writerOut.close();
                 }
+
                 try {
                     if (streamOut != null) {
                         streamOut.close();
@@ -138,4 +142,3 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
         }
     }
 }
-

@@ -26,13 +26,14 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
 
 import ptolemy.actor.Director;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimedEvent
+
 /**
    This class aggregates a double and an Object, and provides a CQComparator
    as an inner class.
@@ -44,9 +45,7 @@ import ptolemy.actor.Director;
    @Pt.AcceptedRating Red (liuj)
    @see CQComparator
 */
-
 public class TimedEvent {
-
     /** Construct an event with the specified time stamp and contents.
      *  @param time The time stamp.
      *  @param obj The contents
@@ -65,12 +64,11 @@ public class TimedEvent {
     /** The event object. */
     public Object contents;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// TimeComparator
+
     /**
      * This class implements the CQComparator interface. It compares instances
      * of TimedEvent. Therefore, all arguments passed to its methods have
@@ -78,7 +76,6 @@ public class TimedEvent {
      * If this is violated, ClassCastException will be thrown.
      */
     public static class TimeComparator implements CQComparator {
-
         /** Construct a TimeComparator object for the given director.
          *  @param director The director this comparator is associated with.
          */
@@ -105,13 +102,12 @@ public class TimedEvent {
          *   of TimedEvent.
          */
         public final int compare(Object object1, Object object2) {
-
             TimedEvent a = (TimedEvent) object1;
             TimedEvent b = (TimedEvent) object2;
 
-            if ( a.timeStamp.compareTo(b.timeStamp) < 0)  {
+            if (a.timeStamp.compareTo(b.timeStamp) < 0) {
                 return -1;
-            } else if ( a.timeStamp.compareTo(b.timeStamp) > 0 ) {
+            } else if (a.timeStamp.compareTo(b.timeStamp) > 0) {
                 return 1;
             } else {
                 return 0;
@@ -133,9 +129,9 @@ public class TimedEvent {
          *   TimedEvent.
          */
         public long getVirtualBinNumber(Object entry) {
-            return (long)(((TimedEvent)entry).timeStamp.subtract(
-                _zeroReference.timeStamp).getDoubleValue()
-                / _binWidth.timeStamp.getDoubleValue());
+            return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
+                                                         .getDoubleValue() / _binWidth.timeStamp
+            .getDoubleValue());
         }
 
         /** Given an array of TimedEvent objects, find the appropriate bin
@@ -154,42 +150,48 @@ public class TimedEvent {
          *   an instance of TimedEvent.
          */
         public void setBinWidth(Object[] entryArray) {
-            if ( entryArray == null ) {
+            if (entryArray == null) {
                 // Reset to default.
-                _binWidth = new TimedEvent(
-                    new Time(_director, 1.0), null);
+                _binWidth = new TimedEvent(new Time(_director, 1.0), null);
                 return;
             }
-            if ( entryArray.length == 1) {
-                _binWidth = (TimedEvent)entryArray[0];
+
+            if (entryArray.length == 1) {
+                _binWidth = (TimedEvent) entryArray[0];
                 return;
             }
 
             double[] diff = new double[entryArray.length - 1];
 
             double average = 0;
+
             for (int i = 1; i < entryArray.length; ++i) {
-                diff[i-1] = ((TimedEvent)entryArray[i]).timeStamp.subtract(
-                ((TimedEvent)entryArray[i-1]).timeStamp).getDoubleValue();
-                average = average + diff[i-1];
+                diff[i - 1] = ((TimedEvent) entryArray[i]).timeStamp.subtract(((TimedEvent) entryArray[i
+                        - 1]).timeStamp).getDoubleValue();
+                average = average + diff[i - 1];
             }
+
             average = average / diff.length;
+
             double effAverage = 0;
             int nEffSamples = 0;
+
             for (int i = 1; i < entryArray.length; ++i) {
-                if ( diff[i-1] < 2*average ) {
+                if (diff[i - 1] < (2 * average)) {
                     nEffSamples++;
-                    effAverage = effAverage + diff[i-1];
+                    effAverage = effAverage + diff[i - 1];
                 }
             }
+
             // To avoid returning NaN or 0.0 for the width, if this is
             // the result, leave the bin width unchanged.
-            if (effAverage == 0.0 || nEffSamples == 0) {
+            if ((effAverage == 0.0) || (nEffSamples == 0)) {
                 return;
             }
+
             effAverage = effAverage / nEffSamples;
-            _binWidth = new TimedEvent(
-                new Time(_director, 3.0 * effAverage), null);
+            _binWidth = new TimedEvent(new Time(_director, 3.0 * effAverage),
+                    null);
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -203,7 +205,6 @@ public class TimedEvent {
 
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
-
         // The director that contains this comparator.
         private Director _director;
 

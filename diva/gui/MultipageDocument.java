@@ -33,6 +33,7 @@ import java.net.URL;
 import diva.util.ModelParser;
 import diva.util.ModelWriter;
 
+
 /**
  * A document that contains a linear sequence of Pages.
  * This class is useful for documents which their data into logical
@@ -86,8 +87,8 @@ public abstract class MultipageDocument extends AbstractDocument {
 
     /** Construct a multipage document that is owned by the given application
      */
-    public MultipageDocument (String title, Application a,
-            ModelParser parser, ModelWriter writer) {
+    public MultipageDocument(String title, Application a, ModelParser parser,
+        ModelWriter writer) {
         super(a);
         _title = title;
         _modelWriter = writer;
@@ -99,8 +100,9 @@ public abstract class MultipageDocument extends AbstractDocument {
     /** Close the document. This method doesn't do anything, as
      * graph data doesn't change.
      */
-    public void close () throws Exception {
+    public void close() throws Exception {
         System.out.println("Close " + _title);
+
         // Do nothing
     }
 
@@ -116,17 +118,16 @@ public abstract class MultipageDocument extends AbstractDocument {
         return _model;
     }
 
-
     /** Open the document from its current file.  If successful, add a
      * new Page to the document containing the model parsed from the
      * current file.
      *
      * @exception Exception  If there is no file, or if the I/O operation failed.
      */
-    public void open () throws Exception {
+    public void open() throws Exception {
         if (getFile() == null) {
-            throw new IllegalStateException(
-                    "MultipageDocument " + getTitle() + " has no current file");
+            throw new IllegalStateException("MultipageDocument " + getTitle()
+                + " has no current file");
         }
 
         String filename = getFile().getName();
@@ -138,11 +139,12 @@ public abstract class MultipageDocument extends AbstractDocument {
      *
      * @exception Exception  If there is no file, or if the I/O operation failed.
      */
-    public void save () throws Exception {
+    public void save() throws Exception {
         if (getFile() == null) {
-            throw new IllegalStateException(
-                    "MultipageDocument " + getTitle() + " has no current file");
+            throw new IllegalStateException("MultipageDocument " + getTitle()
+                + " has no current file");
         }
+
         saveAs(getFile());
     }
 
@@ -151,24 +153,22 @@ public abstract class MultipageDocument extends AbstractDocument {
      *
      * @exception Exception  If the I/O operation failed.
      */
-    public void saveAs (File file) throws Exception {
+    public void saveAs(File file) throws Exception {
         String filename = file.getName();
         _title = filename;
+
         FileWriter out = new FileWriter(file);
         _writer.write(getMultipageModel(), out);
         out.flush();
         out.close();
     }
 
-
     /** Throw an exception, as save to URLs is not supported.
      *
      * @exception Exception Always
      */
-    public void saveAs (URL url) {
-        throw new UnsupportedOperationException(
-                "SketchDocument " + getTitle() + ": save to URL not supported");
+    public void saveAs(URL url) {
+        throw new UnsupportedOperationException("SketchDocument " + getTitle()
+            + ": save to URL not supported");
     }
 }
-
-

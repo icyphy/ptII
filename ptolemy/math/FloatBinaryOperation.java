@@ -30,7 +30,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 
@@ -44,7 +43,6 @@ package ptolemy.math;
     @Pt.AcceptedRating Red (ctsay)
 */
 public interface FloatBinaryOperation {
-
     /** Operate on the operands, returning a value of the same
      *  type. Note that the operation need not be commutative.
      */

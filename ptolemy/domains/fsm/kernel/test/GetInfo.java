@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel.test;
 
 import java.net.URL;
@@ -33,8 +32,10 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GetInfo
+
 /**
    Display the high-level information of interface automata to stdout.
    This class reads the MoML description of a number of interface automata,
@@ -52,16 +53,15 @@ import ptolemy.moml.MoMLParser;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-
 public class GetInfo {
-
     /** Write the high-level description of the interface automaton to stdout.
      *  @param momls An array of MoML file names for InterfaceAutomaton.
      *  @exception Exception If the MoML file is not valid.
      */
     public GetInfo(String[] momls) throws Exception {
         InterfaceAutomaton[] automata = new InterfaceAutomaton[momls.length];
-        for (int i=0; i<momls.length; i++) {
+
+        for (int i = 0; i < momls.length; i++) {
             URL url = MoMLApplication.specToURL(momls[i]);
 
             // following the comments in MoMLApplication, use the same URL for
@@ -70,7 +70,7 @@ public class GetInfo {
             // the same automaton will be returned the second time parse() is
             // called.
             MoMLParser parser = new MoMLParser();
-            automata[i] = (InterfaceAutomaton)parser.parse(url, url);
+            automata[i] = (InterfaceAutomaton) parser.parse(url, url);
             automata[i].addPorts();
 
             System.out.println("\n" + automata[i].getInfo() + "\n");
@@ -81,7 +81,7 @@ public class GetInfo {
      *  argument is a list of MoML files for InterfaceAutomaton.
      *  @param args The command line arguments.
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         try {
             new GetInfo(args);
         } catch (Exception exception) {
@@ -91,20 +91,14 @@ public class GetInfo {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 }

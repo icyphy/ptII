@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
 import java.awt.event.ActionEvent;
@@ -37,8 +36,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.GraphController;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjController
+
 /**
    This class extends LocatableNodeController with an association
    with a configuration. The configuration is central to a Ptolemy GUI,
@@ -54,7 +55,6 @@ import diva.graph.GraphController;
    @Pt.AcceptedRating Red (johnr)
 */
 public class NamedObjController extends LocatableNodeController {
-
     /** Create a node controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
@@ -96,35 +96,35 @@ public class NamedObjController extends LocatableNodeController {
         public GetDocumentationAction() {
             super("Get Documentation");
         }
+
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
+
             NamedObj target = getTarget();
             String className = target.getClass().getName();
             String docName = "doc.codeDoc." + className;
+
             try {
-                URL toRead = getClass().getClassLoader().getResource(
-                        docName.replace('.', '/') + ".html");
+                URL toRead = getClass().getClassLoader().getResource(docName
+                        .replace('.', '/') + ".html");
+
                 if (toRead != null) {
                     if (_configuration != null) {
-                        _configuration.openModel(null,
-                                toRead, toRead.toExternalForm());
+                        _configuration.openModel(null, toRead,
+                            toRead.toExternalForm());
                     } else {
-                        MessageHandler.error(
-                                "Cannot open documentation for "
-                                + className
-                                + " without a configuration.");
+                        MessageHandler.error("Cannot open documentation for "
+                            + className + " without a configuration.");
                     }
                 } else {
                     MessageHandler.error("Cannot find documentation for "
-                            + className
-                            + "\nTry Running \"make\" in ptII/doc,"
-                            + "\nor installing the documentation component.");
+                        + className + "\nTry Running \"make\" in ptII/doc,"
+                        + "\nor installing the documentation component.");
                 }
             } catch (Exception ex) {
                 MessageHandler.error("Cannot find documentation for "
-                        + className
-                        + "\nTry Running \"make\" in ptII/doc."
-                        + "\nor installing the documentation component.", ex);
+                    + className + "\nTry Running \"make\" in ptII/doc."
+                    + "\nor installing the documentation component.", ex);
             }
         }
     }

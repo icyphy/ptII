@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm;
 
 import java.awt.Color;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphTableau
+
 /** An editor tableau for finite state machines.
 
 @author  Steve Neuendorffer and Edward A. Lee
@@ -53,7 +54,6 @@ import ptolemy.moml.LibraryAttribute;
 @Pt.AcceptedRating Red (johnr)
 */
 public class FSMGraphTableau extends Tableau {
-
     /** Create a new FSM editor tableau with the specified container
      *  and name, with no default library.
      *  @param container The container.
@@ -63,9 +63,8 @@ public class FSMGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public FSMGraphTableau(PtolemyEffigy container,
-            String name)
-            throws IllegalActionException, NameDuplicationException {
+    public FSMGraphTableau(PtolemyEffigy container, String name)
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -79,18 +78,19 @@ public class FSMGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public FSMGraphTableau(PtolemyEffigy container,
-            String name,
-            LibraryAttribute defaultLibrary)
-            throws IllegalActionException, NameDuplicationException {
+    public FSMGraphTableau(PtolemyEffigy container, String name,
+        LibraryAttribute defaultLibrary)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
+
         if (!(model instanceof FSMActor)) {
             throw new IllegalActionException(this,
-                    "Cannot edit a model that is not an FSMActor.");
+                "Cannot edit a model that is not an FSMActor.");
         }
-        createGraphFrame((FSMActor)model, defaultLibrary);
+
+        createGraphFrame((FSMActor) model, defaultLibrary);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,15 +115,16 @@ public class FSMGraphTableau extends Tableau {
      *  @param defaultLibrary The default library, or null to not specify
      *   one.
      */
-    public void createGraphFrame(
-            CompositeEntity model, LibraryAttribute defaultLibrary) {
-
+    public void createGraphFrame(CompositeEntity model,
+        LibraryAttribute defaultLibrary) {
         FSMGraphFrame frame = new FSMGraphFrame(model, this, defaultLibrary);
+
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
         }
+
         frame.setBackground(BACKGROUND_COLOR);
         frame.pack();
         frame.centerOnScreen();
@@ -136,7 +137,6 @@ public class FSMGraphTableau extends Tableau {
     /** A factory that creates graph editing tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create an factory with the given name and container.
          *  @param container The container.
          *  @param name The name of the entity.
@@ -146,7 +146,7 @@ public class FSMGraphTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -162,17 +162,17 @@ public class FSMGraphTableau extends Tableau {
             if (!(effigy instanceof PtolemyEffigy)) {
                 return null;
             }
-            NamedObj model = ((PtolemyEffigy)effigy).getModel();
+
+            NamedObj model = ((PtolemyEffigy) effigy).getModel();
+
             if (model instanceof FSMActor) {
                 // Check to see whether this factory contains a
                 // default library.
-                LibraryAttribute library = (LibraryAttribute)getAttribute(
-                        "_library", LibraryAttribute.class);
+                LibraryAttribute library = (LibraryAttribute) getAttribute("_library",
+                        LibraryAttribute.class);
 
-                FSMGraphTableau tableau =
-                    new FSMGraphTableau((PtolemyEffigy)effigy,
-                            effigy.uniqueName("tableau"),
-                            library);
+                FSMGraphTableau tableau = new FSMGraphTableau((PtolemyEffigy) effigy,
+                        effigy.uniqueName("tableau"), library);
                 return tableau;
             } else {
                 return null;
@@ -182,6 +182,5 @@ public class FSMGraphTableau extends Tableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }

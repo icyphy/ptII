@@ -27,11 +27,11 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math.test;
 
 import ptolemy.math.Complex;
 import ptolemy.math.ComplexBinaryOperation;
+
 
 /** A operation taking one argument of type Complex, and producing a value of
     type Complex. This interface attempts to mimic a first-class function of
@@ -44,7 +44,6 @@ import ptolemy.math.ComplexBinaryOperation;
     @Pt.AcceptedRating Red (ctsay)
 */
 public class TestComplexBinaryOperation implements ComplexBinaryOperation {
-
     /** Operate on the operands, returning a value of the same
      *  type. Note that the operation need not be commutative;
      */

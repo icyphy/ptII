@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.connector;
 
 import diva.canvas.AbstractSite;
@@ -32,6 +31,7 @@ import diva.canvas.CanvasLayer;
 import diva.canvas.CanvasPane;
 import diva.canvas.Figure;
 import diva.canvas.TransformContext;
+
 
 /** A site that is not attached to a figure. Autonomous sites are
  * useful in building editors in which connectors can be reshaped
@@ -46,7 +46,6 @@ import diva.canvas.TransformContext;
  * @author         John Reekie
  */
 public class AutonomousSite extends AbstractSite {
-
     /** The enclosing transform context
      */
     private TransformContext _context;
@@ -59,40 +58,40 @@ public class AutonomousSite extends AbstractSite {
     /** Create a new autonomous site in the given transform
      * context and at the given location within that context.
      */
-    public AutonomousSite (TransformContext c, double x, double y) {
+    public AutonomousSite(TransformContext c, double x, double y) {
         setLocation(c, x, y);
     }
 
     /** Create a new autonomous site in the transform
      * context of the given pane and at the given location within that pane.
      */
-    public AutonomousSite (CanvasPane p, double x, double y) {
+    public AutonomousSite(CanvasPane p, double x, double y) {
         setLocation(p.getTransformContext(), x, y);
     }
 
     /** Create a new autonomous site in the transform
      * context of the given pane and at the given location within that layer.
      */
-    public AutonomousSite (CanvasLayer l, double x, double y) {
+    public AutonomousSite(CanvasLayer l, double x, double y) {
         setLocation(l.getTransformContext(), x, y);
     }
 
     /** Create a new autonomous site in the transform context of
      * the given figure and at the given location within that figure.
      */
-    public AutonomousSite (Figure f, double x, double y) {
+    public AutonomousSite(Figure f, double x, double y) {
         setLocation(f.getTransformContext(), x, y);
     }
 
     /** Return null. Autonomous sites are not attached to a figure.
      */
-    public Figure getFigure () {
+    public Figure getFigure() {
         return null;
     }
 
     /** Return zero. Autonomous sites don't have a meaningful ID.
      */
-    public int getID () {
+    public int getID() {
         return 0;
     }
 
@@ -107,14 +106,14 @@ public class AutonomousSite extends AbstractSite {
     /** Get the x-coordinate of the site, in the enclosing
      * transform context.
      */
-    public double getX () {
+    public double getX() {
         return _x;
     }
 
     /** Get the y-coordinate of the site, in the enclosing
      * transform context.
      */
-    public double getY () {
+    public double getY() {
         return _y;
     }
 
@@ -122,7 +121,7 @@ public class AutonomousSite extends AbstractSite {
      * transform context. This is typically used when dragging
      * an autonomous site across context boundaries.
      */
-    public void setLocation (TransformContext c, double x, double y) {
+    public void setLocation(TransformContext c, double x, double y) {
         _context = c;
         _x = x;
         _y = y;
@@ -130,10 +129,8 @@ public class AutonomousSite extends AbstractSite {
 
     /** Translate the site by the indicated distance.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         _x += x;
         _y += y;
     }
 }
-
-

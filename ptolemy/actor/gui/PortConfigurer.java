@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.util.HashSet;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PortConfigurer
+
 /**
    This class is an editor to configure the ports of an object.
    It supports setting their input, output, and multiport properties,
@@ -61,9 +62,7 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (neuendor)
    @deprecated This class is no longer used.  Use PortConfigurerDialog.
 */
-
 public class PortConfigurer extends Query implements QueryListener {
-
     /** Construct a port configurer for the specified entity.
      *  @param object The entity to configure.
      */
@@ -80,27 +79,38 @@ public class PortConfigurer extends Query implements QueryListener {
         _object = object;
 
         Iterator ports = _object.portList().iterator();
+
         while (ports.hasNext()) {
             Object candidate = ports.next();
-            if (candidate instanceof TypedIOPort) {
-                TypedIOPort port = (TypedIOPort)candidate;
-                Set optionsDefault = new HashSet();
-                if (port.isInput()) optionsDefault.add("input");
-                if (port.isOutput()) optionsDefault.add("output");
-                if (port.isMultiport()) optionsDefault.add("multiport");
 
-                addSelectButtons(port.getName(), port.getName(),
-                        _optionsArray, optionsDefault);
+            if (candidate instanceof TypedIOPort) {
+                TypedIOPort port = (TypedIOPort) candidate;
+                Set optionsDefault = new HashSet();
+
+                if (port.isInput()) {
+                    optionsDefault.add("input");
+                }
+
+                if (port.isOutput()) {
+                    optionsDefault.add("output");
+                }
+
+                if (port.isMultiport()) {
+                    optionsDefault.add("multiport");
+                }
+
+                addSelectButtons(port.getName(), port.getName(), _optionsArray,
+                    optionsDefault);
 
                 String typeEntryName = port.getName() + " type";
-                addLine(typeEntryName, typeEntryName,
-                        port.getType().toString());
+                addLine(typeEntryName, typeEntryName, port.getType().toString());
 
                 // Add a column that controls on which side
                 // of the icon the port lies.
-                StringAttribute cardinal
-                    = (StringAttribute)port.getAttribute("_cardinal");
+                StringAttribute cardinal = (StringAttribute) port.getAttribute(
+                        "_cardinal");
                 String cardinalValue = "SOUTH";
+
                 if (cardinal != null) {
                     cardinalValue = cardinal.getExpression().toUpperCase();
                 } else if (port.isInput() && !port.isOutput()) {
@@ -108,9 +118,10 @@ public class PortConfigurer extends Query implements QueryListener {
                 } else if (port.isOutput() && !port.isInput()) {
                     cardinalValue = "EAST";
                 }
+
                 addChoice(port.getName() + " cardinal",
-                        port.getName() + ": cardinal direction",
-                        _cardinals, cardinalValue);
+                    port.getName() + ": cardinal direction", _cardinals,
+                    cardinalValue);
             }
         }
     }
@@ -125,41 +136,40 @@ public class PortConfigurer extends Query implements QueryListener {
         boolean foundOne = false;
         Iterator ports = _object.portList().iterator();
         NamedObj parent = null;
+
         while (ports.hasNext()) {
             Object candidate = ports.next();
+
             if (candidate instanceof TypedIOPort) {
-                TypedIOPort port = (TypedIOPort)candidate;
+                TypedIOPort port = (TypedIOPort) candidate;
                 String name = port.getName();
 
                 // Check whether the positioning information has changed.
                 String nameCardinal = name + " cardinal";
-                if (_changed.contains(nameCardinal)) {
 
+                if (_changed.contains(nameCardinal)) {
                     // The context for the MoML should be the first container
                     // above this port in the hierarchy that defers its
                     // MoML definition, or the immediate parent
                     // if there is none.
-                    parent = (NamedObj)port.getContainer();
+                    parent = (NamedObj) port.getContainer();
                     foundOne = true;
                     moml.append("<port name=\"");
                     moml.append(port.getName());
                     moml.append("\">");
 
                     String cardinalVal = getStringValue(nameCardinal);
-                    moml.append(
-                            "<property name=\"_cardinal\" "
-                            + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                            + "value = \""
-                            + cardinalVal
-                            + "\"/>");
+                    moml.append("<property name=\"_cardinal\" "
+                        + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                        + "value = \"" + cardinalVal + "\"/>");
                     moml.append("</port>");
                 }
 
                 // If either the I/O designation or the type changed,
                 // then generate additional MoML.
                 String typeEntryName = name + " type";
-                if (_changed.contains(name)
-                        || _changed.contains(typeEntryName)) {
+
+                if (_changed.contains(name) || _changed.contains(typeEntryName)) {
                     // Change to the type or I/O status.  Create a MoML command.
                     String value = getStringValue(name);
 
@@ -167,6 +177,7 @@ public class PortConfigurer extends Query implements QueryListener {
                     // comma-separated list.
                     Set selectedValues = new HashSet();
                     StringTokenizer tokenizer = new StringTokenizer(value, ",");
+
                     while (tokenizer.hasMoreTokens()) {
                         selectedValues.add(tokenizer.nextToken().trim());
                     }
@@ -175,7 +186,7 @@ public class PortConfigurer extends Query implements QueryListener {
                     // above this port in the hierarchy that defers its
                     // MoML definition, or the immediate parent
                     // if there is none.
-                    parent = (NamedObj)port.getContainer();
+                    parent = (NamedObj) port.getContainer();
                     foundOne = true;
                     moml.append("<port name=\"");
                     moml.append(port.getName());
@@ -185,31 +196,32 @@ public class PortConfigurer extends Query implements QueryListener {
                         moml.append("<property name=\"input\"/>");
                     } else {
                         moml.append(
-                                "<property name=\"input\" value=\"false\"/>");
+                            "<property name=\"input\" value=\"false\"/>");
                     }
+
                     if (selectedValues.contains("output")) {
                         moml.append("<property name=\"output\"/>");
                     } else {
                         moml.append(
-                                "<property name=\"output\" value=\"false\"/>");
+                            "<property name=\"output\" value=\"false\"/>");
                     }
+
                     if (selectedValues.contains("multiport")) {
                         moml.append("<property name=\"multiport\"/>");
                     } else {
                         moml.append(
-                                "<property name=\"multiport\" value=\"false\"/>");
+                            "<property name=\"multiport\" value=\"false\"/>");
                     }
 
                     if (_changed.contains(typeEntryName)) {
                         // Type designation has changed.
                         String type = getStringValue(typeEntryName);
-                        moml.append(
-                                "<property name=\"_type\" "
-                                + "class = \"ptolemy.actor.TypeAttribute\" "
-                                + "value = \""
-                                + StringUtilities.escapeForXML(type)
-                                + "\"/>");
+                        moml.append("<property name=\"_type\" "
+                            + "class = \"ptolemy.actor.TypeAttribute\" "
+                            + "value = \"" + StringUtilities.escapeForXML(type)
+                            + "\"/>");
                     }
+
                     moml.append("</port>");
                 }
             }
@@ -217,11 +229,11 @@ public class PortConfigurer extends Query implements QueryListener {
 
         if (foundOne) {
             moml.append("</group>");
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this,            // originator
-                    parent,          // context
+
+            MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+                    parent, // context
                     moml.toString(), // MoML code
-                    null);           // base
+                    null); // base
 
             request.setUndoable(true);
 
@@ -244,9 +256,8 @@ public class PortConfigurer extends Query implements QueryListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Possible placements of ports.
-    private String[] _cardinals = {"NORTH", "SOUTH", "EAST", "WEST" };
+    private String[] _cardinals = { "NORTH", "SOUTH", "EAST", "WEST" };
 
     // The set of names of ports that have changed.
     private Set _changed = new HashSet();
@@ -255,5 +266,5 @@ public class PortConfigurer extends Query implements QueryListener {
     private Entity _object;
 
     // The possible configurations for a port.
-    private String[] _optionsArray = {"input", "output", "multiport"};
+    private String[] _optionsArray = { "input", "output", "multiport" };
 }

@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj)
 @AcceptedRating Yellow (janneck)
 */
-
 package ptolemy.actor.corba;
 
 import java.util.StringTokenizer;
@@ -48,8 +47,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PushSupplier
+
 /**
    An actor that send data to a remote consumer.
 
@@ -66,9 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 1.0
 */
-
 public class PushSupplier extends Sink {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,10 +77,10 @@ public class PushSupplier extends Sink {
      *   actor with this name.
      */
     public PushSupplier(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         remoteConsumerName = new Parameter(this, "remoteConsumerName");
         remoteConsumerName.setToken(new StringToken(""));
@@ -89,6 +88,7 @@ public class PushSupplier extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
     /** the ORB initial property. for example:
      * "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
      */
@@ -111,21 +111,23 @@ public class PushSupplier extends Sink {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(
-                ((StringToken)ORBInitProperties.getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
+                .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
+
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
             _debug("ORB initial argument: " + args[i]);
             i++;
         }
+
         _orb = null;
         _initORB(args);
         _debug("Finished initializing " + getName());
     }
-
 
     /** Read one input token, if there is one, from the input
      *  and send it to the remote consumer by call the stub method.
@@ -140,101 +142,106 @@ public class PushSupplier extends Sink {
                 if (input.hasToken(0)) {
                     Token token = input.get(0);
                     String data;
+
                     if (token instanceof StringToken) {
-                        data = ((StringToken)token).stringValue();
+                        data = ((StringToken) token).stringValue();
+
                         if (_debugging) {
                             _debug(getName(), "Publisher writes \n" + data);
                         }
                     } else {
                         data = token.toString();
                     }
+
                     org.omg.CORBA.Any event = _orb.create_any();
                     event.insert_string(data);
                     _remoteConsumer.push(event);
+
                     if (_debugging) {
                         _debug(getName(), "Publisher writes " + data);
                     }
                 }
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
-                        "remote actor throws IllegalActionException"
-                        + ex.getMessage());
+                    "remote actor throws IllegalActionException"
+                    + ex.getMessage());
             }
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     //use a private method to deal with necessary CORBA operations.
     // @exception IllegalActionException If ORB initialize failed.
-    private void _initORB(String[] args) throws IllegalActionException{
+    private void _initORB(String[] args) throws IllegalActionException {
         try {
             // start the ORB
             _orb = ORB.init(args, null);
             _debug(getName(), " ORB initialized");
+
             //get the root naming context
             org.omg.CORBA.Object objRef = _orb.resolve_initial_references(
                     "NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
+
             if (ncRef != null) {
                 _debug(getName(), "found name service.");
             }
+
             //resolve the remote consumer reference in Naming
-            NameComponent namecomp = new NameComponent(
-                    ((StringToken)remoteConsumerName.getToken()).
-                    stringValue(), "");
+            NameComponent namecomp = new NameComponent(((StringToken) remoteConsumerName
+                    .getToken()).stringValue(), "");
             _debug(getName(), " looking for name: ",
-                    (remoteConsumerName.getToken()).toString());
-            NameComponent path[] = {namecomp};
+                (remoteConsumerName.getToken()).toString());
+
+            NameComponent[] path = { namecomp };
+
             // locate the remote actor
             while (!_stopRequested) {
                 try {
                     _debug("before try to get remote consumer.");
-                    _remoteConsumer =
-                        ptolemy.actor.corba.CorbaIOUtil.pushConsumerHelper
+                    _remoteConsumer = ptolemy.actor.corba.CorbaIOUtil.pushConsumerHelper
                         .narrow(ncRef.resolve(path));
                     _debug("after try to get remote consumer.");
+
                     if (_remoteConsumer instanceof pushConsumer) {
                         _debug("get remote consumer.");
                         break;
                     }
+
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
-                        _debug("thread is interrupted when trying to find" +
-                        "remote consumer");
+                        _debug("thread is interrupted when trying to find"
+                            + "remote consumer");
                     }
                 } catch (Exception exp) {
                     // ignor here and retry.
-                    _debug("failed to resolve the remote consumer. will try again." );
-                    try {
+                    _debug(
+                        "failed to resolve the remote consumer. will try again.");
 
+                    try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex1) {
-                        _debug("thread is interrupted when trying to find" +
-                                "remote consumer");
+                        _debug("thread is interrupted when trying to find"
+                            + "remote consumer");
                     }
                 }
             }
-
         } catch (UserException ex) {
             //ex.printStackTrace();
             throw new IllegalActionException(this,
-                    " initialize ORB failed. Please make sure the " +
-                    "naming server has already started and the " +
-                    "ORBInitProperty parameter is configured correctly. " +
-                    "the error message is: " + ex.getMessage());
+                " initialize ORB failed. Please make sure the "
+                + "naming server has already started and the "
+                + "ORBInitProperty parameter is configured correctly. "
+                + "the error message is: " + ex.getMessage());
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private ORB _orb;
+
     //the proxy of the remote consumer.
     private pushConsumer _remoteConsumer;
-
 }
-

@@ -39,6 +39,7 @@ import diva.canvas.FigureLayer;
 import diva.canvas.interactor.BasicSelectionModel;
 import diva.canvas.interactor.SelectionModel;
 
+
 /**
  * An abstract implementation of the GraphController interface.
  * Concrete subclasses must implement the getNodeController()
@@ -93,8 +94,7 @@ public abstract class AbstractGraphController implements GraphController {
      * @exception GraphException If the connector target cannot return a
      * valid site on the node's figure.
      */
-    public void addEdge(Object edge, Object node,
-            int end, double x, double y) {
+    public void addEdge(Object edge, Object node, int end, double x, double y) {
         getEdgeController(edge).addEdge(edge, node, end, x, y);
     }
 
@@ -149,7 +149,7 @@ public abstract class AbstractGraphController implements GraphController {
     /**
      * Remove all figures from the display
      */
-    public void clear () {
+    public void clear() {
         // FIXME
     }
 
@@ -240,13 +240,13 @@ public abstract class AbstractGraphController implements GraphController {
      * if there is no association.
      */
     public Figure getFigure(Object semanticObj) {
-        return (Figure)_map.get(semanticObj);
+        return (Figure) _map.get(semanticObj);
     }
 
     /**
      * Get the default selection model
      */
-    public SelectionModel getSelectionModel () {
+    public SelectionModel getSelectionModel() {
         return _selectionModel;
     }
 
@@ -277,7 +277,7 @@ public abstract class AbstractGraphController implements GraphController {
      * nodes and edges, but do not alter the connectivity in the graph.
      * This should be called when changes to renderers are made.
      */
-    public void rerender () {
+    public void rerender() {
         // FIXME: it would be nice to be able to do this without all
         // stupid business with the selection model.
         List selectedEdges = new LinkedList();
@@ -288,18 +288,20 @@ public abstract class AbstractGraphController implements GraphController {
         // selection on an edge before getting rid of the endpoints of
         // the edge.
         Iterator figures = (new HashSet(_map.values())).iterator();
+
         while (figures.hasNext()) {
-            Figure figure = (Figure)figures.next();
+            Figure figure = (Figure) figures.next();
             Object object = figure.getUserObject();
 
             if (_model.isEdge(object)) {
                 if (!GraphUtilities.isPartiallyContainedEdge(object,
-                            _model.getRoot(),
-                            _model)) {
+                            _model.getRoot(), _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
+
                     clearEdge(object);
+
                     // Previously, the figure was being left in _map,
                     // which results in an accumulation over time
                     // of figures that should not be rendered.
@@ -308,19 +310,22 @@ public abstract class AbstractGraphController implements GraphController {
                 }
             }
         }
+
         figures = (new HashSet(_map.values())).iterator();
+
         while (figures.hasNext()) {
-            Figure figure = (Figure)figures.next();
+            Figure figure = (Figure) figures.next();
             Object object = figure.getUserObject();
 
             if (_model.isNode(object)) {
-                if (!GraphUtilities.isContainedNode(object,
-                            _model.getRoot(),
+                if (!GraphUtilities.isContainedNode(object, _model.getRoot(),
                             _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
+
                     clearNode(object);
+
                     // Previously, the figure was being left in _map,
                     // which results in an accumulation over time
                     // of figures that should not be rendered.
@@ -331,49 +336,62 @@ public abstract class AbstractGraphController implements GraphController {
         }
 
         // Save the selected edges.
-        Iterator edges = GraphUtilities.totallyContainedEdges(
-                _model.getRoot(), _model);
+        Iterator edges = GraphUtilities.totallyContainedEdges(_model.getRoot(),
+                _model);
+
         while (edges.hasNext()) {
             Object edge = edges.next();
             Figure oldFigure = getFigure(edge);
             boolean selected = _selectionModel.containsSelection(oldFigure);
+
             if (selected) {
                 selectedEdges.add(edge);
             }
         }
+
         // Save the selected nodes.
-        Iterator nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model)).iterator();
+        Iterator nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model))
+            .iterator();
+
         while (nodes.hasNext()) {
             Object node = nodes.next();
             Figure oldFigure = getFigure(node);
             boolean selected = _selectionModel.containsSelection(oldFigure);
+
             if (selected) {
                 selectedNodes.add(node);
             }
         }
+
         // Clear all the selections (note that there may be selected objects
         // which no longer exist!)
         _selectionModel.clearSelection();
 
         // draw the nodes.
         nodes = _model.nodes(_model.getRoot());
+
         while (nodes.hasNext()) {
             Object node = nodes.next();
             drawNode(node);
         }
+
         nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model)).iterator();
+
         while (nodes.hasNext()) {
             Object node = nodes.next();
+
             if (selectedNodes.contains(node)) {
                 _selectionModel.addSelection(getFigure(node));
             }
         }
+
         // draw the edges that are connected to any of the above nodes.
-        edges = GraphUtilities.partiallyContainedEdges(
-                _model.getRoot(), _model);
+        edges = GraphUtilities.partiallyContainedEdges(_model.getRoot(), _model);
+
         while (edges.hasNext()) {
             Object edge = edges.next();
             drawEdge(edge);
+
             if (selectedEdges.contains(edge)) {
                 _selectionModel.addSelection(getFigure(edge));
             }
@@ -385,9 +403,10 @@ public abstract class AbstractGraphController implements GraphController {
      * This should be called if the state of the edge has changed in such a
      * way that the rendering should change.
      */
-    public void rerenderEdge (Object edge) {
+    public void rerenderEdge(Object edge) {
         // FIXME this is way overkill.
         rerender();
+
         /*
           Figure oldFigure = getFigure(edge);
           boolean selected = _selectionModel.containsSelection(oldFigure);
@@ -406,9 +425,10 @@ public abstract class AbstractGraphController implements GraphController {
      * figure.  This should be called if the state of the node has
      * changed in such a way that the rendering should change.
      */
-    public void rerenderNode (Object node) {
+    public void rerenderNode(Object node) {
         // FIXME this is way overkill.
         rerender();
+
         /*
           Figure oldFigure = getFigure(node);
           boolean selected = _selectionModel.containsSelection(oldFigure);
@@ -442,21 +462,24 @@ public abstract class AbstractGraphController implements GraphController {
      */
     public void setGraphModel(GraphModel model) {
         Iterator i;
+
         // FIXME we shouldn't have to cast this.
         FigureLayer layer = getGraphPane().getForegroundLayer();
 
         if (_model != null) {
             // Clear existing figures
             Object root = _model.getRoot();
+
             if (_model.getNodeCount(root) != 0) {
-                for (i = _model.nodes(root); i.hasNext(); ) {
+                for (i = _model.nodes(root); i.hasNext();) {
                     clearNode(i.next());
                 }
-                for (i = GraphUtilities.localEdges(root, _model);
-                     i.hasNext(); ) {
+
+                for (i = GraphUtilities.localEdges(root, _model); i.hasNext();) {
                     clearEdge(i.next());
                 }
             }
+
             _model.removeGraphListener(_localListener);
         }
 
@@ -465,6 +488,7 @@ public abstract class AbstractGraphController implements GraphController {
 
         if (_model != null) {
             _model.addGraphListener(_localListener);
+
             Object root = _model.getRoot();
             GraphEvent evt = new GraphEvent(new Object(),
                     GraphEvent.STRUCTURE_CHANGED, root);
@@ -479,8 +503,7 @@ public abstract class AbstractGraphController implements GraphController {
     public void setFigure(Object semanticObj, Figure f) {
         if (f == null) {
             _map.remove(semanticObj);
-        }
-        else {
+        } else {
             _map.put(semanticObj, f);
         }
     }
@@ -489,7 +512,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Set the graph pane. This is called by the GraphPane.
      * FIXME: should this be package private?
      */
-    public void setGraphPane (GraphPane pane) {
+    public void setGraphPane(GraphPane pane) {
         _pane = pane;
         initializeInteraction();
     }
@@ -498,7 +521,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Set the default selection model. The caller is expected to ensure
      * that the old model is empty before calling this.
      */
-    public void setSelectionModel (SelectionModel m) {
+    public void setSelectionModel(SelectionModel m) {
         _selectionModel = m;
     }
 
@@ -509,18 +532,22 @@ public abstract class AbstractGraphController implements GraphController {
      * an edge controller.
      */
     public void dispatch(GraphViewEvent e) {
-        for (Iterator i = _graphViewListenerList.iterator(); i.hasNext(); ) {
-            GraphViewListener l = (GraphViewListener)i.next();
-            switch(e.getID()) {
+        for (Iterator i = _graphViewListenerList.iterator(); i.hasNext();) {
+            GraphViewListener l = (GraphViewListener) i.next();
+
+            switch (e.getID()) {
             case GraphViewEvent.NODE_MOVED:
                 l.nodeMoved(e);
                 break;
+
             case GraphViewEvent.EDGE_ROUTED:
                 l.edgeRouted(e);
                 break;
+
             case GraphViewEvent.NODE_DRAWN:
                 l.nodeDrawn(e);
                 break;
+
             case GraphViewEvent.EDGE_DRAWN:
                 l.edgeDrawn(e);
                 break;
@@ -536,7 +563,7 @@ public abstract class AbstractGraphController implements GraphController {
      * the controller does not yet have a reference to its pane
      * at that time.
      */
-    protected abstract void initializeInteraction ();
+    protected abstract void initializeInteraction();
 
     /**
      * Debugging output.
@@ -607,6 +634,7 @@ public abstract class AbstractGraphController implements GraphController {
         public void structureChanged(GraphEvent e) {
             if (e.getSource() != AbstractGraphController.this) {
                 rerender();
+
                 /* Object root = e.getTarget();
 
                 //FIXME - this could be optimized--
@@ -625,6 +653,3 @@ public abstract class AbstractGraphController implements GraphController {
         }
     }
 }
-
-
-

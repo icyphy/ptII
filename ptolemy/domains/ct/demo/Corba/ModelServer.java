@@ -33,15 +33,16 @@ import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ModelServer
+
 /**
    A model server register the servant to the name server and wait for calls.
    @author Jie Liu
    @version $Id$
 */
 public class ModelServer {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -61,17 +62,18 @@ public class ModelServer {
             System.out.println(orb.object_to_string(impl));
 
             // add naming service.
-            org.omg.CORBA.Object objRef =
-                orb.resolve_initial_references("NameService");
+            org.omg.CORBA.Object objRef = orb.resolve_initial_references(
+                    "NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
 
             // bind the object Reference in Naming
             NameComponent nc = new NameComponent("Nonlinear", "");
-            NameComponent path[] = {nc};
+            NameComponent[] path = { nc };
             ncRef.rebind(path, impl);
 
             //wait for request
             java.lang.Object sync = new java.lang.Object();
+
             synchronized (sync) {
                 sync.wait();
             }

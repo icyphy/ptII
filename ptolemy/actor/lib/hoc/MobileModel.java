@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.hoc;
 
 import java.io.IOException;
@@ -56,8 +55,10 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MobileModel
+
 /**
    This is a composite actor with an input port that accepts MoML descriptions
    of changes that are applied to the contents. Rather than
@@ -76,7 +77,6 @@ import ptolemy.moml.filter.BackwardCompatibility;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class MobileModel extends TypedCompositeActor {
-
     /** Construct an actor in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -85,8 +85,7 @@ public class MobileModel extends TypedCompositeActor {
      *  @exception IllegalActionException If populating the actor with
      *   ports and parameters fails.
      */
-    public MobileModel(Workspace workspace)
-            throws IllegalActionException {
+    public MobileModel(Workspace workspace) throws IllegalActionException {
         super(workspace);
         _init();
     }
@@ -103,7 +102,7 @@ public class MobileModel extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public MobileModel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -159,9 +158,8 @@ public class MobileModel extends TypedCompositeActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        MobileModel newObject = (MobileModel)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MobileModel newObject = (MobileModel) super.clone(workspace);
         return newObject;
     }
 
@@ -171,41 +169,45 @@ public class MobileModel extends TypedCompositeActor {
      *  the director's fire() method throws it, or if the actor is not
      *  opaque.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Invoking fire");
         }
+
         if (modelString.getWidth() < 1) {
             throw new IllegalActionException(getName() + "need to have"
-                    + "the modelString port be connected");
+                + "the modelString port be connected");
         } else if (modelString.hasToken(0)) {
             StringToken str = null;
+
             try {
                 str = (StringToken) modelString.get(0);
 
                 _parser.reset();
 
-                CompositeActor model = (CompositeActor) _parser.parse(str.stringValue());
+                CompositeActor model = (CompositeActor) _parser.parse(str
+                        .stringValue());
                 StringWriter writer = new StringWriter();
+
                 try {
                     model.exportMoML(writer, 1);
                 } catch (Exception ex) {
                     // FIXME: don't ignore?
                 }
 
-                String modelMoML =  writer.toString();
-                if (((BooleanToken)connectPorts.getToken()).booleanValue()) {
-                    _moml = "<group>\n" + modelMoML + "<relation name=\"newR1\" "
+                String modelMoML = writer.toString();
+
+                if (((BooleanToken) connectPorts.getToken()).booleanValue()) {
+                    _moml = "<group>\n" + modelMoML
+                        + "<relation name=\"newR1\" "
                         + "class=\"ptolemy.actor.TypedIORelation\">\n"
-                        + "</relation>\n"
-                        + "<relation name=\"newR2\" "
+                        + "</relation>\n" + "<relation name=\"newR2\" "
                         + "class=\"ptolemy.actor.TypedIORelation\">\n"
                         + "</relation>\n"
                         + "<link port=\"input\" relation=\"newR1\"/>\n"
                         + "<link port=\"" + model.getName()
-                        + ".input\" relation=\"newR1\"/>\n"
-                        + "<link port=\"" + model.getName()
-                        + ".output\" relation=\"newR2\"/>\n"
+                        + ".input\" relation=\"newR1\"/>\n" + "<link port=\""
+                        + model.getName() + ".output\" relation=\"newR2\"/>\n"
                         + "<link port=\"output\" relation=\"newR2\"/>\n"
                         + "</group>";
                 } else {
@@ -215,10 +217,12 @@ public class MobileModel extends TypedCompositeActor {
                 if (_debugging) {
                     _debug("Problem parsing " + str.stringValue());
                 }
+
                 throw new IllegalActionException(this, ex,
-                        "Problem parsing " + str.stringValue());
+                    "Problem parsing " + str.stringValue());
             }
         }
+
         super.fire();
     }
 
@@ -234,32 +238,34 @@ public class MobileModel extends TypedCompositeActor {
      *  is not opaque.
      */
     public boolean postfire() throws IllegalActionException {
-        if (!_stopRequested && _moml != null) {
+        if (!_stopRequested && (_moml != null)) {
             //remove the old model inside first, if there is one.
-            if (((BooleanToken)refresh.getToken()).booleanValue()) {
+            if (((BooleanToken) refresh.getToken()).booleanValue()) {
                 String delete = _requestToRemoveAll(this);
-                MoMLChangeRequest removeRequest = new MoMLChangeRequest(
-                        this,            // originator
-                        this,            // context
-                        delete,          // MoML code
+                MoMLChangeRequest removeRequest = new MoMLChangeRequest(this, // originator
+                        this, // context
+                        delete, // MoML code
                         null);
                 requestChange(removeRequest);
             }
+
             //update the inside model change.
-            MoMLChangeRequest request2 = new MoMLChangeRequest(
-                    this,            // originator
-                    this,          // context
+            MoMLChangeRequest request2 = new MoMLChangeRequest(this, // originator
+                    this, // context
                     _moml, // MoML code
                     null);
             requestChange(request2);
+
             if (_debugging) {
                 _debug("issues change request to modify the model");
             }
+
             _moml = null;
 
             // the model topology changes,
             _modelChanged = true;
         }
+
         return super.postfire();
     }
 
@@ -283,6 +289,7 @@ public class MobileModel extends TypedCompositeActor {
         } else {
             return super.prefire();
         }
+
         //if (input.hasToken(0) || modelString.hasToken(0)) {
         //    return super.prefire();
         //}
@@ -299,23 +306,23 @@ public class MobileModel extends TypedCompositeActor {
         _createDirector();
 
         _moml = null;
+
         try {
             _parser = new MoMLParser();
             _parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
             // When no model applied, output the default value.
-            if (((BooleanToken)connectPorts.getToken()).booleanValue()) {
+            if (((BooleanToken) connectPorts.getToken()).booleanValue()) {
                 Const constActor = new Const(this, "Const");
                 constActor.value.setExpression(defaultValue.getToken().toString());
                 connect(input, constActor.trigger);
                 connect(constActor.output, output);
             } //otherwise, do nothing.
-
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "preinitialize() failed");
         }
-        //connect(input, output);
 
+        //connect(input, output);
         super.preinitialize();
     }
 
@@ -327,13 +334,13 @@ public class MobileModel extends TypedCompositeActor {
     public void wrapup() throws IllegalActionException {
         // clean the inside content.
         String delete = _requestToRemoveAll(this);
-        MoMLChangeRequest removeRequest = new MoMLChangeRequest(
-                this,            // originator
-                this,            // context
-                delete,          // MoML code
+        MoMLChangeRequest removeRequest = new MoMLChangeRequest(this, // originator
+                this, // context
+                delete, // MoML code
                 null);
         requestChange(removeRequest);
         super.wrapup();
+
         if (_director != null) {
             try {
                 _director.setContainer(null);
@@ -349,17 +356,21 @@ public class MobileModel extends TypedCompositeActor {
     /** Export the moml description of this.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         Iterator attributes = attributeList().iterator();
+
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute) attributes.next();
             attribute.exportMoML(output, depth);
         }
+
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            Port port = (Port)ports.next();
+            Port port = (Port) ports.next();
             port.exportMoML(output, depth);
         }
+
         output.write(exportLinks(depth, null));
     }
 
@@ -372,29 +383,34 @@ public class MobileModel extends TypedCompositeActor {
      * class with the specified name by the <i>director<i> parameter,
      *  or if there is name duplicationn for the director.
      */
-    private void _createDirector() throws IllegalActionException{
+    private void _createDirector() throws IllegalActionException {
         try {
-            String directorName =((StringToken) director.getToken()).stringValue();
+            String directorName = ((StringToken) director.getToken())
+                .stringValue();
             Class directorClass = Class.forName(directorName);
             Class[] argClasses = new Class[2];
             argClasses[0] = CompositeEntity.class;
             argClasses[1] = String.class;
+
             Constructor constructor = directorClass.getConstructor(argClasses);
+
             if (constructor != null) {
                 if (_debugging) {
                     _debug("find constructor for the specified director");
                 }
+
                 Object[] args = new Object[2];
                 args[0] = this;
                 args[1] = "new director";
-                _director = (Director)constructor.newInstance(args);
+                _director = (Director) constructor.newInstance(args);
+
                 if (_debugging) {
                     _debug("create a instance of the specified director");
                 }
             }
         } catch (Exception ex) {
-            throw new IllegalActionException("get an illegal action exception" +
-                    "when create director" + ex);
+            throw new IllegalActionException("get an illegal action exception"
+                + "when create director" + ex);
         }
     }
 
@@ -406,20 +422,20 @@ public class MobileModel extends TypedCompositeActor {
             input = new TypedIOPort(this, "input", true, false);
             modelString = new TypedIOPort(this, "modelString", true, false);
             modelString.setTypeEquals(BaseType.STRING);
-            defaultValue = new Parameter(this, "defaultValue",
-                    new IntToken(0));
+            defaultValue = new Parameter(this, "defaultValue", new IntToken(0));
             output = new TypedIOPort(this, "output", false, true);
             output.setTypeAtLeast(defaultValue);
             refresh = new Parameter(this, "refresh", new BooleanToken(true));
             refresh.setTypeEquals(BaseType.BOOLEAN);
-            connectPorts = new Parameter(this, "connectPorts", new BooleanToken(true));
+            connectPorts = new Parameter(this, "connectPorts",
+                    new BooleanToken(true));
             connectPorts.setTypeEquals(BaseType.BOOLEAN);
+
             // create a defaultDirector. Without this director, it may get
             // an infinite loop when preinitialize, etc. is called in case the
             // specified director is not successfully constructed. Even when the
             // specified director is construced successfully, it cannot be removed
             // in wrapup() without this default director.
-
             //The default director may not work when we need multi tokens to fire
             //the inside model because the receiver it creates is an instance of
             //Mailbox, which can only hold one token. In this case, specify a proper
@@ -442,21 +458,27 @@ public class MobileModel extends TypedCompositeActor {
         if (_debugging) {
             _debug("create request to remove old model");
         }
+
         StringBuffer delete = new StringBuffer("<group>");
+
         // FIXME: Should this also remove class definitions?
         // To do that, use classDefinitionList().
         Iterator entities = actor.entityList().iterator();
+
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
             delete.append("<deleteEntity name=\"" + entity.getName()
-                    + "\" class=\"" + entity.getClass().getName() + "\"/>");
+                + "\" class=\"" + entity.getClass().getName() + "\"/>");
         }
+
         Iterator relations = actor.relationList().iterator();
+
         while (relations.hasNext()) {
             IORelation relation = (IORelation) relations.next();
             delete.append("<deleteRelation name=\"" + relation.getName()
-                    + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
+                + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
         }
+
         delete.append("</group>");
         return delete.toString();
     }
@@ -477,6 +499,5 @@ public class MobileModel extends TypedCompositeActor {
      *
      */
     private MoMLParser _parser;
-
     private boolean _modelChanged = false;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.actor.TypedIOPort;
@@ -35,13 +34,14 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SDFTestZeroRate2
+
 /**
    A test actor for HDF. This actor contains parameters that make it
    easy to set the rates of the input and output ports. This actor
@@ -54,9 +54,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (vogel)
    @Pt.AcceptedRating Red (vogel)
 */
-
 public class SDFTestZeroRate2 extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,7 +64,7 @@ public class SDFTestZeroRate2 extends Transformer {
      *   actor with this name.
      */
     public SDFTestZeroRate2(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input2 = new TypedIOPort(this, "input2", true, false);
         output2 = new TypedIOPort(this, "output2", false, true);
@@ -77,20 +75,18 @@ public class SDFTestZeroRate2 extends Transformer {
         input2_rate = new Parameter(this, "input2_rate", new IntToken(1));
         output2_rate = new Parameter(this, "output2_rate", new IntToken(1));
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("input_rate");
 
-        input2_tokenConsumptionRate =
-            new Parameter(input2, "tokenConsumptionRate");
+        input2_tokenConsumptionRate = new Parameter(input2,
+                "tokenConsumptionRate");
         input2_tokenConsumptionRate.setExpression("input2_rate");
 
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setExpression("output_rate");
 
-        output2_tokenProductionRate =
-            new Parameter(output2, "tokenProductionRate");
+        output2_tokenProductionRate = new Parameter(output2,
+                "tokenProductionRate");
         output2_tokenProductionRate.setExpression("output2_rate");
 
         // Set the type constraint.
@@ -107,25 +103,15 @@ public class SDFTestZeroRate2 extends Transformer {
      *  then the director will be asked to redo type resolution.
      */
     public Parameter value;
-
     public Parameter input_rate;
-
     public Parameter input2_rate;
-
     public Parameter output_rate;
-
     public Parameter output2_rate;
-
     public Parameter input_tokenConsumptionRate;
-
     public Parameter input2_tokenConsumptionRate;
-
     public Parameter output_tokenProductionRate;
-
     public Parameter output2_tokenProductionRate;
-
     public TypedIOPort input2;
-
     public TypedIOPort output2;
 
     ///////////////////////////////////////////////////////////////////
@@ -138,34 +124,36 @@ public class SDFTestZeroRate2 extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SDFTestZeroRate2 newObject = (SDFTestZeroRate2)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SDFTestZeroRate2 newObject = (SDFTestZeroRate2) super.clone(workspace);
+
         // Set the type constraint.
         newObject.output.setTypeAtLeast(newObject.value);
         newObject.output2.setTypeAtLeast(newObject.value);
         return newObject;
     }
 
-
     /** Discard tokens recieved. Send the token in the value parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        for (int i = 0; i < ((IntToken)input_rate.getToken()).intValue();
-             i++) {
+        for (int i = 0; i < ((IntToken) input_rate.getToken()).intValue();
+                i++) {
             input.get(0);
         }
-        for (int i = 0; i < ((IntToken)input2_rate.getToken()).intValue();
-             i++) {
+
+        for (int i = 0; i < ((IntToken) input2_rate.getToken()).intValue();
+                i++) {
             input2.get(0);
         }
-        for (int i = 0; i < ((IntToken)output_rate.getToken()).intValue();
-             i++) {
+
+        for (int i = 0; i < ((IntToken) output_rate.getToken()).intValue();
+                i++) {
             output.send(0, value.getToken());
         }
-        for (int i = 0; i < ((IntToken)output2_rate.getToken()).intValue();
-             i++) {
+
+        for (int i = 0; i < ((IntToken) output2_rate.getToken()).intValue();
+                i++) {
             output2.send(0, value.getToken());
         }
     }
@@ -177,15 +165,15 @@ public class SDFTestZeroRate2 extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // debug sdf schedules:
-        SDFDirector dir = (SDFDirector)getDirector();
-        SDFScheduler scheduler = (SDFScheduler)dir.getScheduler();
+        SDFDirector dir = (SDFDirector) getDirector();
+        SDFScheduler scheduler = (SDFScheduler) dir.getScheduler();
+
         // For debugging the SDF scheduler...
         //StreamListener sa = new StreamListener();
         //scheduler.addDebugListener(sa);
         //
-
-
         // Get the SDF Director's scheduler.
         //        Scheduler s = dir.getScheduler();
         //Iterator allActors = s.getSchedule().actorIterator();
@@ -194,11 +182,8 @@ public class SDFTestZeroRate2 extends Transformer {
         //    String schedActName = ((Nameable)actor).getName();
         //    System.out.println("Actor in scheduler: " + schedActName);
         //}
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
 }

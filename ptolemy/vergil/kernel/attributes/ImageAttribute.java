@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Image;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ImageIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageAttribute
+
 /**
    This is an attribute that is rendered as an image.  Its <i>source</i>
    parameter specifies a file containing an image (GIF, JPEG, etc.), and
@@ -60,7 +61,6 @@ import ptolemy.vergil.icon.ImageIcon;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ImageAttribute extends Attribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -75,7 +75,7 @@ public class ImageAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public ImageAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Hide the name.
@@ -122,14 +122,14 @@ public class ImageAttribute extends Attribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == source) {
             URL url = source.asURL();
             Toolkit tk = Toolkit.getDefaultToolkit();
             Image image = tk.getImage(url);
             _icon.setImage(image);
         } else if (attribute == scale) {
-            double scaleValue = ((DoubleToken)scale.getToken()).doubleValue();
+            double scaleValue = ((DoubleToken) scale.getToken()).doubleValue();
             _icon.scaleImage(scaleValue);
         } else {
             super.attributeChanged(attribute);
@@ -144,18 +144,15 @@ public class ImageAttribute extends Attribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ImageAttribute newObject
-                = (ImageAttribute)super.clone(workspace);
-        newObject._icon = (ImageIcon)newObject.getAttribute("_icon");
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ImageAttribute newObject = (ImageAttribute) super.clone(workspace);
+        newObject._icon = (ImageIcon) newObject.getAttribute("_icon");
 
         return newObject;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The image icon.
     private ImageIcon _icon;
 }

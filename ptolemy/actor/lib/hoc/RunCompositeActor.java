@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RunCompositeActor
+
 /**
    This is a composite actor that can executes the contained model
    completely, as if it were a top-level model, on each firing.
@@ -109,7 +110,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (eal)
 */
 public class RunCompositeActor extends LifeCycleManager {
-
     /** Construct an actor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
      *  workspace directory.  You should set the local director or
@@ -118,6 +118,7 @@ public class RunCompositeActor extends LifeCycleManager {
      */
     public RunCompositeActor() {
         super();
+
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is RunCompositeActor.
         // In derived classes, however, we usually do not want to identify
@@ -140,6 +141,7 @@ public class RunCompositeActor extends LifeCycleManager {
      */
     public RunCompositeActor(Workspace workspace) {
         super(workspace);
+
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is RunCompositeActor.
         // In derived classes, however, we usually do not want to identify
@@ -168,8 +170,9 @@ public class RunCompositeActor extends LifeCycleManager {
      *   an actor already in the container.
      */
     public RunCompositeActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is RunCompositeActor.
         // In derived classes, however, we usually do not want to identify
@@ -203,6 +206,7 @@ public class RunCompositeActor extends LifeCycleManager {
         if (_debugging) {
             _debug("---- calling fire(), which will execute a subsystem.");
         }
+
         // FIXME: Return result should be used to set what postfire() returns?
         _executeInsideModel();
     }
@@ -230,6 +234,7 @@ public class RunCompositeActor extends LifeCycleManager {
         if (_debugging) {
             _debug("Called postfire(), which returns true.");
         }
+
         return true;
     }
 
@@ -241,6 +246,7 @@ public class RunCompositeActor extends LifeCycleManager {
         if (_debugging) {
             _debug("Called prefire(), which returns true.");
         }
+
         return true;
     }
 
@@ -259,6 +265,7 @@ public class RunCompositeActor extends LifeCycleManager {
         super.preinitialize();
 
         Iterator ports = outputPortList().iterator();
+
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
 
@@ -266,7 +273,8 @@ public class RunCompositeActor extends LifeCycleManager {
             // FIXME: This may not be right if there is no
             // actual source of data for this port (e.g. no
             // SetVariable actor).
-            Variable rate = (Variable)port.getAttribute("tokenProductionRate");
+            Variable rate = (Variable) port.getAttribute("tokenProductionRate");
+
             if (rate == null) {
                 try {
                     rate = new Variable(port, "tokenProductionRate");
@@ -274,10 +282,12 @@ public class RunCompositeActor extends LifeCycleManager {
                     throw new InternalErrorException(e);
                 }
             }
+
             rate.setToken(new IntToken(1));
 
             String portName = port.getName();
             Attribute attribute = getAttribute(portName);
+
             if (attribute == null) {
                 try {
                     workspace().getWriteAccess();
@@ -288,9 +298,10 @@ public class RunCompositeActor extends LifeCycleManager {
                     workspace().doneWriting();
                 }
             }
+
             // attribute is now assured to be non-null.
             if (attribute instanceof Variable) {
-                port.setTypeAtLeast((Variable)attribute);
+                port.setTypeAtLeast((Variable) attribute);
             } else {
                 // Assume the port type must be a string.
                 port.setTypeEquals(BaseType.STRING);

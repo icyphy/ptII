@@ -24,17 +24,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.util;
 
+import ptolemy.copernicus.jhdl.util.MapList;
+
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import java.util.Iterator;
-import ptolemy.copernicus.jhdl.util.MapList;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// HashListMap
+
 /**
  *
  @author Mike Wirthlin
@@ -44,16 +46,22 @@ import ptolemy.copernicus.jhdl.util.MapList;
  @Pt.AcceptedRating Red (cxh)
 */
 public class HashListMap extends HashMap implements MapList {
+    public HashListMap() {
+        super();
+    }
 
-    public HashListMap() { super(); }
-    public HashListMap(int i) { super(i); }
+    public HashListMap(int i) {
+        super(i);
+    }
+
     public HashListMap(HashListMap hlm) {
         this(hlm.size());
-        for (Iterator i=hlm.keySet().iterator();i.hasNext();) {
+
+        for (Iterator i = hlm.keySet().iterator(); i.hasNext();) {
             Object o = i.next();
             Vector l = (Vector) hlm.get(o);
             Vector copyl = (Vector) l.clone();
-            setList(o,copyl);
+            setList(o, copyl);
         }
     }
 
@@ -64,44 +72,61 @@ public class HashListMap extends HashMap implements MapList {
 
     public List getCreateList(Object key) {
         List l = getList(key);
+
         if (l == null) {
             l = new Vector();
-            put(key,l);
+            put(key, l);
         }
+
         return l;
     }
 
     public Object get(Object key, int index) {
-        List l=getList(key);
-        if (l == null)
+        List l = getList(key);
+
+        if (l == null) {
             return null;
+        }
+
         int size = l.size();
-        if (0 <= index && index < size) {
+
+        if ((0 <= index) && (index < size)) {
             return l.get(index);
-        } else
+        } else {
             return null;
+        }
     }
 
     public Object getFirst(Object key) {
-        List l=getList(key);
-        if (l==null)
+        List l = getList(key);
+
+        if (l == null) {
             return null;
+        }
+
         int size = l.size();
+
         if (size > 0) {
             return l.get(0);
-        } else
+        } else {
             return null;
+        }
     }
 
     public Object getLast(Object key) {
-        List l=getList(key);
-        if (l == null)
+        List l = getList(key);
+
+        if (l == null) {
             return null;
+        }
+
         int size = l.size();
+
         if (size > 0) {
-            return l.get(size-1);
-        } else
+            return l.get(size - 1);
+        } else {
             return null;
+        }
     }
 
     public List getList(Object o) {
@@ -109,7 +134,7 @@ public class HashListMap extends HashMap implements MapList {
     }
 
     public void setList(Object o, List l) {
-        put(o,l);
+        put(o, l);
     }
 
     public Object clone() {
@@ -118,15 +143,18 @@ public class HashListMap extends HashMap implements MapList {
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        for (Iterator i=keySet().iterator();i.hasNext();) {
+
+        for (Iterator i = keySet().iterator(); i.hasNext();) {
             Object o = i.next();
-            sb.append(o+" MAPS TO: ");
-            for (Iterator j=getList(o).iterator();j.hasNext();) {
-                sb.append(j.next()+" ");
+            sb.append(o + " MAPS TO: ");
+
+            for (Iterator j = getList(o).iterator(); j.hasNext();) {
+                sb.append(j.next() + " ");
             }
+
             sb.append("\n");
         }
+
         return sb.toString();
     }
-
 }

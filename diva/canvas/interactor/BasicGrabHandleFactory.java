@@ -27,6 +27,7 @@ package diva.canvas.interactor;
 
 import diva.canvas.Site;
 
+
 /**
  * A factory that creates basic grab-handles.
  *
@@ -41,5 +42,3 @@ public class BasicGrabHandleFactory implements GrabHandleFactory {
         return new BasicGrabHandle(s);
     }
 }
-
-

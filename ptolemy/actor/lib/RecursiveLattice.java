@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RecursiveLattice
+
 /**
    A recursive (all-pole) filter with a lattice structure.
    The coefficients of such a filter are called "reflection coefficients."
@@ -108,7 +109,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class RecursiveLattice extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -118,16 +118,17 @@ public class RecursiveLattice extends Transformer {
      *   actor with this name.
      */
     public RecursiveLattice(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
         reflectionCoefficients = new Parameter(this, "reflectionCoefficients");
+
         // Note that setExpression() will call attributeChanged().
         reflectionCoefficients.setExpression(
-                "{0.804534, -0.820577, 0.521934, -0.205}");
+            "{0.804534, -0.820577, 0.521934, -0.205}");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,11 +150,12 @@ public class RecursiveLattice extends Transformer {
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == reflectionCoefficients) {
-            ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
+            ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
             int valueLength = value.length();
-            if (_backward == null || valueLength != _backward.length - 1) {
+
+            if ((_backward == null) || (valueLength != (_backward.length - 1))) {
                 // Need to allocate or reallocate the arrays.
                 _backward = new double[valueLength + 1];
                 _backwardCache = new double[valueLength + 1];
@@ -161,9 +163,10 @@ public class RecursiveLattice extends Transformer {
                 _forwardCache = new double[valueLength + 1];
                 _reflectionCoefs = new double[valueLength];
             }
+
             for (int i = 0; i < valueLength; i++) {
-                _reflectionCoefs[i] =
-                    ((DoubleToken)value.getElement(i)).doubleValue();
+                _reflectionCoefs[i] = ((DoubleToken) value.getElement(i))
+                    .doubleValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -176,24 +179,30 @@ public class RecursiveLattice extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            DoubleToken inputValue = (DoubleToken)input.get(0);
+            DoubleToken inputValue = (DoubleToken) input.get(0);
+
             // NOTE: The following code is ported from Ptolemy Classic.
             double k;
             int M = _backward.length - 1;
-            // Forward prediction error
 
-            _forwardCache[0] = inputValue.doubleValue();  // _forward(0) = x(n)
+            // Forward prediction error
+            _forwardCache[0] = inputValue.doubleValue(); // _forward(0) = x(n)
+
             for (int i = 1; i <= M; i++) {
-                k = _reflectionCoefs[M-i];
-                _forwardCache[i] = k * _backwardCache[i] + _forwardCache[i-1];
+                k = _reflectionCoefs[M - i];
+                _forwardCache[i] = (k * _backwardCache[i])
+                    + _forwardCache[i - 1];
             }
+
             output.broadcast(new DoubleToken(_forwardCache[M]));
 
             // Backward:  Compute the w's for the next round
-            for (int i = 1; i < M ; i++) {
-                k = - _reflectionCoefs[M-1-i];
-                _backwardCache[i] = _backwardCache[i+1] + k*_forwardCache[i+1];
+            for (int i = 1; i < M; i++) {
+                k = -_reflectionCoefs[M - 1 - i];
+                _backwardCache[i] = _backwardCache[i + 1]
+                    + (k * _forwardCache[i + 1]);
             }
+
             _backwardCache[M] = _forwardCache[M];
         }
     }
@@ -201,7 +210,7 @@ public class RecursiveLattice extends Transformer {
     /** Initialize the state of the filter.
      */
     public void initialize() throws IllegalActionException {
-        for (int i = 0; i < _forward.length; i ++) {
+        for (int i = 0; i < _forward.length; i++) {
             _forward[i] = 0;
             _backward[i] = 0;
         }
@@ -213,12 +222,8 @@ public class RecursiveLattice extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        System.arraycopy(_backwardCache, 0,
-                _backward, 0,
-                _backwardCache.length);
-        System.arraycopy(_forwardCache, 0,
-                _forward, 0,
-                _forwardCache.length);
+        System.arraycopy(_backwardCache, 0, _backward, 0, _backwardCache.length);
+        System.arraycopy(_forwardCache, 0, _forward, 0, _forwardCache.length);
         return super.postfire();
     }
 
@@ -227,22 +232,16 @@ public class RecursiveLattice extends Transformer {
      */
     public boolean prefire() throws IllegalActionException {
         // Get a copy of the current filter state that we can modify.
-        System.arraycopy(_backward, 0,
-                _backwardCache, 0,
-                _backwardCache.length);
-        System.arraycopy(_forward, 0,
-                _forwardCache, 0,
-                _forwardCache.length);
+        System.arraycopy(_backward, 0, _backwardCache, 0, _backwardCache.length);
+        System.arraycopy(_forward, 0, _forwardCache, 0, _forwardCache.length);
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // We set these to null and then the constructor calls setExpression()
     // which in turn calls attributeChanged() which then allocates
     // these arrays.
-
     // Backward prediction errors, represented by "w" in the class
     // comment.
     private double[] _backward = null;

@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.util;
+
 import java.util.NoSuchElementException;
+
 
 /**
  * An iterator over a given array which may contain nulls. Any
@@ -41,7 +43,6 @@ import java.util.NoSuchElementException;
  * @version $Id$
  */
 public class NullArrayIterator extends IteratorAdapter {
-
     Object[] _array;
     int _lastindex = -1;
     int _nextindex = -1;
@@ -52,6 +53,7 @@ public class NullArrayIterator extends IteratorAdapter {
     public NullArrayIterator(Object[] array) {
         _array = array;
         _arraylen = array.length;
+
         if (array != null) {
             advance();
         }
@@ -72,9 +74,11 @@ public class NullArrayIterator extends IteratorAdapter {
      */
     protected void advance() {
         _nextindex++;
-        while (_nextindex < _arraylen && _array[_nextindex] == null) {
+
+        while ((_nextindex < _arraylen) && (_array[_nextindex] == null)) {
             _nextindex++;
         }
+
         if (_nextindex == _arraylen) {
             _nextindex = -1;
         }
@@ -99,6 +103,7 @@ public class NullArrayIterator extends IteratorAdapter {
         if (!hasNext()) {
             throw new NoSuchElementException("No more elements");
         }
+
         Object result = _array[_nextindex];
         _lastindex = _nextindex;
         advance();

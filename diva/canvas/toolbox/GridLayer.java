@@ -39,6 +39,7 @@ import java.awt.geom.Rectangle2D;
 import diva.canvas.CanvasLayer;
 import diva.canvas.VisibleComponent;
 
+
 /**
  * A grid layer displays a rectangular grid. It can be made to display
  * grid lines, grid vertices, or both. For grid lines, the stroke
@@ -51,7 +52,6 @@ import diva.canvas.VisibleComponent;
  * @version        $Id$
  */
 public class GridLayer extends CanvasLayer implements VisibleComponent {
-
     /* The paint used to draw grid lines
      */
     private Paint _gridPaint = Color.lightGray;
@@ -86,13 +86,13 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
     /** Create a new GridLayer with a default one-pixel grid stroke
      * and a light grey grid color.
      */
-    public GridLayer () {
+    public GridLayer() {
         super();
     }
 
     /** Create a new GridLayer with the given grid stroke and paint
      */
-    public GridLayer (Stroke s, Paint p) {
+    public GridLayer(Stroke s, Paint p) {
         super();
         setGridStroke(s);
         setGridPaint(p);
@@ -101,7 +101,7 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
     /** Create a new GridLayer with the given vertex shape and paint.
      * Grid lines will not be displayed.
      */
-    public GridLayer (Shape s, Paint p) {
+    public GridLayer(Shape s, Paint p) {
         super();
         setGridPaint(null);
         setVertexShape(s);
@@ -110,25 +110,25 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
 
     /** Get the grid line stroke.
      */
-    public Stroke getGridStroke () {
+    public Stroke getGridStroke() {
         return _gridStroke;
     }
 
     /** Get the grid line paint.
      */
-    public Paint getGridPaint () {
+    public Paint getGridPaint() {
         return _gridPaint;
     }
 
     /** Get the vertex point shape.
      */
-    public Shape getVertexShape () {
+    public Shape getVertexShape() {
         return _vertexShape;
     }
 
     /** Get the vertex point paint.
      */
-    public Paint getVertexPaint () {
+    public Paint getVertexPaint() {
         return _vertexPaint;
     }
 
@@ -136,7 +136,7 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      *  does not indicate whether the layer is actually visible on
      *  the screen, as its pane or one if its ancestors may not be visible.
      */
-    public boolean isVisible () {
+    public boolean isVisible() {
         return _visible;
     }
 
@@ -147,6 +147,7 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      *
      * <p>FIXME: Vertexes are not yet supported.
      */
+
     /*
       public void paint (Graphics2D g) {
       Point2D paneSize = getCanvasPane().getSize();
@@ -194,9 +195,9 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
       }
       }
     */
-
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         Point2D paneSize = getCanvasPane().getSize();
+
         if (!isVisible()) {
             return;
         }
@@ -210,19 +211,21 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
 
         if (_gridPaint != null) {
             g.setPaint(_gridPaint);
-            // g.setStroke(_gridStroke);
 
+            // g.setStroke(_gridStroke);
             double x = originX;
             double y;
 
             while (x < paneX) {
-                g.drawLine((int)x, (int)originY, (int)x, (int)paneY);
+                g.drawLine((int) x, (int) originY, (int) x, (int) paneY);
 
                 y = originY;
+
                 while (y < paneY) {
-                    g.drawLine((int)originX, (int)y, (int)paneX, (int)y);
+                    g.drawLine((int) originX, (int) y, (int) paneX, (int) y);
                     y += sizeY;
                 }
+
                 x += sizeX;
             }
         }
@@ -234,20 +237,22 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      * lines if they have a non-null paint, and paint the grid vertices
      * if they have a non-null paint.
      */
-    public void paint (Graphics2D g, Rectangle2D region) {
+    public void paint(Graphics2D g, Rectangle2D region) {
         if (!isVisible()) {
             return;
         }
+
         // FIXME: paint in region
         paint(g);
     }
 
     /** Set the grid line stroke.
      */
-    public void setGridStroke (Stroke s) {
+    public void setGridStroke(Stroke s) {
         if (s == null) {
             throw new NullPointerException("Cannot set stroke to null");
         }
+
         _gridStroke = s;
         repaint();
     }
@@ -255,7 +260,7 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
     /** Set the grid line paint. If this is set to null, grid lines
      * will not be displayed.
      */
-    public void setGridPaint (Paint p) {
+    public void setGridPaint(Paint p) {
         _gridPaint = p;
         repaint();
     }
@@ -264,10 +269,11 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      * with radius equal to 10% of the smallest grid size in either
      * dimension.
      */
-    public void setVertexShape (Shape s) {
+    public void setVertexShape(Shape s) {
         if (s == null) {
             throw new NullPointerException("Cannot set shape to null");
         }
+
         _vertexShape = s;
         repaint();
     }
@@ -275,22 +281,21 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
     /** Set the vertex point paint. If this is set to null,
      * vertices will not be displayed.
      */
-    public void setVertexPaint (Paint p) {
+    public void setVertexPaint(Paint p) {
         _vertexPaint = p;
-        if (_vertexPaint != null && _vertexShape == null) {
-            double r = java.lang.Math.min(_size.getX(),_size.getY());
-            _vertexShape = new Ellipse2D.Double(-r, -r, 2*r, 2*r);
+
+        if ((_vertexPaint != null) && (_vertexShape == null)) {
+            double r = java.lang.Math.min(_size.getX(), _size.getY());
+            _vertexShape = new Ellipse2D.Double(-r, -r, 2 * r, 2 * r);
         }
+
         repaint();
     }
 
     /** Set the visibility flag of this layer. If the flag is false,
      * then the layer will not be drawn on the screen.
      */
-    public void setVisible (boolean flag) {
+    public void setVisible(boolean flag) {
         _visible = flag;
     }
-
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib.test;
 
 import ptolemy.actor.Manager;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Time
+
 /* A simple test case for timing purposes
    @author Edward A. Lee
    @version $Id$
@@ -46,15 +47,15 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Time {
-
-    public static void main(String arg[]) throws IllegalActionException,
-            NameDuplicationException {
+    public static void main(String[] arg)
+        throws IllegalActionException, NameDuplicationException {
         Workspace w = new Workspace("w");
         TypedCompositeActor toplevel = new TypedCompositeActor(w);
         toplevel.setName("toplevel");
+
         SDFDirector director = new SDFDirector(toplevel, "director");
+
         // director.addDebugListener(new StreamListener());
         Manager manager = new Manager(w, "manager");
         toplevel.setManager(manager);
@@ -68,6 +69,6 @@ public class Time {
         manager.run();
         manager.run();
         System.out.println("Total number of events seen by Recorder: "
-                + recorder.getCount());
+            + recorder.getCount());
     }
 }

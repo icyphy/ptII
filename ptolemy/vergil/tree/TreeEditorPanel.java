@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.vergil.tree;
 
 import java.awt.Dimension;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TreeEditorPanel
+
 /**
    A panel that displays a Ptolemy II model in a JTree.
 
@@ -53,7 +54,6 @@ import ptolemy.moml.MoMLParser;
    @Pt.AcceptedRating Red (eal)
 */
 public class TreeEditorPanel extends JScrollPane {
-
     /** Construct a display of the Ptolemy II model given by the
      *  specified MoML file.
      *  @param filename The name of a MoML file.
@@ -71,26 +71,28 @@ public class TreeEditorPanel extends JScrollPane {
      *  @exception Exception If the parser cannot parse the file.
      */
     public TreeEditorPanel(String filename, TreeCellRenderer cellRenderer)
-            throws Exception {
+        throws Exception {
         _parser = new MoMLParser();
+
         // FIXME: This should use the Configuration.
         _toplevel = _parser.parseFile(filename);
+
         if (_toplevel instanceof CompositeEntity) {
-            FullTreeModel model
-                = new FullTreeModel((CompositeEntity)_toplevel);
+            FullTreeModel model = new FullTreeModel((CompositeEntity) _toplevel);
             JTree tree = new JTree(model);
-            tree.setPreferredSize(new Dimension(600,800));
+            tree.setPreferredSize(new Dimension(600, 800));
+
             if (cellRenderer == null) {
                 cellRenderer = new PtolemyTreeCellRenderer();
             }
+
             tree.setCellRenderer(cellRenderer);
             tree.setScrollsOnExpand(true);
 
             setViewportView(tree);
         } else {
-            throw new IllegalActionException(
-                    "Cannot display a tree unless "
-                    + "the top level is a CompositeEntity.");
+            throw new IllegalActionException("Cannot display a tree unless "
+                + "the top level is a CompositeEntity.");
         }
     }
 

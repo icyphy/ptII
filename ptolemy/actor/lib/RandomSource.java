@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.Random;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RandomSource
+
 /**
    A base class for sources of random numbers.
    It uses the class java.util.Random.
@@ -51,9 +52,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public abstract class RandomSource extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -63,7 +62,7 @@ public abstract class RandomSource extends Source {
      *   actor with this name.
      */
     public RandomSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
@@ -96,9 +95,8 @@ public abstract class RandomSource extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        RandomSource newObject = (RandomSource)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RandomSource newObject = (RandomSource) (super.clone(workspace));
 
         // Get an independent random number generator.
         newObject._random = new Random();
@@ -114,8 +112,10 @@ public abstract class RandomSource extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        long sd = ((LongToken)(seed.getToken())).longValue();
-        if (sd != (long)0) {
+
+        long sd = ((LongToken) (seed.getToken())).longValue();
+
+        if (sd != (long) 0) {
             _random.setSeed(sd);
         } else {
             _random.setSeed(System.currentTimeMillis() + hashCode());

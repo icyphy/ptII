@@ -31,8 +31,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
-    package ptolemy.math;
+package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,9 +52,9 @@ COPYRIGHTENDKEY
    @Pt.AcceptedRating Yellow (ctsay)
 */
 public class LongMatrixMath {
-
     // private constructor prevents construction of this class.
-    private LongMatrixMath() {}
+    private LongMatrixMath() {
+    }
 
     /** Return a new matrix that is constructed from the argument by
      *  adding the second argument to every element.
@@ -65,11 +64,13 @@ public class LongMatrixMath {
      */
     public static final long[][] add(long[][] matrix, long z) {
         long[][] returnValue = new long[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
                 returnValue[i][j] = matrix[i][j] + z;
             }
         }
+
         return returnValue;
     }
 
@@ -81,15 +82,17 @@ public class LongMatrixMath {
      *  @param matrix2 The second matrix of longs.
      *  @return A new matrix of longs.  */
     public static final long[][] add(final long[][] matrix1,
-            final long[][] matrix2) {
+        final long[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
         long[][] returnValue = new long[_rows(matrix1)][_columns(matrix1)];
+
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
                 returnValue[i][j] = matrix1[i][j] + matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -98,7 +101,7 @@ public class LongMatrixMath {
      *  @return A new matrix of longs.
      */
     public static final long[][] allocCopy(final long[][] matrix) {
-        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
+        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix));
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -106,17 +109,19 @@ public class LongMatrixMath {
      *  using z as the left operand in all cases and the matrix elements
      *  as the right operands (op.operate(z, matrix[i][j])).
      */
-    public static final long[][] applyBinaryOperation(
-            LongBinaryOperation op, final long z, final long[][] matrix) {
+    public static final long[][] applyBinaryOperation(LongBinaryOperation op,
+        final long z, final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(z, matrix[i][j]);
             }
         }
+
         return returnValue;
     }
 
@@ -125,17 +130,19 @@ public class LongMatrixMath {
      *  using the matrix elements as the left operands and z as the right
      *  operand in all cases (op.operate(matrix[i][j], z)).
      */
-    public static final long[][] applyBinaryOperation(
-            LongBinaryOperation op, final long[][] matrix, final long z) {
+    public static final long[][] applyBinaryOperation(LongBinaryOperation op,
+        final long[][] matrix, final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix[i][j], z);
             }
         }
+
         return returnValue;
     }
 
@@ -146,20 +153,21 @@ public class LongMatrixMath {
      *  (op.operate(matrix1[i][j], matrix2[i][j])).  If the matrices
      *  are not the same size, throw an IllegalArgumentException.
      */
-    public static final long[][] applyBinaryOperation(
-            LongBinaryOperation op, final long[][] matrix1,
-            final long[][] matrix2) {
+    public static final long[][] applyBinaryOperation(LongBinaryOperation op,
+        final long[][] matrix1, final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
             }
         }
+
         return returnValue;
     }
 
@@ -168,24 +176,25 @@ public class LongMatrixMath {
      *  (op.operate(matrix[i][j])).
      */
     public static final long[][] applyUnaryOperation(
-            final LongUnaryOperation op, final long[][] matrix) {
+        final LongUnaryOperation op, final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix[i][j]);
             }
         }
+
         return returnValue;
     }
 
     /** Return a new matrix that is the formed by bitwise ANDing z
      *  with each element of the input matrix (matrix[i][j] & z).
      */
-    public static final long[][] bitwiseAnd(final long[][] matrix,
-            final long z) {
+    public static final long[][] bitwiseAnd(final long[][] matrix, final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -206,7 +215,7 @@ public class LongMatrixMath {
      *  IllegalArgumentException.
      */
     public static final long[][] bitwiseAnd(final long[][] matrix1,
-            final long[][] matrix2) {
+        final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -219,6 +228,7 @@ public class LongMatrixMath {
                 returnValue[i][j] = matrix1[i][j] & matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -236,14 +246,14 @@ public class LongMatrixMath {
                 returnValue[i][j] = ~matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
     /** Return a new matrix that is the formed by bitwise ORing z with
      *  each element of the input matrix (matrix[i][j] | z).
      */
-    public static final long[][] bitwiseOr(final long[][] matrix,
-            final long z) {
+    public static final long[][] bitwiseOr(final long[][] matrix, final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -264,7 +274,7 @@ public class LongMatrixMath {
      *  IllegalArgumentException.
      */
     public static final long[][] bitwiseOr(final long[][] matrix1,
-            final long[][] matrix2) {
+        final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -277,14 +287,14 @@ public class LongMatrixMath {
                 returnValue[i][j] = matrix1[i][j] | matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
     /** Return a new matrix that is the formed by bitwise XORing z
      *  with each element of the input matrix (matrix[i][j] ^ z).
      */
-    public static final long[][] bitwiseXor(final long[][] matrix,
-            final long z) {
+    public static final long[][] bitwiseXor(final long[][] matrix, final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -305,7 +315,7 @@ public class LongMatrixMath {
      *  IllegalArgumentException.
      */
     public static final long[][] bitwiseXor(final long[][] matrix1,
-            final long[][] matrix2) {
+        final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -318,9 +328,9 @@ public class LongMatrixMath {
                 returnValue[i][j] = matrix1[i][j] ^ matrix2[i][j];
             }
         }
+
         return returnValue;
     }
-
 
     /** Return a new matrix that is a sub-matrix of the input
      *  matrix argument. The row and column from which to start
@@ -332,16 +342,17 @@ public class LongMatrixMath {
      *  @param colSpan An int specifying how many columns to copy.
      */
     public static final long[][] crop(final long[][] matrix,
-            final int rowStart, final int colStart,
-            final int rowSpan, final int colSpan) {
+        final int rowStart, final int colStart, final int rowSpan,
+        final int colSpan) {
         long[][] returnValue = new long[rowSpan][colSpan];
+
         for (int i = 0; i < rowSpan; i++) {
-            System.arraycopy(matrix[rowStart + i], colStart,
-                    returnValue[i], 0, colSpan);
+            System.arraycopy(matrix[rowStart + i], colStart, returnValue[i], 0,
+                colSpan);
         }
+
         return returnValue;
     }
-
 
     /** Return a new matrix that is constructed by placing the
      *  elements of the input array on the diagonal of the square
@@ -355,7 +366,6 @@ public class LongMatrixMath {
         long[][] returnValue = new long[n][n];
 
         // Assume the matrix is zero-filled.
-
         for (int i = 0; i < n; i++) {
             returnValue[i][i] = array[i];
         }
@@ -371,11 +381,13 @@ public class LongMatrixMath {
      */
     public static final long[][] divide(long[][] matrix, long z) {
         long[][] returnValue = new long[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                returnValue[i][j] = matrix[i][j]/z;
+                returnValue[i][j] = matrix[i][j] / z;
             }
         }
+
         return returnValue;
     }
 
@@ -386,18 +398,20 @@ public class LongMatrixMath {
      *  throw an IllegalArgumentException.
      */
     public static final long[][] divideElements(final long[][] matrix1,
-            final long[][] matrix2) {
+        final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("divideElements", matrix1, matrix2);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] / matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -427,11 +441,13 @@ public class LongMatrixMath {
      *  @return A new array of longs.
      */
     public static final long[] fromMatrixToArray(final long[][] matrix,
-            int maxRow, int maxCol) {
+        int maxRow, int maxCol) {
         long[] returnValue = new long[maxRow * maxCol];
+
         for (int i = 0; i < maxRow; i++) {
             System.arraycopy(matrix[i], 0, returnValue, i * maxCol, maxCol);
         }
+
         return returnValue;
     }
 
@@ -440,10 +456,12 @@ public class LongMatrixMath {
      */
     public static final long[][] identity(final int dim) {
         long[][] returnValue = new long[dim][dim];
+
         // we rely on the fact Java fills the allocated matrix with 0's
         for (int i = 0; i < dim; i++) {
             returnValue[i][i] = 1L;
         }
+
         return returnValue;
     }
 
@@ -461,9 +479,9 @@ public class LongMatrixMath {
      *  @param srcMatrix A matrix of longs, used as the source.
      */
     public static final void matrixCopy(final long[][] srcMatrix,
-            final long[][] destMatrix) {
+        final long[][] destMatrix) {
         matrixCopy(srcMatrix, 0, 0, destMatrix, 0, 0, _rows(srcMatrix),
-                _columns(srcMatrix));
+            _columns(srcMatrix));
     }
 
     /** Replace the first matrix argument's values, in the specified row
@@ -481,29 +499,28 @@ public class LongMatrixMath {
      *  @param colSpan An int specifying how many columns to copy.
      */
     public static final void matrixCopy(final long[][] srcMatrix,
-            final int srcRowStart, final int srcColStart,
-            final long[][] destMatrix,
-            final int destRowStart, final int destColStart,
-            final int rowSpan, final int colSpan) {
+        final int srcRowStart, final int srcColStart,
+        final long[][] destMatrix, final int destRowStart,
+        final int destColStart, final int rowSpan, final int colSpan) {
         // We should verify the parameters here
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
-                    destMatrix[destRowStart + i], destColStart,
-                    colSpan);
+                destMatrix[destRowStart + i], destColStart, colSpan);
         }
     }
 
     /** Return a new matrix that is constructed by computing the
      *  remainders between each element in the matrix and z.
      */
-    public static final long[][] modulo(final long[][] matrix,
-            final long z) {
+    public static final long[][] modulo(final long[][] matrix, final long z) {
         long[][] returnValue = new long[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
                 returnValue[i][j] = matrix[i][j] % z;
             }
         }
+
         return returnValue;
     }
 
@@ -514,18 +531,20 @@ public class LongMatrixMath {
      *  IllegalArgumentException.
      */
     public static final long[][] modulo(final long[][] matrix1,
-            final long[][] matrix2) {
+        final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("modulo", matrix1, matrix2);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] % matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -533,16 +552,18 @@ public class LongMatrixMath {
      *  by a scaleFactor.
      */
     public static final long[][] multiply(final long[][] matrix,
-            final long scaleFactor) {
+        final long scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix[i][j] * scaleFactor;
             }
         }
+
         return returnValue;
     }
 
@@ -553,26 +574,29 @@ public class LongMatrixMath {
      *  of columns of the matrix.
      */
     public static final long[] multiply(final long[][] matrix,
-            final long[] array) {
-
+        final long[] array) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (rows != array.length) {
             throw new IllegalArgumentException(
-                    "preMultiply : array does not have the same number of " +
-                    "elements (" + array.length + ") as the number of rows " +
-                    "of the matrix (" + rows + ")");
+                "preMultiply : array does not have the same number of "
+                + "elements (" + array.length + ") as the number of rows "
+                + "of the matrix (" + rows + ")");
         }
 
         long[] returnValue = new long[columns];
+
         for (int i = 0; i < columns; i++) {
             long sum = 0L;
+
             for (int j = 0; j < rows; j++) {
-                sum += matrix[j][i] * array[j];
+                sum += (matrix[j][i] * array[j]);
             }
+
             returnValue[i] = sum;
         }
+
         return returnValue;
     }
 
@@ -583,25 +607,29 @@ public class LongMatrixMath {
      *  of rows of the matrix.
      */
     public static final long[] multiply(final long[] array,
-            final long[][] matrix) {
+        final long[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (columns != array.length) {
             throw new IllegalArgumentException(
-                    "postMultiply() : array does not have the same number " +
-                    "of elements (" + array.length + ") as the number of " +
-                    "columns of the matrix (" + columns + ")");
+                "postMultiply() : array does not have the same number "
+                + "of elements (" + array.length + ") as the number of "
+                + "columns of the matrix (" + columns + ")");
         }
 
         long[] returnValue = new long[rows];
+
         for (int i = 0; i < rows; i++) {
             long sum = 0L;
+
             for (int j = 0; j < columns; j++) {
-                sum += matrix[i][j] * array[j];
+                sum += (matrix[i][j] * array[j]);
             }
+
             returnValue[i] = sum;
         }
+
         return returnValue;
     }
 
@@ -622,18 +650,21 @@ public class LongMatrixMath {
      *  @param matrix2 The second matrix of longs.
      *  @return A new matrix of longs.
      */
-    public static final long[][] multiply(long[][] matrix1,
-            long[][] matrix2) {
+    public static final long[][] multiply(long[][] matrix1, long[][] matrix2) {
         long[][] returnValue = new long[_rows(matrix1)][matrix2[0].length];
+
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 long sum = 0L;
+
                 for (int k = 0; k < matrix2.length; k++) {
-                    sum += matrix1[i][k] * matrix2[k][j];
+                    sum += (matrix1[i][k] * matrix2[k][j]);
                 }
+
                 returnValue[i][j] = sum;
             }
         }
+
         return returnValue;
     }
 
@@ -646,18 +677,20 @@ public class LongMatrixMath {
      *  matrix multiplication.
      */
     public static final long[][] multiplyElements(final long[][] matrix1,
-            final long[][] matrix2) {
+        final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("multiplyElements", matrix1, matrix2);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] * matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -669,11 +702,13 @@ public class LongMatrixMath {
         int columns = _columns(matrix);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = -matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -690,7 +725,7 @@ public class LongMatrixMath {
      *  negative for right shift.
      *  @return A new matrix of longs.  */
     public static final long[][] shiftArithmetic(final long[][] matrix,
-            final int shiftAmount) {
+        final int shiftAmount) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -726,7 +761,7 @@ public class LongMatrixMath {
      *  negative for right shift.
      *  @return A new matrix of longs.  */
     public static final long[][] shiftLogical(final long[][] matrix,
-            final int shiftAmount) {
+        final int shiftAmount) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -749,25 +784,26 @@ public class LongMatrixMath {
         return returnValue;
     }
 
-
     /** Return a new matrix that is constructed from the argument by
      *  subtracting the second matrix from the first one.  If the two
      *  matrices are not the same size, throw an
      *  IllegalArgumentException.
      */
     public static final long[][] subtract(final long[][] matrix1,
-            final long[][] matrix2) {
+        final long[][] matrix2) {
         _checkSameDimension("subtract", matrix1, matrix2);
 
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         long[][] returnValue = new long[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] - matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -776,11 +812,13 @@ public class LongMatrixMath {
      */
     public static final long sum(final long[][] matrix) {
         long sum = 0L;
+
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
                 sum += matrix[i][j];
             }
         }
+
         return sum;
     }
 
@@ -800,9 +838,10 @@ public class LongMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = new Complex((double)matrix[i][j], 0.0);
+                returnValue[i][j] = new Complex((double) matrix[i][j], 0.0);
             }
         }
+
         return returnValue;
     }
 
@@ -822,6 +861,7 @@ public class LongMatrixMath {
                 returnValue[i][j] = (double) matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -841,6 +881,7 @@ public class LongMatrixMath {
                 returnValue[i][j] = (float) matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -860,6 +901,7 @@ public class LongMatrixMath {
                 returnValue[i][j] = (int) matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -875,11 +917,13 @@ public class LongMatrixMath {
      *  @return A new matrix of longs.
      */
     public static final long[][] toMatrixFromArray(long[] array, int rows,
-            int cols) {
+        int cols) {
         long[][] returnValue = new long[rows][cols];
+
         for (int i = 0; i < rows; i++) {
             System.arraycopy(array, i * cols, returnValue[i], 0, cols);
         }
+
         return returnValue;
     }
 
@@ -897,14 +941,14 @@ public class LongMatrixMath {
      *  format argument.
      */
     public static final String toString(final long[][] matrix,
-            String elementDelimiter, String matrixBegin, String matrixEnd,
-            String vectorBegin, String vectorDelimiter, String vectorEnd) {
+        String elementDelimiter, String matrixBegin, String matrixEnd,
+        String vectorBegin, String vectorDelimiter, String vectorEnd) {
         StringBuffer sb = new StringBuffer();
         sb.append(matrixBegin);
 
         for (int i = 0; i < _rows(matrix); i++) {
-
             sb.append(vectorBegin);
+
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(Long.toString(matrix[i][j]));
 
@@ -925,7 +969,6 @@ public class LongMatrixMath {
         return new String(sb);
     }
 
-
     /** Return the trace of a square matrix, which is the sum of the
      *  diagonal entries A<sub>11</sub> + A<sub>22</sub> + ... + A<sub>nn</sub>
      *  Throw an IllegalArgumentException if the matrix is not square.
@@ -938,6 +981,7 @@ public class LongMatrixMath {
         for (int i = 0; i < dim; i++) {
             sum += matrix[i][i];
         }
+
         return sum;
     }
 
@@ -950,11 +994,13 @@ public class LongMatrixMath {
         int columns = _columns(matrix);
 
         long[][] returnValue = new long[columns][rows];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[j][i] = matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -970,7 +1016,7 @@ public class LongMatrixMath {
      *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final long[][] matrix1,
-            final long[][] matrix2, long distance) {
+        final long[][] matrix2, long distance) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -978,12 +1024,13 @@ public class LongMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (matrix1[i][j] > matrix2[i][j] + distance ||
-                        matrix1[i][j] < matrix2[i][j] - distance) {
+                if ((matrix1[i][j] > (matrix2[i][j] + distance))
+                        || (matrix1[i][j] < (matrix2[i][j] - distance))) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
@@ -999,7 +1046,7 @@ public class LongMatrixMath {
      *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final long[][] matrix1,
-            final long[][] matrix2, final long[][] errorMatrix) {
+        final long[][] matrix2, final long[][] errorMatrix) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1008,14 +1055,14 @@ public class LongMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j] ||
-                        matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j]) {
+                if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
+                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
                     return false;
                 }
             }
         }
-        return true;
 
+        return true;
     }
 
     /** Check that the two matrix arguments are of the same dimension.
@@ -1025,17 +1072,15 @@ public class LongMatrixMath {
      *  @param matrix2 A matrix of longs.
      */
     protected static final void _checkSameDimension(final String caller,
-            final long[][] matrix1, final long[][] matrix2) {
+        final long[][] matrix1, final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.LongMatrixMath." + caller
-                    + "() : one matrix "
-                    + _dimensionString(matrix1)
-                    + " is not the same size as another matrix "
-                    + _dimensionString(matrix2) + ".");
+            throw new IllegalArgumentException("ptolemy.math.LongMatrixMath."
+                + caller + "() : one matrix " + _dimensionString(matrix1)
+                + " is not the same size as another matrix "
+                + _dimensionString(matrix2) + ".");
         }
     }
 
@@ -1046,13 +1091,13 @@ public class LongMatrixMath {
      *  @return The dimension of the square matrix.
      */
     protected static final int _checkSquare(final String caller,
-            final long[][] matrix) {
+        final long[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.LongMatrixMath." + caller +
-                    "() : matrix argument " + _dimensionString(matrix) +
-                    " is not a square matrix.");
+            throw new IllegalArgumentException("ptolemy.math.LongMatrixMath."
+                + caller + "() : matrix argument " + _dimensionString(matrix)
+                + " is not a square matrix.");
         }
+
         return _rows(matrix);
     }
 

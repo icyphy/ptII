@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.lib;
 
 import java.awt.geom.Point2D;
@@ -38,6 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.canvas.Figure;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Translate2D
@@ -52,7 +52,6 @@ import diva.canvas.Figure;
    @Pt.AcceptedRating Red (chf)
 */
 public class Translate2D extends GRTransform2D {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,7 +61,7 @@ public class Translate2D extends GRTransform2D {
      *   actor with this name.
      */
     public Translate2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xTranslate = new TypedIOPort(this, "xTranslate", true, false);
@@ -71,12 +70,12 @@ public class Translate2D extends GRTransform2D {
         yTranslate = new TypedIOPort(this, "yTranslate", true, false);
         yTranslate.setTypeEquals(BaseType.DOUBLE);
 
-        initialXTranslation = new Parameter(this,
-                "initialXTranslation", new DoubleToken(0.0));
+        initialXTranslation = new Parameter(this, "initialXTranslation",
+                new DoubleToken(0.0));
         initialXTranslation.setTypeEquals(BaseType.DOUBLE);
 
-        initialYTranslation = new Parameter(this,
-                "initialYTranslation", new DoubleToken(0.0));
+        initialYTranslation = new Parameter(this, "initialYTranslation",
+                new DoubleToken(0.0));
         initialYTranslation.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -118,11 +117,12 @@ public class Translate2D extends GRTransform2D {
      *  parameters can't be obtained.
      */
     protected void _applyInitialTransform(Figure figure)
-            throws IllegalActionException {
-        double initialX = ((DoubleToken)
-                initialXTranslation.getToken()).doubleValue();
-        double initialY = ((DoubleToken)
-                initialYTranslation.getToken()).doubleValue();
+        throws IllegalActionException {
+        double initialX = ((DoubleToken) initialXTranslation.getToken())
+            .doubleValue();
+        double initialY = ((DoubleToken) initialYTranslation.getToken())
+            .doubleValue();
+
         // Translate to?
         figure.translate(initialX, initialY);
     }
@@ -133,15 +133,14 @@ public class Translate2D extends GRTransform2D {
      *  @exception IllegalActionException If the value of some
      *  parameters can't be obtained.
      */
-    protected void _applyTransform(Figure figure)
-            throws IllegalActionException {
+    protected void _applyTransform(Figure figure) throws IllegalActionException {
         boolean applyTransform = false;
         double xOffset = 0.0;
         double yOffset = 0.0;
-        double initialX = ((DoubleToken)
-                initialXTranslation.getToken()).doubleValue();
-        double initialY = ((DoubleToken)
-                initialYTranslation.getToken()).doubleValue();
+        double initialX = ((DoubleToken) initialXTranslation.getToken())
+            .doubleValue();
+        double initialY = ((DoubleToken) initialYTranslation.getToken())
+            .doubleValue();
         boolean isAccumulating = _isAccumulating();
         Point2D origin = figure.getOrigin();
 
@@ -150,6 +149,7 @@ public class Translate2D extends GRTransform2D {
                 double in = ((DoubleToken) xTranslate.get(0)).doubleValue();
                 applyTransform = true;
                 xOffset = in;
+
                 if (!isAccumulating) {
                     // Subtract the current xOrigin.
                     xOffset = xOffset - origin.getX() + initialX;
@@ -162,6 +162,7 @@ public class Translate2D extends GRTransform2D {
                 double in = ((DoubleToken) yTranslate.get(0)).doubleValue();
                 applyTransform = true;
                 yOffset = in;
+
                 if (!isAccumulating) {
                     // Subtract the current yOrigin.
                     yOffset = yOffset - origin.getY() + initialY;

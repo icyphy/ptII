@@ -24,28 +24,29 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
 import byucc.jhdl.base.Cell;
 import byucc.jhdl.base.CellInterface;
 import byucc.jhdl.base.Wire;
 
-import java.util.*;
+import soot.*;
 
-import ptolemy.copernicus.jhdl.soot.*;
-import ptolemy.copernicus.jhdl.util.*;
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.*;
-import soot.jimple.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * A JHDLIOPort is a Ptolemy representation of a JHDL port. It has a
  * signal width (bit width) and methods for resolving bit widths.
@@ -56,16 +57,14 @@ import soot.jimple.*;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class JHDLIOPort extends IOPort implements Signal {
-
     public JHDLIOPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, Signal.UNRESOLVED);
     }
 
     public JHDLIOPort(ComponentEntity container, String name, int width)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _portWidth = width;
     }
@@ -79,8 +78,10 @@ public class JHDLIOPort extends IOPort implements Signal {
     }
 
     public boolean isResolved() {
-        if (_portWidth != Signal.UNRESOLVED)
+        if (_portWidth != Signal.UNRESOLVED) {
             return true;
+        }
+
         return false;
     }
 
@@ -88,7 +89,7 @@ public class JHDLIOPort extends IOPort implements Signal {
     // on all linked relations. Can only perform resolution when
     // port is resolved.
     public boolean resolveInside() {
-        System.out.println("Resolving Inside "+this);
+        System.out.println("Resolving Inside " + this);
         return _resolveRelations(insideRelationList()); // inside relations
     }
 
@@ -96,38 +97,49 @@ public class JHDLIOPort extends IOPort implements Signal {
     // on all linked relations. Can only perform resolution when
     // port is resolved.
     public boolean resolveOutside() {
-        System.out.println("Resolving Outside "+this);
-        return _resolveRelations(linkedRelationList());  // outside relations
+        System.out.println("Resolving Outside " + this);
+        return _resolveRelations(linkedRelationList()); // outside relations
     }
 
     // Resolve a list of relations linked to this port
     protected boolean _resolveRelations(List relationList) {
-        if (!isResolved())
+        if (!isResolved()) {
             return false;
+        }
+
         int width = getSignalWidth();
+
         // propagate signal width of this port to each linked relation
         // and Port
-        for (Iterator i = relationList.iterator();i.hasNext();) {
+        for (Iterator i = relationList.iterator(); i.hasNext();) {
             JHDLIORelation r = (JHDLIORelation) i.next();
-            System.out.println("Resolving "+r);
+            System.out.println("Resolving " + r);
+
             if (!r.isResolved()) {
                 r.setSignalWidth(width);
             } else {
-                if (r.getSignalWidth() !=width)
+                if (r.getSignalWidth() != width) {
                     return false;
+                }
             }
-            for (Iterator j = r.linkedPortList().iterator(); j.hasNext(); ) {
+
+            for (Iterator j = r.linkedPortList().iterator(); j.hasNext();) {
                 JHDLIOPort port = (JHDLIOPort) j.next();
-                if (port == this)
+
+                if (port == this) {
                     continue;
+                }
+
                 if (!port.isResolved()) {
                     port.setSignalWidth(width);
                 } else {
-                    if (port.getSignalWidth() !=width)
+                    if (port.getSignalWidth() != width) {
                         return false;
+                    }
                 }
             }
         }
+
         return true;
     }
 
@@ -140,8 +152,11 @@ public class JHDLIOPort extends IOPort implements Signal {
      **/
     public JHDLIORelation getOutsideRelation() {
         Iterator i = linkedRelationList().iterator();
-        if (!i.hasNext())
+
+        if (!i.hasNext()) {
             return null;
+        }
+
         JHDLIORelation or = (JHDLIORelation) i.next();
         return or;
     }
@@ -158,25 +173,30 @@ public class JHDLIOPort extends IOPort implements Signal {
      **/
     public JHDLIORelation getInsideRelation() {
         Iterator i = insideRelationList().iterator();
-        if (!i.hasNext())
+
+        if (!i.hasNext()) {
             return null;
+        }
+
         JHDLIORelation ir = (JHDLIORelation) i.next();
+
         // there should not be any
         return ir;
     }
 
     // Creates a JHDL port
     public void buildJHDLPort(Cell parent) {
-
         String portName = getName();
 
         // 1. Add JHDL port to JHDL parent Cell
-        CellInterface ci=null;
+        CellInterface ci = null;
+
         if (isInput()) {
-            ci = Cell.in(portName,getSignalWidth());
+            ci = Cell.in(portName, getSignalWidth());
         } else {
-            ci = Cell.out(portName,getSignalWidth());
+            ci = Cell.out(portName, getSignalWidth());
         }
+
         parent.addPort(ci);
 
         // 2. Get top-level wire (assume top-level wire has been added)
@@ -184,22 +204,19 @@ public class JHDLIOPort extends IOPort implements Signal {
         Wire outsideWire = or.getJHDLWire();
 
         // 3. JHDL port connect (get inside Wire)
-        Wire insideWire = parent.connect(portName,outsideWire);
-        System.out.println("Creating inner wire "+insideWire);
+        Wire insideWire = parent.connect(portName, outsideWire);
+        System.out.println("Creating inner wire " + insideWire);
 
         // 4. Get inner relation linked to this port & associate
         //    relation with new Wire
         JHDLIORelation ir = getInsideRelation();
         ir.setJHDLWire(insideWire);
-
     }
 
     protected String _description(int detail, int indent, int bracket) {
-        return super._description(detail,indent,bracket) + " { portWidth="+
-            _portWidth + (isInput() ? " input" : " output" )+ " }";
+        return super._description(detail, indent, bracket) + " { portWidth="
+        + _portWidth + (isInput() ? " input" : " output") + " }";
     }
 
     protected int _portWidth;
-
 }
-

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.parameters;
 
 import ptolemy.data.DoubleMatrixToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LocationParameter
+
 /**
    A parameter that specifies the location of its container.
    This location is used when rendering the container in a Vergil diagram.
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class LocationParameter extends Parameter implements Locatable {
-
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will use the
@@ -68,7 +68,7 @@ public class LocationParameter extends Parameter implements Locatable {
      *   a parameter already in the container.
      */
     public LocationParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setTypeEquals(BaseType.DOUBLE_MATRIX);
         setExpression("[0.0, 0.0]");
@@ -83,7 +83,7 @@ public class LocationParameter extends Parameter implements Locatable {
      */
     public double[] getLocation() {
         try {
-            DoubleMatrixToken token = (DoubleMatrixToken)getToken();
+            DoubleMatrixToken token = (DoubleMatrixToken) getToken();
             double[][] value = token.doubleMatrix();
             return value[0];
         } catch (IllegalActionException ex) {
@@ -99,7 +99,7 @@ public class LocationParameter extends Parameter implements Locatable {
      *  @exception IllegalActionException If the location is rejected.
      *  @see #getLocation()
      */
-    public void setLocation(double[] location) throws IllegalActionException{
+    public void setLocation(double[] location) throws IllegalActionException {
         double[][] value = new double[1][2];
         value[0][0] = location[0];
         value[0][1] = location[1];

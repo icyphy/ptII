@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.lib;
 
 import java.net.URL;
@@ -47,6 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import com.sun.j3d.utils.geometry.Primitive;
 import com.sun.j3d.utils.geometry.Sphere;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sphere3D
 
@@ -63,7 +63,6 @@ import com.sun.j3d.utils.geometry.Sphere;
     @Pt.AcceptedRating Green (liuxj)
 */
 public class Sphere3D extends GRShadedShape {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,7 +72,7 @@ public class Sphere3D extends GRShadedShape {
      *   actor with this name.
      */
     public Sphere3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         radius = new Parameter(this, "radius");
@@ -105,21 +104,21 @@ public class Sphere3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** If the specified attribute is the <i>radius</i>, then modify the
      *  sphere to the new radius. Note that this will take effect
      *  only if the <i>allowRuntimeChanges</i> parameter has value true.
      *  @param attribute The attribute to change.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == radius && _changesAllowedNow) {
+        throws IllegalActionException {
+        if ((attribute == radius) && _changesAllowedNow) {
             if (_scaleTransform != null) {
                 double scale = ((DoubleToken) radius.getToken()).doubleValue();
                 _scaleTransform.setScale(new Vector3d(scale, scale, scale));
+
                 // The following seems to be needed so the new scale
                 // takes effect.
-                ((TransformGroup)_containedNode).setTransform(_scaleTransform);
+                ((TransformGroup) _containedNode).setTransform(_scaleTransform);
             }
         } else {
             super.attributeChanged(attribute);
@@ -138,9 +137,9 @@ public class Sphere3D extends GRShadedShape {
 
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
-        if (textureURL != null || _changesAllowedNow) {
-            primitiveFlags = primitiveFlags
-                    | Primitive.GENERATE_TEXTURE_COORDS;
+
+        if ((textureURL != null) || _changesAllowedNow) {
+            primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
 
         if (_changesAllowedNow) {
@@ -149,31 +148,31 @@ public class Sphere3D extends GRShadedShape {
             primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
         }
 
-        int divisionsValue = ((IntToken)divisions.getToken()).intValue();
+        int divisionsValue = ((IntToken) divisions.getToken()).intValue();
         double radiusValue = ((DoubleToken) radius.getToken()).doubleValue();
 
         // If changes are not allowed, set the radius of the sphere once
         // and for all. Otherwise, use a transform.
         double scale = radiusValue;
+
         if (_changesAllowedNow) {
             scale = 1.0;
         }
-        _containedNode = new Sphere((float)scale,
-                primitiveFlags,
-                divisionsValue,
-                _appearance);
+
+        _containedNode = new Sphere((float) scale, primitiveFlags,
+                divisionsValue, _appearance);
 
         if (_changesAllowedNow) {
             TransformGroup scaler = new TransformGroup();
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();
-            _scaleTransform.setScale(
-                    new Vector3d(radiusValue, radiusValue, radiusValue));
+            _scaleTransform.setScale(new Vector3d(radiusValue, radiusValue,
+                    radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(_containedNode);
             _containedNode = scaler;
         } else {
-                _scaleTransform = null;
+            _scaleTransform = null;
         }
     }
 

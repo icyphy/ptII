@@ -27,9 +27,9 @@ COPYRIGHTENDKEY
 
 */
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StringTest
+
 /**
 
 A simple class for testing that the String and StringBuffer classes work.
@@ -41,10 +41,8 @@ A simple class for testing that the String and StringBuffer classes work.
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class  StringTest{
-
-    public static void main(String args[]) {
+public class StringTest {
+    public static void main(String[] args) {
         testStringConstructors();
         testStringMethods();
         testStringBuffer();
@@ -56,7 +54,7 @@ public class  StringTest{
         System.out.println(a);
 
         // Initialize with char Array.
-        char[] charArray = {'a', 'b', 'c', 'd', 'e'};
+        char[] charArray = { 'a', 'b', 'c', 'd', 'e' };
         a = new String(charArray);
         System.out.println(a);
 
@@ -65,9 +63,9 @@ public class  StringTest{
 
         // Initialize with String.
         a = "123";
+
         String b = new String(a);
         System.out.println(b);
-
     }
 
     // Test some methods of the String class.
@@ -85,5 +83,4 @@ public class  StringTest{
         buffer.append("\nThen fall, Caesar!");
         System.out.println(buffer);
     }
-
 }

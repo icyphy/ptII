@@ -27,8 +27,8 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.BusContention;
+
 
 // Ptolemy imports.
 import ptolemy.actor.TypedIOPort;
@@ -39,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ContentionAlarm
+
 /**
    A ContentionAlarm is a CSP actor that creates an output only after
    timed deadlock has been reached by all other CSP actors in the
@@ -79,9 +81,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.actor.gui.ExecEvent
    @see ptolemy.actor.gui.ExecEventListener
 */
-
 public class ContentionAlarm extends CSPActor {
-
     /** Construct a ContentionAlarm actor with the specified container
      *  and name. Set the type of the input and ouput ports to
      *  BaseType.GENERAL.
@@ -93,7 +93,7 @@ public class ContentionAlarm extends CSPActor {
      *  already has an actor with this name.
      */
     public ContentionAlarm(CompositeEntity cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -126,18 +126,17 @@ public class ContentionAlarm extends CSPActor {
      *  the input or output ports throws an IllegalActionException.
      */
     public void fire() throws IllegalActionException {
-
         while (true) {
             // State 1
-            _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+            _debug(new ExecEvent(this, ExecEvent.WAITING));
             input.get(0);
 
             // State 2
-            _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+            _debug(new ExecEvent(this, ExecEvent.WAITING));
             _waitForDeadlock();
 
             // State 3
-            _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
+            _debug(new ExecEvent(this, ExecEvent.ACCESSING));
             output.send(0, new Token());
         }
     }

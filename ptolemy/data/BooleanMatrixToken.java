@@ -26,8 +26,8 @@ COPYRIGHTENDKEY
 
 There are currently no interesting operations implemented.
 */
-
 package ptolemy.data;
+
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
@@ -38,8 +38,10 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BooleanMatrixToken
+
 /**
    A token that contains a 2-D boolean matrix.
 
@@ -50,7 +52,6 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class BooleanMatrixToken extends MatrixToken {
-
     /** Construct an BooleanMatrixToken with a one by one matrix. The
      *  only element in the matrix has value false.
      */
@@ -68,12 +69,12 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public BooleanMatrixToken(boolean[][] value)
-            throws IllegalActionException {
+    public BooleanMatrixToken(boolean[][] value) throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("BooleanMatrixToken: The "
-                    + "specified matrix is null.");
+                + "specified matrix is null.");
         }
+
         _initialize(value);
     }
 
@@ -86,12 +87,13 @@ public class BooleanMatrixToken extends MatrixToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+
         if (token instanceof BooleanMatrixToken) {
-            boolean[][] value = ((BooleanMatrixToken)token).booleanMatrix();
+            boolean[][] value = ((BooleanMatrixToken) token).booleanMatrix();
             _initialize(value);
         } else {
             throw new IllegalActionException("A BooleanMatrixToken cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -109,29 +111,32 @@ public class BooleanMatrixToken extends MatrixToken {
      *  of the array cannot be losslessly converted to a boolean.
      */
     public BooleanMatrixToken(Token[] tokens, int rows, int columns)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (tokens == null) {
             throw new IllegalActionException(
-                    "BooleanMatrixToken: The specified"
-                    + " array is null.");
+                "BooleanMatrixToken: The specified" + " array is null.");
         }
-        if (tokens.length != rows * columns) {
+
+        if (tokens.length != (rows * columns)) {
             throw new IllegalActionException(
-                    "BooleanMatrixToken: The specified"
-                    + " array is not of the correct length");
+                "BooleanMatrixToken: The specified"
+                + " array is not of the correct length");
         }
+
         _rowCount = rows;
         _columnCount = columns;
         _value = new boolean[rows][columns];
+
         for (int i = 0; i < tokens.length; i++) {
             Token token = tokens[i];
+
             if (token instanceof BooleanToken) {
-                _value[i / columns][i % columns] =
-                    ((BooleanToken)token).booleanValue();
+                _value[i / columns][i % columns] = ((BooleanToken) token)
+                    .booleanValue();
             } else {
                 throw new IllegalActionException("BooleanMatrixToken: Element "
-                        + i + " in the array with value " + token +
-                        " is not a ScalarToken");
+                    + i + " in the array with value " + token
+                    + " is not a ScalarToken");
             }
         }
     }
@@ -145,11 +150,13 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public boolean[][] booleanMatrix() {
         boolean[][] result = new boolean[_rowCount][_columnCount];
+
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
                 result[i][j] = _value[i][j];
             }
         }
+
         return result;
     }
 
@@ -167,16 +174,16 @@ public class BooleanMatrixToken extends MatrixToken {
      *   be carried out.
      */
     public static BooleanMatrixToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof BooleanMatrixToken) {
-            return (BooleanMatrixToken)token;
+            return (BooleanMatrixToken) token;
         }
 
         int compare = TypeLattice.compare(BaseType.BOOLEAN_MATRIX, token);
-        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(
-                            token, "[boolean]"));
+
+        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
+                    token, "[boolean]"));
         }
 
         // try boolean
@@ -188,11 +195,10 @@ public class BooleanMatrixToken extends MatrixToken {
         //             result[0][0] = tem.booleanValue();
         //             return new BooleanMatrixToken(result);
         //         }
-
         // The argument is below BooleanMatrixToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "[boolean]"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "[boolean]"));
     }
 
     /** Return true if the argument is an instance of BooleanMatrixToken
@@ -209,15 +215,18 @@ public class BooleanMatrixToken extends MatrixToken {
             return false;
         }
 
-        BooleanMatrixToken matrixArgument = (BooleanMatrixToken)object;
+        BooleanMatrixToken matrixArgument = (BooleanMatrixToken) object;
+
         if (_rowCount != matrixArgument.getRowCount()) {
             return false;
         }
+
         if (_columnCount != matrixArgument.getColumnCount()) {
             return false;
         }
 
         boolean[][] matrix = matrixArgument.booleanMatrix();
+
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
                 if (_value[i][j] != matrix[i][j]) {
@@ -245,7 +254,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public Token getElementAsToken(int row, int column)
-            throws ArrayIndexOutOfBoundsException {
+        throws ArrayIndexOutOfBoundsException {
         return BooleanToken.getInstance(_value[row][column]);
     }
 
@@ -288,6 +297,7 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public int hashCode() {
         int code = 0;
+
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
                 if (_value[i][j]) {
@@ -312,7 +322,7 @@ public class BooleanMatrixToken extends MatrixToken {
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("BooleanMatrixToken.one: "
-                    + "Cannot create identity matrix.");
+                + "Cannot create identity matrix.");
         }
     }
 
@@ -329,7 +339,7 @@ public class BooleanMatrixToken extends MatrixToken {
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("BooleanMatrixToken.oneRight: "
-                    + "Cannot create identity matrix.");
+                + "Cannot create identity matrix.");
         }
     }
 
@@ -341,12 +351,11 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public Token zero() {
         try {
-            return new BooleanMatrixToken(
-                    new boolean [_rowCount][_columnCount]);
+            return new BooleanMatrixToken(new boolean[_rowCount][_columnCount]);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("BooleanMatrixToken.zero: "
-                    + "Cannot create zero matrix.");
+                + "Cannot create zero matrix.");
         }
     }
 
@@ -356,24 +365,26 @@ public class BooleanMatrixToken extends MatrixToken {
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
-    protected boolean [][] _createIdentity(int dim) {
-        boolean [][] a = new boolean[dim][dim];
+    protected boolean[][] _createIdentity(int dim) {
+        boolean[][] a = new boolean[dim][dim];
+
         // we rely on the fact Java fills the allocated matrix with false.
         for (int i = 0; i < dim; i++) {
             a[i][i] = true;
         }
+
         return a;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Initialize the row and column count and copy the specified
     // matrix. This method is used by the constructors.
     private void _initialize(boolean[][] value) {
         _rowCount = value.length;
         _columnCount = value[0].length;
         _value = new boolean[_rowCount][_columnCount];
+
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
                 _value[i][j] = value[i][j];

@@ -26,27 +26,27 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jmf;
 
+import java.awt.Image;
+
+import javax.media.Buffer;
+import javax.media.util.ImageToBuffer;
+
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.ImageToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 
-
-import java.awt.Image;
-import javax.media.Buffer;
-import javax.media.util.ImageToBuffer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageToJMF
+
 /**
    Convert an ImageToken into a JMFImageToken.
 
@@ -57,7 +57,6 @@ import javax.media.util.ImageToBuffer;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ImageToJMF extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,7 +66,7 @@ public class ImageToJMF extends Transformer {
      *   actor with this name.
      */
     public ImageToJMF(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         frameRate = new Parameter(this, "frameRate");
         frameRate.setExpression("15");
@@ -78,7 +77,6 @@ public class ImageToJMF extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
 
     /** The frame rate in frames per second at which the images are
      *  being generated.  If video is being generated, then the frame
@@ -96,11 +94,10 @@ public class ImageToJMF extends Transformer {
      *  @exception IllegalActionException If the base class throws it,
      *  or if the data type is not recognized.
      */
-
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == frameRate) {
-            _frameRate = ((IntToken)frameRate.getToken()).intValue();
+            _frameRate = ((IntToken) frameRate.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -124,13 +121,6 @@ public class ImageToJMF extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The frame rate in frames per second.
     private int _frameRate;
 }
-
-
-
-
-
-

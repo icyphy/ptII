@@ -28,8 +28,10 @@ package ptolemy.data.unit;
 
 import java.util.Vector;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Unit
+
 /**
    Class that contains the internal representation of a Unit.
    A Unit has the mathematical notation  <b>S</b>&ltE1, E2, ..., En&gt
@@ -45,15 +47,16 @@ import java.util.Vector;
    @Pt.AcceptedRating Red (rowland)
 */
 public class Unit implements UnitPresentation {
-
     /** Create a Unit with no name and the unitless type.
      *
      */
     public Unit() {
         _type = new int[UnitLibrary.getNumCategories()];
+
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             _type[i] = 0;
         }
+
         _labels.add("noLabel" + _noLabelCounter++);
     }
 
@@ -62,8 +65,10 @@ public class Unit implements UnitPresentation {
      */
     public Unit(BaseUnit bu) {
         this();
+
         String name = bu.getName();
         setPrimaryLabel(name);
+
         String spec = bu.getExpression();
         int index = UnitUtilities.getUnitCategoryIndex(name);
         _type[index] = 1;
@@ -86,10 +91,13 @@ public class Unit implements UnitPresentation {
     public Unit copy() {
         Unit retv = new Unit();
         retv._setLabels((Vector) getLabels().clone());
-        int newExponents[] = retv.getType();
+
+        int[] newExponents = retv.getType();
+
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             newExponents[i] = _type[i];
         }
+
         retv.setScale(getScale());
         return retv;
     }
@@ -102,70 +110,76 @@ public class Unit implements UnitPresentation {
     public String descriptiveForm() {
         String retv = null;
         Unit unit = UnitLibrary.getUnit(this);
+
         if (unit != null) {
             return unit.getPrimaryLabel();
         }
+
         UnitExpr factorization = factor();
+
         if (factorization != null) {
             Vector numerator = new Vector();
             Vector denominator = new Vector();
             Vector uTerms = factorization.getUTerms();
+
             for (int i = 0; i < uTerms.size(); i++) {
                 UnitTerm uterm = (UnitTerm) (uTerms.elementAt(i));
+
                 if (uterm.getExponent() < 0) {
                     denominator.add(uterm.invert());
                 } else if (uterm.getExponent() > 0) {
                     numerator.add(uterm);
                 }
             }
+
             if (numerator.size() == 0) {
                 retv = "1";
             } else {
-                retv =
-                    ((UnitTerm) (numerator.elementAt(0)))
-                        .getUnit()
+                retv = ((UnitTerm) (numerator.elementAt(0))).getUnit()
                         .getPrimaryLabel();
 
                 for (int i = 1; i < numerator.size(); i++) {
-                    retv += " "
-                        + ((UnitTerm) (numerator.elementAt(i)))
-                            .getUnit()
-                            .getPrimaryLabel();
+                    retv += (" "
+                    + ((UnitTerm) (numerator.elementAt(i))).getUnit()
+                       .getPrimaryLabel());
                 }
             }
+
             if (denominator.size() > 0) {
-                retv += "/"
-                    + ((UnitTerm) (denominator.elementAt(0)))
-                        .getUnit()
-                        .getPrimaryLabel();
+                retv += ("/"
+                + ((UnitTerm) (denominator.elementAt(0))).getUnit()
+                   .getPrimaryLabel());
+
                 for (int i = 1; i < denominator.size(); i++) {
-                    retv += " "
-                        + ((UnitTerm) (denominator.elementAt(i)))
-                            .getUnit()
-                            .getPrimaryLabel();
+                    retv += (" "
+                    + ((UnitTerm) (denominator.elementAt(i))).getUnit()
+                       .getPrimaryLabel());
                 }
             }
+
             return retv;
         }
 
         if (_scale == 1.0) {
             int numCats = _type.length;
             String desc = "";
+
             for (int i = 0; i < numCats; i++) {
                 if (_type[i] != 0) {
                     Unit baseUnit = UnitLibrary.getBaseUnit(i);
+
                     if (_type[i] == 1) {
-                        desc += " " + baseUnit.getPrimaryLabel();
+                        desc += (" " + baseUnit.getPrimaryLabel());
                     } else {
-                        desc += " "
-                            + baseUnit.getPrimaryLabel()
-                            + "^"
-                            + _type[i];
+                        desc += (" " + baseUnit.getPrimaryLabel() + "^"
+                        + _type[i]);
                     }
                 }
             }
+
             return desc.substring(1);
         }
+
         // End up here if nothing works, so just return the formal description
         return toString();
     }
@@ -176,11 +190,13 @@ public class Unit implements UnitPresentation {
      */
     public Unit divideBy(Unit divisor) {
         Unit retv = copy();
-        int otherExponents[] = divisor.getType();
-        int thisExponents[] = retv.getType();
+        int[] otherExponents = divisor.getType();
+        int[] thisExponents = retv.getType();
+
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             thisExponents[i] -= otherExponents[i];
         }
+
         retv.setType(thisExponents);
         retv.setScale(retv.getScale() / divisor.getScale());
         return retv;
@@ -191,15 +207,18 @@ public class Unit implements UnitPresentation {
      * @return True if this Unit equals the other Unit.
      */
     public boolean equals(Unit otherUnit) {
-        int otherExponents[] = otherUnit.getType();
+        int[] otherExponents = otherUnit.getType();
+
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             if (_type[i] != otherExponents[i]) {
                 return false;
             }
         }
+
         if (_scale != otherUnit.getScale()) {
             return false;
         }
+
         return true;
     }
 
@@ -211,8 +230,10 @@ public class Unit implements UnitPresentation {
      */
     public UnitExpr factor() {
         Vector uTerms = new Vector();
+
         // First see if it is simply an invert
         Unit invert = UnitLibrary.getUnit(invert());
+
         if (invert != null) {
             UnitExpr retv = new UnitExpr();
             UnitTerm uTerm = new UnitTerm(invert);
@@ -220,18 +241,23 @@ public class Unit implements UnitPresentation {
             retv.addUnitTerm(uTerm);
             return retv;
         }
+
         // Second see if this is of the form numerator/denominator
         Vector libraryUnits = UnitLibrary.getLibrary();
+
         for (int i = 0; i < libraryUnits.size(); i++) {
             Unit factor = (Unit) (libraryUnits.elementAt(i));
             Unit numerator = this.multiplyBy(factor);
             Unit xx = UnitLibrary.getUnit(numerator);
+
             if (xx != null) {
                 UnitExpr retv = new UnitExpr();
+
                 if (xx != UnitLibrary.Identity) {
                     UnitTerm uTerm1 = new UnitTerm(xx);
                     retv.addUnitTerm(uTerm1);
                 }
+
                 UnitTerm uTerm2 = new UnitTerm(factor);
                 uTerm2.setExponent(-1);
                 retv.addUnitTerm(uTerm2);
@@ -243,7 +269,8 @@ public class Unit implements UnitPresentation {
             Unit factor = (Unit) (libraryUnits.elementAt(i));
             Unit remainder = this.divideBy(factor);
             Unit xx = UnitLibrary.getUnit(remainder);
-            if (xx != null && xx != UnitLibrary.Identity) {
+
+            if ((xx != null) && (xx != UnitLibrary.Identity)) {
                 UnitExpr retv = new UnitExpr();
                 UnitTerm uTerm = new UnitTerm(factor);
                 retv.addUnitTerm(uTerm);
@@ -251,8 +278,8 @@ public class Unit implements UnitPresentation {
                 retv.addUnitTerm(uTerm);
                 return retv;
             }
-
         }
+
         return null;
     }
 
@@ -269,14 +296,17 @@ public class Unit implements UnitPresentation {
      */
     public String getLabelsString() {
         String retv = null;
+
         if (_labels.size() > 0) {
             retv = (String) (_labels.elementAt(0));
         } else {
             return "";
         }
+
         for (int i = 1; i < _labels.size(); i++) {
-            retv += (String) (_labels.elementAt(i)) + ",";
+            retv += ((String) (_labels.elementAt(i)) + ",");
         }
+
         return retv;
     }
 
@@ -308,12 +338,14 @@ public class Unit implements UnitPresentation {
      * @return True if the Unit has the same type as the argument.
      */
     public boolean hasSameType(Unit otherUnit) {
-        int otherType[] = otherUnit.getType();
+        int[] otherType = otherUnit.getType();
+
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             if (_type[i] != otherType[i]) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -322,11 +354,13 @@ public class Unit implements UnitPresentation {
      */
     public Unit invert() {
         Unit retv = new Unit();
-        int otherExponents[] = getType();
-        int exponents[] = new int[UnitLibrary.getNumCategories()];
+        int[] otherExponents = getType();
+        int[] exponents = new int[UnitLibrary.getNumCategories()];
+
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             exponents[i] = -otherExponents[i];
         }
+
         retv.setType(exponents);
         retv.setScale(1.0 / getScale());
         return retv;
@@ -338,11 +372,13 @@ public class Unit implements UnitPresentation {
      */
     public Unit multiplyBy(Unit multiplicand) {
         Unit retv = copy();
-        int otherExponents[] = multiplicand.getType();
-        int thisExponents[] = retv.getType();
+        int[] otherExponents = multiplicand.getType();
+        int[] thisExponents = retv.getType();
+
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             thisExponents[i] += otherExponents[i];
         }
+
         retv.setType(thisExponents);
         retv.setScale(retv.getScale() * multiplicand.getScale());
         return retv;
@@ -354,11 +390,13 @@ public class Unit implements UnitPresentation {
      */
     public Unit pow(double power) {
         Unit unit = copy();
-        int exponents[] = unit.getType();
+        int[] exponents = unit.getType();
         double scale = unit.getScale();
+
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             exponents[i] *= power;
         }
+
         scale = Math.pow(scale, power);
         unit.setType(exponents);
         unit.setScale(scale);
@@ -392,9 +430,11 @@ public class Unit implements UnitPresentation {
     public String toString() {
         String retv = "Unit:(" + getLabelsString() + ") " + _scale + "*<";
         retv += _type[0];
+
         for (int i = 1; i < UnitLibrary.getNumCategories(); i++) {
-            retv += ", " + _type[i];
+            retv += (", " + _type[i]);
         }
+
         retv += ">";
         return retv;
     }
@@ -414,5 +454,5 @@ public class Unit implements UnitPresentation {
     Vector _labels = new Vector();
     private static int _noLabelCounter = 0;
     private double _scale = 1.0;
-    int _type[];
+    int[] _type;
 }

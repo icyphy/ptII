@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Default
+
 /**
    When the <i>preferred</i> input has a token, then the output is equal
    to that token. If the <i>preferred</i> input is absent, then the output is
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Default extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -74,17 +73,19 @@ public class Default extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public Default(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
 
         preferred = new TypedIOPort(this, "preferred", true, false);
         alternate = new TypedIOPort(this, "alternate", true, false);
-        StringAttribute controlCardinal
-                = new StringAttribute(alternate, "_cardinal");
+
+        StringAttribute controlCardinal = new StringAttribute(alternate,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
 
         output = new TypedIOPort(this, "output", false, true);
+
         // Default type constraints are the right ones, so we need not
         // explicitly declare them here.
     }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import java.applet.Applet;
@@ -48,8 +47,10 @@ import ptolemy.domains.csp.kernel.CSPDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 ///////////////////////////////////////////////////////////////
 //// DiningApplet
+
 /**
    Applet containing Dining Philosophers demo. This demo uses the
    both the time and conditional communication constructs of the CSP
@@ -70,27 +71,27 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
-public class DiningApplet extends Applet
-    implements Runnable, PhilosopherListener {
-
+public class DiningApplet extends Applet implements Runnable,
+    PhilosopherListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Initialize the applet.
      */
     public void init() {
-
         // Process the background parameter.
         Color background = Color.white;
+
         try {
             String colorspec = getParameter("background");
+
             if (colorspec != null) {
                 background = Color.decode(colorspec);
             }
-        } catch (Exception ex) {}
-        setBackground(background);
+        } catch (Exception ex) {
+        }
 
+        setBackground(background);
 
         try {
             univ = new TypedCompositeActor();
@@ -123,13 +124,17 @@ public class DiningApplet extends Applet
             _philosophers[4] = p5;
 
             Parameter p = null;
-            for (int i = 0; i< 5; i++) {
+
+            for (int i = 0; i < 5; i++) {
                 _philosophers[i].addPhilosopherListener(this);
-                p = (Parameter)_philosophers[i].getAttribute("eatingRate");
+                p = (Parameter) _philosophers[i].getAttribute("eatingRate");
+
                 if (p != null) {
                     p.setExpression("eatingRate");
                 }
-                p = (Parameter)_philosophers[i].getAttribute("thinkingRate");
+
+                p = (Parameter) _philosophers[i].getAttribute("thinkingRate");
+
                 if (p != null) {
                     p.setExpression("thinkingRate");
                 }
@@ -142,64 +147,59 @@ public class DiningApplet extends Applet
             Chopstick f5 = new Chopstick(univ, "Chopstick5");
 
             // Now connect up the Actors
-            univ.connect((TypedIOPort)p1.getPort("leftIn"),
-                    (TypedIOPort)f5.getPort("rightOut"));
-            univ.connect((TypedIOPort)p1.getPort("leftOut"),
-                    (TypedIOPort)f5.getPort("rightIn"));
-            univ.connect((TypedIOPort)p1.getPort("rightIn"),
-                    (TypedIOPort)f1.getPort("leftOut"));
-            univ.connect((TypedIOPort)p1.getPort("rightOut"),
-                    (TypedIOPort)f1.getPort("leftIn"));
+            univ.connect((TypedIOPort) p1.getPort("leftIn"),
+                (TypedIOPort) f5.getPort("rightOut"));
+            univ.connect((TypedIOPort) p1.getPort("leftOut"),
+                (TypedIOPort) f5.getPort("rightIn"));
+            univ.connect((TypedIOPort) p1.getPort("rightIn"),
+                (TypedIOPort) f1.getPort("leftOut"));
+            univ.connect((TypedIOPort) p1.getPort("rightOut"),
+                (TypedIOPort) f1.getPort("leftIn"));
 
+            univ.connect((TypedIOPort) p2.getPort("leftIn"),
+                (TypedIOPort) f1.getPort("rightOut"));
+            univ.connect((TypedIOPort) p2.getPort("leftOut"),
+                (TypedIOPort) f1.getPort("rightIn"));
+            univ.connect((TypedIOPort) p2.getPort("rightIn"),
+                (TypedIOPort) f2.getPort("leftOut"));
+            univ.connect((TypedIOPort) p2.getPort("rightOut"),
+                (TypedIOPort) f2.getPort("leftIn"));
 
-            univ.connect((TypedIOPort)p2.getPort("leftIn"),
-                    (TypedIOPort)f1.getPort("rightOut"));
-            univ.connect((TypedIOPort)p2.getPort("leftOut"),
-                    (TypedIOPort)f1.getPort("rightIn"));
-            univ.connect((TypedIOPort)p2.getPort("rightIn"),
-                    (TypedIOPort)f2.getPort("leftOut"));
-            univ.connect((TypedIOPort)p2.getPort("rightOut"),
-                    (TypedIOPort)f2.getPort("leftIn"));
+            univ.connect((TypedIOPort) p3.getPort("leftIn"),
+                (TypedIOPort) f2.getPort("rightOut"));
 
+            univ.connect((TypedIOPort) p3.getPort("leftOut"),
+                (TypedIOPort) f2.getPort("rightIn"));
 
-            univ.connect((TypedIOPort)p3.getPort("leftIn"),
-                    (TypedIOPort)f2.getPort("rightOut"));
+            univ.connect((TypedIOPort) p3.getPort("rightIn"),
+                (TypedIOPort) f3.getPort("leftOut"));
 
-            univ.connect((TypedIOPort)p3.getPort("leftOut"),
-                    (TypedIOPort)f2.getPort("rightIn"));
+            univ.connect((TypedIOPort) p3.getPort("rightOut"),
+                (TypedIOPort) f3.getPort("leftIn"));
 
-            univ.connect((TypedIOPort)p3.getPort("rightIn"),
-                    (TypedIOPort)f3.getPort("leftOut"));
+            univ.connect((TypedIOPort) p4.getPort("leftIn"),
+                (TypedIOPort) f3.getPort("rightOut"));
 
-            univ.connect((TypedIOPort)p3.getPort("rightOut"),
-                    (TypedIOPort)f3.getPort("leftIn"));
+            univ.connect((TypedIOPort) p4.getPort("leftOut"),
+                (TypedIOPort) f3.getPort("rightIn"));
 
+            univ.connect((TypedIOPort) p4.getPort("rightIn"),
+                (TypedIOPort) f4.getPort("leftOut"));
 
-            univ.connect((TypedIOPort)p4.getPort("leftIn"),
-                    (TypedIOPort)f3.getPort("rightOut"));
+            univ.connect((TypedIOPort) p4.getPort("rightOut"),
+                (TypedIOPort) f4.getPort("leftIn"));
 
-            univ.connect((TypedIOPort)p4.getPort("leftOut"),
-                    (TypedIOPort)f3.getPort("rightIn"));
+            univ.connect((TypedIOPort) p5.getPort("leftIn"),
+                (TypedIOPort) f4.getPort("rightOut"));
 
-            univ.connect((TypedIOPort)p4.getPort("rightIn"),
-                    (TypedIOPort)f4.getPort("leftOut"));
+            univ.connect((TypedIOPort) p5.getPort("leftOut"),
+                (TypedIOPort) f4.getPort("rightIn"));
 
-            univ.connect((TypedIOPort)p4.getPort("rightOut"),
-                    (TypedIOPort)f4.getPort("leftIn"));
+            univ.connect((TypedIOPort) p5.getPort("rightIn"),
+                (TypedIOPort) f5.getPort("leftOut"));
 
-
-            univ.connect((TypedIOPort)p5.getPort("leftIn"),
-                    (TypedIOPort)f4.getPort("rightOut"));
-
-            univ.connect((TypedIOPort)p5.getPort("leftOut"),
-                    (TypedIOPort)f4.getPort("rightIn"));
-
-            univ.connect((TypedIOPort)p5.getPort("rightIn"),
-                    (TypedIOPort)f5.getPort("leftOut"));
-
-            univ.connect((TypedIOPort)p5.getPort("rightOut"),
-                    (TypedIOPort)f5.getPort("leftIn"));
-
+            univ.connect((TypedIOPort) p5.getPort("rightOut"),
+                (TypedIOPort) f5.getPort("leftIn"));
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
@@ -213,10 +213,10 @@ public class DiningApplet extends Applet
 
         // Now create the panel that controls the applet
         Panel controlPanel = new Panel();
+
         /*
           add( _createRunControls(3), "West" );
         */
-
         add(controlPanel, "West");
 
         // Add a time display and go/stop buttons to control panel
@@ -235,18 +235,19 @@ public class DiningApplet extends Applet
         // philosophers think and eat.
         _eatingRateBox = new TextField("1.0", 10);
         _thinkingRateBox = new TextField("1.0", 10);
+
         //controlPanel.add(_eatingRateBox, "South");
         //controlPanel.add(_thinkingRateBox, "South");
-
         // Add the listeners for the go and stop buttons
         _eatingRateBox.addActionListener(new EatingRateListener());
         _thinkingRateBox.addActionListener(new ThinkingRateListener());
     }
 
     public synchronized void philosopherChanged() {
-        if (simulationThread != null && simulationThread.isAlive()) {
+        if ((simulationThread != null) && simulationThread.isAlive()) {
             // repaint the table for the current state
             _table.repaint();
+
             /* To slow down the model, uncomment this...
                try {
                Thread.currentThread().sleep(100);
@@ -257,9 +258,11 @@ public class DiningApplet extends Applet
 
     public void run() {
         System.out.println("DiningApplet.run()");
+
         try {
             // Start the CurrentTimeThread.
             ctt = new CurrentTimeThread();
+
             //ctt = new CurrentTimeThread(this);
             ctt.start();
 
@@ -277,12 +280,11 @@ public class DiningApplet extends Applet
      *  the "Go" button is depressed.
      */
     public void start() {
-        _table._initialize( _philosophers );
+        _table._initialize(_philosophers);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // The thread that runs the simulation.
     Thread simulationThread;
 
@@ -298,36 +300,36 @@ public class DiningApplet extends Applet
 
     // the panel containing the animation for the applet.
     public TablePanel _table;
-
     public Philosopher[] _philosophers = new Philosopher[5];
-
     public TypedCompositeActor univ;
     public CSPDirector _localDirector;
     public Manager _manager;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
-
     // Show simulation progress.
     // NOTE: due to an applet bug, these inner classes are public.
     public class CurrentTimeThread extends Thread {
         NumberFormat nf = NumberFormat.getNumberInstance();
+
         public void run() {
-            while ( true ) {
-                if ( simulationThread == null ) {
+            while (true) {
+                if (simulationThread == null) {
                     return;
-                } else if ( !simulationThread.isAlive() ) {
+                } else if (!simulationThread.isAlive()) {
                     return;
                 }
+
                 // get the current time from director.
-                double currentTime =
-                    _localDirector.getModelTime().getDoubleValue();
-                _currentTimeLabel.setText("Current time = " +
-                        nf.format(currentTime));
+                double currentTime = _localDirector.getModelTime()
+                                                   .getDoubleValue();
+                _currentTimeLabel.setText("Current time = "
+                    + nf.format(currentTime));
+
                 try {
                     sleep(100);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                }
             }
         }
     }
@@ -339,8 +341,10 @@ public class DiningApplet extends Applet
                     simulationThread = new Thread(DiningApplet.this);
                     simulationThread.start();
                 }
+
                 if (!(simulationThread.isAlive())) {
                     simulationThread = new Thread(DiningApplet.this);
+
                     // start() will eventually call the run() method.
                     simulationThread.start();
                 }
@@ -348,7 +352,6 @@ public class DiningApplet extends Applet
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -356,6 +359,7 @@ public class DiningApplet extends Applet
         public void actionPerformed(ActionEvent evt) {
             try {
                 _manager.finish();
+
                 // Force creation of a new thread on next execution.
                 // Is this really necessary?
                 simulationThread = null;
@@ -368,16 +372,19 @@ public class DiningApplet extends Applet
 
     public class EatingRateListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            Parameter p = (Parameter)univ.getAttribute("eatingRate");
-            if ( p!= null) {
+            Parameter p = (Parameter) univ.getAttribute("eatingRate");
+
+            if (p != null) {
                 String timespec = _eatingRateBox.getText();
                 double spec = 1.0;
+
                 try {
                     spec = (Double.valueOf(timespec)).doubleValue();
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid eating rate: " +
-                            ex.getMessage() + ", defaulting to 1.0");
+                    System.err.println("Invalid eating rate: "
+                        + ex.getMessage() + ", defaulting to 1.0");
                 }
+
                 try {
                     p.setToken(new DoubleToken(spec));
                 } catch (IllegalActionException ex) {
@@ -390,16 +397,19 @@ public class DiningApplet extends Applet
 
     public class ThinkingRateListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            Parameter p = (Parameter)univ.getAttribute("thinkingRate");
-            if ( p!= null) {
+            Parameter p = (Parameter) univ.getAttribute("thinkingRate");
+
+            if (p != null) {
                 String timespec = _thinkingRateBox.getText();
                 double spec = 1.0;
+
                 try {
                     spec = (Double.valueOf(timespec)).doubleValue();
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid thinking rate: " +
-                            ex.getMessage() + ", defaulting to 1.0");
+                    System.err.println("Invalid thinking rate: "
+                        + ex.getMessage() + ", defaulting to 1.0");
                 }
+
                 try {
                     p.setToken(new DoubleToken(spec));
                 } catch (IllegalActionException ex) {
@@ -409,6 +419,4 @@ public class DiningApplet extends Applet
             }
         }
     }
-
-
 }

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.kernel;
 
 import java.util.Hashtable;
@@ -41,8 +40,10 @@ import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DDEThread
+
 /**
    A DDEThread controls an actor according to DDE semantics. The
    primary purpose of a DDEThread is to control the iteration
@@ -62,7 +63,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.domains.dde.kernel.TimeKeeper
 */
 public class DDEThread extends ProcessThread {
-
     /** Construct a thread to be used to execute the iteration
      *  methods of a DDEActor. This increases the count of
      *  active actors in the director.
@@ -70,7 +70,7 @@ public class DDEThread extends ProcessThread {
      * @param director The director of this actor.
      */
     public DDEThread(Actor actor, ProcessDirector director)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(actor, director);
         _timeKeeper = new TimeKeeper(actor);
     }
@@ -96,26 +96,28 @@ public class DDEThread extends ProcessThread {
      * @see ptolemy.domains.dde.kernel.PrioritizedTimedQueue
      */
     public synchronized void noticeOfTermination() {
-        Actor actor = (Actor)getActor();
+        Actor actor = (Actor) getActor();
         Iterator outputPorts = actor.outputPortList().iterator();
         double endTime = PrioritizedTimedQueue.INACTIVE;
-        if ( outputPorts != null ) {
-            while ( outputPorts.hasNext() ) {
-                IOPort port = (IOPort)outputPorts.next();
-                Receiver receivers[][] =
-                    (Receiver[][])port.getRemoteReceivers();
-                if ( receivers == null ) {
+
+        if (outputPorts != null) {
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort) outputPorts.next();
+                Receiver[][] receivers = (Receiver[][]) port.getRemoteReceivers();
+
+                if (receivers == null) {
                     break;
                 }
+
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         try {
-                            if ( ((DDEReceiver)receivers[i][j]).getReceiverTime()
-                                .getDoubleValue() != endTime ) {
+                            if (((DDEReceiver) receivers[i][j]).getReceiverTime()
+                                     .getDoubleValue() != endTime) {
                                 ((DDEReceiver) receivers[i][j]).put(null,
                                     new Time(getActor().getDirector(), endTime));
                             }
-                        } catch( TerminateProcessException e ) {
+                        } catch (TerminateProcessException e) {
                             // Do nothing since we are ending
                         }
                     }
@@ -137,15 +139,18 @@ public class DDEThread extends ProcessThread {
      */
     public void start() {
         Actor actor = getActor();
-        DDEDirector director = (DDEDirector)actor.getDirector();
+        DDEDirector director = (DDEDirector) actor.getDirector();
         Hashtable table = director._getInitialTimeTable();
-        if ( table != null ) {
-            Double dTime = (Double)table.get(actor);
-            if ( dTime != null ) {
+
+        if (table != null) {
+            Double dTime = (Double) table.get(actor);
+
+            if (dTime != null) {
                 Time time = new Time(director, dTime.doubleValue());
-                _timeKeeper.setCurrentTime( time );
+                _timeKeeper.setCurrentTime(time);
             }
         }
+
         super.start();
     }
 
@@ -163,7 +168,5 @@ public class DDEThread extends ProcessThread {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private TimeKeeper _timeKeeper = null;
-
 }

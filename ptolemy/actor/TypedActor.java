@@ -26,15 +26,16 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor;
 
 import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypedActor
+
 /**
    A TypedActor is an actor whose ports have types.
    This interface defines the method to get type constraints from
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.actor.TypedIOPort
 */
 public interface TypedActor extends Actor {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -63,4 +63,3 @@ public interface TypedActor extends Actor {
      */
     public List typeConstraintList() throws IllegalActionException;
 }
-

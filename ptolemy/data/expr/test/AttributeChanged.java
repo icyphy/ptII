@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data.expr.test;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Entity;
@@ -34,8 +34,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AttributeChanged
+
 /**
    Test class that checks to see whether it is ok to cache parameter values.
    @author  Edward A. Lee
@@ -45,20 +47,19 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class AttributeChanged extends Entity {
-
     public Parameter param;
     private double _param;
 
     public AttributeChanged(String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(name);
         param = new Parameter(this, "param", new DoubleToken(1.0));
     }
 
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == param) {
-            _param = ((DoubleToken)(param.getToken())).doubleValue();
+            _param = ((DoubleToken) (param.getToken())).doubleValue();
         }
     }
 

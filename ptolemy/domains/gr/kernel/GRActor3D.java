@@ -23,7 +23,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.gr.kernel;
 
 import javax.media.j3d.Node;
@@ -33,8 +32,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GRActor
+
 /**
    A base class for all GR actors. This is an abstract class that is never
    used as a standalone actor in a Ptolemy model. Subclasses of this actor
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 abstract public class GRActor3D extends GRActor {
-
     /** Create a new GRActor3D in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -64,13 +64,12 @@ abstract public class GRActor3D extends GRActor {
      *   an entity already in the container.
      */
     public GRActor3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -81,7 +80,7 @@ abstract public class GRActor3D extends GRActor {
      */
     protected void _addChild(Node node) throws IllegalActionException {
         throw new IllegalActionException(this,
-                "GR domain actor cannot have children");
+            "GR domain actor cannot have children");
     }
 
     /** Return the Java3D node associated with this actor. Derived
@@ -95,13 +94,12 @@ abstract public class GRActor3D extends GRActor {
      *  @exception IllegalActionException If the given actor is not a
      *  ViewScreen3D.
      */
-    protected void _setViewScreen(GRActor actor)
-            throws IllegalActionException {
+    protected void _setViewScreen(GRActor actor) throws IllegalActionException {
         if (actor instanceof ViewScreen3D) {
-            _viewScreen = (ViewScreen3D)actor;
+            _viewScreen = (ViewScreen3D) actor;
         } else {
-            throw new RuntimeException("Actor " + getClass().getName() +
-                    " can only be used with a ViewScreen3D");
+            throw new RuntimeException("Actor " + getClass().getName()
+                + " can only be used with a ViewScreen3D");
         }
     }
 
@@ -119,7 +117,6 @@ abstract public class GRActor3D extends GRActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // The actor displaying the scene, if there is one
     protected ViewScreen3D _viewScreen;
 }

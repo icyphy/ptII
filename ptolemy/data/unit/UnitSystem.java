@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.unit;
 
 import ptolemy.data.expr.ScopeExtendingAttribute;
@@ -32,8 +31,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnitSystem
+
 /**
    A unit system as defined by a set of base and derived units.
    <p>
@@ -52,9 +53,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (liuxj)
    @Pt.AcceptedRating Red (liuxj)
 */
-
 public class UnitSystem extends ScopeExtendingAttribute {
-
     // FIXME: these issues should be addressed (cxh 8/02)
     // 1. The entire notion of a category being indexed into a vector by an
     // integer is a little strange.  I don't think we have quite the right
@@ -81,7 +80,7 @@ public class UnitSystem extends ScopeExtendingAttribute {
      *   an attribute already in the container.
      */
     public UnitSystem(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 }

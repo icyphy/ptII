@@ -24,8 +24,10 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.layout;
+
 import diva.graph.GraphViewEvent;
 import diva.util.Filter;
+
 
 /**
  * A Listener that applies the given incremental layout whenever a graph
@@ -37,8 +39,7 @@ import diva.util.Filter;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
-public class IncrementalLayoutListener
-    implements diva.graph.GraphViewListener {
+public class IncrementalLayoutListener implements diva.graph.GraphViewListener {
     private IncrementalLayout _layout;
     private Filter _filter;
 
@@ -46,8 +47,7 @@ public class IncrementalLayoutListener
      * Construct a new listener that invokes the given incremental layout
      * whenever a graph event is received.
      */
-    public IncrementalLayoutListener(IncrementalLayout layout,
-            Filter filter) {
+    public IncrementalLayoutListener(IncrementalLayout layout, Filter filter) {
         _layout = layout;
         _filter = filter;
     }
@@ -55,14 +55,20 @@ public class IncrementalLayoutListener
     /**
      */
     public void edgeDrawn(GraphViewEvent e) {
-        if (_filter != null && !_filter.accept(e.getTarget())) return;
+        if ((_filter != null) && !_filter.accept(e.getTarget())) {
+            return;
+        }
+
         _layout.edgeDrawn(e.getTarget());
     }
 
     /**
      */
     public void edgeRouted(GraphViewEvent e) {
-        if (_filter != null && !_filter.accept(e.getTarget())) return;
+        if ((_filter != null) && !_filter.accept(e.getTarget())) {
+            return;
+        }
+
         _layout.edgeRouted(e.getTarget());
     }
 
@@ -83,16 +89,20 @@ public class IncrementalLayoutListener
     /**
      */
     public void nodeDrawn(GraphViewEvent e) {
-        if (_filter != null && !_filter.accept(e.getTarget())) return;
+        if ((_filter != null) && !_filter.accept(e.getTarget())) {
+            return;
+        }
+
         _layout.nodeDrawn(e.getTarget());
     }
 
     /**
      */
     public void nodeMoved(GraphViewEvent e) {
-        if (_filter != null && !_filter.accept(e.getTarget())) return;
+        if ((_filter != null) && !_filter.accept(e.getTarget())) {
+            return;
+        }
+
         _layout.nodeMoved(e.getTarget());
     }
 }
-
-

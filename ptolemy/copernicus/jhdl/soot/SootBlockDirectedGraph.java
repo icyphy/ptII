@@ -24,21 +24,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.soot;
 
-import java.util.*;
+import soot.*;
+
+import soot.jimple.*;
+
+import soot.toolkits.graph.Block;
 
 import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 
-import soot.toolkits.graph.Block;
-import soot.*;
-import soot.jimple.*;
+import java.util.*;
 
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  *
  * Is this class necessary?
@@ -49,26 +51,26 @@ import soot.jimple.*;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class SootBlockDirectedGraph extends DirectedGraph {
-
     public SootBlockDirectedGraph(Block block) {
         super();
         _block = block;
         _valueMap = new ValueMap(this);
     }
 
-    public ValueMap getValueMap() { return _valueMap; }
-
-    public Block getBlock() { return _block; }
-
-    protected ValueMap _valueMap;
-
-    protected Block _block;
-
-    public static void main(String args[]) {
-        SootBlockDirectedGraph graphs[] =
-            ControlSootDFGBuilder.createDataFlowGraphs(args,true);
+    public ValueMap getValueMap() {
+        return _valueMap;
     }
 
+    public Block getBlock() {
+        return _block;
+    }
+
+    protected ValueMap _valueMap;
+    protected Block _block;
+
+    public static void main(String[] args) {
+        SootBlockDirectedGraph[] graphs = ControlSootDFGBuilder
+            .createDataFlowGraphs(args, true);
+    }
 }

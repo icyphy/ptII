@@ -25,6 +25,7 @@
 */
 package diva.util;
 
+
 /**
  * An object which is annotated with a single
  * "semantic object" which is its semantic equivalent
@@ -44,5 +45,3 @@ public interface SemanticObjectContainer {
      */
     public void setSemanticObject(Object o);
 }
-
-

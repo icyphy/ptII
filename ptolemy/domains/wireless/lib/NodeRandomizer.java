@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import java.util.Iterator;
@@ -52,8 +51,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLChangeRequest;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NodeRandomizer
+
 /**
    This actor, when fired, randomizes the locations of all actors in the
    same container that contain an attribute named "randomize" with value
@@ -82,7 +83,6 @@ import ptolemy.moml.MoMLChangeRequest;
    @see ptolemy.kernel.util.Locatable
 */
 public class NodeRandomizer extends TypedAtomicActor {
-
     /** Construct an actor in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -96,15 +96,15 @@ public class NodeRandomizer extends TypedAtomicActor {
      *   with an entity in the container.
      */
     public NodeRandomizer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        randomizeInPreinitialize =
-            new Parameter(this, "randomizeInPreinitialize");
+        randomizeInPreinitialize = new Parameter(this,
+                "randomizeInPreinitialize");
         randomizeInPreinitialize.setExpression("false");
         randomizeInPreinitialize.setTypeEquals(BaseType.BOOLEAN);
 
         range = new Parameter(this, "range");
+
         Type rangeType = new ArrayType(new ArrayType(BaseType.DOUBLE));
         range.setTypeEquals(rangeType);
         range.setExpression("{{0.0, 500.0}, {0.0, 500.0}}");
@@ -159,11 +159,13 @@ public class NodeRandomizer extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ChangeRequest doRandomize = new ChangeRequest(this, "randomize nodes") {
                 protected void _execute() throws IllegalActionException {
                     _randomize();
                 }
             };
+
         requestChange(doRandomize);
     }
 
@@ -177,17 +179,20 @@ public class NodeRandomizer extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        long seedValue = ((LongToken)(seed.getToken())).longValue();
-        if (seedValue == (long)0) {
+
+        long seedValue = ((LongToken) (seed.getToken())).longValue();
+
+        if (seedValue == (long) 0) {
             seedValue = System.currentTimeMillis() + hashCode();
         }
+
         if (_random == null) {
             _random = new Random(seedValue);
         } else {
             _random.setSeed(seedValue);
         }
-        if (((BooleanToken)randomizeInPreinitialize.getToken())
-                .booleanValue()) {
+
+        if (((BooleanToken) randomizeInPreinitialize.getToken()).booleanValue()) {
             _randomize();
         }
     }
@@ -207,52 +212,62 @@ public class NodeRandomizer extends TypedAtomicActor {
      */
     protected void _randomize() throws IllegalActionException {
         // Get the range.
-        ArrayToken rangeValue = (ArrayToken)range.getToken();
+        ArrayToken rangeValue = (ArrayToken) range.getToken();
         int dimensions = rangeValue.length();
         double[] randomLocation = new double[dimensions];
 
-        CompositeActor container = (CompositeActor)getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
         StringBuffer changeMoML = new StringBuffer("<group>\n");
         Iterator actors = container.deepEntityList().iterator();
+
         while (actors.hasNext()) {
-            Entity node = (Entity)actors.next();
+            Entity node = (Entity) actors.next();
 
             // Skip actors that are not properly marked.
             Attribute mark = node.getAttribute("randomize");
+
             if (!(mark instanceof Variable)) {
                 continue;
             }
-            Token markValue = ((Variable)mark).getToken();
+
+            Token markValue = ((Variable) mark).getToken();
+
             if (!(markValue instanceof BooleanToken)) {
                 continue;
             }
-            if (!((BooleanToken)markValue).booleanValue()) {
+
+            if (!((BooleanToken) markValue).booleanValue()) {
                 continue;
             }
 
             for (int i = 0; i < dimensions; i++) {
-                ArrayToken lowHigh = (ArrayToken)rangeValue.getElement(i);
+                ArrayToken lowHigh = (ArrayToken) rangeValue.getElement(i);
+
                 if (lowHigh.length() < 2) {
                     throw new IllegalActionException(this,
-                            "Invalid range: " + range.getExpression());
+                        "Invalid range: " + range.getExpression());
                 }
-                double low =
-                    ((DoubleToken)lowHigh.getElement(0)).doubleValue();
-                double high =
-                    ((DoubleToken)lowHigh.getElement(1)).doubleValue();
+
+                double low = ((DoubleToken) lowHigh.getElement(0)).doubleValue();
+                double high = ((DoubleToken) lowHigh.getElement(1)).doubleValue();
+
                 if (high < low) {
                     throw new IllegalActionException(this,
-                            "Invalid range: " + range.getExpression());
+                        "Invalid range: " + range.getExpression());
                 }
-                randomLocation[i] = low + (_random.nextDouble())*(high - low);
+
+                randomLocation[i] = low
+                    + ((_random.nextDouble()) * (high - low));
             }
-            changeMoML.append(
-                    _getLocationSetMoML(
-                            container, node, randomLocation));
+
+            changeMoML.append(_getLocationSetMoML(container, node,
+                    randomLocation));
         }
+
         changeMoML.append("</group>");
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, container, changeMoML.toString());
+
+        MoMLChangeRequest request = new MoMLChangeRequest(this, container,
+                changeMoML.toString());
         container.requestChange(request);
     }
 
@@ -267,17 +282,15 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  @exception IllegalActionException If the location attribute
      *  cannot be set.
      */
-    protected String _getLocationSetMoML(
-            CompositeEntity container, Entity node,
-            double[] location) throws IllegalActionException {
+    protected String _getLocationSetMoML(CompositeEntity container,
+        Entity node, double[] location) throws IllegalActionException {
         return "<property name=\"" + node.getName(container) + "._location\" "
-            + "class=\"ptolemy.kernel.util.Location\" value=\"["
-            + location[0] + ", " + location[1] + "]\"/>\n";
+        + "class=\"ptolemy.kernel.util.Location\" value=\"[" + location[0]
+        + ", " + location[1] + "]\"/>\n";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Random number generator.
     private Random _random;
 }

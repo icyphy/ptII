@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import ptolemy.kernel.CompositeEntity;
@@ -33,8 +32,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BarGraph
+
 /**
    A bar graph plotter.  This plotter contains an instance of the Plot
    class from the Ptolemy plot package as a public member. Data at
@@ -60,7 +61,6 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Red (cxh)
 */
 public class BarGraph extends ArrayPlotter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,35 +70,23 @@ public class BarGraph extends ArrayPlotter {
      *   actor with this name.
      */
     public BarGraph(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-12\" y=\"-12\" "
-                + "width=\"24\" height=\"24\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"2\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"8\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"14\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"-8\" y=\"2\" "
-                + "width=\"4\" height=\"10\" "
-                + "style=\"fill:red\"/>\n"
-                + "<rect x=\"-2\" y=\"-8\" "
-                + "width=\"4\" height=\"20\" "
-                + "style=\"fill:red\"/>\n"
-                + "<rect x=\"4\" y=\"-5\" "
-                + "width=\"4\" height=\"17\" "
-                + "style=\"fill:red\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
+            + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+            + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<rect x=\"-8\" y=\"2\" " + "width=\"4\" height=\"10\" "
+            + "style=\"fill:red\"/>\n" + "<rect x=\"-2\" y=\"-8\" "
+            + "width=\"4\" height=\"20\" " + "style=\"fill:red\"/>\n"
+            + "<rect x=\"4\" y=\"-5\" " + "width=\"4\" height=\"17\" "
+            + "style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,8 +101,9 @@ public class BarGraph extends ArrayPlotter {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // NOTE: We assume the superclass ensures this cast is safe.
-        ((Plot)plot).setBars(true);
-        ((Plot)plot).setConnected(false);
+        ((Plot) plot).setBars(true);
+        ((Plot) plot).setConnected(false);
     }
 }

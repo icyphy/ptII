@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.demo;
 
 import java.awt.AlphaComposite;
@@ -50,7 +49,6 @@ import diva.util.java2d.ShapeUtilities;
  * @version $Id$
  */
 public class SimplePane extends GraphicsPane {
-
     /** The controller
      */
     BasicController controller;
@@ -82,16 +80,16 @@ public class SimplePane extends GraphicsPane {
 
     /** Draw some figures
      */
-    public void drawFigures () {
+    public void drawFigures() {
         // Here's a square
-        BasicRectangle rect = new BasicRectangle(40.0,40.0,80.0,80.0);
+        BasicRectangle rect = new BasicRectangle(40.0, 40.0, 80.0, 80.0);
         rect.setLineWidth(8);
         rect.setStrokePaint(Color.red);
         figureLayer.add(rect);
         rect.setInteractor(selectionInteractor);
 
         // Here's an ellipse
-        BasicEllipse oval = new BasicEllipse(160.0,10.0,120.0,80.0);
+        BasicEllipse oval = new BasicEllipse(160.0, 10.0, 120.0, 80.0);
         oval.setLineWidth(2);
         oval.setFillPaint(Color.magenta);
         figureLayer.add(oval);
@@ -99,11 +97,11 @@ public class SimplePane extends GraphicsPane {
 
         // Create a star using a general path object
         Polygon2D p = new Polygon2D.Double();
-        p.moveTo(- 100.0f, - 25.0f);
-        p.lineTo(+ 100.0f, - 25.0f);
-        p.lineTo(- 50.0f, + 100.0f);
-        p.lineTo(+ 0.0f, - 100.0f);
-        p.lineTo(+ 50.0f, + 100.0f);
+        p.moveTo(-100.0f, -25.0f);
+        p.lineTo(+100.0f, -25.0f);
+        p.lineTo(-50.0f, +100.0f);
+        p.lineTo(+0.0f, -100.0f);
+        p.lineTo(+50.0f, +100.0f);
         p.closePath();
 
         // translate origin towards center of canvas
@@ -132,15 +130,15 @@ public class SimplePane extends GraphicsPane {
         //         area.add(new Area(c));
         //         c.setFrame(60,10,30,30);
         //         area.add(new Area(c));
-
         AffineTransform cat = new AffineTransform();
-        cat.translate(200,100);
-        cat.scale(2.0,2.0);
+        cat.translate(200, 100);
+        cat.scale(2.0, 2.0);
+
         Shape bigarea = cat.createTransformedShape(area);
 
         BasicFigure cloud = new BasicFigure(bigarea, Color.blue);
-        cloud.setComposite(AlphaComposite.getInstance(
-                                   AlphaComposite.SRC_OVER,0.5f));
+        cloud.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                0.5f));
         figureLayer.add(cloud);
         cloud.setInteractor(selectionInteractor);
     }
@@ -150,8 +148,4 @@ public class SimplePane extends GraphicsPane {
     public SelectionInteractor getSelectionInteractor() {
         return selectionInteractor;
     }
-
 }
-
-
-

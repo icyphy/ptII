@@ -24,7 +24,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import java.util.Stack;
@@ -32,8 +31,10 @@ import java.util.Stack;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UndoContext
+
 /**
    Holds information about the current undo context. It is used while parsing
    an incremental model change to hold the following information:
@@ -59,7 +60,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class UndoContext {
-
     ///////////////////////////////////////////////////////////////////
     ////                         Constructors                      ////
 
@@ -112,36 +112,39 @@ public class UndoContext {
     public void applyRename(String newName) throws IllegalActionException {
         if (_undoMoML.length() == 0) {
             // this should not happen
-            throw new IllegalActionException(
-                    "Failed to create undo entry:\n" +
-                    "Cannot rename an element whose parent " +
-                    "undo context does not have any undo MoML. Requested " +
-                    "new name: " + newName);
+            throw new IllegalActionException("Failed to create undo entry:\n"
+                + "Cannot rename an element whose parent "
+                + "undo context does not have any undo MoML. Requested "
+                + "new name: " + newName);
         }
+
         String undo = _undoMoML.toString();
         String marker = "name=\"";
         int startIndex = undo.indexOf("name=\"");
+
         if (startIndex == -1) {
             // this should not happen
-            throw new IllegalActionException(
-                    "Failed to create undo entry:\n" +
-                    "Cannot rename an element whose parent " +
-                    "undo context does not have a name attribute in its " +
-                    "undo MoML. Requested new name: " + newName);
+            throw new IllegalActionException("Failed to create undo entry:\n"
+                + "Cannot rename an element whose parent "
+                + "undo context does not have a name attribute in its "
+                + "undo MoML. Requested new name: " + newName);
         }
+
         // Move the startIndex to after the marker
         startIndex += marker.length();
+
         // Now get the end index
         int endIndex = undo.indexOf("\"", startIndex);
+
         if (endIndex == -1) {
             // Also should not happen
             // this should not happen
-            throw new IllegalActionException(
-                    "Failed to create undo entry:\n" +
-                    "Cannot rename an element whose parent " +
-                    "undo context does not have a valid name attribute " +
-                    "in its undo MoML. Requested new name: " + newName);
+            throw new IllegalActionException("Failed to create undo entry:\n"
+                + "Cannot rename an element whose parent "
+                + "undo context does not have a valid name attribute "
+                + "in its undo MoML. Requested new name: " + newName);
         }
+
         // Finally update the string buffer
         _undoMoML.replace(startIndex, endIndex, newName);
     }
@@ -158,7 +161,7 @@ public class UndoContext {
     public String generateUndoEntry() {
         // First append the undo MoML for the children
         while (!_undoChildEntries.isEmpty()) {
-            _undoMoML.append((String)_undoChildEntries.pop());
+            _undoMoML.append((String) _undoChildEntries.pop());
         }
 
         // Next append any closing MoML
@@ -197,7 +200,6 @@ public class UndoContext {
         return _childrenUndoable;
     }
 
-
     /**
      *  Tells if the current context is undoable or not.
      *
@@ -220,12 +222,11 @@ public class UndoContext {
      *   or an empty string if none is needed.
      *  @see #moveContextStart(NamedObj, NamedObj)
      */
-    public static String moveContextEnd(
-            NamedObj context,
-            NamedObj containee) {
+    public static String moveContextEnd(NamedObj context, NamedObj containee) {
         if (moveContextStart(context, containee).equals("")) {
             return "";
         }
+
         // If we get to here, then containee and its
         // container cannot be null.
         NamedObj container = containee.getContainer();
@@ -250,16 +251,17 @@ public class UndoContext {
      *   or if either argument is null.
      *  @see #moveContextEnd(NamedObj, NamedObj)
      */
-    public static String moveContextStart(
-            NamedObj context,
-            NamedObj containee) {
-        if (context == null || containee == null) {
+    public static String moveContextStart(NamedObj context, NamedObj containee) {
+        if ((context == null) || (containee == null)) {
             return "";
         }
+
         NamedObj container = containee.getContainer();
-        if (container == null || container == context) {
+
+        if ((container == null) || (container == context)) {
             return "";
         }
+
         String entityContext = container.getName(context);
         String elemName = container.getElementName();
         return "<" + elemName + " name=\"" + entityContext + "\" >\n";
@@ -299,18 +301,14 @@ public class UndoContext {
 
     /** Return a string representation of this object */
     public String toString() {
-        return "UndoContext: "
-            + (isUndoable() ? "are" : "are not")
-            + " undoable and "
-            + (hasUndoableChildren() ? "has" : "does not have")
-            + " undoable children\n"
-            + "undoMoML: " + getUndoMoML() + "\n"
-            + "closingUndoMoML: " + _closingUndoMoML.toString() + "\n";
+        return "UndoContext: " + (isUndoable() ? "are" : "are not")
+        + " undoable and " + (hasUndoableChildren() ? "has" : "does not have")
+        + " undoable children\n" + "undoMoML: " + getUndoMoML() + "\n"
+        + "closingUndoMoML: " + _closingUndoMoML.toString() + "\n";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Flag indicating if child elements should be undoable
     private boolean _childrenUndoable;
 
@@ -328,5 +326,4 @@ public class UndoContext {
     // Holds the stack of MoML entries, one for each element for
     // which undo MoML was generated
     private Stack _undoChildEntries;
-
 }

@@ -24,14 +24,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NumericalNonconvergenceException
+
 /**
    This exception is used to indicate a numerical iteration not converging,
    typically in the process of finding the fixed point solution of an
@@ -67,7 +68,7 @@ public class NumericalNonconvergeException extends InvalidStateException {
      *  @param detail The message.
      */
     public NumericalNonconvergeException(Nameable obj1, Nameable obj2,
-            String detail) {
+        String detail) {
         super(obj1, obj2, detail);
     }
 }

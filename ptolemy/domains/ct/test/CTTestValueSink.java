@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.test;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -42,6 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTTestValueSink
+
 /**
    A sink actor that test its last consumed token value with its parameter
    "Value" value (default value 1.0).
@@ -61,7 +62,7 @@ public class CTTestValueSink extends TypedAtomicActor {
      *  @param name The name.
      */
     public CTTestValueSink(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
@@ -90,7 +91,6 @@ public class CTTestValueSink extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public method                     ////
 
-
     /** Return true if the test is successful.
      *  @return true if the test is successful.
      */
@@ -106,13 +106,16 @@ public class CTTestValueSink extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         _debug(getName() + " postfire.");
         _lastToken = input.get(0);
-        if (((BooleanToken)print.getToken()).booleanValue()) {
+
+        if (((BooleanToken) print.getToken()).booleanValue()) {
             Director dir = getDirector();
+
             if (dir != null) {
-                System.out.println(dir.getModelTime() + " " +
-                        ((DoubleToken)_lastToken).doubleValue());
+                System.out.println(dir.getModelTime() + " "
+                    + ((DoubleToken) _lastToken).doubleValue());
             }
         }
+
         return true;
     }
 
@@ -124,11 +127,14 @@ public class CTTestValueSink extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         _debug(getName() + " wrapping up.");
+
         if (_lastToken != null) {
-            double v = ((DoubleToken)_lastToken).doubleValue();
+            double v = ((DoubleToken) _lastToken).doubleValue();
+
             //System.out.println("lasttoken=" + v);
-            double p = ((DoubleToken)testValue.getToken()).doubleValue();
-            if (Math.abs(v-p) < 1e-4) {
+            double p = ((DoubleToken) testValue.getToken()).doubleValue();
+
+            if (Math.abs(v - p) < 1e-4) {
                 _success = true;
             } else {
                 _success = false;
@@ -141,6 +147,5 @@ public class CTTestValueSink extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean _success = false;
-
     private Token _lastToken;
 }

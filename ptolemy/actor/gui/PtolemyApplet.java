@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.event.ActionEvent;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplet
+
 /**
    This class provides a convenient way to make applets out of Ptolemy II
    models.  It assumes that the model is defined as a Java class that
@@ -126,9 +127,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Yellow (johnr)
 */
-public class PtolemyApplet extends BasicJApplet
-    implements ExecutionListener {
-
+public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -164,24 +163,28 @@ public class PtolemyApplet extends BasicJApplet
      */
     public String getAppletInfo() {
         return "Ptolemy applet for Ptolemy II "
-            + VersionAttribute.CURRENT_VERSION
-            + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
-            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
-            + "\n(Build: $Id$)";
+        + VersionAttribute.CURRENT_VERSION
+        + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
+        + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
+        + "\n(Build: $Id$)";
     }
 
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String newInfo[][] = {
-            {"modelClass", "", "Class name for an instance of NamedObj"},
-            {"orientation", "",
-             "Orientation: vertical, horizontal, or controls_only"},
-            {"controls", "", "List of on-screen controls"},
-            {"autoRun", "boolean",
-             "Determines if the model is run automatically"}
-        };
+        String[][] newInfo = {
+                { "modelClass", "", "Class name for an instance of NamedObj" },
+                {
+                    "orientation", "",
+                    "Orientation: vertical, horizontal, or controls_only"
+                },
+                { "controls", "", "List of on-screen controls" },
+                {
+                    "autoRun", "boolean",
+                    "Determines if the model is run automatically"
+                }
+            };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
@@ -198,6 +201,7 @@ public class PtolemyApplet extends BasicJApplet
         super.init();
         _setupOK = true;
         _workspace = new Workspace(getClass().getName());
+
         try {
             _toplevel = _createModel(_workspace);
 
@@ -205,20 +209,21 @@ public class PtolemyApplet extends BasicJApplet
 
             // This might not actually be a top level, because we might
             // be looking inside.  So we check before creating a manager.
-            if (_toplevel.getContainer() == null
-                    && _toplevel instanceof CompositeActor ) {
-                if (((CompositeActor)_toplevel).getManager() == null) {
+            if ((_toplevel.getContainer() == null)
+                    && _toplevel instanceof CompositeActor) {
+                if (((CompositeActor) _toplevel).getManager() == null) {
                     _manager = new Manager(_workspace, "manager");
                     _manager.addExecutionListener(this);
-                    ((CompositeActor)_toplevel).setManager(_manager);
+                    ((CompositeActor) _toplevel).setManager(_manager);
                 } else {
-                    _manager = ((CompositeActor)_toplevel).getManager();
+                    _manager = ((CompositeActor) _toplevel).getManager();
                 }
             }
         } catch (Exception ex) {
             _setupOK = false;
             report("Creation of model failed:\n", ex);
         }
+
         _createView();
     }
 
@@ -227,6 +232,7 @@ public class PtolemyApplet extends BasicJApplet
      */
     public void managerStateChanged(Manager manager) {
         Manager.State newState = manager.getState();
+
         if (newState != _previousState) {
             report(manager.getState().getDescription());
             _previousState = newState;
@@ -245,14 +251,19 @@ public class PtolemyApplet extends BasicJApplet
      */
     public void start() {
         // If an exception occurred during init, do not execute.
-        if (!_setupOK) return;
+        if (!_setupOK) {
+            return;
+        }
 
         String autoRunSpec = getParameter("autoRun");
+
         // Default is to run automatically.
         boolean autoRun = true;
+
         if (autoRunSpec != null) {
             autoRun = Boolean.valueOf(autoRunSpec).booleanValue();
         }
+
         if (autoRun) {
             try {
                 _go();
@@ -271,7 +282,7 @@ public class PtolemyApplet extends BasicJApplet
      *  of the manager. If there is no manager, do nothing.
      */
     public void stop() {
-        if (_manager != null && _setupOK) {
+        if ((_manager != null) && _setupOK) {
             _manager.stop();
         }
     }
@@ -295,38 +306,50 @@ public class PtolemyApplet extends BasicJApplet
      *   exception to throw.
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+        throws Exception {
         NamedObj result = null;
+
         // Look for modelClass applet parameter.
         String modelSpecification = getParameter("modelClass");
+
         if (modelSpecification != null) {
             Object[] arguments = new Object[1];
             arguments[0] = workspace;
+
             Class modelClass = Class.forName(modelSpecification);
             Constructor[] constructors = modelClass.getConstructors();
             boolean foundConstructor = false;
+
             for (int i = 0; i < constructors.length; i++) {
                 Constructor constructor = constructors[i];
                 Class[] parameterTypes = constructor.getParameterTypes();
-                if (parameterTypes.length != arguments.length) continue;
+
+                if (parameterTypes.length != arguments.length) {
+                    continue;
+                }
+
                 boolean match = true;
+
                 for (int j = 0; j < parameterTypes.length; j++) {
                     if (!(parameterTypes[j].isInstance(arguments[j]))) {
                         match = false;
                         break;
                     }
                 }
+
                 if (match) {
-                    result = (NamedObj)constructor.newInstance(arguments);
+                    result = (NamedObj) constructor.newInstance(arguments);
                     foundConstructor = true;
                 }
             }
+
             if (!foundConstructor) {
                 throw new IllegalActionException(
-                        "Cannot find a suitable constructor for "
-                        + modelSpecification);
+                    "Cannot find a suitable constructor for "
+                    + modelSpecification);
             }
         }
+
         // If result is still null, then there was no modelClass given.
         if (result == null) {
             // Historical applets might directly define a model.
@@ -336,6 +359,7 @@ public class PtolemyApplet extends BasicJApplet
                 return _toplevel;
             }
         }
+
         return result;
     }
 
@@ -350,16 +374,19 @@ public class PtolemyApplet extends BasicJApplet
      */
     protected JPanel _createRunControls(int numberOfButtons) {
         JPanel panel = new JPanel();
+
         if (numberOfButtons > 0) {
             _goButton = new JButton("Go");
             panel.add(_goButton);
             _goButton.addActionListener(new GoButtonListener());
         }
+
         if (numberOfButtons > 1) {
             _stopButton = new JButton("Stop");
             panel.add(_stopButton);
             _stopButton.addActionListener(new StopButtonListener());
         }
+
         return panel;
     }
 
@@ -368,35 +395,42 @@ public class PtolemyApplet extends BasicJApplet
      *  different.
      */
     protected void _createView() {
-
         // Parse applet parameters that determine visual appearance.
         // Here, these are only relevant if the model is an instance
         // of CompositeActor, since we create run panel controls.
-        if (!(_toplevel instanceof CompositeActor)) return;
+        if (!(_toplevel instanceof CompositeActor)) {
+            return;
+        }
 
         // Start with orientation.
         String orientationSpec = getParameter("orientation");
+
         // Default is vertical
         int orientation = ModelPane.VERTICAL;
+
         if (orientationSpec != null) {
             if (orientationSpec.trim().toLowerCase().equals("horizontal")) {
                 orientation = ModelPane.HORIZONTAL;
-            } else if (orientationSpec.trim().toLowerCase()
-                    .equals("controls_only")) {
+            } else if (orientationSpec.trim().toLowerCase().equals("controls_only")) {
                 orientation = ModelPane.CONTROLS_ONLY;
             }
         }
 
         // Next do controls.
         String controlsSpec = getParameter("controls");
+
         // Default has only the buttons.
         int controls = ModelPane.BUTTONS;
+
         if (controlsSpec != null) {
             // If controls are given, then buttons need to be explicit.
             controls = 0;
+
             StringTokenizer tokenizer = new StringTokenizer(controlsSpec, ",");
+
             while (tokenizer.hasMoreTokens()) {
                 String controlSpec = tokenizer.nextToken().trim().toLowerCase();
+
                 if (controlSpec.equals("buttons")) {
                     controls = controls | ModelPane.BUTTONS;
                 } else if (controlSpec.equals("topparameters")) {
@@ -411,7 +445,7 @@ public class PtolemyApplet extends BasicJApplet
             }
         }
 
-        ModelPane pane = new ModelPane(((CompositeActor)_toplevel),
+        ModelPane pane = new ModelPane(((CompositeActor) _toplevel),
                 orientation, controls);
         pane.setBackground(null);
         getContentPane().add(pane);
@@ -424,18 +458,24 @@ public class PtolemyApplet extends BasicJApplet
      */
     protected void _go() throws IllegalActionException {
         // If an exception occurred during init, do not execute.
-        if (!_setupOK) return;
-        // Only try to start if there is no execution currently running.
-        if (_manager.getState() == Manager.IDLE)
-            _manager.startRun();
+        if (!_setupOK) {
+            return;
+        }
 
+        // Only try to start if there is no execution currently running.
+        if (_manager.getState() == Manager.IDLE) {
+            _manager.startRun();
+        }
     }
 
     /** Stop the execution.
      */
     protected void _stop() {
         // If an exception occurred during init, do not finish.
-        if (!_setupOK) return;
+        if (!_setupOK) {
+            return;
+        }
+
         _manager.stop();
     }
 
@@ -460,14 +500,12 @@ public class PtolemyApplet extends BasicJApplet
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private JButton _goButton;
     private JButton _stopButton;
     private Manager.State _previousState;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             try {

@@ -26,13 +26,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.plot.demo;
 
 import ptolemy.plot.HistogramApplet;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HistogramDemo
+
 /**
    A Histogram demo.  Data can be given in ASCII format at a URL.
    If none is given, then a sample histogram is generated.
@@ -44,7 +45,6 @@ import ptolemy.plot.HistogramApplet;
    @Pt.AcceptedRating Red (cxh)
 */
 public class HistogramDemo extends HistogramApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.lib.Transformer;
@@ -37,9 +36,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StringToXml
+
 /**
    This actor converts a string token to an xml token.
 
@@ -52,8 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (liuj)
 */
-public class StringToXML extends Transformer{
-
+public class StringToXML extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -63,17 +61,17 @@ public class StringToXML extends Transformer{
      *   actor with this name.
      */
     public StringToXML(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the input port.
         input.setMultiport(true);
         input.setTypeEquals(BaseType.STRING);
+
         // Set the type of the output port.
         output.setMultiport(true);
         output.setTypeEquals(BaseType.XMLTOKEN);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -85,15 +83,16 @@ public class StringToXML extends Transformer{
         //int k = 0;
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                StringToken in = (StringToken)input.get(i);
+                StringToken in = (StringToken) input.get(i);
+
                 try {
                     _outToken = new XMLToken(in.stringValue());
                     output.broadcast(_outToken);
+
                     //k++;
-                }
-                catch (java.lang.Exception ex) {
+                } catch (java.lang.Exception ex) {
                     throw new IllegalActionException(this, ex,
-                            "Can't construct an XML Token from '" +  in + "'");
+                        "Can't construct an XML Token from '" + in + "'");
                 }
             }
         }
@@ -127,12 +126,11 @@ public class StringToXML extends Transformer{
                 return true;
             }
         }
+
         return false;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private XMLToken _outToken;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.datatransfer.DataFlavor;
@@ -40,12 +39,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.kernel.VergilUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyTransferable
+
 /**
    A transferable object that contains a local JVM reference to a
    number of named objects.  To get a reference to an iterator on the
@@ -97,8 +97,13 @@ public class PtolemyTransferable implements Transferable, Serializable {
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         int i;
-        for (i = 0; i < _flavors.length; i++)
-            if (_flavors[i].equals(flavor)) return true;
+
+        for (i = 0; i < _flavors.length; i++) {
+            if (_flavors[i].equals(flavor)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -117,7 +122,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * not supported.
      */
     public Object getTransferData(DataFlavor flavor)
-            throws UnsupportedFlavorException, IOException {
+        throws UnsupportedFlavorException, IOException {
         if (flavor.equals(DataFlavor.plainTextFlavor)) {
             // plain text flavor is deprecated, but everybody still
             // implements it.  The problem is that all the implementations
@@ -128,6 +133,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
         } else if (flavor.equals(DataFlavor.stringFlavor)) {
             return _getMoML();
         }
+
         throw new UnsupportedFlavorException(flavor);
     }
 
@@ -149,6 +155,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * reference to the contained object.
      */
     public static final DataFlavor namedObjFlavor;
+
     static {
         // Under MacOS X 10.2, Java 1.4.1_01 we get a stack trace
         // when ever we drag and drop.  For details See
@@ -156,13 +163,11 @@ public class PtolemyTransferable implements Transferable, Serializable {
         // FIXME: This change happened just before the release of 3.0.2,
         // so we only make the change under Mac OS.
         if (VergilUtilities.macOSLookAndFeel()) {
-            namedObjFlavor =
-                new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
-                        ";class=ptolemy.kernel.util.NamedObj", "Named Object");
+            namedObjFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType
+                    + ";class=ptolemy.kernel.util.NamedObj", "Named Object");
         } else {
-            namedObjFlavor =
-                new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
-                        "ptolemy.kernel.util.NamedObj", "Named Object");
+            namedObjFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType
+                    + "ptolemy.kernel.util.NamedObj", "Named Object");
         }
     }
 
@@ -170,26 +175,26 @@ public class PtolemyTransferable implements Transferable, Serializable {
     public String _getMoML() throws IOException {
         StringWriter buffer = new StringWriter();
         buffer.write("<group>\n");
-        Iterator elements =
-            Collections.unmodifiableList(_objectList).iterator();
+
+        Iterator elements = Collections.unmodifiableList(_objectList).iterator();
+
         while (elements.hasNext()) {
             NamedObj element = (NamedObj) elements.next();
+
             // first level to avoid obnoxiousness with toplevel translations.
             element.exportMoML(buffer, 1);
         }
+
         buffer.write("</group>\n");
         return buffer.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The flavors that this node can return.
     private final DataFlavor[] _flavors = {
-        DataFlavor.plainTextFlavor,
-        DataFlavor.stringFlavor,
-        namedObjFlavor,
-    };
+            DataFlavor.plainTextFlavor, DataFlavor.stringFlavor, namedObjFlavor,
+        };
 
     //The object contained by this transferable.
     private List _objectList;

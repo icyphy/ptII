@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DeScrambler
+
 /**
    Descramble the input bit sequence using a feedback shift register.
    The taps of the feedback shift register are given by the <i>polynomial</i>
@@ -58,7 +59,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class DeScrambler extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -69,7 +69,7 @@ public class DeScrambler extends Transformer {
      *   actor with this name.
      */
     public DeScrambler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         polynomial = new Parameter(this, "polynomial");
@@ -114,16 +114,18 @@ public class DeScrambler extends Transformer {
      *  non-positive or the lower-order bit is not 1.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == polynomial) {
-            int mask = ((IntToken)polynomial.getToken()).intValue();
+            int mask = ((IntToken) polynomial.getToken()).intValue();
+
             if (mask <= 0) {
                 throw new IllegalActionException(this,
-                        "Polynomial is required to be strictly positive.");
+                    "Polynomial is required to be strictly positive.");
             }
+
             if ((mask & 1) == 0) {
                 throw new IllegalActionException(this,
-                        "The low-order bit of the the polynomial is not set.");
+                    "The low-order bit of the the polynomial is not set.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -135,26 +137,30 @@ public class DeScrambler extends Transformer {
      */
     public void fire() throws IllegalActionException {
         _latestShiftReg = _shiftReg;
-        int mask = ((IntToken)polynomial.getToken()).intValue();
-        BooleanToken inputToken = ((BooleanToken)input.get(0));
+
+        int mask = ((IntToken) polynomial.getToken()).intValue();
+        BooleanToken inputToken = ((BooleanToken) input.get(0));
         boolean inputTokenValue = inputToken.booleanValue();
         int reg = _latestShiftReg << 1;
+
         // Put the input in the low-order bit.
-        reg = reg ^ (inputTokenValue ? 1:0);
+        reg = reg ^ (inputTokenValue ? 1 : 0);
 
         // Find the parity of "masked".
         int masked = mask & reg;
         int parity = 0;
+
         // Calculate the parity of the masked word.
-        while (masked >0) {
+        while (masked > 0) {
             parity = parity ^ (masked & 1);
             masked = masked >> 1;
         }
 
         _latestShiftReg = reg;
+
         if (parity == 1) {
             output.broadcast(BooleanToken.TRUE);
-        }else {
+        } else {
             output.broadcast(BooleanToken.FALSE);
         }
     }
@@ -165,8 +171,8 @@ public class DeScrambler extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _latestShiftReg = _shiftReg =
-            ((IntToken)initialState.getToken()).intValue();
+        _latestShiftReg = _shiftReg = ((IntToken) initialState.getToken())
+                .intValue();
     }
 
     /** Record the most recent shift register state as the new
@@ -180,11 +186,9 @@ public class DeScrambler extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Record the state of the shift register.
     private int _shiftReg;
 
     // Updated state of the shift register.
     private int _latestShiftReg;
-
 }

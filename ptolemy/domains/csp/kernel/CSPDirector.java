@@ -26,10 +26,8 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.csp.kernel;
 
-// Ptolemy imports.
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,10 +44,11 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-// Java imports.
 
+// Java imports.
 //////////////////////////////////////////////////////////////////////////
 //// CSPDirector
+
 /**
    CSPDirector governs the execution of a composite actor with the semantics
    of the Communicating Sequential Processes (CSP) domain.
@@ -114,7 +113,6 @@ import ptolemy.kernel.util.Workspace;
 */
 public class CSPDirector extends CompositeProcessDirector
     implements TimedDirector {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -148,7 +146,7 @@ public class CSPDirector extends CompositeProcessDirector
      *   CompositeActor and the name collides with an entity in the container.
      */
     public CSPDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         timePrecisionInDigits.setVisibility(Settable.FULL);
     }
@@ -168,9 +166,9 @@ public class CSPDirector extends CompositeProcessDirector
      *   cannot be cloned.
      *  @return The new CSPDirector.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CSPDirector newObject = (CSPDirector)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CSPDirector newObject = (CSPDirector) super.clone(workspace);
+
         // newObject._actorsBlocked = 0;
         newObject._actorsDelayed = 0;
         newObject._delayedActorList = new LinkedList();
@@ -201,8 +199,9 @@ public class CSPDirector extends CompositeProcessDirector
      *  @return False if no more execution is possible, and true otherwise.
      */
     public boolean postfire() {
-        List ports = ((CompositeActor)getContainer()).inputPortList();
-        if ( ports.iterator().hasNext() ) {
+        List ports = ((CompositeActor) getContainer()).inputPortList();
+
+        if (ports.iterator().hasNext()) {
             return !_stopRequested;
         } else {
             return _notDone && !_stopRequested;
@@ -225,11 +224,12 @@ public class CSPDirector extends CompositeProcessDirector
      *  @param newTime The new current model time.
      */
     public synchronized void setModelTime(Time newTime)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_actorsDelayed != 0) {
             throw new IllegalActionException("CSPDirector.setCurrentTime()"
-                    + " can only be called when no processes are delayed.");
+                + " can only be called when no processes are delayed.");
         }
+
         super.setModelTime(newTime);
     }
 
@@ -242,8 +242,7 @@ public class CSPDirector extends CompositeProcessDirector
         // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[1] =
-            "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
+        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
@@ -255,19 +254,19 @@ public class CSPDirector extends CompositeProcessDirector
     public void wrapup() throws IllegalActionException {
         try {
             _inWrapup = true;
-            while ( _delayedActorList.size() > 0 ) {
-                DelayListLink value =
-                    (DelayListLink)_delayedActorList.get(0);
+
+            while (_delayedActorList.size() > 0) {
+                DelayListLink value = (DelayListLink) _delayedActorList.get(0);
                 value._actor._cancelDelay();
                 _delayedActorList.remove(0);
                 _actorsDelayed--;
             }
+
             super.wrapup();
         } finally {
             _inWrapup = false;
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -293,19 +292,21 @@ public class CSPDirector extends CompositeProcessDirector
      *   negative time.
      */
     protected synchronized void _actorDelayed(double delta, CSPActor actor)
-            throws InvalidStateException {
+        throws InvalidStateException {
         if (_inWrapup) {
             actor._cancelDelay();
             return;
         }
+
         if (delta < 0.0) {
-            throw new InvalidStateException(((Nameable)actor).getName() +
-                    ": delayed for negative time.");
+            throw new InvalidStateException(((Nameable) actor).getName()
+                + ": delayed for negative time.");
         } else {
             _actorsDelayed++;
+
             // Enter the actor and the time to wake it up into the
             // LinkedList of delayed actors.
-            _registerDelayedActor( getModelTime().add(delta), actor);
+            _registerDelayedActor(getModelTime().add(delta), actor);
             notifyAll();
             return;
         }
@@ -321,10 +322,11 @@ public class CSPDirector extends CompositeProcessDirector
      *  delayed, false otherwise.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-        if ( _getActiveActorsCount() == _getBlockedActorsCount()
-                + _actorsDelayed ) {
+        if (_getActiveActorsCount() == (_getBlockedActorsCount()
+                + _actorsDelayed)) {
             return true;
         }
+
         return false;
     }
 
@@ -369,9 +371,10 @@ public class CSPDirector extends CompositeProcessDirector
             // Note that to deal with roundoff errors on doubles,
             // any times within TOLERANCE are considered the same.
             boolean done = false;
-            while (!done && _delayedActorList.size() > 0 ) {
-                DelayListLink value =
-                    (DelayListLink)_delayedActorList.get(0);
+
+            while (!done && (_delayedActorList.size() > 0)) {
+                DelayListLink value = (DelayListLink) _delayedActorList.get(0);
+
                 if (value._resumeTime.compareTo(nextTime) == 0) {
                     _delayedActorList.remove(0);
                     value._actor._continue();
@@ -380,13 +383,15 @@ public class CSPDirector extends CompositeProcessDirector
                     done = true;
                 }
             }
+
             // } else if ( _actorsBlocked == _getActiveActorsCount() ) {
-        } else if ( _getBlockedActorsCount() == _getActiveActorsCount() ) {
+        } else if (_getBlockedActorsCount() == _getActiveActorsCount()) {
             // Real deadlock.
             System.out.println("REAL DEADLOCK. Number of active actors: "
-                    + _getActiveActorsCount());
+                + _getActiveActorsCount());
             return false;
         }
+
         // Return true for topology changes and time deadlock.
         return true;
     }
@@ -406,13 +411,16 @@ public class CSPDirector extends CompositeProcessDirector
         int size = _delayedActorList.size();
 
         boolean done = false;
+
         for (int i = 0; i < size; i++) {
-            DelayListLink tmp = (DelayListLink)_delayedActorList.get(i);
+            DelayListLink tmp = (DelayListLink) _delayedActorList.get(i);
+
             if (!done && (actorTime.compareTo(tmp._resumeTime) < 0)) {
                 _delayedActorList.add(i, newLink);
                 done = true;
             }
         }
+
         if (!done) {
             _delayedActorList.add(newLink);
         }
@@ -423,16 +431,15 @@ public class CSPDirector extends CompositeProcessDirector
      */
     private Time _getNextTime() {
         if (_delayedActorList.size() > 0) {
-            return ((DelayListLink)_delayedActorList.get(0))._resumeTime;
+            return ((DelayListLink) _delayedActorList.get(0))._resumeTime;
         } else {
-            throw new InvalidStateException("CSPDirector.getNextTime(): " +
-                    " called in error.");
+            throw new InvalidStateException("CSPDirector.getNextTime(): "
+                + " called in error.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Count of the number of processes delayed until time
     // sufficiently advances.
     private int _actorsDelayed = 0;
@@ -447,12 +454,10 @@ public class CSPDirector extends CompositeProcessDirector
     // when an actor is delayed after the director calls super.wrapup() in
     // which it waits for all actors to stop.
     private boolean _inWrapup = false;
-
     private static double TOLERANCE = Math.pow(10, -10);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // Class DelayedListLink
     // Keeps track of the actor that is delayed and the time
     // at which to resume it.

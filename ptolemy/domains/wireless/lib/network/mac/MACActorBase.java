@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib.network.mac;
 
 import ptolemy.data.IntToken;
@@ -38,8 +37,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// MACActorBase
@@ -62,9 +62,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (pjb2e)
 */
-
 public class MACActorBase extends NetworkActorBase {
-
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -78,7 +76,7 @@ public class MACActorBase extends NetworkActorBase {
      *   an actor already in the container.
      */
     public MACActorBase(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Configure MAC layer parameters.
@@ -122,28 +120,25 @@ public class MACActorBase extends NetworkActorBase {
         aCWmin.setTypeEquals(BaseType.INT);
         aCWmin.setExpression("15");
 
-        aCWmax= new Parameter(this, "aCWmax");
+        aCWmax = new Parameter(this, "aCWmax");
         aCWmax.setTypeEquals(BaseType.INT);
         aCWmax.setExpression("1023");
 
-        dot11ShortRetryLimit= new Parameter(this, "dot11ShortRetryLimit");
+        dot11ShortRetryLimit = new Parameter(this, "dot11ShortRetryLimit");
         dot11ShortRetryLimit.setTypeEquals(BaseType.INT);
         dot11ShortRetryLimit.setExpression("6");
 
-        dot11LongRetryLimit= new Parameter(this, "dot11LongRetryLimit");
+        dot11LongRetryLimit = new Parameter(this, "dot11LongRetryLimit");
         dot11LongRetryLimit.setTypeEquals(BaseType.INT);
         dot11LongRetryLimit.setExpression("6");
 
-        dotllRTSThreshold= new Parameter(this, "dotllRTSThreshold");
+        dotllRTSThreshold = new Parameter(this, "dotllRTSThreshold");
         dotllRTSThreshold.setTypeEquals(BaseType.INT);
         dotllRTSThreshold.setExpression("1");
-
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
     // all time are in the unit of microseconds
 
     /** The parameter for SIFS (Short Inter Frame Space). This time
@@ -224,160 +219,146 @@ public class MACActorBase extends NetworkActorBase {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int temp = 0;
+
         if (attribute == aSifsTime) {
-            temp = ((IntToken)
-                    aSifsTime.getToken()).intValue();
+            temp = ((IntToken) aSifsTime.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aSifsTime is required to be positive. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "aSifsTime is required to be positive. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aSifsTime = temp;
             }
-
         } else if (attribute == aPreambleLength) {
-            temp = ((IntToken)
-                    aPreambleLength.getToken()).intValue();
+            temp = ((IntToken) aPreambleLength.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "preamble Length is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "preamble Length is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aPreambleLength = temp;
             }
         } else if (attribute == aPlcpHeaderLength) {
-            temp = ((IntToken)
-                    aPlcpHeaderLength.getToken()).intValue();
+            temp = ((IntToken) aPlcpHeaderLength.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "PLCPHeader Length is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "PLCPHeader Length is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aPlcpHeaderLength = temp;
             }
         } else if (attribute == aRxTxTurnaroundTime) {
-            temp = ((IntToken)
-                    aRxTxTurnaroundTime.getToken()).intValue();
+            temp = ((IntToken) aRxTxTurnaroundTime.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aRxTxTurnaroundTime is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "aRxTxTurnaroundTime is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aRxTxTurnaroundTime = temp;
             }
         } else if (attribute == sAckCtsLng) {
-            temp = ((IntToken)
-                    sAckCtsLng.getToken()).intValue();
+            temp = ((IntToken) sAckCtsLng.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "sAckCtsLng is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "sAckCtsLng is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _sAckCtsLng = temp;
             }
         } else if (attribute == mBrate) {
-            temp = ((IntToken)
-                    mBrate.getToken()).intValue();
+            temp = ((IntToken) mBrate.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "mBrate is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "mBrate is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _mBrate = temp;
             }
         } else if (attribute == aSlotTime) {
-            temp = ((IntToken)
-                    aSlotTime.getToken()).intValue();
+            temp = ((IntToken) aSlotTime.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aSlotTime is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "aSlotTime is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aSlotTime = temp;
             }
         } else if (attribute == aRxRfDelay) {
-            temp = ((IntToken)
-                    aRxRfDelay.getToken()).intValue();
+            temp = ((IntToken) aRxRfDelay.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aRxRfDelay is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "aRxRfDelay is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aRxRfDelay = temp;
             }
         } else if (attribute == aRxPlcpDelay) {
-            temp = ((IntToken)
-                    aRxPlcpDelay.getToken()).intValue();
+            temp = ((IntToken) aRxPlcpDelay.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aRxPlcpDelay is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "aRxPlcpDelay is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aRxPlcpDelay = temp;
             }
         } else if (attribute == aCWmin) {
-            temp = ((IntToken)
-                    aCWmin .getToken()).intValue();
+            temp = ((IntToken) aCWmin.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aCWmin is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "aCWmin is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aCWmin = temp;
             }
         } else if (attribute == aCWmax) {
-            temp = ((IntToken)
-                    aCWmax.getToken()).intValue();
+            temp = ((IntToken) aCWmax.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aCWmax is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "aCWmax is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aCWmax = temp;
             }
         } else if (attribute == dot11ShortRetryLimit) {
-            temp = ((IntToken)
-                    dot11ShortRetryLimit.getToken()).intValue();
+            temp = ((IntToken) dot11ShortRetryLimit.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "dot11ShortRetryLimit is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "dot11ShortRetryLimit is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _dot11ShortRetryLimit = temp;
             }
         } else if (attribute == dot11LongRetryLimit) {
-            temp = ((IntToken)
-                    dot11LongRetryLimit.getToken()).intValue();
+            temp = ((IntToken) dot11LongRetryLimit.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "dot11LongRetryLimit is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "dot11LongRetryLimit is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _dot11LongRetryLimit = temp;
             }
         } else if (attribute == dotllRTSThreshold) {
-            temp = ((IntToken)
-                    dotllRTSThreshold.getToken()).intValue();
+            temp = ((IntToken) dotllRTSThreshold.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "dotllRTSThreshold is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "dotllRTSThreshold is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _dotllRTSThreshold = temp;
             }
@@ -408,107 +389,99 @@ public class MACActorBase extends NetworkActorBase {
 
     // the pointers to the remote variables contained by
     // the MAC composite.
+
     /** The time that NAV ends or reservation ends.
      */
     protected Attribute _tNavEnd = null;
+
     /** The flag indicating whether backoff is in progress.
      */
     protected Attribute _mBkIP = null;
 
-
     // message formats
-    protected static final String[] TxStartMsgFields
-            = {"kind", "length", "rate"};
-    protected static final String[] TxDataMsgFields
-            = {"kind", "pdu"};
-    protected static final String[] RtsTimeoutMsgFields ={"kind"};
-    protected static final String[] RxMpduMsgFields
-            ={"kind", "pdu","endRx","rxRate"};
-    protected static final String[] UseIfsMsgFields
-            ={"kind", "tRxEnd"};
-    protected static final String[] RxIndicateMessageFields =
-            {"kind", "pdu", "endRx", "rxRate"};
-    protected static final String[] NeedAckMessageFields =
-            {"kind", "ackto", "endRx", "rxRate", "dAck"};
-    protected static final String[] SetNavMessageFields =
-            {"kind", "tRef", "dNav", "src"};
-
-    protected static final String[] CSMsgFields={"kind"};
+    protected static final String[] TxStartMsgFields = { "kind", "length", "rate" };
+    protected static final String[] TxDataMsgFields = { "kind", "pdu" };
+    protected static final String[] RtsTimeoutMsgFields = { "kind" };
+    protected static final String[] RxMpduMsgFields = {
+            "kind", "pdu", "endRx", "rxRate"
+        };
+    protected static final String[] UseIfsMsgFields = { "kind", "tRxEnd" };
+    protected static final String[] RxIndicateMessageFields = {
+            "kind", "pdu", "endRx", "rxRate"
+        };
+    protected static final String[] NeedAckMessageFields = {
+            "kind", "ackto", "endRx", "rxRate", "dAck"
+        };
+    protected static final String[] SetNavMessageFields = {
+            "kind", "tRef", "dNav", "src"
+        };
+    protected static final String[] CSMsgFields = { "kind" };
 
     // the value for the pdu field is a record with fields
     // as DataPacket's fields.
-    protected static final String[] TxRequestMsgFields
-            = {"kind", "pdu", "rate"};
-    protected static final String[] TxConfirmMsgFields = {"kind"};
-
-    protected static final String[] DataPacket
-            = {"protocolVer", "Type", "Subtype",
-               "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
-               "moreData", "wepBit", "orderBit", "FCS", "durId",
-               "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum",
-               "Addr4", "payload","Length"};
+    protected static final String[] TxRequestMsgFields = { "kind", "pdu", "rate" };
+    protected static final String[] TxConfirmMsgFields = { "kind" };
+    protected static final String[] DataPacket = {
+            "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
+            "retryBit", "pwrMgt", "moreData", "wepBit", "orderBit", "FCS",
+            "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4",
+            "payload", "Length"
+        };
 
     // use Addr1 for RA, so FilterMpdu does not need to check packet type
     // before checking Addr1 or RA filed
-    protected static final String[] AckPacket
-            = {"protocolVer", "Type", "Subtype", "toDs", "frDs",
-               "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-               //"orderBit", "FCS", "durId", "RA","Length"};
-               "orderBit", "FCS", "durId", "Addr1","Length"};
-
-    protected static final String[] RtsPacket
-            = {"protocolVer", "Type", "Subtype", "toDs", "frDs",
-               "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-          //     "orderBit", "FCS", "durId", "RA", "TA","Length"};
-               "orderBit", "FCS", "durId", "Addr1", "Addr2","Length"};
-
-    protected static final String[] BackoffDoneMsgFields
-            = {"kind","cnt"};
-    protected static final String[] getBackoffMsgFields
-            = {"kind","ccw", "cnt"};
-    protected static final String[] GotCtsMsgFields
-            = {"kind","endRx"};
-
-
-
-
+    protected static final String[] AckPacket = {
+            "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
+            "retryBit", "pwrMgt", "moreData", "wepBit", 
+            //"orderBit", "FCS", "durId", "RA","Length"};
+            "orderBit", "FCS", "durId", "Addr1", "Length"
+        };
+    protected static final String[] RtsPacket = {
+            "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
+            "retryBit", "pwrMgt", "moreData", "wepBit", 
+            //     "orderBit", "FCS", "durId", "RA", "TA","Length"};
+            "orderBit", "FCS", "durId", "Addr1", "Addr2", "Length"
+        };
+    protected static final String[] BackoffDoneMsgFields = { "kind", "cnt" };
+    protected static final String[] getBackoffMsgFields = { "kind", "ccw", "cnt" };
+    protected static final String[] GotCtsMsgFields = { "kind", "endRx" };
 
     // message types
-    protected static final int  NeedAck        = 1;
-    protected static final int  RxIndicate     = 2;
-    protected static final int  TxConfirm      = 3;
-    protected static final int  PduRequest     = 4;
-    protected static final int  BkDone         = 5;
-    protected static final int  Backoff        = 6;
-    protected static final int  Slot           = 7;
-    protected static final int  Cancel         = 10;
-    protected static final int  TxRequest      = 21;
-    protected static final int  UseEifs        = 22;
-    protected static final int  UseDifs        = 23;
-    protected static final int  SetNav         = 24;
-    protected static final int  ClearNav       = 25;
-    protected static final int  RtsTimeout     = 26;
-    protected static final int  nosrc          = 27;
-    protected static final int  misc           = 28;
-    protected static final int  RxMpdu         = 29;
-    protected static final int  startRsp       = 43;
-    protected static final int  PCresponse     = 44;
-    protected static final int  PCrequest      = 45;
-    protected static final int  PCcheck        = 46;
-    protected static final int  PCremove       = 47;
-    protected static final int  PCremove2      = 48;
-    protected static final int  PCmax          = 48;
-    protected static final int  PCmin          = 44;
-    protected static final int  Ack            = 13;
-    protected static final int  Cts            = 12;
-    protected static final int  Data           = 0;
-    protected static final int  Rts            = 11;
-    protected static final int  ControlType    = 1;
-    protected static final int  DataType       = 2;
-    protected static final int  GotAckMsg      = 1;
-    protected static final int  GotCts         = 2;
-    protected static final int  ControlCh      = 0;
-    protected static final int  DataCh         = 1;
+    protected static final int NeedAck = 1;
+    protected static final int RxIndicate = 2;
+    protected static final int TxConfirm = 3;
+    protected static final int PduRequest = 4;
+    protected static final int BkDone = 5;
+    protected static final int Backoff = 6;
+    protected static final int Slot = 7;
+    protected static final int Cancel = 10;
+    protected static final int TxRequest = 21;
+    protected static final int UseEifs = 22;
+    protected static final int UseDifs = 23;
+    protected static final int SetNav = 24;
+    protected static final int ClearNav = 25;
+    protected static final int RtsTimeout = 26;
+    protected static final int nosrc = 27;
+    protected static final int misc = 28;
+    protected static final int RxMpdu = 29;
+    protected static final int startRsp = 43;
+    protected static final int PCresponse = 44;
+    protected static final int PCrequest = 45;
+    protected static final int PCcheck = 46;
+    protected static final int PCremove = 47;
+    protected static final int PCremove2 = 48;
+    protected static final int PCmax = 48;
+    protected static final int PCmin = 44;
+    protected static final int Ack = 13;
+    protected static final int Cts = 12;
+    protected static final int Data = 0;
+    protected static final int Rts = 11;
+    protected static final int ControlType = 1;
+    protected static final int DataType = 2;
+    protected static final int GotAckMsg = 1;
+    protected static final int GotCts = 2;
+    protected static final int ControlCh = 0;
+    protected static final int DataCh = 1;
 
     /** Check whether this has a <i>id<i> attribute. If yes, return
      *  the value of it; if no, return the default value -2.
@@ -516,34 +489,38 @@ public class MACActorBase extends NetworkActorBase {
      *  such an attribute.
      *
      */
+
     // currently only used by the FilterMpdu and TxCordination classes
     protected int getID() {
         int id = -2;
+
         // get the id parameter of the node composite
         // make some assumptions about the hierarchy here
         NamedObj nodeComposite = getContainer().getContainer().getContainer();
+
         try {
             Attribute idAttribute = nodeComposite.getAttribute("id");
+
             if (idAttribute instanceof Variable) {
-                Variable idVariable = (Variable)idAttribute;
-                id = ((IntToken)(idVariable.getToken())).intValue();
+                Variable idVariable = (Variable) idAttribute;
+                id = ((IntToken) (idVariable.getToken())).intValue();
             }
         } catch (IllegalActionException ex) {
             // ignore, use the default id
         }
+
         return id;
     }
 
     // A convenient method for the MAC actors to set an
     // attibute of the MAC composite.
     protected void _setAttribute(Attribute attribute, Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute != null) {
             if (attribute instanceof Variable) {
                 ((Variable) attribute).setToken(token);
             } else if (attribute instanceof Settable) {
-                ((Settable) attribute).
-                    setExpression(token.toString());
+                ((Settable) attribute).setExpression(token.toString());
             }
         }
     }

@@ -44,6 +44,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 /**
  * A "palette" of components that can be dragged onto another
  * JComponent.  The components in the palette have String data
@@ -86,37 +87,50 @@ public class JPalette extends JPanel {
     public void makeDraggable(JComponent c, String data) {
         final String dataHandle = data;
         final DragSourceListener dsl = new DragSourceListener() {
-                public void dragDropEnd(DragSourceDropEvent dsde) {}
+                public void dragDropEnd(DragSourceDropEvent dsde) {
+                }
+
                 public void dragEnter(DragSourceDragEvent dsde) {
                     DragSourceContext context = dsde.getDragSourceContext();
+
                     //intersection of the users selected action, and the
                     //source and target actions
                     int myaction = dsde.getDropAction();
+
                     if ((myaction & DnDConstants.ACTION_COPY) != 0) {
                         context.setCursor(DragSource.DefaultCopyDrop);
                     } else {
                         context.setCursor(DragSource.DefaultCopyNoDrop);
                     }
                 }
-                public void dragExit(DragSourceEvent dse) {}
-                public void dragOver(DragSourceDragEvent dsde) {}
-                public void dropActionChanged(DragSourceDragEvent dsde) {}
+
+                public void dragExit(DragSourceEvent dse) {
+                }
+
+                public void dragOver(DragSourceDragEvent dsde) {
+                }
+
+                public void dropActionChanged(DragSourceDragEvent dsde) {
+                }
             };
+
         final DragGestureListener dgl = new DragGestureListener() {
                 public void dragGestureRecognized(DragGestureEvent e) {
                     try {
                         // check to see if action is OK ...
                         Transferable transferable = new StringSelection(dataHandle);
+
                         //initial cursor, transferable, dsource listener
-                        e.startDrag(DragSource.DefaultCopyNoDrop, transferable, dsl);
-                    } catch ( InvalidDnDOperationException idoe ) {
-                        System.err.println( idoe );
+                        e.startDrag(DragSource.DefaultCopyNoDrop, transferable,
+                            dsl);
+                    } catch (InvalidDnDOperationException idoe) {
+                        System.err.println(idoe);
                     }
                 }
             };
 
-        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-                c, DnDConstants.ACTION_COPY_OR_MOVE, dgl);
+        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(c,
+            DnDConstants.ACTION_COPY_OR_MOVE, dgl);
     }
 
     /**
@@ -131,5 +145,3 @@ public class JPalette extends JPanel {
 
     //public void removeIcon(Icon i) {...}
 }
-
-

@@ -22,12 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.copernicus.c;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// Utilities
+
 /**
    This class provides basic utilities used across a variety of classes.
 
@@ -37,10 +37,7 @@ package ptolemy.copernicus.c;
    @Pt.ProposedRating Red (ankush)
    @Pt.AcceptedRating Red (ssb)
 */
-public class Utilities{
-
-
-
+public class Utilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -52,7 +49,7 @@ public class Utilities{
      *  Standard ANSI C comments are used here.
      */
     public static String comment(String text) {
-        return("/* " + text + " */\n");
+        return ("/* " + text + " */\n");
     }
 
     /** Return a string that generates an indentation string (a sequence
@@ -65,30 +62,22 @@ public class Utilities{
     public static String indent(int level) {
         StringBuffer indent = new StringBuffer();
         int i;
+
         for (i = 0; i < level; i++) {
             indent.append("    ");
         }
+
         return indent.toString();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected fields                    ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
 }

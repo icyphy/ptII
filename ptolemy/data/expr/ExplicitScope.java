@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.HashSet;
@@ -36,8 +35,10 @@ import java.util.Set;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedList;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitScope
+
 /**
    An implementation of ParserScope that includes an explicit list of
    Variables in the scope.
@@ -48,9 +49,7 @@ import ptolemy.kernel.util.NamedList;
    @Pt.ProposedRating Red (liuxj)
    @Pt.AcceptedRating Red (liuxj)
 */
-
 public class ExplicitScope implements ParserScope {
-
     /** Construct a new scope that includes the objects in the given
      *  list, which must contain only variables.
      */
@@ -65,10 +64,12 @@ public class ExplicitScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.data.Token get(String name) throws IllegalActionException {
-        Variable variable = (Variable)_list.get(name);
+        Variable variable = (Variable) _list.get(name);
+
         if (variable == null) {
             return null;
         }
+
         return variable.getToken();
     }
 
@@ -80,8 +81,9 @@ public class ExplicitScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.data.type.Type getType(String name)
-            throws IllegalActionException {
-        Variable variable = (Variable)_list.get(name);
+        throws IllegalActionException {
+        Variable variable = (Variable) _list.get(name);
+
         if (variable == null) {
             return null;
         } else {
@@ -98,8 +100,9 @@ public class ExplicitScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-            throws IllegalActionException {
-        Variable variable = (Variable)_list.get(name);
+        throws IllegalActionException {
+        Variable variable = (Variable) _list.get(name);
+
         if (variable == null) {
             return null;
         } else {
@@ -112,11 +115,13 @@ public class ExplicitScope implements ParserScope {
      */
     public Set identifierSet() {
         Set set = new HashSet();
+
         for (Iterator variables = _list.elementList().iterator();
-             variables.hasNext();) {
-            Variable variable = (Variable)variables.next();
+                variables.hasNext();) {
+            Variable variable = (Variable) variables.next();
             set.add(variable.getName());
         }
+
         return set;
     }
 
@@ -128,4 +133,3 @@ public class ExplicitScope implements ParserScope {
 
     private NamedList _list;
 }
-

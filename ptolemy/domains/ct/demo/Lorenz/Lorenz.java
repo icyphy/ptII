@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.demo.Lorenz;
 
 import ptolemy.actor.Manager;
@@ -50,6 +49,7 @@ import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////
 //// Lorenz
+
 /**
    This is a model of a nonlinear feedback system that exhibits chaotic
    behavior.  It is the well-known Lorenz attractor, and is given
@@ -71,26 +71,24 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Lorenz extends TypedCompositeActor {
-
     public Lorenz(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         // Create the model.
         super(workspace);
         setName("LorenzSystem");
+
         Manager manager = new Manager(workspace, "Manager");
         setManager(manager);
 
         // Set up the top level composite actor, director and manager
-        CTMultiSolverDirector director =
-            new CTMultiSolverDirector(this, "CTMultiSolverDirector");
+        CTMultiSolverDirector director = new CTMultiSolverDirector(this,
+                "CTMultiSolverDirector");
         setDirector(director);
         director.stopTime.setToken(new DoubleToken(50.0));
 
         // To get debug outputs, uncomment these:
         // director.addDebugListener(new StreamListener());
         // manager.addDebugListener(new StreamListener());
-
         // Parameters
         stopTime = new Parameter(this, "stopTime", new DoubleToken(50.0));
         lambda = new Parameter(this, "lambda", new DoubleToken(25.0));
@@ -100,8 +98,10 @@ public class Lorenz extends TypedCompositeActor {
         // Create the actors.
         Const LAMBDA = new Const(this, "LAMBDA");
         LAMBDA.value.setExpression("lambda");
+
         Scale SIGMA = new Scale(this, "SIGMA");
         SIGMA.factor.setExpression("sigma");
+
         Scale B = new Scale(this, "B");
         B.factor.setExpression("b");
 
@@ -207,11 +207,11 @@ public class Lorenz extends TypedCompositeActor {
      *  stopTime parameter of the director.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        CTDirector director = (CTDirector)getDirector();
-        if (director != null
-                && director.stopTime != null
-                && stopTime != null) {
+        throws IllegalActionException {
+        CTDirector director = (CTDirector) getDirector();
+
+        if ((director != null) && (director.stopTime != null)
+                && (stopTime != null)) {
             // This is a hack, we should really use controls=directorparamter
             // in the applet
             director.stopTime.setToken(stopTime.getToken());

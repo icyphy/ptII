@@ -24,10 +24,12 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.modular;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import diva.graph.AbstractGraphModel;
+
 
 /**
  * A modular implementation of the graph model, whereby users with
@@ -40,7 +42,6 @@ import diva.graph.AbstractGraphModel;
  * @Pt.AcceptedRating Red
  */
 public abstract class ModularGraphModel extends AbstractGraphModel {
-
     /**
      * The root of the graph contained by this model.
      */
@@ -102,10 +103,12 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
     public Object getParent(Object node) {
         if (node != _root) {
             NodeModel model = getNodeModel(node);
+
             if (model != null) {
                 return model.getParent(node);
             }
         }
+
         return null;
     }
 
@@ -183,9 +186,11 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      */
     public Iterator inEdges(Object node) {
         NodeModel model = getNodeModel(node);
+
         if (model != null) {
             return model.inEdges(node);
         }
+
         return (new LinkedList()).iterator();
     }
 
@@ -197,9 +202,11 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      */
     public Iterator outEdges(Object node) {
         NodeModel model = getNodeModel(node);
+
         if (model != null) {
             return model.outEdges(node);
         }
+
         return (new LinkedList()).iterator();
     }
 
@@ -207,8 +214,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Set the property of the object associated with
      * the given property name.
      */
-    public abstract void setProperty(Object o, String propertyName,
-            Object value);
+    public abstract void setProperty(Object o, String propertyName, Object value);
 
     /**
      * Set the semantic object corresponding
@@ -216,4 +222,3 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      */
     public abstract void setSemanticObject(Object o, Object sem);
 }
-

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel.test;
 
 import java.net.URL;
@@ -33,8 +32,10 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Compose
+
 /**
    Compute the composition of interface automata.
    This class reads the MoML description of a number of interface automata,
@@ -50,9 +51,7 @@ import ptolemy.moml.MoMLParser;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-
 public class Compose {
-
     /** Compose the interface automata in the argument array and write
      *  the MoML description for the composition to stdout.
      *  @param momls An array of MoML file names for InterfaceAutomaton.
@@ -60,9 +59,11 @@ public class Compose {
      *   differently.
      *  @exception Exception If the automata cannot be composed.
      */
-    public Compose(String[] momls, boolean considerTransient) throws Exception {
+    public Compose(String[] momls, boolean considerTransient)
+        throws Exception {
         InterfaceAutomaton[] automata = new InterfaceAutomaton[momls.length];
-        for (int i=0; i<momls.length; i++) {
+
+        for (int i = 0; i < momls.length; i++) {
             URL url = MoMLApplication.specToURL(momls[i]);
 
             // following the comments in MoMLApplication, use the same URL for
@@ -71,14 +72,16 @@ public class Compose {
             // the same automaton will be returned the second time parse() is
             // called.
             MoMLParser parser = new MoMLParser();
-            automata[i] = (InterfaceAutomaton)parser.parse(url, url);
+            automata[i] = (InterfaceAutomaton) parser.parse(url, url);
             automata[i].addPorts();
         }
 
         InterfaceAutomaton composition = automata[0];
-        for (int i=1; i<momls.length; i++) {
+
+        for (int i = 1; i < momls.length; i++) {
             composition = composition.compose(automata[i], considerTransient);
         }
+
         System.out.println(composition.exportMoML());
     }
 
@@ -86,17 +89,20 @@ public class Compose {
      *  argument is a list of MoML files for InterfaceAutomaton.
      *  @param args The command line arguments.
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         try {
             boolean considerTransient = false;
             String[] momls = args;
+
             if (args[0].equals("-transient")) {
                 considerTransient = true;
                 momls = new String[args.length - 1];
-                for (int i=1; i<args.length; i++) {
-                    momls[i-1] = args[i];
+
+                for (int i = 1; i < args.length; i++) {
+                    momls[i - 1] = args[i];
                 }
             }
+
             new Compose(momls, considerTransient);
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
@@ -105,20 +111,14 @@ public class Compose {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 }

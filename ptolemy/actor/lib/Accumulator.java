@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Accumulator
+
 /**
    Output the initial value plus the sum of all the inputs since
    the last time a true token was received at the reset port.
@@ -54,9 +55,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class Accumulator extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,7 +65,7 @@ public class Accumulator extends Transformer {
      *   actor with this name.
      */
     public Accumulator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setMultiport(true);
@@ -107,9 +106,9 @@ public class Accumulator extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Accumulator newObject = (Accumulator)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Accumulator newObject = (Accumulator) super.clone(workspace);
+
         // set the type constraints.
         newObject.output.setTypeAtLeast(newObject.init);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -128,22 +127,26 @@ public class Accumulator extends Transformer {
      */
     public void fire() throws IllegalActionException {
         _latestSum = _sum;
+
         // Check whether to reset.
         for (int i = 0; i < reset.getWidth(); i++) {
             if (reset.hasToken(i)) {
-                BooleanToken r = (BooleanToken)reset.get(i);
+                BooleanToken r = (BooleanToken) reset.get(i);
+
                 if (r.booleanValue()) {
                     // Being reset at this firing.
                     _latestSum = output.getType().convert(init.getToken());
                 }
             }
         }
+
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 Token in = input.get(i);
                 _latestSum = _latestSum.add(in);
             }
         }
+
         output.broadcast(_latestSum);
     }
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.actor;
 
 import javax.swing.JMenu;
@@ -55,8 +54,10 @@ import diva.graph.GraphPane;
 import diva.graph.NodeController;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ActorViewerGraphController
+
 /**
    A graph controller for the Ptolemy II schematic viewer.
    This controller contains a set of default node controllers for attributes,
@@ -80,7 +81,6 @@ import diva.gui.GUIUtilities;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ActorViewerGraphController extends RunnableGraphController {
-
     /** Create a new basic controller with default
      *  terminal and edge interactors and default context menus.
      */
@@ -104,9 +104,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
         GUIUtilities.addHotKey(getFrame().getJGraph(),
-                _entityController._lookInsideAction);
+            _entityController._lookInsideAction);
         GUIUtilities.addHotKey(getFrame().getJGraph(),
-                _classDefinitionController._lookInsideAction);
+            _classDefinitionController._lookInsideAction);
     }
 
     /** React to an event by highlighting the actor being iterated.
@@ -115,44 +115,54 @@ public class ActorViewerGraphController extends RunnableGraphController {
      */
     public void event(DebugEvent event) {
         if (event instanceof FiringEvent) {
-            Actor actor = ((FiringEvent)event).getActor();
+            Actor actor = ((FiringEvent) event).getActor();
+
             if (actor instanceof NamedObj) {
-                NamedObj objToHighlight = (NamedObj)actor;
+                NamedObj objToHighlight = (NamedObj) actor;
 
                 // If the object is not contained by the associated
                 // composite, then find an object above it in the hierarchy
                 // that is.
-                AbstractBasicGraphModel graphModel =
-                    (AbstractBasicGraphModel)getGraphModel();
+                AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
-                while (objToHighlight != null
-                        && objToHighlight.getContainer() != toplevel) {
-                    objToHighlight = (NamedObj)objToHighlight.getContainer();
+
+                while ((objToHighlight != null)
+                        && (objToHighlight.getContainer() != toplevel)) {
+                    objToHighlight = (NamedObj) objToHighlight.getContainer();
                 }
+
                 if (objToHighlight == null) {
                     return;
                 }
+
                 Object location = objToHighlight.getAttribute("_location");
+
                 if (location != null) {
                     Figure figure = getFigure(location);
+
                     if (figure != null) {
                         if (_animationRenderer == null) {
                             _animationRenderer = new AnimationRenderer();
                         }
-                        FiringEvent.FiringEventType type
-                            = ((FiringEvent)event).getType();
-                        if (type == FiringEvent.BEFORE_ITERATE
-                                || type == FiringEvent.BEFORE_FIRE) {
+
+                        FiringEvent.FiringEventType type = ((FiringEvent) event)
+                            .getType();
+
+                        if ((type == FiringEvent.BEFORE_ITERATE)
+                                || (type == FiringEvent.BEFORE_FIRE)) {
                             _animationRenderer.renderSelected(figure);
                             _animated = figure;
+
                             long animationDelay = getAnimationDelay();
+
                             if (animationDelay > 0) {
                                 try {
                                     Thread.sleep(animationDelay);
-                                } catch (InterruptedException ex) {}
+                                } catch (InterruptedException ex) {
+                                }
                             }
-                        } else if (type == FiringEvent.AFTER_ITERATE
-                                || type == FiringEvent.AFTER_POSTFIRE) {
+                        } else if ((type == FiringEvent.AFTER_ITERATE)
+                                || (type == FiringEvent.AFTER_POSTFIRE)) {
                             if (_animated != null) {
                                 _animationRenderer.renderDeselected(_animated);
                             }
@@ -196,6 +206,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
     public NodeController getNodeController(Object object) {
         // Defer to the superclass if it can provide a controller.
         NodeController result = super.getNodeController(object);
+
         if (result != null) {
             return result;
         }
@@ -205,12 +216,13 @@ public class ActorViewerGraphController extends RunnableGraphController {
             return _relationController;
         } else if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
+
             if (semanticObject instanceof Entity) {
                 // In the viewer, there will not be a class definition
                 // controller that is distinct from the entity controller.
                 // In the edit, there will be.
-                if (_classDefinitionController != null
-                        && ((Entity)semanticObject).isClassDefinition()) {
+                if ((_classDefinitionController != null)
+                        && ((Entity) semanticObject).isClassDefinition()) {
                     return _classDefinitionController;
                 } else {
                     return _entityController;
@@ -225,8 +237,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
         } else if (object instanceof Port) {
             return _entityPortController;
         }
-        throw new RuntimeException(
-                "Node with unknown semantic object: " + object);
+
+        throw new RuntimeException("Node with unknown semantic object: "
+            + object);
     }
 
     /** Set the configuration.  The configuration is used when
@@ -257,6 +270,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
         super._createControllers();
         _attributeController = new AttributeController(this,
                 AttributeController.PARTIAL);
+
         // NOTE: Use an ordinary ActorController rather than
         // ClassDefinitionController because access is only PARTIAL.
         _classDefinitionController = new ClassDefinitionController(this,
@@ -281,6 +295,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
         // Create and set up the selection dragger
         _selectionDragger = new SelectionDragger(pane);
         _selectionDragger.addSelectionModel(getSelectionModel());
+
         // If the selectionDragger is consuming, then popup menus don't
         // disappear properly.
         _selectionDragger.setConsuming(false);

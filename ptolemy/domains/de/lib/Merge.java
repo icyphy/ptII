@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.data.BooleanToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Merge
+
 /**
    A timed merge actor for the DE domain. It merges a set of input signals
    into a single output signal based on the order of the tags
@@ -66,8 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (hyzheng)
    @Pt.AcceptedRating Green (hyzheng)
 */
-public class Merge extends DETransformer  {
-
+public class Merge extends DETransformer {
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport.
      *  @param container The container.
@@ -78,7 +78,7 @@ public class Merge extends DETransformer  {
      *   by the proposed container.
      */
     public Merge(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
 
@@ -86,10 +86,9 @@ public class Merge extends DETransformer  {
         discardEvents.setExpression("false");
         discardEvents.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:green\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+            + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,9 +111,10 @@ public class Merge extends DETransformer  {
      *  the input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
-        boolean discard =
-            ((BooleanToken)discardEvents.getToken()).booleanValue();
+        boolean discard = ((BooleanToken) discardEvents.getToken())
+            .booleanValue();
         Token firstAvailableToken = null;
+
         // If tokens can be discarded, this actor sends
         // out the first available tokens only. It discards all
         // remaining tokens from other input channels.
@@ -127,6 +127,7 @@ public class Merge extends DETransformer  {
                     // we see the first available tokens
                     firstAvailableToken = input.get(i);
                     output.send(0, firstAvailableToken);
+
                     while (input.hasToken(i)) {
                         Token token = input.get(i);
                         output.send(0, firstAvailableToken);

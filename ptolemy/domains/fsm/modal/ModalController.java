@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.modal;
 
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -37,12 +36,13 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 // NOTE: This class duplicates code in Refinement, but
 // because of the inheritance hierarchy, there appears to be no convenient
 // way to share the code.
-
 //////////////////////////////////////////////////////////////////////////
 //// ModalController
+
 /**
    This FSM actor supports mirroring of its ports in its container
    (which is required to be a ModalModel), which in turn assures
@@ -58,7 +58,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class ModalController extends FSMActor {
-
     /** Construct a modal controller in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -80,7 +79,7 @@ public class ModalController extends FSMActor {
      *   an actor already in the container.
      */
     public ModalController(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -99,7 +98,8 @@ public class ModalController extends FSMActor {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Have already called the super class.
                 // This time, process the request.
                 RefinementPort port = new RefinementPort(this, name);
@@ -109,31 +109,34 @@ public class ModalController extends FSMActor {
                 // will occur during MoML parsing, but this
                 // should be harmless.  EAL 12/04.
                 // port._mirrorDisable = false;
-
                 // Create the appropriate links.
-                ModalModel container = (ModalModel)getContainer();
+                ModalModel container = (ModalModel) getContainer();
+
                 if (container != null) {
                     String relationName = name + "Relation";
                     Relation relation = container.getRelation(relationName);
+
                     if (relation == null) {
                         relation = container.newRelation(relationName);
+
                         Port containerPort = container.getPort(name);
                         containerPort.link(relation);
                     }
+
                     port.link(relation);
                 }
+
                 return port;
             } else {
                 _mirrorDisable = true;
-                ((ModalModel)getContainer()).newPort(name);
+                ((ModalModel) getContainer()).newPort(name);
                 return getPort(name);
             }
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "ModalController.newPort: Internal error: " +
-                    ex.getMessage());
+                "ModalController.newPort: Internal error: " + ex.getMessage());
         } finally {
             _mirrorDisable = false;
             _workspace.doneWriting();
@@ -159,17 +162,16 @@ public class ModalController extends FSMActor {
      *   TypedActor, or if the base class throws it.
      */
     protected void _checkContainer(Entity container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(container instanceof ModalModel) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "ModalController can only be contained by "
-                    + "ModalModel objects.");
+                "ModalController can only be contained by "
+                + "ModalModel objects.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // These are protected to be accessible to ModalModel.
 
     /** Indicator that we are processing a newPort request. */

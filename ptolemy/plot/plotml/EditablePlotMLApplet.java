@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.plot.plotml;
 
 import java.awt.BorderLayout;
@@ -40,8 +39,10 @@ import ptolemy.plot.EditablePlot;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlotMLApplet
+
 /**
    This applet reads a URL giving a PlotML file for a plot and places
    the data into an editable plot.
@@ -54,7 +55,6 @@ import ptolemy.plot.PlotBox;
    @Pt.AcceptedRating red (cxh)
 */
 public class EditablePlotMLApplet extends PlotMLApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -63,7 +63,9 @@ public class EditablePlotMLApplet extends PlotMLApplet {
      */
     public void init() {
         super.init();
+
         JPanel controlPanel = new JPanel();
+
         // Make the panel transparent so that the background shows through.
         controlPanel.setOpaque(false);
         getContentPane().add(controlPanel, BorderLayout.SOUTH);
@@ -72,9 +74,11 @@ public class EditablePlotMLApplet extends PlotMLApplet {
 
         _choice = new JComboBox();
         controlPanel.add(_choice);
-        for (int i = 0; i < ((Plot)plot()).getNumDataSets(); i++) {
+
+        for (int i = 0; i < ((Plot) plot()).getNumDataSets(); i++) {
             _choice.addItem(plot().getLegend(i));
         }
+
         _choice.addActionListener(new ChoiceListener());
     }
 
@@ -82,10 +86,9 @@ public class EditablePlotMLApplet extends PlotMLApplet {
      * Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "EditablePlotDemo " + PlotBox.PTPLOT_RELEASE +
-            ": Demo of EditablePlot.\n" +
-            "By: Edward A. Lee\n " +
-            "($Id$)";
+        return "EditablePlotDemo " + PlotBox.PTPLOT_RELEASE
+        + ": Demo of EditablePlot.\n" + "By: Edward A. Lee\n "
+        + "($Id$)";
     }
 
     /** Create a new Plot object for the applet.  Derived classes can
@@ -114,16 +117,14 @@ public class EditablePlotMLApplet extends PlotMLApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Choice widget for selecting the editable data set.
     private JComboBox _choice;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class ChoiceListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            ((EditablePlot)plot()).setEditable(_choice.getSelectedIndex());
+            ((EditablePlot) plot()).setEditable(_choice.getSelectedIndex());
         }
     }
 }

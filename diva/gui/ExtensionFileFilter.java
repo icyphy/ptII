@@ -35,6 +35,7 @@ import java.util.Hashtable;
 
 import javax.swing.filechooser.FileFilter;
 
+
 /**
  * A convenience implementation of FileFilter that filters out
  * all files except for those type extensions that it knows about.
@@ -55,10 +56,8 @@ import javax.swing.filechooser.FileFilter;
  * @author Jeff Dinkins
  */
 public class ExtensionFileFilter extends FileFilter {
-
     private static String TYPE_UNKNOWN = "Type Unknown";
     private static String HIDDEN_FILE = "Hidden File";
-
     private Hashtable filters = null;
     private String description = null;
     private String fullDescription = null;
@@ -81,7 +80,7 @@ public class ExtensionFileFilter extends FileFilter {
      * @see #addExtension(String)
      */
     public ExtensionFileFilter(String extension) {
-        this(extension,null);
+        this(extension, null);
     }
 
     /**
@@ -94,7 +93,7 @@ public class ExtensionFileFilter extends FileFilter {
      * @see #addExtension(String)
      */
     public ExtensionFileFilter(String extension, String description) {
-        this(new String[] {extension}, description);
+        this(new String[] { extension }, description);
     }
 
     /**
@@ -121,10 +120,12 @@ public class ExtensionFileFilter extends FileFilter {
      */
     public ExtensionFileFilter(String[] filters, String description) {
         this.filters = new Hashtable(filters.length);
+
         for (int i = 0; i < filters.length; i++) {
             // add filters one by one
             addExtension(filters[i]);
         }
+
         setDescription(description);
     }
 
@@ -142,11 +143,16 @@ public class ExtensionFileFilter extends FileFilter {
             if (f.isDirectory()) {
                 return true;
             }
+
             String extension = getExtension(f);
-            if (extension != null && filters.get(getExtension(f)) != null) {
+
+            if ((extension != null) && (filters.get(getExtension(f)) != null)) {
                 return true;
-            };
+            }
+
+            ;
         }
+
         return false;
     }
 
@@ -157,10 +163,9 @@ public class ExtensionFileFilter extends FileFilter {
      * Added by Heloise Hse
      */
     public String getDefaultExtension() {
-        if (filters.size()==1) {
-            return (String)filters.keys().nextElement();
-        }
-        else {
+        if (filters.size() == 1) {
+            return (String) filters.keys().nextElement();
+        } else {
             return null;
         }
     }
@@ -172,10 +177,14 @@ public class ExtensionFileFilter extends FileFilter {
         if (f != null) {
             String filename = f.getName();
             int i = filename.lastIndexOf('.');
-            if (i>0 && i<filename.length()-1) {
-                return filename.substring(i+1).toLowerCase();
-            };
+
+            if ((i > 0) && (i < (filename.length() - 1))) {
+                return filename.substring(i + 1).toLowerCase();
+            }
+
+            ;
         }
+
         return null;
     }
 
@@ -195,10 +204,10 @@ public class ExtensionFileFilter extends FileFilter {
         if (filters == null) {
             filters = new Hashtable(5);
         }
+
         filters.put(extension.toLowerCase(), this);
         fullDescription = null;
     }
-
 
     /**
      * Returns the human readable description of this filter. For
@@ -211,24 +220,31 @@ public class ExtensionFileFilter extends FileFilter {
      */
     public String getDescription() {
         if (fullDescription == null) {
-            if (description == null || isExtensionListInDescription()) {
+            if ((description == null) || isExtensionListInDescription()) {
                 if (description != null) {
                     fullDescription = description;
                 }
+
                 fullDescription += " (";
+
                 // build the description from the extension list
                 Enumeration extensions = filters.keys();
+
                 if (extensions != null) {
-                    fullDescription += "." + (String) extensions.nextElement();
+                    fullDescription += ("." + (String) extensions.nextElement());
+
                     while (extensions.hasMoreElements()) {
-                        fullDescription += ", " + (String) extensions.nextElement();
+                        fullDescription += (", "
+                        + (String) extensions.nextElement());
                     }
                 }
+
                 fullDescription += ")";
             } else {
                 fullDescription = description;
             }
         }
+
         return fullDescription;
     }
 
@@ -282,7 +298,3 @@ public class ExtensionFileFilter extends FileFilter {
         return getDescription();
     }
 }
-
-
-
-

@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.domains.dde.kernel.test;
 
 import ptolemy.actor.Receiver;
@@ -44,6 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEGetNToken
+
 /**
    DDEGetNToken is a test class used to test the consumption of tokens
    and check relevant parameters. DDEGetNToken can retrieve N tokens
@@ -60,13 +60,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class DDEGetNToken extends DDEGet {
-
     /**
      */
     public DDEGetNToken(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         numTokens = new Parameter(this, "numTokens");
@@ -76,7 +74,7 @@ public class DDEGetNToken extends DDEGet {
     /**
      */
     public DDEGetNToken(TypedCompositeActor cont, String name, int tokens)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(cont, name);
         numTokens.setToken(new IntToken(tokens));
     }
@@ -105,12 +103,12 @@ public class DDEGetNToken extends DDEGet {
     }
 
     public void initialize() throws IllegalActionException {
-        _numTokens = ((IntToken)numTokens.getToken()).intValue();
+        _numTokens = ((IntToken) numTokens.getToken()).intValue();
         _tokens = new Token[_numTokens];
         _beforeTimes = new double[_numTokens];
         _afterTimes = new double[_numTokens];
 
-        for (int i = 0; i < _numTokens; i++ ) {
+        for (int i = 0; i < _numTokens; i++) {
             _beforeTimes[i] = -1.0;
             _afterTimes[i] = -1.0;
         }
@@ -120,29 +118,37 @@ public class DDEGetNToken extends DDEGet {
      */
     public void fire() throws IllegalActionException {
         int cnt = 0;
+
         while (cnt < _numTokens) {
             boolean finished = false;
             Thread thread = Thread.currentThread();
-            if ( thread instanceof DDEThread ) {
-                TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+
+            if (thread instanceof DDEThread) {
+                TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
                 _beforeTimes[cnt] = timeKeeper.getCurrentTime();
+
                 Receiver[][] rcvrs = input.getReceivers();
-                for ( int i = 0; i < rcvrs.length; i++ ) {
-                    for ( int j = 0; j < rcvrs[i].length; j++ ) {
-                        DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-                        if ( rcvr.hasToken() ) {
+
+                for (int i = 0; i < rcvrs.length; i++) {
+                    for (int j = 0; j < rcvrs[i].length; j++) {
+                        DDEReceiver rcvr = (DDEReceiver) rcvrs[i][j];
+
+                        if (rcvr.hasToken()) {
                             // System.out.println("#####");
-                            System.out.println("#####Past DDEGetNToken.rcvr.hasToken()");
+                            System.out.println(
+                                "#####Past DDEGetNToken.rcvr.hasToken()");
+
                             // System.out.println("#####");
                             _tokens[cnt] = rcvr.get();
-                            _afterTimes[cnt]
-                                = timeKeeper.getCurrentTime();
+
+                            _afterTimes[cnt] = timeKeeper.getCurrentTime();
                             cnt++;
                             j = rcvrs[i].length + 1;
                             finished = true;
                         }
                     }
-                    if ( finished ) {
+
+                    if (finished) {
                         i = rcvrs.length + 1;
                     }
                 }
@@ -152,10 +158,8 @@ public class DDEGetNToken extends DDEGet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _numTokens;
     private Token[] _tokens = null;
     private double[] _beforeTimes = null;
     private double[] _afterTimes = null;
-
 }

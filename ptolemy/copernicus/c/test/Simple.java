@@ -28,11 +28,9 @@
 
 */
 
-
-
-
 //////////////////////////////////////////////////////////////////////////
 //// Simple
+
 /**
    /* A simple class that is useful for testing C code generation under
    single class mode. C code generated for this class, when created
@@ -46,15 +44,13 @@
    @Pt.AcceptedRating Red (ssb)
 
 */
-
 public class Simple {
-
-    public void main()
-    {
+    public void main() {
         method1();
-        method2(1,2);
+        method2(1, 2);
         staticMethod(this);
     }
+
     // Constructor with no arguments.
     public Simple() {
         publicField1 = publicField2 = privateField = 0;
@@ -85,6 +81,7 @@ public class Simple {
             local1 = local1 + local2 + local3;
             local2 = local2 - local1;
         }
+
         publicField1 = local1 * local2;
         publicField2 = local2 / local1;
     }
@@ -92,21 +89,37 @@ public class Simple {
     // Method with arguments.
     public int method2(int denom, long p) {
         int x = denom;
-        if (p < 7) denom++;
-        if (p >= 19) denom++;
-        if (staticFlag1 || staticFlag2) denom += privateField;
+
+        if (p < 7) {
+            denom++;
+        }
+
+        if (p >= 19) {
+            denom++;
+        }
+
+        if (staticFlag1 || staticFlag2) {
+            denom += privateField;
+        }
+
         denom = (denom < 0) ? (denom++) : (denom--);
-        if (denom != 6) denom -= 10;
+
+        if (denom != 6) {
+            denom -= 10;
+        }
+
         while (x > 10) {
             publicField1++;
             publicField2++;
             x--;
         }
+
         if (denom == 0) {
             denom = 1;
         } else {
             denom *= 2;
         }
+
         if (denom < 0) {
             publicField1 = 15;
             publicField2 = 9;
@@ -121,11 +134,13 @@ public class Simple {
     // Static method.
     public static void staticMethod(Simple x) {
         int z = x.publicField1;
+
         do {
             x.publicField2++;
             x.publicField1--;
             z--;
         } while (z > 0);
+
         x.method2(5, 9);
     }
 

@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import java.util.List;
@@ -32,8 +31,10 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
 import ptolemy.graph.analysis.strategy.SinkNodeStrategy;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SinkNodeAnalysis
+
 /**
    Computation of sink nodes in a graph.
    A sink node in a graph is a node without output edges.
@@ -47,9 +48,7 @@ import ptolemy.graph.analysis.strategy.SinkNodeStrategy;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class SinkNodeAnalysis extends Analysis {
-
     /** Construct an instance of this class for a given graph.
      *
      *  @param graph The given graph.
@@ -69,14 +68,13 @@ public class SinkNodeAnalysis extends Analysis {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Return the sink nodes in the graph under analysis.
      *  Each element of the list is an {@link ptolemy.graph.Node}.
      *
      *  @return Return the sink nodes.
      */
     public List nodes() {
-        return ((SinkNodeAnalyzer)analyzer()).nodes();
+        return ((SinkNodeAnalyzer) analyzer()).nodes();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -85,7 +83,7 @@ public class SinkNodeAnalysis extends Analysis {
      */
     public String toString() {
         return "Sink node analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

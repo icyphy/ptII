@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.demo.QR;
 
 import java.util.Vector;
@@ -39,6 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ND_3
@@ -58,10 +58,7 @@ matrices is involved; they may change in future releases.
 @Pt.ProposedRating Red (kienhuis)
 @Pt.AcceptedRating Red (kienhuis)
 */
-
 public class ND_3 extends TypedAtomicActor {
-
-
     /** Construct an actor that is an SBF object with the given container
      *  and name.
      *  @param container The container.
@@ -72,8 +69,7 @@ public class ND_3 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_3(CompositeEntity aContainer, String aName)
-            throws IllegalActionException, NameDuplicationException
-    {
+        throws IllegalActionException, NameDuplicationException {
         super(aContainer, aName);
 
         RP_1 = new TypedIOPort(this, "RP_1", true, false);
@@ -96,21 +92,17 @@ public class ND_3 extends TypedAtomicActor {
 
         // The Type of these Parameters is set by the First
         // Token placed in the parameters when created.
-        parameter_N = new Parameter(this, "N" , new IntToken(6));
-        parameter_K = new Parameter(this, "K" , new IntToken(6));
-
+        parameter_N = new Parameter(this, "N", new IntToken(6));
+        parameter_K = new Parameter(this, "K", new IntToken(6));
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     // -- Part of the Actor
     public TypedIOPort RP_1;
     public TypedIOPort RP_2;
     public TypedIOPort RP_3;
     public TypedIOPort RP_4;
-
     public TypedIOPort WP_1;
     public TypedIOPort WP_11;
     public TypedIOPort WP_10;
@@ -138,28 +130,30 @@ public class ND_3 extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        for (int k = 1; k <= (1 * K); k += 1) {
+            for (int j = 1; j <= (1 * N); j += 1) {
+                if ((k - 2) >= 0) {
+                    r_2.add(new Double(
+                            ((DoubleToken) RP_1.get(0)).doubleValue()));
+                    in_0 = ((Double) r_2.elementAt(w_r_2++)).doubleValue();
+                }
 
-        for ( int k = 1 ; k <= 1*K ; k += 1 ) {
-            for ( int j = 1 ; j <= 1*N ; j += 1 ) {
-                if ( k - 2 >= 0 ) {
-                    r_2.add( new Double(((DoubleToken) RP_1.get(0)).
-                                     doubleValue() ) );
-                    in_0 = ((Double)r_2.elementAt(w_r_2++)).doubleValue();
+                if ((k - 1) == 0) {
+                    r_1.add(new Double(
+                            ((DoubleToken) RP_2.get(0)).doubleValue()));
+                    in_0 = ((Double) r_1.elementAt(w_r_1++)).doubleValue();
                 }
-                if ( k - 1 == 0 ) {
-                    r_1.add( new Double(((DoubleToken) RP_2.get(0)).
-                                     doubleValue() ) );
-                    in_0 = ((Double)r_1.elementAt(w_r_1++)).doubleValue();
+
+                if ((j - 2) >= 0) {
+                    x_3.add(new Double(
+                            ((DoubleToken) RP_3.get(0)).doubleValue()));
+                    in_1 = ((Double) x_3.elementAt(w_x_3++)).doubleValue();
                 }
-                if ( j - 2 >= 0 ) {
-                    x_3.add( new Double(((DoubleToken) RP_3.get(0)).
-                                     doubleValue() ) );
-                    in_1 = ((Double)x_3.elementAt(w_x_3++)).doubleValue();
-                }
-                if ( j - 1 == 0 ) {
-                    x_1.add( new Double(((DoubleToken) RP_4.get(0)).
-                                     doubleValue() ) );
-                    in_1 = ((Double)x_1.elementAt(w_x_1++)).doubleValue();
+
+                if ((j - 1) == 0) {
+                    x_1.add(new Double(
+                            ((DoubleToken) RP_4.get(0)).doubleValue()));
+                    in_1 = ((Double) x_1.elementAt(w_x_1++)).doubleValue();
                 }
 
                 _Vectorize(in_0, in_1);
@@ -167,14 +161,16 @@ public class ND_3 extends TypedAtomicActor {
                 out_1 = _argOut1;
                 out_2 = _argOut2;
 
-                if ( K - k - 1 >= 0 ) {
-                    WP_1.broadcast( new DoubleToken( out_0 ) );
+                if ((K - k - 1) >= 0) {
+                    WP_1.broadcast(new DoubleToken(out_0));
                 }
-                if ( -K + k == 0 ) {
-                    WP_11.broadcast( new DoubleToken( out_0 ) );
+
+                if ((-K + k) == 0) {
+                    WP_11.broadcast(new DoubleToken(out_0));
                 }
-                if ( N - j - 1 >= 0 ) {
-                    WP_10.broadcast( new DoubleToken( out_2 ) );
+
+                if ((N - j - 1) >= 0) {
+                    WP_10.broadcast(new DoubleToken(out_2));
                 }
             }
         }
@@ -190,20 +186,17 @@ public class ND_3 extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _Vectorize(double arg0, double arg1) {
-        _argOut2 = -1*Math.atan2(arg1, arg0);
-        _argOut0 = Math.cos(_argOut2) * arg0   -   Math.sin(_argOut2) * arg1;
+        _argOut2 = -1 * Math.atan2(arg1, arg0);
+        _argOut0 = (Math.cos(_argOut2) * arg0) - (Math.sin(_argOut2) * arg1);
         _argOut1 = 0.0;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // -- Get private copies of the parameters
     private int N;
     private int K;
-
     private double in_0;
     private double in_1;
     private double out_0;
@@ -214,17 +207,13 @@ public class ND_3 extends TypedAtomicActor {
     private double _argOut0;
     private double _argOut1;
     private double _argOut2;
-
     private Vector r_2 = new Vector();
     private Vector r_1 = new Vector();
     private Vector x_3 = new Vector();
     private Vector x_1 = new Vector();
-
     private int w_r_2 = 0;
     private int w_r_1 = 0;
     private int w_x_3 = 0;
     private int w_x_1 = 0;
-
     private boolean _returnValue = true;
-
 }

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.giotto.kernel;
 
 import ptolemy.actor.AbstractReceiver;
@@ -35,8 +34,10 @@ import ptolemy.actor.StateReceiver;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GiottoReceiver
+
 /**
    A receiver for the Giotto domain. It uses double-buffering. An actor
    may write to a receiver using put at any time. However, a new token
@@ -52,9 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Yellow (liuj)
    @see GiottoDirector
 */
-public class GiottoReceiver extends AbstractReceiver
-    implements StateReceiver {
-
+public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
     /** Construct an empty GiottoReceiver with no container.
      */
     public GiottoReceiver() {
@@ -90,8 +89,9 @@ public class GiottoReceiver extends AbstractReceiver
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty receiver.");
+                "Attempt to get data from an empty receiver.");
         }
+
         return _token;
     }
 
@@ -154,9 +154,10 @@ public class GiottoReceiver extends AbstractReceiver
     public Token remove() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty receiver.");
+                "Attempt to get data from an empty receiver.");
         }
-        Token buffer =  _token;
+
+        Token buffer = _token;
         _token = null;
         return buffer;
     }
@@ -177,11 +178,9 @@ public class GiottoReceiver extends AbstractReceiver
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The next token.
     private Token _nextToken = null;
 
     // The token available for reading.
     private Token _token = null;
-
 }

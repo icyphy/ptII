@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui;
 
 import java.util.EventListener;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// QueryListener
+
 /**
    Listener interface for changes in the query box.
 
@@ -41,7 +42,6 @@ import java.util.EventListener;
    @Pt.AcceptedRating Red (eal)
 */
 public interface QueryListener extends EventListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

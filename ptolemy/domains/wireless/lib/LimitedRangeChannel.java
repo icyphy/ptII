@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.data.RecordToken;
@@ -39,6 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// LimitedRangeChannel
@@ -72,7 +72,6 @@ import ptolemy.kernel.util.Settable;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class LimitedRangeChannel extends DelayChannel {
-
     /** Construct a channel with the given name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown. If the name argument
@@ -84,14 +83,15 @@ public class LimitedRangeChannel extends DelayChannel {
      *   an actor already in the container.
      */
     public LimitedRangeChannel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Force the type of the defaultProperties to at least include
         // the range field.
-        String[] labels = {"range"};
-        Type[] types = {BaseType.DOUBLE};
+        String[] labels = { "range" };
+        Type[] types = { BaseType.DOUBLE };
         RecordType type = new RecordType(labels, types);
+
         // Setting an upper bound allows the addition of fields.
         defaultProperties.setTypeAtMost(type);
         defaultProperties.setExpression("{range = Infinity}");
@@ -136,32 +136,35 @@ public class LimitedRangeChannel extends DelayChannel {
      *   whether the destination is in range (not thrown in this base
      *   class).
      */
-    protected boolean _isInRange(
-            WirelessIOPort source,
-            WirelessIOPort destination,
-            RecordToken properties)
-            throws IllegalActionException {
+    protected boolean _isInRange(WirelessIOPort source,
+        WirelessIOPort destination, RecordToken properties)
+        throws IllegalActionException {
         double range = Double.POSITIVE_INFINITY;
         boolean rangeIsSet = false;
+
         if (properties != null) {
             Token field = properties.get("range");
+
             if (field instanceof ScalarToken) {
                 // NOTE: This may throw a NotConvertibleException, if,
                 // example, a Complex or a Long is given.
-                range = ((ScalarToken)field).doubleValue();
+                range = ((ScalarToken) field).doubleValue();
                 rangeIsSet = true;
             }
         }
+
         if (!rangeIsSet) {
             // Type constraints in the constructor make the casts safe.
-            RecordToken defaultPropertiesValue
-                = (RecordToken)defaultProperties.getToken();
+            RecordToken defaultPropertiesValue = (RecordToken) defaultProperties
+                .getToken();
+
             // Type of the field must be convertible to double, but
             // need not actually be a double.
-            ScalarToken field =
-                (ScalarToken)defaultPropertiesValue.get("range");
+            ScalarToken field = (ScalarToken) defaultPropertiesValue.get(
+                    "range");
             range = field.doubleValue();
         }
+
         boolean result = (_distanceBetween(source, destination) <= range);
 
         // Whether a port is in range depends on the

@@ -22,13 +22,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.analyzer;
 
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SinkNodeAnalyzer
+
 /**
    Base interface for the computation of sink nodes in a graph.
    <p>
@@ -39,9 +40,7 @@ import java.util.List;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public interface SinkNodeAnalyzer extends GraphAnalyzer {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

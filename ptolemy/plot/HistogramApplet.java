@@ -26,11 +26,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.plot;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// HistogramApplet
+
 /**
    A Histogram.  Data can be given in ASCII format at a URL.
    If none is given, then a sample histogram is generated.
@@ -42,7 +43,6 @@ package ptolemy.plot;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class HistogramApplet extends PlotApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -50,9 +50,8 @@ public class HistogramApplet extends PlotApplet {
      *  @return A string describing the applet.
      */
     public String getAppletInfo() {
-        return "Histogram 1.0: Demo of PlotApplet.\n" +
-            "By: Edward A. Lee\n " +
-            "($Id$)";
+        return "Histogram 1.0: Demo of PlotApplet.\n" + "By: Edward A. Lee\n "
+        + "($Id$)";
     }
 
     /** Create a new Histogram object for the applet.

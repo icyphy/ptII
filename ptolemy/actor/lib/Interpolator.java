@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Interpolation;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Interpolator
+
 /**
    Produce an interpolation based on the parameters.
    This class uses the Interpolation class in the math package to compute
@@ -79,9 +80,7 @@ import ptolemy.math.Interpolation;
    @Pt.AcceptedRating Yellow (yuhong)
    @see ptolemy.math.Interpolation
 */
-
 public class Interpolator extends SequenceSource {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -91,7 +90,7 @@ public class Interpolator extends SequenceSource {
      *   actor with this name.
      */
     public Interpolator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         _interpolation = new Interpolation();
@@ -100,9 +99,9 @@ public class Interpolator extends SequenceSource {
         // Interpolation class. This is not required for this class to
         // function. But since these parameters are public, other objects
         // in the system may use them.
-
         indexes = new Parameter(this, "indexes");
         indexes.setExpression("{0, 1}");
+
         // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
 
@@ -160,36 +159,42 @@ public class Interpolator extends SequenceSource {
      *   is not supported by the Interpolation class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == values) {
-            ArrayToken valuesValue = (ArrayToken)values.getToken();
+            ArrayToken valuesValue = (ArrayToken) values.getToken();
             _values = new double[valuesValue.length()];
+
             for (int i = 0; i < valuesValue.length(); i++) {
-                _values[i] = ((DoubleToken)valuesValue.getElement(i))
+                _values[i] = ((DoubleToken) valuesValue.getElement(i))
                     .doubleValue();
             }
+
             _interpolation.setValues(_values);
         } else if (attribute == indexes) {
-            ArrayToken indexesValue = (ArrayToken)indexes.getToken();
+            ArrayToken indexesValue = (ArrayToken) indexes.getToken();
             _indexes = new int[indexesValue.length()];
+
             int previous = 0;
+
             for (int i = 0; i < indexesValue.length(); i++) {
-                _indexes[i] = ((IntToken)indexesValue.getElement(i)).intValue();
+                _indexes[i] = ((IntToken) indexesValue.getElement(i)).intValue();
+
                 // Check nondecreasing property.
                 if (_indexes[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of indexes is not nondecreasing " +
-                            "and nonnegative.");
+                        "Value of indexes is not nondecreasing "
+                        + "and nonnegative.");
                 }
+
                 previous = _indexes[i];
             }
-            _interpolation.setIndexes(_indexes);
 
+            _interpolation.setIndexes(_indexes);
         } else if (attribute == period) {
-            int newPeriod = ((IntToken)period.getToken()).intValue();
+            int newPeriod = ((IntToken) period.getToken()).intValue();
             _interpolation.setPeriod(newPeriod);
         } else if (attribute == order) {
-            int newOrder = ((IntToken)order.getToken()).intValue();
+            int newOrder = ((IntToken) order.getToken()).intValue();
             _interpolation.setOrder(newOrder);
         } else {
             super.attributeChanged(attribute);
@@ -205,6 +210,7 @@ public class Interpolator extends SequenceSource {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         double result = _interpolation.interpolate(_iterationCount);
         output.send(0, new DoubleToken(result));
     }
@@ -228,10 +234,8 @@ public class Interpolator extends SequenceSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Cache of indexes array value.
     private transient int[] _indexes;
-
     private int _iterationCount = 0;
     private Interpolation _interpolation;
 

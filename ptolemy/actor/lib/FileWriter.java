@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import java.io.IOException;
@@ -37,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 /**
    This actor reads tokens from any number of input channels and writes
@@ -52,7 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (mudit)
 */
 public class FileWriter extends ptolemy.actor.lib.Writer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,7 +61,7 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
      *   actor with this name.
      */
     public FileWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         filename = new Parameter(this, "filename");
         filename.setExpression("");
@@ -89,26 +88,26 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
      *   is <i>filename</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == filename) {
             try {
-                StringToken filenameToken = (StringToken)filename.getToken();
+                StringToken filenameToken = (StringToken) filename.getToken();
+
                 if (filenameToken == null) {
                     setWriter(null);
                 } else {
                     String newFilename = filenameToken.stringValue();
+
                     if (newFilename.equals("")) {
                         setWriter(null);
                     } else {
-                        java.io.FileWriter writer
-                            = new java.io.FileWriter(newFilename);
+                        java.io.FileWriter writer = new java.io.FileWriter(newFilename);
                         setWriter(writer);
                     }
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "attributeChanged(" +
-                        attribute.getName() + ") failed");
+                    "attributeChanged(" + attribute.getName() + ") failed");
             }
         }
     }
@@ -127,6 +126,7 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
         // To get the file to close.
         setWriter(null);
     }

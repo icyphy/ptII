@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.sched;
 
 import java.util.Collections;
@@ -35,9 +34,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import ptolemy.actor.Actor;
+import ptolemy.kernel.util.InvalidStateException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Firing
+
 /**
    This class is a schedule element that contains a reference to an
    actor.  This class is used together with the Schedule class to
@@ -59,7 +61,6 @@ import ptolemy.actor.Actor;
    @see ptolemy.actor.sched.Schedule
    @see ptolemy.actor.sched.ScheduleElement
 */
-
 public class Firing extends ScheduleElement {
     /** Construct a firing with a default iteration count equal to one
      *  and with no parent schedule.
@@ -121,6 +122,7 @@ public class Firing extends ScheduleElement {
         if (_firing == null) {
             _firing = Collections.singletonList(this);
         }
+
         return _firing.iterator();
     }
 
@@ -143,7 +145,7 @@ public class Firing extends ScheduleElement {
      */
     public void setActor(Actor actor) {
         _incrementVersion();
-        _actor  = actor;
+        _actor = actor;
     }
 
     /**
@@ -152,8 +154,11 @@ public class Firing extends ScheduleElement {
     public String toString() {
         String result = "Fire Actor " + _actor;
         int iterationCount = getIterationCount();
-        if (iterationCount > 1)
-            result += " " + iterationCount + " times";
+
+        if (iterationCount > 1) {
+            result += (" " + iterationCount + " times");
+        }
+
         return result;
     }
 
@@ -167,6 +172,7 @@ public class Firing extends ScheduleElement {
     private class ActorIterator implements Iterator {
         // As of 8/02, it seems like this inner class is not really
         // used except by the test suite.
+
         /** Construct a ScheduleIterator.
          */
         public ActorIterator(int iterationCount) {
@@ -185,9 +191,9 @@ public class Firing extends ScheduleElement {
         public boolean hasNext() {
             if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else {
-                return(_currentElement <= _iterationCount);
+                return (_currentElement <= _iterationCount);
             }
         }
 
@@ -222,9 +228,9 @@ public class Firing extends ScheduleElement {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The actor associated with this firing.
     private Actor _actor;
+
     // The list containing this firing as the only element.
     private List _firing = null;
 }

@@ -24,15 +24,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.kernel.undo;
 
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
    A change request to undo. When executed, this change request will
    identify the undo stack associated with the specified context,
@@ -46,7 +47,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public class UndoChangeRequest extends ChangeRequest {
-
     /** Construct a change request to be executed in the specified context.
      *  The undo stack associated with the specified context will be used.
      *  That stack is the one returned by UndoStackAttribute.getUndoInfo().
@@ -72,12 +72,15 @@ public class UndoChangeRequest extends ChangeRequest {
         if (_context == null) {
             throw new InternalErrorException("Context is unexpectedly null.");
         }
+
         UndoStackAttribute undoStack = UndoStackAttribute.getUndoInfo(_context);
+
         // The undo action may involve several subactions.
         // These may queue further change requests.
         // Collect these change requests without executing them
         // until after the whole action is completed.
         boolean previous = _context.isDeferringChangeRequests();
+
         try {
             previous = _context.setDeferringChangeRequests(true);
             undoStack.undo();
@@ -88,7 +91,6 @@ public class UndoChangeRequest extends ChangeRequest {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The context in which to execute the request.
     private NamedObj _context;
 }

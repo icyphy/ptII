@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Discard
+
 /**
    A simple sink actor that consumes and discards input tokens.
    This actor is useful in situations where the value of an output is not
@@ -49,9 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (ssachs)
 */
-
 public class Discard extends Sink {
-
     /** Construct an actor with an input multiport.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,7 +60,7 @@ public class Discard extends Sink {
      *   actor with this name.
      */
     public Discard(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -75,6 +74,7 @@ public class Discard extends Sink {
      */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
+
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 input.get(i);

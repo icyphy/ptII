@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -40,8 +39,10 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BoxedValueIcon
+
 /**
    An icon that displays the value of an attribute of the container in a box
    that resizes according to the width of the attribute value.
@@ -55,7 +56,6 @@ import diva.canvas.toolbox.LabelFigure;
    @Pt.AcceptedRating Red (johnr)
 */
 public class BoxedValueIcon extends AttributeValueIcon {
-
     /** Create a new icon with the given name in the given container.
      *  The container is required to implement Settable, or an exception
      *  will be thrown.
@@ -63,7 +63,7 @@ public class BoxedValueIcon extends AttributeValueIcon {
      *  @param name The name of this attribute.
      */
     public BoxedValueIcon(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -79,17 +79,20 @@ public class BoxedValueIcon extends AttributeValueIcon {
         String displayString = _displayString();
         double width = 60;
         double height = 30;
+
         if (displayString != null) {
             // Measure width of the text.  Unfortunately, this
             // requires generating a label figure that we will not use.
-            LabelFigure label = new LabelFigure(displayString,
-                    _labelFont, 1.0, SwingConstants.CENTER);
+            LabelFigure label = new LabelFigure(displayString, _labelFont, 1.0,
+                    SwingConstants.CENTER);
             Rectangle2D stringBounds = label.getBounds();
+
             // NOTE: Padding of 20. Quantize the height so that
             // snap to grid still works.
             width = Math.floor(stringBounds.getWidth()) + 20;
             height = Math.floor(stringBounds.getHeight()) + 10;
         }
+
         return new BasicRectangle(0, 0, width, height, Color.white, 1);
     }
 }

@@ -24,11 +24,13 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.layout;
+
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import diva.graph.GraphModel;
 import diva.graph.GraphUtilities;
+
 
 /**
  * Miscellaneous utility routines used in layout.
@@ -42,23 +44,27 @@ public final class LayoutUtilities {
      * Place the given node at the given position and
      * reroute its edges.
      */
-    public static final void place(LayoutTarget target, Object node,
-            double x, double y) {
+    public static final void place(LayoutTarget target, Object node, double x,
+        double y) {
         GraphModel model = target.getGraphModel();
         placeNoReroute(target, node, x, y);
 
-        for (Iterator i = model.inEdges(node); i.hasNext(); ) {
+        for (Iterator i = model.inEdges(node); i.hasNext();) {
             Object edge = i.next();
+
             if (target.isEdgeVisible(edge)) {
                 target.route(edge); //XXX reroute
             }
         }
-        for (Iterator i = model.outEdges(node); i.hasNext(); ) {
+
+        for (Iterator i = model.outEdges(node); i.hasNext();) {
             Object edge = i.next();
+
             if (target.isEdgeVisible(edge)) {
                 target.route(edge); //XXX reroute
             }
         }
+
         //XXX reroute children if it's a composite node!
     }
 
@@ -66,23 +72,23 @@ public final class LayoutUtilities {
      * Place the given node at the given position but do
      * not reroute its edges.
      */
-    public static final void placeNoReroute(LayoutTarget target,
-            Object node, double x, double y) {
+    public static final void placeNoReroute(LayoutTarget target, Object node,
+        double x, double y) {
         Rectangle2D bounds = target.getBounds(node);
-        target.translate(node, x-bounds.getWidth()/2-bounds.getX(),
-                y-bounds.getHeight()/2-bounds.getY());
+        target.translate(node, x - (bounds.getWidth() / 2) - bounds.getX(),
+            y - (bounds.getHeight() / 2) - bounds.getY());
     }
-
 
     /**
      * Check consistency of the graph in terms of topology and
      * layout.
      */
     public static final boolean checkConsistency(Object composite,
-            GraphModel model) {
+        GraphModel model) {
         if (!GraphUtilities.checkConsistency(composite, model)) {
             return false;
         }
+
         return checkCommon(composite, model);
     }
 
@@ -91,20 +97,19 @@ public final class LayoutUtilities {
      * layout.
      */
     public static final boolean checkContainment(Object composite,
-            GraphModel model) {
+        GraphModel model) {
         if (!GraphUtilities.checkContainment(composite, model)) {
             return false;
         }
+
         return checkCommon(composite, model);
     }
-
 
     /**
      * A common layout consistency check shared by checkConsistency()
      * and checkContainment().
      */
-    private static final boolean checkCommon(Object composite,
-            GraphModel model) {
+    private static final boolean checkCommon(Object composite, GraphModel model) {
         /*
           for (Iterator i = g.nodes(); i.hasNext(); ) {
           Node n = (Node)i.next();
@@ -129,6 +134,7 @@ public final class LayoutUtilities {
           }
           return true;
         */
+
         //XXX
         return true;
     }
@@ -138,16 +144,14 @@ public final class LayoutUtilities {
      * them.
      */
     public static final void routeVisibleEdges(Object composite,
-            LayoutTarget target) {
+        LayoutTarget target) {
         for (Iterator i = GraphUtilities.localEdges(composite,
-                     target.getGraphModel()); i.hasNext();) {
+                    target.getGraphModel()); i.hasNext();) {
             Object edge = i.next();
+
             if (target.isEdgeVisible(edge)) {
                 target.route(edge);
             }
         }
     }
 }
-
-
-

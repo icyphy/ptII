@@ -32,8 +32,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConverterRangeModel
+
 /**
    Based on the source code for DefaultBoundedRangeModel,
    this class stores its value as a double, rather than
@@ -51,13 +53,13 @@ public class ConverterRangeModel implements BoundedRangeModel {
 
     //protected int maximum = 10000;
     protected int maximum = 3000;
+
     //protected int minimum = 0;
     protected int minimum = 400;
     protected int extent = 0;
 
     //protected double value = 0.0;
     protected double value = 1000.0;
-
     protected double multiplier = 1.0;
     protected boolean isAdjusting = false;
     final static boolean DEBUG = false;
@@ -69,6 +71,7 @@ public class ConverterRangeModel implements BoundedRangeModel {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel getMultiplier");
         }
+
         return multiplier;
     }
 
@@ -76,6 +79,7 @@ public class ConverterRangeModel implements BoundedRangeModel {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel setMultiplier");
         }
+
         this.multiplier = multiplier;
         fireStateChanged();
     }
@@ -84,6 +88,7 @@ public class ConverterRangeModel implements BoundedRangeModel {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel getMaximum");
         }
+
         return maximum;
     }
 
@@ -91,15 +96,17 @@ public class ConverterRangeModel implements BoundedRangeModel {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel setMaximum");
         }
+
         setRangeProperties(value, extent, minimum, newMaximum, isAdjusting);
     }
 
     public int getMinimum() {
-        return (int)minimum;
+        return (int) minimum;
     }
 
     public void setMinimum(int newMinimum) {
         System.out.println("In ConverterRangeModel setMinimum");
+
         //Do nothing.
     }
 
@@ -107,20 +114,23 @@ public class ConverterRangeModel implements BoundedRangeModel {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel getValue");
         }
-        return (int)getDoubleValue();
+
+        return (int) getDoubleValue();
     }
 
     public void setValue(int newValue) {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel setValue");
         }
-        setDoubleValue((double)newValue);
+
+        setDoubleValue((double) newValue);
     }
 
     public double getDoubleValue() {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel getDoubleValue");
         }
+
         return value;
     }
 
@@ -128,11 +138,12 @@ public class ConverterRangeModel implements BoundedRangeModel {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel setDoubleValue");
         }
+
         setRangeProperties(newValue, extent, minimum, maximum, isAdjusting);
     }
 
     public int getExtent() {
-        return (int)extent;
+        return (int) extent;
     }
 
     public void setExtent(int newExtent) {
@@ -147,57 +158,56 @@ public class ConverterRangeModel implements BoundedRangeModel {
         setRangeProperties(value, extent, minimum, maximum, b);
     }
 
-    public void setRangeProperties(int newValue,
-            int newExtent,
-            int newMin,
-            int newMax,
-            boolean newAdjusting) {
+    public void setRangeProperties(int newValue, int newExtent, int newMin,
+        int newMax, boolean newAdjusting) {
         System.out.println("In ConverterRangeModel setRangeProperties");
-        setRangeProperties((double)newValue,
-                newExtent,
-                newMin,
-                newMax,
-                newAdjusting);
+        setRangeProperties((double) newValue, newExtent, newMin, newMax,
+            newAdjusting);
     }
 
-    public void setRangeProperties(double newValue,
-            int unusedExtent,
-            int unusedMin,
-            int newMax,
-            boolean newAdjusting) {
+    public void setRangeProperties(double newValue, int unusedExtent,
+        int unusedMin, int newMax, boolean newAdjusting) {
         if (DEBUG) {
-            System.out.println("setRangeProperties(): "
-                    + "newValue = " + newValue
-                    + "; newMax = " + newMax);
+            System.out.println("setRangeProperties(): " + "newValue = "
+                + newValue + "; newMax = " + newMax);
         }
+
         if (newMax <= minimum) {
             newMax = minimum + 1;
+
             if (DEBUG) {
                 System.out.println("maximum raised by 1 to " + newMax);
             }
         }
+
         if (Math.round(newValue) > newMax) { //allow some rounding error
             newValue = newMax;
+
             if (DEBUG) {
                 System.out.println("value lowered to " + newMax);
             }
         }
 
         boolean changeOccurred = false;
+
         if (newValue != value) {
             if (DEBUG) {
                 System.out.println("value set to " + newValue);
             }
+
             value = newValue;
             changeOccurred = true;
         }
+
         if (newMax != maximum) {
             if (DEBUG) {
                 System.out.println("maximum set to " + newMax);
             }
+
             maximum = newMax;
             changeOccurred = true;
         }
+
         if (newAdjusting != isAdjusting) {
             maximum = newMax;
             isAdjusting = newAdjusting;
@@ -223,12 +233,14 @@ public class ConverterRangeModel implements BoundedRangeModel {
 
     protected void fireStateChanged() {
         Object[] listeners = listenerList.getListenerList();
-        for (int i = listeners.length - 2; i >= 0; i -=2 ) {
+
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == ChangeListener.class) {
                 if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((ChangeListener)listeners[i+1]).stateChanged(changeEvent);
+
+                ((ChangeListener) listeners[i + 1]).stateChanged(changeEvent);
             }
         }
     }

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.jmf;
 
 import java.io.IOException;
@@ -52,6 +51,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlaySound
 
@@ -70,7 +70,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class PlaySound extends TypedAtomicActor implements ControllerListener {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -80,7 +79,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
      *   actor with this name.
      */
     public PlaySound(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileNameOrURL = new FileParameter(this, "fileNameOrURL");
@@ -93,6 +92,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
         onOff.setTypeEquals(BaseType.BOOLEAN);
 
         percentGain = new IntRangeParameter(this, "percentGain");
+
         // Set the default value to full scale.
         percentGain.setToken(new IntToken(100));
     }
@@ -129,34 +129,35 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileNameOrURL) {
             try {
-                if (fileNameOrURL != null
-                        && fileNameOrURL.asURL() != null) {
+                if ((fileNameOrURL != null) && (fileNameOrURL.asURL() != null)) {
                     if (_player != null) {
                         _player.removeControllerListener(this);
                     }
-                    _player = Manager.createRealizedPlayer(
-                            fileNameOrURL.asURL());
+
+                    _player = Manager.createRealizedPlayer(fileNameOrURL.asURL());
                     _player.addControllerListener(this);
+
                     // Initiate as much preprocessing as possible.
                     // _player.realize();
                     _player.prefetch();
                     _gainControl = _player.getGainControl();
+
                     if (percentGain != null) {
-                        _gainControl.setLevel(
-                                0.01f * percentGain.getCurrentValue());
+                        _gainControl.setLevel(0.01f * percentGain
+                            .getCurrentValue());
                     }
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot open file: " + ex.toString());
+                    "Cannot open file: " + ex.toString());
             } catch (MediaException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Exception thrown by media framework");
+                    "Exception thrown by media framework");
             }
-        } else if (attribute == percentGain && _gainControl != null) {
+        } else if ((attribute == percentGain) && (_gainControl != null)) {
             _gainControl.setLevel(0.01f * percentGain.getCurrentValue());
         } else {
             super.attributeChanged(attribute);
@@ -175,16 +176,20 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         // Consume the inputs.
         // Default if there is no input is to play the sound.
         boolean playSound = true;
-        if (onOff.getWidth() > 0 && onOff.hasToken(0)) {
-            playSound = ((BooleanToken)onOff.get(0)).booleanValue();
+
+        if ((onOff.getWidth() > 0) && onOff.hasToken(0)) {
+            playSound = ((BooleanToken) onOff.get(0)).booleanValue();
         }
 
         // If there is no player, then no sound file has been specified.
         // Just return.
-        if (_player == null) return;
+        if (_player == null) {
+            return;
+        }
 
         // Call this whether we have synchronized play or not, since
         // we may now have synchronized play but not have had it before.
@@ -197,11 +202,12 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
             _player.start();
 
             // If synchronizedPlay is true, then wait for the play to complete.
-            boolean synch
-                = ((BooleanToken)synchronizedPlay.getToken()).booleanValue();
+            boolean synch = ((BooleanToken) synchronizedPlay.getToken())
+                .booleanValue();
+
             if (synch) {
-                synchronized(this) {
-                    while (_player.getState() == Controller.Started
+                synchronized (this) {
+                    while ((_player.getState() == Controller.Started)
                             && !_stopRequested) {
                         try {
                             wait();
@@ -218,6 +224,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
      */
     public void stopFire() {
         super.stopFire();
+
         if (_player != null) {
             // FIXME: Doesn't seem to stop the sound.
             _player.stop();

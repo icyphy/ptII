@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel;
 
 import ptolemy.kernel.ComponentRelation;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Link
+
 /**
    Instances of this class represent a link between a port and a
    relation, OR a binary connection between two ports.  In the first
@@ -48,7 +49,6 @@ import ptolemy.kernel.ComponentRelation;
    @Pt.AcceptedRating Red (johnr)
 */
 public class Link {
-
     /** Return the head of this link.   This may be a port, or a vertex
      *  in a relation.
      */
@@ -95,10 +95,7 @@ public class Link {
     /** Return a string representation of this link.
      */
     public String toString() {
-        return "Link("
-            + _head + ", "
-            + _tail + ", "
-            + _relation + ")";
+        return "Link(" + _head + ", " + _tail + ", " + _relation + ")";
     }
 
     private Object _head;

@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.BasicStroke;
@@ -207,10 +206,11 @@ public class FigureTutorial {
 
     /** Create a JCanvas and put it into a window.
      */
-    public FigureTutorial () {
+    public FigureTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
         createFigures();
+
         BasicFrame frame = new BasicFrame("Figure tutorial", canvas);
     }
 
@@ -218,24 +218,24 @@ public class FigureTutorial {
      * in this file. To make the demo a little more interesting,
      * make them draggable.
      */
-    public void createFigures () {
+    public void createFigures() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Create a controller to do the work.
         BasicController controller = new BasicController(graphicsPane);
-        SelectionInteractor defaultInteractor
-            = controller.getSelectionInteractor();
+        SelectionInteractor defaultInteractor = controller
+            .getSelectionInteractor();
         BoundsManipulator manip = new BoundsManipulator();
         defaultInteractor.setPrototypeDecorator(manip);
 
         // Create a custom rectangle and make it draggable
-        AbstractFigure blue = new CustomRectangle(10.0,10.0,50.0,50.0);
+        AbstractFigure blue = new CustomRectangle(10.0, 10.0, 50.0, 50.0);
         layer.add(blue);
         blue.setInteractor(defaultInteractor);
         blue.setToolTipText("Blue figure 1");
 
         // Create a custom rectangle and make it draggable
-        AbstractFigure blue2 = new CustomRectangle(100.0,100.0,100.0,50.0);
+        AbstractFigure blue2 = new CustomRectangle(100.0, 100.0, 100.0, 50.0);
         layer.add(blue2);
         blue2.setInteractor(defaultInteractor);
         blue2.setToolTipText("Blue figure 2");
@@ -243,15 +243,16 @@ public class FigureTutorial {
         // Create an image figure and make it draggable
         Image img = Toolkit.getDefaultToolkit().getImage(IMAGE_FILE_NAME);
         MediaTracker tracker = new MediaTracker(canvas);
-        tracker.addImage(img,0);
+        tracker.addImage(img, 0);
+
         try {
             tracker.waitForID(0);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             System.err.println(e + "... in FigureTutorial");
         }
+
         ImageFigure imgFig = new ImageFigure(img);
-        imgFig.translate(300,100);
+        imgFig.translate(300, 100);
         layer.add(imgFig);
         imgFig.setInteractor(defaultInteractor);
         imgFig.setToolTipText("Image figure");
@@ -259,7 +260,7 @@ public class FigureTutorial {
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -288,10 +289,8 @@ public class FigureTutorial {
          * several constructors, and methods to set and get fields
          * that will control the visual properties of the figure.
          */
-        public CustomRectangle (
-                double x, double y,
-                double width, double height) {
-            _bounds = new Rectangle2D.Double(x,y,width,height);
+        public CustomRectangle(double x, double y, double width, double height) {
+            _bounds = new Rectangle2D.Double(x, y, width, height);
         }
 
         /** Get the bounds of this figure. Because, in this example,
@@ -301,7 +300,7 @@ public class FigureTutorial {
          * being created each time, but it would normally be created
          * only once.
          */
-        public Rectangle2D getBounds () {
+        public Rectangle2D getBounds() {
             Stroke s = new BasicStroke(1.0f);
             return s.createStrokedShape(_bounds).getBounds2D();
         }
@@ -312,7 +311,7 @@ public class FigureTutorial {
          * that clients will not modify the object returned by
          * this method.
          */
-        public Shape getShape () {
+        public Shape getShape() {
             return _bounds;
         }
 
@@ -325,7 +324,7 @@ public class FigureTutorial {
          * Note that we have to set the stroke and paint in the
          * graphics context before we can do anything useful.
          */
-        public void paint (Graphics2D g) {
+        public void paint(Graphics2D g) {
             // Create a stroke and fill then outline the rectangle
             Stroke s = new BasicStroke(1.0f);
             g.setStroke(s);
@@ -340,13 +339,12 @@ public class FigureTutorial {
             double w = _bounds.getWidth();
             double h = _bounds.getHeight();
 
-            s = new BasicStroke(4.0f,
-                    BasicStroke.CAP_BUTT,
+            s = new BasicStroke(4.0f, BasicStroke.CAP_BUTT,
                     BasicStroke.JOIN_MITER);
             g.setStroke(s);
             g.setPaint(Color.red);
-            g.draw(new Line2D.Double(x,y+h/2,x+w,y+h/2));
-            g.draw(new Line2D.Double(x+w/2,y,x+w/2,y+h));
+            g.draw(new Line2D.Double(x, y + (h / 2), x + w, y + (h / 2)));
+            g.draw(new Line2D.Double(x + (w / 2), y, x + (w / 2), y + h));
         }
 
         /** Transform the object. There are various ways of doing this,
@@ -357,14 +355,10 @@ public class FigureTutorial {
          * we have to call the repaint() method so that the region
          * of the canvas that changed is properly repainted.
          */
-        public void transform (AffineTransform at) {
+        public void transform(AffineTransform at) {
             repaint();
-            _bounds = (Rectangle2D)
-                ShapeUtilities.transformBounds(_bounds, at);
+            _bounds = (Rectangle2D) ShapeUtilities.transformBounds(_bounds, at);
             repaint();
         }
     }
 }
-
-
-

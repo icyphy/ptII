@@ -32,8 +32,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotLive
+
 /**
    Plot signals dynamically, where points can be added at any time
    and the display will be updated.  This should be normally used
@@ -62,7 +64,6 @@ import javax.swing.JButton;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public abstract class PlotLive extends Plot implements Runnable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -89,6 +90,7 @@ public abstract class PlotLive extends Plot implements Runnable {
             _startButton.addActionListener(new StartButtonListener());
             add(_startButton);
         }
+
         _startButton.setVisible(true);
 
         if (_stopButton == null) {
@@ -96,6 +98,7 @@ public abstract class PlotLive extends Plot implements Runnable {
             _stopButton.addActionListener(new StopButtonListener());
             add(_stopButton);
         }
+
         _stopButton.setVisible(true);
         _stopButton.setEnabled(false);
         _startButton.setEnabled(true);
@@ -126,16 +129,18 @@ public abstract class PlotLive extends Plot implements Runnable {
         while (_plotting || _paused) {
             if (_plotting) {
                 addPoints();
+
                 // Give the event thread a chance.
                 Thread.yield();
             } else if (_paused) {
                 // NOTE: Cannot synchronize this entire method because then
                 // the Thread.yield() call above does not yield to any
                 // synchronized methods (like _drawPlot()).
-                synchronized(this) {
+                synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {}
+                    } catch (InterruptedException e) {
+                    }
                 }
             }
         }
@@ -157,6 +162,7 @@ public abstract class PlotLive extends Plot implements Runnable {
             _startButton.addActionListener(new StartButtonListener());
             add(_startButton);
         }
+
         _startButton.setVisible(visible);
 
         if (_stopButton == null) {
@@ -164,6 +170,7 @@ public abstract class PlotLive extends Plot implements Runnable {
             _stopButton.addActionListener(new StopButtonListener());
             add(_stopButton);
         }
+
         _stopButton.setVisible(visible);
 
         if (visible) {
@@ -179,11 +186,12 @@ public abstract class PlotLive extends Plot implements Runnable {
         _paused = false;
         _stopButton.setEnabled(true);
         _startButton.setEnabled(false);
+
         if (_plotLiveThread == null) {
             _plotLiveThread = new Thread(this, "PlotLive Thread");
             _plotLiveThread.start();
         } else {
-            synchronized(this) {
+            synchronized (this) {
                 notifyAll();
             }
         }
@@ -206,15 +214,18 @@ public abstract class PlotLive extends Plot implements Runnable {
 
     /** @serial True if we are actually plotting. */
     private boolean _plotting = false;
+
     /** @serial True if we are paused. */
     private boolean _paused = false;
 
     /** @serial Start and Stop Buttons. */
-    private JButton _startButton, _stopButton;
+    private JButton _startButton;
+
+    /** @serial Start and Stop Buttons. */
+    private JButton _stopButton;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     class StartButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             start();

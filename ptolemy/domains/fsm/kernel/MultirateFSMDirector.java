@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.actor.IOPort;
@@ -38,6 +37,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 /**
  * @author zhouye
  *
@@ -45,12 +45,12 @@ import ptolemy.kernel.util.Workspace;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class MultirateFSMDirector extends FSMDirector {
-
     /**
      *
      */
     public MultirateFSMDirector() {
         super();
+
         // TODO Auto-generated constructor stub
     }
 
@@ -59,6 +59,7 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     public MultirateFSMDirector(Workspace workspace) {
         super(workspace);
+
         // TODO Auto-generated constructor stub
     }
 
@@ -69,8 +70,9 @@ public class MultirateFSMDirector extends FSMDirector {
      * @exception NameDuplicationException
      */
     public MultirateFSMDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // TODO Auto-generated constructor stub
     }
 
@@ -99,30 +101,32 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *  input port.
      */
-    public boolean transferInputs(IOPort port)
-            throws IllegalActionException {
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" +
-                    "input port.");
+                "transferInputs: port argument is not an opaque"
+                + "input port.");
         }
+
         boolean transferred = false;
+
         // The receivers of the current refinement that receive data
         // from "port."
         Receiver[][] insideReceivers = _currentLocalReceivers(port);
 
         int rate = DFUtilities.getTokenConsumptionRate(port);
+
         for (int i = 0; i < port.getWidth(); i++) {
             // For each channel
             try {
-                if (insideReceivers != null
-                        && insideReceivers[i] != null) {
+                if ((insideReceivers != null) && (insideReceivers[i] != null)) {
                     for (int j = 0; j < insideReceivers[i].length; j++) {
                         // Since we only transfer number of tokens declared by
                         // the port rate, we should be safe to clear the receivers.
                         // Maybe we should move this step to prefire() or postfire(),
                         // as in FSMDirector.
                         insideReceivers[i][j].clear();
+
                         /*
                         while (insideReceivers[i][j].hasToken()) {
                             // clear tokens.
@@ -132,6 +136,7 @@ public class MultirateFSMDirector extends FSMDirector {
                             insideReceivers[i][j].get();
                         }*/
                     }
+
                     // Transfer number of tokens at most the declared port rate.
                     // Note: we don't throw exception if there are fewer tokens
                     // available. The prefire() method of the refinement simply
@@ -142,15 +147,17 @@ public class MultirateFSMDirector extends FSMDirector {
                             port.sendInside(i, t);
                         }
                     }
+
                     // Successfully transferred data, so return true.
                     transferred = true;
                 }
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
                 throw new InternalErrorException(
-                        "Director.transferInputs: Internal error: " + ex);
+                    "Director.transferInputs: Internal error: " + ex);
             }
         }
+
         return transferred;
     }
 
@@ -167,21 +174,20 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
-
-    public boolean transferOutputs(IOPort port)
-            throws IllegalActionException {
-
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "HDFFSMDirector: transferOutputs():" +
-                    "  port argument is not an opaque output port.");
+                "HDFFSMDirector: transferOutputs():"
+                + "  port argument is not an opaque output port.");
         }
+
         boolean transferred = false;
         int rate = DFUtilities.getRate(port);
         Receiver[][] insideReceivers = port.getInsideReceivers();
-        for (int i = 0; i < port.getWidth(); i ++) {
-            if (insideReceivers != null && insideReceivers[i] != null) {
-                for (int k = 0; k < rate; k ++) {
+
+        for (int i = 0; i < port.getWidth(); i++) {
+            if ((insideReceivers != null) && (insideReceivers[i] != null)) {
+                for (int k = 0; k < rate; k++) {
                     // Only transfer number of tokens declared by the port
                     // rate. Throw exception if there are not enough tokens.
                     try {
@@ -189,15 +195,16 @@ public class MultirateFSMDirector extends FSMDirector {
                         port.send(i, t);
                     } catch (NoTokenException ex) {
                         throw new InternalErrorException(
-                                "Director.transferOutputs: " +
-                                "Not enough tokens for port "
-                                + port.getName() + " " + ex);
+                            "Director.transferOutputs: "
+                            + "Not enough tokens for port " + port.getName()
+                            + " " + ex);
                     }
                 }
             }
+
             transferred = true;
         }
+
         return transferred;
     }
-
 }

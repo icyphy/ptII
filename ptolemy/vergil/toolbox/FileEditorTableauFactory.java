@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.net.URL;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FileEditorTableauFactory
+
 /**
    This class is an attribute that creates a text editor to edit a specified
    file or URL given by an attribute in the container of this attribute.
@@ -62,9 +63,7 @@ import ptolemy.kernel.util.StringAttribute;
    @see TextEditorTableauFactory
    @see FileParameter
 */
-public class FileEditorTableauFactory
-    extends TableauFactory {
-
+public class FileEditorTableauFactory extends TableauFactory {
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -74,7 +73,7 @@ public class FileEditorTableauFactory
      *   an attribute already in the container.
      */
     public FileEditorTableauFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -100,28 +99,24 @@ public class FileEditorTableauFactory
      *   Tableau for the effigy, but something goes wrong.
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
-
         // FIXME: Exceptions thrown here are ignored by the caller,
         // who then just goes to the next tableau factory...
-
         if (!(effigy instanceof PtolemyEffigy)) {
             return null;
         }
+
         NamedObj object = ((PtolemyEffigy) effigy).getModel();
-        Attribute attribute =
-            object.getAttribute(attributeName.getExpression());
+        Attribute attribute = object.getAttribute(attributeName.getExpression());
+
         if (!(attribute instanceof FileParameter)) {
-            throw new IllegalActionException(
-                    object,
-                    "Expected "
-                    + object.getFullName()
-                    + " to contain a FileParameter named "
-                    + attributeName.getExpression()
-                    + ", but it does not.");
+            throw new IllegalActionException(object,
+                "Expected " + object.getFullName()
+                + " to contain a FileParameter named "
+                + attributeName.getExpression() + ", but it does not.");
         }
 
-        URL url = ((FileParameter)attribute).asURL();
-        Configuration configuration = (Configuration)effigy.toplevel();
+        URL url = ((FileParameter) attribute).asURL();
+        Configuration configuration = (Configuration) effigy.toplevel();
         return configuration.openModel(null, url, url.toExternalForm());
     }
 }

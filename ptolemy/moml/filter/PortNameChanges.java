@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FilterBackwardCompatibility
+
 /** When this class is registered with the MoMLParser.setMoMLFilter()
     method, it will cause MoMLParser to filter so that models from
     earlier releases will run in the current release.
@@ -50,7 +51,6 @@ import ptolemy.moml.MoMLParser;
     @Pt.AcceptedRating Red (cxh)
 */
 public class PortNameChanges implements MoMLFilter {
-
     /**  If the attributeName is "class" and attributeValue names a
      *   class that has had its port names changed between releases,
      *   then substitute in the new port names.
@@ -62,84 +62,72 @@ public class PortNameChanges implements MoMLFilter {
      *  @param attributeValue The value of the attribute.
      *  @return the value of the attributeValue argument.
      */
-    public String filterAttributeValue(NamedObj container,
-            String element, String attributeName, String attributeValue) {
-
+    public String filterAttributeValue(NamedObj container, String element,
+        String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
         // are not making the same comparison more than once.
-
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first
             return null;
         }
 
-
         if (attributeName.equals("name")) {
             // Save the name of the for later use if we see a "class"
             _lastNameSeen = attributeValue;
+
             if (_currentlyProcessingActorWithPortNameChanges
-                    && _portMap != null
+                    && (_portMap != null)
                     && _portMap.containsKey(attributeValue)) {
                 // We will do the above checks only if we found a
                 // class that had port name changes, but have not
                 // yet found the next class.
-
                 // Here, we add the port name and the new port name
                 // to a map for later use.
+                String containerName = container.getFullName();
 
-                String containerName =
-                    container.getFullName();
-
-                String newPort = (String)_portMap.get(attributeValue);
+                String newPort = (String) _portMap.get(attributeValue);
 
                 // Save the container.newPort name for later use.
                 _containerPortMap.put(containerName + "." + attributeValue,
-                        containerName + "." + newPort
-                                      );
+                    containerName + "." + newPort);
                 MoMLParser.setModified(true);
                 return newPort;
             }
         }
 
-
         if (attributeName.equals("class")) {
             // Look for lines like:
             // <entity name="ComplexToCartesian1"
             //   class="ptolemy.actor.lib.conversions.ComplexToCartesian">
-
             if (_actorsWithPortNameChanges.containsKey(attributeValue)) {
                 // We found a class with a port name change.
                 _currentlyProcessingActorWithPortNameChanges = true;
-                _doneProcessingActorWithPortNameChanges  = false;
-                _currentActorFullName = container.getFullName()
-                    + "." + _lastNameSeen;
-                _portMap = (HashMap) _actorsWithPortNameChanges
-                    .get(attributeValue);
-            } else if ( _currentlyProcessingActorWithPortNameChanges
-                    && container != null
-                    && !container.getFullName()
-                    .equals(_currentActorFullName)
-                    && !container.getFullName()
-                    .startsWith(_currentActorFullName)) {
+                _doneProcessingActorWithPortNameChanges = false;
+                _currentActorFullName = container.getFullName() + "."
+                    + _lastNameSeen;
+                _portMap = (HashMap) _actorsWithPortNameChanges.get(attributeValue);
+            } else if (_currentlyProcessingActorWithPortNameChanges
+                    && (container != null)
+                    && !container.getFullName().equals(_currentActorFullName)
+                    && !container.getFullName().startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 // set _doneProcessingActorWithPortNameChanges so we
                 // can handle any port changes later.
-
                 _currentlyProcessingActorWithPortNameChanges = false;
-                _doneProcessingActorWithPortNameChanges  = true;
+                _doneProcessingActorWithPortNameChanges = true;
             }
         } else if (_doneProcessingActorWithPortNameChanges
                 && attributeName.equals("port")
-                && _containerPortMap.containsKey(container.getFullName()
-                        + "." + attributeValue)) {
+                && _containerPortMap.containsKey(container.getFullName() + "."
+                    + attributeValue)) {
             // We are processing actors that have port names.
             // Now map the old port to the new port.
-            String newPort = (String)_containerPortMap
-                .get(container.getFullName() + "." + attributeValue);
+            String newPort = (String) _containerPortMap.get(container
+                    .getFullName() + "." + attributeValue);
 
             // Extreme chaos here because sometimes
             // container.getFullName() will be ".transform_2.transform" and
@@ -147,13 +135,12 @@ public class PortNameChanges implements MoMLFilter {
             // and sometimes container.getFullName() will be
             // ".transform_2.transform.ComplexToCartesian"
             // and attributeValue will be "real"
-
-            newPort =
-                newPort.substring(container.getFullName().length() + 1);
+            newPort = newPort.substring(container.getFullName().length() + 1);
 
             MoMLParser.setModified(true);
             return newPort;
         }
+
         return attributeValue;
     }
 
@@ -162,36 +149,39 @@ public class PortNameChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {}
+        throws Exception {
+    }
 
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-        StringBuffer results =
-            new StringBuffer(getClass().getName()
-                    + ": Update any actor port names that have been\n"
-                    + "renamed.\n"
-                    + "Below are the actors that are affected, along\n"
-                    + "with the old port name and the new port name:\n");
+        StringBuffer results = new StringBuffer(getClass().getName()
+                + ": Update any actor port names that have been\n"
+                + "renamed.\n"
+                + "Below are the actors that are affected, along\n"
+                + "with the old port name and the new port name:\n");
         Iterator actors = _actorsWithPortNameChanges.keySet().iterator();
+
         while (actors.hasNext()) {
-            String actor = (String)actors.next();
+            String actor = (String) actors.next();
             results.append("\t" + actor + "\n");
+
             HashMap portMap = (HashMap) _actorsWithPortNameChanges.get(actor);
             Iterator ports = portMap.keySet().iterator();
+
             while (ports.hasNext()) {
                 String oldPort = (String) ports.next();
                 String newPort = (String) portMap.get(oldPort);
                 results.append("\t\t" + oldPort + "\t -> " + newPort + "\n");
             }
         }
+
         return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Map of actor names a HashMap of old ports to new ports
     private static HashMap _actorsWithPortNameChanges;
 
@@ -203,12 +193,10 @@ public class PortNameChanges implements MoMLFilter {
 
     // Set to true if we are currently processing an actor with port name
     // changes, set to false when we are done.
-    private static boolean
-    _currentlyProcessingActorWithPortNameChanges = false;
+    private static boolean _currentlyProcessingActorWithPortNameChanges = false;
 
     // Set to true if we are done processing an actor.
     private static boolean _doneProcessingActorWithPortNameChanges = false;
-
 
     // Last "name" value seen, for use if we see a "class".
     private static String _lastNameSeen;
@@ -227,53 +215,47 @@ public class PortNameChanges implements MoMLFilter {
         HashMap cartesianPorts = new HashMap();
         cartesianPorts.put("real", "x");
         cartesianPorts.put("imag", "y");
-        _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.conversions.ComplexToCartesian",
-                    cartesianPorts);
+        _actorsWithPortNameChanges.put("ptolemy.actor.lib.conversions.ComplexToCartesian",
+            cartesianPorts);
 
         // CartesianToComplex has the same ports as ComplexToCartesian.
-        _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.conversions.CartesianToComplex",
-                    cartesianPorts);
+        _actorsWithPortNameChanges.put("ptolemy.actor.lib.conversions.CartesianToComplex",
+            cartesianPorts);
 
         // Sleep
         HashMap sleepPorts = new HashMap();
         sleepPorts.put("delay", "sleepTime");
-        _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.Sleep", sleepPorts);
-
+        _actorsWithPortNameChanges.put("ptolemy.actor.lib.Sleep", sleepPorts);
 
         // Scrambler changed between 3.0.2 and 4.0
         // Port name change from initial to initialState.
         HashMap scramblerPorts = new HashMap();
         scramblerPorts.put("initial", "initialState");
-        _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.comm.Scrambler",
-                    scramblerPorts);
+        _actorsWithPortNameChanges.put("ptolemy.actor.lib.comm.Scrambler",
+            scramblerPorts);
 
         // ConvolutionalCoder changed between 3.0.2 and 4.0
         HashMap convolutionalCoderPorts = new HashMap();
         convolutionalCoderPorts.put("initial", "initialState");
         convolutionalCoderPorts.put("uncodeBlockSize", "uncodedRate");
 
-        _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.comm.ConvolutionalCoder",
-                    convolutionalCoderPorts);
+        _actorsWithPortNameChanges.put("ptolemy.actor.lib.comm.ConvolutionalCoder",
+            convolutionalCoderPorts);
 
         // ViterbiDecoder changed between 3.0.2 and 4.0
         HashMap viterbiDecoderPorts = new HashMap();
+
         //viterbiDecoderPorts.put("initial", "initialState");
         viterbiDecoderPorts.put("uncodeBlockSize", "uncodedRate");
         viterbiDecoderPorts.put("amplitude", "constellation");
 
-        _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.comm.ViterbiDecoder",
-                    viterbiDecoderPorts);
+        _actorsWithPortNameChanges.put("ptolemy.actor.lib.comm.ViterbiDecoder",
+            viterbiDecoderPorts);
 
         // Server: after 4.1, the newServiceTime is renamed to serviceTime.
         HashMap serverPorts = new HashMap();
         serverPorts.put("serviceTime", "newServiceTime");
-        _actorsWithPortNameChanges
-            .put("ptolemy.domains.de.lib.Server", serverPorts);
+        _actorsWithPortNameChanges.put("ptolemy.domains.de.lib.Server",
+            serverPorts);
     }
 }

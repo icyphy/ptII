@@ -24,11 +24,11 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.event;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+
 
 /** A class that accepts mouse events. Instances of this class
  * are used by event-handling code to decide whether they are
@@ -38,7 +38,6 @@ import java.awt.event.MouseEvent;
  * @author         John Reekie
  */
 public class MouseFilter {
-
     /** The default mouse filter -- accepts button 1 with no
      * modifiers.
      */
@@ -51,21 +50,17 @@ public class MouseFilter {
 
     /** The alternate selection filter -- accepts button 1 with shift.
      */
-    public static MouseFilter alternateSelectionFilter =
-    new MouseFilter(1, InputEvent.SHIFT_MASK);
+    public static MouseFilter alternateSelectionFilter = new MouseFilter(1,
+            InputEvent.SHIFT_MASK);
 
     /** The mouse button mask
      */
-    private int _buttonMask =
-    InputEvent.BUTTON1_MASK
-    | InputEvent.BUTTON2_MASK
-    | InputEvent.BUTTON3_MASK;
+    private int _buttonMask = InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK
+        | InputEvent.BUTTON3_MASK;
 
     /** The modifier mask.
      */
-    private int _modifierMask =
-    InputEvent.SHIFT_MASK
-    | InputEvent.CTRL_MASK;
+    private int _modifierMask = InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK;
 
     // Do not or these masks in, they will conflict with right mousing
     // on transitions in modal models
@@ -92,7 +87,7 @@ public class MouseFilter {
      * button can be specified, in which case the filter will accept
      * events from any of them. In any case, modifier keys are ignored.
      */
-    public MouseFilter (int button) {
+    public MouseFilter(int button) {
         // Why don't we be clever and figure out if the button number
         // instead of mask is given? We know this works because we looked
         // at the AWT source.
@@ -101,14 +96,17 @@ public class MouseFilter {
             case 1:
                 button = InputEvent.BUTTON1_MASK;
                 break;
+
             case 2:
                 button = InputEvent.BUTTON2_MASK;
                 break;
+
             case 3:
                 button = InputEvent.BUTTON3_MASK;
                 break;
             }
         }
+
         // OK, so just set it.
         // FIXME: check range.
         _buttonMask = button;
@@ -121,7 +119,7 @@ public class MouseFilter {
      * in which case the filter will accept events from any of them. The
      * filter will accept modifier sets that exactly match modifiers.
      */
-    public MouseFilter (int button, int modifiers) {
+    public MouseFilter(int button, int modifiers) {
         this(button);
         _modifierFlags = modifiers;
     }
@@ -136,7 +134,7 @@ public class MouseFilter {
      * ignored; the filter will accept modifier sets that, after
      * masking, exactly match modifiers.
      */
-    public MouseFilter (int button, int modifiers, int mask) {
+    public MouseFilter(int button, int modifiers, int mask) {
         this(button);
         _modifierFlags = modifiers;
         _modifierMask = mask;
@@ -155,7 +153,7 @@ public class MouseFilter {
      * or two.  Notice that if you want to react to drag events, they always
      * have a press number of zero.
      */
-    public MouseFilter (int button, int modifiers, int mask, int pressNumber) {
+    public MouseFilter(int button, int modifiers, int mask, int pressNumber) {
         this(button, modifiers, mask);
         _pressNumber = pressNumber;
     }
@@ -163,10 +161,13 @@ public class MouseFilter {
     /**
      * Test whether the given MouseEvent passes the filter.
      */
-    public boolean accept (MouseEvent event) {
-        if (_pressNumber != -1 &&
-                event.getClickCount() != _pressNumber) return false;
+    public boolean accept(MouseEvent event) {
+        if ((_pressNumber != -1) && (event.getClickCount() != _pressNumber)) {
+            return false;
+        }
+
         int m = event.getModifiers();
+
         // FIXME: Java people have broken the mask mechanism!
         // When you right click, this gets called with m=4,
         // indicating that the right mouse button was used.
@@ -180,8 +181,9 @@ public class MouseFilter {
         // event gets passed to the background graph,
         // which accepts it and produces the wrong
         // context menu.
-        boolean val = (m & _buttonMask) != 0 &&
-                (_modifierFlags == (m & _modifierMask));
+        boolean val = ((m & _buttonMask) != 0)
+            && (_modifierFlags == (m & _modifierMask));
+
         // System.out.println("event = " + event);
         // System.out.println("FILTER = " + this);
         // System.out.println("ACCEPT? = " + val);
@@ -190,15 +192,14 @@ public class MouseFilter {
 
     /** Print a useful description of the mouse filter.
      */
-    public String toString () {
+    public String toString() {
         StringBuffer result = new StringBuffer();
-        result.append(super.toString()
-                + "; Button " + MouseEvent.getMouseModifiersText(_buttonMask)
-                + "; Modifiers " + MouseEvent.getMouseModifiersText(_modifierFlags)
-                + "; Modifier mask " + MouseEvent.getMouseModifiersText(_modifierMask)
-                + "; Press Number " + _pressNumber);
+        result.append(super.toString() + "; Button "
+            + MouseEvent.getMouseModifiersText(_buttonMask) + "; Modifiers "
+            + MouseEvent.getMouseModifiersText(_modifierFlags)
+            + "; Modifier mask "
+            + MouseEvent.getMouseModifiersText(_modifierMask)
+            + "; Press Number " + _pressNumber);
         return result.toString();
     }
 }
-
-

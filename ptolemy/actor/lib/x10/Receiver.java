@@ -25,10 +25,11 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.x10;
 
-import java.util.LinkedList;
+import x10.Command;
+import x10.UnitEvent;
+import x10.UnitListener;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -38,12 +39,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
-import x10.Command;
-import x10.UnitEvent;
-import x10.UnitListener;
+
+import java.util.LinkedList;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Receiver
+
 /**
  * Listen for X10 commands propagating through an X10 network. When a
  * command is detected, this actor requests a firing by calling
@@ -57,9 +59,7 @@ import x10.UnitListener;
 @Pt.ProposedRating Green (ptolemy)
 @Pt.AcceptedRating Yellow (ptolemy)
  */
-
 public class Receiver extends X10Interface {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -69,7 +69,7 @@ public class Receiver extends X10Interface {
      *   actor with this name.
      */
     public Receiver(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -118,49 +118,63 @@ public class Receiver extends X10Interface {
     public void fire() throws IllegalActionException {
         super.fire();
         _fireAtCurrentTimeCalled = false;
+
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
                 trigger.get(i);
             }
         }
-        boolean blockingValue = ((BooleanToken)blocking.getToken()).booleanValue();
+
+        boolean blockingValue = ((BooleanToken) blocking.getToken())
+            .booleanValue();
+
         if (blockingValue) {
             if (_debugging) {
                 _debug("Acquiring synchronization lock on this actor.");
             }
-            synchronized(this) {
+
+            synchronized (this) {
                 try {
-                    while (!_commandReady() && !_stopRequested && !_stopFireRequested) {
+                    while (!_commandReady() && !_stopRequested
+                            && !_stopFireRequested) {
                         if (_debugging) {
                             _debug("Waiting for an X10 command.");
                         }
+
                         wait();
                     }
                 } catch (InterruptedException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Thread interrupted while waiting for X10 data.");
+                        "Thread interrupted while waiting for X10 data.");
                 }
             }
+
             if (_commandReady()) {
                 _debug("Got an X10 command.");
             }
         }
-        boolean discardOldDataValue
-            = ((BooleanToken)discardOldData.getToken()).booleanValue();
+
+        boolean discardOldDataValue = ((BooleanToken) discardOldData.getToken())
+            .booleanValue();
+
         if (discardOldDataValue) {
             while (_commandQueue.size() > 1) {
                 if (_debugging) {
                     _debug("Discarding an X10 command.");
                 }
+
                 _getCommand();
             }
         } else {
             if (_commandQueue.size() > 1) {
                 // Request another firing, as there will be data left over.
                 _fireAtCurrentTimeCalled = true;
+
                 if (_debugging) {
-                    _debug("Calling fireAtCurrentTime() to deal with additional pending commands.");
+                    _debug(
+                        "Calling fireAtCurrentTime() to deal with additional pending commands.");
                 }
+
                 getDirector().fireAtCurrentTime(this);
             }
         }
@@ -190,11 +204,13 @@ public class Receiver extends X10Interface {
         _stopFireRequested = true;
         notifyAll();
     }
+
     /** Remove the <i>UnitListener</i> from the x10 interface.
      *  @exception IllegalActionException If the super class throws it.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
         if (_interface != null) {
             _interface.removeUnitListener(_listener);
         }
@@ -207,7 +223,7 @@ public class Receiver extends X10Interface {
      *  @return The first command in the command queue, or null if there
      *   is none.
      */
-    protected Command _getCommand () {
+    protected Command _getCommand() {
         synchronized (_commandQueue) {
             return (Command) _commandQueue.removeFirst();
         }
@@ -217,12 +233,12 @@ public class Receiver extends X10Interface {
      *  otherwise.
      *  @return True if there is a command in the command queue.
      */
-    protected boolean _commandReady () {
+    protected boolean _commandReady() {
         synchronized (_commandQueue) {
             if (_commandQueue.size() != 0) {
-                return(true);
+                return (true);
             } else {
-                return(false);
+                return (false);
             }
         }
     }
@@ -289,28 +305,32 @@ public class Receiver extends X10Interface {
      *  http://x10.homelinux.org/docs/</a>
      */
     private class CommandListener implements UnitListener {
-
         ///////////////////////////////////////////////////////////////////
         ///                       public methods                       ////
-
         public void allLightsOff(UnitEvent event) {
             _appendCommand(event);
         }
+
         public void allLightsOn(UnitEvent event) {
             _appendCommand(event);
         }
+
         public void allUnitsOff(UnitEvent event) {
             _appendCommand(event);
         }
+
         public void unitBright(UnitEvent event) {
             _appendCommand(event);
         }
+
         public void unitDim(UnitEvent event) {
             _appendCommand(event);
         }
+
         public void unitOff(UnitEvent event) {
             _appendCommand(event);
         }
+
         public void unitOn(UnitEvent event) {
             _appendCommand(event);
         }
@@ -321,22 +341,26 @@ public class Receiver extends X10Interface {
         /** Append a received command onto the </i>commandQueue<i>.
          * @return void
          */
-        private void _appendCommand (UnitEvent event) {
+        private void _appendCommand(UnitEvent event) {
             if (_debugging) {
-                _debug("Detected X10 command: " + _commandToString(event.getCommand()));
+                _debug("Detected X10 command: "
+                    + _commandToString(event.getCommand()));
             }
+
             synchronized (_commandQueue) {
                 _commandQueue.addLast(event.getCommand());
             }
+
             if (!_fireAtCurrentTimeCalled) {
                 try {
                     _fireAtCurrentTimeCalled = true;
                     getDirector().fireAtCurrentTime(Receiver.this);
                 } catch (IllegalActionException ex) {
                     throw new KernelRuntimeException(Receiver.this, null, ex,
-                            "fireAtCurrentTime() failed.");
+                        "fireAtCurrentTime() failed.");
                 }
             }
+
             synchronized (Receiver.this) {
                 Receiver.this.notifyAll();
             }

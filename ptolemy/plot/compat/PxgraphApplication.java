@@ -45,6 +45,7 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
 import ptolemy.plot.PlotBox;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PxgraphApplication
 
@@ -69,7 +70,6 @@ import ptolemy.plot.PlotBox;
    @see Plot
 */
 public class PxgraphApplication extends PlotApplication {
-
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
      *  @exception Exception If command line arguments have problems.
@@ -82,7 +82,7 @@ public class PxgraphApplication extends PlotApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PxgraphApplication(String args[]) throws Exception {
+    public PxgraphApplication(String[] args) throws Exception {
         this(new Plot(), args);
     }
 
@@ -92,7 +92,8 @@ public class PxgraphApplication extends PlotApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PxgraphApplication(Plot plot, String args[]) throws Exception {
+    public PxgraphApplication(Plot plot, String[] args)
+        throws Exception {
         super(plot, args);
     }
 
@@ -103,7 +104,7 @@ public class PxgraphApplication extends PlotApplication {
      *  @param args The command line arguments.  To see what command
      *  line arguments are available, run with "-help" as the first element.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             new PxgraphApplication(new Plot(), args);
         } catch (Exception ex) {
@@ -114,9 +115,9 @@ public class PxgraphApplication extends PlotApplication {
         if (_test) {
             try {
                 Thread.sleep(2000);
+            } catch (InterruptedException e) {
             }
-            catch (InterruptedException e) {
-            }
+
             System.exit(0);
         }
     }
@@ -128,17 +129,15 @@ public class PxgraphApplication extends PlotApplication {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "               pxgraph\n" +
-                "        A Java Plotting Tool\n\n" +
-                "By: Edward A. Lee and\n" +
-                "    Christopher Hylands\n" +
-                "Version " + PlotBox.PTPLOT_RELEASE +
-                ", Build: $Id$\n\n"+
-                "For help, type 'pxgraph -help', or see \n" +
-                "the class documentation in the plot.compat package.\n" +
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
+            "               pxgraph\n" + "        A Java Plotting Tool\n\n"
+            + "By: Edward A. Lee and\n" + "    Christopher Hylands\n"
+            + "Version " + PlotBox.PTPLOT_RELEASE
+            + ", Build: $Id$\n\n"
+            + "For help, type 'pxgraph -help', or see \n"
+            + "the class documentation in the plot.compat package.\n"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+            "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse those command-line arguments that are relevant to the
@@ -151,18 +150,19 @@ public class PxgraphApplication extends PlotApplication {
      *  @exception FileNotFoundException If an input file cannot be found.
      *  @exception IOException If there is a problem reading an input.
      */
-    protected int _parseArgs(String args[]) throws CmdLineArgException,
-            FileNotFoundException, IOException {
-        int i = 0, argumentsRead;
+    protected int _parseArgs(String[] args)
+        throws CmdLineArgException, FileNotFoundException, IOException {
+        int i = 0;
+        int argumentsRead;
         String arg;
         String title = "Ptolemy plot, pxgraph version";
 
-        int width = 400;      // Default width of the graph
-        int height = 300;     // Default height of the graph
+        int width = 400; // Default width of the graph
+        int height = 300; // Default height of the graph
 
         // Although most of the arguments are handled by the Plot class,
         // a few are dealt with here.
-        while (args != null && i < args.length) {
+        while ((args != null) && (i < args.length)) {
             arg = args[i++];
 
             if (arg.equals("-help")) {
@@ -176,44 +176,50 @@ public class PxgraphApplication extends PlotApplication {
                 continue;
             } else if (arg.equals("-t")) {
                 // -t <title> TitleText "An X Graph"
-                title =  args[i++];
+                title = args[i++];
                 continue;
             } else if (arg.equals("-v") || arg.equals("-version")) {
                 // -version is not in the original X11 pxgraph.
-                System.out.println("Version " + PlotBox.PTPLOT_RELEASE +
-                        ", Build $Id$");
+                System.out.println("Version " + PlotBox.PTPLOT_RELEASE
+                    + ", Build $Id$");
                 System.exit(0);
                 continue;
             } else if (arg.startsWith("=")) {
                 // Process =WxH+X+Y
-                int xscreen = 1, yscreen = 1;
+                int xscreen = 1;
+
+                // Process =WxH+X+Y
+                int yscreen = 1;
                 boolean screenlocationgiven = false;
-                StringTokenizer stoken =
-                    new StringTokenizer(arg.substring(1, arg.length()),
-                            "=x-+");
+                StringTokenizer stoken = new StringTokenizer(arg.substring(1,
+                            arg.length()), "=x-+");
+
                 if (stoken.hasMoreTokens()) {
-                    width = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
+                    width = (int) Integer.valueOf(stoken.nextToken()).intValue();
                 }
+
                 if (stoken.hasMoreTokens()) {
-                    height = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
+                    height = (int) Integer.valueOf(stoken.nextToken()).intValue();
                 }
+
                 if (stoken.hasMoreTokens()) {
-                    xscreen = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
+                    xscreen = (int) Integer.valueOf(stoken.nextToken())
+                                           .intValue();
                     screenlocationgiven = true;
                 }
+
                 if (stoken.hasMoreTokens()) {
-                    yscreen = (int)Integer.valueOf(stoken.nextToken()).
-                        intValue();
+                    yscreen = (int) Integer.valueOf(stoken.nextToken())
+                                           .intValue();
                     screenlocationgiven = true;
                 }
+
                 if (screenlocationgiven) {
                     // Note: we add one so that =800x200+0+0 will show up
                     // in the proper location.
-                    setLocation(new Point(xscreen+1, yscreen+1));
+                    setLocation(new Point(xscreen + 1, yscreen + 1));
                 }
+
                 continue;
             }
         }
@@ -224,8 +230,9 @@ public class PxgraphApplication extends PlotApplication {
         argumentsRead = i++;
 
         if (_parser == null) {
-            _parser = new PxgraphParser((Plot)plot);
+            _parser = new PxgraphParser((Plot) plot);
         }
+
         _parser.parseArgs(args);
         return argumentsRead;
     }
@@ -256,75 +263,76 @@ public class PxgraphApplication extends PlotApplication {
         // White     - The default (not supported at this time)
         // "(Unsupported)" - The string that is printed to indicate if
         //                   a option is unsupported.
-        String commandOptions[][] = {
-            {"-bd",  "<color>", "Border",  "White", "(Unsupported)"},
-            {"-bg",  "<color>", "BackGround",  "White", ""},
-            {"-brb", "<base>", "BarBase",  "0", "(Unsupported)"},
-            {"-brw", "<width>", "BarWidth",  "1", ""},
-            {"-bw",  "<size>", "BorderSize",  "1", "(Unsupported)"},
-            {"-fg",  "<color>", "Foreground",  "Black", ""},
-            {"-gw",  "<pixels>", "GridStyle",  "1", "(Unsupported)"},
-            {"-lf",  "<fontname>", "LabelFont",  "helvetica-12", ""},
-            {"-lw",  "<width>", "LineWidth",  "0", "(Unsupported)"},
-            {"-lx",  "<xl,xh>", "XLowLimit, XHighLimit",  "0", ""},
-            {"-ly",  "<yl,yh>", "YLowLimit, YHighLimit",  "0", ""},
-            // -o is not in the original X11 pxgraph.
-            {"-o",   "<output filename>", "",  "/tmp/t.ps", ""},
-            {"-t",   "<title>", "TitleText",  "An X Graph", ""},
-            {"-tf",  "<fontname>", "TitleFont",  "helvetica-b-14", ""},
-            {"-x",   "<unitName>", "XUnitText",  "X", ""},
-            {"-y",   "<unitName>", "YUnitText",  "Y", ""},
-            {"-zg",  "<color>", "ZeroColor",  "Black", "(Unsupported)"},
-            {"-zw",  "<width>", "ZeroWidth",  "0", "(Unsupported)"},
-        };
+        String[][] commandOptions = {
+                { "-bd", "<color>", "Border", "White", "(Unsupported)" },
+                { "-bg", "<color>", "BackGround", "White", "" },
+                { "-brb", "<base>", "BarBase", "0", "(Unsupported)" },
+                { "-brw", "<width>", "BarWidth", "1", "" },
+                { "-bw", "<size>", "BorderSize", "1", "(Unsupported)" },
+                { "-fg", "<color>", "Foreground", "Black", "" },
+                { "-gw", "<pixels>", "GridStyle", "1", "(Unsupported)" },
+                { "-lf", "<fontname>", "LabelFont", "helvetica-12", "" },
+                { "-lw", "<width>", "LineWidth", "0", "(Unsupported)" },
+                { "-lx", "<xl,xh>", "XLowLimit, XHighLimit", "0", "" },
+                { "-ly", "<yl,yh>", "YLowLimit, YHighLimit", "0", "" },
+                // -o is not in the original X11 pxgraph.
+                {"-o", "<output filename>", "", "/tmp/t.ps", "" },
+                { "-t", "<title>", "TitleText", "An X Graph", "" },
+                { "-tf", "<fontname>", "TitleFont", "helvetica-b-14", "" },
+                { "-x", "<unitName>", "XUnitText", "X", "" },
+                { "-y", "<unitName>", "YUnitText", "Y", "" },
+                { "-zg", "<color>", "ZeroColor", "Black", "(Unsupported)" },
+                { "-zw", "<width>", "ZeroWidth", "0", "(Unsupported)" },
+            };
 
-        String commandFlags[][] = {
-            {"-bar", "BarGraph",  ""},
-            {"-bb", "BoundBox",  "(Ignored)"},
-            {"-bigendian", "",  ""},
-            {"-littleendian", "",  ""},
-            {"-binary", "Binary",  ""},
-            // -impulses is not in the original X11 pxgraph.
-            {"-impulses", "Impulses",  ""},
-            {"-help", "",  ""},
-            {"-lnx", "XLog",  ""},
-            {"-lny", "YLog",  ""},
-            {"-m", "Markers",  ""},
-            {"-M", "StyleMarkers",  ""},
-            {"-nl", "NoLines",  ""},
-            {"-p", "PixelMarkers",  ""},
-            {"-P", "LargePixel",  ""},
-            {"-rv", "ReverseVideo",  ""},
-            // -test is not in the original X11 pxgraph.  We use it for testing
-            {"-test", "Test",  ""},
-            {"-tk", "Ticks",  ""},
-            // -v is not in the original X11 pxgraph.
-            {"-v", "Version",  ""},
-            {"-version", "Version",  ""},
-        };
+        String[][] commandFlags = {
+                { "-bar", "BarGraph", "" },
+                { "-bb", "BoundBox", "(Ignored)" },
+                { "-bigendian", "", "" },
+                { "-littleendian", "", "" },
+                { "-binary", "Binary", "" },
+                // -impulses is not in the original X11 pxgraph.
+                {"-impulses", "Impulses", "" },
+                { "-help", "", "" },
+                { "-lnx", "XLog", "" },
+                { "-lny", "YLog", "" },
+                { "-m", "Markers", "" },
+                { "-M", "StyleMarkers", "" },
+                { "-nl", "NoLines", "" },
+                { "-p", "PixelMarkers", "" },
+                { "-P", "LargePixel", "" },
+                { "-rv", "ReverseVideo", "" },
+                // -test is not in the original X11 pxgraph.  We use it for testing
+                {"-test", "Test", "" },
+                { "-tk", "Ticks", "" },
+                // -v is not in the original X11 pxgraph.
+                {"-v", "Version", "" },
+                { "-version", "Version", "" },
+            };
         String result = "Usage: ptplot [ options ] [=WxH+X+Y] [file ...]\n\n"
             + " options that take values as second args:\n";
 
         int i;
+
         for (i = 0; i < commandOptions.length; i++) {
-            result += " " + commandOptions[i][0] +
-                " " + commandOptions[i][1] +
-                " " + commandOptions[i][4] + "\n";
+            result += (" " + commandOptions[i][0] + " " + commandOptions[i][1]
+            + " " + commandOptions[i][4] + "\n");
         }
+
         result += "\nBoolean flags:\n";
+
         for (i = 0; i < commandFlags.length; i++) {
-            result += " " + commandFlags[i][0] +
-                " " + commandFlags[i][2] + "\n";
+            result += (" " + commandFlags[i][0] + " " + commandFlags[i][2]
+            + "\n");
         }
-        result += "\nThe following pxgraph features are not supported:\n"
-            + " * Directives in pxgraph input files\n"
-            + " * Xresources\n";
+
+        result += ("\nThe following pxgraph features are not supported:\n"
+        + " * Directives in pxgraph input files\n" + " * Xresources\n");
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Parser.
     private PxgraphParser _parser;
 }

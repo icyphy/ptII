@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.kernel;
 
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// IllegalOutputException
+
 /**
    Thrown on an attempt to send a value to a port that violates the output
    monotonicity constraint of the SR domain.
@@ -46,7 +47,6 @@ import ptolemy.kernel.util.Nameable;
    @see ptolemy.domains.sr.kernel.SRReceiver
 */
 public class IllegalOutputException extends KernelRuntimeException {
-
     /** Constructs an Exception with a detail message.
      *  @param detail The message.
      */
@@ -70,10 +70,4 @@ public class IllegalOutputException extends KernelRuntimeException {
     public IllegalOutputException(Nameable object, String detail) {
         super(object, detail);
     }
-
 }
-
-
-
-
-

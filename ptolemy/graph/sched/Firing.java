@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.graph.sched;
 
 import java.util.ConcurrentModificationException;
@@ -35,8 +34,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import ptolemy.kernel.util.InvalidStateException;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// Firing
+
 /**
    This class is a ScheduleElement that contains a reference to a
    firing element.  The firingElement could be any Object.
@@ -63,7 +66,6 @@ import java.util.NoSuchElementException;
    @see ptolemy.graph.sched.Schedule
    @see ptolemy.graph.sched.ScheduleElement
 */
-
 public class Firing extends ScheduleElement {
     /** Construct a firing with a default iteration count equal to one
      *  and with no parent schedule.
@@ -137,6 +139,7 @@ public class Firing extends ScheduleElement {
             _firing = new LinkedList();
             _firing.add(this);
         }
+
         return _firing.iterator();
     }
 
@@ -147,6 +150,7 @@ public class Firing extends ScheduleElement {
      *
      *  @return The actor associated with this Firing.
      */
+
     // FIXME: the exception is never thrown in the original version
     public Object getFiringElement() {
         return _firingElement;
@@ -161,21 +165,23 @@ public class Firing extends ScheduleElement {
      */
     public void setFiringElement(Object firingElement) {
         if (this.firingElementClass() != null) {
-            if (this.firingElementClass()
-                    .isAssignableFrom(firingElement.getClass())) {
+            if (this.firingElementClass().isAssignableFrom(firingElement
+                        .getClass())) {
                 _incrementVersion();
-                _firingElement  = firingElement;
+                _firingElement = firingElement;
+
                 if (_firing != null) {
                     _firing.clear();
                     _firing.add(this);
                 }
             } else {
                 throw new RuntimeException("Attempt to add a non "
-                        + "authorized firing element");
+                    + "authorized firing element");
             }
         } else {
             _incrementVersion();
-            _firingElement  = firingElement;
+            _firingElement = firingElement;
+
             if (_firing != null) {
                 _firing.clear();
                 _firing.add(this);
@@ -190,12 +196,14 @@ public class Firing extends ScheduleElement {
      *  @return The parenthesis expression for this firing.
      */
     public String toParenthesisString(Map nameMap, String delimiter) {
-        String name = (String)nameMap.get(getFiringElement());
+        String name = (String) nameMap.get(getFiringElement());
         int iterations = getIterationCount();
-        if (iterations > 1)
+
+        if (iterations > 1) {
             return "(" + iterations + delimiter + name + ")";
-        else
+        } else {
             return name;
+        }
     }
 
     /** Return a string representation of this Firing.
@@ -204,8 +212,11 @@ public class Firing extends ScheduleElement {
      */
     public String toString() {
         String result = "Fire firing element " + _firingElement;
-        if (getIterationCount() > 1)
-            result += " " + getIterationCount() + " times";
+
+        if (getIterationCount() > 1) {
+            result += (" " + getIterationCount() + " times");
+        }
+
         return result;
     }
 
@@ -236,9 +247,9 @@ public class Firing extends ScheduleElement {
         public boolean hasNext() {
             if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else {
-                return(_currentElement <= getIterationCount());
+                return (_currentElement <= getIterationCount());
             }
         }
 
@@ -254,7 +265,7 @@ public class Firing extends ScheduleElement {
                 throw new NoSuchElementException("No element to return.");
             } else if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else {
                 _currentElement++;
                 return getFiringElement();
@@ -275,7 +286,6 @@ public class Firing extends ScheduleElement {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The firing element associated with this firing.
     private Object _firingElement;
 

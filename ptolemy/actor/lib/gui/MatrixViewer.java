@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.lib.gui;
 
 import java.awt.BorderLayout;
@@ -64,8 +63,10 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MatrixViewer
+
 /**
    An actor that displays the contents of a matrix input. This
    actor has a single input port, which only accepts MatrixTokens. One
@@ -79,9 +80,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (kienhuis)
    @Pt.AcceptedRating Red (kienhuis)
 */
-
 public class MatrixViewer extends Sink implements Placeable {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -91,7 +90,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *   actor with this name.
      */
     public MatrixViewer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(false);
         input.setTypeEquals(BaseType.MATRIX);
@@ -101,8 +100,8 @@ public class MatrixViewer extends Sink implements Placeable {
         height = new Parameter(this, "height", new IntToken(300));
         height.setTypeEquals(BaseType.INT);
 
-        _windowProperties = new WindowPropertiesAttribute(
-                this, "_windowProperties");
+        _windowProperties = new WindowPropertiesAttribute(this,
+                "_windowProperties");
 
         _paneSize = new SizeAttribute(this, "_paneSize");
     }
@@ -132,13 +131,13 @@ public class MatrixViewer extends Sink implements Placeable {
      *   attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == width) {
-            _width = ((IntToken)width.getToken()).intValue();
+            _width = ((IntToken) width.getToken()).intValue();
         } else if (attribute == height) {
-            _height = ((IntToken)height.getToken()).intValue();
+            _height = ((IntToken) height.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -152,9 +151,8 @@ public class MatrixViewer extends Sink implements Placeable {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        MatrixViewer newObject = (MatrixViewer)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MatrixViewer newObject = (MatrixViewer) super.clone(workspace);
 
         newObject._container = null;
         newObject._effigy = null;
@@ -173,36 +171,40 @@ public class MatrixViewer extends Sink implements Placeable {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         if (_container == null) {
             // No current container for the pane.
             // Need an effigy and a tableau so that menu ops work properly.
             if (_tableau == null) {
                 Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
                 if (containerEffigy == null) {
                     throw new IllegalActionException(this,
-                            "Cannot find effigy for top level: "
-                            + toplevel().getFullName());
+                        "Cannot find effigy for top level: "
+                        + toplevel().getFullName());
                 }
+
                 try {
-                    _effigy = new TokenEffigy(
-                            containerEffigy,
+                    _effigy = new TokenEffigy(containerEffigy,
                             containerEffigy.uniqueName("tokenEffigy"));
+
                     // The default identifier is "Unnamed", which is
                     // no good for two reasons: Wrong title bar label,
                     // and it causes a save-as to destroy the original window.
                     _effigy.identifier.setExpression(getFullName());
 
                     _frame = new DisplayWindow();
-                    _tableau = new MatrixTokenTableau(
-                            _effigy, "tokenTableau", _frame);
+                    _tableau = new MatrixTokenTableau(_effigy, "tokenTableau",
+                            _frame);
                     _frame.setTableau(_tableau);
                     _windowProperties.setProperties(_frame);
 
                     // Regrettably, since setSize() in swing doesn't actually
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
-                    Component[] components
-                        = _frame.getContentPane().getComponents();
+                    Component[] components = _frame.getContentPane()
+                                                   .getComponents();
+
                     if (components.length > 0) {
                         _paneSize.setSize(components[0]);
                     }
@@ -210,11 +212,12 @@ public class MatrixViewer extends Sink implements Placeable {
                     _tableau.show();
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, null, ex,
-                            "Error creating effigy and tableau");
+                        "Error creating effigy and tableau");
                 }
             } else {
                 // Erase previous text.
                 _effigy.clear();
+
                 if (_frame != null) {
                     // Do not use show() as it overrides manual placement.
                     // FIXME: So does setVisible()... But with neither one used,
@@ -243,15 +246,18 @@ public class MatrixViewer extends Sink implements Placeable {
     public void place(Container container) {
         // If there was a previous container that doesn't match this one,
         // remove the pane from it.
-        if (_container != null && _pane != null) {
+        if ((_container != null) && (_pane != null)) {
             _container.remove(_pane);
             _container = null;
         }
+
         if (_frame != null) {
             _frame.dispose();
             _frame = null;
         }
+
         _container = container;
+
         if (container == null) {
             // Reset everything.
             if (_tableau != null) {
@@ -263,20 +269,24 @@ public class MatrixViewer extends Sink implements Placeable {
                     throw new InternalErrorException(ex);
                 }
             }
+
             _tableau = null;
             _effigy = null;
             _pane = null;
 
             return;
         }
+
         if (_pane == null) {
             // Create the pane.
             _pane = new MatrixPane();
+
             // FIXME: The following, as usual with Swing, doesn't work.
-            Dimension size = new Dimension( _width, _height);
+            Dimension size = new Dimension(_width, _height);
             _pane.setPreferredSize(size);
             _pane.setSize(size);
         }
+
         // Place the pane in supplied container.
         _container.add(_pane, BorderLayout.CENTER);
     }
@@ -290,14 +300,16 @@ public class MatrixViewer extends Sink implements Placeable {
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token in = input.get(0);
+
             if (_frame != null) {
                 List tokens = new LinkedList();
                 tokens.add(in);
                 _effigy.setTokens(tokens);
             } else if (_pane != null) {
-                _pane.display((MatrixToken)in);
+                _pane.display((MatrixToken) in);
             }
         }
+
         return super.postfire();
     }
 
@@ -308,8 +320,9 @@ public class MatrixViewer extends Sink implements Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
+
         if (container == null) {
             _remove();
         }
@@ -326,19 +339,22 @@ public class MatrixViewer extends Sink implements Placeable {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {
             _windowProperties.recordProperties(_frame);
+
             // Regrettably, have to also record the size of the contents
             // because in Swing, setSize() methods do not set the size.
             // Only the first component size is recorded.
             Component[] components = _frame.getContentPane().getComponents();
+
             if (components.length > 0) {
                 _paneSize.recordSize(components[0]);
             }
         }
+
         super._exportMoMLContents(output, depth);
     }
 
@@ -350,10 +366,11 @@ public class MatrixViewer extends Sink implements Placeable {
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    if (_container != null && _pane != null) {
+                    if ((_container != null) && (_pane != null)) {
                         _container.remove(_pane);
                         _container = null;
                     }
+
                     if (_frame != null) {
                         _frame.dispose();
                         _frame = null;
@@ -399,7 +416,6 @@ public class MatrixViewer extends Sink implements Placeable {
      *  MatrixViewer upon closing, and also records the size of the display.
      */
     private class DisplayWindow extends TableauFrame {
-
         /** Construct an empty window.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear
@@ -418,13 +434,16 @@ public class MatrixViewer extends Sink implements Placeable {
         protected boolean _close() {
             // Record the window properties before closing.
             _windowProperties.recordProperties(this);
+
             // Regrettably, have to also record the size of the contents
             // because in Swing, setSize() methods do not set the size.
             // Only the first component size is recorded.
             Component[] components = getContentPane().getComponents();
+
             if (components.length > 0) {
                 _paneSize.recordSize(components[0]);
             }
+
             super._close();
             place(null);
             return true;

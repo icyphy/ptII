@@ -33,6 +33,7 @@ import diva.canvas.toolbox.LabelWrapper;
 import diva.graph.NodeRenderer;
 import diva.graph.toolbox.StateBubble;
 
+
 /**
  * A factory which creates and returns a bubble given a node input
  * to render.
@@ -43,7 +44,6 @@ import diva.graph.toolbox.StateBubble;
  * @Pt.AcceptedRating  Red
  */
 public class BubbleRenderer implements NodeRenderer {
-
     /**
      * The fill paint
      */
@@ -62,7 +62,7 @@ public class BubbleRenderer implements NodeRenderer {
     /**
      * Create a renderer which renders bubbles white
      */
-    public BubbleRenderer () {
+    public BubbleRenderer() {
         ;
     }
 
@@ -70,8 +70,7 @@ public class BubbleRenderer implements NodeRenderer {
      * Create a renderer which renders bubbles in the given fill paint,
      * outlie paint, and size.
      */
-    public BubbleRenderer (Paint fillPaint, Paint strokePaint,
-            double size) {
+    public BubbleRenderer(Paint fillPaint, Paint strokePaint, double size) {
         _fillPaint = fillPaint;
         _strokePaint = strokePaint;
         _size = size;
@@ -79,13 +78,13 @@ public class BubbleRenderer implements NodeRenderer {
 
     /** Get the fill paint pattern of this figure.
      */
-    public Paint getFillPaint () {
+    public Paint getFillPaint() {
         return _fillPaint;
     }
 
     /** Get the stroke paint pattern of this figure.
      */
-    public Paint getStrokePaint () {
+    public Paint getStrokePaint() {
         return _strokePaint;
     }
 
@@ -100,14 +99,15 @@ public class BubbleRenderer implements NodeRenderer {
         // Set the state appearance
         //Object s = n.getProperty("stateType");
         int type = StateBubble.NORMAL_STATE;
+
         //if (s != null) {
         //    type = ((Integer) s).intValue();
         //}
         e.setStateType(type);
 
         // Set the label
-        Object p = "node";//n.getProperty("label");
-        String label = p == null ? "Unnamed" : (String) p;
+        Object p = "node"; //n.getProperty("label");
+        String label = (p == null) ? "Unnamed" : (String) p;
         LabelWrapper w = new LabelWrapper(e, label);
         return w;
     }
@@ -116,15 +116,13 @@ public class BubbleRenderer implements NodeRenderer {
      *  filled with this paint pattern. If no pattern is given, do not
      *  fill it.
      */
-    public void setFillPaint (Paint p) {
+    public void setFillPaint(Paint p) {
         _fillPaint = p;
     }
 
     /** Set the stroke paint pattern of this figure.
      */
-    public void setStrokePaint (Paint p) {
+    public void setStrokePaint(Paint p) {
         _strokePaint = p;
     }
 }
-
-

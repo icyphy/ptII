@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.interpreted;
 
 import java.io.BufferedWriter;
@@ -42,6 +40,7 @@ import ptolemy.util.StringUtilities;
 import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
+
 
 /**
    A transformer that writes an interpreted version of a model.
@@ -85,7 +84,6 @@ public class InterpretedWriter extends SceneTransformer
         return "targetPackage outDir";
     }
 
-
     public String getPhaseName() {
         return "";
     }
@@ -108,12 +106,10 @@ public class InterpretedWriter extends SceneTransformer
      *  <code>targetPackage</code> option to specify package
      *  to generate code in.
      */
-    protected void internalTransform(String phaseName, Map options)
-    {
+    protected void internalTransform(String phaseName, Map options) {
         // FIXME: Perhaps AppletWriter should call this transformer?
-
-        System.out.println("InterpretedWriter.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("InterpretedWriter.internalTransform(" + phaseName
+            + ", " + options + ")");
 
         _outputDirectory = PhaseOptions.getString(options, "outDir");
 
@@ -125,33 +121,32 @@ public class InterpretedWriter extends SceneTransformer
 
         // Create the directory where we will create the files.
         File outDirFile = new File(_outputDirectory);
+
         if (outDirFile.isDirectory()) {
-            System.out.println(" Warning: '" + outDirFile
-                    + "' already exists.");
+            System.out.println(" Warning: '" + outDirFile + "' already exists.");
         }
+
         outDirFile.mkdirs();
 
         // Generate the .xml file.
-        String modelFileName =
-            _outputDirectory + "/" + _sanitizedModelName + ".xml";
+        String modelFileName = _outputDirectory + "/" + _sanitizedModelName
+            + ".xml";
         System.out.println("InterpretedWriter: about to write '"
-                + modelFileName + "'");
+            + modelFileName + "'");
+
         try {
-            Writer modelFileWriter =
-                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFileName)));
+            Writer modelFileWriter = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(modelFileName)));
             _model.exportMoML(modelFileWriter);
             modelFileWriter.close();
         } catch (IOException ex) {
             throw new InternalErrorException("Problem writing '"
-                    + modelFileName + "': " + ex);
+                + modelFileName + "': " + ex);
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
     // The model we are generating code for.
     private CompositeActor _model;
 
@@ -168,4 +163,3 @@ public class InterpretedWriter extends SceneTransformer
     // in foo.bar.MyModel.
     private String _targetPackage;
 }
-

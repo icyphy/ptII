@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.graph;
 
 import java.util.ArrayList;
@@ -38,8 +37,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LabeledList
+
 /** A list of unique objects (<i>elements</i>) with a mapping from the elements
     into consecutive integer labels. The labels are consecutive
     integers between 0 and <em>N</em>-1 inclusive, where <em>N</em> is
@@ -73,9 +74,7 @@ import java.util.ListIterator;
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxh)
 */
-
 public class LabeledList implements List {
-
     /** Construct an empty list.
      */
     public LabeledList() {
@@ -107,10 +106,10 @@ public class LabeledList implements List {
     public boolean add(Object element) {
         if (element == null) {
             throw new IllegalArgumentException("Attempt to insert a null "
-                    + "element");
+                + "element");
         } else if (_labels.containsKey(element)) {
             throw new IllegalArgumentException("Attempt to insert a duplicate "
-                    + "element." + _elementDump(element));
+                + "element." + _elementDump(element));
         } else {
             _labels.put(element, new Integer(_elements.size()));
             _elements.add(element);
@@ -167,9 +166,13 @@ public class LabeledList implements List {
      */
     public boolean containsAll(Collection collection) {
         Iterator elements = collection.iterator();
+
         while (elements.hasNext()) {
-            if (!contains(elements.next())) return false;
+            if (!contains(elements.next())) {
+                return false;
+            }
         }
+
         return true;
     }
 
@@ -188,9 +191,10 @@ public class LabeledList implements List {
      *  has the specified label.
      */
     public Object get(int label) {
-        if ((label < 0) || (label >= _elements.size()))  {
+        if ((label < 0) || (label >= _elements.size())) {
             throw new IndexOutOfBoundsException("Invalid label: " + label);
         }
+
         return _elements.get(label);
     }
 
@@ -212,7 +216,8 @@ public class LabeledList implements List {
         if (element == null) {
             return -1;
         } else {
-            Integer label = (Integer)(_labels.get(element));
+            Integer label = (Integer) (_labels.get(element));
+
             if (label == null) {
                 return -1;
             } else {
@@ -227,7 +232,6 @@ public class LabeledList implements List {
     public boolean isEmpty() {
         return size() == 0;
     }
-
 
     /** Return an iterator over the elements in the list. The iterator
      *  returned is safe in that it cannot be used to modify the list.
@@ -249,10 +253,12 @@ public class LabeledList implements List {
         if (element == null) {
             throw new NullPointerException("Null element specified.");
         } else {
-            Integer label = (Integer)(_labels.get(element));
+            Integer label = (Integer) (_labels.get(element));
+
             if (label == null) {
-                throw new IllegalArgumentException("The specified object is not"
-                        + " an element of this list. " + _elementDump(element));
+                throw new IllegalArgumentException(
+                    "The specified object is not"
+                    + " an element of this list. " + _elementDump(element));
             } else {
                 return label.intValue();
             }
@@ -299,12 +305,14 @@ public class LabeledList implements List {
      */
     public boolean remove(Object element) {
         int label;
+
         try {
             label = label(element);
         } catch (IllegalArgumentException exception) {
-            throw  new IllegalArgumentException("Attempt to remove a "
-                    + "non-existent element. " + _elementDump(element));
+            throw new IllegalArgumentException("Attempt to remove a "
+                + "non-existent element. " + _elementDump(element));
         }
+
         _labels.remove(element);
         _elements.remove(label);
         _labelElements(label);
@@ -323,6 +331,7 @@ public class LabeledList implements List {
     public Object remove(int label) {
         Object element = get(label);
         _labels.remove(element);
+
         Object removed = _elements.remove(label);
         _labelElements(label);
         return removed;
@@ -345,7 +354,7 @@ public class LabeledList implements List {
     /** Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
-    public Object set(int index, Object element)  {
+    public Object set(int index, Object element) {
         throw new UnsupportedOperationException();
     }
 
@@ -400,11 +409,13 @@ public class LabeledList implements List {
     public String toString(String delimiter, boolean includeLabels) {
         Iterator elements = iterator();
         StringBuffer result = new StringBuffer();
+
         while (elements.hasNext()) {
             Object element = elements.next();
-            result.append(((includeLabels) ? label(element) + ": " : "") +
-                    element + (elements.hasNext() ? delimiter : ""));
+            result.append(((includeLabels) ? (label(element) + ": ") : "")
+                + element + (elements.hasNext() ? delimiter : ""));
         }
+
         return result.toString();
     }
 
@@ -424,12 +435,11 @@ public class LabeledList implements List {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Return a dump of a list element that is suitable for inclusion
     // in an error message.
     private String _elementDump(Object element) {
-        return "The offending element follows:\n" +
-            ((element == null) ? "null" : element) + "\n";
+        return "The offending element follows:\n"
+        + ((element == null) ? "null" : element) + "\n";
     }
 
     // Fill in the labels map with the appropriate indices of
@@ -442,7 +452,6 @@ public class LabeledList implements List {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The elements that are associated with this list.
     private ArrayList _elements;
 

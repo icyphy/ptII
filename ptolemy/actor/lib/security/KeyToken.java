@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.security;
 
 import java.io.Serializable;
@@ -36,8 +35,10 @@ import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// KeyToken
+
 /**
    Tokens that contain java.security.Keys.
 
@@ -48,7 +49,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class KeyToken extends Token {
-
     /** Construct a token with a specified java.security.Key.
      *  @param value The specified java.security.Key type to construct
      *  the token with.
@@ -89,11 +89,11 @@ public class KeyToken extends Token {
      *  algorithms, formats and encodings are the same.
      */
     public final BooleanToken isEqualTo(Token rightArgument)
-            throws IllegalActionException {
-        java.security.Key rightKey = ((KeyToken)rightArgument).getValue();
+        throws IllegalActionException {
+        java.security.Key rightKey = ((KeyToken) rightArgument).getValue();
         java.security.Key leftKey = getValue();
 
-        if (rightKey == null || leftKey == null) {
+        if ((rightKey == null) || (leftKey == null)) {
             return BooleanToken.FALSE;
         }
 
@@ -105,19 +105,21 @@ public class KeyToken extends Token {
             return BooleanToken.FALSE;
         }
 
-        byte [] rightEncoded = rightKey.getEncoded();
-        byte [] leftEncoded = leftKey.getEncoded();
-        if (rightEncoded.length !=  leftEncoded.length) {
+        byte[] rightEncoded = rightKey.getEncoded();
+        byte[] leftEncoded = leftKey.getEncoded();
+
+        if (rightEncoded.length != leftEncoded.length) {
             return BooleanToken.FALSE;
         }
+
         for (int i = 0; i < rightEncoded.length; i++) {
             if (rightEncoded[i] != leftEncoded[i]) {
                 return BooleanToken.FALSE;
             }
         }
+
         return BooleanToken.TRUE;
     }
-
 
     /** Return a String representation of the KeyToken.
      *  @return A String representation of the KeyToken that includes
@@ -127,15 +129,17 @@ public class KeyToken extends Token {
         // FIXME: we print this token in a format similar to RecordToken.
         // Perhaps this token should be a RecordToken?
         // FIXME: Should we have a constructor that reads in string?
-        StringBuffer result =  new StringBuffer(
-                "{ algorithm = " + _value.getAlgorithm()
-                + ", format = " + _value.getFormat()
+        StringBuffer result = new StringBuffer("{ algorithm = "
+                + _value.getAlgorithm() + ", format = " + _value.getFormat()
                 + ", encoded = ");
         result.append(" Encoded: ");
-        byte [] encoded = _value.getEncoded();
-        for (int i = 0; i < encoded.length -1; i++) {
+
+        byte[] encoded = _value.getEncoded();
+
+        for (int i = 0; i < (encoded.length - 1); i++) {
             result.append(" " + encoded[i] + ",");
         }
+
         result.append(" " + encoded[encoded.length - 1] + ")");
         return result.toString();
     }
@@ -143,10 +147,8 @@ public class KeyToken extends Token {
     /** The cryptographic key type.
      */
     public static class KeyType implements Type, Serializable {
-
         ///////////////////////////////////////////////////////////////////
         ////                         constructors                      ////
-
         // The constructor is private to make a type safe enumeration.
         // We could extend BaseType, yet the BaseType(Class, String)
         // Constructor is private.
@@ -171,14 +173,12 @@ public class KeyToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
-        public Token convert(Token token)
-                throws IllegalActionException {
+        public Token convert(Token token) throws IllegalActionException {
             if (token instanceof KeyToken) {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                        + token +
-                        " into a Key token, which is not possible.");
+                    + token + " into a Key token, which is not possible.");
             }
         }
 
@@ -213,7 +213,6 @@ public class KeyToken extends Token {
         public int getTypeHash() {
             return Type.HASH_INVALID;
         }
-
 
         /** Determine if this type corresponds to an instantiable token
          *  classes. A BaseType is instantiable if it does not correspond
@@ -252,4 +251,3 @@ public class KeyToken extends Token {
     /** The java.security.Key */
     private java.security.Key _value;
 }
-

@@ -23,7 +23,6 @@
  Created on 01 sept. 2003
 
 */
-
 package thales.actor.gui;
 
 import java.io.IOException;
@@ -43,6 +42,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
+
 /**
  <p>Titre : SingleWindowHTMLViewerTableau</p>
  <p>Description : Main Tableau for the SingleWindowHTMLViewer.</p>
@@ -55,7 +55,6 @@ import ptolemy.kernel.util.StringAttribute;
 
  */
 public class SingleWindowHTMLViewerTableau extends Tableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  This creates an instance of HTMLViewer.  It does not make the frame
      *  visible.  To do that, call show().
@@ -67,7 +66,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
      *   attribute already in the container.
      */
     public SingleWindowHTMLViewerTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         url = new StringAttribute(this, "url");
@@ -93,9 +92,10 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == url) {
             String urlSpec = ((Settable) attribute).getExpression();
+
             try {
                 // NOTE: This cannot handle a URL that is relative to the
                 // MoML file within which this attribute might be being
@@ -103,10 +103,8 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                 URL toRead = MoMLApplication.specToURL(urlSpec);
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
-                throw new IllegalActionException(
-                        this,
-                        ex,
-                        "Cannot open URL: " + urlSpec);
+                throw new IllegalActionException(this, ex,
+                    "Cannot open URL: " + urlSpec);
             }
         } else {
             super.attributeChanged(attribute);
@@ -119,7 +117,6 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
     /** A factory that creates HTML viewer tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -129,7 +126,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -153,28 +150,27 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof HTMLEffigy) {
-
                 // Indicate to the effigy that this factory contains effigies
                 // offering multiple views of the effigy data.
                 effigy.setTableauFactory(this);
 
                 // First see whether the effigy already contains an
                 // HTMLViewerTableau.
-                SingleWindowHTMLViewerTableau tableau =
-                    (SingleWindowHTMLViewerTableau) effigy.getEntity(
-                            "SingleWHtmlTableau");
+                SingleWindowHTMLViewerTableau tableau = (SingleWindowHTMLViewerTableau) effigy
+                    .getEntity("SingleWHtmlTableau");
+
                 if (tableau == null) {
-                    tableau =
-                        new SingleWindowHTMLViewerTableau(
-                                (HTMLEffigy) effigy,
-                                "SingleWHtmlTableau");
+                    tableau = new SingleWindowHTMLViewerTableau((HTMLEffigy) effigy,
+                            "SingleWHtmlTableau");
                 }
+
                 // Unfortunately, if we have a jar url, (for example
                 // jar:file:/C:/foo.jar!/intro.htm
                 // then the java.net.URI toURL() method will return
                 // a URL like jar:, which is missing the file: part
                 // This breaks Ptolemy II under WebStart.
                 URL pageURL = new URL(effigy.uri.getURI().toString());
+
                 try {
                     ((HTMLViewer) tableau.getFrame()).setPage(pageURL);
                 } catch (IOException io) {
@@ -183,13 +179,15 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                     // that we are looking in the wrong Jar file, so
                     // we try again.
                     String urlString = effigy.uri.getURI().toString();
-                    URL anotherURL =
-                        JNLPUtilities.jarURLEntryResource(urlString);
+                    URL anotherURL = JNLPUtilities.jarURLEntryResource(urlString);
+
                     if (anotherURL == null) {
                         throw io;
                     }
+
                     ((HTMLViewer) tableau.getFrame()).setPage(anotherURL);
                 }
+
                 // Don't call show() here.  If show() is called here,
                 // then you can't set the size of the window after
                 // createTableau() returns.  This will affect how

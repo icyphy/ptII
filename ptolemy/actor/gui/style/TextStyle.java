@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TextStyle
+
 /**
    This attribute annotates user settable attributes to specify an
    arbitrary multi-line text area style for configuring the containing
@@ -54,9 +55,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Red (zkemenczy)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class TextStyle extends ParameterEditorStyle {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name. This constructor is for testing only.
      *  The object is added to the directory of the workspace.
@@ -68,8 +67,7 @@ public class TextStyle extends ParameterEditorStyle {
      *  Parameter name coincides with an attribute already in the
      *  container.
      */
-    public TextStyle()
-            throws IllegalActionException, NameDuplicationException {
+    public TextStyle() throws IllegalActionException, NameDuplicationException {
         // Note: StyleConfigurer calls this constructor when
         // configure -> preferences -> text is selected.
         super();
@@ -86,7 +84,7 @@ public class TextStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public TextStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initialize();
     }
@@ -123,21 +121,18 @@ public class TextStyle extends ParameterEditorStyle {
      *  @param query The query into which to add the entry.
      */
     public void addEntry(PtolemyQuery query) {
-        Settable container = (Settable)getContainer();
+        Settable container = (Settable) getContainer();
         String name = container.getName();
         String defaultValue = "";
         defaultValue = container.getExpression();
+
         try {
-            int heightValue = ((IntToken)height.getToken()).intValue();
-            int widthValue = ((IntToken)width.getToken()).intValue();
-            query.addTextArea(
-                    name,
-                    name,
-                    defaultValue,
-                    PtolemyQuery.preferredBackgroundColor(container),
-                    PtolemyQuery.preferredForegroundColor(container),
-                    heightValue,
-                    widthValue);
+            int heightValue = ((IntToken) height.getToken()).intValue();
+            int widthValue = ((IntToken) width.getToken()).intValue();
+            query.addTextArea(name, name, defaultValue,
+                PtolemyQuery.preferredBackgroundColor(container),
+                PtolemyQuery.preferredForegroundColor(container), heightValue,
+                widthValue);
             query.attachParameter(container, name);
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
@@ -146,11 +141,10 @@ public class TextStyle extends ParameterEditorStyle {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Initialize height and width.  This method is called by the
     // constructors so as to avoid code duplication.
     private void _initialize()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         height = new Parameter(this, "height");
         height.setToken("10");
         height.setTypeEquals(BaseType.INT);

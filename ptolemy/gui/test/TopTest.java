@@ -24,17 +24,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui.test;
-
-import ptolemy.gui.Top;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import ptolemy.gui.Top;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// TopTest
+
 /**
    Test driver for ptolemy.gui.Top.
 
@@ -45,22 +46,19 @@ import java.net.URL;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TopTest extends Top {
-
     /** Read the specified URL.
      *  @param url The URL to read.
      *  @exception Exception If the URL cannot be read.
      */
     protected void _read(URL url) throws Exception {
-        throw new RuntimeException(
-                "TopTest._readFile() not implemented");
+        throw new RuntimeException("TopTest._readFile() not implemented");
     }
 
-     /** Write the model to the specified file.
-     *  @param file The file to write to.
-     *  @exception IOException If the write fails.
-     */
-   protected void _writeFile(File file) throws IOException {
-        throw new RuntimeException(
-                "TopTest._writeFile() not implemented");
+    /** Write the model to the specified file.
+    *  @param file The file to write to.
+    *  @exception IOException If the write fails.
+    */
+    protected void _writeFile(File file) throws IOException {
+        throw new RuntimeException("TopTest._writeFile() not implemented");
     }
 }

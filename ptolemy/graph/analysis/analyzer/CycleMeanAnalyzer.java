@@ -22,13 +22,14 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
 
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CycleMeanAnalyzer
+
 /**
    A common interface for all the cycle mean analyzers.
    <p>
@@ -40,7 +41,6 @@ import java.util.List;
    @version $Id$
 */
 public interface CycleMeanAnalyzer extends GraphAnalyzer {
-
     /** Return the nodes on the cycle that corresponds to the maximum/minimum
      *  cycle mean as an ordered list. If there is more than one cycle with the
      *  same maximal/minimal cycle, one of them is returned randomly,

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -35,6 +34,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 ///////////////////////////////////////////////////////////////
 /// CartesianToPolar
@@ -53,9 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (pwhitake)
    @Pt.AcceptedRating Green (pwhitake)
 */
-
 public class CartesianToPolar extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,7 +63,7 @@ public class CartesianToPolar extends TypedAtomicActor {
      *   actor with this name.
      */
     public CartesianToPolar(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         x = new TypedIOPort(this, "x", true, false);
@@ -80,10 +78,9 @@ public class CartesianToPolar extends TypedAtomicActor {
         angle = new TypedIOPort(this, "angle", false, true);
         angle.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,13 +112,11 @@ public class CartesianToPolar extends TypedAtomicActor {
         double xValue = ((DoubleToken) (x.get(0))).doubleValue();
         double yValue = ((DoubleToken) (y.get(0))).doubleValue();
 
-        double magnitudeValue
-            = Math.sqrt (xValue * xValue + yValue * yValue);
-        double angleValue
-            = Math.atan2(yValue, xValue);
+        double magnitudeValue = Math.sqrt((xValue * xValue) + (yValue * yValue));
+        double angleValue = Math.atan2(yValue, xValue);
 
-        magnitude.send(0, new DoubleToken (magnitudeValue));
-        angle.send(0, new DoubleToken (angleValue));
+        magnitude.send(0, new DoubleToken(magnitudeValue));
+        angle.send(0, new DoubleToken(angleValue));
     }
 
     /** Return false if either of the input ports has no token, otherwise
@@ -129,10 +124,10 @@ public class CartesianToPolar extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if ( !x.hasToken(0) || !y.hasToken(0) ) {
+        if (!x.hasToken(0) || !y.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-

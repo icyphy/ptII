@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 review sendInside
 */
-
 package ptolemy.domains.giotto.cgc;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypedIOPort
+
 /**
   This port class is used with actors that are instances of CActor.
   It features additional parameters specific to the
@@ -60,9 +61,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Red (vkris)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class CPort extends TypedIOPort {
-
     /** Construct a CPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
      *  must be an instance of CActor, or an exception will be thrown.
@@ -75,7 +74,7 @@ public class CPort extends TypedIOPort {
      *   a port already in the container.
      */
     public CPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         initialOutputValue = new Parameter(this, "initialOutputValue");
         initialOutputValue.setExpression("0");
@@ -103,9 +102,9 @@ public class CPort extends TypedIOPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public CPort(ComponentEntity container, String name,
-            boolean isInput, boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+    public CPort(ComponentEntity container, String name, boolean isInput,
+        boolean isOutput)
+        throws IllegalActionException, NameDuplicationException {
         this(container, name);
         setInput(isInput);
         setOutput(isOutput);
@@ -132,6 +131,7 @@ public class CPort extends TypedIOPort {
      */
     public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
+
         if (isOutput) {
             initialOutputValue.setVisibility(Settable.FULL);
             arrayLength.setVisibility(Settable.FULL);

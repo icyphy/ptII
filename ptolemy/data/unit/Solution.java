@@ -40,8 +40,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Solution
+
 /** An instance of this class contains a "solution" of Unit constraints.
     In essence, the solution represents the constraints between a set of Unit
     variables, and a set of Units.
@@ -112,7 +114,6 @@ import ptolemy.moml.MoMLChangeRequest;
     @Pt.AcceptedRating Red (rowland)
 */
 public class Solution {
-
     /** Construct an empty solution.
      * This constructor is used only by the copy() method, and, can therefore,
      * be made private.
@@ -131,11 +132,8 @@ public class Solution {
      * @exception IllegalActionException If there are problems with transforming
      * a constraint to canonical form.
      */
-    public Solution(
-        TypedCompositeActor model,
-        String[] vLabels,
-        Vector constraints)
-        throws IllegalActionException {
+    public Solution(TypedCompositeActor model, String[] vLabels,
+        Vector constraints) throws IllegalActionException {
         _constraints = constraints;
         _numConstraints = constraints.size();
         _variables = vLabels;
@@ -145,50 +143,54 @@ public class Solution {
         _source = new NamedObj[_numConstraints];
         _done = new boolean[_numConstraints];
         _arrayP = new double[_numConstraints][];
+
         for (int i = 0; i < _numConstraints; i++) {
             _arrayP[i] = new double[_numVariables];
             _done[i] = false;
         }
-        for (int constraintNum = 0;
-            constraintNum < _numConstraints;
-            constraintNum++) {
-            UnitEquation constraint =
-                (UnitEquation) (constraints.elementAt(constraintNum));
+
+        for (int constraintNum = 0; constraintNum < _numConstraints;
+                constraintNum++) {
+            UnitEquation constraint = (UnitEquation) (constraints.elementAt(constraintNum));
             UnitEquation canonicalEquation = constraint.canonicalize();
             Vector rightUTerms = canonicalEquation.getRhs().getUTerms();
+
             if (rightUTerms.size() != 1) {
-                throw new IllegalActionException(
-                    "canonicalEquation "
-                        + canonicalEquation
-                        + " has nonsingular RHS");
+                throw new IllegalActionException("canonicalEquation "
+                    + canonicalEquation + " has nonsingular RHS");
             }
+
             UnitTerm rhsUterm = (UnitTerm) (rightUTerms.elementAt(0));
+
             if (!rhsUterm.isUnit()) {
-                throw new IllegalActionException(
-                    "canonicalEquation "
-                        + canonicalEquation
-                        + " has nonUnit RHS");
+                throw new IllegalActionException("canonicalEquation "
+                    + canonicalEquation + " has nonUnit RHS");
             }
+
             _vectorA[constraintNum] = rhsUterm.getUnit();
             _source[constraintNum] = constraint.getSource();
+
             Vector leftUTerms = canonicalEquation.getLhs().getUTerms();
+
             for (int i = 0; i < leftUTerms.size(); i++) {
                 UnitTerm leftUTerm = (UnitTerm) (leftUTerms.elementAt(i));
+
                 if (leftUTerm == null) {
-                    throw new IllegalActionException(
-                        "canonicalEquation "
-                            + canonicalEquation
-                            + " has nonVar LHS");
+                    throw new IllegalActionException("canonicalEquation "
+                        + canonicalEquation + " has nonVar LHS");
                 }
+
                 String variableLabel = leftUTerm.getVariable();
                 double exponent = leftUTerm.getExponent();
                 int varIndex = -1;
+
                 for (int j = 0; j < _variables.length; j++) {
                     if (_variables[j].equals(variableLabel)) {
                         varIndex = j;
                         break;
                     }
                 }
+
                 _arrayP[constraintNum][varIndex] = exponent;
             }
         }
@@ -196,61 +198,56 @@ public class Solution {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /**
      * Annotates the model so that when it is displayed it will be color coded
      * and have tooltips that will convey various aspects of the solution.
      */
     public void annotateGraph() {
-        if (_debug)
+        if (_debug) {
             trace();
+        }
+
         String color;
         StringBuffer moml = new StringBuffer();
+
         for (int j = 0; j < _numVariables; j++) {
             String explanation = _varBindings[j];
             color = null;
+
             if (_varState[j] == _CONSISTENT) {
                 color = "green";
             } else if (_varState[j] == _INCONSISTENT) {
                 color = "red";
             }
 
-            moml.append(
-                "<port name=\""
-                    + _variables[j]
-                    + "\">"
-                    + " <property name=\"_color\" "
-                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                    + "value = \""
-                    + color
-                    + "\"/>"
-                    + "<property name=\"_explanation\" "
-                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                    + "value = \""
-                    + explanation
-                    + "\"/>"
-                    + "</port>");
+            moml.append("<port name=\"" + _variables[j] + "\">"
+                + " <property name=\"_color\" "
+                + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                + "value = \"" + color + "\"/>"
+                + "<property name=\"_explanation\" "
+                + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                + "value = \"" + explanation + "\"/>" + "</port>");
         }
-        for (int constraintNum = 0;
-            constraintNum < _numConstraints;
-            constraintNum++) {
+
+        for (int constraintNum = 0; constraintNum < _numConstraints;
+                constraintNum++) {
             NamedObj source = _source[constraintNum];
             String expression = _constraintExplanations[constraintNum];
 
             color = null;
+
             if (_constraintState[constraintNum] == _CONSISTENT) {
                 color = "green";
             } else if (_constraintState[constraintNum] == _INCONSISTENT) {
                 color = "red";
             }
+
             if (source instanceof IOPort) {
                 IOPort port = (IOPort) source;
                 ComponentEntity actor = (ComponentEntity) (port.getContainer());
-                moml.append(
-                    "<entity name=\""
-                        + actor.getName()
-                        + "\">"
-                        + _momlAnnotate(port, color, expression)
-                        + "</entity>");
+                moml.append("<entity name=\"" + actor.getName() + "\">"
+                    + _momlAnnotate(port, color, expression) + "</entity>");
             } else if (source instanceof IORelation) {
                 IORelation relation = (IORelation) source;
                 moml.append(_momlAnnotate(relation, color, expression));
@@ -259,10 +256,11 @@ public class Solution {
                 moml.append(_momlAnnotate(componentEntity, color, expression));
             }
         }
+
         if (moml.length() > 0) {
             String momlUpdate = "<group>" + moml.toString() + "</group>";
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(this, _model, momlUpdate);
+            MoMLChangeRequest request = new MoMLChangeRequest(this, _model,
+                    momlUpdate);
             request.setUndoable(true);
             request.setPersistent(false);
             _debug("Solver.annotateGraph moml " + momlUpdate);
@@ -275,17 +273,24 @@ public class Solution {
      */
     public Solution completeSolution() {
         _debug("Solver.completeSolution.initial " + headerInfo() + stateInfo());
+
         Index g;
+
         while ((g = _findG()) != null) {
             _eliminate(g);
             _debug("Solver.completeSolution " + stateInfo());
         }
+
         for (int i = 0; i < _numConstraints; i++) {
             _done[i] = true;
         }
+
         _analyzeState();
-        if (_debug)
+
+        if (_debug) {
             trace();
+        }
+
         return this;
     }
 
@@ -304,14 +309,18 @@ public class Solution {
         retv._vectorA = new Unit[_numConstraints];
         retv._done = new boolean[_numConstraints];
         retv._arrayP = new double[_numConstraints][];
+
         for (int i = 0; i < _numConstraints; i++) {
             retv._arrayP[i] = new double[_numVariables];
+
             for (int j = 0; j < _numVariables; j++) {
                 retv._arrayP[i][j] = _arrayP[i][j];
             }
+
             retv._done[i] = _done[i];
             retv._vectorA[i] = _vectorA[i].copy();
         }
+
         retv._upper = this;
         return retv;
     }
@@ -321,23 +330,15 @@ public class Solution {
      */
     public String getShortStateDesc() {
         switch (_solveState) {
-            case _UNKNOWN :
-                {
-                    return "UnKnown";
-                }
-            case _NONUNIQUE :
-                {
-                    return "No Unique Solution";
-                }
-            case _INCONSISTENT :
-                {
-                    return "Inconsistent";
-                }
-            case _CONSISTENT :
-                {
-                    return "Consistent";
-                }
+        case _UNKNOWN:return "UnKnown";
+
+        case _NONUNIQUE:return "No Unique Solution";
+
+        case _INCONSISTENT:return "Inconsistent";
+
+        case _CONSISTENT:return "Consistent";
         }
+
         return "Unknown";
     }
 
@@ -359,24 +360,23 @@ public class Solution {
     public StringBuffer headerInfo() {
         StringBuffer retv = new StringBuffer();
         retv.append("Header\nVariables\n");
+
         for (int j = 0; j < _numVariables; j++) {
-            retv.append(
-                "   " + _vNumFormat.format(j) + " " + _variables[j] + "\n");
+            retv.append("   " + _vNumFormat.format(j) + " " + _variables[j]
+                + "\n");
         }
+
         retv.append("\n");
         retv.append("ConstrNum  Source\n");
+
         for (int i = 0; i < _numConstraints; i++) {
             NamedObj source = _source[i];
-            retv.append(
-                ""
-                    + _vNumFormat.format(i)
-                    + "         "
-                    + source.toString()
-                    + " "
-                    + ((UnitEquation) _constraints.elementAt(i))
-                        .descriptiveForm()
-                    + "\n");
+            retv.append("" + _vNumFormat.format(i) + "         "
+                + source.toString() + " "
+                + ((UnitEquation) _constraints.elementAt(i)).descriptiveForm()
+                + "\n");
         }
+
         retv.append("\\Header\n");
         return retv;
     }
@@ -388,22 +388,24 @@ public class Solution {
      */
     public Vector minimalSpanSolutions() {
         Vector solutions = new Vector();
-        _debug(
-            "Solver.minimalSpanSolutions "
-                + headerInfo()
-                + " initial\n"
-                + stateInfo());
+        _debug("Solver.minimalSpanSolutions " + headerInfo() + " initial\n"
+            + stateInfo());
+
         Solution root = copy();
+
         // First eliminate all the singletons. These are due to statically bound
         // ports.
         Iterator allG = root._findAllG().iterator();
+
         while (allG.hasNext()) {
             Index g = (Index) (allG.next());
             root._eliminate(g);
         }
+
         // The solution may already be inconsistent. This would be the case if
         // two statically bound ports are connected but have different units.
         root._checkForInConsistency();
+
         if (root._solveState == _INCONSISTENT) {
             root._analyzeState();
             solutions.add(root);
@@ -413,12 +415,11 @@ public class Solution {
             root._branchPoint = null;
             _debug("Solver.solve root\n" + root.stateInfo());
             root._branchPoints = root._findAllG();
+
             if (root._branchPoints.size() > 0) {
                 for (int i = 0; i < root._branchPoints.size(); i++) {
                     Solution s = root.copy();
-                    Vector results =
-                        s._partialSolveRecursively(
-                            1,
+                    Vector results = s._partialSolveRecursively(1,
                             (Index) (root._branchPoints.elementAt(i)));
                     solutions.addAll(results);
                 }
@@ -427,14 +428,15 @@ public class Solution {
                 solutions.add(root);
             }
         }
+
         if (_debug) {
             for (int i = 0; i < solutions.size(); i++) {
                 Solution solution = (Solution) (solutions.elementAt(i));
                 System.out.println("A Solution\n" + solution.stateInfo());
             }
         }
-        return solutions;
 
+        return solutions;
     }
 
     /**
@@ -448,32 +450,38 @@ public class Solution {
         StringBuffer retv = new StringBuffer();
         retv.append("State\n");
         retv.append("BranchPoints " + _branchPoints + "\n    ");
+
         for (int j = 0; j < _numVariables; j++) {
             retv.append(" " + _vNumFormat.format(j));
         }
+
         retv.append("\n");
+
         for (int i = 0; i < _numConstraints; i++) {
             if (_done[i]) {
                 retv.append("T ");
             } else {
                 retv.append("F ");
             }
+
             retv.append("" + _vNumFormat.format(i) + " ");
+
             for (int j = 0; j < _numVariables; j++) {
                 retv.append("" + _pFormat.format(_arrayP[i][j]) + " ");
             }
+
             retv.append("" + _vectorA[i] + " " + _vectorA[i].descriptiveForm());
-            retv.append(
-                " "
-                    + ((UnitEquation) _constraints.elementAt(i))
-                        .descriptiveForm());
+            retv.append(" "
+                + ((UnitEquation) _constraints.elementAt(i)).descriptiveForm());
             retv.append("\n");
         }
+
         if (_branchPoint == null) {
             retv.append("BranchPoint = null\n");
         } else {
             retv.append("BranchPoint = " + _branchPoint.toString() + "\n");
         }
+
         retv.append("Solution: " + getStateDesc());
         retv.append("\n\\State\n");
         return retv;
@@ -481,40 +489,47 @@ public class Solution {
 
     public void trace() {
         System.out.print("Solver.trace\n");
+
         Solution s = this;
+
         while (s != null) {
             System.out.print(s.stateInfo());
             s = s._upper;
         }
+
         System.out.print(headerInfo());
     }
 
     ///////////////////////////////////////////////////////////////////
     /////                        private methods                 //////
-
     private void _analyzeState() {
         _varBindings = new String[_numVariables];
         _constraintExplanations = new String[_numConstraints];
         _varState = new int[_numVariables];
         _constraintState = new int[_numConstraints];
+
         String inconsistencyDesc = "";
+
         for (int i = 0; i < _numConstraints; i++) {
             _constraintState[i] = _UNKNOWN;
             _constraintExplanations[i] = "";
+
             if (_done[i]) {
                 int numNonZeroP = 0;
+
                 for (int j = 0; j < _numVariables; j++) {
-                    if (_arrayP[i][j] != 0)
+                    if (_arrayP[i][j] != 0) {
                         numNonZeroP++;
+                    }
                 }
-                if (numNonZeroP == 0
-                    && !_vectorA[i].equals(UnitLibrary.Identity)) {
+
+                if ((numNonZeroP == 0)
+                        && !_vectorA[i].equals(UnitLibrary.Identity)) {
                     Unit factor = _vectorA[i].invert();
                     String uString = factor.descriptiveForm();
                     _constraintState[i] = _INCONSISTENT;
                     _constraintExplanations[i] = uString;
-                } else if (
-                    numNonZeroP > 1
+                } else if ((numNonZeroP > 1)
                         && _vectorA[i].equals(UnitLibrary.Identity)) {
                     _constraintState[i] = _NONUNIQUE;
                 } else {
@@ -527,21 +542,27 @@ public class Solution {
 
         for (int j = 0; j < _numVariables; j++) {
             _varBindings[j] = "";
+
             int numNonZeroP = 0;
+
             for (int i = 0; i < _numConstraints; i++) {
-                if (_done[i] && _arrayP[i][j] != 0) {
+                if (_done[i] && (_arrayP[i][j] != 0)) {
                     Unit U = _vectorA[i].pow(1.0 / _arrayP[i][j]);
+
                     if (numNonZeroP > 0) {
                         _varBindings[j] += ";";
                     }
+
                     _varBindings[j] += U.descriptiveForm();
                     numNonZeroP++;
                 }
             }
+
             if (numNonZeroP > 1) {
                 _varBindings[j] = "*AMBIGUOUS* " + _varBindings[j];
                 _varState[j] = _INCONSISTENT;
             }
+
             if (numNonZeroP == 1) {
                 _varState[j] = _CONSISTENT;
             } else {
@@ -553,33 +574,33 @@ public class Solution {
         boolean stateInconsistent = false;
         boolean stateNonUnique = false;
         _solveState = _CONSISTENT;
+
         for (int i = 0; i < _numConstraints; i++) {
             switch (_constraintState[i]) {
-                case _INCONSISTENT :
-                    {
-                        stateInconsistent = true;
-                        NamedObj source = _source[i];
-                        String sourceName = "NoSource";
-                        if (source instanceof IORelation) {
-                            sourceName = ((IORelation) source).getName();
-                        } else if (source instanceof ComponentEntity) {
-                            sourceName = ((ComponentEntity) source).getName();
-                        } else if (source instanceof TypedIOPort) {
-                            sourceName =
-                                source.getName(
-                                    source.getContainer().getContainer());
-                        }
-                        inconsistencyDesc += " "
-                            + sourceName
-                            + " "
-                            + _constraintExplanations[i];
-                        break;
-                    }
-                case _NONUNIQUE :
-                    {
-                        stateNonUnique = true;
-                        break;
-                    }
+            case _INCONSISTENT: {
+                stateInconsistent = true;
+
+                NamedObj source = _source[i];
+                String sourceName = "NoSource";
+
+                if (source instanceof IORelation) {
+                    sourceName = ((IORelation) source).getName();
+                } else if (source instanceof ComponentEntity) {
+                    sourceName = ((ComponentEntity) source).getName();
+                } else if (source instanceof TypedIOPort) {
+                    sourceName = source.getName(source.getContainer()
+                                                      .getContainer());
+                }
+
+                inconsistencyDesc += (" " + sourceName + " "
+                + _constraintExplanations[i]);
+                break;
+            }
+
+            case _NONUNIQUE: {
+                stateNonUnique = true;
+                break;
+            }
             }
         }
 
@@ -590,10 +611,8 @@ public class Solution {
         for (int j = 0; j < _numVariables; j++) {
             if (_varState[j] == _INCONSISTENT) {
                 stateInconsistent = true;
-                inconsistencyDesc += " "
-                    + _variables[j]
-                    + "="
-                    + _varBindings[j];
+                inconsistencyDesc += (" " + _variables[j] + "="
+                + _varBindings[j]);
             }
         }
 
@@ -606,44 +625,48 @@ public class Solution {
         }
 
         switch (_solveState) {
-            case _UNKNOWN :
-                {
-                    _stateDescription = "UnKnown";
-                    break;
-                }
-            case _NONUNIQUE :
-                {
-                    _stateDescription = "No Unique Solution";
-                    break;
-                }
-            case _INCONSISTENT :
-                {
-                    _stateDescription = "Inconsistent" + inconsistencyDesc;
-                    break;
-                }
-            case _CONSISTENT :
-                {
-                    _stateDescription = "Consistent";
-                    break;
-                }
+        case _UNKNOWN: {
+            _stateDescription = "UnKnown";
+            break;
         }
 
+        case _NONUNIQUE: {
+            _stateDescription = "No Unique Solution";
+            break;
+        }
+
+        case _INCONSISTENT: {
+            _stateDescription = "Inconsistent" + inconsistencyDesc;
+            break;
+        }
+
+        case _CONSISTENT: {
+            _stateDescription = "Consistent";
+            break;
+        }
+        }
     }
 
     private int[] _branchesFrom(Index g) {
         int k = g.getK();
         int l = g.getL();
         int num = 0;
+
         for (int i = 0; i < _numConstraints; i++) {
-            if (i != k && _arrayP[i][l] != 0)
+            if ((i != k) && (_arrayP[i][l] != 0)) {
                 num++;
+            }
         }
-        int retv[] = new int[num];
+
+        int[] retv = new int[num];
         int index = 0;
+
         for (int i = 0; i < _numConstraints; i++) {
-            if (i != k && _arrayP[i][l] != 0)
+            if ((i != k) && (_arrayP[i][l] != 0)) {
                 retv[index++] = i;
+            }
         }
+
         return retv;
     }
 
@@ -651,11 +674,13 @@ public class Solution {
         for (int i = 0; i < _numConstraints; i++) {
             if (!_vectorA[i].equals(UnitLibrary.Identity)) {
                 boolean inconsistent = true;
+
                 for (int j = 0; j < _numVariables; j++) {
                     if (_arrayP[i][j] != 0) {
                         inconsistent = false;
                     }
                 }
+
                 if (inconsistent) {
                     _done[i] = true;
                     _solveState = _INCONSISTENT;
@@ -665,8 +690,9 @@ public class Solution {
     }
 
     private void _debug(String msg) {
-        if (_debug)
+        if (_debug) {
             System.out.println(msg);
+        }
     }
 
     /**
@@ -677,15 +703,18 @@ public class Solution {
         int k = g.getK();
         int l = g.getL();
         _debug("Eliminating (" + k + ", " + l + ")");
+
         Unit U = _vectorA[k].pow(1.0 / _arrayP[k][l]);
         _vectorA[k] = U;
         _arrayP[k][l] = 1;
+
         for (int i = 0; i < _numConstraints; i++) {
-            if (i != k && !_done[i] && _arrayP[i][l] != 0) {
+            if ((i != k) && !_done[i] && (_arrayP[i][l] != 0)) {
                 _vectorA[i] = _vectorA[i].divideBy(U.pow(_arrayP[i][l]));
                 _arrayP[i][l] = 0;
             }
         }
+
         _branchPoint = g;
         _done[k] = true;
     }
@@ -698,10 +727,12 @@ public class Solution {
      */
     private Vector _findAllG() {
         Vector retv = new Vector();
+
         for (int i = 0; i < _numConstraints; i++) {
             if (!_done[i]) {
                 int l = -1;
                 boolean possible = false;
+
                 for (int j = 0; j < _numVariables; j++) {
                     if (_arrayP[i][j] != 0) {
                         if (l == -1) {
@@ -713,12 +744,14 @@ public class Solution {
                         }
                     }
                 }
+
                 if (possible) {
                     retv.add(new Index(i, l));
                     continue;
                 }
             }
         }
+
         return retv;
     }
 
@@ -728,13 +761,16 @@ public class Solution {
      */
     private Vector _findAllGInRows(int[] rows) {
         Vector retv = new Vector();
+
         for (int a = 0; a < rows.length; a++) {
             int k = rows[a];
             Index g = _findGInRow(k);
+
             if (g != null) {
                 retv.add(g);
             }
         }
+
         return retv;
     }
 
@@ -749,6 +785,7 @@ public class Solution {
             if (!_done[i]) {
                 int l = -1;
                 boolean possible = false;
+
                 for (int j = 0; j < _numVariables; j++) {
                     if (_arrayP[i][j] != 0) {
                         if (l == -1) {
@@ -760,17 +797,20 @@ public class Solution {
                         }
                     }
                 }
+
                 if (possible) {
                     return (new Index(i, l));
                 }
             }
         }
+
         return null;
     }
 
     private Index _findGInRow(int k) {
         Index retv = null;
         int l = -1;
+
         for (int j = 0; j < _numVariables; j++) {
             if (_arrayP[k][j] != 0) {
                 if (l == -1) {
@@ -780,88 +820,81 @@ public class Solution {
                 }
             }
         }
-        if (l == -1)
+
+        if (l == -1) {
             return null;
+        }
+
         return (new Index(k, l));
     }
 
-    private String _momlAnnotate(
-        NamedObj entity,
-        String color,
+    private String _momlAnnotate(NamedObj entity, String color,
         String expression) {
         String colorProperty = null;
-        StringAttribute currentColor =
-            (StringAttribute) (entity.getAttribute("_color"));
-        if (currentColor != null && color == null) {
+        StringAttribute currentColor = (StringAttribute) (entity.getAttribute(
+                "_color"));
+
+        if ((currentColor != null) && (color == null)) {
             colorProperty = "<deleteProperty _name=_color/>";
         } else if (color != null) {
-            colorProperty =
-                "<property name=\"_color\" "
-                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                    + "value = \""
-                    + color
-                    + "\"/>";
+            colorProperty = "<property name=\"_color\" "
+                + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                + "value = \"" + color + "\"/>";
         }
-        return "<"
-            + entity.getElementName()
-            + " name=\""
-            + entity.getName()
-            + "\" class=\""
-            + entity.getClassName()
-            + "\">"
-            + colorProperty
-            + "<property name=\"_explanation\" "
-            + "class = \"ptolemy.kernel.util.StringAttribute\" "
-            + "value = \""
-            + expression
-            + "\"/></"
-            + entity.getElementName()
-            + ">";
+
+        return "<" + entity.getElementName() + " name=\"" + entity.getName()
+        + "\" class=\"" + entity.getClassName() + "\">" + colorProperty
+        + "<property name=\"_explanation\" "
+        + "class = \"ptolemy.kernel.util.StringAttribute\" " + "value = \""
+        + expression + "\"/></" + entity.getElementName() + ">";
     }
 
     private Vector _partialSolveRecursively(int level, Index g) {
         Vector retv = new Vector();
-        _debug(
-            "\nSolver._eliminateRecursively level "
-                + level
-                + " BrancPoint "
-                + g
-                + "\n"
-                + stateInfo());
-        int rows[] = _branchesFrom(g);
+        _debug("\nSolver._eliminateRecursively level " + level + " BrancPoint "
+            + g + "\n" + stateInfo());
+
+        int[] rows = _branchesFrom(g);
         _eliminate(g);
         _checkForInConsistency();
         _branchPoints = _findAllGInRows(rows);
-        if (_solveState != _INCONSISTENT && _branchPoints.size() > 0) {
+
+        if ((_solveState != _INCONSISTENT) && (_branchPoints.size() > 0)) {
             if (_debug) {
                 System.out.print("Branch Rows at level " + level + " for " + g);
+
                 for (int a = 0; a < rows.length; a++) {
                     System.out.print(" " + rows[a]);
                 }
+
                 System.out.print("\nRemaining BranchPoints");
+
                 for (int a = 0; a < _branchPoints.size(); a++) {
-                    System.out.print(
-                        " " + (Index) (_branchPoints.elementAt(a)));
+                    System.out.print(" " + (Index) (_branchPoints.elementAt(a)));
                 }
+
                 System.out.print("\n");
             }
+
             for (int gi = 0; gi < _branchPoints.size(); gi++) {
                 Solution s = copy();
-                Vector results =
-                    s._partialSolveRecursively(
-                        level + 1,
+                Vector results = s._partialSolveRecursively(level + 1,
                         (Index) (_branchPoints.elementAt(gi)));
+
                 if (results != null) {
                     retv.addAll(results);
                 }
             }
         } else {
             _analyzeState();
+
             if (_debug) {
                 trace();
             }
+
             retv.add(this);
         }
+
         return retv;
     }
 
@@ -871,26 +904,26 @@ public class Solution {
     private static final int _CONSISTENT = 0;
     private static final int _INCONSISTENT = 1;
     private static final int _NONUNIQUE = 2;
-    double _arrayP[][];
+    double[][] _arrayP;
     Index _branchPoint = null;
     Vector _branchPoints = null;
     Vector _constraints = null;
-    String _constraintExplanations[] = null;
-    int _constraintState[] = null;
+    String[] _constraintExplanations = null;
+    int[] _constraintState = null;
     boolean _debug = false;
-    boolean _done[];
+    boolean[] _done;
     TypedCompositeActor _model;
     int _numConstraints = 0;
     int _numVariables = 0;
     private static final DecimalFormat _pFormat = new DecimalFormat(" 0;-0");
     private int _solveState = _UNKNOWN;
-    NamedObj _source[];
+    NamedObj[] _source;
     String _stateDescription = "No description";
     Solution _upper = null;
-    String _varBindings[] = null;
-    String _variables[];
-    int _varState[] = null;
-    Unit _vectorA[];
+    String[] _varBindings = null;
+    String[] _variables;
+    int[] _varState = null;
+    Unit[] _vectorA;
     private static final DecimalFormat _vNumFormat = new DecimalFormat("00");
 
     ///////////////////////////////////////////////////////////////////
@@ -901,8 +934,8 @@ public class Solution {
      *
      */
     private class Index {
-
-        int k, l;
+        int k;
+        int l;
 
         private Index(int k1, int l1) {
             k = k1;
@@ -921,5 +954,4 @@ public class Solution {
             return "(" + k + "," + l + ")";
         }
     }
-
 }

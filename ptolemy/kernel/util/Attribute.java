@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.util.Iterator;
@@ -33,6 +32,7 @@ import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Attribute
+
 /**
    Attribute is a base class for attributes to be attached to instances
    of NamedObj.  This base class is itself a NamedObj, with the only
@@ -46,7 +46,6 @@ import java.util.Iterator;
    @Pt.AcceptedRating Green (johnr)
 */
 public class Attribute extends NamedObj {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -84,7 +83,7 @@ public class Attribute extends NamedObj {
      *   an attribute already in the container.
      */
     public Attribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
         _elementName = "property";
@@ -101,9 +100,8 @@ public class Attribute extends NamedObj {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Attribute newObject = (Attribute)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Attribute newObject = (Attribute) super.clone(workspace);
         newObject._container = null;
         return newObject;
     }
@@ -119,17 +117,21 @@ public class Attribute extends NamedObj {
      */
     public int moveDown() throws IllegalActionException {
         NamedObj container = getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._attributes.moveDown(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
+                NamedObj derived = (NamedObj) derivedObjects.next();
                 container = derived.getContainer();
                 container._attributes.moveDown(derived);
             }
@@ -151,17 +153,21 @@ public class Attribute extends NamedObj {
      */
     public int moveToFirst() throws IllegalActionException {
         NamedObj container = getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._attributes.moveToFirst(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
+                NamedObj derived = (NamedObj) derivedObjects.next();
                 container = derived.getContainer();
                 container._attributes.moveToFirst(derived);
             }
@@ -184,17 +190,21 @@ public class Attribute extends NamedObj {
      */
     public int moveToIndex(int index) throws IllegalActionException {
         NamedObj container = getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._attributes.moveToIndex(this, index);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
+                NamedObj derived = (NamedObj) derivedObjects.next();
                 container = derived.getContainer();
                 container._attributes.moveToIndex(derived, index);
             }
@@ -216,17 +226,21 @@ public class Attribute extends NamedObj {
      */
     public int moveToLast() throws IllegalActionException {
         NamedObj container = getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._attributes.moveToLast(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
+                NamedObj derived = (NamedObj) derivedObjects.next();
                 container = derived.getContainer();
                 container._attributes.moveToLast(derived);
             }
@@ -248,17 +262,21 @@ public class Attribute extends NamedObj {
      */
     public int moveUp() throws IllegalActionException {
         NamedObj container = getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._attributes.moveUp(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
+                NamedObj derived = (NamedObj) derivedObjects.next();
                 container = derived.getContainer();
                 container._attributes.moveUp(derived);
             }
@@ -302,36 +320,47 @@ public class Attribute extends NamedObj {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-        if (container != null && _workspace != container.workspace()) {
+        throws IllegalActionException, NameDuplicationException {
+        if ((container != null) && (_workspace != container.workspace())) {
             throw new IllegalActionException(this, container,
-                    "Cannot set container because workspaces are different.");
+                "Cannot set container because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             if (deepContains(container)) {
                 throw new IllegalActionException(this, container,
-                        "Attempt to construct recursive containment " +
-                        "of attributes");
+                    "Attempt to construct recursive containment "
+                    + "of attributes");
             }
 
-            NamedObj previousContainer = (NamedObj)getContainer();
-            if (previousContainer == container) return;
+            NamedObj previousContainer = (NamedObj) getContainer();
+
+            if (previousContainer == container) {
+                return;
+            }
+
             // Do this first, because it may throw an exception.
             if (container != null) {
                 container._addAttribute(this);
+
                 if (previousContainer == null) {
                     _workspace.remove(this);
                 }
+
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
                 // FIXME: Inappropriate?
                 // setOverrideDepth(0);
             }
+
             _container = container;
+
             if (previousContainer != null) {
                 previousContainer._removeAttribute(this);
             }
+
             if (container != null) {
                 // Transfer any queued change requests to the
                 // new container.  There could be queued change
@@ -339,10 +368,12 @@ public class Attribute extends NamedObj {
                 // requests.
                 if (_changeRequests != null) {
                     Iterator requests = _changeRequests.iterator();
+
                     while (requests.hasNext()) {
-                        ChangeRequest request = (ChangeRequest)requests.next();
+                        ChangeRequest request = (ChangeRequest) requests.next();
                         container.requestChange(request);
                     }
+
                     _changeRequests = null;
                 }
             }
@@ -359,19 +390,22 @@ public class Attribute extends NamedObj {
      *       attribute with the same name in the container.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = new String("");
         }
+
         NamedObj container = (NamedObj) getContainer();
+
         if ((container != null)) {
             Attribute another = container.getAttribute(name);
+
             if ((another != null) && (another != this)) {
-                throw new NameDuplicationException (container,
-                        "Name duplication: " +
-                        name);
+                throw new NameDuplicationException(container,
+                    "Name duplication: " + name);
             }
         }
+
         super.setName(name);
     }
 
@@ -380,7 +414,8 @@ public class Attribute extends NamedObj {
      *  Subclasses need to override this class to update the attribute.
      *  @exception InternalErrorException Not thrown in this base class.
      */
-    public void updateContent() throws InternalErrorException {}
+    public void updateContent() throws InternalErrorException {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -396,19 +431,17 @@ public class Attribute extends NamedObj {
      *  @exception IllegalActionException If the object exists
      *   and has the wrong class.
      */
-    protected NamedObj _getContainedObject(
-            NamedObj container, String relativeName)
-            throws IllegalActionException {
+    protected NamedObj _getContainedObject(NamedObj container,
+        String relativeName) throws IllegalActionException {
         Attribute candidate = container.getAttribute(relativeName);
-        if (candidate != null && !getClass().isInstance(candidate)) {
+
+        if ((candidate != null) && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this,
-                    "Expected "
-                    + candidate.getFullName()
-                    + " to be an instance of "
-                    + getClass().getName()
-                    + ", but it is "
-                    + candidate.getClass().getName());
+                "Expected " + candidate.getFullName()
+                + " to be an instance of " + getClass().getName()
+                + ", but it is " + candidate.getClass().getName());
         }
+
         return candidate;
     }
 
@@ -422,10 +455,9 @@ public class Attribute extends NamedObj {
      *   as this one.
      */
     protected NamedObj _propagateExistence(NamedObj container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
-            Attribute newObject = (Attribute)super
-                    ._propagateExistence(container);
+            Attribute newObject = (Attribute) super._propagateExistence(container);
             newObject.setContainer(container);
             return newObject;
         } catch (NameDuplicationException e) {

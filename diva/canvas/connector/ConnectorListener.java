@@ -25,6 +25,7 @@
 */
 package diva.canvas.connector;
 
+
 /**
  * A listener for changes in a connector's connectivity.
  * Listeners register with the ConnectorManipulator (?)
@@ -83,6 +84,3 @@ public interface ConnectorListener extends java.util.EventListener {
      */
     public void connectorUnsnapped(ConnectorEvent e);
 }
-
-
-

@@ -24,16 +24,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui;
+
 
 // ptolemy.gui.CancelException is deprecated, use ptolemy.util.CancelException.
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MessageHandler
+
 /**
    This is a class that is used to report errors.  It provides a
    set of static methods that are called to report errors.  However, the
@@ -58,7 +60,6 @@ import java.io.InputStreamReader;
    @deprecated Use ptolemy.util.MessageHandler.
 */
 public class MessageHandler {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -97,6 +98,7 @@ public class MessageHandler {
      */
     public static String shortDescription(Throwable throwable) {
         String throwableType = null;
+
         if (throwable instanceof Exception) {
             throwableType = "Exception";
         } else if (throwable instanceof Error) {
@@ -104,6 +106,7 @@ public class MessageHandler {
         } else {
             throwableType = "Throwable";
         }
+
         return throwableType;
     }
 
@@ -160,7 +163,7 @@ public class MessageHandler {
      *  the "Cancel" button.
      */
     public static void warning(String info, Throwable throwable)
-            throws ptolemy.util.CancelException {
+        throws ptolemy.util.CancelException {
         _handler._warning(info + ": " + throwable.getMessage(), throwable);
     }
 
@@ -196,6 +199,7 @@ public class MessageHandler {
         if (throwable instanceof ptolemy.util.CancelException) {
             return;
         }
+
         System.err.println(info);
         throwable.printStackTrace();
     }
@@ -234,7 +238,7 @@ public class MessageHandler {
      *  "Cancel" button.
      */
     protected void _warning(String info, Throwable throwable)
-            throws ptolemy.util.CancelException {
+        throws ptolemy.util.CancelException {
         _error(info, throwable);
     }
 
@@ -246,20 +250,24 @@ public class MessageHandler {
     protected boolean _yesNoQuestion(String question) {
         System.out.print(question);
         System.out.print(" (yes or no) ");
-        BufferedReader stdIn = new BufferedReader(
-                new InputStreamReader(System.in));
+
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(
+                    System.in));
+
         try {
             String reply = stdIn.readLine();
+
             if (reply.trim().toLowerCase().equals("yes")) {
                 return true;
             }
-        } catch (IOException ex) {}
+        } catch (IOException ex) {
+        }
+
         return false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The message handler.
     private static MessageHandler _handler = new MessageHandler();
 }

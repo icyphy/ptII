@@ -33,8 +33,10 @@ import java.text.ParseException;
 
 import javax.swing.JTextField;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DecimalField
+
 /**
    @author Brian Vogel
    @version $Id$
@@ -63,6 +65,7 @@ public class DecimalField extends JTextField {
             Toolkit.getDefaultToolkit().beep();
             System.err.println("getValue: could not parse: " + getText());
         }
+
         return retVal;
     }
 

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 Semantics of initialize(Actor) have changed.
 */
-
 package ptolemy.actor.process;
 
 import java.util.Iterator;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ProcessDirector
+
 /**
    The base class for directors for the process oriented domains. It provides
    default implementations for methods that are common across such domains.
@@ -80,7 +81,6 @@ import ptolemy.kernel.util.Workspace;
    @see Director
 */
 public class ProcessDirector extends Director {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -112,7 +112,7 @@ public class ProcessDirector extends Director {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public ProcessDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -130,9 +130,8 @@ public class ProcessDirector extends Director {
      *   cannot be cloned.
      *  @return The new ProcessDirector.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ProcessDirector newObject = (ProcessDirector)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ProcessDirector newObject = (ProcessDirector) super.clone(workspace);
         newObject._activeActorCount = 0;
         newObject._actorThreadList = new LinkedList();
         newObject._blockedActorCount = 0;
@@ -149,12 +148,15 @@ public class ProcessDirector extends Director {
         if (_debugging) {
             _debug("Called fire().");
         }
+
         Workspace workspace = workspace();
+
         synchronized (this) {
-            while ( !_areActorsDeadlocked() && !_areAllActorsStopped() ) {
+            while (!_areActorsDeadlocked() && !_areAllActorsStopped()) {
                 if (_debugging) {
                     _debug("Waiting for actors to stop.");
                 }
+
                 try {
                     workspace.wait(this);
                 } catch (InterruptedException e) {
@@ -163,9 +165,11 @@ public class ProcessDirector extends Director {
                     return;
                 }
             }
+
             if (_debugging) {
                 _debug("Actors have stopped.");
             }
+
             // Don't resolve deadlock if we are just pausing
             // or if a stop has been requested.
             // NOTE: Added !_stopRequested.  EAL 3/12/03.
@@ -173,13 +177,14 @@ public class ProcessDirector extends Director {
                 if (_debugging) {
                     _debug("Deadlock detected.");
                 }
+
                 try {
-                                        _notDone = _resolveDeadlock();
-                                } catch (IllegalActionException e) {
-                                        // stop all threads.
+                    _notDone = _resolveDeadlock();
+                } catch (IllegalActionException e) {
+                    // stop all threads.
                     stop();
                     throw e;
-                                }
+                }
             }
         }
     }
@@ -212,17 +217,19 @@ public class ProcessDirector extends Director {
      */
     public void initialize(Actor actor) throws IllegalActionException {
         if (_debugging) {
-            _debug("Initializing actor: " + ((NamedObj)actor).getFullName());
+            _debug("Initializing actor: " + ((NamedObj) actor).getFullName());
         }
 
         // Reset the receivers.
         Iterator ports = actor.inputPortList().iterator();
-        while ( ports.hasNext() ) {
-            IOPort port = (IOPort)ports.next();
+
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
             Receiver[][] receivers = port.getReceivers();
-            for ( int i = 0; i < receivers.length; i++ ) {
-                for ( int j = 0; j < receivers[i].length; j++ ) {
-                    ((ProcessReceiver)receivers[i][j]).reset();
+
+            for (int i = 0; i < receivers.length; i++) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    ((ProcessReceiver) receivers[i][j]).reset();
                 }
             }
         }
@@ -231,7 +238,6 @@ public class ProcessDirector extends Director {
         ProcessThread processThread = _getProcessThread(actor, this);
         _actorThreadList.addFirst(processThread);
         _newActorThreadList.addFirst(processThread);
-
     }
 
     /** Return true if a stop has been requested on the director.
@@ -273,10 +279,13 @@ public class ProcessDirector extends Director {
             _debug("_stopRequested = " + _stopRequested);
             _debug("_stopFireRequested = " + _stopFireRequested);
         }
+
         _notDone = _notDone && !_stopRequested;
+
         if (_debugging) {
             _debug("Returning from postfire(): " + _notDone);
         }
+
         return _notDone;
     }
 
@@ -287,19 +296,22 @@ public class ProcessDirector extends Director {
      *  @return true.
      *  @exception IllegalActionException If a derived class throws it.
      */
-    public boolean prefire() throws IllegalActionException  {
+    public boolean prefire() throws IllegalActionException {
         // Clear the stopFire flag and trigger all of the actor threads.
         _stopFireRequested = false;
-        synchronized(this) {
+
+        synchronized (this) {
             notifyAll();
         }
 
         Iterator threads = _newActorThreadList.iterator();
         threads = _newActorThreadList.iterator();
+
         while (threads.hasNext()) {
-            ProcessThread procThread = (ProcessThread)threads.next();
+            ProcessThread procThread = (ProcessThread) threads.next();
             procThread.start();
         }
+
         _newActorThreadList.clear();
 
         return true;
@@ -334,20 +346,25 @@ public class ProcessDirector extends Director {
         // needs to distinguish between stopFire() and this method.
         if (_debugging) {
             _debug("stop() has been called. Active thread count is: "
-                    + _activeActorCount);
+                + _activeActorCount);
         }
+
         _stopRequested = true;
         _stopFireRequested = true;
+
         if (_actorThreadList != null) {
             Iterator threads = _actorThreadList.iterator();
-            while (threads.hasNext() ) {
-                ProcessThread thread = (ProcessThread)threads.next();
+
+            while (threads.hasNext()) {
+                ProcessThread thread = (ProcessThread) threads.next();
+
                 try {
                     thread.getActor().stop();
+
                     // I'm not sure why we need the interrupt here...but it
                     // seems to help.
                     thread.interrupt();
-                } catch(Exception ex) {
+                } catch (Exception ex) {
                     // Ignore..  probably InterruptedIOException
                 }
             }
@@ -364,11 +381,14 @@ public class ProcessDirector extends Director {
         if (_debugging) {
             _debug("stopFire() has been called.");
         }
+
         _stopFireRequested = true;
+
         if (_actorThreadList != null) {
             Iterator threads = _actorThreadList.iterator();
-            while (threads.hasNext() ) {
-                ProcessThread thread = (ProcessThread)threads.next();
+
+            while (threads.hasNext()) {
+                ProcessThread thread = (ProcessThread) threads.next();
                 thread.getActor().stopFire();
             }
         }
@@ -379,19 +399,23 @@ public class ProcessDirector extends Director {
      *  to be performed, and the model should be recreated after calling
      *  this method.
      */
+
     //  Note: for now call Thread.stop() but should change to use
     //  Thread.destroy() when it is eventually implemented.
     public void terminate() {
         // First need to invoke terminate on all actors under the
         // control of this director.
         super.terminate();
+
         // Now stop any threads created by this director.
         LinkedList list = new LinkedList();
         list.addAll(_actorThreadList);
         _actorThreadList.clear();
+
         Iterator threads = list.iterator();
+
         while (threads.hasNext()) {
-            ((Thread)threads.next()).stop();
+            ((Thread) threads.next()).stop();
         }
     }
 
@@ -426,25 +450,31 @@ public class ProcessDirector extends Director {
      *   this director.
      */
     public void wrapup() throws IllegalActionException {
-        if ( _debugging ) {
+        if (_debugging) {
             _debug("Called wrapup().");
         }
+
         Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                               .iterator();
             Iterator actorPorts;
             ProcessReceiver nextReceiver;
+
             while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
+                Actor actor = (Actor) actors.next();
                 actorPorts = actor.inputPortList().iterator();
+
                 while (actorPorts.hasNext()) {
-                    IOPort port = (IOPort)actorPorts.next();
+                    IOPort port = (IOPort) actorPorts.next();
+
                     // Setting finished flag in the receivers.
                     Receiver[][] receivers = port.getReceivers();
+
                     for (int i = 0; i < receivers.length; i++) {
                         for (int j = 0; j < receivers[i].length; j++) {
-                            nextReceiver = (ProcessReceiver)receivers[i][j];
+                            nextReceiver = (ProcessReceiver) receivers[i][j];
                             nextReceiver.requestFinish();
                         }
                     }
@@ -452,13 +482,14 @@ public class ProcessDirector extends Director {
             }
 
             // Now wake up threads that depend on the manager.
-            Manager manager = ((Actor)getContainer()).getManager();
+            Manager manager = ((Actor) getContainer()).getManager();
+
             // NOTE: Used to do the notification in a new thread.
             // For some reason, however, this isn't sufficient.
             // Have to click the stop button twice.
             // (new NotifyThread(manager)).start();
-            synchronized(manager) {
-                    manager.notifyAll();
+            synchronized (manager) {
+                manager.notifyAll();
             }
 
             // Wait until all process threads stop.
@@ -586,15 +617,18 @@ public class ProcessDirector extends Director {
      *  reasons.
      */
     protected synchronized void _decreaseActiveCount() {
-        if ( _debugging ) {
-            _debug("Thread for actor " +
-                    ((ProcessThread)Thread.currentThread()).getActor()
-                    + " is deactivating.");
+        if (_debugging) {
+            _debug("Thread for actor "
+                + ((ProcessThread) Thread.currentThread()).getActor()
+                + " is deactivating.");
         }
+
         _activeActorCount--;
+
         if (_debugging) {
             _debug("Decreasing active count to: " + _activeActorCount);
         }
+
         notifyAll();
     }
 
@@ -633,7 +667,7 @@ public class ProcessDirector extends Director {
      *   actor passed as a parameter for this method.
      */
     protected ProcessThread _getProcessThread(Actor actor,
-            ProcessDirector director) throws IllegalActionException {
+        ProcessDirector director) throws IllegalActionException {
         return new ProcessThread(actor, director);
     }
 
@@ -647,9 +681,11 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _increaseActiveCount() {
         _activeActorCount++;
+
         if (_debugging) {
-                _debug("Increasing active count to: " + _activeActorCount);
+            _debug("Increasing active count to: " + _activeActorCount);
         }
+
         notifyAll();
     }
 
@@ -681,7 +717,6 @@ public class ProcessDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Count of the number of processes that were started by this
     // director but have not yet finished.
     private long _activeActorCount;

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import java.util.LinkedList;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Server
+
 /**
    This actor models a server with a fixed or variable service time.
    A server is either busy (serving a customer) or not busy at any given time.
@@ -83,7 +84,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class Server extends VariableDelay {
-
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
@@ -93,7 +93,7 @@ public class Server extends VariableDelay {
      *   actor with this name.
      */
     public Server(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -112,9 +112,10 @@ public class Server extends VariableDelay {
     public void fire() throws IllegalActionException {
         // update delay value
         delay.update();
-        _delay = ((DoubleToken)delay.getToken()).doubleValue();
+        _delay = ((DoubleToken) delay.getToken()).doubleValue();
 
         Time currentTime = getDirector().getModelTime();
+
         // consume input and put it into the _delayedInputTokensList
         // NOTE: this list is different from the _delayedTokens defined in the
         // TimedDelay class.
@@ -124,25 +125,29 @@ public class Server extends VariableDelay {
         } else {
             _currentInput = null;
         }
+
         // produce output
         _currentOutput = null;
+
         if (_delayedOutputTokens.size() > 0) {
             if (currentTime.compareTo(_nextTimeFree) == 0) {
-                TimedEvent earliestEvent
-                    = (TimedEvent)_delayedOutputTokens.get();
+                TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens
+                    .get();
                 Time eventTime = earliestEvent.timeStamp;
+
                 if (!eventTime.equals(currentTime)) {
                     throw new InternalErrorException("Service time is "
-                            + "reached, but output is not available.");
+                        + "reached, but output is not available.");
                 }
-                _currentOutput = (Token)earliestEvent.contents;
+
+                _currentOutput = (Token) earliestEvent.contents;
                 output.send(0, _currentOutput);
             } else {
                 // no tokens to be produced at the current time.
             }
-        } else if (_delay == 0 && _delayedInputTokensList.size() > 0) {
+        } else if ((_delay == 0) && (_delayedInputTokensList.size() > 0)) {
             // The server is not busy.
-            output.send(0, (Token)_delayedInputTokensList.removeFirst());
+            output.send(0, (Token) _delayedInputTokensList.removeFirst());
         }
     }
 
@@ -173,18 +178,19 @@ public class Server extends VariableDelay {
         if (_currentOutput != null) {
             _delayedOutputTokens.take();
         }
+
         // If the delayedInputTokensList is not empty, and the delayedTokens
         // is empty (ready for a new service), get the first token
         // and put it into service. Schedule a refiring to wave up
         // after the service finishes.
-        if (_delayedInputTokensList.size() != 0
+        if ((_delayedInputTokensList.size() != 0)
                 && _delayedOutputTokens.isEmpty()) {
             _nextTimeFree = currentTime.add(_delay);
             _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
-                                             _delayedInputTokensList
-                                             .removeFirst()));
+                    _delayedInputTokensList.removeFirst()));
             getDirector().fireAt(this, _nextTimeFree);
         }
+
         return !_stopRequested;
     }
 
@@ -194,12 +200,13 @@ public class Server extends VariableDelay {
     /** Override the method of the super class to initialize parameters.
      */
     protected void _init()
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super._init();
         delay.getPort().setName("newServiceTime");
+
         // Put the delay port at the bottom of the icon by default.
-        StringAttribute cardinality
-            = new StringAttribute(delay.getPort(), "_cardinal");
+        StringAttribute cardinality = new StringAttribute(delay.getPort(),
+                "_cardinal");
         cardinality.setExpression("SOUTH");
     }
 

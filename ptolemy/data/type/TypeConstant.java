@@ -26,13 +26,15 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.type;
+
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypeConstant
+
 /**
    An InequalityTerm that encapsulate a constant type. The constant type
    is specified in the constructor.
@@ -46,9 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.graph.InequalityTerm
 */
-
 public class TypeConstant implements InequalityTerm {
-
     /** Construct a TypeConstant.
      *  @param type An instance of Type.
      */
@@ -84,8 +84,8 @@ public class TypeConstant implements InequalityTerm {
      *  @exception IllegalActionException Always thrown.
      */
     public void initialize(Object e) throws IllegalActionException {
-        throw new IllegalActionException("TypeConstant.initialize: " +
-                "Type constant cannot be initialized.");
+        throw new IllegalActionException("TypeConstant.initialize: "
+            + "Type constant cannot be initialized.");
     }
 
     /** Return false since this term represent a constant.
@@ -104,6 +104,7 @@ public class TypeConstant implements InequalityTerm {
         if (_type.isInstantiable()) {
             return true;
         }
+
         return false;
     }
 
@@ -113,7 +114,7 @@ public class TypeConstant implements InequalityTerm {
      */
     public void setValue(Object e) throws IllegalActionException {
         throw new IllegalActionException("TypeConstant.setValue: Cannot set "
-                + "the value of a type constant.");
+            + "the value of a type constant.");
     }
 
     /** Return a string representation of this term.
@@ -125,6 +126,5 @@ public class TypeConstant implements InequalityTerm {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
-
     private Type _type = null;
 }

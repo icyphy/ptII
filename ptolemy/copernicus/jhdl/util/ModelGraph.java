@@ -24,20 +24,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.util;
+
+import ptolemy.actor.IOPort;
+import ptolemy.graph.*;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Entity;
 
 import java.util.*;
 
-import ptolemy.graph.*;
-
-import ptolemy.actor.IOPort;
-
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.ComponentEntity;
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
 
 @author Mike Wirthlin
@@ -47,7 +46,6 @@ import ptolemy.kernel.ComponentEntity;
 @Pt.AcceptedRating Red (cxh)
 */
 public class ModelGraph extends DirectedGraph {
-
     public ModelGraph(ComponentEntity entity) {
         super();
         _entity = entity;
@@ -55,22 +53,31 @@ public class ModelGraph extends DirectedGraph {
         _outputPortNodes = new Vector();
     }
 
-    public ComponentEntity getEntity() { return _entity; }
+    public ComponentEntity getEntity() {
+        return _entity;
+    }
 
     public Node addIOPortNode(IOPort port) {
         Node n = addNodeWeight(port);
-        if (port.isInput())
+
+        if (port.isInput()) {
             _inputPortNodes.add(n);
-        else
+        } else {
             _outputPortNodes.add(n);
+        }
+
         return n;
     }
 
-    public Collection getInputPortNodes() { return _inputPortNodes; }
-    public Collection getOutputPortNodes() { return _outputPortNodes; }
+    public Collection getInputPortNodes() {
+        return _inputPortNodes;
+    }
+
+    public Collection getOutputPortNodes() {
+        return _outputPortNodes;
+    }
 
     protected ComponentEntity _entity;
     protected Collection _inputPortNodes;
     protected Collection _outputPortNodes;
-
 }

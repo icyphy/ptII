@@ -24,36 +24,35 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.gr.lib.experimental;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.lib.*;
+import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.gui.Display;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.*;
 import ptolemy.domains.gr.lib.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 import ptolemy.util.StringUtilities;
 
+import com.sun.j3d.loaders.IncorrectFormatException;
+import com.sun.j3d.loaders.ParsingErrorException;
+import com.sun.j3d.loaders.Scene;
+import com.sun.j3d.loaders.vrml97.VrmlLoader;
+import com.sun.j3d.utils.geometry.*;
+import com.sun.j3d.utils.universe.*;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Enumeration;
 
-import com.sun.j3d.utils.geometry.*;
-
-import com.sun.j3d.loaders.vrml97.VrmlLoader;
-import com.sun.j3d.loaders.Scene;
-import com.sun.j3d.loaders.ParsingErrorException;
-import com.sun.j3d.loaders.IncorrectFormatException;
-import com.sun.j3d.utils.universe.*;
 import javax.media.j3d.*;
 import javax.vecmath.*;
-import java.io.*;
 
-import java.net.URL;
-import java.net.MalformedURLException;
 
 //////////////////////////////////////////////////////////////////////////
 //// VrmlLoader3D
@@ -65,7 +64,6 @@ import java.net.MalformedURLException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class VrmlLoader3D extends GRShadedShape {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,8 +73,7 @@ public class VrmlLoader3D extends GRShadedShape {
      *   actor with this name.
      */
     public VrmlLoader3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         filename = new Parameter(this, "filename",
                 new StringToken("chopper.obj"));
@@ -84,44 +81,46 @@ public class VrmlLoader3D extends GRShadedShape {
 
     public Parameter filename;
 
-
     protected Node _getNodeObject() {
         return (Node) obj.getSceneGroup();
     }
 
     protected void _createModel() throws IllegalActionException {
-        String fileName = (String) ((StringToken) filename.getToken()).stringValue();
+        String fileName = (String) ((StringToken) filename.getToken())
+            .stringValue();
 
         VrmlLoader loader = new VrmlLoader();
         URL loadUrl = null;
-        String locString = StringUtilities.getProperty("user.dir") + "\\"+fileName;
-        System.out.println("location:-->  "+locString);
+        String locString = StringUtilities.getProperty("user.dir") + "\\"
+            + fileName;
+        System.out.println("location:-->  " + locString);
 
         Scene scene = null;
+
         try {
             //loadUrl = new URL(fileName);
             loadUrl = new URL(locString);
         } catch (MalformedURLException e) {
             System.err.println(e);
-            System.out.println("bad URL damn "+locString);
+            System.out.println("bad URL damn " + locString);
         }
+
         try {
             //scene = loader.load(fileName);
             scene = loader.load(locString);
+
             //scene = loader.load(loadUrl);
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.err.println(e);
             throw new IllegalActionException("File not found!");
-        }
-        catch (ParsingErrorException e) {
+        } catch (ParsingErrorException e) {
+            System.err.println(e);
+            throw new IllegalActionException("File is not a valid 3D OBJ file");
+        } catch (IncorrectFormatException e) {
             System.err.println(e);
             throw new IllegalActionException("File is not a valid 3D OBJ file");
         }
-        catch (IncorrectFormatException e) {
-            System.err.println(e);
-            throw new IllegalActionException("File is not a valid 3D OBJ file");
-        }
+
         obj = scene;
     }
 

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.fsm.modal;
 
 import java.util.LinkedList;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfModalModel
+
 /** An instance of FunctionDependencyOfModalModel describes the function
     dependency information between the outputs and inputs of a modal model.
 
@@ -58,7 +59,6 @@ import ptolemy.util.MessageHandler;
 */
 public class FunctionDependencyOfModalModel
     extends FunctionDependencyOfCompositeActor {
-
     /** Construct a FunctionDependency in the given actor.
      *  @param compositeActor The associated actor.
      *  @param name The name of the FunctionDependency.
@@ -81,10 +81,11 @@ public class FunctionDependencyOfModalModel
      */
     protected List _getEntities() {
         LinkedList entities = new LinkedList();
+
         try {
-            Actor[] actors =
-                ((ModalModel)getContainer()).getController().
-                currentState().getRefinement();
+            Actor[] actors = ((ModalModel) getContainer()).getController()
+                              .currentState().getRefinement();
+
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     entities.add(actors[i]);
@@ -93,7 +94,7 @@ public class FunctionDependencyOfModalModel
         } catch (IllegalActionException e) {
             MessageHandler.error("Invalid refinements.", e);
         }
+
         return entities;
     }
-
 }

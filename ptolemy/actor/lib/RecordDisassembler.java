@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.Iterator;
@@ -49,8 +48,10 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RecordDisassembler
+
 /**
    On each firing, read one RecordToken from the input port and send out
    the fields of the RecordToken to multiple output ports.
@@ -71,7 +72,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ArrayElement
 */
 public class RecordDisassembler extends TypedAtomicActor {
-
     /** Construct a RecordDisassembler with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -81,15 +81,14 @@ public class RecordDisassembler extends TypedAtomicActor {
      *   actor with this name.
      */
     public RecordDisassembler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"6\" " +
-                "height=\"40\" style=\"fill:red\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+            + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,17 +107,20 @@ public class RecordDisassembler extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Director director = getDirector();
+
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
 
         if (input.hasToken(0)) {
-            RecordToken record = (RecordToken)input.get(0);
+            RecordToken record = (RecordToken) input.get(0);
             Iterator labels = record.labelSet().iterator();
+
             while (labels.hasNext()) {
-                String label = (String)labels.next();
+                String label = (String) labels.next();
                 Token value = record.get(label);
-                IOPort port = (IOPort)getPort(label);
+                IOPort port = (IOPort) getPort(label);
+
                 // since the record received may contain more fields than the
                 // output ports, some fields may not have a corresponding
                 // output port.
@@ -142,26 +144,27 @@ public class RecordDisassembler extends TypedAtomicActor {
 
         // form the declared type for the output port
         for (int i = 0; i < size; i++) {
-            labels[i] = ((Port)portArray[i]).getName();
+            labels[i] = ((Port) portArray[i]).getName();
             types[i] = BaseType.GENERAL;
         }
+
         RecordType declaredType = new RecordType(labels, types);
 
         input.setTypeAtMost(declaredType);
 
         // set the constraints between record fields and output ports
         List constraints = new LinkedList();
+
         // since the input port has a clone of the above RecordType, need to
         // get the type from the input port.
         //   RecordType inputTypes = (RecordType)input.getType();
-
         Iterator outputPorts = outputPortList().iterator();
+
         while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort)outputPorts.next();
+            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
             String label = outputPort.getName();
-            Inequality inequality =
-                new Inequality(new PortFunction(label),
-                        outputPort.getTypeTerm());
+            Inequality inequality = new Inequality(new PortFunction(label),
+                    outputPort.getTypeTerm());
             constraints.add(inequality);
         }
 
@@ -170,7 +173,6 @@ public class RecordDisassembler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // This class implements a monotonic function of the type of a
     // port and a parameter.
     // The function value is determined by:
@@ -193,8 +195,9 @@ public class RecordDisassembler extends TypedAtomicActor {
             if (input.getType() == BaseType.UNKNOWN) {
                 return BaseType.UNKNOWN;
             } else if (input.getType() instanceof RecordType) {
-                RecordType type = (RecordType)input.getType();
+                RecordType type = (RecordType) input.getType();
                 Type fieldType = type.get(_name);
+
                 if (fieldType == null) {
                     return BaseType.UNKNOWN;
                 } else {
@@ -202,7 +205,7 @@ public class RecordDisassembler extends TypedAtomicActor {
                 }
             } else {
                 throw new IllegalActionException(RecordDisassembler.this,
-                        "Invalid type for input port");
+                    "Invalid type for input port");
             }
         }
 
@@ -211,12 +214,14 @@ public class RecordDisassembler extends TypedAtomicActor {
          */
         public String getVerboseString() {
             if (input.getType() instanceof RecordType) {
-                RecordType type = (RecordType)input.getType();
+                RecordType type = (RecordType) input.getType();
                 Type fieldType = type.get(_name);
+
                 if (fieldType == null) {
                     return "Input Record doesn't have field named " + _name;
                 }
             }
+
             return null;
         }
 
@@ -228,17 +233,18 @@ public class RecordDisassembler extends TypedAtomicActor {
          */
         public InequalityTerm[] getVariables() {
             InequalityTerm portTerm = input.getTypeTerm();
+
             if (portTerm.isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
                 variable[0] = portTerm;
                 return variable;
             }
+
             return (new InequalityTerm[0]);
         }
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-
         private String _name;
     }
 }

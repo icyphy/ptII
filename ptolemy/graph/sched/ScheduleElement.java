@@ -25,14 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.graph.sched;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ScheduleElement
+
 /**
    This is an abstract base class for a schedule element. Instances of the
    Schedule and Firing subclasses are used to construct a schedule(static or
@@ -63,9 +65,7 @@ import java.util.Map;
    @see ptolemy.graph.sched.ScheduleElement
    @see ptolemy.graph.sched.ScheduleAnalysis
 */
-
 public abstract class ScheduleElement {
-
     /** Construct a schedule element with an iteration count of 1 and
      *  with no parent schedule element. The constructor that takes
      *  a parameter should be used when constructing a schedule
@@ -219,6 +219,7 @@ public abstract class ScheduleElement {
      */
     protected void _incrementVersion() {
         _scheduleVersion++;
+
         if (_parent != null) {
             _parent._incrementVersion();
         }
@@ -234,12 +235,10 @@ public abstract class ScheduleElement {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The iteration count for this schedule element.
     private int _iterationCount = 1;
 
     // The current version of this schedule.
     private long _scheduleVersion;
-
     private Class _firingElementClass;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.test;
 
 import ptolemy.kernel.Entity;
@@ -33,6 +32,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 
 /**
  *  Illustrates a problem with port naming and cloning.
@@ -45,9 +45,8 @@ import ptolemy.kernel.util.Workspace;
  *  @since Ptolemy II 4.1
  */
 public class PortNameProblem extends Entity {
-
     public PortNameProblem(Workspace workspace, String name)
-            throws  IllegalActionException, NameDuplicationException  {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace, name);
 
         // This port should be oke
@@ -60,7 +59,6 @@ public class PortNameProblem extends Entity {
         // poorlyNamedInput = new Port(this, "poorlyNamedInput");
         // Wrong:
         poorlyNamedInput = new Port(this, "input");
-
     }
 
     // This port, from actor/lib/io/DirectoryListing.java, is ok because
@@ -69,5 +67,4 @@ public class PortNameProblem extends Entity {
 
     //public Port input;
     public Port poorlyNamedInput;
-
 }

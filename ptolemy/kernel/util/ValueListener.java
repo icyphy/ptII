@@ -24,11 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ValueListener
+
 /**
    This is an interface for listeners that are notified when the value
    of an object implementing Settable changes.
@@ -41,7 +42,6 @@ package ptolemy.kernel.util;
    @see ptolemy.data.expr.Variable
 */
 public interface ValueListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

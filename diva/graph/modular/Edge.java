@@ -24,8 +24,10 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.modular;
+
 import diva.util.PropertyContainer;
 import diva.util.SemanticObjectContainer;
+
 
 /**
  * An edge is an object that is contained by a graph and connects
@@ -86,4 +88,3 @@ public interface Edge extends SemanticObjectContainer, PropertyContainer {
      */
     public void setTail(Node tail);
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Multiplexor
+
 /**
    This actor selects from the channels on the
    <i>input</i> port, copying the input from one channel to the output,
@@ -60,9 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
    @see ptolemy.actor.lib.Select
 */
-
 public class Multiplexor extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -73,7 +72,7 @@ public class Multiplexor extends Transformer {
      *   an actor already in the container.
      */
     public Multiplexor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setMultiport(true);
@@ -103,19 +102,24 @@ public class Multiplexor extends Transformer {
         if (select.hasToken(0)) {
             _channel = ((IntToken) select.get(0)).intValue();
         }
+
         boolean inRange = false;
+
         for (int i = 0; i < input.getWidth(); i++) {
             inRange = inRange || (i == _channel);
+
             if (input.hasToken(i)) {
                 Token token = input.get(i);
+
                 if (i == _channel) {
                     output.send(0, token);
                 }
             }
         }
+
         if (!inRange) {
             throw new IllegalActionException(this,
-                    "Select input is out of range: " + _channel + ".");
+                "Select input is out of range: " + _channel + ".");
         }
     }
 

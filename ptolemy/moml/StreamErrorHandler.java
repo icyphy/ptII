@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import java.io.OutputStream;
@@ -34,8 +33,10 @@ import java.io.PrintStream;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StreamErrorHandler
+
 /**
    Basic error handler for the MoMLParser class. This error handler reports
    errors to a stream or to standard error, and requests that parsing continue.
@@ -48,7 +49,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class StreamErrorHandler implements ErrorHandler {
-
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
@@ -58,13 +58,11 @@ public class StreamErrorHandler implements ErrorHandler {
         _output = System.err;
     }
 
-
     /** Create an error handler that sends messages to the specified stream.
      */
     public StreamErrorHandler(OutputStream out) {
         _output = new PrintStream(out);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -82,19 +80,13 @@ public class StreamErrorHandler implements ErrorHandler {
      *  @param exception The exception that was thrown.
      *  @return CONTINUE to request skipping this element.
      */
-    public int handleError(
-            String element,
-            NamedObj context,
-            Throwable exception) {
-        _output.println("Error encountered in:\n"
-                + element
-                + "\n"
-                + KernelException.stackTraceToString(exception));
+    public int handleError(String element, NamedObj context, Throwable exception) {
+        _output.println("Error encountered in:\n" + element + "\n"
+            + KernelException.stackTraceToString(exception));
         return CONTINUE;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private PrintStream _output;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SequentialClock
+
 /**
    A clock source for sequence-capable domains.  This actor is considerably
    simpler than the Clock actor.  On each firing, it produces the next value
@@ -91,9 +92,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (yuhong)
    @deprecated Use Clock instead.
 */
-
 public class SequentialClock extends TypedAtomicActor implements SequenceActor {
-
     // NOTE: This cannot extend Source, because it doesn't have a trigger
     // input.  This is too bad, since it results in a lot of duplicated
     // code with Clock.
@@ -107,7 +106,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *   actor with this name.
      */
     public SequentialClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -118,6 +117,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         offsets = new Parameter(this, "offsets");
         offsets.setExpression("{0.0, 1.0}");
         offsets.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 
@@ -125,12 +125,13 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         IntToken[] defaultValues = new IntToken[2];
         defaultValues[0] = new IntToken(1);
         defaultValues[1] = new IntToken(0);
+
         ArrayToken defaultValueToken = new ArrayToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
         values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType)values.getType();
+        ArrayType valuesArrayType = (ArrayType) values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
 
@@ -175,29 +176,33 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *   nondecreasing and nonnegative, or it is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == offsets) {
-            ArrayToken offsetsValue = (ArrayToken)offsets.getToken();
+            ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
             _offsets = new double[offsetsValue.length()];
+
             double previous = 0.0;
+
             for (int i = 0; i < offsetsValue.length(); i++) {
-                _offsets[i] = ((DoubleToken)offsetsValue.getElement(i))
+                _offsets[i] = ((DoubleToken) offsetsValue.getElement(i))
                     .doubleValue();
+
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of offsets is not nondecreasing " +
-                            "and nonnegative.");
+                        "Value of offsets is not nondecreasing "
+                        + "and nonnegative.");
                 }
+
                 previous = _offsets[i];
             }
         } else if (attribute == period) {
-            double periodValue =
-                ((DoubleToken)period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Period is required to be positive.  " +
-                        "Period given: " + periodValue);
+                    "Period is required to be positive.  " + "Period given: "
+                    + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -212,10 +217,9 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SequentialClock newObject = (SequentialClock)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SequentialClock newObject = (SequentialClock) super.clone(workspace);
+        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
 
@@ -264,8 +268,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *   offsets parameters don't match.
      */
     public boolean postfire() throws IllegalActionException {
-
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
         // Set the cycle start time here rather than in initialize
         // so that we at least start out well aligned.
@@ -276,15 +279,16 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         // Increment to the next phase.
         _phase++;
+
         if (_phase >= _offsets.length) {
             _phase = 0;
             _cycleStartTime = _cycleStartTime.add(periodValue);
         }
+
         if (_offsets[_phase] >= periodValue) {
             throw new IllegalActionException(this,
-                    "Offset number " + _phase + " with value "
-                    + _offsets[_phase] + " must be less than the "
-                    + "period, which is " + periodValue);
+                "Offset number " + _phase + " with value " + _offsets[_phase]
+                + " must be less than the " + "period, which is " + periodValue);
         }
 
         Time nextIterationTime = _cycleStartTime.add(_offsets[_phase]);
@@ -298,10 +302,11 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        ArrayToken val = (ArrayToken)(values.getToken());
-        if (val == null || val.length() <= _phase) {
+        ArrayToken val = (ArrayToken) (values.getToken());
+
+        if ((val == null) || (val.length() <= _phase)) {
             throw new IllegalActionException(this,
-                    "Offsets and values parameters lengths do not match.");
+                "Offsets and values parameters lengths do not match.");
         }
 
         _currentValue = val.getElement(_phase);
@@ -310,10 +315,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The following are all transient because they need not be cloned.
     // Either the clone method or the initialize() method sets them.
-
     // The current value of the clock output.
     private transient Token _currentValue;
 

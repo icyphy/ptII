@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.data.Token;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AbsentToken
+
 /**
    A placeholder that represents the absence of a token.
    @author Paul Whitaker
@@ -39,9 +40,7 @@ import ptolemy.data.Token;
    @Pt.ProposedRating Red (pwhitake)
    @Pt.AcceptedRating Red (pwhitake)
 */
-
 public class AbsentToken extends Token {
-
     /** Construct a token with value false
      */
     public AbsentToken() {
@@ -52,5 +51,4 @@ public class AbsentToken extends Token {
 
     /** An instance of an absent token. */
     public static AbsentToken ABSENT = new AbsentToken();
-
 }

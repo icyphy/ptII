@@ -35,6 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 /**
  * This actor deterministically splits its input token stream into two
  * streams.
@@ -46,33 +47,30 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class SDFTestSplit extends TypedAtomicActor {
     public SDFTestSplit(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate", new IntToken(2));
+        input_tokenConsumptionRate = new Parameter(input,
+                "tokenConsumptionRate", new IntToken(2));
         input.setTypeEquals(BaseType.INT);
 
         output1 = new TypedIOPort(this, "output1", false, true);
-        output1_tokenProductionRate =
-            new Parameter(output1, "tokenProductionRate", new IntToken(1));
+        output1_tokenProductionRate = new Parameter(output1,
+                "tokenProductionRate", new IntToken(1));
         output1.setTypeEquals(BaseType.INT);
 
         output2 = new TypedIOPort(this, "output2", false, true);
-        output2_tokenProductionRate =
-            new Parameter(output2, "tokenProductionRate", new IntToken(1));
+        output2_tokenProductionRate = new Parameter(output2,
+                "tokenProductionRate", new IntToken(1));
 
         output2.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
     public TypedIOPort input;
     public TypedIOPort output1;
     public TypedIOPort output2;
-
     public Parameter input_tokenConsumptionRate;
     public Parameter output1_tokenProductionRate;
     public Parameter output2_tokenProductionRate;
@@ -85,20 +83,9 @@ public class SDFTestSplit extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         IntToken message;
 
-        message = (IntToken)input.get(0);
+        message = (IntToken) input.get(0);
         output1.send(0, message);
-        message = (IntToken)input.get(0);
+        message = (IntToken) input.get(0);
         output2.send(0, message);
     }
-
 }
-
-
-
-
-
-
-
-
-
-

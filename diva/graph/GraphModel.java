@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.graph;
+
 import java.util.Iterator;
+
 
 /**
  * A graph model is an abstraction of a graph implementation and a
@@ -187,4 +189,3 @@ public interface GraphModel {
      */
     public void setSemanticObject(Object o, Object visual);
 }
-

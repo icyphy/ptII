@@ -32,6 +32,7 @@ import java.net.URL;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+
 /**
  * A Default storage policy that is useful for most applications.  This
  * policy is somewhat intelligent about preventing the user from doing
@@ -42,7 +43,6 @@ import javax.swing.JOptionPane;
  * @version $Id$
  */
 public class DefaultStoragePolicy extends AbstractStoragePolicy {
-
     /** The file chooser that is used to open files.  This can be
      * accessed with the getOpenFileChooser() methods so that
      * applications can add/manipulate file filters.
@@ -59,21 +59,22 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * nothing if the document is null.  If the file is successfully saved and
      * closed, then return true, otherwise return false.
      */
-    public boolean close (Document d) {
+    public boolean close(Document d) {
         if (d != null) {
             try {
                 d.close();
+
                 if (d.isDirty()) {
                     // ask if the user wants to save
-                    Component parent =
-                        d.getApplication().getAppContext().makeComponent();
+                    Component parent = d.getApplication().getAppContext()
+                                        .makeComponent();
                     String message = "Do you want to save your changes to "
                         + d.getTitle();
                     String title = "Closing Document";
-                    int val =
-                        JOptionPane.showConfirmDialog(parent, message, title,
-                                JOptionPane.YES_NO_CANCEL_OPTION,
-                                JOptionPane.WARNING_MESSAGE);
+                    int val = JOptionPane.showConfirmDialog(parent, message,
+                            title, JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+
                     if (val == JOptionPane.YES_OPTION) {
                         if (save(d)) {
                             // If we successfully saved,
@@ -98,13 +99,14 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 return false;
             }
         }
+
         return true;
     }
 
     /** Get the open file chooser used by this storage policy. This allows
      * the application to set file filters on the chooser.
      */
-    public JFileChooser getOpenFileChooser () {
+    public JFileChooser getOpenFileChooser() {
         return _openFileChooser;
     }
 
@@ -112,14 +114,14 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      *
      * @deprecated Use getOpenFileChooser() or getSaveFileChooser()
      */
-    public JFileChooser getFileChooser () {
+    public JFileChooser getFileChooser() {
         return _openFileChooser;
     }
 
     /** Get the save file chooser used by this storage policy. This allows
      * the application to set file filters on the chooser.
      */
-    public JFileChooser getSaveFileChooser () {
+    public JFileChooser getSaveFileChooser() {
         return _saveFileChooser;
     }
 
@@ -127,13 +129,14 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * file using the application's document factory.  Return the new
      * document if one was created, otherwise null.
      */
-    public Document open (Application app) {
+    public Document open(Application app) {
         int result;
         Document doc;
 
         _openFileChooser.setCurrentDirectory(new File(getDirectory()));
-        result = _openFileChooser.showOpenDialog(
-                app.getAppContext().makeComponent());
+        result = _openFileChooser.showOpenDialog(app.getAppContext()
+                                                    .makeComponent());
+
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = _openFileChooser.getSelectedFile();
@@ -142,6 +145,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 app.showError("File open failed.", e);
                 return null;
             }
+
             return doc;
         } else {
             return null;
@@ -152,8 +156,9 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * to canonical form in the process.   Return the new
      * document if one was created, otherwise null.
      */
-    public Document open (File file, Application app) {
+    public Document open(File file, Application app) {
         Document doc;
+
         try {
             File canonical = file.getCanonicalFile();
             setDirectory(canonical);
@@ -163,21 +168,24 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
             app.showError("File open failed.", e);
             return null;
         }
+
         return doc;
     }
 
     /** Open a URL and create a new document. Return the new document
      * if one was created, otherwise null.
      */
-    public Document open (URL url, Application app) {
+    public Document open(URL url, Application app) {
         Document doc;
+
         try {
-            doc = app.getDocumentFactory().createDocument(app,url);
+            doc = app.getDocumentFactory().createDocument(app, url);
             doc.open();
         } catch (Exception e) {
             app.showError("URL open failed.", e);
             return null;
         }
+
         return doc;
     }
 
@@ -185,24 +193,24 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * nothing if the document is null. Always return true, unless an
      * I/O exception occurred.
      */
-    public boolean save (Document d) {
+    public boolean save(Document d) {
         if (d != null) {
             if (d.getFile() == null) {
                 return saveAs(d);
-            }
-            else {
+            } else {
                 try {
                     d.save();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     d.getApplication().showError("Save document failed.", e);
                     return false;
                 }
-                d.getApplication().getAppContext().showStatus(
-                        "Saved " + d.getTitle());
+
+                d.getApplication().getAppContext().showStatus("Saved "
+                    + d.getTitle());
                 d.setDirty(false);
             }
         }
+
         return true;
     }
 
@@ -211,7 +219,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * the document's file object.  Do nothing if the document is
      * null. Return true if successful, otherwise false.
      */
-    public boolean saveAs (Document d) {
+    public boolean saveAs(Document d) {
         if (d != null) {
             int result;
             Application app = d.getApplication();
@@ -220,27 +228,32 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
             // Open a chooser dialog
             _saveFileChooser.setCurrentDirectory(new File(getDirectory()));
             result = _saveFileChooser.showSaveDialog(context.makeComponent());
+
             if (result == JFileChooser.APPROVE_OPTION) {
                 File chosenFile = _saveFileChooser.getSelectedFile();
                 setDirectory(chosenFile);
+
                 if (chosenFile.exists()) {
                     // Query on overwrite
-                    int opt = JOptionPane.showConfirmDialog(
-                            context.makeComponent(),
-                            "File \"" + chosenFile.getName() +
-                            "\" exists. Overwrite?", "Overwrite file?",
+                    int opt = JOptionPane.showConfirmDialog(context
+                            .makeComponent(),
+                            "File \"" + chosenFile.getName()
+                            + "\" exists. Overwrite?", "Overwrite file?",
                             JOptionPane.YES_NO_OPTION);
+
                     if (opt != JOptionPane.YES_OPTION) {
                         context.showStatus("File not saved");
                         return false;
                     }
                 }
+
                 try {
                     d.saveAs(chosenFile);
                 } catch (Exception e) {
                     app.showError("Save document failed.", e);
                     return false;
                 }
+
                 d.setFile(chosenFile);
                 context.showStatus("Saved " + d.getTitle());
                 d.setDirty(false);
@@ -249,8 +262,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 return false;
             }
         }
+
         return true;
     }
 }
-
-

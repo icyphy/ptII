@@ -30,11 +30,11 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math.test;
 
 import ptolemy.math.Complex;
 import ptolemy.math.ComplexUnaryOperation;
+
 
 /** A operation taking one argument of type complex, and producing a value of
     type complex. This interface attempts to mimic a first-class function of
@@ -47,7 +47,6 @@ import ptolemy.math.ComplexUnaryOperation;
     @Pt.AcceptedRating Red (ctsay)
 */
 public class TestComplexUnaryOperation implements ComplexUnaryOperation {
-
     /** Operate on the operand, returning a value of the same type. */
     public Complex operate(Complex operand) {
         return operand.negate();

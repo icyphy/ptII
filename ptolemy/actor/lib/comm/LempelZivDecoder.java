@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.comm;
 
 import java.util.LinkedList;
@@ -40,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Lempel-Ziv decoder.
+
 /**
    Lempel-Ziv decoder.
 
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class LempelZivDecoder extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -64,13 +64,13 @@ public class LempelZivDecoder extends Transformer {
      *   actor with this name.
      */
     public LempelZivDecoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Declare port types.
         input.setTypeEquals(BaseType.INT);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
-                       new IntToken(2));
+                new IntToken(2));
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
@@ -81,10 +81,11 @@ public class LempelZivDecoder extends Transformer {
      *  Lempel-Ziv code.
      */
     public void fire() throws IllegalActionException {
-        Token[] inputToken = (Token[])input.get(0, 2);
-        int oldPhase = ((IntToken)inputToken[0]).intValue();
-        int bit = ((IntToken)inputToken[1]).intValue();
-        String current = (String)_decodeBook.get(oldPhase);
+        Token[] inputToken = (Token[]) input.get(0, 2);
+        int oldPhase = ((IntToken) inputToken[0]).intValue();
+        int bit = ((IntToken) inputToken[1]).intValue();
+        String current = (String) _decodeBook.get(oldPhase);
+
         if (bit == 0) {
             current = current + "0";
         } else if (bit == 1) {
@@ -93,15 +94,16 @@ public class LempelZivDecoder extends Transformer {
             throw new IllegalActionException(this,
                 "This is not a valid Lempel-Ziv code.");
         }
+
         _decodeBook.add(current);
-        for (int i = 0; i < current.length(); i ++) {
+
+        for (int i = 0; i < current.length(); i++) {
             if (current.charAt(i) == '0') {
                 output.send(0, new BooleanToken(false));
             } else {
                 output.send(0, new BooleanToken(true));
             }
         }
-
     }
 
     /** initialize the actor by creating a decode book that only
@@ -114,7 +116,6 @@ public class LempelZivDecoder extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The Lempel-Ziv decode book.
     private LinkedList _decodeBook;
 

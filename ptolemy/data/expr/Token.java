@@ -30,15 +30,13 @@
   Created : May 1998
 
 */
-
 package ptolemy.data.expr;
+
 
 /**
  * Describes the input token stream.
  */
-
 public class Token {
-
     /**
      * An integer that describes the kind of this token.  This numbering
      * system is determined by JavaCCParser, and a table of these numbers is
@@ -51,7 +49,28 @@ public class Token {
      * of this token; endLine and endColumn describe the position of the
      * last character of this token.
      */
-    public int beginLine, beginColumn, endLine, endColumn;
+    public int beginLine;
+
+    /**
+     * beginLine and beginColumn describe the position of the first character
+     * of this token; endLine and endColumn describe the position of the
+     * last character of this token.
+     */
+    public int beginColumn;
+
+    /**
+     * beginLine and beginColumn describe the position of the first character
+     * of this token; endLine and endColumn describe the position of the
+     * last character of this token.
+     */
+    public int endLine;
+
+    /**
+     * beginLine and beginColumn describe the position of the first character
+     * of this token; endLine and endColumn describe the position of the
+     * last character of this token.
+     */
+    public int endColumn;
 
     /**
      * The string image of the token.
@@ -85,8 +104,7 @@ public class Token {
     /**
      * Returns the image.
      */
-    public String toString()
-    {
+    public String toString() {
         return image;
     }
 
@@ -102,12 +120,10 @@ public class Token {
      * to the following switch statement. Then you can cast matchedToken
      * variable to the appropriate type and use it in your lexical actions.
      */
-    public static final Token newToken(int ofKind)
-    {
-        switch(ofKind)
-            {
-            default : return new Token();
-            }
+    public static final Token newToken(int ofKind) {
+        switch (ofKind) {
+        default:
+            return new Token();
+        }
     }
-
 }

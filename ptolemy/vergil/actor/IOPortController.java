@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
@@ -67,8 +66,10 @@ import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.ShapeUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// IOPortController
+
 /**
    This class provides interaction with nodes that represent Ptolemy II
    ports on an actor.  It provides a double click binding and context
@@ -88,7 +89,6 @@ import diva.util.java2d.ShapeUtilities;
    @Pt.AcceptedRating Red (johnr)
 */
 public class IOPortController extends AttributeController {
-
     /** Create a port controller associated with the specified graph
      *  controller.  The controller is given full access.
      *  @param controller The associated graph controller.
@@ -107,8 +107,8 @@ public class IOPortController extends AttributeController {
         setNodeRenderer(new EntityPortRenderer());
 
         // "Listen to Actor"
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new ListenToPortAction()));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                new ListenToPortAction()));
 
         // Ports of entities do not use a selection interactor with
         // the same selection model as the rest of the first level figures.
@@ -126,7 +126,6 @@ public class IOPortController extends AttributeController {
      * hollow, while single ports are rendered filled.
      */
     public class EntityPortRenderer implements NodeRenderer {
-
         /**  Render a visual representation of the given node. If the
          * StringAttribute _color of the node is set then use that color to
          * render the node. If the StringAttribute _explanation of the node is
@@ -145,6 +144,7 @@ public class IOPortController extends AttributeController {
             boolean isInput = false;
             boolean isOutput = false;
             boolean isInputOutput = false;
+
             // Figure out what type of port we're dealing with.
             // If ports are not IOPorts, then draw then as ports with
             // no direction.
@@ -195,35 +195,37 @@ public class IOPortController extends AttributeController {
 
             Color fill;
             float lineWidth = (float) 1.5;
+
             if (port instanceof ParameterPort) {
                 fill = Color.lightGray;
                 lineWidth = (float) 0.0;
-            } else if (
-                    port instanceof IOPort && ((IOPort) port).isMultiport()) {
+            } else if (port instanceof IOPort && ((IOPort) port).isMultiport()) {
                 fill = Color.white;
             } else {
                 fill = Color.black;
             }
 
-            StringAttribute _colorAttr =
-                (StringAttribute) (port.getAttribute("_color"));
+            StringAttribute _colorAttr = (StringAttribute) (port.getAttribute(
+                    "_color"));
+
             if (_colorAttr != null) {
                 String _color = _colorAttr.getExpression();
                 fill = SVGUtilities.getColor(_color);
             }
 
-            ActorGraphModel model =
-                (ActorGraphModel) getController().getGraphModel();
+            ActorGraphModel model = (ActorGraphModel) getController()
+                                                          .getGraphModel();
 
             // Wrap the figure in a TerminalFigure to set the direction that
             // connectors exit the port. Note that this direction is the
             // same direction that is used to layout the port in the
             // Entity Controller.
-            StringAttribute cardinal =
-                (StringAttribute) port.getAttribute("_cardinal");
+            StringAttribute cardinal = (StringAttribute) port.getAttribute(
+                    "_cardinal");
 
             int direction;
             double rotation;
+
             //             if (!(port instanceof IOPort)) {
             //                 direction = SwingUtilities.SOUTH;
             //             } else if (((IOPort)port).isInput() &&
@@ -237,7 +239,6 @@ public class IOPortController extends AttributeController {
             //                 // should never happen
             //                 direction = SwingUtilities.SOUTH;
             //             }
-
             if (cardinal == null) {
                 if (isInputOutput) {
                     direction = SwingUtilities.SOUTH;
@@ -271,38 +272,38 @@ public class IOPortController extends AttributeController {
             }
 
             // Transform the port shape so it is facing the right way.
-            AffineTransform transform =
-                AffineTransform.getRotateInstance(Math.toRadians(rotation));
+            AffineTransform transform = AffineTransform.getRotateInstance(Math
+                    .toRadians(rotation));
             shape = ShapeUtilities.transformModify(shape, transform);
 
             Figure figure = new BasicFigure(shape, fill, (float) 1.5) {
-
                     // Override this because we want to show the type.
                     // It doesn't work to set it once because the type
                     // has not been resolved, and anyway, it may
                     // change.
                     public String getToolTipText() {
                         String tipText = port.getName();
-                        StringAttribute _explAttr =
-                            (StringAttribute) (port.getAttribute("_explanation"));
+                        StringAttribute _explAttr = (StringAttribute) (port
+                            .getAttribute("_explanation"));
+
                         if (_explAttr != null) {
                             tipText = _explAttr.getExpression();
                         } else if (port instanceof Typeable) {
                             try {
-                                tipText =
-                                    tipText
-                                    + ", type:"
+                                tipText = tipText + ", type:"
                                     + ((Typeable) port).getType();
                             } catch (IllegalActionException ex) {
                             }
                         }
+
                         return tipText;
                     }
                 };
+
             // Have to do this also, or the awt doesn't display any
             // tooltip at all.
-
             figure.setToolTipText(port.getName());
+
             double normal = CanvasUtilities.getNormal(direction);
             Site tsite = new PerimeterSite(figure, 0);
             tsite.setNormal(normal);
@@ -317,20 +318,22 @@ public class IOPortController extends AttributeController {
         public ListenToPortAction() {
             super("Listen to Port");
         }
+
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                        "Cannot listen to port without a configuration.");
+                    "Cannot listen to port without a configuration.");
                 return;
             }
 
             // Determine which entity was selected for the listen to
             // port action.
             super.actionPerformed(e);
+
             NamedObj object = getTarget();
+
             try {
-                BasicGraphController controller =
-                    (BasicGraphController) getController();
+                BasicGraphController controller = (BasicGraphController) getController();
                 BasicGraphFrame frame = controller.getFrame();
                 Tableau tableau = frame.getTableau();
 
@@ -341,16 +344,12 @@ public class IOPortController extends AttributeController {
                 // child of the model window.  So, we create a new text
                 // effigy inside this one.  Specify model's effigy as
                 // a container for this new effigy.
-                Effigy textEffigy =
-                    new TextEffigy(
-                            effigy,
-                            effigy.uniqueName("debugListener" + object.getName()));
+                Effigy textEffigy = new TextEffigy(effigy,
+                        effigy.uniqueName("debugListener" + object.getName()));
 
-                DebugListenerTableau debugTableau =
-                    new DebugListenerTableau(
-                            textEffigy,
-                            textEffigy.uniqueName(
-                                    "debugListener" + object.getName()));
+                DebugListenerTableau debugTableau = new DebugListenerTableau(textEffigy,
+                        textEffigy.uniqueName("debugListener"
+                            + object.getName()));
                 debugTableau.setDebuggable(object);
             } catch (KernelException ex) {
                 MessageHandler.error("Failed to create debug listener.", ex);

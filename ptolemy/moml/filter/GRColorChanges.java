@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml.filter;
 
 import java.util.HashSet;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GRColorChanges
+
 /**
    This class filters MoML files for backward compatibility between
    GR models constructed in version 4.0 or earlier. In particular, it
@@ -51,7 +52,6 @@ import ptolemy.moml.MoMLParser;
    @Pt.AcceptedRating Red (cxh)
 */
 public class GRColorChanges implements MoMLFilter {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -64,13 +64,13 @@ public class GRColorChanges implements MoMLFilter {
      *   to leave it unchanged, or null to cause the current element
      *   to be ignored (unless the attributeValue argument is null).
      */
-    public String filterAttributeValue(NamedObj container,
-            String element, String attributeName, String attributeValue) {
-        if (attributeValue != null && attributeName != null) {
+    public String filterAttributeValue(NamedObj container, String element,
+        String attributeName, String attributeValue) {
+        if ((attributeValue != null) && (attributeName != null)) {
             if (attributeValue.equals("RGB Color")
                     && attributeName.equals("name")
-                    && _actorsWithRGBColor.contains(
-                    container.getClass().getName())) {
+                    && _actorsWithRGBColor.contains(container.getClass()
+                                                                 .getName())) {
                 // NOTE: This relies on their being no nested
                 // instance of this attribute, which there shouldn't
                 // be.
@@ -79,6 +79,7 @@ public class GRColorChanges implements MoMLFilter {
                 return "diffuseColor";
             }
         }
+
         return attributeValue;
     }
 
@@ -94,51 +95,53 @@ public class GRColorChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
+        throws Exception {
         if (_foundOne) {
             _foundOne = false;
-            if (elementName != null
-                    && elementName.equals("property")
+
+            if ((elementName != null) && elementName.equals("property")
                     && container.getName().equals("diffuseColor")
-                    && ((Settable)container).getExpression().trim()
-                    .startsWith("[")) {
+                    && ((Settable) container).getExpression().trim().startsWith("[")) {
                 // Found one in matrix format.
-                String value = ((Settable)container).getExpression().trim();
+                String value = ((Settable) container).getExpression().trim();
                 value = value.replace('[', '{');
                 value = value.replace(']', '}');
-                ((Settable)container).setExpression(value);
+                ((Settable) container).setExpression(value);
                 MoMLParser.setModified(true);
             }
         }
+
         // Fix the background color of the ViewScreen actor.
         // Note that the ViewScreen actor also has a name change.
-        if (container != null
-              && container.getName().equals("backgroundColor")) {
+        if ((container != null)
+                && container.getName().equals("backgroundColor")) {
             NamedObj actor = container.getContainer();
-            if (actor != null
-                    && actor.getClass().getName().startsWith(
-                    "ptolemy.domains.gr.lib.ViewScreen")) {
-                String value = ((Settable)container).getExpression().trim();
+
+            if ((actor != null)
+                    && actor.getClass().getName().startsWith("ptolemy.domains.gr.lib.ViewScreen")) {
+                String value = ((Settable) container).getExpression().trim();
+
                 if (value.startsWith("[")) {
                     value = value.replace('[', '{');
                     value = value.replace(']', '}');
-                    ((Settable)container).setExpression(value);
+                    ((Settable) container).setExpression(value);
                     MoMLParser.setModified(true);
                 }
             }
         }
+
         // Fix the polygon attribute of the PolyCylinder3D actor.
-        if (container != null
-              && container.getName().equals("polygon")) {
+        if ((container != null) && container.getName().equals("polygon")) {
             NamedObj actor = container.getContainer();
-            if (actor != null
-                    && actor.getClass().getName().equals(
-                    "ptolemy.domains.gr.lib.PolyCylinder3D")) {
-                String value = ((Settable)container).getExpression().trim();
+
+            if ((actor != null)
+                    && actor.getClass().getName().equals("ptolemy.domains.gr.lib.PolyCylinder3D")) {
+                String value = ((Settable) container).getExpression().trim();
+
                 if (value.startsWith("[")) {
                     value = value.replace('[', '{');
                     value = value.replace(']', '}');
-                    ((Settable)container).setExpression(value);
+                    ((Settable) container).setExpression(value);
                     MoMLParser.setModified(true);
                 }
             }
@@ -149,8 +152,7 @@ public class GRColorChanges implements MoMLFilter {
      *  @return A description of the filter (ending with a newline).
      */
     public String toString() {
-        StringBuffer results
-                = new StringBuffer(getClass().getName()
+        StringBuffer results = new StringBuffer(getClass().getName()
                 + ": Update GR actor with the following changes:\n");
         results.append("\tParameter name \"RGB Color\" --> \"diffuseColor\"");
         return results.toString();
@@ -164,13 +166,19 @@ public class GRColorChanges implements MoMLFilter {
 
     static {
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Box3D");
-        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.CircularSweep3D");
+        GRColorChanges._actorsWithRGBColor.add(
+            "ptolemy.domains.gr.lib.CircularSweep3D");
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Cone3D");
-        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Cylinder3D");
-        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Loader3D");
-        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.PolyCylinder3D");
-        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Sphere3D");
-        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.TextString3D");
+        GRColorChanges._actorsWithRGBColor.add(
+            "ptolemy.domains.gr.lib.Cylinder3D");
+        GRColorChanges._actorsWithRGBColor.add(
+            "ptolemy.domains.gr.lib.Loader3D");
+        GRColorChanges._actorsWithRGBColor.add(
+            "ptolemy.domains.gr.lib.PolyCylinder3D");
+        GRColorChanges._actorsWithRGBColor.add(
+            "ptolemy.domains.gr.lib.Sphere3D");
+        GRColorChanges._actorsWithRGBColor.add(
+            "ptolemy.domains.gr.lib.TextString3D");
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Torus3D");
     }
 

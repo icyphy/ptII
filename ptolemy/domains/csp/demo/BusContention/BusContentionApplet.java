@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.BusContention;
 
 import java.awt.BorderLayout;
@@ -70,6 +69,7 @@ import diva.graph.basic.BasicGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// BusContentionApplet
@@ -116,10 +116,8 @@ import diva.graph.layout.LevelLayout;
  *  @Pt.AcceptedRating Red (cxh)
  */
 public class BusContentionApplet extends PtolemyApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -131,63 +129,41 @@ public class BusContentionApplet extends PtolemyApplet {
      *   exception to throw.
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+        throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         _toplevel = toplevel;
         toplevel.setName("BusContention");
         new CSPDirector(toplevel, "CSPDirector");
 
         // Instantiate Actors
-        _contentionActor = new Controller( toplevel, "controller" );
-        _alarmActor = new ContentionAlarm( toplevel, "alarm" );
-        _memoryActor = new Memory( toplevel, "memory" );
-        _processActor1 = new Processor( toplevel, "proc1", 1 );
-        _processActor2 = new Processor( toplevel, "proc2", 2 );
-        _processActor3 = new Processor( toplevel, "proc3", 3 );
+        _contentionActor = new Controller(toplevel, "controller");
+        _alarmActor = new ContentionAlarm(toplevel, "alarm");
+        _memoryActor = new Memory(toplevel, "memory");
+        _processActor1 = new Processor(toplevel, "proc1", 1);
+        _processActor2 = new Processor(toplevel, "proc2", 2);
+        _processActor3 = new Processor(toplevel, "proc3", 3);
 
         // Set up connections
-        toplevel.connect(
-                _contentionActor.requestInput,
-                _processActor1.requestOutput );
-        toplevel.connect(
-                _contentionActor.requestInput,
-                _processActor2.requestOutput );
-        toplevel.connect(
-                _contentionActor.requestInput,
-                _processActor3.requestOutput );
-        toplevel.connect(
-                _contentionActor.contendOutput,
-                _alarmActor.input );
-        toplevel.connect(
-                _contentionActor.contendInput,
-                _alarmActor.output );
-        toplevel.connect(
-                _contentionActor.requestOutput,
-                _processActor1.requestInput );
-        toplevel.connect(
-                _contentionActor.requestOutput,
-                _processActor2.requestInput );
-        toplevel.connect(
-                _contentionActor.requestOutput,
-                _processActor3.requestInput );
-        toplevel.connect(
-                _memoryActor.output,
-                _processActor1.memoryInput );
-        toplevel.connect(
-                _memoryActor.output,
-                _processActor2.memoryInput );
-        toplevel.connect(
-                _memoryActor.output,
-                _processActor3.memoryInput );
-        toplevel.connect(
-                _memoryActor.input,
-                _processActor1.memoryOutput );
-        toplevel.connect(
-                _memoryActor.input,
-                _processActor2.memoryOutput );
-        toplevel.connect(
-                _memoryActor.input,
-                _processActor3.memoryOutput );
+        toplevel.connect(_contentionActor.requestInput,
+            _processActor1.requestOutput);
+        toplevel.connect(_contentionActor.requestInput,
+            _processActor2.requestOutput);
+        toplevel.connect(_contentionActor.requestInput,
+            _processActor3.requestOutput);
+        toplevel.connect(_contentionActor.contendOutput, _alarmActor.input);
+        toplevel.connect(_contentionActor.contendInput, _alarmActor.output);
+        toplevel.connect(_contentionActor.requestOutput,
+            _processActor1.requestInput);
+        toplevel.connect(_contentionActor.requestOutput,
+            _processActor2.requestInput);
+        toplevel.connect(_contentionActor.requestOutput,
+            _processActor3.requestInput);
+        toplevel.connect(_memoryActor.output, _processActor1.memoryInput);
+        toplevel.connect(_memoryActor.output, _processActor2.memoryInput);
+        toplevel.connect(_memoryActor.output, _processActor3.memoryInput);
+        toplevel.connect(_memoryActor.input, _processActor1.memoryOutput);
+        toplevel.connect(_memoryActor.input, _processActor2.memoryOutput);
+        toplevel.connect(_memoryActor.input, _processActor3.memoryOutput);
         return toplevel;
     }
 
@@ -196,13 +172,13 @@ public class BusContentionApplet extends PtolemyApplet {
     protected void _createView() {
         super._createView();
 
-        _divaPanel = new JPanel( new BorderLayout() );
-        _divaPanel.setBorder(new TitledBorder(
-                                     new LineBorder(Color.black), "Animation"));
+        _divaPanel = new JPanel(new BorderLayout());
+        _divaPanel.setBorder(new TitledBorder(new LineBorder(Color.black),
+                "Animation"));
         _divaPanel.setBackground(getBackground());
-        _divaPanel.setPreferredSize( new Dimension(500, 450) );
+        _divaPanel.setPreferredSize(new Dimension(500, 450));
         _divaPanel.setBackground(getBackground());
-        getContentPane().add( _divaPanel, BorderLayout.SOUTH );
+        getContentPane().add(_divaPanel, BorderLayout.SOUTH);
 
         _graph = _constructGraph();
 
@@ -214,12 +190,12 @@ public class BusContentionApplet extends PtolemyApplet {
         _jgraph.repaint();
 
         // Adding it to the center so that it fills the containing panel.
-        _divaPanel.add(_jgraph, BorderLayout.CENTER );
+        _divaPanel.add(_jgraph, BorderLayout.CENTER);
 
         _jgraph.setBackground(getBackground());
 
-        StateListener listener =
-            new StateListener((GraphPane)_jgraph.getCanvasPane());
+        StateListener listener = new StateListener((GraphPane) _jgraph
+                .getCanvasPane());
         _processActor1.addDebugListener(listener);
         _processActor2.addDebugListener(listener);
         _processActor3.addDebugListener(listener);
@@ -328,7 +304,6 @@ public class BusContentionApplet extends PtolemyApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The Actors
     Controller _contentionActor;
     ContentionAlarm _alarmActor;
@@ -351,10 +326,8 @@ public class BusContentionApplet extends PtolemyApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// LayoutListener
-
     // private class LayoutListener implements ActionListener {
     //    public void actionPerformed(ActionEvent evt) {
     //        final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
@@ -362,11 +335,11 @@ public class BusContentionApplet extends PtolemyApplet {
     //        _doLayout(g, gp);
     //    }
     //}
-
     ///////////////////////////////////////////////////////////////////
     //// BusContentionGraphController
     public class BusContentionGraphController extends BasicGraphController {
         private SelectionDragger _selectionDragger;
+
         /**
          * Create a new basic controller with default
          * node and edge interactors.
@@ -378,7 +351,6 @@ public class BusContentionApplet extends PtolemyApplet {
             getNodeController().setNodeRenderer(new ThreadRenderer(this));
             getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
         }
-
 
         /**
          * Initialize all interaction on the graph pane. This method
@@ -410,30 +382,29 @@ public class BusContentionApplet extends PtolemyApplet {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
-            Arrowhead headArrow = new Arrowhead(
-                    headSite.getX(), headSite.getY(),
-                    headSite.getNormal());
+            Arrowhead headArrow = new Arrowhead(headSite.getX(),
+                    headSite.getY(), headSite.getNormal());
             c.setHeadEnd(headArrow);
 
             // Create an arrow at the tail
-            Arrowhead tailArrow = new Arrowhead(
-                    tailSite.getX(), tailSite.getY(),
-                    tailSite.getNormal());
+            Arrowhead tailArrow = new Arrowhead(tailSite.getX(),
+                    tailSite.getY(), tailSite.getNormal());
             c.setTailEnd(tailArrow);
 
             c.setUserObject(edge);
             return c;
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     //// StateListener
+
     /**
      * StateListener is an inner class that listens to state
      * events on the Ptolemy kernel and changes the color of
      * the nodes appropriately.
      */
     public class StateListener implements DebugListener {
-
         // The Pane
         GraphPane _graphPane;
 
@@ -452,39 +423,40 @@ public class BusContentionApplet extends PtolemyApplet {
          */
         public void event(DebugEvent debugEvent) {
             // only trap ExecEvents.
-            if (!(debugEvent instanceof ExecEvent)) return;
+            if (!(debugEvent instanceof ExecEvent)) {
+                return;
+            }
+
             ExecEvent event = (ExecEvent) debugEvent;
             final ExecEvent.ExecEventType state = event.getState();
             NamedObj actor = event.getSource();
 
             // Get the corresponding graph node and its figure
             Object node = (Object) _nodeMap.get(actor);
-            LabelWrapper wrapper = (LabelWrapper)
-                _graphPane.getGraphController().getFigure(node);
-            final BasicFigure figure = (BasicFigure)
-                wrapper.getChild();
+            LabelWrapper wrapper = (LabelWrapper) _graphPane.getGraphController()
+                                                            .getFigure(node);
+            final BasicFigure figure = (BasicFigure) wrapper.getChild();
 
             // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                         public void run() {
-                            if (state == ExecEvent.WAITING)
+                            if (state == ExecEvent.WAITING) {
                                 figure.setFillPaint(Color.yellow);
-                            else if (state == ExecEvent.ACCESSING)
+                            } else if (state == ExecEvent.ACCESSING) {
                                 figure.setFillPaint(Color.green);
-                            else if (state == ExecEvent.BLOCKED)
+                            } else if (state == ExecEvent.BLOCKED) {
                                 figure.setFillPaint(Color.red);
-                            else
+                            } else {
                                 System.err.println("Unknown state: " + state);
+                            }
                         }
                     });
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     //// ThreadRenderer
@@ -493,7 +465,6 @@ public class BusContentionApplet extends PtolemyApplet {
      * ThreadRenderer draws the nodes to represent running threads.
      */
     public class ThreadRenderer implements NodeRenderer {
-
         /** The rectangle size
          */
         private double _size = 50;
@@ -510,22 +481,21 @@ public class BusContentionApplet extends PtolemyApplet {
          * Return the rendered visual representation of this node.
          */
         public Figure render(Object n) {
-            ComponentEntity actor = (ComponentEntity)
-                _controller.getGraphModel().getSemanticObject(n);
+            ComponentEntity actor = (ComponentEntity) _controller.getGraphModel()
+                                                                 .getSemanticObject(n);
 
-            boolean isEllipse =
-                actor instanceof Controller
-                || actor instanceof Memory
-                || actor instanceof ContentionAlarm;
-
+            boolean isEllipse = actor instanceof Controller
+                || actor instanceof Memory || actor instanceof ContentionAlarm;
 
             BasicFigure f;
+
             if (isEllipse) {
                 f = new BasicEllipse(0, 0, _size, _size);
             } else {
                 f = new BasicRectangle(0, 0, _size, _size);
                 f.setFillPaint(Color.blue);
             }
+
             String label = actor.getName();
             LabelWrapper w = new LabelWrapper(f, label);
             w.setAnchor(SwingConstants.SOUTH);

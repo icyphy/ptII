@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.gui;
 
 import java.awt.BorderLayout;
@@ -40,6 +39,7 @@ import javax.swing.KeyStroke;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -47,8 +47,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.gui.toolbox.FocusMouseListener;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// KeystrokeSensor
+
 /**
    Detect when the user types Control-C (for Copy) or Control-V (for Paste)
    and produce an event on the corresponding output.
@@ -78,7 +80,6 @@ import diva.gui.toolbox.FocusMouseListener;
    @Pt.AcceptedRating Red (winthrop)
 */
 public class KeystrokeSensor extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -88,7 +89,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
      *   actor with this name.
      */
     public KeystrokeSensor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         controlC = new TypedIOPort(this, "controlC");
@@ -156,9 +157,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
-
     private class MyFrame extends JFrame {
-
         /** Construct a JFrame.  After constructing this, it is
          *  necessary to call setVisible(true) to make the frame
          *  appear.  This is done by calling show() at the end
@@ -169,12 +168,12 @@ public class KeystrokeSensor extends TypedAtomicActor {
             ActionListener myCopyListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         _copyKeyPressed = true;
+
                         try {
-                            getDirector().fireAtCurrentTime(
-                                    KeystrokeSensor.this);
+                            getDirector().fireAtCurrentTime(KeystrokeSensor.this);
                         } catch (IllegalActionException ex) {
                             System.out.println(this
-                                    + "Ex calling fireAtCurrentTime");
+                                + "Ex calling fireAtCurrentTime");
                             throw new RuntimeException("-fireAt* C catch-");
                         }
                     }
@@ -184,36 +183,36 @@ public class KeystrokeSensor extends TypedAtomicActor {
             ActionListener myPasteListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         _pasteKeyPressed = true;
+
                         try {
-                            getDirector().fireAtCurrentTime(
-                                    KeystrokeSensor.this);
+                            getDirector().fireAtCurrentTime(KeystrokeSensor.this);
                         } catch (IllegalActionException ex) {
                             System.out.println("--" + ex.toString() + "--");
                             System.out.println(this
-                                    + "Exception calling fireAtCurrentTime");
+                                + "Exception calling fireAtCurrentTime");
                             throw new RuntimeException("-fireAt* catch-");
                         }
                     }
                 };
 
             getContentPane().setLayout(new BorderLayout());
+
             JLabel label = new JLabel("Copy and/or Paste here!");
             getContentPane().add(label);
 
             // Paste registration of call-back.
             label.registerKeyboardAction(myPasteListener, "Paste",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Copy registration of call-back.
             label.registerKeyboardAction(myCopyListener, "Copy",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);
             label.addMouseListener(new FocusMouseListener());
+
             // Set the default size.
             // Note that the location is of the frame, while the size
             // is of the scrollpane.
@@ -222,7 +221,3 @@ public class KeystrokeSensor extends TypedAtomicActor {
         }
     }
 }
-
-
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data.type;
 
 import ptolemy.data.Token;
@@ -33,8 +32,10 @@ import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypeLattice
+
 /**
    Type hierarchy for token classes.
 
@@ -45,9 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Red
    @see ptolemy.graph.CPO
 */
-
 public class TypeLattice {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,12 +70,13 @@ public class TypeLattice {
      *  @return An integer.
      */
     public static int compare(Token token1, Token token2) {
-        if (token1 == null || token2 == null) {
+        if ((token1 == null) || (token2 == null)) {
             throw new IllegalArgumentException(
-                    "TypeLattice.compare(Token, Token): " +
-                    "one or both of the argument tokens is null: "
-                    + " token1 = " + token1 + ", token2 = " + token2);
+                "TypeLattice.compare(Token, Token): "
+                + "one or both of the argument tokens is null: " + " token1 = "
+                + token1 + ", token2 = " + token2);
         }
+
         return compare(token1.getType(), token2.getType());
     }
 
@@ -94,9 +94,9 @@ public class TypeLattice {
     public static int compare(Token token, Type type) {
         if (token == null) {
             throw new IllegalArgumentException(
-                    "TypeLattice.compare(Token, Type): " +
-                    "token argument is null");
+                "TypeLattice.compare(Token, Type): " + "token argument is null");
         }
+
         return compare(token.getType(), type);
     }
 
@@ -114,9 +114,9 @@ public class TypeLattice {
     public static int compare(Type type, Token token) {
         if (token == null) {
             throw new IllegalArgumentException(
-                    "TypeLattice.compare(Type, Token): " +
-                    "token argument is null");
+                "TypeLattice.compare(Type, Token): " + "token argument is null");
         }
+
         return compare(type, token.getType());
     }
 
@@ -131,26 +131,29 @@ public class TypeLattice {
      *  @return An integer.
      */
     public static int compare(Type type1, Type type2) {
-        if (type1 == null || type2 == null) {
+        if ((type1 == null) || (type2 == null)) {
             throw new IllegalArgumentException(
-                    "TypeLattice.compare(Type, Type): " +
-                    "one or both of the argument types is null: "
-                    + " type1 = " + type1 + ", type2 = " + type2);
+                "TypeLattice.compare(Type, Type): "
+                + "one or both of the argument types is null: " + " type1 = "
+                + type1 + ", type2 = " + type2);
         }
+
         int i1 = type1.getTypeHash();
         int i2 = type2.getTypeHash();
 
         // Uncommment the false below to measure the impact of
         // _lattice.compare() on ptolemy.data package performance... Run
         // ptolemy/data/type/test/performance.xml before and after...(zk)
-        if (/*false &&*/ (i1 != Type.HASH_INVALID) &&
-                (i2 != Type.HASH_INVALID)) {
+        if ( /*false &&*/
+            (i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)) {
             if (_getCachedTypeComparisonResult(i1, i2) == Type.HASH_INVALID) {
                 _setCachedTypeComparisonResult(i1, i2,
-                        _lattice.compare(type1, type2));
+                    _lattice.compare(type1, type2));
             }
+
             return _getCachedTypeComparisonResult(i1, i2);
         }
+
         return _lattice.compare(type1, type2);
     }
 
@@ -165,7 +168,7 @@ public class TypeLattice {
     /** Return the least upper bound of the two given types.
      */
     public static Type leastUpperBound(Type type1, Type type2) {
-        return (Type)_lattice.leastUpperBound(type1, type2);
+        return (Type) _lattice.leastUpperBound(type1, type2);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -174,25 +177,23 @@ public class TypeLattice {
     /** Return the result for the types that have the given two
      * indexes as hashes.
      */
-    private static final int _getCachedTypeComparisonResult(
-            int index1, int index2) {
+    private static final int _getCachedTypeComparisonResult(int index1,
+        int index2) {
         return _compareCache[index1][index2];
     }
 
     /** Set the result for the types that have the given two
      *  indexes as hashes.
      */
-    private static final void _setCachedTypeComparisonResult(
-            int index1, int index2, int value) {
+    private static final void _setCachedTypeComparisonResult(int index1,
+        int index2, int value) {
         _compareCache[index1][index2] = value;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     // The infinite type lattice
     private static class TheTypeLattice implements CPO {
-
         /** Return the bottom element of the type lattice, which is UNKNOWN.
          *  @return The Type object representing UNKNOWN.
          */
@@ -214,23 +215,22 @@ public class TypeLattice {
          *   are not instances of Type.
          */
         public int compare(Object t1, Object t2) {
-            if ( !(t1 instanceof Type) || !(t2 instanceof Type)) {
-                throw new IllegalArgumentException(
-                        "TheTypeLattice.compare: "
-                        + "Arguments are not instances of Type: "
-                        + " type1 = " + t1 + ", type2 = " + t2);
+            if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
+                throw new IllegalArgumentException("TheTypeLattice.compare: "
+                    + "Arguments are not instances of Type: " + " type1 = "
+                    + t1 + ", type2 = " + t2);
             }
 
-            Type ct1 = (Type)t1;
-            Type ct2 = (Type)t2;
+            Type ct1 = (Type) t1;
+            Type ct2 = (Type) t2;
 
             Type t1Rep = _toRepresentative(ct1);
             Type t2Rep = _toRepresentative(ct2);
 
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                return ((StructuredType)t1)._compare((StructuredType)t2);
-            } else if (_basicLattice.containsNodeWeight(t1Rep) &&
-                    _basicLattice.containsNodeWeight(t2Rep)) {
+                return ((StructuredType) t1)._compare((StructuredType) t2);
+            } else if (_basicLattice.containsNodeWeight(t1Rep)
+                    && _basicLattice.containsNodeWeight(t2Rep)) {
                 // Both are not the same structured type, so their relation is
                 // defined by their relation in the basic lattice.
                 return _basicLattice.compare(t1Rep, t2Rep);
@@ -240,11 +240,11 @@ public class TypeLattice {
                 // rather simple.
                 if (t1Rep.equals(t2Rep)) {
                     return SAME;
-                } else if (t1Rep == BaseType.UNKNOWN ||
-                        t2Rep == BaseType.GENERAL) {
+                } else if ((t1Rep == BaseType.UNKNOWN)
+                        || (t2Rep == BaseType.GENERAL)) {
                     return LOWER;
-                } else if (t2Rep == BaseType.UNKNOWN ||
-                        t1Rep == BaseType.GENERAL) {
+                } else if ((t2Rep == BaseType.UNKNOWN)
+                        || (t1Rep == BaseType.GENERAL)) {
                     return HIGHER;
                 } else {
                     return INCOMPARABLE;
@@ -258,8 +258,8 @@ public class TypeLattice {
          */
         public Object[] downSet(Object e) {
             throw new UnsupportedOperationException(
-                    "TheTypeLattice.downSet(): operation not supported for " +
-                    "the type lattice.");
+                "TheTypeLattice.downSet(): operation not supported for "
+                + "the type lattice.");
         }
 
         /** Return the greatest lower bound of two types.
@@ -270,26 +270,26 @@ public class TypeLattice {
          *   specified arguments are not instances of Type.
          */
         public Object greatestLowerBound(Object t1, Object t2) {
-            if ( !(t1 instanceof Type) || !(t2 instanceof Type)) {
+            if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException(
-                        "TheTypeLattice.greatestLowerBound: " +
-                        "Arguments are not instances of Type.");
+                    "TheTypeLattice.greatestLowerBound: "
+                    + "Arguments are not instances of Type.");
             }
 
-            Type ct1 = (Type)t1;
-            Type ct2 = (Type)t2;
+            Type ct1 = (Type) t1;
+            Type ct2 = (Type) t2;
 
             Type t1Rep = _toRepresentative(ct1);
             Type t2Rep = _toRepresentative(ct2);
 
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                return ((StructuredType)t1)._greatestLowerBound(
-                        (StructuredType)t2);
-            } else if (_basicLattice.containsNodeWeight(t1Rep) &&
-                    _basicLattice.containsNodeWeight(t2Rep)) {
+                return ((StructuredType) t1)._greatestLowerBound((StructuredType) t2);
+            } else if (_basicLattice.containsNodeWeight(t1Rep)
+                    && _basicLattice.containsNodeWeight(t2Rep)) {
                 // Both are not the same structured type, so their relation is
                 // defined by their relation in the basic lattice.
                 int relation = _basicLattice.compare(t1Rep, t2Rep);
+
                 if (relation == SAME) {
                     return t1;
                 } else if (relation == LOWER) {
@@ -305,11 +305,11 @@ public class TypeLattice {
                 // rather simple.
                 if (t1Rep.equals(t2Rep)) {
                     return t1;
-                } else if (t1Rep == BaseType.UNKNOWN ||
-                        t2Rep == BaseType.GENERAL) {
+                } else if ((t1Rep == BaseType.UNKNOWN)
+                        || (t2Rep == BaseType.GENERAL)) {
                     return t1;
-                } else if (t2Rep == BaseType.UNKNOWN ||
-                        t1Rep == BaseType.GENERAL) {
+                } else if ((t2Rep == BaseType.UNKNOWN)
+                        || (t1Rep == BaseType.GENERAL)) {
                     return t2;
                 } else {
                     return bottom();
@@ -333,6 +333,7 @@ public class TypeLattice {
             for (int i = 0; i < subset.length; i++) {
                 glb = greatestLowerBound(glb, subset[i]);
             }
+
             return glb;
         }
 
@@ -348,9 +349,11 @@ public class TypeLattice {
             // the graph package, but more complex.
             for (int i = 0; i < subset.length; i++) {
                 boolean isGreatest = true;
+
                 for (int j = 0; j < subset.length; j++) {
                     int result = compare(subset[i], subset[j]);
-                    if (result == CPO.LOWER || result == CPO.INCOMPARABLE) {
+
+                    if ((result == CPO.LOWER) || (result == CPO.INCOMPARABLE)) {
                         isGreatest = false;
                         break;
                     }
@@ -360,6 +363,7 @@ public class TypeLattice {
                     return subset[i];
                 }
             }
+
             return null;
         }
 
@@ -382,9 +386,11 @@ public class TypeLattice {
             // the graph package, but more complex.
             for (int i = 0; i < subset.length; i++) {
                 boolean isLeast = true;
+
                 for (int j = 0; j < subset.length; j++) {
                     int result = compare(subset[i], subset[j]);
-                    if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
+
+                    if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
                         isLeast = false;
                         break;
                     }
@@ -394,6 +400,7 @@ public class TypeLattice {
                     return subset[i];
                 }
             }
+
             return null;
         }
 
@@ -403,26 +410,26 @@ public class TypeLattice {
          *  @return an instance of Type.
          */
         public Object leastUpperBound(Object t1, Object t2) {
-            if ( !(t1 instanceof Type) || !(t2 instanceof Type)) {
+            if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException(
-                        "TheTypeLattice.leastUpperBound: " +
-                        "Arguments are not instances of Type.");
+                    "TheTypeLattice.leastUpperBound: "
+                    + "Arguments are not instances of Type.");
             }
 
-            Type ct1 = (Type)t1;
-            Type ct2 = (Type)t2;
+            Type ct1 = (Type) t1;
+            Type ct2 = (Type) t2;
 
             Type t1Rep = _toRepresentative(ct1);
             Type t2Rep = _toRepresentative(ct2);
 
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                return ((StructuredType)t1)._leastUpperBound(
-                        (StructuredType)t2);
-            } else if (_basicLattice.containsNodeWeight(t1Rep) &&
-                    _basicLattice.containsNodeWeight(t2Rep)) {
+                return ((StructuredType) t1)._leastUpperBound((StructuredType) t2);
+            } else if (_basicLattice.containsNodeWeight(t1Rep)
+                    && _basicLattice.containsNodeWeight(t2Rep)) {
                 // Both are not the same structured type, so their relation is
                 // defined by their relation in the basic lattice.
                 int relation = _basicLattice.compare(t1Rep, t2Rep);
+
                 if (relation == SAME) {
                     return t1;
                 } else if (relation == LOWER) {
@@ -438,11 +445,11 @@ public class TypeLattice {
                 // rather simple.
                 if (t1Rep.equals(t2Rep)) {
                     return t1;
-                } else if (t1Rep == BaseType.UNKNOWN ||
-                        t2Rep == BaseType.GENERAL) {
+                } else if ((t1Rep == BaseType.UNKNOWN)
+                        || (t2Rep == BaseType.GENERAL)) {
                     return t2;
-                } else if (t2Rep == BaseType.UNKNOWN ||
-                        t1Rep == BaseType.GENERAL) {
+                } else if ((t2Rep == BaseType.UNKNOWN)
+                        || (t1Rep == BaseType.GENERAL)) {
                     return t1;
                 } else {
                     return top();
@@ -466,6 +473,7 @@ public class TypeLattice {
             for (int i = 0; i < subset.length; i++) {
                 lub = leastUpperBound(lub, subset[i]);
             }
+
             return lub;
         }
 
@@ -483,28 +491,26 @@ public class TypeLattice {
          */
         public Object[] upSet(Object e) {
             throw new UnsupportedOperationException(
-                    "TheTypeLattice.upSet(): operation not supported for " +
-                    "the type lattice.");
+                "TheTypeLattice.upSet(): operation not supported for "
+                + "the type lattice.");
         }
 
         ///////////////////////////////////////////////////////////////
         ////                    private constructor                ////
-
         // the constructor is private so only the outer class can use it.
         private TheTypeLattice() {
             _basicLattice = new DirectedAcyclicGraph();
-            StructuredType arrayRep =
-                (new ArrayType(BaseType.UNKNOWN))._getRepresentative();
+
+            StructuredType arrayRep = (new ArrayType(BaseType.UNKNOWN))
+                ._getRepresentative();
 
             String[] labels = new String[0];
             Type[] types = new Type[0];
-            StructuredType recordRep =
-                (new RecordType(labels, types))._getRepresentative();
+            StructuredType recordRep = (new RecordType(labels, types))
+                ._getRepresentative();
 
-            StructuredType functionRep =
-                new ptolemy.data.type.FunctionType(
-                        new ptolemy.data.type.Type[0],
-                        ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
+            StructuredType functionRep = new ptolemy.data.type.FunctionType(new ptolemy.data.type.Type[0],
+                    ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
 
             _basicLattice.addNodeWeight(BaseType.BOOLEAN);
             _basicLattice.addNodeWeight(BaseType.BOOLEAN_MATRIX);
@@ -543,15 +549,12 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BOOLEAN);
 
             _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.MATRIX);
-            _basicLattice.addEdge(BaseType.FIX_MATRIX,
-                    BaseType.NUMERICAL);
+            _basicLattice.addEdge(BaseType.FIX_MATRIX, BaseType.NUMERICAL);
             _basicLattice.addEdge(BaseType.SCALAR, BaseType.NUMERICAL);
             _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.NUMERICAL);
-            _basicLattice.addEdge(BaseType.COMPLEX_MATRIX,
-                    BaseType.NUMERICAL);
+            _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.NUMERICAL);
 
-            _basicLattice.addEdge(BaseType.FIX,
-                    BaseType.FIX_MATRIX);
+            _basicLattice.addEdge(BaseType.FIX, BaseType.FIX_MATRIX);
             _basicLattice.addEdge(BaseType.FIX, BaseType.SCALAR);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.FIX);
             _basicLattice.addEdge(BaseType.LONG, BaseType.SCALAR);
@@ -561,10 +564,9 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.UNSIGNED_BYTE);
 
-            _basicLattice.addEdge(BaseType.INT_MATRIX,
-                    BaseType.DOUBLE_MATRIX);
+            _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
-                    BaseType.COMPLEX_MATRIX);
+                BaseType.COMPLEX_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);
 
             _basicLattice.addEdge(BaseType.COMPLEX, BaseType.SCALAR);
@@ -583,22 +585,21 @@ public class TypeLattice {
             _basicLattice.addEdge(recordRep, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, recordRep);
 
-            if ( !_basicLattice.isLattice()) {
-                throw new InternalErrorException("TheTypeLattice: The " +
-                        "type hierarchy is not a lattice.");
+            if (!_basicLattice.isLattice()) {
+                throw new InternalErrorException("TheTypeLattice: The "
+                    + "type hierarchy is not a lattice.");
             }
         }
 
         ///////////////////////////////////////////////////////////////
         ////                      private methods                  ////
-
         // If the argument is a structured type, return its representative;
         // otherwise, return the argument. In the latter case, the argument
         // is either a base type or a user defined type that is not a
         // structured type.
         private Type _toRepresentative(Type t) {
             if (t instanceof StructuredType) {
-                return ((StructuredType)t)._getRepresentative();
+                return ((StructuredType) t)._getRepresentative();
             } else {
                 return t;
             }
@@ -606,19 +607,20 @@ public class TypeLattice {
 
         ///////////////////////////////////////////////////////////////
         ////                     private variables                 ////
-
         private DirectedAcyclicGraph _basicLattice;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The infinite type lattice.
     private static TheTypeLattice _lattice = new TheTypeLattice();
+
     // The result cache for parts of the type lattice.
     private static int[][] _compareCache;
+
     static {
         _compareCache = new int[Type.HASH_MAX + 1][Type.HASH_MAX + 1];
+
         for (int i = 0; i <= Type.HASH_MAX; i++) {
             for (int j = 0; j <= Type.HASH_MAX; j++) {
                 _compareCache[i][j] = Type.HASH_INVALID;

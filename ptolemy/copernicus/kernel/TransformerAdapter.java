@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.kernel;
 
 import java.util.Iterator;
@@ -67,25 +66,29 @@ public class TransformerAdapter extends SceneTransformer {
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        System.out.println("TransformerAdapter.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("TransformerAdapter.internalTransform(" + phaseName
+            + ", " + options + ")");
 
         Iterator classes = Scene.v().getApplicationClasses().iterator();
+
         while (classes.hasNext()) {
-            SootClass theClass = (SootClass)classes.next();
+            SootClass theClass = (SootClass) classes.next();
             Iterator methods = theClass.getMethods().iterator();
+
             while (methods.hasNext()) {
                 SootMethod method = (SootMethod) methods.next();
-                if (!method.isConcrete())
-                    continue;
-                try {
 
+                if (!method.isConcrete()) {
+                    continue;
+                }
+
+                try {
                     JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                     for (Iterator transformers = _transformers.iterator();
-                         transformers.hasNext();) {
-                        BodyTransformer transformer = (BodyTransformer)
-                            transformers.next();
+                            transformers.hasNext();) {
+                        BodyTransformer transformer = (BodyTransformer) transformers
+                            .next();
 
                         // FIXME: pass in the options.
                         // Currently this is not possible because the
@@ -94,7 +97,7 @@ public class TransformerAdapter extends SceneTransformer {
                     }
                 } catch (RuntimeException ex) {
                     System.err.println("Exception occurred while processing "
-                            + method);
+                        + method);
                     throw ex;
                 }
             }
@@ -103,17 +106,3 @@ public class TransformerAdapter extends SceneTransformer {
 
     private List _transformers;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.kernel.test;
 
 import ptolemy.actor.Receiver;
@@ -41,6 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEGetToken
+
 /**
 
 @author John S. Davis II
@@ -50,11 +50,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cxh)
 */
 public class DDEGetToken extends DDEGet {
-
     /**
      */
     public DDEGetToken(TypedCompositeActor cont, String name, int numTokens)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         _numTokens = numTokens;
@@ -89,38 +88,44 @@ public class DDEGetToken extends DDEGet {
     public void fire() throws IllegalActionException {
         int aCntr = 0;
         Receiver[][] theReceivers = input.getReceivers();
-        for ( int i = 0; i < theReceivers.length; i++ ) {
-            for ( int j = 0; j < theReceivers[i].length; j++ ) {
+
+        for (int i = 0; i < theReceivers.length; i++) {
+            for (int j = 0; j < theReceivers[i].length; j++) {
                 aCntr++;
             }
         }
+
         int cnt = 0;
+
         while (cnt < _numTokens) {
             Receiver[][] receivers = input.getReceivers();
-            for ( int i = 0; i < receivers.length; i++ ) {
-                for ( int j = 0; j < receivers[i].length; j++ ) {
-                    DDEReceiver receiver = (DDEReceiver)receivers[i][j];
-                    if ( receiver.hasToken() ) {
-                        _receiverTimes[cnt]
-                            = receiver.getReceiverTime().getDoubleValue();
+
+            for (int i = 0; i < receivers.length; i++) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    DDEReceiver receiver = (DDEReceiver) receivers[i][j];
+
+                    if (receiver.hasToken()) {
+                        _receiverTimes[cnt] = receiver.getReceiverTime()
+                                                      .getDoubleValue();
                         _tokens[cnt] = receiver.get();
+
                         Thread thread = Thread.currentThread();
-                        if ( thread instanceof DDEThread ) {
-                            TimeKeeper timeKeeper =
-                                ((DDEThread)thread).getTimeKeeper();
-                            _threadTimes[cnt] =
-                                timeKeeper.getCurrentTime();
+
+                        if (thread instanceof DDEThread) {
+                            TimeKeeper timeKeeper = ((DDEThread) thread)
+                                .getTimeKeeper();
+                            _threadTimes[cnt] = timeKeeper.getCurrentTime();
                         }
                     }
                 }
             }
+
             cnt++;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _numTokens;
     private Token[] _tokens = null;
     private double[] _threadTimes = null;

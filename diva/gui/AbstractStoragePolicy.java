@@ -27,6 +27,7 @@ package diva.gui;
 
 import java.io.File;
 
+
 /**
  * It is nice if storage policies suggest good pathnames.  Usually the
  * file they last opened.  This abstract class provides such functionality.
@@ -35,7 +36,6 @@ import java.io.File;
  * @version $Id$
  */
 public abstract class AbstractStoragePolicy implements StoragePolicy {
-
     private String _directory = null;
 
     /** Return a reasonable directory for file choosers to use.  If a
@@ -46,18 +46,23 @@ public abstract class AbstractStoragePolicy implements StoragePolicy {
      */
     public String getDirectory() {
         String dir = "";
+
         if (_directory != null) {
             dir = _directory;
         } else {
             String cwd = System.getProperty("user.dir");
+
             if (cwd != null) {
                 dir = cwd;
             } else {
                 String home = System.getProperty("user.home");
-                if (home != null)
+
+                if (home != null) {
                     dir = home;
+                }
             }
         }
+
         return dir;
     }
 
@@ -78,6 +83,3 @@ public abstract class AbstractStoragePolicy implements StoragePolicy {
         _directory = directory;
     }
 }
-
-
-

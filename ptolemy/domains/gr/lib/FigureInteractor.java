@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.gr.lib;
 
 import java.awt.Cursor;
@@ -41,6 +40,7 @@ import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// FigureInteractor
+
 /**
    Listen for and handle events on a Diva figure.  Because Diva figures
    are not derived from Java's component class, implementing a key
@@ -57,8 +57,7 @@ import diva.canvas.toolbox.BasicFigure;
    @Pt.ProposedRating Yellow (ismael)
    @Pt.AcceptedRating Red (cxh)
 */
-public class FigureInteractor extends AbstractInteractor implements KeyListener{
-
+public class FigureInteractor extends AbstractInteractor implements KeyListener {
     /** Construct a FigureInteractor for the given figure.
      * @param figure The figure this interactor is to listen and respond to.
      */
@@ -67,7 +66,6 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener{
         _figure = figure;
         _isSelected = false;
     }
-
 
     /** Return whether or not a figure has been selected in the
      *  viewscreen.  A figure is selected by a single mouse click on
@@ -80,23 +78,29 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener{
         return _isSelected;
     }
 
-
     /** Translate a selected figure according to which arrow key is
      *  pressed.  This will respond only to the arrow keys outside of
      *  the number pad.
      *  @param e The KeyEvent received.
      */
     public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+        case KeyEvent.VK_UP:
+            _figure.translate(0, -1);
+            break;
 
-        switch(e.getKeyCode()) {
-        case KeyEvent.VK_UP:    _figure.translate(0, -1);
+        case KeyEvent.VK_DOWN:
+            _figure.translate(0, 1);
             break;
-        case KeyEvent.VK_DOWN:  _figure.translate(0, 1);
+
+        case KeyEvent.VK_LEFT:
+            _figure.translate(-1, 0);
             break;
-        case KeyEvent.VK_LEFT:  _figure.translate(-1, 0);
+
+        case KeyEvent.VK_RIGHT:
+            _figure.translate(1, 0);
             break;
-        case KeyEvent.VK_RIGHT: _figure.translate(1, 0);
-            break;
+
             /*
              * case KeyEvent.VK_A: _figureActions.aPressed();
              break;
@@ -108,63 +112,61 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener{
         }
     }
 
+    /** Included to comply with the KeyListener interface requirement.
+     *  This method does nothing in its current implementation.
+     *  @param e The KeyEvent received.
+     */
+    public void keyReleased(KeyEvent e) {
+    }
 
     /** Included to comply with the KeyListener interface requirement.
      *  This method does nothing in its current implementation.
      *  @param e The KeyEvent received.
      */
-    public void keyReleased(KeyEvent e) {}
-
-
-    /** Included to comply with the KeyListener interface requirement.
-     *  This method does nothing in its current implementation.
-     *  @param e The KeyEvent received.
-     */
-    public void keyTyped(KeyEvent e) {}
-
+    public void keyTyped(KeyEvent e) {
+    }
 
     /** Included to comply with the AbstractListener implementation
      *  requirement.  This method does nothing in its current
      *  implementation.
      *  @param layerEvent The LayerEvent received.
      */
-    public void mouseClicked(LayerEvent layerEvent) {}
-
+    public void mouseClicked(LayerEvent layerEvent) {
+    }
 
     /** Translate the figure to wherever the mouse is dragged.
      *  @param layerEvent The LayerEvent received.
      */
     public void mouseDragged(LayerEvent layerEvent) {
         _figure.translate(layerEvent.getLayerX() - dragPointX,
-                layerEvent.getLayerY() - dragPointY);
+            layerEvent.getLayerY() - dragPointY);
         dragPointX = layerEvent.getLayerX();
         dragPointY = layerEvent.getLayerY();
     }
-
 
     /** Included to comply with the AbstractListener implementation
      *  requirement.  This method does nothing in its current
      *  implementation.
      * @param layerEvent The LayerEvent received.
      */
-    public void mouseEntered(LayerEvent layerEvent) {}
-
-
-    /** Included to comply with the AbstractListener implementation
-     *  requirement.  This method does nothing in its current
-     *  implementation.
-     *  @param layerEvent The LayerEvent received.
-     */
-    public void mouseExited(LayerEvent layerEvent) {}
-
+    public void mouseEntered(LayerEvent layerEvent) {
+    }
 
     /** Included to comply with the AbstractListener implementation
      *  requirement.  This method does nothing in its current
      *  implementation.
      *  @param layerEvent The LayerEvent received.
      */
-    public void mouseMoved(LayerEvent layerEvent) {}
+    public void mouseExited(LayerEvent layerEvent) {
+    }
 
+    /** Included to comply with the AbstractListener implementation
+     *  requirement.  This method does nothing in its current
+     *  implementation.
+     *  @param layerEvent The LayerEvent received.
+     */
+    public void mouseMoved(LayerEvent layerEvent) {
+    }
 
     /** Update the state of this listener to reflect where on the
      *  figure the mouse button was pressed, and change the mouse
@@ -175,19 +177,17 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener{
         setSelected(true);
         dragPointX = layerEvent.getLayerX();
         dragPointY = layerEvent.getLayerY();
-        _canvas =
-            ((FigureLayer)_figure.getParent()).getCanvasPane().getCanvas();
+        _canvas = ((FigureLayer) _figure.getParent()).getCanvasPane().getCanvas();
         _canvas.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     }
-
 
     /** Included to comply with the AbstractListener implementation
      *  requirement.  This method does nothing in its current
      *  implementation.
      *  @param layerEvent The LayerEvent received.
      */
-    public void mouseReleased(LayerEvent layerEvent) {}
-
+    public void mouseReleased(LayerEvent layerEvent) {
+    }
 
     /** Set whether the figure being listened to is selected or not selected.
      *  @param selected <b>true</b> if the figure being listened to is
@@ -195,19 +195,21 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener{
      */
     public void setSelected(boolean selected) {
         _isSelected = selected;
+
         if (_isSelected) {
             if (_figure instanceof BasicFigure) {
-                ((BasicFigure)_figure).setLineWidth(4);
+                ((BasicFigure) _figure).setLineWidth(4);
             }
+
             _viewScreen.setSelectedFigure(_figure);
         } else {
             if (_figure instanceof BasicFigure) {
-                ((BasicFigure)_figure).setLineWidth(1);
+                ((BasicFigure) _figure).setLineWidth(1);
             }
+
             _viewScreen.setSelectedFigure(null);
         }
     }
-
 
     /** Notify this object of the view screen which contains the
      *  figure this object is listening to.
@@ -221,7 +223,6 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener{
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
     //The canvas containing the figure this interactor is listening to.
     private JCanvas _canvas;
 

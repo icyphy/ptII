@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel;
 
 import java.io.IOException;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InstantiableNamedObj
+
 /**
    An InstantiableNamedObj is a named object that can be either a class
    definition or an instance.  If it is a class definition, then "instances" of
@@ -72,7 +73,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (neuendor)
 */
 public class InstantiableNamedObj extends NamedObj implements Instantiable {
-
     /** Construct an object in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -116,7 +116,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @exception IllegalActionException If the name has a period.
      */
     public InstantiableNamedObj(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace, name);
     }
 
@@ -135,13 +135,12 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *   cannot be cloned.
      *  @return A new instance of InstantiableNamedObj.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         try {
             workspace().getReadAccess();
 
-            InstantiableNamedObj newObject
-                = (InstantiableNamedObj)super.clone(workspace);
+            InstantiableNamedObj newObject = (InstantiableNamedObj) super.clone(workspace);
+
             // The new object does not have any other objects deferring
             // their MoML definitions to it, so we have to reset this.
             newObject._children = null;
@@ -149,9 +148,11 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             // Set the parent using _setParent() rather than the default
             // clone to get the side effects.
             newObject._parent = null;
+
             // NOTE: This used to do the following,
             // but we now rely on _adjustDeferrals()
             // to fix the parent relationships.
+
             /*
             if (_parent != null) {
                 try {
@@ -208,39 +209,37 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see ptolemy.kernel.util.MoMLExportable
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         if (!isClassDefinition()) {
             super.exportMoML(output, depth, name);
             return;
         }
+
         // If the object is not persistent, and we are not
         // at level 0, do nothing.
         if (_isMoMLSuppressed(depth)) {
             return;
         }
 
-        if (depth == 0 && getContainer() == null) {
+        if ((depth == 0) && (getContainer() == null)) {
             // No container, and this is a top level moml element.
             // Generate header information.
             output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                    + "<!DOCTYPE class PUBLIC "
-                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "    \"http://ptolemy.eecs.berkeley.edu"
-                    + "/xml/dtd/MoML_1.dtd\">\n");
+                + "<!DOCTYPE class PUBLIC "
+                + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                + "    \"http://ptolemy.eecs.berkeley.edu"
+                + "/xml/dtd/MoML_1.dtd\">\n");
         }
 
-        output.write(_getIndentPrefix(depth)
-                + "<class name=\""
-                + name
-                + "\" extends=\""
-                + getClassName()
-                + "\"");
+        output.write(_getIndentPrefix(depth) + "<class name=\"" + name
+            + "\" extends=\"" + getClassName() + "\"");
 
         if (getSource() != null) {
             output.write(" source=\"" + getSource() + "\">\n");
         } else {
             output.write(">\n");
         }
+
         _exportMoMLContents(output, depth + 1);
 
         // Write the close of the element.
@@ -262,6 +261,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
         if (_children == null) {
             return null;
         }
+
         return Collections.unmodifiableList(_children);
     }
 
@@ -303,12 +303,13 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *   name but the wrong class is found.
      *  @see ptolemy.kernel.util.Derivable
      */
-    public List getPrototypeList()
-            throws IllegalActionException {
+    public List getPrototypeList() throws IllegalActionException {
         List result = super.getPrototypeList();
+
         if (getParent() != null) {
             result.add(0, getParent());
         }
+
         return result;
     }
 
@@ -357,20 +358,23 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see Instantiable
      */
     public Instantiable instantiate(NamedObj container, String name)
-            throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException {
+        throws CloneNotSupportedException, IllegalActionException, 
+            NameDuplicationException {
         if (!isClassDefinition()) {
             throw new IllegalActionException(this,
-                    "Cannot instantiate an object that is not a "
-                    + "class definition");
+                "Cannot instantiate an object that is not a "
+                + "class definition");
         }
+
         // Use the workspace of the container, if there is one,
         // or the workspace of this object, if there isn't.
         Workspace workspace = workspace();
+
         if (container != null) {
             workspace = container.workspace();
         }
-        InstantiableNamedObj clone = (InstantiableNamedObj)clone(workspace);
+
+        InstantiableNamedObj clone = (InstantiableNamedObj) clone(workspace);
 
         // The cloning process results an object that defers change
         // requests.  By default, we do not want to defer change
@@ -412,15 +416,17 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see Instantiable
      */
     public void setClassDefinition(boolean isClass)
-            throws IllegalActionException {
+        throws IllegalActionException {
         workspace().getWriteAccess();
+
         try {
-            if (!isClass && _isClassDefinition
-                    && getChildren() != null && getChildren().size() > 0) {
+            if (!isClass && _isClassDefinition && (getChildren() != null)
+                    && (getChildren().size() > 0)) {
                 throw new IllegalActionException(this,
-                        "Cannot change from a class to an instance because" +
-                " there are subclasses and/or instances.");
+                    "Cannot change from a class to an instance because"
+                    + " there are subclasses and/or instances.");
             }
+
             _isClassDefinition = isClass;
         } finally {
             workspace().doneWriting();
@@ -457,39 +463,48 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see #getParent()
      *  @see Instantiable
      */
-    protected void _setParent(Instantiable parent) throws IllegalActionException {
-        if (parent != null && !(parent instanceof InstantiableNamedObj)) {
+    protected void _setParent(Instantiable parent)
+        throws IllegalActionException {
+        if ((parent != null) && !(parent instanceof InstantiableNamedObj)) {
             throw new IllegalActionException(this,
-                    "Parent of an InstantiableNamedObj must also " +
-                    "be an InstantiableNamedObj.");
+                "Parent of an InstantiableNamedObj must also "
+                + "be an InstantiableNamedObj.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             if (_parent != null) {
                 // Previously existing deferral.
                 // Remove it.
                 // NOTE: If WeakReference overrides equal(),
                 // then this could probably be done more simply.
                 List deferredFromList = _parent._children;
+
                 if (deferredFromList != null) {
                     // Removing a previous reference.
                     // Note that this is a list of weak references, so
                     // it is not sufficient to just remove this!
                     ListIterator references = deferredFromList.listIterator();
+
                     while (references.hasNext()) {
-                        WeakReference reference =
-                            (WeakReference)references.next();
-                        if (reference == null || reference.get() == this) {
+                        WeakReference reference = (WeakReference) references
+                            .next();
+
+                        if ((reference == null) || (reference.get() == this)) {
                             references.remove();
                         }
                     }
                 }
             }
-            _parent = (InstantiableNamedObj)parent;
+
+            _parent = (InstantiableNamedObj) parent;
+
             if (_parent != null) {
                 if (_parent._children == null) {
                     _parent._children = new LinkedList();
                 }
+
                 // NOTE: These need to be weak references.
                 _parent._children.add(new WeakReference(this));
             }

@@ -33,11 +33,11 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.lib.ViewScreen2D;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import quicktime.Errors;
@@ -61,8 +61,11 @@ import quicktime.std.movies.Track;
 import quicktime.std.movies.media.VideoMedia;
 import quicktime.util.QTHandle;
 import quicktime.util.RawEncodedImage;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// MovieViewScreen2D
+
 /**
    A sink actor that renders a two-dimensional scene into a display screen, and
    saves it as a movie using Apple's Quicktime for Java.
@@ -73,9 +76,8 @@ import quicktime.util.RawEncodedImage;
    @Pt.ProposedRating Red (chf)
    @Pt.AcceptedRating Red (chf)
 */
-public class MovieViewScreen2D extends ViewScreen2D
-    implements StdQTConstants, Errors {
-
+public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants,
+    Errors {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -89,7 +91,7 @@ public class MovieViewScreen2D extends ViewScreen2D
      *   CompositeActor and the name collides with an entity in the container.
      */
     public MovieViewScreen2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileName = new FileParameter(this, "fileName");
@@ -98,9 +100,7 @@ public class MovieViewScreen2D extends ViewScreen2D
         frameRate = new Parameter(this, "frameRate");
         frameRate.setTypeEquals(BaseType.INT);
         frameRate.setExpression("30");
-
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     Ports and Parameters                  ////
@@ -125,30 +125,26 @@ public class MovieViewScreen2D extends ViewScreen2D
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        _frameNumber ++;
+        _frameNumber++;
+
         try {
             // Paint the frame.
             _imageDrawer.redraw(null);
 
             // Compress it.
             CompressedFrameInfo info = _videoSequence.compressFrame(_gw,
-                    _videoSize,
-                    codecFlagUpdatePrevious,
-                    _compressedFrame);
+                    _videoSize, codecFlagUpdatePrevious, _compressedFrame);
             boolean isKeyFrame = info.getSimilarity() == 0;
-            System.out.println("f#:" + _frameNumber + ",kf="
-                    + isKeyFrame + ",sim=" + info.getSimilarity());
+            System.out.println("f#:" + _frameNumber + ",kf=" + isKeyFrame
+                + ",sim=" + info.getSimilarity());
 
             ImageDescription desc = _videoSequence.getDescription();
 
             // Add it to the video stream.
-            _videoMedia.addSample(_imageHandle,
-                    0, // dataOffset,
-                    info.getDataSize(),
-                    600/_frameRateValue, // frameDuration, in 1/600ths of a second.
-                    desc,
-                    1, // one sample
-                    (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
+            _videoMedia.addSample(_imageHandle, 0, // dataOffset,
+                info.getDataSize(), 600 / _frameRateValue, // frameDuration, in 1/600ths of a second.
+                desc, 1, // one sample
+                (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
         } catch (Exception ex) {
         }
     }
@@ -158,17 +154,18 @@ public class MovieViewScreen2D extends ViewScreen2D
      *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
-
         super.initialize();
         _frameNumber = 0;
         _frameWidth = _getHorizontalPixels();
         _frameHeight = _getVerticalPixels();
+
         try {
             QTSession.open();
 
             Frame frame = new Frame("foo");
             QTCanvas canv = new QTCanvas(QTCanvas.kInitialSize, 0.5F, 0.5F);
             frame.add("Center", canv);
+
             Painter painter = new Painter();
             _imageDrawer = new QTImageDrawer(painter,
                     new Dimension(_frameWidth, _frameHeight),
@@ -179,8 +176,7 @@ public class MovieViewScreen2D extends ViewScreen2D
 
             frame.pack();
             _file = new QTFile(fileName.asFile());
-            _movie = Movie.createMovieFile(_file,
-                    kMoviePlayer,
+            _movie = Movie.createMovieFile(_file, kMoviePlayer,
                     createMovieFileDeleteCurFile
                     | createMovieFileDontCreateResFile);
 
@@ -188,38 +184,33 @@ public class MovieViewScreen2D extends ViewScreen2D
             // add content
             //
             System.out.println("Doing Video Track");
-            int kNoVolume        = 0;
+
+            int kNoVolume = 0;
             int kVidTimeScale = 600;
 
-            _videoTrack = _movie.addTrack(_frameWidth,
-                    _frameHeight, kNoVolume);
+            _videoTrack = _movie.addTrack(_frameWidth, _frameHeight, kNoVolume);
             _videoMedia = new VideoMedia(_videoTrack, kVidTimeScale);
 
             _videoMedia.beginEdits();
 
             _videoSize = new QDRect(_frameWidth, _frameHeight);
             _gw = new QDGraphics(_videoSize);
-            int size = QTImage.getMaxCompressionSize(_gw,
-                    _videoSize,
-                    _gw.getPixMap().getPixelSize(),
-                    codecNormalQuality,
-                    kAnimationCodecType,
-                    CodecComponent.anyCodec);
+
+            int size = QTImage.getMaxCompressionSize(_gw, _videoSize,
+                    _gw.getPixMap().getPixelSize(), codecNormalQuality,
+                    kAnimationCodecType, CodecComponent.anyCodec);
             _imageHandle = new QTHandle(size, true);
             _imageHandle.lock();
             _compressedFrame = RawEncodedImage.fromQTHandle(_imageHandle);
 
-            _frameRateValue = ((IntToken)frameRate.getToken()).intValue();
-            _videoSequence = new CSequence(_gw,
-                    _videoSize,
-                    _gw.getPixMap().getPixelSize(),
-                    kAnimationCodecType,
-                    CodecComponent.bestFidelityCodec,
-                    codecNormalQuality,
-                    codecNormalQuality,
-                    _frameRateValue,        //1 key frame every second
+            _frameRateValue = ((IntToken) frameRate.getToken()).intValue();
+            _videoSequence = new CSequence(_gw, _videoSize,
+                    _gw.getPixMap().getPixelSize(), kAnimationCodecType,
+                    CodecComponent.bestFidelityCodec, codecNormalQuality,
+                    codecNormalQuality, _frameRateValue, //1 key frame every second
                     null, //cTab,
                     0);
+
             ImageDescription desc = _videoSequence.getDescription();
 
             _imageDrawer.setRedrawing(true);
@@ -239,36 +230,37 @@ public class MovieViewScreen2D extends ViewScreen2D
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
         try {
             _videoMedia.endEdits();
 
-            int kTrackStart        = 0;
-            int kMediaTime         = 0;
-            int kMediaRate        = 1;
+            int kTrackStart = 0;
+            int kMediaTime = 0;
+            int kMediaRate = 1;
             _videoTrack.insertMedia(kTrackStart, kMediaTime,
-                    _videoMedia.getDuration(), kMediaRate);
+                _videoMedia.getDuration(), kMediaRate);
 
             // Save movie to file.
             OpenMovieFile outStream = OpenMovieFile.asWrite(_file);
             _movie.addResource(outStream, movieInDataForkResID, _file.getName());
             outStream.close();
             System.out.println("Finished movie");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         QTSession.close();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     private class Painter implements Paintable {
         private Rectangle[] ret = new Rectangle[1];
 
         public void newSizeNotified(QTImageDrawer drawer, Dimension d) {
             ret[0] = new Rectangle(_frameWidth, _frameHeight);
         }
+
         public Rectangle[] paint(Graphics g) {
             getCanvas().paint(g);
 
@@ -279,7 +271,6 @@ public class MovieViewScreen2D extends ViewScreen2D
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private Movie _movie;
     private QTImageDrawer _imageDrawer;
     private QTHandle _imageHandle;
@@ -295,4 +286,3 @@ public class MovieViewScreen2D extends ViewScreen2D
     private int _frameNumber;
     private int _frameRateValue;
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.logic.LogicFunction;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictLogicFunction
+
 /**
    On each firing, produce an output token with a value that is
    equal to the specified logic operator of the input(s) if that output
@@ -74,7 +75,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (pwhitake)
 */
 public class NonStrictLogicFunction extends LogicFunction {
-
     /** Construct an actor with the given container and name.  Set the
      *  logic function to the default ("and").  Set the types of the ports
      *  to boolean.
@@ -86,7 +86,7 @@ public class NonStrictLogicFunction extends LogicFunction {
      *   actor with this name.
      */
     public NonStrictLogicFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
     }
@@ -102,11 +102,15 @@ public class NonStrictLogicFunction extends LogicFunction {
     public void fire() throws IllegalActionException {
         BooleanToken value = null;
         BooleanToken in = null;
+
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.isKnown(i)) {
                 if (input.hasToken(i)) {
-                    in = (BooleanToken)(input.get(i));
-                    if (in != null) value = _updateFunction(in, value);
+                    in = (BooleanToken) (input.get(i));
+
+                    if (in != null) {
+                        value = _updateFunction(in, value);
+                    }
                 }
             }
         }
@@ -114,7 +118,9 @@ public class NonStrictLogicFunction extends LogicFunction {
         if (value == null) {
             // If value is null, there were no inputs.  If all the inputs are
             // known, they must be all absent, so make the output absent.
-            if (input.isKnown()) output.sendClear(0);
+            if (input.isKnown()) {
+                output.sendClear(0);
+            }
         } else {
             // If the value is not null, there were some inputs.  If some of
             // the inputs are unknown, the result might be invalid.  In that
@@ -123,8 +129,11 @@ public class NonStrictLogicFunction extends LogicFunction {
         }
 
         if (value != null) {
-            if (_negate) value = value.not();
-            output.send(0, (BooleanToken)value);
+            if (_negate) {
+                value = value.not();
+            }
+
+            output.send(0, (BooleanToken) value);
         }
     }
 
@@ -142,34 +151,47 @@ public class NonStrictLogicFunction extends LogicFunction {
     /** Nullify results that cannot be asserted due to unknown inputs.
      */
     private BooleanToken _nullifyIncompleteResults(BooleanToken inValue)
-            throws IllegalActionException {
-        BooleanToken outValue = inValue;;
+        throws IllegalActionException {
+        BooleanToken outValue = inValue;
+        ;
+
         if (!input.isKnown()) {
-            switch(_function) {
+            switch (_function) {
             case _AND:
+
                 // Cannot assert that the output of AND is true unless
                 // all inputs are known.
-                if (inValue.booleanValue()) outValue = null;
+                if (inValue.booleanValue()) {
+                    outValue = null;
+                }
+
                 break;
+
             case _OR:
+
                 // Cannot assert that the output of OR is false unless
                 // all inputs are known.
-                if (!inValue.booleanValue()) outValue = null;
+                if (!inValue.booleanValue()) {
+                    outValue = null;
+                }
+
                 break;
+
             case _XOR:
+
                 // Cannot assert the output of XOR unless
                 // all inputs are known.
                 outValue = null;
                 break;
+
             default:
                 throw new InternalErrorException(
-                        "Invalid value for _function private variable. "
-                        + "LogicFunction actor (" + getFullName()
-                        + ")"
-                        + " on function type " + _function);
+                    "Invalid value for _function private variable. "
+                    + "LogicFunction actor (" + getFullName() + ")"
+                    + " on function type " + _function);
             }
         }
+
         return outValue;
     }
-
 }

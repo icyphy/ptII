@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.kernel;
 
 import java.util.Iterator;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.PtolemyThread;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DEThreadActor
+
 /**
    A base class for threaded DE domain actors.
    <P>
@@ -73,7 +74,6 @@ import ptolemy.kernel.util.PtolemyThread;
    @see DEActor
 */
 public abstract class DEThreadActor extends DEActor implements Runnable {
-
     /** Constructor.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -83,7 +83,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
      *   actor with this name.
      */
     public DEThreadActor(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -95,12 +95,14 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     public void fire() {
         // Set the flag to false, to make sure only this actor wakes up.
         _isWaiting = false;
-        synchronized(_monitor) {
+
+        synchronized (_monitor) {
             _monitor.notifyAll();
         }
+
         // then wait until this actor go to wait.
         while (!_isWaiting) {
-            synchronized(_monitor) {
+            synchronized (_monitor) {
                 try {
                     _monitor.wait();
                 } catch (InterruptedException e) {
@@ -127,17 +129,17 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
      *  input events arrive.
      */
     public void waitForNewInputs() {
-
         _emptyPorts();
 
         // Set the flag to true, so the director can wake up.
         _isWaiting = true;
-        synchronized(_monitor) {
+
+        synchronized (_monitor) {
             _monitor.notifyAll();
         }
 
         while (_isWaiting) {
-            synchronized(_monitor) {
+            synchronized (_monitor) {
                 try {
                     _monitor.wait();
                 } catch (InterruptedException e) {
@@ -152,39 +154,37 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
      *  @exception IllegalActionException If the specified array of ports
      *  is not all input ports.
      */
-    public void waitForNewInputs(IOPort[] ports)
-            throws IllegalActionException {
-
+    public void waitForNewInputs(IOPort[] ports) throws IllegalActionException {
         _emptyPorts();
 
         while (true) {
-
             waitForNewInputs();
+
             // check for availability of tokens in the list of ports.
             // If any of the listed ports has at least a token, then return
             // Otherwise, wait for more new inputs.
-
             for (int i = 0; i < ports.length; i++) {
                 IOPort port = ports[i];
+
                 for (int j = 0; j < port.getWidth(); j++) {
-                    if ( port.hasToken(j) ) {
+                    if (port.hasToken(j)) {
                         return;
                     }
                 }
             }
         } // while (true)
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Empty all receivers of all input ports.
     // FIXME: Shouldn't this be guaranteed by the run() of the actor?
     private void _emptyPorts() {
         Iterator ports = inputPortList().iterator();
+
         while (ports.hasNext()) {
-            IOPort port = (IOPort)ports.next();
+            IOPort port = (IOPort) ports.next();
+
             for (int channel = 0; channel < port.getWidth(); channel++) {
                 try {
                     while (port.hasToken(channel)) {
@@ -192,7 +192,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                     }
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(this, ex,
-                            "Failed to empty ports?");
+                        "Failed to empty ports?");
                 }
             }
         }
@@ -200,10 +200,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _isWaiting = true;
     private static Object _monitor = new Object();
     private PtolemyThread _thread;
 }
-
-

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.kernel.attributes;
 
 import java.net.MalformedURLException;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// URIAttribute
+
 /**
    An attribute that identifies the URI from which the container was read.
    This attribute is not persistent by default.  That is, it exports no
@@ -65,7 +66,6 @@ import ptolemy.kernel.util.SingletonAttribute;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class URIAttribute extends SingletonAttribute {
-
     /** Construct an attribute with the given name contained by the specified
      *  container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -82,7 +82,7 @@ public class URIAttribute extends SingletonAttribute {
      *   an attribute already in the container.
      */
     public URIAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }
@@ -103,21 +103,24 @@ public class URIAttribute extends SingletonAttribute {
     public static URI getModelURI(NamedObj container) {
         // Search up the tree for this attribute.
         URIAttribute modelURI = null;
-        while (container != null && modelURI == null) {
+
+        while ((container != null) && (modelURI == null)) {
             try {
-                modelURI = (URIAttribute)container.getAttribute(
-                        "_uri", URIAttribute.class);
+                modelURI = (URIAttribute) container.getAttribute("_uri",
+                        URIAttribute.class);
             } catch (IllegalActionException ex) {
                 // An attribute was found with name "_uri", but it is not
                 // an instance of URIAttribute.  Continue the search.
                 modelURI = null;
             }
-            container = (NamedObj)container.getContainer();
+
+            container = (NamedObj) container.getContainer();
         }
+
         if (modelURI != null) {
             return modelURI.getURI();
         } else {
-        return null;
+            return null;
         }
     }
 
@@ -156,10 +159,10 @@ public class URIAttribute extends SingletonAttribute {
         // % $url toString
         // jar:
         // The above should be jar:file:/C:/foo.jar!/intro.htm
-
         if (_value == null) {
             return null;
         }
+
         return new URL(_value.toString());
     }
 
@@ -172,7 +175,9 @@ public class URIAttribute extends SingletonAttribute {
      */
     public void setURI(URI uri) throws IllegalActionException {
         _value = uri;
-        NamedObj container = (NamedObj)getContainer();
+
+        NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             container.attributeChanged(this);
         }
@@ -193,15 +198,16 @@ public class URIAttribute extends SingletonAttribute {
             // For example, a URL that has a space in it is not
             // a valid URI, the space must be quoted (converted) to %20
             try {
-                _value = new URI(url.getProtocol(), url.getFile(),
-                        url.getRef());
+                _value = new URI(url.getProtocol(), url.getFile(), url.getRef());
             } catch (URISyntaxException ex2) {
                 // Should not occur because a URL is a valid URI.
                 throw new InternalErrorException(this, ex2,
-                        "Error constructing URI from " + url);
+                    "Error constructing URI from " + url);
             }
         }
-        NamedObj container = (NamedObj)getContainer();
+
+        NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             container.attributeChanged(this);
         }
@@ -209,7 +215,6 @@ public class URIAttribute extends SingletonAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The value.
     private URI _value;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AddSubtract
+
 /**
    A polymorphic adder/subtractor.
    This adder has two input ports, both of which are multiports,
@@ -78,9 +79,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class AddSubtract extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -91,7 +90,7 @@ public class AddSubtract extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public AddSubtract(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         plus = new TypedIOPort(this, "plus", true, false);
         plus.setMultiport(true);
@@ -99,20 +98,12 @@ public class AddSubtract extends TypedAtomicActor {
         minus.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<text x=\"-13\" y=\"-5\" "
-                + "style=\"font-size:18\">\n"
-                + "+ \n"
-                + "</text>\n"
-                + "<text x=\"-13\" y=\"7\" "
-                + "style=\"font-size:18\">\n"
-                + "_ \n"
-                + "</text>\n"
-                + "</svg>\n");
-
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-13\" y=\"-5\" " + "style=\"font-size:18\">\n"
+            + "+ \n" + "</text>\n" + "<text x=\"-13\" y=\"7\" "
+            + "style=\"font-size:18\">\n" + "_ \n" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -152,6 +143,7 @@ public class AddSubtract extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Token sum = null;
+
         for (int i = 0; i < plus.getWidth(); i++) {
             if (plus.hasToken(i)) {
                 if (sum == null) {
@@ -161,12 +153,15 @@ public class AddSubtract extends TypedAtomicActor {
                 }
             }
         }
+
         for (int i = 0; i < minus.getWidth(); i++) {
             if (minus.hasToken(i)) {
                 Token in = minus.get(i);
+
                 if (sum == null) {
                     sum = in.zero();
                 }
+
                 sum = sum.subtract(in);
             }
         }

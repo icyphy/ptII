@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.IntToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Commutator
+
 /**
    A polymorphic commutator, which merges a set of input sequences into a
    single output sequence.  The commutator has an input port (a
@@ -70,7 +71,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class Commutator extends Transformer implements SequenceActor {
-
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport. Create
      *  the actor parameters.
@@ -83,7 +83,7 @@ public class Commutator extends Transformer implements SequenceActor {
      *  by the proposed container.
      */
     public Commutator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
         output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
@@ -108,11 +108,10 @@ public class Commutator extends Transformer implements SequenceActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   attributes that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Commutator newObject = (Commutator)super.clone(workspace);
-        newObject.output_tokenProductionRate = (Parameter)
-            (newObject.output.getAttribute("tokenProductionRate"));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Commutator newObject = (Commutator) super.clone(workspace);
+        newObject.output_tokenProductionRate = (Parameter) (newObject.output
+            .getAttribute("tokenProductionRate"));
         return newObject;
     }
 
@@ -123,15 +122,17 @@ public class Commutator extends Transformer implements SequenceActor {
      */
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
+
         if (port == input) {
             try {
-                output_tokenProductionRate.setToken(
-                        new IntToken(input.getWidth()));
+                output_tokenProductionRate.setToken(new IntToken(
+                        input.getWidth()));
+
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                        "input width was" + input.getWidth());
+                    "input width was" + input.getWidth());
             }
         }
     }
@@ -148,12 +149,16 @@ public class Commutator extends Transformer implements SequenceActor {
      */
     public void fire() throws IllegalActionException {
         _tentativeInputPosition = _currentInputPosition;
+
         int width = input.getWidth();
+
         for (int i = 0; i < width; i++) {
             if (!input.hasToken(_tentativeInputPosition)) {
                 break;
             }
+
             output.send(0, input.get(_tentativeInputPosition++));
+
             if (_tentativeInputPosition >= width) {
                 _tentativeInputPosition = 0;
             }
@@ -188,12 +193,12 @@ public class Commutator extends Transformer implements SequenceActor {
         if (!input.hasToken(_currentInputPosition)) {
             return false;
         }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The channel number for the next input.
     private int _currentInputPosition;
 

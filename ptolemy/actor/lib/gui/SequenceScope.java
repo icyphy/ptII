@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import ptolemy.data.IntToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SequenceScope
+
 /**
    A sequence plotter for sequences that are potentially infinitely long.
    This plotter contains an instance of the Plot
@@ -72,7 +73,6 @@ import ptolemy.plot.Plot;
    @see ArrayPlotter
 */
 public class SequenceScope extends SequencePlotter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -82,7 +82,7 @@ public class SequenceScope extends SequencePlotter {
      *   actor with this name.
      */
     public SequenceScope(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // set the parameters
@@ -111,17 +111,19 @@ public class SequenceScope extends SequencePlotter {
      *  attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if ((attribute == width || attribute == xUnit || attribute == xInit)
-                && plot != null) {
+        throws IllegalActionException {
+        if (((attribute == width) || (attribute == xUnit)
+                || (attribute == xInit)) && (plot != null)) {
             // Ensure that protected variables are set.
             super.attributeChanged(attribute);
-            int widthValue = ((IntToken)width.getToken()).intValue();
-            plot.setXRange(_xInit, _xUnit * widthValue + _xInit);
-        } else if (attribute == persistence && plot != null) {
-            int persValue = ((IntToken)persistence.getToken()).intValue();
+
+            int widthValue = ((IntToken) width.getToken()).intValue();
+            plot.setXRange(_xInit, (_xUnit * widthValue) + _xInit);
+        } else if ((attribute == persistence) && (plot != null)) {
+            int persValue = ((IntToken) persistence.getToken()).intValue();
+
             // NOTE: We assume the superclass ensures this cast is safe.
-            ((Plot)plot).setPointsPersistence(persValue);
+            ((Plot) plot).setPointsPersistence(persValue);
         } else {
             super.attributeChanged(attribute);
         }
@@ -133,17 +135,22 @@ public class SequenceScope extends SequencePlotter {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        int widthValue = ((IntToken)width.getToken()).intValue();
-        plot.setXRange(_xInit, _xUnit * widthValue + _xInit);
+
+        int widthValue = ((IntToken) width.getToken()).intValue();
+        plot.setXRange(_xInit, (_xUnit * widthValue) + _xInit);
         plot.setWrap(true);
-        int persValue = ((IntToken)persistence.getToken()).intValue();
+
+        int persValue = ((IntToken) persistence.getToken()).intValue();
+
         // NOTE: We assume the superclass ensures this cast is safe.
-        ((Plot)plot).setPointsPersistence(persValue);
+        ((Plot) plot).setPointsPersistence(persValue);
+
         // Override the default so that there are not gaps in the lines.
         // NOTE: We assume the superclass ensures this cast is safe.
-        if (((Plot)plot).getMarksStyle().equals("none")) {
-            ((Plot)plot).setMarksStyle("pixels");
+        if (((Plot) plot).getMarksStyle().equals("none")) {
+            ((Plot) plot).setMarksStyle("pixels");
         }
+
         plot.repaint();
     }
 

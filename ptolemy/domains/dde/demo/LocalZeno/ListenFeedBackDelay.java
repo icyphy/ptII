@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import ptolemy.domains.dde.kernel.FeedBackDelay;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ListenFeedBackDelay
+
 /**
    An FeedBackDelay actor that can notify an ExecEventListener of ExecEvents.
    In particular, the listener will be notified each time the prefire(),
@@ -57,12 +58,11 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.domains.dde.kernel.NullToken
 */
 public class ListenFeedBackDelay extends FeedBackDelay {
-
     /** Construct a ListenFeedBackDelay actor with no container and a
      *  name that is an empty string.
      */
     public ListenFeedBackDelay()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -71,7 +71,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      * @param workspace The workspace for this ListenFeedBackDelay actor.
      */
     public ListenFeedBackDelay(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -85,7 +85,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  superclass throws a NameDuplicationException .
      */
     public ListenFeedBackDelay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -102,13 +102,15 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  with the thread activity of this method.
      */
     public boolean postfire() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+        _debug(new ExecEvent(this, ExecEvent.WAITING));
+
         try {
             Thread.sleep(100);
-        } catch(InterruptedException e) {
-            throw new IllegalActionException(this, "InternalError "
-                    + "exception during a sleeping thread.");
+        } catch (InterruptedException e) {
+            throw new IllegalActionException(this,
+                "InternalError " + "exception during a sleeping thread.");
         }
+
         return super.postfire();
     }
 
@@ -122,13 +124,15 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  with the thread activity of this method.
      */
     public boolean prefire() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
+        _debug(new ExecEvent(this, ExecEvent.WAITING));
+
         try {
             Thread.sleep(100);
-        } catch(InterruptedException e) {
-            throw new IllegalActionException(this, "InternalError "
-                    + "exception during a sleeping thread.");
+        } catch (InterruptedException e) {
+            throw new IllegalActionException(this,
+                "InternalError " + "exception during a sleeping thread.");
         }
+
         return super.prefire();
     }
 
@@ -138,7 +142,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  the execution of the wrapup method of this actor's superclass.
      */
     public void wrapup() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
+        _debug(new ExecEvent(this, ExecEvent.BLOCKED));
         super.wrapup();
     }
 }

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import java.io.BufferedReader;
@@ -44,10 +43,11 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//import java.io.Reader;
 
+//import java.io.Reader;
 //////////////////////////////////////////////////////////////////////////
 //// Reader
+
 /**
    This actor reads tokens from an URL, and output them. Each entry in
    the file corresponds to one iteration. If there are multiple fires in
@@ -85,7 +85,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (liuj)
 */
 public class Reader extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -95,7 +94,7 @@ public class Reader extends Source {
      *   actor with this name.
      */
     public Reader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the input port.
@@ -110,6 +109,7 @@ public class Reader extends Source {
         if (_stdIn == null) {
             _stdIn = new BufferedReader(new InputStreamReader(System.in));
         }
+
         setReader(_stdIn);
     }
 
@@ -128,7 +128,6 @@ public class Reader extends Source {
      */
     public Parameter refresh;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -139,29 +138,32 @@ public class Reader extends Source {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == sourceURL) {
             try {
-                StringToken URLToken = (StringToken)sourceURL.getToken();
+                StringToken URLToken = (StringToken) sourceURL.getToken();
+
                 if (URLToken == null) {
                     _source = null;
                     setReader(null);
                 } else {
                     _source = URLToken.stringValue();
+
                     if (_source.equals("")) {
                         setReader(null);
                     } else {
                         URL url = new URL(_source);
-                        java.io.BufferedReader reader = new BufferedReader(
-                                new InputStreamReader(url.openStream()));
+                        java.io.BufferedReader reader = new BufferedReader(new InputStreamReader(
+                                    url.openStream()));
                         setReader(reader);
                     }
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "attributeChanged(" + attribute + ") failed");
+                    "attributeChanged(" + attribute + ") failed");
             }
         }
+
         super.attributeChanged(attribute);
     }
 
@@ -170,6 +172,7 @@ public class Reader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         for (int i = 0; i < _dataSize; i++) {
             output.send(i, new DoubleToken(_data[i]));
         }
@@ -180,7 +183,7 @@ public class Reader extends Source {
      */
     public void initialize() throws IllegalActionException {
         System.out.println("actor.lib.Reader is obsolete, "
-                + "use actor.lib.DoubleReader instead");
+            + "use actor.lib.DoubleReader instead");
         _dataSize = output.getWidth();
         _data = new double[_dataSize];
         attributeChanged(sourceURL);
@@ -192,21 +195,28 @@ public class Reader extends Source {
     public boolean prefire() throws IllegalActionException {
         try {
             _dataSize = output.getWidth();
+
             if (_data.length != _dataSize) {
                 _data = new double[_dataSize];
             }
+
             String oneRow = _reader.readLine();
+
             if (oneRow == null) {
                 return false;
             }
+
             StringTokenizer tokenizer = new StringTokenizer(oneRow);
             int columnCount = tokenizer.countTokens();
+
             if (_dataSize > columnCount) {
                 _dataSize = columnCount;
             }
+
             for (int i = 0; i < _dataSize; i++) {
                 _data[i] = Double.valueOf(tokenizer.nextToken()).doubleValue();
             }
+
             return super.prefire();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "prefire() failed");
@@ -219,15 +229,16 @@ public class Reader extends Source {
      *  @exception IllegalActionException If an IO error occurs.
      */
     public void setReader(java.io.BufferedReader reader)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
-            if (_reader != null && _reader != _stdIn) {
+            if ((_reader != null) && (_reader != _stdIn)) {
                 _reader.close();
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "setReader(" + reader + ") failed");
+                "setReader(" + reader + ") failed");
         }
+
         if (reader != null) {
             _reader = reader;
         } else {
@@ -240,18 +251,17 @@ public class Reader extends Source {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            if (_reader != null && _reader != _stdIn) {
+            if ((_reader != null) && (_reader != _stdIn)) {
                 _reader.close();
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "wrapup(" + _reader + ") failed");
+                "wrapup(" + _reader + ") failed");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The writer to write to.
     private java.io.BufferedReader _reader = null;
 

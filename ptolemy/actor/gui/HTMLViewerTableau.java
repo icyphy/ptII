@@ -24,12 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import ptolemy.kernel.util.Attribute;
@@ -40,8 +40,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewerTableau
+
 /**
    A tableau representing a rendered HTML view in a toplevel window.
    The URL that is viewed is given by the <i>url</i> parameter, and
@@ -66,7 +68,6 @@ import ptolemy.util.StringUtilities;
    @see MoMLApplication#specToURL(String)
 */
 public class HTMLViewerTableau extends Tableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  This creates an instance of HTMLViewer.  It does not make the frame
      *  visible.  To do that, call show().
@@ -78,7 +79,7 @@ public class HTMLViewerTableau extends Tableau {
      *   attribute already in the container.
      */
     public HTMLViewerTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         url = new StringAttribute(this, "url");
@@ -104,18 +105,19 @@ public class HTMLViewerTableau extends Tableau {
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == url) {
-            String urlSpec = ((Settable)attribute).getExpression();
+            String urlSpec = ((Settable) attribute).getExpression();
+
             try {
                 // NOTE: This cannot handle a URL that is relative to the
                 // MoML file within which this attribute might be being
                 // defined.  Is there any way to do that?
                 URL toRead = MoMLApplication.specToURL(urlSpec);
-                ((HTMLViewer)getFrame()).setPage(toRead);
+                ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Cannot open URL: " + urlSpec);
+                    "Cannot open URL: " + urlSpec);
             }
         } else {
             super.attributeChanged(attribute);
@@ -128,7 +130,6 @@ public class HTMLViewerTableau extends Tableau {
     /** A factory that creates HTML viewer tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -138,7 +139,7 @@ public class HTMLViewerTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -162,40 +163,41 @@ public class HTMLViewerTableau extends Tableau {
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof HTMLEffigy) {
-
                 // Indicate to the effigy that this factory contains effigies
                 // offering multiple views of the effigy data.
                 effigy.setTableauFactory(this);
 
                 // First see whether the effigy already contains an
                 // HTMLViewerTableau.
-                HTMLViewerTableau tableau =
-                    (HTMLViewerTableau)effigy.getEntity("htmlTableau");
+                HTMLViewerTableau tableau = (HTMLViewerTableau) effigy
+                    .getEntity("htmlTableau");
+
                 if (tableau == null) {
-                    tableau = new HTMLViewerTableau(
-                            (HTMLEffigy)effigy, "htmlTableau");
+                    tableau = new HTMLViewerTableau((HTMLEffigy) effigy,
+                            "htmlTableau");
                 }
+
                 // Unfortunately, if we have a jar url, (for example
                 // jar:file:/C:/foo.jar!/intro.htm
                 // then the java.net.URI toURL() method will return
                 // a URL like jar:, which is missing the file: part
                 // This breaks Ptolemy II under WebStart.
                 URL pageURL = new URL(effigy.uri.getURI().toString());
+
                 try {
-                    ((HTMLViewer)tableau.getFrame())
-                        .setPage(pageURL);
+                    ((HTMLViewer) tableau.getFrame()).setPage(pageURL);
                 } catch (IOException io) {
                     // setPage() throws an IOException if the page can't
                     // be found.  If we are under Web Start, it could be
                     // that we are looking in the wrong Jar file, so
                     // we try again.
                     String urlString = effigy.uri.getURI().toString();
-                    URL anotherURL =
-                        JNLPUtilities.jarURLEntryResource(urlString);
-                    if (anotherURL == null && urlString.indexOf("#") != -1) {
-                        anotherURL =
-                            _entryResourceWithoutFragment(urlString);
+                    URL anotherURL = JNLPUtilities.jarURLEntryResource(urlString);
+
+                    if ((anotherURL == null) && (urlString.indexOf("#") != -1)) {
+                        anotherURL = _entryResourceWithoutFragment(urlString);
                     }
+
                     if (anotherURL == null) {
                         try {
                             anotherURL = _absolutePTIIURLToJarURL(urlString);
@@ -203,15 +205,18 @@ public class HTMLViewerTableau extends Tableau {
                             // Ignore: failed
                         }
                     }
+
                     if (anotherURL == null) {
                         throw io;
                     }
+
                     // Try to set the title bar?
                     effigy.uri.setURI(new URI(anotherURL.toString()));
                     tableau.setTitle(anotherURL.toString());
 
-                    ((HTMLViewer)tableau.getFrame()).setPage(anotherURL);
+                    ((HTMLViewer) tableau.getFrame()).setPage(anotherURL);
                 }
+
                 // Don't call show() here.  If show() is called here,
                 // then you can't set the size of the window after
                 // createTableau() returns.  This will affect how
@@ -241,9 +246,8 @@ public class HTMLViewerTableau extends Tableau {
      *  @exception MalformedURLException If there are problems creating a URL.
      */
     public static URL _absolutePTIIURLToJarURL(String urlName)
-            throws java.net.URISyntaxException,
-            java.net.MalformedURLException {
-            // Try looking up the URL as a resource relative to $PTII.
+        throws java.net.URISyntaxException, java.net.MalformedURLException {
+        // Try looking up the URL as a resource relative to $PTII.
         String ptIIDirAsURLName = StringUtilities.getProperty(
                 "ptolemy.ptII.dirAsURL");
 
@@ -255,13 +259,14 @@ public class HTMLViewerTableau extends Tableau {
         // because ptolemy.ptII.dirAsURL refers to ptsupport.jar
         // The hack is to strip that out.
         String ptsupportPath = "/ptolemy/ptsupport.jar";
+
         if (ptIIDirAsURLName.endsWith(ptsupportPath)) {
             ptIIDirAsURLName = ptIIDirAsURLName.substring(0,
-                    ptIIDirAsURLName.length()
-                    - ptsupportPath.length());
+                    ptIIDirAsURLName.length() - ptsupportPath.length());
         }
 
         String relativePath = null;
+
         if (urlName.startsWith(ptIIDirAsURLName)) {
             relativePath = urlName.substring(ptIIDirAsURLName.length());
         } else {
@@ -272,39 +277,45 @@ public class HTMLViewerTableau extends Tableau {
             // URL.sameFile() will not work here, so we use URI.relativize()
             URI uri = new URI(urlName);
             URI ptIIDirAsURI;
+
             try {
                 ptIIDirAsURI = new URI(ptIIDirAsURLName);
             } catch (java.net.URISyntaxException ex) {
                 // If the ptIIDirAsURLName has a space in it, then it is
                 // not a legitimate URI, so we substitute in %20
-                ptIIDirAsURI =
-                    new URI(StringUtilities.substitute(ptIIDirAsURLName,
-                                    " ", "%20"));
+                ptIIDirAsURI = new URI(StringUtilities.substitute(
+                            ptIIDirAsURLName, " ", "%20"));
             }
+
             URI relativeURI = uri.relativize(ptIIDirAsURI);
 
             if (relativeURI.toURL().sameFile(ptIIDirAsURI.toURL())) {
                 int offset = 0;
+
                 if (urlName.startsWith("jar:")) {
                     offset = 4;
                 }
+
                 // Hmm, should this be
-                relativePath = uri.toString()
-                    .substring(ptIIDirAsURI.toString().length() + offset);
+                relativePath = uri.toString().substring(ptIIDirAsURI.toString()
+                                                                    .length()
+                        + offset);
+
                 //relativePath = urlName.substring(ptIIDirAsURLName.length());
             }
         }
+
         if (relativePath == null) {
             return null;
         } else {
             if (relativePath.startsWith("/")) {
                 relativePath = relativePath.substring(1);
             }
-            URL anotherURL = Thread.currentThread()
-                .getContextClassLoader()
-                .getResource(relativePath);
-            if (anotherURL == null &&
-                    relativePath.indexOf('#') != -1) {
+
+            URL anotherURL = Thread.currentThread().getContextClassLoader()
+                                   .getResource(relativePath);
+
+            if ((anotherURL == null) && (relativePath.indexOf('#') != -1)) {
                 // getResource does not work on paths that look like:
                 // "package-summary.html#package_description"
                 // So, we get the resource without the
@@ -315,10 +326,10 @@ public class HTMLViewerTableau extends Tableau {
                     // Ignored
                 }
             }
+
             return anotherURL;
         }
     }
-
 
     // Given a string that contains a URL that has a # character signifiying
     // a fragment, strip the fragment off and look up the URL as a resource.
@@ -329,25 +340,23 @@ public class HTMLViewerTableau extends Tableau {
     // we return null
     // @param urlString A string representing a jar URL or a relative URL.
     private static URL _entryResourceWithoutFragment(String urlString)
-            throws IOException, MalformedURLException {
-
-        String urlStringBase =
-                    urlString.substring(0,
-                            urlString.lastIndexOf("#"));
+        throws IOException, MalformedURLException {
+        String urlStringBase = urlString.substring(0, urlString.lastIndexOf("#"));
 
         URL anotherURL = null;
+
         if (urlStringBase.startsWith("jar:")) {
             anotherURL = JNLPUtilities.jarURLEntryResource(urlStringBase);
         } else {
-            anotherURL = Thread.currentThread()
-                .getContextClassLoader()
-                .getResource(urlStringBase);
+            anotherURL = Thread.currentThread().getContextClassLoader()
+                               .getResource(urlStringBase);
         }
+
         if (anotherURL != null) {
             anotherURL = new URL(anotherURL.toString()
-                    + urlString.substring(
-                            urlString.lastIndexOf("#")));
+                    + urlString.substring(urlString.lastIndexOf("#")));
         }
+
         return anotherURL;
     }
 }

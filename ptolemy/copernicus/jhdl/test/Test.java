@@ -27,19 +27,21 @@ COPYRIGHTENDKEY
 @ProposedRating Yellow (neuendor)
 @AcceptedRating Yellow (neuendor)
 */
-
 package ptolemy.copernicus.jhdl.test;
 
-import java.util.List;
+import soot.*;
 
-import ptolemy.copernicus.jhdl.util.*;
+import soot.jimple.*;
+
+import soot.toolkits.graph.*;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.FixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -51,19 +53,15 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+import java.util.List;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.graph.*;
 
 public class Test {
-
     /**
      * This static String constant specifies the default class name
      * used for all testing of JHDL code generation files.
      **/
-    public static final String DEFAULT_TESTCLASS =
-    "ptolemy.copernicus.jhdl.test.test1";
+    public static final String DEFAULT_TESTCLASS = "ptolemy.copernicus.jhdl.test.test1";
 
     /**
      * This static String constant specifies the default method name
@@ -101,23 +99,31 @@ public class Test {
      *
      * @see Test#getApplicationClass(String)
      **/
-    public static soot.SootMethod getSootMethod(String args[]) {
+    public static soot.SootMethod getSootMethod(String[] args) {
         String classname = DEFAULT_TESTCLASS;
         String methodname = DEFAULT_TESTMETHOD;
-        if (args.length > 0)
-            classname = args[0];
-        if (args.length > 1)
-            methodname = args[1];
 
-        soot.SootClass testClass =
-            ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
+        if (args.length > 0) {
+            classname = args[0];
+        }
+
+        if (args.length > 1) {
+            methodname = args[1];
+        }
+
+        soot.SootClass testClass = ptolemy.copernicus.jhdl.test.Test
+            .getApplicationClass(classname);
+
         if (testClass == null) {
-            System.err.println("Class "+classname+" not found");
+            System.err.println("Class " + classname + " not found");
             System.exit(1);
         }
-        System.out.println("Loading class "+classname+" method "+methodname);
+
+        System.out.println("Loading class " + classname + " method "
+            + methodname);
+
         if (!testClass.declaresMethodByName(methodname)) {
-            System.err.println("Method "+methodname+" not found");
+            System.err.println("Method " + methodname + " not found");
             System.exit(1);
         }
 
@@ -130,7 +136,7 @@ public class Test {
      *
      * @see Test#getSootMethod(String[])
      **/
-    public static soot.Body getSootBody(String args[]) {
+    public static soot.Body getSootBody(String[] args) {
         soot.SootMethod testMethod = getSootMethod(args);
         return testMethod.retrieveActiveBody();
     }
@@ -145,17 +151,15 @@ public class Test {
      *
      * @see Test#getSootMethod(String[])
      **/
-    public static Block[] getMethodBlocks(String args[]) {
-
+    public static Block[] getMethodBlocks(String[] args) {
         soot.SootMethod testMethod = getSootMethod(args);
         soot.Body body = testMethod.retrieveActiveBody();
 
         BriefBlockGraph bbgraph = new BriefBlockGraph(body);
+
         //BlockGraphToDotty.writeDotFile("cfg",bbgraph);
         List l = bbgraph.getBlocks();
         Block[] b = new Block[l.size()];
         return (Block[]) l.toArray(b);
     }
-
 }
-

@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.DataBuffer;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIToDoubleMatrix
+
 /**
    This actor takes a single banded image and outputs a DoubleMatrixToken
    containing the data.
@@ -68,9 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIToDoubleMatrix extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -80,7 +79,7 @@ public class JAIToDoubleMatrix extends Transformer {
      *   actor with this name.
      */
     public JAIToDoubleMatrix(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         normalize = new Parameter(this, "normalize");
@@ -108,11 +107,10 @@ public class JAIToDoubleMatrix extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the base class throws it.
      */
-
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == normalize) {
-            _normalize = ((BooleanToken)normalize.getToken()).booleanValue();
+            _normalize = ((BooleanToken) normalize.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -124,84 +122,92 @@ public class JAIToDoubleMatrix extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp jaiImage = jaiImageToken.getValue();
         int height = jaiImage.getHeight();
         int width = jaiImage.getWidth();
         Raster raster = jaiImage.getData();
         DataBuffer dataBuffer = raster.getDataBuffer();
-        double data[][] = new double[width][height];
+        double[][] data = new double[width][height];
         _type = dataBuffer.getDataType();
+
         if (_normalize) {
-            switch(_type) {
+            switch (_type) {
             case DataBuffer.TYPE_BYTE:
-                _maxValue = (double)Byte.MAX_VALUE - (double)Byte.MIN_VALUE;
+                _maxValue = (double) Byte.MAX_VALUE - (double) Byte.MIN_VALUE;
                 _minValue = 0;
                 break;
+
             case DataBuffer.TYPE_INT:
-                _maxValue = (double)Integer.MAX_VALUE;
-                _minValue = (double)Integer.MIN_VALUE;
+                _maxValue = (double) Integer.MAX_VALUE;
+                _minValue = (double) Integer.MIN_VALUE;
                 break;
+
             case DataBuffer.TYPE_SHORT:
-                _maxValue = (double)Short.MAX_VALUE;
-                _minValue = (double)Short.MIN_VALUE;
+                _maxValue = (double) Short.MAX_VALUE;
+                _minValue = (double) Short.MIN_VALUE;
                 break;
+
             case DataBuffer.TYPE_USHORT:
-                _maxValue = (double)Short.MAX_VALUE - (double)Short.MIN_VALUE;
+                _maxValue = (double) Short.MAX_VALUE - (double) Short.MIN_VALUE;
                 _minValue = 0;
                 break;
+
             case DataBuffer.TYPE_FLOAT:
-                _maxValue = (double)Float.MAX_VALUE;
+                _maxValue = (double) Float.MAX_VALUE;
                 break;
+
             case DataBuffer.TYPE_DOUBLE:
-                _maxValue = (double)Double.MAX_VALUE;
+                _maxValue = (double) Double.MAX_VALUE;
                 break;
+
             default:
                 throw new IllegalActionException("Data type not suitable for "
-                        + "normalizing");
+                    + "normalizing");
             }
+
             if (_debugging) {
                 _debug("max value is " + _maxValue);
                 _debug("min value is " + _minValue);
             }
-            if (_type == DataBuffer.TYPE_DOUBLE ||
-                    _type == DataBuffer.TYPE_FLOAT) {
+
+            if ((_type == DataBuffer.TYPE_DOUBLE)
+                    || (_type == DataBuffer.TYPE_FLOAT)) {
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
                         // There is some confusion about which order the
                         // array should be in.
                         // We go with i*height + j here so that we
                         // can read in data from the SDF VQ actors.
-
                         //data[i][j] = dataBuffer.getElemDouble(i*height + j);
-                        data[i][j] = dataBuffer.getElemDouble(i + j*width);
-                        data[i][j] = data[i][j]/_maxValue;
-                        data[i][j] = data[i][j]/2;
+                        data[i][j] = dataBuffer.getElemDouble(i + (j * width));
+                        data[i][j] = data[i][j] / _maxValue;
+                        data[i][j] = data[i][j] / 2;
                         data[i][j] = data[i][j] + 0.5D;
                     }
                 }
             } else {
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
-//                         data[i][j] =
-//                             (dataBuffer.getElemDouble(i*height + j) -
-//                                     _minValue)/
-//                             (_maxValue - _minValue);
-                        data[i][j] =
-                            (dataBuffer.getElemDouble(i + j*width) -
-                                    _minValue)/
-                            (_maxValue - _minValue);
+                        //                         data[i][j] =
+                        //                             (dataBuffer.getElemDouble(i*height + j) -
+                        //                                     _minValue)/
+                        //                             (_maxValue - _minValue);
+                        data[i][j] = (dataBuffer.getElemDouble(i + (j * width))
+                            - _minValue) / (_maxValue - _minValue);
                     }
                 }
             }
         } else {
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-//                    data[i][j] = dataBuffer.getElemDouble(i*height + j);
-                    data[i][j] = dataBuffer.getElemDouble(i + j * width);
+                    //                    data[i][j] = dataBuffer.getElemDouble(i*height + j);
+                    data[i][j] = dataBuffer.getElemDouble(i + (j * width));
                 }
             }
         }
+
         DoubleMatrixToken matrixToken = new DoubleMatrixToken(data);
         output.send(0, new DoubleMatrixToken(data));
     }
@@ -225,7 +231,3 @@ public class JAIToDoubleMatrix extends Transformer {
     /** Type determinator for the internal data. */
     private int _type;
 }
-
-
-
-

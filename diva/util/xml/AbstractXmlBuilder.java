@@ -25,6 +25,7 @@
 */
 package diva.util.xml;
 
+
 /**
  * An abstract implementation of the XmlBuilder interface that gets
  * and sets a delegate, leaves the build method abstract, and doesn't
@@ -44,8 +45,8 @@ public abstract class AbstractXmlBuilder implements XmlBuilder {
      *   public Graph build (XmlELement elt, String type);
      * </pre>
      */
-    public abstract Object build (XmlElement elt, String type)
-            throws Exception;
+    public abstract Object build(XmlElement elt, String type)
+        throws Exception;
 
     /** Delegate builders can be used to build/generate for objects
      * that are unknown by the current builder, as might be the
@@ -72,5 +73,3 @@ public abstract class AbstractXmlBuilder implements XmlBuilder {
         throw new UnsupportedOperationException(err);
     }
 }
-
-

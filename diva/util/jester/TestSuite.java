@@ -76,7 +76,6 @@ package diva.util.jester;
  * @version $Id$
  */
 public abstract class TestSuite {
-
     /**
      * The test harness.
      */
@@ -93,7 +92,7 @@ public abstract class TestSuite {
      * calling the test harness to tell it that the test suite is
      * starting and stopping.
      */
-    public final void run () {
+    public final void run() {
         _testHarness.readyTestSuite(this);
         runAll();
         _testHarness.doneTestSuite();
@@ -117,7 +116,7 @@ public abstract class TestSuite {
      * suites to be run on this object. This allows subclasses to
      * exclude certain tests.)
      */
-    public void runAll () {
+    public void runAll() {
         runSuite();
     }
 
@@ -125,7 +124,7 @@ public abstract class TestSuite {
      * Run the tests defined by this test suite. This is an abstract
      * method, and must be overridden to execute the test methods.
      */
-    public abstract void runSuite ();
+    public abstract void runSuite();
 
     /**
      * Run a single test case by passing it to the harness used by this
@@ -135,21 +134,21 @@ public abstract class TestSuite {
      *   getTestHarness().runTestCase(testCase)
      * </pre>
      */
-    public void runTestCase (TestCase testCase) {
+    public void runTestCase(TestCase testCase) {
         _testHarness.runTestCase(testCase);
     }
 
     /**
      * Set the test harness used by this test suite.
      */
-    public void setTestHarness (TestHarness h) {
+    public void setTestHarness(TestHarness h) {
         _testHarness = h;
     }
 
     /**
      * Get the test harness used by this test suite.
      */
-    public TestHarness getTestHarness () {
+    public TestHarness getTestHarness() {
         return _testHarness;
     }
 
@@ -160,16 +159,14 @@ public abstract class TestSuite {
      * being tested, and that has a descriptive toString()
      * method.
      */
-    public void setFactory (Object f) {
+    public void setFactory(Object f) {
         _factory = f;
     }
 
     /**
      * Get the factory used by this test suite.
      */
-    public Object getFactory () {
+    public Object getFactory() {
         return _factory;
     }
 }
-
-

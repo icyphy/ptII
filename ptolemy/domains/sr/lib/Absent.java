@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Absent
+
 /**
    This actor outputs absent values.  That is, it produces no tokens, and it calls
    the sendClear() method of the output port on each firing.
@@ -44,9 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (pwhitake)
    @Pt.AcceptedRating Red (pwhitake)
 */
-
 public class Absent extends Undefined {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -57,7 +56,7 @@ public class Absent extends Undefined {
      *   an actor already in the container.
      */
     public Absent(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

@@ -24,10 +24,10 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.geom.Point2D;
+
 
 /** A site represents a point on a figure. Sites are
  * used by manipulators so that they know where to attach grab-handles.
@@ -40,12 +40,11 @@ import java.awt.geom.Point2D;
  * @Pt.AcceptedRating  Red
  */
 public interface Site {
-
     /** Get the figure to which this site is attached. Usually, this
      * will return a valid Figure, but clients must be aware that
      * certain types of site may return null.
      */
-    public Figure getFigure ();
+    public Figure getFigure();
 
     /** Get the ID of this site. Within each figure, the IDs of
      * the sites must be unique.
@@ -56,45 +55,45 @@ public interface Site {
      * between zero and 2pi. The direction is "out" of the site.
      * The result is meaningful only if hasNormal() returns true.
      */
-    public double getNormal ();
+    public double getNormal();
 
     /** Get the point location of the site, in the enclosing
      * transform context with default normal.
      */
-    public Point2D getPoint ();
+    public Point2D getPoint();
 
     /** Get the point location of the site, in the given
      * transform context with the default normal.
      * The given context must be an enclosing
      * context of the site.
      */
-    public Point2D getPoint (TransformContext tc);
+    public Point2D getPoint(TransformContext tc);
 
     /** Get the point location of the site, in the enclosing
      * transform context with the given normal.
      */
-    public Point2D getPoint (double normal);
+    public Point2D getPoint(double normal);
 
     /** Get the point location of the site, in the given
      * transform context with the given normal.
      * The given context must be an enclosing
      * context of the site.
      */
-    public Point2D getPoint (TransformContext tc, double normal);
+    public Point2D getPoint(TransformContext tc, double normal);
 
     /** Get the enclosing transform context of this site.
      */
-    public TransformContext getTransformContext ();
+    public TransformContext getTransformContext();
 
     /** Get the x-coordinate of the site, in the enclosing
      * transform context.
      */
-    public double getX ();
+    public double getX();
 
     /** Get the y-coordinate of the site, in the enclosing
      * transform context.
      */
-    public double getY ();
+    public double getY();
 
     /** Test if this site has a "normal" to it. The normal
      * is accessible by the methods getNormal()
@@ -102,14 +101,14 @@ public interface Site {
      * a shape will return true to this method, and sites
      * in the center of an object will return false.
      */
-    public boolean hasNormal ();
+    public boolean hasNormal();
 
     /** Test if this site has a normal in the given direction.
      * The direction is that given by one of the static constants
      * NORTH, SOUTH, EAST, or WEST, defined in
      * <b>javax.swing.SwingConstants</b>
      */
-    public boolean isNormal (int direction);
+    public boolean isNormal(int direction);
 
     /** Set the normal "out" of the site. If the site cannot
      * change its normal, it can ignore this call, so clients
@@ -118,7 +117,7 @@ public interface Site {
      * its position. For example, a site on the perimeter of a
      * figure may move to a different position.
      */
-    public void setNormal (double normal);
+    public void setNormal(double normal);
 
     /** Translate the site by the indicated distance, where distances
      * are in the local coordinates of the containing pane. Usually,
@@ -128,7 +127,5 @@ public interface Site {
      * it part of the distance. Clients are expected to check the
      * new location of the site.
      */
-    public void translate (double x, double y);
+    public void translate(double x, double y);
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import java.util.Iterator;
@@ -50,6 +49,7 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// TransmitPropertyTransformer
@@ -93,8 +93,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class TransmitPropertyTransformer extends LifeCycleManager
-        implements PropertyTransformer {
-
+    implements PropertyTransformer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -104,12 +103,13 @@ public class TransmitPropertyTransformer extends LifeCycleManager
      *   actor with this name.
      */
     public TransmitPropertyTransformer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(input);
+
         // Create and configure the variables.
         senderLocation = new Parameter(this, "senderLocation");
         senderLocation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -122,15 +122,15 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         receiverLocation.setVisibility(Settable.EXPERT);
 
         properties = new Parameter(this, "properties");
+
         // FIXME: properties type should be at least an empty record.
         properties.setExpression("{power = 1.0, range = Infinity}");
         properties.setVisibility(Settable.EXPERT);
 
         // Create the icon.
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
 
         // To ensure that exported MoML does not represent this as
         // an ordinary TypedCompositeActor.
@@ -174,10 +174,9 @@ public class TransmitPropertyTransformer extends LifeCycleManager
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        TransmitPropertyTransformer newObject =
-            (TransmitPropertyTransformer)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        TransmitPropertyTransformer newObject = (TransmitPropertyTransformer) (super
+            .clone(workspace));
 
         // set the type constraints
         newObject.output.setTypeSameAs(newObject.input);
@@ -206,6 +205,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         if (_debugging) {
             _debug("Called postfire(), which returns true.");
         }
+
         return true;
     }
 
@@ -219,6 +219,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         if (_debugging) {
             _debug("Called prefire(), which returns true.");
         }
+
         return true;
     }
 
@@ -233,39 +234,47 @@ public class TransmitPropertyTransformer extends LifeCycleManager
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+
         if (_debugging) {
             _debug("Called preinitialize()");
         }
+
         boolean foundOne = false;
+
         //register this property transformer for the connected wireless
         //output port. It assumes there is only one.
         Iterator connectedOutputPorts = output.sinkPortList().iterator();
+
         while (connectedOutputPorts.hasNext()) {
-            IOPort port = (IOPort)connectedOutputPorts.next();
+            IOPort port = (IOPort) connectedOutputPorts.next();
+
             if (port.isOutput() && port instanceof WirelessIOPort) {
                 // Found the port.
                 foundOne = true;
-                Entity container = (Entity)(port.getContainer());
-                String channelName
-                        = ((WirelessIOPort)port).outsideChannel.stringValue();
-                CompositeEntity container2
-                        = (CompositeEntity)container.getContainer();
+
+                Entity container = (Entity) (port.getContainer());
+                String channelName = ((WirelessIOPort) port).outsideChannel
+                    .stringValue();
+                CompositeEntity container2 = (CompositeEntity) container
+                    .getContainer();
+
                 if (container2 == null) {
                     throw new IllegalActionException(this,
-                            "The port's container does not have a container.");
+                        "The port's container does not have a container.");
                 }
+
                 Entity channel = container2.getEntity(channelName);
+
                 if (channel instanceof WirelessChannel) {
                     // Cache it here, so no need to do it again in wrapup().
-                    _outputWirelessChannel = (WirelessChannel)channel;
-                    _wirelessOutputPort = (WirelessIOPort)port;
-                    ((WirelessChannel)channel)
-                            .registerPropertyTransformer(this,
-                            (WirelessIOPort)port);
+                    _outputWirelessChannel = (WirelessChannel) channel;
+                    _wirelessOutputPort = (WirelessIOPort) port;
+                    ((WirelessChannel) channel).registerPropertyTransformer(this,
+                        (WirelessIOPort) port);
                 } else {
                     throw new IllegalActionException(this,
-                            "The connected output port does not refer to a "
-                            + "valid channel.");
+                        "The connected output port does not refer to a "
+                        + "valid channel.");
                 }
             }
         }
@@ -273,40 +282,46 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         //register this property transformer for the connected wireless
         //input port. It assumes there is only one.
         Iterator connectedInputPorts = input.sourcePortList().iterator();
+
         while (connectedInputPorts.hasNext()) {
             //register this property transformer for the connected wireless
             //output port. It assumes there is only one.
-            IOPort port = (IOPort)connectedInputPorts.next();
+            IOPort port = (IOPort) connectedInputPorts.next();
+
             if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
                 foundOne = true;
-                Entity container = (Entity)(port.getContainer());
-                String channelName
-                        = ((WirelessIOPort)port).outsideChannel.stringValue();
-                CompositeEntity container2
-                        = (CompositeEntity)container.getContainer();
+
+                Entity container = (Entity) (port.getContainer());
+                String channelName = ((WirelessIOPort) port).outsideChannel
+                    .stringValue();
+                CompositeEntity container2 = (CompositeEntity) container
+                    .getContainer();
+
                 if (container2 == null) {
                     throw new IllegalActionException(this,
-                            "The port's container does not have a container.");
+                        "The port's container does not have a container.");
                 }
+
                 Entity channel = container2.getEntity(channelName);
+
                 if (channel instanceof WirelessChannel) {
                     // Cache it here, so no need to do it again in wrapup().
-                    _inputWirelessChannel = (WirelessChannel)channel;
-                    _wirelessInputPort = (WirelessIOPort)port;
-                    ((WirelessChannel)channel)
-                            .registerPropertyTransformer(this,
-                            (WirelessIOPort)port);
+                    _inputWirelessChannel = (WirelessChannel) channel;
+                    _wirelessInputPort = (WirelessIOPort) port;
+                    ((WirelessChannel) channel).registerPropertyTransformer(this,
+                        (WirelessIOPort) port);
                 } else {
                     throw new IllegalActionException(this,
-                            "The connected input port does not refer to a "
-                            + "valid channel.");
+                        "The connected input port does not refer to a "
+                        + "valid channel.");
                 }
             }
         }
+
         if (!foundOne) {
             throw new IllegalActionException(this,
-                    "Output is not connected to a WirelessIOPort.");
+                "Output is not connected to a WirelessIOPort.");
         }
     }
 
@@ -321,36 +336,40 @@ public class TransmitPropertyTransformer extends LifeCycleManager
      *   throws it.
      */
     public RecordToken transformProperties(RecordToken initialProperties,
-            WirelessIOPort sender, WirelessIOPort destination)
-            throws IllegalActionException {
+        WirelessIOPort sender, WirelessIOPort destination)
+        throws IllegalActionException {
         double[] p1 = _locationOf(sender);
         double[] p2 = _locationOf(destination);
 
         DoubleToken[] t1 = new DoubleToken[p1.length];
         DoubleToken[] t2 = new DoubleToken[p2.length];
+
         for (int i = 0; i < p1.length; i++) {
             t1[i] = new DoubleToken(p1[i]);
         }
+
         for (int i = 0; i < p2.length; i++) {
             t2[i] = new DoubleToken(p2[i]);
         }
+
         senderLocation.setToken(new ArrayToken(t1));
         receiverLocation.setToken(new ArrayToken(t2));
         properties.setToken(initialProperties);
 
         if (_debugging) {
             _debug("----transformProperties is called; "
-                    + "execute the subsystem.");
+                + "execute the subsystem.");
         }
 
         // FIXME: Should use return value to determine what postfire() returns?
         _executeInsideModel();
 
-        RecordToken result = (RecordToken)properties.getToken();
+        RecordToken result = (RecordToken) properties.getToken();
+
         if (_debugging) {
-            _debug("---- the modified property value is. "
-                    + result.toString());
+            _debug("---- the modified property value is. " + result.toString());
         }
+
         return result;
     }
 
@@ -358,19 +377,22 @@ public class TransmitPropertyTransformer extends LifeCycleManager
      *  channel.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public void wrapup() throws IllegalActionException{
+    public void wrapup() throws IllegalActionException {
         // Do not call the superclass wrapup(), as that will
         // call wrapup() on the diretor.
         if (_debugging) {
-            _debug("Called wrapup(), which unregisters the property transformer.");
+            _debug(
+                "Called wrapup(), which unregisters the property transformer.");
         }
+
         if (_outputWirelessChannel != null) {
             _outputWirelessChannel.unregisterPropertyTransformer(this,
-                    _wirelessOutputPort);
+                _wirelessOutputPort);
         }
+
         if (_inputWirelessChannel != null) {
             _inputWirelessChannel.unregisterPropertyTransformer(this,
-                    _wirelessInputPort);
+                _wirelessInputPort);
         }
     }
 
@@ -379,11 +401,13 @@ public class TransmitPropertyTransformer extends LifeCycleManager
 
     /** Override the base class to not read any inputs.
      */
-    protected void _readInputs() {}
+    protected void _readInputs() {
+    }
 
     /** Override the base class to not write any outputs.
      */
-    protected void _writeOutputs() {}
+    protected void _writeOutputs() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -395,17 +419,17 @@ public class TransmitPropertyTransformer extends LifeCycleManager
      *   be found.
      */
     private double[] _locationOf(WirelessIOPort port)
-            throws IllegalActionException {
-        Entity container = (Entity)port.getContainer();
+        throws IllegalActionException {
+        Entity container = (Entity) port.getContainer();
         Locatable location = null;
-        location = (Locatable)container.getAttribute(
-                LOCATION_ATTRIBUTE_NAME, Locatable.class);
+        location = (Locatable) container.getAttribute(LOCATION_ATTRIBUTE_NAME,
+                Locatable.class);
+
         if (location == null) {
             throw new IllegalActionException(
-                    "Cannot determine location for port "
-                    + port.getName()
-                    + ".");
+                "Cannot determine location for port " + port.getName() + ".");
         }
+
         return location.getLocation();
     }
 

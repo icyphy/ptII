@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToSequence
+
 /**
    This actor unbundles a matrix into a sequence of output tokens.
    On each firing, it writes the elements of the array to the output
@@ -69,9 +70,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (neuendor)
 */
-
 public class MatrixToSequence extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -81,7 +80,7 @@ public class MatrixToSequence extends SDFTransformer {
      *   actor with this name.
      */
     public MatrixToSequence(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeAtMost(BaseType.MATRIX);
@@ -99,10 +98,9 @@ public class MatrixToSequence extends SDFTransformer {
         output_tokenProductionRate.setExpression("rows * columns");
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -132,20 +130,23 @@ public class MatrixToSequence extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == rows) {
-            int rowsValue = ((IntToken)rows.getToken()).intValue();
+            int rowsValue = ((IntToken) rows.getToken()).intValue();
+
             if (rowsValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid number of rows: " + rowsValue);
+                    "Invalid number of rows: " + rowsValue);
             }
         } else if (attribute == columns) {
-            int columnsValue = ((IntToken)columns.getToken()).intValue();
+            int columnsValue = ((IntToken) columns.getToken()).intValue();
+
             if (columnsValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid number of columns: " + columnsValue);
+                    "Invalid number of columns: " + columnsValue);
             }
         }
+
         super.attributeChanged(attribute);
     }
 
@@ -156,9 +157,8 @@ public class MatrixToSequence extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        MatrixToSequence newObject = (MatrixToSequence)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MatrixToSequence newObject = (MatrixToSequence) super.clone(workspace);
 
         newObject.input.setTypeAtMost(BaseType.MATRIX);
         newObject.output.setTypeAtLeast(new FunctionTerm(newObject.input));
@@ -171,22 +171,29 @@ public class MatrixToSequence extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (!input.hasToken(0)) return;
-        MatrixToken token = (MatrixToken)input.get(0);
+
+        if (!input.hasToken(0)) {
+            return;
+        }
+
+        MatrixToken token = (MatrixToken) input.get(0);
         int actualRowCount = token.getRowCount();
         int actualColumnCount = token.getColumnCount();
-        boolean enforce = ((BooleanToken)enforceMatrixSize.getToken())
+        boolean enforce = ((BooleanToken) enforceMatrixSize.getToken())
             .booleanValue();
+
         if (enforce) {
-            int rowsValue = ((IntToken)rows.getToken()).intValue();
-            int columnsValue = ((IntToken)columns.getToken()).intValue();
-            if (actualRowCount != rowsValue
-                    || actualColumnCount != columnsValue) {
+            int rowsValue = ((IntToken) rows.getToken()).intValue();
+            int columnsValue = ((IntToken) columns.getToken()).intValue();
+
+            if ((actualRowCount != rowsValue)
+                    || (actualColumnCount != columnsValue)) {
                 throw new IllegalActionException(this,
-                        "The input matrix size does not"
-                        + " match what the actor requires.");
+                    "The input matrix size does not"
+                    + " match what the actor requires.");
             }
         }
+
         for (int i = 0; i < actualRowCount; i++) {
             for (int j = 0; j < actualColumnCount; j++) {
                 output.send(0, token.getElementAsToken(i, j));
@@ -196,7 +203,6 @@ public class MatrixToSequence extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // This class implements a monotonic function of the input port
     // type. The result of the function is a matrix type with elements
     // that are the same as the input type. If there is no such matrix
@@ -205,7 +211,6 @@ public class MatrixToSequence extends SDFTransformer {
     // there be a common base class?  It is also essentially identical
     // the inner class in SequenceToMatrix.
     private class FunctionTerm extends MonotonicFunction {
-
         // The constructor takes a port argument so that the clone()
         // method can construct an instance of this class for the
         // input port on the clone.
@@ -221,10 +226,12 @@ public class MatrixToSequence extends SDFTransformer {
          */
         public Object getValue() {
             Type inputType = _port.getType();
+
             if (!(inputType instanceof UnsizedMatrixType)) {
                 return BaseType.UNKNOWN;
             }
-            return ((UnsizedMatrixType)inputType).getElementType();
+
+            return ((UnsizedMatrixType) inputType).getElementType();
         }
 
         /** Return the variables in this term. If the type of the input port
@@ -245,7 +252,6 @@ public class MatrixToSequence extends SDFTransformer {
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-
         private TypedIOPort _port;
     }
 }

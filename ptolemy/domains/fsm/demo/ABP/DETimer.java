@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.demo.ABP;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DETimer
+
 /**
    The input sets the time interval before the next expire.
 
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class DETimer extends TypedAtomicActor {
-
     /** Constructor.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -59,15 +59,15 @@ public class DETimer extends TypedAtomicActor {
      *   actor with this name.
      */
     public DETimer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         expired = new TypedIOPort(this, "expired", false, true);
         expired.setTypeEquals(BaseType.GENERAL);
         set = new TypedIOPort(this, "set", true, false);
         set.setTypeEquals(BaseType.DOUBLE);
+
         //        set.delayTo(expired);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -78,12 +78,13 @@ public class DETimer extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        DEDirector dir = (DEDirector)getDirector();
+        DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
 
         if (set.hasToken(0)) {
             // reset timer
-            double delay = ((DoubleToken)set.get(0)).doubleValue();
+            double delay = ((DoubleToken) set.get(0)).doubleValue();
+
             if (delay > 0.0) {
                 _expireTime = now.add(delay);
                 dir.fireAt(this, _expireTime);
@@ -94,16 +95,13 @@ public class DETimer extends TypedAtomicActor {
 
             //System.out.println("Reset DETimer " + this.getFullName() +
             //        " to expire at " + _expireTime);
-
         } else if (now.equals(_expireTime)) {
             // timer expires
             expired.broadcast(_outToken);
 
             //System.out.println("DETimer " + this.getFullName() +
             //        " expires at " + getCurrentTime());
-
         }
-
     }
 
     /** Initialize the timer.
@@ -128,6 +126,7 @@ public class DETimer extends TypedAtomicActor {
 
     /** @serial Set port. */
     public TypedIOPort set;
+
     /** @serial Expired port. */
     public TypedIOPort expired;
 
@@ -141,5 +140,4 @@ public class DETimer extends TypedAtomicActor {
 
     /** @serial The time to expire.*/
     private Time _expireTime;
-
 }

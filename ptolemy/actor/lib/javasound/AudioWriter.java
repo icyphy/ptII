@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.javasound;
 
 import java.io.IOException;
@@ -44,9 +43,9 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.media.javasound.SoundWriter;
 
 
-
 ///////////////////////////////////////////////////////////
 //// AudioWriter
+
 /**
    This actor reads audio samples from the input port and writes
    the samples to the specified sound file. Any existing file
@@ -108,7 +107,6 @@ import ptolemy.media.javasound.SoundWriter;
    @see AudioPlayer
 */
 public class AudioWriter extends Sink {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -118,7 +116,7 @@ public class AudioWriter extends Sink {
      *   actor with this name.
      */
     public AudioWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
 
@@ -128,11 +126,9 @@ public class AudioWriter extends Sink {
         sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
         sampleRate.setTypeEquals(BaseType.INT);
 
-        bitsPerSample = new Parameter(this, "bitsPerSample",
-                new IntToken(16));
+        bitsPerSample = new Parameter(this, "bitsPerSample", new IntToken(16));
         bitsPerSample.setTypeEquals(BaseType.INT);
-        channels = new Parameter(this, "channels",
-                new IntToken(1));
+        channels = new Parameter(this, "channels", new IntToken(1));
         channels.setTypeEquals(BaseType.INT);
         attributeChanged(channels);
         _curElement = 0;
@@ -186,24 +182,27 @@ public class AudioWriter extends Sink {
      *   allowed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == channels) {
-            _channels =
-                ((IntToken)channels.getToken()).intValue();
+            _channels = ((IntToken) channels.getToken()).intValue();
+
             if (_channels < 1) {
                 throw new IllegalActionException(this,
-                        "Attempt to set channels parameter to an illegal " +
-                        "value of: " +  _channels + " . The value must be a " +
-                        "positive integer.");
+                    "Attempt to set channels parameter to an illegal "
+                    + "value of: " + _channels + " . The value must be a "
+                    + "positive integer.");
             }
+
             // Check if we need to reallocate.
             if ((_inArray == null) || (_channels != _inArray.length)) {
                 _inArray = new Token[_channels][];
             }
-            if ((_audioPutArray == null) ||
-                    (_channels != _audioPutArray.length)) {
+
+            if ((_audioPutArray == null)
+                    || (_channels != _audioPutArray.length)) {
                 _audioPutArray = new double[_channels][];
             }
+
             for (int i = 0; i < _channels; i++) {
                 _audioPutArray[i] = new double[_putSampleSize];
             }
@@ -211,6 +210,7 @@ public class AudioWriter extends Sink {
             super.attributeChanged(attribute);
             return;
         }
+
         if (_safeToInitialize == true) {
             _initializeWriter();
         }
@@ -223,6 +223,7 @@ public class AudioWriter extends Sink {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // Initialize/Reinitialize audio resources.
         _initializeWriter();
         _safeToInitialize = true;
@@ -260,6 +261,7 @@ public class AudioWriter extends Sink {
                 return NOT_READY;
             }
         }
+
         // For each sample.
         for (int k = 0; k < count; k++) {
             // For each channel.
@@ -268,24 +270,27 @@ public class AudioWriter extends Sink {
                 // putSamples() is full, then call putSamples().
                 // Array argument to putSamples() is not full yet,
                 // so write another sample for each channel.
-                _audioPutArray[m][_curElement] =
-                    ((DoubleToken)_inArray[m][k]).doubleValue();
+                _audioPutArray[m][_curElement] = ((DoubleToken) _inArray[m][k])
+                    .doubleValue();
             }
+
             // Increment pointer.
             _curElement++;
+
             if (_curElement == _putSampleSize) {
                 try {
                     // write out samples to speaker and/or file.
                     _soundWriter.putSamples(_audioPutArray);
                 } catch (Exception ex) {
                     throw new IllegalActionException(this,
-                            "Cannot write audio: \n" +
-                            ex.getMessage());
+                        "Cannot write audio: \n" + ex.getMessage());
                 }
+
                 // Reset pointer to beginning of array.
                 _curElement = 0;
             }
         }
+
         return COMPLETED;
     }
 
@@ -299,15 +304,17 @@ public class AudioWriter extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         int returnVal = iterate(1);
+
         if (returnVal == COMPLETED) {
             return true;
         } else if (returnVal == NOT_READY) {
             // This should never happen.
-            throw new IllegalActionException(this, "Actor " +
-                    "is not ready to fire.");
+            throw new IllegalActionException(this,
+                "Actor " + "is not ready to fire.");
         } else if (returnVal == STOP_ITERATING) {
             return false;
         }
+
         return false;
     }
 
@@ -317,8 +324,7 @@ public class AudioWriter extends Sink {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _channels =
-            ((IntToken)channels.getToken()).intValue();
+        _channels = ((IntToken) channels.getToken()).intValue();
     }
 
     /** Close the specified file.
@@ -327,16 +333,17 @@ public class AudioWriter extends Sink {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
         // Close any open sound files.
         if (_soundWriter != null) {
             try {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Error closing file:\n" +
-                        ex.getMessage());
+                    "Error closing file:\n" + ex.getMessage());
             }
         }
+
         _safeToInitialize = false;
     }
 
@@ -352,8 +359,7 @@ public class AudioWriter extends Sink {
      *  @exception IllegalActionException If there is a problem
      *   initializing the SoundWriter object.
      */
-    private synchronized void _initializeWriter()
-            throws IllegalActionException {
+    private synchronized void _initializeWriter() throws IllegalActionException {
         // Close any open sound files. Free
         // up audio system resources.
         if (_soundWriter != null) {
@@ -361,38 +367,36 @@ public class AudioWriter extends Sink {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot write audio: \n" +
-                        ex.getMessage());
+                    "Cannot write audio: \n" + ex.getMessage());
             }
         }
 
         _putSampleSize = 64;
+
         for (int i = 0; i < _channels; i++) {
             _audioPutArray[i] = new double[_putSampleSize];
         }
+
         String pathNameString = pathName.getExpression();
+
         // Write audio data to a file.
-        int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
-        int bitsPerSampleInt =
-            ((IntToken)bitsPerSample.getToken()).intValue();
-        int channelsInt = ((IntToken)channels.getToken()).intValue();
+        int sampleRateInt = ((IntToken) sampleRate.getToken()).intValue();
+        int bitsPerSampleInt = ((IntToken) bitsPerSample.getToken()).intValue();
+        int channelsInt = ((IntToken) channels.getToken()).intValue();
         int putSamplesSize = _putSampleSize;
 
-        _soundWriter = new SoundWriter(pathNameString,
-                sampleRateInt,
-                bitsPerSampleInt,
-                channelsInt,
-                putSamplesSize);
+        _soundWriter = new SoundWriter(pathNameString, sampleRateInt,
+                bitsPerSampleInt, channelsInt, putSamplesSize);
         _curElement = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private SoundWriter _soundWriter;
     private int _channels;
     private int _putSampleSize;
     private double[][] _audioPutArray;
+
     // Pointer to the current sample of the array parameter of
     // putSamples() method of SoundWriter.
     private int _curElement;

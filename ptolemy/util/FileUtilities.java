@@ -25,11 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.util;
-
-// Note that classes in ptolemy.util do not depend on any
-// other ptolemy packages.
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -47,8 +43,10 @@ import java.net.URL;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FileUtilities
+
 /**
    A collection of utilities for manipulating files
    These utilities do not depend on any other ptolemy.* packages.
@@ -60,7 +58,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class FileUtilities {
-
     /** Instances of this class cannot be created.
      */
     private FileUtilities() {
@@ -79,30 +76,32 @@ public class FileUtilities {
      *  destination file and the destination file does not exist.
      */
     public static boolean binaryCopyURLToFile(URL sourceURL,
-            File destinationFile)
-            throws IOException {
-
+        File destinationFile) throws IOException {
         URL destinationURL = destinationFile.getCanonicalFile().toURL();
+
         if (sourceURL.sameFile(destinationURL)) {
             return false;
         }
 
         // If sourceURL is of the form file:./foo, then we need to try again.
         File sourceFile = new File(sourceURL.getFile());
+
         if (sourceFile.getCanonicalFile().toURL().sameFile(destinationURL)) {
             return false;
         }
 
         BufferedInputStream input = null;
         BufferedOutputStream output = null;
+
         try {
             input = new BufferedInputStream(sourceURL.openStream());
 
-            output = new BufferedOutputStream(
-                    new FileOutputStream(destinationFile));
+            output = new BufferedOutputStream(new FileOutputStream(
+                        destinationFile));
 
             int c;
-            while (( c = input.read()) != -1) {
+
+            while ((c = input.read()) != -1) {
                 output.write(c);
             }
         } finally {
@@ -111,20 +110,22 @@ public class FileUtilities {
                     input.close();
                 } catch (Throwable throwable) {
                     System.out.println("Ignoring failure to close stream "
-                            + "on " + sourceURL);
+                        + "on " + sourceURL);
                     throwable.printStackTrace();
                 }
             }
+
             if (output != null) {
                 try {
                     output.close();
                 } catch (Throwable throwable) {
                     System.out.println("Ignoring failure to close stream "
-                            + "on " + destinationFile);
+                        + "on " + destinationFile);
                     throwable.printStackTrace();
                 }
             }
         }
+
         return true;
     }
 
@@ -146,10 +147,12 @@ public class FileUtilities {
      *   reading the file name.
      */
     public static File nameToFile(String name, URI base) {
-        if (name == null || name.trim().equals("")) {
+        if ((name == null) || name.trim().equals("")) {
             return null;
         }
+
         File file = new File(name);
+
         if (!file.isAbsolute()) {
             // Try to resolve the base directory.
             if (base != null) {
@@ -157,6 +160,7 @@ public class FileUtilities {
                 file = new File(newURI);
             }
         }
+
         return file;
     }
 
@@ -179,13 +183,12 @@ public class FileUtilities {
      *   the name specification cannot be parsed.
      *  @exception MalformedURLException If the
      */
-    public static URL nameToURL(
-            String name, URI baseDirectory, ClassLoader classLoader)
-            throws IOException {
-
-        if (name == null || name.trim().equals("")) {
+    public static URL nameToURL(String name, URI baseDirectory,
+        ClassLoader classLoader) throws IOException {
+        if ((name == null) || name.trim().equals("")) {
             return null;
         }
+
         // If the name begins with "$CLASSPATH", then attempt to
         // open the file relative to the classpath.
         // NOTE: Use the dummy variable constant set up in the constructor.
@@ -193,34 +196,39 @@ public class FileUtilities {
             // Try relative to classpath.
             // The +1 is to skip over the delimiter after $CLASSPATH.
             String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
+
             if (classLoader == null) {
                 try {
                     // WebStart: We might be in the Swing Event thread, so
                     // Thread.currentThread().getContextClassLoader()
                     // .getResource(entry) probably will not work so we
                     // use a marker class.
-                    Class refClass =
-                        Class.forName("ptolemy.kernel.util.NamedObj");
+                    Class refClass = Class.forName(
+                            "ptolemy.kernel.util.NamedObj");
                     classLoader = refClass.getClassLoader();
                 } catch (Exception ex) {
                     // IOException constructor does not take a cause
-                    IOException ioException =
-                        new IOException("Cannot find file '" + trimmedName
-                                + "' in classpath");
+                    IOException ioException = new IOException(
+                            "Cannot find file '" + trimmedName
+                            + "' in classpath");
                     ioException.initCause(ex);
                     throw ioException;
                 }
             }
+
             // Use Thread.currentThread()... for Web Start.
             URL result = classLoader.getResource(trimmedName);
+
             if (result == null) {
                 new IOException("Cannot find file '" + trimmedName
-                        + "' in classpath");
+                    + "' in classpath");
             }
+
             return result;
         }
 
         File file = new File(name);
+
         if (file.isAbsolute()) {
             if (!file.canRead()) {
                 // FIXME: This is a hack.
@@ -229,19 +237,21 @@ public class FileUtilities {
                 // JAIImageReader because PtolemyII.jpg is passed in
                 // to this method as C:\Program%20Files\Ptolemy\...
                 file = new File(StringUtilities.substitute(name, "%20", " "));
+
                 if (!file.canRead()) {
-                    throw new IOException(
-                            "Cannot read file '" + name + "' or '"
-                            + StringUtilities.substitute(name, "%20", " ")
-                            + "'");
+                    throw new IOException("Cannot read file '" + name
+                        + "' or '"
+                        + StringUtilities.substitute(name, "%20", " ") + "'");
                 }
             }
+
             return file.toURL();
         } else {
             // Try relative to the base directory.
             if (baseDirectory != null) {
                 // Try to resolve the URI.
                 URI newURI;
+
                 try {
                     newURI = baseDirectory.resolve(name);
                 } catch (IllegalArgumentException ex) {
@@ -250,8 +260,8 @@ public class FileUtilities {
                     // demos that have actors that have defaults FileParameters
                     // like "$PTII/doc/img/PtolemyII.jpg", then resolve()
                     // bombs.
-                    String name2 =
-                        StringUtilities.substitute(name, "%20", " ");
+                    String name2 = StringUtilities.substitute(name, "%20", " ");
+
                     try {
                         newURI = baseDirectory.resolve(name2);
                         name = name2;
@@ -268,6 +278,7 @@ public class FileUtilities {
                         throw io;
                     }
                 }
+
                 try {
                     return newURI.toURL();
                 } catch (IllegalArgumentException ex3) {
@@ -302,22 +313,24 @@ public class FileUtilities {
      *  @return A buffered reader.
      *  @exception IOException If the file cannot be opened.
      */
-    public static BufferedReader openForReading(
-            String name, URI base, ClassLoader classLoader)
-            throws IOException {
+    public static BufferedReader openForReading(String name, URI base,
+        ClassLoader classLoader) throws IOException {
         if (name.trim().equals("System.in")) {
             if (STD_IN == null) {
                 STD_IN = new BufferedReader(new InputStreamReader(System.in));
             }
+
             return STD_IN;
         }
+
         // Not standard input. Try URL mechanism.
         URL url = nameToURL(name, base, classLoader);
+
         if (url == null) {
             throw new IOException("No file name has been specified.");
         }
-        return new BufferedReader(
-               new InputStreamReader(url.openStream()));
+
+        return new BufferedReader(new InputStreamReader(url.openStream()));
     }
 
     /** Open the specified file for writing or appending. If the
@@ -339,16 +352,19 @@ public class FileUtilities {
      *   or created.
      */
     public static Writer openForWriting(String name, URI base, boolean append)
-            throws IOException {
+        throws IOException {
         if (name.trim().equals("System.out")) {
             if (STD_OUT == null) {
                 STD_OUT = new PrintWriter(System.out);
             }
+
             return STD_OUT;
         }
-        if (name == null || name.trim().equals("")) {
+
+        if ((name == null) || name.trim().equals("")) {
             return null;
         }
+
         File file = nameToFile(name, base);
         return new FileWriter(file, append);
     }
@@ -378,5 +394,3 @@ public class FileUtilities {
      */
     private static String _CLASSPATH_VALUE = "xxxxxxCLASSPATHxxxxxx";
 }
-
-

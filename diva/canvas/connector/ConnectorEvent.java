@@ -27,6 +27,7 @@ package diva.canvas.connector;
 
 import diva.canvas.Figure;
 
+
 /**
  * A graph event that is emitted when anything
  * interesting happens inside a graph by way of a GraphModel.
@@ -40,7 +41,6 @@ import diva.canvas.Figure;
  * @Pt.AcceptedRating Red
  */
 public class ConnectorEvent extends java.util.EventObject {
-
     /**
      * Signifies that a connector is dragged some distance
      */
@@ -132,10 +132,8 @@ public class ConnectorEvent extends java.util.EventObject {
      * the connector exists, while the target is the figure that the
      * connector is snapped to or unsnapped from.
      */
-    public ConnectorEvent(
-            int id, Object source,
-            Figure target,
-            Connector connector, int end) {
+    public ConnectorEvent(int id, Object source, Figure target,
+        Connector connector, int end) {
         super(source);
         _target = target;
         _id = id;
@@ -154,32 +152,42 @@ public class ConnectorEvent extends java.util.EventObject {
      * Return the end of the connector that this
      * event concerns.
      */
-    public int getEnd() { return _end; }
+    public int getEnd() {
+        return _end;
+    }
 
     /**
      * Return the type id for this event.
      */
-    public int getID() { return _id; }
+    public int getID() {
+        return _id;
+    }
 
     /**
      * Return the target that the connector is snapped to
      * or unsnapped from.
      */
-    public Figure getTarget() { return _target; }
+    public Figure getTarget() {
+        return _target;
+    }
 
     /**
      * Return a string representation of the ID.
      */
     private String idToString() {
-        switch(getID()) {
+        switch (getID()) {
         case CONNECTOR_DRAGGED:
             return "CONNECTOR_DRAGGED";
+
         case CONNECTOR_DROPPED:
             return "CONNECTOR_DROPPED";
+
         case CONNECTOR_SNAPPED:
             return "CONNECTOR_SNAPPED";
+
         case CONNECTOR_UNSNAPPED:
             return "CONNECTOR_UNSNAPPED";
+
         default:
             return "Invalid event ID";
         }
@@ -189,21 +197,23 @@ public class ConnectorEvent extends java.util.EventObject {
      * Return a string representation of the endpoint.
      */
     private String endToString() {
-        switch(getEnd()) {
+        switch (getEnd()) {
         case HEAD_END:
             return "HEAD_END";
+
         case TAIL_END:
             return "TAIL_END";
+
         case BOTH_ENDS:
             return "BOTH_ENDS";
+
         default:
             return "Invalid end.";
         }
     }
 
     public String toString() {
-        return "ConnectorEvent[" + idToString() + ", " + getConnector() + ", " + endToString() + "]";
+        return "ConnectorEvent[" + idToString() + ", " + getConnector() + ", "
+        + endToString() + "]";
     }
 }
-
-

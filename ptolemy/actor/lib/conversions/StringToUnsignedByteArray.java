@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.ArrayToken;
@@ -37,6 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 ///////////////////////////////////////////////////////////////
 /// StringToUnsignedByteArray
@@ -52,9 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (winthrop)
    @Pt.AcceptedRating Red (winthrop)
 */
-
 public class StringToUnsignedByteArray extends Converter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -64,7 +62,7 @@ public class StringToUnsignedByteArray extends Converter {
      *   actor with this name.
      */
     public StringToUnsignedByteArray(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.STRING);
@@ -87,13 +85,13 @@ public class StringToUnsignedByteArray extends Converter {
      *  FIXME: Does this method actually check if there is a director?
      */
     public void fire() throws IllegalActionException {
-
-        String inputValue = ((StringToken)input.get(0)).stringValue();
+        String inputValue = ((StringToken) input.get(0)).stringValue();
 
         byte[] dataBytes = inputValue.getBytes();
 
         int bytesAvailable = dataBytes.length;
         Token[] dataTokens = new Token[bytesAvailable];
+
         for (int j = 0; j < bytesAvailable; j++) {
             dataTokens[j] = new UnsignedByteToken(dataBytes[j]);
         }
@@ -109,25 +107,7 @@ public class StringToUnsignedByteArray extends Converter {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

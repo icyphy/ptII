@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.domains.dde.kernel;
 
 import java.util.Collections;
@@ -54,8 +53,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DDEDirector
+
 /**
    A DDEDirector governs the execution of actors operating according
    to the DDE model of computation (MoC). The DDE MoC incorporates
@@ -118,14 +119,13 @@ import ptolemy.kernel.util.Workspace;
 */
 public class DDEDirector extends CompositeProcessDirector
     implements TimedDirector {
-
     /** Construct a DDEDirector in the default workspace with
      *  an empty string as its name. The director is added to
      *  the list of objects in the workspace. Increment the
      *  version number of the workspace.
      */
     public DDEDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -140,7 +140,7 @@ public class DDEDirector extends CompositeProcessDirector
      * @param workspace The workspace of this object.
      */
     public DDEDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -162,7 +162,7 @@ public class DDEDirector extends CompositeProcessDirector
      *   CompositeActor and the name collides with an entity in the container.
      */
     public DDEDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -202,8 +202,9 @@ public class DDEDirector extends CompositeProcessDirector
      */
     public Time getModelTime() {
         Thread thread = Thread.currentThread();
+
         if (thread instanceof DDEThread) {
-            TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+            TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
             return timeKeeper.getModelTime();
         } else {
             return super.getModelTime();
@@ -228,46 +229,48 @@ public class DDEDirector extends CompositeProcessDirector
      *  method is a DDEThread but the specified actor is
      *  not contained by the DDEThread.
      */
-    public void fireAt(Actor actor, Time time)
-            throws IllegalActionException {
-
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
         double ETERNITY = PrioritizedTimedQueue.ETERNITY;
         DDEThread ddeThread;
         Thread thread = Thread.currentThread();
+
         if (thread instanceof DDEThread) {
-            ddeThread = (DDEThread)thread;
+            ddeThread = (DDEThread) thread;
         } else {
             // Add the start time of actor to initialize table
             if (_initialTimeTable == null) {
                 _initialTimeTable = new Hashtable();
             }
+
             _initialTimeTable.put(actor, new Double(time.getDoubleValue()));
             return;
         }
 
-        if (_completionTime.getDoubleValue() != ETERNITY &&
-            time.compareTo(_completionTime) > 0) {
+        if ((_completionTime.getDoubleValue() != ETERNITY)
+                && (time.compareTo(_completionTime) > 0)) {
             return;
         }
 
         Actor threadActor = ddeThread.getActor();
+
         if (threadActor != actor) {
             throw new IllegalActionException("Actor argument of "
-                    + "DDEDirector.fireAt() must be contained "
-                    + "by the DDEThread that calls fireAt()");
+                + "DDEDirector.fireAt() must be contained "
+                + "by the DDEThread that calls fireAt()");
         }
 
         TimeKeeper timeKeeper = ddeThread.getTimeKeeper();
+
         try {
             if (_debugging) {
                 _debug("fireAt " + actor + " time " + time);
                 _debug("current time was " + timeKeeper.getCurrentTime());
             }
+
             timeKeeper.setCurrentTime(time);
         } catch (IllegalArgumentException e) {
-            throw new IllegalActionException(
-                    ((NamedObj)actor).getName() + " - Attempt to "
-                    + "set current time in the past.");
+            throw new IllegalActionException(((NamedObj) actor).getName()
+                + " - Attempt to " + "set current time in the past.");
         }
     }
 
@@ -308,11 +311,13 @@ public class DDEDirector extends CompositeProcessDirector
     public Receiver newReceiver() {
         DDEReceiver receiver = new DDEReceiver();
         double timeValue;
+
         try {
-            timeValue = ((DoubleToken)stopTime.getToken()).doubleValue();
+            timeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e.toString());
         }
+
         receiver._setCompletionTime(new Time(this, timeValue));
         receiver._lastTime = new Time(this);
         return receiver;
@@ -330,10 +335,12 @@ public class DDEDirector extends CompositeProcessDirector
      */
     public boolean postfire() throws IllegalActionException {
         Thread thread = Thread.currentThread();
+
         if (thread instanceof DDEThread) {
-            TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+            TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
             timeKeeper.removeAllIgnoreTokens();
         }
+
         return super.postfire();
     }
 
@@ -351,8 +358,10 @@ public class DDEDirector extends CompositeProcessDirector
             if (_writeBlockedQueues == null) {
                 _writeBlockedQueues = new LinkedList();
             }
+
             _writeBlockedQueues.addFirst(receiver);
         }
+
         super._actorBlocked(receiver);
         notifyAll();
     }
@@ -365,10 +374,12 @@ public class DDEDirector extends CompositeProcessDirector
      */
     protected synchronized void _actorBlocked(LinkedList receivers) {
         Iterator receiverIterator = receivers.iterator();
+
         while (receiverIterator.hasNext()) {
-            DDEReceiver receiver = (DDEReceiver)receiverIterator.next();
+            DDEReceiver receiver = (DDEReceiver) receiverIterator.next();
             _actorBlocked(receiver);
         }
+
         notifyAll();
     }
 
@@ -378,10 +389,12 @@ public class DDEDirector extends CompositeProcessDirector
      */
     protected synchronized void _actorUnBlocked(LinkedList receivers) {
         Iterator receiverIterator = receivers.iterator();
+
         while (receiverIterator.hasNext()) {
-            DDEReceiver receiver = (DDEReceiver)receiverIterator.next();
+            DDEReceiver receiver = (DDEReceiver) receiverIterator.next();
             _actorUnBlocked(receiver);
         }
+
         notifyAll();
     }
 
@@ -396,8 +409,10 @@ public class DDEDirector extends CompositeProcessDirector
             if (_writeBlockedQueues == null) {
                 // FIXME: throw exception???
             }
+
             _writeBlockedQueues.remove(receiver);
         }
+
         super._actorUnBlocked(receiver);
         notifyAll();
     }
@@ -412,7 +427,7 @@ public class DDEDirector extends CompositeProcessDirector
      *   instantiating the new ProcessThread.
      */
     protected ProcessThread _getProcessThread(Actor actor,
-            ProcessDirector director) throws IllegalActionException {
+        ProcessDirector director) throws IllegalActionException {
         return new DDEThread(actor, director);
     }
 
@@ -422,15 +437,15 @@ public class DDEDirector extends CompositeProcessDirector
      * @exception IllegalActionException If there is an error
      *  while attempting to set the capacity of a DDE receiver.
      */
-    protected void _incrementLowestCapacityPort()
-            throws IllegalActionException {
+    protected void _incrementLowestCapacityPort() throws IllegalActionException {
         if (_writeBlockedQueues == null) {
             return;
         }
-        Collections.sort(_writeBlockedQueues,
-                new ReceiverCapacityComparator());
+
+        Collections.sort(_writeBlockedQueues, new ReceiverCapacityComparator());
+
         DDEReceiver smallestQueue;
-        smallestQueue = (DDEReceiver)_writeBlockedQueues.getFirst();
+        smallestQueue = (DDEReceiver) _writeBlockedQueues.getFirst();
 
         if (smallestQueue.getCapacity() <= 0) {
             smallestQueue.setCapacity(1);
@@ -438,8 +453,10 @@ public class DDEDirector extends CompositeProcessDirector
             int cap = smallestQueue.getCapacity();
             smallestQueue.setCapacity(cap * 2);
         }
+
         _actorUnBlocked(smallestQueue);
-        synchronized(smallestQueue) {
+
+        synchronized (smallestQueue) {
             smallestQueue.notifyAll();
         }
     }
@@ -454,12 +471,15 @@ public class DDEDirector extends CompositeProcessDirector
      *   otherwise return false.
      */
     protected synchronized boolean _resolveInternalDeadlock()
-            throws IllegalActionException {
-        System.out.println("_writeBlockedQueues.size() = " + _writeBlockedQueues.size());
+        throws IllegalActionException {
+        System.out.println("_writeBlockedQueues.size() = "
+            + _writeBlockedQueues.size());
+
         if (_writeBlockedQueues.size() > 0) {
             _incrementLowestCapacityPort();
             return true;
         }
+
         return super._resolveInternalDeadlock();
     }
 
@@ -473,12 +493,12 @@ public class DDEDirector extends CompositeProcessDirector
         if (_initialTimeTable == null) {
             _initialTimeTable = new Hashtable();
         }
+
         return _initialTimeTable;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Since the completionTime is a constant, we do not convert it
     // to a time object.
     private Time _completionTime;
@@ -488,9 +508,7 @@ public class DDEDirector extends CompositeProcessDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     private class ReceiverCapacityComparator implements Comparator {
-
         /** Compare two objects (specified as arguments) according to
          *  their respective capacities and return 1 if the second
          *  object (argument) is larger than the first object; return
@@ -506,16 +524,17 @@ public class DDEDirector extends CompositeProcessDirector
             DDEReceiver second = null;
 
             if (object1 instanceof DDEReceiver) {
-                first = (DDEReceiver)object1;
+                first = (DDEReceiver) object1;
             } else {
-                throw new ClassCastException("object1 must be an " +
-                        "instance of DDEReceiver");
+                throw new ClassCastException("object1 must be an "
+                    + "instance of DDEReceiver");
             }
+
             if (object2 instanceof DDEReceiver) {
-                second = (DDEReceiver)object2;
+                second = (DDEReceiver) object2;
             } else {
-                throw new ClassCastException("object2 must be an " +
-                        "instance of DDEReceiver");
+                throw new ClassCastException("object2 must be an "
+                    + "instance of DDEReceiver");
             }
 
             if (first.getCapacity() < second.getCapacity()) {
@@ -528,4 +547,3 @@ public class DDEDirector extends CompositeProcessDirector
         }
     }
 }
-

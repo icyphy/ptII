@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.pn.kernel.test;
+
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -34,8 +34,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PNSink
+
 /**
 
 @author Mudit Goel
@@ -44,22 +46,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */
-public class TestSink extends AtomicActor{
-
+public class TestSink extends AtomicActor {
     /** Constructor Adds ports to the star
      * @param initValue is the initial token that the star puts in the stream
      * @exception NameDuplicationException indicates that an attempt to add
      *  two ports with the same name has been made
      */
     public TestSink(CompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _input = new IOPort(this, "input", true, false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Clear the record, and reset the iteration count to zero.
      */
@@ -71,9 +71,11 @@ public class TestSink extends AtomicActor{
      */
     public void fire() throws IllegalActionException {
         Token data;
+
         while (true) {
             data = _input.get(0);
-            _list.append(((IntToken)data).intValue());
+            _list.append(((IntToken) data).intValue());
+
             //System.out.println("Sink discarded "+data.intValue());
         }
     }

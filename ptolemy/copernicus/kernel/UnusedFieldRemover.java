@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.kernel;
 
 import java.util.HashSet;
@@ -48,6 +47,7 @@ import soot.jimple.Stmt;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnusedFieldRemover
+
 /**
    A Transformer that removes any private fields from a class that are
    never read.  This transformer also transforms the bodies of the
@@ -61,7 +61,6 @@ import soot.jimple.Stmt;
 
 */
 public class UnusedFieldRemover extends SceneTransformer {
-
     /** Return an instance of this transformer that will operate on
      *  the given model.  The model is assumed to already have been
      *  properly initialized so that resolved types and other static
@@ -73,71 +72,69 @@ public class UnusedFieldRemover extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
-        System.out.println("UnusedFieldRemover.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("UnusedFieldRemover.internalTransform(" + phaseName
+            + ", " + options + ")");
 
-        SootClass stringClass =
-            Scene.v().loadClassAndSupport("java.lang.String");
+        SootClass stringClass = Scene.v().loadClassAndSupport("java.lang.String");
         Type stringType = RefType.v(stringClass);
-        SootClass objectClass =
-            Scene.v().loadClassAndSupport("java.lang.Object");
-        SootMethod toStringMethod =
-            objectClass.getMethod("java.lang.String toString()");
-        SootClass namedObjClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
+        SootClass objectClass = Scene.v().loadClassAndSupport("java.lang.Object");
+        SootMethod toStringMethod = objectClass.getMethod(
+                "java.lang.String toString()");
+        SootClass namedObjClass = Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
         SootMethod getAttributeMethod = namedObjClass.getMethod(
                 "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
         SootMethod attributeChangedMethod = namedObjClass.getMethod(
                 "void attributeChanged(ptolemy.kernel.util.Attribute)");
 
-        SootClass attributeClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
+        SootClass attributeClass = Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
         Type attributeType = RefType.v(attributeClass);
-        SootClass settableClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
+        SootClass settableClass = Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
         Type settableType = RefType.v(settableClass);
-        SootMethod getExpressionMethod =
-            settableClass.getMethod("java.lang.String getExpression()");
-        SootMethod setExpressionMethod =
-            settableClass.getMethod("void setExpression(java.lang.String)");
+        SootMethod getExpressionMethod = settableClass.getMethod(
+                "java.lang.String getExpression()");
+        SootMethod setExpressionMethod = settableClass.getMethod(
+                "void setExpression(java.lang.String)");
 
-        SootClass tokenClass =
-            Scene.v().loadClassAndSupport("ptolemy.data.Token");
+        SootClass tokenClass = Scene.v().loadClassAndSupport("ptolemy.data.Token");
         Type tokenType = RefType.v(tokenClass);
-        SootClass parameterClass =
-            Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
-        SootMethod getTokenMethod =
-            parameterClass.getMethod("ptolemy.data.Token getToken()");
-        SootMethod setTokenMethod =
-            parameterClass.getMethod("void setToken(ptolemy.data.Token)");
+        SootClass parameterClass = Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
+        SootMethod getTokenMethod = parameterClass.getMethod(
+                "ptolemy.data.Token getToken()");
+        SootMethod setTokenMethod = parameterClass.getMethod(
+                "void setToken(ptolemy.data.Token)");
 
         Set unusedFieldSet = new HashSet();
+
         // Loop over all the actor instance classes and create the set of
         // all fields.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-            SootClass entityClass = (SootClass)i.next();
+                i.hasNext();) {
+            SootClass entityClass = (SootClass) i.next();
 
             unusedFieldSet.addAll(entityClass.getFields());
         }
 
         // Loop through all the methods and kill all the used fields.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-            SootClass entityClass = (SootClass)i.next();
+                i.hasNext();) {
+            SootClass entityClass = (SootClass) i.next();
+
             for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                    methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
+
                 for (Iterator stmts = body.getUnits().iterator();
-                     stmts.hasNext();) {
-                    Stmt stmt = (Stmt)stmts.next();
+                        stmts.hasNext();) {
+                    Stmt stmt = (Stmt) stmts.next();
+
                     for (Iterator boxes = stmt.getUseBoxes().iterator();
-                         boxes.hasNext();) {
-                        ValueBox box = (ValueBox)boxes.next();
+                            boxes.hasNext();) {
+                        ValueBox box = (ValueBox) boxes.next();
                         Value value = box.getValue();
+
                         if (value instanceof FieldRef) {
-                            Object field = ((FieldRef)value).getField();
+                            Object field = ((FieldRef) value).getField();
                             unusedFieldSet.remove(field);
                         }
                     }
@@ -148,21 +145,26 @@ public class UnusedFieldRemover extends SceneTransformer {
         // Loop through the methods again, and kill the statements
         // that write to an unused field.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-            SootClass entityClass = (SootClass)i.next();
+                i.hasNext();) {
+            SootClass entityClass = (SootClass) i.next();
+
             for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                    methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
+
                 for (Iterator stmts = body.getUnits().snapshotIterator();
-                     stmts.hasNext();) {
-                    Stmt stmt = (Stmt)stmts.next();
+                        stmts.hasNext();) {
+                    Stmt stmt = (Stmt) stmts.next();
+
                     for (Iterator boxes = stmt.getDefBoxes().iterator();
-                         boxes.hasNext();) {
-                        ValueBox box = (ValueBox)boxes.next();
+                            boxes.hasNext();) {
+                        ValueBox box = (ValueBox) boxes.next();
                         Value value = box.getValue();
+
                         if (value instanceof FieldRef) {
-                            Object field = ((FieldRef)value).getField();
+                            Object field = ((FieldRef) value).getField();
+
                             if (unusedFieldSet.contains(field)) {
                                 body.getUnits().remove(stmt);
                             }
@@ -172,27 +174,15 @@ public class UnusedFieldRemover extends SceneTransformer {
             }
 
             for (Iterator fields = entityClass.getFields().snapshotIterator();
-                 fields.hasNext();) {
-                SootField field = (SootField)fields.next();
+                    fields.hasNext();) {
+                SootField field = (SootField) fields.next();
+
                 if (unusedFieldSet.contains(field)) {
                     entityClass.removeField(field);
                 }
             }
         }
     }
+
     private static UnusedFieldRemover _instance = new UnusedFieldRemover();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.expr.Parameter;
@@ -33,8 +32,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MonitorValue
+
 /**
    Monitor inputs by setting the <i>value</i> parameter equal
    to each arriving token.  This actor can be used with
@@ -48,9 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
 */
-
 public class MonitorValue extends Sink {
-
     /** Construct an actor.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -60,7 +59,7 @@ public class MonitorValue extends Sink {
      *   actor with this name.
      */
     public MonitorValue(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         value = new Parameter(this, "value");
@@ -86,6 +85,7 @@ public class MonitorValue extends Sink {
             value.setToken(input.get(0));
             value.validate();
         }
+
         return true;
     }
 }

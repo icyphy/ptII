@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.csp.kernel.test;
 
 import ptolemy.actor.Receiver;
@@ -40,6 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPCondPut
+
 /**
 
 @author John S. Davis II
@@ -49,25 +49,22 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class CSPCondPut extends CSPPutToken {
-
     /**
      */
-    public CSPCondPut(TypedCompositeActor cont, String name,
-            int numTokens, int receiverCount)
-            throws IllegalActionException, NameDuplicationException {
+    public CSPCondPut(TypedCompositeActor cont, String name, int numTokens,
+        int receiverCount)
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name, numTokens);
 
         _receiverCount = receiverCount;
         _truth = new boolean[receiverCount];
         _winningBranch = new boolean[receiverCount];
 
-        for ( int i = 0; i < receiverCount; i++ ) {
+        for (int i = 0; i < receiverCount; i++) {
             _winningBranch[i] = false;
             _truth[i] = false;
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,23 +75,25 @@ public class CSPCondPut extends CSPPutToken {
     public void fire() throws IllegalActionException {
         int numRcvrs = 0;
         Receiver[][] rcvrs = outputPort.getRemoteReceivers();
-        for ( int i = 0; i < rcvrs.length; i++ ) {
-            for ( int j = 0; j < rcvrs[i].length; j++ ) {
+
+        for (int i = 0; i < rcvrs.length; i++) {
+            for (int j = 0; j < rcvrs[i].length; j++) {
                 numRcvrs++;
             }
         }
 
-        if ( _receiverCount != numRcvrs ) {
-            throw new IllegalActionException(getName()+": Error in the number"
-                    + " of receivers. Be sure constructor is properly"
-                    + " instantiated.");
+        if (_receiverCount != numRcvrs) {
+            throw new IllegalActionException(getName()
+                + ": Error in the number"
+                + " of receivers. Be sure constructor is properly"
+                + " instantiated.");
         }
 
         ConditionalBranch[] Branchs = new ConditionalBranch[numRcvrs];
 
         Token token = new Token();
 
-        for ( int i = 0; i < numRcvrs; i++ ) {
+        for (int i = 0; i < numRcvrs; i++) {
             Branchs[i] = new ConditionalSend(_truth[i], outputPort, i, i, token);
         }
 
@@ -117,7 +116,6 @@ public class CSPCondPut extends CSPPutToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _receiverCount;
     private boolean[] _truth;
     private boolean[] _winningBranch;

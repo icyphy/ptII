@@ -24,21 +24,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.util;
 
-import byucc.jhdl.base.TestBench;
-import byucc.jhdl.base.HWSystem;
-import byucc.jhdl.base.Wire;
-import byucc.jhdl.base.Cell;
 import byucc.jhdl.Logic.Logic;
 
-import java.util.Vector;
+import byucc.jhdl.base.Cell;
+import byucc.jhdl.base.HWSystem;
+import byucc.jhdl.base.TestBench;
+import byucc.jhdl.base.Wire;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+import java.util.Vector;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// JHDLTestbench.java
+
 /**
  *
  *
@@ -49,44 +51,41 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
-public class JHDLTestbench extends Logic implements TestBench{
-
+public class JHDLTestbench extends Logic implements TestBench {
     public JHDLTestbench(HWSystem parent) {
-        this(parent,JHDL_TESTBENCH_NAME,DEFAULT_CELL_NAME);
+        this(parent, JHDL_TESTBENCH_NAME, DEFAULT_CELL_NAME);
     }
 
     public JHDLTestbench(HWSystem parent, String cellname) {
-        this(parent,JHDL_TESTBENCH_NAME,cellname);
+        this(parent, JHDL_TESTBENCH_NAME, cellname);
     }
 
-    public JHDLTestbench(HWSystem parent, String testbenchname,
-            String cellname) {
-        super(parent,testbenchname);
+    public JHDLTestbench(HWSystem parent, String testbenchname, String cellname) {
+        super(parent, testbenchname);
         _inputWires = new Vector();
         _outputWires = new Vector();
-        _topcell = new Logic(this,cellname);
+        _topcell = new Logic(this, cellname);
     }
 
-    public Cell getTopCell() { return _topcell; }
+    public Cell getTopCell() {
+        return _topcell;
+    }
 
     public Wire addPrimaryInputWire(String name, int bits) {
-        Wire w = wire(bits,name);
+        Wire w = wire(bits, name);
         _inputWires.add(w);
         return w;
     }
 
     public Wire addPrimaryOutputWire(String name, int bits) {
-        Wire w = wire(bits,name);
+        Wire w = wire(bits, name);
         _outputWires.add(w);
         return w;
     }
 
     public static final String JHDL_TESTBENCH_NAME = "JHDLTestBench";
     public static final String DEFAULT_CELL_NAME = "top";
-
     protected Vector _inputWires;
     protected Vector _outputWires;
     protected Cell _topcell;
-
 }

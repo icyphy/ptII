@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MultiplyDivide
+
 /**
 
    A polymorphic multiplier and/or divider.  This adder has two input
@@ -76,7 +77,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Green (bilung)
 */
 public class MultiplyDivide extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -87,25 +87,23 @@ public class MultiplyDivide extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public MultiplyDivide(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         multiply = new TypedIOPort(this, "multiply", true, false);
         multiply.setMultiport(true);
         divide = new TypedIOPort(this, "divide", true, false);
         divide.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<line x1=\"-15\" y1=\"-15\" x2=\"-5\" y2=\"-5\"/>"
-                + "<line x1=\"-15\" y1=\"-5\" x2=\"-5\" y2=\"-15\"/>"
-                + "<line x1=\"-15\" y1=\"10\" x2=\"-5\" y2=\"10\"/>"
-                + "<circle cx=\"-10\" cy=\"6\" r=\"1\""
-                + "style=\"fill:black\"/>\n"
-                + "<circle cx=\"-10\" cy=\"14\" r=\"1\""
-                + "style=\"fill:black\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<line x1=\"-15\" y1=\"-15\" x2=\"-5\" y2=\"-5\"/>"
+            + "<line x1=\"-15\" y1=\"-5\" x2=\"-5\" y2=\"-15\"/>"
+            + "<line x1=\"-15\" y1=\"10\" x2=\"-5\" y2=\"10\"/>"
+            + "<circle cx=\"-10\" cy=\"6\" r=\"1\""
+            + "style=\"fill:black\"/>\n"
+            + "<circle cx=\"-10\" cy=\"14\" r=\"1\""
+            + "style=\"fill:black\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,6 +142,7 @@ public class MultiplyDivide extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Token numerator = null;
+
         for (int i = 0; i < multiply.getWidth(); i++) {
             if (multiply.hasToken(i)) {
                 if (numerator == null) {
@@ -153,7 +152,9 @@ public class MultiplyDivide extends TypedAtomicActor {
                 }
             }
         }
+
         Token denominator = null;
+
         for (int i = 0; i < divide.getWidth(); i++) {
             if (divide.hasToken(i)) {
                 if (denominator == null) {
@@ -163,15 +164,19 @@ public class MultiplyDivide extends TypedAtomicActor {
                 }
             }
         }
+
         if (numerator == null) {
             if (denominator == null) {
                 return;
             }
+
             numerator = denominator.one();
         }
+
         if (denominator != null) {
             numerator = numerator.divide(denominator);
         }
+
         output.send(0, numerator);
     }
 }

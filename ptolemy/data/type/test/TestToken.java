@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestToken
+
 /**
 
 This is a new type of token.  It is used to test the TypeLattice to
@@ -52,7 +53,6 @@ to everything else.
 
 */
 public class TestToken extends Token {
-
     public TestToken(Object object) {
         super();
         _object = object;
@@ -85,11 +85,12 @@ public class TestToken extends Token {
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof TestToken) {
             return new BooleanToken(this == token);
-        } else
+        } else {
             throw new IllegalActionException(
-                    "Equality test not supported between "
-                    + this.getClass().getName() + " and "
-                    + token.getClass().getName() + ".");
+                "Equality test not supported between "
+                + this.getClass().getName() + " and "
+                + token.getClass().getName() + ".");
+        }
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -104,12 +105,9 @@ public class TestToken extends Token {
     }
 
     public static class TestType implements Type, Serializable {
-
         // FIXME: should this extend BaseType?
-
         ///////////////////////////////////////////////////////////////////
         ////                         constructors                      ////
-
         // The constructor is private to make a type safe enumeration.
         private TestType() {
             super();
@@ -132,14 +130,12 @@ public class TestToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
-        public Token convert(Token token)
-                throws IllegalActionException {
+        public Token convert(Token token) throws IllegalActionException {
             if (token instanceof TestToken) {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                        + token +
-                        " into a test token, which is not possible.");
+                    + token + " into a test token, which is not possible.");
             }
         }
 
@@ -174,7 +170,6 @@ public class TestToken extends Token {
         public int getTypeHash() {
             return Type.HASH_INVALID;
         }
-
 
         /** Determine if this type corresponds to an instantiable token
          *  classes. A BaseType is instantiable if it does not correspond

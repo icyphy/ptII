@@ -5,8 +5,8 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-public class Unboxing1d
-{
+
+public class Unboxing1d {
     static IntToken intToken = new IntToken(1);
     static Token[] tokens;
     static Token[] tokens2;

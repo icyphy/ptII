@@ -44,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.IntegerMatrixMath;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HTVQEncode
+
 /**
    This actor encodes a matrix using Hierarchical Table-Lookup Vector
    Quantization.   The matrix must be of dimensions that are amenable to this
@@ -116,7 +118,6 @@ import ptolemy.math.IntegerMatrixMath;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red (neuendor)
 */
-
 public class HTVQEncode extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -128,39 +129,33 @@ public class HTVQEncode extends Transformer {
      *   an actor already in the container.
      */
     public HTVQEncode(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT);
 
         codeBook = new Parameter(this, "codeBook",
-                new StringToken("/ptolemy/domains/sdf" +
-                        "/lib/vq/data/usc_hvq_s5.dat"));
+                new StringToken("/ptolemy/domains/sdf"
+                    + "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
 
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
         blockCount.setTypeEquals(BaseType.INT);
 
-        blockWidth =
-            new Parameter(this, "blockWidth", new IntToken("4"));
+        blockWidth = new Parameter(this, "blockWidth", new IntToken("4"));
         blockWidth.setTypeEquals(BaseType.INT);
 
-        blockHeight =
-            new Parameter(this, "blockHeight", new IntToken("2"));
+        blockHeight = new Parameter(this, "blockHeight", new IntToken("2"));
         blockHeight.setTypeEquals(BaseType.INT);
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setExpression("blockCount");
 
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression("blockCount");
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -204,10 +199,10 @@ public class HTVQEncode extends Transformer {
         _blocks = input.get(0, _blockCount);
 
         for (j = 0; j < _blockCount; j++) {
-            _codewords[j] = new IntToken(
-                    _encode(IntegerMatrixMath.fromMatrixToArray(
-                                    ((IntMatrixToken)_blocks[j]).intMatrix()),
-                            _blockWidth * _blockHeight));
+            _codewords[j] = new IntToken(_encode(
+                        IntegerMatrixMath.fromMatrixToArray(
+                            ((IntMatrixToken) _blocks[j]).intMatrix()),
+                        _blockWidth * _blockHeight));
         }
 
         output.send(0, _codewords, _blockCount);
@@ -225,14 +220,15 @@ public class HTVQEncode extends Transformer {
 
         InputStream source = null;
 
-        _blockCount = ((IntToken)blockCount.getToken()).intValue();
-        _blockWidth = ((IntToken)blockWidth.getToken()).intValue();
-        _blockHeight = ((IntToken)blockHeight.getToken()).intValue();
+        _blockCount = ((IntToken) blockCount.getToken()).intValue();
+        _blockWidth = ((IntToken) blockWidth.getToken()).intValue();
+        _blockHeight = ((IntToken) blockHeight.getToken()).intValue();
 
-        _codewords =  new IntToken[_blockCount];
+        _codewords = new IntToken[_blockCount];
         _blocks = new ptolemy.data.Token[_blockCount];
 
-        String filename = ((StringToken)codeBook.getToken()).stringValue();
+        String filename = ((StringToken) codeBook.getToken()).stringValue();
+
         try {
             if (filename != null) {
                 try {
@@ -242,47 +238,57 @@ public class HTVQEncode extends Transformer {
                 } catch (MalformedURLException e) {
                     System.err.println(e.toString());
                 } catch (FileNotFoundException e) {
-                    System.err.println("HTVQEncode: " +
-                            "file not found: " + e);
+                    System.err.println("HTVQEncode: " + "file not found: " + e);
                 } catch (IOException e) {
                     throw new IllegalActionException(
-                            "HTVQEncode: error reading" +
-                            " input file: " + e.getMessage());
+                        "HTVQEncode: error reading" + " input file: "
+                        + e.getMessage());
                 }
             }
 
-            int i, j, y, x, size = 1;
-            byte temp[];
+            int i;
+            int j;
+            int y;
+            int x;
+            int size = 1;
+            byte[] temp;
+
             for (i = 0; i < 5; i++) {
                 size = size * 2;
                 temp = new byte[size];
+
                 for (j = 0; j < 256; j++) {
                     _codeBook[i][j] = new int[size];
-                    if (_fullRead(source, temp) != size)
-                        throw new IllegalActionException("Error reading " +
-                                "codebook file!");
-                    for (x = 0; x < size; x++)
+
+                    if (_fullRead(source, temp) != size) {
+                        throw new IllegalActionException("Error reading "
+                            + "codebook file!");
+                    }
+
+                    for (x = 0; x < size; x++) {
                         _codeBook[i][j][x] = temp[x] & 255;
+                    }
                 }
 
                 temp = new byte[65536];
+
                 // read in the lookup table.
-                if (_fullRead(source, temp) != 65536)
-                    throw new IllegalActionException("Error reading " +
-                            "codebook file!");
-                for (x = 0; x < 65536; x++)
+                if (_fullRead(source, temp) != 65536) {
+                    throw new IllegalActionException("Error reading "
+                        + "codebook file!");
+                }
+
+                for (x = 0; x < 65536; x++) {
                     _lookupTable[i][x] = temp[x] & 255;
+                }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalActionException(e.getMessage());
-        }
-        finally {
+        } finally {
             if (source != null) {
                 try {
                     source.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     // Argh...  can't we do anything right?
                 }
             }
@@ -291,9 +297,13 @@ public class HTVQEncode extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    private int _encode(int p[], int length) {
-        int[][] p5, p4, p3, p2, p1, p0;
+    private int _encode(int[] p, int length) {
+        int[][] p5;
+        int[][] p4;
+        int[][] p3;
+        int[][] p2;
+        int[][] p1;
+        int[][] p0;
         int numberOfStages;
         int stage = 0;
         int ip;
@@ -301,10 +311,10 @@ public class HTVQEncode extends Transformer {
         numberOfStages = _stages(length);
 
         if (numberOfStages > 4) {
-            throw new RuntimeException(
-                    "Number of stages = " + numberOfStages + ", which is "
-                    + "greater than 4");
+            throw new RuntimeException("Number of stages = " + numberOfStages
+                + ", which is " + "greater than 4");
         }
+
         p5 = ipbuf_encodep1;
         p4 = ipbuf_encodep2;
         p3 = ipbuf_encodep1;
@@ -312,20 +322,23 @@ public class HTVQEncode extends Transformer {
         p1 = ipbuf_encodep1;
         p0 = ipbuf_encodep2;
 
-        switch(numberOfStages) {
+        switch (numberOfStages) {
         case 4:
+
             // System.arraycopy is faster for large vectors
             System.arraycopy(p, 0, p5[0], 0, 8);
             System.arraycopy(p, 8, p5[1], 0, 8);
             System.arraycopy(p, 16, p5[2], 0, 8);
             System.arraycopy(p, 24, p5[3], 0, 8);
             break;
+
         case 3:
             System.arraycopy(p, 0, p4[0], 0, 4);
             System.arraycopy(p, 4, p4[1], 0, 4);
             System.arraycopy(p, 8, p4[2], 0, 4);
             System.arraycopy(p, 12, p4[3], 0, 4);
             break;
+
         case 2:
             p3[0][0] = p[0];
             p3[0][1] = p[1];
@@ -336,19 +349,23 @@ public class HTVQEncode extends Transformer {
             p3[1][2] = p[6];
             p3[1][3] = p[7];
             break;
+
         case 1:
             p2[0][0] = p[0];
             p2[0][1] = p[1];
             p2[1][0] = p[2];
             p2[1][1] = p[3];
             break;
+
         case 0:
             p1[0][0] = p[0];
             p1[0][1] = p[1];
             break;
         }
-        switch(numberOfStages) {
+
+        switch (numberOfStages) {
         case 4:
+
             //XSIZE = 8, YSIZE = 4
             ip = ((p5[0][0] & 255) << 8) + (p5[0][1] & 255);
             p4[0][0] = _lookupTable[stage][ip];
@@ -386,7 +403,9 @@ public class HTVQEncode extends Transformer {
             ip = ((p5[3][6] & 255) << 8) + (p5[3][6] & 255);
             p4[3][3] = _lookupTable[stage][ip];
             stage++;
+
         case 3:
+
             //XSIZE = 4, YSIZE = 4
             ip = ((p4[0][1] & 255) << 8) + (p4[0][0] & 255);
             p3[0][0] = _lookupTable[stage][ip];
@@ -408,7 +427,9 @@ public class HTVQEncode extends Transformer {
             ip = ((p4[3][3] & 255) << 8) + (p4[3][2] & 255);
             p3[1][3] = _lookupTable[stage][ip];
             stage++;
+
         case 2:
+
             //XSIZE = 4, YSIZE = 2
             ip = ((p3[0][1] & 255) << 8) + (p3[0][0] & 255);
             p2[0][0] = _lookupTable[stage][ip];
@@ -420,7 +441,9 @@ public class HTVQEncode extends Transformer {
             ip = ((p3[1][3] & 255) << 8) + (p3[1][2] & 255);
             p2[1][1] = _lookupTable[stage][ip];
             stage++;
+
         case 1:
+
             //XSIZE = 2, YSIZE = 2
             ip = ((p2[0][1] & 255) << 8) + (p2[0][0] & 255);
             p1[0][0] = _lookupTable[stage][ip];
@@ -429,6 +452,7 @@ public class HTVQEncode extends Transformer {
             stage++;
 
         case 0:
+
             //XSIZE = 2, YSIZE = 1
             ip = ((p1[0][1] & 255) << 8) + (p1[0][0] & 255);
             p0[0][0] = _lookupTable[stage][ip];
@@ -438,18 +462,22 @@ public class HTVQEncode extends Transformer {
         return p0[0][0];
     }
 
-    private int _fullRead(InputStream s, byte b[]) throws IOException {
+    private int _fullRead(InputStream s, byte[] b) throws IOException {
         int length = 0;
         int remaining = b.length;
         int bytesRead = 0;
+
         while (remaining > 0) {
             bytesRead = s.read(b, length, remaining);
-            if (bytesRead == -1)  {
+
+            if (bytesRead == -1) {
                 throw new IOException("Unexpected EOF");
             }
+
             remaining -= bytesRead;
             length += bytesRead;
         }
+
         return length;
     }
 
@@ -459,26 +487,28 @@ public class HTVQEncode extends Transformer {
      */
     private int _stages(int length) {
         int x = 0;
-        if (length < 2) throw new RuntimeException(
-                "Vector length of " + length +
-                "must be greater than 1");
+
+        if (length < 2) {
+            throw new RuntimeException("Vector length of " + length
+                + "must be greater than 1");
+        }
+
         while (length > 2) {
             length = length >> 1;
             x++;
         }
+
         return x;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private int ipbuf_encodep1[][] = new int[8][8];
-    private int ipbuf_encodep2[][] = new int[8][8];
-    private int _codeBook[][][] = new int[6][256][];
-    private int _lookupTable[][] = new int[6][65536];
-    private IntToken _codewords[];
-    private Token _blocks[];
-
+    private int[][] ipbuf_encodep1 = new int[8][8];
+    private int[][] ipbuf_encodep2 = new int[8][8];
+    private int[][][] _codeBook = new int[6][256][];
+    private int[][] _lookupTable = new int[6][65536];
+    private IntToken[] _codewords;
+    private Token[] _blocks;
     private int _blockCount;
     private int _blockWidth;
     private int _blockHeight;

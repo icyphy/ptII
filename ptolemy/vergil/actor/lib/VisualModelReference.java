@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.vergil.actor.lib;
 
 import javax.swing.JFrame;
@@ -52,8 +51,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VisualModelReference
+
 /**
    This is an atomic actor that can execute and/or open a model specified by
    a file or URL. This can be used to define an actor whose firing behavior
@@ -105,10 +106,8 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
    @see ptolemy.data.expr.Parameter
    @see ptolemy.kernel.util.Settable
 */
-public class VisualModelReference
-    extends ModelReference
+public class VisualModelReference extends ModelReference
     implements ExecutionListener {
-
     /** Construct a VisualModelReference with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -126,11 +125,12 @@ public class VisualModelReference
      *   an actor already in the container.
      */
     public VisualModelReference(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the openOnFiring parameter.
         openOnFiring = new StringParameter(this, "openOnFiring");
+
         // Set the options for the parameters.
         openOnFiring.setExpression("do not open");
         openOnFiring.addChoice("doNotOpen");
@@ -178,29 +178,32 @@ public class VisualModelReference
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == openOnFiring) {
             String openOnFiringValue = openOnFiring.stringValue();
+
             if (openOnFiringValue.equals("do not open")) {
                 _openOnFiringValue = _DO_NOT_OPEN;
             } else if (openOnFiringValue.equals("open in Vergil")) {
                 _openOnFiringValue = _OPEN_IN_VERGIL;
-            } else if (
-                    openOnFiringValue.equals("open in Vergil (full screen)")) {
+            } else if (openOnFiringValue.equals("open in Vergil (full screen)")) {
                 _openOnFiringValue = _OPEN_IN_VERGIL_FULL_SCREEN;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized option for openOnFiring: " + openOnFiringValue);
+                    "Unrecognized option for openOnFiring: "
+                    + openOnFiringValue);
             }
         } else if (attribute == closeOnPostfire) {
             String closeOnPostfireValue = closeOnPostfire.stringValue();
+
             if (closeOnPostfireValue.equals("do nothing")) {
                 _closeOnPostfireValue = _DO_NOTHING;
             } else if (closeOnPostfireValue.equals("close Vergil graph")) {
                 _closeOnPostfireValue = _CLOSE_VERGIL_GRAPH;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized option for closeOnPostfire: " + closeOnPostfireValue);
+                    "Unrecognized option for closeOnPostfire: "
+                    + closeOnPostfireValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -215,10 +218,8 @@ public class VisualModelReference
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        VisualModelReference newActor =
-            (VisualModelReference) super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        VisualModelReference newActor = (VisualModelReference) super.clone(workspace);
         newActor._tableau = null;
         return newActor;
     }
@@ -265,70 +266,83 @@ public class VisualModelReference
                 try {
                     // Conditionally show the model in Vergil. The openModel()
                     // method also creates the right effigy.
-                    if (_openOnFiringValue == _OPEN_IN_VERGIL
-                            || _openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
-
+                    if ((_openOnFiringValue == _OPEN_IN_VERGIL)
+                            || (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN)) {
                         // NOTE: The opening must occur in the event thread.
                         // Regrettably, we cannot continue with the firing until
                         // the open is complete, so we use the very dangerous
                         // invokeAndWait() method.
                         Runnable doOpen = new Runnable() {
-                            public void run() {
-                                Configuration configuration
-                                        = (Configuration) myEffigy.toplevel();
-                                if (_debugging) {
-                                    _debug("** Using the configuration to open a tableau.");
-                                }
-                                try {
-                                                                        // NOTE: Executing this in the event thread averts
-                                                                        // a race condition... Previous close(), which was
-                                                                        // deferred to the UI thread, will have completed.
-                                    _exception = null;
-                                                                        _tableau = configuration.openModel(_model, myEffigy);
-                                    // Set this tableau to be a master so that when it
-                                    // gets closed, all its subwindows get closed.
-                                    _tableau.setMaster(true);
-                                                                } catch (KernelException e) {
-                                                                        // Record the exception for later reporting.
-                                                                        _exception = e;
-                                                                }
-                                _tableau.show();
+                                public void run() {
+                                    Configuration configuration = (Configuration) myEffigy
+                                        .toplevel();
 
-                                JFrame frame = _tableau.getFrame();
-                                if (frame != null) {
-                                    if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
-                                        if (frame instanceof ExtendedGraphFrame) {
-                                            ((ExtendedGraphFrame) frame).fullScreen();
-                                        }
+                                    if (_debugging) {
+                                        _debug(
+                                            "** Using the configuration to open a tableau.");
                                     }
-                                    frame.toFront();
+
+                                    try {
+                                        // NOTE: Executing this in the event thread averts
+                                        // a race condition... Previous close(), which was
+                                        // deferred to the UI thread, will have completed.
+                                        _exception = null;
+                                        _tableau = configuration.openModel(_model,
+                                                myEffigy);
+
+                                        // Set this tableau to be a master so that when it
+                                        // gets closed, all its subwindows get closed.
+                                        _tableau.setMaster(true);
+                                    } catch (KernelException e) {
+                                        // Record the exception for later reporting.
+                                        _exception = e;
+                                    }
+
+                                    _tableau.show();
+
+                                    JFrame frame = _tableau.getFrame();
+
+                                    if (frame != null) {
+                                        if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
+                                            if (frame instanceof ExtendedGraphFrame) {
+                                                ((ExtendedGraphFrame) frame)
+                                                .fullScreen();
+                                            }
+                                        }
+
+                                        frame.toFront();
+                                    }
                                 }
-                            }
-                        };
+                            };
+
                         try {
-                                SwingUtilities.invokeAndWait(doOpen);
+                            SwingUtilities.invokeAndWait(doOpen);
                         } catch (Exception ex) {
-                                throw new IllegalActionException(this, null, ex, "Open failed.");
+                            throw new IllegalActionException(this, null, ex,
+                                "Open failed.");
                         }
+
                         if (_exception != null) {
-                                // An exception occurred while trying to open.
-                            throw new IllegalActionException(this, null, _exception, "Failed to open.");
+                            // An exception occurred while trying to open.
+                            throw new IllegalActionException(this, null,
+                                _exception, "Failed to open.");
                         }
                     } else {
                         // Need an effigy for the model, or else graphical elements
                         // of the model will not work properly.  That effigy needs
                         // to be contained by the effigy responsible for this actor.
-                        PtolemyEffigy newEffigy =
-                            new PtolemyEffigy(
-                                    myEffigy,
-                                    myEffigy.uniqueName(_model.getName()));
+                        PtolemyEffigy newEffigy = new PtolemyEffigy(myEffigy,
+                                myEffigy.uniqueName(_model.getName()));
                         newEffigy.setModel(_model);
+
                         // Since there is no tableau, this is probably not
                         // necessary, but as a safety precaution, we prevent
                         // writing of the model.
                         newEffigy.setModifiable(false);
+
                         if (_debugging) {
-                            _debug("** Created new effigy for referenced model.");
+                            _debug(
+                                "** Created new effigy for referenced model.");
                         }
                     }
                 } catch (NameDuplicationException ex) {
@@ -337,6 +351,7 @@ public class VisualModelReference
                 }
             }
         }
+
         // Call this last so that we open before executing.
         super.fire();
     }
@@ -351,12 +366,15 @@ public class VisualModelReference
     public boolean postfire() throws IllegalActionException {
         // Call this first so execution stops before closing.
         boolean result = super.postfire();
+
         if (_tableau != null) {
             final JFrame frame = _tableau.getFrame();
+
             if (_closeOnPostfireValue == _CLOSE_VERGIL_GRAPH) {
                 if (_debugging) {
                     _debug("** Closing Vergil graph.");
                 }
+
                 if (frame instanceof TableauFrame) {
                     // NOTE: The closing will happen in the swing event
                     // thread.  We can proceed on the assumption
@@ -365,32 +383,38 @@ public class VisualModelReference
                     Runnable doClose = new Runnable() {
                             public void run() {
                                 if (frame instanceof ExtendedGraphFrame) {
-                                    ((ExtendedGraphFrame) frame).cancelFullScreen();
+                                    ((ExtendedGraphFrame) frame)
+                                    .cancelFullScreen();
                                 }
+
                                 ((TableauFrame) frame).close();
                             }
                         };
+
                     Top.deferIfNecessary(doClose);
                 } else if (frame != null) {
                     // This should be done in the event thread.
                     Runnable doClose = new Runnable() {
                             public void run() {
                                 if (frame instanceof ExtendedGraphFrame) {
-                                    ((ExtendedGraphFrame) frame).cancelFullScreen();
+                                    ((ExtendedGraphFrame) frame)
+                                    .cancelFullScreen();
                                 }
+
                                 frame.hide();
                             }
                         };
+
                     Top.deferIfNecessary(doClose);
                 }
             }
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Possible values for openOnFiring.
     private static int _DO_NOT_OPEN = 0;
     private static int _OPEN_IN_VERGIL = 1;

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.rtp.lib;
 
 import ptolemy.actor.Director;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PeriodicTrigger
+
 /**
    This actor produces a ramp at 2Hz.
 
@@ -53,9 +54,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (liuj)
 */
 public class PeriodicTrigger extends TypedAtomicActor {
-
     public PeriodicTrigger(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.GENERAL);
@@ -86,28 +86,31 @@ public class PeriodicTrigger extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        PeriodicTrigger newObject = (PeriodicTrigger)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PeriodicTrigger newObject = (PeriodicTrigger) super.clone(workspace);
+
         try {
             newObject.frequency.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() + ": clone failed.");
         }
+
         return newObject;
     }
 
     /** Once the frequency is updated, calculate the execution period.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == frequency) {
-            double f = ((DoubleToken)(frequency.getToken())).doubleValue();
+            double f = ((DoubleToken) (frequency.getToken())).doubleValue();
+
             if (f > 1000) {
                 throw new IllegalActionException(this,
-                        "does not support frequency higher than 1000.");
+                    "does not support frequency higher than 1000.");
             }
-            _period = 1000.0/f;
+
+            _period = 1000.0 / f;
         }
     }
 
@@ -118,8 +121,11 @@ public class PeriodicTrigger extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         Director director = getDirector();
         Time time = director.getModelTime();
-        if (_debugging) _debug("Next iteration at "
-            + time.add(_period).getDoubleValue());
+
+        if (_debugging) {
+            _debug("Next iteration at " + time.add(_period).getDoubleValue());
+        }
+
         director.fireAt(this, time.add(_period));
         return super.postfire();
     }

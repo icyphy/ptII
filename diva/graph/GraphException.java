@@ -26,8 +26,8 @@
 
 
 */
-
 package diva.graph;
+
 
 /**
  * A graph package topological error.  GraphExceptions are usually
@@ -53,5 +53,3 @@ public class GraphException extends RuntimeException {
         super(e.getMessage());
     }
 }
-
-

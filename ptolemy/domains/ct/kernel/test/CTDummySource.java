@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package ptolemy.domains.ct.kernel.test;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -36,6 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummySource
+
 /**
    Dummy actor for source actor. One output, no input.
    @author  Jie Liu
@@ -44,18 +46,17 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class CTDummySource extends TypedAtomicActor{
+public class CTDummySource extends TypedAtomicActor {
     /** Constructor
      */
     public CTDummySource(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

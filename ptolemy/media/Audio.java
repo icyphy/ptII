@@ -26,15 +26,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.media;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Audio
+
 /**
    Instances of this class represent audio data equivalent to that
    contained by a Sun/NeXT audio file (.au file).  The class also
@@ -80,9 +81,7 @@ import java.io.IOException;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Audio {
-
     /** Construct an instance initialized with the audio
      *  signal given by the argument.  The argument is an array
      *  of bytes that are mu-law encoded.  The audio signal is assumed
@@ -91,6 +90,7 @@ public class Audio {
      */
     public Audio(byte[] audio) {
         String ptinfo = "Ptolemy audio";
+
         // NOTE: This uses the platform encoding, which is probably wrong.
         info = ptinfo.getBytes();
         offset = 24 + info.length;
@@ -112,6 +112,7 @@ public class Audio {
      */
     public Audio(double[] audio) {
         String ptinfo = "Ptolemy audio";
+
         // NOTE: This uses the platform encoding, which is probably wrong.
         info = ptinfo.getBytes();
         offset = 24 + info.length;
@@ -120,8 +121,9 @@ public class Audio {
         sampleRate = 8000;
         numChannels = 1;
         this.audio = new byte[1][size];
-        for (int i = size-1; i >= 0; i--) {
-            this.audio[0][i] = lin2mu((int)(audio[i]*31616.0));
+
+        for (int i = size - 1; i >= 0; i--) {
+            this.audio[0][i] = lin2mu((int) (audio[i] * 31616.0));
         }
     }
 
@@ -136,11 +138,11 @@ public class Audio {
 
         // Check the magic number, which should be 0x2E736E64, '.snd'
         // in ASCII.
-        if (magic[0] != 0x2E || magic[1] != 0x73 || magic[2] != 0x6E ||
-                magic[3] != 0x64) {
+        if ((magic[0] != 0x2E) || (magic[1] != 0x73) || (magic[2] != 0x6E)
+                || (magic[3] != 0x64)) {
             throw new IllegalArgumentException(
-                    "ptolemy.media.Audio: bad magic number in "
-                    + "stream header.  Not an audio file?");
+                "ptolemy.media.Audio: bad magic number in "
+                + "stream header.  Not an audio file?");
         }
 
         offset = input.readInt();
@@ -149,21 +151,22 @@ public class Audio {
         sampleRate = input.readInt();
         numChannels = input.readInt();
 
-        if (offset < 0 || offset > 10000) {
+        if ((offset < 0) || (offset > 10000)) {
             throw new IllegalArgumentException("ptolemy.media.Audio:"
-                    + " offset value '" + offset +
-                    "' is out of range 0-10000");
+                + " offset value '" + offset + "' is out of range 0-10000");
         }
-        info = new byte[offset-24];
-        input.read(info, 0, offset-24);
+
+        info = new byte[offset - 24];
+        input.read(info, 0, offset - 24);
 
         if (format != 1) {
             throw new IllegalArgumentException("ptolemy.media.Audio:"
-                    + " Sorry, only 8-bit mu-law encoded data can be read.");
+                + " Sorry, only 8-bit mu-law encoded data can be read.");
         }
+
         if (numChannels != 1) {
             throw new IllegalArgumentException("ptolemy.media.Audio:"
-                    + " Sorry, only one-channel audio data can be read.");
+                + " Sorry, only one-channel audio data can be read.");
         }
 
         // Finally read the audio data.
@@ -175,7 +178,7 @@ public class Audio {
     ////                      public members                         ////
 
     /** The file type identifier, 0x2E736E64 or '.snd' in ASCII. */
-    public byte magic[] = {(byte)'.', (byte)'s', (byte)'n', (byte)'d'};
+    public byte[] magic = { (byte) '.', (byte) 's', (byte) 'n', (byte) 'd' };
 
     /** Offset of audio data relative to the start of the stream. */
     public int offset;
@@ -193,7 +196,7 @@ public class Audio {
     public int numChannels;
 
     /** Four byte info field. */
-    public byte info[];
+    public byte[] info;
 
     /** Audio data, by channel. */
     public byte[][] audio;
@@ -246,25 +249,34 @@ public class Audio {
      */
     public static byte lin2mu(int sample) {
         int sign = 0;
+
         if (sample < 0) {
             sample = -sample;
             sign = 0x80;
         }
+
         // clip the magnitude
-        if (sample > CLIP) sample = CLIP;
+        if (sample > CLIP) {
+            sample = CLIP;
+        }
+
         sample = sample + BIAS;
-        int exponent =  exp_lut[(sample>>7) & 0xFF];
-        int mantissa = (sample >> (exponent+3)) & 0x0F;
+
+        int exponent = exp_lut[(sample >> 7) & 0xFF];
+        int mantissa = (sample >> (exponent + 3)) & 0x0F;
         int ulawbyte = (sign | (exponent << 4) | mantissa);
+
         // System.out.println(" sign = " + sign + " exponent = " +
         // exponent + " mantissa = " + mantissa );
-        ulawbyte =  ~ulawbyte;
+        ulawbyte = ~ulawbyte;
         ulawbyte &= 0xFF;
-        if (_zerotrap && ulawbyte == 0 ) {
+
+        if (_zerotrap && (ulawbyte == 0)) {
             // optional CCITT trap
             ulawbyte = 0x02;
         }
-        return (byte)ulawbyte;
+
+        return (byte) ulawbyte;
     }
 
     /** Convert mu-255 companded representation of an audio sample
@@ -294,15 +306,17 @@ public class Audio {
     public static int mu2lin(byte b) {
         // flip the bits
         int mu = b ^ 0xFF;
-        int sign = (mu & 0x80) >> 7 ;
-        int exponent = (mu & 0x70) >> 4 ;
+        int sign = (mu & 0x80) >> 7;
+        int exponent = (mu & 0x70) >> 4;
         int mantissa = (mu & 0x0F);
+
         // System.out.println(" sign = " + sign + " exponent = " +
         // exponent + " mantissa = " + mantissa );
-        int linear = (mantissa<<(exponent+1)) - 0x20 + (0x20 << exponent);
+        int linear = (mantissa << (exponent + 1)) - 0x20 + (0x20 << exponent);
+
         // Make into a 16 bit sample.
         linear <<= 2;
-        return (sign == 1) ? -linear : linear;
+        return (sign == 1) ? (-linear) : linear;
     }
 
     /** Read Sun audio file (.au) format and return the audio data as an array.
@@ -324,7 +338,7 @@ public class Audio {
      *   not be declared explicitly
      */
     public static double[] readAudio(DataInputStream input)
-            throws IOException {
+        throws IOException {
         Audio audio = new Audio(input);
         return audio.toDouble(0);
     }
@@ -349,13 +363,17 @@ public class Audio {
      */
     public double[] toDouble(int channel) {
         int[] intdata = toLinear(channel);
+
         if (intdata != null) {
             double[] result = new double[intdata.length];
-            for (int i = intdata.length-1; i >= 0; i--) {
-                result[i] = ((double)(intdata[i]))/31616.0;
+
+            for (int i = intdata.length - 1; i >= 0; i--) {
+                result[i] = ((double) (intdata[i])) / 31616.0;
             }
+
             return result;
         }
+
         return null;
     }
 
@@ -367,26 +385,26 @@ public class Audio {
      */
     public int[] toLinear(int channel) {
         if (audio != null) {
-            if (audio.length > channel && audio[channel] != null) {
+            if ((audio.length > channel) && (audio[channel] != null)) {
                 int[] result = new int[audio[channel].length];
-                for (int i = audio[channel].length-1; i >= 0; i--) {
+
+                for (int i = audio[channel].length - 1; i >= 0; i--) {
                     result[i] = mu2lin(audio[channel][i]);
                 }
+
                 return result;
             }
         }
+
         return null;
     }
 
     /** Return a readable representation of the header data. */
     public String toString() {
-        return "file ID tag = " + new String(magic) + "\n"
-            + "offset = " + offset + "\n"
-            + "size = " + size + "\n"
-            + "format code = " + format + "\n"
-            + "sampleRate = " + sampleRate + "\n"
-            + "number of channels = " + numChannels + "\n"
-            + "info field = " + new String(info).trim();
+        return "file ID tag = " + new String(magic) + "\n" + "offset = "
+        + offset + "\n" + "size = " + size + "\n" + "format code = " + format
+        + "\n" + "sampleRate = " + sampleRate + "\n" + "number of channels = "
+        + numChannels + "\n" + "info field = " + new String(info).trim();
     }
 
     /** Write the audio data to an output stream in the Sun audio format.
@@ -401,7 +419,7 @@ public class Audio {
         output.writeInt(format);
         output.writeInt(sampleRate);
         output.writeInt(numChannels);
-        output.write(info, 0, offset-24);
+        output.write(info, 0, offset - 24);
         output.write(audio[0], 0, size);
     }
 
@@ -446,14 +464,13 @@ public class Audio {
      *  @exception IOException If an I/O error occurs writing to the stream.
      */
     public static void writeAudio(double[] audio, DataOutputStream output)
-            throws IOException {
+        throws IOException {
         Audio obj = new Audio(audio);
         obj.write(output);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                         ////
-
     // The following are used for mu-law conversion.
     // Turn on the trap as per the MIL-STD (this prevents a result of 0).
     private static boolean _zerotrap = false;
@@ -462,18 +479,21 @@ public class Audio {
     private static final int BIAS = 0x84;
 
     // clipping value for inputs.
-    private static final int CLIP =  32635;
+    private static final int CLIP = 32635;
 
     // lookup table for the exponent.
-    private static final byte exp_lut[] = {0, 0, 1, 1, 2, 2, 2, 2, 3,
-                                           3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                                           5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-                                           5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-                                           6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-                                           6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-                                           6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-                                           7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-                                           7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-                                           7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-                                           7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-                                           7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}; }
+    private static final byte[] exp_lut = {
+            0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4,
+            4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6,
+            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7
+        };
+}

@@ -26,14 +26,15 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MultipleEnabledTransitionsException
+
 /**
    Thrown when multiple outgoing transitions from one state are enabled at the
    same time.
@@ -60,5 +61,4 @@ public class MultipleEnabledTransitionsException extends IllegalActionException 
     public MultipleEnabledTransitionsException(Nameable object, String detail) {
         super(object, null, null, detail);
     }
-
 }

@@ -36,6 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 /**
  * This actor will consume all tokens on its input port and write their
  * values to a string.  The value of the string can then be obtained
@@ -53,11 +54,11 @@ import ptolemy.kernel.util.Workspace;
  */
 public class SDFTestConsumer extends TypedAtomicActor {
     public SDFTestConsumer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate", new IntToken("1"));
+        input_tokenConsumptionRate = new Parameter(input,
+                "tokenConsumptionRate", new IntToken("1"));
         _history = new StringBuffer("");
     }
 
@@ -72,9 +73,8 @@ public class SDFTestConsumer extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SDFTestConsumer newObject = (SDFTestConsumer)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SDFTestConsumer newObject = (SDFTestConsumer) (super.clone(workspace));
         newObject._history = new StringBuffer(_history.toString());
         return newObject;
     }
@@ -85,9 +85,10 @@ public class SDFTestConsumer extends TypedAtomicActor {
      * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        int tokens =
-            ((IntToken)input_tokenConsumptionRate.getToken()).intValue();
+        int tokens = ((IntToken) input_tokenConsumptionRate.getToken())
+            .intValue();
         int i;
+
         for (i = 0; i < tokens; i++) {
             Token t = input.get(0);
             _history.append(t.toString() + "\n");

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.hsif.test;
 
 import ptolemy.actor.gui.Effigy;
@@ -34,8 +33,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StandardOutTableau
+
 /**
    A tableau that writes its contents to standard out.
 
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.NamedObj;
    @see Effigy
 */
 public class StandardOutTableau extends Tableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  @param container The container.
      *  @param name The name.
@@ -57,7 +57,7 @@ public class StandardOutTableau extends Tableau {
      *   attribute already in the container.
      */
     public StandardOutTableau(StandardOutEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -80,7 +80,6 @@ public class StandardOutTableau extends Tableau {
      *  Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container entity.
          *  @param name The name of the entity.
@@ -90,7 +89,7 @@ public class StandardOutTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -124,18 +123,19 @@ public class StandardOutTableau extends Tableau {
             if (effigy instanceof StandardOutEffigy) {
                 // First see whether the effigy already contains a
                 // StandardOutTableau with the appropriate name.
-                StandardOutTableau tableau =
-                    (StandardOutTableau)effigy.getEntity("standardOutTableau");
+                StandardOutTableau tableau = (StandardOutTableau) effigy
+                    .getEntity("standardOutTableau");
+
                 if (tableau == null) {
-                    tableau = new StandardOutTableau(
-                            (StandardOutEffigy)effigy, "standardOutTableau");
+                    tableau = new StandardOutTableau((StandardOutEffigy) effigy,
+                            "standardOutTableau");
                 }
+
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
             } else {
                 return null;
             }
         }
-
     }
 }

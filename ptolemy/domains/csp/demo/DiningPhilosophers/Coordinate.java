@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 /**
  * A class for storing cartesian coordinates.
  *
@@ -40,11 +39,13 @@ package ptolemy.domains.csp.demo.DiningPhilosophers;
 public class Coordinate {
     /** The X coordinate. */
     public int X = 0;
+
     /** The Y coordinate. */
     public int Y = 0;
 
     /** Constructs a new Coordinate initialized as the origin (0, 0). */
-    public Coordinate() {}
+    public Coordinate() {
+    }
 
     /** Constructs a new Coordinate with the specified values.
      *
@@ -66,14 +67,13 @@ public class Coordinate {
 
         if (o instanceof Coordinate) {
             c = (Coordinate) o;
-            if (this.X == c.X && this.Y == c.Y) {
+
+            if ((this.X == c.X) && (this.Y == c.Y)) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return false;
         }
     }

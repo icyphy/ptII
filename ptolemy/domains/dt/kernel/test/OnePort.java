@@ -26,7 +26,6 @@
    @ProposedRating Red
    @AcceptedRating Red
 */
-
 package ptolemy.domains.dt.kernel.test;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -44,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class OnePort extends TypedAtomicActor {
     public OnePort(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
@@ -52,10 +51,8 @@ public class OnePort extends TypedAtomicActor {
         inrate = new Parameter(this, "inrate", new IntToken(1));
         _inrate = 1;
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("inrate");
-
 
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
@@ -63,8 +60,7 @@ public class OnePort extends TypedAtomicActor {
         outrate = new Parameter(this, "outrate", new IntToken(1));
         _outrate = 1;
 
-        output_tokenProductionRate =
-            new Parameter(input, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(input, "tokenProductionRate");
         output_tokenProductionRate.setExpression("outrate");
 
         initialOutputs = new Parameter(this, "initialOutputs",
@@ -75,31 +71,28 @@ public class OnePort extends TypedAtomicActor {
     public Parameter input_tokenConsumptionRate;
     public TypedIOPort output;
     public Parameter output_tokenProductionRate;
-
     public Parameter inrate;
     public Parameter outrate;
-
     public Parameter initialOutputs;
-
     public Parameter value;
     public Parameter step;
 
-
-    public final void fire() throws IllegalActionException  {
+    public final void fire() throws IllegalActionException {
         int i;
         DoubleToken token = new DoubleToken(0.0);
-        _inrate = ((IntToken)inrate.getToken()).intValue();
-        _outrate = ((IntToken)outrate.getToken()).intValue();
+        _inrate = ((IntToken) inrate.getToken()).intValue();
+        _outrate = ((IntToken) outrate.getToken()).intValue();
         _buffer = new Token[_inrate];
 
         _buffer[0] = token;
 
         if (input.getWidth() >= 1) {
-            for (i=0; i < _inrate; i++) {
+            for (i = 0; i < _inrate; i++) {
                 // FIXME: should consider port widths
                 //if (input.hasToken(0)) {
                 //token = (DoubleToken) (input.get(0));
                 _buffer[i] = input.get(0);
+
                 //} else {
                 //    throw new IllegalActionException(
                 //              "no Tokens available for OnePort during firing");
@@ -107,13 +100,15 @@ public class OnePort extends TypedAtomicActor {
             }
         }
 
-        for (i=0; i < _outrate; i++) {
+        for (i = 0; i < _outrate; i++) {
             output.send(0, _buffer[i % _inrate]);
         }
     }
 
     private int _inrate;
     private int _outrate;
-    private int defaultValues[][] = {{0,0}};
+    private int[][] defaultValues = {
+            { 0, 0 }
+        };
     private Token[] _buffer;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm;
 
 import java.awt.event.ActionEvent;
@@ -51,8 +50,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphPane;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphFrame
+
 /**
    This is a graph editor frame for ptolemy FSM models.  Given a composite
    entity and a tableau, it creates an editor and populates the menus
@@ -66,7 +67,6 @@ import diva.graph.GraphPane;
    @Pt.AcceptedRating Red (johnr)
 */
 public class FSMGraphFrame extends ExtendedGraphFrame {
-
     /** Construct a frame associated with the specified FSM model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -96,10 +96,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public FSMGraphFrame(
-            CompositeEntity entity,
-            Tableau tableau,
-            LibraryAttribute defaultLibrary) {
+    public FSMGraphFrame(CompositeEntity entity, Tableau tableau,
+        LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
         // Override the default help file.
@@ -118,6 +116,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
+
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
         _graphMenu.addSeparator();
@@ -125,24 +124,28 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
-            new JMenuItem("Listen to Director", KeyEvent.VK_D),
-            new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
-            new JMenuItem("Animate States", KeyEvent.VK_A),
-            new JMenuItem("Stop Animating", KeyEvent.VK_S),
-        };
+                new JMenuItem("Listen to Director", KeyEvent.VK_D),
+                new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
+                new JMenuItem("Animate States", KeyEvent.VK_A),
+                new JMenuItem("Stop Animating", KeyEvent.VK_S),
+            };
+
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
         // of the base class, and static initializers have not yet
         // been run.
         _debugMenu = new JMenu("Debug");
         _debugMenu.setMnemonic(KeyEvent.VK_D);
+
         DebugMenuListener debugMenuListener = new DebugMenuListener();
+
         // Set the action command and listener for each menu item.
         for (int i = 0; i < debugMenuItems.length; i++) {
             debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
             debugMenuItems[i].addActionListener(debugMenuListener);
             _debugMenu.add(debugMenuItems[i]);
         }
+
         _menubar.add(_debugMenu);
     }
 
@@ -163,16 +166,15 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         _controller = new FSMGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
+
         // NOTE: The cast is safe because the constructor accepts
         // only CompositeEntity.
-        final FSMGraphModel graphModel = new FSMGraphModel(
-                (CompositeEntity)getModel());
+        final FSMGraphModel graphModel = new FSMGraphModel((CompositeEntity) getModel());
         return new GraphPane(_controller, graphModel);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // The controller is protected so that the subclass
     // (InterfaceAutomatonGraphFrame) can set it to a more specific
     // controller.
@@ -186,7 +188,6 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
 
@@ -195,75 +196,76 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
     /** Listener for debug menu commands. */
     public class DebugMenuListener implements ActionListener {
-
         /** React to a menu command. */
         public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem)e.getSource();
+            JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
+
             try {
                 if (actionCommand.equals("Listen to Director")) {
-                    Effigy effigy = (Effigy)getTableau().getContainer();
+                    Effigy effigy = (Effigy) getTableau().getContainer();
+
                     // Create a new text effigy inside this one.
                     Effigy textEffigy = new TextEffigy(effigy,
                             effigy.uniqueName("debug listener"));
-                    DebugListenerTableau tableau =
-                        new DebugListenerTableau(textEffigy,
-                                textEffigy.uniqueName("debugListener"));
-                    tableau.setDebuggable(
-                            ((FSMActor)getModel()).getDirector());
-                }
-                else if (actionCommand.equals("Listen to State Machine")) {
-                    Effigy effigy = (Effigy)getTableau().getContainer();
+                    DebugListenerTableau tableau = new DebugListenerTableau(textEffigy,
+                            textEffigy.uniqueName("debugListener"));
+                    tableau.setDebuggable(((FSMActor) getModel()).getDirector());
+                } else if (actionCommand.equals("Listen to State Machine")) {
+                    Effigy effigy = (Effigy) getTableau().getContainer();
+
                     // Create a new text effigy inside this one.
                     Effigy textEffigy = new TextEffigy(effigy,
                             effigy.uniqueName("debug listener"));
-                    DebugListenerTableau tableau =
-                        new DebugListenerTableau(textEffigy,
-                                textEffigy.uniqueName("debugListener"));
+                    DebugListenerTableau tableau = new DebugListenerTableau(textEffigy,
+                            textEffigy.uniqueName("debugListener"));
                     tableau.setDebuggable(getModel());
                 } else if (actionCommand.equals("Animate States")) {
                     // Dialog to ask for a delay time.
                     Query query = new Query();
-                    query.addLine("delay",
-                            "Time (in ms) to hold highlight",
-                            Long.toString(_lastDelayTime));
-                    ComponentDialog dialog = new ComponentDialog(
-                            FSMGraphFrame.this,
-                            "Delay for Animation",
-                            query);
+                    query.addLine("delay", "Time (in ms) to hold highlight",
+                        Long.toString(_lastDelayTime));
+
+                    ComponentDialog dialog = new ComponentDialog(FSMGraphFrame.this,
+                            "Delay for Animation", query);
+
                     if (dialog.buttonPressed().equals("OK")) {
                         try {
-                            _lastDelayTime = Long.parseLong(
-                                    query.getStringValue("delay"));
+                            _lastDelayTime = Long.parseLong(query
+                                    .getStringValue("delay"));
                             _controller.setAnimationDelay(_lastDelayTime);
+
                             NamedObj model = getModel();
-                            if (model != null && _listeningTo != model) {
+
+                            if ((model != null) && (_listeningTo != model)) {
                                 if (_listeningTo != null) {
-                                    _listeningTo.removeDebugListener(
-                                            _controller);
+                                    _listeningTo.removeDebugListener(_controller);
                                 }
+
                                 _listeningTo = model;
                                 _listeningTo.addDebugListener(_controller);
                             }
                         } catch (NumberFormatException ex) {
                             MessageHandler.error(
-                                    "Invalid time, which is required "
-                                    + "to be an integer: ", ex);
+                                "Invalid time, which is required "
+                                + "to be an integer: ", ex);
                         }
                     }
                 } else if (actionCommand.equals("Stop Animating")
-                        && _listeningTo != null) {
+                        && (_listeningTo != null)) {
                     _listeningTo.removeDebugListener(_controller);
                     _controller.clearAnimation();
                     _listeningTo = null;
                 }
             } catch (KernelException ex) {
                 try {
-                    MessageHandler.warning(
-                            "Failed to create debug listener: " + ex);
-                } catch (CancelException exception) {}
+                    MessageHandler.warning("Failed to create debug listener: "
+                        + ex);
+                } catch (CancelException exception) {
+                }
             }
         }
+
         private NamedObj _listeningTo;
     }
 }

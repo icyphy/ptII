@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.debugger;
 
 import java.util.HashSet;
@@ -33,8 +32,10 @@ import java.util.HashSet;
 import ptolemy.actor.FiringEvent.FiringEventType;
 import ptolemy.vergil.basic.BasicGraphController;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DebugProfile
+
 /**
    Profile for an actor being debugged.  Contains the FiringEventTypes on
    which the actor should break.
@@ -46,7 +47,6 @@ import ptolemy.vergil.basic.BasicGraphController;
    @Pt.AcceptedRating Red (celaine)
 */
 public class DebugProfile {
-
     /** Construct a debug profile for an actor with the associated
      *  GraphController.
      *  @param graphController The GraphController.
@@ -99,11 +99,9 @@ public class DebugProfile {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Set of firing event types we want to break on.
     private HashSet _firingEventTypes;
 
     // The GraphController associated with this actor.
     private BasicGraphController _graphController;
-
 }

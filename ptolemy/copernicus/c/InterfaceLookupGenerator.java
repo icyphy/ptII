@@ -23,7 +23,6 @@
    ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -32,8 +31,10 @@ import java.util.Iterator;
 import soot.SootClass;
 import soot.SootMethod;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceLookupGenerator
+
 /**
    A class that generates code that performs lookup operations for
    disambiguation of interfaces.
@@ -45,15 +46,14 @@ import soot.SootMethod;
    @Pt.AcceptedRating Red (ssb)
 */
 public class InterfaceLookupGenerator {
-
     /** Default Constructor.
      */
     public InterfaceLookupGenerator() {
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Generate code for a method that looks up interface method calls in
      * a table and calls the correct function accordingly.
      * @param source The class for which such a method needs to be
@@ -63,10 +63,12 @@ public class InterfaceLookupGenerator {
     public String generate(SootClass source) {
         StringBuffer code = new StringBuffer();
         StringBuffer header = new StringBuffer();
+
         // Nothing needs to be done if the class implements no interfaces.
         if (AnalysisUtilities.getAllInterfacesOf(source).size() <= 0) {
             return code.toString();
         }
+
         // Nothing needs to be done if no methods may need to be looked up.
         HashMap interfaceMethodsMap = getLookupMethods(source);
 
@@ -83,27 +85,26 @@ public class InterfaceLookupGenerator {
         code.append(_indent(indentLevel++) + "{\n");
 
         Iterator interfaceMethods = interfaceMethodsMap.keySet().iterator();
+
         while (interfaceMethods.hasNext()) {
-            SootMethod interfaceMethod = (SootMethod)interfaceMethods.next();
+            SootMethod interfaceMethod = (SootMethod) interfaceMethods.next();
 
             // The corresponding actual method.
-            SootMethod actualMethod = (SootMethod)interfaceMethodsMap
-                .get(interfaceMethod);
+            SootMethod actualMethod = (SootMethod) interfaceMethodsMap.get(interfaceMethod);
 
             if (RequiredFileGenerator.isRequired(actualMethod)
                     // We don't need to map abstract methods.
                     && !actualMethod.isAbstract()) {
-
                 code.append(_indent(indentLevel)
-                        + _comment(interfaceMethod.toString()));
+                    + _comment(interfaceMethod.toString()));
 
                 code.append(_indent(indentLevel) + "case "
-                        + CNames.hashNumberOf(interfaceMethod) + ": "
-                        + "return (void*) &"
-                        + CNames.functionNameOf(actualMethod)
-                        + ";\n\n");
+                    + CNames.hashNumberOf(interfaceMethod) + ": "
+                    + "return (void*) &" + CNames.functionNameOf(actualMethod)
+                    + ";\n\n");
             }
         }
+
         code.append(_indent(indentLevel) + "default: return NULL;\n");
 
         code.append(_indent(--indentLevel) + "}\n");
@@ -111,7 +112,6 @@ public class InterfaceLookupGenerator {
         code.append("}\n\n");
         return code.toString();
     }
-
 
     /** Returns the list of all methods that may need to be looked up.
      * Provides a mapping from the interface's method to the corresponding
@@ -122,11 +122,10 @@ public class InterfaceLookupGenerator {
     public static HashMap getLookupMethods(SootClass source) {
         HashMap interfaceMethodMap = new HashMap();
         Iterator interfaces = AnalysisUtilities.getAllInterfacesOf(source)
-            .iterator();
-
+                                               .iterator();
 
         while (interfaces.hasNext()) {
-            SootClass thisInterface = (SootClass)interfaces.next();
+            SootClass thisInterface = (SootClass) interfaces.next();
             Iterator methods = thisInterface.getMethods().iterator();
 
             while (methods.hasNext()) {
@@ -137,23 +136,24 @@ public class InterfaceLookupGenerator {
                 // if the source either declares or inherits this method.
                 if (source.declaresMethod(method.getSubSignature())) {
                     interfaceMethodMap.put(method,
-                            source.getMethod(method.getSubSignature()));
-                }
-                else {
-                    Iterator inheritedMethods = MethodListGenerator
-                        .getInheritedMethods(source).iterator();
+                        source.getMethod(method.getSubSignature()));
+                } else {
+                    Iterator inheritedMethods = MethodListGenerator.getInheritedMethods(source)
+                                                                   .iterator();
+
                     while (inheritedMethods.hasNext()) {
-                        SootMethod inheritedMethod =
-                            (SootMethod)inheritedMethods.next();
-                        if (inheritedMethod.getSubSignature().equals(
-                                    method.getSubSignature())) {
-                            interfaceMethodMap.put(method,inheritedMethod);
+                        SootMethod inheritedMethod = (SootMethod) inheritedMethods
+                            .next();
+
+                        if (inheritedMethod.getSubSignature().equals(method
+                                    .getSubSignature())) {
+                            interfaceMethodMap.put(method, inheritedMethod);
                         }
                     }
                 }
-
             }
         }
+
         return interfaceMethodMap;
     }
 
@@ -167,11 +167,11 @@ public class InterfaceLookupGenerator {
         if (AnalysisUtilities.getAllInterfacesOf(source).size() <= 0) {
             return false;
         }
+
         // If no methods neeed to be looked up.
         if (getLookupMethods(source).size() == 0) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -185,8 +185,9 @@ public class InterfaceLookupGenerator {
     private String _generateMethodDeclaration(SootClass source) {
         StringBuffer code = new StringBuffer();
         code.append(_comment("Method that provides interface lookups for "
-                            + source.getName())
-                + _comment("Returns a pointer to the correct function"));
+                + source.getName())
+            + _comment("Returns a pointer to the correct function"));
+
         String methodName = CNames.interfaceLookupNameOf(source);
         code.append("static void* " + methodName + "(long int methodIndex)\n");
         return code.toString();
@@ -199,5 +200,4 @@ public class InterfaceLookupGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
 }

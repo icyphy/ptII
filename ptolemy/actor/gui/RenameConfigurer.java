@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import javax.swing.BoxLayout;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RenameConfigurer
+
 /**
    This class is an editor widget to rename an object.
 
@@ -56,10 +57,8 @@ import ptolemy.util.MessageHandler;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (neuendor)
 */
-
-public class RenameConfigurer extends Query
-    implements ChangeListener, QueryListener {
-
+public class RenameConfigurer extends Query implements ChangeListener,
+    QueryListener {
     /** Construct a rename configurer for the specified entity.
      *  @param object The entity to configure.
      */
@@ -70,17 +69,20 @@ public class RenameConfigurer extends Query
         setTextWidth(25);
         _object = object;
         addLine("New name", "New name", object.getName());
+
         // By default, names are not shown for ports, and are shown
         // for everything else.  Note that ports are a little confusing,
         // because names are _always_ shown for external ports inside
         // a composite actor.  This dialog determines whether they will
         // be shown on the outside of the composite actor.
         boolean nameShowing = false;
+
         if (object instanceof Port) {
             nameShowing = _isPropertySet(_object, "_showName");
         } else {
             nameShowing = !_isPropertySet(_object, "_hideName");
         }
+
         addCheckBox("Show name", "Show name", nameShowing);
     }
 
@@ -104,52 +106,56 @@ public class RenameConfigurer extends Query
             moml.append("\"><rename name=\"");
             moml.append(newName);
             moml.append("\"/>");
+
             // Remove or show name.
             boolean showName = getBooleanValue("Show name");
+
             if (_object instanceof Port) {
                 boolean previousShowName = _isPropertySet(_object, "_showName");
+
                 if (showName != previousShowName) {
                     if (showName) {
                         moml.append("<property name=\"_showName\" "
-                        + "class=\"ptolemy.data.expr.SingletonParameter\""
-                        + " value=\"true\"/>");
+                            + "class=\"ptolemy.data.expr.SingletonParameter\""
+                            + " value=\"true\"/>");
                     } else {
                         if (!(_object.getAttribute("_showName") instanceof Parameter)) {
                             moml.append("<deleteProperty name=\"_showName\"/>");
                         } else {
                             moml.append("<property name=\"_showName\" "
-                            + "class=\"ptolemy.data.expr.SingletonParameter\""
-                            + " value=\"false\"/>");
+                                + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                + " value=\"false\"/>");
                         }
                     }
                 }
             } else {
                 boolean previousShowName = !_isPropertySet(_object, "_hideName");
+
                 if (showName != previousShowName) {
                     if (showName) {
                         if (!(_object.getAttribute("_hideName") instanceof Parameter)) {
                             moml.append("<deleteProperty name=\"_hideName\"/>");
                         } else {
                             moml.append("<property name=\"_hideName\" "
-                            + "class=\"ptolemy.data.expr.SingletonParameter\""
-                            + " value=\"false\"/>");
+                                + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                + " value=\"false\"/>");
                         }
                     } else {
                         moml.append("<property name=\"_hideName\" "
-                        + "class=\"ptolemy.data.expr.SingletonParameter\""
-                        + " value=\"true\"/>");
+                            + "class=\"ptolemy.data.expr.SingletonParameter\""
+                            + " value=\"true\"/>");
                     }
                 }
             }
+
             moml.append("</");
             moml.append(elementName);
             moml.append(">");
 
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this,            // originator
-                    parent,          // context
+            MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+                    parent, // context
                     moml.toString(), // MoML code
-                    null);           // base
+                    null); // base
 
             request.addChangeListener(this);
             request.setUndoable(true);
@@ -171,8 +177,11 @@ public class RenameConfigurer extends Query
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Ignore if this is not the originator.
-        if (change != null && change.getSource() != this) return;
-        if (change != null && !change.isErrorReported()) {
+        if ((change != null) && (change.getSource() != this)) {
+            return;
+        }
+
+        if ((change != null) && !change.isErrorReported()) {
             change.setErrorReported(true);
             MessageHandler.error("Rename failed: ", exception);
         }
@@ -201,14 +210,17 @@ public class RenameConfigurer extends Query
      */
     private boolean _isPropertySet(NamedObj object, String name) {
         Attribute attribute = object.getAttribute(name);
+
         if (attribute == null) {
             return false;
         }
+
         if (attribute instanceof Parameter) {
             try {
-                Token token = ((Parameter)attribute).getToken();
+                Token token = ((Parameter) attribute).getToken();
+
                 if (token instanceof BooleanToken) {
-                    if (!((BooleanToken)token).booleanValue()) {
+                    if (!((BooleanToken) token).booleanValue()) {
                         return false;
                     }
                 }
@@ -216,12 +228,12 @@ public class RenameConfigurer extends Query
                 // Ignore, using default of true.
             }
         }
+
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Indicator that the name has changed.
     private boolean _changed = false;
 

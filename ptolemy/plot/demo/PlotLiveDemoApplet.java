@@ -27,11 +27,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.plot.demo;
 
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotLiveApplet;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemoApplet
@@ -46,16 +46,14 @@ import ptolemy.plot.PlotLiveApplet;
    @Pt.AcceptedRating red (cxh)
 */
 public class PlotLiveDemoApplet extends PlotLiveApplet {
-
     /** Return a string describing this applet.
      *  @return A description of the applet.
      */
     public String getAppletInfo() {
-        return "PlotLiveDemoApplet " + PlotBox.PTPLOT_RELEASE +
-            " : Demo of PlotLive.\n" +
-            "By: Edward A. Lee\n" +
-            "    Christopher Hylands\n" +
-            "($Id$)";
+        return "PlotLiveDemoApplet " + PlotBox.PTPLOT_RELEASE
+        + " : Demo of PlotLive.\n" + "By: Edward A. Lee\n"
+        + "    Christopher Hylands\n"
+        + "($Id$)";
     }
 
     /** Create a new Plot object to operate on.

@@ -28,8 +28,8 @@
 
 */
 
-
 /// NestedExceptions
+
 /***
     A simple program to test local inner classes. Local inner classes must be
     able to access:
@@ -60,6 +60,7 @@ public class InnerLocal {
 
     public void run() {
         final int local = 3;
+
         // This is the inner class.
         class Inner {
             public void checkAccess() {
@@ -73,10 +74,4 @@ public class InnerLocal {
         Inner a = new Inner();
         a.checkAccess();
     }
-
 }
-
-
-
-
-

@@ -27,12 +27,12 @@
 
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.math.FixPoint;
 import ptolemy.math.Precision;
 import ptolemy.math.Quantizer;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// FixPointFunctions
@@ -96,12 +96,11 @@ import ptolemy.math.Quantizer;
    @see ptolemy.math.FixPoint
    @see ptolemy.math.Quantizer
 */
-
 public class FixPointFunctions {
-
     // The only constructor is private so that this class cannot
     // be instantiated.
-    private FixPointFunctions() {}
+    private FixPointFunctions() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -120,7 +119,7 @@ public class FixPointFunctions {
      *  @return A fixed point representation of the value.
      */
     public static FixPoint fix(int value, int numberOfBits, int integerBits) {
-        Precision precision = new Precision( numberOfBits, integerBits);
+        Precision precision = new Precision(numberOfBits, integerBits);
         return Quantizer.round(value, precision);
     }
 
@@ -137,9 +136,8 @@ public class FixPointFunctions {
      *  @param integerBits The number of bits used for the integer part.
      *  @return A fixed point representation of the value.
      */
-    public static FixPoint fix(double value, int numberOfBits,
-            int integerBits) {
-        Precision precision = new Precision( numberOfBits, integerBits);
+    public static FixPoint fix(double value, int numberOfBits, int integerBits) {
+        Precision precision = new Precision(numberOfBits, integerBits);
         return Quantizer.round(value, precision);
     }
 
@@ -161,7 +159,7 @@ public class FixPointFunctions {
      *  @return a double with value that is quantized.
      */
     public static double quantize(double value, int numberOfBits,
-            int integerBits) {
+        int integerBits) {
         FixPoint fixValue = Quantizer.round(value,
                 new Precision(numberOfBits, integerBits));
         return fixValue.doubleValue();

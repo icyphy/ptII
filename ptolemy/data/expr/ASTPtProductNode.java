@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.ArrayList;
@@ -38,8 +37,10 @@ import java.util.Map;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtProductNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents product(*,/,%) nodes in
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtProductNode extends ASTPtRootNode {
-
     public ASTPtProductNode(int id) {
         super(id);
     }
@@ -72,8 +72,8 @@ public class ASTPtProductNode extends ASTPtRootNode {
      *   method throws it.
      */
     public Object clone() throws CloneNotSupportedException {
-        ASTPtProductNode newNode = (ASTPtProductNode)super.clone();
-        newNode._lexicalTokens = (ArrayList)_lexicalTokens.clone();
+        ASTPtProductNode newNode = (ASTPtProductNode) super.clone();
+        newNode._lexicalTokens = (ArrayList) _lexicalTokens.clone();
         return newNode;
     }
 
@@ -96,20 +96,23 @@ public class ASTPtProductNode extends ASTPtRootNode {
         if (!super.isCongruent(node, renaming)) {
             return false;
         }
+
         // The operators must be the same.
-        Iterator nodeTokens =
-            ((ASTPtProductNode)node)._lexicalTokens.iterator();
-        for (Iterator tokens = _lexicalTokens.iterator();
-             tokens.hasNext();) {
-            Token token = (Token)tokens.next();
-            Token nodeToken = (Token)nodeTokens.next();
+        Iterator nodeTokens = ((ASTPtProductNode) node)._lexicalTokens.iterator();
+
+        for (Iterator tokens = _lexicalTokens.iterator(); tokens.hasNext();) {
+            Token token = (Token) tokens.next();
+            Token nodeToken = (Token) nodeTokens.next();
+
             if (token.kind != nodeToken.kind) {
                 return false;
             }
+
             if (!token.image.equals(nodeToken.image)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -122,8 +125,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitProductNode(this);
     }
 

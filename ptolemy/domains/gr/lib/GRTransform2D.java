@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -57,7 +56,6 @@ import diva.canvas.Figure;
    @Pt.AcceptedRating Red (chf)
 */
 abstract public class GRTransform2D extends GRActor2D {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,7 +65,7 @@ abstract public class GRTransform2D extends GRActor2D {
      *   actor with this name.
      */
     public GRTransform2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
         sceneGraphIn.setInput(true);
@@ -78,8 +76,7 @@ abstract public class GRTransform2D extends GRActor2D {
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(Scene2DToken.TYPE);
 
-        accumulate = new Parameter(this,
-                "accumulate", new BooleanToken(false));
+        accumulate = new Parameter(this, "accumulate", new BooleanToken(false));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,6 +115,7 @@ abstract public class GRTransform2D extends GRActor2D {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         CompositeFigure compositeFigure = new CompositeFigure();
         _figure = compositeFigure;
         _applyInitialTransform(_figure);
@@ -141,14 +139,15 @@ abstract public class GRTransform2D extends GRActor2D {
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
+
         for (int i = 0; i < width; i++) {
             if (sceneGraphIn.hasToken(i)) {
-                Scene2DToken figureToken = (Scene2DToken)
-                    sceneGraphIn.get(i);
+                Scene2DToken figureToken = (Scene2DToken) sceneGraphIn.get(i);
                 Figure figure = figureToken.getFigure();
                 _figure.add(figure);
             }
         }
+
         sceneGraphOut.send(0, new Scene2DToken(_figure));
     }
 
@@ -160,7 +159,7 @@ abstract public class GRTransform2D extends GRActor2D {
      *  parameters can't be obtained.
      */
     abstract protected void _applyInitialTransform(Figure figure)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Consume input tokens, and transform the given figure according
      * to the current state of the transform.  This method is invoked
@@ -170,7 +169,7 @@ abstract public class GRTransform2D extends GRActor2D {
      *  parameters can't be obtained.
      */
     abstract protected void _applyTransform(Figure figure)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     private CompositeFigure _figure;
 }

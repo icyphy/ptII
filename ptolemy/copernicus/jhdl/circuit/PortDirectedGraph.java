@@ -24,24 +24,25 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
-import java.util.*;
+import soot.*;
 
-import ptolemy.copernicus.jhdl.util.*;
-import ptolemy.copernicus.jhdl.soot.*;
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.jimple.*;
-import soot.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * This class represents a DirectedGraph that has distinct Nodes
  * that are considered "ports". The class also provides a method
@@ -53,9 +54,7 @@ import soot.*;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class PortDirectedGraph extends DirectedGraph {
-
     public PortDirectedGraph() {
         _inputPortNodes = new Vector();
         _outputPortNodes = new Vector();
@@ -76,19 +75,22 @@ public class PortDirectedGraph extends DirectedGraph {
     // TODO: determine if there is a path between each input port and
     // the outputs. If there is no path, remove the input nodes.
     public void removeUnreachable() {
-
         // Determine all nodes that are considered "accetable" input Nodes
         //  - Input ports
         //  - Constants
         Collection forwardreachable = new HashSet();
         forwardreachable.addAll(getInputPortNodes());
+
         for (Iterator i = nodes().iterator(); i.hasNext();) {
             Node n = (Node) i.next();
-            if (n.getWeight() instanceof Constant)
+
+            if (n.getWeight() instanceof Constant) {
                 forwardreachable.add(n);
+            }
         }
+
         // Determine all nodes reachable from inputs & constants
-        for (Iterator i = getInputPortNodes().iterator();i.hasNext();) {
+        for (Iterator i = getInputPortNodes().iterator(); i.hasNext();) {
             Node inport = (Node) i.next();
             Collection reach = reachableNodes(inport);
             forwardreachable.addAll(reach);
@@ -97,28 +99,38 @@ public class PortDirectedGraph extends DirectedGraph {
         // Determine backward reachables
         Collection backwardreachable = new Vector();
         backwardreachable.addAll(getOutputPortNodes());
-        for (Iterator i = getOutputPortNodes().iterator();i.hasNext();) {
+
+        for (Iterator i = getOutputPortNodes().iterator(); i.hasNext();) {
             Node output = (Node) i.next();
             Collection reach = backwardReachableNodes(output);
             backwardreachable.addAll(reach);
         }
+
         //System.out.println(forwardreachable + "n" + backwardreachable);
         Collection remove = new Vector();
-        for (Iterator i = nodes().iterator();i.hasNext();) {
+
+        for (Iterator i = nodes().iterator(); i.hasNext();) {
             Node n = (Node) i.next();
-            if (!forwardreachable.contains(n) ||
-                    !backwardreachable.contains(n))
+
+            if (!forwardreachable.contains(n) || !backwardreachable.contains(n)) {
                 remove.add(n);
+            }
         }
-        for (Iterator i = remove.iterator();i.hasNext();) {
+
+        for (Iterator i = remove.iterator(); i.hasNext();) {
             Node n = (Node) i.next();
             removeNode(n);
         }
     }
-    public Collection getInputPortNodes() { return _inputPortNodes; }
-    public Collection getOutputPortNodes() { return _outputPortNodes; }
+
+    public Collection getInputPortNodes() {
+        return _inputPortNodes;
+    }
+
+    public Collection getOutputPortNodes() {
+        return _outputPortNodes;
+    }
 
     protected Collection _inputPortNodes;
     protected Collection _outputPortNodes;
-
 }

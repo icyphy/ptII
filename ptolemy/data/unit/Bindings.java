@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.unit;
 
 import java.util.Hashtable;
@@ -35,8 +34,10 @@ import java.util.Vector;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Bindings
+
 /**
    Represents a set of bindings. Each binding is a (variable, Unit) pair where
    variable is a String. If the value of Unit is null, then the binding for the
@@ -50,7 +51,6 @@ import ptolemy.kernel.ComponentEntity;
    @Pt.AcceptedRating Red (rowland)
 */
 public class Bindings {
-
     /**
      * Construct Bindings with no members.
      *
@@ -71,6 +71,7 @@ public class Bindings {
         for (int i = 0; i < nodes.size(); i++) {
             ComponentEntity actor = (ComponentEntity) (nodes.elementAt(i));
             Iterator iter = actor.portList().iterator();
+
             while (iter.hasNext()) {
                 IOPort actorPort = (IOPort) iter.next();
                 String varLabel = actor.getName() + "." + actorPort.getName();
@@ -90,12 +91,15 @@ public class Bindings {
      */
     public boolean bindingExists(String vLabel) {
         Iterator iter = _keys.iterator();
+
         while (iter.hasNext()) {
             String key = (String) (iter.next());
+
             if (key.equals(vLabel)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -116,15 +120,19 @@ public class Bindings {
     public String humanReadableForm() {
         StringBuffer retv = new StringBuffer("Bindings\n");
         Iterator keys = _keys.iterator();
+
         while (keys.hasNext()) {
             String varLabel = (String) (keys.next());
             Unit unit = (Unit) (_VarLabel2Unit.get(varLabel));
             String unitExpr = "null";
+
             if (unit != null) {
                 unitExpr = unit.descriptiveForm();
             }
+
             retv.append("   " + varLabel + " = " + unitExpr + "\n");
         }
+
         retv.append("\\Bindings\n");
         return retv.toString();
     }
@@ -138,6 +146,7 @@ public class Bindings {
      */
     public void put(String varLabel, Unit U) {
         _keys.add(varLabel);
+
         if (U != null) {
             _VarLabel2Unit.put(varLabel, U);
         }
@@ -149,12 +158,14 @@ public class Bindings {
      * @return An array of Strings containing the variables.
      */
     public String[] variableLabels() {
-        String retv[] = new String[_keys.size()];
+        String[] retv = new String[_keys.size()];
         Iterator iter = _keys.iterator();
         int i = 0;
+
         while (iter.hasNext()) {
             retv[i++] = (String) (iter.next());
         }
+
         return retv;
     }
 

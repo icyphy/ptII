@@ -28,6 +28,7 @@
 */
 package diva.graph;
 
+
 /**
  * A graph event that is emitted when anything interesting happens
  * inside a graph by way of a GraphModel.  The source of a graph event
@@ -49,32 +50,32 @@ public class GraphEvent extends java.util.EventObject {
      * Edge head is changed; target is the edge, old value is the
      * previous value of the edge head.
      */
-    public static final int EDGE_HEAD_CHANGED   = 11;
+    public static final int EDGE_HEAD_CHANGED = 11;
 
     /**
      * Edge tail is changed; target is the edge, old value is the
      * previous value of the edge tail.
      */
-    public static final int EDGE_TAIL_CHANGED   = 12;
+    public static final int EDGE_TAIL_CHANGED = 12;
 
     /**
      * A node is added to a graph; target is the
      * node, old value is the previous parent of the graph.
      */
-    public static final int NODE_ADDED          = 20;
+    public static final int NODE_ADDED = 20;
 
     /**
      * A node is deleted from a graph; target is the
      * node, old value is the previous parent of the graph.
      */
-    public static final int NODE_REMOVED        = 21;
+    public static final int NODE_REMOVED = 21;
 
     /**
      * Graph is modified significantly and should
      * be fully "refreshed"; target is the
      * graph, old value is <i>null</i>.
      */
-    public static final int STRUCTURE_CHANGED   = 30;
+    public static final int STRUCTURE_CHANGED = 30;
 
     /**
      * @serial
@@ -116,7 +117,9 @@ public class GraphEvent extends java.util.EventObject {
     /**
      * Return the type id for this event.
      */
-    public int getID() { return _id; }
+    public int getID() {
+        return _id;
+    }
 
     /**
      * Return the target value, which is event-specific.
@@ -136,17 +139,22 @@ public class GraphEvent extends java.util.EventObject {
      * Return a string representation of the ID.
      */
     private String idToString() {
-        switch(getID()) {
+        switch (getID()) {
         case EDGE_HEAD_CHANGED:
             return "EDGE_HEAD_CHANGED";
+
         case EDGE_TAIL_CHANGED:
             return "EDGE_TAIL_CHANGED";
+
         case NODE_ADDED:
             return "NODE_ADDED";
+
         case NODE_REMOVED:
             return "NODE_REMOVED";
+
         case STRUCTURE_CHANGED:
             return "STRUCTURE_CHANGED";
+
         default:
             return "Invalid event ID";
         }
@@ -156,9 +164,7 @@ public class GraphEvent extends java.util.EventObject {
      * Return a string representation of this event.
      */
     public String toString() {
-        return "GraphEvent[" + idToString() + ", "
-            + getTarget() + ", " + getOldValue() + "]";
+        return "GraphEvent[" + idToString() + ", " + getTarget() + ", "
+        + getOldValue() + "]";
     }
 }
-
-

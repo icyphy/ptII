@@ -25,10 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
-
-import java.util.List;
 
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -44,13 +41,18 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.kernel.CompositePtolemyModel;
+
 import diva.graph.GraphEvent;
 import diva.graph.modular.CompositeModel;
 import diva.graph.modular.ModularGraphModel;
 import diva.graph.modular.NodeModel;
 
+import java.util.List;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// AbstractBasicGraphModel
+
 /**
    This base class provides some common services for visual notations for
    Ptolemy II models. It assumes that the semantic object of a particular
@@ -70,7 +72,6 @@ import diva.graph.modular.NodeModel;
    @Pt.AcceptedRating Red (johnr)
 */
 public abstract class AbstractBasicGraphModel extends ModularGraphModel {
-
     /** Create a graph model for the specified Ptolemy II model.
      *  Note that the argument need not be a CompositeEntity, although
      *  if it is not, then it is a rather trivial graph that only has
@@ -133,9 +134,10 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      */
     public NodeModel getNodeModel(Object node) {
         if (node instanceof Locatable
-                && ((Locatable)node).getContainer() instanceof Attribute) {
+                && ((Locatable) node).getContainer() instanceof Attribute) {
             return _attributeModel;
         }
+
         return null;
     }
 
@@ -153,11 +155,12 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      */
     public Object getProperty(Object object, String propertyName) {
         try {
-            NamedObj namedObject = (NamedObj)object;
+            NamedObj namedObject = (NamedObj) object;
             Attribute a = namedObject.getAttribute(propertyName);
-            Token t = ((Variable)a).getToken();
+            Token t = ((Variable) a).getToken();
+
             if (t instanceof ObjectToken) {
-                return ((ObjectToken)t).getValue();
+                return ((ObjectToken) t).getValue();
             } else {
                 return t.toString();
             }
@@ -186,8 +189,9 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
         if (element instanceof Port) {
             return element;
         } else if (element instanceof Locatable) {
-            return ((Locatable)element).getContainer();
+            return ((Locatable) element).getContainer();
         }
+
         return null;
     }
 
@@ -199,18 +203,22 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      */
     public boolean isNode(Object object) {
         Object nodeModel = getNodeModel(object);
+
         if (nodeModel != null) {
             return true;
         }
+
         // If the node model is null, then this could
         // be a Locatable with no container, which we will
         // assume is a node.
         if (object instanceof Locatable) {
-            NamedObj container = ((Locatable)object).getContainer();
+            NamedObj container = ((Locatable) object).getContainer();
+
             if (container == null) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -236,9 +244,8 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *  @param propertyName The property name.
      *  @param value The new value of the property.
      */
-    public void setProperty(final Object object,
-            final String propertyName,
-            final Object value) {
+    public void setProperty(final Object object, final String propertyName,
+        final Object value) {
         throw new UnsupportedOperationException("hack");
     }
 
@@ -250,9 +257,8 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *   graph object.
      */
     public void setSemanticObject(Object object, Object semantic) {
-        throw new UnsupportedOperationException("Ptolemy Graph Model does" +
-                " not allow semantic objects" +
-                " to be changed");
+        throw new UnsupportedOperationException("Ptolemy Graph Model does"
+            + " not allow semantic objects" + " to be changed");
     }
 
     /** Remove any listeners we have created. The frame displaying this
@@ -272,8 +278,9 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      */
     protected Locatable _getLocation(NamedObj object) {
         List locations = object.attributeList(Locatable.class);
+
         if (locations.size() > 0) {
-            return (Locatable)locations.get(0);
+            return (Locatable) locations.get(0);
         } else {
             try {
                 // NOTE: We need the location right away, so we go ahead
@@ -289,11 +296,10 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                 location.propagateExistence();
 
                 return location;
-            }
-            catch (Exception e) {
-                throw new InternalErrorException("Failed to create " +
-                        "location, even though one does not exist:" +
-                        e.getMessage());
+            } catch (Exception e) {
+                throw new InternalErrorException("Failed to create "
+                    + "location, even though one does not exist:"
+                    + e.getMessage());
             }
         }
     }
@@ -312,7 +318,6 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The node model for a visible attribute.
     private AttributeNodeModel _attributeModel = new AttributeNodeModel();
 
@@ -338,7 +343,6 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *  propagated at a finer level of granularity than is possible here.
      */
     public class GraphChangeListener implements ChangeListener {
-
         /** Notify the listener that a change has been successfully executed.
          *  If the originator of this change is not this graph model, then
          *  issue a graph event to indicate that the structure of the graph
@@ -361,8 +365,8 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
             // Note that a change listener is registered with the top-level
             // model, as it probably has to be, since a change to a model
             // can have repercusions anywhere in the model.
-            if (change != null
-                    && change.getSource() == AbstractBasicGraphModel.this) {
+            if ((change != null)
+                    && (change.getSource() == AbstractBasicGraphModel.this)) {
                 return;
             }
 
@@ -372,8 +376,8 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                 // that the graph might have
                 // completely changed.
                 dispatchGraphEvent(new GraphEvent(
-                                           AbstractBasicGraphModel.this,
-                                           GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                        AbstractBasicGraphModel.this,
+                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
             }
         }
 
@@ -390,12 +394,12 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                 change.setErrorReported(true);
                 MessageHandler.error("Change failed", exception);
             }
+
             // update the graph model.
             if (_update()) {
                 dispatchGraphEvent(new GraphEvent(
-                                           AbstractBasicGraphModel.this,
-                                           GraphEvent.STRUCTURE_CHANGED,
-                                           getRoot()));
+                        AbstractBasicGraphModel.this,
+                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
             }
         }
     }

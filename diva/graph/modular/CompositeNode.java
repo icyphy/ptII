@@ -25,6 +25,7 @@
 */
 package diva.graph.modular;
 
+
 /**
  * A node that is also a graph, i.e. it can contain other nodes.
  *
@@ -34,4 +35,3 @@ package diva.graph.modular;
  */
 public interface CompositeNode extends Node, Graph {
 }
-

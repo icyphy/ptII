@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.kernel;
 
 import java.io.Writer;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Merge
+
 /**
    This actor takes any number of input streams and merges them
    nondeterministically.  This actor is intended for use in the
@@ -69,8 +70,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (eal)
 */
-public class NondeterministicMerge extends TypedCompositeActor  {
-
+public class NondeterministicMerge extends TypedCompositeActor {
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport.
      *  @param container The container.
@@ -81,7 +81,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
      *   by the proposed container.
      */
     public NondeterministicMerge(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -95,14 +95,13 @@ public class NondeterministicMerge extends TypedCompositeActor  {
         channel.setTypeEquals(BaseType.INT);
 
         // Add an attribute to get the port placed on the bottom.
-        StringAttribute channelCardinal
-                = new StringAttribute(channel, "_cardinal");
+        StringAttribute channelCardinal = new StringAttribute(channel,
+                "_cardinal");
         channelCardinal.setExpression("SOUTH");
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:red\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+            + "style=\"fill:red\"/>\n" + "</svg>\n");
 
         PNDirector director = new MergeDirector(this, "director");
     }
@@ -135,26 +134,31 @@ public class NondeterministicMerge extends TypedCompositeActor  {
      */
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
+
         if (port == input) {
             List containedActors = entityList();
             int numberOfContainedActors = containedActors.size();
 
             // Create the contained actors to handle the inputs.
             int inputWidth = input.getWidth();
+
             for (int i = 0; i < inputWidth; i++) {
                 if (i < numberOfContainedActors) {
-                        // Local actor already exists for this channel.
+                    // Local actor already exists for this channel.
                     // Just wake it up.
                     Object localActor = containedActors.get(i);
-                    synchronized(localActor) {
-                            localActor.notifyAll();
+
+                    synchronized (localActor) {
+                        localActor.notifyAll();
                     }
+
                     // ProcessThread associated with the actor might
                     // be blocked on a wait on the director.
                     // So we need to notify on the director also.
                     Director director = getDirector();
-                    synchronized(director) {
-                            director.notifyAll();
+
+                    synchronized (director) {
+                        director.notifyAll();
                     }
                 } else {
                     try {
@@ -165,7 +169,9 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                         // possibly be executing, so we don't need to do
                         // this.
                         Manager manager = getManager();
-                        if (manager != null && manager.getState() != Manager.IDLE) {
+
+                        if ((manager != null)
+                                && (manager.getState() != Manager.IDLE)) {
                             manager.requestInitialization(localActor);
                         }
 
@@ -187,14 +193,15 @@ public class NondeterministicMerge extends TypedCompositeActor  {
      */
     private class ChannelActor extends TypedAtomicActor {
         public ChannelActor(int index, NondeterministicMerge container)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, "ChannelActor" + index);
             _channelIndex = index;
             _channelValue = new IntToken(_channelIndex);
         }
 
         // Override the base class to not export anything.
-        public void exportMoML(Writer output, int depth, String name) {}
+        public void exportMoML(Writer output, int depth, String name) {
+        }
 
         public void fire() throws IllegalActionException {
             // If there is no connection, do nothing.
@@ -204,11 +211,12 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                         && input.hasToken(_channelIndex)) {
                     if (_debugging) {
                         NondeterministicMerge.this._debug(
-                                "Waiting for input from channel "
-                                + _channelIndex);
+                            "Waiting for input from channel " + _channelIndex);
                     }
+
                     // NOTE: Writing to the port of the host actor.
                     Token result = input.get(_channelIndex);
+
                     // We require that the send to the two output ports be
                     // atomic so that the channel port gets tokens
                     // in the same order as the output port.
@@ -219,30 +227,32 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                         output.send(0, result);
                         channel.send(0, _channelValue);
                     }
+
                     if (_debugging) {
-                        NondeterministicMerge.this._debug(
-                                "Sent " + result + " from channel "
-                                + _channelIndex
-                                + " to the output.");
+                        NondeterministicMerge.this._debug("Sent " + result
+                            + " from channel " + _channelIndex
+                            + " to the output.");
                     }
                 }
             } else {
-                    // Input channel is no longer connected.
+                // Input channel is no longer connected.
                 // We don't want to spin lock here, so we
                 // wait.
-                synchronized(this) {
-                        try {
-                                workspace().wait(this);
+                synchronized (this) {
+                    try {
+                        workspace().wait(this);
                     } catch (InterruptedException ex) {
                         // Ignore and continue executing.
                     }
                 }
             }
-                }
+        }
+
         // Override to return the manager associate with the host.
         public Manager getManager() {
-                return NondeterministicMerge.this.getManager();
+            return NondeterministicMerge.this.getManager();
         }
+
         private int _channelIndex;
         private IntToken _channelValue;
     }
@@ -251,9 +261,10 @@ public class NondeterministicMerge extends TypedCompositeActor  {
      */
     private class MergeDirector extends PNDirector {
         public MergeDirector(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
-                super(container, name);
+            throws IllegalActionException, NameDuplicationException {
+            super(container, name);
         }
+
         // Return false since this director has nothing to do
         // in its iteration loop, unless pause has been requested,
         // in which case we need to be able to iterate again to
@@ -266,63 +277,77 @@ public class NondeterministicMerge extends TypedCompositeActor  {
             // Can we check here whether postfire() is
             // being called because we are pausing?
             if (_debugging) {
-                    _debug("Called postfire().");
+                _debug("Called postfire().");
             }
+
             if (_stopFireRequested && !_stopRequested) {
                 if (_debugging) {
                     _debug("postfire() returns true.");
                 }
-                    return true;
+
+                return true;
             }
+
             // FIXME: This is going to return false immediately
             // because fire() returns immediately.
             if (_debugging) {
                 _debug("postfire() returns false.");
             }
-                return false;
+
+            return false;
         }
+
         // Override this to notify the containing director only.
         // This local director does not keep a count of active
         // actors. It delegates this to the enclosing director.
         protected void _actorHasRestarted() {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
-                ((PNDirector)director)._actorHasRestarted();
+                ((PNDirector) director)._actorHasRestarted();
             }
         }
+
         // Override this to notify the containing director as well.
         // This local director does not keep a count of active
         // actors. It delegates this to the enclosing director.
         protected void _actorHasStopped() {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
-                ((PNDirector)director)._actorHasStopped();
+                ((PNDirector) director)._actorHasStopped();
             }
         }
+
         // Override this to notify the containing director as well.
         // This local director does not keep a count of active
         // actors. It delegates this to the enclosing director.
         protected void _decreaseActiveCount() {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
-                ((PNDirector)director)._decreaseActiveCount();
+                ((PNDirector) director)._decreaseActiveCount();
             }
         }
+
         // Override this to notify the containing director as well.
         // This local director does not keep a count of active
         // actors. It delegates this to the enclosing director.
         protected void _increaseActiveCount() {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
-                ((PNDirector)director)._increaseActiveCount();
+                ((PNDirector) director)._increaseActiveCount();
             }
         }
+
         // Override since deadlock cannot ever occur internally.
         protected boolean _resolveDeadlock() {
             if (_debugging) {
-                    _debug("Deadlock is not real as " +
-                        "NondeterministicMerge can't deadlock.");
+                _debug("Deadlock is not real as "
+                    + "NondeterministicMerge can't deadlock.");
             }
+
             return true;
         }
     }

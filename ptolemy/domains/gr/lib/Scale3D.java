@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.lib;
 
 import javax.media.j3d.Node;
@@ -40,6 +39,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Scale3D
@@ -63,7 +63,6 @@ import ptolemy.kernel.util.NameDuplicationException;
     @Pt.AcceptedRating Red (chf)
 */
 public class Scale3D extends GRTransform {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,13 +72,13 @@ public class Scale3D extends GRTransform {
      *   actor with this name.
      */
     public Scale3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         scaleInput = new TypedIOPort(this, "scaleInput");
         scaleInput.setInput(true);
 
-        scaleFactor = new Parameter(this, "scaleFactor",new DoubleToken(1.0));
+        scaleFactor = new Parameter(this, "scaleFactor", new DoubleToken(1.0));
         scaleFactor.setTypeEquals(BaseType.DOUBLE);
         xScale = new Parameter(this, "xScale", new DoubleToken(1.0));
         yScale = new Parameter(this, "yScale", new DoubleToken(1.0));
@@ -118,7 +117,6 @@ public class Scale3D extends GRTransform {
      */
     public Parameter zScale;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -128,9 +126,10 @@ public class Scale3D extends GRTransform {
         super.initialize();
         _transformNode = new TransformGroup();
         _transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+
         Transform3D scaleTransform = new Transform3D();
-        scaleTransform.setScale(new Vector3d(_getScaleX(),
-                                        _getScaleY(), _getScaleZ()));
+        scaleTransform.setScale(new Vector3d(_getScaleX(), _getScaleY(),
+                _getScaleZ()));
         _transformNode.setTransform(scaleTransform);
     }
 
@@ -154,10 +153,8 @@ public class Scale3D extends GRTransform {
         return (Node) _transformNode;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected TransformGroup _transformNode;
 
     ///////////////////////////////////////////////////////////////////

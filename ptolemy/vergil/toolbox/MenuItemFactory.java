@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import javax.swing.JMenuItem;
@@ -33,8 +32,10 @@ import javax.swing.JMenuItem;
 import ptolemy.kernel.util.NamedObj;
 import diva.gui.toolbox.JContextMenu;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MenuItemFactory
+
 /**
    This is an interface for factories that create menu items.
    Objects that implement this interface can be used in conjunction
@@ -47,7 +48,6 @@ import diva.gui.toolbox.JContextMenu;
    @Pt.AcceptedRating Red (cxh)
 */
 public interface MenuItemFactory {
-
     /** Add an item to the given context menu that will operate on
      *  specified target, and return the menu item.  Return null to
      *  decline to add a menu item for the specified target.

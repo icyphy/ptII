@@ -26,13 +26,14 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.kernel;
 
 import ptolemy.data.Token;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NullToken
+
 /**
    A NullToken is a marker class used to break deadlock in certain
    topologies of DDE models. A NullToken object does not represent
@@ -59,7 +60,5 @@ import ptolemy.data.Token;
    @see ptolemy.data.Token
    @see ptolemy.domains.dde.kernel.DDEReceiver
 */
-
 public class NullToken extends Token {
-
 }

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.event.WindowAdapter;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DebugListenerTableau
+
 /**
    A tableau representing a debug listener window. The constructor of this
    class creates the window.  You must then attached any object implementing
@@ -58,7 +59,6 @@ import ptolemy.kernel.util.NamedObj;
    @see Effigy
 */
 public class DebugListenerTableau extends Tableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  @param container The container.
      *  @param name The name.
@@ -68,20 +68,24 @@ public class DebugListenerTableau extends Tableau {
      *   attribute already in the container.
      */
     public DebugListenerTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         final DebugListenerFrame frame = new DebugListenerFrame();
         setFrame(frame);
         frame.setTableau(this);
+
         // Listen for window closing events to unregister.
         frame.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
                     setDebuggable(null);
                 }
             });
+
         if (container instanceof TextEffigy) {
-            ((TextEffigy)container).setDocument(frame.text.getDocument());
+            ((TextEffigy) container).setDocument(frame.text.getDocument());
         }
+
         frame.setVisible(true);
         frame.pack();
     }
@@ -105,20 +109,21 @@ public class DebugListenerTableau extends Tableau {
      */
     public void setDebuggable(Debuggable debuggable) {
         if (_debug != null) {
-            _debug.removeDebugListener((DebugListenerFrame)getFrame());
+            _debug.removeDebugListener((DebugListenerFrame) getFrame());
         }
+
         _debug = debuggable;
+
         if (_debug != null) {
-            DebugListenerFrame debugFrame = (DebugListenerFrame)getFrame();
+            DebugListenerFrame debugFrame = (DebugListenerFrame) getFrame();
             _debug.addDebugListener(debugFrame);
 
-            debugFrame.setTitle(((NamedObj)_debug).getFullName());
+            debugFrame.setTitle(((NamedObj) _debug).getFullName());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The object this is listening to.
     private Debuggable _debug;
 
@@ -130,7 +135,6 @@ public class DebugListenerTableau extends Tableau {
      */
     public static class DebugListenerFrame extends TextEditor
         implements DebugListener {
-
         /** Create a debug listener that displays messages in a top-level
          *  window.
          */

@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.modular;
+
 import java.util.Iterator;
+
 
 /**
  * A graph is an object that contains nodes and
@@ -46,4 +48,3 @@ public interface CompositeModel {
      */
     public int getNodeCount(Object composite);
 }
-

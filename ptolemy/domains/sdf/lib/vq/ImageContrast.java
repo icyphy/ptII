@@ -24,7 +24,6 @@
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.sdf.lib.vq;
 
 import ptolemy.actor.lib.Transformer;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageContrast
+
 /**
    Change the contrast of an image.
 
@@ -49,9 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (mikele)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ImageContrast extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,8 +60,7 @@ public class ImageContrast extends Transformer {
      *   actor with this name.
      */
     public ImageContrast(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT_MATRIX);
@@ -71,7 +69,6 @@ public class ImageContrast extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -91,11 +88,10 @@ public class ImageContrast extends Transformer {
      *
      *  Send the new image out the output port.
      */
-
     public void fire() throws IllegalActionException {
-
-        int i, j;
-        int frame[][];
+        int i;
+        int j;
+        int[][] frame;
         int frameElement;
 
         IntMatrixToken message = (IntMatrixToken) input.get(0);
@@ -105,44 +101,42 @@ public class ImageContrast extends Transformer {
         // Assuming the color bound for the input 0 and 255. If color detected
         // that has color either bigger than 255 OR small than 0, then throw an
         // illegal action exception.
-
-        for (i = 0; i < 256; i ++)
+        for (i = 0; i < 256; i++) {
             colorHistogram[i] = 0;
+        }
 
         int pixels = frame.length * frame[0].length;
 
         for (i = 0; i < frame.length; i++) {
             for (j = 0; j < frame[i].length; j++) {
                 frameElement = frame[i][j];
-                if ((frameElement < 0) || (frameElement > 255 )) {
+
+                if ((frameElement < 0) || (frameElement > 255)) {
                     throw new IllegalActionException("ImageContrast:"
-                            + "input image pixel contains at"
-                            + j + "," + i
-                            + "with value" + frameElement
-                            + "that is out of bounds."
-                            + " Not between 0 and 255.");
+                        + "input image pixel contains at" + j + "," + i
+                        + "with value" + frameElement
+                        + "that is out of bounds." + " Not between 0 and 255.");
                 }
+
                 colorHistogram[frameElement]++;
             }
         }
 
         //Construct the cdf of the color distribution histogram
         //colorHistogram[0] = colorHistogram[0]
-
-        for (i = 1; i < 256; i ++)
-            colorHistogram[i] = colorHistogram[i-1] + colorHistogram[i];
+        for (i = 1; i < 256; i++) {
+            colorHistogram[i] = colorHistogram[i - 1] + colorHistogram[i];
+        }
 
         // Search each pixel in the image and re-map it to a new
         // color number to make a new relatively even color distribution
         // image.
-
         int distributionConstant = pixels / 255;
 
-        for (i = 0; i < frame.length; i ++) {
+        for (i = 0; i < frame.length; i++) {
             for (j = 0; j < frame[i].length; j++) {
                 frameElement = frame[i][j];
-                frame[i][j] = colorHistogram[frameElement] /
-                    distributionConstant;
+                frame[i][j] = colorHistogram[frameElement] / distributionConstant;
             }
         }
 
@@ -152,6 +146,5 @@ public class ImageContrast extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private int colorHistogram[] = new int[256];
+    private int[] colorHistogram = new int[256];
 }

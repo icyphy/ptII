@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Iterator;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// State
+
 /**
    A State has two ports: one for linking incoming transitions, the other for
    outgoing transitions. When the FSMActor containing a state is the mode
@@ -72,7 +73,6 @@ import ptolemy.kernel.util.Workspace;
    @see FSMDirector
 */
 public class State extends ComponentEntity {
-
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
      *  NullPointerException will be thrown. This state will use the
@@ -89,19 +89,19 @@ public class State extends ComponentEntity {
      *   that of an entity already in the container.
      */
     public State(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         incomingPort = new ComponentPort(this, "incomingPort");
         outgoingPort = new ComponentPort(this, "outgoingPort");
         refinementName = new StringAttribute(this, "refinementName");
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n"
+            + "<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n"
+            + "</svg>\n");
 
         // Specify that the name should be centered in graphical displays.
-        SingletonParameter center
-                = new SingletonParameter(this, "_centerName");
+        SingletonParameter center = new SingletonParameter(this, "_centerName");
         center.setExpression("true");
         center.setVisibility(Settable.EXPERT);
     }
@@ -142,8 +142,9 @@ public class State extends ComponentEntity {
      *   attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.attributeChanged(attribute);
+
         if (attribute == refinementName) {
             _refinementVersion = -1;
         }
@@ -157,15 +158,14 @@ public class State extends ComponentEntity {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        State newObject = (State)super.clone(workspace);
-        newObject.incomingPort =
-            (ComponentPort)newObject.getPort("incomingPort");
-        newObject.outgoingPort =
-            (ComponentPort)newObject.getPort("outgoingPort");
-        newObject.refinementName =
-            (StringAttribute)newObject.getAttribute("refinementName");
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        State newObject = (State) super.clone(workspace);
+        newObject.incomingPort = (ComponentPort) newObject.getPort(
+                "incomingPort");
+        newObject.outgoingPort = (ComponentPort) newObject.getPort(
+                "outgoingPort");
+        newObject.refinementName = (StringAttribute) newObject.getAttribute(
+                "refinementName");
         newObject._refinementVersion = -1;
         newObject._transitionListVersion = -1;
         newObject._nonpreemptiveTransitionList = new LinkedList();
@@ -187,41 +187,53 @@ public class State extends ComponentEntity {
         if (_refinementVersion == workspace().getVersion()) {
             return _refinement;
         }
+
         try {
             workspace().getReadAccess();
+
             String names = refinementName.getExpression();
-            if (names == null || names.trim().equals("")) {
+
+            if ((names == null) || names.trim().equals("")) {
                 _refinementVersion = workspace().getVersion();
                 _refinement = null;
                 return null;
             }
+
             StringTokenizer tokenizer = new StringTokenizer(names, ",");
             int size = tokenizer.countTokens();
+
             if (size <= 0) {
                 _refinementVersion = workspace().getVersion();
                 _refinement = null;
                 return null;
             }
+
             _refinement = new TypedActor[size];
+
             Nameable container = getContainer();
-            TypedCompositeActor containerContainer =
-                (TypedCompositeActor)container.getContainer();
+            TypedCompositeActor containerContainer = (TypedCompositeActor) container
+                .getContainer();
             int index = 0;
+
             while (tokenizer.hasMoreTokens()) {
                 String name = tokenizer.nextToken().trim();
+
                 if (name.equals("")) {
                     throw new IllegalActionException(this,
-                            "Malformed list of refinements: " + names);
+                        "Malformed list of refinements: " + names);
                 }
-                TypedActor element =
-                    (TypedActor)containerContainer.getEntity(name);
+
+                TypedActor element = (TypedActor) containerContainer.getEntity(name);
+
                 if (element == null) {
-                    throw new IllegalActionException(this, "Cannot find "
-                            + "refinement with name \"" + name
-                            + "\" in " + containerContainer.getFullName());
+                    throw new IllegalActionException(this,
+                        "Cannot find " + "refinement with name \"" + name
+                        + "\" in " + containerContainer.getFullName());
                 }
+
                 _refinement[index++] = element;
             }
+
             _refinementVersion = workspace().getVersion();
             return _refinement;
         } finally {
@@ -238,6 +250,7 @@ public class State extends ComponentEntity {
         if (_transitionListVersion != workspace().getVersion()) {
             _updateTransitionLists();
         }
+
         return _nonpreemptiveTransitionList;
     }
 
@@ -250,12 +263,12 @@ public class State extends ComponentEntity {
         if (_transitionListVersion != workspace().getVersion()) {
             _updateTransitionLists();
         }
+
         return _preemptiveTransitionList;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Update the cached transition lists.
     // This method is read-synchronized on the workspace.
     private void _updateTransitionLists() {
@@ -263,16 +276,19 @@ public class State extends ComponentEntity {
             workspace().getReadAccess();
             _nonpreemptiveTransitionList.clear();
             _preemptiveTransitionList.clear();
-            Iterator transitions =
-                outgoingPort.linkedRelationList().iterator();
+
+            Iterator transitions = outgoingPort.linkedRelationList().iterator();
+
             while (transitions.hasNext()) {
-                Transition transition = (Transition)transitions.next();
+                Transition transition = (Transition) transitions.next();
+
                 if (transition.isPreemptive()) {
                     _preemptiveTransitionList.add(transition);
                 } else {
                     _nonpreemptiveTransitionList.add(transition);
                 }
             }
+
             _transitionListVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();
@@ -281,7 +297,6 @@ public class State extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Cached list of non-preemptive outgoing transitions from this state.
     private List _nonpreemptiveTransitionList = new LinkedList();
 
@@ -296,5 +311,4 @@ public class State extends ComponentEntity {
 
     // Version of cached transition lists.
     private long _transitionListVersion = -1;
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.style;
 
 import java.util.List;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ChoiceStyle
+
 /**
    This attribute annotates user settable attributes to specify
    an uneditable combobox style for configuring the containing attribute.
@@ -59,9 +60,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class ChoiceStyle extends ParameterEditorStyle {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -94,7 +93,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public ChoiceStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -120,25 +119,21 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *   has a value that cannot be edited using this style.
      */
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
-        Settable container = (Settable)getContainer();
+        Settable container = (Settable) getContainer();
         String name = container.getName();
         List paramList = attributeList(Settable.class);
-        Settable choices[]
-            = (Settable [])paramList.toArray(
-                    new Settable[paramList.size()]);
-        String values[] = new String[choices.length];
+        Settable[] choices = (Settable[]) paramList.toArray(new Settable[paramList
+                .size()]);
+        String[] values = new String[choices.length];
+
         for (int i = 0; i < choices.length; i++) {
             values[i] = choices[i].getExpression();
         }
+
         String defaultChoice = container.getExpression();
-        query.addChoice(
-                name,
-                name,
-                values,
-                defaultChoice,
-                _isEditable,
-                PtolemyQuery.preferredBackgroundColor(container),
-                PtolemyQuery.preferredForegroundColor(container));
+        query.addChoice(name, name, values, defaultChoice, _isEditable,
+            PtolemyQuery.preferredBackgroundColor(container),
+            PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
     }
 

@@ -27,6 +27,7 @@ package diva.util.jester;
 
 import java.io.PrintStream;
 
+
 /**
  * A test harness. A test harness is created by each test suite
  * and has test cases passed to it. It is where such things as the
@@ -53,12 +54,12 @@ public class TestHarness {
     /**
      * Run a single test and log the results
      */
-    public void runTestCase (TestCase testCase) {
+    public void runTestCase(TestCase testCase) {
         printnoln(testCase.getName());
+
         try {
             testCase.init();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             println("\nInitialization aborted: ");
             println("    " + testCase.toString());
             println("    " + e.getMessage());
@@ -66,10 +67,10 @@ public class TestHarness {
             e.printStackTrace(_outputStream);
             return;
         }
+
         try {
             testCase.run();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             println("\nTest case aborted: ");
             println("    " + testCase.toString());
             println("    " + e.getMessage());
@@ -77,22 +78,22 @@ public class TestHarness {
             e.printStackTrace(_outputStream);
             return;
         }
+
         try {
             testCase.check();
-        }
-        catch (TestFailedException e) {
+        } catch (TestFailedException e) {
             println("\nTest failed: ");
             println("    " + testCase.toString());
             println("    " + e.getMessage());
             return;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             println("\nTest check aborted: ");
             println("    " + testCase.toString());
             println("    " + e.getMessage());
             println("Stack trace: ");
             e.printStackTrace(_outputStream);
         }
+
         if (testCase.getExecutionTime() > 0) {
             print(" (" + testCase.getExecutionTime() + " ms)\n");
         } else {
@@ -107,13 +108,14 @@ public class TestHarness {
         Object factory = suite.getFactory();
         String suiteClass = suite.getClass().getName();
         int index = suiteClass.lastIndexOf(".");
-        suiteClass = suiteClass.substring(index+1);
+        suiteClass = suiteClass.substring(index + 1);
 
         if (factory == null) {
             println(suiteClass);
         } else {
             println(suiteClass + ": " + suite.getFactory().toString());
         }
+
         _indentLevel++;
         _indentString = _indentString + "    ";
     }
@@ -135,23 +137,21 @@ public class TestHarness {
 
     /** Print to the output stream with the current indent
      */
-    void println (String s) {
+    void println(String s) {
         _outputStream.print(_indentString);
         _outputStream.println(s);
     }
 
     /** Print to the output stream with the current indent
      */
-    void printnoln (String s) {
+    void printnoln(String s) {
         _outputStream.print(_indentString);
         _outputStream.print(s);
     }
 
     /** Print to the output stream with no indent
      */
-    void print (String s) {
+    void print(String s) {
         _outputStream.print(s);
     }
 }
-
-

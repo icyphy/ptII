@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.Director;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SingleEvent
+
 /**
    This actor produces an event with the specified value at the
    specified time.  In its initialize() method, it queues an event,
@@ -58,7 +59,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (liuj)
 */
 public class SingleEvent extends TypedAtomicActor {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +68,7 @@ public class SingleEvent extends TypedAtomicActor {
      *   actor with this name.
      */
     public SingleEvent(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         time = new Parameter(this, "time", new DoubleToken(0.0));
@@ -105,9 +105,10 @@ public class SingleEvent extends TypedAtomicActor {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == value) {
             Director director = getDirector();
+
             if (director != null) {
                 director.invalidateResolvedTypes();
             }
@@ -124,9 +125,8 @@ public class SingleEvent extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SingleEvent newObject = (SingleEvent)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SingleEvent newObject = (SingleEvent) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.value);
         return newObject;
     }
@@ -136,11 +136,13 @@ public class SingleEvent extends TypedAtomicActor {
      *  parameter.
      */
     public void fire() throws IllegalActionException {
-        double eventTimeValue = ((DoubleToken)time.getToken()).doubleValue();
+        double eventTimeValue = ((DoubleToken) time.getToken()).doubleValue();
         Time eventTime = new Time(getDirector(), eventTimeValue);
+
         if (getDirector().getModelTime().equals(eventTime)) {
             output.send(0, value.getToken());
         }
+
         super.fire();
     }
 
@@ -150,9 +152,12 @@ public class SingleEvent extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        double eventTime = ((DoubleToken)time.getToken()).doubleValue();
+
+        double eventTime = ((DoubleToken) time.getToken()).doubleValue();
+
         if (eventTime >= 0.0) {
             Director director = getDirector();
+
             if (director != null) {
                 director.fireAt(this, new Time(director, eventTime));
             } else {

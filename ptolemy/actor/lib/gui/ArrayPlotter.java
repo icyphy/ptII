@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.TypedIOPort;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayPlotter
+
 /**
    A plotter that plots a sequence of arrays of doubles.
    This plotter contains an instance of the Plot
@@ -76,7 +77,6 @@ import ptolemy.plot.Plot;
    @see SequenceScope
 */
 public class ArrayPlotter extends Plotter implements SequenceActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -86,7 +86,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
      *   actor with this name.
      */
     public ArrayPlotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.
@@ -136,12 +136,12 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
      *   attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == xInit) {
-            _xInit = ((DoubleToken)xInit.getToken()).doubleValue();
+            _xInit = ((DoubleToken) xInit.getToken()).doubleValue();
         } else {
             if (attribute == xUnit) {
-                _xUnit = ((DoubleToken)xUnit.getToken()).doubleValue();
+                _xUnit = ((DoubleToken) xUnit.getToken()).doubleValue();
             } else {
                 super.attributeChanged(attribute);
             }
@@ -172,33 +172,41 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
-        _offset = ((IntToken)startingDataset.getToken()).intValue();
-        if (_tokens == null || _tokens.length != width) {
+        _offset = ((IntToken) startingDataset.getToken()).intValue();
+
+        if ((_tokens == null) || (_tokens.length != width)) {
             _tokens = new ArrayToken[width];
         }
+
         for (int i = width - 1; i >= 0; i--) {
             double xValue = _xInit;
+
             if (input.hasToken(i)) {
-                _tokens[i] = (ArrayToken)input.get(i);
+                _tokens[i] = (ArrayToken) input.get(i);
+
                 if (_iteration == 0) {
                     Token[] currentArray = _tokens[i].arrayValue();
+
                     // NOTE: We assume the superclass ensures this cast is safe.
-                    ((Plot)plot).clear(i + _offset);
+                    ((Plot) plot).clear(i + _offset);
+
                     for (int j = 0; j < currentArray.length; j++) {
-                        double currentValue =
-                            ((DoubleToken)currentArray[j]).doubleValue();
-                        ((Plot)plot).addPoint(
-                                i + _offset, xValue, currentValue, true);
+                        double currentValue = ((DoubleToken) currentArray[j])
+                            .doubleValue();
+                        ((Plot) plot).addPoint(i + _offset, xValue,
+                            currentValue, true);
                         xValue += _xUnit;
                     }
                 }
             }
         }
+
         _iteration++;
-        if (_iteration == ((IntToken)iterationsPerUpdate
-                    .getToken()).intValue()) {
+
+        if (_iteration == ((IntToken) iterationsPerUpdate.getToken()).intValue()) {
             _iteration = 0;
         }
+
         return super.postfire();
     }
 
@@ -211,20 +219,24 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
         if (_tokens != null) {
             for (int i = _tokens.length - 1; i >= 0; i--) {
                 double xValue = _xInit;
+
                 if (_tokens[i] != null) {
                     Token[] currentArray = _tokens[i].arrayValue();
+
                     // NOTE: We assume the superclass ensures this cast is safe.
-                    ((Plot)plot).clear(i + _offset);
+                    ((Plot) plot).clear(i + _offset);
+
                     for (int j = 0; j < currentArray.length; j++) {
-                        double currentValue =
-                            ((DoubleToken)currentArray[j]).doubleValue();
-                        ((Plot)plot).addPoint(
-                                i + _offset, xValue, currentValue, true);
+                        double currentValue = ((DoubleToken) currentArray[j])
+                            .doubleValue();
+                        ((Plot) plot).addPoint(i + _offset, xValue,
+                            currentValue, true);
                         xValue += _xUnit;
                     }
                 }
             }
         }
+
         super.wrapup();
     }
 
@@ -239,7 +251,6 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Iteration count, modulo the iterationsPerUpdate.
     private int _iteration = 0;
 

@@ -42,8 +42,10 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CheckSize
+
 /**
    Class that checks the size, zoom, and location of a model.
    @author Rowland R Johnson
@@ -52,9 +54,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
    @Pt.ProposedRating Red (rowland)
    @Pt.AcceptedRating Red (rowland)
 */
-
 public class CheckSize {
-
     /** Check the size, zoom and location of the models named
      *  by the args.
      *  @param args An array of Strings naming the models to be checked.
@@ -62,8 +62,12 @@ public class CheckSize {
      *
      */
     public CheckSize(String[] args) throws Exception {
-        int width, height;
-        double x, y, zoom;
+        int width;
+        int height;
+        double x;
+        double y;
+        double zoom;
+
         for (int i = 0; i < args.length; i++) {
             String fileName = args[i];
             StringBuffer analysis = new StringBuffer();
@@ -76,92 +80,92 @@ public class CheckSize {
 
             try {
                 NamedObj top = parser.parse(null, new File(fileName).toURL());
+
                 if (top instanceof CompositeActor) {
-                    SizeAttribute vergilSize =
-                        (SizeAttribute) top.getAttribute("_vergilSize");
-                    ExpertParameter vergilZoom =
-                        (ExpertParameter) top.getAttribute("_vergilZoomFactor");
-                    ExpertParameter vergilCenter =
-                        (ExpertParameter) top.getAttribute("_vergilCenter");
+                    SizeAttribute vergilSize = (SizeAttribute) top.getAttribute(
+                            "_vergilSize");
+                    ExpertParameter vergilZoom = (ExpertParameter) top
+                        .getAttribute("_vergilZoomFactor");
+                    ExpertParameter vergilCenter = (ExpertParameter) top
+                        .getAttribute("_vergilCenter");
+
                     if (vergilSize != null) {
                         try {
                             IntMatrixToken vergilSizeToken;
-                            vergilSizeToken =
-                                (IntMatrixToken) vergilSize.getToken();
+                            vergilSizeToken = (IntMatrixToken) vergilSize
+                                .getToken();
                             width = vergilSizeToken.getElementAt(0, 0);
                             height = vergilSizeToken.getElementAt(0, 1);
+
                             if (width > 800) {
                                 analysis.append(" width(" + width + ") > 800");
                             }
+
                             if (height > 768) {
                                 analysis.append(" width(" + height + ") > 768");
                             }
+
                             if (vergilCenter != null) {
                                 try {
-                                    ArrayToken vergilCenterToken =
-                                        (ArrayToken) vergilCenter.getToken();
-                                    x =
-                                        ((ScalarToken) vergilCenterToken
-                                                .getElement(0))
-                                        .doubleValue();
-                                    y =
-                                        ((ScalarToken) vergilCenterToken
-                                                .getElement(1))
-                                        .doubleValue();
-                                    if ((x != ((double) width) / 2.0)
-                                            || (y != ((double) height) / 2.0)) {
-                                        analysis.append(" Center(["
-                                            + x
-                                            + ", "
+                                    ArrayToken vergilCenterToken = (ArrayToken) vergilCenter
+                                        .getToken();
+                                    x = ((ScalarToken) vergilCenterToken
+                                        .getElement(0)).doubleValue();
+                                    y = ((ScalarToken) vergilCenterToken
+                                        .getElement(1)).doubleValue();
+
+                                    if ((x != (((double) width) / 2.0))
+                                            || (y != (((double) height) / 2.0))) {
+                                        analysis.append(" Center([" + x + ", "
                                             + y
                                             + "]) is not centered, should be ["
-                                            + (((double) width) / 2.0)
-                                            + ", "
-                                            + (((double) height) / 2.0)
-                                            + "]");
+                                            + (((double) width) / 2.0) + ", "
+                                            + (((double) height) / 2.0) + "]");
                                     }
                                 } catch (IllegalActionException ex) {
                                     analysis.append(" _vergilCenter malformed");
                                     analysis.append(KernelException
-                                            .stackTraceToString(ex));
+                                        .stackTraceToString(ex));
                                 }
                             }
                         } catch (IllegalActionException ex) {
                             analysis.append(" _vergilSize malformed");
-                            analysis.append(KernelException
-                                    .stackTraceToString(ex));
+                            analysis.append(KernelException.stackTraceToString(
+                                    ex));
                         }
 
                         if (vergilZoom != null) {
                             try {
-                                DoubleToken vergilZoomToken =
-                                    (DoubleToken) vergilZoom.getToken();
+                                DoubleToken vergilZoomToken = (DoubleToken) vergilZoom
+                                    .getToken();
                                 zoom = vergilZoomToken.doubleValue();
-                                if (zoom != 1.0)
-                                    analysis.append(" Zoom(" + zoom + ") != 1.0");
+
+                                if (zoom != 1.0) {
+                                    analysis.append(" Zoom(" + zoom
+                                        + ") != 1.0");
+                                }
                             } catch (IllegalActionException ex) {
                                 analysis.append(" _vergilZoom malformed");
                                 analysis.append(KernelException
-                                            .stackTraceToString(ex));
+                                    .stackTraceToString(ex));
                             }
                         }
-
                     } else {
                         analysis.append(" has no _vergilSize.");
                     }
                 } else {
-                    analysis.append(" is a "
-                        + top.getClassName()
+                    analysis.append(" is a " + top.getClassName()
                         + " not a CompositeActor.");
                 }
+
                 if (analysis.equals("")) {
                     analysis.append(" seems to be OK.");
                 }
             } catch (Throwable throwable) {
                 analysis.append(" can't be parsed because ");
-                analysis.append(KernelException
-                        .stackTraceToString(throwable));
+                analysis.append(KernelException.stackTraceToString(throwable));
             }
+
             System.out.println("Check Size " + fileName + analysis);
         }
     }

@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package ptolemy.domains.ct.kernel.test;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -36,8 +37,10 @@ import ptolemy.domains.ct.kernel.CTDynamicActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyDynamicActor
+
 /**
    Dummy actor that implement the CTDynamicActor interface. SISO.
    @author  Jie Liu
@@ -47,26 +50,23 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CTDummyDynamicActor extends TypedAtomicActor
-    implements CTDynamicActor{
+    implements CTDynamicActor {
     /** Constructor
      */
     public CTDummyDynamicActor(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
         input.setOutput(false);
-        new Parameter(input, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
         input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
-        new Parameter(output, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

@@ -25,43 +25,41 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.colt;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.String;
-
-import ptolemy.actor.gui.style.ChoiceStyle;
-import ptolemy.actor.lib.RandomSource;
-import ptolemy.actor.util.FunctionDependency;
-
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.LongToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.type.BaseType;
-
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 import cern.jet.random.AbstractDistribution;
 import cern.jet.random.engine.DRand;
 import cern.jet.random.engine.MersenneTwister;
 
-import edu.cornell.lassp.houle.RngPack.Ranecu;
 import edu.cornell.lassp.houle.RngPack.RandomElement;
+import edu.cornell.lassp.houle.RngPack.Ranecu;
 import edu.cornell.lassp.houle.RngPack.Ranlux;
 import edu.cornell.lassp.houle.RngPack.Ranmar;
 
+import ptolemy.actor.gui.style.ChoiceStyle;
+import ptolemy.actor.lib.RandomSource;
+import ptolemy.actor.util.FunctionDependency;
+import ptolemy.data.LongToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+
+import java.lang.String;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ColtRandomSource
+
 /** Base class for Colt random sources.
 
    @author David Bauer and Kostas Oikonomou
@@ -72,7 +70,6 @@ import ptolemy.kernel.util.ChangeRequest;
  */
 public abstract class ColtRandomSource extends RandomSource
     implements ChangeListener {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -82,12 +79,12 @@ public abstract class ColtRandomSource extends RandomSource
      *   actor with this name.
      */
     public ColtRandomSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         _index = 0;
         _seed = 1;
-        _randomNumberGenerator = new DRand((int)_seed);
+        _randomNumberGenerator = new DRand((int) _seed);
 
         _removeAttribute(super.seed);
     }
@@ -117,7 +114,6 @@ public abstract class ColtRandomSource extends RandomSource
      */
     public Parameter randomNumberGeneratorClass = null;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -143,8 +139,9 @@ public abstract class ColtRandomSource extends RandomSource
                 _seed = ((LongToken) (seed.getToken())).longValue();
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                        "Failed to get Colt seed");
+                    "Failed to get Colt seed");
             }
+
             return;
         }
 
@@ -154,24 +151,24 @@ public abstract class ColtRandomSource extends RandomSource
 
         String reClass = randomNumberGeneratorClass.getExpression();
 
-        if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[0])
-                && _index != 0) {
-            _randomNumberGenerator = new DRand((int)_seed);
+        if ((-1 != reClass.indexOf(_randomNumberGeneratorClassNames[0]))
+                && (_index != 0)) {
+            _randomNumberGenerator = new DRand((int) _seed);
             _index = 0;
-        } else if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[1])
-                && _index != 1) {
-            _randomNumberGenerator = new MersenneTwister((int)_seed);
+        } else if ((-1 != reClass.indexOf(_randomNumberGeneratorClassNames[1]))
+                && (_index != 1)) {
+            _randomNumberGenerator = new MersenneTwister((int) _seed);
             _index = 1;
-        } else if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[2])
-                && _index != 2) {
+        } else if ((-1 != reClass.indexOf(_randomNumberGeneratorClassNames[2]))
+                && (_index != 2)) {
             _randomNumberGenerator = new Ranecu(_seed);
             _index = 2;
-        } else if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[3])
-                && _index != 3) {
+        } else if ((-1 != reClass.indexOf(_randomNumberGeneratorClassNames[3]))
+                && (_index != 3)) {
             _randomNumberGenerator = new Ranlux(_seed);
             _index = 3;
-        } else if (-1 != reClass.indexOf(_randomNumberGeneratorClassNames[4])
-                && _index != 4) {
+        } else if ((-1 != reClass.indexOf(_randomNumberGeneratorClassNames[4]))
+                && (_index != 4)) {
             _randomNumberGenerator = new Ranmar(_seed);
             _index = 4;
         }
@@ -184,10 +181,9 @@ public abstract class ColtRandomSource extends RandomSource
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ColtRandomSource newObject = (ColtRandomSource)super.clone(workspace);
-        newObject._randomNumberGenerator = new DRand((int)_seed);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ColtRandomSource newObject = (ColtRandomSource) super.clone(workspace);
+        newObject._randomNumberGenerator = new DRand((int) _seed);
         return newObject;
     }
 
@@ -222,30 +218,27 @@ public abstract class ColtRandomSource extends RandomSource
      * randomNumberGenerator or seed attribute.
      */
     protected Parameter _getRandomNumberGeneratorClass(
-            CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        randomNumberGeneratorClass =
-            (Parameter) container.getAttribute("randomNumberGenerator");
+        CompositeEntity container)
+        throws IllegalActionException, NameDuplicationException {
+        randomNumberGeneratorClass = (Parameter) container.getAttribute(
+                "randomNumberGenerator");
         seed = (Parameter) container.getAttribute("seed");
 
         if (randomNumberGeneratorClass == null) {
-            randomNumberGeneratorClass =
-                new Parameter(container, "randomNumberGenerator",
-                        new StringToken(
-                                _randomNumberGeneratorClassNames[_index]));
+            randomNumberGeneratorClass = new Parameter(container,
+                    "randomNumberGenerator",
+                    new StringToken(_randomNumberGeneratorClassNames[_index]));
 
             ChoiceStyle s = new ChoiceStyle(randomNumberGeneratorClass, "s");
+
             for (int i = 0; i < _randomNumberGeneratorClassNames.length; i++) {
-                Parameter a =
-                    new Parameter(s, "s" + i,
-                            new StringToken(
-                                    _randomNumberGeneratorClassNames[i]));
+                Parameter a = new Parameter(s, "s" + i,
+                        new StringToken(_randomNumberGeneratorClassNames[i]));
             }
         }
 
         if (seed == null) {
-            seed =
-                new Parameter(container, "seed", new LongToken(_seed));
+            seed = new Parameter(container, "seed", new LongToken(_seed));
             seed.setTypeEquals(BaseType.LONG);
         }
 
@@ -257,11 +250,12 @@ public abstract class ColtRandomSource extends RandomSource
 
         if (_randomNumberGenerator == null) {
             throw new InternalErrorException(this, null,
-                    "Unable to create randomNumberGenerator!");
+                "Unable to create randomNumberGenerator!");
         }
+
         if (_debugging) {
             _debug("ColtRandomSource: random number generator = "
-                    + randomNumberGeneratorClass);
+                + randomNumberGeneratorClass);
         }
 
         return randomNumberGeneratorClass;
@@ -280,15 +274,9 @@ public abstract class ColtRandomSource extends RandomSource
 
     /** The list of available RandomElement classes.
      */
-    protected String [] _randomNumberGeneratorClassNames =
-    {
-        "DRand",
-        "MersenneTwister (MT19937)",
-        "Ranecu",
-        "Ranlux",
-        "Ranmar"
-    };
-
+    protected String[] _randomNumberGeneratorClassNames = {
+            "DRand", "MersenneTwister (MT19937)", "Ranecu", "Ranlux", "Ranmar"
+        };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

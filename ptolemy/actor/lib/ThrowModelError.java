@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.InvariantViolationException;
@@ -34,10 +33,13 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ThrowModelError
+
 /**
    An actor that throws a model error when it receives a true token
    on any input channel.  The message reported in the model error is
@@ -60,7 +62,6 @@ import ptolemy.kernel.util.StringAttribute;
    @see ptolemy.kernel.util.NamedObj#handleModelError(NamedObj, IllegalActionException)
 */
 public class ThrowModelError extends Sink {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -71,7 +72,7 @@ public class ThrowModelError extends Sink {
      *   an actor already in the container.
      */
     public ThrowModelError(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -96,28 +97,27 @@ public class ThrowModelError extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
+
         // NOTE: We need to consume data on all channels that have data.
         // If we don't then DE will go into an infinite loop.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                if (((BooleanToken)input.get(i)).booleanValue()) {
+                if (((BooleanToken) input.get(i)).booleanValue()) {
                     result = true;
                 }
             }
         }
+
         if (result) {
             //FIXME: instead of throw an IllegalActionException,
             // an InvariantViolationException is thrown. Should we
             // configure the "model error" type?
-
             //handleModelError(this,
             //      new IllegalActionException(this, message.getExpression()));
             handleModelError(this,
-                    new InvariantViolationException(this,
-                            message.getExpression()));
-
+                new InvariantViolationException(this, message.getExpression()));
         }
+
         return super.postfire();
     }
 }
-

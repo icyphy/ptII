@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Rectangle;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LocationAttribute
+
 /**
    This attribute stores the width and height of a graphical component.
    The token in this attribute is an IntMatrixToken containing a matrix
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.Settable;
    @Pt.AcceptedRating Red (johnr)
 */
 public class LocationAttribute extends Parameter {
-
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -70,7 +70,7 @@ public class LocationAttribute extends Parameter {
      *   an attribute already in the container.
      */
     public LocationAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);
     }
@@ -88,6 +88,7 @@ public class LocationAttribute extends Parameter {
             int[][] locationMatrix = new int[1][2];
             locationMatrix[0][0] = location.x;
             locationMatrix[0][1] = location.y;
+
             IntMatrixToken token = new IntMatrixToken(locationMatrix);
             setToken(token);
         } catch (IllegalActionException ex) {
@@ -103,7 +104,8 @@ public class LocationAttribute extends Parameter {
      */
     public boolean setLocation(Window component) {
         try {
-            IntMatrixToken token = (IntMatrixToken)getToken();
+            IntMatrixToken token = (IntMatrixToken) getToken();
+
             if (token != null) {
                 int x = token.getElementAt(0, 0);
                 int y = token.getElementAt(0, 1);
@@ -114,6 +116,7 @@ public class LocationAttribute extends Parameter {
                 // manager feels free to override it.
                 component.setLocation(x, y);
             }
+
             return true;
         } catch (Exception ex) {
             return false;

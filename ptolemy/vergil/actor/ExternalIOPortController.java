@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
@@ -59,8 +58,10 @@ import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExternalIOPortController
+
 /**
    This class provides interaction with nodes that represent Ptolemy II
    ports inside a composite.  It provides a double click binding and context
@@ -80,7 +81,6 @@ import diva.util.java2d.Polygon2D;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ExternalIOPortController extends AttributeController {
-
     /** Create a port controller associated with the specified graph
      *  controller.  The controller is given full access.
      *  @param controller The associated graph controller.
@@ -101,7 +101,6 @@ public class ExternalIOPortController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
-
     // Prototype input port.
     public static IOPort _GENERIC_INPUT = new IOPort();
 
@@ -134,6 +133,7 @@ public class ExternalIOPortController extends AttributeController {
             _GENERIC_INPUT_MULTIPORT.setMultiport(true);
             _GENERIC_OUTPUT_MULTIPORT.setMultiport(true);
             _GENERIC_INOUT_MULTIPORT.setMultiport(true);
+
             // Need location attributes for these ports in order to
             // be able to render them.
             new Location(_GENERIC_INPUT, "_location");
@@ -158,22 +158,23 @@ public class ExternalIOPortController extends AttributeController {
      */
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {
-            if (((NamedObj)((Locatable)node)
-                        .getContainer()).getAttribute("_hideInside") != null) {
+            if (((NamedObj) ((Locatable) node).getContainer()).getAttribute(
+                        "_hideInside") != null) {
                 return true;
             }
         }
+
         if (node instanceof NamedObj) {
-            if (((NamedObj)node).getAttribute("_hideInside") != null) {
+            if (((NamedObj) node).getAttribute("_hideInside") != null) {
                 return true;
             }
         }
+
         return false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 
     ///////////////////////////////////////////////////////////////////
@@ -184,7 +185,6 @@ public class ExternalIOPortController extends AttributeController {
      *  while single ports are rendered filled.
      */
     public class PortRenderer implements NodeRenderer {
-
         /** Render a port.  If the argument implements Locatable,
          *  then render the port that is the container of that locatable.
          *  If the argument is an instance of _GENERIC_INPUT,
@@ -198,20 +198,24 @@ public class ExternalIOPortController extends AttributeController {
             Polygon2D.Double polygon = new Polygon2D.Double();
 
             Figure figure;
+
             // Wrap the figure in a TerminalFigure to set the direction that
             // connectors exit the port.  Note that this direction is the
             // OPPOSITE direction that is used to layout the port in the
             // Entity Controller.
             int direction;
-            Locatable location = (Location)n;
+            Locatable location = (Location) n;
+
             if (location != null) {
-                final Port port = (Port)location.getContainer();
+                final Port port = (Port) location.getContainer();
 
                 Color fill;
+
                 if (port instanceof IOPort) {
-                    IOPort ioport = (IOPort)port;
+                    IOPort ioport = (IOPort) port;
                     polygon.moveTo(0, 5);
                     polygon.lineTo(0, 10);
+
                     if (ioport.isOutput()) {
                         polygon.lineTo(6, 5);
                         polygon.lineTo(14, 5);
@@ -220,7 +224,9 @@ public class ExternalIOPortController extends AttributeController {
                     } else {
                         polygon.lineTo(12, 0);
                     }
+
                     polygon.lineTo(0, -10);
+
                     if (ioport.isInput()) {
                         polygon.lineTo(0, -5);
                         polygon.lineTo(-6, -5);
@@ -248,15 +254,15 @@ public class ExternalIOPortController extends AttributeController {
                     polygon.closePath();
                     fill = Color.black;
                 }
-                figure = new BasicFigure(polygon, fill, (float)1.5);
+
+                figure = new BasicFigure(polygon, fill, (float) 1.5);
 
                 if (!(port instanceof IOPort)) {
                     direction = SwingUtilities.NORTH;
                 } else {
-                    IOPort ioport = (IOPort)port;
+                    IOPort ioport = (IOPort) port;
 
-                    if (ioport.isInput() &&
-                            ioport.isOutput()) {
+                    if (ioport.isInput() && ioport.isOutput()) {
                         direction = SwingUtilities.NORTH;
                     } else if (ioport.isInput()) {
                         direction = SwingUtilities.EAST;
@@ -267,53 +273,63 @@ public class ExternalIOPortController extends AttributeController {
                         direction = SwingUtilities.NORTH;
                     }
                 }
+
                 double normal = CanvasUtilities.getNormal(direction);
                 Site tsite = new PerimeterSite(figure, 0);
                 tsite.setNormal(normal);
                 tsite = new FixedNormalSite(tsite);
+
                 String name = port.getName();
                 Rectangle2D backBounds = figure.getBounds();
                 figure = new CompositeFigure(figure);
-                if (name != null && !name.equals("")
+
+                if ((name != null) && !name.equals("")
                         && !(port instanceof ParameterPort)) {
-                    LabelFigure label = new LabelFigure(name,
-                            _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+                    LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                            SwingConstants.SOUTH_WEST);
+
                     // Shift the label slightly right so it doesn't
                     // collide with ports.
-                    label.translateTo(
-                            backBounds.getX(),
-                            backBounds.getY());
-                    ((CompositeFigure)figure).add(label);
+                    label.translateTo(backBounds.getX(), backBounds.getY());
+                    ((CompositeFigure) figure).add(label);
                 }
-                figure = new TerminalFigure(figure, tsite)  {
-                        // Override this because the tooltip may
-                        // change over time.  I.e., the port may
-                        // change from being an input or output, etc.
-                        public String getToolTipText() {
-                            String tipText = port.getName();
-                            if (port instanceof IOPort) {
-                                IOPort ioport = (IOPort)port;
-                                if (ioport.isInput()) {
-                                    tipText += ", Input";
+
+                figure = new TerminalFigure(figure, tsite) {
+                            // Override this because the tooltip may
+                            // change over time.  I.e., the port may
+                            // change from being an input or output, etc.
+                            public String getToolTipText() {
+                                String tipText = port.getName();
+
+                                if (port instanceof IOPort) {
+                                    IOPort ioport = (IOPort) port;
+
+                                    if (ioport.isInput()) {
+                                        tipText += ", Input";
+                                    }
+
+                                    if (ioport.isOutput()) {
+                                        tipText += ", Output";
+                                    }
+
+                                    if (ioport.isMultiport()) {
+                                        tipText += ", Multiport";
+                                    }
+
+                                    try {
+                                        tipText = tipText + ", type:"
+                                            + ((Typeable) port).getType();
+                                    } catch (ClassCastException ex) {
+                                        // Do nothing.
+                                    } catch (IllegalActionException ex) {
+                                        // Do nothing.
+                                    }
                                 }
-                                if (ioport.isOutput()) {
-                                    tipText += ", Output";
-                                }
-                                if (ioport.isMultiport()) {
-                                    tipText += ", Multiport";
-                                }
-                                try {
-                                    tipText = tipText + ", type:"
-                                        + ((Typeable)port).getType();
-                                } catch (ClassCastException ex) {
-                                    // Do nothing.
-                                } catch (IllegalActionException ex) {
-                                    // Do nothing.
-                                }
+
+                                return tipText;
                             }
-                            return tipText;
-                        }
-                    };
+                        };
+
                 // Have to do this as well or awt will not render a tooltip.
                 figure.setToolTipText(port.getName());
             } else {
@@ -326,9 +342,8 @@ public class ExternalIOPortController extends AttributeController {
                 figure = new BasicFigure(polygon, Color.black);
                 figure.setToolTipText("Unknown port");
             }
+
             return figure;
         }
     }
 }
-
-

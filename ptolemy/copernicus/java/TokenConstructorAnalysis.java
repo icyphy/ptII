@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -49,8 +48,10 @@ import soot.jimple.Stmt;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.scalar.LocalDefs;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForAttributesTransformer
+
 /**
    An analysis that establishes a constant value, if possible, of a token
    constructed at a particular statement.
@@ -65,29 +66,31 @@ public class TokenConstructorAnalysis {
     public TokenConstructorAnalysis(JimpleBody body, LocalDefs localDefs) {
         _constructorToValue = new HashMap();
 
-        for (Iterator units = body.getUnits().iterator();
-             units.hasNext();) {
-            Stmt unit = (Stmt)units.next();
-            if (unit.containsInvokeExpr() &&
-                    unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
-                InstanceInvokeExpr invokeExpr =
-                    (InstanceInvokeExpr)unit.getInvokeExpr();
+        for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
+            Stmt unit = (Stmt) units.next();
+
+            if (unit.containsInvokeExpr()
+                    && unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
+                InstanceInvokeExpr invokeExpr = (InstanceInvokeExpr) unit
+                    .getInvokeExpr();
                 SootMethod invokedMethod = invokeExpr.getMethod();
+
                 // If we invoke a Token class initializer
-                if (invokedMethod.getName().equals("<init>") &&
-                        SootUtilities.isSubtypeOf(
-                                invokeExpr.getBase().getType(),
-                                RefType.v(PtolemyUtilities.tokenClass))) {
+                if (invokedMethod.getName().equals("<init>")
+                        && SootUtilities.isSubtypeOf(invokeExpr.getBase()
+                                                                   .getType(),
+                            RefType.v(PtolemyUtilities.tokenClass))) {
                     // System.out.println("found token initializer: " + unit);
-                    Unit constructor = _findConstructor(
-                            (Local)invokeExpr.getBase(), unit, localDefs);
+                    Unit constructor = _findConstructor((Local) invokeExpr
+                            .getBase(), unit, localDefs);
+
                     //  System.out.println("found token constructor: " + constructor);
                     if (constructor == null) {
                         continue;
                     }
 
-                    Token token =
-                        _evaluateInitializer(invokeExpr, invokedMethod);
+                    Token token = _evaluateInitializer(invokeExpr, invokedMethod);
+
                     if (token != null) {
                         _constructorToValue.put(constructor, token);
                     }
@@ -99,13 +102,13 @@ public class TokenConstructorAnalysis {
     /** Return the invocation that creates an object with the given name.
      */
     public Token getConstructedTokenValue(Stmt tokenConstructor) {
-        return (Token)_constructorToValue.get(tokenConstructor);
+        return (Token) _constructorToValue.get(tokenConstructor);
     }
 
     private Token _evaluateInitializer(InvokeExpr invokeExpr,
-            SootMethod invokedMethod) {
-        Value[] argValues = (Value[])
-            invokeExpr.getArgs().toArray(new Value[0]);
+        SootMethod invokedMethod) {
+        Value[] argValues = (Value[]) invokeExpr.getArgs().toArray(new Value[0]);
+
         for (int i = 0; i < argValues.length; i++) {
             if (Evaluator.isValueConstantValued(argValues[i])) {
                 argValues[i] = Evaluator.getConstantValueOf(argValues[i]);
@@ -113,27 +116,32 @@ public class TokenConstructorAnalysis {
                 return null;
             }
         }
+
         try {
-            return (Token) SootUtilities.reflectAndInvokeConstructor(
-                    invokedMethod, argValues);
+            return (Token) SootUtilities.reflectAndInvokeConstructor(invokedMethod,
+                argValues);
         } catch (Exception ex) {
             return null;
         }
     }
+
     private Unit _findConstructor(Local local, Unit location,
-            LocalDefs localDefs) {
+        LocalDefs localDefs) {
         NewExpr newExpr = null;
         List definitionList = localDefs.getDefsOfAt(local, location);
+
         if (definitionList.size() == 1) {
-            DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
-            Value value = (Value)stmt.getRightOp();
+            DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
+            Value value = (Value) stmt.getRightOp();
+
             if (value instanceof NewExpr) {
                 return stmt;
             } else {
-                throw new RuntimeException("Found something other" +
-                        " than a constructor: " + stmt);
+                throw new RuntimeException("Found something other"
+                    + " than a constructor: " + stmt);
             }
         }
+
         return null;
     }
 

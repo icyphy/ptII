@@ -31,8 +31,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
-    package ptolemy.math;
+package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,9 +53,9 @@ COPYRIGHTENDKEY
    @Pt.AcceptedRating Yellow (ctsay)
 */
 public class FloatMatrixMath {
-
     // private constructor prevents construction of this class.
-    private FloatMatrixMath() {}
+    private FloatMatrixMath() {
+    }
 
     /** Return a new matrix that is constructed from the argument by
      *  adding the second argument to every element.
@@ -66,11 +65,13 @@ public class FloatMatrixMath {
      */
     public static final float[][] add(float[][] matrix, float z) {
         float[][] returnValue = new float[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
                 returnValue[i][j] = matrix[i][j] + z;
             }
         }
+
         return returnValue;
     }
 
@@ -83,15 +84,17 @@ public class FloatMatrixMath {
      *  @return A new matrix of floats.
      */
     public static final float[][] add(final float[][] matrix1,
-            final float[][] matrix2) {
+        final float[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
         float[][] returnValue = new float[_rows(matrix1)][_columns(matrix1)];
+
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
                 returnValue[i][j] = matrix1[i][j] + matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -100,7 +103,7 @@ public class FloatMatrixMath {
      *  @return A new matrix of floats.
      */
     public static final float[][] allocCopy(final float[][] matrix) {
-        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
+        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix));
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -109,16 +112,18 @@ public class FloatMatrixMath {
      *  as the right operands (op.operate(z, matrix[i][j])).
      */
     public static final float[][] applyBinaryOperation(
-            FloatBinaryOperation op, final float z, final float[][] matrix) {
+        FloatBinaryOperation op, final float z, final float[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         float[][] returnValue = new float[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(z, matrix[i][j]);
             }
         }
+
         return returnValue;
     }
 
@@ -128,16 +133,18 @@ public class FloatMatrixMath {
      *  operand in all cases (op.operate(matrix[i][j], z)).
      */
     public static final float[][] applyBinaryOperation(
-            FloatBinaryOperation op, final float[][] matrix, final float z) {
+        FloatBinaryOperation op, final float[][] matrix, final float z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         float[][] returnValue = new float[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix[i][j], z);
             }
         }
+
         return returnValue;
     }
 
@@ -149,19 +156,21 @@ public class FloatMatrixMath {
      *  are not the same size, throw an IllegalArgumentException.
      */
     public static final float[][] applyBinaryOperation(
-            FloatBinaryOperation op,
-            final float[][] matrix1, final float[][] matrix2) {
+        FloatBinaryOperation op, final float[][] matrix1,
+        final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
 
         float[][] returnValue = new float[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
             }
         }
+
         return returnValue;
     }
 
@@ -170,19 +179,20 @@ public class FloatMatrixMath {
      *  (op.operate(matrix[i][j])).
      */
     public static final float[][] applyUnaryOperation(
-            final FloatUnaryOperation op, final float[][] matrix) {
+        final FloatUnaryOperation op, final float[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         float[][] returnValue = new float[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = op.operate(matrix[i][j]);
             }
         }
+
         return returnValue;
     }
-
 
     /** Return a new matrix that is a sub-matrix of the input
      *  matrix argument. The row and column from which to start
@@ -194,13 +204,15 @@ public class FloatMatrixMath {
      *  @param colSpan An int specifying how many columns to copy.
      */
     public static final float[][] crop(final float[][] matrix,
-            final int rowStart, final int colStart,
-            final int rowSpan, final int colSpan) {
+        final int rowStart, final int colStart, final int rowSpan,
+        final int colSpan) {
         float[][] returnValue = new float[rowSpan][colSpan];
+
         for (int i = 0; i < rowSpan; i++) {
-            System.arraycopy(matrix[rowStart + i], colStart,
-                    returnValue[i], 0, colSpan);
+            System.arraycopy(matrix[rowStart + i], colStart, returnValue[i], 0,
+                colSpan);
         }
+
         return returnValue;
     }
 
@@ -217,12 +229,14 @@ public class FloatMatrixMath {
 
         a = allocCopy(matrix);
 
-        for (int pivot = 0; pivot < n-1; pivot++) {
+        for (int pivot = 0; pivot < (n - 1); pivot++) {
             // find the biggest absolute pivot
             float big = Math.abs(a[pivot][pivot]);
             int swapRow = 0; // initialize for no swap
+
             for (int row = pivot + 1; row < n; row++) {
                 float absElement = Math.abs(a[row][pivot]);
+
                 if (absElement > big) {
                     swapRow = row;
                     big = absElement;
@@ -243,27 +257,28 @@ public class FloatMatrixMath {
             }
 
             // if almost singular matrix, give up now
-
             // FIXME use epsilon instead of this ugly constant
             if (Math.abs(det) <= 1E-12f) {
                 return det;
             }
 
             float pivotInverse = 1.0f / a[pivot][pivot];
+
             for (int col = pivot + 1; col < n; col++) {
                 a[pivot][col] *= pivotInverse;
             }
 
             for (int row = pivot + 1; row < n; row++) {
                 float temp = a[row][pivot];
+
                 for (int col = pivot + 1; col < n; col++) {
-                    a[row][col] -= a[pivot][col] * temp;
+                    a[row][col] -= (a[pivot][col] * temp);
                 }
             }
         }
 
         // last pivot, no reduction required
-        det *= a[n-1][n-1];
+        det *= a[n - 1][n - 1];
 
         return det;
     }
@@ -280,7 +295,6 @@ public class FloatMatrixMath {
         float[][] returnValue = new float[n][n];
 
         // assume the matrix is zero-filled
-
         for (int i = 0; i < n; i++) {
             returnValue[i][i] = array[i];
         }
@@ -296,11 +310,13 @@ public class FloatMatrixMath {
      */
     public static final float[][] divide(float[][] matrix, float z) {
         float[][] returnValue = new float[_rows(matrix)][_columns(matrix)];
+
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                returnValue[i][j] = matrix[i][j]/z;
+                returnValue[i][j] = matrix[i][j] / z;
             }
         }
+
         return returnValue;
     }
 
@@ -311,18 +327,20 @@ public class FloatMatrixMath {
      *  throw an IllegalArgumentException.
      */
     public static final float[][] divideElements(final float[][] matrix1,
-            final float[][] matrix2) {
+        final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("divideElements", matrix1, matrix2);
 
         float[][] returnValue = new float[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] / matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -352,11 +370,13 @@ public class FloatMatrixMath {
      *  @return A new array of floats.
      */
     public static final float[] fromMatrixToArray(final float[][] matrix,
-            int maxRow, int maxCol) {
+        int maxRow, int maxCol) {
         float[] returnValue = new float[maxRow * maxCol];
+
         for (int i = 0; i < maxRow; i++) {
             System.arraycopy(matrix[i], 0, returnValue, i * maxCol, maxCol);
         }
+
         return returnValue;
     }
 
@@ -367,24 +387,27 @@ public class FloatMatrixMath {
      */
     public static final float[][] hilbert(final int dim) {
         float[][] returnValue = new float[dim][dim];
+
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
                 returnValue[i][j] = 1.0f / (float) (i + j + 1);
             }
         }
+
         return returnValue;
     }
-
 
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
     public static final float[][] identity(final int dim) {
         float[][] returnValue = new float[dim][dim];
+
         // we rely on the fact Java fills the allocated matrix with 0's
         for (int i = 0; i < dim; i++) {
             returnValue[i][i] = 1.0f;
         }
+
         return returnValue;
     }
 
@@ -404,16 +427,20 @@ public class FloatMatrixMath {
         int[] swapCol = new int[n];
         int[] swapRow = new int[n];
 
-        int irow = 0, icol = 0;
+        int irow = 0;
+        int icol = 0;
 
         for (int i = 0; i < n; i++) { // n iterations of pivoting
+
             // find the biggest pivot element
             float big = 0.0f;
+
             for (int row = 0; row < n; row++) {
                 if (pivotFlag[row] == 0) {
                     for (int col = 0; col < n; col++) {
                         if (pivotFlag[col] == 0) {
                             float absElement = Math.abs(Ai[row][col]);
+
                             if (absElement >= big) {
                                 big = absElement;
                                 irow = row;
@@ -423,6 +450,7 @@ public class FloatMatrixMath {
                     }
                 }
             }
+
             pivotFlag[icol]++;
 
             // swap rows to make this diagonal the biggest absolute pivot
@@ -446,6 +474,7 @@ public class FloatMatrixMath {
             // divide the row by the pivot
             float pivotInverse = 1.0f / Ai[icol][icol];
             Ai[icol][icol] = 1.0f; // pivot = 1 to avoid round off
+
             for (int col = 0; col < n; col++) {
                 Ai[icol][col] *= pivotInverse;
             }
@@ -455,8 +484,9 @@ public class FloatMatrixMath {
                 if (row != icol) {
                     float temp = Ai[row][icol];
                     Ai[row][icol] = 0.0f;
+
                     for (int col = 0; col < n; col++) {
-                        Ai[row][col] -= Ai[icol][col] * temp;
+                        Ai[row][col] -= (Ai[icol][col] * temp);
                     }
                 }
             }
@@ -476,7 +506,6 @@ public class FloatMatrixMath {
         return Ai;
     }
 
-
     /** Replace the first matrix argument elements with the values of
      *  the second matrix argument. The second matrix argument must be
      *  large enough to hold all the values of second matrix argument.
@@ -484,9 +513,9 @@ public class FloatMatrixMath {
      *  @param srcMatrix A matrix of floats, used as the source.
      */
     public static final void matrixCopy(final float[][] srcMatrix,
-            final float[][] destMatrix) {
+        final float[][] destMatrix) {
         matrixCopy(srcMatrix, 0, 0, destMatrix, 0, 0, _rows(srcMatrix),
-                _columns(srcMatrix));
+            _columns(srcMatrix));
     }
 
     /** Replace the first matrix argument's values, in the specified row
@@ -504,34 +533,32 @@ public class FloatMatrixMath {
      *  @param colSpan An int specifying how many columns to copy.
      */
     public static final void matrixCopy(final float[][] srcMatrix,
-            final int srcRowStart, final int srcColStart,
-            final float[][] destMatrix,
-            final int destRowStart, final int destColStart,
-            final int rowSpan, final int colSpan) {
+        final int srcRowStart, final int srcColStart,
+        final float[][] destMatrix, final int destRowStart,
+        final int destColStart, final int rowSpan, final int colSpan) {
         // We should verify the parameters here
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
-                    destMatrix[destRowStart + i], destColStart,
-                    colSpan);
+                destMatrix[destRowStart + i], destColStart, colSpan);
         }
     }
-
-
 
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a scaleFactor.
      */
     public static final float[][] multiply(final float[][] matrix,
-            final float scaleFactor) {
+        final float scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         float[][] returnValue = new float[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix[i][j] * scaleFactor;
             }
         }
+
         return returnValue;
     }
 
@@ -542,26 +569,29 @@ public class FloatMatrixMath {
      *  of columns of the matrix.
      */
     public static final float[] multiply(final float[][] matrix,
-            final float[] array) {
-
+        final float[] array) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (rows != array.length) {
             throw new IllegalArgumentException(
-                    "preMultiply : array does not have the same number of " +
-                    "elements (" + array.length + ") as the number of rows " +
-                    "of the matrix (" + rows + ")");
+                "preMultiply : array does not have the same number of "
+                + "elements (" + array.length + ") as the number of rows "
+                + "of the matrix (" + rows + ")");
         }
 
         float[] returnValue = new float[columns];
+
         for (int i = 0; i < columns; i++) {
             float sum = 0.0f;
+
             for (int j = 0; j < rows; j++) {
-                sum += matrix[j][i] * array[j];
+                sum += (matrix[j][i] * array[j]);
             }
+
             returnValue[i] = sum;
         }
+
         return returnValue;
     }
 
@@ -572,25 +602,29 @@ public class FloatMatrixMath {
      *  of rows of the matrix.
      */
     public static final float[] multiply(final float[] array,
-            final float[][] matrix) {
+        final float[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (columns != array.length) {
             throw new IllegalArgumentException(
-                    "postMultiply() : array does not have the same number " +
-                    "of elements (" + array.length + ") as the number of " +
-                    "columns of the matrix (" + columns + ")");
+                "postMultiply() : array does not have the same number "
+                + "of elements (" + array.length + ") as the number of "
+                + "columns of the matrix (" + columns + ")");
         }
 
         float[] returnValue = new float[rows];
+
         for (int i = 0; i < rows; i++) {
             float sum = 0.0f;
+
             for (int j = 0; j < columns; j++) {
-                sum += matrix[i][j] * array[j];
+                sum += (matrix[i][j] * array[j]);
             }
+
             returnValue[i] = sum;
         }
+
         return returnValue;
     }
 
@@ -611,18 +645,21 @@ public class FloatMatrixMath {
      *  @param matrix2 The second matrix of floats.
      *  @return A new matrix of floats.
      */
-    public static final float[][] multiply(float[][] matrix1,
-            float[][] matrix2) {
+    public static final float[][] multiply(float[][] matrix1, float[][] matrix2) {
         float[][] returnValue = new float[_rows(matrix1)][matrix2[0].length];
+
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 float sum = 0.0f;
+
                 for (int k = 0; k < matrix2.length; k++) {
-                    sum += matrix1[i][k] * matrix2[k][j];
+                    sum += (matrix1[i][k] * matrix2[k][j]);
                 }
+
                 returnValue[i][j] = sum;
             }
         }
+
         return returnValue;
     }
 
@@ -635,18 +672,20 @@ public class FloatMatrixMath {
      *  matrix multiplication.
      */
     public static final float[][] multiplyElements(final float[][] matrix1,
-            final float[][] matrix2) {
+        final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("multiplyElements", matrix1, matrix2);
 
         float[][] returnValue = new float[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] * matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -658,11 +697,13 @@ public class FloatMatrixMath {
         int columns = _columns(matrix);
 
         float[][] returnValue = new float[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = -matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -672,9 +713,7 @@ public class FloatMatrixMath {
      *  output matrix will contain a column of zeros for all redundant
      *  input columns.
      */
-
-    public static final float[][] orthogonalizeColumns(
-            final float[][] matrix) {
+    public static final float[][] orthogonalizeColumns(final float[][] matrix) {
         Object[] orthoInfo = _orthogonalizeRows(transpose(matrix));
         return transpose((float[][]) orthoInfo[0]);
     }
@@ -689,15 +728,13 @@ public class FloatMatrixMath {
         return (float[][]) orthoInfo[0];
     }
 
-
     /** Return a new matrix that is formed by orthogonalizing the
      *  columns of the input matrix (the column vectors are orthogonal
      *  and have norm 1). If not all columns are linearly independent,
      *  the output matrix will contain a column of zeros for all
      *  redundant input columns.
      */
-    public static final float[][] orthonormalizeColumns(
-            final float[][] matrix) {
+    public static final float[][] orthonormalizeColumns(final float[][] matrix) {
         return transpose(orthogonalizeRows(transpose(matrix)));
     }
 
@@ -715,14 +752,12 @@ public class FloatMatrixMath {
         float[] oneOverNormSquaredArray = (float[]) orthoInfo[2];
 
         for (int i = 0; i < rows; i++) {
-            orthogonalMatrix[i] = FloatArrayMath.scale(
-                    orthogonalMatrix[i],
+            orthogonalMatrix[i] = FloatArrayMath.scale(orthogonalMatrix[i],
                     (float) Math.sqrt(oneOverNormSquaredArray[i]));
         }
 
         return orthogonalMatrix;
     }
-
 
     /** Return a pair of matrices that are the decomposition of the
      *  input matrix (which must have linearly independent column
@@ -755,14 +790,14 @@ public class FloatMatrixMath {
         // dividing by the norm of each row vector.  To compute R,
         // normalize each row of dotProducts by dividing each row the
         // norm of each column vector of Q.
-
         float[] oneOverNormSquaredArray = (float[]) orthoRowInfo[2];
 
         // check that all columns were linearly independent
         Integer nullity = (Integer) orthoRowInfo[3];
+
         if (nullity.intValue() > 0) {
             throw new IllegalArgumentException("qr() : not all column "
-                    + "vectors are linearly independent.");
+                + "vectors are linearly independent.");
         }
 
         for (int i = 0; i < columns; i++) {
@@ -778,25 +813,26 @@ public class FloatMatrixMath {
         return new float[][][] { transpose(qT), dotProducts };
     }
 
-
     /** Return a new matrix that is constructed from the argument by
      *  subtracting the second matrix from the first one.  If the two
      *  matrices are not the same size, throw an
      *  IllegalArgumentException.
      */
     public static final float[][] subtract(final float[][] matrix1,
-            final float[][] matrix2) {
+        final float[][] matrix2) {
         _checkSameDimension("subtract", matrix1, matrix2);
 
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         float[][] returnValue = new float[rows][columns];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] - matrix2[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -805,11 +841,13 @@ public class FloatMatrixMath {
      */
     public static final float sum(final float[][] matrix) {
         float sum = 0.0f;
+
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
                 sum += matrix[i][j];
             }
         }
+
         return sum;
     }
 
@@ -829,9 +867,10 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = new Complex((double)matrix[i][j], 0.0);
+                returnValue[i][j] = new Complex((double) matrix[i][j], 0.0);
             }
         }
+
         return returnValue;
     }
 
@@ -851,9 +890,9 @@ public class FloatMatrixMath {
                 returnValue[i][j] = (double) matrix[i][j];
             }
         }
+
         return returnValue;
     }
-
 
     /** Return a new matrix that is formed by converting the floats in
      *  the argument matrix to integers.
@@ -871,9 +910,9 @@ public class FloatMatrixMath {
                 returnValue[i][j] = (int) matrix[i][j];
             }
         }
+
         return returnValue;
     }
-
 
     /** Return a new matrix that is formed by converting the floats in
      *  the argument matrix to longs.
@@ -891,9 +930,9 @@ public class FloatMatrixMath {
                 returnValue[i][j] = (long) matrix[i][j];
             }
         }
+
         return returnValue;
     }
-
 
     /** Return a new matrix of floats that is initialized from a 1-D
      *  array.  The format of the array must be (0, 0), (0, 1), ...,
@@ -908,11 +947,13 @@ public class FloatMatrixMath {
      *  @return A new matrix of floats.
      */
     public static final float[][] toMatrixFromArray(float[] array, int rows,
-            int cols) {
+        int cols) {
         float[][] returnValue = new float[rows][cols];
+
         for (int i = 0; i < rows; i++) {
             System.arraycopy(array, i * cols, returnValue[i], 0, cols);
         }
+
         return returnValue;
     }
 
@@ -930,14 +971,14 @@ public class FloatMatrixMath {
      *  format argument.
      */
     public static final String toString(final float[][] matrix,
-            String elementDelimiter, String matrixBegin, String matrixEnd,
-            String vectorBegin, String vectorDelimiter, String vectorEnd) {
+        String elementDelimiter, String matrixBegin, String matrixEnd,
+        String vectorBegin, String vectorDelimiter, String vectorEnd) {
         StringBuffer sb = new StringBuffer();
         sb.append(matrixBegin);
 
         for (int i = 0; i < _rows(matrix); i++) {
-
             sb.append(vectorBegin);
+
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(Float.toString(matrix[i][j]));
 
@@ -958,7 +999,6 @@ public class FloatMatrixMath {
         return new String(sb);
     }
 
-
     /** Return the trace of a square matrix, which is the sum of the
      *  diagonal entries A<sub>11</sub> + A<sub>22</sub> + ... + A<sub>nn</sub>
      *  Throw an IllegalArgumentException if the matrix is not square.
@@ -971,6 +1011,7 @@ public class FloatMatrixMath {
         for (int i = 0; i < dim; i++) {
             sum += matrix[i][i];
         }
+
         return sum;
     }
 
@@ -983,11 +1024,13 @@ public class FloatMatrixMath {
         int columns = _columns(matrix);
 
         float[][] returnValue = new float[columns][rows];
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[j][i] = matrix[i][j];
             }
         }
+
         return returnValue;
     }
 
@@ -1002,7 +1045,7 @@ public class FloatMatrixMath {
      *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final float[][] matrix1,
-            final float[][] matrix2, float distance) {
+        final float[][] matrix2, float distance) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1010,11 +1053,13 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (matrix1[i][j] > matrix2[i][j] + distance ||
-                        matrix1[i][j] < matrix2[i][j] - distance)
+                if ((matrix1[i][j] > (matrix2[i][j] + distance))
+                        || (matrix1[i][j] < (matrix2[i][j] - distance))) {
                     return false;
+                }
             }
         }
+
         return true;
     }
 
@@ -1030,7 +1075,7 @@ public class FloatMatrixMath {
      *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final float[][] matrix1,
-            final float[][] matrix2, final float[][] errorMatrix) {
+        final float[][] matrix2, final float[][] errorMatrix) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1039,14 +1084,15 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j] ||
-                        matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j])
+                if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
+                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
                     return false;
+                }
             }
         }
+
         return true;
     }
-
 
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.
@@ -1055,17 +1101,15 @@ public class FloatMatrixMath {
      *  @param matrix2 A matrix of floats.
      */
     protected static final void _checkSameDimension(final String caller,
-            final float[][] matrix1, final float[][] matrix2) {
+        final float[][] matrix1, final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.FloatMatrixMath." + caller
-                    + "() : one matrix "
-                    + _dimensionString(matrix1)
-                    + " is not the same size as another matrix "
-                    + _dimensionString(matrix2) + ".");
+            throw new IllegalArgumentException("ptolemy.math.FloatMatrixMath."
+                + caller + "() : one matrix " + _dimensionString(matrix1)
+                + " is not the same size as another matrix "
+                + _dimensionString(matrix2) + ".");
         }
     }
 
@@ -1076,13 +1120,13 @@ public class FloatMatrixMath {
      *  @return The dimension of the square matrix.
      */
     protected static final int _checkSquare(final String caller,
-            final float[][] matrix) {
+        final float[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.FloatMatrixMath." + caller +
-                    "() : matrix argument " + _dimensionString(matrix) +
-                    " is not a square matrix.");
+            throw new IllegalArgumentException("ptolemy.math.FloatMatrixMath."
+                + caller + "() : matrix argument " + _dimensionString(matrix)
+                + " is not a square matrix.");
         }
+
         return _rows(matrix);
     }
 
@@ -1118,9 +1162,9 @@ public class FloatMatrixMath {
      *  Orthogonalization is done with the Gram-Schmidt process.
      */
     protected static final Object[] _orthogonalizeRows(
-            final float[][] rowArrays) {
+        final float[][] rowArrays) {
         int rows = rowArrays.length;
-        int columns =  rowArrays[0].length;
+        int columns = rowArrays[0].length;
         int nullity = 0;
 
         float[][] orthogonalMatrix = new float[rows][];
@@ -1141,22 +1185,21 @@ public class FloatMatrixMath {
 
             // Subtract projections onto all previous vectors.
             for (int j = 0; j < i; j++) {
-
                 // Save the dot product for future use for QR decomposition.
-                float dotProduct =
-                    FloatArrayMath.dotProduct(refArray, orthogonalMatrix[j]);
+                float dotProduct = FloatArrayMath.dotProduct(refArray,
+                        orthogonalMatrix[j]);
 
                 dotProductMatrix[j][i] = dotProduct;
 
                 rowArray = FloatArrayMath.subtract(rowArray,
                         FloatArrayMath.scale(orthogonalMatrix[j],
-                                dotProduct * oneOverNormSquaredArray[j]));
+                            dotProduct * oneOverNormSquaredArray[j]));
             }
 
             // Compute the dot product between the input and output vector
             // for the diagonal entry of dotProductMatrix.
-            dotProductMatrix[i][i] =
-                FloatArrayMath.dotProduct(refArray, rowArray);
+            dotProductMatrix[i][i] = FloatArrayMath.dotProduct(refArray,
+                    rowArray);
 
             // Check the norm to find zero rows, and save the 1 /
             // norm^2 for later computation.
@@ -1186,9 +1229,11 @@ public class FloatMatrixMath {
                 oneOverNormSquaredArray[i] = 1.0f / normSquared;
             }
         }
-        return new Object[] { orthogonalMatrix, dotProductMatrix,
-                              oneOverNormSquaredArray,
-                              new Integer(nullity) };
+
+        return new Object[] {
+            orthogonalMatrix, dotProductMatrix, oneOverNormSquaredArray,
+            new Integer(nullity)
+        };
     }
 
     /** Return the number of rows of a matrix. */

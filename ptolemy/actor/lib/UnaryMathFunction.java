@@ -25,13 +25,9 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -40,11 +36,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
-
 //////////////////////////////////////////////////////////////////////////
 //// UnaryMathFunction
+
 /**
    Produce an output token on each firing with a value that is
    equal to the specified math function of the input.
@@ -76,7 +73,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see TrigFunction
 */
 public class UnaryMathFunction extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -86,7 +82,7 @@ public class UnaryMathFunction extends Transformer {
      *   actor with this name.
      */
     public UnaryMathFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -115,16 +111,16 @@ public class UnaryMathFunction extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws  IllegalActionException {
+        throws IllegalActionException {
         if (attribute == function) {
             String functionName = function.stringValue();
+
             if (functionName.equals("exp")) {
                 _function = _EXP;
             } else if (functionName.equals("log")) {
@@ -137,8 +133,8 @@ public class UnaryMathFunction extends Transformer {
                 _function = _SQRT;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized math function: " + functionName);
-                }
+                    "Unrecognized math function: " + functionName);
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -165,14 +161,18 @@ public class UnaryMathFunction extends Transformer {
      */
     private double _doFunction(double input) {
         double result;
-        switch(_function) {
+
+        switch (_function) {
         case _EXP:
             result = Math.exp(input);
             break;
+
         case _LOG:
             result = Math.log(input);
             break;
+
         case _SIGN:
+
             if (input > 0) {
                 result = 1.0;
             } else if (input < 0) {
@@ -180,26 +180,29 @@ public class UnaryMathFunction extends Transformer {
             } else {
                 result = 0.0;
             }
+
             break;
+
         case _SQUARE:
             result = input * input;
             break;
+
         case _SQRT:
             result = Math.sqrt(input);
             break;
+
         default:
             throw new InternalErrorException(
-                    "Invalid value for _function private variable. "
-                    + "MathFunction actor (" + getFullName()
-                    + ")"
-                    + " on function type " + _function);
+                "Invalid value for _function private variable. "
+                + "MathFunction actor (" + getFullName() + ")"
+                + " on function type " + _function);
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // An indicator for the function to compute.
     private int _function;
 

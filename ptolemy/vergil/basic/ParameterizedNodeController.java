@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
 import ptolemy.vergil.toolbox.ConfigureAction;
@@ -38,8 +37,10 @@ import diva.graph.GraphController;
 import diva.graph.NodeInteractor;
 import diva.gui.toolbox.MenuCreator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParameterizedNodeController
+
 /**
    This class provides interaction with nodes that represent Ptolemy II
    components with parameters.  It provides a context menu item labeled
@@ -53,7 +54,6 @@ import diva.gui.toolbox.MenuCreator;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ParameterizedNodeController extends NamedObjController {
-
     /** Create an attribute controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
@@ -66,7 +66,7 @@ public class ParameterizedNodeController extends NamedObjController {
         _menuCreator.setMouseFilter(new PopupMouseFilter());
 
         // FIXME: Why doesn't getNodeInteractor() return a NodeInteractor?
-        NodeInteractor interactor = (NodeInteractor)getNodeInteractor();
+        NodeInteractor interactor = (NodeInteractor) getNodeInteractor();
         interactor.addInteractor(_menuCreator);
 
         // The contents of the menu is determined by the associated
@@ -74,17 +74,16 @@ public class ParameterizedNodeController extends NamedObjController {
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
 
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(_configureAction));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(_configureAction));
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
-        ActionInteractor doubleClickInteractor
-            = new ActionInteractor(_configureAction);
+        ActionInteractor doubleClickInteractor = new ActionInteractor(_configureAction);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
         interactor.addInteractor(doubleClickInteractor);
+
         // NOTE: This dance is so that the
         // doubleClickInteractor gets the events before the drag interactor.
         interactor.setDragInteractor(interactor.getDragInteractor());
@@ -104,6 +103,6 @@ public class ParameterizedNodeController extends NamedObjController {
     protected MenuCreator _menuCreator;
 
     /** The configure action, which handles edit parameters requests. */
-    protected static ConfigureAction _configureAction
-    = new ConfigureAction("Configure");
+    protected static ConfigureAction _configureAction = new ConfigureAction(
+            "Configure");
 }

@@ -30,8 +30,8 @@
 
 
 */
-
 package diva.graph.tutorial;
+
 import javax.swing.SwingUtilities;
 
 import diva.graph.GraphPane;
@@ -40,6 +40,7 @@ import diva.graph.basic.BasicGraphController;
 import diva.graph.basic.BasicGraphModel;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
+
 
 /**
  * This is the most basic tutorial, popping up an empty graph
@@ -54,7 +55,7 @@ public class SimpleTutorial {
     /**
      * Pop up an empty graph editing window.
      */
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         final AppContext context = new BasicFrame("Simple Tutorial");
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -66,9 +67,7 @@ public class SimpleTutorial {
 
     public SimpleTutorial(AppContext context) {
         JGraph jg = new JGraph(new GraphPane(new BasicGraphController(),
-                                       new BasicGraphModel()));
+                    new BasicGraphModel()));
         context.getContentPane().add("Center", jg);
     }
 }
-
-

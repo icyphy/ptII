@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTTransparentDirector
+
 /**
    Interface for CT transparent directors. This director extends the
    CTGeneralDirector interface.
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.IllegalActionException;
 
 */
 public interface CTTransparentDirector extends CTGeneralDirector {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -62,13 +62,13 @@ public interface CTTransparentDirector extends CTGeneralDirector {
      *  @exception IllegalActionException If the data transfer is not
      *  completed.
      */
-    public void emitCurrentStates()  throws IllegalActionException;
+    public void emitCurrentStates() throws IllegalActionException;
 
     /** Implementations of this method should go to the marked state.
      *  If there's no marked state, throws an exception.
      *  @exception IllegalActionException If there is no marked state.
      */
-    public void goToMarkedState() throws IllegalActionException ;
+    public void goToMarkedState() throws IllegalActionException;
 
     /** Implementations of this method should return
      *  true if the all output actors declare the
@@ -118,4 +118,3 @@ public interface CTTransparentDirector extends CTGeneralDirector {
      */
     public double refinedStepSize();
 }
-

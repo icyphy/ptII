@@ -50,11 +50,10 @@ import diva.canvas.Figure;
  * @author         John Reekie
  */
 public interface Geometry {
-
     /** Get the figure to which this geometry object is attached.
      * Returns null if there isn't one.
      */
-    public Figure getFigure ();
+    public Figure getFigure();
 
     /** Get the shape that defines this geometry. In general,
      * a geometry is defined by a shape of some sort, and this
@@ -63,21 +62,19 @@ public interface Geometry {
      * to define other, more efficient or more type-specific
      * methods.
      */
-    public Shape getShape ();
+    public Shape getShape();
 
     /** Set the shape that defines this geometry object.
      * Implementing classes should check that the specific
      * type of the shape is one that they can accept, and
      * throw an IllegalArgumentException exception if not.
      */
-    public void setShape (Shape shape);
+    public void setShape(Shape shape);
 
     /** Translate the geometry object. This method is typically
      * used by clients as a fast way of changing the geometry.
      * Implementors can use it to update their internal data
      * more efficiently than by using the setShape() method.
      */
-    public void translate (double x, double y);
+    public void translate(double x, double y);
 }
-
-

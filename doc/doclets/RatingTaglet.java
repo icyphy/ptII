@@ -29,9 +29,10 @@ COPYRIGHTENDKEY
 
 package doc.doclets;
 
-import com.sun.tools.doclets.Taglet;
-import com.sun.javadoc.*;
 import java.util.Map;
+
+import com.sun.javadoc.Tag;
+import com.sun.tools.doclets.Taglet;
 
 //////////////////////////////////////////////////////////////////////////
 //// RatingTaglet

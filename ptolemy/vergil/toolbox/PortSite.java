@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.geom.Rectangle2D;
@@ -35,6 +34,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.StringAttribute;
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
+
 
 /**
    A site that locates itself on the bounds of a figure's shape, designed
@@ -47,7 +47,6 @@ import diva.canvas.Figure;
    @Pt.AcceptedRating Red (johnr)
 */
 public class PortSite extends AbstractSite {
-
     /** Create a new site on the given figure with the given ID
      *  port type, and port number.
      *  @param figure The figure for the entity icon.
@@ -60,13 +59,15 @@ public class PortSite extends AbstractSite {
         _port = port;
         _number = number;
         _count = count;
-        StringAttribute cardinalAttribute =
-            (StringAttribute)port.getAttribute("_cardinal");
-        if ( cardinalAttribute != null ) {
+
+        StringAttribute cardinalAttribute = (StringAttribute) port.getAttribute(
+                "_cardinal");
+
+        if (cardinalAttribute != null) {
             _cardinal = cardinalAttribute.getExpression();
         }
-        _normal = _getNormal();
 
+        _normal = _getNormal();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,44 +97,54 @@ public class PortSite extends AbstractSite {
     public double getX() {
         Rectangle2D bounds = _parentFigure.getShape().getBounds();
         double x = 0.0;
+
         if (_cardinal == null) {
             boolean isIOPort = _port instanceof IOPort;
-            if (isIOPort && ((IOPort)_port).isInput()) {
+
+            if (isIOPort && ((IOPort) _port).isInput()) {
                 // Port is an input only.
                 x = bounds.getX();
-            } else if (isIOPort && ((IOPort)_port).isOutput()) {
+            } else if (isIOPort && ((IOPort) _port).isOutput()) {
                 // Port is an output only.
                 x = bounds.getX() + bounds.getWidth();
             } else {
                 // Port is either not an IOPort, or is
                 // neither an input and an output, or is
                 // both an input and output.
-                double offset = bounds.getWidth()/2.0 - (_count/2)*_snap;
+                double offset = (bounds.getWidth() / 2.0)
+                    - ((_count / 2) * _snap);
+
                 // If there are an even number of ports, skip the middle
                 // position to get symmetry.
-                boolean skipOne = (_count/2)*2 == _count;
-                if (skipOne && _number >= _count/2) {
+                boolean skipOne = ((_count / 2) * 2) == _count;
+
+                if (skipOne && (_number >= (_count / 2))) {
                     offset += _snap;
                 }
-                x = bounds.getX() + _snap * _number + offset;
+
+                x = bounds.getX() + (_snap * _number) + offset;
             }
         } else {
-            if (_cardinal.equalsIgnoreCase( "WEST" ) ) {
+            if (_cardinal.equalsIgnoreCase("WEST")) {
                 // Port is on the left.
                 x = bounds.getX();
-            } else if (_cardinal.equalsIgnoreCase( "EAST" ) ) {
+            } else if (_cardinal.equalsIgnoreCase("EAST")) {
                 // Port is on the right.
                 x = bounds.getX() + bounds.getWidth();
             } else {
                 // Port is on the top or bottom side.
-                double offset = bounds.getWidth()/2.0 - (_count/2)*_snap;
+                double offset = (bounds.getWidth() / 2.0)
+                    - ((_count / 2) * _snap);
+
                 // If there are an even number of ports, skip the middle
                 // position to get symmetry.
-                boolean skipOne = (_count/2)*2 == _count;
-                if (skipOne && _number >= _count/2) {
+                boolean skipOne = ((_count / 2) * 2) == _count;
+
+                if (skipOne && (_number >= (_count / 2))) {
                     offset += _snap;
                 }
-                x = bounds.getX() + _snap * _number + offset;
+
+                x = bounds.getX() + (_snap * _number) + offset;
             }
         }
 
@@ -146,18 +157,22 @@ public class PortSite extends AbstractSite {
         Rectangle2D bounds = _parentFigure.getShape().getBounds();
         double y = 0.0;
 
-        if (_cardinal == null ) {
-            if ((_port instanceof IOPort) &&
-                    (((IOPort)_port).isInput()
-                    != ((IOPort)_port).isOutput())) {
+        if (_cardinal == null) {
+            if ((_port instanceof IOPort)
+                    && (((IOPort) _port).isInput() != ((IOPort) _port).isOutput())) {
                 // Port is an input or output only.
-                double offset = bounds.getHeight()/2.0 - (_count/2)*_snap;
+                double offset = (bounds.getHeight() / 2.0)
+                    - ((_count / 2) * _snap);
+
                 // If there are an even number of ports, skip the middle
                 // position to get symmetry.
-                boolean skipOne = (_count/2)*2 == _count;
-                if (skipOne && _number >= _count/2) offset += _snap;
+                boolean skipOne = ((_count / 2) * 2) == _count;
 
-                y = bounds.getY() + _snap * _number + offset;
+                if (skipOne && (_number >= (_count / 2))) {
+                    offset += _snap;
+                }
+
+                y = bounds.getY() + (_snap * _number) + offset;
             } else {
                 // Port is either not an IOPort, or
                 // is neither an input nor an output,
@@ -165,21 +180,26 @@ public class PortSite extends AbstractSite {
                 y = bounds.getY() + bounds.getHeight();
             }
         } else {
-            if (_cardinal.equalsIgnoreCase( "SOUTH" ) ) {
+            if (_cardinal.equalsIgnoreCase("SOUTH")) {
                 // Port is on the bottom.
                 y = bounds.getY() + bounds.getHeight();
-            } else if (_cardinal.equalsIgnoreCase( "NORTH" ) ) {
+            } else if (_cardinal.equalsIgnoreCase("NORTH")) {
                 // Port is on the top.
                 y = bounds.getY();
             } else {
                 // Port is on the left or right.
-                double offset = bounds.getHeight()/2.0 - (_count/2)*_snap;
+                double offset = (bounds.getHeight() / 2.0)
+                    - ((_count / 2) * _snap);
+
                 // If there are an even number of ports, skip the middle
                 // position to get symmetry.
-                boolean skipOne = (_count/2)*2 == _count;
-                if (skipOne && _number >= _count/2) offset += _snap;
+                boolean skipOne = ((_count / 2) * 2) == _count;
 
-                y = bounds.getY() + _snap * _number + offset;
+                if (skipOne && (_number >= (_count / 2))) {
+                    offset += _snap;
+                }
+
+                y = bounds.getY() + (_snap * _number) + offset;
             }
         }
 
@@ -195,33 +215,35 @@ public class PortSite extends AbstractSite {
 
     /** Get the normal of the site.
      */
-    private double _getNormal () {
-        if (_cardinal == null ) {
+    private double _getNormal() {
+        if (_cardinal == null) {
             if (_port instanceof IOPort) {
-                if (((IOPort)_port).isInput() && ! ((IOPort)_port).isOutput()) {
+                if (((IOPort) _port).isInput() && !((IOPort) _port).isOutput()) {
                     // Port is an input only.
                     return Math.PI;
                 }
-                if (!((IOPort)_port).isInput() && ((IOPort)_port).isOutput()) {
+
+                if (!((IOPort) _port).isInput() && ((IOPort) _port).isOutput()) {
                     // Port is an output only.
-                        return 0.0;
+                    return 0.0;
                 }
             }
+
             // Port is neither an input nor an output,
             // or it is both.
-            return Math.PI/2;
+            return Math.PI / 2;
         } else {
-            if (_cardinal.equalsIgnoreCase("NORTH") ) {
-                return -Math.PI/2;
-            } else if (_cardinal.equalsIgnoreCase("SOUTH") ) {
-                return Math.PI/2;
-            } else if (_cardinal.equalsIgnoreCase("EAST") ) {
+            if (_cardinal.equalsIgnoreCase("NORTH")) {
+                return -Math.PI / 2;
+            } else if (_cardinal.equalsIgnoreCase("SOUTH")) {
+                return Math.PI / 2;
+            } else if (_cardinal.equalsIgnoreCase("EAST")) {
                 return 0.0;
-            } else if (_cardinal.equalsIgnoreCase("WEST") ) {
+            } else if (_cardinal.equalsIgnoreCase("WEST")) {
                 return Math.PI;
             } else {
                 // somebody misspelled the cardinal direction.
-                return Math.PI/2;
+                return Math.PI / 2;
             }
         }
     }

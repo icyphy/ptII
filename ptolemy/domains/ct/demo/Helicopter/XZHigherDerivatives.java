@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.demo.Helicopter;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// XZHigherDerivatives
+
 /**
    Compute the third and fourth derivatives of Px and Pz
    DDDotPx = (Dotth*TM*Cos[th))/m + (DotTM*Math.sin[th))/m
@@ -70,7 +71,7 @@ public class XZHigherDerivatives extends TypedAtomicActor {
      * @exception IllegalActionException If there is an internal error.
      */
     public XZHigherDerivatives(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputTm = new TypedIOPort(this, "inputTm");
         inputTm.setInput(true);
@@ -132,16 +133,16 @@ public class XZHigherDerivatives extends TypedAtomicActor {
         outputD4Pz.setMultiport(false);
         outputD4Pz.setTypeEquals(BaseType.DOUBLE);
 
-        _Iy = (double)0.271256;
+        _Iy = (double) 0.271256;
         paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));
 
-        _hm = (double)0.2943;
+        _hm = (double) 0.2943;
         paramHm = new Parameter(this, "hm", new DoubleToken(_hm));
 
-        _Mm = (double)25.23;
+        _Mm = (double) 25.23;
         paramMm = new Parameter(this, "Mm", new DoubleToken(_Mm));
 
-        _mass = (double)4.9;
+        _mass = (double) 4.9;
         paramMass = new Parameter(this, "Mass", new DoubleToken(_mass));
     }
 
@@ -154,14 +155,15 @@ public class XZHigherDerivatives extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == paramIy) {
-            _Iy = ((DoubleToken)paramIy.getToken()).doubleValue();
+            _Iy = ((DoubleToken) paramIy.getToken()).doubleValue();
         } else if (att == paramHm) {
-            _hm = ((DoubleToken)paramHm.getToken()).doubleValue();
+            _hm = ((DoubleToken) paramHm.getToken()).doubleValue();
         } else if (att == paramMm) {
-            _Mm = ((DoubleToken)paramMm.getToken()).doubleValue();
+            _Mm = ((DoubleToken) paramMm.getToken()).doubleValue();
         } else if (att == paramMass) {
-            _mass = ((DoubleToken)paramMass.getToken()).doubleValue();
+            _mass = ((DoubleToken) paramMass.getToken()).doubleValue();
         }
+
         super.attributeChanged(att);
     }
 
@@ -170,33 +172,35 @@ public class XZHigherDerivatives extends TypedAtomicActor {
      *  @exception IllegalActionException If there's no input token
      *        when needed.
      */
-    public void fire() throws IllegalActionException{
-        double Tm = ((DoubleToken)inputTm.get(0)).doubleValue();
-        double DTm = ((DoubleToken)inputDTm.get(0)).doubleValue();
-        double DDTm = ((DoubleToken)inputDDTm.get(0)).doubleValue();
-        double Th = ((DoubleToken)inputTh.get(0)).doubleValue();
-        double DTh = ((DoubleToken)inputDTh.get(0)).doubleValue();
-        double A = ((DoubleToken)inputA.get(0)).doubleValue();
+    public void fire() throws IllegalActionException {
+        double Tm = ((DoubleToken) inputTm.get(0)).doubleValue();
+        double DTm = ((DoubleToken) inputDTm.get(0)).doubleValue();
+        double DDTm = ((DoubleToken) inputDDTm.get(0)).doubleValue();
+        double Th = ((DoubleToken) inputTh.get(0)).doubleValue();
+        double DTh = ((DoubleToken) inputDTh.get(0)).doubleValue();
+        double A = ((DoubleToken) inputA.get(0)).doubleValue();
 
-        double D3Px = (DTh*Tm*Math.cos(Th))/_mass + (DTm*Math.sin(Th))/_mass;
+        double D3Px = ((DTh * Tm * Math.cos(Th)) / _mass)
+            + ((DTm * Math.sin(Th)) / _mass);
 
-        double D4Px = (2.0*DTh*DTm*Math.cos(Th))/_mass +
-            (Tm*Math.cos(Th)*(A*_Mm + _hm*Tm*Math.sin(A)))/(_Iy*_mass) +
-            (DDTm*Math.sin(Th))/_mass - (DTh*DTh*Tm*Math.sin(Th))/_mass;
+        double D4Px = (((2.0 * DTh * DTm * Math.cos(Th)) / _mass)
+            + ((Tm * Math.cos(Th) * ((A * _Mm) + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass))
+            + ((DDTm * Math.sin(Th)) / _mass))
+            - ((DTh * DTh * Tm * Math.sin(Th)) / _mass);
 
-        double D3Pz = -((DTm*Math.cos(Th))/_mass) +(DTh*Tm*Math.sin(Th))/_mass;
+        double D3Pz = -((DTm * Math.cos(Th)) / _mass)
+            + ((DTh * Tm * Math.sin(Th)) / _mass);
 
-        double D4Pz = -((DDTm*Math.cos(Th))/_mass) +
-            (DTh*DTh*Tm*Math.cos(Th))/_mass + (2.0*DTh*DTm*Math.sin(Th))/_mass
-            + (Tm*(A*_Mm + _hm*Tm*Math.sin(A))*Math.sin(Th))/(_Iy*_mass);
+        double D4Pz = -((DDTm * Math.cos(Th)) / _mass)
+            + ((DTh * DTh * Tm * Math.cos(Th)) / _mass)
+            + ((2.0 * DTh * DTm * Math.sin(Th)) / _mass)
+            + ((Tm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math.sin(Th)) / (_Iy * _mass));
 
         outputD3Px.broadcast(new DoubleToken(D3Px));
         outputD4Px.broadcast(new DoubleToken(D4Px));
         outputD3Pz.broadcast(new DoubleToken(D3Pz));
         outputD4Pz.broadcast(new DoubleToken(D4Pz));
     }
-
-
 
     /** Input port Tm
      */
@@ -221,7 +225,6 @@ public class XZHigherDerivatives extends TypedAtomicActor {
     /** Input port DTh
      */
     public TypedIOPort inputDTh;
-
 
     /** Output port D3Px = dddPx/dttt
      */
@@ -257,12 +260,8 @@ public class XZHigherDerivatives extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private double _Iy;
-
     private double _hm;
-
     private double _Mm;
-
     private double _mass;
 }

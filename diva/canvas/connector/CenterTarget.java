@@ -31,6 +31,7 @@ import java.util.HashMap;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 
+
 /** An implementation of connector targets that finds center sites.
  *
  * @version $Id$
@@ -38,7 +39,6 @@ import diva.canvas.Site;
  * @author Michael Shilman
  */
 public class CenterTarget extends AbstractConnectorTarget {
-
     /** The mapping from figures to sites. Ignore the
      * problem that none of the contents will ever get
      * garbage-collected.
@@ -48,7 +48,7 @@ public class CenterTarget extends AbstractConnectorTarget {
     /** Return a center site located on the figure, if the figure is not a
      * connector.
      */
-    public Site getHeadSite (Figure f, double x, double y) {
+    public Site getHeadSite(Figure f, double x, double y) {
         if (!(f instanceof Connector)) {
             if (_siteMap.containsKey(f)) {
                 return (Site) _siteMap.get(f);
@@ -58,8 +58,7 @@ public class CenterTarget extends AbstractConnectorTarget {
                 return s;
             }
         }
+
         return null;
     }
 }
-
-

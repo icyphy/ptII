@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.Frame;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorConfigureFactory
+
 /**
    If this class is contained by a actor, then double clicking on that
    actor will invoke a text editor that edits the value of a specified
@@ -64,11 +65,8 @@ import ptolemy.util.MessageHandler;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (ptolemy)
 */
-
-public class TextEditorConfigureFactory
-    extends EditorFactory
+public class TextEditorConfigureFactory extends EditorFactory
     implements TextEditorFactory {
-
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -78,7 +76,7 @@ public class TextEditorConfigureFactory
      *   an attribute already in the container.
      */
     public TextEditorConfigureFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -128,30 +126,23 @@ public class TextEditorConfigureFactory
     public void createEditor(NamedObj object, Frame parent) {
         if (_editor == null) {
             try {
-                StringAttribute attributeToEdit =
-                    (StringAttribute) ((NamedObj) getContainer()).getAttribute(
-                            attributeName.getExpression(),
-                            StringAttribute.class);
-                int numberOfRows =
-                    ((IntToken) rowsDisplayed.getToken()).intValue();
-                int numberOfColumns =
-                    ((IntToken) columnsDisplayed.getToken()).intValue();
-                _editor =
-                    new TextEditorForStringAttributes(
-                            this,
-                            attributeToEdit,
-                            numberOfRows,
-                            numberOfColumns,
-                            "Editor for "
-                            + attributeName.getExpression()
-                            + " of "
-                            + getContainer().getFullName());
+                StringAttribute attributeToEdit = (StringAttribute) ((NamedObj) getContainer())
+                    .getAttribute(attributeName.getExpression(),
+                        StringAttribute.class);
+                int numberOfRows = ((IntToken) rowsDisplayed.getToken())
+                    .intValue();
+                int numberOfColumns = ((IntToken) columnsDisplayed.getToken())
+                    .intValue();
+                _editor = new TextEditorForStringAttributes(this,
+                        attributeToEdit, numberOfRows, numberOfColumns,
+                        "Editor for " + attributeName.getExpression() + " of "
+                        + getContainer().getFullName());
             } catch (IllegalActionException ex) {
-                MessageHandler.error(
-                        "Cannot get specified string attribute to edit.",
-                        ex);
+                MessageHandler.error("Cannot get specified string attribute to edit.",
+                    ex);
             }
         }
+
         // Can't just call show() here because after calling pack() and
         // before making visible we need to call adjustFileMenu().
         _editor.pack();
@@ -168,12 +159,12 @@ public class TextEditorConfigureFactory
         if (_editor != null) {
             return _editor.text.getText();
         }
+
         return null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Keep track of an open editor so that it isn't opened more than
     // once.
     private TextEditorForStringAttributes _editor;

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Color;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AbstractTextAttribute
+
 /**
    An abstract base class for text annotations.
    <p>
@@ -59,7 +60,6 @@ import ptolemy.vergil.icon.TextIcon;
    @Pt.AcceptedRating Red (cxh)
 */
 public class AbstractTextAttribute extends Attribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -74,7 +74,7 @@ public class AbstractTextAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public AbstractTextAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Hide the name.
@@ -105,9 +105,10 @@ public class AbstractTextAttribute extends Attribute {
         // Dialog, DialogInput, Monospaced, Serif, SansSerif, or Symbol.
         fontFamily = new StringParameter(this, "fontFamily");
         fontFamily.setExpression("SansSerif");
-        String[] families = GraphicsEnvironment
-            .getLocalGraphicsEnvironment()
-            .getAvailableFontFamilyNames();
+
+        String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                               .getAvailableFontFamilyNames();
+
         for (int i = 0; i < families.length; i++) {
             fontFamily.addChoice(families[i]);
         }
@@ -158,9 +159,9 @@ public class AbstractTextAttribute extends Attribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if ((attribute == fontFamily || attribute == textSize
-                    || attribute == bold || attribute == italic)
+        throws IllegalActionException {
+        if (((attribute == fontFamily) || (attribute == textSize)
+                || (attribute == bold) || (attribute == italic))
                 && !_inAttributeChanged) {
             try {
                 // Prevent redundant actions here... When we evaluate the
@@ -169,15 +170,19 @@ public class AbstractTextAttribute extends Attribute {
                 // attributeChanged(), which will result in this action
                 // being performed twice.
                 _inAttributeChanged = true;
+
                 int sizeValue = ((IntToken) textSize.getToken()).intValue();
                 String familyValue = fontFamily.stringValue();
                 int styleValue = Font.PLAIN;
-                if (((BooleanToken)bold.getToken()).booleanValue()) {
+
+                if (((BooleanToken) bold.getToken()).booleanValue()) {
                     styleValue = styleValue | Font.BOLD;
                 }
-                if (((BooleanToken)italic.getToken()).booleanValue()) {
+
+                if (((BooleanToken) italic.getToken()).booleanValue()) {
                     styleValue = styleValue | Font.ITALIC;
                 }
+
                 Font fontValue = new Font(familyValue, styleValue, sizeValue);
                 _icon.setFont(fontValue);
             } finally {
@@ -197,11 +202,9 @@ public class AbstractTextAttribute extends Attribute {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        AbstractTextAttribute result =
-            (AbstractTextAttribute)super.clone(workspace);
-        result._icon = (TextIcon)result.getAttribute("_icon");
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        AbstractTextAttribute result = (AbstractTextAttribute) super.clone(workspace);
+        result._icon = (TextIcon) result.getAttribute("_icon");
         return result;
     }
 
@@ -213,6 +216,5 @@ public class AbstractTextAttribute extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _inAttributeChanged = false;
 }

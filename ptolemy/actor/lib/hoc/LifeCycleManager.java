@@ -26,12 +26,7 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.lib.hoc;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
@@ -49,8 +44,14 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// LifeCycleManager
+
 /**
    This is a composite actor with some services for life-cycle management.
 
@@ -65,7 +66,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (eal)
 */
 public class LifeCycleManager extends TypedCompositeActor {
-
     /** Construct an actor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
      *  workspace directory.  You should set the local director or
@@ -106,7 +106,7 @@ public class LifeCycleManager extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public LifeCycleManager(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -122,8 +122,8 @@ public class LifeCycleManager extends TypedCompositeActor {
      *  @see #setDeferringChangeRequests(boolean)
      */
     public void executeChangeRequests() {
-        synchronized(_changeLock) {
-            if (_changeRequests != null && _changeRequests.size() > 0) {
+        synchronized (_changeLock) {
+            if ((_changeRequests != null) && (_changeRequests.size() > 0)) {
                 // Copy the change requests lists because it may
                 // be modified during execution.
                 LinkedList copy = new LinkedList(_changeRequests);
@@ -136,6 +136,7 @@ public class LifeCycleManager extends TypedCompositeActor {
 
                 Iterator requests = copy.iterator();
                 boolean previousDeferStatus = isDeferringChangeRequests();
+
                 try {
                     // Get write access once on the outside, to make
                     // getting write access on each individual
@@ -145,14 +146,17 @@ public class LifeCycleManager extends TypedCompositeActor {
                     // Defer change requests so that if changes are
                     // requested during execution, they get queued.
                     previousDeferStatus = setDeferringChangeRequests(true);
+
                     while (requests.hasNext()) {
-                        ChangeRequest change = (ChangeRequest)requests.next();
+                        ChangeRequest change = (ChangeRequest) requests.next();
                         change.setListeners(_changeListeners);
+
                         if (_debugging) {
                             _debug("-- Executing change request "
-                                    + "with description: "
-                                    + change.getDescription());
+                                + "with description: "
+                                + change.getDescription());
                         }
+
                         // The change listeners should be those of this
                         // actor and any container that it has!
                         // FIXME: This is expensive... Better solution?
@@ -163,13 +167,17 @@ public class LifeCycleManager extends TypedCompositeActor {
                         // Is it sufficient to just go to the top level?
                         List changeListeners = new LinkedList();
                         NamedObj container = getContainer();
+
                         while (container != null) {
                             List list = container.getChangeListeners();
+
                             if (list != null) {
                                 changeListeners.addAll(list);
                             }
+
                             container = container.getContainer();
                         }
+
                         change.setListeners(changeListeners);
 
                         change.execute();
@@ -216,13 +224,15 @@ public class LifeCycleManager extends TypedCompositeActor {
         // this execution.  But we don't want to hold a lock on the
         // this NamedObj during execution of the change because this
         // could lead to deadlock.  So we synchronize to _changeLock.
-        synchronized(_changeLock) {
+        synchronized (_changeLock) {
             // Queue the request.
             // Create the list of requests if it doesn't already exist
             if (_changeRequests == null) {
                 _changeRequests = new LinkedList();
             }
+
             _changeRequests.add(change);
+
             if (!isDeferringChangeRequests()) {
                 executeChangeRequests();
             }
@@ -254,23 +264,28 @@ public class LifeCycleManager extends TypedCompositeActor {
             setDeferringChangeRequests(true);
 
             _readInputs();
-            if (_stopRequested) return COMPLETED;
+
+            if (_stopRequested) {
+                return COMPLETED;
+            }
 
             // FIXME: Reset time to zero. How?
             // NOTE: Use the superclass initialize() because this method overrides
             // initialize() and does not initialize the model.
             super.initialize();
 
-
             // Call iterate() until finish() is called or postfire()
             // returns false.
             _debug("-- Beginning to iterate.");
 
             int lastIterateResult = COMPLETED;
+
             while (!_stopRequested) {
                 executeChangeRequests();
+
                 if (super.prefire()) {
                     super.fire();
+
                     if (!super.postfire()) {
                         lastIterateResult = STOP_ITERATING;
                         break;
@@ -280,6 +295,7 @@ public class LifeCycleManager extends TypedCompositeActor {
                     break;
                 }
             }
+
             return lastIterateResult;
         } finally {
             try {
@@ -290,9 +306,11 @@ public class LifeCycleManager extends TypedCompositeActor {
                 // change requests when they are requested.
                 setDeferringChangeRequests(false);
             }
+
             if (!_stopRequested) {
                 _writeOutputs();
             }
+
             if (_debugging) {
                 _debug("---- Firing is complete.");
             }
@@ -310,30 +328,41 @@ public class LifeCycleManager extends TypedCompositeActor {
         if (_debugging) {
             _debug("** Reading inputs (if any).");
         }
+
         Iterator ports = inputPortList().iterator();
+
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
+
             if (port instanceof ParameterPort) {
-                PortParameter parameter = ((ParameterPort)port).getParameter();
+                PortParameter parameter = ((ParameterPort) port).getParameter();
+
                 if (_debugging) {
                     _debug("** Updating PortParameter: " + port.getName());
                 }
+
                 parameter.update();
                 continue;
             }
-            if (port.getWidth() > 0 && port.hasToken(0)) {
+
+            if ((port.getWidth() > 0) && port.hasToken(0)) {
                 Token token = port.get(0);
                 Attribute attribute = getAttribute(port.getName());
+
                 // Use the token directly rather than a string if possible.
                 if (attribute instanceof Variable) {
                     if (_debugging) {
-                        _debug("** Transferring input to parameter: " + port.getName());
+                        _debug("** Transferring input to parameter: "
+                            + port.getName());
                     }
+
                     ((Variable) attribute).setToken(token);
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
-                        _debug("** Transferring input as string to parameter: " + port.getName());
+                        _debug("** Transferring input as string to parameter: "
+                            + port.getName());
                     }
+
                     ((Settable) attribute).setExpression(token.toString());
                 }
             }
@@ -351,26 +380,33 @@ public class LifeCycleManager extends TypedCompositeActor {
         if (_debugging) {
             _debug("** Writing outputs (if any).");
         }
+
         Iterator ports = outputPortList().iterator();
+
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
+
             // Only write if the port has a connected channel.
             if (port.getWidth() > 0) {
                 Attribute attribute = getAttribute(port.getName());
+
                 // Use the token directly rather than a string if possible.
                 if (attribute instanceof Variable) {
                     if (_debugging) {
-                        _debug("** Transferring parameter to output: " + port.getName());
+                        _debug("** Transferring parameter to output: "
+                            + port.getName());
                     }
+
                     port.send(0, ((Variable) attribute).getToken());
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
-                        _debug("** Transferring parameter as string to output: " + port.getName());
+                        _debug(
+                            "** Transferring parameter as string to output: "
+                            + port.getName());
                     }
-                    port.send(
-                            0,
-                            new StringToken(
-                                    ((Settable) attribute).getExpression()));
+
+                    port.send(0,
+                        new StringToken(((Settable) attribute).getExpression()));
                 }
             }
         }

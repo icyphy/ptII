@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.security;
 
 import ptolemy.kernel.CompositeEntity;
@@ -33,8 +32,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SecretKeyReader
+
 /** Open a keystore from a FileParameter and output a SecretKey.
 
 <p>This class is a wrapper class for {@link KeyReader} that always
@@ -65,7 +66,7 @@ public class SecretKeyReader extends PrivateKeyReader {
      *   actor with this name.
      */
     public SecretKeyReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // SecretKeys do not have certificates.

@@ -31,7 +31,6 @@ capable of returning an enumeration sorted alphabetically by name.
 This would require extensions to the interface, but not modifications
 of the current interface.
 */
-
 package ptolemy.kernel.util;
 
 import java.io.Serializable;
@@ -42,8 +41,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NamedList
+
 /**
    An ordered list of objects with names.
    The objects must implement the Nameable interface.
@@ -68,7 +69,6 @@ import java.util.NoSuchElementException;
    @see Nameable
 */
 public final class NamedList implements Cloneable, Serializable {
-
     /** Construct an empty NamedList with no container.
      */
     public NamedList() {
@@ -91,9 +91,11 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public NamedList(NamedList original) {
         super();
+
         if (original != null) {
             _namedList.addAll(original.elementList());
         }
+
         _container = null;
     }
 
@@ -109,14 +111,16 @@ public final class NamedList implements Cloneable, Serializable {
      *   an element already on the list.
      */
     public void append(Nameable element)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         String newName = element.getName();
+
         if (newName == null) {
             throw new IllegalActionException(_container,
-                    _NULL_NAME_EXCEPTION_STRING);
+                _NULL_NAME_EXCEPTION_STRING);
         }
+
         // NOTE: Having to do this named lookup each time is expensive.
-        if ( get(newName) == null ) {
+        if (get(newName) == null) {
             _namedList.add(element);
         } else {
             throw new NameDuplicationException(_container, element);
@@ -151,7 +155,7 @@ public final class NamedList implements Cloneable, Serializable {
      *  @return The specified element.
      */
     public Nameable first() throws NoSuchElementException {
-        return (Nameable)_namedList.getFirst();
+        return (Nameable) _namedList.getFirst();
     }
 
     /** Get an element by name.
@@ -160,12 +164,15 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public Nameable get(String name) {
         Iterator iterator = _namedList.iterator();
-        while ( iterator.hasNext() ) {
-            Nameable obj = (Nameable)iterator.next();
-            if ( name.equals(obj.getName()) ) {
+
+        while (iterator.hasNext()) {
+            Nameable obj = (Nameable) iterator.next();
+
+            if (name.equals(obj.getName())) {
                 return obj;
             }
         }
+
         return null;
     }
 
@@ -187,14 +194,15 @@ public final class NamedList implements Cloneable, Serializable {
      *   name that coincides with one already on the list.
      */
     public void insertAfter(String name, Nameable element)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         int index = _getIndexOf(name);
+
         if (index == -1) {
             // name doesn't exist in list
             append(element);
         } else {
             // name exists in list
-            _insertAt((index+1), element);
+            _insertAt((index + 1), element);
         }
     }
 
@@ -208,8 +216,9 @@ public final class NamedList implements Cloneable, Serializable {
      *   name that coincides with one already on the list.
      */
     public void insertBefore(String name, Nameable element)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         int index = _getIndexOf(name);
+
         if (index == -1) {
             // name doesn't exist in list
             prepend(element);
@@ -224,7 +233,7 @@ public final class NamedList implements Cloneable, Serializable {
      *  @return The last element.
      */
     public Nameable last() throws NoSuchElementException {
-        return (Nameable)_namedList.getLast();
+        return (Nameable) _namedList.getLast();
     }
 
     /** Move the specified element down by one in the list.
@@ -239,10 +248,11 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public int moveDown(Nameable element) throws IllegalActionException {
         int index = _namedList.indexOf(element);
+
         if (index < 0) {
             // The element is not on the list.
             throw new IllegalActionException(element, "Not on the list.");
-        } else if (index < _namedList.size() - 1) {
+        } else if (index < (_namedList.size() - 1)) {
             _namedList.remove(element);
             _namedList.add(index + 1, element);
             return index;
@@ -262,6 +272,7 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public int moveToFirst(Nameable element) throws IllegalActionException {
         int index = _namedList.indexOf(element);
+
         if (index < 0) {
             // The element is not on the list.
             throw new IllegalActionException(element, "Not on the list.");
@@ -285,12 +296,14 @@ public final class NamedList implements Cloneable, Serializable {
      *  @exception IllegalActionException If the argument is not
      *   on the list, or if the specified position is out of range.
      */
-    public int moveToIndex(Nameable element, int index) throws IllegalActionException {
+    public int moveToIndex(Nameable element, int index)
+        throws IllegalActionException {
         int priorIndex = _namedList.indexOf(element);
+
         if (priorIndex < 0) {
             // The element is not on the list.
             throw new IllegalActionException(element, "Not on the list.");
-        } else if (index < 0 || index >= _namedList.size()) {
+        } else if ((index < 0) || (index >= _namedList.size())) {
             throw new IllegalActionException(element, "Index out of range.");
         } else if (priorIndex != index) {
             _namedList.remove(element);
@@ -312,10 +325,11 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public int moveToLast(Nameable element) throws IllegalActionException {
         int index = _namedList.indexOf(element);
+
         if (index < 0) {
             // The element is not on the list.
             throw new IllegalActionException(element, "Not on the list.");
-        } else if (index < _namedList.size() - 1) {
+        } else if (index < (_namedList.size() - 1)) {
             _namedList.remove(element);
             _namedList.add(element);
             return index;
@@ -335,6 +349,7 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public int moveUp(Nameable element) throws IllegalActionException {
         int index = _namedList.indexOf(element);
+
         if (index < 0) {
             // The element is not on the list.
             throw new IllegalActionException(element, "Not on the list.");
@@ -358,7 +373,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   an element already on the list.
      */
     public void prepend(Nameable element)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         _insertAt(0, element);
     }
 
@@ -378,10 +393,12 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public Nameable remove(String name) {
         Nameable element = get(name);
+
         if (element != null) {
             remove(element);
             return element;
         }
+
         return null;
     }
 
@@ -397,7 +414,6 @@ public final class NamedList implements Cloneable, Serializable {
         return _namedList.size();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -410,13 +426,17 @@ public final class NamedList implements Cloneable, Serializable {
     private int _getIndexOf(String name) {
         Iterator iterator = _namedList.iterator();
         int count = 0;
-        while ( iterator.hasNext() ) {
-            Nameable obj = (Nameable)iterator.next();
-            if ( name.equals(obj.getName()) ) {
+
+        while (iterator.hasNext()) {
+            Nameable obj = (Nameable) iterator.next();
+
+            if (name.equals(obj.getName())) {
                 return count;
             }
+
             count++;
         }
+
         return -1;
     }
 
@@ -434,14 +454,15 @@ public final class NamedList implements Cloneable, Serializable {
      *   name that coincides with one already on the list.
      */
     private void _insertAt(int index, Nameable element)
-            throws IllegalActionException, NameDuplicationException {
-        if ( element.getName() == null ) {
+        throws IllegalActionException, NameDuplicationException {
+        if (element.getName() == null) {
             throw new IllegalActionException(_container,
-                    _NULL_NAME_EXCEPTION_STRING);
+                _NULL_NAME_EXCEPTION_STRING);
         } else if (get(element.getName()) == null) {
             _namedList.add(index, element);
             return;
         }
+
         throw new NameDuplicationException(_container, element);
     }
 
@@ -455,6 +476,5 @@ public final class NamedList implements Cloneable, Serializable {
     private LinkedList _namedList = new LinkedList();
 
     // Constant strings.
-    private static final String _NULL_NAME_EXCEPTION_STRING =
-    "Attempt to add an object with a null name to a NamedList.";
+    private static final String _NULL_NAME_EXCEPTION_STRING = "Attempt to add an object with a null name to a NamedList.";
 }

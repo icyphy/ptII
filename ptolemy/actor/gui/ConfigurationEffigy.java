@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
@@ -32,8 +31,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConfigurationEffigy
+
 /**
    An effigy for a Ptolemy II model.  This effigy allows views to be
    easily created on the configuration that contains this effigy.
@@ -45,7 +46,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class ConfigurationEffigy extends PtolemyEffigy {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
@@ -59,13 +59,12 @@ public class ConfigurationEffigy extends PtolemyEffigy {
      *  @param name The name of this effigy.
      */
     public ConfigurationEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Specify the container, adding the entity to the list
      *  of entities in the container.  If the container already contains
@@ -93,8 +92,9 @@ public class ConfigurationEffigy extends PtolemyEffigy {
      *   collides with a name already in the container.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
+
         if (container != null) {
             setModel(container.toplevel());
         }

@@ -32,8 +32,10 @@ package ptolemy.plot;
 
 import java.io.Serializable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotPoint
+
 /**
    A simple structure for storing a plot point.
    @author Edward A. Lee
@@ -43,7 +45,6 @@ import java.io.Serializable;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class PlotPoint implements Serializable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 

@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// BreakpointODESolver
+
 /**
    Marker interface for ODE solvers that can only be used at breakpoints.
    Typical breakpoint ODE solvers do not advance time. By implementing
@@ -45,4 +46,3 @@ package ptolemy.domains.ct.kernel;
 */
 public interface BreakpointODESolver {
 }
-

@@ -29,13 +29,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Created : May 1998
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionApplicationNode
+
 /**
    This class represents an expression that is the application of a
    function in the parse tree.  The first child of this node is the child
@@ -56,7 +57,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see java.lang.Math
 */
 public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
-
     public ASTPtFunctionApplicationNode(int id) {
         super(id);
     }
@@ -67,13 +67,14 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public String getFunctionName() {
         Node n = jjtGetChild(0);
-        if (!(n instanceof ASTPtLeafNode))
+
+        if (!(n instanceof ASTPtLeafNode)) {
             return null;
-        else {
-            ASTPtLeafNode leaf = (ASTPtLeafNode)n;
+        } else {
+            ASTPtLeafNode leaf = (ASTPtLeafNode) n;
+
             if (leaf.isIdentifier()) {
                 return leaf.getName();
             } else {
@@ -84,6 +85,7 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
 
     public void jjtClose() {
         super.jjtClose();
+
         // We cannot assume that the result of a function call is
         // constant, even when the arguments to the function are.
         _isConstant = false;
@@ -91,10 +93,7 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitFunctionApplicationNode(this);
     }
-
 }
-

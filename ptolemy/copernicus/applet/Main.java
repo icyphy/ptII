@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.applet;
 
 import ptolemy.copernicus.kernel.GeneratorAttribute;
@@ -33,8 +32,10 @@ import ptolemy.copernicus.kernel.MakefileWriter;
 import soot.Pack;
 import soot.PackManager;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Main
+
 /**
    Read in a MoML model and generate a .html file that will run the model
    as an applet.
@@ -46,7 +47,6 @@ import soot.PackManager;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Main extends KernelMain {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -56,34 +56,30 @@ public class Main extends KernelMain {
         Pack pack = PackManager.v().getPack("wjtp");
 
         // Generate the makefile files in outDir
-        addTransform(pack, "wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel),
-                "_generatorAttributeFileName:" + _generatorAttributeFileName +
-                " targetPackage:" + _targetPackage +
-                " templateDirectory:" + _templateDirectory +
-                " outDir:" + _outputDirectory +
-                " overwrite:false");
+        addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
+            "_generatorAttributeFileName:" + _generatorAttributeFileName
+            + " targetPackage:" + _targetPackage + " templateDirectory:"
+            + _templateDirectory + " outDir:" + _outputDirectory
+            + " overwrite:false");
 
         // Generate the applet files in outDir
-        addTransform(pack, "wjtp.appletWriter",
-                AppletWriter.v(_toplevel),
-                "targetPackage:" + _targetPackage +
-                " modelPath:" + _modelPath +
-                " outDir:" + _outputDirectory);
+        addTransform(pack, "wjtp.appletWriter", AppletWriter.v(_toplevel),
+            "targetPackage:" + _targetPackage + " modelPath:" + _modelPath
+            + " outDir:" + _outputDirectory);
     }
 
     /** Parse any code generator specific arguments.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-            throws Exception {
-
-        _generatorAttributeFileName =
-            attribute.getParameter("generatorAttributeFileName");
+        throws Exception {
+        _generatorAttributeFileName = attribute.getParameter(
+                "generatorAttributeFileName");
         _modelPath = attribute.getParameter("modelPath");
         _outputDirectory = attribute.getParameter("outputDirectory");
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");
+
         //String sootArgs = attribute.getParameter("sootArgs");
         return new String[1];
     }
@@ -94,18 +90,4 @@ public class Main extends KernelMain {
     private static String _targetPackage = "unsetParameter";
     private static String _templateDirectory = "ptolemy/copernicus/java";
     private static String _watchDogTimeout = "unsetParameter";
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -24,11 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CancelException
+
 /**
    An exception that is not reported to the user.  This exception can be used
    to cancel an ongoing operation.  It works together with MessageHandler,
@@ -46,9 +47,7 @@ package ptolemy.gui;
    @Pt.AcceptedRating Green (janneck)
    @deprecated Use ptolemy.util.CancelException.
 */
-
 public class CancelException extends Exception {
-
     /** Construct an exception with a default message.
      */
     public CancelException() {

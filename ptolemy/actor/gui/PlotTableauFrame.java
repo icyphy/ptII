@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
@@ -51,8 +50,10 @@ import ptolemy.plot.PlotFormatter;
 import ptolemy.util.StringUtilities;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotTableauFrame
+
 /**
 
 PlotTableauFrame is a version of PlotFrame in the plot package that
@@ -72,7 +73,6 @@ field is set once in the constructor and immutable afterwards.
 @Pt.AcceptedRating Yellow (cxh)
 */
 public class PlotTableauFrame extends TableauFrame {
-
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -167,17 +167,17 @@ public class PlotTableauFrame extends TableauFrame {
         _menubar.add(_specialMenu);
 
         JMenuItem[] specialMenuItems = {
-            new JMenuItem("Clear", KeyEvent.VK_C),
-            new JMenuItem("Export", KeyEvent.VK_E),
-            new JMenuItem("Fill", KeyEvent.VK_F),
-            new JMenuItem("Reset axes", KeyEvent.VK_R),
-            new JMenuItem("Sample plot", KeyEvent.VK_S),
-        };
+                new JMenuItem("Clear", KeyEvent.VK_C),
+                new JMenuItem("Export", KeyEvent.VK_E),
+                new JMenuItem("Fill", KeyEvent.VK_F),
+                new JMenuItem("Reset axes", KeyEvent.VK_R),
+                new JMenuItem("Sample plot", KeyEvent.VK_S),
+            };
         SpecialMenuListener sml = new SpecialMenuListener();
+
         // Set the action command and listener for each menu item.
         for (int i = 0; i < specialMenuItems.length; i++) {
-            specialMenuItems[i].setActionCommand(
-                    specialMenuItems[i].getText());
+            specialMenuItems[i].setActionCommand(specialMenuItems[i].getText());
             specialMenuItems[i].addActionListener(sml);
             _specialMenu.add(specialMenuItems[i]);
         }
@@ -191,6 +191,7 @@ public class PlotTableauFrame extends TableauFrame {
      */
     protected boolean _clear() {
         boolean result = super._clear();
+
         // The false argument prevents clearing decorations.
         plot.clear(false);
         return result;
@@ -210,6 +211,7 @@ public class PlotTableauFrame extends TableauFrame {
         JFileChooser fileDialog = new JFileChooser();
         fileDialog.addChoosableFileFilter(new EPSFileFilter());
         fileDialog.setDialogTitle("Export EPS to...");
+
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
         } else {
@@ -217,32 +219,35 @@ public class PlotTableauFrame extends TableauFrame {
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
             String cwd = StringUtilities.getProperty("user.dir");
+
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                           "plot.eps"));
+                "plot.eps"));
 
         int returnVal = fileDialog.showDialog(this, "Export");
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
             FileOutputStream fout = null;
+
             try {
                 fout = new FileOutputStream(file);
                 plot.export(fout);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Error exporting plot to '" + file + "': " + ex,
-                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
+                    "Error exporting plot to '" + file + "': " + ex,
+                    "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
             } finally {
                 if (fout != null) {
                     try {
                         fout.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + file);
+                            + "on " + file);
                         throwable.printStackTrace();
                     }
                 }
@@ -254,10 +259,10 @@ public class PlotTableauFrame extends TableauFrame {
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-                "PlotTableauFrame is a plot in a top-level window.\n" +
-                "  File formats understood: Ptplot ASCII.\n" +
-                "  Left mouse button: Zooming.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "PlotTableauFrame is a plot in a top-level window.\n"
+            + "  File formats understood: Ptplot ASCII.\n"
+            + "  Left mouse button: Zooming.", "About Ptolemy Plot",
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Print the plot.
@@ -265,13 +270,14 @@ public class PlotTableauFrame extends TableauFrame {
     protected void _print() {
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setPrintable(plot);
+
         if (job.printDialog()) {
             try {
                 job.print();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Printing failed:\n" + ex.toString(),
-                        "Print Error", JOptionPane.WARNING_MESSAGE);
+                    "Printing failed:\n" + ex.toString(), "Print Error",
+                    JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -290,14 +296,11 @@ public class PlotTableauFrame extends TableauFrame {
 
     /** Action to format the plot. */
     private class FormatAction extends AbstractAction {
-
         /** Create a new action to format the plot. */
         public FormatAction() {
             super("Format");
-            putValue("tooltip",
-                    "Open a dialog to format the plot.");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_F));
+            putValue("tooltip", "Open a dialog to format the plot.");
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_F));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -308,9 +311,10 @@ public class PlotTableauFrame extends TableauFrame {
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
-                        "Format Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                    "Format Exception:\n" + exception.toString(),
+                    "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
+
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -320,8 +324,9 @@ public class PlotTableauFrame extends TableauFrame {
 
     class SpecialMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem)e.getSource();
+            JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
+
             try {
                 if (actionCommand.equals("Fill")) {
                     plot.fillPlot();
@@ -341,9 +346,10 @@ public class PlotTableauFrame extends TableauFrame {
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
-                        "Special Menu Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                    "Special Menu Exception:\n" + exception.toString(),
+                    "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
+
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -356,7 +362,6 @@ public class PlotTableauFrame extends TableauFrame {
 
     /** Display only .eps files */
     class EPSFileFilter extends FileFilter {
-
         /** Accept only .eps files.
          *  @param file The file to be checked.
          *  @return true if the file is a directory, a .eps file
@@ -368,12 +373,12 @@ public class PlotTableauFrame extends TableauFrame {
 
             String fileOrDirectoryName = fileOrDirectory.getName();
             int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+
             if (dotIndex == -1) {
                 return false;
             }
-            String extension =
-                fileOrDirectoryName
-                .substring(dotIndex);
+
+            String extension = fileOrDirectoryName.substring(dotIndex);
 
             if (extension != null) {
                 if (extension.equalsIgnoreCase(".eps")) {
@@ -382,6 +387,7 @@ public class PlotTableauFrame extends TableauFrame {
                     return false;
                 }
             }
+
             return false;
         }
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// QueueWithNextOut
+
 /**
    This actor implements an event queue.  When a token is received on the
    <i>input</i> port, it is stored in the queue.
@@ -73,7 +74,7 @@ public class QueueWithNextOut extends Queue {
      *   actor with this name.
      */
     public QueueWithNextOut(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         nextOut = new TypedIOPort(this, "nextOut");
         nextOut.setTypeAtLeast(input);
@@ -99,9 +100,8 @@ public class QueueWithNextOut extends Queue {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        QueueWithNextOut newObject = (QueueWithNextOut)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        QueueWithNextOut newObject = (QueueWithNextOut) super.clone(workspace);
         newObject.nextOut.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -119,22 +119,26 @@ public class QueueWithNextOut extends Queue {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             _queue.put(input.get(0));
+
             if (_queue.size() == 1) {
                 // Queue was empty, new item is next item.
                 // Send it without removing it from the queue.
-                nextOut.send(0, (Token)_queue.get(0));
+                nextOut.send(0, (Token) _queue.get(0));
             }
         }
+
         if (trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
+
             if (_queue.size() > 0) {
-                output.send(0, (Token)_queue.take());
+                output.send(0, (Token) _queue.take());
             }
+
             if (_queue.size() > 0) {
                 // If queue still has token(s), send the
                 // next token while keeping a copy in the queue.
-                nextOut.send(0, (Token)_queue.get(0));
+                nextOut.send(0, (Token) _queue.get(0));
             }
         }
     }

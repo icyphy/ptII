@@ -28,11 +28,9 @@
 
 */
 
-
-
-
 //////////////////////////////////////////////////////////////////////////
 //// Terp
+
 /**
 
 A class that tests a single simple non-nested exception within a method.
@@ -48,16 +46,14 @@ Expected output is:
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class BasicException{
-
-    public static void main(String args[]) {
+public class BasicException {
+    public static void main(String[] args) {
         System.out.println(0);
+
         try {
             System.out.println(10);
             throw (new Exception());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(20);
         }
     }

@@ -28,11 +28,9 @@
 
 */
 
-
-
-
 //////////////////////////////////////////////////////////////////////////
 //// Terp
+
 /**
 
 A class that runs multiple array tests. Runs the Array1,
@@ -45,14 +43,12 @@ Array2DInt, Array3DInt and ArrayOfObjects tests.
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class Arrays{
-
-    public static void main(String args[]) {
+public class Arrays {
+    public static void main(String[] args) {
         //1-D Array.
         {
             // Initialize array.
-            int data[] = new int[10];
+            int[] data = new int[10];
 
             // Set the data.
             for (int i = 0; i < 10; i++) {
@@ -64,13 +60,12 @@ public class Arrays{
                 System.out.println(data[i]);
             }
         }
-
         //2-D Int Array.
         {
             // Initialize array.
-            int data[][] = new int[2][];
-            data [0] = new int[2];
-            data [1] = new int[2];
+            int[][] data = new int[2][];
+            data[0] = new int[2];
+            data[1] = new int[2];
 
             // Set the data.
             data[0][0] = 0;
@@ -84,11 +79,10 @@ public class Arrays{
             System.out.println(data[1][0]);
             System.out.println(data[1][1]);
         }
-
         //3-D Int Array
         {
             // Initialize array.
-            int data[][][] = new int[3][3][3];
+            int[][][] data = new int[3][3][3];
 
             // Set the diagonal of the data.
             for (int i = 0; i < 3; i++) {
@@ -99,11 +93,10 @@ public class Arrays{
                 System.out.println(data[i][i][i]);
             }
         }
-
         // Array of Objects
         {
             // Initialize array.
-            String data[] = new String[2];
+            String[] data = new String[2];
 
             // Set the data.
             data[0] = new String("I, said the sparrow.");
@@ -114,16 +107,15 @@ public class Arrays{
                 System.out.println(data[i]);
             }
         }
-
         // Test Array.length
         {
             int[] a = new int[10];
             System.out.println(a.length);
         }
-
         // Test System.arrayCopy()
         {
             int[] source = new int[10];
+
             for (int i = 0; i < 10; i++) {
                 source[i] = i;
             }
@@ -132,10 +124,10 @@ public class Arrays{
             dest[0] = 8;
             System.arraycopy(source, 2, dest, 1, 2);
             dest[3] = 666;
+
             for (int i = 0; i < dest.length; i++) {
                 System.out.println(dest[i]);
             }
         }
-
     }
 }

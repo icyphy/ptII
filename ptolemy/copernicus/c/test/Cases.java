@@ -28,8 +28,8 @@
 
 */
 
-
 //// Cases
+
 /** A simple program to test the switch construct.
     The code tests System.out.println with switching cases.
     The output of the program would be:
@@ -41,19 +41,15 @@
     @Pt.ProposedRating Red (ankush)
     @Pt.AcceptedRating Red (ankush)
 */
-
-
 public class Cases {
-
     /** Outputs the appropriate string.
      *  @param args Application arguments.
      */
     public static void main(String[] args) {
-
         int choice = 5;
 
         // Selects an appropriate message.
-        switch(choice) {
+        switch (choice) {
         case 4:
             System.out.println("Today is Thursday.");
             break;
@@ -73,7 +69,7 @@ public class Cases {
         choice = 1729;
 
         // Selects an appropriate message.
-        switch(choice) {
+        switch (choice) {
         case 4:
             System.out.println("Today is Thursday.");
             break;
@@ -89,8 +85,5 @@ public class Cases {
         default:
             System.out.println("Invalid entry.");
         }
-
     }
 }
-
-

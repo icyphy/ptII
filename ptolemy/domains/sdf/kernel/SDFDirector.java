@@ -24,7 +24,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.kernel;
 
 import java.util.Iterator;
@@ -49,8 +48,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
+
 /**
    Director for the synchronous dataflow (SDF) model of computation.
 
@@ -124,7 +125,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (neuendor)
 */
 public class SDFDirector extends StaticSchedulingDirector {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -132,7 +132,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  The SDFDirector will have a default scheduler of type SDFScheduler.
      */
     public SDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -145,7 +145,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @param workspace The workspace for this object.
      */
     public SDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -166,7 +166,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public SDFDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -232,11 +232,12 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the parameter set is not valid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == allowDisconnectedGraphs
-                || attribute == vectorizationFactor ) {
+        throws IllegalActionException {
+        if ((attribute == allowDisconnectedGraphs)
+                || (attribute == vectorizationFactor)) {
             invalidateSchedule();
         }
+
         super.attributeChanged(attribute);
     }
 
@@ -254,29 +255,35 @@ public class SDFDirector extends StaticSchedulingDirector {
         super.initialize();
         _iterationCount = 0;
 
-        CompositeActor container = (CompositeActor)getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
+
         for (Iterator ports = container.outputPortList().iterator();
-             ports.hasNext();) {
-            IOPort port = (IOPort)ports.next();
+                ports.hasNext();) {
+            IOPort port = (IOPort) ports.next();
 
             // Create external initial production.
             int rate = DFUtilities.getTokenInitProduction(port);
             boolean wasTransferred = false;
+
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
                     for (int k = 0; k < rate; k++) {
                         if (port.hasTokenInside(i)) {
                             Token t = port.getInside(i);
-                            if (_debugging) _debug(getName(),
+
+                            if (_debugging) {
+                                _debug(getName(),
                                     "transferring output from "
                                     + port.getName());
+                            }
+
                             port.send(i, t);
                             wasTransferred = true;
                         } else {
                             throw new IllegalActionException(this, port,
-                                    "Port should produce " + rate
-                                    + " tokens, but there were only "
-                                    + k + " tokens available.");
+                                "Port should produce " + rate
+                                + " tokens, but there were only " + k
+                                + " tokens available.");
                         }
                     }
                 } catch (NoTokenException ex) {
@@ -307,36 +314,43 @@ public class SDFDirector extends StaticSchedulingDirector {
         // Set current time based on the enclosing model.
         super.prefire();
 
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+        TypedCompositeActor container = ((TypedCompositeActor) getContainer());
         Iterator inputPorts = container.inputPortList().iterator();
         int inputCount = 0;
+
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
 
             // NOTE: If the port is a ParameterPort, then we should not
             // insist on there being an input.
-            if (inputPort instanceof ParameterPort) continue;
+            if (inputPort instanceof ParameterPort) {
+                continue;
+            }
 
             int threshold = DFUtilities.getTokenConsumptionRate(inputPort);
+
             if (_debugging) {
                 _debug("checking input " + inputPort.getFullName());
                 _debug("Threshold = " + threshold);
             }
 
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
-                if (threshold > 0
-                        && !inputPort.hasToken(channel, threshold)) {
+                if ((threshold > 0) && !inputPort.hasToken(channel, threshold)) {
                     if (_debugging) {
                         _debug("Port " + inputPort.getFullName()
-                                + " does not have enough tokens: "
-                                + threshold
-                                + " Prefire returns false.");
+                            + " does not have enough tokens: " + threshold
+                            + " Prefire returns false.");
                     }
+
                     return false;
                 }
             }
         }
-        if (_debugging) _debug("Director prefire returns true." );
+
+        if (_debugging) {
+            _debug("Director prefire returns true.");
+        }
+
         return true;
     }
 
@@ -354,17 +368,23 @@ public class SDFDirector extends StaticSchedulingDirector {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        BaseSDFScheduler scheduler = (BaseSDFScheduler)getScheduler();
-        if (scheduler == null)
-            throw new IllegalActionException("Attempted to initialize " +
-                    "SDF system with no scheduler");
+        BaseSDFScheduler scheduler = (BaseSDFScheduler) getScheduler();
+
+        if (scheduler == null) {
+            throw new IllegalActionException("Attempted to initialize "
+                + "SDF system with no scheduler");
+        }
+
         // force the schedule to be computed.
-        if (_debugging) _debug("Computing schedule");
+        if (_debugging) {
+            _debug("Computing schedule");
+        }
+
         try {
             Schedule sched = scheduler.getSchedule();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to compute schedule:");
+                "Failed to compute schedule:");
         }
 
         // Declare the dependencies of rate parameters of external
@@ -389,10 +409,12 @@ public class SDFDirector extends StaticSchedulingDirector {
     public boolean postfire() throws IllegalActionException {
         int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
         _iterationCount++;
+
         if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
             _iterationCount = 0;
             return false;
         }
+
         return super.postfire();
     }
 
@@ -406,8 +428,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         // in the array.
         String[] defaultSuggestions = new String[3];
         defaultSuggestions[2] = "ptolemy.domains.hdf.kernel.HDFFSMDirector";
-        defaultSuggestions[1] =
-            "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
+        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
@@ -429,40 +450,46 @@ public class SDFDirector extends StaticSchedulingDirector {
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "Attempted to transferInputs on a port is not an opaque" +
-                    "input port.");
+                "Attempted to transferInputs on a port is not an opaque"
+                + "input port.");
         }
+
         // The number of tokens depends on the schedule, so make sure
         // the schedule is valid.
         getScheduler().getSchedule();
+
         int rate = DFUtilities.getTokenConsumptionRate(port);
         boolean wasTransferred = false;
+
         for (int i = 0; i < port.getWidth(); i++) {
             try {
                 if (i < port.getWidthInside()) {
                     for (int k = 0; k < rate; k++) {
                         if (port.hasToken(i)) {
                             Token t = port.get(i);
-                            if (_debugging) _debug(getName(),
-                                    "transferring input from "
-                                    + port.getName());
+
+                            if (_debugging) {
+                                _debug(getName(),
+                                    "transferring input from " + port.getName());
+                            }
+
                             port.sendInside(i, t);
                             wasTransferred = true;
                         } else {
                             throw new IllegalActionException(this, port,
-                                    "Port should consume "
-                                    + rate
-                                    + " tokens, but there were only "
-                                    + k
-                                    + " tokens available.");
+                                "Port should consume " + rate
+                                + " tokens, but there were only " + k
+                                + " tokens available.");
                         }
                     }
                 } else {
                     // No inside connection to transfer tokens to.
                     // In this case, consume one input token if there is one.
-                    if (_debugging) _debug(getName(),
-                            "Dropping single input from "
-                            + port.getName());
+                    if (_debugging) {
+                        _debug(getName(),
+                            "Dropping single input from " + port.getName());
+                    }
+
                     if (port.hasToken(i)) {
                         port.get(i);
                     }
@@ -472,6 +499,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 throw new InternalErrorException(this, ex, null);
             }
         }
+
         return wasTransferred;
     }
 
@@ -487,33 +515,38 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
-    public boolean transferOutputs(IOPort port)
-            throws IllegalActionException {
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferOutputs on port: " + port.getFullName());
         }
+
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that "
-                    + "is not an opaque input port.");
+                "Attempted to transferOutputs on a port that "
+                + "is not an opaque input port.");
         }
+
         int rate = DFUtilities.getTokenProductionRate(port);
         boolean wasTransferred = false;
+
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {
                 for (int k = 0; k < rate; k++) {
                     if (port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
-                        if (_debugging) _debug(getName(),
-                                "transferring output from "
-                                + port.getName());
+
+                        if (_debugging) {
+                            _debug(getName(),
+                                "transferring output from " + port.getName());
+                        }
+
                         port.send(i, t);
                         wasTransferred = true;
                     } else {
                         throw new IllegalActionException(this, port,
-                                "Port should produce " + rate
-                                + " tokens, but there were only "
-                                + k + " tokens available.");
+                            "Port should produce " + rate
+                            + " tokens, but there were only " + k
+                            + " tokens available.");
                     }
                 }
             } catch (NoTokenException ex) {
@@ -521,6 +554,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 throw new InternalErrorException(this, ex, null);
             }
         }
+
         return wasTransferred;
     }
 
@@ -543,9 +577,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  parameter and a vectorizationFactor parameter.
      */
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
-        SDFScheduler scheduler =
-            new SDFScheduler(this, uniqueName("Scheduler"));
+        throws IllegalActionException, NameDuplicationException {
+        SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));
 
         allowDisconnectedGraphs = new Parameter(this, "allowDisconnectedGraphs");
         allowDisconnectedGraphs.setTypeEquals(BaseType.BOOLEAN);
@@ -566,6 +599,5 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _iterationCount = 0;
 }

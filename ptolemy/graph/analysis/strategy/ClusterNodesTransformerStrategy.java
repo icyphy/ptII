@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import java.util.ArrayList;
@@ -35,8 +34,10 @@ import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
 
+
 //////////////////////////////////////////////////////////////////////////
 ////  ClusterNodesTransformerStrategy
+
 /**
    Strategy for cluster transformers for graphs. The nodes of a graph given
    in a collection are being removed (clustered) and all of them are replaced
@@ -50,17 +51,15 @@ import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
    @author Shahrooz Shahparnia based on a method by Ming Yung Ko.
    @version $Id$
 */
-
 public class ClusterNodesTransformerStrategy extends CachedStrategy
     implements ClusterNodesTransformer {
-
     /** Construct a clusterer for a given graph.
      *  @param graph The given graph.
      *  @param nodeCollection The collection of nodes to be clustered.
      *  @param superNode The super node that replaces the clustered nodes.
      */
     public ClusterNodesTransformerStrategy(Graph graph,
-            Collection nodeCollection, Node superNode) {
+        Collection nodeCollection, Node superNode) {
         super(graph);
         _nodeCollection = nodeCollection;
         _superNode = superNode;
@@ -74,7 +73,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
      *  @return Return the clustered Graph.
      */
     public Graph clusterNodes() {
-        return (Graph)_result();
+        return (Graph) _result();
     }
 
     /** Specify if this transformation has a mapping from the transformed
@@ -136,36 +135,43 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
         Graph graph = graph();
         Graph subgraph = graph.subgraph(_nodeCollection);
         graph.addNode(_superNode);
+
         HashSet nodesToRemove = new HashSet(_nodeCollection);
 
         // Remove all edges that are inside the induced subgraph.
         Iterator edges = graph.edges().iterator();
         ArrayList removeList = new ArrayList();
+
         while (edges.hasNext()) {
-            Edge edge = (Edge)(edges.next());
-            if (nodesToRemove.contains(edge.source()) &&
-                    nodesToRemove.contains(edge.sink())) {
+            Edge edge = (Edge) (edges.next());
+
+            if (nodesToRemove.contains(edge.source())
+                    && nodesToRemove.contains(edge.sink())) {
                 removeList.add(edge);
             }
         }
+
         Iterator edgesToRemove = removeList.iterator();
+
         while (edgesToRemove.hasNext()) {
-            graph.removeEdge((Edge)edgesToRemove.next());
+            graph.removeEdge((Edge) edgesToRemove.next());
         }
 
         // For each edge that connects a node Z outside the induced subgraph
         // to a node inside the subgraph, replace the edge that connects
         // Z to the super node.
         removeList.clear();
+
         ArrayList addList = new ArrayList();
         edges = graph.edges().iterator();
+
         while (edges.hasNext()) {
-            Edge edge = (Edge)edges.next();
+            Edge edge = (Edge) edges.next();
             Edge newEdge = null;
+
             if (nodesToRemove.contains(edge.source())) {
                 if (edge.hasWeight()) {
-                    newEdge = new Edge(_superNode, edge.sink(),
-                            edge.getWeight());
+                    newEdge = new Edge(_superNode, edge.sink(), edge.getWeight());
                 } else {
                     newEdge = new Edge(_superNode, edge.sink());
                 }
@@ -177,6 +183,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
                     newEdge = new Edge(edge.source(), _superNode);
                 }
             }
+
             if (newEdge != null) {
                 removeList.add(edge);
                 addList.add(newEdge);
@@ -185,21 +192,24 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
 
         // Add edges for super nodes.
         Iterator edgesToAdd = addList.iterator();
+
         while (edgesToAdd.hasNext()) {
-            graph.addEdge((Edge)edgesToAdd.next());
+            graph.addEdge((Edge) edgesToAdd.next());
         }
 
         // Remove old edges connecting members outside the subgraph to members
         // of N.
         edgesToRemove = removeList.iterator();
+
         while (edgesToRemove.hasNext()) {
-            graph.removeEdge((Edge)edgesToRemove.next());
+            graph.removeEdge((Edge) edgesToRemove.next());
         }
 
         // Remove the nodes in the specified collection.
         Iterator nodes = _nodeCollection.iterator();
+
         while (nodes.hasNext()) {
-            graph.removeNode((Node)nodes.next());
+            graph.removeNode((Node) nodes.next());
         }
 
         // Return the subgraph that was induced by the collection of nodes.
@@ -208,8 +218,6 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Node _superNode;
     private Collection _nodeCollection;
 }
-

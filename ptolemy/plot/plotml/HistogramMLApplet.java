@@ -25,14 +25,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.plot.plotml;
 
 import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HistogramMLApplet
+
 /**
    This applet reads a URL giving a PlotML file that contains data.
    It plots a histogram of that data.
@@ -45,17 +46,15 @@ import ptolemy.plot.PlotBox;
    @Pt.AcceptedRating red (cxh)
 */
 public class HistogramMLApplet extends PlotMLApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "HistogramMLApplet " + PlotBox.PTPLOT_RELEASE +
-            ": A histogram plotter.\n" +
-            "By: Edward A. Lee.\n" +
-            "($Id$)";
+        return "HistogramMLApplet " + PlotBox.PTPLOT_RELEASE
+        + ": A histogram plotter.\n" + "By: Edward A. Lee.\n"
+        + "($Id$)";
     }
 
     /** Create a new Plot object for the applet.  Derived classes can
@@ -71,6 +70,6 @@ public class HistogramMLApplet extends PlotMLApplet {
     /** Create a new parser object for the applet.
      */
     protected PlotMLParser _newParser() {
-        return new HistogramMLParser((Histogram)plot());
+        return new HistogramMLParser((Histogram) plot());
     }
 }

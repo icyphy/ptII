@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel;
 
 import java.awt.Component;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import diva.gui.toolbox.JContextMenu;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RenameDialogFactory
+
 /**
    A factory that creates a dialog to rename an object.
 
@@ -53,7 +54,6 @@ import diva.gui.toolbox.JContextMenu;
    @Pt.AcceptedRating Red (johnr)
 */
 public class RenameDialogFactory implements MenuItemFactory {
-
     /** Add an item to the given context menu that will open a dialog
      *  to add or remove ports from an object.
      *  @param menu The context menu.
@@ -67,7 +67,10 @@ public class RenameDialogFactory implements MenuItemFactory {
         final NamedObj target = object;
 
         // ensure that we actually have a target.
-        if (target == null) return null;
+        if (target == null) {
+            return null;
+        }
+
         Action action = new AbstractAction(name) {
                 public void actionPerformed(ActionEvent e) {
                     // Create a dialog for configuring the object.
@@ -77,16 +80,19 @@ public class RenameDialogFactory implements MenuItemFactory {
                     // will not have the appropriate parent, and will disappear
                     // when put in the background.
                     Component parent = menu.getInvoker();
+
                     while (parent.getParent() != null) {
                         parent = parent.getParent();
                     }
+
                     if (parent instanceof Frame) {
-                        new RenameDialog((Frame)parent, target);
+                        new RenameDialog((Frame) parent, target);
                     } else {
                         new RenameDialog(null, target);
                     }
                 }
             };
+
         return menu.add(action, name);
     }
 }

@@ -25,7 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.SingletonAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayLevelCrossing
+
 /**
 
    Search an array from the specified starting index and report the
@@ -72,7 +73,6 @@ import ptolemy.kernel.util.SingletonAttribute;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ArrayLevelCrossing extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -82,14 +82,13 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrayLevelCrossing(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         start = new PortParameter(this, "start");
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
-        (new SingletonParameter(start.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(start.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         forwards = new Parameter(this, "forwards");
         forwards.setExpression("true");
@@ -178,48 +177,49 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         start.update();
+
         if (array.hasToken(0)) {
             ArrayToken inputArray = (ArrayToken) array.get(0);
             int inputSize = inputArray.length();
 
-            int startValue = ((IntToken)start.getToken()).intValue();
+            int startValue = ((IntToken) start.getToken()).intValue();
 
-            if (startValue >= inputSize || startValue < 0) {
+            if ((startValue >= inputSize) || (startValue < 0)) {
                 throw new IllegalActionException(this,
-                        "start is out of range: " + startValue);
+                    "start is out of range: " + startValue);
             }
 
             int increment = -1;
-            if (((BooleanToken)forwards.getToken()).booleanValue()) {
+
+            if (((BooleanToken) forwards.getToken()).booleanValue()) {
                 increment = 1;
             }
 
-            double reference = ((DoubleToken)inputArray.getElement(startValue))
+            double reference = ((DoubleToken) inputArray.getElement(startValue))
                 .doubleValue();
 
-            double thresholdValue = ((DoubleToken)threshold.getToken())
+            double thresholdValue = ((DoubleToken) threshold.getToken())
                 .doubleValue();
 
             String scaleValue = scale.stringValue();
 
-            boolean aboveValue = ((BooleanToken)above.getToken())
-                .booleanValue();
+            boolean aboveValue = ((BooleanToken) above.getToken()).booleanValue();
 
             if (scaleValue.equals("relative amplitude decibels")) {
                 if (aboveValue) {
-                    thresholdValue =
-                        reference * Math.pow(10.0, (thresholdValue/20));
+                    thresholdValue = reference * Math.pow(10.0,
+                            (thresholdValue / 20));
                 } else {
-                    thresholdValue =
-                        reference * Math.pow(10.0, (-thresholdValue/20));
+                    thresholdValue = reference * Math.pow(10.0,
+                            (-thresholdValue / 20));
                 }
             } else if (scaleValue.equals("relative power decibels")) {
                 if (aboveValue) {
-                    thresholdValue =
-                        reference * Math.pow(10.0, (thresholdValue/10));
+                    thresholdValue = reference * Math.pow(10.0,
+                            (thresholdValue / 10));
                 } else {
-                    thresholdValue =
-                        reference * Math.pow(10.0, (-thresholdValue/10));
+                    thresholdValue = reference * Math.pow(10.0,
+                            (-thresholdValue / 10));
                 }
             } else if (scaleValue.equals("relative linear")) {
                 if (aboveValue) {
@@ -231,10 +231,12 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
 
             // Default output if we don't find a crossing.
             int bin = -1;
-            for (int i = startValue; i < inputSize && i >= 0; i += increment) {
-                double currentValue
-                    = ((DoubleToken)inputArray.getElement(i))
+
+            for (int i = startValue; (i < inputSize) && (i >= 0);
+                    i += increment) {
+                double currentValue = ((DoubleToken) inputArray.getElement(i))
                     .doubleValue();
+
                 if (aboveValue) {
                     // Searching for values above the threshold.
                     if (currentValue > thresholdValue) {

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.util.CalendarQueue;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Timer
+
 /**
    A timer actor delays an event with a time delay specified by its input.
    <p>
@@ -67,7 +68,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class Timer extends DETransformer {
-
     /** Construct an actor with the specified container and name.
      *  Declare that the input can only receive double tokens and the output
      *  has a data type the same as the value parameter.
@@ -79,7 +79,7 @@ public class Timer extends DETransformer {
      *   actor with this name.
      */
     public Timer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         value = new Parameter(this, "value", new BooleanToken(true));
         input.setTypeEquals(BaseType.DOUBLE);
@@ -105,9 +105,8 @@ public class Timer extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Timer newObject = (Timer)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Timer newObject = (Timer) super.clone(workspace);
         newObject.output.setTypeSameAs(value);
         newObject.input.setTypeEquals(BaseType.DOUBLE);
         return newObject;
@@ -127,31 +126,37 @@ public class Timer extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         _delay = -1.0;
+
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
-            double delayValue = ((DoubleToken)_currentInput).doubleValue();
+
+            double delayValue = ((DoubleToken) _currentInput).doubleValue();
+
             if (delayValue < 0) {
-                throw new IllegalActionException(
-                        "Delay can not be negative.");
+                throw new IllegalActionException("Delay can not be negative.");
             } else {
                 _delay = delayValue;
             }
         } else {
             _currentInput = null;
         }
+
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
+
         if (_delayedOutputTokens.size() > 0) {
-            TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
+            TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens.get();
             Time eventTime = earliestEvent.timeStamp;
+
             if (eventTime.equals(currentTime)) {
-                _currentOutput = (Token)earliestEvent.contents;
+                _currentOutput = (Token) earliestEvent.contents;
                 output.send(0, value.getToken());
                 return;
             } else {
                 // no tokens to be produced at the current time.
             }
         }
+
         if (_delay == 0.0) {
             output.send(0, value.getToken());
             _currentInput = null;
@@ -165,8 +170,8 @@ public class Timer extends DETransformer {
         super.initialize();
         _currentInput = null;
         _currentOutput = null;
-        _delayedOutputTokens = new CalendarQueue(
-                new TimedEvent.TimeComparator(this.getDirector()));
+        _delayedOutputTokens = new CalendarQueue(new TimedEvent.TimeComparator(
+                    this.getDirector()));
     }
 
     /** Update the internal states of this actor. If the current input
@@ -180,28 +185,33 @@ public class Timer extends DETransformer {
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         Time delayToTime = currentTime.add(_delay);
+
         // Remove the token that is already sent at the current time.
         if (_delayedOutputTokens.size() > 0) {
             if (_currentOutput != null) {
                 _delayedOutputTokens.take();
             }
         }
+
         // handle the refiring of the multiple tokens
         // that are scheduled to produce at the same time.
         if (_delayedOutputTokens.size() > 0) {
-            TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
+            TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens.get();
             Time eventTime = earliestEvent.timeStamp;
+
             if (eventTime.equals(currentTime)) {
                 getDirector().fireAt(this, currentTime);
             }
         }
+
         // If the current input is not processed, schedule a future firing
         // to process it.
         if (_currentInput != null) {
-            _delayedOutputTokens.put(
-                    new TimedEvent(delayToTime, value.getToken()));
+            _delayedOutputTokens.put(new TimedEvent(delayToTime,
+                    value.getToken()));
             getDirector().fireAt(this, delayToTime);
         }
+
         return super.postfire();
     }
 
@@ -231,5 +241,4 @@ public class Timer extends DETransformer {
     /** Current output.
      */
     protected Token _currentOutput;
-
 }

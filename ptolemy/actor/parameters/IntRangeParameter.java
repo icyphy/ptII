@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.parameters;
 
 import ptolemy.data.IntToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// IntRangeParameter
+
 /**
    This is a parameter with type integer with a limited range.
    Its value is an integer token that is constrained to lie
@@ -56,7 +57,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class IntRangeParameter extends Parameter {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -71,7 +71,7 @@ public class IntRangeParameter extends Parameter {
      *   an attribute already in the container.
      */
     public IntRangeParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         min = new Parameter(this, "min");
@@ -85,14 +85,11 @@ public class IntRangeParameter extends Parameter {
         setExpression("50");
         setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-2\" "
-                + "width=\"60\" height=\"4\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"15\" y=\"-10\" "
-                + "width=\"4\" height=\"20\" "
-                + "style=\"fill:grey\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-2\" "
+            + "width=\"60\" height=\"4\" " + "style=\"fill:white\"/>\n"
+            + "<rect x=\"15\" y=\"-10\" " + "width=\"4\" height=\"20\" "
+            + "style=\"fill:grey\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,21 +111,25 @@ public class IntRangeParameter extends Parameter {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == max && !_inCheck) {
+        throws IllegalActionException {
+        if ((attribute == max) && !_inCheck) {
             try {
                 _inCheck = true;
-                int maxValue = ((IntToken)max.getToken()).intValue();
+
+                int maxValue = ((IntToken) max.getToken()).intValue();
+
                 if (getCurrentValue() > maxValue) {
                     setToken(max.getToken());
                 }
             } finally {
                 _inCheck = false;
             }
-        } else if (attribute == min  && !_inCheck) {
+        } else if ((attribute == min) && !_inCheck) {
             try {
                 _inCheck = true;
-                int minValue = ((IntToken)min.getToken()).intValue();
+
+                int minValue = ((IntToken) min.getToken()).intValue();
+
                 if (getCurrentValue() < minValue) {
                     setToken(min.getToken());
                 }
@@ -148,7 +149,7 @@ public class IntRangeParameter extends Parameter {
      *   and there are variables that depend on this one.
      */
     public int getCurrentValue() throws IllegalActionException {
-        return ((IntToken)getToken()).intValue();
+        return ((IntToken) getToken()).intValue();
     }
 
     /** Return the maximum value of this parameter as an integer.
@@ -159,7 +160,7 @@ public class IntRangeParameter extends Parameter {
      *   and there are variables that depend on this one.
      */
     public int getMaxValue() throws IllegalActionException {
-        return ((IntToken)max.getToken()).intValue();
+        return ((IntToken) max.getToken()).intValue();
     }
 
     /** Return the minimum value of this parameter.
@@ -170,7 +171,7 @@ public class IntRangeParameter extends Parameter {
      *   and there are variables that depend on this one.
      */
     public int getMinValue() throws IllegalActionException {
-        return ((IntToken)min.getToken()).intValue();
+        return ((IntToken) min.getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -189,34 +190,36 @@ public class IntRangeParameter extends Parameter {
      *   or its value is out of range.
      */
     protected void _setTokenAndNotify(Token newToken)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_inCheck) {
             super._setTokenAndNotify(newToken);
             return;
         }
+
         if (newToken instanceof IntToken) {
             try {
                 _inCheck = true;
-                int minValue = ((IntToken)min.getToken()).intValue();
-                int maxValue = ((IntToken)max.getToken()).intValue();
-                int currentValue = ((IntToken)newToken).intValue();
-                if (minValue <= currentValue && currentValue <= maxValue) {
+
+                int minValue = ((IntToken) min.getToken()).intValue();
+                int maxValue = ((IntToken) max.getToken()).intValue();
+                int currentValue = ((IntToken) newToken).intValue();
+
+                if ((minValue <= currentValue) && (currentValue <= maxValue)) {
                     // All is OK.
                     super._setTokenAndNotify(newToken);
                     return;
                 }
+
                 throw new IllegalActionException(this,
-                        "Value is required to lie between "
-                        + min
-                        + " and "
-                        + max
-                        + ".");
+                    "Value is required to lie between " + min + " and " + max
+                    + ".");
             } finally {
                 _inCheck = false;
             }
         }
+
         throw new IllegalActionException(this,
-                "Value is required to be an integer token.");
+            "Value is required to be an integer token.");
     }
 
     ///////////////////////////////////////////////////////////////////

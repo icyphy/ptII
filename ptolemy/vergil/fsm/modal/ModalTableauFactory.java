@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.vergil.fsm.modal;
 
 import ptolemy.actor.gui.Configuration;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 ///////////////////////////////////////////////////////////////////
 //// ModalTableauFactory
+
 /**
    A tableau factory that opens an editor on the contained controller
    rather than this composite actor.  This is triggered by look inside.
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class ModalTableauFactory extends TableauFactory {
-
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -62,7 +62,7 @@ public class ModalTableauFactory extends TableauFactory {
      *   an entity already in the container.
      */
     public ModalTableauFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -79,9 +79,9 @@ public class ModalTableauFactory extends TableauFactory {
      *   Tableau for the effigy, but something goes wrong.
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
-        Configuration configuration = (Configuration)effigy.toplevel();
-        ModalModel model = (ModalModel)((PtolemyEffigy)effigy).getModel();
-        FSMActor controller = ((FSMDirector)model.getDirector()).getController();
+        Configuration configuration = (Configuration) effigy.toplevel();
+        ModalModel model = (ModalModel) ((PtolemyEffigy) effigy).getModel();
+        FSMActor controller = ((FSMDirector) model.getDirector()).getController();
         return configuration.openModel(controller);
     }
 }

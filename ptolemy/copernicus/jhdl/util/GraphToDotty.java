@@ -26,16 +26,15 @@ COPYRIGHTENDKEY
 @ProposedRating Red (cxh)
 @AcceptedRating Red (cxh)
 */
-
 package ptolemy.copernicus.jhdl.util;
+
+import ptolemy.graph.DirectedGraph;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
-import ptolemy.graph.DirectedGraph;
 
 public abstract class GraphToDotty {
-
     public static final String MYEOL = "\n";
 
     //public abstract String convert(Object g, String ename);
@@ -63,49 +62,67 @@ public abstract class GraphToDotty {
      */
     public static String convertSpecialsToEscapes(String str) {
         StringBuffer strBuf = new StringBuffer();
+
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
+
             switch (c) {
             case '\n':
                 strBuf.append("\\n");
                 break;
+
             case '\t':
                 strBuf.append("\\t");
                 break;
+
             case '\r':
+
                 // determine use of \r based on current MYEOL value
-                if (MYEOL.equals("\r\n"))
+                if (MYEOL.equals("\r\n")) {
                     strBuf.append("\\r");
+                }
+
                 break;
+
             case '\"':
                 strBuf.append("\\\"");
                 break;
+
             case '\'':
                 strBuf.append("\\\'");
                 break;
+
             case '\b':
                 strBuf.append("\\b");
                 break;
+
             case '\f':
                 strBuf.append("\\f");
                 break;
+
             case '\\':
                 strBuf.append("\\\\");
                 break;
+
             default:
                 strBuf.append(c);
             }
         }
+
         return strBuf.toString();
     }
 
     public static String validFileName(String basename) {
-        byte bbytes[] = basename.getBytes();
+        byte[] bbytes = basename.getBytes();
+
         //        byte nbytes[] = new byte[bbytes.length];
-        if (!((bbytes[0] >= 'a' && bbytes[0] <= 'z') ||
-                    (bbytes[0] >= 'A' && bbytes[0] <= 'Z')))
+        if (!(((bbytes[0] >= 'a') && (bbytes[0] <= 'z'))
+                || ((bbytes[0] >= 'A') && (bbytes[0] <= 'Z')))) {
             bbytes[0] = 'A';
+        }
+
         // Colons are valid in DOS filenames...
+
         /*        for (int i=0;i<bbytes.length;i++) {
                   switch(bbytes[i]) {
                   case ':':
@@ -120,16 +137,18 @@ public abstract class GraphToDotty {
     }
 
     public void writeDotFile(String basename, Object graph) {
-        writeDotFile(null,basename,graph);
+        writeDotFile(null, basename, graph);
     }
 
-    public void writeDotFile(
-            String dirName, String basename, Object graph) {
+    public void writeDotFile(String dirName, String basename, Object graph) {
         String filename = validFileName(basename) + ".dot";
+
         if (dirName != null) {
             filename = dirName + "/" + filename;
         }
+
         System.out.println("Writing " + filename);
+
         try {
             FileWriter dotFile = new FileWriter(filename);
             dotFile.write(convert(graph, basename));

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import java.io.IOException;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Vertex
+
 /**
    This attribute represents a waypoint in a relation. It extends
    Location, meaning that can be associated with a physical location
@@ -58,7 +59,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class Vertex extends Location {
-
     /** Construct an attribute in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument
@@ -81,7 +81,7 @@ public class Vertex extends Location {
      *   an attribute already in the container.
      */
     public Vertex(Relation container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _elementName = "vertex";
     }
@@ -96,6 +96,7 @@ public class Vertex extends Location {
         if (_ports == null) {
             _ports = new LinkedList();
         }
+
         _ports.add(port);
     }
 
@@ -118,36 +119,29 @@ public class Vertex extends Location {
      *  @exception IOException If an I/O error occurs.
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
+
         // This method is very similar to the superclass
         // Location.exportMoML() except that this method does not
         // include the 'class='.
-
         String value = getExpression();
         String valueTerm = "";
-        if (value != null && !value.equals("")) {
-            valueTerm = " value=\"" +
-                StringUtilities.escapeForXML(value) + "\"";
+
+        if ((value != null) && !value.equals("")) {
+            valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
+                + "\"";
         }
 
-        output.write(_getIndentPrefix(depth)
-                + "<"
-                + _elementName
-                + " name=\""
-                + name
-                // + "\" class=\""
-                // + getMoMLInfo().className
-                + "\""
-                + valueTerm
-                + ">\n");
+        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
+            + name// + "\" class=\""
+        // + getMoMLInfo().className
+             + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
-        output.write(_getIndentPrefix(depth) + "</"
-                + _elementName + ">\n");
+        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
-
 
     /** Return the other vertex to which there is a path from this vertex, or
      *  null if there is none.  Note that the paths are one directional,
@@ -207,8 +201,9 @@ public class Vertex extends Location {
      *  @see ptolemy.kernel.util.NamedObj#_exportMoMLContents
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         super._exportMoMLContents(output, depth);
+
         if (_linked != null) {
             output.write(_getIndentPrefix(depth));
             output.write("<pathTo=\"" + _linked.getName() + "\"/>\n");
@@ -217,7 +212,6 @@ public class Vertex extends Location {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The vertex that this attribute is connected to.
     private Vertex _linked;
 

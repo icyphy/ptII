@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
 import java.awt.BorderLayout;
@@ -50,8 +49,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.LibraryAttribute;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExtendedGraphFrame
+
 /**
    An graph view for ptolemy models extended with the capability
    to display the model in full-screen mode.
@@ -63,7 +64,6 @@ import diva.gui.GUIUtilities;
    @Pt.AcceptedRating Red (johnr)
 */
 public abstract class ExtendedGraphFrame extends BasicGraphFrame {
-
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -93,10 +93,8 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public ExtendedGraphFrame(
-            CompositeEntity entity,
-            Tableau tableau,
-            LibraryAttribute defaultLibrary) {
+    public ExtendedGraphFrame(CompositeEntity entity, Tableau tableau,
+        LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
         GUIUtilities.addToolBarButton(_toolbar, _fullScreenAction);
     }
@@ -112,10 +110,13 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             // Already canceled.
             return;
         }
+
         _screen.dispose();
         _screen = null;
+
         // Put the component back into the original window.
         _splitPane.setRightComponent(_jgraph);
+
         // Restore association with the graph panner.
         _graphPanner.setCanvas(_jgraph);
         pack();
@@ -133,6 +134,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             _screen.toFront();
             return;
         }
+
         // NOTE: Do not make the original graph frame the owner,
         // because we are going to hide it, and if it is the owner,
         // then the new frame will be hidden also.
@@ -152,7 +154,6 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         // dialog to resize the preferred size of _jgraph, which
         // nullifies the call to setSize() above.
         // _screen.pack();
-
         _screen.setVisible(true);
 
         // Make the new screen the default context for modal messages.
@@ -173,8 +174,10 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
         // Bind escape key to remove full-screen mode.
         ActionMap actionMap = _jgraph.getActionMap();
+
         // Use the action as both a key and the action.
         actionMap.put(_fullScreenAction, _fullScreenAction);
+
         InputMap inputMap = _jgraph.getInputMap();
         inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), _fullScreenAction);
 
@@ -211,13 +214,10 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
-
     ///////////////////////////////////////////////////////////////////
     //// FullScreenAction
-
     // An action to display in full-screen mode.
-    public class FullScreenAction extends AbstractAction
-        implements KeyListener {
+    public class FullScreenAction extends AbstractAction implements KeyListener {
         public FullScreenAction(String description) {
             super(description);
 
@@ -226,16 +226,16 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/basic/img/fullscreen.gif");
+            URL img = getClass().getResource("/ptolemy/vergil/basic/img/fullscreen.gif");
+
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
                 putValue(GUIUtilities.LARGE_ICON, icon);
             }
+
             putValue("tooltip", description);
 
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_S));
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
         }
 
         public void actionPerformed(ActionEvent e) {

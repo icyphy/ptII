@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.toolbox;
 
 import java.awt.Color;
@@ -38,6 +37,7 @@ import diva.canvas.DamageRegion;
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
 
+
 /** A decorator figure that displays a highlight behind the
  * figure. The highlighter has several options to control
  * the color, transparency, and "halo." Currently, this
@@ -49,7 +49,6 @@ import diva.canvas.FigureDecorator;
  * @author         John Reekie
  */
 public class BasicHighlighter extends FigureDecorator {
-
     /* The compositing operation.
      */
     private Composite _composite = null;
@@ -68,14 +67,14 @@ public class BasicHighlighter extends FigureDecorator {
 
     /** Create a new highlighter with a default paint and "halo"
      */
-    public BasicHighlighter () {
+    public BasicHighlighter() {
         this._paint = Color.yellow;
         this._halo = 4.0f;
     }
 
     /** Create a new highlighter with the given paint and "halo"
      */
-    public BasicHighlighter (Paint paint, float halo) {
+    public BasicHighlighter(Paint paint, float halo) {
         this._paint = paint;
         this._halo = halo;
     }
@@ -83,7 +82,7 @@ public class BasicHighlighter extends FigureDecorator {
     /** Create a new highlighter with the given paint, "halo,"
      * and compositing operation.
      */
-    public BasicHighlighter (Paint paint, float halo, Composite composite) {
+    public BasicHighlighter(Paint paint, float halo, Composite composite) {
         this._paint = paint;
         this._halo = halo;
         this._composite = composite;
@@ -93,7 +92,8 @@ public class BasicHighlighter extends FigureDecorator {
      *  compositing operation, and stroke.  This highlighter
      *  draws an outline only and does not fill it.
      */
-    public BasicHighlighter (Paint paint, float halo, Composite composite, Stroke stroke) {
+    public BasicHighlighter(Paint paint, float halo, Composite composite,
+        Stroke stroke) {
         this._paint = paint;
         this._halo = halo;
         this._composite = composite;
@@ -102,33 +102,31 @@ public class BasicHighlighter extends FigureDecorator {
 
     /** Get the composite.
      */
-    public Composite getComposite () {
+    public Composite getComposite() {
         return _composite;
     }
 
     /** Get the bounds. This is the child's bounding box stretched
      * by the "halo."
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         Rectangle2D b = getChild().getBounds();
-        Rectangle2D bounds = new Rectangle2D.Double(
-                b.getX() - _halo,
-                b.getY() - _halo,
-                b.getWidth() + 2 * _halo,
-                b.getHeight() + 2 * _halo);
+        Rectangle2D bounds = new Rectangle2D.Double(b.getX() - _halo,
+                b.getY() - _halo, b.getWidth() + (2 * _halo),
+                b.getHeight() + (2 * _halo));
 
         return bounds;
     }
 
     /** Get the halo.
      */
-    public float getHalo () {
+    public float getHalo() {
         return _halo;
     }
 
     /** Get the paint.
      */
-    public Paint getPaint () {
+    public Paint getPaint() {
         return _paint;
     }
 
@@ -141,7 +139,7 @@ public class BasicHighlighter extends FigureDecorator {
     /** Return false. This method always returns false, as it
      * is meaningless (and dangerous!) to be able to hit a highlight.
      */
-    public boolean hit (Rectangle2D region) {
+    public boolean hit(Rectangle2D region) {
         return false;
     }
 
@@ -149,7 +147,7 @@ public class BasicHighlighter extends FigureDecorator {
      * instance will have the same paint, halo, and composite
      * as this one.
      */
-    public FigureDecorator newInstance (Figure f) {
+    public FigureDecorator newInstance(Figure f) {
         return new BasicHighlighter(_paint, _halo, _composite, _stroke);
     }
 
@@ -157,10 +155,11 @@ public class BasicHighlighter extends FigureDecorator {
      * the contained figure's bounding box stretched by the halo. It
      * then paints the contained figure.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (_composite != null) {
             g.setComposite(_composite);
         }
+
         g.setPaint(_paint);
 
         // Draw the highlight
@@ -169,14 +168,14 @@ public class BasicHighlighter extends FigureDecorator {
         Rectangle2D bounds = getChild().getShape().getBounds2D();
         double x = bounds.getX() - _halo;
         double y = bounds.getY() - _halo;
-        double w = bounds.getWidth() + 2 * _halo;
-        double h = bounds.getHeight() + 2 * _halo;
+        double w = bounds.getWidth() + (2 * _halo);
+        double h = bounds.getHeight() + (2 * _halo);
 
         if (_stroke == null) {
-            g.fill(new Rectangle2D.Double(x,y,w,h));
+            g.fill(new Rectangle2D.Double(x, y, w, h));
         } else {
             g.setStroke(_stroke);
-            g.draw(new Rectangle2D.Double(x,y,w,h));
+            g.draw(new Rectangle2D.Double(x, y, w, h));
         }
 
         // Draw the child
@@ -187,7 +186,7 @@ public class BasicHighlighter extends FigureDecorator {
      * repaint() call, with a larger region, in order to ensure
      * that the highlight is repainted.
      */
-    public void repaint (DamageRegion d) {
+    public void repaint(DamageRegion d) {
         repaint();
     }
 
@@ -196,17 +195,14 @@ public class BasicHighlighter extends FigureDecorator {
      * figure, and requests a repaint of that box stretched
      * in each direction by the halo.
      */
-    public void repaint () {
+    public void repaint() {
         Rectangle2D bounds = getChild().getBounds();
         double x = bounds.getX() - _halo;
         double y = bounds.getY() - _halo;
-        double w = bounds.getWidth() + 2 * _halo;
-        double h = bounds.getHeight() + 2 * _halo;
+        double w = bounds.getWidth() + (2 * _halo);
+        double h = bounds.getHeight() + (2 * _halo);
 
         getParent().repaint(DamageRegion.createDamageRegion(
-                                    getTransformContext(),
-                                    x,y,w,h));
+                getTransformContext(), x, y, w, h));
     }
 }
-
-

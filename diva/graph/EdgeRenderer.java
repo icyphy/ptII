@@ -27,8 +27,10 @@
 
 */
 package diva.graph;
+
 import diva.canvas.Site;
 import diva.canvas.connector.Connector;
+
 
 /**
  * A factory which creates a visual representation (EdgeFigure)
@@ -48,5 +50,3 @@ public interface EdgeRenderer {
      */
     public Connector render(Object edge, Site tailSite, Site headSite);
 }
-
-

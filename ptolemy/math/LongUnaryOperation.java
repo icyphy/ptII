@@ -27,7 +27,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 
@@ -42,7 +41,6 @@ package ptolemy.math;
     @Pt.AcceptedRating Red (ctsay)
 */
 public interface LongUnaryOperation {
-
     /** Operate on the operand, returning a value of the same type. */
     long operate(long operand);
 }

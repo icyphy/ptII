@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.data.DoubleToken;
@@ -40,6 +39,7 @@ import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PowerLossChannel
@@ -105,7 +105,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class PowerLossChannel extends LimitedRangeChannel {
-
     /** Construct a channel with the given name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown. If the name argument
@@ -117,32 +116,33 @@ public class PowerLossChannel extends LimitedRangeChannel {
      *   an actor already in the container.
      */
     public PowerLossChannel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the default properties.  Note that this type is a
         // subtype of the base class type (it includes more fields).
-        defaultProperties.setExpression(
-                "{range = Infinity, power = Infinity}");
+        defaultProperties.setExpression("{range = Infinity, power = Infinity}");
 
         // Force the type of the defaultProperties to at least include
         // the range field. This must be done after setting the value
         // above, because the value in the base class is not a subtype
         // of this specified type.
-        String[] labels = {"range", "power"};
-        Type[] types = {BaseType.DOUBLE, BaseType.DOUBLE};
+        String[] labels = { "range", "power" };
+        Type[] types = { BaseType.DOUBLE, BaseType.DOUBLE };
         RecordType type = new RecordType(labels, types);
+
         // Setting an upper bound allows the addition of fields.
         defaultProperties.setTypeAtMost(type);
 
         powerPropagationFactor = new Parameter(this, "powerPropagationFactor");
         powerPropagationFactor.setTypeEquals(BaseType.DOUBLE);
         powerPropagationFactor.setExpression(
-                "1.0 / (4 * PI * distance * distance)");
+            "1.0 / (4 * PI * distance * distance)");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+
     /** The default formula for the power loss factor.
      *  This value, when multiplied by the transmit power, yields
      *  the power density (per unit area) at a receiver. It can
@@ -170,31 +170,28 @@ public class PowerLossChannel extends LimitedRangeChannel {
      *  @exception IllegalActionException If the properties cannot
      *   be transformed. Not thrown in this base class.
      */
-    public RecordToken transformProperties(
-            RecordToken properties,
-            WirelessIOPort source,
-            WirelessIOPort destination)
-            throws IllegalActionException {
+    public RecordToken transformProperties(RecordToken properties,
+        WirelessIOPort source, WirelessIOPort destination)
+        throws IllegalActionException {
         // Use the superclass to merge the record argument with the
         // default properties and to apply registered transformers.
-        RecordToken merged = super.transformProperties(
-                properties, source, destination);
+        RecordToken merged = super.transformProperties(properties, source,
+                destination);
 
         // Get the transmit power.
-        ScalarToken transmitPower = (ScalarToken)merged.get("power");
+        ScalarToken transmitPower = (ScalarToken) merged.get("power");
 
         // Evaluate the power loss factor, which will have been updated
         // with the new value of "distance."
-        double powerPropagationFactorValue
-            = ((DoubleToken)powerPropagationFactor.getToken()).doubleValue();
+        double powerPropagationFactorValue = ((DoubleToken) powerPropagationFactor
+            .getToken()).doubleValue();
 
         // Calculate the receive power.
-        double receivePower
-            = transmitPower.doubleValue() * powerPropagationFactorValue;
+        double receivePower = transmitPower.doubleValue() * powerPropagationFactorValue;
 
         // Create a record token with the receive power.
-        String[] names = {"power"};
-        Token[] values = {new DoubleToken(receivePower)};
+        String[] names = { "power" };
+        Token[] values = { new DoubleToken(receivePower) };
         RecordToken newPower = new RecordToken(names, values);
 
         // Merge the receive power into the merged token.
@@ -202,10 +199,9 @@ public class PowerLossChannel extends LimitedRangeChannel {
 
         // Report the new received power.
         if (_debugging) {
-            _debug(" * receive properties: \""
-                    + result.toString()
-                    + "\".");
+            _debug(" * receive properties: \"" + result.toString() + "\".");
         }
+
         return result;
     }
 }

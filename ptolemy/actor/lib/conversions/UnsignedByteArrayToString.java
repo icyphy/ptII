@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.ArrayToken;
@@ -36,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 ///////////////////////////////////////////////////////////////
 /// UnsignedByteArrayToString
@@ -51,9 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (winthrop)
    @Pt.AcceptedRating Red (winthrop)
 */
-
 public class UnsignedByteArrayToString extends Converter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -63,7 +61,7 @@ public class UnsignedByteArrayToString extends Converter {
      *   actor with this name.
      */
     public UnsignedByteArrayToString(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
@@ -90,10 +88,11 @@ public class UnsignedByteArrayToString extends Converter {
     public void fire() throws IllegalActionException {
         ArrayToken dataArrayToken = (ArrayToken) input.get(0);
         byte[] dataBytes = new byte[dataArrayToken.length()];
+
         for (int j = 0; j < dataArrayToken.length(); j++) {
-            UnsignedByteToken dataToken =
-                (UnsignedByteToken)dataArrayToken.getElement(j);
-            dataBytes[j] = (byte)dataToken.byteValue();
+            UnsignedByteToken dataToken = (UnsignedByteToken) dataArrayToken
+                .getElement(j);
+            dataBytes[j] = (byte) dataToken.byteValue();
         }
 
         // Convert using the default character encoding.
@@ -109,25 +108,7 @@ public class UnsignedByteArrayToString extends Converter {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

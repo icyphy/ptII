@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BitwiseOperationToken
+
 /*
   The operations that can be performed on tokens that have bitwise operations.
 
@@ -40,9 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
   @Pt.ProposedRating Green (neuendor)
   @Pt.AcceptedRating Yellow (wbwu)
 */
-
 public interface BitwiseOperationToken {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -54,7 +53,7 @@ public interface BitwiseOperationToken {
      *  sense for this type.
      */
     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Returns a token representing the bitwise NOT of this token.
      *  @return The bitwise NOT of this token.
@@ -62,8 +61,7 @@ public interface BitwiseOperationToken {
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
-    public BitwiseOperationToken bitwiseNot()
-            throws IllegalActionException;
+    public BitwiseOperationToken bitwiseNot() throws IllegalActionException;
 
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.
@@ -73,7 +71,7 @@ public interface BitwiseOperationToken {
      *  sense for this type.
      */
     public BitwiseOperationToken bitwiseOr(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.
@@ -83,5 +81,5 @@ public interface BitwiseOperationToken {
      *  sense for this type.
      */
     public BitwiseOperationToken bitwiseXor(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 }

@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.graph;
+
 import diva.canvas.Figure;
+
 
 /**
  * A factory which creates a visual representation (Figure)
@@ -42,5 +44,3 @@ public interface NodeRenderer {
      */
     public Figure render(Object node);
 }
-
-

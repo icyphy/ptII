@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sequence
+
 /**
  * This actor produces a sequence of values, optionally periodically repeating
  * them. The <i>values</i> parameter contains an ArrayToken that specifies the
@@ -62,9 +63,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */
-
 public class Sequence extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -75,7 +74,7 @@ public class Sequence extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public Sequence(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // set values parameter
@@ -93,7 +92,7 @@ public class Sequence extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType)values.getType();
+        ArrayType valuesArrayType = (ArrayType) values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
     }
@@ -132,10 +131,9 @@ public class Sequence extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Sequence newObject = (Sequence)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Sequence newObject = (Sequence) super.clone(workspace);
+        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
@@ -148,10 +146,11 @@ public class Sequence extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (enable.getWidth() == 0
-                        || (enable.hasToken(0)
-                    && ((BooleanToken)enable.get(0)).booleanValue())) {
-            ArrayToken valuesArray = (ArrayToken)values.getToken();
+        if ((enable.getWidth() == 0)
+                || (enable.hasToken(0)
+                && ((BooleanToken) enable.get(0)).booleanValue())) {
+            ArrayToken valuesArray = (ArrayToken) values.getToken();
+
             if (_currentIndex < valuesArray.length()) {
                 output.send(0, valuesArray.getElement(_currentIndex));
                 _outputProduced = true;
@@ -177,23 +176,27 @@ public class Sequence extends TypedAtomicActor {
         if (_outputProduced) {
             _outputProduced = false;
             _currentIndex += 1;
-            ArrayToken valuesArray = (ArrayToken)values.getToken();
+
+            ArrayToken valuesArray = (ArrayToken) values.getToken();
+
             if (_currentIndex >= valuesArray.length()) {
-                boolean repeatValue = ((BooleanToken)repeat.getToken()).booleanValue();
+                boolean repeatValue = ((BooleanToken) repeat.getToken())
+                    .booleanValue();
+
                 if (repeatValue) {
-                        _currentIndex = 0;
+                    _currentIndex = 0;
                 } else {
-                        // To prevent overflow...
+                    // To prevent overflow...
                     _currentIndex = valuesArray.length();
                 }
             }
         }
+
         return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The index of the next value to be produced.
     private int _currentIndex;
 

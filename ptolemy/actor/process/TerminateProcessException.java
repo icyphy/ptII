@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.process;
 
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TerminateProcessException
+
 /**
    This exception is thrown to terminate a process. This is only a
    notification exception that a ProcessDirector uses to terminate all the
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.Nameable;
    @Pt.AcceptedRating Yellow (mudit)
 */
 public class TerminateProcessException extends RuntimeException {
-
     // NOTE: This class has much duplicated code with KernelException,
     // but because it needs to be a RuntimeException, there seemed to
     // be no way to avoid this.  Should there be an interface defined
@@ -84,10 +84,11 @@ public class TerminateProcessException extends RuntimeException {
      *  @param detail The message.
      */
     public TerminateProcessException(Nameable object1, Nameable object2,
-            String detail) {
+        String detail) {
         String object1String = _getFullName(object1);
         String object2String = _getFullName(object2);
         String prefix;
+
         if (!object1String.equals("")) {
             if (!object2String.equals("")) {
                 prefix = new String(object1String + " and " + object2String);
@@ -97,7 +98,9 @@ public class TerminateProcessException extends RuntimeException {
         } else {
             prefix = object2String;
         }
+
         _setMessage(prefix);
+
         if (detail != null) {
             if (!detail.equals("")) {
                 if (!prefix.equals("")) {
@@ -128,6 +131,7 @@ public class TerminateProcessException extends RuntimeException {
      */
     protected String _getFullName(Nameable object) {
         String name;
+
         if (object == null) {
             return "";
         } else {
@@ -137,6 +141,7 @@ public class TerminateProcessException extends RuntimeException {
                 name = object.getName();
             }
         }
+
         return name;
     }
 
@@ -147,14 +152,17 @@ public class TerminateProcessException extends RuntimeException {
      */
     protected String _getName(Nameable object) {
         String name;
+
         if (object == null) {
             return "";
         } else {
             name = object.getName();
+
             if (name.equals("")) {
                 name = new String("<Unnamed Object>");
             }
         }
+
         return name;
     }
 
@@ -167,7 +175,6 @@ public class TerminateProcessException extends RuntimeException {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The detail message.
-    private String _message ;
+    private String _message;
 }

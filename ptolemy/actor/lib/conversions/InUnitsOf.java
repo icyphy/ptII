@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.lib.Transformer;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InUnitsOf
+
 /**
    An actor that converts input tokens to specified units by dividing the
    input by the value of the <i>units</i> parameter.  This actor is designed
@@ -59,9 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class InUnitsOf extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>units</i> parameter. Initialize <i>units</i>
@@ -74,7 +73,7 @@ public class InUnitsOf extends Transformer {
      *   actor with this name.
      */
     public InUnitsOf(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         units = new Parameter(this, "units", new DoubleToken(1.0));
 
@@ -101,9 +100,9 @@ public class InUnitsOf extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            DoubleToken in = (DoubleToken)input.get(0);
-            DoubleToken out = (DoubleToken)in.inUnitsOf(
-                    (DoubleToken)units.getToken());
+            DoubleToken in = (DoubleToken) input.get(0);
+            DoubleToken out = (DoubleToken) in.inUnitsOf((DoubleToken) units
+                    .getToken());
             output.send(0, out);
         }
     }
@@ -113,10 +112,10 @@ public class InUnitsOf extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if ( !input.hasToken(0)) {
+        if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 }
-

@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
-// Ptolemy imports.
 import java.awt.Frame;
 
 import ptolemy.kernel.util.Attribute;
@@ -36,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditorFactory
+
 /**
    This is an attribute that can create an editor for interactively
    configuring its container. If you place an instance of this class
@@ -66,9 +66,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public abstract class EditorFactory extends Attribute {
-
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -78,7 +76,7 @@ public abstract class EditorFactory extends Attribute {
      *   an attribute already in the container.
      */
     public EditorFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -89,7 +87,7 @@ public abstract class EditorFactory extends Attribute {
      *  This editor will have no parent window.
      */
     public void createEditor() {
-        createEditor((NamedObj)getContainer(), null);
+        createEditor((NamedObj) getContainer(), null);
     }
 
     /** Create an editor for configuring the specified object.

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.string;
 
 import java.util.regex.Matcher;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringReplace
+
 /**
    On each firing, look for instances of the pattern specified by <i>pattern</i>
    in <i>stringToEdit</i> and replace them with the string given by
@@ -66,9 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (djstone)
    @Pt.AcceptedRating Green (net)
 */
-
 public class StringReplace extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,7 +77,7 @@ public class StringReplace extends TypedAtomicActor {
      *   actor with this name.
      */
     public StringReplace(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create new parameters and ports.
@@ -86,8 +85,7 @@ public class StringReplace extends TypedAtomicActor {
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
-        (new SingletonParameter(pattern.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(pattern.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         replaceAll = new Parameter(this, "replaceAll");
         replaceAll.setExpression("true");
@@ -96,14 +94,12 @@ public class StringReplace extends TypedAtomicActor {
         replacement = new PortParameter(this, "replacement");
         replacement.setStringMode(true);
         replacement.setExpression("");
-        (new SingletonParameter(replacement.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(replacement.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         stringToEdit = new PortParameter(this, "stringToEdit");
         stringToEdit.setStringMode(true);
         stringToEdit.setExpression("");
-        (new SingletonParameter(stringToEdit.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(stringToEdit.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
@@ -149,18 +145,18 @@ public class StringReplace extends TypedAtomicActor {
      *   compile.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == pattern) {
             try {
-                String patternValue
-                    = ((StringToken)pattern.getToken()).stringValue();
+                String patternValue = ((StringToken) pattern.getToken())
+                    .stringValue();
                 _pattern = Pattern.compile(patternValue);
             } catch (PatternSyntaxException ex) {
-                String patternValue
-                    = ((StringToken)pattern.getToken()).stringValue();
+                String patternValue = ((StringToken) pattern.getToken())
+                    .stringValue();
                 throw new IllegalActionException(this, ex,
-                        "Failed to compile regular expression \""
-                        + patternValue + "\"");
+                    "Failed to compile regular expression \"" + patternValue
+                    + "\"");
             }
         } else {
             super.attributeChanged(attribute);
@@ -178,26 +174,27 @@ public class StringReplace extends TypedAtomicActor {
         stringToEdit.update();
         pattern.update();
 
-        String replacementValue
-            = ((StringToken)replacement.getToken()).stringValue();
-        String stringToEditValue
-            = ((StringToken)stringToEdit.getToken()).stringValue();
-        boolean replaceAllTokens
-            = ((BooleanToken)replaceAll.getToken()).booleanValue();
+        String replacementValue = ((StringToken) replacement.getToken())
+            .stringValue();
+        String stringToEditValue = ((StringToken) stringToEdit.getToken())
+            .stringValue();
+        boolean replaceAllTokens = ((BooleanToken) replaceAll.getToken())
+            .booleanValue();
 
         Matcher match = _pattern.matcher(stringToEditValue);
         String outputString;
+
         if (replaceAllTokens) {
             outputString = match.replaceAll(replacementValue);
         } else {
             outputString = match.replaceFirst(replacementValue);
         }
+
         output.send(0, new StringToken(outputString));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The compiled regular expression.
     private Pattern _pattern;
 }

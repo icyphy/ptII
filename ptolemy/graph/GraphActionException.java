@@ -22,13 +22,14 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GraphActionException
+
 /**
    Exception for graph action errors. This is a non-RuntimeException and
    should be caught by calling methods.
@@ -40,7 +41,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (ssb)
 */
 public class GraphActionException extends IllegalActionException {
-
     /** Constructor with an argument of text description.
      *  @param message Detailed description of the error.
      */
@@ -48,4 +48,3 @@ public class GraphActionException extends IllegalActionException {
         super(message);
     }
 }
-

@@ -22,10 +22,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 // In theory, this class could be in ptolemy.graph, but that would
 // set up a two way dependency between ptolemy.actor and ptolemy.graph.
-
 package ptolemy.actor;
 
 import java.util.HashMap;
@@ -39,6 +37,7 @@ import ptolemy.graph.Node;
 
 ///////////////////////////////////////////////////////////////////////
 //// GraphReader
+
 /** This class provides methods for converting Ptolemy II models
     into generic graph representations. Portions of
     this code are based on examples from [1].
@@ -57,7 +56,6 @@ import ptolemy.graph.Node;
     @Pt.AcceptedRating Red (cxh)
 */
 public class GraphReader {
-
     /** Construct a new graph reader.
      */
     public GraphReader() {
@@ -82,49 +80,53 @@ public class GraphReader {
      *  composite actor contains an entry that is not an AtomicActor.
      */
     public Graph convert(CompositeActor compositeActor) {
-
         // Instantiate an empty graph.
         Graph graph = _initializeGraph(compositeActor);
 
         // Add all deeply-contained actors to the graph
         Iterator actors = compositeActor.deepEntityList().iterator();
+
         while (actors.hasNext()) {
             Object entity = actors.next();
-            if (entity instanceof AtomicActor ||
-                    entity instanceof CompositeActor) {
-                Actor actor = (Actor)entity;
+
+            if (entity instanceof AtomicActor
+                    || entity instanceof CompositeActor) {
+                Actor actor = (Actor) entity;
                 Node newNode = graph.addNodeWeight(_computeNodeWeight(actor));
                 _actorMap.put(actor, newNode);
                 _processNewNode(graph, newNode, actor);
             } else {
                 throw new RuntimeException("Unsupported deep entity type: "
-                        + entity.getClass().getName()
-                        + " (value = " + entity + ")");
+                    + entity.getClass().getName() + " (value = " + entity + ")");
             }
         }
 
         // Convert each connection in the model to a graph edge
         actors = compositeActor.deepEntityList().iterator();
+
         while (actors.hasNext()) {
-            Actor source = (Actor)(actors.next());
+            Actor source = (Actor) (actors.next());
 
             // Connect the current actor to each of its sinks
             Iterator outPorts = source.outputPortList().iterator();
-            while (outPorts.hasNext()) {
-                IOPort outPort = (IOPort)(outPorts.next());
-                Iterator inPorts =
-                    outPort.deepConnectedInPortList().iterator();
-                while (inPorts.hasNext()) {
-                    IOPort inPort = (IOPort)(inPorts.next());
-                    Actor sink = (Actor)(inPort.getContainer());
-                    if (graph.containsNode((Node)(_actorMap.get(sink)))) {
-                        if (_debug) System.out.println("Adding edge from "
-                                + source + " to " + sink);
 
-                        Edge newEdge =
-                            graph.addEdge((Node)(_actorMap.get(source)),
-                                    (Node)(_actorMap.get(sink)),
-                                    _computeEdgeWeight(outPort, inPort));
+            while (outPorts.hasNext()) {
+                IOPort outPort = (IOPort) (outPorts.next());
+                Iterator inPorts = outPort.deepConnectedInPortList().iterator();
+
+                while (inPorts.hasNext()) {
+                    IOPort inPort = (IOPort) (inPorts.next());
+                    Actor sink = (Actor) (inPort.getContainer());
+
+                    if (graph.containsNode((Node) (_actorMap.get(sink)))) {
+                        if (_debug) {
+                            System.out.println("Adding edge from " + source
+                                + " to " + sink);
+                        }
+
+                        Edge newEdge = graph.addEdge((Node) (_actorMap.get(
+                                    source)), (Node) (_actorMap.get(sink)),
+                                _computeEdgeWeight(outPort, inPort));
                         _processNewEdge(graph, newEdge, outPort, inPort);
                     }
                 }
@@ -190,7 +192,7 @@ public class GraphReader {
      *  @param sinkPort The sink port of the connection.
      */
     protected void _processNewEdge(Graph graph, Edge edge, IOPort sourcePort,
-            IOPort sinkPort) {
+        IOPort sinkPort) {
         return;
     }
 
@@ -209,7 +211,7 @@ public class GraphReader {
      * @param debug True will turn on debug mode, false will turn off debug
      * mode.
      */
-    protected void _setDebug(boolean  debug) {
+    protected void _setDebug(boolean debug) {
         _debug = debug;
     }
 
@@ -223,25 +225,22 @@ public class GraphReader {
     protected void _transformTopology(Graph graph) {
         if (_debug) {
             System.out.println("A dump of the graph before global "
-                    + "transformation:\n" + graph.toString() + "\n");
+                + "transformation:\n" + graph.toString() + "\n");
         }
 
         //write transform strategy here.
-
         if (_debug) {
             System.out.println("A dump of the graph after global "
-                    + "transformation:\n" + graph.toString() + "\n");
+                + "transformation:\n" + graph.toString() + "\n");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Flag for turning local debugging output on and off.
     private static boolean _debug = false;
 
     // Map from actors to the generic graph nodes that represent them.
     // Keys are instances of AtomicActor, and values are instances of Node.
     private HashMap _actorMap;
-
 }

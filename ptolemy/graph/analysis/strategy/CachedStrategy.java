@@ -21,14 +21,15 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CachedStrategy
+
 /**
    A base class for cached analyzers on graphs. To facilitate demand-driven
    and incremental recomputation (e.g., see [1]) of analyzers, analyzer results
@@ -60,9 +61,7 @@ import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
    @author Shuvra S. Bhattacharyya, Ming Yung Ko and Shahrooz Shahparnia
    @version $Id$
 */
-
 abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
-
     /** No instance of this object can be created as it is abstract.
      *  The derived classes will use it to initialize its internal data
      *  structures.
@@ -200,6 +199,7 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
         // only happens when the graph changes, as specified in the
         // contract of the method comment. (when caching is on)
         Object result = null;
+
         if (_cachingEnabled && obsolete()) {
             _cachedResult = _compute();
             _registerComputation();
@@ -211,6 +211,7 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
             // it is.
             result = _compute();
         }
+
         return _convertResult(result);
     }
 
@@ -228,7 +229,6 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The result of the most recent computation of the analysis, as determined
     // by _compute(), and without conversion by _convertResult().
     private Object _cachedResult = null;
@@ -239,6 +239,5 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
     // The change count of the associated graph that was in effect when the
     // the analysis was last performed.
     private long _lastComputation;
-
     private boolean _cachingEnabled = true;
 }

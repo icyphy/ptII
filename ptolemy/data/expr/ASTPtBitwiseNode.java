@@ -28,15 +28,16 @@ COPYRIGHTENDKEY
 Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.Map;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtBitwiseNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents bitwise operator(&, |, ^)
@@ -52,8 +53,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtBitwiseNode extends ASTPtRootNode {
-
-
     public ASTPtBitwiseNode(int id) {
         super(id);
     }
@@ -99,16 +98,17 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
         if (!super.isCongruent(node, renaming)) {
             return false;
         }
-        if (_lexicalToken.kind != ((ASTPtBitwiseNode)node)._lexicalToken.kind) {
+
+        if (_lexicalToken.kind != ((ASTPtBitwiseNode) node)._lexicalToken.kind) {
             return false;
         }
+
         return true;
     }
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitBitwiseNode(this);
     }
 

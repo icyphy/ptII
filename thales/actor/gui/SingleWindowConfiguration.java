@@ -46,8 +46,10 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 import thales.vergil.SingleWindowApplication;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SingleWindowConfiguration
+
 /**
    A Configuration that intercept created Tableau, and the content of its
    Frame into a TabbedPane.
@@ -59,7 +61,6 @@ import thales.vergil.SingleWindowApplication;
    @Pt.AcceptedRating Red (cxh)
 */
 public class SingleWindowConfiguration extends Configuration {
-
     /**
      * @param workspace
      */
@@ -82,24 +83,28 @@ public class SingleWindowConfiguration extends Configuration {
         // However, this does not appear to be necessary, and it
         // makes it impossible to return the tableau.
         // So we no longer do this.
-
         // If the object referenced by the effigy contains
         // an attribute that is an instance of TableauFactory,
         // then use that factory to create the tableau.
         // Otherwise, use the first factory encountered in the
         // configuration that agrees to represent this effigy.
         TableauFactory factory = null;
+
         if (effigy instanceof PtolemyEffigy) {
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
+
             if (model != null) {
-                Iterator factories =
-                    model.attributeList(TableauFactory.class).iterator();
+                Iterator factories = model.attributeList(TableauFactory.class)
+                                          .iterator();
+
                 // If there are more than one of these, use the first
                 // one that agrees to open the model.
-                while (factories.hasNext() && factory == null) {
+                while (factories.hasNext() && (factory == null)) {
                     factory = (TableauFactory) factories.next();
+
                     try {
                         Tableau tableau = factory.createTableau(effigy);
+
                         if (tableau != null) {
                             // The first tableau is a master if the container
                             // of the containing effigy is the model directory.
@@ -108,7 +113,9 @@ public class SingleWindowConfiguration extends Configuration {
                             if (effigy.masterEffigy() == effigy) {
                                 tableau.setMaster(true);
                             }
+
                             tableau.setEditable(effigy.isModifiable());
+
                             //THALES MODIF
                             catchTableau(tableau);
                             tableau.show();
@@ -121,22 +128,28 @@ public class SingleWindowConfiguration extends Configuration {
                 }
             }
         }
+
         // Defer to the configuration.
         // Create a tableau if there is a tableau factory.
         factory = (TableauFactory) getAttribute("tableauFactory");
+
         if (factory != null) {
             // If this fails, we do not want the effigy to linger
             try {
                 Tableau tableau = factory.createTableau(effigy);
+
                 if (tableau == null) {
                     throw new Exception("Tableau factory returns null.");
                 }
+
                 // The first tableau is a master if the container
                 // of the containing effigy is the model directory.
                 if (effigy.getContainer() instanceof ModelDirectory) {
                     tableau.setMaster(true);
                 }
+
                 tableau.setEditable(effigy.isModifiable());
+
                 //THALES MODIF
                 catchTableau(tableau);
                 tableau.show();
@@ -145,20 +158,17 @@ public class SingleWindowConfiguration extends Configuration {
                 // Note that we can't rethrow the exception here
                 // because removing the effigy may result in
                 // the application exiting.
-                MessageHandler.error(
-                        "Failed to open tableau for "
-                        + effigy.identifier.getExpression(),
-                        ex);
+                MessageHandler.error("Failed to open tableau for "
+                    + effigy.identifier.getExpression(), ex);
+
                 try {
                     effigy.setContainer(null);
                 } catch (KernelException kernelException) {
-                    throw new InternalErrorException(
-                            this,
-                            kernelException,
-                            null);
+                    throw new InternalErrorException(this, kernelException, null);
                 }
             }
         }
+
         return null;
     }
 
@@ -168,6 +178,7 @@ public class SingleWindowConfiguration extends Configuration {
      *
      * @param tableau tableau to catch
      */
+
     //THALES MODIF
     private void catchTableau(Tableau tableau) {
         if (SingleWindowApplication._mainFrame == null) {
@@ -175,6 +186,7 @@ public class SingleWindowConfiguration extends Configuration {
             mainView.setConfiguration(this);
             mainView.show();
         }
+
         SingleWindowApplication._mainFrame.newTabbedPanel(tableau);
     }
 
@@ -190,14 +202,16 @@ public class SingleWindowConfiguration extends Configuration {
      *   should not be thrown).
      */
     public Tableau openModel(NamedObj entity)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         // If the entity defers its MoML definition to another,
         // then open that other.
         InstantiableNamedObj deferredTo = null;
+
         if (entity instanceof InstantiableNamedObj) {
-            deferredTo = (InstantiableNamedObj)((InstantiableNamedObj)entity).getParent();
+            deferredTo = (InstantiableNamedObj) ((InstantiableNamedObj) entity)
+                .getParent();
         }
+
         if (deferredTo != null) {
             entity = deferredTo;
         }
@@ -205,6 +219,7 @@ public class SingleWindowConfiguration extends Configuration {
         // Search the model directory for an effigy that already
         // refers to this model.
         PtolemyEffigy effigy = getEffigy(entity);
+
         if (effigy != null) {
             // Found one.  Display all open tableaux.
             return effigy.showTableaux();
@@ -214,17 +229,19 @@ public class SingleWindowConfiguration extends Configuration {
             NamedObj topLevel = entity.toplevel();
 
             effigy = createEffigy(getEffigy(topLevel));
+
             if (effigy == null) {
                 effigy = new PtolemyEffigy(workspace());
             }
+
             effigy.setModel(entity);
 
             // Look to see whether the model has a URIAttribute.
             List attributes = entity.attributeList(URIAttribute.class);
+
             if (attributes.size() > 0) {
                 // The entity has a URI, which was probably
                 // inserted by MoMLParser.
-
                 URI uri = ((URIAttribute) attributes.get(0)).getURI();
 
                 // Set the URI and identifier of the effigy.
@@ -243,18 +260,20 @@ public class SingleWindowConfiguration extends Configuration {
                 // that is defined within the same file as the parent,
                 // probably.  Create a new PtolemyEffigy
                 // and open a tableau for it.
-
                 // Put the effigy inside the effigy of the parent,
                 // rather than directly into the directory.
                 NamedObj parent = (NamedObj) entity.getContainer();
                 PtolemyEffigy parentEffigy = null;
+
                 // Find the first container above in the hierarchy that
                 // has an effigy.
-                while (parent != null && parentEffigy == null) {
+                while ((parent != null) && (parentEffigy == null)) {
                     parentEffigy = getEffigy(parent);
                     parent = (NamedObj) parent.getContainer();
                 }
+
                 boolean isContainerSet = false;
+
                 if (parentEffigy != null) {
                     // OK, we can put it into this other effigy.
                     effigy.setName(parentEffigy.uniqueName(entity.getName()));
@@ -262,7 +281,6 @@ public class SingleWindowConfiguration extends Configuration {
 
                     // Set the identifier of the effigy to be that
                     // of the parent with the model name appended.
-
                     // Note that we add a # the first time, and
                     // then add . after that.  So
                     // file:/c:/foo.xml#bar.bif is ok, but
@@ -273,11 +291,13 @@ public class SingleWindowConfiguration extends Configuration {
                     // value if they xml edit files by hand. (cxh-4/02)
                     String entityName = parentEffigy.identifier.getExpression();
                     String separator = "#";
+
                     if (entityName.indexOf("#") > 0) {
                         separator = ".";
                     }
-                    effigy.identifier.setExpression(
-                            entityName + separator + entity.getName());
+
+                    effigy.identifier.setExpression(entityName + separator
+                        + entity.getName());
 
                     // Set the uri of the effigy to that of
                     // the parent.
@@ -286,6 +306,7 @@ public class SingleWindowConfiguration extends Configuration {
                     // Indicate success.
                     isContainerSet = true;
                 }
+
                 // If the above code did not find an effigy to put
                 // the new effigy within, then put it into the
                 // directory directly.
@@ -303,6 +324,7 @@ public class SingleWindowConfiguration extends Configuration {
 
     protected PtolemyEffigy createEffigy(PtolemyEffigy container) {
         PtolemyEffigy answer = null;
+
         if (container instanceof NavigableEffigy) {
             answer = new NavigableEffigy(workspace());
         }
@@ -313,17 +335,10 @@ public class SingleWindowConfiguration extends Configuration {
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.Configuration#openModel(java.net.URL, java.net.URL, java.lang.String, ptolemy.actor.gui.EffigyFactory)
      */
-    public Tableau openModel(
-            URL base,
-            URL in,
-            String identifier,
-            EffigyFactory factory)
-            throws Exception {
-
+    public Tableau openModel(URL base, URL in, String identifier,
+        EffigyFactory factory) throws Exception {
         //ModelValidator validator = new ModelValidator();
         //validator.filter(base);
-
         return super.openModel(base, in, identifier, factory);
     }
-
 }

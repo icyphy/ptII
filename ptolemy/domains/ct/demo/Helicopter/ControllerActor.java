@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.demo.Helicopter;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ControllerActor
+
 /**
    The controller for the helicopter. It has the form:
    <pre><code>
@@ -105,7 +106,7 @@ public class ControllerActor extends TypedAtomicActor {
      * @exception IllegalActionException If there is an internal error.
      */
     public ControllerActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputTm = new TypedIOPort(this, "inputTm");
         inputTm.setInput(true);
@@ -167,16 +168,16 @@ public class ControllerActor extends TypedAtomicActor {
         outputDA.setMultiport(false);
         outputDA.setTypeEquals(BaseType.DOUBLE);
 
-        _Iy = (double)0.271256;
+        _Iy = (double) 0.271256;
         paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));
 
-        _hm = (double)0.2943;
+        _hm = (double) 0.2943;
         paramHm = new Parameter(this, "hm", new DoubleToken(_hm));
 
-        _Mm = (double)25.23;
+        _Mm = (double) 25.23;
         paramMm = new Parameter(this, "Mm", new DoubleToken(_Mm));
 
-        _mass = (double)4.9;
+        _mass = (double) 4.9;
         paramMass = new Parameter(this, "Mass", new DoubleToken(_mass));
     }
 
@@ -188,62 +189,62 @@ public class ControllerActor extends TypedAtomicActor {
      *  @exception IllegalActionException If there's no input token
      *        when needed.
      */
-    public void fire() throws IllegalActionException{
-        double Tm = ((DoubleToken)inputTm.get(0)).doubleValue();
-        double DTm = ((DoubleToken)inputDTm.get(0)).doubleValue();
-        double DDTm = ((DoubleToken)inputDDTm.get(0)).doubleValue();
-        double Th = ((DoubleToken)inputTh.get(0)).doubleValue();
-        double DTh = ((DoubleToken)inputDTh.get(0)).doubleValue();
-        double A = ((DoubleToken)inputA.get(0)).doubleValue();
-        double Vx = ((DoubleToken)inputVx.get(0)).doubleValue();
-        double Vz = ((DoubleToken)inputVz.get(0)).doubleValue();
+    public void fire() throws IllegalActionException {
+        double Tm = ((DoubleToken) inputTm.get(0)).doubleValue();
+        double DTm = ((DoubleToken) inputDTm.get(0)).doubleValue();
+        double DDTm = ((DoubleToken) inputDDTm.get(0)).doubleValue();
+        double Th = ((DoubleToken) inputTh.get(0)).doubleValue();
+        double DTh = ((DoubleToken) inputDTh.get(0)).doubleValue();
+        double A = ((DoubleToken) inputA.get(0)).doubleValue();
+        double Vx = ((DoubleToken) inputVx.get(0)).doubleValue();
+        double Vz = ((DoubleToken) inputVz.get(0)).doubleValue();
 
         double CosTh2 = Math.pow(Math.cos(Th), 2);
         double SinTh2 = Math.pow(Math.sin(Th), 2);
-        double mass2 = _mass*_mass;
+        double mass2 = _mass * _mass;
+
         // compute inv(K)
-        double IK11 = ((_Mm*Tm*Math.sin(Th))/(_Iy*_mass) +
-                (_hm*Tm*Tm*Math.cos(A)*Math.sin(Th))/(_Iy*_mass)) /
-            ((_Mm*Tm*CosTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) +
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2));
+        double IK11 = (((_Mm * Tm * Math.sin(Th)) / (_Iy * _mass))
+            + ((_hm * Tm * Tm * Math.cos(A) * Math.sin(Th)) / (_Iy * _mass))) / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+            + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
+            + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
+            + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2)));
 
-        double IK12 = (-((_Mm*Tm*Math.cos(Th))/(_Iy*_mass)) -
-                (_hm*Tm*Tm*Math.cos(A)*Math.cos(Th))/(_Iy*_mass))/
-            ((_Mm*Tm*CosTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) +
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2));
+        double IK12 = (-((_Mm * Tm * Math.cos(Th)) / (_Iy * _mass))
+            - ((_hm * Tm * Tm * Math.cos(A) * Math.cos(Th)) / (_Iy * _mass))) / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+            + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
+            + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
+            + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2)));
 
-        double IK21 = Math.cos(Th)/
-            (_mass*((_Mm*Tm*CosTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) +
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2)));
+        double IK21 = Math.cos(Th) / (_mass * (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+            + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
+            + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
+            + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
 
-        double IK22 = Math.sin(Th)/
-            (_mass*((_Mm*Tm*CosTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) +
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2)));
+        double IK22 = Math.sin(Th) / (_mass * (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+            + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
+            + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
+            + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
 
-        double B1 = (3.0*DDTm*DTh*Math.cos(Th))/_mass -
-            (DTh*DTh*DTh*Tm*Math.cos(Th))/_mass +
-            (DTm*_hm*Tm*Math.cos(Th)*Math.sin(A))/(_Iy*_mass) +
-            (3.0*DTm*Math.cos(Th)*(A*_Mm + _hm*Tm*Math.sin(A)))/(_Iy*_mass) -
-            (3.0*DTh*DTh*DTm*Math.sin(Th))/_mass -
-            (3.0*DTh*Tm*(A*_Mm + _hm*Tm*Math.sin(A))*Math.sin(Th))/(_Iy*_mass);
+        double B1 = (((3.0 * DDTm * DTh * Math.cos(Th)) / _mass)
+            - ((DTh * DTh * DTh * Tm * Math.cos(Th)) / _mass)
+            + ((DTm * _hm * Tm * Math.cos(Th) * Math.sin(A)) / (_Iy * _mass))
+            + ((3.0 * DTm * Math.cos(Th) * ((A * _Mm)
+            + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass)))
+            - ((3.0 * DTh * DTh * DTm * Math.sin(Th)) / _mass)
+            - ((3.0 * DTh * Tm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math
+            .sin(Th)) / (_Iy * _mass));
 
-        double B2 = (3.8*DTh*DTh*DTm*Math.cos(Th))/_mass +
-            (3.0*DTh*Tm*Math.cos(Th)*(A*_Mm + _hm*Tm*Math.sin(A)))/(_Iy*_mass)+
-            (3.0*DDTm*DTh*Math.sin(Th))/_mass -
-            (DTh*DTh*DTh*Tm*Math.sin(Th))/_mass +
-            (DTm*_hm*Tm*Math.sin(A)*Math.sin(Th))/(_Iy*_mass) +
-            (3.0*DTm*(A*_Mm + _hm*Tm*Math.sin(A))*Math.sin(Th))/(_Iy*_mass);
+        double B2 = (((3.8 * DTh * DTh * DTm * Math.cos(Th)) / _mass)
+            + ((3.0 * DTh * Tm * Math.cos(Th) * ((A * _Mm)
+            + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass))
+            + ((3.0 * DDTm * DTh * Math.sin(Th)) / _mass))
+            - ((DTh * DTh * DTh * Tm * Math.sin(Th)) / _mass)
+            + ((DTm * _hm * Tm * Math.sin(A) * Math.sin(Th)) / (_Iy * _mass))
+            + ((3.0 * DTm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math.sin(Th)) / (_Iy * _mass));
 
-        double DDDTm = IK11*(B1+Vx) + IK12*(B2+Vz);
-        double DA = IK21*(B1+Vx) + IK22*(B2+Vz);
+        double DDDTm = (IK11 * (B1 + Vx)) + (IK12 * (B2 + Vz));
+        double DA = (IK21 * (B1 + Vx)) + (IK22 * (B2 + Vz));
         outputDDDTm.broadcast(new DoubleToken(DDDTm));
         outputDA.broadcast(new DoubleToken(DA));
     }
@@ -254,13 +255,13 @@ public class ControllerActor extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == paramIy) {
-            _Iy = ((DoubleToken)paramIy.getToken()).doubleValue();
+            _Iy = ((DoubleToken) paramIy.getToken()).doubleValue();
         } else if (att == paramHm) {
-            _hm = ((DoubleToken)paramHm.getToken()).doubleValue();
+            _hm = ((DoubleToken) paramHm.getToken()).doubleValue();
         } else if (att == paramMm) {
-            _Mm = ((DoubleToken)paramMm.getToken()).doubleValue();
+            _Mm = ((DoubleToken) paramMm.getToken()).doubleValue();
         } else if (att == paramMass) {
-            _mass = ((DoubleToken)paramMass.getToken()).doubleValue();
+            _mass = ((DoubleToken) paramMass.getToken()).doubleValue();
         }
     }
 
@@ -325,12 +326,8 @@ public class ControllerActor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private double _Iy;
-
     private double _hm;
-
     private double _Mm;
-
     private double _mass;
 }

@@ -24,11 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.unit;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitInEquality
+
 /** A place holder for the day there is a UnitInEquality
 
     @author Rowland R Johnson
@@ -37,11 +38,7 @@ package ptolemy.data.unit;
     @Pt.ProposedRating Red (rowland)
     @Pt.AcceptedRating Red (rowland)
 */
-
-public class UnitInEquality
-    extends UnitConstraint
-    implements UnitPresentation {
-
+public class UnitInEquality extends UnitConstraint implements UnitPresentation {
     /** Construct a UnitInEquality from the left and right hand sides.
      * @param lhs The left hand side.
      * @param rhs The right hand side.
@@ -49,5 +46,4 @@ public class UnitInEquality
     public UnitInEquality(UnitExpr lhs, UnitExpr rhs) {
         super(lhs, "<", rhs);
     }
-
 }

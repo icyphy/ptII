@@ -25,11 +25,8 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.c;
 
-// FIXME: cleanup imports
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,6 +37,7 @@ import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 
+
 /** A transformer that writes C source code.
     @author Shuvra S. Bhattacharyya
     @version $Id$
@@ -48,7 +46,6 @@ import soot.SootClass;
     @Pt.AcceptedRating Red (cxh)
 */
 public class CWriter extends SceneTransformer {
-
     /** Test if the internal transform associated with this writer has
      *  completed.
      *  @return True if the transform has completed.
@@ -69,7 +66,6 @@ public class CWriter extends SceneTransformer {
         return "outDir targetPackage";
     }
 
-
     /** Write out the C (.i, .h, interface Header) files.
      *  Sample option arguments:
      *  <code>-p wjtp.writeJimple1 outDir:jimple1</code>
@@ -81,8 +77,8 @@ public class CWriter extends SceneTransformer {
      *  file should be written
      */
     public void internalTransform(String phaseName, Map options) {
-        System.out.println("CWriter.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("CWriter.internalTransform(" + phaseName + ", "
+            + options + ")");
 
         // We use soot.Options to avoid confusion with
         // copernicus.c.options.
@@ -95,7 +91,6 @@ public class CWriter extends SceneTransformer {
 
         // FIXME: Remove the next line if things don't break without it
         // _completedTransform = true;
-
         // We need to cache the classes up front to avoid a concurrent
         // modification exception.
         ArrayList classList = new ArrayList();
@@ -109,11 +104,12 @@ public class CWriter extends SceneTransformer {
         StringBuffer sourcesList = new StringBuffer();
 
         for (Iterator sootClasses = classList.iterator();
-             sootClasses.hasNext(); ) {
-            SootClass sootClass = (SootClass)sootClasses.next();
+                sootClasses.hasNext();) {
+            SootClass sootClass = (SootClass) sootClasses.next();
 
             // Determine the base of the source code file names.
             String fileName;
+
             /* FIXME: Changed this to enable code generation in correct
              * directory.
              if (!outDir.equals("")) {
@@ -127,8 +123,8 @@ public class CWriter extends SceneTransformer {
              }
             */
             fileName = CNames.classNameToFileName(sootClass.getName());
-            //fileName += sootClass.getName();
 
+            //fileName += sootClass.getName();
             // FIXME: move these out of the loop?
             HeaderFileGenerator hGenerator = new HeaderFileGenerator();
             CodeFileGenerator cGenerator = new CodeFileGenerator();
@@ -145,27 +141,27 @@ public class CWriter extends SceneTransformer {
             Options.v().put("compileMode", "full");
             Options.v().put("verbose", "true");
             Options.v().put("runtimeDir", "../../runtime");
-            //Options.v().put("gcDir", null);
 
+            //Options.v().put("gcDir", null);
             RFG.init(classPath, sootClass.getName());
 
             // Figure out if this is the main class
             System.out.println("Main file: " + mainFile);
             System.out.println("Class name:" + sootClass.getName());
 
-
             boolean isMainClass = false;
             MainFileGenerator mGenerator = null;
+
             // FIXME: Testing purposes.
             if (true) {
-            //if (mainFile.equals(sootClass.getName())) {
-
+                //if (mainFile.equals(sootClass.getName())) {
                 isMainClass = true;
                 mGenerator = new MainFileGenerator();
             }
 
             //generate the .i.h, .h, and .c files
             System.out.println("Generating C code files for " + fileName);
+
             String code = null;
 
             /* FIXME: Remove this code.
@@ -187,10 +183,10 @@ public class CWriter extends SceneTransformer {
             // main class.
             try {
                 RequiredFileGenerator.generateTransitiveClosureOf(classPath,
-                        sootClass.getName());
+                    sootClass.getName());
             } catch (IOException exception) {
                 throw new RuntimeException("Could not generate transitive "
-                        + "closure during required file generation");
+                    + "closure during required file generation");
             }
 
             // Generate a main file, containing a C main function,
@@ -203,16 +199,14 @@ public class CWriter extends SceneTransformer {
             // Generate a makefile.
             MakeFileGenerator.generateMakeFile(classPath, sootClass.getName());
 
-
             System.out.println("Done generating C code files for " + fileName);
-
         }
+
         MakefileWriter.addMakefileSubstitution("@cFiles@",
-                sourcesList.toString());
+            sourcesList.toString());
 
         _completedTransform = true;
     }
-
 
     /** Return a new CWriter.
      *  @return The new CWriter.
@@ -221,12 +215,10 @@ public class CWriter extends SceneTransformer {
         return instance;
     }
 
-
     // Flag that indicates whether transform has been completed.
     private boolean _completedTransform = false;
-
     private static CWriter instance = new CWriter();
-    private CWriter() {}
 
+    private CWriter() {
+    }
 }
-

@@ -8,19 +8,16 @@ package ptolemy.actor.corba.util;
  * Thursday, January 18, 2001 7:07:59 PM PST
  */
 
-
 /* A CORBA compatible interface that implements the execution
  * methods of Ptolemy II.
  */
-public interface CorbaActorOperations
-{
-
+public interface CorbaActorOperations {
     /* Mirror the fire() method of Ptolemy II
      * executable interface.
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
-    void fire () throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+    void fire() throws ptolemy.actor.corba.util.CorbaIllegalActionException;
 
     /* Return the value (in the form of a string) of
      * a parameter.
@@ -29,14 +26,17 @@ public interface CorbaActorOperations
      * @exception CorbaUnknowParamException If the parameter
      *  name is not known by the actor.
      */
-    String getParameter (String paramName) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownParamException;
+    String getParameter(String paramName)
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
+            ptolemy.actor.corba.util.CorbaUnknownParamException;
 
     /* Mirror the initialize() method of Ptolemy II
      * executable interface.
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
-    void initialize () throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+    void initialize()
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
 
     /* Return true if the specified channel of the specified
      * port contains unsent data.
@@ -47,12 +47,15 @@ public interface CorbaActorOperations
      * @exception CorbaIndexOutofBoundException If the
      *   channel index is out of the width of the port.
      */
-    boolean hasData (String portName, short portIndex) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaUnknownPortException;
+    boolean hasData(String portName, short portIndex)
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
+            ptolemy.actor.corba.util.CorbaIndexOutofBoundException, 
+            ptolemy.actor.corba.util.CorbaUnknownPortException;
 
     /* Return true if there is a parameter of the specified
      * name defined in the actor.
      */
-    boolean hasParameter (String paramName);
+    boolean hasParameter(String paramName);
 
     /* Return true if there is a port of the specified name
      * and specified property contained by the actor.
@@ -61,7 +64,8 @@ public interface CorbaActorOperations
      * @param isOutput True if the port is an output port.
      * @param isMultiport True if the port is a multiport.
      */
-    boolean hasPort (String portName, boolean isInput, boolean isOutput, boolean isMultiport);
+    boolean hasPort(String portName, boolean isInput, boolean isOutput,
+        boolean isMultiport);
 
     /* Set the width of the specified port.
      * @param portName The name of the port.
@@ -73,28 +77,33 @@ public interface CorbaActorOperations
      * @exception CorbaUnknownPortException If the port is \
      *  not known by the actor.
      */
-    void setPortWidth (String portName, short width) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException;
+    void setPortWidth(String portName, short width)
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
+            ptolemy.actor.corba.util.CorbaUnknownPortException;
 
     /* Mirror the postfire() method of Ptolemy II
      * executable interface.
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
-    boolean postfire () throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+    boolean postfire()
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
 
     /* Mirror the prefire() method of Ptolemy II
      * executable interface.
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
-    boolean prefire () throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+    boolean prefire()
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
 
     /* Mirror the preinitialize() method of Ptolmey II
      * executable interface.
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
-    boolean preinitialize () throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+    boolean preinitialize()
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
 
     /* Set the value of the specified parameter.
      * @param paramName The parameter name.
@@ -106,21 +115,25 @@ public interface CorbaActorOperations
      * @exception CorbaIllegalValueException If the value
      *  is invalid for this parameter.
      */
-    void setParameter (String paramName, String paramValue) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownParamException, ptolemy.actor.corba.util.CorbaIllegalValueException;
+    void setParameter(String paramName, String paramValue)
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
+            ptolemy.actor.corba.util.CorbaUnknownParamException, 
+            ptolemy.actor.corba.util.CorbaIllegalValueException;
 
     /*  Mirror the stopFire() method of Ptolemy II
      * executable interface.
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
-    void stopFire () throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+    void stopFire() throws ptolemy.actor.corba.util.CorbaIllegalActionException;
 
     /* Mirror the terminate() method of Ptolemy II
      * executable interface.
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
-    void terminate () throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+    void terminate()
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
 
     /* Transfer the input data to the specified port.
      * @param portName The port name.
@@ -135,7 +148,11 @@ public interface CorbaActorOperations
      * @exception CorbaIllegalValueException If the value is not
      *  valid, e.g. the string cannot be converted to a value.
      */
-    void transferInput (String portName, short portIndex, String tokenValue) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaIllegalValueException;
+    void transferInput(String portName, short portIndex, String tokenValue)
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
+            ptolemy.actor.corba.util.CorbaUnknownPortException, 
+            ptolemy.actor.corba.util.CorbaIndexOutofBoundException, 
+            ptolemy.actor.corba.util.CorbaIllegalValueException;
 
     /* Transfer the output from an output port.
      * @param portName The port name
@@ -147,12 +164,15 @@ public interface CorbaActorOperations
      * @exception CorbaIndexOutofBoundException If the index
      *  number is out of the width of the port.
      */
-    String transferOutput (String portName, short portIndex) throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException;
+    String transferOutput(String portName, short portIndex)
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
+            ptolemy.actor.corba.util.CorbaUnknownPortException, 
+            ptolemy.actor.corba.util.CorbaIndexOutofBoundException;
 
     /* Mirror the wrapup() method of Ptolemy II
      * executable interface.
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
-    void wrapup () throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+    void wrapup() throws ptolemy.actor.corba.util.CorbaIllegalActionException;
 } // interface CorbaActorOperations

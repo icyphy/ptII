@@ -24,11 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.plot.demo;
 
-// This class is not in the ptolemy.plot package so that it is a
-// more realistic example.
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
@@ -41,8 +38,10 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TwoPlotExample
+
 /**
    TwoPlotExample is a simple example that uses displays two plots side by side
    To compile and run this application, do the following:
@@ -58,7 +57,6 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating red (cxh)
 */
 public class TwoPlotExample extends JFrame {
-
     /** We use a constructor here so that we can call methods
      *  directly on the Frame.  The main method is static
      *  so getting at the Frame is a little trickier.
@@ -84,9 +82,9 @@ public class TwoPlotExample extends JFrame {
         leftPlot.setXLabel("time");
         leftPlot.setYLabel("value");
         leftPlot.addYTick("-PI", -Math.PI);
-        leftPlot.addYTick("-PI/2", -Math.PI/2);
-        leftPlot.addYTick("0",0);
-        leftPlot.addYTick("PI/2", Math.PI/2);
+        leftPlot.addYTick("-PI/2", -Math.PI / 2);
+        leftPlot.addYTick("0", 0);
+        leftPlot.addYTick("PI/2", Math.PI / 2);
         leftPlot.addYTick("PI", Math.PI);
         leftPlot.setMarksStyle("none");
         leftPlot.setImpulses(true);
@@ -97,46 +95,46 @@ public class TwoPlotExample extends JFrame {
         boolean first = true;
 
         for (int i = 0; i <= 100; i++) {
-            leftPlot.addPoint(0, (double)i,
-                    5 * Math.cos(Math.PI * i/20), !first);
-            leftPlot.addPoint(1, (double)i,
-                    4.5 * Math.cos(Math.PI * i/25), !first);
-            leftPlot.addPoint(2, (double)i,
-                    4 * Math.cos(Math.PI * i/30), !first);
-            leftPlot.addPoint(3, (double)i,
-                    3.5* Math.cos(Math.PI * i/35), !first);
-            leftPlot.addPoint(4, (double)i,
-                    3 * Math.cos(Math.PI * i/40), !first);
-            leftPlot.addPoint(5, (double)i,
-                    2.5 * Math.cos(Math.PI * i/45), !first);
-            leftPlot.addPoint(6, (double)i,
-                    2 * Math.cos(Math.PI * i/50), !first);
-            leftPlot.addPoint(7, (double)i,
-                    1.5 * Math.cos(Math.PI * i/55), !first);
-            leftPlot.addPoint(8, (double)i,
-                    1 * Math.cos(Math.PI * i/60), !first);
-            leftPlot.addPoint(9, (double)i,
-                    0.5 * Math.cos(Math.PI * i/65), !first);
+            leftPlot.addPoint(0, (double) i, 5 * Math.cos((Math.PI * i) / 20),
+                !first);
+            leftPlot.addPoint(1, (double) i,
+                4.5 * Math.cos((Math.PI * i) / 25), !first);
+            leftPlot.addPoint(2, (double) i, 4 * Math.cos((Math.PI * i) / 30),
+                !first);
+            leftPlot.addPoint(3, (double) i,
+                3.5 * Math.cos((Math.PI * i) / 35), !first);
+            leftPlot.addPoint(4, (double) i, 3 * Math.cos((Math.PI * i) / 40),
+                !first);
+            leftPlot.addPoint(5, (double) i,
+                2.5 * Math.cos((Math.PI * i) / 45), !first);
+            leftPlot.addPoint(6, (double) i, 2 * Math.cos((Math.PI * i) / 50),
+                !first);
+            leftPlot.addPoint(7, (double) i,
+                1.5 * Math.cos((Math.PI * i) / 55), !first);
+            leftPlot.addPoint(8, (double) i, 1 * Math.cos((Math.PI * i) / 60),
+                !first);
+            leftPlot.addPoint(9, (double) i,
+                0.5 * Math.cos((Math.PI * i) / 65), !first);
             first = false;
-
         }
 
         // Create the right plot by reading in a file.
         rightPlot.setButtons(true);
         leftPlot.setSize(350, 300);
+
         File file = new File(".", "data.plt");
+
         try {
             rightPlot.clear(true);
             rightPlot.read(new FileInputStream(file));
         } catch (FileNotFoundException ex) {
             System.err.println("File not found: " + file + " : " + ex);
         } catch (IOException ex) {
-            System.err.println("Error reading input: " + file +
-                    " : " + ex);
+            System.err.println("Error reading input: " + file + " : " + ex);
         }
+
         // Override the title in the file.
         rightPlot.setTitle("Right Plot");
-
 
         // Layout the two plots
         GridBagLayout gridbag = new GridBagLayout();
@@ -163,12 +161,11 @@ public class TwoPlotExample extends JFrame {
         show();
     }
 
-
     /** main method called in a standalone java application.
      *  We simple instantiate this class, most of the work
      *  happens in the constructor.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         // We execute everything in the Swing Event Thread, see
         // the comment
         Runnable doAction = new Runnable() {
@@ -176,6 +173,7 @@ public class TwoPlotExample extends JFrame {
                     new TwoPlotExample();
                 }
             };
+
         SwingUtilities.invokeLater(doAction);
     }
 }

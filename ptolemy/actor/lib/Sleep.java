@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sleep
+
 /**
    On each firing, read at most one token from each input channel, sleep
    by the specified amount of real time, and then produce the same input
@@ -69,7 +70,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class Sleep extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -79,15 +79,15 @@ public class Sleep extends Transformer {
      *   actor with this name.
      */
     public Sleep(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         sleepTime = new PortParameter(this, "sleepTime");
         sleepTime.setExpression("0L");
         sleepTime.setTypeEquals(BaseType.LONG);
 
         Port sleepPort = sleepTime.getPort();
-        StringAttribute sleepCardinal
-                = new StringAttribute(sleepPort, "_cardinal");
+        StringAttribute sleepCardinal = new StringAttribute(sleepPort,
+                "_cardinal");
         sleepCardinal.setExpression("SOUTH");
 
         // Data type polymorphic, multiports.
@@ -114,9 +114,8 @@ public class Sleep extends Transformer {
      *   if one of the attributes cannot be cloned.
      *  @return A new instance of Sleep.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Sleep newObject = (Sleep)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Sleep newObject = (Sleep) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -135,30 +134,34 @@ public class Sleep extends Transformer {
     public void fire() throws IllegalActionException {
         int inputWidth = input.getWidth();
         Token[] inputs = new Token[inputWidth];
+
         for (int i = 0; i < inputWidth; i++) {
             if (input.hasToken(i)) {
                 inputs[i] = input.get(i);
             }
         }
+
         if (!_wasSleepCalledInFireYet) {
             try {
-                long sleepTimeValue
-                        = ((LongToken)sleepTime.getToken()).longValue();
+                long sleepTimeValue = ((LongToken) sleepTime.getToken())
+                    .longValue();
+
                 if (_debugging) {
-                    _debug(getName()
-                            + ": Wait for "
-                            + sleepTimeValue
-                            + " milliseconds.");
+                    _debug(getName() + ": Wait for " + sleepTimeValue
+                        + " milliseconds.");
                 }
+
                 Thread.sleep(sleepTimeValue);
             } catch (InterruptedException e) {
                 // Ignore...
             }
         }
+
         int outputWidth = output.getWidth();
+
         for (int i = 0; i < inputWidth; i++) {
             if (inputs[i] != null) {
-                if ( i < outputWidth) {
+                if (i < outputWidth) {
                     output.send(i, inputs[i]);
                 }
             }
@@ -187,7 +190,6 @@ public class Sleep extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // True if sleep was called in fire().  Sleep should only
     // be called once in fire() per iteration.
     private boolean _wasSleepCalledInFireYet = false;

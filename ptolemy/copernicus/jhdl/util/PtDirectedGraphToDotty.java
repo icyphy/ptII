@@ -24,18 +24,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.jhdl.util;
 
 import ptolemy.graph.*;
-import java.util.Iterator;
-import java.util.HashMap;
+
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PtDirectedGraphToDotty
+
 /**
    Convert a Soot DirectedGraph to dotty notation.
    @author Michael Wirthlin
@@ -44,46 +45,55 @@ import java.io.IOException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class PtDirectedGraphToDotty  extends GraphToDotty {
-
+public class PtDirectedGraphToDotty extends GraphToDotty {
     /**
      * Return a string which contains the DirectedGraph in dotty form
      * @param ename Title of the graph
      */
     public String convert(Object graph, String ename) {
-        DirectedGraph g = (DirectedGraph)graph;
-        int count=0;
-        HashMap hm=new HashMap();
+        DirectedGraph g = (DirectedGraph) graph;
+        int count = 0;
+        HashMap hm = new HashMap();
         StringBuffer sb = new StringBuffer();
-        sb.append(header("PtDirectedGraphToDotty",ename));
+        sb.append(header("PtDirectedGraphToDotty", ename));
+
         for (Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
-            Node source = (Node)nodes.next();
-            String name="v" + count++;
-            sb.append("\t\""+name+"\"");
+            Node source = (Node) nodes.next();
+            String name = "v" + count++;
+            sb.append("\t\"" + name + "\"");
 
             if (source.hasWeight()) {
                 sb.append(" [label=\""
-                        +convertSpecialsToEscapes(source.getWeight().toString())
-                        +"\"]");
+                    + convertSpecialsToEscapes(source.getWeight().toString())
+                    + "\"]");
             }
+
             sb.append(";\r\n");
             hm.put(source, name);
         }
+
         sb.append("\t// Edges\r\n");
-        for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();) {
-            Node source = (Node)nodes.next();
-            for (Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
-                Edge edge= (Edge)succs.next();
-                Node dest= edge.sink();
-                sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
+
+        for (Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
+            Node source = (Node) nodes.next();
+
+            for (Iterator succs = g.outputEdges(source).iterator();
+                    succs.hasNext();) {
+                Edge edge = (Edge) succs.next();
+                Node dest = edge.sink();
+                sb.append("\t\"" + hm.get(source) + "\" -> \"" + hm.get(dest)
+                    + "\"");
+
                 if (edge.hasWeight()) {
-                    sb.append(" [label=\""+
-                            convertSpecialsToEscapes(edge.getWeight().toString())
-                            +"\"]");
+                    sb.append(" [label=\""
+                        + convertSpecialsToEscapes(edge.getWeight().toString())
+                        + "\"]");
                 }
+
                 sb.append(";\r\n");
             }
         }
+
         sb.append("}\r\n");
         return sb.toString();
     }

@@ -26,7 +26,6 @@
    @ProposedRating Red (eal)
    @AcceptedRating Red (cxh)
 */
-
 package ptolemy.domains.de.lib.test;
 
 import ptolemy.actor.Director;
@@ -40,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 /**
    This actor fires itself five times at each time instant,
    then repeats the cycle one time unit later.  It outputs a ramp,
@@ -52,42 +52,43 @@ import ptolemy.kernel.util.Workspace;
    tests, connect two of these actors in cascade.
 */
 public class TestSource extends TypedAtomicActor {
-
     public TestSource(Workspace workspace) {
         super(workspace);
     }
 
     public TestSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+            + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     public TypedIOPort input;
     public TypedIOPort output;
 
     // NOTE: No clone() method, so don't clone this.
-
     public void fire() throws IllegalActionException {
         double increment = 0.0;
-        if (input.getWidth() > 0 && input.hasToken(0)) {
-            DoubleToken in = (DoubleToken)input.get(0);
+
+        if ((input.getWidth() > 0) && input.hasToken(0)) {
+            DoubleToken in = (DoubleToken) input.get(0);
             increment = in.doubleValue();
         }
+
         output.broadcast(new DoubleToken(value + increment));
         value += 1.0;
+
         Director director = getDirector();
         Time time = director.getModelTime();
         count++;
+
         if (count >= 5) {
             director.fireAt(this, time.add(1.0));
             count = 0;
@@ -99,6 +100,7 @@ public class TestSource extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         value = 0.0;
         count = 0;
+
         Director director = getDirector();
         director.fireAt(this, director.getModelTime());
     }

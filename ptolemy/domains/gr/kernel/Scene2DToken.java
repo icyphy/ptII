@@ -36,8 +36,10 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import diva.canvas.Figure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Scene2DToken
+
 /**
    A token that contains a two-dimension GR scene.  Two dimensional GR scenes are represented by Diva canvases.  This is used by the GR domain to get
    proper type checking across 2D GR actors.
@@ -50,7 +52,6 @@ import diva.canvas.Figure;
 
 */
 public class Scene2DToken extends Token {
-
     public Scene2DToken(Figure figure) {
         super();
         _figure = figure;
@@ -83,11 +84,12 @@ public class Scene2DToken extends Token {
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof Scene2DToken) {
             return new BooleanToken(this == token);
-        } else
+        } else {
             throw new IllegalActionException(
-                    "Equality test not supported between "
-                    + this.getClass().getName() + " and "
-                    + token.getClass().getName() + ".");
+                "Equality test not supported between "
+                + this.getClass().getName() + " and "
+                + token.getClass().getName() + ".");
+        }
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -102,7 +104,6 @@ public class Scene2DToken extends Token {
     }
 
     public static class Scene2DType implements Type, Serializable {
-
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -120,14 +121,13 @@ public class Scene2DToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
-        public Token convert(Token token)
-                throws IllegalActionException {
+        public Token convert(Token token) throws IllegalActionException {
             if (token instanceof Scene2DToken) {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                        + token +
-                        " into a scene graph token, which is not possible.");
+                    + token
+                    + " into a scene graph token, which is not possible.");
             }
         }
 
@@ -172,7 +172,6 @@ public class Scene2DToken extends Token {
         public int getTypeHash() {
             return Type.HASH_INVALID;
         }
-
 
         /** Determine if this type corresponds to an instantiable token
          *  classes. A BaseType is instantiable if it does not correspond

@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.kernel;
 
 import ptolemy.data.RecordToken;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PropertyTransformer
+
 /**
    Interface for transmit property transformers.  Property transformers
    are components that register with the channel a callback that they can
@@ -70,7 +71,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public interface PropertyTransformer {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -84,9 +84,7 @@ public interface PropertyTransformer {
      *  @exception IllegalActionException If the properties cannot be
      *   transformed for some reason.
      */
-    public RecordToken transformProperties(
-            RecordToken properties,
-            WirelessIOPort source,
-            WirelessIOPort destination)
-            throws IllegalActionException;
+    public RecordToken transformProperties(RecordToken properties,
+        WirelessIOPort source, WirelessIOPort destination)
+        throws IllegalActionException;
 }

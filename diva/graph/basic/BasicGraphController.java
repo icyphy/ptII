@@ -39,6 +39,7 @@ import diva.graph.NodeController;
 import diva.graph.NodeInteractor;
 import diva.graph.SimpleGraphController;
 
+
 /**
  * A basic implementation of GraphController, which works with
  * simple graphs that have edges connecting simple nodes. It
@@ -68,14 +69,13 @@ public class BasicGraphController extends SimpleGraphController {
 
     /** The filter for control operations
      */
-    private MouseFilter _controlFilter = new MouseFilter (
-            InputEvent.BUTTON1_MASK,
+    private MouseFilter _controlFilter = new MouseFilter(InputEvent.BUTTON1_MASK,
             InputEvent.CTRL_MASK);
 
     /**
      * Create a new basic controller with default node and edge controllers.
      */
-    public BasicGraphController () {
+    public BasicGraphController() {
         NodeController nc = new BasicNodeController(this);
         nc.setNodeRenderer(new BasicNodeRenderer(this));
         setNodeController(nc);
@@ -94,7 +94,7 @@ public class BasicGraphController extends SimpleGraphController {
      * the controller does not yet have a reference to its pane
      * at that time.
      */
-    protected void initializeInteraction () {
+    protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
 
         // Create and set up the selection dragger
@@ -108,14 +108,15 @@ public class BasicGraphController extends SimpleGraphController {
 
         // Create the interactor that drags new edges.
         _edgeCreator = new EdgeCreator(this) {
-                public Object createEdge() {
-                    Object semanticObject = new Integer(_globalCount++);
-                    BasicGraphModel bgm = (BasicGraphModel)getGraphModel();
-                    return bgm.createEdge(semanticObject);
-                }
-            };
+                    public Object createEdge() {
+                        Object semanticObject = new Integer(_globalCount++);
+                        BasicGraphModel bgm = (BasicGraphModel) getGraphModel();
+                        return bgm.createEdge(semanticObject);
+                    }
+                };
         _edgeCreator.setMouseFilter(_controlFilter);
-        ((NodeInteractor)getNodeController().getNodeInteractor()).addInteractor(_edgeCreator);
+        ((NodeInteractor) getNodeController().getNodeInteractor())
+        .addInteractor(_edgeCreator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -128,11 +129,9 @@ public class BasicGraphController extends SimpleGraphController {
     protected class NodeCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
             Object semanticObject = new Integer(_globalCount++);
-            BasicGraphModel bgm = (BasicGraphModel)getGraphModel();
+            BasicGraphModel bgm = (BasicGraphModel) getGraphModel();
             Object node = bgm.createNode(semanticObject);
-            addNode(node,  e.getLayerX(), e.getLayerY());
+            addNode(node, e.getLayerX(), e.getLayerY());
         }
     }
 }
-
-

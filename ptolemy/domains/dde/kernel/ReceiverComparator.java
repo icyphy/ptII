@@ -26,13 +26,14 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.kernel;
 
 import java.util.Comparator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ReceiverComparator
+
 /**
    A ReceiverComparator is used to sort receivers controlled by a time keeper.
    Receivers are sorted according to ReceiverTime and priority using the
@@ -58,7 +59,6 @@ import java.util.Comparator;
    @see ptolemy.domains.dde.kernel.DDEThread
 */
 public class ReceiverComparator implements Comparator {
-
     /**
      */
     public ReceiverComparator(TimeKeeper cntlr) {
@@ -80,11 +80,13 @@ public class ReceiverComparator implements Comparator {
     public int compare(Object object1, Object object2) {
         PrioritizedTimedQueue receiver1 = null;
         PrioritizedTimedQueue receiver2 = null;
-        if ( object1 instanceof PrioritizedTimedQueue ) {
-            receiver1 = (PrioritizedTimedQueue)object1;
+
+        if (object1 instanceof PrioritizedTimedQueue) {
+            receiver1 = (PrioritizedTimedQueue) object1;
         }
-        if ( object2 instanceof PrioritizedTimedQueue ) {
-            receiver2 = (PrioritizedTimedQueue)object2;
+
+        if (object2 instanceof PrioritizedTimedQueue) {
+            receiver2 = (PrioritizedTimedQueue) object2;
         }
 
         //
@@ -92,35 +94,36 @@ public class ReceiverComparator implements Comparator {
         //
         double time1 = receiver1.getReceiverTime().getDoubleValue();
         double time2 = receiver2.getReceiverTime().getDoubleValue();
-        if ( time1 == PrioritizedTimedQueue.IGNORE ||
-                time2 == PrioritizedTimedQueue.IGNORE ) {
+
+        if ((time1 == PrioritizedTimedQueue.IGNORE)
+                || (time2 == PrioritizedTimedQueue.IGNORE)) {
             _timeKeeper._ignoredReceivers = true;
         } else {
             _timeKeeper._ignoredReceivers = false;
         }
 
         // Compare Nonnegative Time with Negative Time
-        if ( time1 >= 0 && time2 < 0 ) {
+        if ((time1 >= 0) && (time2 < 0)) {
             return -1;
-        } else if ( time1 < 0 && time2 >= 0 ) {
+        } else if ((time1 < 0) && (time2 >= 0)) {
             return 1;
         }
 
         // Compare Nonnegative Time with Nonnegative Time
-        if ( time1 >= 0 && time2 >= 0 ) {
-            if ( time1 < time2 ) {
+        if ((time1 >= 0) && (time2 >= 0)) {
+            if (time1 < time2) {
                 return -1;
-            } else if ( time1 > time2 ) {
+            } else if (time1 > time2) {
                 return 1;
             }
         }
 
         // Compare Negative Time with Negative Time
-        if ( time1 == PrioritizedTimedQueue.IGNORE &&
-                time2 == PrioritizedTimedQueue.INACTIVE ) {
+        if ((time1 == PrioritizedTimedQueue.IGNORE)
+                && (time2 == PrioritizedTimedQueue.INACTIVE)) {
             return -1;
-        } else if ( time1 == PrioritizedTimedQueue.INACTIVE &&
-                time2 == PrioritizedTimedQueue.IGNORE ) {
+        } else if ((time1 == PrioritizedTimedQueue.INACTIVE)
+                && (time2 == PrioritizedTimedQueue.IGNORE)) {
             return 1;
         }
 
@@ -130,9 +133,9 @@ public class ReceiverComparator implements Comparator {
         int priority1 = receiver1._priority;
         int priority2 = receiver2._priority;
 
-        if ( priority1 > priority2 ) {
+        if (priority1 > priority2) {
             return -1;
-        } else if ( priority1 < priority2 ) {
+        } else if (priority1 < priority2) {
             return 1;
         }
 
@@ -141,6 +144,5 @@ public class ReceiverComparator implements Comparator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private TimeKeeper _timeKeeper;
 }

@@ -29,7 +29,6 @@
    Created: September 2002
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.ArrayList;
@@ -41,8 +40,10 @@ import java.util.Map;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionDefinitionNode
+
 /**
    The parse tree created from function definitions of the form:
    <pre>
@@ -73,7 +74,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
-
     public ASTPtFunctionDefinitionNode(int id) {
         super(id);
     }
@@ -90,9 +90,9 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
      *   method throws it.
      */
     public Object clone() throws CloneNotSupportedException {
-        ASTPtFunctionDefinitionNode newNode =
-            (ASTPtFunctionDefinitionNode)super.clone();
-        newNode._argList = (ArrayList)_argList.clone();
+        ASTPtFunctionDefinitionNode newNode = (ASTPtFunctionDefinitionNode) super
+            .clone();
+        newNode._argList = (ArrayList) _argList.clone();
         return newNode;
     }
 
@@ -113,7 +113,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
      */
     public ASTPtRootNode getExpressionTree() {
         // The first children are the arguments.
-        return (ASTPtRootNode)jjtGetChild(jjtGetNumChildren() - 1);
+        return (ASTPtRootNode) jjtGetChild(jjtGetNumChildren() - 1);
     }
 
     /** Return true if this node is (hierarchically) congruent to the
@@ -129,27 +129,30 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
         if (!(node instanceof ASTPtFunctionDefinitionNode)) {
             return false;
         }
-        ASTPtFunctionDefinitionNode functionNode =
-            (ASTPtFunctionDefinitionNode)node;
+
+        ASTPtFunctionDefinitionNode functionNode = (ASTPtFunctionDefinitionNode) node;
 
         // The number of arguments must be the same.
-        if (getArgumentNameList().size() !=
-                functionNode.getArgumentNameList().size()) {
+        if (getArgumentNameList().size() != functionNode.getArgumentNameList()
+                                                            .size()) {
             return false;
         }
+
         Map newRenaming = new HashMap(renaming);
 
         Iterator argNames = functionNode.getArgumentNameList().iterator();
+
         for (Iterator names = getArgumentNameList().iterator();
-             names.hasNext();) {
-            String name = (String)names.next();
-            String argName = (String)argNames.next();
+                names.hasNext();) {
+            String name = (String) names.next();
+            String argName = (String) argNames.next();
             newRenaming.put(name, argName);
         }
 
         if (!super.isCongruent(node, newRenaming)) {
             return false;
         }
+
         return true;
     }
 
@@ -162,12 +165,10 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitFunctionDefinitionNode(this);
     }
 
     protected ArrayList _argList = new ArrayList();
     protected Type[] _argTypes = null;
 }
-

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.de.lib.test;
 
 import ptolemy.actor.Manager;
@@ -37,6 +36,7 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 /**
   @author Edward A. Lee
   @version $Id$
@@ -44,16 +44,13 @@ import ptolemy.kernel.util.NameDuplicationException;
   @Pt.AcceptedRating Red (cxh)
 */
 public class Mutate {
-
     public Manager manager;
-
     private Recorder _rec;
     private Clock _clock;
     private TypedCompositeActor _top;
     private DEDirector _director;
 
-    public Mutate() throws IllegalActionException,
-            NameDuplicationException {
+    public Mutate() throws IllegalActionException, NameDuplicationException {
         _top = new TypedCompositeActor();
         _top.setName("top");
         manager = new Manager();
@@ -72,24 +69,28 @@ public class Mutate {
     public void insertClock() {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(_top, "test2") {
-                public void _execute() throws IllegalActionException,
-                        NameDuplicationException {
+                public void _execute()
+                    throws IllegalActionException, NameDuplicationException {
                     _clock.output.unlinkAll();
                     _rec.input.unlinkAll();
+
                     Clock clock2 = new Clock(_top, "clock2");
                     clock2.values.setExpression("[2.0]");
                     clock2.offsets.setExpression("[0.5]");
                     clock2.period.setExpression("2.0");
+
                     Merge merge = new Merge(_top, "merge");
                     _top.connect(_clock.output, merge.input);
                     _top.connect(clock2.output, merge.input);
                     _top.connect(merge.output, _rec.input);
+
                     // Any pre-existing input port whose connections
                     // are modified needs to have this method called.
                     _rec.input.createReceivers();
                     _director.invalidateSchedule();
                 }
             };
+
         _top.requestChange(change);
     }
 }

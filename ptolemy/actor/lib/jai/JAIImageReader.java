@@ -27,10 +27,10 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.media.jai.JAI;
@@ -45,19 +45,13 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-// FIXME: we should not import com.sun classes.
-// http://java.sun.com/products/java-media/jai/forDevelopers/jai-apidocs/com/sun/media/jai/codec/FileCacheSeekableStream.html
-// says:
-// "This class is not a committed part of the JAI API. It may be
-// removed or changed in future releases of JAI."
-
 import com.sun.media.jai.codec.FileCacheSeekableStream;
 import com.sun.media.jai.codec.SeekableStream;
-import java.io.InputStream;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIImageReader
+
 /**
    This actor reads an image from a file or a URL.  The file or URL is
    specified using any form acceptable to FileParameter.  Supports BMP, FPX,
@@ -69,9 +63,7 @@ import java.io.InputStream;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIImageReader extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -81,7 +73,7 @@ public class JAIImageReader extends Source {
      *   actor with this name.
      */
     public JAIImageReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
@@ -107,7 +99,7 @@ public class JAIImageReader extends Source {
      *  @exception IllegalActionException If the URL is null.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileOrURL) {
             _fileURL = fileOrURL.asURL();
         } else {
@@ -121,11 +113,14 @@ public class JAIImageReader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         InputStream inputStream = null;
         SeekableStream seekableStream = null;
+
         try {
             try {
                 inputStream = _fileURL.openStream();
+
                 // We use a FileCacheSeekableStream here because
                 // we need to have a stream that can go backwards.
                 // If we are running under the windows installer, Web Start
@@ -134,9 +129,11 @@ public class JAIImageReader extends Source {
                 seekableStream = new FileCacheSeekableStream(inputStream);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Unable to load file '" + _fileURL + "'");
+                    "Unable to load file '" + _fileURL + "'");
             }
+
             _outputtedImage = JAI.create("stream", seekableStream);
+
             PlanarImage dummy = _outputtedImage.getRendering();
         } finally {
             if (seekableStream != null) {
@@ -144,20 +141,20 @@ public class JAIImageReader extends Source {
                     seekableStream.close();
                 } catch (Throwable throwable2) {
                     throw new IllegalActionException(this, throwable2,
-                            "Unable to close SeekableStream for '"
-                            + _fileURL + "'");
+                        "Unable to close SeekableStream for '" + _fileURL + "'");
                 }
             }
+
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (Throwable throwable3) {
                     throw new IllegalActionException(this, throwable3,
-                            "Unable to close InputStream for '"
-                            + _fileURL + "'");
+                        "Unable to close InputStream for '" + _fileURL + "'");
                 }
             }
         }
+
         output.send(0, new JAIImageToken(_outputtedImage));
     }
 

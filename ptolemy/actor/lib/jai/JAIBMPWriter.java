@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.jai;
 
 import ptolemy.data.BooleanToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.BMPEncodeParam;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIBMPWriter
+
 /**
    Write a javax.media.jai.RenderedOp to a specified BMP file.
 
@@ -62,7 +63,6 @@ import com.sun.media.jai.codec.BMPEncodeParam;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JAIBMPWriter extends JAIWriter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,7 +72,7 @@ public class JAIBMPWriter extends JAIWriter {
      *   actor with this name.
      */
     public JAIBMPWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileName.setExpression("file.bmp");
@@ -104,13 +104,14 @@ public class JAIBMPWriter extends JAIWriter {
      */
     public boolean postfire() throws IllegalActionException {
         _imageEncoderName = "BMP";
+
         // Set the encoding parameters.  Note that only Version 3
         // bitmaps are currently supported, otherwise it would be
         // a parameter.
         BMPEncodeParam bmpEncodeParam = new BMPEncodeParam();
         bmpEncodeParam.setVersion(BMPEncodeParam.VERSION_3);
-        bmpEncodeParam.setTopDown(
-                ((BooleanToken)storeTopDown.getToken()).booleanValue());
+        bmpEncodeParam.setTopDown(((BooleanToken) storeTopDown.getToken())
+            .booleanValue());
         _imageEncodeParam = bmpEncodeParam;
         return super.postfire();
     }

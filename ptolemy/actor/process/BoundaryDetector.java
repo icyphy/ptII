@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.actor.process;
 
 import java.util.Iterator;
@@ -36,8 +35,10 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.kernel.ComponentEntity;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BoundaryDetector
+
 /**
    A BoundaryDetector determines the topological relationship of a Receiver
    with respect to boundary ports.
@@ -50,7 +51,6 @@ import ptolemy.kernel.ComponentEntity;
 
 */
 public class BoundaryDetector {
-
     /** Construct a BoundaryDetector with the specified containing
      *  receiver.
      *  @param receiver The receiver containing this BoundaryDetector.
@@ -72,54 +72,57 @@ public class BoundaryDetector {
      *  boundary port; return false otherwise.
      */
     public boolean isConnectedToBoundary() {
-        if ( _connectedBoundaryCacheIsOn ) {
+        if (_connectedBoundaryCacheIsOn) {
             return _isConnectedBoundaryValue;
         } else {
-            IOPort contPort = (IOPort)_receiver.getContainer();
-            if ( contPort == null ) {
+            IOPort contPort = (IOPort) _receiver.getContainer();
+
+            if (contPort == null) {
                 _connectedBoundaryCacheIsOn = false;
                 _isConnectedBoundaryValue = false;
                 return _isConnectedBoundaryValue;
             }
-            ComponentEntity contEntity =
-                (ComponentEntity)contPort.getContainer();
+
+            ComponentEntity contEntity = (ComponentEntity) contPort
+                .getContainer();
             IOPort connectedPort = null;
             ComponentEntity connectedEntity = null;
 
             Iterator ports = contPort.connectedPortList().iterator();
+
             while (ports.hasNext()) {
-                connectedPort = (IOPort)ports.next();
-                connectedEntity =
-                    (ComponentEntity)connectedPort.getContainer();
-                if (connectedEntity == contEntity.getContainer()
-                        && connectedPort.isInput()
-                        && connectedPort.isOpaque()) {
+                connectedPort = (IOPort) ports.next();
+                connectedEntity = (ComponentEntity) connectedPort.getContainer();
+
+                if ((connectedEntity == contEntity.getContainer())
+                        && connectedPort.isInput() && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
                     // Now determine if this receiver's channel is
                     // connected to the boundary port.
-                    Receiver[][] receivers =
-                        connectedPort.deepGetReceivers();
-                    for ( int i = 0; i < receivers.length; i++ ) {
-                        for ( int j = 0; j < receivers[i].length; j++ ) {
-                            if ( _receiver == receivers[i][j] ) {
+                    Receiver[][] receivers = connectedPort.deepGetReceivers();
+
+                    for (int i = 0; i < receivers.length; i++) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            if (_receiver == receivers[i][j]) {
                                 _connectedBoundaryCacheIsOn = true;
                                 _isConnectedBoundaryValue = true;
                                 return true;
                             }
                         }
                     }
-                } else if ( connectedPort.isOpaque()
+                } else if (connectedPort.isOpaque()
                         && !connectedEntity.isAtomic()
-                        && connectedPort.isOutput() ) {
+                        && connectedPort.isOutput()) {
                     // The port container of this receiver is
                     // connected to the outside of a boundary port.
                     // Now determine if this receiver's channel is
                     // connected to the boundary port.
                     Receiver[][] receivers = connectedPort.getRemoteReceivers();
-                    for ( int i = 0; i < receivers.length; i++ ) {
-                        for ( int j = 0; j < receivers[i].length; j++ ) {
-                            if ( _receiver == receivers[i][j] ) {
+
+                    for (int i = 0; i < receivers.length; i++) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            if (_receiver == receivers[i][j]) {
                                 _connectedBoundaryCacheIsOn = true;
                                 _isConnectedBoundaryValue = true;
                                 return true;
@@ -128,6 +131,7 @@ public class BoundaryDetector {
                     }
                 }
             }
+
             _connectedBoundaryCacheIsOn = true;
             _isConnectedBoundaryValue = false;
             return _isConnectedBoundaryValue;
@@ -143,37 +147,39 @@ public class BoundaryDetector {
      *  inside of a boundary port; return false otherwise.
      */
     public boolean isConnectedToBoundaryInside() {
-        if ( _connectedInsideOfBoundaryCacheIsOn ) {
+        if (_connectedInsideOfBoundaryCacheIsOn) {
             return _isConnectedInsideOfBoundaryValue;
         } else {
-            IOPort contPort = (IOPort)_receiver.getContainer();
-            if ( contPort == null ) {
+            IOPort contPort = (IOPort) _receiver.getContainer();
+
+            if (contPort == null) {
                 _connectedInsideOfBoundaryCacheIsOn = false;
                 _isConnectedInsideOfBoundaryValue = false;
                 return _isConnectedInsideOfBoundaryValue;
             }
-            ComponentEntity contEntity =
-                (ComponentEntity)contPort.getContainer();
+
+            ComponentEntity contEntity = (ComponentEntity) contPort
+                .getContainer();
             IOPort connectedPort = null;
             ComponentEntity connectedEntity = null;
 
             Iterator ports = contPort.connectedPortList().iterator();
-            while ( ports.hasNext() ) {
-                connectedPort = (IOPort)ports.next();
-                connectedEntity =
-                    (ComponentEntity)connectedPort.getContainer();
-                if ( connectedEntity == contEntity.getContainer()
-                        && connectedPort.isInput()
-                        && connectedPort.isOpaque()) {
+
+            while (ports.hasNext()) {
+                connectedPort = (IOPort) ports.next();
+                connectedEntity = (ComponentEntity) connectedPort.getContainer();
+
+                if ((connectedEntity == contEntity.getContainer())
+                        && connectedPort.isInput() && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
                     // Now determine if this receiver's channel is
                     // connected to the boundary port.
-                    Receiver[][] receivers =
-                        connectedPort.deepGetReceivers();
-                    for ( int i = 0; i < receivers.length; i++ ) {
-                        for ( int j = 0; j < receivers[i].length; j++ ) {
-                            if ( _receiver == receivers[i][j] ) {
+                    Receiver[][] receivers = connectedPort.deepGetReceivers();
+
+                    for (int i = 0; i < receivers.length; i++) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            if (_receiver == receivers[i][j]) {
                                 _connectedInsideOfBoundaryCacheIsOn = true;
                                 _isConnectedInsideOfBoundaryValue = true;
                                 return true;
@@ -182,6 +188,7 @@ public class BoundaryDetector {
                     }
                 }
             }
+
             _connectedInsideOfBoundaryCacheIsOn = true;
             _isConnectedInsideOfBoundaryValue = false;
             return _isConnectedInsideOfBoundaryValue;
@@ -199,33 +206,35 @@ public class BoundaryDetector {
      *  outside of a boundary port; return false otherwise.
      */
     public boolean isConnectedToBoundaryOutside() {
-        if ( _connectedOutsideOfBoundaryCacheIsOn ) {
+        if (_connectedOutsideOfBoundaryCacheIsOn) {
             return _isConnectedOutsideOfBoundaryValue;
         } else {
-            IOPort contPort = (IOPort)_receiver.getContainer();
-            if ( contPort == null ) {
+            IOPort contPort = (IOPort) _receiver.getContainer();
+
+            if (contPort == null) {
                 _connectedOutsideOfBoundaryCacheIsOn = false;
                 _isConnectedOutsideOfBoundaryValue = false;
                 return _isConnectedOutsideOfBoundaryValue;
             }
 
             Iterator ports = contPort.connectedPortList().iterator();
-            while ( ports.hasNext() ) {
-                IOPort connectedPort = (IOPort)ports.next();
-                ComponentEntity connectedEntity =
-                    (ComponentEntity)connectedPort.getContainer();
-                if ( connectedPort.isOpaque()
-                        && !connectedEntity.isAtomic()
-                        && connectedPort.isOutput() ) {
+
+            while (ports.hasNext()) {
+                IOPort connectedPort = (IOPort) ports.next();
+                ComponentEntity connectedEntity = (ComponentEntity) connectedPort
+                    .getContainer();
+
+                if (connectedPort.isOpaque() && !connectedEntity.isAtomic()
+                        && connectedPort.isOutput()) {
                     // The port container of this receiver is
                     // connected to the outside of a boundary port.
                     // Now determine if this receiver's channel is
                     // connected to the boundary port.
-                    Receiver[][] receivers =
-                        connectedPort.getRemoteReceivers();
-                    for ( int i = 0; i < receivers.length; i++ ) {
-                        for ( int j = 0; j < receivers[i].length; j++ ) {
-                            if ( _receiver == receivers[i][j] ) {
+                    Receiver[][] receivers = connectedPort.getRemoteReceivers();
+
+                    for (int i = 0; i < receivers.length; i++) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            if (_receiver == receivers[i][j]) {
                                 _connectedOutsideOfBoundaryCacheIsOn = true;
                                 _isConnectedOutsideOfBoundaryValue = true;
                                 return true;
@@ -234,6 +243,7 @@ public class BoundaryDetector {
                     }
                 }
             }
+
             _connectedOutsideOfBoundaryCacheIsOn = true;
             _isConnectedOutsideOfBoundaryValue = false;
             return _isConnectedOutsideOfBoundaryValue;
@@ -250,38 +260,43 @@ public class BoundaryDetector {
      *  inside of a boundary port; return false otherwise.
      */
     public boolean isInsideBoundary() {
-        if ( _insideBoundaryCacheIsOn ) {
+        if (_insideBoundaryCacheIsOn) {
             return _isInsideBoundaryValue;
         } else {
-            IOPort innerPort = (IOPort)_receiver.getContainer();
-            if ( innerPort == null ) {
+            IOPort innerPort = (IOPort) _receiver.getContainer();
+
+            if (innerPort == null) {
                 _insideBoundaryCacheIsOn = false;
                 _isInsideBoundaryValue = false;
                 return _isInsideBoundaryValue;
             }
-            ComponentEntity innerEntity =
-                (ComponentEntity)innerPort.getContainer();
-            if ( innerEntity != null
-                    && !innerEntity.isAtomic() && innerPort.isOpaque() ) {
+
+            ComponentEntity innerEntity = (ComponentEntity) innerPort
+                .getContainer();
+
+            if ((innerEntity != null) && !innerEntity.isAtomic()
+                    && innerPort.isOpaque()) {
                 // The containing receiver is contained by the port
                 // of a composite actor.
-                if ( innerPort.isOutput() && !innerPort.isInput() ) {
+                if (innerPort.isOutput() && !innerPort.isInput()) {
                     _isInsideBoundaryValue = true;
-                } else if ( !innerPort.isOutput() && innerPort.isInput() ) {
+                } else if (!innerPort.isOutput() && innerPort.isInput()) {
                     _isInsideBoundaryValue = false;
-                } else if ( !innerPort.isOutput() && !innerPort.isInput() ) {
+                } else if (!innerPort.isOutput() && !innerPort.isInput()) {
                     _isInsideBoundaryValue = false;
                 } else {
                     // CONCERN: The following only works if the port
                     // is not both an input and output.
                     throw new IllegalArgumentException("A port that "
-                            + "is both an input and output can not be "
-                            + "properly dealt with by "
-                            + "PNQueueReceiver.isInsideBoundary");
+                        + "is both an input and output can not be "
+                        + "properly dealt with by "
+                        + "PNQueueReceiver.isInsideBoundary");
                 }
+
                 _insideBoundaryCacheIsOn = true;
                 return _isInsideBoundaryValue;
             }
+
             _insideBoundaryCacheIsOn = true;
             _isInsideBoundaryValue = false;
             return _isInsideBoundaryValue;
@@ -298,38 +313,43 @@ public class BoundaryDetector {
      *  outside of a boundary port; return false otherwise.
      */
     public boolean isOutsideBoundary() {
-        if ( _outsideBoundaryCacheIsOn ) {
+        if (_outsideBoundaryCacheIsOn) {
             return _isInsideBoundaryValue;
         } else {
-            IOPort innerPort = (IOPort)_receiver.getContainer();
-            if ( innerPort == null ) {
+            IOPort innerPort = (IOPort) _receiver.getContainer();
+
+            if (innerPort == null) {
                 _outsideBoundaryCacheIsOn = false;
                 _isOutsideBoundaryValue = false;
                 return _isOutsideBoundaryValue;
             }
-            ComponentEntity innerEntity =
-                (ComponentEntity)innerPort.getContainer();
-            if ( innerEntity != null
-                    && !innerEntity.isAtomic() && innerPort.isOpaque() ) {
+
+            ComponentEntity innerEntity = (ComponentEntity) innerPort
+                .getContainer();
+
+            if ((innerEntity != null) && !innerEntity.isAtomic()
+                    && innerPort.isOpaque()) {
                 // The containing receiver is contained by the port
                 // of a composite actor.
-                if ( innerPort.isOutput() && !innerPort.isInput() ) {
+                if (innerPort.isOutput() && !innerPort.isInput()) {
                     _isOutsideBoundaryValue = false;
-                } else if ( !innerPort.isOutput() && innerPort.isInput() ) {
+                } else if (!innerPort.isOutput() && innerPort.isInput()) {
                     _isOutsideBoundaryValue = true;
-                } else if ( !innerPort.isOutput() && !innerPort.isInput() ) {
+                } else if (!innerPort.isOutput() && !innerPort.isInput()) {
                     _isOutsideBoundaryValue = false;
                 } else {
                     // CONCERN: The following only works if the port
                     // is not both an input and output.
                     throw new IllegalArgumentException("A port that "
-                            + "is both an input and output can not be "
-                            + "properly dealt with by "
-                            + "PNQueueReceiver.isInsideBoundary");
+                        + "is both an input and output can not be "
+                        + "properly dealt with by "
+                        + "PNQueueReceiver.isInsideBoundary");
                 }
+
                 _outsideBoundaryCacheIsOn = true;
                 return _isOutsideBoundaryValue;
             }
+
             _outsideBoundaryCacheIsOn = true;
             _isOutsideBoundaryValue = false;
             return _isOutsideBoundaryValue;
@@ -349,22 +369,15 @@ public class BoundaryDetector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private Receiver _receiver;
-
     private boolean _insideBoundaryCacheIsOn = false;
     private boolean _isInsideBoundaryValue = false;
-
     private boolean _outsideBoundaryCacheIsOn = false;
     private boolean _isOutsideBoundaryValue = false;
-
     private boolean _connectedBoundaryCacheIsOn = false;
     private boolean _isConnectedBoundaryValue = false;
-
     private boolean _connectedInsideOfBoundaryCacheIsOn = false;
     private boolean _isConnectedInsideOfBoundaryValue = false;
-
     private boolean _connectedOutsideOfBoundaryCacheIsOn = false;
     private boolean _isConnectedOutsideOfBoundaryValue = false;
-
 }

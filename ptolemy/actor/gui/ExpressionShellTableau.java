@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.util.Set;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionShellTableau
+
 /**
    A tableau that provides an interactive shell for evaluating expressions.
 
@@ -59,9 +60,7 @@ import ptolemy.kernel.util.NamedObj;
    @see ShellTextArea
    @see ExpressionShellEffigy
 */
-public class ExpressionShellTableau extends Tableau
-    implements ShellInterpreter {
-
+public class ExpressionShellTableau extends Tableau implements ShellInterpreter {
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
      *  and having the specified name.  The frame is not made visible
@@ -74,7 +73,7 @@ public class ExpressionShellTableau extends Tableau
      *   an entity with the specified name.
      */
     public ExpressionShellTableau(ExpressionShellEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         frame = new ExpressionShellFrame(this);
         setFrame(frame);
@@ -94,6 +93,7 @@ public class ExpressionShellTableau extends Tableau
         if (command.trim().equals("")) {
             return "";
         }
+
         PtParser parser = new PtParser();
         ASTPtRootNode node = parser.generateSimpleAssignmentParseTree(command);
         String targetName = null;
@@ -106,39 +106,42 @@ public class ExpressionShellTableau extends Tableau
             node = assignmentNode.getExpressionTree();
         }
 
-        final NamedObj model =
-            ((ExpressionShellEffigy)getContainer()).getModel();
+        final NamedObj model = ((ExpressionShellEffigy) getContainer())
+            .getModel();
         ParserScope scope = new ModelScope() {
                 public ptolemy.data.Token get(String name)
-                        throws IllegalActionException {
-                    Variable result = getScopedVariable(
-                            null, model, name);
+                    throws IllegalActionException {
+                    Variable result = getScopedVariable(null, model, name);
+
                     if (result != null) {
                         return result.getToken();
                     } else {
                         return null;
                     }
                 }
+
                 public ptolemy.data.type.Type getType(String name)
-                        throws IllegalActionException {
-                    Variable result = getScopedVariable(
-                            null, model, name);
+                    throws IllegalActionException {
+                    Variable result = getScopedVariable(null, model, name);
+
                     if (result != null) {
                         return result.getType();
                     } else {
                         return null;
                     }
                 }
+
                 public InequalityTerm getTypeTerm(String name)
-                        throws IllegalActionException {
-                    Variable result = getScopedVariable(
-                            null, model, name);
+                    throws IllegalActionException {
+                    Variable result = getScopedVariable(null, model, name);
+
                     if (result != null) {
                         return result.getTypeTerm();
                     } else {
                         return null;
                     }
                 }
+
                 public Set identifierSet() {
                     return getAllScopedVariableNames(null, model);
                 }
@@ -149,14 +152,17 @@ public class ExpressionShellTableau extends Tableau
         // If a target was specified, instantiate a new token.
         if (targetName != null) {
             Attribute attribute = model.getAttribute(targetName);
-            if (attribute != null && !(attribute instanceof Parameter)) {
+
+            if ((attribute != null) && !(attribute instanceof Parameter)) {
                 attribute.setContainer(null);
                 attribute = null;
             }
+
             if (attribute == null) {
                 attribute = new Parameter(model, targetName);
             }
-            ((Parameter)attribute).setToken(result);
+
+            ((Parameter) attribute).setToken(result);
         }
 
         if (result == null) {
@@ -186,7 +192,6 @@ public class ExpressionShellTableau extends Tableau
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The parameter used for evaluation.
     private ParseTreeEvaluator _evaluator;
 
@@ -196,7 +201,6 @@ public class ExpressionShellTableau extends Tableau
     /** A factory that creates a control panel to display a Tcl Shell
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -206,7 +210,7 @@ public class ExpressionShellTableau extends Tableau
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -226,9 +230,8 @@ public class ExpressionShellTableau extends Tableau
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?
             if (effigy instanceof ExpressionShellEffigy) {
-                return new ExpressionShellTableau(
-                        (ExpressionShellEffigy)effigy,
-                        "ExpressionShellTableau");
+                return new ExpressionShellTableau((ExpressionShellEffigy) effigy,
+                    "ExpressionShellTableau");
             } else {
                 return null;
             }

@@ -30,6 +30,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
 
+
 /**
  * CompositeBuilder is a non-validating parser that uses other
  * builders to parse and generate XML files from arbitrary collections
@@ -53,8 +54,7 @@ public class CompositeBuilder extends AbstractXmlBuilder {
     /**
      * The DTD for builder declarations.
      */
-    public static final String DTD_1 =
-    "<!ELEMENT builderDecls (builder*)><!ATTLIST builderDecls ref CDATA #IMPLIED><!ATTLIST builder name CDATA #REQUIRED class CDATA #REQUIRED builder CDATA #REQUIRED>";
+    public static final String DTD_1 = "<!ELEMENT builderDecls (builder*)><!ATTLIST builderDecls ref CDATA #IMPLIED><!ATTLIST builder name CDATA #REQUIRED class CDATA #REQUIRED builder CDATA #REQUIRED>";
 
     /**
      * Indicates a recognizer class
@@ -89,20 +89,23 @@ public class CompositeBuilder extends AbstractXmlBuilder {
         XmlDocument doc = new XmlDocument();
         doc.setDTDPublicID(PUBLIC_ID);
         doc.setDTD(DTD_1);
+
         XmlReader reader = new XmlReader();
         reader.parse(doc, in);
+
         if (reader.getErrorCount() > 0) {
             throw new Exception("errors encountered during parsing");
         }
-        for (Iterator i = doc.getRoot().elements(); i.hasNext(); ) {
-            XmlElement builder = (XmlElement)i.next();
+
+        for (Iterator i = doc.getRoot().elements(); i.hasNext();) {
+            XmlElement builder = (XmlElement) i.next();
             String[] val = new String[2];
             val[0] = builder.getAttribute(CLASS_TAG);
             val[1] = builder.getAttribute(BUILDER_TAG);
             _builders.put(builder.getAttribute(TAG_TAG), val);
             _builders.put(builder.getAttribute(CLASS_TAG), val);
-            debug("Adding: " + builder.getAttribute(TAG_TAG)
-                    + "=>" + builder.getAttribute(BUILDER_TAG));
+            debug("Adding: " + builder.getAttribute(TAG_TAG) + "=>"
+                + builder.getAttribute(BUILDER_TAG));
         }
     }
 
@@ -114,15 +117,18 @@ public class CompositeBuilder extends AbstractXmlBuilder {
      * appropriate builder and calling that builder on the element.
      */
     public Object build(XmlElement elt, String type) throws Exception {
-        String[] val = (String[])_builders.get(type);
+        String[] val = (String[]) _builders.get(type);
+
         if (val == null) {
             if (getDelegate() == null) {
                 String err = "Unknown type: " + type;
                 throw new Exception(err);
             }
+
             return getDelegate().build(elt, type);
         }
-        XmlBuilder builder = (XmlBuilder)(Class.forName(val[1]).newInstance());
+
+        XmlBuilder builder = (XmlBuilder) (Class.forName(val[1]).newInstance());
         builder.setDelegate(this);
         return builder.build(elt, val[0]);
     }
@@ -132,15 +138,18 @@ public class CompositeBuilder extends AbstractXmlBuilder {
      * and calling that builder's generate method on the object.
      */
     public XmlElement generate(Object in) throws Exception {
-        String[] val = (String[])_builders.get(in.getClass().getName());
+        String[] val = (String[]) _builders.get(in.getClass().getName());
+
         if (val == null) {
             if (getDelegate() == null) {
                 String err = "Unknown type: " + in.getClass().getName();
                 throw new Exception(err);
             }
+
             return getDelegate().generate(in);
         }
-        XmlBuilder builder = (XmlBuilder)(Class.forName(val[1]).newInstance());
+
+        XmlBuilder builder = (XmlBuilder) (Class.forName(val[1]).newInstance());
         builder.setDelegate(this);
         return builder.generate(in);
     }
@@ -148,9 +157,10 @@ public class CompositeBuilder extends AbstractXmlBuilder {
     /**
      * Simple test of this class.
      */
-    public static void main (String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         if (args.length != 2) {
-            System.err.println("java CompositeBuilder <builderDeclsURI> <fileURI>");
+            System.err.println(
+                "java CompositeBuilder <builderDeclsURI> <fileURI>");
             System.exit(1);
         } else {
             XmlDocument doc = new XmlDocument();
@@ -158,8 +168,8 @@ public class CompositeBuilder extends AbstractXmlBuilder {
             CompositeBuilder builder = new CompositeBuilder();
             builder.addBuilderDecls(new FileReader(args[0]));
             reader.parse(doc, new FileReader(args[1]));
-            System.out.println("out = " + builder.build(doc.getRoot(), doc.getRoot().getType()));
+            System.out.println("out = "
+                + builder.build(doc.getRoot(), doc.getRoot().getType()));
         }
     }
 }
-

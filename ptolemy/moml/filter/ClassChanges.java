@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ClassChanges
+
 /** When this class is registered with the MoMLParser.setMoMLFilter()
     method, it will cause MoMLParser to filter so that models from
     earlier releases will run in the current release.
@@ -56,7 +57,6 @@ import ptolemy.moml.MoMLParser;
     @Pt.AcceptedRating Red (cxh)
 */
 public class ClassChanges implements MoMLFilter {
-
     /** If the attributeName is "class" and attributeValue names a
      *  class that needs to be renamed, then substitute in the new class
      *  name. If the attributeValue names a class that needs to be removed,
@@ -69,14 +69,12 @@ public class ClassChanges implements MoMLFilter {
      *  @param attributeValue The value of the attribute.
      *  @return the value of the attributeValue argument.
      */
-    public String filterAttributeValue(NamedObj container,
-            String element, String attributeName, String attributeValue) {
-
+    public String filterAttributeValue(NamedObj container, String element,
+        String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
         // are not making the same comparison more than once.
-
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first
@@ -88,17 +86,17 @@ public class ClassChanges implements MoMLFilter {
         // is:
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
-
         if (attributeName.equals("class")) {
             if (_classChanges.containsKey(attributeValue)) {
                 // We found a class with a class change.
                 MoMLParser.setModified(true);
-                return (String)_classChanges.get(attributeValue);
+                return (String) _classChanges.get(attributeValue);
             } else if (_classesToRemove.contains(attributeValue)) {
                 // We found a class to remove.
                 return null;
             }
         }
+
         return attributeValue;
     }
 
@@ -107,36 +105,40 @@ public class ClassChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {}
+        throws Exception {
+    }
 
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-        StringBuffer results =
-            new StringBuffer(getClass().getName()
-                    + ": change any class names that have been "
-                    + "renamed and remove obsolete classes.\n"
-                    + "Below are original class names followed by "
-                    + "the new class names:\n");
+        StringBuffer results = new StringBuffer(getClass().getName()
+                + ": change any class names that have been "
+                + "renamed and remove obsolete classes.\n"
+                + "Below are original class names followed by "
+                + "the new class names:\n");
         Iterator classNames = _classChanges.keySet().iterator();
+
         while (classNames.hasNext()) {
-            String className = (String)classNames.next();
+            String className = (String) classNames.next();
             results.append("\t" + className + "\t -> "
-                    + _classChanges.get(className) + "\n");
+                + _classChanges.get(className) + "\n");
         }
+
         results.append("\nBelow are the classes to remove:\n");
+
         Iterator classesToRemove = _classesToRemove.iterator();
+
         while (classesToRemove.hasNext()) {
-            String className = (String)classesToRemove.next();
+            String className = (String) classesToRemove.next();
             results.append("\t" + className + "\n");
         }
+
         return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Map of actor names a HashMap of property names to new classes.
     private static HashMap _classChanges;
 
@@ -147,78 +149,78 @@ public class ClassChanges implements MoMLFilter {
 
         // Location
         _classChanges.put("ptolemy.moml.Location",
-                "ptolemy.kernel.util.Location");
+            "ptolemy.kernel.util.Location");
 
         // New in 2.1-devel-2
         _classChanges.put("ptolemy.kernel.util.VersionAttribute",
-                "ptolemy.kernel.attributes.VersionAttribute");
+            "ptolemy.kernel.attributes.VersionAttribute");
 
         // New in 2.3-devel
         _classChanges.put("ptolemy.actor.lib.comm.SerialComm",
-                "ptolemy.actor.lib.io.comm.SerialComm");
+            "ptolemy.actor.lib.io.comm.SerialComm");
 
         // New in 3.1-devel
         _classChanges.put("ptolemy.domains.fsm.lib.RelationList",
-                "ptolemy.domains.fsm.kernel.RelationList");
+            "ptolemy.domains.fsm.kernel.RelationList");
 
         // Renamed in 3.1-devel
         _classChanges.put("ptolemy.vergil.icon.ImageEditorIcon",
-                "ptolemy.vergil.icon.ImageIcon");
+            "ptolemy.vergil.icon.ImageIcon");
 
         // Replaced FileAttribute with FileParameter in 3.2-devel
         _classChanges.put("ptolemy.kernel.attributes.FileAttribute",
-                "ptolemy.data.expr.FileParameter");
+            "ptolemy.data.expr.FileParameter");
 
         // SDFIOPort is obsolete as of 3.2-devel
         _classChanges.put("ptolemy.domains.sdf.kernel.SDFIOPort",
-                "ptolemy.actor.TypedIOPort");
+            "ptolemy.actor.TypedIOPort");
 
         // Moved MultiInstanceComposite
         _classChanges.put("ptolemy.actor.hoc.MultiInstanceComposite",
-                "ptolemy.actor.lib.hoc.MultiInstanceComposite");
+            "ptolemy.actor.lib.hoc.MultiInstanceComposite");
 
         // Moved ModalModel
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel",
-                "ptolemy.domains.fsm.modal.ModalModel");
+            "ptolemy.domains.fsm.modal.ModalModel");
 
         // Moved ModalTableauFactory
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory",
-                "ptolemy.vergil.fsm.modal.ModalTableauFactory");
+            "ptolemy.vergil.fsm.modal.ModalTableauFactory");
 
         // Moved ModalPort
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalPort",
-                "ptolemy.domains.fsm.modal.ModalPort");
+            "ptolemy.domains.fsm.modal.ModalPort");
 
         // Moved ModalController
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalController",
-                "ptolemy.domains.fsm.modal.ModalController");
+            "ptolemy.domains.fsm.modal.ModalController");
 
         // Moved Refinement
         _classChanges.put("ptolemy.vergil.fsm.modal.Refinement",
-                "ptolemy.domains.fsm.modal.Refinement");
+            "ptolemy.domains.fsm.modal.Refinement");
 
         // Moved RefinementPort
         _classChanges.put("ptolemy.vergil.fsm.modal.RefinementPort",
-                "ptolemy.domains.fsm.modal.RefinementPort");
+            "ptolemy.domains.fsm.modal.RefinementPort");
 
         // Moved TransitionRefinement
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinement",
-                "ptolemy.domains.fsm.modal.TransitionRefinement");
+            "ptolemy.domains.fsm.modal.TransitionRefinement");
 
         // Moved TransitionRefinementPort
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinementPort",
-                "ptolemy.domains.fsm.modal.TransitionRefinementPort");
+            "ptolemy.domains.fsm.modal.TransitionRefinementPort");
 
         // Moved IDAttribute from ptolemy.kernel.attributes to
         // ptolemy.vergil.kernel.atttributes
         _classChanges.put("ptolemy.kernel.attributes.IDAttribute",
-                "ptolemy.vergil.kernel.attributes.IDAttribute");
+            "ptolemy.vergil.kernel.attributes.IDAttribute");
 
         _classChanges.put("ptolemy.domains.gr.lib.ViewScreen",
-                "ptolemy.domains.gr.lib.ViewScreen3D");
+            "ptolemy.domains.gr.lib.ViewScreen3D");
 
         _classChanges.put("ptolemy.domains.sr.lib.Latch",
-                "ptolemy.domains.sr.lib.Current");
+            "ptolemy.domains.sr.lib.Current");
     }
 
     // Set of class names that are obsolete and should be simply

@@ -26,14 +26,15 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.process;
 
 import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver
+
 /**
    A ProcessReceiver is an interface for receivers in the process oriented
    domains. It adds methods to the Receiver interface for setting flags that
@@ -95,7 +96,6 @@ import ptolemy.data.Token;
 
 */
 public interface ProcessReceiver extends Receiver {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

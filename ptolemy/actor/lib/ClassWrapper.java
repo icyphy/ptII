@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.lang.reflect.Constructor;
@@ -53,8 +52,10 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ClassWrapper
+
 /**
    This actor wraps (an instance of) a Java class specified by the
    <i>className</i> parameter. The actor has no port when created.
@@ -89,9 +90,7 @@ import ptolemy.math.FixPoint;
    @Pt.ProposedRating Red (liuxj)
    @Pt.AcceptedRating Red (liuxj)
 */
-
 public class ClassWrapper extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructor, create
      *  the <i>className</i> parameter.
@@ -103,7 +102,7 @@ public class ClassWrapper extends TypedAtomicActor {
      *   actor with the specified name.
      */
     public ClassWrapper(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         className = new StringAttribute(this, "className");
     }
@@ -128,8 +127,10 @@ public class ClassWrapper extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Iterator inPorts = inputPortList().iterator();
+
         while (inPorts.hasNext()) {
-            IOPort inPort = (IOPort)inPorts.next();
+            IOPort inPort = (IOPort) inPorts.next();
+
             if (inPort.hasToken(0)) {
                 _invoke(inPort, inPort.get(0));
             }
@@ -149,44 +150,55 @@ public class ClassWrapper extends TypedAtomicActor {
             _class = Class.forName(className.getExpression());
         } catch (ClassNotFoundException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot find specified "
-                    + "class " + className.getExpression());
+                "Cannot find specified " + "class " + className.getExpression());
         }
 
         _methodTable = new Hashtable();
+
         Method[] methods = _class.getMethods();
         Iterator inPorts = inputPortList().iterator();
         boolean needInstance = false;
+
         while (inPorts.hasNext()) {
-            IOPort inPort = (IOPort)inPorts.next();
+            IOPort inPort = (IOPort) inPorts.next();
             String portName = inPort.getName();
             Method m = null;
+
             for (int i = 0; i < methods.length; ++i) {
                 if (methods[i].getName().equals(portName)) {
                     m = methods[i];
                     break;
                 }
             }
+
             if (m == null) {
-                throw new IllegalActionException(this, "The specified class "
-                        + "does not have a method of the same name as input "
-                        + "port " + portName);
+                throw new IllegalActionException(this,
+                    "The specified class "
+                    + "does not have a method of the same name as input "
+                    + "port " + portName);
             }
+
             Object[] methodInfo = new Object[3];
             methodInfo[0] = m;
             methodInfo[1] = m.getParameterTypes();
-            IOPort outPort = (IOPort)getPort(portName + "Result");
-            if (outPort != null && outPort.isOutput()) {
+
+            IOPort outPort = (IOPort) getPort(portName + "Result");
+
+            if ((outPort != null) && outPort.isOutput()) {
                 methodInfo[2] = outPort;
             } else {
                 methodInfo[2] = null;
             }
+
             _methodTable.put(inPort, methodInfo);
+
             if (!Modifier.isStatic(m.getModifiers())) {
                 needInstance = true;
             }
         }
+
         _instance = null;
+
         if (needInstance) {
             try {
                 // FIXME: here only try to use a constructor with no argument
@@ -194,44 +206,45 @@ public class ClassWrapper extends TypedAtomicActor {
                 _instance = constructor.newInstance(new Object[0]);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Cannot create an "
-                        + "instance of the specified class");
+                    "Cannot create an " + "instance of the specified class");
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Invoke on the wrapped instance the method with the same name as the
     // specified port, treating argv as the arguments.
     // NOTE: Should this method return a boolean, false when the invocation
     // fails? The actor may have an error output port, and send a token
     // to this port when invocation fails.
-    private void _invoke(IOPort port, Token argv)
-            throws IllegalActionException {
+    private void _invoke(IOPort port, Token argv) throws IllegalActionException {
         // assert port.isInput()
-        Object[] methodInfo = (Object[])_methodTable.get(port);
+        Object[] methodInfo = (Object[]) _methodTable.get(port);
+
         // when _methodTable is built, an entry for each input port is
         // guaranteed
-        Method m = (Method)methodInfo[0];
-        Class[] argTypes = (Class[])methodInfo[1];
+        Method m = (Method) methodInfo[0];
+        Class[] argTypes = (Class[]) methodInfo[1];
         int args = argTypes.length;
-        IOPort outPort = (IOPort)methodInfo[2];
+        IOPort outPort = (IOPort) methodInfo[2];
 
         // The following code is mostly copied from data.expr.ASTPtFunctionNode
-
         Object[] argValues = new Object[args];
+
         if (args > 0) {
             RecordToken argRecord = null;
+
             if (argv instanceof RecordToken) {
-                argRecord = (RecordToken)argv;
+                argRecord = (RecordToken) argv;
             } else if (args > 1) {
-                throw new IllegalActionException(this, "cannot convert "
-                        + "input token to method call arguments.");
+                throw new IllegalActionException(this,
+                    "cannot convert " + "input token to method call arguments.");
             }
+
             for (int i = 0; i < args; ++i) {
                 Token arg = null;
+
                 if (argRecord != null) {
                     arg = argRecord.get("arg" + (i + 1));
                 } else {
@@ -239,69 +252,71 @@ public class ClassWrapper extends TypedAtomicActor {
                     // and the input token is not a record token
                     arg = argv;
                 }
+
                 if (argTypes[i].isAssignableFrom(arg.getClass())) {
                     argValues[i] = arg;
                 } else if (arg instanceof DoubleToken) {
-                    argValues[i] =
-                        new Double(((DoubleToken)arg).doubleValue());
+                    argValues[i] = new Double(((DoubleToken) arg).doubleValue());
                 } else if (arg instanceof IntToken) {
-                    argValues[i] =
-                        new Integer(((IntToken)arg).intValue());
+                    argValues[i] = new Integer(((IntToken) arg).intValue());
                 } else if (arg instanceof LongToken) {
-                    argValues[i] =
-                        new Long(((LongToken)arg).longValue());
+                    argValues[i] = new Long(((LongToken) arg).longValue());
                 } else if (arg instanceof StringToken) {
-                    argValues[i] = ((StringToken)arg).stringValue();
+                    argValues[i] = ((StringToken) arg).stringValue();
                 } else if (arg instanceof BooleanToken) {
-                    argValues[i] =
-                        new Boolean(((BooleanToken)arg).booleanValue());
+                    argValues[i] = new Boolean(((BooleanToken) arg)
+                            .booleanValue());
                 } else if (arg instanceof ComplexToken) {
-                    argValues[i] = ((ComplexToken)arg).complexValue();
+                    argValues[i] = ((ComplexToken) arg).complexValue();
                 } else if (arg instanceof FixToken) {
-                    argValues[i] = ((FixToken)arg).fixValue();
+                    argValues[i] = ((FixToken) arg).fixValue();
                 } else {
                     argValues[i] = arg;
                 }
             }
         }
+
         Object result = null;
+
         try {
             result = m.invoke(_instance, argValues);
         } catch (InvocationTargetException ex) {
             // get the exception produced by the invoked function
             ex.getTargetException().printStackTrace();
             throw new IllegalActionException(this, ex.getTargetException(),
-                    "Error invoking method " + m.getName());
-        } catch (Exception ex)  {
+                "Error invoking method " + m.getName());
+        } catch (Exception ex) {
             new IllegalActionException(this, ex,
-                    "Error invoking method " + m.getName());
+                "Error invoking method " + m.getName());
         }
 
         Token resultToken = null;
+
         if (result == null) {
             // the method does not return value
             return;
         } else if (result instanceof Token) {
-            resultToken = (Token)result;
+            resultToken = (Token) result;
         } else if (result instanceof Double) {
-            resultToken = new DoubleToken(((Double)result).doubleValue());
+            resultToken = new DoubleToken(((Double) result).doubleValue());
         } else if (result instanceof Integer) {
-            resultToken = new IntToken(((Integer)result).intValue());
+            resultToken = new IntToken(((Integer) result).intValue());
         } else if (result instanceof Long) {
-            resultToken = new LongToken(((Long)result).longValue());
+            resultToken = new LongToken(((Long) result).longValue());
         } else if (result instanceof String) {
-            resultToken = new StringToken((String)result);
+            resultToken = new StringToken((String) result);
         } else if (result instanceof Boolean) {
-            resultToken = new BooleanToken(((Boolean)result).booleanValue());
+            resultToken = new BooleanToken(((Boolean) result).booleanValue());
         } else if (result instanceof Complex) {
-            resultToken = new ComplexToken((Complex)result);
+            resultToken = new ComplexToken((Complex) result);
         } else if (result instanceof FixPoint) {
-            resultToken = new FixToken((FixPoint)result);
+            resultToken = new FixToken((FixPoint) result);
         } else {
-            throw new IllegalActionException(this, "Result of method call "
-                    + port.getName() + " is not a supported type: boolean, "
-                    + "complex, fixpoint, double, int, long  and String, "
-                    + "or a Token.");
+            throw new IllegalActionException(this,
+                "Result of method call " + port.getName()
+                + " is not a supported type: boolean, "
+                + "complex, fixpoint, double, int, long  and String, "
+                + "or a Token.");
         }
 
         if (outPort != null) {
@@ -311,7 +326,6 @@ public class ClassWrapper extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A hash table containing the method invocation information for the
     // input ports. For each input port, the entry in the hash table is
     // an array of three objects. The first is the Method object of the
@@ -325,5 +339,4 @@ public class ClassWrapper extends TypedAtomicActor {
 
     // The Class object of the specified class.
     private Class _class = null;
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm;
 
 import java.awt.Toolkit;
@@ -39,7 +38,6 @@ import javax.swing.JMenu;
 import javax.swing.JToolBar;
 
 import ptolemy.actor.gui.Configuration;
-import ptolemy.data.expr.SingletonParameter;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -48,7 +46,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
@@ -76,8 +73,10 @@ import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphController
+
 /**
    A Graph Controller for FSM models.  This controller allows states to be
    dragged and dropped onto its graph. Arcs can be created by
@@ -90,7 +89,6 @@ import diva.gui.toolbox.FigureIcon;
    @Pt.AcceptedRating Red (johnr)
 */
 public class FSMGraphController extends FSMViewerGraphController {
-
     /** Create a new basic controller with default
      *  terminal and edge interactors.
      */
@@ -117,14 +115,12 @@ public class FSMGraphController extends FSMViewerGraphController {
         diva.gui.GUIUtilities.addMenuItem(menu, _newInOutPortAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutPortAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(
-                toolbar, _newInputMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(
-                toolbar, _newOutputMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar,
+            _newOutputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInOutMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(
-                toolbar, _newInOutMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutMultiportAction);
 
         // Add an item that adds new states.
         menu.addSeparator();
@@ -138,6 +134,7 @@ public class FSMGraphController extends FSMViewerGraphController {
      */
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
+
         if (_portDialogFactory != null) {
             _portDialogFactory.setConfiguration(configuration);
         }
@@ -158,8 +155,7 @@ public class FSMGraphController extends FSMViewerGraphController {
                 AttributeController.FULL);
         _portController = new ExternalIOPortController(this,
                 AttributeController.FULL);
-        _stateController = new StateController(this,
-                AttributeController.FULL);
+        _stateController = new StateController(this, AttributeController.FULL);
         _modalTransitionController = new ModalTransitionController(this);
         _transitionController = new TransitionController(this);
     }
@@ -174,6 +170,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         // NOTE: This method name does not have a leading underscore
         // because it is a diva method.
         super.initializeInteraction();
+
         /* GraphPane pane = */ getGraphPane();
 
         // Add a menu command to configure the ports.
@@ -188,8 +185,8 @@ public class FSMGraphController extends FSMViewerGraphController {
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
-        ((CompositeInteractor)_stateController.getNodeInteractor())
-            .addInteractor(_linkCreator);
+        ((CompositeInteractor) _stateController.getNodeInteractor())
+        .addInteractor(_linkCreator);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -200,10 +197,12 @@ public class FSMGraphController extends FSMViewerGraphController {
      */
     protected void _initializeInteraction(NamedObjController controller) {
         super._initializeInteraction(controller);
+
         if (controller instanceof StateController) {
             Interactor interactor = controller.getNodeInteractor();
+
             if (interactor instanceof CompositeInteractor) {
-                ((CompositeInteractor)interactor).addInteractor(_linkCreator);
+                ((CompositeInteractor) interactor).addInteractor(_linkCreator);
             }
         }
     }
@@ -212,7 +211,7 @@ public class FSMGraphController extends FSMViewerGraphController {
     ////                         private variables                 ////
 
     /** The interactor that interactively creates edges. */
-    private LinkCreator _linkCreator;  // For control-click
+    private LinkCreator _linkCreator; // For control-click
 
     /** The action for creating states. */
     private NewStateAction _newStateAction = new NewStateAction();
@@ -225,42 +224,32 @@ public class FSMGraphController extends FSMViewerGraphController {
      *  http://lists.apple.com/archives/java-dev User: archives,
      *  passwd: archives
      */
-    private MouseFilter _shortcutFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK,
+    private MouseFilter _shortcutFilter = new MouseFilter(InputEvent.BUTTON1_MASK,
             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
     /** Action for creating a new input port. */
-    private Action _newInputPortAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_INPUT, "New input port",
-            KeyEvent.VK_I);
+    private Action _newInputPortAction = new NewPortAction(ExternalIOPortController._GENERIC_INPUT,
+            "New input port", KeyEvent.VK_I);
 
     /** Action for creating a new output port. */
-    private Action _newOutputPortAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_OUTPUT, "New output port",
-            KeyEvent.VK_O);
+    private Action _newOutputPortAction = new NewPortAction(ExternalIOPortController._GENERIC_OUTPUT,
+            "New output port", KeyEvent.VK_O);
 
     /** Action for creating a new in/out port. */
-    private Action _newInOutPortAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_INOUT, "New input/output port",
-            KeyEvent.VK_P);
+    private Action _newInOutPortAction = new NewPortAction(ExternalIOPortController._GENERIC_INOUT,
+            "New input/output port", KeyEvent.VK_P);
 
     /** Action for creating a new input multiport. */
-    private Action _newInputMultiportAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
-            "New input multiport",
-            KeyEvent.VK_N);
+    private Action _newInputMultiportAction = new NewPortAction(ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
+            "New input multiport", KeyEvent.VK_N);
 
     /** Action for creating a new output multiport. */
-    private Action _newOutputMultiportAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
-            "New output multiport",
-            KeyEvent.VK_U);
+    private Action _newOutputMultiportAction = new NewPortAction(ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
+            "New output multiport", KeyEvent.VK_U);
 
     /** Action for creating a new in/out multiport. */
-    private Action _newInOutMultiportAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
-            "New input/output multiport",
-            KeyEvent.VK_T);
+    private Action _newInOutMultiportAction = new NewPortAction(ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
+            "New input/output multiport", KeyEvent.VK_T);
 
     /** The port dialog factory. */
     private PortDialogFactory _portDialogFactory;
@@ -270,6 +259,7 @@ public class FSMGraphController extends FSMViewerGraphController {
 
     static {
         CompositeEntity container = new CompositeEntity();
+
         try {
             State state = new State(container, "S");
             _prototypeState = new Location(state, "_location");
@@ -281,7 +271,6 @@ public class FSMGraphController extends FSMViewerGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// LinkCreator
 
@@ -289,7 +278,6 @@ public class FSMGraphController extends FSMViewerGraphController {
      *  to another.
      */
     protected class LinkCreator extends AbstractInteractor {
-
         /** Initiate creation of an arc. */
         public void mousePressed(LayerEvent event) {
             Figure source = event.getFigureSource();
@@ -299,32 +287,33 @@ public class FSMGraphController extends FSMViewerGraphController {
 
             // Set the tail, going through the model so the link is added
             // to the list of links.
-            FSMGraphModel model = (FSMGraphModel)getGraphModel();
+            FSMGraphModel model = (FSMGraphModel) getGraphModel();
             model.getArcModel().setTail(link, sourceObject);
 
             try {
                 // add it to the foreground layer.
                 FigureLayer layer = getGraphPane().getForegroundLayer();
-                Site headSite, tailSite;
+                Site headSite;
+                Site tailSite;
 
                 // Temporary sites.  One of these will get removed later.
-                headSite = new AutonomousSite(layer,
-                        event.getLayerX(),
+                headSite = new AutonomousSite(layer, event.getLayerX(),
                         event.getLayerY());
-                tailSite = new AutonomousSite(layer,
-                        event.getLayerX(),
+                tailSite = new AutonomousSite(layer, event.getLayerX(),
                         event.getLayerY());
+
                 // Render the edge.
-                Connector c = getEdgeController(link).render(
-                        link, layer, tailSite, headSite);
+                Connector c = getEdgeController(link).render(link, layer,
+                        tailSite, headSite);
+
                 // get the actual attach site.
-                tailSite = getEdgeController(link)
-                    .getConnectorTarget().getTailSite(c, source,
-                            event.getLayerX(),
-                            event.getLayerY());
+                tailSite = getEdgeController(link).getConnectorTarget()
+                               .getTailSite(c, source, event.getLayerX(),
+                        event.getLayerY());
+
                 if (tailSite == null) {
-                    throw new RuntimeException("Invalid connector target: " +
-                            "no valid site found for tail of new connector.");
+                    throw new RuntimeException("Invalid connector target: "
+                        + "no valid site found for tail of new connector.");
                 }
 
                 // And reattach the connector.
@@ -334,8 +323,8 @@ public class FSMGraphController extends FSMViewerGraphController {
                 // make events go to the grab-handle under the mouse
                 Figure ef = getFigure(link);
                 getSelectionModel().addSelection(ef);
-                ConnectorManipulator cm =
-                    (ConnectorManipulator) ef.getParent();
+
+                ConnectorManipulator cm = (ConnectorManipulator) ef.getParent();
                 GrabHandle gh = cm.getHeadHandle();
                 layer.grabPointer(event, gh);
             } catch (Exception ex) {
@@ -349,32 +338,35 @@ public class FSMGraphController extends FSMViewerGraphController {
 
     /** An action to create a new state. */
     public class NewStateAction extends FigureAction {
-
         /** Construct a new state. */
         public NewStateAction() {
             super("New State");
             putValue("tooltip", "New State");
-            NodeRenderer renderer
-                    = new StateController.StateRenderer(getGraphModel());
+
+            NodeRenderer renderer = new StateController.StateRenderer(getGraphModel());
             Figure figure = renderer.render(_prototypeState);
+
             // Standard toolbar icons are 25x25 pixels.
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
             putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "New State");
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_W));
+                new Integer(KeyEvent.VK_W));
         }
 
         /** Execute the action. */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
+
             double x;
             double y;
-            if (getSourceType() == TOOLBAR_TYPE ||
-                    getSourceType() == MENUBAR_TYPE) {
+
+            if ((getSourceType() == TOOLBAR_TYPE)
+                    || (getSourceType() == MENUBAR_TYPE)) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = FSMGraphController.this.getFrame();
                 Point2D center;
+
                 if (frame != null) {
                     // Put in the middle of the visible part.
                     center = frame.getCenter();
@@ -384,18 +376,19 @@ public class FSMGraphController extends FSMViewerGraphController {
                     // Put in the middle of the pane.
                     GraphPane pane = getGraphPane();
                     center = pane.getSize();
-                    x = center.getX()/2;
-                    y = center.getY()/2;
+                    x = center.getX() / 2;
+                    y = center.getY() / 2;
                 }
             } else {
                 x = getX();
                 y = getY();
             }
 
-            FSMGraphModel graphModel = (FSMGraphModel)getGraphModel();
+            FSMGraphModel graphModel = (FSMGraphModel) getGraphModel();
             NamedObj toplevel = graphModel.getPtolemyModel();
 
             String stateName = toplevel.uniqueName("state");
+
             // Create the state.
             String moml = null;
             String locationName = "_location";
@@ -404,37 +397,35 @@ public class FSMGraphController extends FSMViewerGraphController {
             // so that the library and the toolbar are assured of creating
             // the same object.
             try {
-                LibraryAttribute attribute = (LibraryAttribute)toplevel
+                LibraryAttribute attribute = (LibraryAttribute) toplevel
                     .getAttribute("_library", LibraryAttribute.class);
+
                 if (attribute != null) {
                     CompositeEntity library = attribute.getLibrary();
                     Entity prototype = library.getEntity("state");
+
                     if (prototype != null) {
                         moml = prototype.exportMoML(stateName);
+
                         // FIXME: Get location name from prototype.
                     }
                 }
             } catch (Exception ex) {
                 // Ignore and use the default.
             }
+
             if (moml == null) {
-                moml = new String("<entity name=\""
-                        + stateName
+                moml = new String("<entity name=\"" + stateName
                         + "\" class=\"ptolemy.domains.fsm.kernel.State\">\n"
-                        + "<property name=\""
-                        + locationName
+                        + "<property name=\"" + locationName
                         + "\" class=\"ptolemy.kernel.util.Location\""
-                        + " value=\"["
-                        + x
-                        + ", "
-                        + y
-                        + "]\"/>\n"
+                        + " value=\"[" + x + ", " + y + "]\"/>\n"
                         + "</entity>\n");
             }
 
-            ChangeRequest request =
-                new MoMLChangeRequest(this, toplevel, moml);
+            ChangeRequest request = new MoMLChangeRequest(this, toplevel, moml);
             toplevel.requestChange(request);
+
             try {
                 request.waitForCompletion();
             } catch (Exception ex) {

@@ -24,42 +24,38 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.gr.lib.experimental;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.lib.*;
+import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.gui.Display;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.*;
 import ptolemy.domains.gr.kernel.*;
 import ptolemy.domains.gr.lib.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
-import java.util.Enumeration;
-
-import com.sun.j3d.utils.geometry.*;
-
-import com.sun.j3d.loaders.vrml97.VrmlLoader;
-import com.sun.j3d.loaders.Scene;
-import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.IncorrectFormatException;
+import com.sun.j3d.loaders.ParsingErrorException;
+import com.sun.j3d.loaders.Scene;
+import com.sun.j3d.loaders.vrml97.VrmlLoader;
+import com.sun.j3d.utils.geometry.*;
+import com.sun.j3d.utils.picking.PickResult;
+import com.sun.j3d.utils.picking.PickTool;
+import com.sun.j3d.utils.picking.behaviors.PickMouseBehavior;
 import com.sun.j3d.utils.universe.*;
 
-import com.sun.j3d.utils.picking.PickTool;
-import com.sun.j3d.utils.picking.PickResult;
-import com.sun.j3d.utils.picking.behaviors.PickMouseBehavior;
-
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Enumeration;
 
 import javax.media.j3d.*;
 import javax.vecmath.*;
-import java.io.*;
 
-import java.net.URL;
-import java.net.MalformedURLException;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRPickActor
@@ -71,7 +67,6 @@ import java.net.MalformedURLException;
    @Pt.AcceptedRating Red (cxh)
 */
 abstract public class GRPickActor extends GRActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -81,8 +76,7 @@ abstract public class GRPickActor extends GRActor {
      *   actor with this name.
      */
     public GRPickActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
@@ -94,13 +88,11 @@ abstract public class GRPickActor extends GRActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     public TypedIOPort sceneGraphOut;
 
     /** BooleanToken
      */
     public TypedIOPort clicked;
-
 
     /** Return false if the scene graph is already initialized.
      *
@@ -108,35 +100,38 @@ abstract public class GRPickActor extends GRActor {
      *  @exception IllegalActionException will not be thrown..
      */
     public boolean prefire() throws IllegalActionException {
-        boolean returnValue = true;;
-
+        boolean returnValue = true;
+        ;
 
         if (_isSceneGraphInitialized) {
             returnValue = false;
         } else {
             returnValue = true;
         }
+
         if (isDirty) {
             returnValue = true;
         }
+
         return returnValue;
     }
 
     public void fire() throws IllegalActionException {
         super.fire();
+
         if (isDirty) {
             isDirty = false;
-            clicked.send(0,new BooleanToken(true));
+            clicked.send(0, new BooleanToken(true));
             System.out.println("sending out");
         }
     }
 
     boolean isDirty = false;
+
     public void processCallback() {
         isDirty = true;
         System.out.println("isDirty turned true");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -151,38 +146,35 @@ abstract public class GRPickActor extends GRActor {
       super.initialize();
       _createModel();
       }*/
-
-
-
     public void initialize() throws IllegalActionException {
         super.initialize();
         System.out.println("init picker");
         _createModel();
+
         //bg = new BranchGroup();
         //bg.addChild(_containedNode);
-        BoundingSphere bounds =
-            new BoundingSphere(new Point3d(0.0,0.0,0.0), 100.0);
+        BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
+                100.0);
         Canvas3D canvas = ((ViewScreen) _root).getCanvas();
         BranchGroup branchGroup = ((ViewScreen) _root).getBranchGroup();
         branchGroup = _getBranchGroup();
-        System.out.println(" alert "+canvas+" "+branchGroup);
+        System.out.println(" alert " + canvas + " " + branchGroup);
+
         // FIXME: this is one big fat hack!
         //if (pick!=null) pick.setEnable(false);
-        pick = new PickCallback(this,canvas,branchGroup,bounds);
+        pick = new PickCallback(this, canvas, branchGroup, bounds);
     }
 
     static PickCallback pick = null;
 
     abstract protected BranchGroup _getBranchGroup();
 
-
     protected Node _getNodeObject() {
         return (Node) branchGroup;
     }
 
-
     protected void _makeSceneGraphConnection() throws IllegalActionException {
-        sceneGraphOut.send(0,new SceneGraphToken(_getNodeObject()));
+        sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }
 
     protected void _createModel() throws IllegalActionException {
@@ -190,19 +182,19 @@ abstract public class GRPickActor extends GRActor {
 
     protected BranchGroup branchGroup;
 
-
     private class PickCallback extends PickMouseBehavior {
         Appearance savedAppearance = null;
         Shape3D oldShape = null;
         Appearance highlightAppearance;
         GRPickActor callbackActor;
 
-        public PickCallback(GRPickActor pickableActor,Canvas3D canvas, BranchGroup root,
-                Bounds bounds) {
+        public PickCallback(GRPickActor pickableActor, Canvas3D canvas,
+            BranchGroup root, Bounds bounds) {
             super(canvas, root, bounds);
             callbackActor = pickableActor;
             this.setSchedulingBounds(bounds);
             root.addChild(this);
+
             /*Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
               Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
               Color3f highlightColor = new Color3f(0.0f, 1.0f, 0.0f);
@@ -212,7 +204,6 @@ abstract public class GRPickActor extends GRActor {
               highlightAppearance.setMaterial(new Material(highlightColor, black,
               highlightColor, white,
               80.0f));*/
-
             pickCanvas.setMode(PickTool.BOUNDS);
         }
 
@@ -223,10 +214,12 @@ abstract public class GRPickActor extends GRActor {
             pickCanvas.setShapeLocation(xpos, ypos);
 
             pickResult = pickCanvas.pickClosest();
+
             if (pickResult != null) {
                 if (mevent.getModifiers() == 4) {
                     shape = (Shape3D) pickResult.getNode(PickResult.SHAPE3D);
-                    System.out.println("the result "+shape + " "+callbackActor);
+                    System.out.println("the result " + shape + " "
+                        + callbackActor);
                     callbackActor.processCallback();
                 }
             }

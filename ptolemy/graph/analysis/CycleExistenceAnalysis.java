@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import ptolemy.graph.Graph;
@@ -30,8 +29,10 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallCycleExistenceStrategy;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CycleExistenceAnalysis
+
 /**
    Analyzes a directed graph and detects the existence of cycles.
    In other words, this analysis checks if a given directed graph has at least
@@ -44,9 +45,7 @@ import ptolemy.graph.analysis.strategy.FloydWarshallCycleExistenceStrategy;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class CycleExistenceAnalysis extends Analysis {
-
     /** Construct an instance of this class for a given graph, using a
      *  default analyzer that runs in O(N^3) in which N is the number of nodes.
      *
@@ -72,7 +71,7 @@ public class CycleExistenceAnalysis extends Analysis {
      *  @return True if the graph under analysis has at least one cycle.
      */
     public boolean hasCycle() {
-        return ((CycleExistenceAnalyzer)analyzer()).hasCycle();
+        return ((CycleExistenceAnalyzer) analyzer()).hasCycle();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -81,7 +80,7 @@ public class CycleExistenceAnalysis extends Analysis {
      */
     public String toString() {
         return "Cyclic existence analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

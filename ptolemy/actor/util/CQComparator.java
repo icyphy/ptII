@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
 
 import java.util.Comparator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CQComparator
+
 /**
    This interface extends the java.util.Comparator interface, which
    defines the compare() method. The extension defines additional methods
@@ -48,9 +49,7 @@ import java.util.Comparator;
    @see ptolemy.actor.util.CalendarQueue
    @see java.util.Comparator
 */
-
 public interface CQComparator extends Comparator {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.kernel;
 
 import ptolemy.actor.Receiver;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FeedBackDelay
+
 /**
    FeedBackDelay actors are used to add delay to feedback topologies.
    If a FeedBackDelay actor consumes a token (real or Null), it has the
@@ -82,7 +83,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.domains.dde.kernel.NullToken
 */
 public class FeedBackDelay extends DDEActor {
-
     /** Construct a FeedBackDelay with no container and a name that
      *  is an empty string.
      * @exception IllegalActionException If the constructor of the
@@ -91,7 +91,7 @@ public class FeedBackDelay extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public FeedBackDelay()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _setVariables();
     }
@@ -105,7 +105,7 @@ public class FeedBackDelay extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public FeedBackDelay(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _setVariables();
     }
@@ -120,16 +120,14 @@ public class FeedBackDelay extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public FeedBackDelay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _setVariables();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
-
     public Parameter delay;
-
     public TypedIOPort input = null;
 
     /** The boolean parameter that indicates whether a delay value
@@ -137,7 +135,6 @@ public class FeedBackDelay extends DDEActor {
      *  produced by this actor. This parameter defaults to true.
      */
     public Parameter nullDelay;
-
     public TypedIOPort output = null;
 
     /** The boolean parameter that indicates whether a delay value
@@ -153,7 +150,7 @@ public class FeedBackDelay extends DDEActor {
      * @return The delay value of this actor.
      */
     public double getDelay() throws IllegalActionException {
-        return ((DoubleToken)delay.getToken()).doubleValue();
+        return ((DoubleToken) delay.getToken()).doubleValue();
     }
 
     /** Consume a single input token and produce an identical output
@@ -171,27 +168,26 @@ public class FeedBackDelay extends DDEActor {
      */
     public void fire() throws IllegalActionException {
         Token token = _getNextInput();
-        boolean delayNullVal =
-            ((BooleanToken)nullDelay.getToken()).booleanValue();
-        boolean delayRealVal =
-            ((BooleanToken)realDelay.getToken()).booleanValue();
+        boolean delayNullVal = ((BooleanToken) nullDelay.getToken())
+            .booleanValue();
+        boolean delayRealVal = ((BooleanToken) realDelay.getToken())
+            .booleanValue();
         Thread thread = Thread.currentThread();
-        if ( thread instanceof DDEThread ) {
-            if ( token instanceof NullToken ) {
-                if ( delayNullVal ) {
-                    _sendOutToken( token,
-                            getDirector().getModelTime().add(getDelay()));
+
+        if (thread instanceof DDEThread) {
+            if (token instanceof NullToken) {
+                if (delayNullVal) {
+                    _sendOutToken(token,
+                        getDirector().getModelTime().add(getDelay()));
                 } else {
-                    _sendOutToken( token,
-                            getDirector().getModelTime());
+                    _sendOutToken(token, getDirector().getModelTime());
                 }
             } else {
-                if ( delayRealVal ) {
-                    _sendOutToken( token,
-                            getDirector().getModelTime().add(getDelay()));
+                if (delayRealVal) {
+                    _sendOutToken(token,
+                        getDirector().getModelTime().add(getDelay()));
                 } else {
-                    _sendOutToken( token,
-                            getDirector().getModelTime());
+                    _sendOutToken(token, getDirector().getModelTime());
                 }
             }
         }
@@ -208,19 +204,20 @@ public class FeedBackDelay extends DDEActor {
         super.initialize();
 
         Receiver[][] receivers = output.getRemoteReceivers();
-        for ( int i = 0; i < receivers.length; i++ ) {
-            for ( int j = 0; j < receivers[i].length; j++ ) {
-                DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
-                rcvr.put( new Token(),
+
+        for (int i = 0; i < receivers.length; i++) {
+            for (int j = 0; j < receivers[i].length; j++) {
+                DDEReceiver rcvr = (DDEReceiver) receivers[i][j];
+                rcvr.put(new Token(),
                     new Time(getDirector(), PrioritizedTimedQueue.IGNORE));
             }
         }
 
-
         receivers = input.getReceivers();
-        for ( int i = 0; i < receivers.length; i++ ) {
-            for ( int j = 0; j < receivers[i].length; j++ ) {
-                DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
+
+        for (int i = 0; i < receivers.length; i++) {
+            for (int j = 0; j < receivers[i].length; j++) {
+                DDEReceiver rcvr = (DDEReceiver) receivers[i][j];
                 rcvr._hideNullTokens(false);
             }
         }
@@ -233,34 +230,30 @@ public class FeedBackDelay extends DDEActor {
      *  depending on IOPort.send().
      */
     private void _sendOutToken(Token token, Time time) {
-        Receiver[][] receivers =
-            (Receiver[][])output.getRemoteReceivers();
-        for ( int i = 0; i < receivers.length; i++ ) {
-            for ( int j = 0; j < receivers[i].length; j++ ) {
-                DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
-                rcvr.put( token, time );
+        Receiver[][] receivers = (Receiver[][]) output.getRemoteReceivers();
+
+        for (int i = 0; i < receivers.length; i++) {
+            for (int j = 0; j < receivers[i].length; j++) {
+                DDEReceiver rcvr = (DDEReceiver) receivers[i][j];
+                rcvr.put(token, time);
             }
         }
     }
 
     /** Syntactic sugar for initializing parameters.
      */
-    private void _setVariables() throws IllegalActionException,
-            NameDuplicationException {
+    private void _setVariables()
+        throws IllegalActionException, NameDuplicationException {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         input.setTypeEquals(BaseType.GENERAL);
         output.setTypeEquals(BaseType.GENERAL);
 
-        nullDelay = new
-            Parameter(this, "nullDelay", new BooleanToken(true));
+        nullDelay = new Parameter(this, "nullDelay", new BooleanToken(true));
         nullDelay.setTypeEquals(BaseType.BOOLEAN);
-        realDelay = new
-            Parameter(this, "realDelay", new BooleanToken(false));
+        realDelay = new Parameter(this, "realDelay", new BooleanToken(false));
         realDelay.setTypeEquals(BaseType.BOOLEAN);
-        delay = new
-            Parameter(this, "delay", new DoubleToken(1.0));
+        delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
     }
-
 }

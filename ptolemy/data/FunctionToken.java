@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -36,8 +35,10 @@ import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FunctionToken
+
 /**
    A token that contains a function. The function takes a fixed number of
    arguments, supplied as a list of tokens.
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (liuxj)
 */
 public class FunctionToken extends Token {
-
     /** Create a new FunctionToken from the given string.
      *  @exception IllegalActionException If an error occurs, or the
      *  string cannot be parsed into a function.
@@ -62,13 +62,15 @@ public class FunctionToken extends Token {
         ASTPtRootNode tree = parser.generateParseTree(init);
         ParseTreeTypeInference inference = new ParseTreeTypeInference();
         inference.inferTypes(tree);
+
         Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+
         if (token instanceof FunctionToken) {
-            _function = ((FunctionToken)token)._function;
-            _type = ((FunctionToken)token)._type;
+            _function = ((FunctionToken) token)._function;
+            _type = ((FunctionToken) token)._type;
         } else {
             throw new IllegalActionException("A function token cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -115,9 +117,8 @@ public class FunctionToken extends Token {
      *  @return A true-valued token if the first argument is equal to
      *  this token.
      */
-    public BooleanToken isCloseTo(
-            Token rightArgument, double epsilon)
-            throws IllegalActionException {
+    public BooleanToken isCloseTo(Token rightArgument, double epsilon)
+        throws IllegalActionException {
         return isEqualTo(rightArgument);
     }
 
@@ -129,9 +130,9 @@ public class FunctionToken extends Token {
      *  argument is equal to the value of this token.
      */
     public BooleanToken isEqualTo(Token rightArgument) {
-        FunctionToken convertedArgument = (FunctionToken)rightArgument;
-        return BooleanToken.getInstance(
-                convertedArgument._function.isCongruent(_function));
+        FunctionToken convertedArgument = (FunctionToken) rightArgument;
+        return BooleanToken.getInstance(convertedArgument._function.isCongruent(
+                _function));
     }
 
     /** Return a String representation of this function
@@ -142,11 +143,9 @@ public class FunctionToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
     // The object that implements the function.
     private Function _function;
 
     // The type of this function.
     private FunctionType _type;
 }
-

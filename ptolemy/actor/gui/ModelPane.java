@@ -24,10 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
-// Ptolemy imports
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -57,8 +55,10 @@ import ptolemy.gui.CloseListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ModelPane
+
 /**
 
 ModelPane is a panel for interacting with an executing Ptolemy II model.
@@ -75,7 +75,6 @@ the Placeable interface is placed in the display region.
 @Pt.AcceptedRating Yellow (janneck)
 */
 public class ModelPane extends JPanel implements CloseListener {
-
     /** Construct a panel for interacting with the specified Ptolemy II model.
      *  This uses the default layout, which is horizontal, and shows
      *  control buttons, top-level parameters, and director parameters.
@@ -104,21 +103,21 @@ public class ModelPane extends JPanel implements CloseListener {
      *  @param show Indicator of which controls to show.
      */
     public ModelPane(final CompositeActor model, int layout, int show) {
-
         if (layout == HORIZONTAL) {
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         } else {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         }
+
         _layout = layout;
 
         if (show != 0) {
             // Add run controls.
             _controlPanel = new JPanel();
-            _controlPanel.setLayout(new BoxLayout(
-                                            _controlPanel, BoxLayout.Y_AXIS));
-            _controlPanel.setBorder(
-                    BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            _controlPanel.setLayout(new BoxLayout(_controlPanel,
+                    BoxLayout.Y_AXIS));
+            _controlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
             // Add a listener that requests the focus when we click
             // in the pane. This allows keyboard bindings to work.
             ClickListener clickListener = new ClickListener();
@@ -127,13 +126,13 @@ public class ModelPane extends JPanel implements CloseListener {
 
             if ((show & BUTTONS) != 0) {
                 _buttonPanel = new JPanel();
-                _buttonPanel.setLayout(new BoxLayout(
-                                               _buttonPanel, BoxLayout.X_AXIS));
+                _buttonPanel.setLayout(new BoxLayout(_buttonPanel,
+                        BoxLayout.X_AXIS));
                 _buttonPanel.addMouseListener(clickListener);
 
                 // Padding top and bottom...
-                _buttonPanel.setBorder(
-                        BorderFactory.createEmptyBorder(10, 0, 10, 0));
+                _buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0,
+                        10, 0));
                 _buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
 
                 _goButton = new JButton("Go");
@@ -178,6 +177,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _controlPanel.add(_buttonPanel);
                 _buttonPanel.setBackground(null);
             }
+
             add(_controlPanel);
             _controlPanel.setBackground(null);
         }
@@ -201,6 +201,7 @@ public class ModelPane extends JPanel implements CloseListener {
             _displays.setBackground(null);
             add(_displays);
         }
+
         return _displays;
     }
 
@@ -237,7 +238,8 @@ public class ModelPane extends JPanel implements CloseListener {
      */
     public void setDefaultButton() {
         JRootPane root = getRootPane();
-        if (root != null && (_show & BUTTONS) != 0) {
+
+        if ((root != null) && ((_show & BUTTONS) != 0)) {
             root.setDefaultButton(_goButton);
             _goButton.setMnemonic(KeyEvent.VK_G);
             _pauseButton.setMnemonic(KeyEvent.VK_P);
@@ -255,6 +257,7 @@ public class ModelPane extends JPanel implements CloseListener {
         if (_displays != null) {
             remove(_displays);
         }
+
         _displays = pane;
         add(_displays);
         _displays.setBackground(null);
@@ -269,28 +272,35 @@ public class ModelPane extends JPanel implements CloseListener {
         // If there was a previous model, close its displays.
         _closeDisplays();
         _model = model;
+
         // For the new model, in case displays are open, close them.
         _closeDisplays();
+
         if (_parameterQuery != null) {
             _controlPanel.remove(_parameterQuery);
             _parameterQuery = null;
         }
+
         if (_directorQuery != null) {
             _controlPanel.remove(_directorQuery);
             _directorQuery = null;
         }
+
         if (model != null) {
             _manager = _model.getManager();
 
             if ((_show & TOP_PARAMETERS) != 0) {
                 List parameterList = _model.attributeList(Parameter.class);
+
                 if (parameterList.size() > 0) {
                     JLabel pTitle = new JLabel("Model parameters:");
+
                     // Use a dark blue for the text color.
                     pTitle.setForeground(new Color(0, 0, 128));
                     _controlPanel.add(pTitle);
                     _controlPanel.add(Box.createRigidArea(new Dimension(0, 8)));
                     _parameterQuery = new Configurer(model);
+
                     if (_layout == HORIZONTAL) {
                         _parameterQuery.setAlignmentX(LEFT_ALIGNMENT);
                     } else {
@@ -301,11 +311,13 @@ public class ModelPane extends JPanel implements CloseListener {
                         // toplevel parameters, but not director parameters.
                         _parameterQuery.setAlignmentX(CENTER_ALIGNMENT);
                     }
+
                     _parameterQuery.setBackground(null);
                     _controlPanel.add(_parameterQuery);
+
                     if ((_show & DIRECTOR_PARAMETERS) != 0) {
                         _controlPanel.add(Box.createRigidArea(
-                                                  new Dimension(0, 15)));
+                                new Dimension(0, 15)));
                     }
                 }
             }
@@ -313,17 +325,20 @@ public class ModelPane extends JPanel implements CloseListener {
             if ((_show & DIRECTOR_PARAMETERS) != 0) {
                 // Director parameters.
                 Director director = _model.getDirector();
+
                 if (director != null) {
-                    List dirParameterList =
-                        director.attributeList(Parameter.class);
+                    List dirParameterList = director.attributeList(Parameter.class);
+
                     if (dirParameterList.size() > 0) {
                         JLabel pTitle = new JLabel("Director parameters:");
+
                         // Use a dark blue for the text color.
                         pTitle.setForeground(new Color(0, 0, 128));
                         _controlPanel.add(pTitle);
-                        _controlPanel.add(
-                                Box.createRigidArea(new Dimension(0, 8)));
+                        _controlPanel.add(Box.createRigidArea(
+                                new Dimension(0, 8)));
                         _directorQuery = new Configurer(director);
+
                         if (_layout == HORIZONTAL) {
                             _directorQuery.setAlignmentX(LEFT_ALIGNMENT);
                         } else {
@@ -332,30 +347,30 @@ public class ModelPane extends JPanel implements CloseListener {
                             // the orientation of an applet is vertical
                             _directorQuery.setAlignmentX(CENTER_ALIGNMENT);
                         }
+
                         _directorQuery.setBackground(null);
                         _controlPanel.add(_directorQuery);
                     }
                 }
             }
 
-            if (_controlPanel != null && _layout == HORIZONTAL) {
+            if ((_controlPanel != null) && (_layout == HORIZONTAL)) {
                 // Why they call this glue is beyond me, but what it does
                 // is make extra space to fill in the bottom.
                 _controlPanel.add(Box.createVerticalGlue());
             }
 
             // If there are two queries, make them the same width.
-            if (_parameterQuery != null && _directorQuery != null) {
+            if ((_parameterQuery != null) && (_directorQuery != null)) {
                 Dimension modelSize = _parameterQuery.getPreferredSize();
                 Dimension directorSize = _directorQuery.getPreferredSize();
+
                 if (directorSize.width > modelSize.width) {
                     _parameterQuery.setPreferredSize(new Dimension(
-                                                             directorSize.width,
-                                                             modelSize.height));
+                            directorSize.width, modelSize.height));
                 } else {
                     _directorQuery.setPreferredSize(new Dimension(
-                                                            modelSize.width,
-                                                            directorSize.height));
+                            modelSize.width, directorSize.height));
                 }
             }
 
@@ -399,9 +414,11 @@ public class ModelPane extends JPanel implements CloseListener {
         if (_directorQuery != null) {
             _directorQuery.windowClosed(window, button);
         }
+
         if (_parameterQuery != null) {
             _parameterQuery.windowClosed(window, button);
         }
+
         if (_model != null) {
             _closeDisplays();
         }
@@ -442,6 +459,7 @@ public class ModelPane extends JPanel implements CloseListener {
             remove(_displays);
             _displays = null;
         }
+
         // place the placeable objects in the model
         _displays = new JPanel();
 
@@ -450,10 +468,11 @@ public class ModelPane extends JPanel implements CloseListener {
         _displays.setBackground(null);
 
         // Put placeable objects in a reasonable place.
-        Iterator atomicEntities = model
-            .allAtomicEntityList().iterator();
+        Iterator atomicEntities = model.allAtomicEntityList().iterator();
+
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
+
             if (object instanceof Placeable) {
                 ((Placeable) object).place(_displays);
             }
@@ -468,7 +487,6 @@ public class ModelPane extends JPanel implements CloseListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The panel for the control buttons.
     private JPanel _buttonPanel;
 
@@ -513,8 +531,10 @@ public class ModelPane extends JPanel implements CloseListener {
     private void _closeDisplays() {
         if (_model != null) {
             Iterator atomicEntities = _model.allAtomicEntityList().iterator();
+
             while (atomicEntities.hasNext()) {
                 Object object = atomicEntities.next();
+
                 if (object instanceof Placeable) {
                     ((Placeable) object).place(null);
                 }
@@ -524,7 +544,6 @@ public class ModelPane extends JPanel implements CloseListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class ClickListener extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
             _controlPanel.requestFocus();
@@ -534,53 +553,78 @@ public class ModelPane extends JPanel implements CloseListener {
     private class CommandListener extends KeyAdapter {
         public void keyPressed(KeyEvent e) {
             int keycode = e.getKeyCode();
-            switch(keycode) {
+
+            switch (keycode) {
             case KeyEvent.VK_CONTROL:
                 _control = true;
                 break;
+
             case KeyEvent.VK_SHIFT:
                 _shift = true;
                 break;
+
             case KeyEvent.VK_ENTER:
                 startRun();
                 break;
+
             case KeyEvent.VK_G:
+
                 if (_control) {
                     startRun();
                 }
+
                 break;
+
             case KeyEvent.VK_H:
+
                 if (_control) {
                     MessageHandler.message(_helpString);
                 }
+
                 break;
+
             case KeyEvent.VK_M:
-                if (_control && _model != null) {
+
+                if (_control && (_model != null)) {
                     System.out.println(_model.exportMoML());
                     MessageHandler.message("Exported MoML to standard out.");
                 }
+
                 break;
+
             case KeyEvent.VK_P:
+
                 if (_control) {
                     pauseRun();
                 }
+
                 break;
+
             case KeyEvent.VK_R:
+
                 if (_control) {
                     resumeRun();
                 }
+
                 break;
+
             case KeyEvent.VK_S:
+
                 if (_control) {
                     stopRun();
                 }
+
                 break;
+
             case KeyEvent.VK_SLASH:
+
                 if (_shift) {
                     // Question mark is SHIFT-SLASH
                     MessageHandler.message(_helpString);
                 }
+
                 break;
+
             default:
                 // None
             }
@@ -588,13 +632,16 @@ public class ModelPane extends JPanel implements CloseListener {
 
         public void keyReleased(KeyEvent e) {
             int keycode = e.getKeyCode();
-            switch(keycode) {
+
+            switch (keycode) {
             case KeyEvent.VK_CONTROL:
                 _control = false;
                 break;
+
             case KeyEvent.VK_SHIFT:
                 _shift = false;
                 break;
+
             default:
                 // None
             }
@@ -603,12 +650,9 @@ public class ModelPane extends JPanel implements CloseListener {
         private boolean _control = false;
         private boolean _shift = false;
         private String _helpString = "Key bindings in button panel:\n"
-        + "  Control-G: Start a run.\n"
-        + "  Control-H: Display help.\n"
-        + "  Control-M: Export MoML to standard out.\n"
-        + "  Control-P: Pause a run.\n"
-        + "  Control-R: Resume a run.\n"
-        + "  Control-S: Stop a run.\n"
-        + "  Control-?: Display help.\n";
+            + "  Control-G: Start a run.\n" + "  Control-H: Display help.\n"
+            + "  Control-M: Export MoML to standard out.\n"
+            + "  Control-P: Pause a run.\n" + "  Control-R: Resume a run.\n"
+            + "  Control-S: Stop a run.\n" + "  Control-?: Display help.\n";
     }
 }

@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 /** Create an increasing sequence of integer tokens,
     starting with value zero, and incrementing by one.
     This actor is aware of the rate that is set on its port and
@@ -50,19 +51,17 @@ import ptolemy.kernel.util.Workspace;
 */
 public class SDFTestRamp extends TypedAtomicActor {
     public SDFTestRamp(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate", new IntToken(1));
+        output_tokenProductionRate = new Parameter(output,
+                "tokenProductionRate", new IntToken(1));
         output.setTypeEquals(BaseType.INT);
         _value = 0;
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public TypedIOPort output;
     public Parameter output_tokenProductionRate;
 
@@ -74,10 +73,9 @@ public class SDFTestRamp extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SDFTestRamp newObject = (SDFTestRamp)(super.clone(workspace));
-        newObject.output = (TypedIOPort)newObject.getPort("output");
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SDFTestRamp newObject = (SDFTestRamp) (super.clone(workspace));
+        newObject.output = (TypedIOPort) newObject.getPort("output");
         return newObject;
     }
 
@@ -91,8 +89,9 @@ public class SDFTestRamp extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         int i;
 
-        int tokens =
-            ((IntToken)output_tokenProductionRate.getToken()).intValue();
+        int tokens = ((IntToken) output_tokenProductionRate.getToken())
+            .intValue();
+
         for (i = 0; i < tokens; i++) {
             Token message = new IntToken(_value);
             _value = _value + 1;

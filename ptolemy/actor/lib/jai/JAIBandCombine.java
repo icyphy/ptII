@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIBandCombine
+
 /**
    Linearly combines input bands into an output image.  The matrix parameter
    specifies how many input bands there are, and how many output bands
@@ -65,9 +66,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIBandCombine extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,7 +76,7 @@ public class JAIBandCombine extends Transformer {
      *   actor with this name.
      */
     public JAIBandCombine(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         matrix = new Parameter(this, "matrix",
@@ -100,10 +99,9 @@ public class JAIBandCombine extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == matrix) {
-            _matrixValue =
-                ((DoubleMatrixToken)matrix.getToken()).doubleMatrix();
+            _matrixValue = ((DoubleMatrixToken) matrix.getToken()).doubleMatrix();
         } else {
             super.attributeChanged(attribute);
         }
@@ -114,22 +112,25 @@ public class JAIBandCombine extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
 
         parameters.addSource(oldImage);
         parameters.add(_matrixValue);
+
         RenderedOp newImage;
+
         try {
             newImage = JAI.create("bandCombine", parameters);
         } catch (IllegalArgumentException ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to band combine the image\n"
-                    + ex.getMessage()
-                    + "\n  Number of bands: " + oldImage.getNumBands()
-                    + "\n  Image: " + oldImage.toString());
+                "Failed to band combine the image\n" + ex.getMessage()
+                + "\n  Number of bands: " + oldImage.getNumBands()
+                + "\n  Image: " + oldImage.toString());
         }
+
         output.send(0, new JAIImageToken(newImage));
     }
 
@@ -137,11 +138,12 @@ public class JAIBandCombine extends Transformer {
     ////                         private variables                 ////
 
     /** The initial value of the transformation matrix.  */
-    private double _initialMatrix[][] = {{1.0D, 0.0D, 0.0D, 0.0D},
-                                         {0.0D, 1.0D, 0.0D, 0.0D},
-                                         {0.0D, 0.0D, 1.0D, 0.0D}};
+    private double[][] _initialMatrix = {
+            { 1.0D, 0.0D, 0.0D, 0.0D },
+            { 0.0D, 1.0D, 0.0D, 0.0D },
+            { 0.0D, 0.0D, 1.0D, 0.0D }
+        };
 
     /** The value of the transformation matrix */
-    private double _matrixValue[][];
-
+    private double[][] _matrixValue;
 }

@@ -24,10 +24,10 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.util.Iterator;
+
 
 /** A collection of canvas utilities. These utilities perform
  * useful functions related to the structural aspects of diva.canvas
@@ -45,27 +45,32 @@ public final class CanvasDebugUtilities {
         String out = "LAYER:";
         TransformContext rootContext = rootLayer.getTransformContext();
         out = out + rootContext + "\n";
-        for (Iterator i = rootLayer.figures(); i.hasNext(); ) {
-            Figure root = (Figure)i.next();
+
+        for (Iterator i = rootLayer.figures(); i.hasNext();) {
+            Figure root = (Figure) i.next();
             out = out + printHelper(root, "  ", rootContext);
         }
+
         return out;
     }
 
     private static String printHelper(Figure root, String prefix,
-            TransformContext parent) {
+        TransformContext parent) {
         String out = "";
+
         if (root.getTransformContext() != parent) {
             out = out + prefix + root + root.getTransformContext() + "\n";
         }
+
         if (root instanceof FigureSet) {
-            FigureSet fs = (FigureSet)root;
-            for (Iterator i = fs.figures(); i.hasNext(); ) {
-                Figure f = (Figure)i.next();
-                out = out + printHelper(f, prefix+"  ", parent);
+            FigureSet fs = (FigureSet) root;
+
+            for (Iterator i = fs.figures(); i.hasNext();) {
+                Figure f = (Figure) i.next();
+                out = out + printHelper(f, prefix + "  ", parent);
             }
         }
+
         return out;
     }
 }
-

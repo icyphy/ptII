@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.lib;
 
 import java.awt.Paint;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.canvas.toolbox.BasicFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Line2D
+
 /** Create a line with the endpoints provided by the user.
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
@@ -54,7 +55,6 @@ import diva.canvas.toolbox.BasicFigure;
 @Pt.AcceptedRating Red (chf)
 */
 public class Line2D extends GRActor2D {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -64,7 +64,7 @@ public class Line2D extends GRActor2D {
      *   actor with this name.
      */
     public Line2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
@@ -74,8 +74,7 @@ public class Line2D extends GRActor2D {
         rgbColor = new ColorAttribute(this, "rgbColor");
         rgbColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
 
-        lineWidth = new Parameter(this, "lineWidth",
-                new DoubleToken(1.0));
+        lineWidth = new Parameter(this, "lineWidth", new DoubleToken(1.0));
         lineWidth.setTypeEquals(BaseType.DOUBLE);
 
         xStart = new Parameter(this, "xStart", new DoubleToken(0.0));
@@ -89,7 +88,6 @@ public class Line2D extends GRActor2D {
 
         yEnd = new Parameter(this, "yEnd", new DoubleToken(0.0));
         yEnd.setTypeEquals(BaseType.DOUBLE);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,7 +121,6 @@ public class Line2D extends GRActor2D {
     /** The y coordinate of the line's end position in the view screen. */
     public Parameter yEnd;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -131,18 +128,17 @@ public class Line2D extends GRActor2D {
      * the user changes the parameters.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-
-        if ((attribute == xStart || attribute == yStart
-                    || attribute == xEnd || attribute == yEnd)
-                && _viewScreen != null) {
+        throws IllegalActionException {
+        if (((attribute == xStart) || (attribute == yStart)
+                || (attribute == xEnd) || (attribute == yEnd))
+                && (_viewScreen != null)) {
             _figure.setPrototypeShape(new java.awt.geom.Line2D.Double(
-                                              ((DoubleToken)xStart.getToken()).doubleValue(),
-                                              ((DoubleToken)yStart.getToken()).doubleValue(),
-                                              ((DoubleToken)xEnd.getToken()).doubleValue(),
-                                              ((DoubleToken)xEnd.getToken()).doubleValue()));
-        } else if ((attribute == rgbColor || attribute == lineWidth) &&
-                _viewScreen != null) {
+                    ((DoubleToken) xStart.getToken()).doubleValue(),
+                    ((DoubleToken) yStart.getToken()).doubleValue(),
+                    ((DoubleToken) xEnd.getToken()).doubleValue(),
+                    ((DoubleToken) xEnd.getToken()).doubleValue()));
+        } else if (((attribute == rgbColor) || (attribute == lineWidth))
+                && (_viewScreen != null)) {
             _setAppearance(_figure);
         }
 
@@ -181,12 +177,11 @@ public class Line2D extends GRActor2D {
      *  @exception IllegalActionException If a parameter is not valid.
      */
     protected BasicFigure _createFigure() throws IllegalActionException {
-        BasicFigure figure =
-            new BasicFigure(new java.awt.geom.Line2D.Double(
-                                    ((DoubleToken)xStart.getToken()).doubleValue(),
-                                    ((DoubleToken)yStart.getToken()).doubleValue(),
-                                    ((DoubleToken)xEnd.getToken()).doubleValue(),
-                                    ((DoubleToken)yEnd.getToken()).doubleValue()));
+        BasicFigure figure = new BasicFigure(new java.awt.geom.Line2D.Double(
+                    ((DoubleToken) xStart.getToken()).doubleValue(),
+                    ((DoubleToken) yStart.getToken()).doubleValue(),
+                    ((DoubleToken) xEnd.getToken()).doubleValue(),
+                    ((DoubleToken) yEnd.getToken()).doubleValue()));
         _setAppearance(figure);
         return figure;
     }
@@ -201,22 +196,19 @@ public class Line2D extends GRActor2D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Set the appearance of the given figure consistent with the
     // parameters of this class.
     private void _setAppearance(BasicFigure figure)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Paint strokePaint = rgbColor.asColor();
         figure.setStrokePaint(strokePaint);
 
-        float lineWidthValue = (float)
-            ((DoubleToken) lineWidth.getToken()).doubleValue();
+        float lineWidthValue = (float) ((DoubleToken) lineWidth.getToken())
+            .doubleValue();
         figure.setLineWidth(lineWidthValue);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     private BasicFigure _figure;
-
 }

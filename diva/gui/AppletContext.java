@@ -35,6 +35,7 @@ import javax.swing.JApplet;
 import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 
+
 /**
  * A context for an applet in the diva.gui infrastructure.
  * Generally, all this class does is
@@ -72,14 +73,15 @@ public class AppletContext extends JApplet implements AppContext {
      */
     public AppletContext() {
         _exitAction = new AbstractAction() {
-                public void actionPerformed(ActionEvent e) {
-                    //do nothing?
-                }
-            };
+                    public void actionPerformed(ActionEvent e) {
+                        //do nothing?
+                    }
+                };
+
         try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {}
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
     }
 
     /**
@@ -102,14 +104,14 @@ public class AppletContext extends JApplet implements AppContext {
     /**
      * Get the image that represents this frame.
      */
-    public Image getIconImage () {
+    public Image getIconImage() {
         return _iconImage;
     }
 
     /**
      * Return the title of the context.
      */
-    public String getTitle () {
+    public String getTitle() {
         return _title;
     }
 
@@ -147,14 +149,14 @@ public class AppletContext extends JApplet implements AppContext {
      * Set the title of the context.  This has no significance in an
      * applet context.
      */
-    public void setTitle (String title) {
+    public void setTitle(String title) {
         _title = title;
     }
 
     /**
      * Set the icon that represents this frame.
      */
-    public void setIconImage (Image image) {
+    public void setIconImage(Image image) {
         _iconImage = image;
     }
 
@@ -184,6 +186,3 @@ public class AppletContext extends JApplet implements AppContext {
         return true;
     }
 }
-
-
-

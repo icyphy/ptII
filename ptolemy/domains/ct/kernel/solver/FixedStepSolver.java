@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel.solver;
 
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
@@ -34,8 +33,10 @@ import ptolemy.domains.ct.kernel.ODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FixedStepSolver
+
 /**
    Abstract base class for fixed step size ODE solvers, which provides no
    error control. It provides base implementation for some methods that
@@ -81,11 +82,12 @@ public abstract class FixedStepSolver extends ODESolver {
         // changed via calling _voteForConverged() by that integrator.
         _setConverged(true);
         super.fireDynamicActors();
+
         if (_getRoundCount() == 0) {
             // At the first round, advance the time with the current step size.
-            CTDirector director = (CTDirector)getContainer();
-            director.setModelTime(
-                    director.getModelTime().add(director.getCurrentStepSize()));
+            CTDirector director = (CTDirector) getContainer();
+            director.setModelTime(director.getModelTime().add(director
+                    .getCurrentStepSize()));
         }
     }
 
@@ -96,6 +98,7 @@ public abstract class FixedStepSolver extends ODESolver {
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();
         _incrementRoundCount();
+
         if (_isConverged()) {
             _resetRoundCount();
         }
@@ -131,8 +134,7 @@ public abstract class FixedStepSolver extends ODESolver {
      *  @param integrator The integrator that want to predict the step size.
      *  @return The current step size of the director.
      */
-    public final double integratorPredictedStepSize(
-            CTBaseIntegrator integrator) {
+    public final double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector director = (CTDirector) getContainer();
         return director.getCurrentStepSize();
     }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import java.util.Iterator;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator
+
 /**
    The base class for integrators in the continuous-time (CT) domain.
    An integrator has one input port and one output port. Conceptually,
@@ -106,10 +107,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ODESolver
    @see CTDirector
 */
-public class CTBaseIntegrator extends TypedAtomicActor
-    implements TimedActor, CTStepSizeControlActor,
-               CTDynamicActor, CTStatefulActor {
-
+public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
+    CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {
     /** Construct an integrator, with a name and a container.
      *  The integrator is in the same workspace as the container.
      *
@@ -121,7 +120,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  thrown by the super class.
      */
     public CTBaseIntegrator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         //      impulseInput = new TypedIOPort(this, "impulseInput", true, false);
@@ -129,22 +128,19 @@ public class CTBaseIntegrator extends TypedAtomicActor
         //      StringAttribute cardinality
         //            = new StringAttribute(impulseInput, "_cardinal");
         //      cardinality.setExpression("NORTH");
-
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        initialState = new Parameter(this, "initialState",
-                new DoubleToken(0.0));
+        initialState = new Parameter(this, "initialState", new DoubleToken(0.0));
         initialState.setTypeEquals(BaseType.DOUBLE);
         _history = new History(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     //  /** The impulse input port. This is a single port of type double.
     //  */
     // public TypedIOPort impulseInput;
@@ -160,7 +156,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** The initial state of type DoubleToken. The default value is 0.0.
      */
     public Parameter initialState;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -187,12 +182,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @exception IllegalActionException If thrown by integratorFire()
      *  of the solver.
      */
-    public void fire() throws  IllegalActionException {
-        CTDirector dir = (CTDirector)getDirector();
-        ODESolver solver = (ODESolver)dir.getCurrentODESolver();
+    public void fire() throws IllegalActionException {
+        CTDirector dir = (CTDirector) getDirector();
+        ODESolver solver = (ODESolver) dir.getCurrentODESolver();
+
         if (_debugging) {
             _debug(getName() + "fire using solver: ", solver.getName());
         }
+
         solver.integratorFire(this);
     }
 
@@ -305,28 +302,33 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  parameter does not contain a valid token.
      */
     public void initialize() throws IllegalActionException {
-        CTDirector dir = (CTDirector)getDirector();
+        CTDirector dir = (CTDirector) getDirector();
+
         if (dir == null) {
-            throw new IllegalActionException( this,
-                    " no director available");
+            throw new IllegalActionException(this, " no director available");
         } else if (!(dir instanceof CTGeneralDirector)) {
-            throw new IllegalActionException("Integrators can only be " +
-                    "used in CT models.");
+            throw new IllegalActionException("Integrators can only be "
+                + "used in CT models.");
         }
-        ODESolver solver = (ODESolver)dir.getCurrentODESolver();
+
+        ODESolver solver = (ODESolver) dir.getCurrentODESolver();
+
         if (solver == null) {
-            throw new IllegalActionException( this, " no ODE solver available");
+            throw new IllegalActionException(this, " no ODE solver available");
         }
+
         super.initialize();
-        _tentativeState = ((DoubleToken)initialState.getToken()).doubleValue();
+        _tentativeState = ((DoubleToken) initialState.getToken()).doubleValue();
         _tentativeDerivative = 0.0;
         _state = _tentativeState;
         _derivative = _tentativeDerivative;
+
         if (_debugging) {
             _debug(getName(),
-                    " initialize: initial state = " + _tentativeState
-                    + " derivative = " + _tentativeDerivative);
+                " initialize: initial state = " + _tentativeState
+                + " derivative = " + _tentativeDerivative);
         }
+
         _history.clear();
     }
 
@@ -347,17 +349,19 @@ public class CTBaseIntegrator extends TypedAtomicActor
         try {
             // We check the validity of the input
             // If it is NaN, or Infinity, an exception is thrown.
-            double f_dot = ((DoubleToken)input.get(0)).doubleValue();
+            double f_dot = ((DoubleToken) input.get(0)).doubleValue();
+
             if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
-                throw new InternalErrorException("The input of " +
-                        getName() + " is not valid because" +
-                        " it is a result of divide-by-zero.");
+                throw new InternalErrorException("The input of " + getName()
+                    + " is not valid because"
+                    + " it is a result of divide-by-zero.");
             }
         } catch (IllegalActionException e) {
-            throw new InternalErrorException(getName() +
-                    " can't read input." + e.getMessage());
+            throw new InternalErrorException(getName() + " can't read input."
+                + e.getMessage());
         }
-        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
+
+        ODESolver solver = ((CTDirector) getDirector()).getCurrentODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
     }
@@ -388,13 +392,16 @@ public class CTBaseIntegrator extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
         _state = _tentativeState;
         _derivative = _tentativeDerivative;
+
         if (_debugging) {
             _debug("Saving the following into history: state: " + _state
-                    + " derivative: " + _derivative);
+                + " derivative: " + _derivative);
         }
+
         if (getHistoryCapacity() > 0) {
             _history.pushEntry(_tentativeState, _tentativeDerivative);
         }
+
         return true;
     }
 
@@ -403,7 +410,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @return The predicteded next step size.
      */
     public double predictedStepSize() {
-        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
+        ODESolver solver = ((CTDirector) getDirector()).getCurrentODESolver();
         return solver.integratorPredictedStepSize(this);
     }
 
@@ -419,26 +426,33 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  the director has no ODE solver.
      */
     public boolean prefire() throws IllegalActionException {
-        CTDirector dir = (CTDirector)getDirector();
+        CTDirector dir = (CTDirector) getDirector();
+
         if (dir == null) {
-            throw new IllegalActionException( this,
-                    " does not have a director.");
+            throw new IllegalActionException(this, " does not have a director.");
         }
-        ODESolver solver = (ODESolver)dir.getCurrentODESolver();
+
+        ODESolver solver = (ODESolver) dir.getCurrentODESolver();
+
         if (solver == null) {
-            throw new IllegalActionException( this,
-                    " does not have an ODE solver.");
+            throw new IllegalActionException(this,
+                " does not have an ODE solver.");
         }
+
         int n = solver.getIntegratorAuxVariableCount();
+
         if ((_auxVariables == null) || (_auxVariables.length < n)) {
             _auxVariables = new double[n];
         }
+
         if (getHistoryCapacity() != solver.getAmountOfHistoryInformation()) {
             setHistoryCapacity(solver.getAmountOfHistoryInformation());
         }
+
         if (getValidHistoryCount() >= 2) {
             _history.rebalance(dir.getCurrentStepSize());
         }
+
         return true;
     }
 
@@ -457,11 +471,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        double step = ((CTDirector)getDirector()).getCurrentStepSize();
+        double step = ((CTDirector) getDirector()).getCurrentStepSize();
+
         if (_successful) {
             return step;
-        }else {
-            return (double)0.5*step;
+        } else {
+            return (double) 0.5 * step;
         }
     }
 
@@ -477,12 +492,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @see #getAuxVariables
      */
     public void setAuxVariables(int index, double value)
-            throws InvalidStateException {
+        throws InvalidStateException {
         try {
             _auxVariables[index] = value;
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new InvalidStateException(this,
-                    "index out of the range of the auxVariables.");
+                "index out of the range of the auxVariables.");
         }
     }
 
@@ -530,7 +545,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Auxiliary variable array.
     private double[] _auxVariables;
 
@@ -561,7 +575,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  tested.
      */
     protected class History {
-
         /** Construct a history object and associate it with the given
          *  integrator.
          *  @param container The container that contains this history object.
@@ -606,7 +619,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
          *         its derivative in history.
          */
         public double[] getEntry(int index) {
-            return ((DoubleDouble)_entries.get(index)).toArray();
+            return ((DoubleDouble) _entries.get(index)).toArray();
         }
 
         /** Push the new state-derivative pair into the history.
@@ -618,23 +631,24 @@ public class CTBaseIntegrator extends TypedAtomicActor
          *  of history is less than or equal to zero.
          */
         public void pushEntry(double state, double derivative)
-                throws IllegalActionException {
-            if (_capacity >0) {
+            throws IllegalActionException {
+            if (_capacity > 0) {
                 DoubleDouble entry = new DoubleDouble(state, derivative);
+
                 if (_entries.size() >= _capacity) {
                     // the history list has achieved its capacity,
                     // so remove the oldest entry.
                     _entries.removeLast();
                 }
+
                 _entries.addFirst(entry);
-                _stepsize =
-                    ((CTDirector)_container.getDirector()).getCurrentStepSize();
+                _stepsize = ((CTDirector) _container.getDirector())
+                    .getCurrentStepSize();
             } else {
                 throw new IllegalActionException(getContainer(),
-                        "The history capacity is less than or equal to 0.");
+                    "The history capacity is less than or equal to 0.");
             }
         }
-
 
         /** Rebalance the history information
          *  with respect to the current step size, such that the information
@@ -648,31 +662,37 @@ public class CTBaseIntegrator extends TypedAtomicActor
          *  @param currentStepSize The current step size.
          */
         public void rebalance(double currentStepSize) {
-            double timeResolution =
-                ((CTDirector) _container.getDirector()).getTimeResolution();
-            if (Math.abs(currentStepSize - _stepsize)>timeResolution) {
+            double timeResolution = ((CTDirector) _container.getDirector())
+                .getTimeResolution();
+
+            if (Math.abs(currentStepSize - _stepsize) > timeResolution) {
                 double[][] history = toDoubleArray();
                 int size = _entries.size();
-                for (int i = 0; i < size-1; i++) {
+
+                for (int i = 0; i < (size - 1); i++) {
                     _entries.removeLast();
                 }
-                double ratio = currentStepSize/_stepsize;
+
+                double ratio = currentStepSize / _stepsize;
+
                 for (int i = 1; i < size; i++) {
                     double[] newEntry;
-                    int bin = (int)Math.floor(i*ratio);
+                    int bin = (int) Math.floor(i * ratio);
+
                     if (bin < size) {
                         // Interpolation as much as possible.
-                        double remainder = i*ratio - (double)bin;
-                        newEntry = _Hermite(history[bin+1], history[bin],
-                                1-remainder);
+                        double remainder = (i * ratio) - (double) bin;
+                        newEntry = _Hermite(history[bin + 1], history[bin],
+                                1 - remainder);
                     } else {
                         // Extrapolation
-                        newEntry = _extrapolation(history[size-2],
-                                history[size-1], i*ratio-size+1);
+                        newEntry = _extrapolation(history[size - 2],
+                                history[size - 1], (i * ratio) - size + 1);
                     }
-                    _entries.addLast(new DoubleDouble
-                            (newEntry[0], newEntry[1]));
+
+                    _entries.addLast(new DoubleDouble(newEntry[0], newEntry[1]));
                 }
+
                 _stepsize = currentStepSize;
             }
         }
@@ -684,7 +704,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
          *  @see #getCapacity
          */
         public void setCapacity(int capacity) {
-            _capacity = (capacity>0) ? capacity : 0;
+            _capacity = (capacity > 0) ? capacity : 0;
+
             while (_entries.size() > capacity) {
                 _entries.removeLast();
             }
@@ -699,35 +720,38 @@ public class CTBaseIntegrator extends TypedAtomicActor
             double[][] array = new double[_entries.size()][2];
             Iterator objs = _entries.iterator();
             int i = 0;
+
             while (objs.hasNext()) {
                 DoubleDouble entry = (DoubleDouble) objs.next();
                 array[i++] = entry.toArray();
             }
+
             return array;
         }
 
         ///////////////////////////////////////////////////////////////
         ////                        private methods                ////
-
         // Hermite interpolation.
         // @param p1 Point 1, state and derivative.
         // @param p2 Point 2, state and derivative.
         // @param s The interpolation point.
         // @return The Hermite interpolation of the arguments.
         private double[] _Hermite(double[] p1, double[] p2, double s) {
-            double s3 = s*s*s;
-            double s2 = s*s;
-            double h1 = 2*s3 - 3*s2 + 1;
-            double h2 = -2*s3 + 3*s2;
-            double h3 = s3- 2*s2 + s;
+            double s3 = s * s * s;
+            double s2 = s * s;
+            double h1 = (2 * s3) - (3 * s2) + 1;
+            double h2 = (-2 * s3) + (3 * s2);
+            double h3 = s3 - (2 * s2) + s;
             double h4 = s3 - s2;
-            double g1 = 6*s2 - 6*s;
-            double g2 = -6*s2 + 6*s;
-            double g3 = 3*s2 -4*s +1;
-            double g4 = 3*s2 -2*s;
+            double g1 = (6 * s2) - (6 * s);
+            double g2 = (-6 * s2) + (6 * s);
+            double g3 = (3 * s2) - (4 * s) + 1;
+            double g4 = (3 * s2) - (2 * s);
             double[] result = new double[2];
-            result[0] = h1*p1[0] + h2*p2[0] + h3*p1[1] + h4*p2[1];
-            result[1] = g1*p1[0] + g2*p2[0] + g3*p1[1] + g4*p2[1];
+            result[0] = (h1 * p1[0]) + (h2 * p2[0]) + (h3 * p1[1])
+                + (h4 * p2[1]);
+            result[1] = (g1 * p1[0]) + (g2 * p2[0]) + (g3 * p1[1])
+                + (g4 * p2[1]);
             return result;
         }
 
@@ -737,16 +761,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
         // @param s The extrapolation ration.
         // @return The extrapolation of the arguments.
         private double[] _extrapolation(double[] p1, double[] p2, double s) {
-
             double[] result = new double[2];
-            result[0] = p2[0] - (p1[0] - p2[0])*s;
-            result[1] = p2[1] - (p1[1] - p2[1])*s;
+            result[0] = p2[0] - ((p1[0] - p2[0]) * s);
+            result[1] = p2[1] - ((p1[1] - p2[1]) * s);
             return result;
         }
 
         ///////////////////////////////////////////////////////////////
         ////                        private variables               ////
-
         // The container.
         CTBaseIntegrator _container;
 
@@ -766,7 +788,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** A data structure for storing two double numbers.
      */
     private class DoubleDouble {
-
         /** construct the Double pair.
          *  @param first The first double value in a DoubleDouble object.
          *  @param second The second double value in a DoubleDouble object.
@@ -788,9 +809,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
         ///////////////////////////////////////////////////////////////
         ////                        private variables               ////
-
         // The data as a form of a double array of two elements
         private double[] _data = new double[2];
     }
-
 }

@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import java.util.List;
@@ -37,6 +36,7 @@ import ptolemy.graph.mapping.ToIntMapping;
 
 //////////////////////////////////////////////////////////////////////////
 //// MaximumProfitToCostRatioAnalysis
+
 /**
    Maximum profit to cost ratio analysis.
    <p>
@@ -56,9 +56,7 @@ import ptolemy.graph.mapping.ToIntMapping;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class MaximumProfitToCostRatioAnalysis extends Analysis {
-
     /** Construct an instance of this class using a default analyzer.
      *  Please note the limitation on edge costs which is being imposed by the
      *  default analyzer.
@@ -68,18 +66,17 @@ public class MaximumProfitToCostRatioAnalysis extends Analysis {
      *  @param edgeCosts The costs associated with the edges of the graph.
      */
     public MaximumProfitToCostRatioAnalysis(Graph graph,
-            ToDoubleMapping edgeProfits,
-            ToIntMapping edgeCosts) {
-        super(new ParhiMaximumProfitToCostRatioStrategy
-                (graph, edgeProfits, edgeCosts));
+        ToDoubleMapping edgeProfits, ToIntMapping edgeCosts) {
+        super(new ParhiMaximumProfitToCostRatioStrategy(graph, edgeProfits,
+                edgeCosts));
     }
 
     /** Construct an instance of this class using a given analyzer.
      *
      *  @param analyzer The given analyzer.
      */
-    public MaximumProfitToCostRatioAnalysis(MaximumProfitToCostRatioAnalyzer
-            analyzer) {
+    public MaximumProfitToCostRatioAnalysis(
+        MaximumProfitToCostRatioAnalyzer analyzer) {
         super(analyzer);
     }
 
@@ -92,7 +89,7 @@ public class MaximumProfitToCostRatioAnalysis extends Analysis {
      *  @return The nodes on the cycle as an ordered list.
      */
     public List cycle() {
-        return ((MaximumProfitToCostRatioAnalyzer)analyzer()).cycle();
+        return ((MaximumProfitToCostRatioAnalyzer) analyzer()).cycle();
     }
 
     /** Return the maximum profit to cost ratio of the given graph.
@@ -100,7 +97,7 @@ public class MaximumProfitToCostRatioAnalysis extends Analysis {
      *  @return Return the maximum profit to cost ratio of the associated graph.
      */
     public double maximumRatio() {
-        return ((MaximumProfitToCostRatioAnalyzer)analyzer()).maximumRatio();
+        return ((MaximumProfitToCostRatioAnalyzer) analyzer()).maximumRatio();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -109,8 +106,7 @@ public class MaximumProfitToCostRatioAnalysis extends Analysis {
      */
     public String toString() {
         return "Maximum profit to cost ratio analysis using "
-            + "the following analyzer:\n"
-            + analyzer().toString();
+        + "the following analyzer:\n" + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

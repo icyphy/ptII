@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.kernel;
 
 import ptolemy.actor.Actor;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimedPNDirector
+
 /**
    A TimedPNDirector governs the execution of a CompositeActor with
    Kahn-MacQueen process networks (PN) semantics extended by introduction of a
@@ -102,9 +103,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (mudit)
    @Pt.AcceptedRating Green (davisj)
 */
-public class TimedPNDirector extends PNDirector
-    implements TimedDirector {
-
+public class TimedPNDirector extends PNDirector implements TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -113,7 +112,7 @@ public class TimedPNDirector extends PNDirector
      *  the receivers created in the PN domain.
      */
     public TimedPNDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         timePrecisionInDigits.setVisibility(Settable.FULL);
     }
@@ -127,7 +126,7 @@ public class TimedPNDirector extends PNDirector
      *  @param workspace The workspace of this object.
      */
     public TimedPNDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         timePrecisionInDigits.setVisibility(Settable.FULL);
     }
@@ -148,7 +147,7 @@ public class TimedPNDirector extends PNDirector
      *   CompositeActor and the name collides with an entity in the container.
      */
     public TimedPNDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         timePrecisionInDigits.setVisibility(Settable.FULL);
     }
@@ -168,11 +167,10 @@ public class TimedPNDirector extends PNDirector
      *   cannot be cloned.
      *  @return The new TimedPNDirector.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        TimedPNDirector newObject = (TimedPNDirector)super.clone(workspace);
-        newObject._eventQueue =
-            new CalendarQueue(new TimedEvent.TimeComparator(this));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        TimedPNDirector newObject = (TimedPNDirector) super.clone(workspace);
+        newObject._eventQueue = new CalendarQueue(new TimedEvent.TimeComparator(
+                    this));
         newObject._delayBlockCount = 0;
         return newObject;
     }
@@ -189,13 +187,15 @@ public class TimedPNDirector extends PNDirector
      *  permissible (e.g. the given time is in the past).
      */
     public synchronized void fireAt(Actor actor, Time newFiringTime)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (newFiringTime.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this, "The process wants to "
-                    + " get fired in the past!");
+            throw new IllegalActionException(this,
+                "The process wants to " + " get fired in the past!");
         }
+
         _eventQueue.put(new TimedEvent(newFiringTime, actor));
         _informOfDelayBlock();
+
         try {
             while (getModelTime().compareTo(newFiringTime) < 0) {
                 wait();
@@ -211,11 +211,10 @@ public class TimedPNDirector extends PNDirector
      *  time to less than the current time.
      *  @param newTime The new time of the model.
      */
-    public void setModelTime(Time newTime)
-            throws IllegalActionException {
+    public void setModelTime(Time newTime) throws IllegalActionException {
         if (newTime.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this, "Attempt to set the "+
-                    "time to past.");
+            throw new IllegalActionException(this,
+                "Attempt to set the " + "time to past.");
         } else {
             super.setModelTime(newTime);
         }
@@ -230,8 +229,7 @@ public class TimedPNDirector extends PNDirector
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-        if (_readBlockCount + _writeBlockCount + _delayBlockCount
-                >= _getActiveActorsCount()) {
+        if ((_readBlockCount + _writeBlockCount + _delayBlockCount) >= _getActiveActorsCount()) {
             return true;
         } else {
             return false;
@@ -265,8 +263,7 @@ public class TimedPNDirector extends PNDirector
      *  @exception IllegalActionException Not thrown in this base class.
      *  This might be thrown by derived classes.
      */
-    protected boolean _resolveDeadlock()
-            throws IllegalActionException {
+    protected boolean _resolveDeadlock() throws IllegalActionException {
         if (_writeBlockCount != 0) {
             // Artificial deadlock based on write blocks.
             _incrementLowestWriteCapacityPort();
@@ -277,32 +274,36 @@ public class TimedPNDirector extends PNDirector
         } else {
             // Artificial deadlock due to delayed processes.
             // Advance time to next possible time.
-            synchronized(this) {
+            synchronized (this) {
                 if (!_eventQueue.isEmpty()) {
                     //Take the first time-blocked process from the queue.
-                    TimedEvent event = (TimedEvent)_eventQueue.take();
+                    TimedEvent event = (TimedEvent) _eventQueue.take();
+
                     //Advance time to the resumption time of this process.
                     setModelTime(event.timeStamp);
                     _informOfDelayUnblock();
                 } else {
-                    throw new InternalErrorException("Inconsistency"+
-                            " in number of actors blocked on delays count"+
-                            " and the entries in the CalendarQueue");
+                    throw new InternalErrorException("Inconsistency"
+                        + " in number of actors blocked on delays count"
+                        + " and the entries in the CalendarQueue");
                 }
 
                 //Remove any other process waiting to be resumed at the new
                 //advanced time (the new currentTime).
                 boolean sameTime = true;
+
                 while (sameTime) {
                     //If queue is not empty, then determine the resumption
                     //time of the next process.
                     if (!_eventQueue.isEmpty()) {
                         //Remove the first process from the queue.
-                        TimedEvent event = (TimedEvent)_eventQueue.take();
-                        Actor actor = (Actor)event.contents;
+                        TimedEvent event = (TimedEvent) _eventQueue.take();
+                        Actor actor = (Actor) event.contents;
+
                         //Get the resumption time of the newly removed
                         //process.
                         Time newTime = event.timeStamp;
+
                         //If the resumption time of the newly removed
                         //process is the same as the newly advanced time
                         //then unblock it. Else put the newly removed
@@ -317,10 +318,12 @@ public class TimedPNDirector extends PNDirector
                         sameTime = false;
                     }
                 }
+
                 //Wake up all delayed actors
                 notifyAll();
             }
         }
+
         return true;
     }
 
@@ -331,8 +334,8 @@ public class TimedPNDirector extends PNDirector
      *  to advance. These processes are sorted by the time they want to resume
      *  at.
      */
-    protected CalendarQueue _eventQueue =
-        new CalendarQueue(new TimedEvent.TimeComparator(this));
+    protected CalendarQueue _eventQueue = new CalendarQueue(new TimedEvent.TimeComparator(
+                this));
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

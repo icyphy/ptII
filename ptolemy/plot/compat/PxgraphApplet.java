@@ -40,6 +40,7 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplet;
 import ptolemy.plot.PlotBox;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PxgraphApplet
 
@@ -62,47 +63,44 @@ import ptolemy.plot.PlotBox;
    @see ptolemy.plot.Plot
 */
 public class PxgraphApplet extends PlotApplet {
-
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PxgraphApplet " + PlotBox.PTPLOT_RELEASE +
-            ": A data plotter.\n" +
-            "By: Edward A. Lee and\n " +
-            "Christopher Hylands\n" +
-            "($Id$)";
+        return "PxgraphApplet " + PlotBox.PTPLOT_RELEASE
+        + ": A data plotter.\n" + "By: Edward A. Lee and\n "
+        + "Christopher Hylands\n"
+        + "($Id$)";
     }
 
     /** Return information about parameters.
      */
     public String[][] getParameterInfo() {
-        String pinfo[][] = {
-            {"background", "hexcolor value", "background color"},
-            {"foreground", "hexcolor value", "foreground color"},
-            {"dataurl",   "url",     "the URL of the data to plot"},
-            {"pxgraphargs",   "args",
-             "pxgraph style command line arguments"}
-        };
+        String[][] pinfo = {
+                { "background", "hexcolor value", "background color" },
+                { "foreground", "hexcolor value", "foreground color" },
+                { "dataurl", "url", "the URL of the data to plot" },
+                { "pxgraphargs", "args", "pxgraph style command line arguments" }
+            };
         return pinfo;
     }
 
     /** Initialize the applet.  Read the applet parameters.
      */
     public void init() {
-
         if (plot() == null) {
             // This is a bit of a hack to make sure that we actually
             // have a plot to operate on.
             setPlot(newPlot());
         }
 
-        _parser = new PxgraphParser((Plot)plot());
+        _parser = new PxgraphParser((Plot) plot());
 
         super.init();
 
         // Process the pxgraphargs parameter.
         String pxgraphargs = null;
         pxgraphargs = getParameter("pxgraphargs");
+
         if (pxgraphargs != null) {
             try {
                 // Since there may be filenames specified here, we
@@ -112,15 +110,15 @@ public class PxgraphApplet extends PlotApplet {
                 _parser.parsePxgraphargs(pxgraphargs, getDocumentBase());
                 showStatus("Done reading arguments");
             } catch (CmdLineArgException e) {
-                System.err.println(
-                        "PxgraphApplet: failed to parse `"
-                        + pxgraphargs + "': " + e);
+                System.err.println("PxgraphApplet: failed to parse `"
+                    + pxgraphargs + "': " + e);
             } catch (FileNotFoundException e) {
                 System.err.println(e.toString());
             } catch (IOException e) {
                 System.err.println(e.toString());
             }
         }
+
         // Because things may occur in an odd order above...
         plot().repaint();
     }
@@ -138,7 +136,6 @@ public class PxgraphApplet extends PlotApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Parser.
     private PxgraphParser _parser;
 }

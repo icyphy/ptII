@@ -36,15 +36,14 @@ import java.awt.image.ImageObserver;
 import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasUtilities;
 
+
 /**
  * A figure which draws a user-specified image.
  *
  * @author Michael Shilman
  * @version $Id$
  */
-public class ImageFigure extends AbstractFigure
-        implements ImageObserver {
-
+public class ImageFigure extends AbstractFigure implements ImageObserver {
     /** Indicator of whether this figure should be centered on its origin.
      *  By default, this class is not centered.
      */
@@ -98,14 +97,16 @@ public class ImageFigure extends AbstractFigure
      *  shape if the figure is not centered.
      *  @return The origin of the figure.
      */
-    public Point2D getOrigin () {
+    public Point2D getOrigin() {
         Rectangle2D bounds = getBounds();
+
         if (_centered) {
             return super.getOrigin();
+
             // Used to do:
             // return new Point2D.Double(bounds.getX(), bounds.getY());
         } else {
-            Point2D point = new Point2D.Double(0,0);
+            Point2D point = new Point2D.Double(0, 0);
             _xf.transform(point, point);
             return point;
         }
@@ -122,7 +123,8 @@ public class ImageFigure extends AbstractFigure
         if (_image != null) {
             int w = _image.getWidth(this);
             int h = _image.getHeight(this);
-            if (w < 0 || h < 0) {
+
+            if ((w < 0) || (h < 0)) {
                 // Width and height are not ready
                 // (Image is not fully loaded or it
                 // is fully loaded, but the Java
@@ -132,6 +134,7 @@ public class ImageFigure extends AbstractFigure
                 w = _width;
                 h = _height;
             }
+
             Rectangle2D r = new Rectangle2D.Double(0, 0, w, h);
             return _xf.createTransformedShape(r);
         } else {
@@ -153,15 +156,10 @@ public class ImageFigure extends AbstractFigure
      *  @return False if the infoflags indicate that the image is
      *   completely loaded; true otherwise.
      */
-    public boolean imageUpdate(Image image,
-            int infoflags,
-            int x,
-            int y,
-            int width,
-            int height) {
+    public boolean imageUpdate(Image image, int infoflags, int x, int y,
+        int width, int height) {
         // FIXME: This should probably create some default error
         // image if the infoflags argument contains ERROR or ABORT.
-
         if ((infoflags & (ImageObserver.HEIGHT | ImageObserver.WIDTH)) != 0) {
             // NOTE: Incredibly stupidly, when Java calls this method
             // with a new width and height, it hasn't set those fields
@@ -176,9 +174,11 @@ public class ImageFigure extends AbstractFigure
             // In case the width or height is later updated.
             _image.getWidth(this);
             _image.getHeight(this);
+
             // repaint();
             return true;
         }
+
         // A zillion calls are made with PROPERTIES or SOMEBITS.
         // If these occur, do not call repaint().
         if ((infoflags & (ImageObserver.PROPERTIES | ImageObserver.SOMEBITS)) != 0) {
@@ -187,11 +187,14 @@ public class ImageFigure extends AbstractFigure
             _image.getHeight(this);
             return true;
         }
+
         if ((infoflags & ImageObserver.ALLBITS) != 0) {
             repaint();
+
             // Return false, indicating that the image is completely loaded.
             return false;
         }
+
         // In case the width or height is later updated.
         _image.getWidth(this);
         _image.getHeight(this);
@@ -229,6 +232,7 @@ public class ImageFigure extends AbstractFigure
      */
     public void setCentered(boolean centered) {
         repaint();
+
         Point2D point = getOrigin();
         _centered = centered;
         CanvasUtilities.translateTo(this, point.getX(), point.getY());

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.gui.demo;
 
 import javax.swing.UIManager;
@@ -34,8 +33,10 @@ import ptolemy.gui.BasicJApplet;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// QueryApplet
+
 /**
    Applet demonstrating the Query class.
 
@@ -47,7 +48,6 @@ import ptolemy.gui.QueryListener;
    @see ptolemy.gui.Query
 */
 public class QueryApplet extends BasicJApplet implements QueryListener {
-
     /** Constructor.
      */
     public QueryApplet() {
@@ -58,8 +58,7 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         // NOTE: This creates the only dependence on Swing in this
         // class.  Should this be left to derived classes?
         try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
@@ -85,23 +84,26 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         _query.setTextWidth(20);
         _query.addLine("line", "Entry box", "default entry");
         _query.addDisplay("display", "Display", "displayed string");
-        String[] choices = {"a", "b", "c"};
+
+        String[] choices = { "a", "b", "c" };
         _query.addChoice("choice", "Choice", choices, "b");
-        String[] moreChoices = {"d", "e", "f"};
-        _query.addChoice("editchoice", "Editable Choice", moreChoices, "d",
-                true);
+
+        String[] moreChoices = { "d", "e", "f" };
+        _query.addChoice("editchoice", "Editable Choice", moreChoices, "d", true);
         _query.addSlider("slider", "Slider", 0, -100, 100);
-        String[] options = {"mayonnaise", "mustard", "both", "none"};
+
+        String[] options = { "mayonnaise", "mustard", "both", "none" };
         _query.addRadioButtons("radio", "Radio buttons", options, "none");
 
         try {
-            _query.addFileChooser(
-                    "fileChooser", "FileChooser", "default", null, null);
-        } catch ( SecurityException security) {
+            _query.addFileChooser("fileChooser", "FileChooser", "default",
+                null, null);
+        } catch (SecurityException security) {
             System.out.println("addFileChooser failed: " + security);
         }
-        _query.addColorChooser(
-                "colorChooser", "ColorChoser", "{0.0, 0.0, 0.0, 1.0}");
+
+        _query.addColorChooser("colorChooser", "ColorChoser",
+            "{0.0, 0.0, 0.0, 1.0}");
         _query.addQueryListener(this);
         _query.setBackground(getBackground());
         getContentPane().add(_query);
@@ -109,6 +111,5 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     Query _query;
 }

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.kernel.test;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -39,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEGet
+
 /**
    DDEGet is used as a test class for consuming tokens. This class has a
    single typed output multiport. Use this class to test DDEReceiver and
@@ -51,13 +51,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class DDEGet extends TypedAtomicActor {
-
     /**
      */
     public DDEGet(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -76,6 +74,5 @@ public class DDEGet extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     public TypedIOPort input;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel;
 
 import java.awt.Color;
@@ -39,6 +38,7 @@ import diva.canvas.FigureContainer;
 import diva.canvas.FigureDecorator;
 import diva.canvas.interactor.SelectionRenderer;
 import diva.canvas.toolbox.BasicHighlighter;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// AnimationRenderer
@@ -62,11 +62,10 @@ import diva.canvas.toolbox.BasicHighlighter;
    @Pt.AcceptedRating Red (johnr)
 */
 public class AnimationRenderer implements SelectionRenderer {
-
     /** Create a new selection renderer with the default prototype
      *  decorator.
      */
-    public AnimationRenderer () {
+    public AnimationRenderer() {
         this(Color.red);
     }
 
@@ -74,7 +73,7 @@ public class AnimationRenderer implements SelectionRenderer {
      *  decorator using the specified color.
      *  @param color The color for the highlight.
      */
-    public AnimationRenderer (Color color) {
+    public AnimationRenderer(Color color) {
         _prototypeDecorator = new BasicHighlighter(color, 4.0f);
     }
 
@@ -83,7 +82,7 @@ public class AnimationRenderer implements SelectionRenderer {
      *  an outline rather than a filled shape.
      *  @param color The color for the highlight.
      */
-    public AnimationRenderer (Color color, Stroke stroke) {
+    public AnimationRenderer(Color color, Stroke stroke) {
         _prototypeDecorator = new BasicHighlighter(color, 4.0f, null, stroke);
     }
 
@@ -93,14 +92,14 @@ public class AnimationRenderer implements SelectionRenderer {
     /** Create a new renderer with the given prototype decorator.
      *  @param decorator The prototype decorator.
      */
-    public AnimationRenderer (FigureDecorator decorator) {
+    public AnimationRenderer(FigureDecorator decorator) {
         _prototypeDecorator = decorator;
     }
 
     /** Get the prototype decorator.
      *  @return The prototype decorator.
      */
-    public FigureDecorator getDecorator () {
+    public FigureDecorator getDecorator() {
         return _prototypeDecorator;
     }
 
@@ -108,7 +107,7 @@ public class AnimationRenderer implements SelectionRenderer {
      *  @param figure The figure that may be highlighted.
      *  @return True if the figure is highlighted.
      */
-    public synchronized boolean isRenderedSelected (Figure figure) {
+    public synchronized boolean isRenderedSelected(Figure figure) {
         return _decorators.containsKey(figure);
     }
 
@@ -121,28 +120,31 @@ public class AnimationRenderer implements SelectionRenderer {
      *  to give the event thread a chance to catch up.
      *  @param figure The figure to deselect.
      */
-    public void renderDeselected (final Figure figure) {
+    public void renderDeselected(final Figure figure) {
         Runnable doUndecorate = new Runnable() {
                 public void run() {
-                    synchronized(AnimationRenderer.this) {
-                        if ( !_decorators.containsKey(figure)) {
+                    synchronized (AnimationRenderer.this) {
+                        if (!_decorators.containsKey(figure)) {
                             return;
                         }
+
                         // Rather than just get the parent of the
                         // figure, we must get the decorator out of
                         // the hashtable, since other wrappers may
                         // have been inserted between the figure and
                         // its decorator
-                        FigureDecorator d = (FigureDecorator)
-                            _decorators.get(figure);
+                        FigureDecorator d = (FigureDecorator) _decorators.get(figure);
+
                         if (d.getParent() != null) {
                             figure.repaint();
                             ((FigureContainer) d.getParent()).undecorate(d);
                         }
+
                         _decorators.remove(figure);
                     }
                 }
             };
+
         SwingUtilities.invokeLater(doUndecorate);
         Thread.yield();
     }
@@ -156,25 +158,27 @@ public class AnimationRenderer implements SelectionRenderer {
      *  to give the event thread a chance to catch up.
      *  @param figure The figure to highlight.
      */
-    public void renderSelected (final Figure figure) {
+    public void renderSelected(final Figure figure) {
         Runnable doDecorate = new Runnable() {
                 public void run() {
-                    synchronized(AnimationRenderer.this) {
+                    synchronized (AnimationRenderer.this) {
                         if (_decorators.containsKey(figure)) {
-                            ((Figure)_decorators.get(figure)).repaint();
+                            ((Figure) _decorators.get(figure)).repaint();
                         } else {
-                            FigureContainer parent
-                                = (FigureContainer) figure.getParent();
+                            FigureContainer parent = (FigureContainer) figure
+                                .getParent();
+
                             if (parent != null) {
-                                FigureDecorator d
-                                    = _prototypeDecorator.newInstance(figure);
-                                parent.decorate(figure,d);
-                                _decorators.put(figure,d);
+                                FigureDecorator d = _prototypeDecorator
+                                    .newInstance(figure);
+                                parent.decorate(figure, d);
+                                _decorators.put(figure, d);
                             }
                         }
                     }
                 }
             };
+
         SwingUtilities.invokeLater(doDecorate);
         Thread.yield();
     }
@@ -182,7 +186,7 @@ public class AnimationRenderer implements SelectionRenderer {
     /** Set the prototype decorator.
      *  @param decorator The prototype decorator.
      */
-    public void setDecorator (FigureDecorator decorator) {
+    public void setDecorator(FigureDecorator decorator) {
         _prototypeDecorator = decorator;
     }
 
@@ -199,5 +203,4 @@ public class AnimationRenderer implements SelectionRenderer {
     /** Mapping from figures to decorators
      */
     private Hashtable _decorators = new Hashtable();
-
 }

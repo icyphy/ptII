@@ -40,22 +40,22 @@ import diva.canvas.event.LayerEvent;
  * @author Edward A. Lee
  */
 public class ArcInteractor extends ConnectorInteractor {
-
     /** Create a new interactor to be used with the given manipulator.
      */
-    public ArcInteractor (ArcManipulator m) {
+    public ArcInteractor(ArcManipulator m) {
         super(m);
     }
 
     /** Fire a connector event to all connector listeners.
      */
-    protected void fireConnectorEvent (int id) {
+    protected void fireConnectorEvent(int id) {
         // NOTE: The following cast is safe because the method that
         // creates grab handles in ArcManipulator ensures that the
         // connector is an instance of ArcConnector.
-        ArcConnector connector = (ArcConnector)getConnector();
+        ArcConnector connector = (ArcConnector) getConnector();
         Site site = getHandle().getSite();
         int end;
+
         if (site == connector.getTailSite()) {
             end = ConnectorEvent.TAIL_END;
         } else if (site == connector.getMidpointSite()) {
@@ -64,12 +64,9 @@ public class ArcInteractor extends ConnectorInteractor {
             // Default is head site.
             end = ConnectorEvent.HEAD_END;
         }
-        ConnectorEvent event = new ConnectorEvent(
-                id,
-                connector.getLayer(),
-                getTarget(),
-                connector,
-                end);
+
+        ConnectorEvent event = new ConnectorEvent(id, connector.getLayer(),
+                getTarget(), connector, end);
         _notifyConnectorListeners(event, id);
     }
 
@@ -77,17 +74,16 @@ public class ArcInteractor extends ConnectorInteractor {
      *  grab-handle, and adjust the connector accordingly,
      *  snapping it to a suitable target if possible.
      */
-    public void translate (LayerEvent e, double dx, double dy) {
+    public void translate(LayerEvent e, double dx, double dy) {
         // NOTE: The following cast is safe because the method that
         // creates grab handles in ArcManipulator ensures that the
         // connector is an instance of ArcConnector.
-        ArcConnector connector = (ArcConnector)getConnector();
+        ArcConnector connector = (ArcConnector) getConnector();
         Site site = getHandle().getSite();
 
         // Process movement in one of the end manipulators
         if (site != connector.getMidpointSite()) {
             super.translate(e, dx, dy);
-
         } else {
             // Process movement of the mid-point manipulator. The
             // distance we want to tell the connector to move, is
@@ -105,28 +101,35 @@ public class ArcInteractor extends ConnectorInteractor {
 
             // Apply a couple of limiting functions to this, to avoid
             // "yoyo-ing"
-            if (newdx > 0 && dx < 0 || newdx < 0 && dx > 0) {
+            if (((newdx > 0) && (dx < 0)) || ((newdx < 0) && (dx > 0))) {
                 newdx = 0;
             }
-            if (newdy > 0 && dy < 0 || newdy < 0 && dy > 0) {
+
+            if (((newdy > 0) && (dy < 0)) || ((newdy < 0) && (dy > 0))) {
                 newdy = 0;
             }
+
             double limit = 25.0;
+
             if (newdx > limit) {
                 newdx = limit;
             } else if (newdx < -limit) {
                 newdx = -limit;
             }
+
             if (newdy > limit) {
                 newdy = limit;
             } else if (newdy < -limit) {
                 newdy = -limit;
             }
+
             // Tell the connector to move its midpoint
             connector.translateMidpoint(newdx, newdy);
+
             //connector.translateMidpoint(dx, dy); // This one is "open-loop"
             connector.reroute();
         }
+
         fireConnectorEvent(ConnectorEvent.CONNECTOR_DRAGGED);
     }
 }

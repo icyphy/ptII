@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.DoubleToken;
@@ -44,8 +43,10 @@ import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
 import ptolemy.math.Rounding;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToFix
+
 /**
    This actor converts a DoubleToken to a FixToken with a specified
    precision. Note that this conversion is lossy, in that the output
@@ -80,9 +81,7 @@ import ptolemy.math.Rounding;
    @see ptolemy.math.Precision
    @see ptolemy.math.Rounding
 */
-
 public class DoubleToFix extends Converter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -92,7 +91,7 @@ public class DoubleToFix extends Converter {
      *   actor with this name.
      */
     public DoubleToFix(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.FIX);
@@ -129,13 +128,15 @@ public class DoubleToFix extends Converter {
      *  @exception IllegalActionException If the parameter value is invalid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == precision) {
-            IntMatrixToken token = (IntMatrixToken)precision.getToken();
-            if (token.getRowCount() != 1 || token.getColumnCount() != 2) {
+            IntMatrixToken token = (IntMatrixToken) precision.getToken();
+
+            if ((token.getRowCount() != 1) || (token.getColumnCount() != 2)) {
                 throw new IllegalActionException(this,
-                        "Invalid precision (not a 1 by 2 matrix).");
+                    "Invalid precision (not a 1 by 2 matrix).");
             }
+
             Precision precision = new Precision(token.getElementAt(0, 0),
                     token.getElementAt(0, 1));
             _quantization = _quantization.setPrecision(precision);
@@ -158,7 +159,7 @@ public class DoubleToFix extends Converter {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        DoubleToken in = (DoubleToken)input.get(0);
+        DoubleToken in = (DoubleToken) input.get(0);
         FixPoint fixValue = new FixPoint(in.doubleValue(), _quantization);
         FixToken result = new FixToken(fixValue);
         output.send(0, result);
@@ -172,14 +173,13 @@ public class DoubleToFix extends Converter {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The quantization of the output.
-    private FixPointQuantization _quantization =
-    new FixPointQuantization(null, Overflow.SATURATE, Rounding.NEAREST);
+    private FixPointQuantization _quantization = new FixPointQuantization(null,
+            Overflow.SATURATE, Rounding.NEAREST);
 }
-

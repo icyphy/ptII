@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.geom.AffineTransform;
@@ -50,8 +49,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIAffineTransform
+
 /**
    Compute an affine transformation on an image.  The parameter
    affineMatrix must be a two by three matrix.  If the matrix is
@@ -76,7 +77,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JAIAffineTransform extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -86,19 +86,17 @@ public class JAIAffineTransform extends Transformer {
      *   actor with this name.
      */
     public JAIAffineTransform(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        affineMatrix =
-            new Parameter(this, "affineMatrix",
-                    new DoubleMatrixToken(_initialMatrix));
+        affineMatrix = new Parameter(this, "affineMatrix",
+                new DoubleMatrixToken(_initialMatrix));
 
         interpolationType = new StringAttribute(this, "interpolationType");
         interpolationType.setExpression("bilinear");
         _interpolationType = _BILINEAR;
 
-        subSampleBits =
-            new Parameter(this, "subSampleBits", new IntToken(8));
+        subSampleBits = new Parameter(this, "subSampleBits", new IntToken(8));
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -132,9 +130,10 @@ public class JAIAffineTransform extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == interpolationType) {
             String typeName = interpolationType.getExpression();
+
             if (typeName.equals("bicubic")) {
                 _interpolationType = _BICUBIC;
             } else if (typeName.equals("bicubic2")) {
@@ -145,32 +144,29 @@ public class JAIAffineTransform extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized interpolation type: " + typeName);
+                    "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == subSampleBits) {
-            _subSampleBits =
-                ((IntToken) subSampleBits.getToken()).intValue();
+            _subSampleBits = ((IntToken) subSampleBits.getToken()).intValue();
         } else if (attribute == affineMatrix) {
-            DoubleMatrixToken affineMatrixToken =
-                (DoubleMatrixToken) affineMatrix.getToken();
-            if (affineMatrixToken.getColumnCount() == 3
-                    && affineMatrixToken.getRowCount() == 2) {
+            DoubleMatrixToken affineMatrixToken = (DoubleMatrixToken) affineMatrix
+                .getToken();
+
+            if ((affineMatrixToken.getColumnCount() == 3)
+                    && (affineMatrixToken.getRowCount() == 2)) {
                 _matrixValue = affineMatrixToken.doubleMatrix();
-                _affineTransform =
-                    new AffineTransform(_matrixValue[0][0],
-                            _matrixValue[1][0], _matrixValue[0][1],
-                            _matrixValue[1][1], _matrixValue[0][2],
-                            _matrixValue[1][2]);
+                _affineTransform = new AffineTransform(_matrixValue[0][0],
+                        _matrixValue[1][0], _matrixValue[0][1],
+                        _matrixValue[1][1], _matrixValue[0][2],
+                        _matrixValue[1][2]);
             } else {
                 throw new IllegalActionException(this,
-                        "Matrix must have two rows and three "
-                        + "columns");
+                    "Matrix must have two rows and three " + "columns");
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
-
 
     /** Fire this actor.
      *  Output the affine transformed RenderedOp.
@@ -179,6 +175,7 @@ public class JAIAffineTransform extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
 
@@ -186,38 +183,40 @@ public class JAIAffineTransform extends Transformer {
         case _BICUBIC:
             _interpolation = new InterpolationBicubic(_subSampleBits);
             break;
+
         case _BICUBIC2:
             _interpolation = new InterpolationBicubic2(_subSampleBits);
             break;
+
         case _BILINEAR:
             _interpolation = new InterpolationBilinear(_subSampleBits);
             break;
+
         case _NEARESTNEIGHBOR:
             _interpolation = new InterpolationNearest();
             break;
+
         default:
             throw new IllegalActionException(
-                    "Invalid value for interpolationType");
+                "Invalid value for interpolationType");
         }
-        RenderedOp newImage =
-            JAI.create("affine", oldImage,
-                    _affineTransform, _interpolation);
+
+        RenderedOp newImage = JAI.create("affine", oldImage, _affineTransform,
+                _interpolation);
         output.send(0, new JAIImageToken(newImage));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private AffineTransform _affineTransform;
-
-    private double[][] _initialMatrix =
-    {{1.0F, 0.0F, 0.0F}, {0.0F, 1.0F, 0.0F}};
-
+    private double[][] _initialMatrix = {
+            { 1.0F, 0.0F, 0.0F },
+            { 0.0F, 1.0F, 0.0F }
+        };
     private Interpolation _interpolation;
 
     /** An indicator for the type of interpolation to use */
     private int _interpolationType;
-
     private double[][] _matrixValue;
 
     /** The subsample precision */

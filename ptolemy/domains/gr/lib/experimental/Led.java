@@ -30,18 +30,20 @@ COPYRIGHTENDKEY
 package ptolemy.domains.gr.lib.experimental;
 
 import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.lib.*;
-import ptolemy.domains.gr.lib.*;
 import ptolemy.domains.dt.kernel.DTDebug;
+import ptolemy.domains.gr.lib.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 import com.sun.j3d.utils.geometry.*;
+
 import javax.media.j3d.*;
 import javax.vecmath.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Cylinder3D
@@ -54,7 +56,6 @@ import javax.vecmath.*;
     @author C. Fong
 */
 public class Led extends Box3D {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -64,8 +65,7 @@ public class Led extends Box3D {
      *   actor with this name.
      */
     public Led(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         emissivity = new TypedIOPort(this, "emissivity");
@@ -75,26 +75,28 @@ public class Led extends Box3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     public TypedIOPort emissivity;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     protected void _createAppearance() {
         super._createAppearance();
         _material = new Material();
-        _material.setCapability(Material.ALLOW_COMPONENT_READ|Material.ALLOW_COMPONENT_WRITE);
+        _material.setCapability(Material.ALLOW_COMPONENT_READ
+            | Material.ALLOW_COMPONENT_WRITE);
         _appearance = new Appearance();
-        _appearance.setCapability(Appearance.ALLOW_MATERIAL_READ|Appearance.ALLOW_MATERIAL_WRITE);
+        _appearance.setCapability(Appearance.ALLOW_MATERIAL_READ
+            | Appearance.ALLOW_MATERIAL_WRITE);
 
         _material.setDiffuseColor(_color);
+
         if (_shine > 1.0) {
             _material.setSpecularColor(whiteColor);
             _material.setShininess(_shine);
         } else {
             _material.setSpecularColor(_color);
         }
+
         /*
           if (_transparency > 0.0f) {
           TransparencyAttributes feature1 = new TransparencyAttributes();
@@ -114,7 +116,6 @@ public class Led extends Box3D {
           feature1.setCullFace(feature1.CULL_NONE);
           _appearance.setPolygonAttributes(feature1);
           }*/
-
         //_material.setEmissiveColor(0.0f,0.9f,0.0f);
         _appearance.setMaterial(_material);
     }
@@ -129,17 +130,15 @@ public class Led extends Box3D {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         System.out.println("create model");
-        _containedNode.setCapability(Shape3D.ALLOW_APPEARANCE_READ|Shape3D.ALLOW_APPEARANCE_WRITE);
-
+        _containedNode.setCapability(Shape3D.ALLOW_APPEARANCE_READ
+            | Shape3D.ALLOW_APPEARANCE_WRITE);
     }
-
 
     public boolean prefire() throws IllegalActionException {
         boolean returnValue = super.prefire();
         returnValue = true;
         return returnValue;
     }
-
 
     /** Check the input ports for translation inputs.  Convert the translation
      *  tokens into a Java3D transformation.
@@ -148,22 +147,22 @@ public class Led extends Box3D {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         if (emissivity.getWidth() != 0) {
             if (emissivity.hasToken(0)) {
                 double in = ((DoubleToken) emissivity.get(0)).doubleValue();
                 float inf = (float) in;
+
                 //System.out.println(" firing led");
-                _material.setEmissiveColor(0.0f,inf,0.0f);
-                _material.setDiffuseColor(0.0f,inf,0.0f);
+                _material.setEmissiveColor(0.0f, inf, 0.0f);
+                _material.setDiffuseColor(0.0f, inf, 0.0f);
                 _appearance.setMaterial(_material);
+
                 //_containedNode.setAppearance(_appearance);
                 //_appearance.getMaterial().setEmissiveColor(inf, inf, inf);
                 //containedNode.setAppearance(_appearance);
                 //unLitBoxTG.addChild(new Box(0.1f, 0.1f, 0.1f, Box.GENERATE_NORMALS, redGlowMat));
             }
         }
-
     }
-
-
 }

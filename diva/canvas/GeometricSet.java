@@ -24,10 +24,10 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.Shape;
+
 
 /** An interface for figure sets with that have their contents defined
  * geometrically. The geometry of the set is a Shape, and the contents
@@ -42,13 +42,13 @@ import java.awt.Shape;
  * @Pt.AcceptedRating Red
  */
 public interface GeometricSet extends FigureSet {
-
     /** Return an iteration of undecorated figures added to the set
      * since the most recent call to setGeometry(). If there
      * are none, the iterator will return false() to the
      * first call to hasNext(). The figures are returned in
      * an undefined order. This is an optional operation.
      */
+
     //public abstract Iterator freshFigures();
 
     /** Get the geometry. The client must not modify the
@@ -70,6 +70,7 @@ public interface GeometricSet extends FigureSet {
      * first call to hasNext(). The figures are returned in
      * an undefined order. This is an optional operation.
      */
+
     //public abstract Iterator staleFigures();
 
     /** Return an iteration of the undecorated figures in the set.
@@ -77,7 +78,6 @@ public interface GeometricSet extends FigureSet {
      * figures() method, but with any FigureDecorators stripped
      * out.
      */
+
     //public abstract Iterator undecoratedFigures();
 }
-
-

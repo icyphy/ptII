@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -37,8 +36,10 @@ import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JNLPUtilities
+
 /** This class contains utilities for use with JNLP, aka Web Start.
 
 <p>For more information about Web Start, see
@@ -53,7 +54,6 @@ or <code>$PTII/doc/webStartHelp</code>
 @see Configuration
 */
 public class JNLPUtilities {
-
     /** Instances of this class cannot be created.
      */
     private JNLPUtilities() {
@@ -72,24 +72,23 @@ public class JNLPUtilities {
      *  @exception java.net.MalformedURLException If new URL() throws it.
      */
     public static URL canonicalizeJarURL(URL possibleJarURL)
-            throws java.net.MalformedURLException {
+        throws java.net.MalformedURLException {
         // This method is needed so that under Web Start we are always
         // referring to files like intro.htm with the same URL.
         // The reason is that the Web Start under Windows is likely
         // to be in c:/Documents and Settings/username
         // so we want to always refer to the files with the same URL
         // so as to avoid duplicate windows
-
         if (possibleJarURL.toExternalForm().startsWith("jar:")) {
             // FIXME: Could it be that we only want to convert spaces before
             // the '!/' string?
-            URL jarURL =
-                new URL(StringUtilities
-                        .substitute(possibleJarURL.toExternalForm(),
-                                " ", "%20"));
+            URL jarURL = new URL(StringUtilities.substitute(
+                        possibleJarURL.toExternalForm(), " ", "%20"));
+
             // FIXME: should we check to see if the jarURL exists here?
             return jarURL;
         }
+
         return possibleJarURL;
     }
 
@@ -99,12 +98,14 @@ public class JNLPUtilities {
             // NOTE: getProperty() will probably fail in applets, which
             // is why this is in a try block.
             String javaWebStart = System.getProperty("javawebstart.version");
+
             if (javaWebStart != null) {
                 return true;
             }
         } catch (SecurityException security) {
             // Ignored
         }
+
         return false;
     }
 
@@ -122,7 +123,8 @@ public class JNLPUtilities {
      *  @see ptolemy.util.ClassUtilities#jarURLEntryResource(String)
      *  @see java.net.JarURLConnection
      */
-    public static URL jarURLEntryResource(String spec) throws IOException {
+    public static URL jarURLEntryResource(String spec)
+        throws IOException {
         return ClassUtilities.jarURLEntryResource(spec);
     }
 
@@ -145,12 +147,8 @@ public class JNLPUtilities {
      *  temporary directory is used.
      *  @return the name of the temporary file that was created
      */
-    public static String saveJarURLAsTempFile(String jarURLName,
-            String prefix,
-            String suffix,
-            File directory)
-            throws IOException {
-
+    public static String saveJarURLAsTempFile(String jarURLName, String prefix,
+        String suffix, File directory) throws IOException {
         URL jarURL = _lookupJarURL(jarURLName);
         jarURLName = jarURL.toString();
 
@@ -192,12 +190,12 @@ public class JNLPUtilities {
      *  null if the file cannot be created
      */
     public static String saveJarURLInClassPath(String jarURLName)
-            throws IOException {
-
+        throws IOException {
         URL jarURL = _lookupJarURL(jarURLName);
         jarURLName = jarURL.toString();
 
         int jarSeparatorIndex = jarURLName.indexOf("!/");
+
         if (jarSeparatorIndex == -1) {
             // Could be that we found a copy of the file in the classpath.
             return jarURLName;
@@ -211,52 +209,51 @@ public class JNLPUtilities {
         // We assume / is the file separator here because URLs
         // _BY_DEFINITION_ have / as a separator and not the Microsoft
         // non-conforming hack of using a backslash.
+        String jarURLParentFileName = jarURLFileName.substring(0,
+                jarURLFileName.lastIndexOf("/"));
 
-        String jarURLParentFileName =
-            jarURLFileName.substring(0, jarURLFileName.lastIndexOf("/"));
-
-        String parentEntryFileName =
-            entryFileName.substring(0, entryFileName.lastIndexOf("/"));
+        String parentEntryFileName = entryFileName.substring(0,
+                entryFileName.lastIndexOf("/"));
 
         if (jarURLParentFileName.endsWith(parentEntryFileName)
                 && jarURLParentFileName.startsWith("jar:file:/")) {
             // The top level directory, probably $PTII
-            String jarURLTop =
-                jarURLParentFileName.substring(10,
-                        jarURLParentFileName.length()
-                        - parentEntryFileName.length());
+            String jarURLTop = jarURLParentFileName.substring(10,
+                    jarURLParentFileName.length()
+                    - parentEntryFileName.length());
 
             File temporaryFile = new File(jarURLTop, entryFileName);
 
             // If the file exists, we assume that it is the right one.
             // FIXME: we could do more here, like check for file sizes.
-            if ( !temporaryFile.exists()) {
+            if (!temporaryFile.exists()) {
                 FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
             }
+
             return temporaryFile.toString();
         }
+
         return null;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Lookup a jarURLName as a resource.
-    private static URL _lookupJarURL(String jarURLName) throws IOException {
+    private static URL _lookupJarURL(String jarURLName)
+        throws IOException {
         // We call jarURLEntryResource here so that we get a URL
         // that has the right jar file associated with the right entry.
         URL jarURL = jarURLEntryResource(jarURLName);
+
         if (jarURL == null) {
-            jarURL = Thread.currentThread()
-                .getContextClassLoader().getResource(jarURLName);
+            jarURL = Thread.currentThread().getContextClassLoader().getResource(jarURLName);
         }
 
         if (jarURL == null) {
-            throw new FileNotFoundException("Could not find '"
-                    + jarURLName + "'");
+            throw new FileNotFoundException("Could not find '" + jarURLName
+                + "'");
         }
+
         return jarURL;
     }
 }
-

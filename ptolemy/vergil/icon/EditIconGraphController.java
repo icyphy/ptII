@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import javax.swing.JMenu;
@@ -43,8 +42,10 @@ import diva.graph.EdgeController;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditIconGraphController
+
 /**
    A graph controller for the Ptolemy II icon editor.
    This controller contains a set of default node controllers for attributes,
@@ -59,7 +60,6 @@ import diva.graph.NodeController;
    @Pt.AcceptedRating Red (johnr)
 */
 public class EditIconGraphController extends BasicGraphController {
-
     /** Create a new basic controller with default
      *  terminal and edge interactors and default context menus.
      */
@@ -77,6 +77,7 @@ public class EditIconGraphController extends BasicGraphController {
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
+
         // FIXME: Placeholder for adding support for icon editing here.
     }
 
@@ -104,23 +105,26 @@ public class EditIconGraphController extends BasicGraphController {
     public NodeController getNodeController(Object object) {
         // Defer to the superclass if it can provide a controller.
         NodeController result = super.getNodeController(object);
+
         if (result != null) {
-            ((NamedObjController)result).setSnapResolution(_SNAP_RESOLUTION);
+            ((NamedObjController) result).setSnapResolution(_SNAP_RESOLUTION);
             return result;
         }
 
         // Superclass cannot provide a controller. Use defaults.
         if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
+
             if (semanticObject instanceof Attribute) {
                 return _attributeController;
             } else {
-                throw new RuntimeException(
-                        "Unrecognized object: " + semanticObject);
+                throw new RuntimeException("Unrecognized object: "
+                    + semanticObject);
             }
         }
-        throw new RuntimeException(
-                "Node with unknown semantic object: " + object);
+
+        throw new RuntimeException("Node with unknown semantic object: "
+            + object);
     }
 
     /** Set the configuration.  The configuration is used when
@@ -145,6 +149,7 @@ public class EditIconGraphController extends BasicGraphController {
         super._createControllers();
         _attributeController = new AttributeController(this,
                 AttributeController.FULL);
+
         // Set the snap resolution smaller than the default of 5.0.
         _attributeController.setSnapResolution(_SNAP_RESOLUTION);
     }
@@ -173,7 +178,6 @@ public class EditIconGraphController extends BasicGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
 

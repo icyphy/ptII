@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GraphTableau
+
 /**
    This is a graph editor for ptolemy models.  It constructs an instance
    of ActorGraphFrame, which contains an editor pane based on diva.
@@ -55,12 +56,11 @@ import ptolemy.moml.LibraryAttribute;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ActorGraphTableau extends Tableau {
-
     /** Create a tableau in the specified workspace.
      *  @param workspace The workspace.
      */
     public ActorGraphTableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -69,9 +69,8 @@ public class ActorGraphTableau extends Tableau {
      *  @param container The container.
      *  @param name The name.
      */
-    public ActorGraphTableau(PtolemyEffigy container,
-            String name)
-            throws IllegalActionException, NameDuplicationException {
+    public ActorGraphTableau(PtolemyEffigy container, String name)
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -81,29 +80,28 @@ public class ActorGraphTableau extends Tableau {
      *  @param name The name.
      *  @param defaultLibrary The default library, or null to not specify one.
      */
-    public ActorGraphTableau(
-            PtolemyEffigy container,
-            String name,
-            LibraryAttribute defaultLibrary)
-            throws IllegalActionException, NameDuplicationException {
-
+    public ActorGraphTableau(PtolemyEffigy container, String name,
+        LibraryAttribute defaultLibrary)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (container instanceof PtolemyEffigy) {
             NamedObj model = container.getModel();
+
             if (model == null) {
                 return;
             }
+
             if (!(model instanceof CompositeEntity)) {
                 throw new IllegalActionException(this,
-                        "Cannot graphically edit a model "
-                        + "that is not a CompositeEntity. Model is a "
-                        + model);
+                    "Cannot graphically edit a model "
+                    + "that is not a CompositeEntity. Model is a " + model);
             }
-            CompositeEntity entity = (CompositeEntity)model;
 
-            ActorGraphFrame frame = new ActorGraphFrame(
-                    entity, this, defaultLibrary);
+            CompositeEntity entity = (CompositeEntity) model;
+
+            ActorGraphFrame frame = new ActorGraphFrame(entity, this,
+                    defaultLibrary);
             setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
         }
@@ -111,7 +109,6 @@ public class ActorGraphTableau extends Tableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The background color.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
@@ -121,7 +118,6 @@ public class ActorGraphTableau extends Tableau {
     /** A factory that creates graph editing tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create an factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -131,7 +127,7 @@ public class ActorGraphTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -152,16 +148,18 @@ public class ActorGraphTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a graphTableau.
-                ActorGraphTableau tableau =
-                    (ActorGraphTableau)effigy.getEntity("graphTableau");
+                ActorGraphTableau tableau = (ActorGraphTableau) effigy
+                    .getEntity("graphTableau");
+
                 if (tableau == null) {
                     // Check to see whether this factory contains a
                     // default library.
-                    LibraryAttribute library = (LibraryAttribute)getAttribute(
-                            "_library", LibraryAttribute.class);
-                    tableau = new ActorGraphTableau(
-                            (PtolemyEffigy)effigy, "graphTableau", library);
+                    LibraryAttribute library = (LibraryAttribute) getAttribute("_library",
+                            LibraryAttribute.class);
+                    tableau = new ActorGraphTableau((PtolemyEffigy) effigy,
+                            "graphTableau", library);
                 }
+
                 // Don't call show() here, it is called for us in
                 // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;

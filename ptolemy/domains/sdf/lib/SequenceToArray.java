@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import java.util.LinkedList;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SequenceToArray
+
 /**
    This actor bundles a specified number of input tokens into a single array.
    The number of tokens to be bundled is specified by the <i>arrayLength</i>
@@ -62,9 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (yuhong)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class SequenceToArray extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,7 +73,7 @@ public class SequenceToArray extends SDFTransformer {
      *   actor with this name.
      */
     public SequenceToArray(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input_tokenConsumptionRate.setExpression("arrayLength");
@@ -87,10 +86,9 @@ public class SequenceToArray extends SDFTransformer {
         arrayLength.setExpression("1");
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,14 +107,14 @@ public class SequenceToArray extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == arrayLength) {
-            int rate = ((IntToken)arrayLength.getToken()).intValue();
+            int rate = ((IntToken) arrayLength.getToken()).intValue();
+
             if (rate < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid arrayLength: " + rate);
+                    "Invalid arrayLength: " + rate);
             }
-
         } else {
             super.attributeChanged(attribute);
         }
@@ -128,11 +126,11 @@ public class SequenceToArray extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         arrayLength.update();
-        int length = ((IntToken)arrayLength.getToken()).intValue();
+
+        int length = ((IntToken) arrayLength.getToken()).intValue();
 
         Token[] valueArray = new Token[length];
-        System.arraycopy(input.get(0, length),
-                0, valueArray, 0,length);
+        System.arraycopy(input.get(0, length), 0, valueArray, 0, length);
 
         output.send(0, new ArrayToken(valueArray));
     }
@@ -147,11 +145,13 @@ public class SequenceToArray extends SDFTransformer {
      *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
     public boolean prefire() throws IllegalActionException {
-        int length = ((IntToken)arrayLength.getToken()).intValue();
+        int length = ((IntToken) arrayLength.getToken()).intValue();
+
         if (!input.hasToken(0, length)) {
             if (_debugging) {
                 _debug("Called prefire(), which returns false.");
             }
+
             return false;
         } else {
             return super.prefire();
@@ -163,7 +163,7 @@ public class SequenceToArray extends SDFTransformer {
      *  @return A list of inequalities.
      */
     public List typeConstraintList() {
-        ArrayType outArrType = (ArrayType)output.getType();
+        ArrayType outArrType = (ArrayType) output.getType();
         InequalityTerm elementTerm = outArrType.getElementTypeTerm();
         Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
 

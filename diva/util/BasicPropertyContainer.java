@@ -24,8 +24,10 @@
   COPYRIGHTENDKEY
 */
 package diva.util;
+
 import java.util.HashMap;
 import java.util.Iterator;
+
 
 /**
  * An object that can be annotated with arbitrary
@@ -66,12 +68,15 @@ public class BasicPropertyContainer implements PropertyContainer {
      */
     public Object getProperty(String key) {
         Object o = null;
+
         if (_mapping != null) {
             o = _mapping.get(key);
         }
-        if (o == null && _defaults != null) {
+
+        if ((o == null) && (_defaults != null)) {
             return _defaults.getProperty(key);
         }
+
         return o;
     }
 
@@ -83,6 +88,7 @@ public class BasicPropertyContainer implements PropertyContainer {
         if (_mapping == null) {
             _mapping = new HashMap();
         }
+
         _mapping.put(key, value);
     }
 

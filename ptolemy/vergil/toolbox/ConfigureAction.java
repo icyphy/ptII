@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.Event;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConfigureAction
+
 /**
    An action that will configure parameters on the current object.
    If that object contains an attribute that is an instance of EditorFactory,
@@ -58,17 +59,17 @@ import diva.gui.GUIUtilities;
    @see ptolemy.actor.gui.EditParametersDialog
 */
 public class ConfigureAction extends FigureAction {
-
     /** Construct a new configure action.
      *  @param description A description.
      */
     public ConfigureAction(String description) {
         super(description);
+
         // FIXME: For some inexplicable reason, the following line
         // works for LookInsideAction to define a hotkey for look inside,
         // but it doesn't work here.
         putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_E, Event.CTRL_MASK));
+            KeyStroke.getKeyStroke(KeyEvent.VK_E, Event.CTRL_MASK));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,7 +84,10 @@ public class ConfigureAction extends FigureAction {
             super.actionPerformed(e);
 
             NamedObj target = getTarget();
-            if (target == null) return;
+
+            if (target == null) {
+                return;
+            }
 
             // Create a dialog for configuring the object.
             // First, identify the top parent frame.
@@ -94,7 +98,7 @@ public class ConfigureAction extends FigureAction {
             // was throwing an exception here that was not being displayed
             // in the UI.
             MessageHandler.error("Failed to open a dialog to edit the target.",
-                    throwable);
+                throwable);
         }
     }
 
@@ -106,8 +110,9 @@ public class ConfigureAction extends FigureAction {
      */
     public void openDialog(Frame parent, NamedObj target) {
         List attributeList = target.attributeList(EditorFactory.class);
+
         if (attributeList.size() > 0) {
-            EditorFactory factory = (EditorFactory)attributeList.get(0);
+            EditorFactory factory = (EditorFactory) attributeList.get(0);
             factory.createEditor(target, parent);
         } else {
             new EditParametersDialog(parent, target);

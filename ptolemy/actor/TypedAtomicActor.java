@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import java.util.Iterator;
@@ -45,6 +44,7 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedAtomicActor
+
 /**
    A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
    <p>
@@ -71,7 +71,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.actor.TypedIOPort
 */
 public class TypedAtomicActor extends AtomicActor implements TypedActor {
-
     // All the constructors are wrappers of the super class constructors.
 
     /** Construct an actor in the default workspace with an empty string
@@ -106,7 +105,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *   an entity already in the container.
      */
     public TypedAtomicActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -126,8 +125,9 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *   Derived classes can throw this exception if type change is not allowed.
      */
     public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Director director = getDirector();
+
         if (director != null) {
             director.invalidateResolvedTypes();
         }
@@ -142,12 +142,11 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      */
     public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException("clone() is not supported "
-                + "in actors, call clone(Workspace workspace) instead. "
-                + "Sometimes actors are mistakenly written to have a "
-                + "clone() method instead of a "
-                + "clone(Workspace workspace) method.");
+            + "in actors, call clone(Workspace workspace) instead. "
+            + "Sometimes actors are mistakenly written to have a "
+            + "clone() method instead of a "
+            + "clone(Workspace workspace) method.");
     }
-
 
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -161,6 +160,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+
             TypedIOPort port = new TypedIOPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
@@ -190,35 +190,36 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
             LinkedList result = new LinkedList();
             Iterator inPorts = inputPortList().iterator();
+
             while (inPorts.hasNext()) {
-                TypedIOPort inPort = (TypedIOPort)inPorts.next();
+                TypedIOPort inPort = (TypedIOPort) inPorts.next();
                 boolean isUndeclared = inPort.getTypeTerm().isSettable();
+
                 if (isUndeclared) {
                     // inPort has undeclared type.
                     Iterator outPorts = outputPortList().iterator();
+
                     while (outPorts.hasNext()) {
-                        TypedIOPort outPort =
-                            (TypedIOPort)outPorts.next();
+                        TypedIOPort outPort = (TypedIOPort) outPorts.next();
 
                         isUndeclared = outPort.getTypeTerm().isSettable();
-                        if (isUndeclared && inPort != outPort) {
+
+                        if (isUndeclared && (inPort != outPort)) {
                             // output also undeclared, not bidirectional port,
                             // check if there is any type constraints stored
                             // in ports.
-                            List inPortConstraints =
-                                inPort.typeConstraintList();
-                            List outPortConstraints =
-                                outPort.typeConstraintList();
-                            if (inPortConstraints.isEmpty() &&
-                                    outPortConstraints.isEmpty()) {
+                            List inPortConstraints = inPort.typeConstraintList();
+                            List outPortConstraints = outPort
+                                .typeConstraintList();
+
+                            if (inPortConstraints.isEmpty()
+                                    && outPortConstraints.isEmpty()) {
                                 // ports not constrained, use default
                                 // constraint
-                                Inequality inequality = new Inequality(
-                                        inPort.getTypeTerm(),
-                                        outPort.getTypeTerm());
+                                Inequality inequality = new Inequality(inPort
+                                        .getTypeTerm(), outPort.getTypeTerm());
                                 result.add(inequality);
                             }
-
                         }
                     }
                 }
@@ -226,19 +227,20 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
             // collect constraints from contained Typeables
             Iterator ports = portList().iterator();
+
             while (ports.hasNext()) {
-                Typeable port = (Typeable)ports.next();
+                Typeable port = (Typeable) ports.next();
                 result.addAll(port.typeConstraintList());
             }
 
             Iterator typeables = attributeList(Typeable.class).iterator();
+
             while (typeables.hasNext()) {
-                Typeable typeable = (Typeable)typeables.next();
+                Typeable typeable = (Typeable) typeables.next();
                 result.addAll(typeable.typeConstraintList());
             }
 
             return result;
-
         } finally {
             _workspace.doneReading();
         }
@@ -264,15 +266,16 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *   the name of another port already in the actor.
      */
     protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // In the future, this method can be changed to allow IOPort to be
         // added. In that case, the type system just ignores instances of
         // IOPort during type checking. Since there is no intended application
         // for that change yet, constrain the port to be TypedIOPort for now.
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
-                    "Incompatible port class for this actor.");
+                "Incompatible port class for this actor.");
         }
+
         super._addPort(port);
     }
 }

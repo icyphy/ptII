@@ -28,7 +28,6 @@
   Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import java.io.InputStream;
@@ -40,9 +39,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
 
-
 //////////////////////////////////////////////////////////////////////
 //// XmlParser.java
+
 /**
    This class parses a XML string token to a DOM document.
 
@@ -55,11 +54,11 @@ import org.w3c.dom.Document;
 
 */
 public class XMLParser {
-
     public XMLParser() throws Exception {
-
-        if ( _documentBuilderFactory==null )
+        if (_documentBuilderFactory == null) {
             _documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        }
+
         _documentBuilder = _documentBuilderFactory.newDocumentBuilder();
     }
 
@@ -72,6 +71,7 @@ public class XMLParser {
      */
     public Document parser(String str) throws Exception {
         InputStream is = (InputStream) new StringBufferInputStream(str);
+
         //System.out.println("--- the inputStream of the XmlToken is: " + is.toString() + "\n");
         return parser(is);
     }

@@ -24,11 +24,13 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.modular;
+
 import java.util.Iterator;
 
 import diva.graph.GraphEvent;
 import diva.graph.GraphUtilities;
 import diva.graph.MutableGraphModel;
+
 
 /**
  * A modular implementation of the graph model, whereby users with
@@ -42,7 +44,6 @@ import diva.graph.MutableGraphModel;
  */
 public abstract class MutableModularGraphModel extends ModularGraphModel
     implements MutableGraphModel {
-
     /**
      * Construct an empty graph model whose
      * root is the given semantic object.
@@ -75,8 +76,8 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
         Object prevParent = getMutableNodeModel(node).getParent(node);
         getMutableNodeModel(node).setParent(node, parent);
 
-        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED,
-                node, prevParent);
+        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED, node,
+                prevParent);
         dispatchGraphEvent(e);
     }
 
@@ -84,21 +85,19 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * Connect the given edge to the given tail and head nodes,
      * then dispatch events to the listeners.
      */
-    public void connectEdge(Object eventSource, Object edge,
-            Object tailNode, Object headNode) {
+    public void connectEdge(Object eventSource, Object edge, Object tailNode,
+        Object headNode) {
         Object prevTail = getMutableEdgeModel(edge).getTail(edge);
         Object prevHead = getMutableEdgeModel(edge).getHead(edge);
         getMutableEdgeModel(edge).setHead(edge, headNode);
         getMutableEdgeModel(edge).setTail(edge, tailNode);
 
         GraphEvent e1 = new GraphEvent(eventSource,
-                GraphEvent.EDGE_HEAD_CHANGED,
-                edge, prevHead);
+                GraphEvent.EDGE_HEAD_CHANGED, edge, prevHead);
         dispatchGraphEvent(e1);
 
         GraphEvent e2 = new GraphEvent(eventSource,
-                GraphEvent.EDGE_TAIL_CHANGED,
-                edge, prevTail);
+                GraphEvent.EDGE_TAIL_CHANGED, edge, prevTail);
         dispatchGraphEvent(e2);
     }
 
@@ -113,16 +112,16 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
         Object tail = model.getTail(edge);
         model.setTail(edge, null);
         model.setHead(edge, null);
+
         if (head != null) {
             GraphEvent e = new GraphEvent(eventSource,
-                    GraphEvent.EDGE_HEAD_CHANGED,
-                    edge, head);
+                    GraphEvent.EDGE_HEAD_CHANGED, edge, head);
             dispatchGraphEvent(e);
         }
+
         if (tail != null) {
             GraphEvent e = new GraphEvent(eventSource,
-                    GraphEvent.EDGE_TAIL_CHANGED,
-                    edge, tail);
+                    GraphEvent.EDGE_TAIL_CHANGED, edge, tail);
             dispatchGraphEvent(e);
         }
     }
@@ -133,7 +132,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * assumes that the edge model for the given edge is mutable.
      */
     public MutableEdgeModel getMutableEdgeModel(Object edge) {
-        return (MutableEdgeModel)getEdgeModel(edge);
+        return (MutableEdgeModel) getEdgeModel(edge);
     }
 
     /**
@@ -142,7 +141,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * assumes that the edge model for the given edge is mutable.
      */
     public MutableNodeModel getMutableNodeModel(Object node) {
-        return (MutableNodeModel)getNodeModel(node);
+        return (MutableNodeModel) getNodeModel(node);
     }
 
     /**
@@ -154,18 +153,21 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
     public void removeNode(Object eventSource, Object node) {
         // Remove the edges.
         Iterator i = GraphUtilities.partiallyContainedEdges(node, this);
+
         while (i.hasNext()) {
             Object edge = i.next();
             disconnectEdge(eventSource, edge);
         }
 
         i = outEdges(node);
+
         while (i.hasNext()) {
             Object edge = i.next();
             disconnectEdge(eventSource, edge);
         }
 
         i = inEdges(node);
+
         while (i.hasNext()) {
             Object edge = i.next();
             disconnectEdge(eventSource, edge);
@@ -174,6 +176,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
         // remove the node.
         Object prevParent = getMutableNodeModel(node).getParent(node);
         getMutableNodeModel(node).setParent(node, null);
+
         GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_REMOVED,
                 node, prevParent);
         dispatchGraphEvent(e);
@@ -186,9 +189,9 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
     public void setEdgeHead(Object eventSource, Object edge, Object head) {
         Object prevHead = getMutableEdgeModel(edge).getHead(edge);
         getMutableEdgeModel(edge).setHead(edge, head);
+
         GraphEvent e = new GraphEvent(eventSource,
-                GraphEvent.EDGE_HEAD_CHANGED,
-                edge, prevHead);
+                GraphEvent.EDGE_HEAD_CHANGED, edge, prevHead);
         dispatchGraphEvent(e);
     }
 
@@ -199,10 +202,9 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
     public void setEdgeTail(Object eventSource, Object edge, Object tail) {
         Object prevTail = getMutableEdgeModel(edge).getTail(edge);
         getMutableEdgeModel(edge).setTail(edge, tail);
+
         GraphEvent e = new GraphEvent(eventSource,
-                GraphEvent.EDGE_TAIL_CHANGED,
-                edge, prevTail);
+                GraphEvent.EDGE_TAIL_CHANGED, edge, prevTail);
         dispatchGraphEvent(e);
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.net.demo.Datagram;
 
 import java.awt.Toolkit;
@@ -45,8 +44,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Datagram
+
 /**
    This actor copies, to the system clipboard, the contents of any token
    received at its <i>input</i> port.  It pastes, from the system
@@ -66,10 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (winthrop)
    @Pt.AcceptedRating Red (winthrop)
 */
-
-public class Datagram extends TypedAtomicActor
-    implements ClipboardOwner {
-
+public class Datagram extends TypedAtomicActor implements ClipboardOwner {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -79,7 +77,7 @@ public class Datagram extends TypedAtomicActor
      *   actor with this name.
      */
     public Datagram(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Inputs
@@ -118,37 +116,45 @@ public class Datagram extends TypedAtomicActor
      *  inputs are present.
      */
     public void fire() throws IllegalActionException {
-        if (_debugging) _debug("fire has been called");
+        if (_debugging) {
+            _debug("fire has been called");
+        }
 
         // Paste
-        if (trigger.getWidth() > 0 && trigger.hasToken(0)) {
+        if ((trigger.getWidth() > 0) && trigger.hasToken(0)) {
             trigger.get(0);
+
             Clipboard clipboard = Toolkit.getDefaultToolkit()
-                .getSystemClipboard();
+                                         .getSystemClipboard();
             Transferable transferable = clipboard.getContents(this);
+
             try {
-                output.broadcast(new StringToken( (String)transferable
-                                         .getTransferData(DataFlavor.stringFlavor) ));
+                output.broadcast(new StringToken(
+                        (String) transferable.getTransferData(
+                            DataFlavor.stringFlavor)));
+
                 // NullPointerException also possible //
                 // Ignore this for now, allowing exception to go uncaught.
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        " Failed to paste (IO Exception): " + ex);
+                    " Failed to paste (IO Exception): " + ex);
             } catch (UnsupportedFlavorException ex) {
                 throw new IllegalActionException(this,
-                        " Failed to paste: (Flavor Exception)" + ex);
+                    " Failed to paste: (Flavor Exception)" + ex);
             }
         }
 
         // Copy
-        if (input.getWidth()>0 && input.hasToken(0)) {
+        if ((input.getWidth() > 0) && input.hasToken(0)) {
             Clipboard clipboard = Toolkit.getDefaultToolkit()
-                .getSystemClipboard();
-            String myString = ((StringToken)(input.get(0))).stringValue();
+                                         .getSystemClipboard();
+            String myString = ((StringToken) (input.get(0))).stringValue();
             clipboard.setContents(new StringSelection(myString), this);
         }
 
-        if (_debugging) _debug("fire has completed");
+        if (_debugging) {
+            _debug("fire has completed");
+        }
     }
 
     /** Comply with the ClipboardOwner interface.  It requires a
@@ -163,12 +169,5 @@ public class Datagram extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
-
     // No private variables.
 }
-
-
-
-
-
-

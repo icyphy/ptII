@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.AWTEvent;
@@ -34,13 +33,14 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.NoninvertibleTransformException;
 import java.util.Iterator;
+
 import javax.swing.DefaultBoundedRangeModel;
 
 import diva.canvas.event.EventAcceptor;
 import diva.canvas.event.LayerEvent;
 import diva.util.java2d.ShapeUtilities;
+
 
 /** A canvas pane groups canvas layers. The layers all share the same
  * logical-to-screen transform as the canvas pane. This is an abstract
@@ -55,7 +55,6 @@ import diva.util.java2d.ShapeUtilities;
  * @Pt.AcceptedRating Yellow
  */
 public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
-
     /** The parent component.
      */
     private CanvasComponent _parent = null;
@@ -74,12 +73,11 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** The size of this pane, in logical coordinates
      */
-    private Point2D _paneSize = new Point2D.Double(100.0,100.0);
+    private Point2D _paneSize = new Point2D.Double(100.0, 100.0);
 
     /** The transform context of this pane
      */
     private TransformContext _transformContext = new TransformContext(this);
-
 
     ///////////////////////////////////////////////////////////////////
     //// Public methods
@@ -87,34 +85,32 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Dispatch an AWT event on this pane. Currently only
      * layer events are handled.
      */
-    public void dispatchEvent (AWTEvent event) {
+    public void dispatchEvent(AWTEvent event) {
         if (event instanceof LayerEvent) {
-            processLayerEvent((LayerEvent)event);
+            processLayerEvent((LayerEvent) event);
         } else {
-            throw new IllegalArgumentException(
-                    "Event type not recognized by " +
-                    "CanvasPane.dispatchEvent: " +
-                    event);
+            throw new IllegalArgumentException("Event type not recognized by "
+                + "CanvasPane.dispatchEvent: " + event);
         }
     }
 
     /** Get the parent component, or null if there isn't one.
      * Only one of the canvas or the display parent can be non-null.
      */
-    public final CanvasComponent getParent () {
+    public final CanvasComponent getParent() {
         return _parent;
     }
 
     /** Get the containing canvas, or null if there isn't one.
      * Only one of the canvas or the display parent can be non-null.
      */
-    public final JCanvas getCanvas () {
+    public final JCanvas getCanvas() {
         return _canvas;
     }
 
     /** Return whether or not this pane is antialiased
      */
-    public final boolean isAntialiasing () {
+    public final boolean isAntialiasing() {
         return _antialias;
     }
 
@@ -125,28 +121,33 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      *  return a null tooltip, then return null indicating that no
      *  tooltip should be displayed.
      */
-    protected String getToolTipText (LayerEvent event) {
+    protected String getToolTipText(LayerEvent event) {
         if (!isEnabled()) {
             return null;
         }
+
         Iterator i = layersFromFront();
+
         while (i.hasNext()) {
             CanvasLayer layer = (CanvasLayer) i.next();
 
             // Set the layer source to the layer, then
             // pass the event to that layer
             event.setLayerSource(layer);
+
             String tip = layer.getToolTipText(event);
+
             if (tip != null) {
                 return tip;
             }
         }
+
         return null;
     }
 
     /** Return the transform context of this pane.
      */
-    public final TransformContext getTransformContext () {
+    public final TransformContext getTransformContext() {
         return _transformContext;
     }
 
@@ -155,7 +156,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * size is obtained from the JCanvas. Otherwise, it
      * returns the size previously set with setSize().
      */
-    public Point2D getSize () {
+    public Point2D getSize() {
         if (_canvas != null) {
             Dimension d = _canvas.getSize();
             Point2D s = new Point2D.Double(d.width, d.height);
@@ -170,26 +171,26 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      *  does not indicate whether the pane is actually enabled,
      *  as its canvas or one if its ancestors may not be enabled.
      */
-    public final boolean isEnabled () {
+    public final boolean isEnabled() {
         return _enabled;
     }
 
     /** Return an iteration of the layers, in undefined order. The
      * default implementation simply calls layersFromFront().
      */
-    public Iterator layers () {
+    public Iterator layers() {
         return layersFromFront();
     }
 
     /** Return an iteration of the layers from back to front --
      * that is, in redraw order.
      */
-    public abstract Iterator layersFromBack ();
+    public abstract Iterator layersFromBack();
 
     /** Return an iteration of the layers from front to back --
      * that is, in event-processing order.
      */
-    public abstract Iterator layersFromFront ();
+    public abstract Iterator layersFromFront();
 
     /** Paint this pane onto a 2D graphics context. This implementation
      * paints all layers that implement VisibleComponent, from back
@@ -198,22 +199,25 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * transform is obliged to return it to its prior state after
      * finishing.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         _transformContext.push(g);
 
         if (isAntialiasing()) {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+                RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
         CanvasLayer layer;
         Iterator i = layersFromBack();
+
         while (i.hasNext()) {
             layer = (CanvasLayer) i.next();
+
             if (layer instanceof VisibleComponent) {
                 ((VisibleComponent) layer).paint(g);
             }
         }
+
         _transformContext.pop(g);
     }
 
@@ -224,12 +228,12 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * any layer that changes the transform is obliged to return it to
      * its prior state after finishing.
      */
-    public void paint (Graphics2D g, Rectangle2D region) {
+    public void paint(Graphics2D g, Rectangle2D region) {
         _transformContext.push(g);
 
         if (isAntialiasing()) {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+                RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
         // Transform the region to paint as well
@@ -239,12 +243,15 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
         // paint the VisibleComponents
         CanvasLayer layer;
         Iterator i = layersFromBack();
+
         while (i.hasNext()) {
             layer = (CanvasLayer) i.next();
+
             if (layer instanceof VisibleComponent) {
                 ((VisibleComponent) layer).paint(g, region);
             }
         }
+
         _transformContext.pop(g);
     }
 
@@ -254,11 +261,13 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * interface, from front to back. After each layer,
      * check whether the event has been consumed, and return if so.
      */
-    protected void processLayerEvent (LayerEvent event) {
+    protected void processLayerEvent(LayerEvent event) {
         if (!isEnabled()) {
             return;
         }
+
         Iterator i = layersFromFront();
+
         while (i.hasNext()) {
             CanvasLayer layer = (CanvasLayer) i.next();
 
@@ -282,7 +291,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Schedule a repaint of this pane. The pane passes
      * the repaint request to its parent, if it has one.
      */
-    public void repaint () {
+    public void repaint() {
         if (_canvas != null) {
             _canvas.repaint();
         } else if (_parent != null) {
@@ -295,7 +304,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * through a transform context, and then forward the
      * notification up to the parent.
      */
-    public void repaint (DamageRegion d) {
+    public void repaint(DamageRegion d) {
         // Check the transform cache
         d.checkCacheValid(_transformContext);
 
@@ -319,36 +328,37 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * This method is not intended for general use, only by JCanvas
      * and subclasses.
      */
-    public final void setCanvas (JCanvas canvas) {
-        if (canvas != null && _parent != null) {
-            throw new IllegalArgumentException(
-                    "CanvasPane " + this +
-                    " is already contained in another CanvasComponent. \n" +
-                    "Cannot set the parent canvas to " + canvas);
+    public final void setCanvas(JCanvas canvas) {
+        if ((canvas != null) && (_parent != null)) {
+            throw new IllegalArgumentException("CanvasPane " + this
+                + " is already contained in another CanvasComponent. \n"
+                + "Cannot set the parent canvas to " + canvas);
         }
+
         this._canvas = canvas;
     }
 
     /** Set the enabled flag of this pane. If the flag is false,
      * then the pane will not respond to user input events.
      */
-    public final void setEnabled (boolean flag) {
+    public final void setEnabled(boolean flag) {
         _enabled = flag;
     }
 
     /** Set the parent component of this pane. If the parent is not
      * null and the canvas is not null, throw an exception.
      */
-    public final void setParent (CanvasComponent parent) {
-        if (parent != null && _canvas != null) {
-            throw new IllegalArgumentException(
-                    "CanvasPane " + this +
-                    " is already contained in a JCanvas. \n" +
-                    "Cannot set the parent component to " + parent);
+    public final void setParent(CanvasComponent parent) {
+        if ((parent != null) && (_canvas != null)) {
+            throw new IllegalArgumentException("CanvasPane " + this
+                + " is already contained in a JCanvas. \n"
+                + "Cannot set the parent component to " + parent);
         }
+
         if (_transformContext != null) {
             _transformContext.invalidateCache();
         }
+
         this._parent = parent;
     }
 
@@ -357,7 +367,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * the getSize() and getPreferredSize() methods of the JCanvas
      * will return the size set here.
      */
-    public void setSize (double width, double height) {
+    public void setSize(double width, double height) {
         setSize(new Point2D.Double(width, height));
     }
 
@@ -380,7 +390,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * This version has a flag that can be used to avoid calling
      * the 'updateRangeModel' method
      */
-    public final void setTransform (AffineTransform at) {
+    public final void setTransform(AffineTransform at) {
         _transformContext.setTransform(at);
         repaint();
         updateRangeModel();
@@ -389,8 +399,8 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Translate this pane the given distance. The translation is
      * done such that it works "correctly" in the presence of scaling.
      */
-    public void translate (double x, double y) {
-        _transformContext.translate(x,y);
+    public void translate(double x, double y) {
+        _transformContext.translate(x, y);
         repaint();
     }
 
@@ -398,23 +408,20 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * the center point to scale about, the second two are the
      * horizontal and vertical scale factors.
      */
-    public void scale (
-            double xcenter, double ycenter,
-            double xscale, double yscale) {
-
+    public void scale(double xcenter, double ycenter, double xscale,
+        double yscale) {
         // Construct the translation transform
         AffineTransform at = new AffineTransform();
 
         at.translate(xcenter, ycenter);
-        at.scale(xscale,yscale);
-        at.translate(-(xcenter),-(ycenter));
+        at.scale(xscale, yscale);
+        at.translate(-(xcenter), -(ycenter));
 
         // Preconcatenate the pane's transform with it and refresh
         _transformContext.getTransform().preConcatenate(at);
         _transformContext.invalidateCache();
         repaint();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -425,11 +432,10 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      */
     protected void _initNewLayer(CanvasLayer l) {
         if (l._containingPane != null) {
-            throw new IllegalArgumentException(
-                    "The layer " +
-                    l +
-                    " does not have its _containingPane set to null");
+            throw new IllegalArgumentException("The layer " + l
+                + " does not have its _containingPane set to null");
         }
+
         l._containingPane = this;
     }
 
@@ -439,12 +445,10 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      */
     protected void _nullifyLayer(CanvasLayer l) {
         if (l._containingPane != this) {
-            throw new IllegalArgumentException(
-                    "The layer " +
-                    l +
-                    " does not have its _containingPane set to " +
-                    this);
+            throw new IllegalArgumentException("The layer " + l
+                + " does not have its _containingPane set to " + this);
         }
+
         l._containingPane = null;
     }
 
@@ -455,37 +459,36 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * set the model params for the range models.  This sets the min, max
      * value and extent which can be used by a panner or scrollbars
      */
-    private void updateRangeModel()
-    {
-      if (_canvas.getCanvasPane() == this)
-      { //make sure this pane is the top one.
-        DefaultBoundedRangeModel _horizontalRangeModel =
-            (DefaultBoundedRangeModel)_canvas.getHorizontalRangeModel();
-        DefaultBoundedRangeModel _verticalRangeModel =
-            (DefaultBoundedRangeModel)_canvas.getVerticalRangeModel();
-        Rectangle2D viewsize = _canvas.getViewSize();
-        Rectangle2D vissize = _canvas.getVisibleSize();
+    private void updateRangeModel() {
+        if (_canvas.getCanvasPane() == this) { //make sure this pane is the top one.
 
-        int visWidth = (int)vissize.getWidth();
-        int visHeight = (int)vissize.getHeight();
-        int visX = (int)vissize.getX();
-        int visY = (int)vissize.getY();
-        int viewWidth = (int)viewsize.getWidth();
-        int viewHeight = (int)viewsize.getHeight();
-        int viewX = (int)viewsize.getX();
-        int viewY = (int)viewsize.getY();
+            DefaultBoundedRangeModel _horizontalRangeModel = (DefaultBoundedRangeModel) _canvas
+                .getHorizontalRangeModel();
+            DefaultBoundedRangeModel _verticalRangeModel = (DefaultBoundedRangeModel) _canvas
+                .getVerticalRangeModel();
+            Rectangle2D viewsize = _canvas.getViewSize();
+            Rectangle2D vissize = _canvas.getVisibleSize();
 
-        _verticalRangeModel.setMinimum(-viewHeight);
-        _horizontalRangeModel.setMinimum(-viewWidth);
+            int visWidth = (int) vissize.getWidth();
+            int visHeight = (int) vissize.getHeight();
+            int visX = (int) vissize.getX();
+            int visY = (int) vissize.getY();
+            int viewWidth = (int) viewsize.getWidth();
+            int viewHeight = (int) viewsize.getHeight();
+            int viewX = (int) viewsize.getX();
+            int viewY = (int) viewsize.getY();
 
-        _verticalRangeModel.setMaximum(viewY+2*viewHeight);
-        _horizontalRangeModel.setMaximum(viewX+2*viewWidth);
+            _verticalRangeModel.setMinimum(-viewHeight);
+            _horizontalRangeModel.setMinimum(-viewWidth);
 
-        _verticalRangeModel.setExtent(visHeight);
-        _horizontalRangeModel.setExtent(visWidth);
+            _verticalRangeModel.setMaximum(viewY + (2 * viewHeight));
+            _horizontalRangeModel.setMaximum(viewX + (2 * viewWidth));
 
-        _verticalRangeModel.setValue(visY);
-        _horizontalRangeModel.setValue(visX);
-      }
+            _verticalRangeModel.setExtent(visHeight);
+            _horizontalRangeModel.setExtent(visWidth);
+
+            _verticalRangeModel.setValue(visY);
+            _horizontalRangeModel.setValue(visX);
+        }
     }
 }

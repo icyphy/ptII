@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EventToken
+
 /**
    A token representing a pure event.
 
@@ -43,7 +44,6 @@ import ptolemy.data.type.Type;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class EventToken extends Token {
-
     public EventToken() {
     }
 
@@ -60,6 +60,7 @@ public class EventToken extends Token {
         if (object.getClass() == getClass()) {
             return true;
         }
+
         return false;
     }
 

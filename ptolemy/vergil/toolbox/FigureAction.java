@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.Component;
@@ -50,8 +49,10 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JContextMenu;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FigureAction
+
 /**
    An action that is attached to a figure on a named object.
    Such an action is fired in one of several ways.
@@ -71,7 +72,6 @@ import diva.gui.toolbox.JContextMenu;
    @Pt.AcceptedRating Red (johnr)
 */
 public class FigureAction extends AbstractAction {
-
     public FigureAction(String name) {
         super(name);
     }
@@ -88,8 +88,10 @@ public class FigureAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         Component parent = null;
+
         if (source instanceof LayerEvent) {
             _sourceType = CANVAS_TYPE;
+
             // Action activated using an ActionInteractor.
             LayerEvent event = (LayerEvent) source;
             CanvasLayer layer = event.getLayerSource();
@@ -98,6 +100,7 @@ public class FigureAction extends AbstractAction {
             GraphModel model = controller.getGraphModel();
 
             _figure = (Figure) event.getFigureSource();
+
             // Set the target.
             if (_figure == null) {
                 _target = (NamedObj) model.getRoot();
@@ -113,12 +116,13 @@ public class FigureAction extends AbstractAction {
             // Set the parent.
             CanvasPane canvasPane = layer.getCanvasPane();
             parent = canvasPane.getCanvas();
-
         } else if (source instanceof JMenuItem) {
             // Action activated using a context menu.
             JMenuItem item = (JMenuItem) source;
+
             if (item.getParent() instanceof JContextMenu) {
                 _sourceType = CONTEXTMENU_TYPE;
+
                 JContextMenu menu = (JContextMenu) item.getParent();
                 parent = menu.getInvoker();
                 _target = (NamedObj) menu.getTarget();
@@ -142,23 +146,30 @@ public class FigureAction extends AbstractAction {
             CanvasComponent currentFigure = layer.getCurrentFigure();
             GraphController controller = pane.getGraphController();
             GraphModel model = controller.getGraphModel();
+
             if (currentFigure != null) {
                 _target = null;
-                while (_target == null && currentFigure != null) {
+
+                while ((_target == null) && (currentFigure != null)) {
                     Object object = currentFigure;
+
                     if (object instanceof Figure) {
                         object = ((Figure) currentFigure).getUserObject();
                     }
+
                     _target = (NamedObj) model.getSemanticObject(object);
                     currentFigure = currentFigure.getParent();
                 }
+
                 // NOTE: _target may end up null here!
                 if (_target == null) {
-                    throw new InternalErrorException("Internal error: Figure has no associated Ptolemy II object!");
+                    throw new InternalErrorException(
+                        "Internal error: Figure has no associated Ptolemy II object!");
                 }
             } else {
                 _target = (NamedObj) model.getRoot();
             }
+
             _sourceType = HOTKEY_TYPE;
 
             // FIXME: set _x and _y.  How to do this?
@@ -175,11 +186,13 @@ public class FigureAction extends AbstractAction {
             _x = 0;
             _y = 0;
         }
+
         if (parent != null) {
             while (parent.getParent() != null) {
                 parent = parent.getParent();
             }
         }
+
         if (parent instanceof Frame) {
             _frame = (Frame) parent;
         } else {
@@ -272,7 +285,6 @@ public class FigureAction extends AbstractAction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     public static class SourceType {
         private SourceType(String name) {
             _name = name;
@@ -281,12 +293,12 @@ public class FigureAction extends AbstractAction {
         public String getName() {
             return _name;
         }
+
         private String _name;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Figure _figure = null;
     private Frame _frame = null;
     private SourceType _sourceType = null;

@@ -29,8 +29,8 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.matlab;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,8 +55,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.matlab.Engine.ConversionParameters;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Expression
+
 /**
    On each firing send an expression for evaluation to a matlab {@link
    Engine}. The expression is any valid matlab expression, e.g.:
@@ -124,7 +126,6 @@ import ptolemy.matlab.Engine.ConversionParameters;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Expression extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -134,8 +135,8 @@ public class Expression extends TypedAtomicActor {
      *   actor with this name.
      */
     public Expression(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException,
-            java.lang.Exception  {
+        throws NameDuplicationException, IllegalActionException, 
+            java.lang.Exception {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -143,19 +144,16 @@ public class Expression extends TypedAtomicActor {
 
         _dataParameters = new Engine.ConversionParameters();
 
-        get1x1asScalars = new Parameter
-            (this, "get1x1asScalars",
-                    new BooleanToken(_dataParameters.getScalarMatrices));
+        get1x1asScalars = new Parameter(this, "get1x1asScalars",
+                new BooleanToken(_dataParameters.getScalarMatrices));
         new CheckBoxStyle(get1x1asScalars, "style");
 
-        getIntegerMatrices = new Parameter
-            (this, "getIntegerMatrices",
-                    new BooleanToken(_dataParameters.getIntMatrices));
+        getIntegerMatrices = new Parameter(this, "getIntegerMatrices",
+                new BooleanToken(_dataParameters.getIntMatrices));
         new CheckBoxStyle(getIntegerMatrices, "style");
 
         // _time is not needed, fire() sets a matlab variable directly
         _iteration = new Variable(this, "iteration", new IntToken(1));
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -188,7 +186,7 @@ public class Expression extends TypedAtomicActor {
      *  TypedAtomicActor type constraints do not apply in this case, since the
      *  input type may be totally unrelated to the output type and cannot be
      *  inferred; return an empty list. */
-    public List typeConstraintList()  {
+    public List typeConstraintList() {
         LinkedList result = new LinkedList();
         return result;
     }
@@ -198,26 +196,32 @@ public class Expression extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+
         try {
             matlabEngine = new Engine();
         } catch (Throwable throwable) {
             // LinkageError is and Error, not an exceptoin
             throw new IllegalActionException(this, throwable,
-                    "There was a problem invoking the Ptolemy II Matlab interface"
-                    + ".\nThe interface has been tested under Windows and Linux,\n"
-                    + "requires that Matlab be installed on the local machine."
-                    + "Refer to $PTII/ptolemy/matlab/makefile for more"
-                    + "information.");
+                "There was a problem invoking the Ptolemy II Matlab interface"
+                + ".\nThe interface has been tested under Windows and Linux,\n"
+                + "requires that Matlab be installed on the local machine."
+                + "Refer to $PTII/ptolemy/matlab/makefile for more"
+                + "information.");
         }
 
         // First set default debugging level, then check for more
-        matlabEngine.setDebugging((byte)0);
-        Parameter debugging = ((Parameter)getAttribute("_debugging"));
+        matlabEngine.setDebugging((byte) 0);
+
+        Parameter debugging = ((Parameter) getAttribute("_debugging"));
+
         if (debugging != null) {
             Token t = debugging.getToken();
-            if (t instanceof IntToken)
-                matlabEngine.setDebugging((byte)((IntToken)t).intValue());
+
+            if (t instanceof IntToken) {
+                matlabEngine.setDebugging((byte) ((IntToken) t).intValue());
+            }
         }
+
         engine = matlabEngine.open();
     }
 
@@ -234,43 +238,45 @@ public class Expression extends TypedAtomicActor {
         // which ptolemy was started or any directory listed in the current
         // classpath (in this order, first match wins). See
         // UtilityFunctions.findFile()
-
-        _addPathCommand = null;         // Assume none
+        _addPathCommand = null; // Assume none
         _previousPath = null;
-        Parameter packageDirectories =
-            (Parameter)getAttribute("packageDirectories");
+
+        Parameter packageDirectories = (Parameter) getAttribute(
+                "packageDirectories");
 
         if (packageDirectories != null) {
-            StringTokenizer dirs = new
-                StringTokenizer((String)
-                        ((StringToken)packageDirectories
-                                .getToken()).stringValue(),",");
+            StringTokenizer dirs = new StringTokenizer((String) ((StringToken) packageDirectories
+                    .getToken()).stringValue(), ",");
             StringBuffer cellFormat = new StringBuffer(512);
             cellFormat.append("{");
+
             if (dirs.hasMoreTokens()) {
-                cellFormat.append("'" + UtilityFunctions
-                        .findFile(dirs.nextToken()) + "'");
+                cellFormat.append("'"
+                    + UtilityFunctions.findFile(dirs.nextToken()) + "'");
             }
+
             while (dirs.hasMoreTokens()) {
-                cellFormat.append(",'" + UtilityFunctions
-                        .findFile(dirs.nextToken()) + "'");
+                cellFormat.append(",'"
+                    + UtilityFunctions.findFile(dirs.nextToken()) + "'");
             }
+
             cellFormat.append("}");
 
             if (cellFormat.length() > 2) {
                 _addPathCommand = "addedPath_ = " + cellFormat.toString()
                     + ";addpath(addedPath_{:});";
+
                 synchronized (Engine.semaphore) {
-                    matlabEngine.evalString
-                        (engine, "previousPath_=path");
+                    matlabEngine.evalString(engine, "previousPath_=path");
                     _previousPath = matlabEngine.get(engine, "previousPath_");
                 }
             }
         }
-        _dataParameters.getScalarMatrices =
-            ((BooleanToken)get1x1asScalars.getToken()).booleanValue();
-        _dataParameters.getIntMatrices =
-            ((BooleanToken)getIntegerMatrices.getToken()).booleanValue();
+
+        _dataParameters.getScalarMatrices = ((BooleanToken) get1x1asScalars
+            .getToken()).booleanValue();
+        _dataParameters.getIntMatrices = ((BooleanToken) getIntegerMatrices
+            .getToken()).booleanValue();
     }
 
     /** Return true if all input ports have at least one token.
@@ -279,12 +285,15 @@ public class Expression extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)(inputPorts.next());
+            IOPort port = (IOPort) (inputPorts.next());
+
             if (!port.hasToken(0)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -295,47 +304,53 @@ public class Expression extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Director director = getDirector();
+
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
+
         try {
             synchronized (Engine.semaphore) {
                 // The following clears variables, but preserves any
                 // persistent storage created by a function (this usually
                 // for speed-up purposes to avoid recalculation on every
                 // function call)
-                matlabEngine.evalString
-                    (engine, "clear variables;clear globals");
+                matlabEngine.evalString(engine, "clear variables;clear globals");
 
                 if (_addPathCommand != null) {
                     matlabEngine.evalString(engine, _addPathCommand);
                 }
 
                 matlabEngine.put(engine, "time",
-                        new DoubleToken(
-                            director.getModelTime().getDoubleValue()));
-                matlabEngine.put(engine, "iteration",
-                        _iteration.getToken());
+                    new DoubleToken(director.getModelTime().getDoubleValue()));
+                matlabEngine.put(engine, "iteration", _iteration.getToken());
+
                 Iterator inputPorts = inputPortList().iterator();
+
                 while (inputPorts.hasNext()) {
-                    IOPort port = (IOPort)(inputPorts.next());
+                    IOPort port = (IOPort) (inputPorts.next());
                     matlabEngine.put(engine, port.getName(), port.get(0));
                 }
+
                 matlabEngine.evalString(engine, expression.stringValue());
+
                 Iterator outputPorts = outputPortList().iterator();
+
                 while (outputPorts.hasNext()) {
-                    IOPort port = (IOPort)(outputPorts.next());
+                    IOPort port = (IOPort) (outputPorts.next());
+
                     // FIXME: Handle multiports
                     if (port.getWidth() > 0) {
-                        port.send(0, matlabEngine.get
-                                (engine, port.getName(), _dataParameters));
+                        port.send(0,
+                            matlabEngine.get(engine, port.getName(),
+                                _dataParameters));
                     }
                 }
+
                 // Restore previous path if path was modified above
                 if (_previousPath != null) {
-                    matlabEngine.put(engine, "previousPath_",_previousPath);
-                    matlabEngine.evalString
-                        (engine, "path(previousPath_);");
+                    matlabEngine.put(engine, "previousPath_", _previousPath);
+                    matlabEngine.evalString(engine, "path(previousPath_);");
                 }
             }
         } catch (IllegalActionException ex) {
@@ -349,6 +364,7 @@ public class Expression extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
         _iteration.setToken(new IntToken(_iterationCount));
+
         // This actor never requests termination.
         return true;
     }
@@ -358,7 +374,11 @@ public class Expression extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (matlabEngine != null) matlabEngine.close(engine);
+
+        if (matlabEngine != null) {
+            matlabEngine.close(engine);
+        }
+
         engine = null;
     }
 

@@ -23,7 +23,6 @@
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import java.util.ArrayList;
@@ -37,8 +36,10 @@ import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.AllPairShortestPathAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FloydWarshallAllPairShortestPathStrategy
+
 /**
    Computation of the all pair shortest path of a directed graph using the
    Floyd-Warshall algorithm. The result is in the form of two dimensional array
@@ -59,17 +60,15 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class FloydWarshallAllPairShortestPathStrategy
     extends FloydWarshallStrategy implements AllPairShortestPathAnalyzer {
-
     /** Construct an AllPairShortestPathAnalyzer which works using the
      *  Floyd-Warshall strategy.
      *
      *  @param graph The given graph.
      */
     public FloydWarshallAllPairShortestPathStrategy(Graph graph,
-            ToDoubleMapping edgeLengths)  {
+        ToDoubleMapping edgeLengths) {
         super(graph);
         _edgeLengths = edgeLengths;
     }
@@ -91,18 +90,20 @@ public class FloydWarshallAllPairShortestPathStrategy
         int endNodeLabel = graph().nodeLabel(endNode);
         int n = graph().nodeCount();
         int[][] nodeLabels = predecessors();
-        if (nodeLabels[startNodeLabel][endNodeLabel] != -1 ) {
+
+        if (nodeLabels[startNodeLabel][endNodeLabel] != -1) {
             shortestPath = new ArrayList();
             shortestPath.add(endNode);
+
             Node nodeOnPath = endNode;
+
             while (nodeOnPath != startNode) {
                 int nodeOnPathLabel = graph().nodeLabel(nodeOnPath);
-                nodeOnPath =
-                    graph().node(nodeLabels[startNodeLabel]
-                            [nodeOnPathLabel]);
+                nodeOnPath = graph().node(nodeLabels[startNodeLabel][nodeOnPathLabel]);
                 shortestPath.add(nodeOnPath);
             }
         }
+
         return shortestPath;
     }
 
@@ -117,9 +118,9 @@ public class FloydWarshallAllPairShortestPathStrategy
     public double shortestPathLength(Node startNode, Node endNode) {
         double result = 0.0;
         int n = graph().nodeCount();
-        double[][] shortestPathResults = (double[][])_result();
-        result = shortestPathResults[graph().nodeLabel(startNode)]
-            [graph().nodeLabel(endNode)];
+        double[][] shortestPathResults = (double[][]) _result();
+        result = shortestPathResults[graph().nodeLabel(startNode)][graph()
+                                                                       .nodeLabel(endNode)];
         return result;
     }
 
@@ -138,7 +139,7 @@ public class FloydWarshallAllPairShortestPathStrategy
      *  @return The all pair shortest path matrix as a double[][].
      */
     public double[][] shortestPathMatrix() {
-        return (double[][])_result();
+        return (double[][]) _result();
     }
 
     /** Return a description of the analyzer.
@@ -147,7 +148,7 @@ public class FloydWarshallAllPairShortestPathStrategy
      */
     public String toString() {
         return "All pair shortest path analyzer"
-            + " based on the Floyd-Warshall algorithm.";
+        + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -171,30 +172,36 @@ public class FloydWarshallAllPairShortestPathStrategy
      */
     protected Object _compute() {
         int n = graph().nodeCount();
+
         // Initialize shortest path matrix
-        _allPairShortestPath = new double[n+1][n][n];
-        _predecessors = new int[n+1][n][n];
+        _allPairShortestPath = new double[n + 1][n][n];
+        _predecessors = new int[n + 1][n][n];
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 _predecessors[0][i][j] = -1;
+
                 if (i != j) {
                     _allPairShortestPath[0][i][j] = Double.MAX_VALUE;
                 } else {
                     _allPairShortestPath[0][i][j] = Double.MAX_VALUE;
                 }
             }
+
             Node node = graph().node(i);
-            Iterator outputEdges =
-                ((DirectedGraph)graph()).outputEdges(node).iterator();
+            Iterator outputEdges = ((DirectedGraph) graph()).outputEdges(node)
+                                    .iterator();
+
             while (outputEdges.hasNext()) {
-                Edge edge = (Edge)outputEdges.next();
-                int sinkLabel = ((DirectedGraph)graph()).
-                    nodeLabel(edge.sink());
-                if (_allPairShortestPath[0][i][sinkLabel] >
-                        _edgeLengths.toDouble(edge)) {
-                    _allPairShortestPath[0][i][sinkLabel] =
-                        _edgeLengths.toDouble(edge);
+                Edge edge = (Edge) outputEdges.next();
+                int sinkLabel = ((DirectedGraph) graph()).nodeLabel(edge.sink());
+
+                if (_allPairShortestPath[0][i][sinkLabel] > _edgeLengths
+                        .toDouble(edge)) {
+                    _allPairShortestPath[0][i][sinkLabel] = _edgeLengths
+                        .toDouble(edge);
                 }
+
                 _predecessors[0][i][sinkLabel] = i;
             }
         }
@@ -217,20 +224,21 @@ public class FloydWarshallAllPairShortestPathStrategy
     protected final void _floydWarshallComputation(int k, int i, int j) {
         double b = Double.MAX_VALUE;
         double a = _allPairShortestPath[k][i][j];
-        if (i != k && k != j) {
-            b = _allPairShortestPath[k][i][k]
-                + _allPairShortestPath[k][k][j];
-        } else if (i == k && k != j) {
+
+        if ((i != k) && (k != j)) {
+            b = _allPairShortestPath[k][i][k] + _allPairShortestPath[k][k][j];
+        } else if ((i == k) && (k != j)) {
             b = _allPairShortestPath[k][k][j];
-        } else if (i != k && k == j) {
+        } else if ((i != k) && (k == j)) {
             b = _allPairShortestPath[k][i][k];
         }
+
         if (b >= a) {
-            _allPairShortestPath[k+1][i][j] = a;
-            _predecessors[k+1][i][j] = _predecessors[k][i][j];
+            _allPairShortestPath[k + 1][i][j] = a;
+            _predecessors[k + 1][i][j] = _predecessors[k][i][j];
         } else {
-            _allPairShortestPath[k+1][i][j] = b;
-            _predecessors[k+1][i][j] = _predecessors[k][k][j];
+            _allPairShortestPath[k + 1][i][j] = b;
+            _predecessors[k + 1][i][j] = _predecessors[k][k][j];
         }
     }
 
@@ -253,7 +261,6 @@ public class FloydWarshallAllPairShortestPathStrategy
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private ToDoubleMapping _edgeLengths;
     private int[][][] _predecessors;
     private int[][] _predecessorResult;

@@ -26,13 +26,14 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.graph;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InequalityTerm
+
 /**
    An interface for a term in an inequality over a CPO.
    A term is either a constant, a variable, or a function.
@@ -49,9 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Green (kienhuis)
    @see CPO
 */
-
 public interface InequalityTerm {
-
     /** Return the Object associated with this term. If this term is
      *  not associated with a particular Object, or it is not necessary
      *  to obtain the reference of the associated Object, this method
@@ -91,8 +90,7 @@ public interface InequalityTerm {
      *  @param e An Object representing an element in the underlying CPO.
      *  @exception IllegalActionException If this term is not a variable.
      */
-    public void initialize(Object e)
-            throws IllegalActionException;
+    public void initialize(Object e) throws IllegalActionException;
 
     /** Check whether this term can be set to a specific element of the
      *  underlying CPO. Only variable terms are settable, constant
@@ -115,7 +113,5 @@ public interface InequalityTerm {
      *   underlying CPO.
      *  @exception IllegalActionException If this term is not a variable.
      */
-    public void setValue(Object e)
-            throws IllegalActionException;
-
+    public void setValue(Object e) throws IllegalActionException;
 }

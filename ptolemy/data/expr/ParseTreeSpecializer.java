@@ -30,8 +30,10 @@ import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeSpecializer
+
 /**
    This class reduces a parse tree, given a scope of bound variables.  If
    an identifier is not found in the given scope, then the identifier is
@@ -46,9 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.data.expr.ASTPtRootNode
 */
-
 public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,44 +60,46 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
      *  destroyed in the process.
      */
     public ASTPtRootNode specialize(ASTPtRootNode node, List excludedNames,
-            ParserScope scope)
-            throws IllegalActionException {
+        ParserScope scope) throws IllegalActionException {
         _excludedNames = excludedNames;
         _scope = scope;
         _evaluator = new ParseTreeEvaluator();
+
         try {
             _result = (ASTPtRootNode) node.clone();
             _result._parent = null;
         } catch (CloneNotSupportedException ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to clone node for specialization");
+                "Failed to clone node for specialization");
         }
+
         _result.visit(this);
         _evaluator = null;
         _scope = null;
         _excludedNames = null;
+
         ASTPtRootNode result = _result;
         _result = null;
         return result;
     }
 
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
-
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Check to see if we are referencing a function closure in scope.
         ptolemy.data.Token value = null;
         String functionName = node.getFunctionName();
-        if (_scope != null && functionName != null) {
+
+        if ((_scope != null) && (functionName != null)) {
             if (!_excludedNames.contains(functionName)) {
                 value = _scope.get(node.getFunctionName());
             }
@@ -106,6 +108,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         if (value == null) {
             // Just visit arguments other than the first.
             int numChildren = node.jjtGetNumChildren();
+
             for (int i = 1; i < numChildren; i++) {
                 _visitChild(node, i);
             }
@@ -115,11 +118,13 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         List excludedNames = new LinkedList(_excludedNames);
+
         // Don't substitute any names in the parse tree that are
         // bound in the definition.
         excludedNames.addAll(node.getArgumentNameList());
+
         List oldExcludedNames = _excludedNames;
         _excludedNames = excludedNames;
 
@@ -130,72 +135,86 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
-    public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException {
+
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
+
         if (!_excludedNames.contains(node.getName())) {
             ptolemy.data.Token token = null;
+
             if (_scope != null) {
                 token = _scope.get(node.getName());
             }
+
             if (token == null) {
                 token = Constants.get(node.getName());
             }
+
             if (token != null) {
                 node.setToken(token);
                 node.setConstant(true);
+
                 // Reset the name, since it no longer makes sense.
                 node._name = null;
                 return;
             }
-            throw new IllegalActionException(
-                    "The ID " + node.getName() + " is undefined.");
+
+            throw new IllegalActionException("The ID " + node.getName()
+                + " is undefined.");
         }
     }
 
     public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
+
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
+
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
+
     public void visitPowerNode(ASTPtPowerNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
+
     public void visitProductNode(ASTPtProductNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
+
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
+
     public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
+
     public void visitShiftNode(ASTPtShiftNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
-    public void visitSumNode(ASTPtSumNode node)
-            throws IllegalActionException {
+
+    public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _defaultVisit(node);
     }
+
     public void visitUnaryNode(ASTPtUnaryNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _defaultVisit(node);
     }
 
@@ -206,41 +225,46 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
      */
     protected boolean _childrenAreConstant(ASTPtRootNode node) {
         int numChildren = node.jjtGetNumChildren();
+
         for (int i = 0; i < numChildren; i++) {
-            ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+            ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
+
             if (!child.isConstant()) {
                 return false;
             }
         }
+
         return true;
     }
 
     protected void _defaultVisit(ASTPtRootNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _visitAllChildren(node);
+
         boolean isConstant = _childrenAreConstant(node);
+
         if (isConstant) {
             _replaceConstantNode(node);
         }
     }
 
     protected void _replaceConstantNode(ASTPtRootNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Create the replacement
-        ASTPtLeafNode newNode =
-            new ASTPtLeafNode(PtParserTreeConstants.JJTPTLEAFNODE);
-        ptolemy.data.Token token =
-            _evaluator.evaluateParseTree(node, _scope);
+        ASTPtLeafNode newNode = new ASTPtLeafNode(PtParserTreeConstants.JJTPTLEAFNODE);
+        ptolemy.data.Token token = _evaluator.evaluateParseTree(node, _scope);
         newNode.setToken(token);
         newNode.setType(token.getType());
         newNode.setConstant(true);
 
-        ASTPtRootNode parent = (ASTPtRootNode)node._parent;
+        ASTPtRootNode parent = (ASTPtRootNode) node._parent;
+
         if (parent == null) {
             _result = newNode;
         } else {
             // Replace the old with the new.
             newNode._parent = parent;
+
             int index = parent._children.indexOf(node);
             parent._children.set(index, newNode);
         }

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.plot;
 
 import java.awt.BorderLayout;
@@ -57,11 +56,12 @@ import javax.swing.filechooser.FileFilter;
 
 import ptolemy.util.StringUtilities;
 
+
 // TO DO:
 //   - Add a mechanism for combining two plots into one
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotFrame
+
 /**
 
 PlotFrame is a versatile two-dimensional data plotter that runs as
@@ -96,7 +96,6 @@ field is set once in the constructor and immutable afterwards.
 @Pt.AcceptedRating Yellow (cxh)
 */
 public class PlotFrame extends JFrame {
-
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -139,36 +138,39 @@ public class PlotFrame extends JFrame {
 
         // File menu
         JMenuItem[] fileMenuItems = {
-            new JMenuItem("Open", KeyEvent.VK_O),
-            new JMenuItem("Save", KeyEvent.VK_S),
-            new JMenuItem("SaveAs", KeyEvent.VK_A),
-            new JMenuItem("Export", KeyEvent.VK_E),
-            new JMenuItem("Print", KeyEvent.VK_P),
-            new JMenuItem("Close", KeyEvent.VK_C),
-        };
+                new JMenuItem("Open", KeyEvent.VK_O),
+                new JMenuItem("Save", KeyEvent.VK_S),
+                new JMenuItem("SaveAs", KeyEvent.VK_A),
+                new JMenuItem("Export", KeyEvent.VK_E),
+                new JMenuItem("Print", KeyEvent.VK_P),
+                new JMenuItem("Close", KeyEvent.VK_C),
+            };
+
         // Open button = ctrl-o.
-        fileMenuItems[0].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+        fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+                Event.CTRL_MASK));
 
         // Save button = ctrl-s.
-        fileMenuItems[1].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+        fileMenuItems[1].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                Event.CTRL_MASK));
 
         // Print button = ctrl-p.
-        fileMenuItems[4].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+        fileMenuItems[4].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+                Event.CTRL_MASK));
 
         // Close button = ctrl-w.
-        fileMenuItems[5].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+        fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
+                Event.CTRL_MASK));
 
         FileMenuListener fml = new FileMenuListener();
+
         // Set the action command and listener for each menu item.
         for (int i = 0; i < fileMenuItems.length; i++) {
             fileMenuItems[i].setActionCommand(fileMenuItems[i].getText());
             fileMenuItems[i].addActionListener(fml);
             _fileMenu.add(fileMenuItems[i]);
         }
+
         _menubar.add(_fileMenu);
 
         // Edit menu
@@ -180,26 +182,28 @@ public class PlotFrame extends JFrame {
 
         // Special menu
         JMenuItem[] specialMenuItems = {
-            new JMenuItem("About", KeyEvent.VK_A),
-            new JMenuItem("Help", KeyEvent.VK_H),
-            new JMenuItem("Clear", KeyEvent.VK_C),
-            new JMenuItem("Fill", KeyEvent.VK_F),
-            new JMenuItem("Reset axes", KeyEvent.VK_R),
-            new JMenuItem("Sample plot", KeyEvent.VK_S),
-        };
+                new JMenuItem("About", KeyEvent.VK_A),
+                new JMenuItem("Help", KeyEvent.VK_H),
+                new JMenuItem("Clear", KeyEvent.VK_C),
+                new JMenuItem("Fill", KeyEvent.VK_F),
+                new JMenuItem("Reset axes", KeyEvent.VK_R),
+                new JMenuItem("Sample plot", KeyEvent.VK_S),
+            };
         SpecialMenuListener sml = new SpecialMenuListener();
+
         // Set the action command and listener for each menu item.
         for (int i = 0; i < specialMenuItems.length; i++) {
-            specialMenuItems[i].setActionCommand(
-                    specialMenuItems[i].getText());
+            specialMenuItems[i].setActionCommand(specialMenuItems[i].getText());
             specialMenuItems[i].addActionListener(sml);
             _specialMenu.add(specialMenuItems[i]);
         }
+
         _menubar.add(_specialMenu);
 
         setJMenuBar(_menubar);
 
         getContentPane().add(plot, BorderLayout.CENTER);
+
         // FIXME: This should not be hardwired in here.
         setSize(500, 300);
 
@@ -226,12 +230,12 @@ public class PlotFrame extends JFrame {
     ////                         public variables                  ////
 
     /** @serial The plot object held by this frame. */
+
     // FIXME: uncomment final when we upgrade to jdk1.2
     public /*final*/ PlotBox plot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
 
     /** @serial Menubar for this frame. */
     protected JMenuBar _menubar = new JMenuBar();
@@ -251,22 +255,18 @@ public class PlotFrame extends JFrame {
     /** @serial The input file. */
     protected File _file = null;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "PlotFrame class\n" +
-                "By: Edward A. Lee " +
-                "and Christopher Hylands\n" +
-                "Version " + PlotBox.PTPLOT_RELEASE +
-                ", Build: $Id$\n\n"+
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
-                "Copyright (c) 1997-2005, " +
-                "The Regents of the University of California.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "PlotFrame class\n" + "By: Edward A. Lee "
+            + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
+            + ", Build: $Id$\n\n"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+            + "Copyright (c) 1997-2005, "
+            + "The Regents of the University of California.",
+            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Close the window.
@@ -289,6 +289,7 @@ public class PlotFrame extends JFrame {
         JFileChooser fileDialog = new JFileChooser();
         fileDialog.addChoosableFileFilter(new EPSFileFilter());
         fileDialog.setDialogTitle("Export EPS to...");
+
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
         } else {
@@ -296,19 +297,23 @@ public class PlotFrame extends JFrame {
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
             String cwd = StringUtilities.getProperty("user.dir");
+
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                           "plot.eps"));
+                "plot.eps"));
 
         int returnVal = fileDialog.showDialog(this, "Export");
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
+
             try {
                 FileOutputStream fout = null;
+
                 try {
                     fout = new FileOutputStream(file);
                     plot.export(fout);
@@ -317,14 +322,14 @@ public class PlotFrame extends JFrame {
                         fout.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + file);
+                            + "on " + file);
                         throwable.printStackTrace();
                     }
                 }
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Error exporting plot: " + ex,
-                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
+                    "Error exporting plot: " + ex, "Ptolemy II Error",
+                    JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -333,10 +338,10 @@ public class PlotFrame extends JFrame {
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-                "PlotFrame is a plot in a top-level window.\n" +
-                "  File formats understood: Ptplot ASCII.\n" +
-                "  Left mouse button: Zooming.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "PlotFrame is a plot in a top-level window.\n"
+            + "  File formats understood: Ptplot ASCII.\n"
+            + "  Left mouse button: Zooming.", "About Ptolemy Plot",
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Open a new file and plot its data.
@@ -355,28 +360,32 @@ public class PlotFrame extends JFrame {
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
             String cwd = StringUtilities.getProperty("user.dir");
+
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
         }
+
         int returnVal = fileDialog.showOpenDialog(this);
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _file = fileDialog.getSelectedFile();
             setTitle(_file.getName());
             _directory = fileDialog.getCurrentDirectory();
+
             try {
                 plot.clear(true);
                 _read(new URL("file", null, _directory.getAbsolutePath()),
-                        new FileInputStream(_file));
+                    new FileInputStream(_file));
                 plot.repaint();
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "File not found:\n" + ex.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                    "File not found:\n" + ex.toString(), "Ptolemy Plot Error",
+                    JOptionPane.WARNING_MESSAGE);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Error reading input:\n" + ex.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                    "Error reading input:\n" + ex.toString(),
+                    "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -385,6 +394,7 @@ public class PlotFrame extends JFrame {
      */
     protected void _print() {
         _printCrossPlatform();
+
         //_printNative();
     }
 
@@ -398,13 +408,14 @@ public class PlotFrame extends JFrame {
         PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setPrintable(plot);
+
         if (job.printDialog(aset)) {
             try {
                 job.print(aset);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Printing failed:\n" + ex.toString(),
-                        "Print Error", JOptionPane.WARNING_MESSAGE);
+                    "Printing failed:\n" + ex.toString(), "Print Error",
+                    JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -415,10 +426,11 @@ public class PlotFrame extends JFrame {
      */
     protected void _printNative() {
         PrinterJob job = PrinterJob.getPrinterJob();
-        //PageFormat pageFormat = job.defaultPage();
 
+        //PageFormat pageFormat = job.defaultPage();
         //job.setPrintable(plot, pageFormat);
         job.setPrintable(plot);
+
         if (job.printDialog()) {
             try {
                 // job.print() eventually
@@ -426,8 +438,8 @@ public class PlotFrame extends JFrame {
                 job.print();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Printing failed:\n" + ex.toString(),
-                        "Print Error", JOptionPane.WARNING_MESSAGE);
+                    "Printing failed:\n" + ex.toString(), "Print Error",
+                    JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -453,8 +465,8 @@ public class PlotFrame extends JFrame {
                 plot.write(fout);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Error writing file:\n" + ex.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                    "Error writing file:\n" + ex.toString(),
+                    "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             _saveAs();
@@ -464,10 +476,10 @@ public class PlotFrame extends JFrame {
     /** Query the user for a filename and save the plot to that file.
      */
     protected void _saveAs() {
-
         JFileChooser fileDialog = new JFileChooser();
         fileDialog.addChoosableFileFilter(new PLTOrXMLFileFilter());
         fileDialog.setDialogTitle("Save plot as...");
+
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
         } else {
@@ -475,15 +487,17 @@ public class PlotFrame extends JFrame {
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
             String cwd = StringUtilities.getProperty("user.dir");
+
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                           "plot.xml"));
+                "plot.xml"));
 
         int returnVal = fileDialog.showSaveDialog(this);
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _file = fileDialog.getSelectedFile();
             setTitle(_file.getName());
@@ -491,13 +505,14 @@ public class PlotFrame extends JFrame {
             _save();
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     class FileMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem)e.getSource();
+            JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
+
             try {
                 if (actionCommand.equals("Open")) {
                     _open();
@@ -517,10 +532,10 @@ public class PlotFrame extends JFrame {
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
-                        "File Menu Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
-
+                    "File Menu Exception:\n" + exception.toString(),
+                    "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
+
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -537,9 +552,10 @@ public class PlotFrame extends JFrame {
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
-                        "Format Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                    "Format Exception:\n" + exception.toString(),
+                    "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
+
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -549,8 +565,9 @@ public class PlotFrame extends JFrame {
 
     class SpecialMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem)e.getSource();
+            JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
+
             try {
                 if (actionCommand.equals("About")) {
                     _about();
@@ -572,9 +589,10 @@ public class PlotFrame extends JFrame {
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
-                        "Special Menu Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                    "Special Menu Exception:\n" + exception.toString(),
+                    "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
+
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -587,7 +605,6 @@ public class PlotFrame extends JFrame {
 
     /** Display only .eps files */
     class EPSFileFilter extends FileFilter {
-
         /** Accept only .eps files.
          *  @param file The file to be checked.
          *  @return true if the file is a directory, a .eps file
@@ -599,12 +616,12 @@ public class PlotFrame extends JFrame {
 
             String fileOrDirectoryName = fileOrDirectory.getName();
             int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+
             if (dotIndex == -1) {
                 return false;
             }
-            String extension =
-                fileOrDirectoryName
-                .substring(dotIndex);
+
+            String extension = fileOrDirectoryName.substring(dotIndex);
 
             if (extension != null) {
                 if (extension.equalsIgnoreCase(".eps")) {
@@ -613,6 +630,7 @@ public class PlotFrame extends JFrame {
                     return false;
                 }
             }
+
             return false;
         }
 
@@ -624,7 +642,6 @@ public class PlotFrame extends JFrame {
 
     /** Display only .plt and .xml files */
     class PLTOrXMLFileFilter extends FileFilter {
-
         /** Accept only .plt or .xml files.
          *  @param file The file to be checked.
          *  @return true if the file is a directory, a .plot or a .xml file.
@@ -636,12 +653,12 @@ public class PlotFrame extends JFrame {
 
             String fileOrDirectoryName = fileOrDirectory.getName();
             int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+
             if (dotIndex == -1) {
                 return false;
             }
-            String extension =
-                fileOrDirectoryName
-                .substring(dotIndex);
+
+            String extension = fileOrDirectoryName.substring(dotIndex);
 
             if (extension != null) {
                 if (extension.equalsIgnoreCase(".plt")
@@ -651,6 +668,7 @@ public class PlotFrame extends JFrame {
                     return false;
                 }
             }
+
             return false;
         }
 
@@ -659,5 +677,4 @@ public class PlotFrame extends JFrame {
             return ".plt and .xml files";
         }
     }
-
 }

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel.test;
 
 import java.net.URL;
@@ -33,8 +32,10 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Compose
+
 /**
    Combine the internal transitions using the combineInternalTransitions()
    method.
@@ -51,9 +52,7 @@ import ptolemy.moml.MoMLParser;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-
 public class CombineInternalTransitions {
-
     /** Combine the internal transitions for the argument automaton and write
      *  the MoML description for the result to stdout.
      *  @param moml The MoML file name for the InterfaceAutomaton.
@@ -68,8 +67,8 @@ public class CombineInternalTransitions {
         // the same automaton will be returned the second time parse() is
         // called.
         MoMLParser parser = new MoMLParser();
-        InterfaceAutomaton automaton =
-            (InterfaceAutomaton)parser.parse(url, url);
+        InterfaceAutomaton automaton = (InterfaceAutomaton) parser.parse(url,
+                url);
         automaton.addPorts();
 
         automaton.combineInternalTransitions();
@@ -82,7 +81,7 @@ public class CombineInternalTransitions {
      *  InterfaceAutomaton.
      *  @param args The command line arguments.
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         try {
             new CombineInternalTransitions(args[0]);
         } catch (Exception exception) {
@@ -92,20 +91,14 @@ public class CombineInternalTransitions {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 }

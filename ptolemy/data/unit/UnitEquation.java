@@ -24,15 +24,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.unit;
 
 import java.util.Vector;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnitEquation
+
 /** A Unit equation is a particular type of Unit constraint, another
     type being a Unit inequality.
 
@@ -42,9 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
     @Pt.ProposedRating Red (rowland)
     @Pt.AcceptedRating Red (rowland)
 */
-
 public class UnitEquation extends UnitConstraint implements UnitPresentation {
-
     /** Construct a UnitEquation from the left and right hand sides.
      * @param lhs The left hand side.
      * @param rhs The right hand side.
@@ -62,11 +61,11 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
      */
     public static boolean areSatisfied(Vector equations) {
         for (int i = 0; i < equations.size(); i++) {
-            if (((UnitEquation) (equations.elementAt(i))).isSatisfied()
-                    != true) {
+            if (((UnitEquation) (equations.elementAt(i))).isSatisfied() != true) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -88,21 +87,26 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
 
         for (int i = 0; i < leftUTerms.size(); i++) {
             UnitTerm uTerm = ((UnitTerm) (leftUTerms.elementAt(i)));
+
             if (uTerm.isUnit()) {
                 newRightUExpr.addUnitTerm(uTerm.invert());
             } else if (uTerm.isVariable()) {
                 newLeftUExpr.addUnitTerm(uTerm);
             }
         }
+
         Vector rightUTerms = rhsUExpr.getUTerms();
+
         for (int i = 0; i < rightUTerms.size(); i++) {
             UnitTerm uTerm = ((UnitTerm) (rightUTerms.elementAt(i)));
+
             if (uTerm.isUnit()) {
                 newRightUExpr.addUnitTerm(uTerm);
             } else if (uTerm.isVariable()) {
                 newLeftUExpr.addUnitTerm(uTerm.invert());
             }
         }
+
         if (newRightUExpr.getUTerms().isEmpty()) {
             UnitTerm x = new UnitTerm();
             x.setUnit(UnitLibrary.Identity);
@@ -131,9 +135,10 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
         Unit lhsUnit = lhsReduced.getSingleUnit();
         Unit rhsUnit = rhsReduced.getSingleUnit();
 
-        if (lhsUnit == null || rhsUnit == null) {
+        if ((lhsUnit == null) || (rhsUnit == null)) {
             return false;
         }
+
         if (lhsUnit.hasSameType(rhsUnit)) {
             return true;
         } else {
@@ -146,8 +151,7 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
      * @return Whatever may be returned by the visitor.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public Object visit(EquationVisitor visitor)
-            throws IllegalActionException {
+    public Object visit(EquationVisitor visitor) throws IllegalActionException {
         return visitor._visitUnitEquation(this);
     }
 }

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.media.javasound;
 
 import java.io.IOException;
@@ -38,8 +37,10 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+
 /////////////////////////////////////////////////////////////////
 //// SoundReader
+
 /**
    This class is a buffer that supports the reading of audio samples
    from a sound file that is specified as a URL. Specifically, this
@@ -100,7 +101,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
    @see ptolemy.media.javasound.SoundWriter
 */
 public class SoundReader {
-
     /** Construct a sound reader object that reads audio samples
      *  from a sound file specified as a string describing a
      *  URL and open the file at the specified URL.
@@ -120,11 +120,13 @@ public class SoundReader {
      *  @param getSamplesArraySize The number of samples per channel
      *   returned by getSamples().
      */
-    public SoundReader(String sourceURL,
-            int getSamplesArraySize) throws IOException  {
+    public SoundReader(String sourceURL, int getSamplesArraySize)
+        throws IOException {
         _productionRate = getSamplesArraySize;
+
         // Create a URL corresponding to the sound file location.
         URL soundURL = new URL(sourceURL);
+
         // Open the specified sound file.
         _openFileFromURL(soundURL);
         _isAudioCaptureActive = true;
@@ -138,9 +140,10 @@ public class SoundReader {
      *  @param getSamplesArraySize The number of samples per channel
      *   returned by getSamples().
      */
-    public SoundReader(URL soundURL,
-            int getSamplesArraySize) throws IOException  {
+    public SoundReader(URL soundURL, int getSamplesArraySize)
+        throws IOException {
         _productionRate = getSamplesArraySize;
+
         // Open the specified sound file.
         _openFileFromURL(soundURL);
         _isAudioCaptureActive = true;
@@ -161,9 +164,9 @@ public class SoundReader {
         if (_isAudioCaptureActive == true) {
             return _channels;
         } else {
-            throw new IllegalStateException("SoundReader: " +
-                    "getChannels() was called while audio capture was" +
-                    " inactive (openFile() was never called).");
+            throw new IllegalStateException("SoundReader: "
+                + "getChannels() was called while audio capture was"
+                + " inactive (openFile() was never called).");
         }
     }
 
@@ -178,9 +181,9 @@ public class SoundReader {
         if (_isAudioCaptureActive == true) {
             return _sampleRate;
         } else {
-            throw new IllegalStateException("SoundReader: " +
-                    "getSampleRate() was called while audio capture was" +
-                    " inactive (openFile() was never called).");
+            throw new IllegalStateException("SoundReader: "
+                + "getSampleRate() was called while audio capture was"
+                + " inactive (openFile() was never called).");
         }
     }
 
@@ -207,41 +210,41 @@ public class SoundReader {
      *  @exception IllegalStateException If closeFile() has already
      *   been called.
      */
-    public double[][] getSamples() throws IOException,
-            IllegalStateException {
+    public double[][] getSamples() throws IOException, IllegalStateException {
         if (_isAudioCaptureActive == true) {
             if (_debug) {
                 System.out.println("SoundReader: getSamples(): invoked");
             }
+
             int numBytesRead;
+
             if (_debug) {
-                System.out.println("SoundReader: getSamples(): " +
-                        "bytes available = " +
-                        _properFormatAudioInputStream.available());
+                System.out.println("SoundReader: getSamples(): "
+                    + "bytes available = "
+                    + _properFormatAudioInputStream.available());
             }
+
             // Capture audio from file.
-            numBytesRead =
-                _properFormatAudioInputStream.read(_data);
+            numBytesRead = _properFormatAudioInputStream.read(_data);
+
             if (_debug) {
-                System.out.println("SoundReader: getSamples(): " +
-                        "numBytesRead = " + numBytesRead);
+                System.out.println("SoundReader: getSamples(): "
+                    + "numBytesRead = " + numBytesRead);
             }
+
             if (numBytesRead == _data.length) {
                 // Convert byte array to double array.
-                _audioInDoubleArray =
-                    _byteArrayToDoubleArray(_data,
-                            _bytesPerSample,
-                            _channels);
+                _audioInDoubleArray = _byteArrayToDoubleArray(_data,
+                        _bytesPerSample, _channels);
                 return _audioInDoubleArray;
-
             } else if (numBytesRead == -1) {
                 // Ran out of samples to play. This generally means
                 // that the end of the sound file has been reached.
                 if (_debug) {
-                    System.out.println("SoundReader: getSamples(): " +
-                            "numBytesRead = -1, so " +
-                            "returning null now...");
+                    System.out.println("SoundReader: getSamples(): "
+                        + "numBytesRead = -1, so " + "returning null now...");
                 }
+
                 return null;
             } else if (numBytesRead != _data.length) {
                 // Read fewer samples than productionRate many samples.
@@ -249,19 +252,17 @@ public class SoundReader {
                 // causes AudioInputStream.read(array) to sometimes
                 // return fewer bytes than requested, even though
                 // the end of the file has not yet been reached.
-                _audioInDoubleArray =
-                    _byteArrayToDoubleArray(_data,
-                            _bytesPerSample,
-                            _channels);
+                _audioInDoubleArray = _byteArrayToDoubleArray(_data,
+                        _bytesPerSample, _channels);
                 return _audioInDoubleArray;
             } else {
                 return null;
             }
         } else {
-            throw new IllegalStateException("SoundReader: " +
-                    "getSamples() was called while audio capture was" +
-                    " inactive (openFile() was never called or " +
-                    "closeFile has already been called).");
+            throw new IllegalStateException("SoundReader: "
+                + "getSamples() was called while audio capture was"
+                + " inactive (openFile() was never called or "
+                + "closeFile has already been called).");
         }
     }
 
@@ -273,15 +274,18 @@ public class SoundReader {
      */
     public void closeFile() throws IOException {
         System.out.println("SoundReader: closeFile() invoked");
+
         if (_isAudioCaptureActive == true) {
             // Free up audio system resources.
             if (_audioInputStream != null) {
                 _audioInputStream.close();
             }
+
             if (_properFormatAudioInputStream != null) {
                 _properFormatAudioInputStream.close();
             }
         }
+
         _isAudioCaptureActive = false;
     }
 
@@ -299,10 +303,10 @@ public class SoundReader {
         if (_isAudioCaptureActive == true) {
             return _sampleSizeInBits;
         } else {
-            throw new IllegalStateException("SoundReader: " +
-                    "getSampleSizeInBits() was called while " +
-                    "audio capture was" +
-                    " inactive (openFile() was never called).");
+            throw new IllegalStateException("SoundReader: "
+                + "getSampleSizeInBits() was called while "
+                + "audio capture was"
+                + " inactive (openFile() was never called).");
         }
     }
 
@@ -317,52 +321,60 @@ public class SoundReader {
     private void _openFileFromURL(URL soundURL) throws IOException {
         if (soundURL != null) {
             try {
-                _audioInputStream =
-                    AudioSystem.getAudioInputStream(soundURL);
+                _audioInputStream = AudioSystem.getAudioInputStream(soundURL);
             } catch (UnsupportedAudioFileException e) {
-                throw new IOException("Unsupported AudioFile :" +
-                        e);
+                throw new IOException("Unsupported AudioFile :" + e);
             }
         }
+
         // make sure we have something to play
         if (_audioInputStream == null) {
             throw new IOException("No loaded audio to play back");
         }
+
         AudioFormat origFormat = _audioInputStream.getFormat();
+
         // Now convert to PCM_SIGNED_BIG_ENDIAN so that can get double
         // representation of samples.
         _sampleRate = origFormat.getSampleRate();
+
         if (_debug) {
-            System.out.println("SoundReader: sampling rate = " +
-                    _sampleRate);
+            System.out.println("SoundReader: sampling rate = " + _sampleRate);
         }
+
         _sampleSizeInBits = origFormat.getSampleSizeInBits();
-        _bytesPerSample = _sampleSizeInBits/8;
+        _bytesPerSample = _sampleSizeInBits / 8;
+
         if (_debug) {
-            System.out.println("SoundReader: sample size in bits = " +
-                    _sampleSizeInBits);
+            System.out.println("SoundReader: sample size in bits = "
+                + _sampleSizeInBits);
         }
+
         _channels = origFormat.getChannels();
+
         boolean signed = true;
         boolean bigEndian = true;
-        AudioFormat format = new AudioFormat(_sampleRate,
-                _sampleSizeInBits, _channels,
-                signed, bigEndian);
+        AudioFormat format = new AudioFormat(_sampleRate, _sampleSizeInBits,
+                _channels, signed, bigEndian);
+
         if (_debug) {
             System.out.println("Converted format: " + format.toString());
         }
+
         try {
-            _properFormatAudioInputStream =
-                AudioSystem.getAudioInputStream(format, _audioInputStream);
+            _properFormatAudioInputStream = AudioSystem.getAudioInputStream(format,
+                    _audioInputStream);
         } catch (IllegalArgumentException e) {
             // Interpret a failed conversion to mean that
             // the input sound file has an unsupported format.
-            throw new IOException("Unsupported audio file format: " +
-                    e);
+            throw new IOException("Unsupported audio file format: " + e);
         }
+
         _frameSizeInBytes = format.getFrameSize();
+
         // Array of audio samples in byte format.
-        _data = new byte[_productionRate*_frameSizeInBytes];
+        _data = new byte[_productionRate * _frameSizeInBytes];
+
         // Initialize the index to the first sample of the sound file.
         _index = 0;
     }
@@ -380,19 +392,21 @@ public class SoundReader {
      * array containing samples for channel m.
      */
     private double[][] _byteArrayToDoubleArray(byte[] byteArray,
-            int bytesPerSample,
-            int channels) {
-        int lengthInSamples = byteArray.length / (bytesPerSample*channels);
+        int bytesPerSample, int channels) {
+        int lengthInSamples = byteArray.length / (bytesPerSample * channels);
+
         // Check if we need to reallocate.
-        if ((channels != _doubleArray.length) ||
-                (lengthInSamples != _doubleArray[0].length)) {
+        if ((channels != _doubleArray.length)
+                || (lengthInSamples != _doubleArray[0].length)) {
             // Reallocate
             _doubleArray = new double[channels][lengthInSamples];
         }
+
         //double maxSampleReciprocal = 1/(Math.pow(2, 8 * bytesPerSample - 1));
         // Could use above line, but hopefully, code below will
         // be faster.
         double maxSampleReciprocal;
+
         if (bytesPerSample == 2) {
             // 1 / 32768
             maxSampleReciprocal = 3.0517578125e-5;
@@ -409,40 +423,48 @@ public class SoundReader {
             // Should not happen.
             maxSampleReciprocal = 0;
         }
+
         // Check if we need to reallocate.
         // Note: This test is really not needed since bytesPerSample
         // is set in the constructor. It should never change.
         if (bytesPerSample != _b.length) {
             _b = new byte[bytesPerSample];
         }
+
         for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
             // For each channel,
             for (int currChannel = 0; currChannel < channels; currChannel++) {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
-                    _b[i] = byteArray[currSamp*bytesPerSample*channels +
-                            bytesPerSample*currChannel + i];
+                    _b[i] = byteArray[(currSamp * bytesPerSample * channels)
+                        + (bytesPerSample * currChannel) + i];
                 }
-                int result = (_b[0] >> 7) ;
-                for (int i = 0; i < bytesPerSample; i += 1)
+
+                int result = (_b[0] >> 7);
+
+                for (int i = 0; i < bytesPerSample; i += 1) {
                     result = (result << 8) + (_b[i] & 0xff);
-                _doubleArray[currChannel][currSamp] =
-                    ((double) result*maxSampleReciprocal);
+                }
+
+                _doubleArray[currChannel][currSamp] = ((double) result * maxSampleReciprocal);
             }
         }
+
         return _doubleArray;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private AudioInputStream  _properFormatAudioInputStream;
+    private AudioInputStream _properFormatAudioInputStream;
     private AudioInputStream _audioInputStream;
     private int _productionRate;
+
     // Array of audio samples in double format.
     private double[][] _audioInDoubleArray;
+
     // Array of audio samples in int format.
     private int[][] _audioInIntArray;
+
     // Array of audio samples in byte format.
     private byte[] _data;
     private int _index;
@@ -457,8 +479,10 @@ public class SoundReader {
     private byte[] _b = new byte[1];
     private double[][] _doubleArray = new double[1][1];
     private int[][] _intArray = new int[1][1];
+
     /////////////// For debugging: ///////////////////////////////
     // Set this variable to "true" to enable debugging information.
     private boolean _debug = false;
+
     ///////////////////////////////////////////////////////////////////
 }

@@ -25,13 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.Beta;
+import cern.jet.random.engine.DRand;
+
 import ptolemy.actor.gui.style.ChoiceStyle;
-import ptolemy.data.StringToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -39,11 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-import cern.jet.random.Beta;
-import cern.jet.random.engine.DRand;
 
 //////////////////////////////////////////////////////////////////////////
 //// Beta
+
 /**
    Produce a random sequence with a Beta distribution.  On each
    iteration, a new random number is produced.  The output port is of
@@ -58,9 +59,7 @@ import cern.jet.random.engine.DRand;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ColtBeta extends ColtRandomSource {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,8 +69,7 @@ public class ColtBeta extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtBeta(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
-
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -117,7 +115,6 @@ public class ColtBeta extends ColtRandomSource {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-
         double alphaValue = ((DoubleToken) alpha.getToken()).doubleValue();
         double betaValue = ((DoubleToken) beta.getToken()).doubleValue();
 
@@ -128,7 +125,6 @@ public class ColtBeta extends ColtRandomSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The random number for the current iteration.
     private double _current;
 }

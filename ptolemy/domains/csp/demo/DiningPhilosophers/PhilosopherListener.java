@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.DiningPhilosophers;
+
 
 /** Listener for Philosopher events.
     @author Neil Smyth
@@ -36,7 +36,6 @@ package ptolemy.domains.csp.demo.DiningPhilosophers;
     @Pt.AcceptedRating Red (cxh)
 */
 public interface PhilosopherListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

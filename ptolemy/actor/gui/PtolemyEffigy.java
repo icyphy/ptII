@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -48,8 +47,10 @@ import ptolemy.moml.ParserAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyEffigy
+
 /**
    An effigy for a Ptolemy II model.
    An effigy represents model metadata, and is contained by the
@@ -67,7 +68,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Yellow (janneck)
 */
 public class PtolemyEffigy extends Effigy implements ChangeListener {
-
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this effigy.
@@ -85,7 +85,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *   an entity already in the container.
      */
     public PtolemyEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -97,13 +97,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @param change The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change) {
-
         // Initially, the undo facility wanted us to call
         // setModified(true) here.  However, if we do, then running an
         // SDF Model that sets the bufferSize of a relation would
         // result in the model being marked as modified and the user
         // being queried about saving the model upon exit.
-
         // Needed for undo.
         //setModified(true);
     }
@@ -122,7 +120,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         } else if (!change.isErrorReported()) {
             change.setErrorReported(true);
             MessageHandler.error("Change failed: " + change.getDescription(),
-                    exception);
+                exception);
         }
     }
 
@@ -134,12 +132,13 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        PtolemyEffigy newObject = (PtolemyEffigy)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PtolemyEffigy newObject = (PtolemyEffigy) super.clone(workspace);
+
         if (_model != null) {
-            newObject._model = (NamedObj)_model.clone(new Workspace());
+            newObject._model = (NamedObj) _model.clone(new Workspace());
         }
+
         return newObject;
     }
 
@@ -161,14 +160,18 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
     public Effigy masterEffigy() {
         if (_model != null) {
             NamedObj toplevel = _model.toplevel();
+
             if (toplevel == _model) {
-                    return this;
+                return this;
             }
+
             Effigy effigyForToplevel = Configuration.findEffigy(toplevel);
+
             if (effigyForToplevel != null) {
                 return effigyForToplevel;
             }
         }
+
         return super.masterEffigy();
     }
 
@@ -180,7 +183,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         if (_model != null) {
             _model.toplevel().removeChangeListener(this);
         }
+
         _model = model;
+
         if (model != null) {
             _model.toplevel().addChangeListener(this);
         }
@@ -199,6 +204,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 
         String filename = file.getName();
         int period = filename.indexOf(".");
+
         if (period > 0) {
             name = filename.substring(0, period);
         } else {
@@ -222,19 +228,17 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *   an acceptable class.
      */
     protected void _checkContainer(CompositeEntity container)
-            throws IllegalActionException {
-        if (container != null
-                && !(container instanceof ModelDirectory)
+        throws IllegalActionException {
+        if ((container != null) && !(container instanceof ModelDirectory)
                 && !(container instanceof PtolemyEffigy)) {
             throw new IllegalActionException(this, container,
-                    "The container can only be set to an " +
-                    "instance of ModelDirectory or PtolemyEffigy.");
+                "The container can only be set to an "
+                + "instance of ModelDirectory or PtolemyEffigy.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The model associated with this effigy.
     private NamedObj _model;
 
@@ -244,7 +248,6 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
     /** A factory for creating new Ptolemy effigies.
      */
     public static class Factory extends EffigyFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -254,7 +257,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -292,23 +295,24 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
-        public Effigy createEffigy(
-                CompositeEntity container, URL base, URL input)
-                throws Exception {
+        public Effigy createEffigy(CompositeEntity container, URL base,
+            URL input) throws Exception {
             if (input == null) {
                 // Create a blank effigy.
                 // Use the strategy pattern so derived classes can
                 // override this.
-                PtolemyEffigy effigy = _newEffigy(
-                        container, container.uniqueName("effigy"));
+                PtolemyEffigy effigy = _newEffigy(container,
+                        container.uniqueName("effigy"));
 
                 // If this factory contains an entity called "blank", then
                 // clone that.
                 NamedObj entity = getEntity("blank");
                 Attribute attribute = getAttribute("blank");
                 NamedObj newModel;
+
                 if (entity != null) {
-                    newModel = (NamedObj)entity.clone(new Workspace());
+                    newModel = (NamedObj) entity.clone(new Workspace());
+
                     // The cloning process results an object that defers change
                     // requests.  By default, we do not want to defer change
                     // requests, but more importantly, we need to execute
@@ -316,7 +320,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     // during cloning. The following call does that.
                     newModel.setDeferringChangeRequests(false);
                 } else if (attribute != null) {
-                    newModel = (NamedObj)attribute.clone(new Workspace());
+                    newModel = (NamedObj) attribute.clone(new Workspace());
+
                     // The cloning process results an object that defers change
                     // requests.  By default, we do not want to defer change
                     // requests, but more importantly, we need to execute
@@ -341,20 +346,23 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 return effigy;
             } else {
                 String extension = getExtension(input).toLowerCase();
+
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     if (extension.equals("hsif")) {
                         // FIXME: We could try using reflection to invoke
                         // the HSIFEffigyFactory here.
                         System.out.println("Warning: Could not open up '"
-                                + input + "' because it ends with '.hsif'.\n"
-                                + "Try running "
-                                + "$PTII/bin/vergil -hyvisual " + input);
+                            + input + "' because it ends with '.hsif'.\n"
+                            + "Try running " + "$PTII/bin/vergil -hyvisual "
+                            + input);
                     }
+
                     return null;
                 }
+
                 // Create a blank effigy.
-                PtolemyEffigy effigy = _newEffigy(
-                        container, container.uniqueName("effigy"));
+                PtolemyEffigy effigy = _newEffigy(container,
+                        container.uniqueName("effigy"));
 
                 MoMLParser parser = new MoMLParser();
 
@@ -366,6 +374,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 parser.reset();
 
                 NamedObj toplevel = null;
+
                 try {
                     try {
                         // If the following fails, we should remove the effigy.
@@ -375,21 +384,23 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // If we are running under Web Start, we
                             // might have a URL that refers to another
                             // jar file.
-                            URL anotherURL =
-                                JNLPUtilities
-                                .jarURLEntryResource(input.toString());
+                            URL anotherURL = JNLPUtilities.jarURLEntryResource(input
+                                    .toString());
+
                             if (anotherURL != null) {
                                 toplevel = parser.parse(base, anotherURL);
                             } else {
                                 throw io;
                             }
                         }
+
                         if (toplevel != null) {
                             effigy.setModel(toplevel);
 
                             // A MoMLFilter may have modified the model
                             // as it was being parsed.
                             effigy.setModified(MoMLParser.isModified());
+
                             // The effigy will handle saving the modified
                             // moml for us, so MoMLParser need
                             // not care anymore.
@@ -398,9 +409,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // Identify the URI from which the model was read
                             // by inserting an attribute into both the model
                             // and the effigy.
-                            URIAttribute uriAttribute =
-                                new URIAttribute(toplevel, "_uri");
+                            URIAttribute uriAttribute = new URIAttribute(toplevel,
+                                    "_uri");
                             URI inputURI = null;
+
                             try {
                                 inputURI = new URI(input.toExternalForm());
                             } catch (java.net.URISyntaxException ex) {
@@ -414,20 +426,22 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                 // is a %20 instead of a space.  This could
                                 // cause problems in Web Start
                                 String inputExternalFormFixed = StringUtilities
-                                    .substitute(input.toExternalForm(),
-                                            " ", "%20");
+                                    .substitute(input.toExternalForm(), " ",
+                                        "%20");
+
                                 try {
                                     inputURI = new URI(inputExternalFormFixed);
                                 } catch (Exception ex2) {
                                     throw new Exception("Failed to generate "
-                                            + "a URI from '"
-                                            + input.toExternalForm()
-                                            + "' and from '"
-                                            + inputExternalFormFixed
-                                            + "'", ex);
+                                        + "a URI from '"
+                                        + input.toExternalForm()
+                                        + "' and from '"
+                                        + inputExternalFormFixed + "'", ex);
                                 }
                             }
+
                             uriAttribute.setURI(inputURI);
+
                             // This is used by TableauFrame in its
                             //_save() method.
                             effigy.uri.setURI(inputURI);
@@ -438,46 +452,46 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         }
                     } catch (Throwable throwable) {
                         if (throwable instanceof StackOverflowError) {
-                            Throwable newThrowable =
-                                new StackOverflowError("StackOverflowError: "
-                                        + "Which often indicates that a class "
-                                        + "could not be found, but there was "
-                                        + "possibly a moml file with that same "
-                                        + "name in the directory that referred "
-                                        + "to the class, so we got into a loop."
-                                        + "For example: We had "
-                                        + "actor/lib/joystick/Joystick.java "
-                                        + "and "
-                                        + "actor/lib/joystick/joystick.xml, "
-                                        + "but "
-                                        + "the .class file would not load "
-                                        + "because of a classpath problem, "
-                                        + "so we kept "
-                                        + "loading joystick.xml which "
-                                        + "referred to Joystick and because "
-                                        + "of Windows "
-                                        + "filename case insensitivity, "
-                                        + "we found joystick.xml, which put "
-                                        + "us in a loop.");
+                            Throwable newThrowable = new StackOverflowError(
+                                    "StackOverflowError: "
+                                    + "Which often indicates that a class "
+                                    + "could not be found, but there was "
+                                    + "possibly a moml file with that same "
+                                    + "name in the directory that referred "
+                                    + "to the class, so we got into a loop."
+                                    + "For example: We had "
+                                    + "actor/lib/joystick/Joystick.java "
+                                    + "and "
+                                    + "actor/lib/joystick/joystick.xml, "
+                                    + "but "
+                                    + "the .class file would not load "
+                                    + "because of a classpath problem, "
+                                    + "so we kept "
+                                    + "loading joystick.xml which "
+                                    + "referred to Joystick and because "
+                                    + "of Windows "
+                                    + "filename case insensitivity, "
+                                    + "we found joystick.xml, which put "
+                                    + "us in a loop.");
                             newThrowable.initCause(throwable);
                             throwable = newThrowable;
                         }
 
                         throwable.printStackTrace();
+
                         // The finally clause below can result in the
                         // application exiting if there are no other
                         // effigies open.  We check for that condition,
                         // and report the error here.  Otherwise, we
                         // pass the error to the caller.
-                        ModelDirectory dir = (ModelDirectory)
-                            effigy.topEffigy().getContainer();
+                        ModelDirectory dir = (ModelDirectory) effigy.topEffigy()
+                                                                    .getContainer();
                         List effigies = dir.entityList(Effigy.class);
 
                         // We might get to here if we are running a
                         // vergil with a model specified as a command
                         // line argument and the model has an invalid
                         // parameter.
-
                         // We might have three effigies here:
                         // 1) .configuration.directory.configuration
                         // 2) .configuration.directory.UserLibrary
@@ -485,9 +499,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // Note that one of the effigies is the configuration
                         // itself, which does not prevent exiting the app.
                         // Hence, we handle the error if there are 3 or fewer.
-
                         if (effigies.size() <= 3) {
-
                             // FIXME: This could cause problems with
                             // systems that do not load the user
                             // library.  Currently, VergilApplication
@@ -498,7 +510,6 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // .configuration.directory.configuration
                             // and.configuration.directory.user
                             // library, but this seems like overkill.
-
                             String errorMessage = "Failed to read " + input;
                             System.err.println(errorMessage);
                             throwable.printStackTrace();
@@ -506,8 +517,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         } else {
                             if (throwable instanceof Exception) {
                                 // Let the caller handle the error.
-                                throw (Exception)throwable;
-
+                                throw (Exception) throwable;
                             } else {
                                 // If we have a parameter that has a backslash
                                 // then we might get a data.expr.TokenMgrError
@@ -526,6 +536,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         effigy.setContainer(null);
                     }
                 }
+
                 return null;
             }
         }
@@ -537,9 +548,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  @param name The name.
          *  @return A new effigy.
          */
-        protected PtolemyEffigy _newEffigy(
-                CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+        protected PtolemyEffigy _newEffigy(CompositeEntity container,
+            String name)
+            throws IllegalActionException, NameDuplicationException {
             return new PtolemyEffigy(container, name);
         }
     }
@@ -550,7 +561,6 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  in the File->New menu.
      */
     public static class FactoryWithoutNew extends Factory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -560,7 +570,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *   an entity already in the container.
          */
         public FactoryWithoutNew(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

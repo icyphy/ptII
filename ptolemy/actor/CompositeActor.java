@@ -33,10 +33,8 @@ setDirector invalidatesSchedule of executiveDirector.
 moved invalidation code from _addEntity to _finishedAddEntity
 initialize now clears receivers.. This helps SampleDelay inside a modal models with reset transition work better.
 */
-
 package ptolemy.actor;
 
-//import ptolemy.kernel.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,8 +55,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CompositeActor
+
 /**
    A CompositeActor is an aggregation of actors.  It may have a
    <i>local director</i>, which is an attribute of class Director that
@@ -118,9 +118,7 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.actor.Director
    @see ptolemy.actor.Manager
 */
-public class CompositeActor extends CompositeEntity
-    implements Actor {
-
+public class CompositeActor extends CompositeEntity implements Actor {
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
@@ -164,7 +162,7 @@ public class CompositeActor extends CompositeEntity
      *   an actor already in the container.
      */
     public CompositeActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -189,9 +187,8 @@ public class CompositeActor extends CompositeEntity
      *   or if one of the attributes cannot be cloned.
      *  @return A new CompositeActor.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CompositeActor newObject = (CompositeActor)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CompositeActor newObject = (CompositeActor) super.clone(workspace);
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         return newObject;
@@ -208,22 +205,25 @@ public class CompositeActor extends CompositeEntity
         if (_debugging) {
             _debug("Connections changed on port: " + port.getName());
         }
+
         super.connectionsChanged(port);
+
         if (port instanceof ComponentPort) {
             // NOTE: deepInsidePortList() is not the right thing here
             // since it will return the same port if it is opaque.
-            Iterator insidePorts
-                = ((ComponentPort)port).insidePortList().iterator();
+            Iterator insidePorts = ((ComponentPort) port).insidePortList()
+                                    .iterator();
+
             try {
                 _inConnectionsChanged = true;
+
                 while (insidePorts.hasNext()) {
-                    ComponentPort insidePort
-                        = (ComponentPort)insidePorts.next();
-                    Entity portContainer = (Entity)insidePort.getContainer();
+                    ComponentPort insidePort = (ComponentPort) insidePorts.next();
+                    Entity portContainer = (Entity) insidePort.getContainer();
+
                     // Avoid an infinite loop where notifications are traded.
                     if (!(portContainer instanceof CompositeActor)
-                            || !((CompositeActor)portContainer)
-                            ._inConnectionsChanged) {
+                            || !((CompositeActor) portContainer)._inConnectionsChanged) {
                         portContainer.connectionsChanged(insidePort);
                     }
                 }
@@ -231,29 +231,33 @@ public class CompositeActor extends CompositeEntity
                 _inConnectionsChanged = false;
             }
         }
+
         if (port instanceof IOPort) {
             IOPort castPort = (IOPort) port;
+
             if (castPort.isOpaque()) {
-                if (castPort.isOutput() && getDirector() != null) {
+                if (castPort.isOutput() && (getDirector() != null)) {
                     // Note that even if castPort is opaque, we still have to
                     // check for director above.
                     try {
                         castPort.createReceivers();
                     } catch (IllegalActionException ex) {
                         // Should never happen.
-                        throw new InternalErrorException(
-                                this, ex, "Cannot create receivers");
+                        throw new InternalErrorException(this, ex,
+                            "Cannot create receivers");
                     }
                 }
-                if (castPort.isInput() && getExecutiveDirector() != null) {
+
+                if (castPort.isInput() && (getExecutiveDirector() != null)) {
                     try {
                         castPort.createReceivers();
                     } catch (IllegalActionException ex) {
                         // Should never happen.
-                        throw new InternalErrorException(
-                                this, ex, "Cannot create receivers");
+                        throw new InternalErrorException(this, ex,
+                            "Cannot create receivers");
                     }
                 }
+
                 // Invalidate the local director schedule and types
                 if (getDirector() != null) {
                     getDirector().invalidateSchedule();
@@ -283,11 +287,13 @@ public class CompositeActor extends CompositeEntity
         if (_debugging) {
             _debug("Calling fire()");
         }
+
         try {
             _workspace.getReadAccess();
+
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot fire a non-opaque actor.");
+                    "Cannot fire a non-opaque actor.");
             }
 
             // Need to read from port parameters
@@ -296,34 +302,47 @@ public class CompositeActor extends CompositeEntity
             // set from ParameterPorts.
             for (Iterator inputPorts = inputPortList().iterator();
                     inputPorts.hasNext() && !_stopRequested;) {
-                IOPort p = (IOPort)inputPorts.next();
+                IOPort p = (IOPort) inputPorts.next();
+
                 if (p instanceof ParameterPort) {
-                    ((ParameterPort)p).getParameter().update();
+                    ((ParameterPort) p).getParameter().update();
                 }
             }
+
             // Use the local director to transfer inputs from
             // everything that is not a port parameter.
             // The director will also update the schedule in
             // the process, if necessary.
             for (Iterator inputPorts = inputPortList().iterator();
                     inputPorts.hasNext() && !_stopRequested;) {
-                IOPort p = (IOPort)inputPorts.next();
+                IOPort p = (IOPort) inputPorts.next();
+
                 if (!(p instanceof ParameterPort)) {
                     _director.transferInputs(p);
                 }
             }
-            if (_stopRequested) return;
+
+            if (_stopRequested) {
+                return;
+            }
+
             _director.fire();
-            if (_stopRequested) return;
+
+            if (_stopRequested) {
+                return;
+            }
+
             // Use the local director to transfer outputs.
             Iterator outports = outputPortList().iterator();
+
             while (outports.hasNext() && !_stopRequested) {
-                IOPort p = (IOPort)outports.next();
+                IOPort p = (IOPort) outports.next();
                 _director.transferOutputs(p);
             }
         } finally {
             _workspace.doneReading();
         }
+
         if (_debugging) {
             _debug("Called fire()");
         }
@@ -339,7 +358,11 @@ public class CompositeActor extends CompositeEntity
     public Director getDirector() {
         try {
             _workspace.getReadAccess();
-            if (_director != null) return _director;
+
+            if (_director != null) {
+                return _director;
+            }
+
             return getExecutiveDirector();
         } finally {
             _workspace.doneReading();
@@ -357,10 +380,13 @@ public class CompositeActor extends CompositeEntity
     public Director getExecutiveDirector() {
         try {
             _workspace.getReadAccess();
+
             Nameable container = getContainer();
+
             if (container instanceof Actor) {
-                return ((Actor)container).getDirector();
+                return ((Actor) container).getDirector();
             }
+
             return null;
         } finally {
             _workspace.doneReading();
@@ -374,23 +400,23 @@ public class CompositeActor extends CompositeEntity
      *  @see ptolemy.actor.util.FunctionDependency
      */
     public FunctionDependency getFunctionDependency() {
-        FunctionDependency functionDependency
-            = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
+        FunctionDependency functionDependency = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
+
         if (functionDependency == null) {
             try {
-                functionDependency
-                    = new FunctionDependencyOfCompositeActor(
-                            this, FunctionDependency.UniqueName);
+                functionDependency = new FunctionDependencyOfCompositeActor(this,
+                        FunctionDependency.UniqueName);
             } catch (NameDuplicationException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a" +
-                        "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a"
+                    + "function dependency object for " + getName());
             } catch (IllegalActionException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a" +
-                        "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a"
+                    + "function dependency object for " + getName());
             }
         }
+
         return functionDependency;
     }
 
@@ -407,11 +433,17 @@ public class CompositeActor extends CompositeEntity
     public Manager getManager() {
         try {
             _workspace.getReadAccess();
-            if (_manager != null) return _manager;
-            Nameable container = getContainer();
-            if (container instanceof Actor) {
-                return ((Actor)container).getManager();
+
+            if (_manager != null) {
+                return _manager;
             }
+
+            Nameable container = getContainer();
+
+            if (container instanceof Actor) {
+                return ((Actor) container).getManager();
+            }
+
             return null;
         } finally {
             _workspace.doneReading();
@@ -432,31 +464,38 @@ public class CompositeActor extends CompositeEntity
         if (_debugging) {
             _debug("Called initialize()");
         }
+
         try {
             _workspace.getReadAccess();
+
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot initialize a non-opaque actor.");
+                    "Cannot initialize a non-opaque actor.");
             }
 
             // Clear all of the contained actor's input ports.
             for (Iterator actors = entityList(Actor.class).iterator();
-                 actors.hasNext();) {
-                Entity actor = (Entity)actors.next();
+                    actors.hasNext();) {
+                Entity actor = (Entity) actors.next();
                 Iterator ports = actor.portList().iterator();
+
                 while (ports.hasNext()) {
-                    IOPort port = (IOPort)ports.next();
+                    IOPort port = (IOPort) ports.next();
+
                     if (port.isInput()) {
                         // Clear all receivers.
                         Receiver[][] receivers = port.getReceivers();
+
                         if (receivers == null) {
                             throw new InternalErrorException(this, null,
-                                    "port.getReceivers() returned null! "
-                                    + "This should never happen. "
-                                    + "port was '" + port + "'");
+                                "port.getReceivers() returned null! "
+                                + "This should never happen. " + "port was '"
+                                + port + "'");
                         }
+
                         for (int i = 0; i < receivers.length; i++) {
                             Receiver[] receivers2 = receivers[i];
+
                             for (int j = 0; j < receivers2.length; j++) {
                                 receivers2[j].clear();
                             }
@@ -467,19 +506,24 @@ public class CompositeActor extends CompositeEntity
 
             // Clear all of the output ports.
             Iterator ports = portList().iterator();
+
             while (ports.hasNext()) {
-                IOPort port = (IOPort)ports.next();
+                IOPort port = (IOPort) ports.next();
+
                 if (port.isOutput()) {
                     // Clear all insideReceivers.
                     Receiver[][] receivers = port.getInsideReceivers();
+
                     for (int i = 0; i < receivers.length; i++) {
                         Receiver[] receivers2 = receivers[i];
+
                         for (int j = 0; j < receivers2.length; j++) {
                             receivers2[j].clear();
                         }
                     }
                 }
             }
+
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().initialize();
@@ -497,22 +541,25 @@ public class CompositeActor extends CompositeEntity
     public List inputPortList() {
         try {
             _workspace.getReadAccess();
+
             if (_inputPortsVersion != _workspace.getVersion()) {
                 // Update the cache.
                 List inputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
+
                 while (ports.hasNext()) {
-                    IOPort p = (IOPort)ports.next();
-                    if ( p.isInput()) {
+                    IOPort p = (IOPort) ports.next();
+
+                    if (p.isInput()) {
                         inputPorts.add(p);
                     }
                 }
+
                 _cachedInputPorts = inputPorts;
                 _inputPortsVersion = _workspace.getVersion();
             }
 
             return _cachedInputPorts;
-
         } finally {
             _workspace.doneReading();
         }
@@ -550,15 +597,21 @@ public class CompositeActor extends CompositeEntity
         if (_debugging) {
             _debug("Called iterate(" + count + ")");
         }
+
         int n = 0;
-        while (n++ < count && !_stopRequested) {
+
+        while ((n++ < count) && !_stopRequested) {
             if (prefire()) {
                 fire();
-                if (!postfire()) return Executable.STOP_ITERATING;
+
+                if (!postfire()) {
+                    return Executable.STOP_ITERATING;
+                }
             } else {
                 return Executable.NOT_READY;
             }
         }
+
         if (_stopRequested) {
             return Executable.STOP_ITERATING;
         } else {
@@ -577,8 +630,9 @@ public class CompositeActor extends CompositeEntity
     public Receiver newInsideReceiver() throws IllegalActionException {
         if (_director == null) {
             throw new IllegalActionException(this,
-                    "Cannot create a receiver without a director.");
+                "Cannot create a receiver without a director.");
         }
+
         return _director.newReceiver();
     }
 
@@ -591,10 +645,10 @@ public class CompositeActor extends CompositeEntity
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
      */
-    public Port newPort(String name)
-            throws NameDuplicationException {
+    public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+
             IOPort port = new IOPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
@@ -616,10 +670,12 @@ public class CompositeActor extends CompositeEntity
      */
     public Receiver newReceiver() throws IllegalActionException {
         Director director = getExecutiveDirector();
+
         if (director == null) {
             throw new IllegalActionException(this,
-                    "Cannot create a receiver without an executive director.");
+                "Cannot create a receiver without an executive director.");
         }
+
         return director.newReceiver();
     }
 
@@ -633,9 +689,10 @@ public class CompositeActor extends CompositeEntity
      *   already on the container's contents list.
      */
     public ComponentRelation newRelation(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+
             IORelation relation = new IORelation(this, name);
             return relation;
         } finally {
@@ -652,17 +709,23 @@ public class CompositeActor extends CompositeEntity
     public List outputPortList() {
         try {
             _workspace.getReadAccess();
+
             if (_outputPortsVersion != _workspace.getVersion()) {
                 _cachedOutputPorts = new LinkedList();
+
                 Iterator ports = portList().iterator();
+
                 while (ports.hasNext()) {
-                    IOPort p = (IOPort)ports.next();
-                    if ( p.isOutput()) {
+                    IOPort p = (IOPort) ports.next();
+
+                    if (p.isOutput()) {
                         _cachedOutputPorts.add(p);
                     }
                 }
+
                 _outputPortsVersion = _workspace.getVersion();
             }
+
             return _cachedOutputPorts;
         } finally {
             _workspace.doneReading();
@@ -686,21 +749,27 @@ public class CompositeActor extends CompositeEntity
         if (_debugging) {
             _debug("Calling postfire()");
         }
+
         try {
             _workspace.getReadAccess();
+
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot postfire a non-opaque actor.");
+                    "Cannot postfire a non-opaque actor.");
             }
+
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             boolean result = getDirector().postfire();
+
             if (_debugging) {
                 _debug("Postfire returns (from director) " + result);
             }
+
             if (_debugging) {
                 _debug("Called postfire()");
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -716,24 +785,29 @@ public class CompositeActor extends CompositeEntity
      *   or if the director's prefire() method throws it, or if this actor
      *   is not opaque.
      */
-    public boolean prefire()
-            throws IllegalActionException {
+    public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Calling prefire()");
         }
+
         try {
             _workspace.getReadAccess();
+
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot invoke prefire on a non-opaque actor.");
+                    "Cannot invoke prefire on a non-opaque actor.");
             }
+
             boolean result = getDirector().prefire();
+
             if (_debugging) {
                 _debug("Prefire returns (from director) " + result);
             }
+
             if (_debugging) {
                 _debug("Called prefire()");
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -756,27 +830,29 @@ public class CompositeActor extends CompositeEntity
      */
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
+
         if (_debugging) {
             _debug("Called preinitialize()");
         }
+
         try {
             _workspace.getReadAccess();
             _createReceivers();
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot preinitialize a non-opaque actor.");
+                    "Cannot preinitialize a non-opaque actor.");
             }
+
             if (_director == null) {
                 throw new InternalErrorException(
-                        "Actor says it is opaque, but it has no director: "
-                        + getFullName());
+                    "Actor says it is opaque, but it has no director: "
+                    + getFullName());
             }
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().preinitialize();
-
         } finally {
             _workspace.doneReading();
         }
@@ -788,9 +864,11 @@ public class CompositeActor extends CompositeEntity
      */
     public void requestChange(ChangeRequest change) {
         Manager manager = getManager();
+
         if (manager != null) {
             stopFire();
         }
+
         super.requestChange(change);
     }
 
@@ -804,9 +882,10 @@ public class CompositeActor extends CompositeEntity
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // Invalidate the schedule and type resolution of the old director.
         Director oldDirector = getDirector();
+
         if (oldDirector != null) {
             oldDirector.invalidateSchedule();
             oldDirector.invalidateResolvedTypes();
@@ -815,6 +894,7 @@ public class CompositeActor extends CompositeEntity
         super.setContainer(container);
 
         Director director = getDirector();
+
         // Invalidate the schedule and type resolution of the new director.
         if (director != null) {
             director.invalidateSchedule();
@@ -842,7 +922,7 @@ public class CompositeActor extends CompositeEntity
      *  in this container with the same name as the given director.
      */
     public void setDirector(Director director)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (director != null) {
             director.setContainer(this);
         } else {
@@ -861,28 +941,31 @@ public class CompositeActor extends CompositeEntity
      *  actor.
      *  @see #getManager()
      */
-    public void setManager(Manager manager)
-            throws IllegalActionException {
-        if (manager != null && _workspace != manager.workspace()) {
+    public void setManager(Manager manager) throws IllegalActionException {
+        if ((manager != null) && (_workspace != manager.workspace())) {
             throw new IllegalActionException(this, manager,
-                    "Cannot set manager because workspaces are different.");
+                "Cannot set manager because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
-            if (getContainer() != null && manager != null) {
+
+            if ((getContainer() != null) && (manager != null)) {
                 throw new IllegalActionException(this, manager,
-                        "Cannot set the Manager of an actor "
-                        + "with a container.");
+                    "Cannot set the Manager of an actor " + "with a container.");
             }
+
             // If there was a previous manager, we need to reset it.
             if (_manager != null) {
                 // Remove this from the list of debug listeners of the old
                 // manager.
                 _manager.removeDebugListener(this);
+
                 // Notify the old manager that it is no longer the manager
                 // of anything.
                 _manager._makeManagerOf(null);
             }
+
             if (manager != null) {
                 // Add this to the list of debug listeners of the new manager.
                 // This composite actor will relay debug messages from
@@ -890,6 +973,7 @@ public class CompositeActor extends CompositeEntity
                 manager.addDebugListener(this);
                 manager._makeManagerOf(this);
             }
+
             _manager = manager;
             return;
         } finally {
@@ -908,13 +992,17 @@ public class CompositeActor extends CompositeEntity
         if (_debugging) {
             _debug("Called stop()");
         }
+
         try {
             _workspace.getReadAccess();
             _stopRequested = true;
+
             if (!isOpaque()) {
                 return;
             }
+
             Director director = getDirector();
+
             if (director != null) {
                 director.stop();
             }
@@ -933,12 +1021,16 @@ public class CompositeActor extends CompositeEntity
         if (_debugging) {
             _debug("Called stopFire()");
         }
+
         try {
             _workspace.getReadAccess();
+
             if (!isOpaque()) {
                 return;
             }
+
             Director director = getDirector();
+
             if (director != null) {
                 director.stopFire();
             }
@@ -955,7 +1047,11 @@ public class CompositeActor extends CompositeEntity
         if (_debugging) {
             _debug("Called terminate()");
         }
-        if (!isOpaque()) return;
+
+        if (!isOpaque()) {
+            return;
+        }
+
         getDirector().terminate();
     }
 
@@ -970,17 +1066,20 @@ public class CompositeActor extends CompositeEntity
         if (_debugging) {
             _debug("Called wrapup()");
         }
+
         try {
             _workspace.getReadAccess();
+
             if (!isOpaque()) {
-                throw new IllegalActionException(this,
-                        "Missing director.");
+                throw new IllegalActionException(this, "Missing director.");
             }
+
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             // However, there may not be a director (e.g. DifferentialSystem
             // actor in CT).
             Director director = getDirector();
+
             if (director != null) {
                 director.wrapup();
             }
@@ -1006,12 +1105,13 @@ public class CompositeActor extends CompositeEntity
      *   already on the actor contents list.
      */
     protected void _addEntity(ComponentEntity entity)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof Actor)) {
             throw new IllegalActionException(this, entity,
-                    "CompositeActor can only contain entities that " +
-                    " implement the Actor interface.");
+                "CompositeActor can only contain entities that "
+                + " implement the Actor interface.");
         }
+
         super._addEntity(entity);
     }
 
@@ -1032,11 +1132,12 @@ public class CompositeActor extends CompositeEntity
      *   name already in the actor.
      */
     protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
-                    "CompositeActor can only contain instances of IOPort.");
+                "CompositeActor can only contain instances of IOPort.");
         }
+
         super._addPort(port);
     }
 
@@ -1053,11 +1154,12 @@ public class CompositeActor extends CompositeEntity
      *   already on the contained relations list.
      */
     protected void _addRelation(ComponentRelation relation)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof IORelation)) {
             throw new IllegalActionException(this, relation,
-                    "CompositeActor can only contain instances of IORelation.");
+                "CompositeActor can only contain instances of IORelation.");
         }
+
         super._addRelation(relation);
     }
 
@@ -1077,10 +1179,11 @@ public class CompositeActor extends CompositeEntity
      */
     protected void _finishedAddEntity(ComponentEntity entity) {
         Director director = getDirector();
+
         if (director != null) {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
-            director.requestInitialization((Actor)entity);
+            director.requestInitialization((Actor) entity);
         }
     }
 
@@ -1097,9 +1200,9 @@ public class CompositeActor extends CompositeEntity
      *   causes this to be thrown. Should not be thrown.
      */
     protected void _setDirector(Director director)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         Director oldDirector = getDirector();
+
         if (oldDirector != null) {
             oldDirector.invalidateSchedule();
             oldDirector.invalidateResolvedTypes();
@@ -1114,6 +1217,7 @@ public class CompositeActor extends CompositeEntity
             // When deleting, the executive director also needs to be
             // notified that its schedule must be recomputed.
             Director executiveDirector = getExecutiveDirector();
+
             if (executiveDirector != null) {
                 executiveDirector.invalidateSchedule();
             }
@@ -1134,8 +1238,9 @@ public class CompositeActor extends CompositeEntity
      */
     private void _createReceivers() throws IllegalActionException {
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            IOPort onePort = (IOPort)ports.next();
+            IOPort onePort = (IOPort) ports.next();
             onePort.createReceivers();
         }
     }

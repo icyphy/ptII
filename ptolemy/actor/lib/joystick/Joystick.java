@@ -25,10 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.joystick;
-
-import java.io.IOException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -44,8 +41,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import com.centralnexus.input.JoystickListener;
 
+import java.io.IOException;
+
+
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
    This actor reads data from a Joystick using the Joystick interface
    from
@@ -91,25 +92,21 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *   actor with this name.
      */
     public Joystick(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException,
-            IOException {
+        throws NameDuplicationException, IllegalActionException, IOException {
         super(container, name);
 
         deadZone = new Parameter(this, "deadZone", new DoubleToken("0.01"));
 
-        isPolling
-            = new Parameter(this, "isPolling", new BooleanToken("true"));
+        isPolling = new Parameter(this, "isPolling", new BooleanToken("true"));
 
-        pollingInterval
-            = new Parameter(this, "pollingInterval", new IntToken("50"));
+        pollingInterval = new Parameter(this, "pollingInterval",
+                new IntToken("50"));
 
         x = new TypedIOPort(this, "x", false, true);
         x.setTypeEquals(BaseType.DOUBLE);
 
         y = new TypedIOPort(this, "y", false, true);
         y.setTypeEquals(BaseType.DOUBLE);
-
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -151,31 +148,33 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_debugging) {
-            _debug("Joystick.attributeChanged(): " + attribute );
+            _debug("Joystick.attributeChanged(): " + attribute);
         }
 
         // FIXME: not sure about this, but it seems like a good idea.
-        if (attribute == deadZone && _joy != null) {
-            double deadZoneValue
-                = ((DoubleToken)deadZone.getToken()).doubleValue();
+        if ((attribute == deadZone) && (_joy != null)) {
+            double deadZoneValue = ((DoubleToken) deadZone.getToken())
+                .doubleValue();
             _joy.setDeadZone(deadZoneValue);
         } else if (attribute == isPolling) {
             boolean oldIsPollingValue = _isPollingValue;
-            _isPollingValue
-                = ((BooleanToken)isPolling.getToken()).booleanValue();
+
+            _isPollingValue = ((BooleanToken) isPolling.getToken())
+                .booleanValue();
+
             // If necessary, add or remove this as a JoystickListener.
-            if (_joy != null && _isPollingValue != oldIsPollingValue) {
+            if ((_joy != null) && (_isPollingValue != oldIsPollingValue)) {
                 if (!_isPollingValue) {
                     _joy.addJoystickListener(this);
                 } else {
                     _joy.removeJoystickListener(this);
                 }
             }
-        } else if (attribute == pollingInterval && _joy != null) {
-            int pollingIntervalValue
-                = ((DoubleToken)pollingInterval.getToken()).intValue();
+        } else if ((attribute == pollingInterval) && (_joy != null)) {
+            int pollingIntervalValue = ((DoubleToken) pollingInterval.getToken())
+                .intValue();
             _joy.setPollInterval(pollingIntervalValue);
         } else {
             super.attributeChanged(attribute);
@@ -187,11 +186,13 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      */
     public synchronized void fire() throws IllegalActionException {
         super.fire();
+
         if (_isPollingValue) {
             _joy.poll();
         }
-        x.send(0, new DoubleToken (_joy.getX()));
-        y.send(0, new DoubleToken (_joy.getY()));
+
+        x.send(0, new DoubleToken(_joy.getX()));
+        y.send(0, new DoubleToken(_joy.getY()));
     }
 
     /** Get the values of the parameters and initialize the joystick
@@ -201,34 +202,36 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         if (_debugging) {
             _debug("Joystick.initialize() start");
         }
-        double deadZoneValue
-            = ((DoubleToken)deadZone.getToken()).doubleValue();
-        int pollingIntervalValue
-            = ((IntToken)pollingInterval.getToken()).intValue();
+
+        double deadZoneValue = ((DoubleToken) deadZone.getToken()).doubleValue();
+        int pollingIntervalValue = ((IntToken) pollingInterval.getToken())
+            .intValue();
 
         try {
             _joy = com.centralnexus.input.Joystick.createInstance();
+
             if (_debugging) {
                 _debug("JoystickID: " + _joy.getID());
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to create a joystick instance");
+                "Failed to create a joystick instance");
         }
 
         _joy.setDeadZone(deadZoneValue);
         _joy.setPollInterval(pollingIntervalValue);
+
         if (!_isPollingValue) {
             _joy.addJoystickListener(this);
         }
+
         if (_debugging) {
             _debug("Joystick.initialize() end");
         }
-
     }
 
     /* This method gets called periodically when the joystick changes
@@ -241,28 +244,25 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  changes its value.
      */
     public void joystickButtonChanged(com.centralnexus.input.Joystick j) {
-
     }
 
     /** Wrap up deallocates resources, specifically the serial port.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
-        if (_joy != null && !_isPollingValue) {
+        if ((_joy != null) && !_isPollingValue) {
             _joy.removeJoystickListener(this);
         }
+
         _joy = null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Set from the isPolling parameter.  True if we call poll(), false
     // if we add this as a listener.
     private boolean _isPollingValue;
 
     // The joystick
     private com.centralnexus.input.Joystick _joy;
-
 }
-

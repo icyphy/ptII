@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DebugEvent
+
 /**
    An interface for events that can be used for debugging.  These events will
    generally be subclassed to create events with more meaning (such as
@@ -48,7 +49,6 @@ package ptolemy.kernel.util;
    @see ptolemy.actor.FiringEvent
 */
 public interface DebugEvent {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -62,4 +62,3 @@ public interface DebugEvent {
      */
     public String toString();
 }
-

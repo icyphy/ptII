@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel;
 
 import java.util.Collections;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ComponentRelation
+
 /**
    This class defines a relation supporting hierarchy (clustered graphs).
    Specifically, a method is added for defining a container and for
@@ -74,7 +75,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (johnr)
 */
 public class ComponentRelation extends Relation {
-
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Add the relation to the directory of the workspace.
      */
@@ -108,7 +108,7 @@ public class ComponentRelation extends Relation {
      *   a relation already in the container.
      */
     public ComponentRelation(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
     }
@@ -125,10 +125,8 @@ public class ComponentRelation extends Relation {
      *   cannot be cloned.
      *  @return A new ComponentRelation.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ComponentRelation newObject =
-            (ComponentRelation)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ComponentRelation newObject = (ComponentRelation) super.clone(workspace);
         newObject._container = null;
         return newObject;
     }
@@ -141,15 +139,18 @@ public class ComponentRelation extends Relation {
     public List deepLinkedPortList() {
         try {
             _workspace.getReadAccess();
+
             if (_deepLinkedPortsVersion == _workspace.getVersion()) {
                 // Cache is valid.  Use it.
                 return _deepLinkedPorts;
             }
+
             Iterator nearPorts = linkedPortList().iterator();
             _deepLinkedPorts = new LinkedList();
 
-            while ( nearPorts.hasNext() ) {
-                ComponentPort port = (ComponentPort)nearPorts.next();
+            while (nearPorts.hasNext()) {
+                ComponentPort port = (ComponentPort) nearPorts.next();
+
                 if (port._isInsideLinkable(this.getContainer())) {
                     // Port is above me in the hierarchy.
                     if (port.isOpaque()) {
@@ -168,6 +169,7 @@ public class ComponentRelation extends Relation {
                     }
                 }
             }
+
             _deepLinkedPortsVersion = _workspace.getVersion();
             return Collections.unmodifiableList(_deepLinkedPorts);
         } finally {
@@ -202,19 +204,23 @@ public class ComponentRelation extends Relation {
      *   no container.
      */
     public int moveDown() throws IllegalActionException {
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._containedRelations.moveDown(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (CompositeEntity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (CompositeEntity) derived.getContainer();
                 container._containedRelations.moveDown(derived);
             }
 
@@ -233,19 +239,23 @@ public class ComponentRelation extends Relation {
      *   no container.
      */
     public int moveToFirst() throws IllegalActionException {
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._containedRelations.moveToFirst(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (CompositeEntity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (CompositeEntity) derived.getContainer();
                 container._containedRelations.moveToFirst(derived);
             }
 
@@ -266,19 +276,23 @@ public class ComponentRelation extends Relation {
      *   no container or if the index is out of bounds.
      */
     public int moveToIndex(int index) throws IllegalActionException {
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._containedRelations.moveToIndex(this, index);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (CompositeEntity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (CompositeEntity) derived.getContainer();
                 container._containedRelations.moveToIndex(derived, index);
             }
 
@@ -297,19 +311,23 @@ public class ComponentRelation extends Relation {
      *   no container.
      */
     public int moveToLast() throws IllegalActionException {
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._containedRelations.moveToLast(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (CompositeEntity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (CompositeEntity) derived.getContainer();
                 container._containedRelations.moveToLast(derived);
             }
 
@@ -328,19 +346,23 @@ public class ComponentRelation extends Relation {
      *   no container.
      */
     public int moveUp() throws IllegalActionException {
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "Has no container.");
         }
+
         try {
             _workspace.getWriteAccess();
+
             int result = container._containedRelations.moveUp(this);
 
             // Propagate.
             Iterator derivedObjects = getDerivedList().iterator();
+
             while (derivedObjects.hasNext()) {
-                NamedObj derived = (NamedObj)derivedObjects.next();
-                container = (CompositeEntity)derived.getContainer();
+                NamedObj derived = (NamedObj) derivedObjects.next();
+                container = (CompositeEntity) derived.getContainer();
                 container._containedRelations.moveUp(derived);
             }
 
@@ -380,28 +402,37 @@ public class ComponentRelation extends Relation {
      *  @see #getContainer()
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (container != null && _workspace != container.workspace()) {
+        throws IllegalActionException, NameDuplicationException {
+        if ((container != null) && (_workspace != container.workspace())) {
             throw new IllegalActionException(this, container,
-                    "Cannot set container because workspaces are different.");
+                "Cannot set container because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
             _checkContainer(container);
-            CompositeEntity previousContainer
-                = (CompositeEntity)getContainer();
-            if (previousContainer == container) return;
+
+            CompositeEntity previousContainer = (CompositeEntity) getContainer();
+
+            if (previousContainer == container) {
+                return;
+            }
+
             // Do this first, because it may throw an exception.
             if (container != null) {
                 container._addRelation(this);
+
                 if (previousContainer == null) {
                     _workspace.remove(this);
                 }
             }
+
             _container = container;
+
             if (previousContainer != null) {
                 previousContainer._removeRelation(this);
             }
+
             if (container == null) {
                 unlinkAll();
             } else {
@@ -409,20 +440,22 @@ public class ComponentRelation extends Relation {
                 // object. Mark it modified to ensure MoML export.
                 // FIXME: Inappropriate?
                 // setOverrideDepth(0);
-
                 // Transfer any queued change requests to the
                 // new container.  There could be queued change
                 // requests if this component is deferring change
                 // requests.
                 if (_changeRequests != null) {
                     Iterator requests = _changeRequests.iterator();
+
                     while (requests.hasNext()) {
-                        ChangeRequest request = (ChangeRequest)requests.next();
+                        ChangeRequest request = (ChangeRequest) requests.next();
                         container.requestChange(request);
                     }
+
                     _changeRequests = null;
                 }
             }
+
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.
             validateSettables();
@@ -439,18 +472,22 @@ public class ComponentRelation extends Relation {
      *   with the same name in the container.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = new String("");
         }
+
         CompositeEntity container = (CompositeEntity) getContainer();
+
         if ((container != null)) {
             ComponentRelation another = container.getRelation(name);
+
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
-                        "Name duplication: " + name);
+                    "Name duplication: " + name);
             }
         }
+
         super.setName(name);
     }
 
@@ -465,20 +502,22 @@ public class ComponentRelation extends Relation {
             // containers of the ports are not notified of the change.
             // Also, have to first copy the ports references, then remove
             // them, to avoid a corrupted enumeration exception.
-
             // Unlink the outside links of linked ports.
             super.unlinkAll();
 
             // Next, remove the links that are inside links of ports.
             _workspace.getWriteAccess();
+
             int size = numLinks();
-            ComponentPort portArray[] = new ComponentPort[size];
+            ComponentPort[] portArray = new ComponentPort[size];
             int i = 0;
             Enumeration ports = linkedPorts();
+
             while (ports.hasMoreElements()) {
-                ComponentPort p = (ComponentPort)ports.nextElement();
+                ComponentPort p = (ComponentPort) ports.nextElement();
                 portArray[i++] = p;
             }
+
             for (i = 0; i < size; i++) {
                 portArray[i].unlinkInside(this);
             }
@@ -498,17 +537,18 @@ public class ComponentRelation extends Relation {
      *   an acceptable class.  Not thrown in this base class.
      */
     protected void _checkContainer(CompositeEntity container)
-            throws IllegalActionException {}
+        throws IllegalActionException {
+    }
 
     /** Throw an exception if the specified port cannot be linked to this
      *  relation (is not of class ComponentPort).
      *  @param port The port to link to.
      *  @exception IllegalActionException If the port is not a ComponentPort.
      */
-    protected void _checkPort (Port port) throws IllegalActionException {
+    protected void _checkPort(Port port) throws IllegalActionException {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
-                    "ComponentRelation can only link to a ComponentPort.");
+                "ComponentRelation can only link to a ComponentPort.");
         }
     }
 
@@ -522,11 +562,11 @@ public class ComponentRelation extends Relation {
      *   as this one.
      */
     protected NamedObj _propagateExistence(NamedObj container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
-            ComponentRelation newObject = (ComponentRelation)super
-                    ._propagateExistence(container);
-            newObject.setContainer((CompositeEntity)container);
+            ComponentRelation newObject = (ComponentRelation) super
+                ._propagateExistence(container);
+            newObject.setContainer((CompositeEntity) container);
             return newObject;
         } catch (NameDuplicationException e) {
             throw new InternalErrorException(e);

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.io.comm;
 
 import java.io.IOException;
@@ -55,8 +54,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SerialComm
+
 /**
    Send and receive bytes via the serial port.  The serial port and
    baud rate are specified by parameters.
@@ -133,7 +134,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class SerialComm extends TypedAtomicActor
     implements SerialPortEventListener {
-
     /** Construct a SerialComm actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -143,7 +143,7 @@ public class SerialComm extends TypedAtomicActor
      *   actor with this name.
      */
     public SerialComm(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         dataToSend = new TypedIOPort(this, "dataToSend");
@@ -155,31 +155,37 @@ public class SerialComm extends TypedAtomicActor
         dataReceived.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
         serialPortName = new StringParameter(this, "serialPortName");
+
         // Enumerate the available ports.
         Enumeration ports = CommPortIdentifier.getPortIdentifiers();
         String defaultChoice = null;
+
         while (ports.hasMoreElements()) {
-            CommPortIdentifier identifier =
-                (CommPortIdentifier) ports.nextElement();
+            CommPortIdentifier identifier = (CommPortIdentifier) ports
+                .nextElement();
+
             if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 String value = identifier.getName();
                 serialPortName.addChoice(value);
+
                 if (defaultChoice == null) {
                     defaultChoice = value;
                 }
             }
         }
+
         if (defaultChoice == null) {
             defaultChoice = "no ports available";
             serialPortName.addChoice(defaultChoice);
         }
+
         serialPortName.setExpression(defaultChoice);
 
         baudRate = new Parameter(this, "baudRate");
         baudRate.setTypeEquals(BaseType.INT);
         baudRate.setToken(new IntToken(19200));
-        // FIXME: Should find the available values. How?
 
+        // FIXME: Should find the available values. How?
         blocking = new Parameter(this, "blocking");
         blocking.setTypeEquals(BaseType.BOOLEAN);
         blocking.setToken(BooleanToken.FALSE);
@@ -259,9 +265,10 @@ public class SerialComm extends TypedAtomicActor
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == serialPortName || attribute == baudRate) {
+        throws IllegalActionException {
+        if ((attribute == serialPortName) || (attribute == baudRate)) {
             /* Do nothing */
+
             // One desired behavior would be to use the new serial port
             // and/or new baud rate with next transmission and
             // to set to receive on the new port and/or at new baud rate
@@ -270,7 +277,6 @@ public class SerialComm extends TypedAtomicActor
             // java class) implements 'SerialPortEventListener'.
             // I'm not sure what happens when baud rate is altered
             // while it is listening.
-
             // Another possible desired behavior is to alter the baud
             // rate at the end of the current transmission.  This is
             // useful (though not vital) for some hardware.  For example,
@@ -279,27 +285,28 @@ public class SerialComm extends TypedAtomicActor
             // change one's own baud rate so as to catch the reply at the
             // new rate.
         } else if (attribute == minimumOutputSize) {
-            _minimumOutputSize
-                = ((IntToken)minimumOutputSize.getToken()).intValue();
+            _minimumOutputSize = ((IntToken) minimumOutputSize.getToken())
+                .intValue();
+
             if (_minimumOutputSize < 1) {
                 throw new IllegalActionException(this,
-                        "minimumOutputSize is required "
-                        + "to be strictly positive.");
+                    "minimumOutputSize is required "
+                    + "to be strictly positive.");
             }
         } else if (attribute == maximumOutputSize) {
-            _maximumOutputSize
-                = ((IntToken)maximumOutputSize.getToken()).intValue();
+            _maximumOutputSize = ((IntToken) maximumOutputSize.getToken())
+                .intValue();
+
             if (_maximumOutputSize < 1) {
                 throw new IllegalActionException(this,
-                        "maximumOutputSize is required "
-                        + "to be strictly positive.");
+                    "maximumOutputSize is required "
+                    + "to be strictly positive.");
             }
         } else if (attribute == discardOldData) {
-            _discardOldData
-                = ((BooleanToken)discardOldData.getToken()).booleanValue();
+            _discardOldData = ((BooleanToken) discardOldData.getToken())
+                .booleanValue();
         } else if (attribute == blocking) {
-            _blocking
-                = ((BooleanToken)blocking.getToken()).booleanValue();
+            _blocking = ((BooleanToken) blocking.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -329,86 +336,108 @@ public class SerialComm extends TypedAtomicActor
      */
     public synchronized void fire() throws IllegalActionException {
         super.fire();
+
         try {
             // Produce output first.
-            if (dataToSend.getWidth() > 0 && dataToSend.hasToken(0)) {
+            if ((dataToSend.getWidth() > 0) && dataToSend.hasToken(0)) {
                 ArrayToken dataArrayToken = (ArrayToken) dataToSend.get(0);
                 OutputStream out = _serialPort.getOutputStream();
                 int inputLength = dataArrayToken.length();
+
                 if (_debugging) {
-                    _debug("Writing bytes from the input port to the serial port: "
-                            + inputLength);
+                    _debug(
+                        "Writing bytes from the input port to the serial port: "
+                        + inputLength);
                 }
+
                 for (int j = 0; j < inputLength; j++) {
-                    UnsignedByteToken dataToken =
-                        (UnsignedByteToken)dataArrayToken.getElement(j);
+                    UnsignedByteToken dataToken = (UnsignedByteToken) dataArrayToken
+                        .getElement(j);
                     out.write(dataToken.byteValue());
                 }
+
                 out.flush();
             }
 
             InputStream in = _serialPort.getInputStream();
             int bytesAvailable = in.available();
+
             if (_debugging) {
                 _debug("Number of input bytes available on the serial port: "
-                        + bytesAvailable);
+                    + bytesAvailable);
             }
+
             // NOTE: This needs _minimumOutputSize to be at least 1.
-            while (bytesAvailable < _minimumOutputSize
-                    && _blocking
-                    && !_stopRequested
-                    && !_stopFireRequested) {
+            while ((bytesAvailable < _minimumOutputSize) && _blocking
+                    && !_stopRequested && !_stopFireRequested) {
                 try {
                     if (_debugging) {
                         _debug("Blocking waiting for minimum number of bytes: "
-                                + _minimumOutputSize);
+                            + _minimumOutputSize);
                     }
+
                     wait();
                     bytesAvailable = in.available();
+
                     if (_debugging) {
-                        _debug("Number of input bytes available on the serial port: "
-                                + bytesAvailable);
+                        _debug(
+                            "Number of input bytes available on the serial port: "
+                            + bytesAvailable);
                     }
                 } catch (InterruptedException ex) {
                     throw new IllegalActionException(this,
-                            "Thread interrupted waiting for serial port data.");
+                        "Thread interrupted waiting for serial port data.");
                 }
             }
 
             if (bytesAvailable >= _minimumOutputSize) {
                 // Read only if at least desired amount of data is present.
-                if (_discardOldData && bytesAvailable > _maximumOutputSize) {
+                if (_discardOldData && (bytesAvailable > _maximumOutputSize)) {
                     // Skip excess bytes.
                     int excess = bytesAvailable - _maximumOutputSize;
+
                     if (_debugging) {
                         _debug("Discarding input bytes: " + excess);
                     }
-                    bytesAvailable -= (int)in.skip((long)excess);
+
+                    bytesAvailable -= (int) in.skip((long) excess);
                 }
+
                 int outputSize = bytesAvailable;
+
                 if (outputSize > _maximumOutputSize) {
                     outputSize = _maximumOutputSize;
                 }
+
                 byte[] dataBytes = new byte[outputSize];
+
                 if (_debugging) {
                     _debug("Reading bytes from the serial port: " + outputSize);
                 }
+
                 in.read(dataBytes, 0, outputSize);
+
                 Token[] dataTokens = new Token[outputSize];
+
                 for (int j = 0; j < outputSize; j++) {
                     dataTokens[j] = new UnsignedByteToken(dataBytes[j]);
                 }
+
                 if (_debugging) {
                     _debug("Producing byte array on the output port.");
                 }
+
                 dataReceived.broadcast(new ArrayToken(dataTokens));
 
                 int available = in.available();
+
                 if (available >= _minimumOutputSize) {
                     if (_debugging) {
-                        _debug("Calling fireAtCurrentTime() to deal with additional bytes: "
-                                + available);
+                        _debug(
+                            "Calling fireAtCurrentTime() to deal with additional bytes: "
+                            + available);
                     }
+
                     getDirector().fireAtCurrentTime(this);
                 }
             }
@@ -429,20 +458,17 @@ public class SerialComm extends TypedAtomicActor
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _directorFiredAtAlready = false;
+
         try {
-
             String serialPortNameValue = serialPortName.stringValue();
-            CommPortIdentifier portID =
-                CommPortIdentifier.getPortIdentifier(serialPortNameValue);
+            CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier(serialPortNameValue);
             _serialPort = (SerialPort) portID.open("Ptolemy", 2000);
-            // The 2000 above is 2000mS to open the port, otherwise time out.
 
-            int bits_per_second = ((IntToken)(baudRate.getToken())).intValue();
-            _serialPort.setSerialPortParams(
-                    bits_per_second,
-                    SerialPort.DATABITS_8,
-                    SerialPort.STOPBITS_1,
-                    SerialPort.PARITY_NONE);
+            // The 2000 above is 2000mS to open the port, otherwise time out.
+            int bits_per_second = ((IntToken) (baudRate.getToken())).intValue();
+            _serialPort.setSerialPortParams(bits_per_second,
+                SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
+                SerialPort.PARITY_NONE);
 
             _serialPort.addEventListener(this);
             _serialPort.notifyOnDataAvailable(true);
@@ -450,14 +476,12 @@ public class SerialComm extends TypedAtomicActor
             _serialPort.notifyOnCTS(true); // ClearToSend isCTS
             _serialPort.notifyOnCarrierDetect(true); // isCD
             _serialPort.notifyOnRingIndicator(true); // isRI
+
             // Direct serial events on this port to my serialEvent() method.
-
             _stopFireRequested = false;
-
         } catch (Exception ex) {
-
             throw new IllegalActionException(this, ex,
-                    "Communication port initialization failed.");
+                "Communication port initialization failed.");
         }
     }
 
@@ -472,18 +496,21 @@ public class SerialComm extends TypedAtomicActor
             if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
                 if (!_directorFiredAtAlready) {
                     _directorFiredAtAlready = true;
+
                     InputStream in = _serialPort.getInputStream();
+
                     if (in.available() >= _minimumOutputSize) {
                         getDirector().fireAtCurrentTime(this);
                     }
                 }
+
                 notifyAll();
             }
         } catch (Exception ex) {
             // This will only occur if the model is not running.
             throw new KernelRuntimeException(this, null, ex,
-                    "Failure calling fireAtCurrentTime() "
-                    + "from the event listener.");
+                "Failure calling fireAtCurrentTime() "
+                + "from the event listener.");
         }
     }
 
@@ -519,7 +546,6 @@ public class SerialComm extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The serial port.
     private SerialPort _serialPort;
 
@@ -555,5 +581,3 @@ public class SerialComm extends TypedAtomicActor
         new com.sun.comm.Win32Driver().initialize();
     }
 }
-
-

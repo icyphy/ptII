@@ -24,11 +24,11 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.toolbox;
 
 import java.awt.Paint;
 import java.awt.Shape;
+
 
 /** A PathFigure is one that contains a single instance of
  *  Shape. The figure can have a fill with optional compositing (for
@@ -44,13 +44,12 @@ import java.awt.Shape;
  * @deprecated  BasicFigure now does everything this class used to do.
  */
 public class PathFigure extends BasicFigure {
-
     /** Create a new figure with the given shape. The figure, by
      *  default, has a unit-width continuous black outline and no
      *  fill.  The given shape will be cloned to prevent the original
      *  from being modified.
      */
-    public PathFigure (Shape shape) {
+    public PathFigure(Shape shape) {
         this(shape, null, 1.0f);
     }
 
@@ -61,8 +60,8 @@ public class PathFigure extends BasicFigure {
      *
      * @deprecated  Use the float constructor instead.
      */
-    public PathFigure (Shape shape, int lineWidth) {
-        this(shape, null, (float)lineWidth);
+    public PathFigure(Shape shape, int lineWidth) {
+        this(shape, null, (float) lineWidth);
     }
 
     /** Create a new figure with the given shape and outline width.
@@ -70,7 +69,7 @@ public class PathFigure extends BasicFigure {
      * shape will be cloned to prevent the original from being
      * modified.
      */
-    public PathFigure (Shape shape, float lineWidth) {
+    public PathFigure(Shape shape, float lineWidth) {
         this(shape, null, lineWidth);
     }
 
@@ -78,7 +77,7 @@ public class PathFigure extends BasicFigure {
      *  by default, has no stroke.  The given shape will be cloned to
      *  prevent the original from being modified.
      */
-    public PathFigure (Shape shape, Paint fill) {
+    public PathFigure(Shape shape, Paint fill) {
         this(shape, fill, 1.0f);
     }
 
@@ -86,7 +85,7 @@ public class PathFigure extends BasicFigure {
      *  width.  The given shape will be cloned to prevent the original
      *  from being modified.
      */
-    public PathFigure (Shape shape, Paint fill, float lineWidth) {
+    public PathFigure(Shape shape, Paint fill, float lineWidth) {
         super(shape, fill, lineWidth);
     }
 }

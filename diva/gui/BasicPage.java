@@ -25,6 +25,7 @@
 */
 package diva.gui;
 
+
 /**
  * A simple concrete implementation of the Page interface.
  *
@@ -52,7 +53,7 @@ public class BasicPage implements Page {
     /**
      * Create a basic page owned by the given multipage.
      */
-    public BasicPage (MultipageModel multi) {
+    public BasicPage(MultipageModel multi) {
         _multipage = multi;
     }
 
@@ -60,7 +61,7 @@ public class BasicPage implements Page {
      * Create a basic page owned by the given multipage, and
      * with the given title.
      */
-    public BasicPage (MultipageModel multi, String title) {
+    public BasicPage(MultipageModel multi, String title) {
         _multipage = multi;
         _title = title;
     }
@@ -69,7 +70,7 @@ public class BasicPage implements Page {
      * Create a basic page owned by the given multipage, and
      * with the given title and model.
      */
-    public BasicPage (MultipageModel multi, String title, Object model) {
+    public BasicPage(MultipageModel multi, String title, Object model) {
         this(multi, title);
         _model = model;
     }
@@ -109,5 +110,3 @@ public class BasicPage implements Page {
         _title = title;
     }
 }
-
-

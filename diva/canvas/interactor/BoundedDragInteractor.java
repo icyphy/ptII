@@ -31,6 +31,7 @@ import java.awt.geom.Rectangle2D;
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
 
+
 /** An interactor that drags its target only within a given
  * rectangular region. An instance of this class sets itself up so
  * that the dragged figures or items always remain within the given
@@ -45,7 +46,6 @@ import diva.canvas.event.LayerEvent;
  * @author John Reekie
  */
 public class BoundedDragInteractor extends DragInteractor {
-
     /** The bounds
      */
     private Rectangle2D _bounds;
@@ -57,7 +57,7 @@ public class BoundedDragInteractor extends DragInteractor {
     /**
      * Create an instance that keeps figures inside the given regio
      */
-    public BoundedDragInteractor (Rectangle2D bounds) {
+    public BoundedDragInteractor(Rectangle2D bounds) {
         super();
         _bounds = bounds;
         _constraint = new BoundsConstraint(_bounds);
@@ -67,7 +67,7 @@ public class BoundedDragInteractor extends DragInteractor {
     /** Adjust the bounds so that the bounding-box of the target stays
      * within the region.
      */
-    public void setup (LayerEvent e) {
+    public void setup(LayerEvent e) {
         // Get the size of the figure and calculate bounds
         // FIXME: how to parameterize for figure sets?
         Figure f = e.getFigureSource();
@@ -75,21 +75,15 @@ public class BoundedDragInteractor extends DragInteractor {
         double ey = e.getLayerY();
         Rectangle2D b = f.getBounds();
 
-        double x = _bounds.getX() + ex - b.getX();
-        double y = _bounds.getY() + ey - b.getY();
+        double x = (_bounds.getX() + ex) - b.getX();
+        double y = (_bounds.getY() + ey) - b.getY();
 
-        double w = _bounds.getX() + _bounds.getWidth() +
-            ex - (b.getX() + b.getWidth()) -
-            x;
-        double h = _bounds.getY() + _bounds.getHeight() +
-            ey - (b.getY() + b.getHeight()) -
-            y;
+        double w = (_bounds.getX() + _bounds.getWidth() + ex)
+            - (b.getX() + b.getWidth()) - x;
+        double h = (_bounds.getY() + _bounds.getHeight() + ey)
+            - (b.getY() + b.getHeight()) - y;
 
         // Finally (!), set the bounds constraint
-        _constraint.setBounds(new Rectangle2D.Double(x,y,w,h));
+        _constraint.setBounds(new Rectangle2D.Double(x, y, w, h));
     }
 }
-
-
-
-

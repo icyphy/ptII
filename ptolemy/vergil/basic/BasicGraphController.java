@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
 import java.awt.EventQueue;
@@ -70,8 +69,10 @@ import diva.graph.GraphUtilities;
 import diva.graph.NodeController;
 import diva.gui.toolbox.MenuCreator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphController
+
 /**
    A base class for Ptolemy II graph controllers. This extends the base
    class with an association with a configuration. The configuration is
@@ -86,10 +87,8 @@ import diva.gui.toolbox.MenuCreator;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-public abstract class BasicGraphController
-    extends AbstractGraphController
+public abstract class BasicGraphController extends AbstractGraphController
     implements DebugListener, ValueListener {
-
     /** Create a new basic controller.
      */
     public BasicGraphController() {
@@ -111,7 +110,7 @@ public abstract class BasicGraphController
      */
     public void clearAnimation() {
         // Deselect previous one.
-        if (_animated != null && _animationRenderer != null) {
+        if ((_animated != null) && (_animationRenderer != null)) {
             _animationRenderer.renderDeselected(_animated);
         }
     }
@@ -160,6 +159,7 @@ public abstract class BasicGraphController
     public NodeController getNodeController(Object object) {
         if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
+
             // Check to see whether
             // this is a NamedObj that contains a NodeControllerFactory.
             // If so, that should be used. If not, use the defaults
@@ -167,12 +167,11 @@ public abstract class BasicGraphController
             // its own controller, which means its own context menu
             // and its own interactors.
             if (semanticObject instanceof NamedObj) {
-                List factoryList =
-                    ((NamedObj) semanticObject).attributeList(
-                        NodeControllerFactory.class);
+                List factoryList = ((NamedObj) semanticObject).attributeList(NodeControllerFactory.class);
+
                 if (factoryList.size() > 0) {
-                    NodeControllerFactory factory =
-                        (NodeControllerFactory) factoryList.get(0);
+                    NodeControllerFactory factory = (NodeControllerFactory) factoryList
+                        .get(0);
                     NamedObjController controller = factory.create(this);
                     controller.setConfiguration(getConfiguration());
                     _initializeInteraction(controller);
@@ -180,6 +179,7 @@ public abstract class BasicGraphController
                 }
             }
         }
+
         return null;
     }
 
@@ -206,11 +206,11 @@ public abstract class BasicGraphController
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
 
-        if (_configuration != null && _menuFactory != null) {
+        if ((_configuration != null) && (_menuFactory != null)) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(_openBaseClassAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _openBaseClassAction));
         }
     }
 
@@ -226,6 +226,7 @@ public abstract class BasicGraphController
      */
     public void setFigure(Object semanticObject, Figure figure) {
         super.setFigure(semanticObject, figure);
+
         if (semanticObject instanceof Settable) {
             ((Settable) semanticObject).addValueListener(this);
         }
@@ -251,67 +252,78 @@ public abstract class BasicGraphController
             // Have to defer this to the event thread, or repaint
             // doesn't work properly.
             Runnable action = new Runnable() {
-                public void run() {
-                    Locatable location = (Locatable) settable;
-                    Figure figure = getFigure(location);
-                    Point2D origin = figure.getOrigin();
-                    double originalUpperLeftX = origin.getX();
-                    double originalUpperLeftY = origin.getY();
+                    public void run() {
+                        Locatable location = (Locatable) settable;
+                        Figure figure = getFigure(location);
+                        Point2D origin = figure.getOrigin();
+                        double originalUpperLeftX = origin.getX();
+                        double originalUpperLeftY = origin.getY();
 
-                    // NOTE: the following call may trigger an evaluation,
-                    // which results in another recursive call to this method.
-                    // Thus, we ignore the inside call and detect it with a
-                    // private variable.
-                    double[] newLocation;
-                    try {
-                        _inValueChanged = true;
-                        newLocation = location.getLocation();
-                    } finally {
-                        _inValueChanged = false;
-                    }
+                        // NOTE: the following call may trigger an evaluation,
+                        // which results in another recursive call to this method.
+                        // Thus, we ignore the inside call and detect it with a
+                        // private variable.
+                        double[] newLocation;
 
-                    double translationX = newLocation[0] - originalUpperLeftX;
-                    double translationY = newLocation[1] - originalUpperLeftY;
+                        try {
+                            _inValueChanged = true;
+                            newLocation = location.getLocation();
+                        } finally {
+                            _inValueChanged = false;
+                        }
 
-                    if (translationX != 0.0 || translationY != 0.0) {
-                        // The translate method supposedly handles the required
-                        // repaint.
-                        figure.translate(translationX, translationY);
+                        double translationX = newLocation[0]
+                            - originalUpperLeftX;
+                        double translationY = newLocation[1]
+                            - originalUpperLeftY;
 
-                        // Reroute edges linked to this figure.
-                        GraphModel model = getGraphModel();
-                        Object userObject = figure.getUserObject();
-                        if (userObject != null) {
-                            Iterator inEdges = model.inEdges(userObject);
-                            while (inEdges.hasNext()) {
-                                Figure connector = getFigure(inEdges.next());
-                                if (connector instanceof Connector) {
-                                    ((Connector) connector).reroute();
-                                }
-                            }
-                            Iterator outEdges = model.outEdges(userObject);
-                            while (outEdges.hasNext()) {
-                                Figure connector = getFigure(outEdges.next());
-                                if (connector instanceof Connector) {
-                                    ((Connector) connector).reroute();
-                                }
-                            }
-                            if (model.isComposite(userObject)) {
-                                Iterator edges =
-                                    GraphUtilities.partiallyContainedEdges(
-                                        userObject,
-                                        model);
-                                while (edges.hasNext()) {
-                                    Figure connector = getFigure(edges.next());
+                        if ((translationX != 0.0) || (translationY != 0.0)) {
+                            // The translate method supposedly handles the required
+                            // repaint.
+                            figure.translate(translationX, translationY);
+
+                            // Reroute edges linked to this figure.
+                            GraphModel model = getGraphModel();
+                            Object userObject = figure.getUserObject();
+
+                            if (userObject != null) {
+                                Iterator inEdges = model.inEdges(userObject);
+
+                                while (inEdges.hasNext()) {
+                                    Figure connector = getFigure(inEdges.next());
+
                                     if (connector instanceof Connector) {
                                         ((Connector) connector).reroute();
                                     }
                                 }
+
+                                Iterator outEdges = model.outEdges(userObject);
+
+                                while (outEdges.hasNext()) {
+                                    Figure connector = getFigure(outEdges.next());
+
+                                    if (connector instanceof Connector) {
+                                        ((Connector) connector).reroute();
+                                    }
+                                }
+
+                                if (model.isComposite(userObject)) {
+                                    Iterator edges = GraphUtilities
+                                        .partiallyContainedEdges(userObject,
+                                            model);
+
+                                    while (edges.hasNext()) {
+                                        Figure connector = getFigure(edges.next());
+
+                                        if (connector instanceof Connector) {
+                                            ((Connector) connector).reroute();
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
-                } /* end of run() method */
-            }; /* end of Runnable definition. */
+                    } /* end of run() method */}; /* end of Runnable definition. */
+
             if (EventQueue.isDispatchThread()) {
                 action.run();
             } else {
@@ -365,13 +377,14 @@ public abstract class BasicGraphController
         // it is an interactor.  EAL 2/5/05.
         pane.getBackgroundEventLayer().addInteractor(_menuCreator);
         pane.getBackgroundEventLayer().setConsuming(false);
+
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(_openBaseClassAction));
-            _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(_unitSolverDialogAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _openBaseClassAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _unitSolverDialogAction));
         }
     }
 
@@ -385,8 +398,8 @@ public abstract class BasicGraphController
     protected SelectionRenderer _animationRenderer;
 
     /** The configure action. */
-    protected static ConfigureAction _configureAction =
-        new ConfigureAction("Configure");
+    protected static ConfigureAction _configureAction = new ConfigureAction(
+            "Configure");
 
     /** The interactor for creating context sensitive menus on the
      *  graph itself.
@@ -397,18 +410,16 @@ public abstract class BasicGraphController
     protected PtolemyMenuFactory _menuFactory;
 
     /** The open base class action. */
-    protected OpenBaseClassAction _openBaseClassAction =
-        new OpenBaseClassAction();
+    protected OpenBaseClassAction _openBaseClassAction = new OpenBaseClassAction();
 
     /** The UnitSolverDialog action. */
-    protected UnitSolverDialogAction _unitSolverDialogAction =
-        new UnitSolverDialogAction();
+    protected UnitSolverDialogAction _unitSolverDialogAction = new UnitSolverDialogAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The time to sleep upon animation. */
-    private long _animationDelay = 0l;
+    private long _animationDelay = 0L;
 
     // The configuration.
     private Configuration _configuration;
@@ -421,7 +432,6 @@ public abstract class BasicGraphController
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// OpenBaseClassAction
 
@@ -429,7 +439,6 @@ public abstract class BasicGraphController
      *  of an instance.
      */
     public class OpenBaseClassAction extends FigureAction {
-
         /** Construct a new action.
          */
         public OpenBaseClassAction() {
@@ -453,41 +462,39 @@ public abstract class BasicGraphController
             super.actionPerformed(e);
 
             NamedObj target = getTarget();
-            if (target == null)
+
+            if (target == null) {
                 return;
+            }
 
             try {
                 if (target instanceof InstantiableNamedObj) {
-                    InstantiableNamedObj deferTo =
-                        (InstantiableNamedObj) ((InstantiableNamedObj) target).getParent();
+                    InstantiableNamedObj deferTo = (InstantiableNamedObj) ((InstantiableNamedObj) target)
+                        .getParent();
+
                     if (deferTo != null) {
                         _configuration.openModel(deferTo);
                         return;
                     }
                 }
+
                 String source = target.getSource();
-                if (source != null && !source.trim().equals("")) {
+
+                if ((source != null) && !source.trim().equals("")) {
                     // FIXME: Is there a more reasonable base directory
                     // to give for the second argument?
-                    URL sourceURL =
-                        FileUtilities.nameToURL(
-                            source,
-                            null,
+                    URL sourceURL = FileUtilities.nameToURL(source, null,
                             target.getClass().getClassLoader());
                     _configuration.openModel(null, sourceURL, source);
                     return;
                 }
+
                 // Target does not defer and does not have a defined "source".
                 // Assume its base class is a Java class and open the source
                 // code.
-                String sourceFileName =
-                    StringUtilities.objectToSourceFileName(target);
-                URL sourceURL =
-                    target.getClass().getClassLoader().getResource(
-                        sourceFileName);
-                _configuration.openModel(
-                    null,
-                    sourceURL,
+                String sourceFileName = StringUtilities.objectToSourceFileName(target);
+                URL sourceURL = target.getClass().getClassLoader().getResource(sourceFileName);
+                _configuration.openModel(null, sourceURL,
                     sourceURL.toExternalForm());
             } catch (Exception ex) {
                 MessageHandler.error("Open base class failed.", ex);
@@ -501,7 +508,6 @@ public abstract class BasicGraphController
     /** An action that will create a UnitSolverDialog
      */
     public class UnitSolverDialogAction extends AbstractAction {
-
         public UnitSolverDialogAction() {
             super("UnitConstraints Solver");
         }
@@ -509,13 +515,11 @@ public abstract class BasicGraphController
         public void actionPerformed(ActionEvent e) {
             // Only makes sense if this is an ActorGraphFrame.
             if (_frame instanceof ActorGraphFrame) {
-                DialogTableau dialogTableau =
-                    DialogTableau.createDialog(
-                        _frame,
-                        _configuration,
-                        ((ActorGraphFrame) _frame).getEffigy(),
+                DialogTableau dialogTableau = DialogTableau.createDialog(_frame,
+                        _configuration, ((ActorGraphFrame) _frame).getEffigy(),
                         UnitSolverDialog.class,
                         (Entity) ((ActorGraphFrame) _frame).getModel());
+
                 if (dialogTableau != null) {
                     dialogTableau.show();
                 }
@@ -527,9 +531,7 @@ public abstract class BasicGraphController
     //// SchematicContextMenuFactory
 
     /** Factory for context menus. */
-    public static class SchematicContextMenuFactory
-        extends PtolemyMenuFactory {
-
+    public static class SchematicContextMenuFactory extends PtolemyMenuFactory {
         /** Create a new context menu factory associated with the
          *  specified controller.
          *  @param controller The controller.
@@ -537,16 +539,16 @@ public abstract class BasicGraphController
         public SchematicContextMenuFactory(GraphController controller) {
             super(controller);
             addMenuItemFactory(new MenuActionFactory(_configureAction));
-
         }
 
         protected NamedObj _getObjectFromFigure(Figure source) {
             // NOTE: Between Ptolemy 3.0 and 5.0, this would ignore
             // the source argument, even if it was non-null.  Why?
             // EAL 2/5/05.
-                if (source != null) {
+            if (source != null) {
                 Object object = source.getUserObject();
-                return (NamedObj)getController().getGraphModel().getSemanticObject(object);
+                return (NamedObj) getController().getGraphModel()
+                                      .getSemanticObject(object);
             } else {
                 return (NamedObj) getController().getGraphModel().getRoot();
             }

@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// NegativeLengthCycleAnalyzer
+
 /**
    A common interface for all the negative length cycle analyzers.
    <p>
@@ -38,7 +39,6 @@ package ptolemy.graph.analysis.analyzer;
    @version $Id$
 */
 public interface NegativeLengthCycleAnalyzer extends GraphAnalyzer {
-
     /** Return true if a negative cycle exists in the graph under analysis.
      *
      *  @return True if the graph has a negative cycle.

@@ -36,8 +36,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver
+
 /**This is a second order variable step size ODE solver that uses the
    trapezoidal rule algorithm. Unlike the solvers with fixed step size,
    this solver adjusts its step size based on the estimation of the
@@ -79,7 +81,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public class TrapezoidalRuleSolver extends ODESolver {
-
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -99,6 +100,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
      */
     public TrapezoidalRuleSolver(Workspace workspace) {
         super(workspace);
+
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
@@ -120,14 +122,17 @@ public class TrapezoidalRuleSolver extends ODESolver {
         // If any integrator does not agree, the final converged status may be
         // changed via calling _voteForConverged() by that integrator.
         _setConverged(true);
-        CTDirector director = (CTDirector)getContainer();
+
+        CTDirector director = (CTDirector) getContainer();
         super.fireDynamicActors();
+
         if (_getRoundCount() == 0) {
             _recalculatingWithTwoSteps = false;
             _firstStep = true;
-            director.setModelTime(
-                    director.getModelTime().add(director.getCurrentStepSize()));
+            director.setModelTime(director.getModelTime().add(director
+                    .getCurrentStepSize()));
         }
+
         if (_isConverged()) {
             // Resolved states have converged.
             // We need to recalculate the states with two steps.
@@ -151,6 +156,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();
         _incrementRoundCount();
+
         if (_isConverged()) {
             _resetRoundCount();
         }
@@ -181,28 +187,35 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  read input, or send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
-        CTDirector director = (CTDirector)getContainer();
+        throws IllegalActionException {
+        CTDirector director = (CTDirector) getContainer();
         double h = director.getCurrentStepSize();
         double tentativeState;
+
         if (_getRoundCount() == 0) {
             // During the first round, use the current derivative to predict
             // the states at currentModelTime + currentStepSize. The predicted
             // states are the initial guesses for fixed-point iteration.
             double f1 = integrator.getDerivative();
-            tentativeState = integrator.getState() + f1*h;
+            tentativeState = integrator.getState() + (f1 * h);
+
             // Set converged to false such that the integrator will be refired
             // again to check convergence of resolved states.
             _voteForConverged(false);
         } else {
             // get the derivative at the beginning time of current integration.
             double f1 = integrator.getDerivative();
+
             // get predicated derivative at the end time of current integration.
-            double f2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
+            double f2 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+
             if (!_recalculatingWithTwoSteps) {
-                tentativeState = integrator.getState() + (h*(f1+f2))/2.0;
-                double error =
-                    Math.abs(tentativeState-integrator.getTentativeState());
+                tentativeState = integrator.getState()
+                    + ((h * (f1 + f2)) / 2.0);
+
+                double error = Math.abs(tentativeState
+                        - integrator.getTentativeState());
+
                 if (error < director.getValueResolution()) {
                     // save resolved states for local truncation error control
                     integrator.setAuxVariables(0, tentativeState);
@@ -213,12 +226,13 @@ public class TrapezoidalRuleSolver extends ODESolver {
             } else {
                 if (_firstStep) {
                     // calculate the states with half of the step size.
-                    tentativeState
-                        = integrator.getState() + (h*(f1+f2))/2.0/2.0;
+                    tentativeState = integrator.getState()
+                        + ((h * (f1 + f2)) / 2.0 / 2.0);
                 } else {
                     // calculate the states with half of the step size.
-                    tentativeState
-                        = integrator.getTentativeState() + (h*(f1+f2))/2.0/2.0;
+                    tentativeState = integrator.getTentativeState()
+                        + ((h * (f1 + f2)) / 2.0 / 2.0);
+
                     // NOTE: We save the newly calculated state as the saved
                     // aux variable and restore the tentativeState back to
                     // the fixed-point state
@@ -227,9 +241,11 @@ public class TrapezoidalRuleSolver extends ODESolver {
                     tentativeState = (integrator.getAuxVariables())[0];
                     integrator.setTentativeDerivative(f2);
                 }
+
                 _voteForConverged(true);
             }
         }
+
         integrator.setTentativeState(tentativeState);
         integrator.output.broadcast(new DoubleToken(tentativeState));
     }
@@ -243,27 +259,31 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  error tolerance.
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
-        CTDirector director = (CTDirector)getContainer();
+        CTDirector director = (CTDirector) getContainer();
         double tolerance = director.getErrorTolerance();
         double[] k = integrator.getAuxVariables();
-        double localError =
-            (1.0/3.0)*Math.abs(integrator.getTentativeState() - k[0]);
+        double localError = (1.0 / 3.0) * Math.abs(integrator.getTentativeState()
+                - k[0]);
         integrator.setAuxVariables(1, localError);
+
         if (_debugging) {
-            _debug("Integrator: "+ integrator.getName() +
-                    " local truncation error = " + localError);
+            _debug("Integrator: " + integrator.getName()
+                + " local truncation error = " + localError);
         }
+
         if (localError < tolerance) {
             if (_debugging) {
-                _debug("Integrator: " + integrator.getName() +
-                        " report a success.");
+                _debug("Integrator: " + integrator.getName()
+                    + " report a success.");
             }
+
             return true;
         } else {
             if (_debugging) {
-                _debug("Integrator: " + integrator.getName() +
-                        " reports a failure.");
+                _debug("Integrator: " + integrator.getName()
+                    + " reports a failure.");
             }
+
             return false;
         }
     }
@@ -279,17 +299,19 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  @return The suggested next step by the given integrator.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
-        CTDirector director = (CTDirector)getContainer();
+        CTDirector director = (CTDirector) getContainer();
         double localError = (integrator.getAuxVariables())[1];
         double h = director.getCurrentStepSize();
         double tolerance = director.getErrorTolerance();
         double newh = h;
-        if (localError/tolerance < 0.1) {
-            newh =
-                h* Math.min(2, Math.pow((3.0*tolerance/localError), 1.0/3.0));
+
+        if ((localError / tolerance) < 0.1) {
+            newh = h * Math.min(2,
+                    Math.pow(((3.0 * tolerance) / localError), 1.0 / 3.0));
         }
-        _debug("integrator: " + integrator.getName() +
-                " suggests next step size = " + newh);
+
+        _debug("integrator: " + integrator.getName()
+            + " suggests next step size = " + newh);
         return newh;
     }
 
@@ -300,11 +322,13 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        CTDirector director = (CTDirector)getContainer();
+        CTDirector director = (CTDirector) getContainer();
+
         if (_getRoundCount() > director.getMaxIterations()) {
             _resetRoundCount();
             return false;
         }
+
         return super.resolveStates();
     }
 
@@ -312,8 +336,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
     ////                         private variables                 ////
 
     /** Name of this Solver. */
-    private static final String _DEFAULT_NAME="CT_Trapezoidal_Rule_Solver" ;
+    private static final String _DEFAULT_NAME = "CT_Trapezoidal_Rule_Solver";
     private boolean _recalculatingWithTwoSteps = false;
     private boolean _firstStep = true;
-
 }

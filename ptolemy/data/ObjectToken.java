@@ -26,15 +26,16 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ObjectToken
+
 /**
    A token that contains a reference to an arbitrary object.
    Note that when this token constructed, the object passed to the constructor
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Yellow (wbwu)
 */
 public class ObjectToken extends Token {
-
     /** Construct an empty token.
      */
     public ObjectToken() {
@@ -61,8 +61,7 @@ public class ObjectToken extends Token {
      *  the appropriate type
      *  (may be thrown by derived classes, but is not thrown here).
      */
-    public ObjectToken(Object value)
-            throws IllegalActionException {
+    public ObjectToken(Object value) throws IllegalActionException {
         _value = value;
     }
 
@@ -83,13 +82,13 @@ public class ObjectToken extends Token {
      *   cannot be carried out.
      */
     public static ObjectToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof ObjectToken) {
-            return (ObjectToken)token;
+            return (ObjectToken) token;
         }
 
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "object"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "object"));
     }
 
     /** Return true if the argument is an instance of ObjectToken and its
@@ -105,9 +104,10 @@ public class ObjectToken extends Token {
             return false;
         }
 
-        if (((ObjectToken)object).getValue().equals(_value)) {
+        if (((ObjectToken) object).getValue().equals(_value)) {
             return true;
         }
+
         return false;
     }
 
@@ -151,7 +151,6 @@ public class ObjectToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // This is protected to allow access in derived classes only.
     protected Object _value = null;
 }

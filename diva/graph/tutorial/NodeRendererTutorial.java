@@ -31,6 +31,7 @@
 
 */
 package diva.graph.tutorial;
+
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -53,6 +54,7 @@ import diva.graph.modular.Node;
 import diva.graph.toolbox.TypedNodeRenderer;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
+
 
 /**
  * This tutorial shows how to customize the look of
@@ -77,7 +79,7 @@ public class NodeRendererTutorial {
      * Instantiate a new tutorial window and
      * display it.
      */
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         final AppContext context = new BasicFrame("Node Renderer Tutorial");
         context.setSize(800, 600);
 
@@ -93,28 +95,24 @@ public class NodeRendererTutorial {
         final BasicGraphController bgc = new BasicGraphController();
 
         // Build the renderers
-        NodeRenderer defaultRenderer =
-            new BasicNodeRenderer(bgc,
-                    new Ellipse2D.Double(0.0,0.0,40.0,40.0),
-                    new Ellipse2D.Double(0.0,0.0,600.0,600.0),
-                    Color.gray, Color.gray, .3);
-        NodeRenderer stringRenderer =
-            new BasicNodeRenderer(bgc,
-                    new Ellipse2D.Double(0.0,0.0,40.0,40.0),
-                    new Ellipse2D.Double(0.0,0.0,600.0,600.0),
-                    Color.blue, Color.blue, .3);
-        NodeRenderer integerRenderer =
-            new BasicNodeRenderer(bgc,
-                    new Rectangle2D.Double(0.0,0.0,40.0,40.0),
-                    new Rectangle2D.Double(0.0,0.0,600.0,600.0),
-                    Color.orange, Color.orange, .3);
-        NodeRenderer setRenderer =
-            new BasicNodeRenderer(bgc,
-                    new Ellipse2D.Double(0.0,0.0,40.0,40.0),
-                    new Ellipse2D.Double(0.0,0.0,600.0,600.0),
-                    Color.red, Color.red, .3);
-        TypedNodeRenderer typedRenderer =
-            new TypedNodeRenderer(bgc, defaultRenderer);
+        NodeRenderer defaultRenderer = new BasicNodeRenderer(bgc,
+                new Ellipse2D.Double(0.0, 0.0, 40.0, 40.0),
+                new Ellipse2D.Double(0.0, 0.0, 600.0, 600.0), Color.gray,
+                Color.gray, .3);
+        NodeRenderer stringRenderer = new BasicNodeRenderer(bgc,
+                new Ellipse2D.Double(0.0, 0.0, 40.0, 40.0),
+                new Ellipse2D.Double(0.0, 0.0, 600.0, 600.0), Color.blue,
+                Color.blue, .3);
+        NodeRenderer integerRenderer = new BasicNodeRenderer(bgc,
+                new Rectangle2D.Double(0.0, 0.0, 40.0, 40.0),
+                new Rectangle2D.Double(0.0, 0.0, 600.0, 600.0), Color.orange,
+                Color.orange, .3);
+        NodeRenderer setRenderer = new BasicNodeRenderer(bgc,
+                new Ellipse2D.Double(0.0, 0.0, 40.0, 40.0),
+                new Ellipse2D.Double(0.0, 0.0, 600.0, 600.0), Color.red,
+                Color.red, .3);
+        TypedNodeRenderer typedRenderer = new TypedNodeRenderer(bgc,
+                defaultRenderer);
         typedRenderer.addTypedRenderer(Integer.class, integerRenderer);
         typedRenderer.addTypedRenderer(ArrayList.class, setRenderer);
         typedRenderer.addTypedRenderer(String.class, stringRenderer);
@@ -122,6 +120,7 @@ public class NodeRendererTutorial {
         // Use the renderer in the JGraph
         GraphPane gp = new GraphPane(bgc, new BasicGraphModel());
         bgc.getNodeController().setNodeRenderer(typedRenderer); // <=== HERE!
+
         JGraph g = new JGraph(gp);
 
         // Display it all
@@ -133,8 +132,8 @@ public class NodeRendererTutorial {
 
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    LevelLayout random =
-                        new LevelLayout(new BasicLayoutTarget(bgc));
+                    LevelLayout random = new LevelLayout(new BasicLayoutTarget(
+                                bgc));
                     random.layout(model.getRoot());
                 }
             });
@@ -158,7 +157,7 @@ public class NodeRendererTutorial {
         set0.add(o4);
         set0.add(o5);
 
-        Graph root = (Graph)model.getRoot();
+        Graph root = (Graph) model.getRoot();
         Node s0 = model.createNode(set0);
         Node n1 = model.createNode(o1);
         Node n2 = model.createNode(o2);
@@ -207,4 +206,3 @@ public class NodeRendererTutorial {
         return model;
     }
 }
-

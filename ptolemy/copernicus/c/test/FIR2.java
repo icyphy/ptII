@@ -21,12 +21,11 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
-
 /* An FIR filter example for Java to C translation.
    @author Shuvra S. Bhattacharyya
    @version $Id$
@@ -40,23 +39,22 @@ ENHANCEMENTS, OR MODIFICATIONS.
    compilation using the 'singleclass' mode of JavaToC.
 */
 public class FIR2 {
-
     /** Initialize the actor with the appropriate values, fire it, and
      *  output the results. The values of the parameters were taken from
      *  FIRSingleConfig.h.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         // Parameter values.
-        float[] taps = {1, 2, 3, 4};
+        float[] taps = { 1, 2, 3, 4 };
         int numberOfTaps = 4; // Replace this with a "length" expression.
-        float[] data = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        float[] data = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         int interpolation = 3;
         int decimation = 4;
         int decimationPhase = 0;
 
         // Initialize the fields.
         initialize(taps, numberOfTaps, data, interpolation, decimation,
-                decimationPhase);
+            decimationPhase);
 
         float[] output = new float[10];
 
@@ -74,7 +72,7 @@ public class FIR2 {
      *  @param input The input array.
      *  @param output The output array.
      */
-    public static void fire(float input[], float output[]) {
+    public static void fire(float[] input, float[] output) {
         // Pointers into the input and output buffers
         int inputIndex = 0;
         int outputIndex = 0;
@@ -88,6 +86,7 @@ public class FIR2 {
             if (--_mostRecent < 0) {
                 _mostRecent = _dataLength - 1;
             }
+
             _data[_mostRecent] = input[inputIndex++];
         }
 
@@ -100,22 +99,24 @@ public class FIR2 {
 
                 // Compute the inner product.
                 for (int i = 0; i < _phaseLength; i++) {
-                    int tapsIndex = i * _interpolation+ phase;
+                    int tapsIndex = (i * _interpolation) + phase;
 
-                    int dataIndex = (_mostRecent + _decimation -
-                            inC + i)%(_dataLength);
+                    int dataIndex = ((_mostRecent + _decimation) - inC + i) % (_dataLength);
 
                     if (tapsIndex < _numberOfTaps) {
                         float _tapItem = _taps[tapsIndex];
                         float _dataItem = _data[dataIndex];
-                        _dataItem = _tapItem  * _dataItem;
+                        _dataItem = _tapItem * _dataItem;
                         outToken = outToken += _dataItem;
                     }
+
                     // else assume tap is zero, so do nothing.
                 }
+
                 output[outputIndex++] = outToken;
                 phase += _decimation;
             }
+
             phase -= _interpolation;
         }
     }
@@ -133,8 +134,8 @@ public class FIR2 {
      *  @param decimationPhase The decimation phase.
      *
      */
-    public static void initialize(float taps[], int numberOfTaps, float data[],
-            int interpolation, int decimation, int decimationPhase) {
+    public static void initialize(float[] taps, int numberOfTaps, float[] data,
+        int interpolation, int decimation, int decimationPhase) {
         /* Copy the arguments */
         _taps = taps;
         _numberOfTaps = numberOfTaps;
@@ -144,15 +145,17 @@ public class FIR2 {
         _decimationPhase = decimationPhase;
         _mostRecent = 0;
 
-        _phaseLength = (int)(numberOfTaps / _interpolation);
+        _phaseLength = (int) (numberOfTaps / _interpolation);
+
         if ((numberOfTaps % _interpolation) != 0) {
             _phaseLength++;
         }
-        for (int i = 0; i < _phaseLength; i++ ) {
+
+        for (int i = 0; i < _phaseLength; i++) {
             _data[i] = 0;
         }
-        _dataLength = _phaseLength;
 
+        _dataLength = _phaseLength;
     }
 
     // Protected variables.
@@ -175,7 +178,7 @@ public class FIR2 {
     protected static int _phaseLength;
 
     /** The delay line. */
-    protected static float _data[];
+    protected static float[] _data;
 
     /** The index into the delay line of the most recent input. */
     protected static int _mostRecent;
@@ -184,5 +187,5 @@ public class FIR2 {
     protected static int _numberOfTaps;
 
     /** The filter coefficients */
-    protected static float _taps[];
+    protected static float[] _taps;
 }

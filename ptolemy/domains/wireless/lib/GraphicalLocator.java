@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.Director;
@@ -40,6 +39,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphicalLocator
@@ -62,7 +62,6 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
    @see LimitedRangeChannel
 */
 public class GraphicalLocator extends Locator {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -72,15 +71,14 @@ public class GraphicalLocator extends Locator {
      *   actor with this name.
      */
     public GraphicalLocator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         outputRange = new Parameter(this, "outputRange");
         outputRange.setToken("100.0");
         outputRange.setTypeEquals(BaseType.DOUBLE);
 
-        output.outsideTransmitProperties.setExpression(
-                "{range = outputRange}");
+        output.outsideTransmitProperties.setExpression("{range = outputRange}");
 
         // Hide the ports in Vergil.
         SingletonParameter hide = new SingletonParameter(output, "_hide");
@@ -101,10 +99,12 @@ public class GraphicalLocator extends Locator {
         _circle.lineColor.setToken("{0.0, 0.5, 0.5, 1.0}");
 
         // Create the green antenna shape.
-        ResizablePolygonAttribute  antenna = new ResizablePolygonAttribute(node_icon, "antenna2");
+        ResizablePolygonAttribute antenna = new ResizablePolygonAttribute(node_icon,
+                "antenna2");
         antenna.vertices.setToken("{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}");
         antenna.width.setToken("10");
         antenna.height.setToken("30");
+
         // Set the color to green.
         antenna.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
 
@@ -134,7 +134,6 @@ public class GraphicalLocator extends Locator {
      *  another firing after 1.0 time unit to change it back to blue.
      */
     public void fire() throws IllegalActionException {
-
         if (input.hasToken(0)) {
             // Change the color of the icon to red.
             _circle.fillColor.setToken("{1.0, 0.0, 0.1, 0.7}");
@@ -147,6 +146,7 @@ public class GraphicalLocator extends Locator {
             // Set color to blue.
             _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");
         }
+
         super.fire();
     }
 

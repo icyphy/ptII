@@ -27,6 +27,7 @@ package diva.canvas.interactor;
 
 import diva.canvas.Site;
 
+
 /**
  * A factory so that a client can create grab handles without
  * knowing anything about their implementation.
@@ -39,7 +40,5 @@ public interface GrabHandleFactory {
      * site. The grab-handle will be located so that its
      * attachment point is at the site.
      */
-    public GrabHandle createGrabHandle (Site s);
+    public GrabHandle createGrabHandle(Site s);
 }
-
-

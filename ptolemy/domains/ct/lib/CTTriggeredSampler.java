@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTTriggeredSampler
+
 /**
    This actor samples the continuous input signal when there is a discrete
    event presents at the "trigger" input.
@@ -55,9 +56,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (cxh)
 */
-public class CTTriggeredSampler extends Transformer
-    implements CTEventGenerator {
-
+public class CTTriggeredSampler extends Transformer implements CTEventGenerator {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -71,29 +70,24 @@ public class CTTriggeredSampler extends Transformer
      *   an entity already in the container.
      */
     public CTTriggeredSampler(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
-        new Parameter(input, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
         output.setMultiport(true);
         output.setTypeAtLeast(input);
-        new Parameter(output, "signalType",
-                new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("DISCRETE"));
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(false);
-        new Parameter(trigger, "signalType",
-                new StringToken("DISCRETE"));
-        // The trigger input has a generic type.
+        new Parameter(trigger, "signalType", new StringToken("DISCRETE"));
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"-30,10 2,10 2,0\"/>\n"
-                + "<polyline points=\"-30,-10 -20,-10 -20,0 -10,0 10,-7\"/>\n"
-                + "<polyline points=\"10,0 30,0\"/>\n"
-                + "</svg>\n");
+        // The trigger input has a generic type.
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<polyline points=\"-30,10 2,10 2,0\"/>\n"
+            + "<polyline points=\"-30,-10 -20,-10 -20,0 -10,0 10,-7\"/>\n"
+            + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,10 +108,8 @@ public class CTTriggeredSampler extends Transformer
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CTTriggeredSampler newObject =
-            (CTTriggeredSampler)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CTTriggeredSampler newObject = (CTTriggeredSampler) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -128,14 +120,15 @@ public class CTTriggeredSampler extends Transformer
      *  or tokens cannot be sent from the output.
      */
     public void fire() throws IllegalActionException {
-        CTDirector director = (CTDirector)getDirector();
+        CTDirector director = (CTDirector) getDirector();
+
         // FIXME: do we need to constraint that the current execution phase is
         // CTExecutionPhase.GENERATING_EVENTS_PHASE?
         if (director.isDiscretePhase() && hasCurrentEvent()) {
             trigger.get(0);
-            for (int i = 0;
-                 i < Math.min(input.getWidth(), output.getWidth());
-                 i++) {
+
+            for (int i = 0; i < Math.min(input.getWidth(), output.getWidth());
+                    i++) {
                 if (input.hasToken(i)) {
                     output.send(i, input.get(i));
                 }
@@ -150,10 +143,13 @@ public class CTTriggeredSampler extends Transformer
      */
     public boolean hasCurrentEvent() {
         try {
-            if (trigger.hasToken(0)) return true;
+            if (trigger.hasToken(0)) {
+                return true;
+            }
         } catch (IllegalActionException e) {
             throw new InternalErrorException("Token mismatch.");
         }
+
         return false;
     }
 }

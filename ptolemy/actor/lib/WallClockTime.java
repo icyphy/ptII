@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,7 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
+
 
 /**
    Upon firing, this actor outputs the elapsed real time in seconds
@@ -62,7 +61,6 @@ import ptolemy.math.Utilities;
    @Pt.AcceptedRating Red (cxh)
 */
 public class WallClockTime extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,7 +70,7 @@ public class WallClockTime extends Source {
      *   actor with this name.
      */
     public WallClockTime(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -100,9 +98,8 @@ public class WallClockTime extends Source {
      *  @exception CloneNotSupportedException If a derived class includes
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        WallClockTime newObject = (WallClockTime)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        WallClockTime newObject = (WallClockTime) super.clone(workspace);
         newObject.passThrough.setTypeAtLeast(newObject.trigger);
         return newObject;
     }
@@ -118,10 +115,13 @@ public class WallClockTime extends Source {
         if (_debugging) {
             _debug("Called fire()");
         }
+
         output.broadcast(new DoubleToken(_getCurrentTime()));
+
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
                 Token token = trigger.get(i);
+
                 if (i < passThrough.getWidth()) {
                     passThrough.send(i, token);
                 }
@@ -145,12 +145,12 @@ public class WallClockTime extends Source {
      */
     protected double _getCurrentTime() {
         long elapsedTime = System.currentTimeMillis() - _startTime;
+
         // Note that we need use the actor.util.Time class
         // here because if we do, it breaks deep codegen because
         // deep codegen removes the Actor classes, and actor.util.Time
         // needs to keep track of the Director.
-
-        return (((double)elapsedTime)/1000.0);
+        return (((double) elapsedTime) / 1000.0);
     }
 
     ///////////////////////////////////////////////////////////////////

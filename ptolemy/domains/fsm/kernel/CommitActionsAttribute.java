@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Iterator;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CommitActionsAttribute
+
 /**
    An action that sends outputs to one or more ports, or sets the values
    of variables either in the containing FSMActor or in a state refinement.
@@ -106,9 +107,8 @@ import ptolemy.kernel.util.Workspace;
    @see Transition
    @see FSMActor
 */
-public class CommitActionsAttribute
-    extends AbstractActionsAttribute implements CommitAction {
-
+public class CommitActionsAttribute extends AbstractActionsAttribute
+    implements CommitAction {
     /** Construct an action in the specified workspace with an empty
      *  string as a name.
      *  The object is added to the directory of the workspace.
@@ -134,7 +134,7 @@ public class CommitActionsAttribute
      *   has an attribute with the name.
      */
     public CommitActionsAttribute(Transition transition, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(transition, name);
     }
 
@@ -149,93 +149,102 @@ public class CommitActionsAttribute
      */
     public void execute() throws IllegalActionException {
         super.execute();
+
         if (_destinations != null) {
             Iterator destinations = _destinations.iterator();
             Iterator channels = _numbers.iterator();
             Iterator parseTrees = _parseTrees.iterator();
+
             while (destinations.hasNext()) {
-                NamedObj nextDestination = (NamedObj)destinations.next();
+                NamedObj nextDestination = (NamedObj) destinations.next();
+
                 // Need to get the next channel even if it's not used.
-                Integer channel = (Integer)channels.next();
-                ASTPtRootNode parseTree = (ASTPtRootNode)parseTrees.next();
+                Integer channel = (Integer) channels.next();
+                ASTPtRootNode parseTree = (ASTPtRootNode) parseTrees.next();
                 Token token;
+
                 try {
-                    token = _parseTreeEvaluator.evaluateParseTree(
-                            parseTree, _scope);
+                    token = _parseTreeEvaluator.evaluateParseTree(parseTree,
+                            _scope);
                 } catch (IllegalActionException ex) {
                     // Chain exceptions to get the actor that
                     // threw the exception.
-                    throw new IllegalActionException(
-                            this, ex, "Expression invalid.");
+                    throw new IllegalActionException(this, ex,
+                        "Expression invalid.");
                 }
+
                 if (nextDestination instanceof IOPort) {
-                    IOPort destination = (IOPort)nextDestination;
+                    IOPort destination = (IOPort) nextDestination;
 
                     try {
                         if (channel != null) {
                             if (token == null) {
                                 destination.sendClear(channel.intValue());
+
                                 if (_debugging) {
                                     _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " channel: "
-                                            + channel.intValue() + ", Clear!");
+                                        + destination.getName() + " channel: "
+                                        + channel.intValue() + ", Clear!");
                                 }
                             } else {
                                 destination.send(channel.intValue(), token);
+
                                 if (_debugging) {
                                     _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " channel: "
-                                            + channel.intValue()
-                                            + ", token: " + token);
+                                        + destination.getName() + " channel: "
+                                        + channel.intValue() + ", token: "
+                                        + token);
                                 }
                             }
                         } else {
                             if (token == null) {
                                 destination.broadcastClear();
+
                                 if (_debugging) {
                                     _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " broadcast Clear!");
+                                        + destination.getName()
+                                        + " broadcast Clear!");
                                 }
                             } else {
                                 destination.broadcast(token);
+
                                 if (_debugging) {
                                     _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " broadcast token: " + token);
+                                        + destination.getName()
+                                        + " broadcast token: " + token);
                                 }
                             }
                         }
                     } catch (NoRoomException ex) {
                         throw new IllegalActionException(this,
-                                "Cannot complete action: " + ex.getMessage());
+                            "Cannot complete action: " + ex.getMessage());
                     } catch (UnknownResultException ex) {
                         // Produce no output.
                     }
                 } else if (nextDestination instanceof Variable) {
-                    Variable destination = (Variable)nextDestination;
+                    Variable destination = (Variable) nextDestination;
+
                     try {
                         //Token token = variable.getToken();
                         destination.setToken(token);
+
                         // Force all dependents to re-evaluate.
                         // This makes the parameters in the actors of
                         // the refinement take on new values immediately
                         // after the action is committed.
                         destination.validate();
+
                         if (_debugging) {
                             _debug(getFullName() + " variable: "
-                                    + destination.getName() + ", value: "
-                                    + token);
+                                + destination.getName() + ", value: " + token);
                         }
                     } catch (UnknownResultException ex) {
                         destination.setUnknown(true);
                     }
                 } else {
                     throw new IllegalActionException(this,
-                            "Destination is neither an IOPort nor a Variable: "
-                            + nextDestination.getFullName());
+                        "Destination is neither an IOPort nor a Variable: "
+                        + nextDestination.getFullName());
                 }
             }
         }
@@ -252,61 +261,71 @@ public class CommitActionsAttribute
      *   does not have a destination with the specified name.
      */
     protected NamedObj _getDestination(String name)
-            throws IllegalActionException {
-        Transition transition = (Transition)getContainer();
+        throws IllegalActionException {
+        Transition transition = (Transition) getContainer();
+
         if (transition == null) {
             throw new IllegalActionException(this,
-                    "Action has no container transition.");
+                "Action has no container transition.");
         }
-        Entity fsm = (Entity)transition.getContainer();
+
+        Entity fsm = (Entity) transition.getContainer();
+
         if (fsm == null) {
             throw new IllegalActionException(this, transition,
-                    "Transition has no container.");
+                "Transition has no container.");
         }
-        IOPort port = (IOPort)fsm.getPort(name);
+
+        IOPort port = (IOPort) fsm.getPort(name);
+
         if (port == null) {
             // No port found.  Try for a variable.
             Attribute variable = fsm.getAttribute(name);
+
             if (variable == null) {
                 // Try for a refinement variable.
                 int period = name.indexOf(".");
+
                 if (period > 0) {
                     String refinementName = name.substring(0, period);
                     String entryName = name.substring(period + 1);
+
                     // FIXME: Look in the container of the fsm???
                     // Below we look for an attribute only in the fsm
                     // itself.
                     Nameable fsmContainer = fsm.getContainer();
+
                     if (fsmContainer instanceof CompositeEntity) {
-                        Entity refinement = ((CompositeEntity)fsmContainer)
+                        Entity refinement = ((CompositeEntity) fsmContainer)
                             .getEntity(refinementName);
+
                         if (refinement != null) {
-                            Attribute entry
-                                = refinement.getAttribute(entryName);
+                            Attribute entry = refinement.getAttribute(entryName);
+
                             if (entry instanceof Variable) {
                                 return entry;
                             }
                         }
                     }
                 }
+
                 throw new IllegalActionException(fsm, this,
-                        "Cannot find port or variable with the name: " + name);
+                    "Cannot find port or variable with the name: " + name);
             } else {
                 if (!(variable instanceof Variable)) {
                     throw new IllegalActionException(fsm, this,
-                            "The attribute with name \""
-                            + name
-                            + "\" is not an "
-                            + "instance of Variable.");
+                        "The attribute with name \"" + name + "\" is not an "
+                        + "instance of Variable.");
                 }
+
                 return variable;
             }
         } else {
             if (!port.isOutput()) {
                 throw new IllegalActionException(fsm, this,
-                        "The port is not an output port: "
-                        + name);
+                    "The port is not an output port: " + name);
             }
+
             return port;
         }
     }

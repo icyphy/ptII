@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.javasound;
 
 import java.io.IOException;
@@ -46,6 +45,7 @@ import ptolemy.media.javasound.LiveSoundListener;
 
 /////////////////////////////////////////////////////////
 //// LiveSoundActor
+
 /**
    This actor forms a base class for actors that interact with real-time
    sound through the ptolemy.media.LiveSound class.  This class manages the
@@ -63,7 +63,6 @@ import ptolemy.media.javasound.LiveSoundListener;
 */
 public class LiveSoundActor extends TypedAtomicActor
     implements LiveSoundListener {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,18 +72,16 @@ public class LiveSoundActor extends TypedAtomicActor
      *   actor with this name.
      */
     public LiveSoundActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
         sampleRate.setTypeEquals(BaseType.INT);
 
-        bitsPerSample = new Parameter(this, "bitsPerSample",
-                new IntToken(16));
+        bitsPerSample = new Parameter(this, "bitsPerSample", new IntToken(16));
         bitsPerSample.setTypeEquals(BaseType.INT);
 
-        channels = new Parameter(this, "channels",
-                new IntToken(1));
+        channels = new Parameter(this, "channels", new IntToken(1));
         channels.setTypeEquals(BaseType.INT);
 
         transferSize = new Parameter(this, "transferSize");
@@ -137,59 +134,59 @@ public class LiveSoundActor extends TypedAtomicActor
      *   allowed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             if (attribute == transferSize) {
                 // The size of the array (in samples per channel) to pass
                 // to LiveSound.putSamples().
-                _transferSize =
-                    ((IntToken)transferSize.getToken()).intValue();
-                if (!_isExecuting &&
-                        LiveSound.getTransferSize() != _transferSize) {
+                _transferSize = ((IntToken) transferSize.getToken()).intValue();
+
+                if (!_isExecuting
+                        && (LiveSound.getTransferSize() != _transferSize)) {
                     LiveSound.setTransferSize(_transferSize);
                 }
             } else if (attribute == channels) {
-                int channelsInt =
-                    ((IntToken)channels.getToken()).intValue();
+                int channelsInt = ((IntToken) channels.getToken()).intValue();
+
                 if (channelsInt < 1) {
                     throw new IllegalActionException(this,
-                            "Attempt to set channels parameter to an illegal "
-                            + "value of: " +  channelsInt
-                            + " . The value must be a "
-                            + "positive integer.");
+                        "Attempt to set channels parameter to an illegal "
+                        + "value of: " + channelsInt
+                        + " . The value must be a " + "positive integer.");
                 }
 
                 // Only set the channels if it is different than
                 // the currently active channels.
-                if (!_isExecuting &&
-                        LiveSound.getChannels() != channelsInt) {
+                if (!_isExecuting && (LiveSound.getChannels() != channelsInt)) {
                     LiveSound.setChannels(channelsInt);
                 }
-            }  else if (attribute == sampleRate) {
-                int sampleRateInt =
-                    ((IntToken)sampleRate.getToken()).intValue();
+            } else if (attribute == sampleRate) {
+                int sampleRateInt = ((IntToken) sampleRate.getToken()).intValue();
+
                 // Only set the sample rate if it is different than
                 // the currently active sample rate.
-                if (!_isExecuting &&
-                        LiveSound.getSampleRate() != sampleRateInt) {
+                if (!_isExecuting
+                        && (LiveSound.getSampleRate() != sampleRateInt)) {
                     LiveSound.setSampleRate(sampleRateInt);
                 }
             } else if (attribute == bitsPerSample) {
-                int bitsPerSampleInt =
-                    ((IntToken)bitsPerSample.getToken()).intValue();
+                int bitsPerSampleInt = ((IntToken) bitsPerSample.getToken())
+                    .intValue();
+
                 // Only set the bitsPerSample if it is different than
                 // the currently active bitsPerSample.
-                if (!_isExecuting &&
-                        LiveSound.getBitsPerSample() != bitsPerSampleInt) {
+                if (!_isExecuting
+                        && (LiveSound.getBitsPerSample() != bitsPerSampleInt)) {
                     LiveSound.setBitsPerSample(bitsPerSampleInt);
                 }
             }
+
             super.attributeChanged(attribute);
             return;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot perform audio playback " +
-                    "with the specified parameter values.");
+                "Cannot perform audio playback "
+                + "with the specified parameter values.");
         }
     }
 
@@ -211,24 +208,29 @@ public class LiveSoundActor extends TypedAtomicActor
     public void liveSoundChanged(LiveSoundEvent event) {
         // Check to see what parameter was changed.
         int changedParameter = event.getSoundParameter();
+
         try {
             if (changedParameter == LiveSoundEvent.SAMPLE_RATE) {
                 // Get the currently active sample rate.
                 int activeSampleRate = LiveSound.getSampleRate();
+
                 // Get the current value of this actor's sampleRate parameter.
-                int thisActorSampleRate =
-                    ((IntToken)sampleRate.getToken()).intValue();
+                int thisActorSampleRate = ((IntToken) sampleRate.getToken())
+                    .intValue();
+
                 // Only set the sampleRate parameter if it is different from
                 // the new sample rate.
                 if (activeSampleRate != thisActorSampleRate) {
                     sampleRate.setToken(new IntToken(activeSampleRate));
                 }
-            }  else if (changedParameter == LiveSoundEvent.CHANNELS) {
+            } else if (changedParameter == LiveSoundEvent.CHANNELS) {
                 // Get the currently active number of channels.
                 int activeChannels = LiveSound.getChannels();
+
                 // Get the current value of this actor's sampleRate parameter.
-                int thisActorChannels =
-                    ((IntToken)channels.getToken()).intValue();
+                int thisActorChannels = ((IntToken) channels.getToken())
+                    .intValue();
+
                 // Only set the channels parameter if it is different from
                 // the new channels.
                 if (activeChannels != thisActorChannels) {
@@ -237,10 +239,12 @@ public class LiveSoundActor extends TypedAtomicActor
             } else if (changedParameter == LiveSoundEvent.BITS_PER_SAMPLE) {
                 // Get the currently active bitsPerSample.
                 int activeBitsPerSample = LiveSound.getBitsPerSample();
+
                 // Get the current value of this actor's bitsPerSample
                 // parameter.
-                int thisActorBitsPerSample =
-                    ((IntToken)bitsPerSample.getToken()).intValue();
+                int thisActorBitsPerSample = ((IntToken) bitsPerSample.getToken())
+                    .intValue();
+
                 // Only set the channels parameter if it is different from
                 // the new channels.
                 if (activeBitsPerSample != thisActorBitsPerSample) {
@@ -249,8 +253,7 @@ public class LiveSoundActor extends TypedAtomicActor
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
-                    "Error responding to audio parameter change. " +
-                    ex);
+                "Error responding to audio parameter change. " + ex);
         }
     }
 
@@ -275,27 +278,30 @@ public class LiveSoundActor extends TypedAtomicActor
      *  bits per sample, channels or buffer size.
      */
     protected synchronized void _initializeAudio()
-            throws IllegalActionException, IOException {
-
+        throws IllegalActionException, IOException {
         // Initialize audio.
-        _transferSize = ((IntToken)transferSize.getToken()).intValue();
-        _channels = ((IntToken)channels.getToken()).intValue();
-        int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
-        int bitsPerSampleInt =
-            ((IntToken)bitsPerSample.getToken()).intValue();
+        _transferSize = ((IntToken) transferSize.getToken()).intValue();
+        _channels = ((IntToken) channels.getToken()).intValue();
+
+        int sampleRateInt = ((IntToken) sampleRate.getToken()).intValue();
+        int bitsPerSampleInt = ((IntToken) bitsPerSample.getToken()).intValue();
 
         if (LiveSound.getSampleRate() != sampleRateInt) {
             LiveSound.setSampleRate(sampleRateInt);
         }
+
         if (LiveSound.getBitsPerSample() != bitsPerSampleInt) {
             LiveSound.setBitsPerSample(bitsPerSampleInt);
         }
+
         if (LiveSound.getChannels() != _channels) {
             LiveSound.setChannels(_channels);
         }
+
         if (LiveSound.getBufferSize() != 1000) {
             LiveSound.setBufferSize(1000);
         }
+
         if (LiveSound.getTransferSize() != _transferSize) {
             LiveSound.setTransferSize(_transferSize);
         }

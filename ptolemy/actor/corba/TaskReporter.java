@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj)
 @AcceptedRating Yellow (janneck)
 */
-
 package ptolemy.actor.corba;
 
 import java.util.StringTokenizer;
@@ -48,8 +47,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TaskReporter
+
 /**
    An actor that sends data to a remote coordinator that implements the
    Coordinator inteface defined in Coordinator.idl.
@@ -70,9 +71,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $ $
    @since Ptolemy II 3.0
 */
-
 public class TaskReporter extends Sink {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -82,10 +81,10 @@ public class TaskReporter extends Sink {
      *   actor with this name.
      */
     public TaskReporter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         coordinatorName = new Parameter(this, "coordinatorName");
         coordinatorName.setToken(new StringToken("TaskCoordinator"));
@@ -95,6 +94,7 @@ public class TaskReporter extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
     /** the ORB initial property. for example:
      * "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
      */
@@ -123,24 +123,25 @@ public class TaskReporter extends Sink {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(
-                ((StringToken)ORBInitProperties.getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
+                .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
+
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
             _debug("ORB initial argument: " + args[i]);
             i++;
         }
+
         _orb = null;
         _coordinator = null;
         _initORB(args);
-        _clientName = ((StringToken)thisClientName.getToken()).
-            stringValue();
+        _clientName = ((StringToken) thisClientName.getToken()).stringValue();
         _debug("Finished initializing " + getName());
     }
-
 
     /** send data to the remote coordinator.
      *  @exception IllegalActionException If the publication
@@ -153,19 +154,24 @@ public class TaskReporter extends Sink {
                 if (input.hasToken(0)) {
                     Token token = input.get(0);
                     String data;
+
                     if (token instanceof StringToken) {
-                        data = ((StringToken)token).stringValue();
+                        data = ((StringToken) token).stringValue();
+
                         if (_debugging) {
                             _debug(getName(), "Publisher writes \n" + data);
                         }
                     } else {
                         data = token.toString();
                     }
+
                     org.omg.CORBA.Any event = _orb.create_any();
                     event.insert_string(data);
+
                     if (_coordinator != null) {
-                        _coordinator.result(_clientName,event);
+                        _coordinator.result(_clientName, event);
                     }
+
                     if (_debugging) {
                         _debug(getName(), "Publisher writes " + data);
                     }
@@ -173,53 +179,52 @@ public class TaskReporter extends Sink {
             } catch (CorbaIllegalActionException e) {
                 //e.printStackTrace();
                 throw new IllegalActionException(this,
-                        " failed to send result back because: " + e.getMessage());
+                    " failed to send result back because: " + e.getMessage());
             }
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     //use a private method to deal with necessary CORBA operations.
     // @exception IllegalActionException If ORB initialize failed.
-    private void _initORB(String[] args) throws IllegalActionException{
+    private void _initORB(String[] args) throws IllegalActionException {
         try {
             // start the ORB
             _orb = ORB.init(args, null);
             _debug(getName(), " ORB initialized");
+
             //get the root naming context
             org.omg.CORBA.Object objRef = _orb.resolve_initial_references(
                     "NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
+
             if (ncRef != null) {
                 _debug(getName(), "found name service.");
             }
+
             //resolve the remote consumer reference in Naming
-            NameComponent namecomp = new NameComponent(
-                    ((StringToken)coordinatorName.getToken()).
-                    stringValue(), "Multi");
+            NameComponent namecomp = new NameComponent(((StringToken) coordinatorName
+                    .getToken()).stringValue(), "Multi");
             _debug(getName(), " looking for name: ",
-                    (coordinatorName.getToken()).toString());
-            NameComponent path[] = {namecomp};
-            _coordinator =
-                ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
+                (coordinatorName.getToken()).toString());
+
+            NameComponent[] path = { namecomp };
+            _coordinator = ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
                 .narrow(ncRef.resolve(path));
         } catch (UserException ex) {
             //ex.printStackTrace();
             throw new IllegalActionException(this,
-                    " initialize ORB failed. Please make sure the " +
-                    "naming server has already started and the " +
-                    "ORBInitProperty parameter and look up names are " +
-                    "configured correctly. " +
-                    "the error message is: " + ex.getMessage());
+                " initialize ORB failed. Please make sure the "
+                + "naming server has already started and the "
+                + "ORBInitProperty parameter and look up names are "
+                + "configured correctly. " + "the error message is: "
+                + ex.getMessage());
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private ORB _orb;
 
     //the proxy object of the Coordiantor.
@@ -227,6 +232,4 @@ public class TaskReporter extends Sink {
 
     //the name of the client application that this actor belongs to.
     private String _clientName;
-
 }
-

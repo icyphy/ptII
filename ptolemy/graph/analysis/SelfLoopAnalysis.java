@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import java.util.List;
@@ -32,8 +31,10 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.SelfLoopAnalyzer;
 import ptolemy.graph.analysis.strategy.SelfLoopStrategy;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SelfLoopAnalysis
+
 /**
    Computation of self-loops in a graph.
    A self-loop (also called a self-loop edge) in a graph is an
@@ -49,15 +50,14 @@ import ptolemy.graph.analysis.strategy.SelfLoopStrategy;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class SelfLoopAnalysis extends Analysis {
-
     /** Construct an instance of this class for a given graph.
      *
      *  @param graph The given graph.
      */
     public SelfLoopAnalysis(Graph graph) {
-        super(new SelfLoopStrategy(graph));;
+        super(new SelfLoopStrategy(graph));
+        ;
     }
 
     /** Construct an instance of this class with a given analyzer.
@@ -65,7 +65,8 @@ public class SelfLoopAnalysis extends Analysis {
      *  @param analyzer The analyzer to use.
      */
     public SelfLoopAnalysis(SelfLoopAnalyzer analyzer) {
-        super(analyzer);;
+        super(analyzer);
+        ;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -77,7 +78,7 @@ public class SelfLoopAnalysis extends Analysis {
      *  @return Return the self-loop edges.
      */
     public List edges() {
-        return ((SelfLoopAnalyzer)analyzer()).edges();
+        return ((SelfLoopAnalyzer) analyzer()).edges();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -86,7 +87,7 @@ public class SelfLoopAnalysis extends Analysis {
      */
     public String toString() {
         return "Self loop analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

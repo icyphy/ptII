@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.io.OutputStream;
@@ -34,6 +33,7 @@ import java.io.PrintStream;
 
 //////////////////////////////////////////////////////////////////////////
 //// StreamChangeListener
+
 /**
    A change listener that describes the changes on the standard output.
    It simply prints the description of the change once it executes (or
@@ -46,7 +46,6 @@ import java.io.PrintStream;
    @Pt.AcceptedRating Green (neuendor)
 */
 public class StreamChangeListener implements ChangeListener {
-
     /** Create a change listener that sends messages to the standard output.
      */
     public StreamChangeListener() {
@@ -68,12 +67,13 @@ public class StreamChangeListener implements ChangeListener {
      */
     public void changeExecuted(ChangeRequest change) {
         String description = "";
+
         if (change != null) {
             description = change.getDescription();
         }
-        _output.println("StreamChangeRequest.changeExecuted(): "
-                + description
-                + " succeeded");
+
+        _output.println("StreamChangeRequest.changeExecuted(): " + description
+            + " succeeded");
     }
 
     /** Print the description of the failure to the stream output.
@@ -82,13 +82,13 @@ public class StreamChangeListener implements ChangeListener {
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         String description = "";
+
         if (change != null) {
             description = change.getDescription();
         }
-        _output.println("StreamChangeRequest.changeFailed(): "
-                + description
-                + " failed: "
-                + exception.toString());
+
+        _output.println("StreamChangeRequest.changeFailed(): " + description
+            + " failed: " + exception.toString());
     }
 
     ///////////////////////////////////////////////////////////////////

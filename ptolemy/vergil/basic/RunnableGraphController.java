@@ -25,13 +25,11 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
-import java.awt.Event;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.Toolkit;
 import java.net.URL;
 
 import javax.swing.Action;
@@ -50,8 +48,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RunnableGraphController
+
 /**
    A graph controller for models that can be executed.
    This controller provides toolbar buttons for executing
@@ -64,9 +64,8 @@ import diva.gui.GUIUtilities;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-public abstract class RunnableGraphController
-    extends WithIconGraphController implements ExecutionListener {
-
+public abstract class RunnableGraphController extends WithIconGraphController
+    implements ExecutionListener {
     /** Create a new controller.
      */
     public RunnableGraphController() {
@@ -112,6 +111,7 @@ public abstract class RunnableGraphController
      */
     public void managerStateChanged(Manager manager) {
         Manager.State newState = manager.getState();
+
         if (newState != _previousState) {
             getFrame().report(manager.getState().getDescription());
             _previousState = newState;
@@ -128,28 +128,32 @@ public abstract class RunnableGraphController
      *   not a CompositeActor, or if the manager cannot be created.
      */
     protected Manager _getManager() throws IllegalActionException {
-        AbstractBasicGraphModel graphModel =
-            (AbstractBasicGraphModel)getGraphModel();
+        AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) getGraphModel();
         NamedObj toplevel = graphModel.getPtolemyModel().toplevel();
+
         if (!(toplevel instanceof CompositeActor)) {
             throw new IllegalActionException(toplevel,
-                    "Cannot get a manager because the model is not a CompositeActor.");
+                "Cannot get a manager because the model is not a CompositeActor.");
         }
-        Manager manager = ((CompositeActor)toplevel).getManager();
+
+        Manager manager = ((CompositeActor) toplevel).getManager();
+
         if (manager == null) {
             try {
                 manager = new Manager(toplevel.workspace(), "manager");
-                ((CompositeActor)toplevel).setManager(manager);
-            } catch ( IllegalActionException ex) {
+                ((CompositeActor) toplevel).setManager(manager);
+            } catch (IllegalActionException ex) {
                 // Should not occur.
                 throw new InternalErrorException(ex);
             }
         }
+
         if (manager != _manager) {
             // If there was a previous manager, unlisten.
             if (_manager != null) {
                 _manager.removeExecutionListener(this);
             }
+
             manager.addExecutionListener(this);
             _manager = manager;
         }
@@ -164,8 +168,7 @@ public abstract class RunnableGraphController
     private Manager _manager = null;
 
     /** Action for pausing the model. */
-    private Action _pauseModelAction = new PauseModelAction(
-            "Pause the model");
+    private Action _pauseModelAction = new PauseModelAction("Pause the model");
 
     /** The previous state of the manager, to avoid reporting
      *  it if it hasn't changed. */
@@ -176,18 +179,15 @@ public abstract class RunnableGraphController
             "Run or Resume the model");
 
     /** Action for stopping the model. */
-    private Action _stopModelAction = new StopModelAction(
-            "Stop the model");
+    private Action _stopModelAction = new StopModelAction("Stop the model");
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// RunModelAction
 
     /** An action to run the model. */
     private class RunModelAction extends FigureAction {
-
         /** Run the model without opening a run-control window.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -200,21 +200,23 @@ public abstract class RunnableGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/actor/img/run.gif");
+            URL img = getClass().getResource("/ptolemy/vergil/actor/img/run.gif");
+
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
+
             putValue("tooltip", description + " (Ctrl+R)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_R,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_R,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         /** Run the model. */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
+
             try {
                 _getManager().startRun();
             } catch (IllegalActionException ex) {
@@ -233,7 +235,6 @@ public abstract class RunnableGraphController
 
     /** An action to pause the model. */
     private class PauseModelAction extends FigureAction {
-
         /** Pause the model if it is running.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -246,21 +247,23 @@ public abstract class RunnableGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/actor/img/pause.gif");
+            URL img = getClass().getResource("/ptolemy/vergil/actor/img/pause.gif");
+
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
+
             putValue("tooltip", description + " (Ctrl+U)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_U,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_U,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         /** Pause the model. */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
+
             try {
                 _getManager().pause();
             } catch (IllegalActionException ex) {
@@ -274,7 +277,6 @@ public abstract class RunnableGraphController
 
     /** An action to stop the model. */
     private class StopModelAction extends FigureAction {
-
         /** Stop the model, if it is running.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -287,21 +289,23 @@ public abstract class RunnableGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/actor/img/stop.gif");
+            URL img = getClass().getResource("/ptolemy/vergil/actor/img/stop.gif");
+
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
+
             putValue("tooltip", description + " (Ctrl+H)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_H,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_H,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         /** Stop the model. */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
+
             try {
                 _getManager().stop();
             } catch (IllegalActionException ex) {

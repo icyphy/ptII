@@ -29,15 +29,16 @@
    Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.Map;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtShiftNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents shift
@@ -56,7 +57,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtShiftNode extends ASTPtRootNode {
-
     public ASTPtShiftNode(int id) {
         super(id);
     }
@@ -84,16 +84,17 @@ public class ASTPtShiftNode extends ASTPtRootNode {
         if (!super.isCongruent(node, renaming)) {
             return false;
         }
-        if (_lexicalToken.kind != ((ASTPtShiftNode)node)._lexicalToken.kind) {
+
+        if (_lexicalToken.kind != ((ASTPtShiftNode) node)._lexicalToken.kind) {
             return false;
         }
+
         return true;
     }
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitShiftNode(this);
     }
 

@@ -25,11 +25,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.gui;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ShellInterpreter
+
 /**
    An interface for interpreters that work with the ShellTextArea.
 
@@ -41,7 +42,6 @@ package ptolemy.gui;
    @Pt.AcceptedRating Red (cxh)
 */
 public interface ShellInterpreter {
-
     /** Evaluate the specified command. If this method returns null, then
      *  the associated ShellTextArea will not display a prompt until
      *  returnResult() is called. If this method returns an empty string,

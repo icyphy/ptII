@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.BusContention;
 
 import ptolemy.actor.Receiver;
@@ -45,6 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Memory
+
 /**
    A CSP actor that continually performs conditional rendezvous in
    an alternating fashion with its input and output ports. The Memory
@@ -57,9 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (davisj)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class Memory extends CSPActor {
-
     /** Construct a Memory actor with the specified container
      *  and name.
      * @param cont The container of this actor.
@@ -70,7 +68,7 @@ public class Memory extends CSPActor {
      *  already has an actor with this name.
      */
     public Memory(CompositeEntity cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -107,21 +105,25 @@ public class Memory extends CSPActor {
      *  during communication via the ports.
      */
     public void fire() throws IllegalActionException {
-
-        if ( _numInChannels == -1 ) {
+        if (_numInChannels == -1) {
             _numInChannels = 0;
+
             Receiver[][] rcvrs = input.getReceivers();
-            for ( int i = 0; i < rcvrs.length; i++ ) {
-                for ( int j = 0; j < rcvrs[i].length; j++ ) {
+
+            for (int i = 0; i < rcvrs.length; i++) {
+                for (int j = 0; j < rcvrs[i].length; j++) {
                     _numInChannels++;
                 }
             }
         }
-        if ( _numOutChannels == -1 ) {
+
+        if (_numOutChannels == -1) {
             _numOutChannels = 0;
+
             Receiver[][] rcvrs = output.getRemoteReceivers();
-            for ( int i = 0; i < rcvrs.length; i++ ) {
-                for ( int j = 0; j < rcvrs[i].length; j++ ) {
+
+            for (int i = 0; i < rcvrs.length; i++) {
+                for (int j = 0; j < rcvrs[i].length; j++) {
                     _numOutChannels++;
                 }
             }
@@ -130,41 +132,38 @@ public class Memory extends CSPActor {
         StringToken token;
 
         while (true) {
-            token = new StringToken( _strValue );
+            token = new StringToken(_strValue);
 
             int numBranches = _numInChannels + _numOutChannels;
-            ConditionalBranch[] branches =
-                new ConditionalBranch[numBranches];
+            ConditionalBranch[] branches = new ConditionalBranch[numBranches];
 
             // Receive Branches
-            for ( int i = 0; i < _numInChannels; i++ ) {
-                branches[i] = new
-                    ConditionalReceive(true, input, i, i);
+            for (int i = 0; i < _numInChannels; i++) {
+                branches[i] = new ConditionalReceive(true, input, i, i);
             }
 
             // Send Branches
-            for ( int i = 0; i < _numOutChannels; i++ ) {
-                branches[i+_numInChannels] = new
-                    ConditionalSend(true, output, i,
-                            i+_numInChannels, token);
+            for (int i = 0; i < _numOutChannels; i++) {
+                branches[i + _numInChannels] = new ConditionalSend(true,
+                        output, i, i + _numInChannels, token);
             }
 
-            int br = chooseBranch( branches );
+            int br = chooseBranch(branches);
 
             // Sleep so that graphical displays involving this
             // applet will pause after colors are changed.
             try {
                 Thread.sleep(300);
-            } catch( InterruptedException e ) {
+            } catch (InterruptedException e) {
                 throw new TerminateProcessException(this, "Terminated");
             }
 
-            if ( br >= 0 && br < _numInChannels ) {
-                token = (StringToken)branches[br].getToken();
+            if ((br >= 0) && (br < _numInChannels)) {
+                token = (StringToken) branches[br].getToken();
                 _strValue = token.toString();
-            } else if ( br >= _numInChannels && br < numBranches ) {
+            } else if ((br >= _numInChannels) && (br < numBranches)) {
                 _strValue = "write";
-            } else if ( br == -1 ) {
+            } else if (br == -1) {
                 return;
             }
         }
@@ -180,9 +179,7 @@ public class Memory extends CSPActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     private int _numInChannels = -1;
     private int _numOutChannels = -1;
     private String _strValue = null;
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel;
 
 import java.util.Iterator;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Vertex;
 import diva.graph.modular.CompositeModel;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CompositePtolemyModel
+
 /**
    A diva node model for a Ptolemy II composite entity. Each element of
    the graph model is represented by an instance of Locatable, which is
@@ -70,7 +71,6 @@ import diva.graph.modular.CompositeModel;
    @see ptolemy.kernel.util.Location
 */
 public class CompositePtolemyModel implements CompositeModel {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -85,14 +85,16 @@ public class CompositePtolemyModel implements CompositeModel {
         if (!(composite instanceof NamedObj)) {
             return 0;
         }
-        long version = ((NamedObj)composite).workspace().getVersion();
-        if (_nodeList == null
-                || composite != _composite
-                || version != _version) {
-            _nodeList = _nodeList((NamedObj)composite);
+
+        long version = ((NamedObj) composite).workspace().getVersion();
+
+        if ((_nodeList == null) || (composite != _composite)
+                || (version != _version)) {
+            _nodeList = _nodeList((NamedObj) composite);
             _composite = composite;
             _version = version;
         }
+
         return _nodeList.size();
     }
 
@@ -107,14 +109,16 @@ public class CompositePtolemyModel implements CompositeModel {
         if (!(composite instanceof NamedObj)) {
             return (new LinkedList()).iterator();
         }
-        long version = ((NamedObj)composite).workspace().getVersion();
-        if (_nodeList == null
-                || composite != _composite
-                || version != _version) {
-            _nodeList = _nodeList((NamedObj)composite);
+
+        long version = ((NamedObj) composite).workspace().getVersion();
+
+        if ((_nodeList == null) || (composite != _composite)
+                || (version != _version)) {
+            _nodeList = _nodeList((NamedObj) composite);
             _composite = composite;
             _version = version;
         }
+
         return _nodeList.iterator();
     }
 
@@ -128,8 +132,9 @@ public class CompositePtolemyModel implements CompositeModel {
      */
     protected Locatable _getLocation(NamedObj object) {
         List locations = object.attributeList(Locatable.class);
+
         if (locations.size() > 0) {
-            return (Locatable)locations.get(0);
+            return (Locatable) locations.get(0);
         } else {
             try {
                 // NOTE: We need the location right away, so we go ahead
@@ -146,9 +151,9 @@ public class CompositePtolemyModel implements CompositeModel {
 
                 return location;
             } catch (Exception e) {
-                throw new InternalErrorException("Failed to create " +
-                        "location, even though one does not exist:" +
-                        e.getMessage());
+                throw new InternalErrorException("Failed to create "
+                    + "location, even though one does not exist:"
+                    + e.getMessage());
             }
         }
     }
@@ -169,19 +174,22 @@ public class CompositePtolemyModel implements CompositeModel {
             // Add a graph node for every class definition.
             // The node is actually the location contained by the entity.
             // If the entity does not contain a location, then create one.
-            Iterator classes = ((CompositeEntity)composite)
-                .classDefinitionList().iterator();
+            Iterator classes = ((CompositeEntity) composite).classDefinitionList()
+                                .iterator();
+
             while (classes.hasNext()) {
-                ComponentEntity entity = (ComponentEntity)classes.next();
+                ComponentEntity entity = (ComponentEntity) classes.next();
                 nodes.add(_getLocation(entity));
             }
+
             // Add a graph node for every entity.
             // The node is actually the location contained by the entity.
             // If the entity does not contain a location, then create one.
-            Iterator entities = ((CompositeEntity)composite)
-                .entityList().iterator();
+            Iterator entities = ((CompositeEntity) composite).entityList()
+                                 .iterator();
+
             while (entities.hasNext()) {
-                ComponentEntity entity = (ComponentEntity)entities.next();
+                ComponentEntity entity = (ComponentEntity) entities.next();
                 nodes.add(_getLocation(entity));
             }
         }
@@ -190,9 +198,10 @@ public class CompositePtolemyModel implements CompositeModel {
             // Add a graph node for every external port.
             // The node is actually the location contained by the port.
             // If the port does not contain a location, then create one.
-            Iterator ports = ((Entity)composite).portList().iterator();
+            Iterator ports = ((Entity) composite).portList().iterator();
+
             while (ports.hasNext()) {
-                ComponentPort port = (ComponentPort)ports.next();
+                ComponentPort port = (ComponentPort) ports.next();
                 nodes.add(_getLocation(port));
             }
         }
@@ -203,23 +212,26 @@ public class CompositePtolemyModel implements CompositeModel {
             // NOTE: This particular part of the graph model is irrelevant
             // for FSMs, but it is harmless to include it, so there is no
             // real need to subclass this to remove it.
-            Iterator relations = ((CompositeEntity)composite)
-                .relationList().iterator();
+            Iterator relations = ((CompositeEntity) composite).relationList()
+                                  .iterator();
+
             while (relations.hasNext()) {
-                ComponentRelation relation = (ComponentRelation)relations.next();
+                ComponentRelation relation = (ComponentRelation) relations.next();
                 List vertexList = relation.attributeList(Vertex.class);
 
                 if (vertexList.size() != 0) {
                     // Add in all the vertexes.
                     Iterator vertexes = vertexList.iterator();
+
                     while (vertexes.hasNext()) {
-                        Vertex v = (Vertex)vertexes.next();
+                        Vertex v = (Vertex) vertexes.next();
                         nodes.add(v);
                     }
                 } else {
                     // See if we need to create a vertex.
                     // Count the linked ports.
                     int count = relation.linkedPortList().size();
+
                     if (count != 2) {
                         // A vertex is needed, so create one.
                         try {
@@ -233,11 +245,9 @@ public class CompositePtolemyModel implements CompositeModel {
                             // (Unlikely though since auto naming will take
                             // into account subclasses).
                             vertex.propagateExistence();
-
                         } catch (Exception e) {
                             throw new InternalErrorException(
-                                    "Failed to create a vertex! " +
-                                    e.getMessage());
+                                "Failed to create a vertex! " + e.getMessage());
                         }
                     }
                 }
@@ -250,8 +260,9 @@ public class CompositePtolemyModel implements CompositeModel {
         // For visible attributes, add them only if they already
         // create a location.
         Iterator attributes = composite.attributeList().iterator();
+
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute) attributes.next();
 
             if (attribute instanceof Director) {
                 nodes.add(_getLocation(attribute));
@@ -259,6 +270,7 @@ public class CompositePtolemyModel implements CompositeModel {
                 // The object is not a director, so only give a location
                 // if one exists already.
                 List locations = attribute.attributeList(Locatable.class);
+
                 if (locations.size() > 0) {
                     nodes.add(locations.get(0));
                 }
@@ -271,7 +283,6 @@ public class CompositePtolemyModel implements CompositeModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The most recent object whose model was accessed.
     private Object _composite;
 

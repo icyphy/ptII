@@ -24,8 +24,10 @@
   COPYRIGHTENDKEY
 */
 package diva.canvas.event;
+
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 
 /**
  * An object which wraps a mouse listener and
@@ -97,5 +99,3 @@ public class LayerMouseAdapter implements LayerListener, LayerMotionListener {
         _filter = f;
     }
 }
-
-

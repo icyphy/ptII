@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ZeroLengthCycleAnalyzer
+
 /**
    A common interface for all the zero length cycle detection analyzers.
    <p>
@@ -37,8 +38,7 @@ package ptolemy.graph.analysis.analyzer;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-public interface ZeroLengthCycleAnalyzer  extends GraphAnalyzer {
-
+public interface ZeroLengthCycleAnalyzer extends GraphAnalyzer {
     /** Return true if a zero-length cycle exists in the graph under analysis.
      *
      *  @return True if the graph has a zero-length cycle.

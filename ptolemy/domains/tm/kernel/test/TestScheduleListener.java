@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.kernel.test;
 
 import ptolemy.domains.tm.kernel.ScheduleListener;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestTypeListener
+
 /**
    This dummy schedule listener implements the ScheduleListener interface.
    Each time event() is called, a line is appended to an internal
@@ -46,7 +47,6 @@ import ptolemy.domains.tm.kernel.ScheduleListener;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestScheduleListener implements ScheduleListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -68,6 +68,5 @@ public class TestScheduleListener implements ScheduleListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private StringBuffer _events = new StringBuffer("");
 }

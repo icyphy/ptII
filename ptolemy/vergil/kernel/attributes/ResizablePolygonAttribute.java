@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Polygon;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ResizablePolygonAttribute
+
 /**
    This is an attribute that is rendered as a polygon.  The <i>vertices</i>
    parameter is an array of doubles that specify the vertices of the polygon
@@ -59,7 +60,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ResizablePolygonAttribute extends FilledShapeAttribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -74,10 +74,11 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *   an attribute already in the container.
      */
     public ResizablePolygonAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         vertices = new Parameter(this, "vertices");
+
         ArrayType type = new ArrayType(BaseType.DOUBLE);
         vertices.setTypeEquals(type);
         vertices.setExpression("{0.0, 0.0, 50.0, 0.0, 25.0, 50.0, -25.0, 50.0}");
@@ -102,16 +103,18 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == vertices || attribute == width || attribute == height
-                && !_inAttributeChanged) {
+        throws IllegalActionException {
+        if ((attribute == vertices) || (attribute == width)
+                || ((attribute == height) && !_inAttributeChanged)) {
             // Check that the length of the array is even.
-            ArrayToken verticesValue = (ArrayToken)vertices.getToken();
+            ArrayToken verticesValue = (ArrayToken) vertices.getToken();
             int length = verticesValue.length();
-            if (length/2 != (length + 1)/2)  {
+
+            if ((length / 2) != ((length + 1) / 2)) {
                 throw new IllegalActionException(this,
-                        "Length of the vertices array is required to be even.");
+                    "Length of the vertices array is required to be even.");
             }
+
             try {
                 // Prevent redundant actions here... When we evaluate the
                 // _other_ atribute here (whichever one did _not_ trigger
@@ -119,9 +122,11 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
                 // attributeChanged(), which will result in this action
                 // being performed twice.
                 _inAttributeChanged = true;
-                double widthValue = ((DoubleToken) width.getToken()).doubleValue();
-                double heightValue =
-                    ((DoubleToken) height.getToken()).doubleValue();
+
+                double widthValue = ((DoubleToken) width.getToken())
+                    .doubleValue();
+                double heightValue = ((DoubleToken) height.getToken())
+                    .doubleValue();
                 _widthValue = widthValue;
                 _heightValue = heightValue;
                 _icon.setShape(_newShape());
@@ -140,14 +145,13 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *  @return A new shape.
      */
     protected Shape _newShape() {
-
         try {
-            ArrayToken verticesValue = (ArrayToken)vertices.getToken();
+            ArrayToken verticesValue = (ArrayToken) vertices.getToken();
             int length = verticesValue.length();
 
             // Keep computations in double as long as possible.
-            double[] xPoints = new double[length/2];
-            double[] yPoints = new double[length/2];
+            double[] xPoints = new double[length / 2];
+            double[] yPoints = new double[length / 2];
             double xMax = Double.NEGATIVE_INFINITY;
             double xMin = Double.POSITIVE_INFINITY;
             double yMax = Double.NEGATIVE_INFINITY;
@@ -158,49 +162,60 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             double height = _heightValue;
 
             // First, read vertex values and find the bounds.
-            for (int j = 0; j < length/2; j++) {
-                xPoints[j] = ((DoubleToken)verticesValue.getElement(2*j)).doubleValue();
-                yPoints[j] = ((DoubleToken)verticesValue.getElement(2*j + 1)).doubleValue();
+            for (int j = 0; j < (length / 2); j++) {
+                xPoints[j] = ((DoubleToken) verticesValue.getElement(2 * j))
+                    .doubleValue();
+                yPoints[j] = ((DoubleToken) verticesValue.getElement((2 * j)
+                        + 1)).doubleValue();
 
                 if (xPoints[j] > xMax) {
                     xMax = xPoints[j];
                 }
+
                 if (xPoints[j] < xMin) {
                     xMin = xPoints[j];
                 }
+
                 if (yPoints[j] > yMax) {
                     yMax = yPoints[j];
                 }
+
                 if (yPoints[j] < yMin) {
                     yMin = yPoints[j];
                 }
             }
 
             // Next, scale to width and height.
-            double scaleX = _widthValue/(xMax - xMin);
-            double scaleY = _heightValue/(yMax - yMin);
-            for (int j = 0; j < length/2; j++) {
+            double scaleX = _widthValue / (xMax - xMin);
+            double scaleY = _heightValue / (yMax - yMin);
+
+            for (int j = 0; j < (length / 2); j++) {
                 xPoints[j] *= scaleX;
                 yPoints[j] *= scaleY;
             }
 
             // Finally, correct if centered, and convert to int.
-            int[] xInt = new int[length/2];
-            int[] yInt = new int[length/2];
+            int[] xInt = new int[length / 2];
+            int[] yInt = new int[length / 2];
+
             if (_centeredValue) {
-                double xOffset = (xMin - xMax)/2;
-                double yOffset = (yMin - yMax)/2;
-                for (int i = 0; i < length/2; i++) {
-                    xInt[i] = (int)Math.rint(xPoints[i] + xOffset);
-                    yInt[i] = (int)Math.rint(yPoints[i] + yOffset);;
+                double xOffset = (xMin - xMax) / 2;
+                double yOffset = (yMin - yMax) / 2;
+
+                for (int i = 0; i < (length / 2); i++) {
+                    xInt[i] = (int) Math.rint(xPoints[i] + xOffset);
+                    yInt[i] = (int) Math.rint(yPoints[i] + yOffset);
+                    ;
                 }
             } else {
-                for (int i = 0; i < length/2; i++) {
-                    xInt[i] = (int)Math.rint(xPoints[i]);
-                    yInt[i] = (int)Math.rint(yPoints[i]);;
+                for (int i = 0; i < (length / 2); i++) {
+                    xInt[i] = (int) Math.rint(xPoints[i]);
+                    yInt[i] = (int) Math.rint(yPoints[i]);
+                    ;
                 }
             }
-            return new Polygon(xInt, yInt, length/2);
+
+            return new Polygon(xInt, yInt, length / 2);
         } catch (IllegalActionException e) {
             // This should not occur because attributeChanged()
             // has accessed the token of vertices.

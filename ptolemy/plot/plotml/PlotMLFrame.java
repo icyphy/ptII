@@ -44,6 +44,7 @@ import ptolemy.plot.PlotFrame;
 
 import com.microstar.xml.XmlException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLFrame
 
@@ -80,7 +81,6 @@ import com.microstar.xml.XmlException;
    @Pt.AcceptedRating red (cxh)
 */
 public class PlotMLFrame extends PlotFrame {
-
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
      */
@@ -102,7 +102,6 @@ public class PlotMLFrame extends PlotFrame {
         super(title, plotArg);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -110,14 +109,12 @@ public class PlotMLFrame extends PlotFrame {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "Ptolemy plot frame\n" +
-                "By: Edward A. Lee\n" +
-                "and Christopher Hylands\n" +
-                "Version " + PlotBox.PTPLOT_RELEASE +
-                ", Build: $Id$"+
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "Ptolemy plot frame\n" + "By: Edward A. Lee\n"
+            + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
+            + ", Build: $Id$"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether
@@ -134,35 +131,40 @@ public class PlotMLFrame extends PlotFrame {
         // Create a buffered input stream so that mark and reset
         // are supported.
         BufferedInputStream bin = new BufferedInputStream(in);
+
         // Peek at the file...
         bin.mark(9);
+
         // Read 8 bytes in case 16-bit encoding is being used.
         byte[] peek = new byte[8];
         bin.read(peek);
         bin.reset();
+
         if ((new String(peek)).startsWith("<?xm")) {
             // file is an XML file.
             PlotBoxMLParser parser;
+
             if (plot instanceof Plot) {
-                parser = new PlotMLParser((Plot)plot);
+                parser = new PlotMLParser((Plot) plot);
             } else {
                 parser = new PlotBoxMLParser(plot);
             }
+
             try {
                 parser.parse(base, bin);
             } catch (Exception ex) {
                 String msg;
+
                 if (ex instanceof XmlException) {
-                    XmlException xmlex = (XmlException)ex;
-                    msg =
-                        "PlotMLFrame: failed to parse PlotML data:\n"
-                        + "line: " + xmlex.getLine()
-                        + ", column: " + xmlex.getColumn()
-                        + "\nIn entity: " + xmlex.getSystemId()
-                        + "\n";
+                    XmlException xmlex = (XmlException) ex;
+                    msg = "PlotMLFrame: failed to parse PlotML data:\n"
+                        + "line: " + xmlex.getLine() + ", column: "
+                        + xmlex.getColumn() + "\nIn entity: "
+                        + xmlex.getSystemId() + "\n";
                 } else {
                     msg = "PlotMLFrame: failed to parse PlotML data:\n";
                 }
+
                 System.err.println(msg + ex.toString());
                 ex.printStackTrace();
             }

@@ -24,11 +24,13 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.toolbox;
+
 import java.util.Hashtable;
 
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
+
 
 /**
  * A NodeRenderer implementation which allows a user to add different
@@ -61,7 +63,8 @@ public class TypedNodeRenderer implements NodeRenderer {
      * as its default (i.e. how to render a node if it
      * has a type that is not understood by this renderer).
      */
-    public TypedNodeRenderer(GraphController controller, NodeRenderer defaultRenderer) {
+    public TypedNodeRenderer(GraphController controller,
+        NodeRenderer defaultRenderer) {
         _controller = controller;
         _defaultRenderer = defaultRenderer;
         _typedRenderers = new Hashtable();
@@ -91,12 +94,10 @@ public class TypedNodeRenderer implements NodeRenderer {
     public Figure render(Object node) {
         try {
             Object o = _controller.getGraphModel().getSemanticObject(node);
-            NodeRenderer r = (NodeRenderer)_typedRenderers.get(o.getClass());
+            NodeRenderer r = (NodeRenderer) _typedRenderers.get(o.getClass());
             return r.render(node);
         } catch (Exception ex) {
             return _defaultRenderer.render(node);
         }
     }
 }
-
-

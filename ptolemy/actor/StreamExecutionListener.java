@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StreamExecutionListener
+
 /**
    A default implementation of the ExecutionListener interface.
    This implementation prints information about each event to a stream.
@@ -44,7 +45,6 @@ import java.io.PrintStream;
    @Pt.AcceptedRating Green (bart)
 */
 public class StreamExecutionListener implements ExecutionListener {
-
     /** Create a listener that sends messages to the standard output.
      */
     public StreamExecutionListener() {
@@ -75,7 +75,7 @@ public class StreamExecutionListener implements ExecutionListener {
      */
     public void executionFinished(Manager manager) {
         _output.println("Completed execution with "
-                + manager.getIterationCount() + " iterations");
+            + manager.getIterationCount() + " iterations");
     }
 
     /** Report that the manager has changed state by printing a
@@ -85,17 +85,18 @@ public class StreamExecutionListener implements ExecutionListener {
     public void managerStateChanged(Manager manager) {
         Manager.State state = manager.getState();
         String message;
+
         if (state == Manager.ITERATING) {
             message = state.getDescription() + " number "
                 + manager.getIterationCount();
         } else {
             message = state.getDescription();
         }
+
         _output.println(message);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private PrintStream _output;
 }

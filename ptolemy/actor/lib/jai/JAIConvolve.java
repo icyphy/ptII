@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.jai;
 
 import javax.media.jai.JAI;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIConvolve
+
 /**
    An actor that convolves an image with a given filter.  The filter must
    be rectangular.
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JAIConvolve extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -63,8 +63,7 @@ public class JAIConvolve extends Transformer {
      *   actor with this name.
      */
     public JAIConvolve(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -89,20 +88,22 @@ public class JAIConvolve extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == filter) {
-            DoubleMatrixToken matrix = (DoubleMatrixToken)filter.getToken();
+            DoubleMatrixToken matrix = (DoubleMatrixToken) filter.getToken();
             double[][] matrixValue = matrix.doubleMatrix();
             int height = matrix.getRowCount();
             int width = matrix.getColumnCount();
-            float[] floatArray = new float[width*height];
+            float[] floatArray = new float[width * height];
             int count = 0;
-            for (int i = 0; i < height; i = i+1) {
-                for (int j = 0; j < width; j = j+1) {
-                    floatArray[count] = (float)matrixValue[i][j];
+
+            for (int i = 0; i < height; i = i + 1) {
+                for (int j = 0; j < width; j = j + 1) {
+                    floatArray[count] = (float) matrixValue[i][j];
                     count = count + 1;
                 }
             }
+
             _filter = new KernelJAI(width, height, floatArray);
         } else {
             super.attributeChanged(attribute);
@@ -116,6 +117,7 @@ public class JAIConvolve extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
         RenderedOp newImage = JAI.create("convolve", oldImage, _filter);
@@ -129,7 +131,9 @@ public class JAIConvolve extends Transformer {
     private KernelJAI _filter;
 
     /** A filter that does nothing to an image when convolved with it. */
-    private double[][] _initialMatrix = {{0.0F, 0.0F, 0.0F},
-                                         {0.0F, 1.0F, 0.0F},
-                                         {0.0F, 0.0F, 0.0F}};
+    private double[][] _initialMatrix = {
+            { 0.0F, 0.0F, 0.0F },
+            { 0.0F, 1.0F, 0.0F },
+            { 0.0F, 0.0F, 0.0F }
+        };
 }

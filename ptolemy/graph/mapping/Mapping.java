@@ -23,11 +23,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.mapping;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Mapping
+
 /** A mapping from some domain of values into some range.
     Mappings are different from Maps (see {@link java.util.List}) in that the set
     of keys (domain values) is not necessarily stored with or even known to a
@@ -51,7 +52,6 @@ package ptolemy.graph.mapping;
     @version $Id$
 */
 public interface Mapping {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel;
 
 import java.io.IOException;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Entity
+
 /**
    An Entity is a vertex in a generalized graph. It is an aggregation
    of ports. The ports can be linked to relations. The
@@ -84,7 +85,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.kernel.Relation
 */
 public class Entity extends InstantiableNamedObj {
-
     /** Construct an entity in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -131,7 +131,7 @@ public class Entity extends InstantiableNamedObj {
      *  @exception IllegalActionException If the name has a period.
      */
     public Entity(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace, name);
         _portList = new NamedList(this);
     }
@@ -152,18 +152,20 @@ public class Entity extends InstantiableNamedObj {
      *   if one of the attributes cannot be cloned.
      *  @return The new Entity.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         try {
             workspace().getReadAccess();
 
-            Entity newEntity = (Entity)super.clone(workspace);
+            Entity newEntity = (Entity) super.clone(workspace);
             newEntity._portList = new NamedList(newEntity);
+
             // Clone the ports.
             Iterator ports = portList().iterator();
+
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                Port newPort = (Port)port.clone(workspace);
+                Port port = (Port) ports.next();
+                Port newPort = (Port) port.clone(workspace);
+
                 // Assume that since we are dealing with clones,
                 // exceptions won't occur normally (the original was successfully
                 // incorporated, so this one should be too).  If they do, throw an
@@ -173,63 +175,59 @@ public class Entity extends InstantiableNamedObj {
                 } catch (KernelException ex) {
                     workspace.remove(newEntity);
                     throw new InvalidStateException(this,
-                            "Failed to clone an Entity: " + ex.getMessage());
+                        "Failed to clone an Entity: " + ex.getMessage());
                 }
             }
+
             Class myClass = getClass();
-            Field fields[] = myClass.getFields();
+            Field[] fields = myClass.getFields();
 
             for (int i = 0; i < fields.length; i++) {
                 try {
                     if (fields[i].get(newEntity) instanceof Port) {
                         String fieldName = fields[i].getName();
                         Port port = newEntity.getPort(fieldName);
+
                         if (port == null) {
                             // Names that end in Port are ok.
                             if (fieldName.endsWith("Port")) {
-                                port = newEntity.getPort(
-                                        fieldName.substring(0,
-                                                fieldName.length() - 4));
+                                port = newEntity.getPort(fieldName.substring(
+                                            0, fieldName.length() - 4));
                             }
+
                             if (port == null) {
                                 throw new IllegalActionException(this,
-                                        "Could not find a port named '"
-                                        + fieldName + "' or '"
-                                        + fieldName + "Port'. "
-                                        + "This can occur when the name of "
-                                        + "the "
-                                        + "variable does not match the name "
-                                        + "passed to the constructor of the "
-                                        + "actor.\n"
-                                        + "Right:\n"
-                                        + "    " + fieldName
-                                        + " = new TypedIOPort(this, "
-                                        + "\"" + fieldName
-                                        + "\", true, false);\n"
-                                        + "Right:\n"
-                                        + "    " + fieldName
-                                        + " = new TypedIOPort(this, "
-                                        + "\"" + fieldName
-                                        + "Port\", true, false);\n"
-                                        + "Wrong:\n"
-                                        + "    " + fieldName
-                                        + " = new TypedIOPort(this, "
-                                        + "\"foo\", true, false);");
+                                    "Could not find a port named '" + fieldName
+                                    + "' or '" + fieldName + "Port'. "
+                                    + "This can occur when the name of "
+                                    + "the "
+                                    + "variable does not match the name "
+                                    + "passed to the constructor of the "
+                                    + "actor.\n" + "Right:\n" + "    "
+                                    + fieldName + " = new TypedIOPort(this, "
+                                    + "\"" + fieldName + "\", true, false);\n"
+                                    + "Right:\n" + "    " + fieldName
+                                    + " = new TypedIOPort(this, " + "\""
+                                    + fieldName + "Port\", true, false);\n"
+                                    + "Wrong:\n" + "    " + fieldName
+                                    + " = new TypedIOPort(this, "
+                                    + "\"foo\", true, false);");
                             }
                         }
+
                         fields[i].set(newEntity, port);
                     }
                 } catch (Exception ex) {
                     // CloneNotSupportedException does not have a
                     // constructor that takes a cause argument, so we call
                     // initCause() and then throw.
-                    CloneNotSupportedException cloneException =
-                        new CloneNotSupportedException("Problem cloning '"
-                                + fields[i].getName() + "'");
+                    CloneNotSupportedException cloneException = new CloneNotSupportedException(
+                            "Problem cloning '" + fields[i].getName() + "'");
                     cloneException.initCause(ex);
                     throw cloneException;
                 }
             }
+
             _cloneFixAttributeFields(newEntity);
             return newEntity;
         } finally {
@@ -249,6 +247,7 @@ public class Entity extends InstantiableNamedObj {
     public List connectedPortList() {
         try {
             _workspace.getReadAccess();
+
             // This works by constructing a linked list and returning it.
             // That list will not be corrupted by changes
             // in the topology.
@@ -256,14 +255,17 @@ public class Entity extends InstantiableNamedObj {
             if (_workspace.getVersion() != _connectedPortsVersion) {
                 // Cache is not valid, so update it.
                 _connectedPorts = new LinkedList();
+
                 Iterator ports = _portList.elementList().iterator();
 
-                while ( ports.hasNext() ) {
-                    Port port = (Port)ports.next();
-                    _connectedPorts.addAll( port.connectedPortList() );
+                while (ports.hasNext()) {
+                    Port port = (Port) ports.next();
+                    _connectedPorts.addAll(port.connectedPortList());
                 }
+
                 _connectedPortsVersion = _workspace.getVersion();
             }
+
             return Collections.unmodifiableList(_connectedPorts);
         } finally {
             _workspace.doneReading();
@@ -318,17 +320,22 @@ public class Entity extends InstantiableNamedObj {
     public Attribute getAttribute(String name) {
         try {
             _workspace.getReadAccess();
+
             Attribute result = super.getAttribute(name);
+
             if (result == null) {
                 // Check ports.
                 String[] subnames = _splitName(name);
+
                 if (subnames[1] != null) {
                     Port match = getPort(subnames[0]);
+
                     if (match != null) {
                         result = match.getAttribute(subnames[1]);
                     }
                 }
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -344,7 +351,7 @@ public class Entity extends InstantiableNamedObj {
     public Port getPort(String name) {
         try {
             _workspace.getReadAccess();
-            return (Port)_portList.get(name);
+            return (Port) _portList.get(name);
         } finally {
             _workspace.doneReading();
         }
@@ -368,19 +375,23 @@ public class Entity extends InstantiableNamedObj {
     public List linkedRelationList() {
         try {
             _workspace.getReadAccess();
+
             // This method constructs a list and then enumerates it.
             // The list is cached for efficiency.
             if (_workspace.getVersion() != _linkedRelationsVersion) {
                 // Cache is not valid.  Update it.
                 _linkedRelations = new LinkedList();
+
                 Iterator ports = _portList.elementList().iterator();
 
-                while ( ports.hasNext() ) {
-                    Port port = (Port)ports.next();
-                    _linkedRelations.addAll( port.linkedRelationList() );
+                while (ports.hasNext()) {
+                    Port port = (Port) ports.next();
+                    _linkedRelations.addAll(port.linkedRelationList());
                 }
+
                 _linkedRelationsVersion = _workspace.getVersion();
             }
+
             return Collections.unmodifiableList(_linkedRelations);
         } finally {
             _workspace.doneReading();
@@ -412,9 +423,10 @@ public class Entity extends InstantiableNamedObj {
      *   with the specified name.
      */
     public Port newPort(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+
             Port port = new Port(this, name);
             return port;
         } finally {
@@ -444,20 +456,21 @@ public class Entity extends InstantiableNamedObj {
     public void removeAllPorts() {
         try {
             _workspace.getWriteAccess();
+
             // Have to copy _portList to avoid corrupting the iterator.
             // NOTE: Could use a ListIterator here instead.
             NamedList portListCopy = new NamedList(_portList);
             Iterator ports = portListCopy.elementList().iterator();
 
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
+                Port port = (Port) ports.next();
+
                 try {
                     port.setContainer(null);
                 } catch (KernelException ex) {
                     // Should not be thrown.
                     throw new InternalErrorException(
-                            "Internal error in Port constructor!"
-                            + ex.getMessage());
+                        "Internal error in Port constructor!" + ex.getMessage());
                 }
             }
         } finally {
@@ -474,21 +487,24 @@ public class Entity extends InstantiableNamedObj {
      *   this entity contains ports with links.
      */
     public final void setClassDefinition(boolean isClass)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (isClass && !isClassDefinition()) {
             // Converting from an instance to a class.
             // Check that there are no links
             // to ports contained by this entity.
             Iterator ports = portList().iterator();
+
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
+                Port port = (Port) ports.next();
+
                 if (port.numLinks() > 0) {
                     throw new IllegalActionException(this,
-                            "Cannot convert an entity to a class definition "
-                            + "while it contains ports with links.");
+                        "Cannot convert an entity to a class definition "
+                        + "while it contains ports with links.");
                 }
             }
         }
+
         super.setClassDefinition(isClass);
     }
 
@@ -506,13 +522,17 @@ public class Entity extends InstantiableNamedObj {
         if (prefix == null) {
             prefix = "null";
         }
+
         prefix = _stripNumericSuffix(prefix);
+
         String candidate = prefix;
         int uniqueNameIndex = 2;
-        while (getAttribute(candidate) != null
-                || getPort(candidate) != null) {
+
+        while ((getAttribute(candidate) != null)
+                || (getPort(candidate) != null)) {
             candidate = prefix + uniqueNameIndex++;
         }
+
         return candidate;
     }
 
@@ -528,15 +548,18 @@ public class Entity extends InstantiableNamedObj {
         super.validateSettables();
 
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            Port port = (Port)ports.next();
+            Port port = (Port) ports.next();
+
             if (port instanceof Settable) {
                 try {
-                    ((Settable)port).validate();
+                    ((Settable) port).validate();
                 } catch (IllegalActionException ex) {
                     handleModelError(this, ex);
                 }
             }
+
             port.validateSettables();
         }
     }
@@ -561,7 +584,7 @@ public class Entity extends InstantiableNamedObj {
      *   name already in the entity.
      */
     protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         _portList.append(port);
     }
 
@@ -583,25 +606,36 @@ public class Entity extends InstantiableNamedObj {
     protected String _description(int detail, int indent, int bracket) {
         try {
             _workspace.getReadAccess();
+
             String result;
-            if (bracket == 1 || bracket == 2) {
+
+            if ((bracket == 1) || (bracket == 2)) {
                 result = super._description(detail, indent, 1);
             } else {
                 result = super._description(detail, indent, 0);
             }
-            if ((detail & CONTENTS) != 0 || (detail & LINKS) != 0) {
+
+            if (((detail & CONTENTS) != 0) || ((detail & LINKS) != 0)) {
                 if (result.trim().length() > 0) {
                     result += " ";
                 }
+
                 result += "ports {\n";
+
                 Iterator portLists = portList().iterator();
+
                 while (portLists.hasNext()) {
-                    Port port = (Port)portLists.next();
-                    result += port._description(detail, indent + 1, 2) + "\n";
+                    Port port = (Port) portLists.next();
+                    result += (port._description(detail, indent + 1, 2) + "\n");
                 }
-                result += _getIndentPrefix(indent) + "}";
+
+                result += (_getIndentPrefix(indent) + "}");
             }
-            if (bracket == 2) result += "}";
+
+            if (bracket == 2) {
+                result += "}";
+            }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -617,11 +651,13 @@ public class Entity extends InstantiableNamedObj {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         super._exportMoMLContents(output, depth);
+
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            Port port = (Port)ports.next();
+            Port port = (Port) ports.next();
             port.exportMoML(output, depth);
         }
     }
@@ -641,7 +677,6 @@ public class Entity extends InstantiableNamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                         friendly variables                ////
-
     // The following is package friendly so port can access it.
 
     /** A list of Ports owned by this Entity. */
@@ -649,7 +684,6 @@ public class Entity extends InstantiableNamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Cached list of connected ports.
     private transient LinkedList _connectedPorts;
     private transient long _connectedPortsVersion = -1;
@@ -673,7 +707,6 @@ public class Entity extends InstantiableNamedObj {
      */
     protected class ContainedObjectsIterator
         extends NamedObj.ContainedObjectsIterator {
-
         /** Return true if the iteration has more elements.
          *  In this base class, this returns true if there are more
          *  attributes or ports.
@@ -683,9 +716,11 @@ public class Entity extends InstantiableNamedObj {
             if (super.hasNext()) {
                 return true;
             }
+
             if (_portListIterator == null) {
                 _portListIterator = portList().iterator();
             }
+
             return _portListIterator.hasNext();
         }
 
@@ -697,9 +732,11 @@ public class Entity extends InstantiableNamedObj {
             if (super.hasNext()) {
                 return super.next();
             }
+
             if (_portListIterator == null) {
                 _portListIterator = portList().iterator();
             }
+
             _lastElementWasMine = true;
             return _portListIterator.next();
         }

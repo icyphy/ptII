@@ -28,10 +28,10 @@ COPYRIGHTENDKEY
 isCloseTo(t), isCloseTo(t, e), EPSILON
 
 */
-
 package ptolemy.math;
 
 import java.io.Serializable;
+
 
 /** This class provides a complex data type and a library of functions that
     operate on and return complex numbers.  An instance of the class is
@@ -62,7 +62,6 @@ import java.io.Serializable;
     @Pt.AcceptedRating Red (cxh)
 */
 public class Complex implements Cloneable, Serializable {
-
     /** Construct a Complex equal to zero.
      *  @deprecated Use Complex.ZERO instead.
      */
@@ -91,7 +90,6 @@ public class Complex implements Cloneable, Serializable {
     // NOTE: There is no need for a constructor that takes a Complex
     // argument because instances of this class are immutable.  There
     // is never a need to make another instance with the same value.
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -115,7 +113,8 @@ public class Complex implements Cloneable, Serializable {
      *  arc cosine of the given complex number.
      */
     public final Complex acos() {
-        Complex c1 = new Complex(1.0-real*real+imag*imag, -2.0*real*imag);
+        Complex c1 = new Complex(1.0 - (real * real) + (imag * imag),
+                -2.0 * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(real - c2.imag, imag + c2.real);
         Complex c4 = c3.log();
@@ -148,7 +147,8 @@ public class Complex implements Cloneable, Serializable {
      *  principal hyperbolic arc cosine of this complex number.
      */
     public final Complex acosh() {
-        Complex c1 = new Complex(real*real-imag*imag-1.0, 2.0*real*imag);
+        Complex c1 = new Complex((real * real) - (imag * imag) - 1.0,
+                2.0 * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
         return c3.log();
@@ -182,7 +182,7 @@ public class Complex implements Cloneable, Serializable {
      *  @return A double in the range -<em>pi < /em> to <em>pi</em>.
      */
     public final double angle() {
-        return  Math.atan2(imag, real);
+        return Math.atan2(imag, real);
     }
 
     /** Return the angle or argument of this complex number.
@@ -190,7 +190,7 @@ public class Complex implements Cloneable, Serializable {
      *  @return A double in the range -<em>pi < /em> to <em>pi</em>.
      */
     public static double angle(Complex z) {
-        return  z.angle();
+        return z.angle();
     }
 
     /** Return the principal arc sine of this complex number.
@@ -204,9 +204,10 @@ public class Complex implements Cloneable, Serializable {
      *  of this complex number.
      */
     public final Complex asin() {
-        Complex c1 = new Complex(1.0-real*real+imag*imag, -2.0*real*imag);
+        Complex c1 = new Complex(1.0 - (real * real) + (imag * imag),
+                -2.0 * real * imag);
         Complex c2 = c1.sqrt();
-        Complex c3 = new Complex(c2.real-imag, c2.imag+real);
+        Complex c3 = new Complex(c2.real - imag, c2.imag + real);
         Complex c4 = c3.log();
         return new Complex(c4.imag, -c4.real);
     }
@@ -237,7 +238,8 @@ public class Complex implements Cloneable, Serializable {
      *  hyperbolic arc sine of this complex number.
      */
     public final Complex asinh() {
-        Complex c1 = new Complex(1.0+real*real-imag*imag, 2.0*real*imag);
+        Complex c1 = new Complex((1.0 + (real * real)) - (imag * imag),
+                2.0 * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
         return c3.log();
@@ -269,11 +271,11 @@ public class Complex implements Cloneable, Serializable {
      *  tangent of this complex number.
      */
     public final Complex atan() {
-        double denominator = real*real+(imag+1.0)*(imag+1.0);
-        Complex c1 = new Complex((-real*real-imag*imag+1.0)/denominator,
-                2.0*real/denominator);
+        double denominator = (real * real) + ((imag + 1.0) * (imag + 1.0));
+        Complex c1 = new Complex(((-real * real) - (imag * imag) + 1.0) / denominator,
+                (2.0 * real) / denominator);
         Complex c2 = c1.log();
-        return new Complex(c2.imag*0.5, -c2.real*0.5);
+        return new Complex(c2.imag * 0.5, -c2.real * 0.5);
     }
 
     /** Return the principal arc tangent of the given complex
@@ -302,11 +304,11 @@ public class Complex implements Cloneable, Serializable {
      *  hyperbolic arc tangent of this complex number.
      */
     public final Complex atanh() {
-        double denominator = (1.0-real)*(1.0-real)+imag*imag;
-        Complex c1 = new Complex((-real*real-imag*imag+1.0)/denominator,
-                2.0*imag/denominator);
+        double denominator = ((1.0 - real) * (1.0 - real)) + (imag * imag);
+        Complex c1 = new Complex(((-real * real) - (imag * imag) + 1.0) / denominator,
+                (2.0 * imag) / denominator);
         Complex c2 = c1.log();
-        return new Complex(c2.real*0.5, c2.imag*0.5);
+        return new Complex(c2.real * 0.5, c2.imag * 0.5);
     }
 
     /** Return the principal hyperbolic arc tangent of
@@ -330,7 +332,9 @@ public class Complex implements Cloneable, Serializable {
      */
     public final Complex conjugate() {
         // Avoid negative zero.
-        if (imag != 0.0) return new Complex(real, -imag);
+        if (imag != 0.0) {
+            return new Complex(real, -imag);
+        }
 
         return new Complex(real, imag);
     }
@@ -368,7 +372,7 @@ public class Complex implements Cloneable, Serializable {
         Complex c2 = c1.exp();
         Complex c3 = new Complex(imag, -real);
         Complex c4 = c2.add(c3.exp());
-        return new Complex(c4.real*0.5, c4.imag*0.5);
+        return new Complex(c4.real * 0.5, c4.imag * 0.5);
     }
 
     /** Return the cosine of the given complex number.  This is defined by:
@@ -399,7 +403,7 @@ public class Complex implements Cloneable, Serializable {
         Complex c1 = exp();
         Complex c2 = new Complex(-real, -imag);
         Complex c3 = c1.add(c2.exp());
-        return new Complex(c3.real*0.5, c3.imag*0.5);
+        return new Complex(c3.real * 0.5, c3.imag * 0.5);
     }
 
     /** Return the hyperbolic cosine of the given complex
@@ -483,8 +487,8 @@ public class Complex implements Cloneable, Serializable {
     public final Complex divide(Complex divisor) {
         // This algorithm results from writing a/b as (ab*)/magSquared(b).
         double denominator = divisor.magnitudeSquared();
-        return new Complex((real*divisor.real+imag*divisor.imag)/denominator,
-                (imag*divisor.real-real*divisor.imag)/denominator);
+        return new Complex(((real * divisor.real) + (imag * divisor.imag)) / denominator,
+            ((imag * divisor.real) - (real * divisor.imag)) / denominator);
     }
 
     /** Return true if the real and imaginary parts of this complex number
@@ -493,7 +497,7 @@ public class Complex implements Cloneable, Serializable {
      *  @return True if the real and imaginary parts are equal.
      */
     public final boolean equals(Complex z) {
-        return (z.real == real && z.imag == imag);
+        return ((z.real == real) && (z.imag == imag));
     }
 
     /** Return the exponential of this complex number,
@@ -504,7 +508,7 @@ public class Complex implements Cloneable, Serializable {
      *  of this complex number.
      */
     public final Complex exp() {
-        double magnitude =  Math.exp(real);
+        double magnitude = Math.exp(real);
         return polarToComplex(magnitude, imag);
     }
 
@@ -563,8 +567,10 @@ public class Complex implements Cloneable, Serializable {
         if (distance < 0.0) {
             return false;
         }
+
         double differenceSquared = subtract(z).magnitudeSquared();
-        double distanceSquared = distance*distance;
+        double distanceSquared = distance * distance;
+
         if (differenceSquared > distanceSquared) {
             return false;
         } else {
@@ -579,7 +585,7 @@ public class Complex implements Cloneable, Serializable {
      *  @return True if this is infinite.
      */
     public final boolean isInfinite() {
-        return  ( Double.isInfinite(real) || Double.isInfinite(imag) );
+        return (Double.isInfinite(real) || Double.isInfinite(imag));
     }
 
     /** Return true if either the real or imaginary part of the given
@@ -601,7 +607,7 @@ public class Complex implements Cloneable, Serializable {
      *  @return True if this is NaN.
      */
     public final boolean isNaN() {
-        return  ( Double.isNaN(real) || Double.isNaN(imag) );
+        return (Double.isNaN(real) || Double.isNaN(imag));
     }
 
     /** Return true if either the real or imaginary part of the given
@@ -629,7 +635,7 @@ public class Complex implements Cloneable, Serializable {
      *  of this complex number.
      */
     public final Complex log() {
-        return  new Complex( Math.log(magnitude()), angle() );
+        return new Complex(Math.log(magnitude()), angle());
     }
 
     /** Return the natural logarithm of the specified complex
@@ -677,7 +683,7 @@ public class Complex implements Cloneable, Serializable {
      *  complex number.
      */
     public double magnitudeSquared() {
-        return (real*real) + (imag*imag);
+        return (real * real) + (imag * imag);
     }
 
     /** Return the square of the magnitude of this complex number.
@@ -702,7 +708,8 @@ public class Complex implements Cloneable, Serializable {
      *  @see Complex#scale
      */
     public Complex multiply(Complex w) {
-        return new Complex(w.real*real-w.imag*imag, w.real*imag+w.imag*real);
+        return new Complex((w.real * real) - (w.imag * imag),
+            (w.real * imag) + (w.imag * real));
     }
 
     /** Negate this complex number.
@@ -715,8 +722,15 @@ public class Complex implements Cloneable, Serializable {
         // Avoid negative zero.
         double r = 0.0;
         double i = 0.0;
-        if (real != 0.0) r = -real;
-        if (imag != 0.0) i = -imag;
+
+        if (real != 0.0) {
+            r = -real;
+        }
+
+        if (imag != 0.0) {
+            i = -imag;
+        }
+
         return new Complex(r, i);
     }
 
@@ -726,15 +740,18 @@ public class Complex implements Cloneable, Serializable {
      *  @param angle The angle.
      *  @return A new complex number with the specified magnitude and angle.
      */
-    public static Complex polarToComplex(double magnitude,
-            double angle) {
+    public static Complex polarToComplex(double magnitude, double angle) {
         if (magnitude < 0.0) {
-            angle +=  Math.PI;
+            angle += Math.PI;
             magnitude = -magnitude;
         }
-        if (magnitude == 0.0) return Complex.ZERO;
-        return  new Complex(magnitude * Math.cos(angle),
-                magnitude * Math.sin(angle));
+
+        if (magnitude == 0.0) {
+            return Complex.ZERO;
+        }
+
+        return new Complex(magnitude * Math.cos(angle),
+            magnitude * Math.sin(angle));
     }
 
     /** Return a new complex number with value <em>z <sup>y</sup></em>
@@ -748,10 +765,9 @@ public class Complex implements Cloneable, Serializable {
         // This formula follows from expanding the input form
         //     (rho e^(j theta))^(c + dj)
         // to something of the form ae^jb.
-
-        double lnrho =  Math.log(magnitude());
+        double lnrho = Math.log(magnitude());
         double magnitude = Math.exp(lnrho * y);
-        double angle =  angle() * y;
+        double angle = angle() * y;
         return polarToComplex(magnitude, angle);
     }
 
@@ -777,11 +793,10 @@ public class Complex implements Cloneable, Serializable {
         // This formula follows from expanding the input form
         //     (rho e^(j theta))^(c + dj)
         // to something of the form ae^jb.
-
-        double lnrho =  Math.log(magnitude());
-        double theta =  angle();
-        double magnitude = Math.exp((lnrho*y.real) - (theta*y.imag));
-        double angle =  (lnrho*y.imag) + (theta*y.real);
+        double lnrho = Math.log(magnitude());
+        double theta = angle();
+        double magnitude = Math.exp((lnrho * y.real) - (theta * y.imag));
+        double angle = (lnrho * y.imag) + (theta * y.real);
         return polarToComplex(magnitude, angle);
     }
 
@@ -831,7 +846,7 @@ public class Complex implements Cloneable, Serializable {
      */
     public final Complex reciprocal() {
         double magSquared = magnitudeSquared();
-        return new Complex(real/magSquared, -imag/magSquared);
+        return new Complex(real / magSquared, -imag / magSquared);
     }
 
     /** Return the reciprocal of this complex number.
@@ -857,7 +872,7 @@ public class Complex implements Cloneable, Serializable {
     public final Complex[] roots(int n) {
         if (n < 1) {
             throw new IllegalArgumentException("Complex.roots(): "
-                    + "n must be greater than or equal to one.");
+                + "n must be greater than or equal to one.");
         }
 
         Complex[] returnValue = new Complex[n];
@@ -902,7 +917,7 @@ public class Complex implements Cloneable, Serializable {
      *  @see Complex#multiply
      */
     public final Complex scale(double scalar) {
-        return new Complex(real*scalar, imag*scalar);
+        return new Complex(real * scalar, imag * scalar);
     }
 
     /** Return a new complex number with value equal to the secant
@@ -949,7 +964,7 @@ public class Complex implements Cloneable, Serializable {
         Complex c2 = c1.exp();
         Complex c3 = new Complex(imag, -real);
         Complex c4 = c2.subtract(c3.exp());
-        return new Complex(c4.imag*0.5, -c4.real*0.5);
+        return new Complex(c4.imag * 0.5, -c4.real * 0.5);
     }
 
     /** Return a new complex number with value equal to the sine
@@ -980,7 +995,7 @@ public class Complex implements Cloneable, Serializable {
         Complex c1 = exp();
         Complex c2 = new Complex(-real, -imag);
         Complex c3 = c1.subtract(c2.exp());
-        return new Complex(c3.real*0.5, c3.imag*0.5);
+        return new Complex(c3.real * 0.5, c3.imag * 0.5);
     }
 
     /** Return a new complex number with value equal to the hyperbolic sine
@@ -1011,7 +1026,7 @@ public class Complex implements Cloneable, Serializable {
      */
     public final Complex sqrt() {
         double magnitude = Math.sqrt(magnitude());
-        double angle = angle()*0.5;
+        double angle = angle() * 0.5;
         return polarToComplex(magnitude, angle);
     }
 
@@ -1038,7 +1053,7 @@ public class Complex implements Cloneable, Serializable {
      *  complex number from this complex number.
      */
     public final Complex subtract(Complex w) {
-        return new Complex(real-w.real, imag-w.imag);
+        return new Complex(real - w.real, imag - w.imag);
     }
 
     /** Return a new complex number with value equal to the tangent
@@ -1103,11 +1118,9 @@ public class Complex implements Cloneable, Serializable {
      */
     public final String toString() {
         if (imag >= 0) {
-            return Double.toString(real) + " + "
-                + Double.toString(imag) + "i";
+            return Double.toString(real) + " + " + Double.toString(imag) + "i";
         } else {
-            return Double.toString(real) + " - "
-                + Double.toString(-imag) + "i";
+            return Double.toString(real) + " - " + Double.toString(-imag) + "i";
         }
     }
 
@@ -1118,10 +1131,10 @@ public class Complex implements Cloneable, Serializable {
     public static String toString(Complex value) {
         if (value.imag >= 0) {
             return Double.toString(value.real) + " + "
-                + Double.toString(value.imag) + "i";
+            + Double.toString(value.imag) + "i";
         } else {
             return Double.toString(value.real) + " - "
-                + Double.toString(-value.imag) + "i";
+            + Double.toString(-value.imag) + "i";
         }
     }
 
@@ -1149,15 +1162,15 @@ public class Complex implements Cloneable, Serializable {
      *  that both the real and imaginary parts are equal to
      *  Double.NEGATIVE_INFINITY.
      */
-    public static final Complex NEGATIVE_INFINITY = new Complex(
-            Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+    public static final Complex NEGATIVE_INFINITY = new Complex(Double.NEGATIVE_INFINITY,
+            Double.NEGATIVE_INFINITY);
 
     /** A Complex number representing positive infinity, by which we mean
      *  that both the real and imaginary parts are equal to
      *  Double.POSITIVE_INFINITY.
      */
-    public static final Complex POSITIVE_INFINITY = new Complex(
-            Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+    public static final Complex POSITIVE_INFINITY = new Complex(Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY);
 
     /** A Complex number representing zero. Reference this to save
      *  memory usage and construction overhead.
@@ -1174,4 +1187,3 @@ public class Complex implements Cloneable, Serializable {
      */
     public static final Complex I = new Complex(0.0, 1.0);
 }
-

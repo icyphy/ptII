@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.Director;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PoissonClock
+
 /**
    This actor produces a signal that is piecewise constant, with transitions
    between levels taken at times given by a Poisson process.
@@ -90,9 +91,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (yuhong)
 */
-
 public class PoissonClock extends TimedSource {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -102,7 +101,7 @@ public class PoissonClock extends TimedSource {
      *   actor with this name.
      */
     public PoissonClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         meanTime = new Parameter(this, "meanTime");
@@ -115,7 +114,7 @@ public class PoissonClock extends TimedSource {
         values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType)values.getType();
+        ArrayType valuesArrayType = (ArrayType) values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
 
@@ -155,16 +154,17 @@ public class PoissonClock extends TimedSource {
      *   not positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == meanTime) {
-            double mean = ((DoubleToken)meanTime.getToken()).doubleValue();
+            double mean = ((DoubleToken) meanTime.getToken()).doubleValue();
+
             if (mean <= 0.0) {
                 throw new IllegalActionException(this,
-                        "meanTime is required to be positive.  meanTime given: "
-                        + mean);
+                    "meanTime is required to be positive.  meanTime given: "
+                    + mean);
             }
         } else if (attribute == values) {
-            ArrayToken val = (ArrayToken)(values.getToken());
+            ArrayToken val = (ArrayToken) (values.getToken());
             _length = val.length();
         } else {
             super.attributeChanged(attribute);
@@ -179,10 +179,9 @@ public class PoissonClock extends TimedSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        PoissonClock newObject = (PoissonClock)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PoissonClock newObject = (PoissonClock) super.clone(workspace);
+        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
@@ -208,9 +207,11 @@ public class PoissonClock extends TimedSource {
         // next output, update it.
         if (currentTime.compareTo(_nextFiringTime) == 0) {
             _tentativeCurrentOutputIndex++;
+
             if (_tentativeCurrentOutputIndex >= _length) {
                 _tentativeCurrentOutputIndex = 0;
             }
+
             _boundaryCrossed = true;
         }
     }
@@ -223,14 +224,16 @@ public class PoissonClock extends TimedSource {
         super.initialize();
         _tentativeCurrentOutputIndex = 0;
         _currentOutputIndex = 0;
+
         Time currentTime = getDirector().getModelTime();
         _nextFiringTime = currentTime;
-        if (((BooleanToken)fireAtStart.getToken()).booleanValue()) {
+
+        if (((BooleanToken) fireAtStart.getToken()).booleanValue()) {
             getDirector().fireAt(this, currentTime);
         } else {
-            double meanTimeValue =
-                ((DoubleToken)meanTime.getToken()).doubleValue();
-            double exp = -Math.log((1-Math.random()))*meanTimeValue;
+            double meanTimeValue = ((DoubleToken) meanTime.getToken())
+                .doubleValue();
+            double exp = -Math.log((1 - Math.random())) * meanTimeValue;
             Director director = getDirector();
             _nextFiringTime = director.getModelTime().add(exp);
             director.fireAt(this, _nextFiringTime);
@@ -244,14 +247,16 @@ public class PoissonClock extends TimedSource {
      */
     public boolean postfire() throws IllegalActionException {
         _currentOutputIndex = _tentativeCurrentOutputIndex;
+
         if (_boundaryCrossed) {
-            double meanTimeValue =
-                ((DoubleToken)meanTime.getToken()).doubleValue();
-            double exp = -Math.log((1-Math.random()))*meanTimeValue;
+            double meanTimeValue = ((DoubleToken) meanTime.getToken())
+                .doubleValue();
+            double exp = -Math.log((1 - Math.random())) * meanTimeValue;
             Director director = getDirector();
             _nextFiringTime = director.getModelTime().add(exp);
             director.fireAt(this, _nextFiringTime);
         }
+
         return super.postfire();
     }
 
@@ -261,22 +266,22 @@ public class PoissonClock extends TimedSource {
     /* Get the specified value, checking the form of the values parameter.
      */
     private Token _getValue(int index) throws IllegalActionException {
-        ArrayToken val = (ArrayToken)(values.getToken());
-        if (val == null || index >= _length) {
+        ArrayToken val = (ArrayToken) (values.getToken());
+
+        if ((val == null) || (index >= _length)) {
             throw new IllegalActionException(this,
-                    "Index out of range of the values parameter.");
+                "Index out of range of the values parameter.");
         }
+
         return val.getElement(index);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The following are all transient to silence a javadoc bug
     // about the @serialize tag.
     // The transient qualifier should probably be removed if this
     // class is made serializable.
-
     // The length of the values parameter vector.
     private transient int _length;
 

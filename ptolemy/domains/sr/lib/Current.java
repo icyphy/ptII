@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.Transformer;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Current
+
 /**
  * At each tick of the clock, this actor outputs the most recently received
  * non-absent input. If no input has been received, then the output is absent.
@@ -46,9 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (cxh) Should support multiports
  */
-
 public class Current extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -59,7 +58,7 @@ public class Current extends Transformer {
      *   an actor already in the container.
      */
     public Current(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -91,7 +90,6 @@ public class Current extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The most recent token received.
     private Token _lastInput;
 }

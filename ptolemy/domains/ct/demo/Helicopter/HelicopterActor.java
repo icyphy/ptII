@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.demo.Helicopter;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HelicopterActor
+
 /**
    The system dynamic of a 2D-helicopter model.
    <pre><code>
@@ -73,7 +74,7 @@ public class HelicopterActor extends TypedAtomicActor {
      * @exception IllegalActionException If there is an internal error.
      */
     public HelicopterActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputTm = new TypedIOPort(this, "inputTm");
         inputTm.setInput(true);
@@ -111,18 +112,17 @@ public class HelicopterActor extends TypedAtomicActor {
         outputDDTh.setMultiport(false);
         outputDDTh.setTypeEquals(BaseType.DOUBLE);
 
-        _Iy = (double)0.271256;
+        _Iy = (double) 0.271256;
         paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));
 
-        _hm = (double)0.2943;
+        _hm = (double) 0.2943;
         paramHm = new Parameter(this, "hm", new DoubleToken(_hm));
 
-        _Mm = (double)25.23;
+        _Mm = (double) 25.23;
         paramMm = new Parameter(this, "Mm", new DoubleToken(_Mm));
 
-        _mass = (double)4.9;
+        _mass = (double) 4.9;
         paramMass = new Parameter(this, "Mass", new DoubleToken(_mass));
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,13 +134,13 @@ public class HelicopterActor extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == paramIy) {
-            _Iy = ((DoubleToken)paramIy.getToken()).doubleValue();
+            _Iy = ((DoubleToken) paramIy.getToken()).doubleValue();
         } else if (att == paramHm) {
-            _hm = ((DoubleToken)paramHm.getToken()).doubleValue();
+            _hm = ((DoubleToken) paramHm.getToken()).doubleValue();
         } else if (att == paramMm) {
-            _Mm = ((DoubleToken)paramMm.getToken()).doubleValue();
+            _Mm = ((DoubleToken) paramMm.getToken()).doubleValue();
         } else if (att == paramMass) {
-            _mass = ((DoubleToken)paramMass.getToken()).doubleValue();
+            _mass = ((DoubleToken) paramMass.getToken()).doubleValue();
         }
     }
 
@@ -149,22 +149,20 @@ public class HelicopterActor extends TypedAtomicActor {
      *  @exception IllegalActionException If there's no input token
      *        when needed.
      */
-    public void fire() throws IllegalActionException{
-        double Tm = ((DoubleToken)inputTm.get(0)).doubleValue();
-        double A = ((DoubleToken)inputA.get(0)).doubleValue();
-        double Th = ((DoubleToken)inputTh.get(0)).doubleValue();
+    public void fire() throws IllegalActionException {
+        double Tm = ((DoubleToken) inputTm.get(0)).doubleValue();
+        double A = ((DoubleToken) inputA.get(0)).doubleValue();
+        double Th = ((DoubleToken) inputTh.get(0)).doubleValue();
 
-        double ddPx = (-Tm*Math.cos(Th)*Math.sin(A) +
-                Tm*Math.sin(Th)*Math.cos(A))/_mass;
-        double ddPz = (-Tm*Math.sin(Th)*Math.sin(A) -
-                Tm*Math.cos(Th)*Math.cos(A))/_mass + g;
-        double ddTh = (_Mm*A + _hm*Tm*Math.sin(A))/_Iy;
+        double ddPx = ((-Tm * Math.cos(Th) * Math.sin(A))
+            + (Tm * Math.sin(Th) * Math.cos(A))) / _mass;
+        double ddPz = (((-Tm * Math.sin(Th) * Math.sin(A))
+            - (Tm * Math.cos(Th) * Math.cos(A))) / _mass) + g;
+        double ddTh = ((_Mm * A) + (_hm * Tm * Math.sin(A))) / _Iy;
         outputDDPx.broadcast(new DoubleToken(ddPx));
         outputDDPz.broadcast(new DoubleToken(ddPz));
         outputDDTh.broadcast(new DoubleToken(ddTh));
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -184,7 +182,6 @@ public class HelicopterActor extends TypedAtomicActor {
     /** Input port Th
      */
     public TypedIOPort inputTh;
-
 
     /** Output port Px
      */
@@ -214,15 +211,11 @@ public class HelicopterActor extends TypedAtomicActor {
      */
     public Parameter paramMass;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Variables
     private double _Iy;
-
     private double _hm;
-
     private double _Mm;
-
     private double _mass;
 }

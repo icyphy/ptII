@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -62,8 +61,10 @@ import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.scalar.LocalSplitter;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypeSpecializer
+
 /**
    A transformer that modifies each class using the token types from
    ports.  In particular, this class creates constraints in the same
@@ -113,8 +114,8 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
-        System.out.println("TypeSpecializer.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("TypeSpecializer.internalTransform(" + phaseName
+            + ", " + options + ")");
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
 
@@ -122,17 +123,17 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
         Scene.v().setFastHierarchy(new FastHierarchy());
 
         Hierarchy h = Scene.v().getActiveHierarchy();
+
         for (Iterator entities = _model.deepEntityList().iterator();
-             entities.hasNext();) {
-            Entity entity = (Entity)entities.next();
-            String className =
-                ModelTransformer.getInstanceClassName(entity, options);
-            SootClass theClass =
-                Scene.v().loadClassAndSupport(className);
+                entities.hasNext();) {
+            Entity entity = (Entity) entities.next();
+            String className = ModelTransformer.getInstanceClassName(entity,
+                    options);
+            SootClass theClass = Scene.v().loadClassAndSupport(className);
 
             Set unsafeLocalSet = new HashSet();
-            TypeSpecializerAnalysis analysis =
-                new TypeSpecializerAnalysis(theClass, unsafeLocalSet);
+            TypeSpecializerAnalysis analysis = new TypeSpecializerAnalysis(theClass,
+                    unsafeLocalSet);
             specializeTypes(debug, theClass, unsafeLocalSet, analysis);
         }
     }
@@ -143,9 +144,11 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
      *  Exclude locals in the given set from the typing algorithm.
      */
     public static Map specializeTypes(boolean debug, SootClass theClass,
-            Set unsafeLocals, TypeSpecializerAnalysis typeAnalysis) {
+        Set unsafeLocals, TypeSpecializerAnalysis typeAnalysis) {
+        if (debug) {
+            System.out.println("updating types for " + theClass);
+        }
 
-        if (debug) System.out.println("updating types for " + theClass);
         Map map = new HashMap();
 
         // Loop through all the methods and update types of locals.
@@ -157,30 +160,45 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
         // use this information (for example, when converting
         // token types (like IntToken) to native types (like int).
         for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
-            SootMethod method = (SootMethod)methods.next();
-            if (debug) System.out.println("updating types for " + method);
+                methods.hasNext();) {
+            SootMethod method = (SootMethod) methods.next();
+
+            if (debug) {
+                System.out.println("updating types for " + method);
+            }
+
             Body body = method.retrieveActiveBody();
+
             for (Iterator units = body.getUnits().snapshotIterator();
-                 units.hasNext();) {
-                Unit unit = (Unit)units.next();
+                    units.hasNext();) {
+                Unit unit = (Unit) units.next();
+
                 //System.out.println("unit = " + unit);
                 Iterator boxes = unit.getUseBoxes().iterator();
+
                 while (boxes.hasNext()) {
-                    ValueBox box = (ValueBox)boxes.next();
+                    ValueBox box = (ValueBox) boxes.next();
                     Value value = box.getValue();
+
                     // Replace Array creations with a more specific
                     // type, if possible.
                     if (box.getValue() instanceof NewArrayExpr) {
-                        NewArrayExpr newArrayExpr = (NewArrayExpr)box.getValue();
-                        if (debug) System.out.println("newArrayExpr = " + newArrayExpr);
+                        NewArrayExpr newArrayExpr = (NewArrayExpr) box.getValue();
+
+                        if (debug) {
+                            System.out.println("newArrayExpr = " + newArrayExpr);
+                        }
 
                         Type baseType = newArrayExpr.getBaseType();
-                        Type newType =
-                            typeAnalysis.getSpecializedSootType(newArrayExpr);
-                        if (newType != null && !newType.equals(baseType)) {
-                            if (debug) System.out.println("replacing with " + newType);
-                            box.setValue(Jimple.v().newNewArrayExpr(newType, newArrayExpr.getSize()));
+                        Type newType = typeAnalysis.getSpecializedSootType(newArrayExpr);
+
+                        if ((newType != null) && !newType.equals(baseType)) {
+                            if (debug) {
+                                System.out.println("replacing with " + newType);
+                            }
+
+                            box.setValue(Jimple.v().newNewArrayExpr(newType,
+                                    newArrayExpr.getSize()));
                         }
                     }
                 }
@@ -189,17 +207,22 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 if (!(unit instanceof AssignStmt)) {
                     continue;
                 }
-                AssignStmt assignStmt = (AssignStmt)unit;
+
+                AssignStmt assignStmt = (AssignStmt) unit;
 
                 // Ignore anything that isn't an assignment to a field.
                 if (!(assignStmt.getLeftOp() instanceof FieldRef)) {
                     continue;
                 }
-                if (!PtolemyUtilities.isTokenType(assignStmt.getLeftOp().getType())) {
+
+                if (!PtolemyUtilities.isTokenType(assignStmt.getLeftOp()
+                                                                .getType())) {
                     continue;
                 }
 
-                if (debug) System.out.println("checking assignment " + assignStmt);
+                if (debug) {
+                    System.out.println("checking assignment " + assignStmt);
+                }
 
                 // FIXME: We need to figure out a way to insert casts where appropriate.
                 // See RampFiringLimitSDF
@@ -208,12 +231,9 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 //                         assignStmt.getLeftOp(), typeAnalysis);
                 //                 rightType = _getReplacementTokenType(
                 //                         assignStmt.getRightOp(), typeAnalysis);
-
                 //                 if (leftType != null && rightType != null && !leftType.equals(rightType)) {
                 //                     if (debug) System.out.println("inserting conversion: leftType = " +
                 //                             leftType + ", rightType = " + rightType);
-
-
                 //                     // insert a call to convert(), and a cast.
                 //                     FieldRef ref = (FieldRef)assignStmt.getLeftOp();
                 //                     SootField field = ref.getField();
@@ -227,7 +247,6 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 //                     body.getLocals().add(tokenLocal);
                 //                     Local typeLocal =
                 //                         PtolemyUtilities.buildConstantTypeLocal(body, unit, leftType);
-
                 //                     body.getUnits().insertBefore(
                 //                             Jimple.v().newAssignStmt(tokenLocal,
                 //                                     Jimple.v().newVirtualInvokeExpr(
@@ -242,118 +261,122 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 //                                             newType)),
                 //                             unit);
                 //                     assignStmt.setRightOp(tempLocal);
-
-
                 //                 } else {
-                FieldRef ref = (FieldRef)assignStmt.getLeftOp();
+                FieldRef ref = (FieldRef) assignStmt.getLeftOp();
                 SootField field = ref.getField();
 
                 Type type = field.getType();
+
                 // Things that aren't token types are ignored.
                 // Things that are already the same type are ignored.
-                Type newType =
-                    typeAnalysis.getSpecializedSootType(field);
-                if (newType != null && !newType.equals(type)) {
-                    if (debug) System.out.println("inserting cast");
-                    Local tempLocal =
-                        Jimple.v().newLocal("fieldUpdateLocal", newType);
+                Type newType = typeAnalysis.getSpecializedSootType(field);
+
+                if ((newType != null) && !newType.equals(type)) {
+                    if (debug) {
+                        System.out.println("inserting cast");
+                    }
+
+                    Local tempLocal = Jimple.v().newLocal("fieldUpdateLocal",
+                            newType);
                     body.getLocals().add(tempLocal);
-                    body.getUnits().insertBefore(
-                            Jimple.v().newAssignStmt(tempLocal,
-                                    Jimple.v().newCastExpr(
-                                            assignStmt.getRightOp(),
-                                            newType)),
-                            unit);
+                    body.getUnits().insertBefore(Jimple.v().newAssignStmt(tempLocal,
+                            Jimple.v().newCastExpr(assignStmt.getRightOp(),
+                                newType)), unit);
                     assignStmt.setRightOp(tempLocal);
                 }
+
                 //     }
             }
         }
 
         // Loop through all the fields and update the types.
         for (Iterator fields = theClass.getFields().iterator();
-             fields.hasNext();) {
-            SootField field = (SootField)fields.next();
-            if (debug) System.out.println("updating types for " + field);
+                fields.hasNext();) {
+            SootField field = (SootField) fields.next();
+
+            if (debug) {
+                System.out.println("updating types for " + field);
+            }
 
             Type baseType = field.getType();
             RefType refType = PtolemyUtilities.getBaseTokenType(baseType);
-            if (refType != null &&
-                    SootUtilities.derivesFrom(refType.getSootClass(),
-                            PtolemyUtilities.tokenClass)) {
+
+            if ((refType != null)
+                    && SootUtilities.derivesFrom(refType.getSootClass(),
+                        PtolemyUtilities.tokenClass)) {
                 Type type = typeAnalysis.getSpecializedSootType(field);
 
-                if (debug) System.out.println("replacing with " + type);
+                if (debug) {
+                    System.out.println("replacing with " + type);
+                }
+
                 field.setType(type);
 
                 // Update the type tag.
                 // FIXME: Correct?
-                ptolemy.data.type.Type specializedType =
-                    typeAnalysis.getSpecializedType(field);
-                if (specializedType != BaseType.UNKNOWN &&
-                   specializedType != BaseType.GENERAL &&
-                   specializedType.isInstantiable()) {
-                    if (debug) System.out.println(
-                            "updating type tag of " + field
+                ptolemy.data.type.Type specializedType = typeAnalysis
+                    .getSpecializedType(field);
+
+                if ((specializedType != BaseType.UNKNOWN)
+                        && (specializedType != BaseType.GENERAL)
+                        && specializedType.isInstantiable()) {
+                    if (debug) {
+                        System.out.println("updating type tag of " + field
                             + " to " + typeAnalysis.getSpecializedType(field));
+                    }
+
                     field.removeTag("_CGType");
-                    field.addTag(
-                            new TypeTag(
-                                    typeAnalysis.getSpecializedType(field)));
+                    field.addTag(new TypeTag(typeAnalysis.getSpecializedType(
+                                field)));
                 }
+
                 map.put(field, typeAnalysis.getSpecializedType(field));
             }
         }
 
         for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
-            SootMethod method = (SootMethod)methods.next();
-            if (debug) System.out.println("updating types for " + method);
+                methods.hasNext();) {
+            SootMethod method = (SootMethod) methods.next();
+
+            if (debug) {
+                System.out.println("updating types for " + method);
+            }
+
             Body body = method.retrieveActiveBody();
+
             // First split local variables that are used in
             // multiple places.
-            LocalSplitter.v().transform(
-                    body, "ls");
+            LocalSplitter.v().transform(body, "ls");
+
             // We may have locals with the same name.  Rename them.
-            LocalNameStandardizer.v().transform(
-                    body, "lns");
+            LocalNameStandardizer.v().transform(body, "lns");
+
             // Assign types to local variables... This types
             // everything that isn't a token type.
-            TypeAssigner.v().transform(
-                    body, "ta");
+            TypeAssigner.v().transform(body, "ta");
         }
+
         return map;
     }
 
     private static ptolemy.data.type.Type _getReplacementTokenType(
-            Value value, TypeSpecializerAnalysis typeAnalysis) {
+        Value value, TypeSpecializerAnalysis typeAnalysis) {
         if (value instanceof FieldRef) {
-            FieldRef ref = (FieldRef)value;
+            FieldRef ref = (FieldRef) value;
             SootField field = ref.getField();
             return typeAnalysis.getSpecializedType(field);
         } else if (value instanceof Local) {
-            Local local = (Local)value;
+            Local local = (Local) value;
             return typeAnalysis.getSpecializedType(local);
+
             //   } else if (value.getType().equals(NullType.v())) {
             //             return tokenClass
         } else {
             return null;
+
             //throw new RuntimeException("Unrecognized value:" + value);
         }
     }
+
     private CompositeActor _model;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

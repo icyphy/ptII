@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Shape;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EllipseAttribute
+
 /**
    This is an attribute that is rendered as an ellipse.
    Unlike the base class, by default, an ellipse is centered on its origin.
@@ -48,7 +49,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class EllipseAttribute extends FilledShapeAttribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -63,8 +63,9 @@ public class EllipseAttribute extends FilledShapeAttribute {
      *   an attribute already in the container.
      */
     public EllipseAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // NOTE: This used to be calling setExpression(), but the change
         // does not take effect when the icon is created.
         centered.setToken("true");
@@ -87,11 +88,8 @@ public class EllipseAttribute extends FilledShapeAttribute {
         if (_centeredValue) {
             double halfWidth = _widthValue * 0.5;
             double halfHeight = _heightValue * 0.5;
-            return new Ellipse2D.Double(
-                    -halfWidth,
-                    -halfHeight,
-                    _widthValue,
-                    _heightValue);
+            return new Ellipse2D.Double(-halfWidth, -halfHeight, _widthValue,
+                _heightValue);
         } else {
             return new Ellipse2D.Double(0.0, 0.0, _widthValue, _heightValue);
         }

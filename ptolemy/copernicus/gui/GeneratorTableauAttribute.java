@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.gui;
 
 import java.awt.Frame;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableauAttribute
+
 /**
    This is an attribute that stores the configuration of a generator tableau.
    It contains a number of parameters that are presented to the user in
@@ -57,7 +58,6 @@ import ptolemy.kernel.util.Settable;
    @Pt.AcceptedRating Red (johnr)
 */
 public class GeneratorTableauAttribute extends GeneratorAttribute {
-
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -72,7 +72,7 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
      *   an attribute already in the container.
      */
     public GeneratorTableauAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
@@ -81,15 +81,15 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
 
         new GeneratorTableauEditorFactory(this, "_editorFactory");
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class GeneratorTableauEditorFactory extends EditorFactory {
-
         public GeneratorTableauEditorFactory(NamedObj _container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(_container, name);
         }
+
         /** Create an editor for configuring the specified object with the
          *  specified parent window.
          *  @param object The object to configure.
@@ -97,17 +97,17 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
          */
         public void createEditor(NamedObj object, Frame parent) {
             try {
-                Configuration configuration
-                    = ((TableauFrame)parent).getConfiguration();
+                Configuration configuration = ((TableauFrame) parent)
+                    .getConfiguration();
 
-                TextEffigy codeEffigy = TextEffigy.newTextEffigy(
-                        configuration.getDirectory(), toString());
+                TextEffigy codeEffigy = TextEffigy.newTextEffigy(configuration
+                        .getDirectory(), toString());
                 codeEffigy.setModified(true);
 
                 configuration.createPrimaryTableau(codeEffigy);
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
-                        "Cannot generate code. Perhaps outside Vergil?");
+                    "Cannot generate code. Perhaps outside Vergil?");
             }
         }
     }

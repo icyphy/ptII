@@ -33,17 +33,13 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.data.expr.FileParameter;
-
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImplicitSurface

@@ -27,7 +27,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.Iterator;
@@ -42,8 +41,10 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BusAssembler
+
 /**
    Aggregate all input relation channels into one output "bus" relation.
    The width of the output port (bus relation) is set to the sum of the
@@ -64,9 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.actor.IORelation
 */
-
 public class BusAssembler extends TypedAtomicActor {
-
     /** Construct a BusAssembler with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -76,14 +75,13 @@ public class BusAssembler extends TypedAtomicActor {
      *   actor with this name.
      */
     public BusAssembler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"6\" " +
-                "height=\"40\" style=\"fill:black\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+            + "height=\"40\" style=\"fill:black\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,7 +96,11 @@ public class BusAssembler extends TypedAtomicActor {
     /** React to a change in an input port width. */
     public void connectionsChanged(Port p) {
         super.connectionsChanged(p);
-        if (p == output) return;
+
+        if (p == output) {
+            return;
+        }
+
         try {
             _recalculateOutputWidth();
         } catch (IllegalActionException ex) {
@@ -113,21 +115,27 @@ public class BusAssembler extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
-        TypedIOPort inputPort = (TypedIOPort)
-            (inputPorts.hasNext() ? inputPorts.next() : null);
-        int inputWidth = inputPort != null ? inputPort.getWidth() : 0;
-        int i = 0, j = 0;
+        TypedIOPort inputPort = (TypedIOPort) (inputPorts.hasNext()
+            ? inputPorts.next() : null);
+        int inputWidth = (inputPort != null) ? inputPort.getWidth() : 0;
+        int i = 0;
+        int j = 0;
+
         while (inputPort != null) {
-            if (i < inputWidth && inputPort.hasToken(i)) {
+            if ((i < inputWidth) && inputPort.hasToken(i)) {
                 Token t = inputPort.get(i);
-                if (j < _outputWidth)
+
+                if (j < _outputWidth) {
                     output.send(j, t);
+                }
             }
+
             j++;
+
             if (++i >= inputWidth) {
-                inputPort = (TypedIOPort)
-                    (inputPorts.hasNext() ? inputPorts.next() : null);
-                inputWidth = inputPort != null ? inputPort.getWidth() : 0;
+                inputPort = (TypedIOPort) (inputPorts.hasNext()
+                    ? inputPorts.next() : null);
+                inputWidth = (inputPort != null) ? inputPort.getWidth() : 0;
                 i = 0;
             }
         }
@@ -137,13 +145,15 @@ public class BusAssembler extends TypedAtomicActor {
         output port and recalculates its width. */
     public void preinitialize() throws IllegalActionException {
         if (outputPortList().size() > 1) {
-            throw new IllegalActionException
-                (this, "can have only one output port.");
+            throw new IllegalActionException(this,
+                "can have only one output port.");
         }
+
         if (output.linkedRelationList().size() > 1) {
-            throw new IllegalActionException
-                (this, "can have only one output relation linked.");
+            throw new IllegalActionException(this,
+                "can have only one output relation linked.");
         }
+
         _recalculateOutputWidth();
         super.preinitialize();
     }
@@ -155,17 +165,21 @@ public class BusAssembler extends TypedAtomicActor {
     private void _recalculateOutputWidth() throws IllegalActionException {
         List outputRelations = output.linkedRelationList();
         _outputWidth = 0;
+
         if (outputRelations.isEmpty()) {
             return;
         }
-        TypedIORelation outputRelation =
-            (TypedIORelation)outputRelations.get(0);
+
+        TypedIORelation outputRelation = (TypedIORelation) outputRelations.get(0);
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            TypedIOPort port = (TypedIOPort)inputPorts.next();
+            TypedIOPort port = (TypedIOPort) inputPorts.next();
             _outputWidth += port.getWidth(); // includes all linked relations
         }
+
         outputRelation.setWidth(_outputWidth);
+
         // TODO: figure out how to obey if the output relation width is
         // set (if isWidthFixed() would return a reliable true...)
     }

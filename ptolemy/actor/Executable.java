@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Executable
+
 /**
    This interface defines the <i>action methods</i>, which determine
    how an object can be invoked. It should be implemented by actors
@@ -56,7 +57,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Green (davisj)
 */
 public interface Executable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

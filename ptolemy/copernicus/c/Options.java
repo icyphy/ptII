@@ -22,10 +22,10 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.Hashtable;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Options
@@ -101,7 +101,6 @@ import java.util.Hashtable;
    @Pt.AcceptedRating Red (ssb)
 */
 public class Options {
-
     /** Default constructor. Initializes default key-value pairs.
      */
     public Options() {
@@ -119,7 +118,6 @@ public class Options {
         _optionTable.put("reportEntities", "false");
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -129,7 +127,7 @@ public class Options {
     @return The value corresponding to this option.
     */
     public String get(String key) {
-        return (String)_optionTable.get(key);
+        return (String) _optionTable.get(key);
     }
 
     /** Get a boolean value corresponding to a given key. This returns true
@@ -143,15 +141,14 @@ public class Options {
      */
     public boolean getBoolean(String key) {
         String value = get(key);
+
         if (value.compareTo("true") == 0) {
             return true;
-        }
-        else if (value.compareTo("false") == 0) {
+        } else if (value.compareTo("false") == 0) {
             return false;
-        }
-        else {
+        } else {
             throw new RuntimeException(
-                    "Stored value cannot be converted to boolean.");
+                "Stored value cannot be converted to boolean.");
         }
     }
 
@@ -167,42 +164,31 @@ public class Options {
      * @param string The string to be checked.
      * @return True if it is a valid Option flag.
      */
-     public static boolean isValidOption(String string) {
-         if (string.equals("lib")
-               || string.equals("verbose")
-               || string.equals("compileMode")
-               || string.equals("pruneLevel")
-               || string.equals("gcDir")
-               || string.equals("target")
-               || string.equals("runtimeDir")
-               || string.equals("vta")
-               || string.equals("ptII")
-               || string.equals("compulsoryMethods")
-               || string.equals("cFlags")
-               || string.equals("reportEntities")
-               ) {
-             return true;
-         }
-         else {
-             return false;
-         }
-     }
-
-     /** Checks if a given string is a valid option flag. A valid option
-      * flag is a "-" followed by a valid Option String.
-      * @param string The string to be checked.
-      * @return True if it is a valid option flag.
-      */
-    public static boolean isValidFlag(String string) {
-        if (string.startsWith("-")
-                && isValidOption(string.substring(1))) {
+    public static boolean isValidOption(String string) {
+        if (string.equals("lib") || string.equals("verbose")
+                || string.equals("compileMode") || string.equals("pruneLevel")
+                || string.equals("gcDir") || string.equals("target")
+                || string.equals("runtimeDir") || string.equals("vta")
+                || string.equals("ptII") || string.equals("compulsoryMethods")
+                || string.equals("cFlags") || string.equals("reportEntities")) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
+    /** Checks if a given string is a valid option flag. A valid option
+     * flag is a "-" followed by a valid Option String.
+     * @param string The string to be checked.
+     * @return True if it is a valid option flag.
+     */
+    public static boolean isValidFlag(String string) {
+        if (string.startsWith("-") && isValidOption(string.substring(1))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /** Put a key-value pair into the options table.
         @param key The name of the option to be set.
@@ -226,26 +212,17 @@ public class Options {
         return _v;
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected fields                    ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
+
     /** The table of the values assigned to each key.
      */
     private Hashtable _optionTable = new Hashtable();
@@ -253,5 +230,4 @@ public class Options {
     /** Provides a static version of this class.
      */
     private static Options _v = new Options();
-
 }

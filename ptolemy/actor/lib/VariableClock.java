@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VariableClock
+
 /**
    This actor is identical to Clock except that it has an additional
    input port, <i>periodControl</i>.  If this port has a token when the actor
@@ -67,9 +68,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (yuhong)
 */
-
 public class VariableClock extends Clock {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -79,7 +78,7 @@ public class VariableClock extends Clock {
      *   actor with this name.
      */
     public VariableClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         periodControl = new TypedIOPort(this, "periodControl", true, false);
@@ -108,10 +107,11 @@ public class VariableClock extends Clock {
      *   or if the base class throws it.
      */
     public void fire() throws IllegalActionException {
-        if (periodControl.getWidth() > 0 && periodControl.hasToken(0)) {
+        if ((periodControl.getWidth() > 0) && periodControl.hasToken(0)) {
             Token in = periodControl.get(0);
             period.setToken(in);
         }
+
         super.fire();
     }
 }

@@ -26,11 +26,12 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.graph;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CPO
+
 /**
    An interface defining the operations on complete partial order (CPO).
    The definitions of these operations can be found in "Introduction to
@@ -48,7 +49,6 @@ package ptolemy.graph;
    @Pt.ProposedRating Green (yuhong)
    @Pt.AcceptedRating Green (kienhuis)
 */
-
 public interface CPO {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

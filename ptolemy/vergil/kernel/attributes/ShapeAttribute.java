@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Color;
@@ -48,8 +47,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ShapeIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ShapeAttribute
+
 /**
    This is an abstract attribute that is rendered as a shape.
    This base class provides support for a line width and a line color.
@@ -63,7 +64,6 @@ import ptolemy.vergil.icon.ShapeIcon;
    @Pt.AcceptedRating Red (cxh)
 */
 public abstract class ShapeAttribute extends Attribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -78,7 +78,7 @@ public abstract class ShapeAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public ShapeAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Hide the name.
@@ -131,13 +131,14 @@ public abstract class ShapeAttribute extends Attribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == lineWidth) {
-            double lineWidthValue =
-                ((DoubleToken) lineWidth.getToken()).doubleValue();
+            double lineWidthValue = ((DoubleToken) lineWidth.getToken())
+                .doubleValue();
             _icon.setLineWidth((float) lineWidthValue);
         } else if (attribute == lineColor) {
             Color lineColorValue = lineColor.asColor();
+
             if (lineColorValue.getAlpha() == 0f) {
                 // Color is fully transparent, so no line is desired.
                 _icon.setLineColor(null);
@@ -157,13 +158,13 @@ public abstract class ShapeAttribute extends Attribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ShapeAttribute newObject = (ShapeAttribute)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ShapeAttribute newObject = (ShapeAttribute) super.clone(workspace);
+
         // The base class clones the icon, but since this is a protected
         // member, it doesn't automatically get updated by NamedObj!
-        newObject._icon = (ShapeIcon)newObject.getAttribute("_icon");
-        newObject._none = (Variable)newObject.getAttribute("_none");
+        newObject._icon = (ShapeIcon) newObject.getAttribute("_icon");
+        newObject._none = (Variable) newObject.getAttribute("_none");
         return newObject;
     }
 

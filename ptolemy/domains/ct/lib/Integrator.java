@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.data.StringToken;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Integrator
+
 /**
    An integrator in the continuous time (CT) domain.
    This actor has one input port and one output port. Conceptually,
@@ -101,7 +102,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class Integrator extends CTBaseIntegrator {
-
     /** Construct an integrator.
      * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
      * @param container The container.
@@ -111,20 +111,18 @@ public class Integrator extends CTBaseIntegrator {
      * @exception IllegalActionException If there was an internal problem.
      */
     public Integrator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        new Parameter(input, "signalType",
-                new StringToken("CONTINUOUS"));
-//        new Parameter(discreteInput, "signalType",
-//                new StringToken("DISCRETE"));
-        new Parameter(output, "signalType",
-                new StringToken("CONTINUOUS"));
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-15\" y=\"-20\" "
-                + "width=\"30\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<image x=\"-4\" y=\"-20\" width=\"8\" height=\"40\""
-                + "xlink:href=\"ptolemy/domains/ct/lib/integral.gif\"/>\n"
-                + "</svg>\n");
+        new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
+
+        //        new Parameter(discreteInput, "signalType",
+        //                new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-15\" y=\"-20\" "
+            + "width=\"30\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<image x=\"-4\" y=\"-20\" width=\"8\" height=\"40\""
+            + "xlink:href=\"ptolemy/domains/ct/lib/integral.gif\"/>\n"
+            + "</svg>\n");
     }
 }

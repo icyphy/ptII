@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.Image;
@@ -40,6 +39,7 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIImageToken
@@ -56,7 +56,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JAIImageToken extends ImageToken {
-
     /** Construct a token with a specified RenderedOp.
      *  @param value The RenderedOp with whic to construct the JAIImageToken.
      */
@@ -78,11 +77,10 @@ public class JAIImageToken extends ImageToken {
      * @return A new token containing the result.
      * @exception IllegalActionException If the data type is not supported.
      */
-    public Token add(Token rightArgument)
-            throws IllegalActionException {
+    public Token add(Token rightArgument) throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
-            ParameterBlock parameters =
-                _parameterize(_renderedOp, (JAIImageToken) rightArgument);
+            ParameterBlock parameters = _parameterize(_renderedOp,
+                    (JAIImageToken) rightArgument);
             return new JAIImageToken(JAI.create("add", parameters));
         } else {
             throw new IllegalActionException("illegal data type");
@@ -109,11 +107,10 @@ public class JAIImageToken extends ImageToken {
      * @return A new token containing the result.
      * @exception IllegalActionException If the data type is not supported.
      */
-    public Token divide(Token rightArgument)
-            throws IllegalActionException {
+    public Token divide(Token rightArgument) throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
-            ParameterBlock parameters =
-                _parameterize(_renderedOp, (JAIImageToken) rightArgument);
+            ParameterBlock parameters = _parameterize(_renderedOp,
+                    (JAIImageToken) rightArgument);
             return new JAIImageToken(JAI.create("divide", parameters));
         } else {
             throw new IllegalActionException("illegal data type");
@@ -121,6 +118,7 @@ public class JAIImageToken extends ImageToken {
     }
 
     //FIXME: There should be a new type for ImageTokens.
+
     /** Return the type of this token.
      *  @return BaseType.OBJECT
      */
@@ -145,11 +143,10 @@ public class JAIImageToken extends ImageToken {
      * @return A new token containing the result.
      * @exception IllegalActionException If the data type is not supported.
      */
-    public Token multiply(Token rightArgument)
-            throws IllegalActionException {
+    public Token multiply(Token rightArgument) throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
-            ParameterBlock parameters =
-                _parameterize(_renderedOp, (JAIImageToken) rightArgument);
+            ParameterBlock parameters = _parameterize(_renderedOp,
+                    (JAIImageToken) rightArgument);
             return new JAIImageToken(JAI.create("multiply", parameters));
         } else {
             throw new IllegalActionException("illegal data type");
@@ -167,11 +164,10 @@ public class JAIImageToken extends ImageToken {
      * @return A new token containing the result.
      * @exception IllegalActionException If the data type is not supported.
      */
-    public Token subtract(Token rightArgument)
-            throws IllegalActionException {
+    public Token subtract(Token rightArgument) throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
-            ParameterBlock parameters =
-                _parameterize(_renderedOp, (JAIImageToken) rightArgument);
+            ParameterBlock parameters = _parameterize(_renderedOp,
+                    (JAIImageToken) rightArgument);
             return new JAIImageToken(JAI.create("subtract", parameters));
         } else {
             throw new IllegalActionException("illegal data type");
@@ -190,17 +186,15 @@ public class JAIImageToken extends ImageToken {
     public String toString() {
         // FIXME: return a value that can be parsed by the expression language.
         _bufferedImage = _renderedOp.getRendering().getAsBufferedImage();
-        return "{type=\"" + getClass()
-            + "\" width=\"" + _bufferedImage.getWidth(null)
-            + "\" height=\"" + _bufferedImage.getHeight(null)
-            + "\" bands=\"" + _renderedOp.getNumBands()
-            + "\" toString=\"" + _renderedOp.toString()
-            + "\"}";
+        return "{type=\"" + getClass() + "\" width=\""
+        + _bufferedImage.getWidth(null) + "\" height=\""
+        + _bufferedImage.getHeight(null) + "\" bands=\""
+        + _renderedOp.getNumBands() + "\" toString=\"" + _renderedOp.toString()
+        + "\"}";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Create a ParameterBlock containing two RenderedOp's, the first
     // being the internal Image, the second being from an ImageToken.
     //     private ParameterBlock _parameterize(RenderedOp left, ImageToken right) {
@@ -212,7 +206,6 @@ public class JAIImageToken extends ImageToken {
     //         parameters.addSource(rightOp);
     //         return parameters;
     //     }
-
     // Create a ParameterBlock containing two RenderedOp's, the first
     // being the internal Image, the second being from a JAIImageToken.
     private ParameterBlock _parameterize(RenderedOp left, JAIImageToken right) {
@@ -231,10 +224,8 @@ public class JAIImageToken extends ImageToken {
     //         parameters.add(right.doubleValue());
     //         return parameters;
     //     }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A buffered image that contains a rendering of the image.
     private BufferedImage _bufferedImage;
 

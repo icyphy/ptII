@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.AbstractReceiver;
@@ -40,8 +39,10 @@ import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CSPReceiver
+
 /**
    Receiver for CSP style communication. In CSP all communication is via
    synchronous message passing, so both the the sending and receiving
@@ -59,9 +60,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Green (nsmyth)
    @Pt.AcceptedRating Green (kienhuis)
 */
-
 public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
-
     /** Construct a CSPReceiver with no container.
      */
     public CSPReceiver() {
@@ -79,7 +78,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         _boundaryDetector = new BoundaryDetector(this);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -88,9 +86,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public void clear() {
         reset();
+
         //notifyAll();
     }
-
 
     /** Get a token from the mailbox receiver and specify a null
      *  Branch to control the execution of this method.
@@ -118,14 +116,16 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     public synchronized Token get(Branch branch) {
         Token tmp = null;
         boolean blocked = false;
+
         try {
             if (_isPutWaiting()) {
-                _setPutWaiting(false);  //needs to be done here
+                _setPutWaiting(false); //needs to be done here
 
                 // See FIXME below
                 tmp = _token;
                 _setRendezvousComplete(false);
                 notifyAll(); //wake up the waiting put;
+
                 while (!_isRendezvousComplete()) {
                     _checkFlagsAndWait();
                 }
@@ -140,18 +140,20 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // _isConditionalSendWaiting flag and does a put()
                 // which sets the getWaiting flag to false and the
                 // rendezvous proceeds normally.
-
                 while (_isConditionalSendWaiting()) {
                     _checkFlagsAndWait();
                 }
 
                 _checkFlags();
                 markBlocked(branch);
+
                 // _getDirector()._actorBlocked(this);
                 blocked = true;
+
                 while (_isGetWaiting()) {
                     _checkFlagsAndWait();
                 }
+
                 _checkFlags();
 
                 // FIXME: This is a race condition that could
@@ -159,6 +161,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // be done as soon as setGetWaiting(false) is
                 // called.
                 markUnblocked();
+
                 // _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 tmp = _token;
@@ -167,15 +170,17 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(
-                    "CSPReceiver.get() interrupted.");
+                "CSPReceiver.get() interrupted.");
         } finally {
             if (blocked) {
                 // process was blocked, woken up and terminated.
                 // register process as being unblocked
                 markUnblocked();
+
                 // _getDirector()._actorUnBlocked(this);
             }
         }
+
         return tmp;
     }
 
@@ -273,9 +278,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  hence this method returns true;
      */
     public boolean isConsumerReceiver() {
-        if ( isConnectedToBoundary() ) {
+        if (isConnectedToBoundary()) {
             return true;
         }
+
         return false;
     }
 
@@ -309,9 +315,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  hence this method returns true;
      */
     public boolean isProducerReceiver() {
-        if ( isOutsideBoundary() || isInsideBoundary() ) {
+        if (isOutsideBoundary() || isInsideBoundary()) {
             return true;
         }
+
         return false;
     }
 
@@ -337,7 +344,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  blocked; otherwise mark the actor blocked.
      */
     public synchronized void markBlocked(Branch branch) {
-        if ( branch != null ) {
+        if (branch != null) {
             branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
@@ -350,11 +357,12 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  unblocked; otherwise mark the actor unblocked.
      */
     public synchronized void markUnblocked() {
-        if ( _otherBranch != null ) {
+        if (_otherBranch != null) {
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
             _getDirector()._actorUnBlocked(this);
         }
+
         notifyAll();
     }
 
@@ -383,17 +391,21 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public synchronized void put(Token t, Branch branch) {
         boolean blocked = false;
+
         try {
             _token = t; // perform transfer
+
             if (_isGetWaiting()) {
-                _setGetWaiting(false);  //needs to be done here
+                _setGetWaiting(false); //needs to be done here
 
                 // See FIXME below
                 _setRendezvousComplete(false);
                 notifyAll(); //wake up the waiting get
+
                 while (!_isRendezvousComplete()) {
                     _checkFlagsAndWait();
                 }
+
                 return;
             } else {
                 // put got there first, so have to wait for a get
@@ -406,18 +418,20 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // resets the _isConditionalReceiveWaiting flag and
                 // does a get() which sets the putWaiting flag to
                 // false and the rendezvous proceeds normally.
-
                 while (_isConditionalReceiveWaiting()) {
                     _checkFlagsAndWait();
                 }
 
                 _checkFlags();
                 markBlocked(branch);
+
                 // _getDirector()._actorBlocked(this);
                 blocked = true;
+
                 while (_isPutWaiting()) {
                     _checkFlagsAndWait();
                 }
+
                 _checkFlags();
 
                 // FIXME: This is a race condition that could
@@ -425,6 +439,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // be done as soon as setGetWaiting(false) is
                 // called.
                 markUnblocked();
+
                 // _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 _setRendezvousComplete(true);
@@ -433,12 +448,13 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(
-                    "CSPReceiver.put() interrupted.");
+                "CSPReceiver.put() interrupted.");
         } finally {
             if (blocked) {
                 // process was blocked, awakened and terminated.
                 // register process as being unblocked
                 markUnblocked();
+
                 // _getDirector()._actorUnBlocked(this);
             }
         }
@@ -450,12 +466,14 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public synchronized void requestFinish() {
         _modelFinished = true;
+
         // Need to reset the state of the receiver.
         _setConditionalReceive(false, null, -1);
         _setConditionalSend(false, null, -1);
         _setPutWaiting(false);
         _setGetWaiting(false);
         _setRendezvousComplete(false);
+
         // Wake up any pending threads. EAL 12/04
         notifyAll();
     }
@@ -471,7 +489,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         _modelFinished = false;
         _boundaryDetector.reset();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -490,8 +507,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @exception InterruptedException If the actor is
      *   interrupted while waiting(for a rendezvous to complete).
      */
-    protected synchronized void _checkFlagsAndWait() throws
-            TerminateProcessException, InterruptedException {
+    protected synchronized void _checkFlagsAndWait()
+        throws TerminateProcessException, InterruptedException {
         _checkFlags();
         wait();
         _checkFlags();
@@ -514,11 +531,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         return _otherController;
     }
 
-
     protected int getOtherID() {
         return _otherID;
     }
-
 
     /** Flag indicating whether or not a ConditionalReceive is trying
      *  to rendezvous with this receiver.
@@ -567,7 +582,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   conditional send.
      */
     protected synchronized void _setConditionalSend(boolean v,
-            ConditionalBranchController p, int otherID) {
+        ConditionalBranchController p, int otherID) {
         _conditionalSendWaiting = v;
         _otherController = p;
         _otherID = otherID;
@@ -586,7 +601,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   conditional receive.
      */
     protected synchronized void _setConditionalReceive(boolean v,
-            ConditionalBranchController p, int otherID) {
+        ConditionalBranchController p, int otherID) {
         _conditionalReceiveWaiting = v;
         _otherController = p;
         _otherID = otherID;
@@ -605,11 +620,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   which this receiver belongs has been terminated while still
      *   running i.e. it was not allowed to run to completion.
      */
-    private synchronized void _checkFlags()
-            throws TerminateProcessException {
+    private synchronized void _checkFlags() throws TerminateProcessException {
         if (_modelFinished) {
-            throw new TerminateProcessException(getContainer().getName() +
-                    ": terminated.");
+            throw new TerminateProcessException(getContainer().getName()
+                + ": terminated.");
         }
     }
 
@@ -619,18 +633,19 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     private CSPDirector _getDirector() {
         try {
-            Actor container = (Actor)getContainer().getContainer();
+            Actor container = (Actor) getContainer().getContainer();
+
             if (container instanceof CompositeActor) {
-                return  (CSPDirector)container.getExecutiveDirector();
+                return (CSPDirector) container.getExecutiveDirector();
             } else {
-                return  (CSPDirector)container.getDirector();
+                return (CSPDirector) container.getDirector();
             }
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
-            throw new TerminateProcessException("CSPReceiver: trying to " +
-                    " rendezvous with a receiver with no " +
-                    "director => terminate.");
+            throw new TerminateProcessException("CSPReceiver: trying to "
+                + " rendezvous with a receiver with no "
+                + "director => terminate.");
         }
     }
 
@@ -674,7 +689,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _readBlocked = false;
     private boolean _writeBlocked = false;
 
@@ -686,7 +700,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     // obsolete when implement containment
     private ConditionalBranchController _otherController = null;
-
     private int _otherID = -1;
 
     // Flag indicating whether or not a conditional receive is waiting
@@ -706,8 +719,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     // The token being transferred during the rendezvous.
     private Token _token;
-
     private BoundaryDetector _boundaryDetector;
-
     private Branch _otherBranch = null;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import java.text.DateFormat;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.BoxedValuesIcon;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// IDAttribute
+
 /**
    This attribute identifies the containing model, showing its name, base
    class, last modified date, author, and contributors information.
@@ -65,7 +66,6 @@ import ptolemy.vergil.icon.BoxedValuesIcon;
    @Pt.AcceptedRating Red (cxh)
 */
 public class IDAttribute extends SingletonAttribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -80,16 +80,17 @@ public class IDAttribute extends SingletonAttribute {
      *   an attribute already in the container.
      */
     public IDAttribute(Entity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // name for the model
         this.name = new StringAttribute(this, "name");
         this.name.setExpression(container.getName());
+
         // This should not be persistent, in case the name changes outside
         // of this parameter.
         this.name.setPersistent(false);
+
         // This should not be editable, since the name is set by saveAs.
         this.name.setVisibility(Settable.NOT_EDITABLE);
 
@@ -97,24 +98,27 @@ public class IDAttribute extends SingletonAttribute {
         // How to do that?
         // The current design is also a solution in that the name of this
         // attribute and model must be consistent with the name of the file.
-
         boolean isClass = false;
+
         if (container instanceof InstantiableNamedObj) {
-            isClass = ((InstantiableNamedObj)container).isClassDefinition();
+            isClass = ((InstantiableNamedObj) container).isClassDefinition();
         }
 
         String className = container.getClassName();
 
         baseClass = new StringAttribute(this, "baseClass");
         baseClass.setExpression(className);
+
         // This should not be persistent, because the base class
         // is set already, generally.
         baseClass.setPersistent(false);
+
         // Cannot change the base class.
         baseClass.setVisibility(Settable.NOT_EDITABLE);
 
-        URIAttribute modelURI = (URIAttribute)container.getAttribute(
-                "_uri", URIAttribute.class);
+        URIAttribute modelURI = (URIAttribute) container.getAttribute("_uri",
+                URIAttribute.class);
+
         if (modelURI != null) {
             StringAttribute definedIn = new StringAttribute(this, "definedIn");
             definedIn.setExpression(modelURI.getURI().toString());
@@ -129,8 +133,7 @@ public class IDAttribute extends SingletonAttribute {
         // We may force this to happen.:-) Further more, we may force
         // that only the top level contains an model ID.
         created = new StringAttribute(this, "created");
-        created.setExpression(
-            DateFormat.getDateTimeInstance().format(new Date()));
+        created.setExpression(DateFormat.getDateTimeInstance().format(new Date()));
         created.setVisibility(Settable.NOT_EDITABLE);
         created.setPersistent(true);
 
@@ -148,21 +151,26 @@ public class IDAttribute extends SingletonAttribute {
         // intellectual property (IP) is preserved.
         author = new StringAttribute(this, "author");
         author.setVisibility(Settable.NOT_EDITABLE);
+
         String userName = null;
+
         try {
             userName = StringUtilities.getProperty("user.name");
         } catch (Exception ex) {
             System.out.println("Warning, in IDAttribute, failed to read "
-                    + "'user.name' property (-sandbox or applets always cause "
-                    + "this)");
+                + "'user.name' property (-sandbox or applets always cause "
+                + "this)");
         }
+
         if (userName != null) {
             author.setExpression(userName);
         }
+
         author.setPersistent(true);
 
         // The names of the contributors who modify the model.
         contributors = new StringAttribute(this, "contributors");
+
         String contributorsNames = "";
         contributors.setExpression(contributorsNames);
         author.setPersistent(true);
@@ -174,7 +182,6 @@ public class IDAttribute extends SingletonAttribute {
 
         BoxedValuesIcon icon = new BoxedValuesIcon(this, "_icon");
         icon.setPersistent(false);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -214,14 +221,15 @@ public class IDAttribute extends SingletonAttribute {
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == name) {
             Nameable container = getContainer();
+
             try {
                 container.setName(name.getExpression());
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
-                        "Cannot change the name of the container to match.");
+                    "Cannot change the name of the container to match.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -242,8 +250,7 @@ public class IDAttribute extends SingletonAttribute {
      */
     private void _updateDate() {
         try {
-            lastUpdated.setExpression(
-                DateFormat.getDateTimeInstance().format(new Date()));
+            lastUpdated.setExpression(DateFormat.getDateTimeInstance().format(new Date()));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

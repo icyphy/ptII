@@ -36,6 +36,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 
+
 /**
  * A class for helping to manage application resources. This class is
  * an extension to the standard ResourceBundle that allows to
@@ -49,7 +50,6 @@ import javax.swing.ImageIcon;
  * @version $Id$
  */
 public class ApplicationResources extends ResourceBundle {
-
     /** The class that is to be used to look up URL resources
      * from this bundle.
      */
@@ -66,7 +66,7 @@ public class ApplicationResources extends ResourceBundle {
     /** Create a new ApplicationResources object containing
      * the default Diva GUI resources.
      */
-    public ApplicationResources () {
+    public ApplicationResources() {
         this("diva.resource.Defaults", null, null);
         _class = getClass();
     }
@@ -75,15 +75,17 @@ public class ApplicationResources extends ResourceBundle {
      * with the given class as the loader for URL-based resources, and with the
      * given ResourceBundle as the one that gets overridden.
      */
-    public ApplicationResources (String baseName, Class withLoader,
-            ResourceBundle overrides) {
+    public ApplicationResources(String baseName, Class withLoader,
+        ResourceBundle overrides) {
         try {
             _delegate = ResourceBundle.getBundle(baseName, Locale.getDefault());
         } catch (MissingResourceException e) {
-            System.err.println( baseName + ".properties not found");
+            System.err.println(baseName + ".properties not found");
             System.exit(1);
         }
+
         _class = getClass();
+
         if (overrides != null) {
             setParent(overrides);
         }
@@ -91,8 +93,9 @@ public class ApplicationResources extends ResourceBundle {
 
     /** Get a resource as an absolute URL.
      */
-    public URL getResource (String key) {
+    public URL getResource(String key) {
         String s = getString(key);
+
         // Web Start requires using getClassLoader.
         return _class.getClassLoader().getResource(s);
     }
@@ -101,15 +104,18 @@ public class ApplicationResources extends ResourceBundle {
      * formed by appending "Image" to the given key. Return null if not found.
      * (Or should this throw an exception?)
      */
-    public ImageIcon getImageIcon (String key) {
-        ImageIcon icon = (ImageIcon)_imageIcons.get(key + "Image");
+    public ImageIcon getImageIcon(String key) {
+        ImageIcon icon = (ImageIcon) _imageIcons.get(key + "Image");
+
         if (icon == null) {
             URL url = getResource(key + "Image");
+
             if (url != null) {
                 icon = new ImageIcon(url);
-                _imageIcons.put(key+"Image", icon);
+                _imageIcons.put(key + "Image", icon);
             }
         }
+
         return icon;
     }
 
@@ -117,7 +123,7 @@ public class ApplicationResources extends ResourceBundle {
      * formed by appending "Image" to the given key. Return null if not found.
      * (Or should this throw an exception?)
      */
-    public Image getImage (String key) {
+    public Image getImage(String key) {
         URL url = getResource(key + "Image");
 
         if (url != null) {
@@ -125,21 +131,20 @@ public class ApplicationResources extends ResourceBundle {
             Image img = tk.getImage(url);
             return img;
         }
+
         return null;
     }
 
     /** Get an object from a ResourceBundle.
      */
     protected Object handleGetObject(String key)
-            throws MissingResourceException {
+        throws MissingResourceException {
         return _delegate.getObject(key);
     }
 
     /** Get an enumeration over the keys
      */
-    public Enumeration getKeys () {
+    public Enumeration getKeys() {
         return _delegate.getKeys();
     }
 }
-
-

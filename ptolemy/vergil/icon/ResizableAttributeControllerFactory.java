@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -38,8 +37,10 @@ import ptolemy.vergil.toolbox.AttributeBoundsManipulator;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.graph.GraphController;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ResizableAttributeControllerFactory
+
 /**
    This is attribute that produces a custom node controller for icons that
    can be interactively resized. It provides a context menu suitable for
@@ -59,9 +60,7 @@ import diva.graph.GraphController;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-public class ResizableAttributeControllerFactory
-    extends NodeControllerFactory {
-
+public class ResizableAttributeControllerFactory extends NodeControllerFactory {
     /** Construct a new attribute with the given container and name.
      *  @param container The container.
      *  @param name The name.
@@ -71,7 +70,7 @@ public class ResizableAttributeControllerFactory
      *   attribute with this name.
      */
     public ResizableAttributeControllerFactory(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -96,23 +95,21 @@ public class ResizableAttributeControllerFactory
      *  the user to resize the image.
      */
     public class ResizeAttributeController extends AttributeController {
-
         /** Create a controller associated with the specified graph
          *  controller.  The attribute controller is given full access.
          *  @param controller The associated graph controller.
          */
         public ResizeAttributeController(GraphController controller) {
             super(controller);
-            SelectionInteractor interactor =
-                (SelectionInteractor) getNodeInteractor();
+
+            SelectionInteractor interactor = (SelectionInteractor) getNodeInteractor();
 
             // Create and set up the manipulator for connectors.
             // FIXME: This is only a prototype.  But due to a Diva bug,
             // the prototype is what gets the mouse events!  I.e., not
             // the instance decorator that is created from the prototype!
             NamedObj container = (NamedObj) getContainer();
-            _manipulator =
-                new AttributeBoundsManipulator(container);
+            _manipulator = new AttributeBoundsManipulator(container);
 
             interactor.setPrototypeDecorator(_manipulator);
         }

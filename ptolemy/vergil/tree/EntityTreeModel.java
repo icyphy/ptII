@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.tree;
 
 import java.util.ArrayList;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EntityTreeModel
+
 /**
 
 A tree model for Ptolemy II objects. This class makes it easy to
@@ -61,7 +62,6 @@ Derived classes represent more (or less) of the Ptolemy II model.
 @Pt.AcceptedRating Red (johnr)
 */
 public class EntityTreeModel implements TreeModel {
-
     /** Create a new tree model with the specified root.
      *  Normally the root is an instance of CompositeEntity, but other
      *  root objects might be used by derived classes.
@@ -89,8 +89,11 @@ public class EntityTreeModel implements TreeModel {
      *  @return A node, or null if there is no such child.
      */
     public Object getChild(Object parent, int index) {
-        if (index > getChildCount(parent)) return null;
-        CompositeEntity entity = (CompositeEntity)parent;
+        if (index > getChildCount(parent)) {
+            return null;
+        }
+
+        CompositeEntity entity = (CompositeEntity) parent;
         return entity.entityList().get(index);
     }
 
@@ -100,8 +103,11 @@ public class EntityTreeModel implements TreeModel {
      *  @return The number of contained entities.
      */
     public int getChildCount(Object parent) {
-        if (!(parent instanceof CompositeEntity)) return 0;
-        CompositeEntity entity = (CompositeEntity)parent;
+        if (!(parent instanceof CompositeEntity)) {
+            return 0;
+        }
+
+        CompositeEntity entity = (CompositeEntity) parent;
         return entity.numberOfEntities();
     }
 
@@ -110,8 +116,11 @@ public class EntityTreeModel implements TreeModel {
      *  @return The index of the specified child.
      */
     public int getIndexOfChild(Object parent, Object child) {
-        if (!(parent instanceof CompositeEntity)) return -1;
-        CompositeEntity entity = (CompositeEntity)parent;
+        if (!(parent instanceof CompositeEntity)) {
+            return -1;
+        }
+
+        CompositeEntity entity = (CompositeEntity) parent;
         return entity.entityList().indexOf(child);
     }
 
@@ -127,7 +136,10 @@ public class EntityTreeModel implements TreeModel {
      *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
-        if (!(object instanceof CompositeEntity)) return true;
+        if (!(object instanceof CompositeEntity)) {
+            return true;
+        }
+
         // NOTE: The following is probably not a good idea because it
         // will force evaluation of the contents of a Library prematurely.
         // if (((CompositeEntity)object).numEntities() == 0) return true;
@@ -140,7 +152,9 @@ public class EntityTreeModel implements TreeModel {
         if (_root != null) {
             _root.removeChangeListener(_rootListener);
         }
+
         _root = root;
+
         if (_root != null) {
             _root.addChangeListener(_rootListener);
         }
@@ -160,17 +174,16 @@ public class EntityTreeModel implements TreeModel {
     public void valueForPathChanged(TreePath path, Object newValue) {
         Iterator listeners = _listenerList.iterator();
         TreeModelEvent event = new TreeModelEvent(this, path);
+
         while (listeners.hasNext()) {
-            TreeModelListener listener = (TreeModelListener)listeners.next();
+            TreeModelListener listener = (TreeModelListener) listeners.next();
             listener.treeStructureChanged(event);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     public class TreeUpdateListener implements ChangeListener {
-
         /** Trigger an update of the tree.  If the change
          *  request indicates that it is localized, then only
          *  the relevant portion of the tree is updated.
@@ -180,36 +193,40 @@ public class EntityTreeModel implements TreeModel {
             // System.out.println("change = " + change);
             // Note that this should be in the swing thread.
             SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ArrayList path = new ArrayList();
-                    Object root = getRoot();
-                    // If the change request is local, then it
-                    // should return non-null to this method.
-                    NamedObj locality = change.getLocality();
-                    if (locality == null) {
-                        path.add(0, root);
-                    } else {
-                        // The change has a declared locality.
-                        // Construct a path to that locality.
-                        NamedObj container = locality;
-                        while (container != root) {
-                            if (container == null) {
-                                // This should not occur, but if it
-                                // does, we revert to just using the
-                                // root.
-                                path = new ArrayList();
-                                path.add(0, root);
-                                break;
-                            }
-                            path.add(0, container);
-                            container = container.getContainer();
-                        }
-                    }
+                    public void run() {
+                        ArrayList path = new ArrayList();
+                        Object root = getRoot();
 
-                    valueForPathChanged(
-                            new TreePath(path.toArray()), locality);
-                }
-            });
+                        // If the change request is local, then it
+                        // should return non-null to this method.
+                        NamedObj locality = change.getLocality();
+
+                        if (locality == null) {
+                            path.add(0, root);
+                        } else {
+                            // The change has a declared locality.
+                            // Construct a path to that locality.
+                            NamedObj container = locality;
+
+                            while (container != root) {
+                                if (container == null) {
+                                    // This should not occur, but if it
+                                    // does, we revert to just using the
+                                    // root.
+                                    path = new ArrayList();
+                                    path.add(0, root);
+                                    break;
+                                }
+
+                                path.add(0, container);
+                                container = container.getContainer();
+                            }
+                        }
+
+                        valueForPathChanged(new TreePath(path.toArray()),
+                            locality);
+                    }
+                });
         }
 
         /** Trigger an update of the tree.  If the change
@@ -225,13 +242,11 @@ public class EntityTreeModel implements TreeModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // The root of the tree.
     protected NamedObj _root = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The list of listeners.
     private List _listenerList = new LinkedList();
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.SequenceActor;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SingleTokenDistributor
+
 /**
    A distributor that splits an input stream into a set of output
    streams. The distributor has an input port and an output port, the
@@ -54,9 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Yellow (cxh)
 */
-public class SingleTokenDistributor extends Transformer
-    implements SequenceActor {
-
+public class SingleTokenDistributor extends Transformer implements SequenceActor {
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport. Create
      *  the actor parameters.
@@ -69,7 +68,7 @@ public class SingleTokenDistributor extends Transformer
      *  by the proposed container.
      */
     public SingleTokenDistributor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setMultiport(true);
     }
@@ -104,6 +103,7 @@ public class SingleTokenDistributor extends Transformer
      */
     public boolean postfire() throws IllegalActionException {
         _currentOutputPosition++;
+
         if (_currentOutputPosition >= output.getWidth()) {
             _currentOutputPosition = 0;
         }
@@ -113,7 +113,6 @@ public class SingleTokenDistributor extends Transformer
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The channel number for the next output.
     private int _currentOutputPosition;
 }

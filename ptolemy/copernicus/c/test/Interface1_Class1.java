@@ -37,9 +37,7 @@ COPYRIGHTENDKEY
 @Pt.AcceptedRating Red (ssb)
 
 */
-
 public class Interface1_Class1 implements Interface1 {
-
     public void method1() {
     }
 

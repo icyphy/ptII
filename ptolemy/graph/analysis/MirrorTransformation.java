@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import ptolemy.graph.Graph;
@@ -31,8 +30,10 @@ import ptolemy.graph.analysis.analyzer.MirrorTransformer;
 import ptolemy.graph.analysis.analyzer.Transformer;
 import ptolemy.graph.analysis.strategy.MirrorTransformerStrategy;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MirrorTransformation
+
 /**
    A mirror transformations on graphs. Creates a mirror of this graph in the form
    of the type of the associated graph.  The mirror and original graphs are
@@ -57,7 +58,6 @@ import ptolemy.graph.analysis.strategy.MirrorTransformerStrategy;
    @version $Id$
 */
 public class MirrorTransformation extends Analysis {
-
     /** Construct a transformation for a given graph with a default analyzer.
      *  The default constructor runs in O(N+E) in which N is the number of
      *  nodes in the graph and E is the number of edges in the graph.
@@ -86,8 +86,7 @@ public class MirrorTransformation extends Analysis {
      *  @param status If true, the weights will also be cloned.
      */
     public void cloneWeight(boolean status) {
-        ((MirrorTransformer)analyzer())
-            .cloneWeight(status);
+        ((MirrorTransformer) analyzer()).cloneWeight(status);
     }
 
     /** Specify if this transformation has a mapping from the transformed
@@ -97,8 +96,7 @@ public class MirrorTransformation extends Analysis {
      *  mapping.
      */
     public boolean hasBackwardMapping() {
-        return ((MirrorTransformer)analyzer())
-            .hasBackwardMapping();
+        return ((MirrorTransformer) analyzer()).hasBackwardMapping();
     }
 
     /** Specify if this transformation has a mapping from the original
@@ -108,8 +106,7 @@ public class MirrorTransformation extends Analysis {
      *  mapping.
      */
     public boolean hasForwardMapping() {
-        return ((MirrorTransformer)analyzer())
-            .hasForwardMapping();
+        return ((MirrorTransformer) analyzer()).hasForwardMapping();
     }
 
     /** Create a mirror of the graph associated with this analyzer with the
@@ -118,8 +115,7 @@ public class MirrorTransformation extends Analysis {
      *  @return The mirror graph.
      */
     public Graph mirror() {
-        return ((MirrorTransformer)analyzer())
-            .mirror();
+        return ((MirrorTransformer) analyzer()).mirror();
     }
 
     /** Return a mirror of this graph in the form of the argument graph type
@@ -132,8 +128,7 @@ public class MirrorTransformation extends Analysis {
      *  @return The mirror graph.
      */
     public Graph mirror(Graph graph, boolean cloneWeights) {
-        return ((MirrorTransformer)analyzer())
-            .mirror(graph, cloneWeights);
+        return ((MirrorTransformer) analyzer()).mirror(graph, cloneWeights);
     }
 
     /** Return the original version of given object in the transformed graph.
@@ -142,7 +137,7 @@ public class MirrorTransformation extends Analysis {
      *  @return Return the original version the given object.
      */
     public Object originalVersionOf(Object transformedObject) {
-        return ((Transformer)analyzer()).originalVersionOf(transformedObject);
+        return ((Transformer) analyzer()).originalVersionOf(transformedObject);
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -151,7 +146,7 @@ public class MirrorTransformation extends Analysis {
      */
     public String toString() {
         return "Mirror transformation using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Return the transformed version of a given object in the original graph.
@@ -160,7 +155,7 @@ public class MirrorTransformation extends Analysis {
      *  @return Return the transformed version of the given object.
      */
     public Object transformedVersionOf(Object originalObject) {
-        return ((Transformer)analyzer()).transformedVersionOf(originalObject);
+        return ((Transformer) analyzer()).transformedVersionOf(originalObject);
     }
 
     /** Check if a given analyzer is compatible with this analysis.
@@ -174,6 +169,3 @@ public class MirrorTransformation extends Analysis {
         return analyzer instanceof MirrorTransformer;
     }
 }
-
-
-

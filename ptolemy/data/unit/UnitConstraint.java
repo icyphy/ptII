@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.unit;
 
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnitConstraint
+
 /**
    @author Rowland R Johnson
    @version $Id$
@@ -39,12 +40,10 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (rowland)
 */
 public abstract class UnitConstraint {
-
     /**
      * @param string
      */
     public UnitConstraint(String string) {
-
         // TODO Auto-generated constructor stub
     }
 
@@ -115,8 +114,11 @@ public abstract class UnitConstraint {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    UnitExpr _lhs;
 
-    UnitExpr _lhs, _rhs;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    UnitExpr _rhs;
     String _operator;
     NamedObj _source = null;
 }

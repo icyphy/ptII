@@ -23,14 +23,15 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 */
-
 package diva.graph;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import diva.util.Filter;
 import diva.util.FilteredIterator;
+
 
 /**
  * A set of utilities for traversing/manipulating/etc. graphs.
@@ -40,90 +41,103 @@ import diva.util.FilteredIterator;
  * @Pt.AcceptedRating Red
  */
 public final class GraphUtilities {
-
     //You can't instantiate this class
-    private GraphUtilities() {}
-
+    private GraphUtilities() {
+    }
 
     /**
      * Check to make sure that all nodes and edges
      * are self-consistent within a graph.
      */
     public static final boolean checkConsistency(Object composite,
-            GraphModel model) {
-        for (Iterator i = model.nodes(composite); i.hasNext(); ) {
+        GraphModel model) {
+        for (Iterator i = model.nodes(composite); i.hasNext();) {
             Object node = i.next();
-            for (Iterator j = model.outEdges(node); j.hasNext(); ) {
+
+            for (Iterator j = model.outEdges(node); j.hasNext();) {
                 Object edge = j.next();
+
                 if ((edge == null) || (model.getHead(edge) == null)) {
                     return false;
                 }
             }
-            for (Iterator j = model.inEdges(node); j.hasNext(); ) {
+
+            for (Iterator j = model.inEdges(node); j.hasNext();) {
                 Object edge = j.next();
-                if ((edge == null) || (model.getTail(edge) == null) ) {
+
+                if ((edge == null) || (model.getTail(edge) == null)) {
                     return false;
                 }
             }
         }
+
         return true;
     }
-
 
     /**
      * Check to make sure that all nodes and edges
      * are contained with in a graph and are consistent.
      */
     public static final boolean checkContainment(Object composite,
-            GraphModel model) {
+        GraphModel model) {
         if (!checkConsistency(composite, model)) {
             return false;
         }
 
-        for (Iterator i = model.nodes(composite); i.hasNext(); ) {
+        for (Iterator i = model.nodes(composite); i.hasNext();) {
             Object node = i.next();
+
             if (model.getParent(node) != composite) {
                 return false;
             }
-            for (Iterator j = model.outEdges(node); j.hasNext(); ) {
+
+            for (Iterator j = model.outEdges(node); j.hasNext();) {
                 Object edge = j.next();
                 Object head = model.getHead(edge);
+
                 if (model.getParent(head) != composite) {
                     return false;
                 }
             }
-            for (Iterator j = model.inEdges(node); j.hasNext(); ) {
+
+            for (Iterator j = model.inEdges(node); j.hasNext();) {
                 Object edge = j.next();
                 Object tail = model.getTail(edge);
+
                 if (model.getParent(tail) != composite) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
     /** Return a new set that contains any edges that are connected
      * to any nodes in the given composite.
      */
-    public static final Set edgeSet(Object composite,
-            GraphModel model) {
+    public static final Set edgeSet(Object composite, GraphModel model) {
         if (model.isComposite(composite)) {
             Set nodeSet = nodeSet(composite, model);
             Set set = new HashSet();
             Iterator nodes = nodeSet.iterator();
+
             while (nodes.hasNext()) {
                 Object node = nodes.next();
                 Iterator i;
                 i = model.outEdges(node);
+
                 while (i.hasNext()) {
                     set.add(i.next());
                 }
+
                 i = model.inEdges(node);
+
                 while (i.hasNext()) {
                     set.add(i.next());
                 }
             }
+
             return set;
         } else {
             return new HashSet();
@@ -136,13 +150,13 @@ public final class GraphUtilities {
      * @param composite A composite in the given model.
      * @param model The graph model.
      */
-    public static boolean isContainedNode(Object node,
-            Object composite,
-            GraphModel model) {
+    public static boolean isContainedNode(Object node, Object composite,
+        GraphModel model) {
         if (model.isNode(node)) {
             boolean isOK = false;
             Object parent = model.getParent(node);
-            while (!isOK && parent != null) {
+
+            while (!isOK && (parent != null)) {
                 if (parent == composite) {
                     isOK = true;
                 } else if (model.isNode(node)) {
@@ -151,6 +165,7 @@ public final class GraphUtilities {
                     parent = null;
                 }
             }
+
             return isOK;
         } else {
             return false;
@@ -165,8 +180,7 @@ public final class GraphUtilities {
      * @param model The graph model.
      */
     public static boolean isPartiallyContainedEdge(Object edge,
-            Object composite,
-            GraphModel model) {
+        Object composite, GraphModel model) {
         if (model.isEdge(edge)) {
             Object head = model.getHead(edge);
             Object tail = model.getTail(edge);
@@ -187,14 +201,15 @@ public final class GraphUtilities {
      * @param composite A composite in the given model.
      * @param model The graph model.
      */
-    public static boolean isTotallyContainedEdge(Object edge,
-            Object composite,
-            GraphModel model) {
+    public static boolean isTotallyContainedEdge(Object edge, Object composite,
+        GraphModel model) {
         if (model.isEdge(edge)) {
             Object head = model.getHead(edge);
             Object tail = model.getTail(edge);
 
-            if (head == null || tail == null) return false;
+            if ((head == null) || (tail == null)) {
+                return false;
+            }
 
             boolean headIsOK = isContainedNode(head, composite, model);
             boolean tailIsOK = isContainedNode(tail, composite, model);
@@ -222,18 +237,20 @@ public final class GraphUtilities {
     /** Return a new set that contains all the nodes that are deeply
      * contained in the given composite.
      */
-    public static final Set nodeSet(Object composite,
-            GraphModel model) {
+    public static final Set nodeSet(Object composite, GraphModel model) {
         if (model.isComposite(composite)) {
             Set set = new HashSet();
             Iterator i = model.nodes(composite);
+
             while (i.hasNext()) {
                 Object node = i.next();
                 set.add(node);
+
                 if (model.isComposite(node)) {
                     set.addAll(nodeSet(node, model));
                 }
             }
+
             return set;
         } else {
             return new HashSet();
@@ -261,15 +278,15 @@ public final class GraphUtilities {
      * @exception GraphException if the operation fails.
      */
     public static final void purgeNode(Object eventSource, Object node,
-            MutableGraphModel model)
-            throws GraphException {
+        MutableGraphModel model) throws GraphException {
+        for (Iterator i = model.outEdges(node); i.hasNext();) {
+            model.disconnectEdge(eventSource, i.next());
+        }
 
-        for (Iterator i = model.outEdges(node); i.hasNext(); ) {
+        for (Iterator i = model.inEdges(node); i.hasNext();) {
             model.disconnectEdge(eventSource, i.next());
         }
-        for (Iterator i = model.inEdges(node); i.hasNext(); ) {
-            model.disconnectEdge(eventSource, i.next());
-        }
+
         model.removeNode(eventSource, node);
     }
 
@@ -280,10 +297,9 @@ public final class GraphUtilities {
      * composite, or a subnode).
      */
     public static final Iterator partiallyContainedEdges(Object composite,
-            GraphModel model) {
+        GraphModel model) {
         return new FilteredIterator(edgeSet(model.getRoot(), model).iterator(),
-                new PartiallyContainedEdgeFilter(model,
-                        composite));
+            new PartiallyContainedEdgeFilter(model, composite));
     }
 
     /**
@@ -293,10 +309,9 @@ public final class GraphUtilities {
      * composite, or a subnode).
      */
     public static final Iterator totallyContainedEdges(Object composite,
-            GraphModel model) {
+        GraphModel model) {
         return new FilteredIterator(edgeSet(model.getRoot(), model).iterator(),
-                new TotallyContainedEdgeFilter(model,
-                        composite));
+            new TotallyContainedEdgeFilter(model, composite));
     }
 
     /**
@@ -306,8 +321,7 @@ public final class GraphUtilities {
      * graph, or a subgraph)
      * @deprecated use totallyContainedEdges instead.
      */
-    public static final Iterator localEdges(Object composite,
-            GraphModel model) {
+    public static final Iterator localEdges(Object composite, GraphModel model) {
         return totallyContainedEdges(composite, model);
     }
 
@@ -317,8 +331,7 @@ public final class GraphUtilities {
         private GraphModel _model;
         private Object _composite;
 
-        public PartiallyContainedEdgeFilter(GraphModel model,
-                Object composite) {
+        public PartiallyContainedEdgeFilter(GraphModel model, Object composite) {
             _model = model;
             _composite = composite;
         }
@@ -344,5 +357,3 @@ public final class GraphUtilities {
         }
     }
 }
-
-

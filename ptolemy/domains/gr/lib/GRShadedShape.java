@@ -58,6 +58,7 @@ import ptolemy.kernel.util.Workspace;
 
 import com.sun.j3d.utils.image.TextureLoader;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GRShadedShape
 
@@ -106,7 +107,6 @@ import com.sun.j3d.utils.image.TextureLoader;
     @Pt.AcceptedRating Green (liuxj)
 */
 abstract public class GRShadedShape extends GRActor3D {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -116,8 +116,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *   actor with this name.
      */
     public GRShadedShape(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
@@ -133,10 +132,11 @@ abstract public class GRShadedShape extends GRActor3D {
         specularColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
 
         texture = new FileParameter(this, "texture");
+
         // The following ensures that revert to defaults works properly.
         texture.setExpression("");
 
-        shininess = new DoubleRangeParameter(this,"shininess");
+        shininess = new DoubleRangeParameter(this, "shininess");
         shininess.min.setExpression("1.0");
         shininess.max.setExpression("128.0");
         shininess.precision.setExpression("128");
@@ -147,11 +147,11 @@ abstract public class GRShadedShape extends GRActor3D {
         transparency.setExpression("0.0");
         transparency.setTypeEquals(BaseType.DOUBLE);
 
-        wireFrame = new Parameter(this,"wireFrame");
+        wireFrame = new Parameter(this, "wireFrame");
         wireFrame.setExpression("false");
         wireFrame.setTypeEquals(BaseType.BOOLEAN);
 
-        flat = new Parameter(this,"flat");
+        flat = new Parameter(this, "flat");
         flat.setExpression("false");
         flat.setTypeEquals(BaseType.BOOLEAN);
 
@@ -231,83 +231,95 @@ abstract public class GRShadedShape extends GRActor3D {
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
     public void attributeChanged(Attribute attribute)
-                    throws IllegalActionException {
-            // If allowRuntimeChanges is null, then we are in the
-            // constructor, and don't need to do any of this.
-            if (allowRuntimeChanges != null) {
-                        if (_changesAllowedNow) {
-                            if (attribute == transparency && _transparencyAttributes != null) {
-                            float transparent = (float)
-                                                        ((DoubleToken)transparency.getToken()).doubleValue();
-                            if (transparent > 0.0) {
-                                    _transparencyAttributes.setTransparencyMode(
-                                                    TransparencyAttributes.NICEST);
-                            } else {
-                                    _transparencyAttributes.setTransparencyMode(
-                                                    TransparencyAttributes.NONE);
-                            }
-                                    _transparencyAttributes.setTransparency(transparent);
-                                }
-                            if (attribute == flat && _coloringAttributes != null) {
-                            boolean flatValue
-                                                        = ((BooleanToken)flat.getToken()).booleanValue();
-                            int shadeModel = ColoringAttributes.SHADE_GOURAUD;
-                            if (flatValue) {
-                                    shadeModel = ColoringAttributes.SHADE_FLAT;
-                            }
-                                    _coloringAttributes.setShadeModel(shadeModel);
-                                }
-                                if (_material != null) {
-                                        if (attribute == diffuseColor) {
-                                        Color3f color = new Color3f(diffuseColor.asColor());
-                                        _material.setDiffuseColor(color);
-                                        } else if (attribute == emissiveColor) {
-                                        Color3f color = new Color3f(emissiveColor.asColor());
-                                        _material.setEmissiveColor(color);
-                                        } else if (attribute == specularColor) {
-                                        Color3f color = new Color3f(specularColor.asColor());
-                                        _material.setSpecularColor(color);
-                                        } else if (attribute == shininess) {
-                                        float shine = (float)
-                                                    ((DoubleToken)shininess.getToken())
-                                                                .doubleValue();
-                                        _material.setShininess(shine);
-                                        }
-                                }
-                                if (attribute == texture && _appearance != null) {
-                                URL textureURL = texture.asURL();
-                                if (_viewScreen != null && textureURL != null) {
-                                    TextureLoader loader;
-                                    loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
-                                    Texture loadedTexture = loader.getTexture();
-                                    if (loadedTexture != null) {
-                                        _appearance.setTexture(loadedTexture);
-                                    }
-                                }
-                                }
-                                if (attribute == wireFrame && _polygonAttributes != null) {
-                                int mode = PolygonAttributes.POLYGON_FILL;
-                                if (((BooleanToken)wireFrame.getToken()).booleanValue()) {
-                                    mode = PolygonAttributes.POLYGON_LINE;
-                                }
-                                _polygonAttributes.setPolygonMode(mode);
-                                }
+        throws IllegalActionException {
+        // If allowRuntimeChanges is null, then we are in the
+        // constructor, and don't need to do any of this.
+        if (allowRuntimeChanges != null) {
+            if (_changesAllowedNow) {
+                if ((attribute == transparency)
+                        && (_transparencyAttributes != null)) {
+                    float transparent = (float) ((DoubleToken) transparency
+                        .getToken()).doubleValue();
+
+                    if (transparent > 0.0) {
+                        _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
+                    } else {
+                        _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NONE);
+                    }
+
+                    _transparencyAttributes.setTransparency(transparent);
+                }
+
+                if ((attribute == flat) && (_coloringAttributes != null)) {
+                    boolean flatValue = ((BooleanToken) flat.getToken())
+                        .booleanValue();
+                    int shadeModel = ColoringAttributes.SHADE_GOURAUD;
+
+                    if (flatValue) {
+                        shadeModel = ColoringAttributes.SHADE_FLAT;
+                    }
+
+                    _coloringAttributes.setShadeModel(shadeModel);
+                }
+
+                if (_material != null) {
+                    if (attribute == diffuseColor) {
+                        Color3f color = new Color3f(diffuseColor.asColor());
+                        _material.setDiffuseColor(color);
+                    } else if (attribute == emissiveColor) {
+                        Color3f color = new Color3f(emissiveColor.asColor());
+                        _material.setEmissiveColor(color);
+                    } else if (attribute == specularColor) {
+                        Color3f color = new Color3f(specularColor.asColor());
+                        _material.setSpecularColor(color);
+                    } else if (attribute == shininess) {
+                        float shine = (float) ((DoubleToken) shininess.getToken())
+                            .doubleValue();
+                        _material.setShininess(shine);
+                    }
+                }
+
+                if ((attribute == texture) && (_appearance != null)) {
+                    URL textureURL = texture.asURL();
+
+                    if ((_viewScreen != null) && (textureURL != null)) {
+                        TextureLoader loader;
+                        loader = new TextureLoader(textureURL,
+                                _viewScreen.getCanvas());
+
+                        Texture loadedTexture = loader.getTexture();
+
+                        if (loadedTexture != null) {
+                            _appearance.setTexture(loadedTexture);
                         }
+                    }
+                }
+
+                if ((attribute == wireFrame) && (_polygonAttributes != null)) {
+                    int mode = PolygonAttributes.POLYGON_FILL;
+
+                    if (((BooleanToken) wireFrame.getToken()).booleanValue()) {
+                        mode = PolygonAttributes.POLYGON_LINE;
+                    }
+
+                    _polygonAttributes.setPolygonMode(mode);
+                }
             }
-            super.attributeChanged(attribute);
+        }
+
+        super.attributeChanged(attribute);
     }
 
     /** Override the base class to null out private variables.
      */
-    public Object clone(Workspace workspace)
-                    throws CloneNotSupportedException {
-            GRShadedShape newObject = (GRShadedShape)super.clone(workspace);
-            newObject._appearance = null;
-            newObject._coloringAttributes = null;
-            newObject._material = null;
-            newObject._polygonAttributes = null;
-            newObject._transparencyAttributes = null;
-            return newObject;
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        GRShadedShape newObject = (GRShadedShape) super.clone(workspace);
+        newObject._appearance = null;
+        newObject._coloringAttributes = null;
+        newObject._material = null;
+        newObject._polygonAttributes = null;
+        newObject._transparencyAttributes = null;
+        return newObject;
     }
 
     /** Create the Java3D geometry and appearance for this GR actor.
@@ -337,11 +349,11 @@ abstract public class GRShadedShape extends GRActor3D {
      *   is not a GRDirector.
      */
     public void preinitialize() throws IllegalActionException {
-            _appearance = null;
-            _coloringAttributes = null;
-            _material = null;
-            _polygonAttributes = null;
-            _transparencyAttributes = null;
+        _appearance = null;
+        _coloringAttributes = null;
+        _material = null;
+        _polygonAttributes = null;
+        _transparencyAttributes = null;
         super.preinitialize();
     }
 
@@ -352,11 +364,11 @@ abstract public class GRShadedShape extends GRActor3D {
      *   is not a GRDirector.
      */
     public void wrapup() throws IllegalActionException {
-            _appearance = null;
-            _coloringAttributes = null;
-            _material = null;
-            _polygonAttributes = null;
-            _transparencyAttributes = null;
+        _appearance = null;
+        _coloringAttributes = null;
+        _material = null;
+        _polygonAttributes = null;
+        _transparencyAttributes = null;
         super.wrapup();
     }
 
@@ -369,13 +381,11 @@ abstract public class GRShadedShape extends GRActor3D {
      *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
     protected void _createAppearance() throws IllegalActionException {
-
         _material = new Material();
         _appearance = new Appearance();
 
-            boolean allowChanges
-                                = ((BooleanToken)allowRuntimeChanges.getToken())
-                                .booleanValue();
+        boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
+            .booleanValue();
 
         Color3f color = new Color3f(emissiveColor.asColor());
         _material.setEmissiveColor(color);
@@ -386,8 +396,8 @@ abstract public class GRShadedShape extends GRActor3D {
         color = new Color3f(specularColor.asColor());
         _material.setSpecularColor(color);
 
-        float shine = (float)
-            ((DoubleToken)shininess.getToken()).doubleValue();
+        float shine = (float) ((DoubleToken) shininess.getToken()).doubleValue();
+
         if (shine > 1.0) {
             _material.setShininess(shine);
         }
@@ -395,20 +405,24 @@ abstract public class GRShadedShape extends GRActor3D {
         _appearance.setMaterial(_material);
 
         // Deal with transparent attributes.
-        float transparent = (float)
-            ((DoubleToken)transparency.getToken()).doubleValue();
-        if (transparent > 0.0 || allowChanges) {
-                int mode = TransparencyAttributes.NICEST;
-                if (transparent == 0.0) {
-                        mode = TransparencyAttributes.NONE;
-                }
-                _transparencyAttributes = new TransparencyAttributes(
-                                mode, transparent);
+        float transparent = (float) ((DoubleToken) transparency.getToken())
+            .doubleValue();
+
+        if ((transparent > 0.0) || allowChanges) {
+            int mode = TransparencyAttributes.NICEST;
+
+            if (transparent == 0.0) {
+                mode = TransparencyAttributes.NONE;
+            }
+
+            _transparencyAttributes = new TransparencyAttributes(mode,
+                    transparent);
             _appearance.setTransparencyAttributes(_transparencyAttributes);
         }
 
         // Deal with flat attribute.
-        boolean flatValue = ((BooleanToken)flat.getToken()).booleanValue();
+        boolean flatValue = ((BooleanToken) flat.getToken()).booleanValue();
+
         if (flatValue) {
             _coloringAttributes = new ColoringAttributes(0.7f, 0.7f, 0.7f,
                     ColoringAttributes.SHADE_FLAT);
@@ -420,40 +434,33 @@ abstract public class GRShadedShape extends GRActor3D {
 
         // Deal with wireFrame attribute.
         int mode = PolygonAttributes.POLYGON_FILL;
-        if (((BooleanToken)wireFrame.getToken()).booleanValue()) {
+
+        if (((BooleanToken) wireFrame.getToken()).booleanValue()) {
             mode = PolygonAttributes.POLYGON_LINE;
         }
+
         // Default culls back facing polygons, which is weird.
         // We disable that here.
-        _polygonAttributes = new PolygonAttributes(
-                mode,
-                PolygonAttributes.CULL_NONE,
-                0.0f);
+        _polygonAttributes = new PolygonAttributes(mode,
+                PolygonAttributes.CULL_NONE, 0.0f);
         _appearance.setPolygonAttributes(_polygonAttributes);
 
         // Turn on antialiasing.
-        LineAttributes lineAttributes = new LineAttributes(
-                1.0f,
-                LineAttributes.PATTERN_SOLID,
-                true);
+        LineAttributes lineAttributes = new LineAttributes(1.0f,
+                LineAttributes.PATTERN_SOLID, true);
         _appearance.setLineAttributes(lineAttributes);
 
         // If runtime changes are allowed, we need to set the
         // appropriate capabilities.
         if (allowChanges) {
-                _transparencyAttributes.setCapability(
-                                TransparencyAttributes.ALLOW_VALUE_WRITE);
-                _transparencyAttributes.setCapability(
-                                TransparencyAttributes.ALLOW_MODE_WRITE);
-                _material.setCapability(
-                                Material.ALLOW_COMPONENT_WRITE);
-                _coloringAttributes.setCapability(
-                                ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
-                _appearance.setCapability(
-                                Appearance.ALLOW_TEXTURE_WRITE);
-                _polygonAttributes.setCapability(
-                                PolygonAttributes.ALLOW_MODE_WRITE);
+            _transparencyAttributes.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+            _transparencyAttributes.setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
+            _material.setCapability(Material.ALLOW_COMPONENT_WRITE);
+            _coloringAttributes.setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
+            _appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+            _polygonAttributes.setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
         }
+
         _changesAllowedNow = allowChanges;
     }
 
@@ -476,14 +483,16 @@ abstract public class GRShadedShape extends GRActor3D {
      *  @exception IllegalActionException If the given actor is not a
      *   ViewScreen3D or if an invalid texture is specified.
      */
-    protected void _setViewScreen(GRActor actor)
-            throws IllegalActionException {
+    protected void _setViewScreen(GRActor actor) throws IllegalActionException {
         super._setViewScreen(actor);
+
         URL textureURL = texture.asURL();
         TextureAttributes attributes = null;
+
         if (textureURL != null) {
             TextureLoader loader;
             loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
+
             Texture loadedTexture = loader.getTexture();
 
             if (loadedTexture != null) {
@@ -494,13 +503,14 @@ abstract public class GRShadedShape extends GRActor3D {
                 _appearance.setTexture(loadedTexture);
             }
         }
+
         // If runtime changes are allowed, then we need to set texture
         // attributes even if not needed now.
-        if (attributes == null
-                        && ((BooleanToken)allowRuntimeChanges.getToken()).booleanValue()) {
+        if ((attributes == null)
+                && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
             attributes = new TextureAttributes();
             attributes.setTextureMode(TextureAttributes.MODULATE);
-           _appearance.setTextureAttributes(attributes);
+            _appearance.setTextureAttributes(attributes);
         }
     }
 

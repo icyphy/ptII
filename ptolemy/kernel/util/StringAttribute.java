@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.kernel.util;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
@@ -34,8 +34,10 @@ import java.util.List;
 
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringAttribute
+
 /**
    An attribute that has a string value.
    Use setExpression() to define the value, as in for example
@@ -67,7 +69,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Green (cxh)
 */
 public class StringAttribute extends AbstractSettableAttribute {
-
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -105,7 +106,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *   an attribute already in the container.
      */
     public StringAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _value = "";
     }
@@ -121,6 +122,7 @@ public class StringAttribute extends AbstractSettableAttribute {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
         }
+
         if (!_valueListeners.contains(listener)) {
             _valueListeners.add(listener);
         }
@@ -145,30 +147,23 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
+
         String value = getExpression();
         String valueTerm = "";
-        if (value != null && !value.equals("")) {
-            valueTerm = " value=\"" +
-                StringUtilities.escapeForXML(value) + "\"";
+
+        if ((value != null) && !value.equals("")) {
+            valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
+                + "\"";
         }
 
-        output.write(_getIndentPrefix(depth)
-                + "<"
-                + _elementName
-                + " name=\""
-                + name
-                + "\" class=\""
-                + getClassName()
-                + "\""
-                + valueTerm
-                + ">\n");
+        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
+            + name + "\" class=\"" + getClassName() + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
-        output.write(_getIndentPrefix(depth) + "</"
-                + _elementName + ">\n");
+        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
     /** Get the value that has been set by setExpression(),
@@ -205,21 +200,23 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
      */
-    public void setExpression(String expression)
-            throws IllegalActionException {
+    public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
         _value = expression;
 
         // Notify the container and any value listeners immediately,
         // rather than deferring to validate().
-        NamedObj container = (NamedObj)getContainer();
+        NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             container.attributeChanged(this);
         }
+
         if (_valueListeners != null) {
             Iterator listeners = _valueListeners.iterator();
+
             while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
+                ValueListener listener = (ValueListener) listeners.next();
                 listener.valueChanged(this);
             }
         }
@@ -242,8 +239,9 @@ public class StringAttribute extends AbstractSettableAttribute {
      */
     public void validate() throws IllegalActionException {
         Iterator attributes = attributeList(Settable.class).iterator();
+
         while (attributes.hasNext()) {
-            Settable attribute = (Settable)attributes.next();
+            Settable attribute = (Settable) attributes.next();
             attribute.validate();
         }
     }
@@ -261,13 +259,12 @@ public class StringAttribute extends AbstractSettableAttribute {
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
-        ((Settable)destination).setExpression(getExpression());
+        throws IllegalActionException {
+        ((Settable) destination).setExpression(getExpression());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The value.
     private String _value;
 

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.kernel.util.test;
 
 import java.util.Collections;
@@ -34,8 +33,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestWorkspaceBase
+
 /**
    A base class for creating tests on the workspace synchronization features.
    A derived test creates a list of threads that access the workspace in
@@ -49,7 +50,6 @@ import java.util.List;
 
 */
 public abstract class TestWorkspaceBase {
-
     /** Create threads that access a workspace in various ways.
      *  List the threads in _accessThreads.
      */
@@ -58,12 +58,12 @@ public abstract class TestWorkspaceBase {
     /** Initialize and run the test.
      */
     public void runTest() {
-
         initializeTest();
 
         Iterator threads = _accessThreads.iterator();
+
         while (threads.hasNext()) {
-            Thread thread = (Thread)threads.next();
+            Thread thread = (Thread) threads.next();
             thread.start();
         }
 
@@ -74,26 +74,31 @@ public abstract class TestWorkspaceBase {
         }
 
         threads = _accessThreads.iterator();
+
         while (threads.hasNext()) {
-            Thread thread = (Thread)threads.next();
+            Thread thread = (Thread) threads.next();
             thread.interrupt();
+
             try {
                 thread.join();
             } catch (InterruptedException ex) {
-                _profile += "Test thread " + thread.getName()
-                    + " interrupted\n";
+                _profile += ("Test thread " + thread.getName()
+                + " interrupted\n");
             }
         }
 
         if (_profile == null) {
             StringBuffer buf = new StringBuffer();
             Iterator records = _record.iterator();
+
             while (records.hasNext()) {
-                buf.append((String)records.next());
+                buf.append((String) records.next());
                 buf.append("\n");
             }
+
             _profile = buf.toString();
         }
+
         //System.out.println(_profile);
     }
 
@@ -102,9 +107,7 @@ public abstract class TestWorkspaceBase {
     }
 
     private String _profile;
-
     protected List _accessThreads = new LinkedList();
     protected List _record = Collections.synchronizedList(new LinkedList());
     protected long _testTime = 0;
-
 }

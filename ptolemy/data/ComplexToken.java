@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -38,8 +37,10 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ComplexToken
+
 /**
    A token that contains a Complex number represented by a 64-bit
    double-precision floating point real and imaginary parts.
@@ -53,7 +54,6 @@ import ptolemy.math.Complex;
    @Pt.AcceptedRating Green (cxh)
 */
 public class ComplexToken extends ScalarToken {
-
     /** Construct a ComplexToken with Complex 0.0+0.0i
      */
     public ComplexToken() {
@@ -74,11 +74,12 @@ public class ComplexToken extends ScalarToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
+
         if (token instanceof ComplexToken) {
-            _value = ((ComplexToken)token).complexValue();
+            _value = ((ComplexToken) token).complexValue();
         } else {
             throw new IllegalActionException("A ComplexToken cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -109,31 +110,32 @@ public class ComplexToken extends ScalarToken {
      *   cannot be carried out.
      */
     public static ComplexToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof ComplexToken) {
-            return (ComplexToken)token;
+            return (ComplexToken) token;
         }
 
         int compare = TypeLattice.compare(BaseType.COMPLEX, token);
-        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(
-                            token, "complex"));
+
+        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
+                    token, "complex"));
         }
 
         compare = TypeLattice.compare(BaseType.DOUBLE, token);
-        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+
+        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             DoubleToken doubleToken = DoubleToken.convert(token);
             ComplexToken result = new ComplexToken(doubleToken.complexValue());
-            result._unitCategoryExponents =
-                doubleToken._copyOfCategoryExponents();
+            result._unitCategoryExponents = doubleToken
+                ._copyOfCategoryExponents();
             return result;
         }
 
         // The argument is below ComplexToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "complex"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "complex"));
     }
 
     /** Return true if the argument's class is IntToken and it has the
@@ -148,9 +150,10 @@ public class ComplexToken extends ScalarToken {
             return false;
         }
 
-        if (((ComplexToken)object).complexValue().equals(_value)) {
+        if (((ComplexToken) object).complexValue().equals(_value)) {
             return true;
         }
+
         return false;
     }
 
@@ -166,7 +169,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-        return (int)_value.magnitude();
+        return (int) _value.magnitude();
     }
 
     /** Returns a new ComplexToken with value 1.0.
@@ -213,8 +216,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      */
     protected ScalarToken _add(ScalarToken rightArgument) {
-        Complex result =
-            _value.add(((ComplexToken)rightArgument).complexValue());
+        Complex result = _value.add(((ComplexToken) rightArgument).complexValue());
         return new ComplexToken(result);
     }
 
@@ -223,19 +225,18 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("bitwiseAnd", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
+                this, rightArgument));
     }
 
     /** Throw an exception because bitwise NOT is not supported.
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
-    protected ScalarToken _bitwiseNot()
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("bitwiseNot", this, this));
+    protected ScalarToken _bitwiseNot() throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseNot",
+                this, this));
     }
 
     /** Throw an exception because bitwise OR is not supported.
@@ -243,9 +244,9 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("bitwiseOr", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
+                rightArgument));
     }
 
     /** Throw an exception because bitwise XOR is not supported.
@@ -253,9 +254,9 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("bitwiseXor", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("bitwiseXor",
+                this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -265,9 +266,9 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      */
     protected ScalarToken _divide(ScalarToken rightArgument)
-            throws IllegalActionException {
-        Complex result =
-            _value.divide(((ComplexToken)rightArgument).complexValue());
+        throws IllegalActionException {
+        Complex result = _value.divide(((ComplexToken) rightArgument)
+                .complexValue());
         return new ComplexToken(result);
     }
 
@@ -281,12 +282,9 @@ public class ComplexToken extends ScalarToken {
      *  @return A true-valued rightArgument if the first argument is
      *  close in value to this rightArgument.
      */
-    protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon) {
-        return BooleanToken.getInstance(
-                complexValue().isCloseTo(((ComplexToken)rightArgument)
-                        .complexValue(),
-                        epsilon));
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+        return BooleanToken.getInstance(complexValue().isCloseTo(((ComplexToken) rightArgument)
+                .complexValue(), epsilon));
     }
 
     /** Throw an exception because complex values cannot be compared.
@@ -295,10 +293,10 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("isLessThan", this, rightArgument) +
-                " because complex numbers cannot be compared.");
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("isLessThan",
+                this, rightArgument)
+            + " because complex numbers cannot be compared.");
     }
 
     /** Throw an exception because the modulo operation does not
@@ -308,9 +306,9 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("modulo", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("modulo", this,
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -320,8 +318,8 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        Complex result =
-            _value.multiply(((ComplexToken)rightArgument).complexValue());
+        Complex result = _value.multiply(((ComplexToken) rightArgument)
+                .complexValue());
         return new ComplexToken(result);
     }
 
@@ -332,8 +330,8 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        Complex result =
-            _value.subtract(((ComplexToken)rightArgument).complexValue());
+        Complex result = _value.subtract(((ComplexToken) rightArgument)
+                .complexValue());
         return new ComplexToken(result);
     }
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Gaussian
+
 /**
    Produce a random sequence with a Gaussian distribution.  On each
    iteration, a new random number is produced.  The output port is of
@@ -51,9 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class Gaussian extends RandomSource {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -63,7 +62,7 @@ public class Gaussian extends RandomSource {
      *   actor with this name.
      */
     public Gaussian(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -107,17 +106,16 @@ public class Gaussian extends RandomSource {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-        double meanValue = ((DoubleToken)(mean.getToken())).doubleValue();
-        double standardDeviationValue =
-            ((DoubleToken)(standardDeviation.getToken())).doubleValue();
+        double meanValue = ((DoubleToken) (mean.getToken())).doubleValue();
+        double standardDeviationValue = ((DoubleToken) (standardDeviation
+            .getToken())).doubleValue();
         double rawNum = _random.nextGaussian();
-        _current = (rawNum*standardDeviationValue) + meanValue;
+        _current = (rawNum * standardDeviationValue) + meanValue;
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The random number for the current iteration.
     private double _current;
 }

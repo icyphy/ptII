@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -49,6 +48,7 @@ import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
 
+
 /**
  * This tutorial illustrates how to use Terminals.
  *
@@ -56,7 +56,6 @@ import diva.gui.BasicFrame;
  * @version $Id$
  */
 public class TerminalTutorial {
-
     // The JCanvas
     private JCanvas canvas;
 
@@ -71,9 +70,9 @@ public class TerminalTutorial {
 
     /** Create a JCanvas and put it into a window
      */
-    public TerminalTutorial () {
+    public TerminalTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         // Create a controller to do the work.
         controller = new BasicController(graphicsPane);
@@ -81,17 +80,17 @@ public class TerminalTutorial {
 
         // Create the window
         BasicFrame frame = new BasicFrame("Simple canvas tutorial", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
     }
 
     /** Create a collection of terminals.
      */
-    public void createTerminals () {
+    public void createTerminals() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Draw a rectangle to position them
-        BasicRectangle square = new BasicRectangle(160,80,80,80);
+        BasicRectangle square = new BasicRectangle(160, 80, 80, 80);
         square.setStrokePaint(Color.gray);
         layer.add(square);
 
@@ -99,7 +98,6 @@ public class TerminalTutorial {
         BoundsGeometry _geometry = new BoundsGeometry(square, square.getBounds());
 
         // Create a set of terminals, one by one
-
         // NORTH
         StraightTerminal north = new StraightTerminal(_geometry.getN());
         Site connectNorth = north.getConnectSite();
@@ -139,7 +137,7 @@ public class TerminalTutorial {
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -149,5 +147,3 @@ public class TerminalTutorial {
             });
     }
 }
-
-

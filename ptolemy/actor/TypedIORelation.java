@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor;
 
 import ptolemy.kernel.CompositeEntity;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypedIORelation
+
 /**
    This class overrides some of the methods in IORelation to ensure that
    TypedIOPorts are only connected to TypedIOPorts. I.e., Instances of
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (liuxj)
 */
 public class TypedIORelation extends IORelation {
-
     // all the constructors are wrappers of the super class constructors.
 
     /** Construct a relation in the default workspace with an empty string
@@ -97,7 +97,7 @@ public class TypedIORelation extends IORelation {
      *   a relation already in the container.
      */
     public TypedIORelation(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -113,12 +113,11 @@ public class TypedIORelation extends IORelation {
      *   are not in the same workspace.
      */
     protected void _checkContainer(CompositeEntity container)
-            throws IllegalActionException {
-        if (!(container instanceof TypedCompositeActor) &&
-                (container != null)) {
-            throw new IllegalActionException (this, container,
-                    "TypedIORelation can only be contained by " +
-                    "TypedCompositeActor.");
+        throws IllegalActionException {
+        if (!(container instanceof TypedCompositeActor) && (container != null)) {
+            throw new IllegalActionException(this, container,
+                "TypedIORelation can only be contained by "
+                + "TypedCompositeActor.");
         }
     }
 
@@ -128,10 +127,10 @@ public class TypedIORelation extends IORelation {
      *  @exception IllegalActionException If the port is not an
      *   TypedIOPort.
      */
-    protected void _checkPort (Port port) throws IllegalActionException {
+    protected void _checkPort(Port port) throws IllegalActionException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
-                    "TypedIORelation can only link to a TypedIOPort.");
+                "TypedIORelation can only link to a TypedIOPort.");
         }
     }
 }

@@ -36,6 +36,7 @@ import java.util.Iterator;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
+
 /**
  * A collection of static methods that
  * create useful default actions.
@@ -62,11 +63,12 @@ public class DefaultActions {
      * clipboard, do nothing.
      */
     public static Action copyAction(final Application app) {
-        return new AbstractAction (COPY) {
+        return new AbstractAction(COPY) {
                 public void actionPerformed(ActionEvent e) {
                     View view = app.getCurrentView();
                     Clipboard c = app.getClipboard();
-                    if (view != null && c != null) {
+
+                    if ((view != null) && (c != null)) {
                         view.copy(c);
                     }
                 }
@@ -77,7 +79,7 @@ public class DefaultActions {
      * document. If there is no current document, do nothing.
      */
     public static Action closeAction(final Application app) {
-        return new AbstractAction (CLOSE) {
+        return new AbstractAction(CLOSE) {
                 public void actionPerformed(ActionEvent e) {
                     app.closeDocument(app.getCurrentView().getDocument());
                 }
@@ -90,11 +92,12 @@ public class DefaultActions {
      * clipboard, do nothing.
      */
     public static Action cutAction(final Application app) {
-        return new AbstractAction (CUT) {
+        return new AbstractAction(CUT) {
                 public void actionPerformed(ActionEvent e) {
                     View view = app.getCurrentView();
                     Clipboard c = app.getClipboard();
-                    if (view != null && c != null) {
+
+                    if ((view != null) && (c != null)) {
                         view.cut(c);
                     }
                 }
@@ -107,14 +110,16 @@ public class DefaultActions {
      * the action is cancelled.
      */
     public static Action exitAction(final Application app) {
-        return new AbstractAction (EXIT) {
+        return new AbstractAction(EXIT) {
                 public void actionPerformed(ActionEvent e) {
                     Iterator docs = app.documentList().iterator();
                     boolean succeeded = true;
+
                     while (docs.hasNext() && succeeded) {
-                        Document d = (Document)docs.next();
+                        Document d = (Document) docs.next();
                         succeeded &= app.closeDocument(d);
                     }
+
                     if (succeeded) {
                         System.exit(0);
                     }
@@ -126,10 +131,11 @@ public class DefaultActions {
      * document.
      */
     public static Action newAction(final Application app) {
-        return new AbstractAction (NEW) {
+        return new AbstractAction(NEW) {
                 public void actionPerformed(ActionEvent e) {
                     Document doc = app.getDocumentFactory().createDocument(app);
                     app.addDocument(doc);
+
                     View v = app.createView(doc);
                     app.addView(v);
                     app.setCurrentView(v);
@@ -141,12 +147,14 @@ public class DefaultActions {
      * document.
      */
     public static Action openAction(final Application app) {
-        return new AbstractAction (OPEN) {
+        return new AbstractAction(OPEN) {
                 public void actionPerformed(ActionEvent e) {
                     Document doc = app.getStoragePolicy().open(app);
+
                     //FIXME: should this check be done in the app instead?
                     if (doc != null) {
                         app.addDocument(doc);
+
                         View v = app.createView(doc);
                         app.addView(v);
                         app.setCurrentView(v);
@@ -161,13 +169,15 @@ public class DefaultActions {
      * Document is not printable/pageable do nothing.
      */
     public static Action printAction(final Application app) {
-        return new AbstractAction (PRINT) {
+        return new AbstractAction(PRINT) {
                 public void actionPerformed(ActionEvent e) {
                     View view = app.getCurrentView();
-                    if (view != null && view instanceof Printable) {
+
+                    if ((view != null) && view instanceof Printable) {
                         PrinterJob job = PrinterJob.getPrinterJob();
                         PageFormat format = job.pageDialog(job.defaultPage());
-                        job.setPrintable((Printable)view, format);
+                        job.setPrintable((Printable) view, format);
+
                         if (job.printDialog()) {
                             try {
                                 job.print();
@@ -175,11 +185,11 @@ public class DefaultActions {
                                 app.showError("PrintingFailed", ex);
                             }
                         }
-                    }
-                    else if (view != null && view instanceof Pageable) {
+                    } else if ((view != null) && view instanceof Pageable) {
                         PrinterJob job = PrinterJob.getPrinterJob();
                         PageFormat format = job.pageDialog(job.defaultPage());
-                        job.setPageable((Pageable)view);
+                        job.setPageable((Pageable) view);
+
                         if (job.printDialog()) {
                             try {
                                 job.print();
@@ -198,11 +208,12 @@ public class DefaultActions {
      * clipboard, do nothing.
      */
     public static Action pasteAction(final Application app) {
-        return new AbstractAction (PASTE) {
+        return new AbstractAction(PASTE) {
                 public void actionPerformed(ActionEvent e) {
                     View view = app.getCurrentView();
                     Clipboard c = app.getClipboard();
-                    if (view != null && c != null) {
+
+                    if ((view != null) && (c != null)) {
                         view.paste(c);
                     }
                 }
@@ -221,9 +232,10 @@ public class DefaultActions {
      * document. If there is no current document, do nothing.
      */
     public static Action saveAction(final Application app) {
-        return new AbstractAction (SAVE) {
+        return new AbstractAction(SAVE) {
                 public void actionPerformed(ActionEvent e) {
-                    app.getStoragePolicy().save(app.getCurrentView().getDocument());//FIXME???
+                    app.getStoragePolicy().save(app.getCurrentView()
+                                                   .getDocument()); //FIXME???
                 }
             };
     }
@@ -233,12 +245,11 @@ public class DefaultActions {
      * document, do nothing.
      */
     public static Action saveAsAction(final Application app) {
-        return new AbstractAction (SAVE_AS) {
+        return new AbstractAction(SAVE_AS) {
                 public void actionPerformed(ActionEvent e) {
-                    app.getStoragePolicy().saveAs(app.getCurrentView().getDocument());
+                    app.getStoragePolicy().saveAs(app.getCurrentView()
+                                                     .getDocument());
                 }
             };
     }
 }
-
-

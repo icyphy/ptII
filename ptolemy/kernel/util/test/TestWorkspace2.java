@@ -26,13 +26,14 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.kernel.util.test;
 
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestWorkspace2
+
 /**
    This object implements a thread that obtains read permission to
    a workspace three times sequentially, then calls workspace.wait(obj) on an
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.Workspace;
 
 */
 public class TestWorkspace2 extends Thread {
-
     public static void main(String[] args) {
         Workspace w = new Workspace("test");
         TestWorkspace2 tw = new TestWorkspace2("test", w);
@@ -75,28 +75,35 @@ public class TestWorkspace2 extends Thread {
      */
     public synchronized void run() {
         _notif.start();
+
         int i = 0;
+
         try {
             for (i = 0; i < 3; i++) {
                 _workspace.getReadAccess();
-                profile += _name + ".getReadAccess()\n";
+                profile += (_name + ".getReadAccess()\n");
+
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException ex) {}
+                } catch (InterruptedException ex) {
+                }
             }
-            synchronized(_notif) {
+
+            synchronized (_notif) {
                 _notif.getWriteAccess = true;
+
                 try {
                     _workspace.wait(_notif);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
                 _notif.done = true;
             }
         } finally {
             for (int j = i; j > 0; j--) {
                 _workspace.doneReading();
-                profile += _name + ".doneReading()\n";
+                profile += (_name + ".doneReading()\n");
             }
         }
     }
@@ -110,14 +117,11 @@ public class TestWorkspace2 extends Thread {
 
     public Workspace _workspace;
     public String profile = "";
-
-
     private Notification _notif;
     private String _name;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
 
     /** Repeatedly calls notifyAll on itself to wake up any threads waiting
      *  on it.
@@ -127,28 +131,32 @@ public class TestWorkspace2 extends Thread {
             _name = name;
         }
 
-        public void run () {
+        public void run() {
             while (!done) {
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException ex) {}
-                synchronized(this) {
+                } catch (InterruptedException ex) {
+                }
+
+                synchronized (this) {
                     if (getWriteAccess) {
                         try {
                             TestWorkspace2.this._workspace.getWriteAccess();
-                            TestWorkspace2.this.profile +=
-                                _name + ".getWriteAccess()\n";
+                            TestWorkspace2.this.profile += (_name
+                            + ".getWriteAccess()\n");
                         } finally {
                             _workspace.doneWriting();
-                            TestWorkspace2.this.profile +=
-                                _name + ".doneWriting()\n";
+                            TestWorkspace2.this.profile += (_name
+                            + ".doneWriting()\n");
                         }
+
                         getWriteAccess = false;
                         notifyAll();
                     }
                 }
             }
         }
+
         public boolean done = false;
         public boolean getWriteAccess = false;
         public String _name;

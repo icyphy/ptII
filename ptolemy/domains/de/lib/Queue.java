@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Queue
+
 /**
    This actor implements an event queue.  When a token is received on the
    <i>input</i> port, it is stored in the queue.
@@ -56,9 +57,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (eal)
 */
-
 public class Queue extends DETransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,14 +67,14 @@ public class Queue extends DETransformer {
      *   actor with this name.
      */
     public Queue(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
+
         // Leave trigger type undeclared.
         // Put it at the bottom of the icon by default.
-        StringAttribute cardinality
-            = new StringAttribute(trigger, "_cardinal");
+        StringAttribute cardinality = new StringAttribute(trigger, "_cardinal");
         cardinality.setExpression("SOUTH");
 
         _queue = new FIFOQueue();
@@ -100,9 +99,8 @@ public class Queue extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Queue newObject = (Queue)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Queue newObject = (Queue) super.clone(workspace);
         newObject._queue = new FIFOQueue();
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
@@ -119,11 +117,13 @@ public class Queue extends DETransformer {
         if (input.hasToken(0)) {
             _queue.put(input.get(0));
         }
+
         if (trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
+
             if (_queue.size() > 0) {
-                output.send(0, (Token)_queue.take());
+                output.send(0, (Token) _queue.take());
             }
         }
     }
@@ -146,12 +146,15 @@ public class Queue extends DETransformer {
         // If the trigger input is not connected, never fire.
         boolean hasInput = false;
         boolean hasTrigger = false;
+
         if (input.getWidth() > 0) {
             hasInput = (input.hasToken(0));
         }
+
         if (trigger.getWidth() > 0) {
             hasTrigger = (trigger.hasToken(0));
         }
+
         return hasInput || hasTrigger;
     }
 

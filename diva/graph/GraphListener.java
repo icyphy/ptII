@@ -25,6 +25,7 @@
 */
 package diva.graph;
 
+
 /**
  * A listener for changes in a graph's structure or contents,
  * which are communicated through GraphEvent objects.  GraphListeners
@@ -38,7 +39,6 @@ package diva.graph;
  * @Pt.AcceptedRating Yellow
  */
 public interface GraphListener extends java.util.EventListener {
-
     /**
      * An edge's head has been changed in a registered
      * graph or one of its subgraphs.  The added edge
@@ -78,5 +78,3 @@ public interface GraphListener extends java.util.EventListener {
      */
     public void structureChanged(GraphEvent e);
 }
-
-

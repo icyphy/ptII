@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.ComplexToken;
@@ -39,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// IFFT
@@ -59,9 +59,7 @@ import ptolemy.math.SignalProcessing;
    @Pt.AcceptedRating Yellow (eal)
    @see ptolemy.math.SignalProcessing#IFFTComplexOut
 */
-
 public class IFFT extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +69,7 @@ public class IFFT extends SDFTransformer {
      *   actor with this name.
      */
     public IFFT(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.COMPLEX);
@@ -102,20 +100,21 @@ public class IFFT extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == order) {
             // Get the size of the FFT transform
-            _orderValue = ((IntToken)order.getToken()).intValue();
+            _orderValue = ((IntToken) order.getToken()).intValue();
+
             if (_orderValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Order was " + _orderValue
-                        + " but must be greater than zero.");
+                    "Order was " + _orderValue
+                    + " but must be greater than zero.");
             }
-            _transformSize = (int)Math.pow(2, _orderValue );
+
+            _transformSize = (int) Math.pow(2, _orderValue);
 
             _inComplexArray = new Complex[_transformSize];
             _outTokenArray = new ComplexToken[_transformSize];
-
         } else {
             super.attributeChanged(attribute);
         }
@@ -126,25 +125,27 @@ public class IFFT extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         Token[] inTokenArray = input.get(0, _transformSize);
+
         for (int i = 0; i < _transformSize; i++) {
-            _inComplexArray[i] =
-                ((ComplexToken)inTokenArray[i]).complexValue();
+            _inComplexArray[i] = ((ComplexToken) inTokenArray[i]).complexValue();
         }
-        Complex[] outComplexArray =
-            SignalProcessing.IFFTComplexOut(_inComplexArray, _orderValue);
+
+        Complex[] outComplexArray = SignalProcessing.IFFTComplexOut(_inComplexArray,
+                _orderValue);
+
         for (int i = 0; i < _transformSize; i++) {
             _outTokenArray[i] = new ComplexToken(outComplexArray[i]);
         }
+
         output.send(0, _outTokenArray, _transformSize);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _transformSize;
     private int _orderValue;
-
     private ComplexToken[] _outTokenArray;
     private Complex[] _inComplexArray;
 }

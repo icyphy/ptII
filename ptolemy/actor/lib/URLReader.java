@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib;
 
 import java.io.BufferedReader;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// URLReader
+
 /**
    This actor reads tokens from an URL, and output them. Each entry in
    the file corresponds to one iteration. If there are multiple fires in
@@ -82,7 +83,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (liuj)
 */
 public abstract class URLReader extends Source {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -92,7 +92,7 @@ public abstract class URLReader extends Source {
      *   actor with this name.
      */
     public URLReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the output port.
@@ -108,6 +108,7 @@ public abstract class URLReader extends Source {
         if (_stdIn == null) {
             _stdIn = new BufferedReader(new InputStreamReader(System.in));
         }
+
         _setURLReader(_stdIn);
     }
 
@@ -127,7 +128,6 @@ public abstract class URLReader extends Source {
      */
     public Parameter refresh;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -138,33 +138,36 @@ public abstract class URLReader extends Source {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == sourceURL) {
             StringToken urlToken = null;
+
             try {
-                urlToken = (StringToken)sourceURL.getToken();
+                urlToken = (StringToken) sourceURL.getToken();
+
                 if (urlToken == null) {
                     _source = null;
                     _setURLReader(null);
                 } else {
                     _source = urlToken.stringValue();
+
                     if (_source.equals("")) {
                         _setURLReader(null);
                     } else {
                         URL url = new URL(_source);
-                        java.io.BufferedReader reader = new BufferedReader(
-                                new InputStreamReader(url.openStream()));
+                        java.io.BufferedReader reader = new BufferedReader(new InputStreamReader(
+                                    url.openStream()));
                         _setURLReader(reader);
                     }
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to evaluate sourceURL '"
-                        + urlToken + "'");
+                    "Failed to evaluate sourceURL '" + urlToken + "'");
             }
         } else if (attribute == refresh) {
-            _refreshFlag = ((BooleanToken)refresh.getToken()).booleanValue();
+            _refreshFlag = ((BooleanToken) refresh.getToken()).booleanValue();
         }
+
         super.attributeChanged(attribute);
     }
 
@@ -181,7 +184,7 @@ public abstract class URLReader extends Source {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            if (_reader != null && _reader != _stdIn) {
+            if ((_reader != null) && (_reader != _stdIn)) {
                 _reader.close();
             }
         } catch (IOException ex) {
@@ -198,14 +201,15 @@ public abstract class URLReader extends Source {
      *  @exception IllegalActionException If an IO error occurs.
      */
     protected void _setURLReader(java.io.BufferedReader reader)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
-            if (_reader != null && _reader != _stdIn) {
+            if ((_reader != null) && (_reader != _stdIn)) {
                 _reader.close();
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "Failed to close");
         }
+
         if (reader != null) {
             _reader = reader;
         } else {

@@ -57,8 +57,10 @@ import thales.vergil.SingleWindowApplication;
 import thales.vergil.navigable.NavigableActorGraphFrame;
 import thales.vergil.navigable.NavigationPTree;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SingleWindowHTMLViewer
+
 /**
    Main application Frame. Contains all the
    panels, menus and needed widget for the whole Design Environment.
@@ -70,19 +72,13 @@ import thales.vergil.navigable.NavigationPTree;
    @Pt.ProposedRating Yellow (jerome.blanc)
    @Pt.AcceptedRating Red (cxh)
 */
-public class SingleWindowHTMLViewer
-    extends HTMLViewer
-    implements ChangeListener {
-
+public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener {
     /**
      * Main panel
      */
     protected JPanel startPanel = new JPanel();
-
     protected JTabbedPane _viewsTabbedPane = new JTabbedPane();
-
     private JMenuBar _originalMenuBar = null;
-
     private Configuration _configuration = null;
 
     public SingleWindowHTMLViewer() {
@@ -94,11 +90,13 @@ public class SingleWindowHTMLViewer
         //Fetsh the scroller and keep reference here
         JScrollPane _scroller = null;
         Component[] liste = getContentPane().getComponents();
+
         for (int i = 0; i < liste.length; i++) {
             if (liste[i] instanceof JScrollPane) {
                 _scroller = (JScrollPane) liste[i];
             }
         }
+
         getContentPane().removeAll();
 
         //set the UI for _viewsTabbedPane
@@ -115,9 +113,10 @@ public class SingleWindowHTMLViewer
                     if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
                         JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
                         int index = tabbedPane.getSelectedIndex();
+
                         if (index > 0) {
-                            final Component theClickedOne =
-                                tabbedPane.getComponentAt(index);
+                            final Component theClickedOne = tabbedPane
+                                .getComponentAt(index);
                             JPopupMenu popUpMenu = new JPopupMenu();
                             JMenuItem close = new JMenuItem("Close");
                             close.addActionListener(new ActionListener() {
@@ -129,14 +128,11 @@ public class SingleWindowHTMLViewer
                                     }
                                 });
                             popUpMenu.add(close);
-                            popUpMenu.show(
-                                    (Component) e.getSource(),
-                                    e.getX(),
-                                    e.getY());
+                            popUpMenu.show((Component) e.getSource(), e.getX(),
+                                e.getY());
                         }
                     }
                 }
-
             });
 
         buildStartPanel(_scroller);
@@ -166,6 +162,7 @@ public class SingleWindowHTMLViewer
      */
     public void newTabbedPanel(Tableau tableau) {
         removeEmptyTabs();
+
         //Create the TabbedPanel
         JFrame frame = tableau.getFrame();
 
@@ -186,12 +183,12 @@ public class SingleWindowHTMLViewer
                 public void windowActivated(WindowEvent e) {
                     JFrame frame = (JFrame) e.getSource();
                     frame.hide();
+
                     try {
                         selectTab(frame.getName());
                     } catch (IndexOutOfBoundsException ex) {
                     }
                 }
-
             });
 
         Container container = frame.getContentPane();
@@ -203,6 +200,7 @@ public class SingleWindowHTMLViewer
 
     public void selectTab(String name) {
         int idx = findComponentIndex(name);
+
         if (idx < _viewsTabbedPane.getTabCount()) {
             _viewsTabbedPane.setSelectedIndex(idx);
         }
@@ -216,8 +214,11 @@ public class SingleWindowHTMLViewer
     protected void removeEmptyTabs() {
         for (int i = 0; i < _viewsTabbedPane.getComponentCount(); ++i) {
             String name = _viewsTabbedPane.getComponentAt(i).getName();
+
             if (name != null) { //Not using
+
                 Tableau tableau = findComponentTableau(name);
+
                 if (tableau == null) {
                     removeTab(name);
                     --i;
@@ -236,28 +237,35 @@ public class SingleWindowHTMLViewer
         if (_originalMenuBar == null) {
             _originalMenuBar = getJMenuBar();
         }
+
         setJMenuBar(menuBar);
     }
 
     /* (non-Javadoc)
      * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
      */
+
     /**
      * Changes menus according to the selected Tab.
      */
     public void stateChanged(ChangeEvent e) {
         removeEmptyTabs();
+
         Object source = e.getSource();
+
         if (source instanceof JTabbedPane) {
             JTabbedPane tabbedPane = ((JTabbedPane) source);
             Component aComp = tabbedPane.getSelectedComponent();
+
             if (aComp != null) {
                 String name = aComp.getName();
-                if (name != null && !name.equals("Start")) {
+
+                if ((name != null) && !name.equals("Start")) {
                     Tableau tableau = findComponentTableau(name);
+
                     if (tableau != null) {
-                        fillMainFrame(
-                                ((Tableau) tableau).getFrame().getJMenuBar());
+                        fillMainFrame(((Tableau) tableau).getFrame()
+                                       .getJMenuBar());
                         _statusBar.setVisible(false);
                     }
                 } else {
@@ -277,14 +285,18 @@ public class SingleWindowHTMLViewer
      */
     protected Tableau findComponentTableau(String tableauFullName) {
         Tableau answer = null;
+
         if (tableauFullName != null) {
-            tableauFullName =
-                tableauFullName.substring(15, tableauFullName.length());
+            tableauFullName = tableauFullName.substring(15,
+                    tableauFullName.length());
+
             Entity tableau = _configuration.getEntity(tableauFullName);
+
             if (tableau instanceof Tableau) {
                 answer = (Tableau) tableau;
             }
         }
+
         return answer;
     }
 
@@ -297,8 +309,10 @@ public class SingleWindowHTMLViewer
 
         String name = aComp.getName();
         Tableau tableau = findComponentTableau(name);
+
         if (tableau != null) {
             answer = tableau.close();
+
             if (answer) {
                 tableau.getFrame().dispose();
                 removeTab(name);
@@ -318,10 +332,12 @@ public class SingleWindowHTMLViewer
         if (tableauFullName != null) {
             int nbTabs = _viewsTabbedPane.getComponentCount();
             boolean found = false;
-            for (int i = 0; i < nbTabs && !found; ++i) {
+
+            for (int i = 0; (i < nbTabs) && !found; ++i) {
                 Component aComp = _viewsTabbedPane.getComponent(i);
                 String compName = aComp.getName();
-                if (compName != null && compName.equals(tableauFullName)) {
+
+                if ((compName != null) && compName.equals(tableauFullName)) {
                     found = true;
                     answer = i;
                 }
@@ -338,20 +354,23 @@ public class SingleWindowHTMLViewer
     public void removeTab(String tableauFullName) {
         int idx = findComponentIndex(tableauFullName);
         Tableau tab = findComponentTableau(tableauFullName);
+
         if (tab != null) {
             Frame frame = tab.getFrame();
+
             if (frame instanceof NavigableActorGraphFrame) {
-                NavigableActorGraphFrame navFrame =
-                    (NavigableActorGraphFrame) frame;
+                NavigableActorGraphFrame navFrame = (NavigableActorGraphFrame) frame;
                 NavigationPTree aTree = navFrame.getTree();
 
                 Nameable effigy = tab.getContainer();
+
                 if (effigy instanceof NavigableEffigy) {
                     NavigableEffigy navEff = (NavigableEffigy) effigy;
                     navEff.getNavigationModel().unRegister(aTree);
                 }
             }
         }
+
         if (idx < _viewsTabbedPane.getTabCount()) {
             try {
                 _viewsTabbedPane.remove(idx);
@@ -363,20 +382,24 @@ public class SingleWindowHTMLViewer
     /* (non-Javadoc)
      * @see ptolemy.gui.Top#_close()
      */
+
     /**
      * Closes all the Tableau displayed into the TabbedPane.
      */
     protected boolean _close() {
         boolean close = true;
         int nbTabs = _viewsTabbedPane.getComponentCount();
-        for (int i = 0; i < nbTabs - 1; ++i) {
+
+        for (int i = 0; i < (nbTabs - 1); ++i) {
             if (close) {
                 close = closeTabbedPane(_viewsTabbedPane.getComponent(1));
             }
         }
+
         if (close) {
             close = super._close();
         }
+
         return close;
     }
 
@@ -400,13 +423,16 @@ public class SingleWindowHTMLViewer
      */
     public boolean reOpenGraph(Tableau tableau) {
         boolean answer = false;
+
         if (tableau != null) {
             Nameable effigy = tableau.getContainer();
+
             if (effigy instanceof PtolemyEffigy) {
                 NamedObj toReOpen = ((PtolemyEffigy) effigy).getModel();
                 tableau.close();
                 tableau.getFrame().dispose();
                 removeTab(tableau.getFullName());
+
                 try {
                     ((PtolemyEffigy) effigy).setContainer(null);
                     removeEmptyTabs();
@@ -419,7 +445,7 @@ public class SingleWindowHTMLViewer
                 }
             }
         }
+
         return answer;
     }
-
 }

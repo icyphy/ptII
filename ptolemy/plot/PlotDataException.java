@@ -27,8 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotDataException
+
 /**
    Exception thrown by plot classes if there are format
    problems with the data to be plotted.
@@ -40,7 +42,11 @@ package ptolemy.plot;
    @Pt.AcceptedRating Yellow (cxh)
 */
 class PlotDataException extends Throwable {
-    public PlotDataException() { super(); }
-    public PlotDataException(String s) { super(s); }
+    public PlotDataException() {
+        super();
+    }
 
+    public PlotDataException(String s) {
+        super(s);
+    }
 }

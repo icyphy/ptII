@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Primitive;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Cylinder3D
 
@@ -62,7 +63,6 @@ import com.sun.j3d.utils.geometry.Primitive;
     @Pt.AcceptedRating Green (liuxj)
 */
 public class Cylinder3D extends GRShadedShape {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,8 +72,7 @@ public class Cylinder3D extends GRShadedShape {
      *   actor with this name.
      */
     public Cylinder3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         radius = new Parameter(this, "radius");
         radius.setExpression("0.5");
@@ -128,21 +127,21 @@ public class Cylinder3D extends GRShadedShape {
     /** If the dimensions change, then update the box.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Check that a box has been previously created.
-        if (attribute == radius
-                || attribute == height) {
+        if ((attribute == radius) || (attribute == height)) {
             if (_scaleTransform != null) {
-                float radiusValue = (float)
-                        ((DoubleToken)radius.getToken()).doubleValue();
-                float heightValue = (float)
-                        ((DoubleToken)height.getToken()).doubleValue();
+                float radiusValue = (float) ((DoubleToken) radius.getToken())
+                    .doubleValue();
+                float heightValue = (float) ((DoubleToken) height.getToken())
+                    .doubleValue();
 
-                _scaleTransform.setScale(new Vector3d(
-                        radiusValue, heightValue, radiusValue));
+                _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
+                        radiusValue));
+
                 // The following seems to be needed so the new scale
                 // takes effect.
-                ((TransformGroup)_containedNode).setTransform(_scaleTransform);
+                ((TransformGroup) _containedNode).setTransform(_scaleTransform);
             }
         } else {
             super.attributeChanged(attribute);
@@ -159,19 +158,19 @@ public class Cylinder3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
-        float radiusValue = (float)
-                ((DoubleToken)radius.getToken()).doubleValue();
-        float heightValue = (float)
-                ((DoubleToken)height.getToken()).doubleValue();
+        float radiusValue = (float) ((DoubleToken) radius.getToken())
+            .doubleValue();
+        float heightValue = (float) ((DoubleToken) height.getToken())
+            .doubleValue();
 
-        boolean allowChanges = ((BooleanToken)
-                allowRuntimeChanges.getToken()).booleanValue();
+        boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
+            .booleanValue();
 
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
-        if (textureURL != null || allowChanges) {
-            primitiveFlags = primitiveFlags
-                | Primitive.GENERATE_TEXTURE_COORDS;
+
+        if ((textureURL != null) || allowChanges) {
+            primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
 
         if (allowChanges) {
@@ -180,28 +179,26 @@ public class Cylinder3D extends GRShadedShape {
             primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
         }
 
-        int circleDivisionsValue
-                = ((IntToken)circleDivisions.getToken()).intValue();
-        int sideDivisionsValue
-                = ((IntToken)sideDivisions.getToken()).intValue();
+        int circleDivisionsValue = ((IntToken) circleDivisions.getToken())
+            .intValue();
+        int sideDivisionsValue = ((IntToken) sideDivisions.getToken()).intValue();
 
         if (allowChanges) {
-            Cylinder cylinder = new Cylinder(1.0f, 1.0f,
-                    primitiveFlags, circleDivisionsValue,
-                    sideDivisionsValue, _appearance);
+            Cylinder cylinder = new Cylinder(1.0f, 1.0f, primitiveFlags,
+                    circleDivisionsValue, sideDivisionsValue, _appearance);
 
             TransformGroup scaler = new TransformGroup();
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();
-            _scaleTransform.setScale(
-                    new Vector3d(radiusValue, heightValue, radiusValue));
+            _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
+                    radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(cylinder);
             _containedNode = scaler;
         } else {
             _containedNode = new Cylinder(radiusValue, heightValue,
-                    primitiveFlags, circleDivisionsValue,
-                    sideDivisionsValue, _appearance);
+                    primitiveFlags, circleDivisionsValue, sideDivisionsValue,
+                    _appearance);
             _scaleTransform = null;
         }
     }

@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util.test;
 
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestDebugEvent
+
 /**
    Class used to test DebugEvent
 
@@ -43,7 +44,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestDebugEvent implements DebugEvent {
-
     /**
      * Create a new firing event with the given source, actor, and type.
      */
@@ -70,6 +70,5 @@ public class TestDebugEvent implements DebugEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private NamedObj _source;
 }

@@ -24,10 +24,12 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.layout;
+
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import diva.graph.GraphModel;
+
 
 /**
  * A static random layout engine.  This class tries to be smart by
@@ -64,30 +66,40 @@ public class RandomLayout extends AbstractGlobalLayout {
     public void layout(Object composite) {
         LayoutTarget target = getLayoutTarget();
         GraphModel model = target.getGraphModel();
-        for (Iterator ns = model.nodes(composite); ns.hasNext(); ) {
+
+        for (Iterator ns = model.nodes(composite); ns.hasNext();) {
             Object node = ns.next();
+
             if (target.isNodeVisible(node)) {
                 Rectangle2D vp = target.getViewport(composite);
                 Rectangle2D bounds = target.getBounds(node);
+
                 for (int i = 0; i < NUM_ITER; i++) {
-                    double x = vp.getX() + Math.abs(Math.random())*vp.getWidth();
-                    double y = vp.getY() + Math.abs(Math.random())*vp.getHeight();
+                    double x = vp.getX()
+                        + (Math.abs(Math.random()) * vp.getWidth());
+                    double y = vp.getY()
+                        + (Math.abs(Math.random()) * vp.getHeight());
                     LayoutUtilities.place(target, node, x, y);
                     bounds = target.getBounds(node);
+
                     boolean overlap = false;
                     Iterator j = target.intersectingNodes(bounds);
+
                     while (j.hasNext()) {
                         Object n2 = j.next();
-                        if (node != n2) { overlap = false; }
+
+                        if (node != n2) {
+                            overlap = false;
+                        }
                     }
+
                     if (!overlap) {
                         break;
                     }
                 }
             }
         }
+
         LayoutUtilities.routeVisibleEdges(composite, target);
     }
 }
-
-

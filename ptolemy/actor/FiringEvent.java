@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FiringEvent
+
 /**
    An event that is published by directors whenever an actor is activated.
    An activation occurs whenever an actor is prefired, fired, or
@@ -62,7 +63,6 @@ import ptolemy.kernel.util.NamedObj;
    @see ptolemy.kernel.util.DebugListener
 */
 public class FiringEvent implements DebugEvent {
-
     /** Create a new firing event with the given source, actor, and type.
      *  @param source The director invoking the firing.
      *  @param actor The actor being fired.
@@ -86,17 +86,13 @@ public class FiringEvent implements DebugEvent {
      *  @param multiplicity The multiplicity of the firing.
      *
      */
-    public FiringEvent(
-            Director source,
-            Actor actor,
-            FiringEventType type,
-            int multiplicity) {
+    public FiringEvent(Director source, Actor actor, FiringEventType type,
+        int multiplicity) {
         _director = source;
         _actor = actor;
         _type = type;
         _multiplicity = multiplicity;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -136,14 +132,16 @@ public class FiringEvent implements DebugEvent {
         // not bother.
         StringBuffer buffer = new StringBuffer();
         buffer.append("The actor ");
-        buffer.append(((NamedObj)_actor).getFullName());
+        buffer.append(((NamedObj) _actor).getFullName());
         buffer.append(" ");
         buffer.append(_type.getName());
+
         if (_multiplicity > 1) {
             buffer.append(" ");
             buffer.append(_multiplicity);
             buffer.append(" times");
         }
+
         buffer.append(".");
         return buffer.toString();
     }
@@ -152,39 +150,48 @@ public class FiringEvent implements DebugEvent {
     ////                         public variables                  ////
 
     /** This type of event is published after a prefire method is called. */
-    public static final FiringEventType AFTER_PREFIRE =
-    new FiringEventType("was prefired");
+    public static final FiringEventType AFTER_PREFIRE = new FiringEventType(
+            "was prefired");
+
     /** This type of event is published after a fire method is called. */
-    public static final FiringEventType AFTER_FIRE =
-    new FiringEventType("was fired");
+    public static final FiringEventType AFTER_FIRE = new FiringEventType(
+            "was fired");
+
     /** This type of event is published after a postfire method is called. */
-    public static final FiringEventType AFTER_POSTFIRE =
-    new FiringEventType("was postfired");
+    public static final FiringEventType AFTER_POSTFIRE = new FiringEventType(
+            "was postfired");
+
     /** This type of event is published after an iterate method is called. */
-    public static final FiringEventType AFTER_ITERATE =
-    new FiringEventType("was iterated");
+    public static final FiringEventType AFTER_ITERATE = new FiringEventType(
+            "was iterated");
+
     /** This type of event is published before a prefire method is called. */
-    public static final FiringEventType BEFORE_PREFIRE =
-    new FiringEventType("will be prefired");
+    public static final FiringEventType BEFORE_PREFIRE = new FiringEventType(
+            "will be prefired");
+
     /** This type of event is published before a fire method is called. */
-    public static final FiringEventType BEFORE_FIRE =
-    new FiringEventType("will be fired");
+    public static final FiringEventType BEFORE_FIRE = new FiringEventType(
+            "will be fired");
+
     /** This type of event is published before a postfire method is called. */
-    public static final FiringEventType BEFORE_POSTFIRE =
-    new FiringEventType("will be postfired");
+    public static final FiringEventType BEFORE_POSTFIRE = new FiringEventType(
+            "will be postfired");
+
     /** This type of event is published before an iterate method is called. */
-    public static final FiringEventType BEFORE_ITERATE =
-    new FiringEventType("will be iterated");
+    public static final FiringEventType BEFORE_ITERATE = new FiringEventType(
+            "will be iterated");
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The actor that was activated.
     private Actor _actor;
+
     // The director that activated the actor.
     private Director _director;
+
     // The multiplicity.
     private int _multiplicity = 1;
+
     // The type of activation.
     private FiringEventType _type;
 

@@ -26,11 +26,12 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.media.javasound;
+
 
 ////////////////////////////////////////////////////////////////
 //// LiveSoundListener
+
 /**
    This interface is implemented by objects that are interested
    in being kept informed about changes in the audio parameters
@@ -47,10 +48,7 @@ package ptolemy.media.javasound;
    @see LiveSoundEvent
    @see ptolemy.media.javasound.LiveSound
 */
-
 public interface LiveSoundListener {
-
-
     /** Notify that the an audio parameter of LiveSound has
      *  changed.
      *
@@ -59,4 +57,3 @@ public interface LiveSoundListener {
      */
     public void liveSoundChanged(LiveSoundEvent event);
 }
-

@@ -25,23 +25,21 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.ecsl;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Scale;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Gain
+
 /**
    An actor that outputs a scaled version of the input for use with ECSL.
 
@@ -51,9 +49,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ECSLGain extends Scale {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -64,7 +60,7 @@ public class ECSLGain extends Scale {
      *   an actor already in the container.
      */
     public ECSLGain(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
 
@@ -83,7 +79,6 @@ public class ECSLGain extends Scale {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-
     /** The Gain.
      */
     public Parameter Gain;
@@ -96,7 +91,7 @@ public class ECSLGain extends Scale {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == Gain) {
             factor.setToken(Gain.getToken());
         } else {
@@ -112,8 +107,9 @@ public class ECSLGain extends Scale {
     public void fire() throws IllegalActionException {
         if (output.getWidth() > 1) {
             throw new IllegalActionException("Output widths greater than "
-                    + "1 not yet supported");
+                + "1 not yet supported");
         }
+
         super.fire();
     }
 }

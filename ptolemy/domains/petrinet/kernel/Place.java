@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.petrinet.kernel;
 
 import ptolemy.actor.lib.Transformer;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Place
+
 /**
    A Petri net place. A Petri net place is a basic component of the Petri Net
    model. Another basic component is the Transition. A place is connected to
@@ -56,7 +57,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class Place extends Transformer {
-
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -70,7 +70,7 @@ public class Place extends Transformer {
      *   an entity already in the container.
      */
     public Place(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         initialMarking = new Parameter(this, "initialMarking");
@@ -89,7 +89,6 @@ public class Place extends Transformer {
 
     /** The number of initial tokens in the place. This is an integer. */
     public Parameter initialMarking;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -160,14 +159,12 @@ public class Place extends Transformer {
      *   throws it.
      */
     public void initialize() throws IllegalActionException {
-        _currentMarking = ((IntToken)initialMarking.getToken()).intValue();
+        _currentMarking = ((IntToken) initialMarking.getToken()).intValue();
         _temporaryMarking = _currentMarking;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Current marking.
     private int _currentMarking = 0;
     private int _temporaryMarking = 0;

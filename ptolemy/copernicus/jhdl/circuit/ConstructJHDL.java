@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
 import byucc.jhdl.Logic.Logic;
 
+
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * An interface that specifies the build method (for JHDL circuits).
  @author Mike Wirthlin
@@ -39,9 +40,6 @@ import byucc.jhdl.Logic.Logic;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 interface ConstructJHDL {
-
     public void build(Logic parent);
-
 }

@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTDynamicActor
+
 /**
    Interface of dynamic actors in the CT domain. Dynamic actors are actors
    that have one or more integrators. Typically, integrators, analog filters,
@@ -51,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Green (hyzheng)
    @Pt.AcceptedRating Green (yuhong)
 */
-public interface CTDynamicActor extends Actor{
+public interface CTDynamicActor extends Actor {
     /** Implementations of this method should emit the current states of
      *  this actor.
      *  @exception IllegalActionException If the data transfer is not

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Component;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SizeAttribute
+
 /**
    This attribute stores the width and height of a graphical component.
    The token in this attribute is an IntMatrixToken containing a matrix
@@ -65,7 +66,6 @@ import ptolemy.kernel.util.Settable;
    @see WindowPropertiesAttribute
 */
 public class SizeAttribute extends Parameter implements ComponentListener {
-
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -80,9 +80,10 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *   an attribute already in the container.
      */
     public SizeAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);
+
         // The class mechanism tends to suppress export of this attribute.
         // Why?  We override that here.
         setPersistent(true);
@@ -95,13 +96,15 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  invoked when the component has been made invisible.
      *  @param event The component event.
      */
-    public void componentHidden(ComponentEvent event) {}
+    public void componentHidden(ComponentEvent event) {
+    }
 
     /** Do nothing. This method is
      *  invoked when the component's position changes.
      *  @param event The component event.
      */
-    public void componentMoved(ComponentEvent event) {}
+    public void componentMoved(ComponentEvent event) {
+    }
 
     /** Record the new size. This method is
      *  invoked when the component's size changes.
@@ -121,7 +124,8 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  invoked when the component has been made visible.
      *  @param event The component event.
      */
-    public void componentShown(ComponentEvent event) {}
+    public void componentShown(ComponentEvent event) {
+    }
 
     /** Set the value of the attribute to match those of the specified
      *  component.
@@ -149,14 +153,18 @@ public class SizeAttribute extends Parameter implements ComponentListener {
             if (_listeningTo != null) {
                 _listeningTo.removeComponentListener(this);
             }
+
             component.addComponentListener(this);
             _listeningTo = component;
         }
+
         try {
-            IntMatrixToken token = (IntMatrixToken)getToken();
+            IntMatrixToken token = (IntMatrixToken) getToken();
+
             if (token != null) {
                 int width = token.getElementAt(0, 0);
                 int height = token.getElementAt(0, 1);
+
                 // NOTE: As usual with swing, it's not obvious what the
                 // right way to do this is. The following seems to work,
                 // found by trial and error.  Even then, the layout
@@ -169,10 +177,11 @@ public class SizeAttribute extends Parameter implements ComponentListener {
                 // Sun why this is so).  We also have to do the
                 // following.
                 if (component instanceof JComponent) {
-                    ((JComponent)component).setPreferredSize(dimension);
-                    ((JComponent)component).setMinimumSize(dimension);
+                    ((JComponent) component).setPreferredSize(dimension);
+                    ((JComponent) component).setMinimumSize(dimension);
                 }
             }
+
             return true;
         } catch (Exception ex) {
             return false;

@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -67,7 +66,6 @@ import diva.util.java2d.Polygon2D;
  * @version $Id$
  */
 public class IconTutorial {
-
     // The JCanvas
     private JCanvas canvas;
 
@@ -86,9 +84,9 @@ public class IconTutorial {
 
     /** Create a JCanvas and put it into a window
      */
-    public IconTutorial () {
+    public IconTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         // Create a controller to do the work.
         controller = new BasicController(graphicsPane);
@@ -100,13 +98,13 @@ public class IconTutorial {
 
         // Create the window
         BasicFrame frame = new BasicFrame("Icons 'R' us", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
     }
 
     /** Create a collection of terminals an an icon
      */
-    public void createTerminals (IconFigure iconFigure) {
+    public void createTerminals(IconFigure iconFigure) {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // NORTH
@@ -149,26 +147,26 @@ public class IconTutorial {
     /** Create an icon. The icon's graphic is created
      * by directly calling the PaintedShape API.
      */
-    public void createIcon1 () {
+    public void createIcon1() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Create the graphic
         PaintedList graphic = new PaintedList();
 
         Polygon2D polygon = new Polygon2D.Double();
-        polygon.moveTo(30,50);
-        polygon.lineTo(70,80);
-        polygon.lineTo(70,20);
+        polygon.moveTo(30, 50);
+        polygon.lineTo(70, 80);
+        polygon.lineTo(70, 20);
         graphic.add(new PaintedShape(polygon, Color.red, 1.0f));
 
-        Line2D line1 = new Line2D.Double(10,50,30,50);
+        Line2D line1 = new Line2D.Double(10, 50, 30, 50);
         graphic.add(new PaintedPath(line1));
 
-        Line2D line2 = new Line2D.Double(70,50,90,50);
+        Line2D line2 = new Line2D.Double(70, 50, 90, 50);
         graphic.add(new PaintedPath(line2));
 
         // Create the icon
-        BasicRectangle background = new BasicRectangle(0,0,100,100,
+        BasicRectangle background = new BasicRectangle(0, 0, 100, 100,
                 Color.green.brighter().brighter());
         IconFigure _icon1 = new IconFigure(background, graphic);
         layer.add(_icon1);
@@ -182,7 +180,7 @@ public class IconTutorial {
     /** Create an icon. The icon's graphic is created
      * by using GraphicsParse.
      */
-    public void createIcon2 () {
+    public void createIcon2() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // Use a hash-table
@@ -192,23 +190,20 @@ public class IconTutorial {
         map.put("coords", "30 50 70 80 70 20");
         map.put("fill", "red");
         map.put("width", "1");
-        g.add(GraphicsParser.createPaintedObject(
-                      "polygon", map));
+        g.add(GraphicsParser.createPaintedObject("polygon", map));
 
         //Line2D line1 = new Line2D.Double(10,50,30,50);
         //f.add(new PaintedPath(line1));
-
         //Line2D line2 = new Line2D.Double(70,50,90,50);
         //f.add(new PaintedPath(line2));
-
         layer.add(g);
         g.setInteractor(defaultInteractor);
-        g.translate(100,0);
+        g.translate(100, 0);
     }
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -219,5 +214,3 @@ public class IconTutorial {
             });
     }
 }
-
-

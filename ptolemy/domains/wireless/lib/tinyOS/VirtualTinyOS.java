@@ -28,8 +28,8 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib.tinyOS;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,8 +43,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VirtualTinyOS
+
 /** Provide a virtual enviorment to run tinyOS code directly...
     FIXME: this class hasn't been fully implemented.
     FIXME: add more doc here.
@@ -55,7 +57,6 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
     @Pt.AcceptedRating Red (cxh)
 */
 public class VirtualTinyOS extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,12 +66,12 @@ public class VirtualTinyOS extends TypedAtomicActor {
      *   actor with this name.
      */
     public VirtualTinyOS(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException,
-            java.lang.Exception  {
+        throws NameDuplicationException, IllegalActionException, 
+            java.lang.Exception {
         super(container, name);
+
         //timer = new TypedIOPort(this, "timer", true, false);
         //toLED = new TypedIOPort(this, "toLED", false, true);
-
         //create the node icon.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
 
@@ -88,11 +89,12 @@ public class VirtualTinyOS extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** The output port. */
+
     //public TypedIOPort toLED;
 
     /** The input port for timer interupt. */
-    //public TypedIOPort timer;
 
+    //public TypedIOPort timer;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -100,7 +102,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
      *  TypedAtomicActor type constraints do not apply in this case, since the
      *  input type may be totally unrelated to the output type and cannot be
      *  inferred; return an empty list. */
-    public List typeConstraintList()  {
+    public List typeConstraintList() {
         LinkedList result = new LinkedList();
         return result;
     }
@@ -110,15 +112,16 @@ public class VirtualTinyOS extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         //tos = new TosSystem(this);
         UtilityFunctions.loadLibrary("ptolemy/domains/wireless/lib/tinyOS/TOS");
         _hasLed = false;
         _hasTimer = false;
         _timerPeriod = 0.0;
         _scheduledTime = new Time(getDirector());
+
         //call the native method to initialize the application.
         initMote();
-
     }
 
     /** pass the input to the proper event handler.
@@ -129,14 +132,16 @@ public class VirtualTinyOS extends TypedAtomicActor {
         if (_debugging) {
             _debug("Called fire()");
         }
-        Director director = getDirector();
-        //If there is a timer component, we handel the timer interupt here.
-        if (_hasTimer &&
-            director.getModelTime().compareTo(_scheduledTime) >= 0) {
 
+        Director director = getDirector();
+
+        //If there is a timer component, we handel the timer interupt here.
+        if (_hasTimer
+                && (director.getModelTime().compareTo(_scheduledTime) >= 0)) {
             if (_debugging) {
                 _debug("Called native method to trigger the time event");
             }
+
             // signal a timer interupt here to the application.
             triggerTimerEvent();
             _scheduledTime = _scheduledTime.add(_timerPeriod);
@@ -145,6 +150,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
             if (_debugging) {
                 _debug("LED Blinking");
             }
+
             //toLED.send(0, new IntToken(_outputToLED));
             // Change the color of the icon to red.
             _circle.fillColor.setToken("{1.0, 0.0, 0.1, 0.7}");
@@ -154,18 +160,20 @@ public class VirtualTinyOS extends TypedAtomicActor {
             // Set color back to blue.
             _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");
         }
-
     }
 
     // a callback method for the native code. Potentially, the mote code can
     // call this method to render the led toggle animation.
     public void ledBlink(int x) {
         Director director = getDirector();
+
         if (director != null) {
             try {
                 _hasLed = true;
+
                 Time currentTime = director.getModelTime();
                 director.fireAt(this, currentTime);
+
                 //then change the color of the node in fire();
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
@@ -176,6 +184,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
 
     public int triggerTimerEvent() {
         System.out.println("about to call the native method to signal an event");
+
         int r = signalTimerEvent();
         System.out.println("return from the native method");
         return r;
@@ -185,7 +194,8 @@ public class VirtualTinyOS extends TypedAtomicActor {
     // FIXME: should be able to handle muti-timers...
     public void setupTimer(int period) throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        if (period >=0) {
+
+        if (period >= 0) {
             try {
                 getDirector().fireAt(this, currentTime);
                 _hasTimer = true;
@@ -198,13 +208,10 @@ public class VirtualTinyOS extends TypedAtomicActor {
         }
     }
 
-
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private native int signalTimerEvent();
+
     private native void initMote();
 
     ///////////////////////////////////////////////////////////////////

@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import ptolemy.graph.Graph;
@@ -30,8 +29,10 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
 import ptolemy.graph.analysis.strategy.CachedStrategy;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Analysis
+
 /**
    A base class for analyses on graphs.
    <p>
@@ -74,15 +75,14 @@ import ptolemy.graph.analysis.strategy.CachedStrategy;
    @author Shahrooz Shahparnia, Shuvra S. Bhattacharyya
    @version $Id$
 */
-
 public class Analysis {
-
     /** Construct an analysis using a given analyzer.
      *
      *  @param analyzer The given analyzer.
      */
     public Analysis(GraphAnalyzer analyzer) {
         _analyzer = analyzer;
+
         // Maybe we may want to implement the Observer pattern instead of this.
         graph().addAnalysis(this);
     }
@@ -109,15 +109,14 @@ public class Analysis {
         if (validAnalyzerInterface(analyzer)) {
             if (analyzer instanceof CachedStrategy) {
                 if (graph() == analyzer().graph()) {
-                    ((CachedStrategy)analyzer)
-                        .setCachedResult((CachedStrategy)_analyzer);
+                    ((CachedStrategy) analyzer).setCachedResult((CachedStrategy) _analyzer);
                 }
             }
+
             _analyzer = analyzer;
         } else {
             throw new InvalidAnalyzerException(
-                    "Invalid analyzer for the analysis:\n"
-                    + toString());
+                "Invalid analyzer for the analysis:\n" + toString());
         }
     }
 
@@ -138,7 +137,7 @@ public class Analysis {
      */
     public String toString() {
         return "Analysis using the following analyzer:\n"
-            + _analyzer.toString();
+        + _analyzer.toString();
     }
 
     /** Return the validity of the associated analyzer. An analyzer is valid
@@ -166,7 +165,6 @@ public class Analysis {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The analyzer that is used in the computation of this analysis.
     private GraphAnalyzer _analyzer;
 }

@@ -26,11 +26,12 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeListener
+
 /**
    An interface implemented by objects that are interested in being kept
    informed about type changes in a Typeable object.
@@ -47,9 +48,7 @@ package ptolemy.actor;
    @see ptolemy.actor.TypedIOPort#addTypeListener
    @see ptolemy.actor.TypedIOPort#removeTypeListener
 */
-
 public interface TypeListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

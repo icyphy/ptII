@@ -24,16 +24,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.soot;
 
 import soot.*;
+
 import soot.jimple.*;
-import soot.util.*;
+
 import soot.jimple.internal.*;
+
+import soot.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanNotExpr
+
 /**
  *
  * A Not expression in Java (i.e. the ! operator) is implemented as
@@ -54,7 +58,6 @@ import soot.jimple.internal.*;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class BooleanNotExpr implements UnopExpr {
-
     /*
       public BooleanNotExpr(CompoundBooleanExpression op) {
       super(Jimple.v().newConditionExprBox(op));
@@ -68,38 +71,49 @@ public class BooleanNotExpr implements UnopExpr {
         this.op = op;
     }
 
-    public Value getOp() { return op; }
-    public void setOp(Value op) { this.op = op; }
-    public ValueBox getOpBox() { return null; }
-    public java.util.List getUseBoxes() { return null; }
+    public Value getOp() {
+        return op;
+    }
+
+    public void setOp(Value op) {
+        this.op = op;
+    }
+
+    public ValueBox getOpBox() {
+        return null;
+    }
+
+    public java.util.List getUseBoxes() {
+        return null;
+    }
 
     public Object clone() {
         return new BooleanNotExpr(Jimple.cloneIfNecessary(getOp()));
     }
+
     /** Compares the specified object with this one for structural equality. */
-    public boolean equivTo(Object o)
-    {
-        if (o instanceof BooleanNotExpr)
-            {
-                return getOpBox().getValue().equivTo(((BooleanNotExpr)o).getOpBox().getValue());
-            }
+    public boolean equivTo(Object o) {
+        if (o instanceof BooleanNotExpr) {
+            return getOpBox().getValue().equivTo(((BooleanNotExpr) o).getOpBox()
+                                                  .getValue());
+        }
+
         return false;
     }
 
     /** Returns a hash code for this object, consistent with structural equality. */
-    public int equivHashCode()
-    {
+    public int equivHashCode() {
         return op.equivHashCode();
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "!" + " " + op.toString();
     }
 
-    public void toString( UnitPrinter up ) {
+    public void toString(UnitPrinter up) {
         up.literal("!" + " ");
         op.toString(up);
+
         /*
           Value val1 = op1Box.getValue();
           Value val2 = op2Box.getValue();
@@ -122,30 +136,30 @@ public class BooleanNotExpr implements UnopExpr {
       return "!" + " " + ((ToBriefString) op).toBriefString();
       }
     */
-
-    public Type getType()
-    {
+    public Type getType() {
         Value op = getOpBox().getValue();
 
-        if (op.getType().equals(IntType.v()) || op.getType().equals(ByteType.v()) ||
-                op.getType().equals(ShortType.v()) || op.getType().equals(BooleanType.v()) ||
-                op.getType().equals(CharType.v()))
+        if (op.getType().equals(IntType.v())
+                || op.getType().equals(ByteType.v())
+                || op.getType().equals(ShortType.v())
+                || op.getType().equals(BooleanType.v())
+                || op.getType().equals(CharType.v())) {
             return IntType.v();
-        else if (op.getType().equals(LongType.v()))
+        } else if (op.getType().equals(LongType.v())) {
             return LongType.v();
-        else if (op.getType().equals(DoubleType.v()))
+        } else if (op.getType().equals(DoubleType.v())) {
             return DoubleType.v();
-        else if (op.getType().equals(FloatType.v()))
+        } else if (op.getType().equals(FloatType.v())) {
             return FloatType.v();
-        else
+        } else {
             return UnknownType.v();
+        }
     }
 
-    public void apply(Switch sw)
-    {
+    public void apply(Switch sw) {
         //((ExprSwitch) sw).caseNegExpr(this);
     }
+
     ValueBox opBox;
     Value op;
 }
-

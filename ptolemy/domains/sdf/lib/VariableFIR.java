@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VariableFIR
+
 /**
    This actor implements a type polymorphic finite-impulse response
    filter with multirate capability, where the impulse response
@@ -78,7 +79,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.data.Token
 */
 public class VariableFIR extends FIR {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -88,7 +88,7 @@ public class VariableFIR extends FIR {
      *   actor with this name.
      */
     public VariableFIR(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         blockSize = new Parameter(this, "blockSize");
@@ -132,12 +132,11 @@ public class VariableFIR extends FIR {
      *  an invalid value or if the super method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.attributeChanged(attribute);
-        if (attribute == interpolation
-                || attribute == decimation
-                || attribute == blockSize) {
 
+        if ((attribute == interpolation) || (attribute == decimation)
+                || (attribute == blockSize)) {
             _reinitializeNeeded = true;
         }
     }
@@ -149,9 +148,8 @@ public class VariableFIR extends FIR {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        VariableFIR newObject = (VariableFIR)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        VariableFIR newObject = (VariableFIR) (super.clone(workspace));
 
         newObject.newTaps.setTypeSameAs(newObject.taps);
         newObject.output.setTypeSameAs(newObject.input);
@@ -164,7 +162,7 @@ public class VariableFIR extends FIR {
      */
     public void fire() throws IllegalActionException {
         if (newTaps.hasToken(0)) {
-            ArrayToken tapsToken = (ArrayToken)(newTaps.get(0));
+            ArrayToken tapsToken = (ArrayToken) (newTaps.get(0));
             _taps = tapsToken.arrayValue();
 
             // Get a token representing zero in the appropriate type.
@@ -172,7 +170,9 @@ public class VariableFIR extends FIR {
 
             _reinitialize();
         }
-        int blockSizeValue = ((IntToken)blockSize.getToken()).intValue();
+
+        int blockSizeValue = ((IntToken) blockSize.getToken()).intValue();
+
         for (int i = 0; i < blockSizeValue; i++) {
             super.fire();
         }
@@ -188,7 +188,9 @@ public class VariableFIR extends FIR {
     public boolean prefire() throws IllegalActionException {
         // If an attribute has changed since the last fire(), or if
         // this is the first fire(), then reinitialize.
-        if (_reinitializeNeeded) _reinitialize();
+        if (_reinitializeNeeded) {
+            _reinitialize();
+        }
 
         if (newTaps.hasToken(0)) {
             return super.prefire();
@@ -196,6 +198,7 @@ public class VariableFIR extends FIR {
             if (_debugging) {
                 _debug("Called prefire(), which returns false.");
             }
+
             return false;
         }
     }

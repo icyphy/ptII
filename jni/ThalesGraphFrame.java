@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package jni;
 
 import java.awt.event.ActionEvent;
@@ -41,8 +40,10 @@ import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphTableau;
 import diva.graph.GraphPane;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ThalesGraphFrame
+
 /**
    This is a graph editor frame for ptolemy models that use the JNI interface.
    Given a composite entity and an instance of ThalesGraphTableau,
@@ -56,7 +57,6 @@ import diva.graph.GraphPane;
    @Pt.AcceptedRating Red (vincent.arnould)
 */
 public class ThalesGraphFrame extends ActorGraphFrame {
-
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -65,9 +65,7 @@ public class ThalesGraphFrame extends ActorGraphFrame {
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
-    public ThalesGraphFrame(
-            CompositeEntity entity,
-            ActorGraphTableau tableau) {
+    public ThalesGraphFrame(CompositeEntity entity, ActorGraphTableau tableau) {
         super(entity, tableau);
     }
 
@@ -81,23 +79,24 @@ public class ThalesGraphFrame extends ActorGraphFrame {
         super._addMenus();
 
         // TRT Add JNI Menu
-
         JMenuItem[] jniMenuItems = {
-            new JMenuItem("Generate C Interface",
-                    KeyEvent.VK_G)};
+                new JMenuItem("Generate C Interface", KeyEvent.VK_G)
+            };
 
         _jniMenu = new JMenu("JNI");
         _jniMenu.setMnemonic(KeyEvent.VK_J);
+
         JNIMenuListener jniMenuListener = new JNIMenuListener();
+
         // Set the action command and listener for each menu item.
         for (int i = 0; i < jniMenuItems.length; i++) {
-            jniMenuItems[i].setActionCommand(
-                    jniMenuItems[i].getText());
-            jniMenuItems[i].addActionListener(
-                    jniMenuListener);
+            jniMenuItems[i].setActionCommand(jniMenuItems[i].getText());
+            jniMenuItems[i].addActionListener(jniMenuListener);
             _jniMenu.add(jniMenuItems[i]);
         }
+
         _menubar.add(_jniMenu);
+
         //TRT end
     }
 
@@ -107,12 +106,10 @@ public class ThalesGraphFrame extends ActorGraphFrame {
      *  local variables that may not have yet been created.
      */
     protected GraphPane _createGraphPane() {
-
         GraphPane result = super._createGraphPane();
 
         // Add the ArgumentDialogFactory to the context menu for actors
-        _controller.getEntityController()
-            .addMenuItemFactory(new ArgumentDialogFactory());
+        _controller.getEntityController().addMenuItemFactory(new ArgumentDialogFactory());
 
         return result;
     }
@@ -123,17 +120,17 @@ public class ThalesGraphFrame extends ActorGraphFrame {
     /** Listener for jni menu commands.
      */
     public class JNIMenuListener implements ActionListener {
-
         /** React to a menu command.
          */
         public void actionPerformed(ActionEvent event) {
             JMenuItem target = (JMenuItem) event.getSource();
             String actionCommand = target.getActionCommand();
+
             try {
                 if (actionCommand.equals("Generate C Interface")) {
                     // NOTE: The cast is safe because the constructor
                     // accepts only CompositeEntity.
-                    if (!JNIUtilities.generateJNI((CompositeEntity)getModel())) {
+                    if (!JNIUtilities.generateJNI((CompositeEntity) getModel())) {
                         MessageHandler.error("No JNIActor to interface to!");
                     }
                 }
@@ -145,13 +142,13 @@ public class ThalesGraphFrame extends ActorGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     //TRT
+
     /** Jni menu for this frame.
      */
     protected JMenu _jniMenu;
-    //TRT end
 
+    //TRT end
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -49,8 +49,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import thales.vergil.navigable.NavigationTreeModel;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NavigableEffigy
+
 /**
    An effigy for navigable models.
 
@@ -62,10 +64,8 @@ import thales.vergil.navigable.NavigationTreeModel;
    @Pt.AcceptedRating Red (cxh)
 */
 public class NavigableEffigy extends PtolemyEffigy {
-
     // FIXME: This class has a huge amount of code duplication
     // with PtolemyEffigy.  This makes it very difficult to maintain.
-
     private NavigationTreeModel _navigModel = null;
 
     /*
@@ -88,7 +88,7 @@ public class NavigableEffigy extends PtolemyEffigy {
      * @exception NameDuplicationException
      */
     public NavigableEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -97,12 +97,14 @@ public class NavigableEffigy extends PtolemyEffigy {
      */
     public NavigationTreeModel getNavigationModel() {
         Nameable container = getContainer();
+
         if (container instanceof NavigableEffigy) {
             return ((NavigableEffigy) container).getNavigationModel();
         } else {
             if (_navigModel == null) {
                 _navigModel = new NavigationTreeModel(getModel());
             }
+
             return _navigModel;
         }
     }
@@ -112,6 +114,7 @@ public class NavigableEffigy extends PtolemyEffigy {
      */
     public void setNavigModel(NavigationTreeModel model) {
         Nameable container = getContainer();
+
         if (!(container instanceof NavigableEffigy)) {
             _navigModel = model;
         }
@@ -129,6 +132,7 @@ public class NavigableEffigy extends PtolemyEffigy {
             _lieAtNumberOfOpendTableaux = false;
             return 1;
         }
+
         return super.numberOfOpenTableaux();
     }
 
@@ -146,7 +150,6 @@ public class NavigableEffigy extends PtolemyEffigy {
     /** A factory for creating new Ptolemy effigies.
      */
     public static class Factory extends EffigyFactory {
-
         protected String _tagToCheck;
 
         /** Create a factory with the given name and container.
@@ -158,7 +161,7 @@ public class NavigableEffigy extends PtolemyEffigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
             _tagToCheck = "_navigable";
         }
@@ -196,25 +199,24 @@ public class NavigableEffigy extends PtolemyEffigy {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
-        public Effigy createEffigy(
-                CompositeEntity container,
-                URL base,
-                URL input)
-                throws Exception {
+        public Effigy createEffigy(CompositeEntity container, URL base,
+            URL input) throws Exception {
             if (input == null) {
                 // Create a blank effigy.
                 // Use the strategy pattern so derived classes can
                 // override this.
-                PtolemyEffigy effigy =
-                    _newEffigy(container, container.uniqueName("effigy"));
+                PtolemyEffigy effigy = _newEffigy(container,
+                        container.uniqueName("effigy"));
 
                 // If this factory contains an entity called "blank", then
                 // clone that.
                 NamedObj entity = getEntity("blank");
                 Attribute attribute = getAttribute("blank");
                 NamedObj newModel;
+
                 if (entity != null) {
                     newModel = (NamedObj) entity.clone(new Workspace());
+
                     // The cloning process results an object that defers change
                     // requests.  By default, we do not want to defer change
                     // requests, but more importantly, we need to execute
@@ -222,7 +224,8 @@ public class NavigableEffigy extends PtolemyEffigy {
                     // during cloning. The following call does that.
                     newModel.setDeferringChangeRequests(false);
                 } else if (attribute != null) {
-                    newModel = (NamedObj)attribute.clone(new Workspace());
+                    newModel = (NamedObj) attribute.clone(new Workspace());
+
                     // The cloning process results an object that defers change
                     // requests.  By default, we do not want to defer change
                     // requests, but more importantly, we need to execute
@@ -235,16 +238,16 @@ public class NavigableEffigy extends PtolemyEffigy {
 
                 // The model should have a parser associated with it
                 // so that undo works.
-
                 // Checking to see if there already is a _parser attribute
                 // might be overkill, but it is safer.
-                ParserAttribute parserAttribute =
-                    (ParserAttribute) newModel.getAttribute(
-                            "_parser",
-                            ParserAttribute.class);
+                ParserAttribute parserAttribute = (ParserAttribute) newModel
+                    .getAttribute("_parser", ParserAttribute.class);
+
                 if (parserAttribute == null) {
                     parserAttribute = new ParserAttribute(newModel, "_parser");
+
                     MoMLParser parser = new MoMLParser();
+
                     // Make sure that the MoMLParser._modified flag is reset
                     // If we don't call reset here, then the second time
                     // the code generator is run, we will be prompted to
@@ -263,25 +266,26 @@ public class NavigableEffigy extends PtolemyEffigy {
 
                 // THALES MODIF
                 new Attribute(newModel, "_navigable");
+
                 if (!modelIsValid(newModel)) {
                     effigy.setContainer(null);
                     effigy = null;
                 }
-                //END THALES MODIF
 
+                //END THALES MODIF
                 return effigy;
             } else {
                 String extension = getExtension(input);
+
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     return null;
                 }
 
                 // THALES MODIF
                 if (checkFile(input)) {
-
                     // Create a blank effigy.
-                    PtolemyEffigy effigy =
-                        _newEffigy(container, container.uniqueName("effigy"));
+                    PtolemyEffigy effigy = _newEffigy(container,
+                            container.uniqueName("effigy"));
 
                     MoMLParser parser = new MoMLParser();
 
@@ -293,6 +297,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                     parser.reset();
 
                     NamedObj toplevel = null;
+
                     try {
                         try {
                             // If the following fails, we should remove the effigy.
@@ -302,22 +307,23 @@ public class NavigableEffigy extends PtolemyEffigy {
                                 // If we are running under Web Start, we
                                 // might have a URL that refers to another
                                 // jar file.
-                                URL anotherURL =
-                                    JNLPUtilities.jarURLEntryResource(
-                                            input.toString());
+                                URL anotherURL = JNLPUtilities
+                                    .jarURLEntryResource(input.toString());
+
                                 if (anotherURL != null) {
-                                    toplevel =
-                                        parser.parse(base, anotherURL);
+                                    toplevel = parser.parse(base, anotherURL);
                                 } else {
                                     throw io;
                                 }
                             }
+
                             if (toplevel != null) {
                                 effigy.setModel(toplevel);
 
                                 // A MoMLFilter may have modified the model
                                 // as it was being parsed.
                                 effigy.setModified(MoMLParser.isModified());
+
                                 // The effigy will handle saving the modified
                                 // moml for us, so MoMLParser need
                                 // not care anymore.
@@ -326,9 +332,10 @@ public class NavigableEffigy extends PtolemyEffigy {
                                 // Identify the URI from which the model was read
                                 // by inserting an attribute into both the model
                                 // and the effigy.
-                                URIAttribute uriAttribute =
-                                    new URIAttribute(toplevel, "_uri");
+                                URIAttribute uriAttribute = new URIAttribute(toplevel,
+                                        "_uri");
                                 URI inputURI = null;
+
                                 try {
                                     inputURI = new URI(input.toExternalForm());
                                 } catch (java.net.URISyntaxException ex) {
@@ -341,26 +348,24 @@ public class NavigableEffigy extends PtolemyEffigy {
                                     // FIXME: Note that jar urls will barf if there
                                     // is a %20 instead of a space.  This could
                                     // cause problems in Web Start
-                                    String inputExternalFormFixed =
-                                        StringUtilities.substitute(
-                                                input.toExternalForm(),
-                                                " ",
-                                                "%20");
+                                    String inputExternalFormFixed = StringUtilities
+                                        .substitute(input.toExternalForm(),
+                                            " ", "%20");
+
                                     try {
-                                        inputURI =
-                                            new URI(inputExternalFormFixed);
+                                        inputURI = new URI(inputExternalFormFixed);
                                     } catch (Exception ex2) {
                                         throw new Exception(
-                                                "Failed to generate "
-                                                + "a URI from '"
-                                                + input.toExternalForm()
-                                                + "' and from '"
-                                                + inputExternalFormFixed
-                                                + "'",
-                                                ex);
+                                            "Failed to generate "
+                                            + "a URI from '"
+                                            + input.toExternalForm()
+                                            + "' and from '"
+                                            + inputExternalFormFixed + "'", ex);
                                     }
                                 }
+
                                 uriAttribute.setURI(inputURI);
+
                                 // This is used by TableauFrame in its
                                 //_save() method.
                                 effigy.uri.setURI(inputURI);
@@ -371,49 +376,46 @@ public class NavigableEffigy extends PtolemyEffigy {
                             }
                         } catch (Throwable throwable) {
                             if (throwable instanceof StackOverflowError) {
-                                Throwable newThrowable =
-                                    new StackOverflowError(
-                                            "StackOverflowError: "
-                                            + "Which often indicates that a class "
-                                            + "could not be found, but there was "
-                                            + "possibly a moml file with that same "
-                                            + "name in the directory that referred "
-                                            + "to the class, so we got into a loop."
-                                            + "For example: We had "
-                                            + "actor/lib/joystick/Joystick.java "
-                                            + "and "
-                                            + "actor/lib/joystick/joystick.xml, "
-                                            + "but "
-                                            + "the .class file would not load "
-                                            + "because of a classpath problem, "
-                                            + "so we kept "
-                                            + "loading joystick.xml which "
-                                            + "referred to Joystick and because "
-                                            + "of Windows "
-                                            + "filename case insensitivity, "
-                                            + "we found joystick.xml, which put "
-                                            + "us in a loop.");
+                                Throwable newThrowable = new StackOverflowError(
+                                        "StackOverflowError: "
+                                        + "Which often indicates that a class "
+                                        + "could not be found, but there was "
+                                        + "possibly a moml file with that same "
+                                        + "name in the directory that referred "
+                                        + "to the class, so we got into a loop."
+                                        + "For example: We had "
+                                        + "actor/lib/joystick/Joystick.java "
+                                        + "and "
+                                        + "actor/lib/joystick/joystick.xml, "
+                                        + "but "
+                                        + "the .class file would not load "
+                                        + "because of a classpath problem, "
+                                        + "so we kept "
+                                        + "loading joystick.xml which "
+                                        + "referred to Joystick and because "
+                                        + "of Windows "
+                                        + "filename case insensitivity, "
+                                        + "we found joystick.xml, which put "
+                                        + "us in a loop.");
                                 newThrowable.initCause(throwable);
                                 throwable = newThrowable;
                             }
 
                             throwable.printStackTrace();
+
                             // The finally clause below can result in the
                             // application exiting if there are no other
                             // effigies open.  We check for that condition,
                             // and report the error here.  Otherwise, we
                             // pass the error to the caller.
-                            ModelDirectory dir =
-                                (ModelDirectory) effigy
-                                .topEffigy()
-                                .getContainer();
+                            ModelDirectory dir = (ModelDirectory) effigy.topEffigy()
+                                                                        .getContainer();
                             List effigies = dir.entityList(Effigy.class);
 
                             // We might get to here if we are running a
                             // vergil with a model specified as a command
                             // line argument and the model has an invalid
                             // parameter.
-
                             // We might have three effigies here:
                             // 1) .configuration.directory.configuration
                             // 2) .configuration.directory.UserLibrary
@@ -421,9 +423,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                             // Note that one of the effigies is the configuration
                             // itself, which does not prevent exiting the app.
                             // Hence, we handle the error if there are 3 or fewer.
-
                             if (effigies.size() <= 3) {
-
                                 // FIXME: This could cause problems with
                                 // systems that do not load the user
                                 // library.  Currently, VergilApplication
@@ -434,7 +434,6 @@ public class NavigableEffigy extends PtolemyEffigy {
                                 // .configuration.directory.configuration
                                 // and.configuration.directory.user
                                 // library, but this seems like overkill.
-
                                 String errorMessage = "Failed to read " + input;
                                 System.err.println(errorMessage);
                                 throwable.printStackTrace();
@@ -443,7 +442,6 @@ public class NavigableEffigy extends PtolemyEffigy {
                                 if (throwable instanceof Exception) {
                                     // Let the caller handle the error.
                                     throw (Exception) throwable;
-
                                 } else {
                                     // If we have a parameter that has a backslash
                                     // then we might get a data.expr.TokenMgrError
@@ -463,6 +461,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                         }
                     }
                 }
+
                 //END THALES MODIF
                 return null;
             }
@@ -476,15 +475,17 @@ public class NavigableEffigy extends PtolemyEffigy {
             boolean answer = false;
 
             BufferedReader reader;
+
             try {
-                reader =
-                    new BufferedReader(new InputStreamReader(url.openStream()));
+                reader = new BufferedReader(new InputStreamReader(
+                            url.openStream()));
+
                 String aLine = "";
+
                 while ((aLine = reader.readLine()) != null) {
-                    if (aLine.indexOf("<property") != -1
-                            && (aLine.indexOf("name=\"" + _tagToCheck + "\"") != -1
-                                    || aLine.indexOf("name='" + _tagToCheck + "'")
-                                    != -1)) {
+                    if ((aLine.indexOf("<property") != -1)
+                            && ((aLine.indexOf("name=\"" + _tagToCheck + "\"") != -1)
+                            || (aLine.indexOf("name='" + _tagToCheck + "'") != -1))) {
                         answer = true;
                         break;
                     }
@@ -503,10 +504,9 @@ public class NavigableEffigy extends PtolemyEffigy {
          *  @param name The name.
          *  @return A new effigy.
          */
-        protected NavigableEffigy _newEffigy(
-                CompositeEntity container,
-                String name)
-                throws IllegalActionException, NameDuplicationException {
+        protected NavigableEffigy _newEffigy(CompositeEntity container,
+            String name)
+            throws IllegalActionException, NameDuplicationException {
             return new NavigableEffigy(container, name);
         }
     }
@@ -517,7 +517,6 @@ public class NavigableEffigy extends PtolemyEffigy {
      *  in the File->New menu.
      */
     public static class FactoryWithoutNew extends Factory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -527,7 +526,7 @@ public class NavigableEffigy extends PtolemyEffigy {
          *   an entity already in the container.
          */
         public FactoryWithoutNew(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

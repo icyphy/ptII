@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.BooleanToken;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 ///////////////////////////////////////////////////////////////
 /// BitsToInt
+
 /**
    This actor converts a sequence of BooleanTokens into a single IntToken.
    The number of Boolean tokens is specified by the <i>numberOfBits</i>
@@ -58,9 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class BitsToInt extends SDFConverter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,8 +69,7 @@ public class BitsToInt extends SDFConverter {
      *   actor with this name.
      */
     public BitsToInt(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
-
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         numberOfBits = new Parameter(this, "numberOfBits");
@@ -101,12 +99,13 @@ public class BitsToInt extends SDFConverter {
      *  @exception IllegalActionException If the parameter is out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == numberOfBits) {
-            int rate = ((IntToken)numberOfBits.getToken()).intValue();
-            if (rate < 1 || rate > 32) {
+            int rate = ((IntToken) numberOfBits.getToken()).intValue();
+
+            if ((rate < 1) || (rate > 32)) {
                 throw new IllegalActionException(this,
-                        "Invalid number of bits: " + rate);
+                    "Invalid number of bits: " + rate);
             }
         } else {
             super.attributeChanged(attribute);
@@ -120,19 +119,24 @@ public class BitsToInt extends SDFConverter {
      *  The last token consumed is the least significant bit
      *  @exception IllegalActionException If there is no director.
      */
-    public final void fire() throws IllegalActionException  {
+    public final void fire() throws IllegalActionException {
         super.fire();
-        int rate = ((IntToken)numberOfBits.getToken()).intValue();
+
+        int rate = ((IntToken) numberOfBits.getToken()).intValue();
         Token[] bits = new BooleanToken[rate];
         bits = input.get(0, rate);
 
         int integer = 0;
+
         for (int i = 1; i < rate; i++) {
             integer = integer << 1;
-            if (((BooleanToken)bits[i]).booleanValue())
+
+            if (((BooleanToken) bits[i]).booleanValue()) {
                 integer += 1;
+            }
         }
-        if (((BooleanToken)bits[0]).booleanValue()) {
+
+        if (((BooleanToken) bits[0]).booleanValue()) {
             //convert integer to negative value.
             integer = integer - (1 << (rate - 1));
         }

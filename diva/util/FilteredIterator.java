@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.util;
+
 import java.util.Iterator;
+
 
 /**
  * An iterator that takes another iterator, and applies a filter
@@ -48,10 +50,12 @@ public class FilteredIterator extends IteratorAdapter {
             return true;
         } else {
             getNext();
+
             if (_nextObject != null) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -59,6 +63,7 @@ public class FilteredIterator extends IteratorAdapter {
         if (_nextObject == null) {
             getNext();
         }
+
         Object result = _nextObject;
         _nextObject = null;
         return result;
@@ -67,6 +72,7 @@ public class FilteredIterator extends IteratorAdapter {
     private void getNext() {
         while (_iterator.hasNext()) {
             Object o = _iterator.next();
+
             if (_filter.accept(o)) {
                 _nextObject = o;
                 break;
@@ -74,5 +80,3 @@ public class FilteredIterator extends IteratorAdapter {
         }
     }
 }
-
-

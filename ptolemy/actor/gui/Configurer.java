@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
-// Ptolemy imports.
 import java.awt.Component;
 import java.awt.Window;
 import java.util.HashMap;
@@ -46,8 +44,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Configurer
+
 /**
    This class is an editor for the user settable attributes of an object.
    It may consist of more than one editor panel.  If the object has
@@ -71,9 +71,7 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class Configurer extends JPanel implements CloseListener {
-
     /** Construct a configurer for the specified object.  This stores
      *  the current values of any Settable attributes of the given object,
      *  and then defers to any editor pane factories contained by
@@ -86,29 +84,39 @@ public class Configurer extends JPanel implements CloseListener {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _object = object;
+
         // Record the original values so a restore can happen later.
         _originalValues = new HashMap();
+
         Iterator parameters = _object.attributeList(Settable.class).iterator();
+
         while (parameters.hasNext()) {
-            Settable parameter = (Settable)parameters.next();
+            Settable parameter = (Settable) parameters.next();
+
             if (isVisible(_object, parameter)) {
                 _originalValues.put(parameter, parameter.getExpression());
             }
         }
+
         boolean foundOne = false;
-        Iterator editors
-            = object.attributeList(EditorPaneFactory.class).iterator();
+        Iterator editors = object.attributeList(EditorPaneFactory.class)
+                                 .iterator();
+
         while (editors.hasNext()) {
             foundOne = true;
-            EditorPaneFactory editor = (EditorPaneFactory)editors.next();
+
+            EditorPaneFactory editor = (EditorPaneFactory) editors.next();
             Component pane = editor.createEditorPane();
             add(pane);
+
             // Inherit the background color from the container.
             pane.setBackground(null);
+
             if (pane instanceof CloseListener) {
                 _closeListeners.add(pane);
             }
         }
+
         if (!foundOne) {
             // There is no attribute of class EditorPaneFactory.
             // We cannot create one because that would have to be done
@@ -120,8 +128,10 @@ public class Configurer extends JPanel implements CloseListener {
             // the static method of EditorPaneFactory.
             Component pane = EditorPaneFactory.createEditorPane(object);
             add(pane);
+
             // Inherit the background color from the container.
             pane.setBackground(null);
+
             if (pane instanceof CloseListener) {
                 _closeListeners.add(pane);
             }
@@ -140,14 +150,16 @@ public class Configurer extends JPanel implements CloseListener {
      *  @param settable The object whose visibility is returned.
      */
     public static boolean isVisible(NamedObj target, Settable settable) {
-        if (settable.getVisibility() == Settable.FULL
-                || settable.getVisibility() == Settable.NOT_EDITABLE) {
+        if ((settable.getVisibility() == Settable.FULL)
+                || (settable.getVisibility() == Settable.NOT_EDITABLE)) {
             return true;
         }
-        if (target.getAttribute("_expertMode") != null
-                && settable.getVisibility() == Settable.EXPERT) {
+
+        if ((target.getAttribute("_expertMode") != null)
+                && (settable.getVisibility() == Settable.EXPERT)) {
             return true;
         }
+
         return false;
     }
 
@@ -174,35 +186,41 @@ public class Configurer extends JPanel implements CloseListener {
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     // First check for changes.
-                    Iterator parameters = _object.attributeList(Settable.class).iterator();
+                    Iterator parameters = _object.attributeList(Settable.class)
+                                                 .iterator();
                     boolean hasChanges = false;
                     StringBuffer buffer = new StringBuffer("<group>\n");
+
                     while (parameters.hasNext()) {
-                        Settable parameter = (Settable)parameters.next();
+                        Settable parameter = (Settable) parameters.next();
+
                         if (isVisible(_object, parameter)) {
                             String newValue = parameter.getExpression();
-                            String oldValue = (String)_originalValues.get(parameter);
+                            String oldValue = (String) _originalValues.get(parameter);
+
                             if (!newValue.equals(oldValue)) {
                                 hasChanges = true;
                                 buffer.append("<property name=\"");
-                                buffer.append(((NamedObj)parameter).getName(_object));
+                                buffer.append(((NamedObj) parameter).getName(
+                                        _object));
                                 buffer.append("\" value=\"");
-                                buffer.append(StringUtilities.escapeForXML(oldValue));
+                                buffer.append(StringUtilities.escapeForXML(
+                                        oldValue));
                                 buffer.append("\"/>\n");
                             }
                         }
                     }
+
                     buffer.append("</group>\n");
 
                     // If there are changes, then issue a change request.
                     // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
                     // of a previous change.
                     if (hasChanges) {
-                        MoMLChangeRequest request = new MoMLChangeRequest(
-                                this,              // originator
-                                _object,           // context
+                        MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+                                _object, // context
                                 buffer.toString(), // MoML code
-                                null);             // base
+                                null); // base
                         _object.requestChange(request);
                     }
                 }
@@ -224,50 +242,66 @@ public class Configurer extends JPanel implements CloseListener {
         // window is destroyed.
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    Iterator parameters = _object.attributeList(Settable.class).iterator();
+                    Iterator parameters = _object.attributeList(Settable.class)
+                                                 .iterator();
                     StringBuffer buffer = new StringBuffer("<group>\n");
                     final List parametersReset = new LinkedList();
+
                     while (parameters.hasNext()) {
-                        Settable parameter = (Settable)parameters.next();
+                        Settable parameter = (Settable) parameters.next();
+
                         if (isVisible(_object, parameter)) {
                             String newValue = parameter.getExpression();
-                            String defaultValue = parameter.getDefaultExpression();
-                            if (defaultValue != null && !newValue.equals(defaultValue)) {
+                            String defaultValue = parameter
+                                .getDefaultExpression();
+
+                            if ((defaultValue != null)
+                                    && !newValue.equals(defaultValue)) {
                                 buffer.append("<property name=\"");
-                                buffer.append(((NamedObj)parameter).getName(_object));
+                                buffer.append(((NamedObj) parameter).getName(
+                                        _object));
                                 buffer.append("\" value=\"");
-                                buffer.append(StringUtilities.escapeForXML(defaultValue));
+                                buffer.append(StringUtilities.escapeForXML(
+                                        defaultValue));
                                 buffer.append("\"/>\n");
                                 parametersReset.add(parameter);
                             }
                         }
                     }
+
                     buffer.append("</group>\n");
 
                     // If there are changes, then issue a change request.
                     // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
                     // of a previous change.
                     if (parametersReset.size() > 0) {
-                        MoMLChangeRequest request = new MoMLChangeRequest(
-                                this,              // originator
-                                _object,           // context
+                        MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+                                _object, // context
                                 buffer.toString(), // MoML code
-                                null) {            // base
-                            protected void _execute() throws Exception {
-                                super._execute();
-                                // Reset the derived level, which has the side
-                                // effect of marking the object not overridden.
-                                Iterator parameters = parametersReset.iterator();
-                                while (parameters.hasNext()) {
-                                    Settable parameter = (Settable)parameters.next();
-                                    if (isVisible(_object, parameter)) {
-                                        int derivedLevel
-                                                = ((NamedObj)parameter).getDerivedLevel();
-                                        ((NamedObj)parameter).setDerivedLevel(derivedLevel);
+                                null) { // base
+                                protected void _execute()
+                                    throws Exception {
+                                    super._execute();
+
+                                    // Reset the derived level, which has the side
+                                    // effect of marking the object not overridden.
+                                    Iterator parameters = parametersReset
+                                        .iterator();
+
+                                    while (parameters.hasNext()) {
+                                        Settable parameter = (Settable) parameters
+                                            .next();
+
+                                        if (isVisible(_object, parameter)) {
+                                            int derivedLevel = ((NamedObj) parameter)
+                                                .getDerivedLevel();
+                                            ((NamedObj) parameter)
+                                            .setDerivedLevel(derivedLevel);
+                                        }
                                     }
                                 }
-                            }
-                        };
+                            };
+
                         _object.requestChange(request);
                     }
                 }
@@ -283,15 +317,15 @@ public class Configurer extends JPanel implements CloseListener {
      */
     public void windowClosed(Window window, String button) {
         Iterator listeners = _closeListeners.iterator();
+
         while (listeners.hasNext()) {
-            CloseListener listener = (CloseListener)listeners.next();
+            CloseListener listener = (CloseListener) listeners.next();
             listener.windowClosed(window, button);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A list of panels in this configurer that implement CloseListener,
     // if there are any.
     private List _closeListeners = new LinkedList();

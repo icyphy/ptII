@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TriggeredContinuousClock
+
 /**
    This actor is an extension of ContinuousClock with a <i>start</i> and
    <i>stop</i> input. It is only used in CT domain. A token at the <i>start</i>
@@ -56,9 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
-
 public class TriggeredContinuousClock extends ContinuousClock {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,12 +67,13 @@ public class TriggeredContinuousClock extends ContinuousClock {
      *   actor with this name.
      */
     public TriggeredContinuousClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // start port.
         start = new TypedIOPort(this, "start");
         start.setInput(true);
+
         // type is undeclared.
         // Annotate DISCRETE, for the benefit of CT.
         new Parameter(start, "signalType", new StringToken("DISCRETE"));
@@ -81,6 +81,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
         // stop port.
         stop = new TypedIOPort(this, "stop");
         stop.setInput(true);
+
         // type is undeclared.
         // Annotate DISCRETE, for the benefit of CT.
         new Parameter(stop, "signalType", new StringToken("DISCRETE"));
@@ -117,9 +118,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
      *  @exception IllegalActionException If thrown accessing start or stop
      *   input data.
      */
-    protected void _updateTentativeValues()
-            throws IllegalActionException {
-
+    protected void _updateTentativeValues() throws IllegalActionException {
         super._updateTentativeValues();
 
         // Check the start input, to see whether everything needs to
@@ -129,9 +128,12 @@ public class TriggeredContinuousClock extends ContinuousClock {
                 if (_debugging) {
                     _debug("Received a start input.");
                 }
+
                 start.get(0);
+
                 // Indicate to postfire() that it can call fireAt().
                 _tentativeDone = false;
+
                 Time currentTime = getDirector().getModelTime();
                 _tentativeCycleStartTime = currentTime;
                 _tentativeStartTime = currentTime;
@@ -146,6 +148,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
                 if (_debugging) {
                     _debug("Received a stop input.");
                 }
+
                 stop.get(0);
                 _tentativeDone = true;
                 _tentativeCycleCount = 0;
@@ -153,6 +156,4 @@ public class TriggeredContinuousClock extends ContinuousClock {
             }
         }
     }
-
-
 }

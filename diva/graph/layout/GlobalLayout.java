@@ -25,6 +25,7 @@
 */
 package diva.graph.layout;
 
+
 /**
  * A static layout engine which layouts traverse the graph structure and
  * performs layout from scratch, ignoring the previous positions of the nodes
@@ -35,7 +36,6 @@ package diva.graph.layout;
  * @Pt.AcceptedRating Red
  */
 public interface GlobalLayout {
-
     /** Return the layout target.
      */
     public LayoutTarget getLayoutTarget();
@@ -50,5 +50,3 @@ public interface GlobalLayout {
      */
     public void layout(Object composite);
 }
-
-

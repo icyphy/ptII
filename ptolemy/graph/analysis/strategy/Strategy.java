@@ -22,13 +22,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import ptolemy.graph.analysis.analyzer.Analyzer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Strategy
+
 /**
    A base class for all the strategies. The Analysis package is implementing the
    Strategy pattern, and the Strategy class defines the family of classes that
@@ -40,6 +41,5 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 abstract class Strategy implements Analyzer {
 }

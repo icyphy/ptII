@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.image;
 
 import java.awt.Image;
@@ -39,8 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageToString
+
 /**
    This actor reads an ObjectToken that is a java.awt.Image from the input
    and writes information about the image to the output as a StringToken.
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ImageToString extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,7 +62,7 @@ public class ImageToString extends Transformer {
      *   actor with this name.
      */
     public ImageToString(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.STRING);
@@ -79,14 +79,13 @@ public class ImageToString extends Transformer {
      */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
+
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 ImageToken imageToken = (ImageToken) input.get(i);
                 Image image = (Image) imageToken.asAWTImage();
                 String description = new String("Image: "
-                        + image.getWidth(null)
-                        + " x "
-                        + image.getHeight(null));
+                        + image.getWidth(null) + " x " + image.getHeight(null));
                 Token out = new StringToken(description);
                 output.broadcast(out);
             }

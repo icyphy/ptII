@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.comm;
 
 import ptolemy.data.ArrayToken;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
+
 /**
    Given a probability distribution and the corresponding alphabet,
    decode the input using Huffman code and send the result to the output
@@ -56,7 +57,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class HuffmanDecoder extends HuffmanBasic {
-
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -67,11 +67,11 @@ public class HuffmanDecoder extends HuffmanBasic {
      *   actor with this name.
      */
     public HuffmanDecoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Declare port types.
-        ArrayType alphabetArrayType = (ArrayType)alphabet.getType();
+        ArrayType alphabetArrayType = (ArrayType) alphabet.getType();
         InequalityTerm elementTerm = alphabetArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -88,9 +88,9 @@ public class HuffmanDecoder extends HuffmanBasic {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HuffmanDecoder newObject = (HuffmanDecoder)super.clone(workspace);
-        InequalityTerm elementTerm
-            = ((ArrayType)newObject.alphabet.getType()).getElementTypeTerm();
+        HuffmanDecoder newObject = (HuffmanDecoder) super.clone(workspace);
+        InequalityTerm elementTerm = ((ArrayType) newObject.alphabet.getType())
+            .getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
     }
@@ -101,17 +101,22 @@ public class HuffmanDecoder extends HuffmanBasic {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        ArrayToken alphabetArrayToken = (ArrayToken)alphabet.getToken();
+
+        ArrayToken alphabetArrayToken = (ArrayToken) alphabet.getToken();
         Token[] alphabetTokens = new Token[_pmf.length];
-        for (int i = 0; i < _pmf.length; i ++) {
+
+        for (int i = 0; i < _pmf.length; i++) {
             alphabetTokens[i] = alphabetArrayToken.getElement(i);
         }
+
         // Get the input token. Ready for output.
-        if (! input.hasToken(0) && !_code.equals("")) {
+        if (!input.hasToken(0) && !_code.equals("")) {
             throw new IllegalActionException(this,
                 "This is not a decodable code.");
         }
-        BooleanToken inputToken = (BooleanToken)input.get(0);
+
+        BooleanToken inputToken = (BooleanToken) input.get(0);
+
         if (inputToken.booleanValue()) {
             _code = _code + "1";
         } else {
@@ -119,7 +124,7 @@ public class HuffmanDecoder extends HuffmanBasic {
         }
 
         // Find the codeword in the code book.
-        for (int i = 0; i < _pmf.length; i ++) {
+        for (int i = 0; i < _pmf.length; i++) {
             if (_code.equals(_codeBook[i])) {
                 output.send(0, alphabetTokens[i]);
                 _code = "";
@@ -137,8 +142,6 @@ public class HuffmanDecoder extends HuffmanBasic {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The current input string, concatenated by input booleans.
     private String _code = "";
-
 }

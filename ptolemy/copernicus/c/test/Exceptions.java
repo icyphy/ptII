@@ -28,11 +28,9 @@
 
 */
 
-
-
-
 //////////////////////////////////////////////////////////////////////////
 //// Terp
+
 /**
 
 A class that runs multiple exception tests. Runs the following tests:
@@ -49,15 +47,12 @@ NestedExceptions.java
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class Exceptions{
-
-    public static void main(String args[]) {
-        String dummy[] = new String[1];
+public class Exceptions {
+    public static void main(String[] args) {
+        String[] dummy = new String[1];
         BasicException.main(dummy);
         GlobalExceptions.main(dummy);
         InheritedException.main(dummy);
         NestedExceptions.main(dummy);
     }
-
 }

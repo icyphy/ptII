@@ -22,13 +22,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.analyzer;
 
 import ptolemy.graph.Graph;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MirrorTransformerAnalyzer
+
 /**
    Base interface for a mirror transformer for graphs.
    <p>
@@ -44,9 +45,7 @@ import ptolemy.graph.Graph;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public interface MirrorTransformer extends Transformer {
-
     /** Changes the status of the graph returned by the {@link #mirror} method.
      *  If set to true, the weights will also be cloned in the next calls to the
      *  {@link #mirror} method.
@@ -74,4 +73,3 @@ public interface MirrorTransformer extends Transformer {
      */
     public Graph mirror(Graph graph, boolean cloneWeights);
 }
-

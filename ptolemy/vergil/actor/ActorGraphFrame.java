@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.actor;
 
 import java.awt.Toolkit;
@@ -71,8 +70,10 @@ import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ActorGraphFrame
+
 /**
    This is a graph editor frame for ptolemy models.  Given a composite
    entity and an instance of ActorGraphTableau, it creates an editor
@@ -87,7 +88,6 @@ import diva.gui.GUIUtilities;
    @Pt.AcceptedRating Red (johnr)
 */
 public class ActorGraphFrame extends ExtendedGraphFrame {
-
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -117,10 +117,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public ActorGraphFrame(
-            CompositeEntity entity,
-            Tableau tableau,
-            LibraryAttribute defaultLibrary) {
+    public ActorGraphFrame(CompositeEntity entity, Tableau tableau,
+        LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
         // Override the default help file.
@@ -167,25 +165,29 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
-            new JMenuItem("Listen to Director", KeyEvent.VK_L),
-            new JMenuItem("Normal Information", KeyEvent.VK_N),
-            new JMenuItem("Verbose Information", KeyEvent.VK_V),
-            new JMenuItem("Animate Execution", KeyEvent.VK_A),
-            new JMenuItem("Stop Animating", KeyEvent.VK_S),
-        };
+                new JMenuItem("Listen to Director", KeyEvent.VK_L),
+                new JMenuItem("Normal Information", KeyEvent.VK_N),
+                new JMenuItem("Verbose Information", KeyEvent.VK_V),
+                new JMenuItem("Animate Execution", KeyEvent.VK_A),
+                new JMenuItem("Stop Animating", KeyEvent.VK_S),
+            };
+
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
         // of the base class, and static initializers have not yet
         // been run.
         _debugMenu = new JMenu("Debug");
         _debugMenu.setMnemonic(KeyEvent.VK_D);
+
         DebugMenuListener debugMenuListener = new DebugMenuListener();
+
         // Set the action command and listener for each menu item.
         for (int i = 0; i < debugMenuItems.length; i++) {
             debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
             debugMenuItems[i].addActionListener(debugMenuListener);
             _debugMenu.add(debugMenuItems[i]);
         }
+
         _menubar.add(_debugMenu);
     }
 
@@ -197,14 +199,17 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      */
     protected boolean _close() {
         NamedObj ptModel = getModel();
-        if (ptModel instanceof CompositeActor &&
-                ptModel.getContainer() == null) {
-            CompositeActor ptActorModel = (CompositeActor)ptModel;
+
+        if (ptModel instanceof CompositeActor
+                && (ptModel.getContainer() == null)) {
+            CompositeActor ptActorModel = (CompositeActor) ptModel;
             Manager manager = ptActorModel.getManager();
+
             if (manager != null) {
                 manager.stop();
             }
         }
+
         return super._close();
     }
 
@@ -216,10 +221,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         _controller = new ActorEditorGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
+
         // The cast is safe because the constructor only accepts
         // CompositeEntity.
-        final ActorGraphModel graphModel = new ActorGraphModel(
-                (CompositeEntity)getModel());
+        final ActorGraphModel graphModel = new ActorGraphModel((CompositeEntity) getModel());
         return new GraphPane(_controller, graphModel);
     }
 
@@ -247,51 +252,51 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     ////                         private variables                 ////
 
     /** The most recent class name for instantiating an attribute. */
-    private String _lastAttributeClassName
-            = "ptolemy.vergil.kernel.attributes.EllipseAttribute";
+    private String _lastAttributeClassName = "ptolemy.vergil.kernel.attributes.EllipseAttribute";
 
     /** The most recent class name for instantiating an entity. */
-    private String _lastEntityClassName
-            = "ptolemy.actor.lib.Ramp";
+    private String _lastEntityClassName = "ptolemy.actor.lib.Ramp";
 
     /** The most recent location for instantiating a class. */
-    private String _lastLocation= "";
+    private String _lastLocation = "";
 
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
-
     // NOTE: The following class is very similar to the inner class
     // in FSMGraphFrame.  Is there some way to merge these?
     // There seem to be enough differences that this may be hard.
 
     /** Listener for debug menu commands. */
     public class DebugMenuListener implements ActionListener {
-
         /** React to a menu command. */
         public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem)e.getSource();
+            JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
+
             try {
                 if (actionCommand.equals("Listen to Director")) {
                     NamedObj model = getModel();
                     boolean success = false;
+
                     if (model instanceof Actor) {
-                        Director director = ((Actor)model).getDirector();
+                        Director director = ((Actor) model).getDirector();
+
                         if (director != null) {
-                            Effigy effigy = (Effigy)getTableau().getContainer();
+                            Effigy effigy = (Effigy) getTableau().getContainer();
+
                             // Create a new text effigy inside this one.
                             Effigy textEffigy = new TextEffigy(effigy,
                                     effigy.uniqueName("debug listener"));
-                            DebugListenerTableau tableau =
-                                new DebugListenerTableau(textEffigy,
-                                        textEffigy.uniqueName("debugListener"));
+                            DebugListenerTableau tableau = new DebugListenerTableau(textEffigy,
+                                    textEffigy.uniqueName("debugListener"));
                             tableau.setDebuggable(director);
                             success = true;
                         }
                     }
+
                     if (!success) {
                         MessageHandler.error("No director to listen to!");
                     }
@@ -303,53 +308,57 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                     // actors do not get animated if they are classes
                     // rather than instances.
                     NamedObj model = getModel();
+
                     if (model instanceof Actor) {
                         // Dialog to ask for a delay time.
                         Query query = new Query();
                         query.addLine("delay",
-                                "Time (in ms) to hold highlight",
-                                Long.toString(_lastDelayTime));
-                        ComponentDialog dialog = new ComponentDialog(
-                                ActorGraphFrame.this,
-                                "Delay for Animation",
-                                query);
+                            "Time (in ms) to hold highlight",
+                            Long.toString(_lastDelayTime));
+
+                        ComponentDialog dialog = new ComponentDialog(ActorGraphFrame.this,
+                                "Delay for Animation", query);
+
                         if (dialog.buttonPressed().equals("OK")) {
                             try {
-                                _lastDelayTime = Long.parseLong(
-                                        query.getStringValue("delay"));
+                                _lastDelayTime = Long.parseLong(query
+                                        .getStringValue("delay"));
                                 _controller.setAnimationDelay(_lastDelayTime);
-                                Director director
-                                    = ((Actor)model).getDirector();
-                                while (director == null
+
+                                Director director = ((Actor) model).getDirector();
+
+                                while ((director == null)
                                         && model instanceof Actor) {
-                                    model = (NamedObj)model.getContainer();
+                                    model = (NamedObj) model.getContainer();
+
                                     if (model instanceof Actor) {
-                                        director = ((Actor)model).getDirector();
+                                        director = ((Actor) model).getDirector();
                                     }
                                 }
-                                if (director != null
-                                        && _listeningTo != director) {
+
+                                if ((director != null)
+                                        && (_listeningTo != director)) {
                                     if (_listeningTo != null) {
-                                        _listeningTo.removeDebugListener(
-                                                _controller);
+                                        _listeningTo.removeDebugListener(_controller);
                                     }
+
                                     director.addDebugListener(_controller);
                                     _listeningTo = director;
                                 }
                             } catch (NumberFormatException ex) {
                                 MessageHandler.error(
-                                        "Invalid time, which is required "
-                                        + "to be an integer", ex);
+                                    "Invalid time, which is required "
+                                    + "to be an integer", ex);
                             }
                         } else {
                             MessageHandler.error(
-                                    "Cannot find the director. Possibly this "
-                                    + "is because this is a class, not an "
-                                    + "instance.");
+                                "Cannot find the director. Possibly this "
+                                + "is because this is a class, not an "
+                                + "instance.");
                         }
                     } else {
                         MessageHandler.error(
-                                "Model is not an actor. Cannot animate.");
+                            "Model is not an actor. Cannot animate.");
                     }
                 } else if (actionCommand.equals("Stop Animating")) {
                     if (_listeningTo != null) {
@@ -368,9 +377,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 }
             } catch (KernelException ex) {
                 try {
-                    MessageHandler.warning(
-                            "Failed to create debug listener: " + ex);
-                } catch (CancelException exception) {}
+                    MessageHandler.warning("Failed to create debug listener: "
+                        + ex);
+                } catch (CancelException exception) {
+                }
             }
         }
 
@@ -379,7 +389,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
-
     ///////////////////////////////////////////////////////////////////
     //// CreateHierarchy
 
@@ -387,14 +396,14 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      *  the selected actors.
      */
     private class CreateHierarchyAction extends AbstractAction {
-
         /**  Create a new action to introduce a level of hierarchy.
          */
         public CreateHierarchyAction() {
             super("CreateHierarchy");
             putValue("tooltip",
-                    "Create a TypedCompositeActor that contains the"
-                    + " selected actors.");
+                "Create a TypedCompositeActor that contains the"
+                + " selected actors.");
+
             //putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
             //        KeyStroke.getKeyStroke(KeyEvent.VK_H,
             //       Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
@@ -412,13 +421,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     /** An action to import a library of components. */
     private class ImportLibraryAction extends AbstractAction {
-
         /** Create a new action to import a library of components. */
         public ImportLibraryAction() {
             super("Import Library");
             putValue("tooltip", "Import a library into the Palette");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_M));
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_M));
         }
 
         /** Import a library by first opening a file chooser dialog and
@@ -437,34 +444,41 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 // So we use the current directory instead.
                 // FIXME: This will throw a security exception in an applet?
                 String cwd = StringUtilities.getProperty("user.dir");
+
                 if (cwd != null) {
                     chooser.setCurrentDirectory(new File(cwd));
                 }
             }
+
             int result = chooser.showOpenDialog(ActorGraphFrame.this);
+
             if (result == JFileChooser.APPROVE_OPTION) {
                 try {
                     File file = chooser.getSelectedFile();
+
                     // FIXME it would be nice if MoMLChangeRequest had the
                     // ability to read from a URL
                     StringBuffer buffer = new StringBuffer();
                     FileReader reader = new FileReader(file);
                     char[] chars = new char[50];
+
                     while (reader.ready()) {
                         int count = reader.read(chars, 0, 50);
                         buffer.append(chars, 0, count);
                     }
-                    PtolemyEffigy effigy =
-                        (PtolemyEffigy)getTableau().getContainer();
-                    Configuration configuration =
-                        (Configuration)effigy.toplevel();
-                    NamedObj library =
-                        configuration.getEntity("actor library");
-                    if (library == null) return;
-                    MoMLChangeRequest request =
-                        new MoMLChangeRequest(this, library,
-                                buffer.toString(),
-                                file.toURL());
+
+                    PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
+                                                               .getContainer();
+                    Configuration configuration = (Configuration) effigy
+                        .toplevel();
+                    NamedObj library = configuration.getEntity("actor library");
+
+                    if (library == null) {
+                        return;
+                    }
+
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            library, buffer.toString(), file.toURL());
                     library.requestChange(request);
                     _setDirectory(chooser.getCurrentDirectory());
                 } catch (Exception ex) {
@@ -479,13 +493,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     /** An action to instantiate an entity given a class name. */
     private class InstantiateAttributeAction extends AbstractAction {
-
         /** Create a new action to instantiate an entity. */
         public InstantiateAttributeAction() {
             super("Instantiate Attribute");
             putValue("tooltip", "Instantiate an attribute by class name");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_A));
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_A));
         }
 
         /** Instantiate a class by first opening a dialog to get
@@ -495,14 +507,16 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             Query query = new Query();
             query.setTextWidth(60);
             query.addLine("class", "Class name", _lastAttributeClassName);
-            ComponentDialog dialog = new ComponentDialog(
-                    ActorGraphFrame.this, "Instantiate Attribute", query);
+
+            ComponentDialog dialog = new ComponentDialog(ActorGraphFrame.this,
+                    "Instantiate Attribute", query);
+
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
-                GraphController controller =
-                    _jgraph.getGraphPane().getGraphController();
-                AbstractBasicGraphModel model =
-                    (AbstractBasicGraphModel)controller.getGraphModel();
+                GraphController controller = _jgraph.getGraphPane()
+                                                    .getGraphController();
+                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
+                    .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
 
                 _lastAttributeClassName = query.getStringValue("class");
@@ -510,28 +524,25 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 // Find the root for the instance name.
                 String rootName = _lastAttributeClassName;
                 int period = rootName.lastIndexOf(".");
-                if (period >= 0 && (rootName.length() > period + 1)) {
+
+                if ((period >= 0) && (rootName.length() > (period + 1))) {
                     rootName = rootName.substring(period + 1);
                 }
 
                 // Use the center of the screen as a location.
                 Rectangle2D bounds = getVisibleCanvasRectangle();
-                double x = bounds.getWidth()/2.0;
-                double y = bounds.getHeight()/2.0;
+                double x = bounds.getWidth() / 2.0;
+                double y = bounds.getHeight() / 2.0;
 
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
                 String moml = "<group name=\"auto\"><property name=\""
-                    + rootName
-                    + "\" class=\""
-                    + _lastAttributeClassName
+                    + rootName + "\" class=\"" + _lastAttributeClassName
                     + "\"><property name=\"_location\" "
-                    + "class=\"ptolemy.kernel.util.Location\" value=\""
-                    + x
-                    + ", "
-                    + y
-                    + "\"></property></property></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
+                    + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
+                    + ", " + y + "\"></property></property></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        context, moml);
                 context.requestChange(request);
             }
         }
@@ -542,13 +553,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     /** An action to instantiate an entity given a class name. */
     private class InstantiateEntityAction extends AbstractAction {
-
         /** Create a new action to instantiate an entity. */
         public InstantiateEntityAction() {
             super("Instantiate Entity");
             putValue("tooltip", "Instantiate an entity by class name");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_E));
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_E));
         }
 
         /** Instantiate a class by first opening a dialog to get
@@ -559,14 +568,16 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             query.setTextWidth(60);
             query.addLine("class", "Class name", _lastEntityClassName);
             query.addLine("location", "Location (URL)", _lastLocation);
-            ComponentDialog dialog = new ComponentDialog(
-                    ActorGraphFrame.this, "Instantiate Entity", query);
+
+            ComponentDialog dialog = new ComponentDialog(ActorGraphFrame.this,
+                    "Instantiate Entity", query);
+
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
-                GraphController controller =
-                    _jgraph.getGraphPane().getGraphController();
-                AbstractBasicGraphModel model =
-                    (AbstractBasicGraphModel)controller.getGraphModel();
+                GraphController controller = _jgraph.getGraphPane()
+                                                    .getGraphController();
+                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
+                    .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
 
                 _lastEntityClassName = query.getStringValue("class");
@@ -575,37 +586,33 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 // Find the root for the instance name.
                 String rootName = _lastEntityClassName;
                 int period = rootName.lastIndexOf(".");
-                if (period >= 0 && (rootName.length() > period + 1)) {
+
+                if ((period >= 0) && (rootName.length() > (period + 1))) {
                     rootName = rootName.substring(period + 1);
                 }
 
                 // Use the center of the screen as a location.
                 Rectangle2D bounds = getVisibleCanvasRectangle();
-                double x = bounds.getWidth()/2.0;
-                double y = bounds.getHeight()/2.0;
+                double x = bounds.getWidth() / 2.0;
+                double y = bounds.getHeight() / 2.0;
 
                 // If a location is given, construct MoML to
                 // specify a "source".
                 String source = "";
+
                 if (!(_lastLocation.trim().equals(""))) {
                     source = " source=\"" + _lastLocation.trim() + "\"";
                 }
 
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
-                String moml = "<group name=\"auto\"><entity name=\""
-                    + rootName
-                    + "\" class=\""
-                    + _lastEntityClassName
-                    + "\""
-                    + source
+                String moml = "<group name=\"auto\"><entity name=\"" + rootName
+                    + "\" class=\"" + _lastEntityClassName + "\"" + source
                     + "><property name=\"_location\" "
-                    + "class=\"ptolemy.kernel.util.Location\" value=\""
-                    + x
-                    + ", "
-                    + y
-                    + "\"></property></entity></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
+                    + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
+                    + ", " + y + "\"></property></entity></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        context, moml);
                 context.requestChange(request);
             }
         }
@@ -616,16 +623,14 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     /** Action to automatically lay out the graph. */
     private class LayoutAction extends AbstractAction {
-
         /** Create a new action to automatically lay out the graph. */
         public LayoutAction() {
             super("Automatic Layout");
             putValue("tooltip", "Layout the Graph (Ctrl+T)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_T,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_L));
+                KeyStroke.getKeyStroke(KeyEvent.VK_T,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
         }
 
         /** Lay out the graph. */
@@ -643,32 +648,31 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     /** An action to save the current model in a library. */
     private class SaveInLibraryAction extends AbstractAction {
-
         /** Create a new action to save a model in a library. */
         public SaveInLibraryAction() {
             super("Save In Library");
             putValue("tooltip", "Save as a Component in Library");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_S));
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
         }
 
         /** Create a new instance of the current model in the
          *  actor library of the configuration.
          */
         public void actionPerformed(ActionEvent e) {
-            PtolemyEffigy effigy =
-                (PtolemyEffigy)getTableau().getContainer();
+            PtolemyEffigy effigy = (PtolemyEffigy) getTableau().getContainer();
             NamedObj object = effigy.getModel();
+
             if (object == null) {
                 return;
             }
+
             if (!(object instanceof Entity)) {
                 throw new KernelRuntimeException("Could not save in "
-                        + "library, '" + object + "' is not an Entity");
+                    + "library, '" + object + "' is not an Entity");
             }
 
             Entity entity = (Entity) object;
-            Configuration configuration = (Configuration)effigy.toplevel();
+            Configuration configuration = (Configuration) effigy.toplevel();
             saveComponentInLibrary(configuration, entity);
         }
     }

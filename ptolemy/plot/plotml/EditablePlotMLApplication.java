@@ -46,6 +46,7 @@ import ptolemy.gui.Query;
 import ptolemy.plot.EditablePlot;
 import ptolemy.plot.PlotBox;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlotMLApplication
 
@@ -70,7 +71,6 @@ import ptolemy.plot.PlotBox;
    @see ptolemy.plot.Plot
 */
 public class EditablePlotMLApplication extends PlotMLApplication {
-
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
      *  @exception Exception If command line arguments have problems.
@@ -83,7 +83,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public EditablePlotMLApplication(String args[]) throws Exception {
+    public EditablePlotMLApplication(String[] args) throws Exception {
         this(new EditablePlot(), args);
     }
 
@@ -93,12 +93,12 @@ public class EditablePlotMLApplication extends PlotMLApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public EditablePlotMLApplication(EditablePlot plot, String args[])
-            throws Exception {
+    public EditablePlotMLApplication(EditablePlot plot, String[] args)
+        throws Exception {
         super(plot, args);
 
         // The default is that no set is editable.
-        ((EditablePlot)plot).setEditable(-1);
+        ((EditablePlot) plot).setEditable(-1);
 
         // Edit menu
         JMenuItem select = new JMenuItem("Edit Dataset", KeyEvent.VK_E);
@@ -108,7 +108,6 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         // Note that under Windows, the setLookAndFeel() in
         // PlotApplication causes problems here with this new
         // JMenuItem: the font and background color may be wrong.
-
         // Unfortunately, setting the background helps, but the
         // result does not have the etch border
         select.setBackground(_editMenu.getBackground());
@@ -119,13 +118,8 @@ public class EditablePlotMLApplication extends PlotMLApplication {
 
         // http://developer.java.sun.com/developer/bugParade/bugs/4736093.html
         // suggests this, which does not seem to help
-        getRootPane().getInputMap
-            (JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_ALT,
-                            Event.ALT_MASK, false),
-                    "repaint");
-
-
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke
+            .getKeyStroke(KeyEvent.VK_ALT, Event.ALT_MASK, false), "repaint");
 
         _editMenu.add(select);
 
@@ -133,7 +127,6 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         // suggests calling updateComponentTreeUI(), but if we do,
         // that forces the menu back to a white background.
         //SwingUtilities.updateComponentTreeUI(select);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -141,10 +134,10 @@ public class EditablePlotMLApplication extends PlotMLApplication {
 
     /** Create a new plot window and map it to the screen.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
-            EditablePlotMLApplication plot =
-                new EditablePlotMLApplication(new EditablePlot(), args);
+            EditablePlotMLApplication plot = new EditablePlotMLApplication(new EditablePlot(),
+                    args);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
@@ -154,9 +147,9 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         if (_test) {
             try {
                 Thread.sleep(2000);
+            } catch (InterruptedException e) {
             }
-            catch (InterruptedException e) {
-            }
+
             System.exit(0);
         }
     }
@@ -164,71 +157,72 @@ public class EditablePlotMLApplication extends PlotMLApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /** Display basic information about the application.
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "EditablePlotMLApplication class\n" +
-                "By: Edward A. Lee " +
-                "and Christopher Hylands\n" +
-                "Version " + PlotBox.PTPLOT_RELEASE +
-                ", Build: $Id$\n\n"+
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
-                "Copyright (c) 1997-2005, " +
-                "The Regents of the University of California.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "EditablePlotMLApplication class\n" + "By: Edward A. Lee "
+            + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
+            + ", Build: $Id$\n\n"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+            + "Copyright (c) 1997-2005, "
+            + "The Regents of the University of California.",
+            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-                "EditablePlotMLApplication is a standalone plot " +
-                " application.\n" +
-                "  File formats understood: PlotML and Ptplot ASCII.\n" +
-                "  Left mouse button: Zooming.\n" +
-                "  Right mouse button: Editing data (use edit menu to select " +
-                "a dataset).\n\n" +
-                _usage(),
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "EditablePlotMLApplication is a standalone plot "
+            + " application.\n"
+            + "  File formats understood: PlotML and Ptplot ASCII.\n"
+            + "  Left mouse button: Zooming.\n"
+            + "  Right mouse button: Editing data (use edit menu to select "
+            + "a dataset).\n\n" + _usage(), "About Ptolemy Plot",
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Open a dialog to select a dataset to edit.
      */
     protected void _selectDataset() {
         Query query = new Query();
-        int numSets = ((EditablePlot)plot).getNumDataSets();
+        int numSets = ((EditablePlot) plot).getNumDataSets();
         String[] choices = new String[numSets + 1];
+
         for (int i = 0; i < numSets; i++) {
             choices[i + 1] = plot.getLegend(i);
+
             if (choices[i + 1] == null) {
                 choices[i + 1] = "" + i;
             }
         }
+
         choices[0] = "none";
         query.setTextWidth(20);
         query.addChoice("choice",
-                "Choose a data set, then drag the right mouse button",
-                choices, choices[0]);
-        ComponentDialog dialog =
-            new ComponentDialog(this, "Select dataset", query);
+            "Choose a data set, then drag the right mouse button", choices,
+            choices[0]);
+
+        ComponentDialog dialog = new ComponentDialog(this, "Select dataset",
+                query);
         String buttonPressed = dialog.buttonPressed();
+
         if (buttonPressed.equals("OK")) {
             int result = query.getIntValue("choice");
+
             if (result > 0) {
-                ((EditablePlot)plot).setEditable(result - 1);
+                ((EditablePlot) plot).setEditable(result - 1);
             } else {
                 // none...
-                ((EditablePlot)plot).setEditable(-1);
+                ((EditablePlot) plot).setEditable(-1);
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     class SelectListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             _selectDataset();

@@ -29,6 +29,7 @@ package diva.canvas.interactor;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+
 /**
  * Keep a point within a given rectangular bounds.
  *
@@ -36,7 +37,6 @@ import java.awt.geom.Rectangle2D;
  * @author John Reekie
  */
 public class BoundsConstraint implements PointConstraint {
-
     /** The bounds
      */
     private Rectangle2D _bounds;
@@ -47,7 +47,7 @@ public class BoundsConstraint implements PointConstraint {
 
     /** Create a new BoundsConstraint with the given bounds.
      */
-    public BoundsConstraint (Rectangle2D bounds) {
+    public BoundsConstraint(Rectangle2D bounds) {
         setBounds(bounds);
     }
 
@@ -60,33 +60,37 @@ public class BoundsConstraint implements PointConstraint {
         if (x < _boundsX0) {
             x = _boundsX0;
         }
+
         if (y < _boundsY0) {
             y = _boundsY0;
         }
+
         if (x > _boundsX1) {
             x = _boundsX1;
         }
+
         if (y > _boundsY1) {
             y = _boundsY1;
         }
-        point.setLocation(x,y);
+
+        point.setLocation(x, y);
     }
 
     /** Get the bounds
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         return _bounds;
     }
 
     /** Return false. This constraint never snaps.
      */
-    public boolean snapped () {
+    public boolean snapped() {
         return false;
     }
 
     /** Set the bounds
      */
-    public void setBounds (Rectangle2D bounds) {
+    public void setBounds(Rectangle2D bounds) {
         this._bounds = bounds;
         _boundsX0 = bounds.getX();
         _boundsY0 = bounds.getY();
@@ -94,5 +98,3 @@ public class BoundsConstraint implements PointConstraint {
         _boundsY1 = _boundsY0 + bounds.getHeight();
     }
 }
-
-

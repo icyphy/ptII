@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import java.util.HashMap;
@@ -64,6 +63,7 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMDirector
+
 /**
    An FSMDirector governs the execution of a modal model. A modal model is
    a TypedCompositeActor with a FSMDirector as local director. The mode
@@ -119,9 +119,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating red (hyzheng)
    @see FSMActor
 */
-public class FSMDirector extends Director
-    implements ModelErrorHandler, ExplicitChangeContext {
-
+public class FSMDirector extends Director implements ModelErrorHandler,
+    ExplicitChangeContext {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -154,7 +153,7 @@ public class FSMDirector extends Director
      *   CompositeActor and the name collides with an entity in the container.
      */
     public FSMDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _createAttribute();
     }
@@ -182,8 +181,9 @@ public class FSMDirector extends Director
      *  attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.attributeChanged(attribute);
+
         if (attribute == controllerName) {
             _controllerVersion = -1;
         }
@@ -197,9 +197,8 @@ public class FSMDirector extends Director
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        FSMDirector newObject = (FSMDirector)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FSMDirector newObject = (FSMDirector) super.clone(workspace);
         newObject._controllerVersion = -1;
         newObject._localReceiverMaps = new HashMap();
         newObject._localReceiverMapsVersion = -1;
@@ -234,70 +233,92 @@ public class FSMDirector extends Director
      */
     public void fire() throws IllegalActionException {
         FSMActor ctrl = getController();
+
         if (_debugging && _verbose) {
-            _debug(getFullName(), " find FSMActor " + ctrl.getName()
-                    + " at time: " + getModelTime());
+            _debug(getFullName(),
+                " find FSMActor " + ctrl.getName() + " at time: "
+                + getModelTime());
         }
 
         ctrl._readInputs();
+
         State st = ctrl.currentState();
 
         Transition tr = ctrl._chooseTransition(st.preemptiveTransitionList());
         _enabledTransition = tr;
+
         if (tr != null) {
             // First execute the refinemtns of transition
             Actor[] actors = tr.getRefinement();
+
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested) break;
+                    if (_stopRequested) {
+                        break;
+                    }
+
                     if (actors[i].prefire()) {
                         actors[i].fire();
                         actors[i].postfire();
                     }
                 }
             }
+
             ctrl._readOutputsFromRefinement();
             return;
         }
 
         Actor[] actors = st.getRefinement();
+
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
-                if (_stopRequested) break;
+                if (_stopRequested) {
+                    break;
+                }
+
                 if (actors[i].prefire()) {
                     if (_debugging) {
                         _debug(getFullName(), " fire refinement",
-                                ((ptolemy.kernel.util.NamedObj)
-                                        actors[i]).getName());
+                            ((ptolemy.kernel.util.NamedObj) actors[i]).getName());
                     }
+
                     actors[i].fire();
                     actors[i].postfire();
                 }
             }
         }
+
         ctrl._readOutputsFromRefinement();
 
         tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
         _enabledTransition = tr;
+
         if (tr != null) {
             actors = tr.getRefinement();
+
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested) break;
+                    if (_stopRequested) {
+                        break;
+                    }
+
                     if (actors[i].prefire()) {
                         if (_debugging) {
                             _debug(getFullName(),
-                                    " fire transition refinement",
-                                    ((ptolemy.kernel.util.NamedObj)
-                                            actors[i]).getName());
+                                " fire transition refinement",
+                                ((ptolemy.kernel.util.NamedObj) actors[i])
+                                .getName());
                         }
+
                         actors[i].fire();
                         actors[i].postfire();
                     }
                 }
+
                 ctrl._readOutputsFromRefinement();
             }
         }
+
         return;
     }
 
@@ -325,15 +346,16 @@ public class FSMDirector extends Director
      *  a firing of the container of this director at the given
      *  time with the executive director.
      */
-    public void fireAt(Actor actor, Time time)
-            throws IllegalActionException {
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
         // FIXME: Changed by liuj, not yet reviewed.
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();
+
         if (container instanceof Actor) {
-            Actor modalModel = (Actor)container;
+            Actor modalModel = (Actor) container;
             Director executiveDirector = modalModel.getExecutiveDirector();
+
             if (executiveDirector != null) {
                 executiveDirector.fireAt(modalModel, time);
             } else {
@@ -354,28 +376,37 @@ public class FSMDirector extends Director
         if (_controllerVersion == workspace().getVersion()) {
             return _controller;
         }
+
         try {
             workspace().getReadAccess();
+
             String name = controllerName.getExpression();
+
             if (name == null) {
-                throw new IllegalActionException(this, "No name for mode "
-                        + "controller is set.");
+                throw new IllegalActionException(this,
+                    "No name for mode " + "controller is set.");
             }
+
             Nameable container = getContainer();
+
             if (!(container instanceof CompositeActor)) {
                 throw new IllegalActionException(this, "No controller found.");
             }
-            CompositeActor cont = (CompositeActor)container;
+
+            CompositeActor cont = (CompositeActor) container;
             Entity entity = cont.getEntity(name);
+
             if (entity == null) {
-                throw new IllegalActionException(this, "No controller found "
-                        + "with name " + name);
+                throw new IllegalActionException(this,
+                    "No controller found " + "with name " + name);
             }
+
             if (!(entity instanceof FSMActor)) {
                 throw new IllegalActionException(this, entity,
-                        "mode controller must be an instance of FSMActor.");
+                    "mode controller must be an instance of FSMActor.");
             }
-            _controller = (FSMActor)entity;
+
+            _controller = (FSMActor) entity;
             _controllerVersion = workspace().getVersion();
             return _controller;
         } finally {
@@ -389,7 +420,7 @@ public class FSMDirector extends Director
      *  @return The explicit change context.
      */
     public Entity getContext() {
-        return (Entity)getContainer();
+        return (Entity) getContainer();
     }
 
     /** Return a list of variables that are modified in a modal model.
@@ -400,40 +431,43 @@ public class FSMDirector extends Director
      */
     public List getModifiedVariables() throws IllegalActionException {
         List list = new LinkedList();
+
         // Collect assignments from FSM transitions
         for (Iterator states = getController().entityList().iterator();
-             states.hasNext();) {
-            State state = (State)states.next();
-            for (Iterator transitions =
-                     state.outgoingPort.linkedRelationList().iterator();
-                 transitions.hasNext();) {
-                Transition transition = (Transition)transitions.next();
-                for (Iterator actions =
-                         transition.choiceActionList().iterator();
-                     actions.hasNext();) {
-                    AbstractActionsAttribute action =
-                        (AbstractActionsAttribute)actions.next();
-                    for (Iterator names =
-                             action.getDestinationNameList().iterator();
-                         names.hasNext();) {
-                        String name = (String)names.next();
+                states.hasNext();) {
+            State state = (State) states.next();
+
+            for (Iterator transitions = state.outgoingPort.linkedRelationList()
+                                                          .iterator();
+                    transitions.hasNext();) {
+                Transition transition = (Transition) transitions.next();
+
+                for (Iterator actions = transition.choiceActionList().iterator();
+                        actions.hasNext();) {
+                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions
+                        .next();
+
+                    for (Iterator names = action.getDestinationNameList()
+                                                .iterator(); names.hasNext();) {
+                        String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
+
                         if (object instanceof Variable) {
                             list.add(object);
                         }
                     }
                 }
-                for (Iterator actions =
-                         transition.commitActionList().iterator();
-                     actions.hasNext();) {
-                    AbstractActionsAttribute action =
-                        (AbstractActionsAttribute)actions.next();
 
-                    for (Iterator names =
-                             action.getDestinationNameList().iterator();
-                         names.hasNext();) {
-                        String name = (String)names.next();
+                for (Iterator actions = transition.commitActionList().iterator();
+                        actions.hasNext();) {
+                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions
+                        .next();
+
+                    for (Iterator names = action.getDestinationNameList()
+                                                .iterator(); names.hasNext();) {
+                        String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
+
                         if (object instanceof Variable) {
                             list.add(object);
                         }
@@ -441,6 +475,7 @@ public class FSMDirector extends Director
                 }
             }
         }
+
         return list;
     }
 
@@ -463,20 +498,24 @@ public class FSMDirector extends Director
     public Time getModelNextIterationTime() {
         try {
             Actor[] actors = getController().currentState().getRefinement();
-            if (actors == null || actors.length == 0) {
+
+            if ((actors == null) || (actors.length == 0)) {
                 return super.getModelNextIterationTime();
             }
+
             double result = Double.POSITIVE_INFINITY;
             boolean givenByRefinement = false;
+
             for (int i = 0; i < actors.length; ++i) {
                 if (actors[i].getDirector() != this) {
                     // The refinement has a local director.
                     result = Math.min(result,
-                            actors[i].getDirector()
-                            .getModelNextIterationTime().getDoubleValue());
+                            actors[i].getDirector().getModelNextIterationTime()
+                                     .getDoubleValue());
                     givenByRefinement = true;
                 }
             }
+
             if (givenByRefinement) {
                 return new Time(this, result);
             } else {
@@ -487,6 +526,7 @@ public class FSMDirector extends Director
             // return whatever given by the superclass.
             // Ignore the IllegalActionException here.
         }
+
         return super.getModelNextIterationTime();
     }
 
@@ -514,11 +554,8 @@ public class FSMDirector extends Director
      *  detected, or mode controller can not be found, or can not read
      *  outputs from refinements.
      */
-    public boolean handleModelError(
-            NamedObj context,
-            IllegalActionException exception)
-            throws IllegalActionException {
-
+    public boolean handleModelError(NamedObj context,
+        IllegalActionException exception) throws IllegalActionException {
         // NOTE: Besides throwing exception directly, we can handle
         // multiple enabled transitions in different ways...
         // For example, try refining the step size.
@@ -529,15 +566,16 @@ public class FSMDirector extends Director
         // If the exception is an InvariantViolationException
         // exception, check if any transition is enabled.
         if (exception instanceof InvariantViolationException) {
-
             FSMActor controller = getController();
             controller._readOutputsFromRefinement();
+
             State st = controller.currentState();
-            Transition tr =
-                controller._checkTransition(st.nonpreemptiveTransitionList());
+            Transition tr = controller._checkTransition(st
+                    .nonpreemptiveTransitionList());
 
             if (tr == null) {
                 ModelErrorHandler container = getContainer();
+
                 if (container != null) {
                     // We can not call the handleModelError() method of the
                     // super class, because the container will call this
@@ -546,9 +584,11 @@ public class FSMDirector extends Director
                     throw exception;
                 }
             }
+
             if (_debugging && _verbose) {
                 _debug("ModelError " + exception.getMessage() + " is handled.");
             }
+
             return true;
         }
 
@@ -585,13 +625,14 @@ public class FSMDirector extends Director
                         if (hasToken() == true) {
                             get();
                         }
+
                         super.put(token);
                     } catch (NoRoomException ex) {
                         throw new InternalErrorException("One-place buffer: "
-                                + ex.getMessage());
+                            + ex.getMessage());
                     } catch (NoTokenException ex) {
                         throw new InternalErrorException("One-place buffer: "
-                                + ex.getMessage());
+                            + ex.getMessage());
                     }
                 }
             };
@@ -608,33 +649,32 @@ public class FSMDirector extends Director
      */
     public boolean postfire() throws IllegalActionException {
         if (_debugging && _verbose) {
-            _debug(getFullName(),
-                    "postfire called at time: " + getModelTime());
+            _debug(getFullName(), "postfire called at time: " + getModelTime());
         }
 
         FSMActor controller = getController();
         boolean result = controller.postfire();
 
-        _currentLocalReceiverMap =
-            (Map)_localReceiverMaps.get(controller.currentState());
+        _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
+                .currentState());
 
         // Note, we increment the workspace version such that the
         // function dependencies will be reconstructed. This design
         // is based on that each time one transition happens, the
         // new refinement takes place of the modal model for
         // execution, consequently, the model structure changes.
-
         // Note that we also check whether mutation is enabled at
         // the current iteration. For some models, such as CT models,
         // during a discrete phase of execution, the mutation is disable
         // to avoid unnecessary change requests made by this director.
-        if (_mutationEnabled && _enabledTransition != null) {
-            ChangeRequest request =
-                new ChangeRequest(this, "increment workspace version by 1") {
-                protected void _execute() throws KernelException {
-                    ((NamedObj) getContainer()).workspace().incrVersion();
-                }
-            };
+        if (_mutationEnabled && (_enabledTransition != null)) {
+            ChangeRequest request = new ChangeRequest(this,
+                    "increment workspace version by 1") {
+                    protected void _execute() throws KernelException {
+                        ((NamedObj) getContainer()).workspace().incrVersion();
+                    }
+                };
+
             request.setPersistent(false);
             getContainer().requestChange(request);
         }
@@ -653,19 +693,27 @@ public class FSMDirector extends Director
     public boolean prefire() throws IllegalActionException {
         // FIXME: Changed by liuj, not yet reviewed.
         if (_debugging) {
-            _debug(getFullName(),
-                    "prefire called at time: "+getModelTime());
+            _debug(getFullName(), "prefire called at time: " + getModelTime());
         }
+
         // Clear the inside receivers of all output ports of the container.
         // FIXME: why here? should this happen at the postfire() method?
-        CompositeActor actor = (CompositeActor)getContainer();
+        CompositeActor actor = (CompositeActor) getContainer();
         Iterator outputPorts = actor.outputPortList().iterator();
+
         while (outputPorts.hasNext()) {
-            IOPort p = (IOPort)outputPorts.next();
+            IOPort p = (IOPort) outputPorts.next();
             Receiver[][] insideReceivers = p.getInsideReceivers();
-            if (insideReceivers == null) continue;
+
+            if (insideReceivers == null) {
+                continue;
+            }
+
             for (int i = 0; i < insideReceivers.length; i++) {
-                if (insideReceivers[i] == null) continue;
+                if (insideReceivers[i] == null) {
+                    continue;
+                }
+
                 for (int j = 0; j < insideReceivers[i].length; j++) {
                     try {
                         if (insideReceivers[i][j].hasToken()) {
@@ -677,6 +725,7 @@ public class FSMDirector extends Director
                 }
             }
         }
+
         // Set the current time based on the enclosing class.
         super.prefire();
         return getController().prefire();
@@ -694,8 +743,9 @@ public class FSMDirector extends Director
      *  collides with a name already in the container.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
+
         if (container != null) {
             container.setModelErrorHandler(this);
         }
@@ -710,9 +760,7 @@ public class FSMDirector extends Director
      *  @param newTime The new current simulation time.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void setModelTime(Time newTime)
-    // FIXME: Changed by liuj, not yet reviewed.
-        throws IllegalActionException {
+    public void setModelTime(Time newTime) throws IllegalActionException {
         _currentTime = newTime;
     }
 
@@ -732,36 +780,41 @@ public class FSMDirector extends Director
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" +
-                    "input port.");
+                "transferInputs: port argument is not an opaque"
+                + "input port.");
         }
+
         boolean transferredToken = false;
         Receiver[][] insideReceivers = _currentLocalReceivers(port);
+
         for (int i = 0; i < port.getWidth(); i++) {
             try {
                 if (port.hasToken(i)) {
                     Token t = port.get(i);
-                    if (insideReceivers != null
-                            && insideReceivers[i] != null) {
+
+                    if ((insideReceivers != null)
+                            && (insideReceivers[i] != null)) {
                         for (int j = 0; j < insideReceivers[i].length; j++) {
                             if (insideReceivers[i][j].hasToken()) {
                                 insideReceivers[i][j].get();
                             }
+
                             insideReceivers[i][j].put(t);
+
                             if (_debugging) {
                                 _debug(getFullName(),
-                                        "transferring input from "
-                                        + port.getFullName()
-                                        + " to "
-                                        + (insideReceivers[i][j])
-                                        .getContainer().getFullName());
+                                    "transferring input from "
+                                    + port.getFullName() + " to "
+                                    + (insideReceivers[i][j]).getContainer()
+                                       .getFullName());
                             }
                         }
+
                         transferredToken = true;
                     }
                 } else {
-                    if (insideReceivers != null
-                            && insideReceivers[i] != null) {
+                    if ((insideReceivers != null)
+                            && (insideReceivers[i] != null)) {
                         for (int j = 0; j < insideReceivers[i].length; j++) {
                             if (insideReceivers[i][j].hasToken()) {
                                 insideReceivers[i][j].get();
@@ -772,10 +825,11 @@ public class FSMDirector extends Director
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
                 throw new InternalErrorException(
-                        "Director.transferInputs: Internal error: " +
-                        ex.getMessage());
+                    "Director.transferInputs: Internal error: "
+                    + ex.getMessage());
             }
         }
+
         return transferredToken;
     }
 
@@ -792,87 +846,102 @@ public class FSMDirector extends Director
     protected void _buildLocalReceiverMaps() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+
             FSMActor controller = getController();
+
             // Remove any existing maps.
             _localReceiverMaps.clear();
+
             // Create a map for each state of the mode controller.
             Iterator states = controller.entityList().iterator();
             State state = null;
+
             while (states.hasNext()) {
-                state = (State)states.next();
+                state = (State) states.next();
                 _localReceiverMaps.put(state, new HashMap());
             }
-            CompositeActor comp = (CompositeActor)getContainer();
+
+            CompositeActor comp = (CompositeActor) getContainer();
             Iterator inPorts = comp.inputPortList().iterator();
             List resultsList = new LinkedList();
+
             while (inPorts.hasNext()) {
-                IOPort port = (IOPort)inPorts.next();
+                IOPort port = (IOPort) inPorts.next();
                 Receiver[][] allReceivers = port.deepGetReceivers();
                 states = controller.entityList().iterator();
+
                 while (states.hasNext()) {
-                    state = (State)states.next();
+                    state = (State) states.next();
+
                     TypedActor[] actors = state.getRefinement();
-                    Receiver[][] allReceiversArray
-                        = new Receiver[allReceivers.length][0];
+                    Receiver[][] allReceiversArray = new Receiver[allReceivers.length][0];
+
                     for (int i = 0; i < allReceivers.length; ++i) {
                         resultsList.clear();
+
                         for (int j = 0; j < allReceivers[i].length; ++j) {
                             Receiver receiver = allReceivers[i][j];
                             Nameable cont = receiver.getContainer()
-                                .getContainer();
+                                                    .getContainer();
+
                             if (cont == controller) {
                                 resultsList.add(receiver);
                             } else {
                                 // check transitions
-                                Iterator transitions =
-                                    state.nonpreemptiveTransitionList()
-                                    .iterator();
+                                Iterator transitions = state.nonpreemptiveTransitionList()
+                                                            .iterator();
+
                                 while (transitions.hasNext()) {
-                                    Transition transition =
-                                        (Transition) transitions.next();
-                                    _checkActorsForReceiver
-                                        (transition.getRefinement(), cont,
-                                                receiver, resultsList);
+                                    Transition transition = (Transition) transitions
+                                        .next();
+                                    _checkActorsForReceiver(transition
+                                        .getRefinement(), cont, receiver,
+                                        resultsList);
                                 }
+
                                 // check refinements
                                 List stateList = new LinkedList();
                                 stateList.add(state);
-                                transitions =
-                                    state.preemptiveTransitionList()
-                                    .iterator();
+                                transitions = state.preemptiveTransitionList()
+                                                   .iterator();
+
                                 while (transitions.hasNext()) {
-                                    Transition transition =
-                                        (Transition)transitions.next();
-                                    stateList.add(transition
-                                            .destinationState());
-                                    _checkActorsForReceiver
-                                        (transition.getRefinement(), cont,
-                                                receiver, resultsList);
+                                    Transition transition = (Transition) transitions
+                                        .next();
+                                    stateList.add(transition.destinationState());
+                                    _checkActorsForReceiver(transition
+                                        .getRefinement(), cont, receiver,
+                                        resultsList);
                                 }
+
                                 Iterator nextStates = stateList.iterator();
+
                                 while (nextStates.hasNext()) {
-                                    actors =
-                                        ((State)nextStates.next())
+                                    actors = ((State) nextStates.next())
                                         .getRefinement();
-                                    _checkActorsForReceiver
-                                        (actors,cont, receiver, resultsList);
+                                    _checkActorsForReceiver(actors, cont,
+                                        receiver, resultsList);
                                 }
                             }
                         }
-                        allReceiversArray[i] =
-                            new Receiver[resultsList.size()];
+
+                        allReceiversArray[i] = new Receiver[resultsList.size()];
+
                         Object[] receivers = resultsList.toArray();
+
                         for (int j = 0; j < receivers.length; ++j) {
-                            allReceiversArray[i][j] = (Receiver)receivers[j];
+                            allReceiversArray[i][j] = (Receiver) receivers[j];
                         }
                     }
-                    Map m = (HashMap)_localReceiverMaps.get(state);
+
+                    Map m = (HashMap) _localReceiverMaps.get(state);
                     m.put(port, allReceiversArray);
                 }
             }
+
             _localReceiverMapsVersion = workspace().getVersion();
-            _currentLocalReceiverMap =
-                (Map)_localReceiverMaps.get(controller.currentState());
+            _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
+                    .currentState());
         } finally {
             workspace().doneReading();
         }
@@ -888,8 +957,9 @@ public class FSMDirector extends Director
      *   by the enabled transition, or if there is no controller.
      */
     protected Transition _chooseTransition(List transitionList)
-            throws IllegalActionException {
+        throws IllegalActionException {
         FSMActor controller = getController();
+
         if (controller != null) {
             return controller._chooseTransition(transitionList);
         } else {
@@ -906,11 +976,12 @@ public class FSMDirector extends Director
      *  @exception IllegalActionException If there is no controller.
      */
     protected Receiver[][] _currentLocalReceivers(IOPort port)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_localReceiverMapsVersion != workspace().getVersion()) {
             _buildLocalReceiverMaps();
         }
-        return (Receiver[][])_currentLocalReceiverMap.get(port);
+
+        return (Receiver[][]) _currentLocalReceiverMap.get(port);
     }
 
     /** Return the last chosen transition.
@@ -920,6 +991,7 @@ public class FSMDirector extends Director
     protected Transition _getLastChosenTransition()
         throws IllegalActionException {
         FSMActor controller = getController();
+
         if (controller != null) {
             return controller._lastChosenTransition;
         } else {
@@ -934,6 +1006,7 @@ public class FSMDirector extends Director
      */
     protected void _readInputs() throws IllegalActionException {
         FSMActor controller = getController();
+
         if (controller != null) {
             controller._readInputs();
         }
@@ -946,6 +1019,7 @@ public class FSMDirector extends Director
      */
     protected void _readOutputsFromRefinement() throws IllegalActionException {
         FSMActor controller = getController();
+
         if (controller != null) {
             controller._readOutputsFromRefinement();
         }
@@ -960,6 +1034,7 @@ public class FSMDirector extends Director
      */
     protected void _setCurrentConnectionMap() throws IllegalActionException {
         FSMActor controller = getController();
+
         if (controller != null) {
             controller._setCurrentConnectionMap();
         } else {
@@ -971,9 +1046,9 @@ public class FSMDirector extends Director
      *  @param state The state to set.
      *  @exception IllegalActionException If there is no controller.
      */
-    protected void _setCurrentState(State state)
-            throws IllegalActionException {
+    protected void _setCurrentState(State state) throws IllegalActionException {
         FSMActor controller = getController();
+
         if (controller != null) {
             controller._currentState = state;
         } else {
@@ -1010,10 +1085,8 @@ public class FSMDirector extends Director
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    private void _checkActorsForReceiver(TypedActor[] actors,
-            Nameable cont, Receiver receiver,
-            List resultsList) {
+    private void _checkActorsForReceiver(TypedActor[] actors, Nameable cont,
+        Receiver receiver, List resultsList) {
         if (actors != null) {
             for (int k = 0; k < actors.length; ++k) {
                 if (cont == actors[k]) {
@@ -1030,22 +1103,23 @@ public class FSMDirector extends Director
     private void _createAttribute() {
         try {
             Attribute a = getAttribute("controllerName");
+
             if (a != null) {
                 a.setContainer(null);
             }
+
             controllerName = new StringAttribute(this, "controllerName");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(getName() + "Cannot create "
-                    + "controllerName attribute.");
+                + "controllerName attribute.");
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() + "Cannot create "
-                    + "controllerName attribute.");
+                + "controllerName attribute.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Cached reference to mode controller.
     private FSMActor _controller = null;
 
@@ -1054,5 +1128,4 @@ public class FSMDirector extends Director
 
     // Version of the local receiver maps.
     private long _localReceiverMapsVersion = -1;
-
 }

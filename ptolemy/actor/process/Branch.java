@@ -27,16 +27,16 @@
 
 
 */
-
 package ptolemy.actor.process;
-
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Branch
+
 /**
    A Branch transfers tokens through a channel that crosses a composite
    actor boundary. Branch implements the Runnable class and the execution
@@ -71,16 +71,13 @@ import ptolemy.kernel.util.Nameable;
    @Pt.ProposedRating Red (davisj)
    @Pt.AcceptedRating Red (davisj)
 */
-
 public class Branch implements Runnable {
-
     /** Construct a branch object with a branch controller.
      *
      *  @param controller The branch controller assigned to this branch.
      *  @deprecated Use this constructor for testing purposes only.
      */
-    public Branch(BranchController controller) throws
-            IllegalActionException {
+    public Branch(BranchController controller) throws IllegalActionException {
         _controller = controller;
     }
 
@@ -94,30 +91,31 @@ public class Branch implements Runnable {
      *   this branch are null or improperly configured.
      */
     public Branch(ProcessReceiver producerReceiver,
-            ProcessReceiver consumerReceiver,
-            BranchController controller) throws IllegalActionException {
+        ProcessReceiver consumerReceiver, BranchController controller)
+        throws IllegalActionException {
         _controller = controller;
 
-        if ( producerReceiver == null || consumerReceiver == null ) {
+        if ((producerReceiver == null) || (consumerReceiver == null)) {
             throw new IllegalActionException("The boundary "
-                    + "receivers of this branch are null.");
+                + "receivers of this branch are null.");
         }
-        if ( !producerReceiver.isProducerReceiver() ) {
-            String name = ((Nameable)consumerReceiver
-                    .getContainer()).getFullName();
-            throw new IllegalActionException("Receiver in the port: "
-                    + name
-                    + " is not a producer receiver");
+
+        if (!producerReceiver.isProducerReceiver()) {
+            String name = ((Nameable) consumerReceiver.getContainer())
+                .getFullName();
+            throw new IllegalActionException("Receiver in the port: " + name
+                + " is not a producer receiver");
         }
+
         _producerReceiver = producerReceiver;
 
-        if ( !consumerReceiver.isConsumerReceiver() ) {
-            String name = ((Nameable)consumerReceiver
-                    .getContainer()).getFullName();
-            throw new IllegalActionException("Receiver in the port: "
-                    + name
-                    + " is not a consumer receiver");
+        if (!consumerReceiver.isConsumerReceiver()) {
+            String name = ((Nameable) consumerReceiver.getContainer())
+                .getFullName();
+            throw new IllegalActionException("Receiver in the port: " + name
+                + " is not a consumer receiver");
         }
+
         _consumerReceiver = consumerReceiver;
     }
 
@@ -159,7 +157,7 @@ public class Branch implements Runnable {
      *   is blocked.
      */
     public void registerReceiverBlocked(ProcessReceiver receiver) {
-        if ( !_receiverBlocked ) {
+        if (!_receiverBlocked) {
             _receiverBlocked = true;
             _controller._branchBlocked(receiver);
         }
@@ -172,7 +170,7 @@ public class Branch implements Runnable {
      *   which a block is being removed.
      */
     public void registerReceiverUnBlocked(ProcessReceiver receiver) {
-        if ( _receiverBlocked ) {
+        if (_receiverBlocked) {
             _receiverBlocked = false;
             _controller._branchUnBlocked(receiver);
         }
@@ -186,10 +184,11 @@ public class Branch implements Runnable {
     public void run() {
         try {
             setActive(true);
-            while ( isActive() ) {
+
+            while (isActive()) {
                 transferToken();
             }
-        } catch( TerminateProcessException e ) {
+        } catch (TerminateProcessException e) {
             return;
         }
     }
@@ -209,25 +208,23 @@ public class Branch implements Runnable {
      *  token transfer.
      */
     public void transferToken() {
-        if ( _producerReceiver == null ) {
+        if (_producerReceiver == null) {
             return;
-        } else if ( _consumerReceiver == null ) {
+        } else if (_consumerReceiver == null) {
             return;
         }
+
         Token token = _producerReceiver.get(this);
         _consumerReceiver.put(token, this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _active = false;
     private BranchController _controller;
     private ProcessReceiver _producerReceiver;
     private ProcessReceiver _consumerReceiver;
     private boolean _receiverBlocked = false;
-
 }

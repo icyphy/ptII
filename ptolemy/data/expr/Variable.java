@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.Collections;
@@ -61,8 +60,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Variable
+
 /**
    A Variable is an Attribute that contains a token, and can be set by an
    expression that can refer to other variables.
@@ -214,10 +215,8 @@ import ptolemy.kernel.util.Workspace;
    @see ScopeExtendingAttribute
    @see #setPersistent(boolean)
 */
-
-public class Variable extends AbstractSettableAttribute
-    implements Typeable, ValueListener {
-
+public class Variable extends AbstractSettableAttribute implements Typeable,
+    ValueListener {
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
@@ -253,7 +252,7 @@ public class Variable extends AbstractSettableAttribute
      *   variable already in the container.
      */
     public Variable(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }
@@ -273,12 +272,14 @@ public class Variable extends AbstractSettableAttribute
      *   variable already in the container.
      */
     public Variable(NamedObj container, String name, ptolemy.data.Token token)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // Notification is important here so that the attributeChanged()
         // method of the container is called.
         _setToken(token);
         setPersistent(false);
+
         // Record the initial value so "Restore Defaults" works.
         // Note that we call the superclass only to avoid getting the
         // other effects of setting the expression.
@@ -295,6 +296,7 @@ public class Variable extends AbstractSettableAttribute
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
         }
+
         if (!_valueListeners.contains(listener)) {
             _valueListeners.add(listener);
         }
@@ -313,15 +315,16 @@ public class Variable extends AbstractSettableAttribute
      *  @see java.lang.Object#clone()
      *  @return The cloned variable.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Variable newObject = (Variable)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Variable newObject = (Variable) super.clone(workspace);
 
         // _currentExpression and _initialExpression are preserved in clone
         if (_currentExpression != null) {
             newObject._needsEvaluation = true;
         }
+
         newObject._dependencyLoop = false;
+
         // _noTokenYet and _initialToken are preserved in clone
         newObject._parserScope = null;
 
@@ -335,12 +338,13 @@ public class Variable extends AbstractSettableAttribute
         newObject._valueListeners = null;
 
         // set _declaredType and _varType
-        if (_declaredType instanceof StructuredType &&
-                !_declaredType.isConstant()) {
-            newObject._declaredType =
-                (Type)((StructuredType)_declaredType).clone();
+        if (_declaredType instanceof StructuredType
+                && !_declaredType.isConstant()) {
+            newObject._declaredType = (Type) ((StructuredType) _declaredType)
+                .clone();
             newObject._varType = newObject._declaredType;
         }
+
         // _typeAtMost is preserved
         newObject._parseTree = null;
         newObject._parseTreeValid = false;
@@ -368,11 +372,12 @@ public class Variable extends AbstractSettableAttribute
         if (_currentExpression == null) {
             return Collections.EMPTY_SET;
         }
+
         try {
             workspace().getReadAccess();
             _parseIfNecessary();
-            ParseTreeFreeVariableCollector collector =
-                new ParseTreeFreeVariableCollector();
+
+            ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
             return collector.collectFreeVariables(_parseTree);
         } finally {
             workspace().doneReading();
@@ -387,22 +392,28 @@ public class Variable extends AbstractSettableAttribute
      */
     public String getExpression() {
         String value = _currentExpression;
+
         if (value == null) {
             ptolemy.data.Token token = null;
+
             try {
                 token = getToken();
-            } catch (IllegalActionException ex) {}
+            } catch (IllegalActionException ex) {
+            }
+
             if (token != null) {
                 if (isStringMode()) {
-                    value = ((StringToken)token).stringValue();
+                    value = ((StringToken) token).stringValue();
                 } else {
                     value = token.toString();
                 }
             }
         }
+
         if (value == null) {
             value = "";
         }
+
         return value;
     }
 
@@ -429,19 +440,24 @@ public class Variable extends AbstractSettableAttribute
     public NamedList getScope() {
         try {
             workspace().getReadAccess();
+
             NamedList scope = new NamedList();
-            NamedObj container = (NamedObj)getContainer();
+            NamedObj container = (NamedObj) getContainer();
+
             while (container != null) {
                 Iterator level1 = container.attributeList().iterator();
                 Attribute var = null;
+
                 while (level1.hasNext()) {
                     // add the variables in the same NamedObj to scope,
                     // excluding this
-                    var = (Attribute)level1.next();
+                    var = (Attribute) level1.next();
+
                     if ((var instanceof Variable) && (var != this)) {
-                        if (!_isLegalInScope((Variable)var)) {
+                        if (!_isLegalInScope((Variable) var)) {
                             continue;
                         }
+
                         try {
                             scope.append(var);
                         } catch (NameDuplicationException ex) {
@@ -453,19 +469,23 @@ public class Variable extends AbstractSettableAttribute
                         }
                     }
                 }
-                level1 =
-                    container.attributeList(ScopeExtender.class).iterator();
+
+                level1 = container.attributeList(ScopeExtender.class).iterator();
+
                 while (level1.hasNext()) {
-                    ScopeExtender extender = (ScopeExtender)level1.next();
+                    ScopeExtender extender = (ScopeExtender) level1.next();
                     Iterator level2 = extender.attributeList().iterator();
+
                     while (level2.hasNext()) {
                         // add the variables in the scope extender to scope,
                         // excluding this
-                        var = (Attribute)level2.next();
+                        var = (Attribute) level2.next();
+
                         if ((var instanceof Variable) && (var != this)) {
-                            if (!_isLegalInScope((Variable)var)) {
+                            if (!_isLegalInScope((Variable) var)) {
                                 continue;
                             }
+
                             try {
                                 scope.append(var);
                             } catch (NameDuplicationException ex) {
@@ -480,8 +500,9 @@ public class Variable extends AbstractSettableAttribute
                     }
                 }
 
-                container = (NamedObj)container.getContainer();
+                container = (NamedObj) container.getContainer();
             }
+
             return scope;
         } finally {
             workspace().doneReading();
@@ -506,13 +527,20 @@ public class Variable extends AbstractSettableAttribute
      *   and there are variables that depend on this one.
      */
     public ptolemy.data.Token getToken() throws IllegalActionException {
-        if (_isTokenUnknown) throw new UnknownResultException(this);
+        if (_isTokenUnknown) {
+            throw new UnknownResultException(this);
+        }
+
         // If the value has been set with an expression, then
         // reevaluate the token.
-        if (_needsEvaluation) _evaluate();
-        if (_token == null && isStringMode()) {
+        if (_needsEvaluation) {
+            _evaluate();
+        }
+
+        if ((_token == null) && isStringMode()) {
             _token = _EMPTY_STRING_TOKEN;
         }
+
         return _token;
     }
 
@@ -529,7 +557,10 @@ public class Variable extends AbstractSettableAttribute
      */
     public Type getType() {
         try {
-            if (_needsEvaluation) _evaluate();
+            if (_needsEvaluation) {
+                _evaluate();
+            }
+
             return _varType;
         } catch (IllegalActionException iae) {
             return _declaredType;
@@ -543,6 +574,7 @@ public class Variable extends AbstractSettableAttribute
         if (_typeTerm == null) {
             _typeTerm = new TypeTerm();
         }
+
         return _typeTerm;
     }
 
@@ -566,15 +598,19 @@ public class Variable extends AbstractSettableAttribute
         if (_currentExpression != null) {
             _needsEvaluation = true;
         }
+
         if (_variablesDependentOn != null) {
             Iterator entries = _variablesDependentOn.entrySet().iterator();
+
             while (entries.hasNext()) {
-                Map.Entry entry = (Map.Entry)entries.next();
-                Variable variable = (Variable)entry.getValue();
+                Map.Entry entry = (Map.Entry) entries.next();
+                Variable variable = (Variable) entry.getValue();
                 variable.removeValueListener(this);
             }
+
             _variablesDependentOn.clear();
         }
+
         _notifyValueListeners();
     }
 
@@ -595,6 +631,7 @@ public class Variable extends AbstractSettableAttribute
         } catch (UnknownResultException ex) {
             return false;
         }
+
         return true;
     }
 
@@ -627,6 +664,7 @@ public class Variable extends AbstractSettableAttribute
         if (getType().isInstantiable()) {
             return true;
         }
+
         return false;
     }
 
@@ -655,7 +693,10 @@ public class Variable extends AbstractSettableAttribute
      *   It is not currently used in Ptolemy II, as of version 2.0.
      */
     public void reset() {
-        if (_noTokenYet) return;
+        if (_noTokenYet) {
+            return;
+        }
+
         if (_initialToken != null) {
             try {
                 setToken(_initialToken);
@@ -697,9 +738,10 @@ public class Variable extends AbstractSettableAttribute
      *   an attribute with the name of this variable.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Nameable cont = getContainer();
         super.setContainer(container);
+
         if (container != cont) {
             // Every variable that this may shadow in its new location
             // must invalidate all their dependents.
@@ -739,21 +781,25 @@ public class Variable extends AbstractSettableAttribute
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
+
         if (_debugging) {
             _debug("setExpression: " + expr);
         }
-        if (expr == null || expr.trim().equals("")) {
+
+        if ((expr == null) || expr.trim().equals("")) {
             _token = null;
             _needsEvaluation = false;
+
             // set _varType
             if (_declaredType instanceof StructuredType) {
-                ((StructuredType)_varType).initialize(BaseType.UNKNOWN);
+                ((StructuredType) _varType).initialize(BaseType.UNKNOWN);
             } else {
                 _varType = _declaredType;
             }
         } else {
             _needsEvaluation = true;
         }
+
         _currentExpression = expr;
         _parseTree = null;
         _parseTreeValid = false;
@@ -793,6 +839,7 @@ public class Variable extends AbstractSettableAttribute
         if (_debugging) {
             _debug("setLazy: " + lazy);
         }
+
         _isLazy = lazy;
     }
 
@@ -815,9 +862,9 @@ public class Variable extends AbstractSettableAttribute
      *   parameter is incompatible with the resulting type.
      *  @see #isStringMode()
      */
-    public void setStringMode(boolean stringMode)
-            throws IllegalActionException {
+    public void setStringMode(boolean stringMode) throws IllegalActionException {
         _isStringMode = stringMode;
+
         if (_isStringMode) {
             setTypeEquals(BaseType.STRING);
         } else {
@@ -847,10 +894,11 @@ public class Variable extends AbstractSettableAttribute
      *   container rejects the change.
      */
     public void setToken(ptolemy.data.Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_debugging) {
             _debug("setToken: " + token);
         }
+
         _setTokenAndNotify(token);
 
         // Override any expression that may have been previously given.
@@ -893,11 +941,14 @@ public class Variable extends AbstractSettableAttribute
     public void setTypeAtLeast(Typeable lesser) {
         if (_debugging) {
             String name = "not named";
+
             if (lesser instanceof Nameable) {
-                name = ((Nameable)lesser).getFullName();
+                name = ((Nameable) lesser).getFullName();
             }
+
             _debug("setTypeAtLeast: " + name);
         }
+
         Inequality ineq = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
         _constraints.add(ineq);
@@ -912,11 +963,14 @@ public class Variable extends AbstractSettableAttribute
     public void setTypeAtLeast(InequalityTerm typeTerm) {
         if (_debugging) {
             String name = "not named";
+
             if (typeTerm.getAssociatedObject() instanceof Nameable) {
-                name = ((Nameable)typeTerm.getAssociatedObject()).getFullName();
+                name = ((Nameable) typeTerm.getAssociatedObject()).getFullName();
             }
+
             _debug("setTypeAtLeast: " + name);
         }
+
         Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
         _constraints.add(ineq);
     }
@@ -942,24 +996,29 @@ public class Variable extends AbstractSettableAttribute
         if (_debugging) {
             _debug("setTypeAtMost: " + type);
         }
+
         if (type == BaseType.UNKNOWN) {
             _typeAtMost = BaseType.UNKNOWN;
             return;
         }
+
         if (!type.isInstantiable()) {
-            throw new IllegalActionException(this, "setTypeAtMost(): "
-                    + "the argument " + type
-                    + " is not an instantiable type in the type lattice.");
+            throw new IllegalActionException(this,
+                "setTypeAtMost(): " + "the argument " + type
+                + " is not an instantiable type in the type lattice.");
         }
 
         Type currentType = getType();
         int typeInfo = TypeLattice.compare(currentType, type);
+
         if ((typeInfo == CPO.HIGHER) || (typeInfo == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(this, "setTypeAtMost(): "
-                    + "the current type " + currentType.toString()
-                    + " is not less than the desired bounding type "
-                    + type.toString());
+            throw new IllegalActionException(this,
+                "setTypeAtMost(): " + "the current type "
+                + currentType.toString()
+                + " is not less than the desired bounding type "
+                + type.toString());
         }
+
         _typeAtMost = type;
     }
 
@@ -981,35 +1040,35 @@ public class Variable extends AbstractSettableAttribute
         if (_debugging) {
             _debug("setTypeEquals: " + type);
         }
+
         if (_token != null) {
             if (type.isCompatible(_token.getType())) {
                 _token = type.convert(_token);
             } else {
                 throw new IllegalActionException(this,
-                        "The currently contained token "
-                        + _token.getClass().getName()
-                        + "("
-                        + _token.toString()
-                        + ") is not compatible with the desired type "
-                        + type.toString());
+                    "The currently contained token "
+                    + _token.getClass().getName() + "(" + _token.toString()
+                    + ") is not compatible with the desired type "
+                    + type.toString());
             }
         }
 
         // set _declaredType to a clone of the argument since the argument
         // may be a structured type and may change later.
         try {
-            _declaredType = (Type)type.clone();
+            _declaredType = (Type) type.clone();
         } catch (CloneNotSupportedException cnse) {
-            throw new InternalErrorException("Variable.setTypeEquals: " +
-                    "The specified type cannot be cloned.");
+            throw new InternalErrorException("Variable.setTypeEquals: "
+                + "The specified type cannot be cloned.");
         }
 
         // set _varType. It is _token.getType() if _token is not null, or
         // _declaredType if _token is null.
         _varType = _declaredType;
-        if (_token != null && _declaredType instanceof StructuredType) {
-            ((StructuredType)_varType).updateType(
-                    (StructuredType)_token.getType());
+
+        if ((_token != null) && _declaredType instanceof StructuredType) {
+            ((StructuredType) _varType).updateType((StructuredType) _token
+                .getType());
         }
     }
 
@@ -1024,6 +1083,7 @@ public class Variable extends AbstractSettableAttribute
         if (_debugging) {
             _debug("setUnknown: " + value);
         }
+
         _isTokenUnknown = value;
     }
 
@@ -1035,6 +1095,7 @@ public class Variable extends AbstractSettableAttribute
         if (_debugging) {
             _debug("setVisibility: " + visibility);
         }
+
         _visibility = visibility;
     }
 
@@ -1047,16 +1108,17 @@ public class Variable extends AbstractSettableAttribute
     public void setTypeSameAs(Typeable equal) {
         if (_debugging) {
             String name = "not named";
+
             if (equal instanceof Nameable) {
-                name = ((Nameable)equal).getFullName();
+                name = ((Nameable) equal).getFullName();
             }
+
             _debug("setTypeSameAs: " + name);
         }
-        Inequality ineq = new Inequality(this.getTypeTerm(),
-                equal.getTypeTerm());
+
+        Inequality ineq = new Inequality(this.getTypeTerm(), equal.getTypeTerm());
         _constraints.add(ineq);
-        ineq = new Inequality(equal.getTypeTerm(),
-                this.getTypeTerm());
+        ineq = new Inequality(equal.getTypeTerm(), this.getTypeTerm());
         _constraints.add(ineq);
     }
 
@@ -1073,12 +1135,15 @@ public class Variable extends AbstractSettableAttribute
      */
     public String toString() {
         ptolemy.data.Token value = null;
+
         try {
             value = getToken();
         } catch (IllegalActionException ex) {
             // The value of this variable is undefined.
         }
+
         String tokenString;
+
         if (value == null) {
             tokenString = "value undefined";
         } else {
@@ -1089,8 +1154,7 @@ public class Variable extends AbstractSettableAttribute
             tokenString = "value elided";
         }
 
-        return super.toString() + " " +
-            tokenString;
+        return super.toString() + " " + tokenString;
     }
 
     /** Return the type constraints of this variable.
@@ -1115,6 +1179,7 @@ public class Variable extends AbstractSettableAttribute
         // Variable.
         try {
             Token currentToken = getToken();
+
             if (currentToken != null) {
                 Type currentType = currentToken.getType();
 
@@ -1134,7 +1199,6 @@ public class Variable extends AbstractSettableAttribute
         //     Inequality ineq = new Inequality(current, getTypeTerm());
         //     result.add(ineq);
         // }
-
         // If an upper bound has been specified, add a constraint.
         if (_typeAtMost != BaseType.UNKNOWN) {
             TypeConstant atMost = new TypeConstant(_typeAtMost);
@@ -1169,27 +1233,34 @@ public class Variable extends AbstractSettableAttribute
         if (_debugging) {
             _debug("validate");
         }
+
         invalidate();
+
         // Unless the expression is null, the following will have
         // been set to true by the invalidate() call above.
         // See note below... this is not used anymore.
         // boolean neededEvaluation = _needsEvaluation;
         List errors = _propagate();
-        if (errors != null && errors.size() > 0) {
+
+        if ((errors != null) && (errors.size() > 0)) {
             Iterator errorsIterator = errors.iterator();
             StringBuffer message = new StringBuffer();
+
             while (errorsIterator.hasNext()) {
-                Exception error = (Exception)errorsIterator.next();
+                Exception error = (Exception) errorsIterator.next();
                 message.append(error.getMessage());
+
                 if (errorsIterator.hasNext()) {
                     message.append("\n-------------- and --------------\n");
                 }
             }
+
             // NOTE: We could use exception chaining here to report
             // the cause, but this leads to very verbose error
             // error messages that are not very friendly.
             throw new IllegalActionException(message.toString());
         }
+
         // NOTE: The call to _propagate() above has already done
         // notification, but only if _needsEvaluation was true.
         // Note that this will not happen unless the expression is also null.
@@ -1205,7 +1276,8 @@ public class Variable extends AbstractSettableAttribute
         // EAL 9/16/03
         // if (!_isLazy && !neededEvaluation) {
         if (!_isLazy) {
-            NamedObj container = (NamedObj)getContainer();
+            NamedObj container = (NamedObj) getContainer();
+
             if (container != null) {
                 container.attributeChanged(this);
             }
@@ -1227,6 +1299,7 @@ public class Variable extends AbstractSettableAttribute
             if (_currentExpression != null) {
                 _needsEvaluation = true;
             }
+
             _notifyValueListeners();
         }
     }
@@ -1245,14 +1318,19 @@ public class Variable extends AbstractSettableAttribute
     protected String _description(int detail, int indent, int bracket) {
         try {
             workspace().getReadAccess();
+
             String result = _getIndentPrefix(indent);
+
             if ((bracket == 1) || (bracket == 2)) {
                 result += "{";
             }
+
             result += toString();
+
             if (bracket == 2) {
                 result += "}";
             }
+
             return result;
         } finally {
             workspace().doneReading();
@@ -1291,11 +1369,12 @@ public class Variable extends AbstractSettableAttribute
      *   be parsed or cannot be evaluated, or if a dependency loop is found.
      */
     protected void _evaluate() throws IllegalActionException {
-        if (_currentExpression == null
+        if ((_currentExpression == null)
                 || _currentExpression.trim().equals("")) {
             _setToken(null);
             return;
         }
+
         // If _dependencyLoop is true, then this call to evaluate() must
         // have been triggered by evaluating the expression of this variable,
         // which means that the expression directly or indirectly refers
@@ -1303,29 +1382,31 @@ public class Variable extends AbstractSettableAttribute
         if (_dependencyLoop) {
             _dependencyLoop = false;
             throw new IllegalActionException("There is a dependency loop"
-                    + " where " + getFullName() + " directly or indirectly"
-                    + " refers to itself in its expression: "
-                    + _currentExpression);
+                + " where " + getFullName() + " directly or indirectly"
+                + " refers to itself in its expression: " + _currentExpression);
         }
+
         _dependencyLoop = true;
 
         try {
             workspace().getReadAccess();
             _parseIfNecessary();
+
             if (_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
+
             if (_parserScope == null) {
                 _parserScope = new VariableScope();
             }
-            Token result = _parseTreeEvaluator.evaluateParseTree(
-                    _parseTree, _parserScope);
+
+            Token result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
+                    _parserScope);
             _setTokenAndNotify(result);
         } catch (IllegalActionException ex) {
             _needsEvaluation = true;
             throw new IllegalActionException(this, ex,
-                    "Error evaluating expression: "
-                    + _currentExpression);
+                "Error evaluating expression: " + _currentExpression);
         } finally {
             _dependencyLoop = false;
             workspace().doneReading();
@@ -1343,11 +1424,13 @@ public class Variable extends AbstractSettableAttribute
             // code executing, which if this were to happen within
             // the synchronized block, would create risk of deadlock.
             Iterator listeners;
-            synchronized(this) {
+
+            synchronized (this) {
                 listeners = (new LinkedList(_valueListeners)).iterator();
             }
+
             while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
+                ValueListener listener = (ValueListener) listeners.next();
                 listener.valueChanged(this);
             }
         }
@@ -1361,18 +1444,19 @@ public class Variable extends AbstractSettableAttribute
         if (!_parseTreeValid) {
             if (_currentExpression == null) {
                 throw new IllegalActionException(this,
-                        "Empty expression cannot be parsed!");
+                    "Empty expression cannot be parsed!");
             }
+
             PtParser parser = new PtParser();
+
             if (isStringMode()) {
                 // Different parse rules for String mode parameters.
-                _parseTree = parser.generateStringParseTree(
-                        _currentExpression);
+                _parseTree = parser.generateStringParseTree(_currentExpression);
             } else {
                 // Normal parse rules for expressions.
-                _parseTree = parser.generateParseTree(
-                        _currentExpression);
+                _parseTree = parser.generateParseTree(_currentExpression);
             }
+
             _parseTreeValid = (_parseTree != null);
         }
     }
@@ -1387,9 +1471,12 @@ public class Variable extends AbstractSettableAttribute
         if (_propagating) {
             return null;
         }
+
         _propagating = true;
+
         try {
             List result = null;
+
             // Force evaluation.
             if (_needsEvaluation && !_isLazy) {
                 try {
@@ -1405,8 +1492,10 @@ public class Variable extends AbstractSettableAttribute
                     }
                 }
             }
+
             // All the value dependents now need evaluation also.
             List additionalErrors = _propagateToValueListeners();
+
             if (result == null) {
                 result = additionalErrors;
             } else {
@@ -1414,6 +1503,7 @@ public class Variable extends AbstractSettableAttribute
                     result.addAll(additionalErrors);
                 }
             }
+
             return result;
         } finally {
             _propagating = false;
@@ -1427,31 +1517,38 @@ public class Variable extends AbstractSettableAttribute
      */
     protected List _propagateToValueListeners() {
         List result = null;
+
         if (_valueListeners != null) {
             // Avoid co-modification exception.
             Iterator listeners;
-            synchronized(this) {
+
+            synchronized (this) {
                 listeners = (new LinkedList(_valueListeners)).iterator();
             }
+
             while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
+                ValueListener listener = (ValueListener) listeners.next();
+
                 // Avoid doing this more than once if the the value
                 // dependent appears more than once.  This also has
                 // the advantage of stopping circular reference looping.
                 if (listener instanceof Variable) {
-                    if (((Variable)listener)._needsEvaluation) {
-                        List additionalErrors
-                            = ((Variable)listener)._propagate();
+                    if (((Variable) listener)._needsEvaluation) {
+                        List additionalErrors = ((Variable) listener)
+                            ._propagate();
+
                         if (additionalErrors != null) {
                             if (result == null) {
                                 result = new LinkedList();
                             }
+
                             result.addAll(additionalErrors);
                         }
                     }
                 }
             }
         }
+
         return result;
     }
 
@@ -1465,8 +1562,8 @@ public class Variable extends AbstractSettableAttribute
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
-        ((Settable)destination).setExpression(getExpression());
+        throws IllegalActionException {
+        ((Settable) destination).setExpression(getExpression());
     }
 
     /** Set the token value and type of the variable.
@@ -1488,7 +1585,7 @@ public class Variable extends AbstractSettableAttribute
 
             // set _varType
             if (_declaredType instanceof StructuredType) {
-                ((StructuredType)_varType).initialize(BaseType.UNKNOWN);
+                ((StructuredType) _varType).initialize(BaseType.UNKNOWN);
             } else {
                 _varType = _declaredType;
             }
@@ -1500,29 +1597,32 @@ public class Variable extends AbstractSettableAttribute
             // compatible with the declared type, the current resolved type
             // need to be preserved, so make a clone.
             Type declaredType;
+
             try {
-                declaredType = (Type)_declaredType.clone();
+                declaredType = (Type) _declaredType.clone();
             } catch (CloneNotSupportedException cnse) {
-                throw new InternalErrorException("Variable._setToken: " +
-                        "Cannot clone the declared type of this Variable.");
+                throw new InternalErrorException("Variable._setToken: "
+                    + "Cannot clone the declared type of this Variable.");
             }
+
             if (declaredType instanceof StructuredType) {
-                ((StructuredType)declaredType).initialize(BaseType.UNKNOWN);
+                ((StructuredType) declaredType).initialize(BaseType.UNKNOWN);
             }
+
             if (declaredType.isCompatible(newToken.getType())) {
                 newToken = declaredType.convert(newToken);
             } else {
                 throw new IllegalActionException(this,
-                        "Variable._setToken: Cannot store a token of type " +
-                        newToken.getType().toString() +
-                        ", which is incompatible with type " +
-                        declaredType.toString());
+                    "Variable._setToken: Cannot store a token of type "
+                    + newToken.getType().toString()
+                    + ", which is incompatible with type "
+                    + declaredType.toString());
             }
 
             // update _varType to the type of the new token.
             if (_declaredType instanceof StructuredType) {
-                ((StructuredType)_varType).updateType(
-                        (StructuredType)newToken.getType());
+                ((StructuredType) _varType).updateType((StructuredType) newToken
+                    .getType());
             } else {
                 // _declaredType is a BaseType
                 _varType = newToken.getType();
@@ -1532,28 +1632,30 @@ public class Variable extends AbstractSettableAttribute
             if (_typeAtMost != BaseType.UNKNOWN) {
                 // Recalculate this in case the type has changed.
                 Type tokenType = newToken.getType();
-                int comparison
-                    = TypeLattice.compare(tokenType, _typeAtMost);
+                int comparison = TypeLattice.compare(tokenType, _typeAtMost);
+
                 if ((comparison == CPO.HIGHER)
                         || (comparison == CPO.INCOMPARABLE)) {
                     // Incompatible type!
                     throw new IllegalActionException(this,
-                            "Cannot store a token of type "
-                            + tokenType.toString()
-                            + ", which is not less than or equal to "
-                            + _typeAtMost.toString());
-
+                        "Cannot store a token of type " + tokenType.toString()
+                        + ", which is not less than or equal to "
+                        + _typeAtMost.toString());
                 }
             }
+
             if (_noTokenYet) {
                 // This is the first token stored in this variable.
                 _initialExpression = _currentExpression;
+
                 if (_currentExpression == null) {
                     // The token is being set directly.
                     _initialToken = newToken;
                 }
+
                 _noTokenYet = false;
             }
+
             _token = newToken;
 
             _needsEvaluation = false;
@@ -1574,36 +1676,39 @@ public class Variable extends AbstractSettableAttribute
      *   to set to null a variable that has value dependents.
      */
     protected void _setTokenAndNotify(Token newToken)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         // Save to restore in case the change is rejected.
         Token oldToken = _token;
         Type oldVarType = _varType;
+
         if (_varType instanceof StructuredType) {
             try {
-                oldVarType = (Type)((StructuredType)_varType).clone();
+                oldVarType = (Type) ((StructuredType) _varType).clone();
             } catch (CloneNotSupportedException ex2) {
                 throw new InternalErrorException(
-                        "Variable._setTokenAndNotify: " +
-                        " Cannot clone _varType" +
-                        ex2.getMessage());
+                    "Variable._setTokenAndNotify: " + " Cannot clone _varType"
+                    + ex2.getMessage());
             }
         }
+
         boolean oldNoTokenYet = _noTokenYet;
         String oldInitialExpression = _initialExpression;
         Token oldInitialToken = _initialToken;
 
-
         try {
             _setToken(newToken);
-            NamedObj container = (NamedObj)getContainer();
+
+            NamedObj container = (NamedObj) getContainer();
+
             if (container != null) {
-                if ( !oldVarType.equals(_varType) &&
-                        oldVarType != BaseType.UNKNOWN) {
+                if (!oldVarType.equals(_varType)
+                        && (oldVarType != BaseType.UNKNOWN)) {
                     container.attributeTypeChanged(this);
                 }
+
                 container.attributeChanged(this);
             }
+
             _notifyValueListeners();
         } catch (IllegalActionException ex) {
             // reverse the changes
@@ -1611,11 +1716,11 @@ public class Variable extends AbstractSettableAttribute
 
             if (_varType instanceof StructuredType
                     && oldVarType instanceof StructuredType) {
-                ((StructuredType)_varType).updateType(
-                        (StructuredType)oldVarType);
+                ((StructuredType) _varType).updateType((StructuredType) oldVarType);
             } else {
                 _varType = oldVarType;
             }
+
             _noTokenYet = oldNoTokenYet;
             _initialExpression = oldInitialExpression;
             _initialToken = oldInitialToken;
@@ -1647,38 +1752,44 @@ public class Variable extends AbstractSettableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _invalidateShadowedSettables(NamedObj object)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (object == null) {
             // Nothing to do.
             return;
         }
-        for (Iterator variables = object.attributeList(
-                     Variable.class).iterator();
-             variables.hasNext();) {
-            Variable variable = (Variable)variables.next();
+
+        for (Iterator variables = object.attributeList(Variable.class).iterator();
+                variables.hasNext();) {
+            Variable variable = (Variable) variables.next();
+
             if (variable.getName().equals(getName())) {
                 variable.invalidate();
             }
         }
+
         // Also invalidate the variables inside any
         // scopeExtendingAttributes.
-        Iterator scopeAttributes = object.attributeList(
-                ScopeExtendingAttribute.class).iterator();
+        Iterator scopeAttributes = object.attributeList(ScopeExtendingAttribute.class)
+                                         .iterator();
+
         while (scopeAttributes.hasNext()) {
-            ScopeExtendingAttribute attribute =
-                (ScopeExtendingAttribute)scopeAttributes.next();
-            Iterator variables = attribute.attributeList(
-                    Variable.class).iterator();
+            ScopeExtendingAttribute attribute = (ScopeExtendingAttribute) scopeAttributes
+                .next();
+            Iterator variables = attribute.attributeList(Variable.class)
+                                          .iterator();
+
             while (variables.hasNext()) {
-                Variable variable = (Variable)variables.next();
+                Variable variable = (Variable) variables.next();
+
                 if (variable.getName().equals(getName())) {
                     variable.invalidate();
                 }
             }
         }
-        NamedObj container = (NamedObj)object.getContainer();
+
+        NamedObj container = (NamedObj) object.getContainer();
+
         if (container != null) {
             _invalidateShadowedSettables(container);
         }
@@ -1696,7 +1807,6 @@ public class Variable extends AbstractSettableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Used to check for dependency loops among variables.
     private transient boolean _dependencyLoop = false;
 
@@ -1765,9 +1875,7 @@ public class Variable extends AbstractSettableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class TypeTerm implements InequalityTerm {
-
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
 
@@ -1796,6 +1904,7 @@ public class Variable extends AbstractSettableAttribute
                 result[0] = this;
                 return result;
             }
+
             return (new InequalityTerm[0]);
         }
 
@@ -1804,24 +1913,22 @@ public class Variable extends AbstractSettableAttribute
          *  @exception IllegalActionException If the type is not settable,
          *   or the argument is not a Type.
          */
-        public void initialize(Object e)
-                throws IllegalActionException {
-
-            if ( !isSettable()) {
-                throw new IllegalActionException("TypeTerm.initialize: " +
-                        "The type is not settable.");
+        public void initialize(Object e) throws IllegalActionException {
+            if (!isSettable()) {
+                throw new IllegalActionException("TypeTerm.initialize: "
+                    + "The type is not settable.");
             }
 
-            if ( !(e instanceof Type)) {
-                throw new IllegalActionException("TypeTerm.initialize: " +
-                        "The argument is not a Type.");
+            if (!(e instanceof Type)) {
+                throw new IllegalActionException("TypeTerm.initialize: "
+                    + "The argument is not a Type.");
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
-                _varType = (Type)e;
+                _varType = (Type) e;
             } else {
                 // _declaredType is a StructuredType
-                ((StructuredType)_varType).initialize((Type)e);
+                ((StructuredType) _varType).initialize((Type) e);
             }
         }
 
@@ -1833,7 +1940,7 @@ public class Variable extends AbstractSettableAttribute
          *   false otherwise.
          */
         public boolean isSettable() {
-            return ( !_declaredType.isConstant());
+            return (!_declaredType.isConstant());
         }
 
         /** Check whether the current value of this term is acceptable.
@@ -1851,26 +1958,25 @@ public class Variable extends AbstractSettableAttribute
          *   or this type cannot be updated to the new type.
          */
         public void setValue(Object e) throws IllegalActionException {
-            if ( !isSettable()) {
+            if (!isSettable()) {
                 throw new IllegalActionException("TypeTerm.setValue: The "
-                        + "type is not settable.");
+                    + "type is not settable.");
             }
 
-            if ( !_declaredType.isSubstitutionInstance((Type)e)) {
+            if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("Variable$TypeTerm"
-                        + ".setValue: "
-                        + "Cannot update the type of this variable to the "
-                        + "new type."
-                        + " Variable: " + Variable.this.getFullName()
-                        + ", Variable type: " + _declaredType.toString()
-                        + ", New type: " + e.toString());
+                    + ".setValue: "
+                    + "Cannot update the type of this variable to the "
+                    + "new type." + " Variable: " + Variable.this.getFullName()
+                    + ", Variable type: " + _declaredType.toString()
+                    + ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
-                _varType = (Type)e;
+                _varType = (Type) e;
             } else {
                 // _declaredType is a StructuredType
-                ((StructuredType)_varType).updateType((StructuredType)e);
+                ((StructuredType) _varType).updateType((StructuredType) e);
             }
         }
 
@@ -1885,7 +1991,6 @@ public class Variable extends AbstractSettableAttribute
 
     /** Scope implementation with local caching. */
     protected class VariableScope extends ModelScope {
-
         /** Construct a scope consisting of the variables
          *  of the container of the the enclosing instance of
          *  Variable and its containers and their scope-extending
@@ -1912,14 +2017,15 @@ public class Variable extends AbstractSettableAttribute
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.Token get(String name)
-                throws IllegalActionException {
+            throws IllegalActionException {
             if (_variablesDependentOn == null) {
                 _variablesDependentOn = new HashMap();
             } else {
                 // Variable might be cached.
                 if (_variablesDependentOnVersion == workspace().getVersion()) {
                     // Cache is valid. Look up the variable.
-                    Variable result = (Variable)_variablesDependentOn.get(name);
+                    Variable result = (Variable) _variablesDependentOn.get(name);
+
                     if (result != null) {
                         return result.getToken();
                     }
@@ -1928,17 +2034,17 @@ public class Variable extends AbstractSettableAttribute
                     _variablesDependentOn.clear();
                 }
             }
+
             // Either cache is not valid, or the variable is not in the cache.
             _variablesDependentOnVersion = workspace().getVersion();
 
             NamedObj reference = _reference;
+
             if (_reference == null) {
-                reference = (NamedObj)Variable.this.getContainer();
+                reference = (NamedObj) Variable.this.getContainer();
             }
-            Variable result = getScopedVariable(
-                    Variable.this,
-                    reference,
-                    name);
+
+            Variable result = getScopedVariable(Variable.this, reference, name);
 
             if (result != null) {
                 // If the variable is not in the cache, then we also
@@ -1947,6 +2053,7 @@ public class Variable extends AbstractSettableAttribute
                     result.addValueListener(Variable.this);
                     _variablesDependentOn.put(name, result);
                 }
+
                 return result.getToken();
             } else {
                 return null;
@@ -1961,16 +2068,15 @@ public class Variable extends AbstractSettableAttribute
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.type.Type getType(String name)
-                throws IllegalActionException {
+            throws IllegalActionException {
             NamedObj reference = _reference;
+
             if (_reference == null) {
-                reference = (NamedObj)Variable.this.getContainer();
+                reference = (NamedObj) Variable.this.getContainer();
             }
 
-            Variable result = getScopedVariable(
-                    Variable.this,
-                    reference,
-                    name);
+            Variable result = getScopedVariable(Variable.this, reference, name);
+
             if (result != null) {
                 return result.getType();
             } else {
@@ -1987,16 +2093,15 @@ public class Variable extends AbstractSettableAttribute
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
+            throws IllegalActionException {
             NamedObj reference = _reference;
+
             if (_reference == null) {
-                reference = (NamedObj)Variable.this.getContainer();
+                reference = (NamedObj) Variable.this.getContainer();
             }
 
-            Variable result = getScopedVariable(
-                    Variable.this,
-                    reference,
-                    name);
+            Variable result = getScopedVariable(Variable.this, reference, name);
+
             if (result != null) {
                 return result.getTypeTerm();
             } else {
@@ -2009,9 +2114,11 @@ public class Variable extends AbstractSettableAttribute
          */
         public Set identifierSet() {
             NamedObj reference = _reference;
+
             if (_reference == null) {
-                reference = (NamedObj)Variable.this.getContainer();
+                reference = (NamedObj) Variable.this.getContainer();
             }
+
             return getAllScopedVariableNames(Variable.this, reference);
         }
 
@@ -2019,4 +2126,3 @@ public class Variable extends AbstractSettableAttribute
         private NamedObj _reference;
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.demo.Helicopter;
 
 import java.util.StringTokenizer;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CruiseLinearizer
+
 /**
    Linearization of the Cruise mode
    Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
@@ -57,7 +58,7 @@ public class CruiseLinearizer extends TypedAtomicActor {
     /** Constructor
      */
     public CruiseLinearizer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputPx = new TypedIOPort(this, "inputPx");
         inputPx.setInput(true);
@@ -119,7 +120,6 @@ public class CruiseLinearizer extends TypedAtomicActor {
         inputD4Pz.setMultiport(false);
         inputD4Pz.setTypeEquals(BaseType.DOUBLE);
 
-
         outputVx = new TypedIOPort(this, "outputVx");
         outputVx.setInput(false);
         outputVx.setOutput(true);
@@ -145,15 +145,19 @@ public class CruiseLinearizer extends TypedAtomicActor {
         outputR.setTypeEquals(BaseType.DOUBLE);
 
         String sP = new String();
-        for (int i = 0; i< 5; i++) {
+
+        for (int i = 0; i < 5; i++) {
             sP = sP + _alphaP[i] + " ";
         }
+
         paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
 
         String sV = new String();
-        for (int i = 0; i< 4; i++) {
+
+        for (int i = 0; i < 4; i++) {
             sV = sV + _alphaV[i] + " ";
         }
+
         paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV));
 
         _cVx = 5.0;
@@ -172,27 +176,29 @@ public class CruiseLinearizer extends TypedAtomicActor {
      *        when needed.
      */
     public void fire() throws IllegalActionException {
-        /* double Px = */ ((DoubleToken)inputPx.get(0)).doubleValue();
-        double DPx = ((DoubleToken)inputDPx.get(0)).doubleValue();
-        double DDPx = ((DoubleToken)inputDDPx.get(0)).doubleValue();
-        double D3Px = ((DoubleToken)inputD3Px.get(0)).doubleValue();
-        double D4Px = ((DoubleToken)inputD4Px.get(0)).doubleValue();
+        /* double Px = */ ((DoubleToken) inputPx.get(0)).doubleValue();
 
-        double Pz = ((DoubleToken)inputPz.get(0)).doubleValue();
-        double DPz = ((DoubleToken)inputDPz.get(0)).doubleValue();
-        double DDPz = ((DoubleToken)inputDDPz.get(0)).doubleValue();
-        double D3Pz = ((DoubleToken)inputD3Pz.get(0)).doubleValue();
-        double D4Pz = ((DoubleToken)inputD4Pz.get(0)).doubleValue();
+        double DPx = ((DoubleToken) inputDPx.get(0)).doubleValue();
+        double DDPx = ((DoubleToken) inputDDPx.get(0)).doubleValue();
+        double D3Px = ((DoubleToken) inputD3Px.get(0)).doubleValue();
+        double D4Px = ((DoubleToken) inputD4Px.get(0)).doubleValue();
 
-        double Vx = -1.0*(_alphaV[0]*(DPx-_cVx) + _alphaV[1]* DDPx +
-                _alphaV[2]*D3Px + _alphaV[3]*D4Px);
-        double Vz = -1.0*(_alphaP[0]*(Pz-_cPz) + _alphaP[1]* DPz +
-                _alphaP[2]*DDPz + _alphaP[3]*D3Pz + _alphaP[4]*D4Pz);
+        double Pz = ((DoubleToken) inputPz.get(0)).doubleValue();
+        double DPz = ((DoubleToken) inputDPz.get(0)).doubleValue();
+        double DDPz = ((DoubleToken) inputDDPz.get(0)).doubleValue();
+        double D3Pz = ((DoubleToken) inputD3Pz.get(0)).doubleValue();
+        double D4Pz = ((DoubleToken) inputD4Pz.get(0)).doubleValue();
 
-        double V = Math.sqrt(DPx*DPx + DPz*DPz);
-        double R = Math.PI/2.0;
+        double Vx = -1.0 * ((_alphaV[0] * (DPx - _cVx)) + (_alphaV[1] * DDPx)
+            + (_alphaV[2] * D3Px) + (_alphaV[3] * D4Px));
+        double Vz = -1.0 * ((_alphaP[0] * (Pz - _cPz)) + (_alphaP[1] * DPz)
+            + (_alphaP[2] * DDPz) + (_alphaP[3] * D3Pz) + (_alphaP[4] * D4Pz));
+
+        double V = Math.sqrt((DPx * DPx) + (DPz * DPz));
+        double R = Math.PI / 2.0;
+
         if (DPx != 0.0) {
-            R = Math.atan(DPz/DPx);
+            R = Math.atan(DPz / DPx);
         }
 
         outputV.broadcast(new DoubleToken(V));
@@ -202,40 +208,43 @@ public class CruiseLinearizer extends TypedAtomicActor {
         outputVz.broadcast(new DoubleToken(Vz));
     }
 
-
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == paramAlphaP) {
-            String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
+            String taps = ((StringToken) paramAlphaP.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
+
             if (stokens.countTokens() < 5) {
-                throw new IllegalActionException ( this,
-                        "Not enough parameter numbers.");
+                throw new IllegalActionException(this,
+                    "Not enough parameter numbers.");
             }
-            while (stokens.hasMoreTokens() && index < 5) {
+
+            while (stokens.hasMoreTokens() && (index < 5)) {
                 String valueToken = stokens.nextToken();
                 _alphaP[index++] = (new Double(valueToken)).doubleValue();
             }
 
-            taps = ((StringToken)paramAlphaV.getToken()).stringValue();
+            taps = ((StringToken) paramAlphaV.getToken()).stringValue();
             stokens = new StringTokenizer(taps);
             index = 0;
+
             if (stokens.countTokens() < 4) {
-                throw new IllegalActionException ( this,
-                        "Not enough parameter numbers.");
+                throw new IllegalActionException(this,
+                    "Not enough parameter numbers.");
             }
-            while (stokens.hasMoreTokens() && index < 4) {
+
+            while (stokens.hasMoreTokens() && (index < 4)) {
                 String valueToken = stokens.nextToken();
                 _alphaV[index++] = (new Double(valueToken)).doubleValue();
             }
         } else if (att == paramCVx) {
-            _cVx = ((DoubleToken)paramCVx.getToken()).doubleValue();
+            _cVx = ((DoubleToken) paramCVx.getToken()).doubleValue();
         } else if (att == paramCPz) {
-            _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();
+            _cPz = ((DoubleToken) paramCPz.getToken()).doubleValue();
         }
     }
 
@@ -315,17 +324,10 @@ public class CruiseLinearizer extends TypedAtomicActor {
      */
     public Parameter paramCPz;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
-    private double[] _alphaP = {500.0, 650.0, 395.0,  121.0, 17.8};
-
-    private double[] _alphaV = {100.0, 110.0, 57.0, 12.80};
-
+    private double[] _alphaP = { 500.0, 650.0, 395.0, 121.0, 17.8 };
+    private double[] _alphaV = { 100.0, 110.0, 57.0, 12.80 };
     private double _cVx;
-
     private double _cPz;
-
 }

@@ -38,9 +38,7 @@ A simple class that uses command-line arguments.
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class CommandLine{
-
+public class CommandLine {
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
             System.out.println(args[i]);

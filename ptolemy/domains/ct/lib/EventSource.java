@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EventSource
+
 /**
    This actor outputs a set of events at a discrete set of time points.
    It can be used to generate impulses in CT models.
@@ -63,9 +64,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (liuj)
 */
-
 public class EventSource extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -79,8 +78,9 @@ public class EventSource extends TypedAtomicActor {
      *   an entity already in the container.
      */
     public EventSource(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // Create port and parameters.
         output = new TypedIOPort(this, "output", false, true);
         new Parameter(output, "signalType", new StringToken("DISCRETE"));
@@ -92,6 +92,7 @@ public class EventSource extends TypedAtomicActor {
         offsets = new Parameter(this, "offsets");
         offsets.setExpression("{0.0, 1.0}");
         offsets.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 
@@ -101,7 +102,7 @@ public class EventSource extends TypedAtomicActor {
         values.setExpression("{1, 0}");
 
         // set type constraint
-        ArrayType valuesArrayType = (ArrayType)values.getType();
+        ArrayType valuesArrayType = (ArrayType) values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
 
@@ -146,29 +147,33 @@ public class EventSource extends TypedAtomicActor {
      *   nondecreasing and nonnegative, or it is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == offsets) {
-            ArrayToken offsetsValue = (ArrayToken)offsets.getToken();
+            ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
             _offsets = new double[offsetsValue.length()];
+
             double previous = 0.0;
+
             for (int i = 0; i < offsetsValue.length(); i++) {
-                _offsets[i] = ((DoubleToken)offsetsValue.getElement(i))
+                _offsets[i] = ((DoubleToken) offsetsValue.getElement(i))
                     .doubleValue();
+
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of offsets is not nondecreasing " +
-                            "and nonnegative.");
+                        "Value of offsets is not nondecreasing "
+                        + "and nonnegative.");
                 }
+
                 previous = _offsets[i];
             }
         } else if (attribute == period) {
-            double periodValue =
-                ((DoubleToken)period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Period is required to be positive.  " +
-                        "Period given: " + periodValue);
+                    "Period is required to be positive.  " + "Period given: "
+                    + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -183,10 +188,9 @@ public class EventSource extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        EventSource newObject = (EventSource)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        EventSource newObject = (EventSource) super.clone(workspace);
+        ArrayType valuesArrayType = (ArrayType) newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
 
@@ -198,7 +202,7 @@ public class EventSource extends TypedAtomicActor {
      *  @exception IllegalActionException If the event cannot be sent.
      */
     public void fire() throws IllegalActionException {
-        output.send(0, ((ArrayToken)values.getToken()).getElement(_phase));
+        output.send(0, ((ArrayToken) values.getToken()).getElement(_phase));
     }
 
     /** Schedule the first firing and initialize local variables.
@@ -209,9 +213,10 @@ public class EventSource extends TypedAtomicActor {
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
 
-         _cycleStartTime = getDirector().getModelTime();
+        _cycleStartTime = getDirector().getModelTime();
         _phase = 0;
         _nextOutputTime = _cycleStartTime.add(_offsets[0]);
+
         // Schedule the first firing.
         getDirector().fireAt(this, _nextOutputTime);
     }
@@ -221,9 +226,8 @@ public class EventSource extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown by the super class.
      */
     public boolean prefire() throws IllegalActionException {
-        CTDirector director = (CTDirector)getDirector();
-        boolean result
-            = (director.getModelTime().compareTo(_nextOutputTime) == 0);
+        CTDirector director = (CTDirector) getDirector();
+        boolean result = (director.getModelTime().compareTo(_nextOutputTime) == 0);
         return result && super.prefire();
     }
 
@@ -234,20 +238,23 @@ public class EventSource extends TypedAtomicActor {
      *   offsets parameters don't match.
      */
     public boolean postfire() throws IllegalActionException {
-        CTDirector director = (CTDirector)getDirector();
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        CTDirector director = (CTDirector) getDirector();
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+
         // Increment to the next phase.
         _phase++;
+
         if (_phase >= _offsets.length) {
             _phase = 0;
             _cycleStartTime = _cycleStartTime.add(periodValue);
         }
+
         if (_offsets[_phase] >= periodValue) {
             throw new IllegalActionException(this,
-                    "Offset number " + _phase + " with value "
-                    + _offsets[_phase] + " must be less than the "
-                    + "period, which is " + periodValue);
+                "Offset number " + _phase + " with value " + _offsets[_phase]
+                + " must be less than the " + "period, which is " + periodValue);
         }
+
         _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
         director.fireAt(this, _nextOutputTime);
         return true;
@@ -255,10 +262,8 @@ public class EventSource extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The following are all transient because they need not be cloned.
     // Either the clone method or the initialize() method sets them.
-
     // The most recent cycle start time.
     private transient Time _cycleStartTime;
 

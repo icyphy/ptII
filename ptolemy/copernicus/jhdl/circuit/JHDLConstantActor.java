@@ -24,30 +24,33 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
 import byucc.jhdl.Logic.Logic;
 import byucc.jhdl.Logic.Modules.arrayMult;
+
+import byucc.jhdl.apps.Viewers.Schematic.SmartSchematicFrame;
+
 import byucc.jhdl.base.HWSystem;
 import byucc.jhdl.base.Wire;
-import byucc.jhdl.apps.Viewers.Schematic.SmartSchematicFrame;
+
+import soot.*;
+
+import soot.jimple.*;
+
+import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
+import ptolemy.graph.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.util.*;
 
-import ptolemy.copernicus.jhdl.util.*;
-import ptolemy.copernicus.jhdl.soot.*;
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.graph.*;
-
-import soot.jimple.*;
-import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * This class represents a JHDL constant circuit. This class will generate
  * the corresponding JHDL Wire with the given constant.
@@ -59,17 +62,15 @@ import soot.*;
  @Pt.AcceptedRating Red (cxh)
 */
 public class JHDLConstantActor extends JHDLAtomicActor {
-
     JHDLConstantActor(CompositeEntity container, String name, int constant,
-            int width)
-            throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+        int width) throws IllegalActionException, NameDuplicationException {
+        super(container, name);
         _constant = constant;
     }
 
     JHDLConstantActor(CompositeEntity container, int constant, int width)
-            throws IllegalActionException, NameDuplicationException {
-        this(container,container.uniqueName("C"),constant,width);
+        throws IllegalActionException, NameDuplicationException {
+        this(container, container.uniqueName("C"), constant, width);
         output = new JHDLIOPort(this, "output", width);
     }
 
@@ -79,13 +80,11 @@ public class JHDLConstantActor extends JHDLAtomicActor {
     }
 
     public void build(Logic parent) {
-        Wire c = parent.constant(output.getSignalWidth(),_constant);
+        Wire c = parent.constant(output.getSignalWidth(), _constant);
         JHDLIORelation r = output.getOutsideRelation();
-        parent.buf_o(c,r.getJHDLWire());
+        parent.buf_o(c, r.getJHDLWire());
     }
 
     protected int _constant;
-
     public JHDLIOPort output;
-
 }

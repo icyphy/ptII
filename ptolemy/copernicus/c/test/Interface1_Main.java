@@ -37,10 +37,10 @@ COPYRIGHTENDKEY
 @Pt.AcceptedRating Red (ssb)
 
 */
-
 public class Interface1_Main {
-    public static void main(String args[]) {
-        Interface1 a, b;
+    public static void main(String[] args) {
+        Interface1 a;
+        Interface1 b;
 
         a = new Interface1_Class1();
         b = new Interface1_Class2();

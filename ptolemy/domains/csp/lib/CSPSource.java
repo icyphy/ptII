@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.lib;
 
 import ptolemy.actor.AtomicActor;
@@ -37,8 +36,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CSPSource
+
 /**
    A CSPSource actor produces tokens through an output channel.
    The tokenLimit parameter specifies how many tokens are
@@ -54,9 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class CSPSource extends AtomicActor {
-
     /** Construct a CSPSource in the default workspace with an
      *  empty string as a name.
      *  @exception IllegalActionException If there is an error
@@ -64,11 +63,9 @@ public class CSPSource extends AtomicActor {
      *  @exception NameDuplicationException If there is an error
      *   with instantiation of the tokenLimit parameter.
      */
-    public CSPSource() throws IllegalActionException,
-            NameDuplicationException {
+    public CSPSource() throws IllegalActionException, NameDuplicationException {
         super();
-        tokenLimit = new Parameter( this, "tokenLimit",
-                (new IntToken(-1)) );
+        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(-1)));
     }
 
     /** Construct a CSPSource with the specified container and the
@@ -85,7 +82,7 @@ public class CSPSource extends AtomicActor {
      *   container.
      */
     public CSPSource(CompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, -1, 0);
     }
 
@@ -110,12 +107,10 @@ public class CSPSource extends AtomicActor {
      *   or the tokenLimit parameter is not unique within the container.
      */
     public CSPSource(CompositeActor container, String name, int limit,
-            int initValue) throws IllegalActionException,
-            NameDuplicationException {
+        int initValue) throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _value = initValue;
-        tokenLimit = new Parameter( this, "tokenLimit",
-                (new IntToken(limit)) );
+        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
         output = new IOPort(this, "output", false, true);
     }
 
@@ -142,17 +137,18 @@ public class CSPSource extends AtomicActor {
      */
     public void fire() {
         try {
-            int limit =
-                ((IntToken)tokenLimit.getToken()).intValue();
-            while ( (_value < limit) || (limit < 0) ) {
+            int limit = ((IntToken) tokenLimit.getToken()).intValue();
+
+            while ((_value < limit) || (limit < 0)) {
                 Token t = new IntToken(_value);
                 output.send(0, t);
                 _value++;
             }
+
             return;
         } catch (IllegalActionException ex) {
             System.out.println("CSPSource: illegalActionException, "
-                    + "exiting");
+                + "exiting");
         }
     }
 
@@ -167,7 +163,5 @@ public class CSPSource extends AtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     private int _value = 0;
-
 }

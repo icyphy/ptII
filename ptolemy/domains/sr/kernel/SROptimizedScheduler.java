@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.kernel;
 
 import ptolemy.actor.Actor;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SROptimizedScheduler
+
 /**
    A scheduler the Synchronous Reactive (SR) domain.  This scheduler returns
    a static schedule for the graph.  The schedule guarantees that the values will
@@ -72,7 +73,6 @@ import ptolemy.util.MessageHandler;
    @see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SROptimizedScheduler extends Scheduler {
-
     /** Construct a SR scheduler with no container (director)
      *  in the default workspace.
      */
@@ -104,7 +104,7 @@ public class SROptimizedScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public SROptimizedScheduler(Director container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -123,53 +123,58 @@ public class SROptimizedScheduler extends Scheduler {
      *   schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-
-        StaticSchedulingDirector director =
-            (StaticSchedulingDirector) getContainer();
+        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
 
         if (director == null) {
-            throw new NotSchedulableException(this, "SROptimizedScheduler "
-                    + "cannot schedule graph with no director.");
+            throw new NotSchedulableException(this,
+                "SROptimizedScheduler "
+                + "cannot schedule graph with no director.");
         }
 
-        CompositeActor compositeActor =
-            (CompositeActor) (director.getContainer());
+        CompositeActor compositeActor = (CompositeActor) (director.getContainer());
 
         if (compositeActor == null) {
-            throw new NotSchedulableException(this, "SROptimizedScheduler "
-                    + "cannot schedule graph with no container.");
+            throw new NotSchedulableException(this,
+                "SROptimizedScheduler "
+                + "cannot schedule graph with no container.");
         }
 
-        FunctionDependencyOfCompositeActor functionDependency =
-            (FunctionDependencyOfCompositeActor)
-            compositeActor.getFunctionDependency();
+        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) compositeActor
+            .getFunctionDependency();
 
-        Object[] cycleNodes =
-            ((FunctionDependencyOfCompositeActor)functionDependency)
+        Object[] cycleNodes = ((FunctionDependencyOfCompositeActor) functionDependency)
             .getCycleNodes();
+
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
+
             for (int i = 0; i < cycleNodes.length; i++) {
                 if (cycleNodes[i] instanceof Nameable) {
-                    if (i > 0) names.append(", ");
-                    names.append(((Nameable)cycleNodes[i])
-                            .getContainer().getFullName());
+                    if (i > 0) {
+                        names.append(", ");
+                    }
+
+                    names.append(((Nameable) cycleNodes[i]).getContainer()
+                                  .getFullName());
                 }
             }
+
             MessageHandler.error("There are strict cycle loops in the model:"
-                    + names.toString() + "\n"
-                    +  " The results may contain unknowns.  This optimized " +
-                    "scheduler does not handle this model. Try the " +
-                    "randomized scheduler instead.");
+                + names.toString() + "\n"
+                + " The results may contain unknowns.  This optimized "
+                + "scheduler does not handle this model. Try the "
+                + "randomized scheduler instead.");
         }
 
-        DirectedAcyclicGraph dependencyGraph =
-            functionDependency.getDetailedDependencyGraph().toDirectedAcyclicGraph();
+        DirectedAcyclicGraph dependencyGraph = functionDependency.getDetailedDependencyGraph()
+                                                                 .toDirectedAcyclicGraph();
 
         if (_debugging) {
             _debug("## dependency graph is:" + dependencyGraph.toString());
         }
+
         Object[] sort = (Object[]) dependencyGraph.topologicalSort();
+
         if (_debugging) {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
@@ -179,10 +184,11 @@ public class SROptimizedScheduler extends Scheduler {
         Actor actor = null;
 
         for (int i = 0; i < sort.length; i++) {
-            IOPort ioPort = (IOPort)sort[i];
+            IOPort ioPort = (IOPort) sort[i];
+
             // If this ioPort is input but has no connections,
             // we ignore it.
-            if (ioPort.isInput() && ioPort.numLinks() == 0) {
+            if (ioPort.isInput() && (ioPort.numLinks() == 0)) {
                 continue;
             }
 
@@ -193,8 +199,9 @@ public class SROptimizedScheduler extends Scheduler {
             // then skip this actor. The container of the director
             // should not be listed in the schedule.
             if (actor == compositeActor) {
-                    continue;
+                continue;
             }
+
             // We record the information of last actor.
             // If some consecutive ports belong to the
             // same actor, we only schedule that actor once.
@@ -207,15 +214,19 @@ public class SROptimizedScheduler extends Scheduler {
                     lastActor = actor;
                 }
             }
+
             Firing firing = new Firing(actor);
             schedule.add(firing);
-            if (_debugging) _debug(((Nameable)actor).getFullName(),
-                    "depth: " + i);
+
+            if (_debugging) {
+                _debug(((Nameable) actor).getFullName(), "depth: " + i);
+            }
         }
 
-        if (_debugging) _debug("## End of topological sort.");
+        if (_debugging) {
+            _debug("## End of topological sort.");
+        }
 
         return schedule;
     }
 }
-

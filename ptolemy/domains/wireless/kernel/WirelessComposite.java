@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.kernel;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// WirelessComposite
+
 /**
    This is a composite actor for use in the wireless domain. Unlike
    the base class, this composite creates instances of WirelessIOPort
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class WirelessComposite extends TypedCompositeActor {
-
     /** Construct a composite actor in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -79,7 +79,7 @@ public class WirelessComposite extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public WirelessComposite(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initialize();
     }
@@ -93,10 +93,10 @@ public class WirelessComposite extends TypedCompositeActor {
      *  @exception NameDuplicationException If this actor already has a
      *   port with the specified name.
      */
-    public Port newPort(String name)
-            throws NameDuplicationException {
+    public Port newPort(String name) throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
+
             WirelessIOPort port = new WirelessIOPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
@@ -110,7 +110,6 @@ public class WirelessComposite extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _initialize() {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is WirelessComposite.
@@ -122,23 +121,19 @@ public class WirelessComposite extends TypedCompositeActor {
         // here to be WirelessComposite.
         setClassName("ptolemy.domains.wireless.kernel.WirelessComposite");
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<ellipse cx=\"0\" cy=\"0\" " +
-                "rx=\"27\" ry=\"27\" " +
-                "style=\"fill:red\"/>\n" +
-                "<ellipse cx=\"0\" cy=\"0\" " +
-                "rx=\"25\" ry=\"25\" " +
-                "style=\"fill:lightgrey\"/>\n" +
-                "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" " +
-                "style=\"fill:white\"/>\n" +
-                "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" " +
-                "style=\"fill:white\"/>\n" +
-                "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" " +
-                "style=\"fill:white\"/>\n" +
-                "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>" +
-                "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>" +
-                "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>" +
-                "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<ellipse cx=\"0\" cy=\"0\" " + "rx=\"27\" ry=\"27\" "
+            + "style=\"fill:red\"/>\n" + "<ellipse cx=\"0\" cy=\"0\" "
+            + "rx=\"25\" ry=\"25\" " + "style=\"fill:lightgrey\"/>\n"
+            + "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" "
+            + "style=\"fill:white\"/>\n"
+            + "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" "
+            + "style=\"fill:white\"/>\n"
+            + "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" "
+            + "style=\"fill:white\"/>\n"
+            + "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>"
+            + "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>"
+            + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
+            + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n");
     }
 }

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.gui;
 
 import java.util.Iterator;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyTableauFactory
+
 /**
    This is an intermediate container tableau factory that is designed to contain
    all tableau factories in a configuration that are capable of displaying a
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.NamedObj;
    @see Tableau
 */
 public class PtolemyTableauFactory extends TableauFactory {
-
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -65,7 +65,7 @@ public class PtolemyTableauFactory extends TableauFactory {
      *   an entity already in the container.
      */
     public PtolemyTableauFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -84,7 +84,9 @@ public class PtolemyTableauFactory extends TableauFactory {
      *   Tableau for the effigy, but something goes wrong.
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
-        if (!(effigy instanceof PtolemyEffigy)) return null;
+        if (!(effigy instanceof PtolemyEffigy)) {
+            return null;
+        }
 
         // Indicate to the effigy that this factory contains effigies
         // offering multiple views of the effigy data.
@@ -93,10 +95,12 @@ public class PtolemyTableauFactory extends TableauFactory {
         // Delegate to the first contained effigy to open a view.
         Tableau tableau = null;
         Iterator factories = attributeList(TableauFactory.class).iterator();
+
         if (factories.hasNext()) {
-            TableauFactory factory = (TableauFactory)factories.next();
+            TableauFactory factory = (TableauFactory) factories.next();
             tableau = factory.createTableau(effigy);
         }
+
         return tableau;
     }
 }

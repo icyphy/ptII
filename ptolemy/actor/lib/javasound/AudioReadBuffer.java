@@ -26,10 +26,8 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.javasound;
 
-//import ptolemy.actor.*;
 import java.io.IOException;
 
 import ptolemy.actor.lib.Transformer;
@@ -43,14 +41,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.media.javasound.SoundReader;
+
+
 //import java.net.*;
 //import java.util.*;
 //import javax.sound.sampled.*;
-
-
-
 /////////////////////////////////////////////////////////////////
 //// AudioReadBuffer
+
 /**
    This actor reads a sound file into a buffer and outputs the the
    sample value at the specified buffer element. The sound file
@@ -111,7 +109,6 @@ import ptolemy.media.javasound.SoundReader;
    @see ptolemy.media.javasound.LiveSound
 */
 public class AudioReadBuffer extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the parameters and initialize them to their default values.
@@ -123,7 +120,7 @@ public class AudioReadBuffer extends Transformer {
      *   actor with this name.
      */
     public AudioReadBuffer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
         output.setMultiport(true);
@@ -159,15 +156,14 @@ public class AudioReadBuffer extends Transformer {
      *   allowed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == sourceURL) {
             if (_safeToInitialize == true) {
                 try {
                     _initializeReader();
                 } catch (IOException ex) {
                     throw new IllegalActionException(this,
-                            "Cannot read audio:\n" +
-                            ex);
+                        "Cannot read audio:\n" + ex);
                 }
             }
         } else if (attribute == bufferLength) {
@@ -176,8 +172,7 @@ public class AudioReadBuffer extends Transformer {
                     _initializeReader();
                 } catch (IOException ex) {
                     throw new IllegalActionException(this,
-                            "Cannot read audio:\n" +
-                            ex);
+                        "Cannot read audio:\n" + ex);
                 }
             }
         } else {
@@ -193,13 +188,14 @@ public class AudioReadBuffer extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         try {
             _initializeReader();
         } catch (IOException ex) {
             throw new IllegalActionException(this,
-                    "Cannot open the specified URL: " +
-                    ex);
+                "Cannot open the specified URL: " + ex);
         }
+
         _safeToInitialize = true;
         _haveASample = false;
     }
@@ -218,9 +214,10 @@ public class AudioReadBuffer extends Transformer {
      *  sent to the output. Note that if a stereo sound file is
      *  specified, only the left channel will be used.
      */
-    public void fire () throws IllegalActionException {
+    public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            int in = ((IntToken)input.get(0)).intValue();
+            int in = ((IntToken) input.get(0)).intValue();
+
             if (in < 0) {
                 // invalid index, so just output a 0.0
                 output.send(0, new DoubleToken(0.0));
@@ -263,8 +260,7 @@ public class AudioReadBuffer extends Transformer {
                 _soundReader.closeFile();
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Problem closing sound file: \n" +
-                        ex.getMessage());
+                    "Problem closing sound file: \n" + ex.getMessage());
             }
         }
     }
@@ -282,30 +278,35 @@ public class AudioReadBuffer extends Transformer {
      *   the audio reader.
      */
     private synchronized void _initializeReader()
-            throws IOException, IllegalActionException {
+        throws IOException, IllegalActionException {
         if (_soundReader != null) {
             _soundReader.closeFile();
         }
+
         // Load audio from a URL.
         String theURL = sourceURL.getExpression();
+
         // Each read this many samples per channel when
         // _soundReader.getSamples() is called.
         // This value was chosen somewhat arbitrarily.
         int getSamplesArraySize = 1;
-        _soundReader = new SoundReader(theURL,
-                getSamplesArraySize);
+        _soundReader = new SoundReader(theURL, getSamplesArraySize);
+
         // Read the number of audio channels and set
         // parameter accordingly.
         _channels = _soundReader.getChannels();
-        int length = ((IntToken)bufferLength
-                .getToken()).intValue();
+
+        int length = ((IntToken) bufferLength.getToken()).intValue();
         _audioBuffer = new double[length];
+
         // Read all of the samples into an array.
         double[][] samples = new double[_channels][getSamplesArraySize];
         boolean done = false;
+
         for (int i = 0; i < length; i++) {
             if (!done) {
                 samples = _soundReader.getSamples();
+
                 // Write the sample to the buffer.
                 if (samples != null) {
                     _audioBuffer[i] = samples[0][0];
@@ -318,7 +319,6 @@ public class AudioReadBuffer extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private SoundReader _soundReader;
     private int _channels;
     private boolean _haveASample;

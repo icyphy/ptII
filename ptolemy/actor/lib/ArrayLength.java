@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayLength
+
 /**
    Output the length of an array.  This actor reads an ArrayToken from the
    <i>input</i> port and sends its length to the <i>output</i> port.
@@ -48,9 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (celaine)
    @Pt.AcceptedRating Green (cxh)
 */
-
 public class ArrayLength extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -60,7 +59,7 @@ public class ArrayLength extends Transformer {
      *   actor with this name.
      */
     public ArrayLength(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // set type constraints.
@@ -78,7 +77,7 @@ public class ArrayLength extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ArrayToken token = (ArrayToken)input.get(0);
+            ArrayToken token = (ArrayToken) input.get(0);
             output.broadcast(new IntToken(token.length()));
         }
     }

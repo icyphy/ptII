@@ -27,10 +27,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.giotto.cgc;
 
-// Ptolemy imports.
 import java.awt.Frame;
 import java.io.File;
 import java.io.FileWriter;
@@ -64,6 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GiottoCEmachineFrameworkGenerator
 
@@ -95,9 +94,7 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (vkris)
 */
-
 public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
-
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -107,7 +104,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *   an attribute already in the container.
      */
     public GiottoCEmachineFrameworkGenerator(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -125,24 +122,28 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *   the name of another actor already in the model.
      */
     public void writeGiottoCode(TypedCompositeActor model, File directory)
-                throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         String modelName = StringUtilities.sanitizeName(model.getName());
-        String giottoDirectoryName = directory.getAbsolutePath() + "/" + modelName + "/";
+        String giottoDirectoryName = directory.getAbsolutePath() + "/"
+            + modelName + "/";
 
         File outDirFile = new File(giottoDirectoryName);
+
         if (!outDirFile.isDirectory()) {
             outDirFile.mkdirs();
         }
 
-        File writeGiottoFile = new File(giottoDirectoryName, modelName + ".giotto");
+        File writeGiottoFile = new File(giottoDirectoryName,
+                modelName + ".giotto");
+
         try {
             FileWriter giottoWriter = new FileWriter(writeGiottoFile);
             giottoWriter.write(generateGiottoCode(model));
             giottoWriter.close();
         } catch (IOException e) {
             throw new IllegalActionException(model, e,
-                    "Failed to open file " + modelName + ".giotto" + " for writing.");
+                "Failed to open file " + modelName + ".giotto"
+                + " for writing.");
         }
     }
 
@@ -157,11 +158,10 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *   the name of another actor already in the model.
      */
     public void writeFrameworkCode(TypedCompositeActor model, File directory)
-                    throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         dataTypes = new HashSet(); // Creating a set of all the unique types used
 
-        FHfuncVarDeclString = "";  // Contains the declaration of functions defined in the C file
+        FHfuncVarDeclString = ""; // Contains the declaration of functions defined in the C file
         FCoutDriversImplString = ""; // Contains the code for the initialization of output drivers
         FCinDriversImplString = ""; // Contains functions to implement the input drivers
         THfuncDeclString = ""; // Contains the declaration of the task functions
@@ -170,18 +170,22 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
         _generateCodeStrings(model);
 
-        String fcodeDirectoryName =  directory.getAbsolutePath() + "/"
-        + StringUtilities.sanitizeName(model.getName()) + "/c_functionality/fcode/";
+        String fcodeDirectoryName = directory.getAbsolutePath() + "/"
+            + StringUtilities.sanitizeName(model.getName())
+            + "/c_functionality/fcode/";
 
         File outDirFile = new File(fcodeDirectoryName);
+
         if (!outDirFile.isDirectory()) {
             outDirFile.mkdirs();
         }
 
         File writeFCFile = new File(fcodeDirectoryName, "f_code.c");
         File writeFHFile = new File(fcodeDirectoryName, "f_code.h");
+
         //File writeTCFile = new File(directoryName, "task_code.c"); // This file is unneeded once we have the function declarations in the header file
         File writeTHFile = new File(fcodeDirectoryName, "task_code.h");
+
         try {
             FileWriter FCwriter = new FileWriter(writeFCFile);
             FCwriter.write(_generateFrameworkImplementationCode(model));
@@ -194,13 +198,12 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             //FileWriter TCwriter = new FileWriter(writeTCFile);
             //TCwriter.write(_generateTaskImplementationCode(model));
             //TCwriter.close();
-
             FileWriter THwriter = new FileWriter(writeTHFile);
             THwriter.write(_generateTaskHeaderCode(model));
             THwriter.close();
         } catch (IOException e) {
             throw new IllegalActionException(model, e,
-                    "Failed to open file for writing.");
+                "Failed to open file for writing.");
         }
     }
 
@@ -231,15 +234,18 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         String type = port.getType().toString();
         StringBuffer retval;
         retval = new StringBuffer();
-        switch(type.charAt(0)) {
-            case '{':
-             retval.append(type.substring(1,type.length()-1) + "array");
-             break;
-             default:
-             retval.append(type);
-             break;
+
+        switch (type.charAt(0)) {
+        case '{':
+            retval.append(type.substring(1, type.length() - 1) + "array");
+            break;
+
+        default:
+            retval.append(type);
+            break;
         }
-        return retval.toString();//"Token_port";
+
+        return retval.toString(); //"Token_port";
     }
 
     /** Return the correct Giotto initial value string for the given port.
@@ -247,10 +253,12 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     protected String _getInitialValueString(TypedIOPort port)
         throws IllegalActionException {
         String retVal = "";
-        Parameter initVal = (Parameter)port.getAttribute("initialOutputValue");
+        Parameter initVal = (Parameter) port.getAttribute("initialOutputValue");
+
         if (initVal != null) {
             retVal = initVal.getToken().toString();
         }
+
         return retVal;
     }
 
@@ -259,13 +267,14 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     protected String _getArrayLength(TypedIOPort port)
         throws IllegalActionException {
         String retVal = "";
-        Parameter initVal = (Parameter)port.getAttribute("arrayLength");
+        Parameter initVal = (Parameter) port.getAttribute("arrayLength");
+
         if (initVal != null) {
             retVal = initVal.getToken().toString();
-        }
-        else {
+        } else {
             retVal = "1"; // If no length parameter is given, assume an array length of 1
         }
+
         return retVal;
     }
 
@@ -278,33 +287,38 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      * code as well as the input driver code.
      *  @return The output code.
      */
-    protected String _generateFrameworkImplementationCode(TypedCompositeActor model)
-        throws IllegalActionException {
+    protected String _generateFrameworkImplementationCode(
+        TypedCompositeActor model) throws IllegalActionException {
         String codeString = "";
 
         codeString += copyrightString;
-        codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
-        codeString += "\n#include \"f_code.h\"" + _endLine;
-        codeString += "#include <stdlib.h>" + _endLine;
-        codeString += "#include <string.h>" + _endLine;
-        codeString += "\n// Legacy Emachine code" + _endLine;
-        codeString += "void giotto_timer_enable_code(e_machine_type e_machine_func, int relative_time) {" + _endLine;
-        codeString += "}" + _endLine;
-        codeString += "\nint giotto_timer_save_code(void) {" + _endLine;
-        codeString += _tabChar + "return get_logical_time();" + _endLine;
-        codeString += "}" + _endLine;
-        codeString += "\nunsigned giotto_timer_trigger_code(int initial_time, int relative_time) {" + _endLine;
-        codeString += _tabChar + "return (get_logical_time() == (initial_time + relative_time) % get_logical_time_overflow());" + _endLine;
-        codeString += "}" + _endLine;
-        codeString += "\ninline unsigned constant_true( void ) {" + _endLine;
-        codeString += _tabChar + "return ( (unsigned)1 );" + _endLine;
-        codeString += "}" + _endLine + _endLine;
+        codeString += ("/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */"
+        + _endLine);
+        codeString += ("\n#include \"f_code.h\"" + _endLine);
+        codeString += ("#include <stdlib.h>" + _endLine);
+        codeString += ("#include <string.h>" + _endLine);
+        codeString += ("\n// Legacy Emachine code" + _endLine);
+        codeString += ("void giotto_timer_enable_code(e_machine_type e_machine_func, int relative_time) {"
+        + _endLine);
+        codeString += ("}" + _endLine);
+        codeString += ("\nint giotto_timer_save_code(void) {" + _endLine);
+        codeString += (_tabChar + "return get_logical_time();" + _endLine);
+        codeString += ("}" + _endLine);
+        codeString += ("\nunsigned giotto_timer_trigger_code(int initial_time, int relative_time) {"
+        + _endLine);
+        codeString += (_tabChar
+        + "return (get_logical_time() == (initial_time + relative_time) % get_logical_time_overflow());"
+        + _endLine);
+        codeString += ("}" + _endLine);
+        codeString += ("\ninline unsigned constant_true( void ) {" + _endLine);
+        codeString += (_tabChar + "return ( (unsigned)1 );" + _endLine);
+        codeString += ("}" + _endLine + _endLine);
 
         codeString += FCVarInitString;
         codeString += FCoutDriversImplString;
         codeString += FCinDriversImplString;
 
-    return codeString;
+        return codeString;
     }
 
     /** Generate code for the H file f_code.h.
@@ -317,68 +331,79 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         String codeString = "";
 
         codeString += copyrightString;
-        codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
-        codeString +=  _endLine;
+        codeString += ("/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */"
+        + _endLine);
+        codeString += _endLine;
 
         // Writing code to prevent multiple inclusion of the file
-        codeString += "#ifndef _F_CODE_" + _endLine;
-        codeString += "#define _F_CODE_" + _endLine;
-        codeString +=  _endLine;
-        codeString += "// Header file Inclusions" + _endLine;
-        codeString += "#include \"f_table.h\"" + _endLine;
-        codeString += "#include \"f_spec.h\"" + _endLine;
-        codeString += "#include \"f_interface.h\"" + _endLine;
-        codeString +=  _endLine;
-        codeString += "// Task Frequency Definitions" + _endLine;
-        codeString += "#define SUPER_PERIOD"
-                    + _tabChar + _tabChar
-                    + "(" + ((GiottoDirector) model.getDirector()).getIntPeriod() + ")" + _endLine;
+        codeString += ("#ifndef _F_CODE_" + _endLine);
+        codeString += ("#define _F_CODE_" + _endLine);
+        codeString += _endLine;
+        codeString += ("// Header file Inclusions" + _endLine);
+        codeString += ("#include \"f_table.h\"" + _endLine);
+        codeString += ("#include \"f_spec.h\"" + _endLine);
+        codeString += ("#include \"f_interface.h\"" + _endLine);
+        codeString += _endLine;
+        codeString += ("// Task Frequency Definitions" + _endLine);
+        codeString += ("#define SUPER_PERIOD" + _tabChar + _tabChar + "("
+        + ((GiottoDirector) model.getDirector()).getIntPeriod() + ")"
+        + _endLine);
+
         Iterator actors = model.entityList().iterator();
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-        String actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
-        int actorFreq = 0;
+            String actorName = StringUtilities.sanitizeName(((NamedObj) actor)
+                    .getName());
+            int actorFreq = 0;
 
-            Parameter actorFreqPara = (Parameter)
-                ((NamedObj) actor).getAttribute("frequency");
+            Parameter actorFreqPara = (Parameter) ((NamedObj) actor)
+                .getAttribute("frequency");
+
             if (actorFreqPara == null) {
                 actorFreq = 1;
             } else {
-                actorFreq = ((IntToken) actorFreqPara.
-                        getToken()).intValue();
+                actorFreq = ((IntToken) actorFreqPara.getToken()).intValue();
             }
 
-            codeString += "#define " + actorName + "_FREQ"
-                        + _tabChar + _tabChar
-                        + "(" + actorFreq + ")" + _endLine;
+            codeString += ("#define " + actorName + "_FREQ" + _tabChar
+            + _tabChar + "(" + actorFreq + ")" + _endLine);
         }
+
         codeString += _endLine;
 
-        codeString += "// Datatype Declarations" + _endLine;
+        codeString += ("// Datatype Declarations" + _endLine);
+
         Iterator dataType = dataTypes.iterator();
+
         while (dataType.hasNext()) {
-            String type = (String)dataType.next();
+            String type = (String) dataType.next();
+
             if (type.endsWith("array")) {
-            codeString += "typedef " + type.substring(0, type.length()-5 /* Length of "array" */) + " *"
-                        + type + ";" + _endLine + _endLine;
+                codeString += ("typedef "
+                + type.substring(0, type.length() - 5 /* Length of "array" */    )
+                + " *" + type + ";" + _endLine + _endLine);
             }
         }
-        codeString += "typedef unsigned char boolean;" + _endLine + _endLine;
 
-        codeString += "// Legacy Emachine function declarations" + _endLine;
-        codeString += "void giotto_timer_enable_code(e_machine_type, int);" +  _endLine;
+        codeString += ("typedef unsigned char boolean;" + _endLine + _endLine);
+
+        codeString += ("// Legacy Emachine function declarations" + _endLine);
+        codeString += ("void giotto_timer_enable_code(e_machine_type, int);"
+        + _endLine);
         codeString += _endLine;
-        codeString += "int giotto_timer_save_code(void);" +  _endLine;
+        codeString += ("int giotto_timer_save_code(void);" + _endLine);
         codeString += _endLine;
-        codeString += "unsigned giotto_timer_trigger_code(int, int);" +  _endLine;
+        codeString += ("unsigned giotto_timer_trigger_code(int, int);"
+        + _endLine);
         codeString += _endLine;
-        codeString += "inline unsigned constant_true( void );" +  _endLine;
+        codeString += ("inline unsigned constant_true( void );" + _endLine);
         codeString += _endLine;
-        codeString += "void f_code_init( void );" +  _endLine;
+        codeString += ("void f_code_init( void );" + _endLine);
         codeString += _endLine;
         codeString += FHfuncVarDeclString;
         codeString += _endLine;
-        codeString += "#endif" +  _endLine;
+        codeString += ("#endif" + _endLine);
 
         return codeString;
     }
@@ -397,12 +422,13 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         String codeString = "";
 
         codeString += copyrightString;
-        codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
-        codeString += "\n#include \"task_code.h\"" + _endLine + _endLine;
-        codeString += "// Function called upon Termination" + _endLine;
-        codeString += "void func_shutdown() {" + _endLine;
-        codeString += "}" + _endLine + _endLine;
-        codeString += "// Task Code" + _endLine;
+        codeString += ("/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */"
+        + _endLine);
+        codeString += ("\n#include \"task_code.h\"" + _endLine + _endLine);
+        codeString += ("// Function called upon Termination" + _endLine);
+        codeString += ("void func_shutdown() {" + _endLine);
+        codeString += ("}" + _endLine + _endLine);
+        codeString += ("// Task Code" + _endLine);
         codeString += TCfuncImplString;
 
         return codeString;
@@ -418,18 +444,19 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         String codeString = "";
 
         codeString += copyrightString;
-        codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
-        codeString +=  _endLine;
+        codeString += ("/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */"
+        + _endLine);
+        codeString += _endLine;
 
         // Writing code to prevent multiple inclusion of the file
-        codeString += "#ifndef _TASK_CODE_" + _endLine;
-        codeString += "#define _TASK_CODE_" + _endLine;
-        codeString +=  _endLine;
-        codeString += "// Header file Inclusions" + _endLine;
-        codeString += "#include \"f_code.h\"" + _endLine;
-        codeString +=  _endLine;
+        codeString += ("#ifndef _TASK_CODE_" + _endLine);
+        codeString += ("#define _TASK_CODE_" + _endLine);
+        codeString += _endLine;
+        codeString += ("// Header file Inclusions" + _endLine);
+        codeString += ("#include \"f_code.h\"" + _endLine);
+        codeString += _endLine;
         codeString += THfuncDeclString;
-        codeString += "#endif" +  _endLine;
+        codeString += ("#endif" + _endLine);
 
         return codeString;
     }
@@ -439,11 +466,10 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      */
     protected void _generateCodeStrings(TypedCompositeActor model)
         throws IllegalActionException {
-
-            _outputInitializationCode(model);
-            _arrayVariablesAllocationCode(model);
-            _driversImplementationCode(model);
-            _taskCodeSkeleton(model);
+        _outputInitializationCode(model);
+        _arrayVariablesAllocationCode(model);
+        _driversImplementationCode(model);
+        _taskCodeSkeleton(model);
     }
 
     /** Generate Initialization code for the output drivers.
@@ -456,41 +482,44 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  @return The output code.
      */
     protected void _outputInitializationCode(TypedCompositeActor model)
-            throws IllegalActionException {
-
-        FCoutDriversImplString += "// Output Drivers Initialization Code" + _endLine + _endLine;
+        throws IllegalActionException {
+        FCoutDriversImplString += ("// Output Drivers Initialization Code"
+        + _endLine + _endLine);
 
         Iterator actors = model.entityList().iterator();
+
         while (actors.hasNext()) {
-            TypedActor actor = (TypedActor)actors.next();
+            TypedActor actor = (TypedActor) actors.next();
             Iterator outPorts = actor.outputPortList().iterator();
+
             while (outPorts.hasNext()) {
-                TypedIOPort port = (TypedIOPort)outPorts.next();
+                TypedIOPort port = (TypedIOPort) outPorts.next();
+
                 // Ignore unconnected ports
-                if (port.getWidth()>0) {
-                    String portID = StringUtilities.sanitizeName(
-                            port.getName(model));
+                if (port.getWidth() > 0) {
+                    String portID = StringUtilities.sanitizeName(port.getName(
+                                model));
                     String portTypeID = _getTypeString(port);
                     dataTypes.add(portTypeID);
 
                     String portInitialValueFunction = "CGinit_" + portID;
                     String portInitialValue = _getInitialValueString(port);
                     GiottoCodeGeneratorUtilities.checkGiottoID(portID);
-                    FCoutDriversImplString += "inline void"
-                        + " "
-                        + portInitialValueFunction
-                        + "(" + portTypeID + " *p" + portID + ") {" + _endLine;
-                            // TODO: Take care of array datatype initialization. Ignoring it for the moment
-                                  if (!portTypeID.endsWith("array")) {
-                                    FCoutDriversImplString += _tabChar + "*p" + portID + " = " + portInitialValue + ";" + _endLine;
-                            }
-                    FCoutDriversImplString += "}" + _endLine + _endLine;
+                    FCoutDriversImplString += ("inline void" + " "
+                    + portInitialValueFunction + "(" + portTypeID + " *p"
+                    + portID + ") {" + _endLine);
 
-                    FHfuncVarDeclString += "inline void"
-                    + " "
-                    + portInitialValueFunction
-                    + "(" + portTypeID + " *p" + portID + ");"
-                    + _endLine + _endLine;
+                    // TODO: Take care of array datatype initialization. Ignoring it for the moment
+                    if (!portTypeID.endsWith("array")) {
+                        FCoutDriversImplString += (_tabChar + "*p" + portID
+                        + " = " + portInitialValue + ";" + _endLine);
+                    }
+
+                    FCoutDriversImplString += ("}" + _endLine + _endLine);
+
+                    FHfuncVarDeclString += ("inline void" + " "
+                    + portInitialValueFunction + "(" + portTypeID + " *p"
+                    + portID + ");" + _endLine + _endLine);
                 }
             }
         }
@@ -502,87 +531,99 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  on the order of driver input parameters
      */
     protected void _arrayVariablesAllocationCode(TypedCompositeActor model)
-            throws IllegalActionException {
-
-        FHfuncVarDeclString += "// Allocating Memory for Array data types" + _endLine;
-        FCVarInitString += "// Initialization function containing the global and local array variables"
-                         + _endLine
-                         + "void f_code_init ( void ) {" + _endLine;
+        throws IllegalActionException {
+        FHfuncVarDeclString += ("// Allocating Memory for Array data types"
+        + _endLine);
+        FCVarInitString += ("// Initialization function containing the global and local array variables"
+        + _endLine + "void f_code_init ( void ) {" + _endLine);
 
         Iterator actors = model.entityList().iterator();
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            String actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
+            String actorName = StringUtilities.sanitizeName(((NamedObj) actor)
+                    .getName());
 
-            FHfuncVarDeclString += "// For Task " + actorName + _endLine;
-            FCVarInitString += _tabChar + "// For Task " + actorName + _endLine;
+            FHfuncVarDeclString += ("// For Task " + actorName + _endLine);
+            FCVarInitString += (_tabChar + "// For Task " + actorName
+            + _endLine);
 
             for (Iterator ports = actor.outputPortList().iterator();
-                 ports.hasNext();) {
+                    ports.hasNext();) {
                 TypedIOPort port = (TypedIOPort) ports.next();
                 String portType = _getTypeString(port);
+
                 if (portType.endsWith("array")) {
-                    String sanitizedPortName =
-                    StringUtilities.sanitizeName(
-                                port.getName(model));
+                    String sanitizedPortName = StringUtilities.sanitizeName(port
+                            .getName(model));
                     String arrayLength = _getArrayLength(port);
 
-                    FHfuncVarDeclString += portType.substring(0, portType.length()-5/* Length of "array" */)
-                                         + " array" + sanitizedPortName + "_1"
-                                         + "[" + arrayLength + "]" + ";" + _endLine;
-                    FHfuncVarDeclString += portType.substring(0, portType.length()-5/* Length of "array" */)
-                                         + " array" + sanitizedPortName + "_2"
-                                         + "[" + arrayLength + "]" + ";" + _endLine;
+                    FHfuncVarDeclString += (portType.substring(0,
+                        portType.length() - 5 /* Length of "array" */    )
+                    + " array" + sanitizedPortName + "_1" + "[" + arrayLength
+                    + "]" + ";" + _endLine);
+                    FHfuncVarDeclString += (portType.substring(0,
+                        portType.length() - 5 /* Length of "array" */    )
+                    + " array" + sanitizedPortName + "_2" + "[" + arrayLength
+                    + "]" + ";" + _endLine);
                     FHfuncVarDeclString += _endLine;
 
-                    FHfuncVarDeclString += "extern " + portType
-                                         + " local_" + sanitizedPortName + ";" + _endLine;
-                    FHfuncVarDeclString += "extern " + portType
-                                         + " global_" + sanitizedPortName + ";" + _endLine;
+                    FHfuncVarDeclString += ("extern " + portType + " local_"
+                    + sanitizedPortName + ";" + _endLine);
+                    FHfuncVarDeclString += ("extern " + portType + " global_"
+                    + sanitizedPortName + ";" + _endLine);
                     FHfuncVarDeclString += _endLine;
 
                     // Writing into f_code_init
-                    FCVarInitString += _tabChar + "local_" + sanitizedPortName
-                                     + " = array" + sanitizedPortName + "_1;" + _endLine;
-                    FCVarInitString += _tabChar + "global_" + sanitizedPortName
-                                     + " = array" + sanitizedPortName + "_2;" + _endLine;
+                    FCVarInitString += (_tabChar + "local_" + sanitizedPortName
+                    + " = array" + sanitizedPortName + "_1;" + _endLine);
+                    FCVarInitString += (_tabChar + "global_"
+                    + sanitizedPortName + " = array" + sanitizedPortName
+                    + "_2;" + _endLine);
                 }
             }
 
             for (Iterator ports = actor.inputPortList().iterator();
-                 ports.hasNext();) {
+                    ports.hasNext();) {
                 TypedIOPort port = (TypedIOPort) ports.next();
                 String portType = _getTypeString(port);
+
                 if (portType.endsWith("array")) {
-                    String sanitizedPortName =
-                    StringUtilities.sanitizeName(
-                                port.getName(model));
+                    String sanitizedPortName = StringUtilities.sanitizeName(port
+                            .getName(model));
+
                     // Since the array size need not be declared at the input port
                     // in the model, we resort to the following
                     List sourcePortList = port.sourcePortList();
+
                     if (sourcePortList.size() > 1) {
-                        throw new IllegalActionException(port, "Input port " +
-                                "cannot receive data from multiple sources in Giotto.");
+                        throw new IllegalActionException(port,
+                            "Input port "
+                            + "cannot receive data from multiple sources in Giotto.");
                     }
-                    TypedIOPort sport = (TypedIOPort)port.sourcePortList().get(0);
+
+                    TypedIOPort sport = (TypedIOPort) port.sourcePortList().get(0);
                     String arrayLength = _getArrayLength(sport);
 
-                    FHfuncVarDeclString += portType.substring(0, portType.length()-5/* Length of "array" */)
-                                         + " array" + sanitizedPortName
-                                         + "[" + arrayLength + "]" + ";" + _endLine;
+                    FHfuncVarDeclString += (portType.substring(0,
+                        portType.length() - 5 /* Length of "array" */    )
+                    + " array" + sanitizedPortName + "[" + arrayLength + "]"
+                    + ";" + _endLine);
                     FHfuncVarDeclString += _endLine;
 
-                    FHfuncVarDeclString += "extern " + portType
-                                         + " " + actorName + "_" + sanitizedPortName + ";" + _endLine;
+                    FHfuncVarDeclString += ("extern " + portType + " "
+                    + actorName + "_" + sanitizedPortName + ";" + _endLine);
                     FHfuncVarDeclString += _endLine;
 
                     // Writing into f_code_init
-                    FCVarInitString += _tabChar + actorName + "_" + sanitizedPortName
-                                     + " = array" + sanitizedPortName + ";" + _endLine;
+                    FCVarInitString += (_tabChar + actorName + "_"
+                    + sanitizedPortName + " = array" + sanitizedPortName + ";"
+                    + _endLine);
                 }
             }
         }
-        FCVarInitString += "}" + _endLine;
+
+        FCVarInitString += ("}" + _endLine);
     }
 
     /** Generate implementation code for the drivers.
@@ -591,10 +632,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  @return The drivers code.
      *
      */
-
     protected void _driversImplementationCode(TypedCompositeActor model)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         _outputDriversImplementationCode(model);
         _inputDriversImplementationCode(model);
     }
@@ -607,120 +646,123 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      * @exception IllegalActionException
      */
     protected void _outputDriversImplementationCode(TypedCompositeActor model)
-            throws IllegalActionException {
+        throws IllegalActionException {
+        FCoutDriversImplString += ("// Output drivers to copy values from the local to the global stage"
+        + _endLine);
 
-        FCoutDriversImplString += "// Output drivers to copy values from the local to the global stage"
-                    + _endLine;
         Iterator dataType = dataTypes.iterator();
+
         while (dataType.hasNext()) {
-            String type = (String)dataType.next();
-            FCoutDriversImplString += "inline void"
-                        + " copy_" + type
-                        + " (" + type + " *src, "
-                        + type + " *dst) {" + _endLine
-                        + _tabChar + type + " temp;" + _endLine + _endLine
-                        + _tabChar + "temp = *dst;" + _endLine
-                        + _tabChar + "*dst = *src;" + _endLine
-                        + _tabChar + "*src = temp;" + _endLine
-                        + "}" + _endLine + _endLine;
+            String type = (String) dataType.next();
+            FCoutDriversImplString += ("inline void" + " copy_" + type + " ("
+            + type + " *src, " + type + " *dst) {" + _endLine + _tabChar + type
+            + " temp;" + _endLine + _endLine + _tabChar + "temp = *dst;"
+            + _endLine + _tabChar + "*dst = *src;" + _endLine + _tabChar
+            + "*src = temp;" + _endLine + "}" + _endLine + _endLine);
 
-            FHfuncVarDeclString += "inline void"
-                        + " copy_" + type
-                        + " (" + type + " *src, "
-                        + type + " *dst);"
-                        + _endLine + _endLine;
-
+            FHfuncVarDeclString += ("inline void" + " copy_" + type + " ("
+            + type + " *src, " + type + " *dst);" + _endLine + _endLine);
         }
     }
 
     protected void _inputDriversImplementationCode(TypedCompositeActor model)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         String assgtStmtString = "";
         String initStmtString = "";
         Actor actor;
         String actorName;
 
-        FCinDriversImplString += "// Input Drivers for all the Tasks requiring one" + _endLine + _endLine;
-        initStmtString += _tabChar + "static int counter = 0;" + _endLine;
+        FCinDriversImplString += ("// Input Drivers for all the Tasks requiring one"
+        + _endLine + _endLine);
+        initStmtString += (_tabChar + "static int counter = 0;" + _endLine);
         initStmtString += _endLine;
 
         // generate "Driver functions" for common actors.
         Iterator actors = model.entityList().iterator();
+
         while (actors.hasNext()) {
             actor = (Actor) actors.next();
+
             if (!GiottoCodeGeneratorUtilities.needsInputDriver(actor)) {
                 continue;
             }
 
             actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
 
-            FCinDriversImplString += "inline void " + actorName + "_inputdriver( ";
-            FHfuncVarDeclString      += "inline void " + actorName + "_inputdriver( ";
+            FCinDriversImplString += ("inline void " + actorName
+            + "_inputdriver( ");
+            FHfuncVarDeclString += ("inline void " + actorName
+            + "_inputdriver( ");
 
-                assgtStmtString = "";
+            assgtStmtString = "";
 
             Map driverIOMap = new LinkedHashMap();
             boolean firstParameter = true;
-                boolean firstArray = true;
+            boolean firstArray = true;
 
             for (Iterator inPorts = actor.inputPortList().iterator();
-                 inPorts.hasNext();) {
+                    inPorts.hasNext();) {
                 TypedIOPort inPort = (TypedIOPort) inPorts.next();
-                String sanitizedInPortName =
-                    StringUtilities.sanitizeName(
-                            inPort.getName(model));
+                String sanitizedInPortName = StringUtilities.sanitizeName(inPort
+                        .getName(model));
                 String inPortType = _getTypeString(inPort);
 
                 List sourcePortList = inPort.sourcePortList();
+
                 if (sourcePortList.size() > 1) {
-                    throw new IllegalActionException(inPort, "Input port " +
-                            "cannot receive data from multiple sources in Giotto.");
+                    throw new IllegalActionException(inPort,
+                        "Input port "
+                        + "cannot receive data from multiple sources in Giotto.");
                 }
-                TypedIOPort outPort = (TypedIOPort)inPort.sourcePortList().get(0);
-                String sanitizedOutPortName = StringUtilities.sanitizeName(
-                        outPort.getName(model));
+
+                TypedIOPort outPort = (TypedIOPort) inPort.sourcePortList().get(0);
+                String sanitizedOutPortName = StringUtilities.sanitizeName(outPort
+                        .getName(model));
                 String arrayLength = _getArrayLength(outPort);
-                String sourceActorName = StringUtilities.sanitizeName((outPort.getContainer()).getName());
+                String sourceActorName = StringUtilities.sanitizeName((outPort
+                        .getContainer()).getName());
 
                 if (firstParameter) {
                     firstParameter = false;
-                }
-                else {
+                } else {
                     FCinDriversImplString += ", ";
                     FHfuncVarDeclString += ", ";
                 }
-                FCinDriversImplString += inPortType + " *" + sanitizedOutPortName
-                           + ", " + _getTypeString(inPort) + " *" + sanitizedInPortName;
-                FHfuncVarDeclString += inPortType + " *" + sanitizedOutPortName
-                           + ", " + _getTypeString(inPort) + " *" + sanitizedInPortName;
 
-                assgtStmtString += _tabChar + "if ( ("
-                                    + actorName + "_FREQ <= " + sourceActorName + "_FREQ)"
-                                    + " || !(counter % ("
-                                    + actorName + "_FREQ/"
-                                    + sourceActorName + "_FREQ)) ) {" + _endLine;
+                FCinDriversImplString += (inPortType + " *"
+                + sanitizedOutPortName + ", " + _getTypeString(inPort) + " *"
+                + sanitizedInPortName);
+                FHfuncVarDeclString += (inPortType + " *"
+                + sanitizedOutPortName + ", " + _getTypeString(inPort) + " *"
+                + sanitizedInPortName);
+
+                assgtStmtString += (_tabChar + "if ( (" + actorName
+                + "_FREQ <= " + sourceActorName + "_FREQ)"
+                + " || !(counter % (" + actorName + "_FREQ/" + sourceActorName
+                + "_FREQ)) ) {" + _endLine);
+
                 if (inPortType.endsWith("array")) {
-                    assgtStmtString += _tabChar + _tabChar + "memcpy( *" + sanitizedInPortName
-                                        + ", *" + sanitizedOutPortName
-                                        + ", " + arrayLength + ");" + _endLine;
+                    assgtStmtString += (_tabChar + _tabChar + "memcpy( *"
+                    + sanitizedInPortName + ", *" + sanitizedOutPortName + ", "
+                    + arrayLength + ");" + _endLine);
+                } else {
+                    assgtStmtString += (_tabChar + _tabChar + "*"
+                    + sanitizedInPortName + " = *" + sanitizedOutPortName + ";"
+                    + _endLine);
                 }
-                else {
-                    assgtStmtString += _tabChar + _tabChar + "*" + sanitizedInPortName
-                                        + " = *" + sanitizedOutPortName
-                                        + ";" + _endLine;
-                }
-                assgtStmtString += _tabChar + "}" + _endLine + _endLine;
+
+                assgtStmtString += (_tabChar + "}" + _endLine + _endLine);
             }
 
-            assgtStmtString += _tabChar + "counter = (counter % "
-                                + actorName + "_FREQ) + 1;"+ _endLine;
-            FCinDriversImplString += ") {" + _endLine;
-            FHfuncVarDeclString += ");" + _endLine + _endLine;
+            assgtStmtString += (_tabChar + "counter = (counter % " + actorName
+            + "_FREQ) + 1;" + _endLine);
+            FCinDriversImplString += (") {" + _endLine);
+            FHfuncVarDeclString += (");" + _endLine + _endLine);
             FCinDriversImplString += initStmtString;
             FCinDriversImplString += assgtStmtString; // Copy values from the global section to the input of the task
-            FCinDriversImplString += "}" + _endLine;
+            FCinDriversImplString += ("}" + _endLine);
         }
+
         // TODO : Generate driver code for the actuators.
     }
 
@@ -728,127 +770,138 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  @return The task code.
      */
     protected void _taskCodeSkeleton(TypedCompositeActor model)
-            throws IllegalActionException {
+        throws IllegalActionException {
         boolean first;
 
         Iterator actors = model.entityList().iterator();
+
         while (actors.hasNext()) {
-            TypedActor actor = (TypedActor)actors.next();
-            String taskName = StringUtilities.sanitizeName(
-                    ((NamedObj)actor).getName());
+            TypedActor actor = (TypedActor) actors.next();
+            String taskName = StringUtilities.sanitizeName(((NamedObj) actor)
+                    .getName());
 
             // Write the input port specification of the task
             first = true;
+
             String inputPorts = "";
+
             for (Iterator inPorts = actor.inputPortList().iterator();
-                 inPorts.hasNext();) {
-                TypedIOPort port = (TypedIOPort)inPorts.next();
+                    inPorts.hasNext();) {
+                TypedIOPort port = (TypedIOPort) inPorts.next();
+
                 // Ignore unconnected ports
-                if (port.getWidth()>0) {
+                if (port.getWidth() > 0) {
                     if (first) {
                         first = false;
                     } else {
                         inputPorts += ",";
                     }
-                    String portID = StringUtilities.sanitizeName(
-                            port.getName());
+
+                    String portID = StringUtilities.sanitizeName(port.getName());
                     String portTypeID = _getTypeString(port);
                     List sourcePortList = port.sourcePortList();
-                    if (sourcePortList.size() > 1) {
-                        throw new IllegalActionException(port, "Input port " +
-                                "cannot receive data from multiple sources in Giotto.");
-                    }
-                    TypedIOPort sport = (TypedIOPort)port.sourcePortList().get(0);
-                    String sanitizedSourceActorName = StringUtilities.sanitizeName(
-                            sport.getContainer().getName());
 
-                    inputPorts += portTypeID + " *" + sanitizedSourceActorName + "_" + portID;
+                    if (sourcePortList.size() > 1) {
+                        throw new IllegalActionException(port,
+                            "Input port "
+                            + "cannot receive data from multiple sources in Giotto.");
+                    }
+
+                    TypedIOPort sport = (TypedIOPort) port.sourcePortList().get(0);
+                    String sanitizedSourceActorName = StringUtilities
+                        .sanitizeName(sport.getContainer().getName());
+
+                    inputPorts += (portTypeID + " *" + sanitizedSourceActorName
+                    + "_" + portID);
                 }
             }
 
             // write the output port specification of the task.
             first = true;
+
             String outputPorts = "";
+
             for (Iterator outPorts = actor.outputPortList().iterator();
-                 outPorts.hasNext();) {
-                 TypedIOPort port = (TypedIOPort)outPorts.next();
-                 // Ignore unconnected ports
-                 if (port.getWidth()>0) {
+                    outPorts.hasNext();) {
+                TypedIOPort port = (TypedIOPort) outPorts.next();
+
+                // Ignore unconnected ports
+                if (port.getWidth() > 0) {
                     if (first) {
                         first = false;
                     } else {
                         outputPorts += ",";
                     }
-                    String portID = StringUtilities.sanitizeName(
-                            port.getName());
-                     String portTypeID = _getTypeString(port);
 
-                    outputPorts += portTypeID + " *" + portID;
-                 }
+                    String portID = StringUtilities.sanitizeName(port.getName());
+                    String portTypeID = _getTypeString(port);
+
+                    outputPorts += (portTypeID + " *" + portID);
+                }
             }
+
             String portSeparator = ",";
+
             if (inputPorts.equals("") || outputPorts.equals("")) {
                 portSeparator = "";
             }
-            TCfuncImplString +=  "void CG"
-                + taskName
-                + "_Task(" + inputPorts + portSeparator + outputPorts + ") {"
-                + _endLine;
-            TCfuncImplString +=  "}"
-                + _endLine + _endLine;
 
-            THfuncDeclString +=  "void CG"
-                + taskName
-                + "_Task(" + inputPorts + portSeparator + outputPorts + ");"
-                + _endLine + _endLine;
+            TCfuncImplString += ("void CG" + taskName + "_Task(" + inputPorts
+            + portSeparator + outputPorts + ") {" + _endLine);
+            TCfuncImplString += ("}" + _endLine + _endLine);
+
+            THfuncDeclString += ("void CG" + taskName + "_Task(" + inputPorts
+            + portSeparator + outputPorts + ");" + _endLine + _endLine);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected Set dataTypes;
     protected String _endLine = "\n";
     protected String _tabChar = "\t";
-    protected String FHfuncVarDeclString;  // Contains the declaration of the driver functions & array variables
+    protected String FHfuncVarDeclString; // Contains the declaration of the driver functions & array variables
     protected String FCoutDriversImplString; // Contains the code for the initialization of output drivers
     protected String FCVarInitString; // Contains the code for the initialization of the array variables
     protected String FCinDriversImplString; // Contains functions to implement the input drivers
     protected String THfuncDeclString; // Contains the declaration of the task functions
     protected String TCfuncImplString; // Contains the skeleton code for the task functions
-
-    protected String copyrightString = "/*" + _endLine + _endLine+
-        " Copyright (c) 2001-2005 The Regents of the University of California." + _endLine +
-        " All rights reserved." + _endLine +
-        " Permission is hereby granted, without written agreement and without" + _endLine +
-        " license or royalty fees, to use, copy, modify, and distribute this" + _endLine +
-        " software and its documentation for any purpose, provided that the above" + _endLine +
-        " copyright notice and the following two paragraphs appear in all copies" + _endLine +
-        " of this software." + _endLine +
-        "" + _endLine +
-        " IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY" + _endLine +
-        " FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES" + _endLine +
-        " ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF" + _endLine +
-        " THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF" + _endLine +
-        " SUCH DAMAGE." + _endLine +
-        "" + _endLine +
-        " THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES," + _endLine +
-        " INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF" + _endLine +
-        " MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE" + _endLine +
-        " PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF" + _endLine +
-        " CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES," + _endLine +
-        " ENHANCEMENTS, OR MODIFICATIONS." + _endLine +
-        "" + _endLine +
-        "*/" + _endLine;
-
+    protected String copyrightString = "/*" + _endLine + _endLine
+        + " Copyright (c) 2001-2005 The Regents of the University of California."
+        + _endLine + " All rights reserved." + _endLine
+        + " Permission is hereby granted, without written agreement and without"
+        + _endLine
+        + " license or royalty fees, to use, copy, modify, and distribute this"
+        + _endLine
+        + " software and its documentation for any purpose, provided that the above"
+        + _endLine
+        + " copyright notice and the following two paragraphs appear in all copies"
+        + _endLine + " of this software." + _endLine + "" + _endLine
+        + " IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY"
+        + _endLine
+        + " FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES"
+        + _endLine
+        + " ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF"
+        + _endLine
+        + " THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF"
+        + _endLine + " SUCH DAMAGE." + _endLine + "" + _endLine
+        + " THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,"
+        + _endLine
+        + " INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF"
+        + _endLine
+        + " MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE"
+        + _endLine
+        + " PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF"
+        + _endLine
+        + " CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,"
+        + _endLine + " ENHANCEMENTS, OR MODIFICATIONS." + _endLine + ""
+        + _endLine + "*/" + _endLine;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     protected class CEmachineFrameworkEditorFactory extends EditorFactory {
-
         public CEmachineFrameworkEditorFactory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -863,28 +916,31 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 JFileChooser dirDialog = new JFileChooser();
                 dirDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 dirDialog.setDialogTitle("Choose Directory to store files...");
+
                 String cwd = StringUtilities.getProperty("user.dir");
+
                 if (cwd != null) {
                     dirDialog.setCurrentDirectory(new File(cwd));
                 }
+
                 int returnVal = dirDialog.showDialog(parent, "Generate Files");
+
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File directory = dirDialog.getSelectedFile();
 
-                    Configuration configuration
-                        = ((TableauFrame)parent).getConfiguration();
+                    Configuration configuration = ((TableauFrame) parent)
+                        .getConfiguration();
 
                     // NamedObj container = (NamedObj)object.getContainer();
-
-                    TypedCompositeActor model = (TypedCompositeActor)
-                        GiottoCEmachineFrameworkGenerator.this.getContainer();
+                    TypedCompositeActor model = (TypedCompositeActor) GiottoCEmachineFrameworkGenerator.this
+                        .getContainer();
 
                     // Preinitialize and resolve types.
-                    CompositeActor toplevel = (CompositeActor)model.toplevel();
+                    CompositeActor toplevel = (CompositeActor) model.toplevel();
                     Manager manager = toplevel.getManager();
+
                     if (manager == null) {
-                        manager = new Manager(
-                                toplevel.workspace(), "manager");
+                        manager = new Manager(toplevel.workspace(), "manager");
                         toplevel.setManager(manager);
                     }
 
@@ -904,7 +960,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 }
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
-                        "Cannot generate code. Perhaps outside Vergil?");
+                    "Cannot generate code. Perhaps outside Vergil?");
             }
         }
     }

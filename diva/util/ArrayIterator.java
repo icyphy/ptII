@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.util;
+
 import java.util.NoSuchElementException;
+
 
 /**
  * An iterator over a given array.  Treats "null" as an
@@ -45,8 +47,7 @@ public class ArrayIterator extends IteratorAdapter {
     public boolean hasNext() {
         if (_array == null) {
             return false;
-        }
-        else {
+        } else {
             return _i < _array.length;
         }
     }
@@ -54,8 +55,7 @@ public class ArrayIterator extends IteratorAdapter {
     public Object next() {
         if (hasNext()) {
             return _array[_i++];
-        }
-        else {
+        } else {
             throw new NoSuchElementException("No more elements");
         }
     }

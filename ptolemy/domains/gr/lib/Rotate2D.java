@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.lib;
 
 import java.awt.geom.AffineTransform;
@@ -64,7 +63,6 @@ import diva.canvas.Figure;
    @Pt.AcceptedRating Yellow (chf)
 */
 public class Rotate2D extends GRTransform2D {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,23 +72,21 @@ public class Rotate2D extends GRTransform2D {
      *   actor with this name.
      */
     public Rotate2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         angleType = new StringAttribute(this, "angleType");
         angleType.setExpression("radians");
 
-        initialTheta =
-            new Parameter(this, "initialTheta", new DoubleToken(0.0));
+        initialTheta = new Parameter(this, "initialTheta", new DoubleToken(0.0));
         initialTheta.setTypeEquals(BaseType.DOUBLE);
 
-        initialAnchorX =
-            new Parameter(this, "initialAnchorX", new DoubleToken(0.0));
+        initialAnchorX = new Parameter(this, "initialAnchorX",
+                new DoubleToken(0.0));
         initialAnchorX.setTypeEquals(BaseType.DOUBLE);
 
-        initialAnchorY =
-            new Parameter(this, "initialAnchorY", new DoubleToken(0.0));
+        initialAnchorY = new Parameter(this, "initialAnchorY",
+                new DoubleToken(0.0));
         initialAnchorY.setTypeEquals(BaseType.DOUBLE);
 
         theta = new TypedIOPort(this, "theta", true, false);
@@ -139,7 +135,6 @@ public class Rotate2D extends GRTransform2D {
      */
     public StringAttribute angleType;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -149,20 +144,18 @@ public class Rotate2D extends GRTransform2D {
      *  throws such an exception.
      */
     protected void _applyInitialTransform(Figure figure)
-            throws IllegalActionException{
-
-        _oldAngle = ((DoubleToken)initialTheta.getToken()).doubleValue();
-        _oldAnchorX = ((DoubleToken)initialAnchorX.getToken()).doubleValue();
-        _oldAnchorY = ((DoubleToken)initialAnchorY.getToken()).doubleValue();
+        throws IllegalActionException {
+        _oldAngle = ((DoubleToken) initialTheta.getToken()).doubleValue();
+        _oldAnchorX = ((DoubleToken) initialAnchorX.getToken()).doubleValue();
+        _oldAnchorY = ((DoubleToken) initialAnchorY.getToken()).doubleValue();
 
         if (angleType.getExpression().equals("degrees")) {
             _oldAngle = Math.toRadians(_oldAngle);
         }
 
         figure.transform(AffineTransform.getRotateInstance(_oldAngle,
-                                 _oldAnchorX, _oldAnchorY));
+                _oldAnchorX, _oldAnchorY));
     }
-
 
     /** Apply the current rotation transformation to the figure.
      *  @param figure The figure the transformation is to be applied to.
@@ -170,44 +163,40 @@ public class Rotate2D extends GRTransform2D {
      *  such an exception.
      */
     protected void _applyTransform(final Figure figure)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         double angle = _oldAngle;
         double anchorXValue = _oldAnchorX;
         double anchorYValue = _oldAnchorY;
 
         boolean needsTransform = false;
-        if (theta.getWidth() != 0 && theta.hasToken(0)) {
+
+        if ((theta.getWidth() != 0) && theta.hasToken(0)) {
             angle = ((DoubleToken) theta.get(0)).doubleValue();
             needsTransform = true;
 
-            if (angleType.getExpression().equals("degrees"))
+            if (angleType.getExpression().equals("degrees")) {
                 angle = Math.toRadians(angle);
+            }
         }
 
-        if (anchorX.getWidth() != 0 && anchorX.hasToken(0)) {
+        if ((anchorX.getWidth() != 0) && anchorX.hasToken(0)) {
             anchorXValue = ((DoubleToken) anchorX.get(0)).doubleValue();
             needsTransform = true;
         }
 
-        if (anchorY.getWidth() != 0 && anchorY.hasToken(0)) {
+        if ((anchorY.getWidth() != 0) && anchorY.hasToken(0)) {
             anchorYValue = -((DoubleToken) anchorY.get(0)).doubleValue();
             needsTransform = true;
         }
 
-
         if (needsTransform) {
-            final AffineTransform inputTransform =
-                AffineTransform.getRotateInstance(angle,
-                        anchorXValue, anchorYValue);
+            final AffineTransform inputTransform = AffineTransform
+                .getRotateInstance(angle, anchorXValue, anchorYValue);
 
-            if ( !figure.getTransformContext().getTransform()
-                    .equals(inputTransform)) {
-
+            if (!figure.getTransformContext().getTransform().equals(inputTransform)) {
                 if (!_isAccumulating()) {
-                    inputTransform.concatenate(
-                            figure.getTransformContext()
-                            .getInverseTransform());
+                    inputTransform.concatenate(figure.getTransformContext()
+                                                     .getInverseTransform());
                 }
 
                 figure.transform(inputTransform);
@@ -218,5 +207,4 @@ public class Rotate2D extends GRTransform2D {
     private double _oldAngle;
     private double _oldAnchorX;
     private double _oldAnchorY;
-
 }

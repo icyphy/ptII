@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Source
+
 /**
 
    Base class for simple data sources.  This class provides an output
@@ -69,9 +70,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public abstract class Source extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -82,10 +81,11 @@ public abstract class Source extends TypedAtomicActor {
      *   actor with this name.
      */
     public Source(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         trigger = new TypedIOPort(this, "trigger", true, false);
+
         // NOTE: It used to be that trigger was set to GENERAL, but this
         // isn't really what we want.  What we want is an undeclared type
         // that can resolve to anything.  EAL 12/31/02
@@ -121,6 +121,7 @@ public abstract class Source extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         // NOTE: It might seem that using trigger.numberOfSources() is
         // correct here, but it is not. It is possible for channels
         // to be connected, for example, to other output ports or

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.demo.QR;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,6 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ND_1
@@ -56,9 +56,7 @@ matrices is involved; they may change in future releases.
 @Pt.ProposedRating Red (kienhuis)
 @Pt.AcceptedRating Red (kienhuis)
 */
-
 public class ND_1 extends TypedAtomicActor {
-
     /** Construct an actor that is an SBF object with the given container
      *  and name.
      *  @param container The container.
@@ -69,32 +67,26 @@ public class ND_1 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_1(CompositeEntity aContainer, String aName)
-            throws IllegalActionException, NameDuplicationException
-    {
-
+        throws IllegalActionException, NameDuplicationException {
         super(aContainer, aName);
 
         WP_2 = new TypedIOPort(this, "WP_2", false, true);
         WP_6 = new TypedIOPort(this, "WP_6", false, true);
-
 
         WP_2.setTypeEquals(BaseType.DOUBLE);
         WP_6.setTypeEquals(BaseType.DOUBLE);
 
         // The Type of these Parameters is set by the First
         // Token placed in the parameters when created.
-        parameter_N = new Parameter(this, "N" , new IntToken(6));
-        parameter_K = new Parameter(this, "K" , new IntToken(6));
+        parameter_N = new Parameter(this, "N", new IntToken(6));
+        parameter_K = new Parameter(this, "K", new IntToken(6));
 
-        x_1.ReadMatrix( "Zeros_64x64" );
+        x_1.ReadMatrix("Zeros_64x64");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     // -- Part of the Actor
-
     public TypedIOPort WP_2;
     public TypedIOPort WP_6;
 
@@ -121,16 +113,17 @@ public class ND_1 extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        for (int j = 1; j <= (1 * N); j += 1) {
+            for (int i = 1 * j; i <= (1 * N); i += 1) {
+                out_0 = x_1.retrieve(x_1.atKey(j, i));
+                _debug(" Broadcast from ND_1: " + out_0);
 
-        for ( int j = 1 ; j <= 1*N ; j += 1 ) {
-            for ( int i = 1*j ; i <= 1*N ; i += 1 ) {
-                out_0 = x_1.retrieve( x_1.atKey(j, i) );
-                _debug(" Broadcast from ND_1: " + out_0 );
-                if ( -i + j == 0 && K - 1 >= 0 ) {
-                    WP_2.broadcast( new DoubleToken( out_0 ) );
+                if (((-i + j) == 0) && ((K - 1) >= 0)) {
+                    WP_2.broadcast(new DoubleToken(out_0));
                 }
-                if ( i - j - 1 >= 0 && K - 1 >= 0 ) {
-                    WP_6.broadcast( new DoubleToken( out_0 ) );
+
+                if (((i - j - 1) >= 0) && ((K - 1) >= 0)) {
+                    WP_6.broadcast(new DoubleToken(out_0));
                 }
             }
         }
@@ -146,16 +139,10 @@ public class ND_1 extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // -- Get private copies of the parameters
     private int N;
     private int K;
-
     private double out_0;
-
     private ArrayIndex x_1 = new ArrayIndex();
-
     private boolean _returnValue = true;
-
-
 }

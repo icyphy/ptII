@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -42,8 +41,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FirstOrderHold
+
 /**
    Convert discrete events at the input to a continuous-time signal at the
    output by projecting the value with the derivative.
@@ -54,10 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (cxh)
 */
-
-public class FirstOrderHold extends Transformer
-    implements CTWaveformGenerator {
-
+public class FirstOrderHold extends Transformer implements CTWaveformGenerator {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -71,7 +69,7 @@ public class FirstOrderHold extends Transformer
      *   an entity already in the container.
      */
     public FirstOrderHold(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         derivative = new TypedIOPort(this, "derivative", true, false);
         defaultValue = new Parameter(this, "defaultValue");
@@ -82,12 +80,9 @@ public class FirstOrderHold extends Transformer
         input.setTypeEquals(BaseType.DOUBLE);
         derivative.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
-        new Parameter(input, "signalType",
-                new StringToken("DISCRETE"));
-        new Parameter(derivative, "signalType",
-                new StringToken("DISCRETE"));
-        new Parameter(output, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(input, "signalType", new StringToken("DISCRETE"));
+        new Parameter(derivative, "signalType", new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,48 +112,48 @@ public class FirstOrderHold extends Transformer
      *  derivative.
      *  @exception IllegalActionException If the token cannot be sent.
      */
-    public void fire() throws IllegalActionException{
-        CTDirector director = (CTDirector)getDirector();
+    public void fire() throws IllegalActionException {
+        CTDirector director = (CTDirector) getDirector();
+
         if (director.isDiscretePhase()) {
-            if ((input.hasToken(0) && (!derivative.hasToken(0))) ||
-                    !input.hasToken(0) && derivative.hasToken(0)) {
+            if ((input.hasToken(0) && (!derivative.hasToken(0)))
+                    || (!input.hasToken(0) && derivative.hasToken(0))) {
                 throw new IllegalActionException(this,
-                        " No synchronized inputs.");
+                    " No synchronized inputs.");
             }
+
             if (input.hasToken(0) && derivative.hasToken(0)) {
-                _value = ((DoubleToken)input.get(0)).doubleValue();
-                _derivative = ((DoubleToken)derivative.get(0)).doubleValue();
+                _value = ((DoubleToken) input.get(0)).doubleValue();
+                _derivative = ((DoubleToken) derivative.get(0)).doubleValue();
                 _time = director.getModelTime();
-                if (_debugging) _debug(getFullName(),
-                        " get inputs: (" + _value,
+
+                if (_debugging) {
+                    _debug(getFullName(), " get inputs: (" + _value,
                         ", " + _derivative + ").");
+                }
             }
         }
-        double timeInterval =
-            director.getModelTime().subtract(_time).getDoubleValue();
-        output.send(0, new DoubleToken(_value + timeInterval * _derivative));
+
+        double timeInterval = director.getModelTime().subtract(_time)
+                                      .getDoubleValue();
+        output.send(0, new DoubleToken(_value + (timeInterval * _derivative)));
     }
 
     /** Initialize token. If there is no input, the initial token is
      *  a zero Double Token.
      *  @exception IllegalActionException If thrown by the super class.
      */
-    public void initialize() throws IllegalActionException{
+    public void initialize() throws IllegalActionException {
         super.initialize();
-        _value = ((DoubleToken)defaultValue.getToken()).doubleValue();
-        _derivative =
-            ((DoubleToken)defaultDerivative.getToken()).doubleValue();
+        _value = ((DoubleToken) defaultValue.getToken()).doubleValue();
+        _derivative = ((DoubleToken) defaultDerivative.getToken()).doubleValue();
         _time = getDirector().getModelTime();
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Saved token.
     private double _value;
-
     private double _derivative;
-
     private Time _time;
 }

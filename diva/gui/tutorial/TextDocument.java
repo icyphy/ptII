@@ -43,6 +43,7 @@ import diva.gui.Application;
 import diva.gui.Document;
 import diva.gui.DocumentFactory;
 
+
 /**
  * A example document that contains plain boring old text
  * and saves it to ascii files.  Here you can see some sample
@@ -63,7 +64,6 @@ import diva.gui.DocumentFactory;
  * @version $Id$
  */
 public class TextDocument extends AbstractDocument {
-
     /** The string contained in this document.
      */
     String _text;
@@ -86,7 +86,7 @@ public class TextDocument extends AbstractDocument {
      *
      * @exception Exception If the close operation fails.
      */
-    public void close () {
+    public void close() {
         // DO NOTHING.
     }
 
@@ -101,14 +101,16 @@ public class TextDocument extends AbstractDocument {
      *
      * @exception Exception If the close operation fails.
      */
-    public void open () throws Exception {
+    public void open() throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader(getFile()));
         char[] buffer = new char[100];
         StringBuffer readResult = new StringBuffer();
         int amountRead;
+
         while ((amountRead = reader.read(buffer, 0, 100)) == 100) {
             readResult.append(buffer);
         }
+
         readResult.append(buffer, 0, amountRead);
         _text = readResult.toString();
     }
@@ -121,7 +123,7 @@ public class TextDocument extends AbstractDocument {
      *
      * @exception Exception If the save operation fails.
      */
-    public void save () throws Exception {
+    public void save() throws Exception {
         saveAs(getFile());
     }
 
@@ -134,7 +136,7 @@ public class TextDocument extends AbstractDocument {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
-    public void saveAs (File file) throws Exception {
+    public void saveAs(File file) throws Exception {
         Writer writer = new BufferedWriter(new FileWriter(file));
         writer.write(_text);
         writer.flush();
@@ -148,10 +150,9 @@ public class TextDocument extends AbstractDocument {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
-    public void saveAs (URL url) throws Exception {
-        throw new UnsupportedOperationException("Saving as a URL is not" +
-                " supported for" +
-                " text documents.");
+    public void saveAs(URL url) throws Exception {
+        throw new UnsupportedOperationException("Saving as a URL is not"
+            + " supported for" + " text documents.");
     }
 
     /**
@@ -170,14 +171,14 @@ public class TextDocument extends AbstractDocument {
     public static class Factory implements DocumentFactory {
         /** Create an empty document.
          */
-        public Document createDocument (Application app) {
+        public Document createDocument(Application app) {
             TextDocument d = new TextDocument(app);
             return d;
         }
 
         /** Create a new document that contains data from the given URL.
          */
-        public Document createDocument (Application app, URL url) {
+        public Document createDocument(Application app, URL url) {
             TextDocument d = new TextDocument(app);
             d.setURL(url);
             return d;
@@ -185,12 +186,10 @@ public class TextDocument extends AbstractDocument {
 
         /** Create a new document that contains data from the given file.
          */
-        public Document createDocument (Application app, File file) {
+        public Document createDocument(Application app, File file) {
             TextDocument d = new TextDocument(app);
             d.setFile(file);
             return d;
         }
     }
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.BooleanToken;
@@ -36,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DB
@@ -63,9 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (ssachs)
 */
-
 public class DB extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -76,7 +74,7 @@ public class DB extends Transformer {
      *   an actor already in the container.
      */
     public DB(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -110,10 +108,10 @@ public class DB extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if ( input.hasToken(0) ) {
+        if (input.hasToken(0)) {
             DoubleToken in = (DoubleToken) input.get(0);
             double number = in.doubleValue();
-            double minValue = ((DoubleToken)min.getToken()).doubleValue();
+            double minValue = ((DoubleToken) min.getToken()).doubleValue();
             output.send(0, _doFunction(number, minValue));
         }
     }
@@ -141,14 +139,17 @@ public class DB extends Transformer {
         }
 
         if (input.hasToken(0, count)) {
-            double minValue = ((DoubleToken)min.getToken()).doubleValue();
+            double minValue = ((DoubleToken) min.getToken()).doubleValue();
+
             // NOTE: inArray.length may be > count, in which case
             // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
+
             for (int i = 0; i < count; i++) {
-                double input = ((DoubleToken)(inArray[i])).doubleValue();
+                double input = ((DoubleToken) (inArray[i])).doubleValue();
                 _resultArray[i] = _doFunction(input, minValue);
             }
+
             output.send(0, _resultArray, count);
             return COMPLETED;
         } else {
@@ -163,24 +164,27 @@ public class DB extends Transformer {
      *  but no less than <i>minValue</i>.
      */
     private DoubleToken _doFunction(double number, double minValue)
-            throws IllegalActionException {
+        throws IllegalActionException {
         double outNumber;
-        if ( number <= 0.0 ) {
+
+        if (number <= 0.0) {
             outNumber = minValue;
         } else {
-            outNumber = ptolemy.math.SignalProcessing.toDecibels( number );
-            if (((BooleanToken)inputIsPower.getToken()).booleanValue()) {
+            outNumber = ptolemy.math.SignalProcessing.toDecibels(number);
+
+            if (((BooleanToken) inputIsPower.getToken()).booleanValue()) {
                 outNumber /= 2.0;
             }
-            if ( outNumber < minValue ) {
+
+            if (outNumber < minValue) {
                 outNumber = minValue;
             }
         }
+
         return new DoubleToken(outNumber);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private DoubleToken[] _resultArray = new DoubleToken[1];
 }

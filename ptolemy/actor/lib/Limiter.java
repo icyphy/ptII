@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Limiter
+
 /**
    Produce an output token on each firing with a value that is
    equal to the input if the input lies between the <i>bottom</i> and
@@ -50,9 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (yuhong)
 */
-
 public class Limiter extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,7 +61,7 @@ public class Limiter extends Transformer {
      *   actor with this name.
      */
     public Limiter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         bottom = new Parameter(this, "bottom");
         bottom.setExpression("0.0");
@@ -98,11 +97,12 @@ public class Limiter extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            DoubleToken in = (DoubleToken)input.get(0);
+            DoubleToken in = (DoubleToken) input.get(0);
             double inValue = in.doubleValue();
-            if (inValue < ((DoubleToken)bottom.getToken()).doubleValue()) {
+
+            if (inValue < ((DoubleToken) bottom.getToken()).doubleValue()) {
                 output.send(0, bottom.getToken());
-            } else if (inValue > ((DoubleToken)top.getToken()).doubleValue()) {
+            } else if (inValue > ((DoubleToken) top.getToken()).doubleValue()) {
                 output.send(0, top.getToken());
             } else {
                 output.send(0, in);

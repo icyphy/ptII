@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.HashSet;
@@ -49,8 +48,10 @@ import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DeadObjectEliminator
+
 /**
    A transformer that removes unnecessary object creations.  If
    an attribute, type or token is created, but never used anywhere, then
@@ -67,7 +68,8 @@ import soot.toolkits.scalar.SimpleLocalDefs;
 public class DeadObjectEliminator extends BodyTransformer {
     /** Construct a new transformer
      */
-    private DeadObjectEliminator() {}
+    private DeadObjectEliminator() {
+    }
 
     /* Return the instance of this transformer.
      */
@@ -75,27 +77,25 @@ public class DeadObjectEliminator extends BodyTransformer {
         return instance;
     }
 
-    protected void internalTransform(Body body,
-            String phaseName, Map options) {
+    protected void internalTransform(Body body, String phaseName, Map options) {
         // Assume that all classes we care about have been loaded...
         Hierarchy hierarchy = Scene.v().getActiveHierarchy();
         Set set = new HashSet();
 
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.tokenClass));
+                PtolemyUtilities.tokenClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.baseTypeClass));
+                PtolemyUtilities.baseTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.arrayTypeClass));
+                PtolemyUtilities.arrayTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.recordTypeClass));
+                PtolemyUtilities.recordTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.matrixTypeClass));
+                PtolemyUtilities.matrixTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.attributeClass));
+                PtolemyUtilities.attributeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           Scene.v().loadClassAndSupport(
-                                   "ptolemy.data.expr.PtParser")));
+                Scene.v().loadClassAndSupport("ptolemy.data.expr.PtParser")));
 
         _removeDeadObjectCreation(body, set);
     }
@@ -107,41 +107,48 @@ public class DeadObjectEliminator extends BodyTransformer {
      *  this when we have knowledge of the given class that side
      *  effects are not possible, or that the object is immutable.
      */
-    private static void _removeDeadObjectCreation(
-            Body body, Set classSet) {
+    private static void _removeDeadObjectCreation(Body body, Set classSet) {
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
+
         for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
-            Stmt stmt = (Stmt)units.next();
+                units.hasNext();) {
+            Stmt stmt = (Stmt) units.next();
+
             if (!stmt.containsInvokeExpr()) {
                 continue;
             }
+
             ValueBox box = stmt.getInvokeExprBox();
             Value value = box.getValue();
+
             if (value instanceof SpecialInvokeExpr) {
-                SpecialInvokeExpr r = (SpecialInvokeExpr)value;
+                SpecialInvokeExpr r = (SpecialInvokeExpr) value;
+
                 //      System.out.println("compare " + r.getMethod().getDeclaringClass());
                 //                 System.out.println("with " + theClass);
-                if (classSet.contains(r.getMethod().getDeclaringClass()) &&
-                        !liveLocals.getLiveLocalsAfter(stmt).contains(
-                                r.getBase())) {
+                if (classSet.contains(r.getMethod().getDeclaringClass())
+                        && !liveLocals.getLiveLocalsAfter(stmt).contains(r
+                            .getBase())) {
                     // Remove the initialization and the constructor.
                     // Note: This assumes a fairly tight coupling between
                     // the new and the object constructor.  This may
                     // not be true.
                     body.getUnits().remove(stmt);
+
                     for (Iterator defs = localDefs.getDefsOfAt(
-                                 (Local)r.getBase(), stmt).iterator();
-                         defs.hasNext();) {
-                        Unit defUnit = (Unit)defs.next();
+                                (Local) r.getBase(), stmt).iterator();
+                            defs.hasNext();) {
+                        Unit defUnit = (Unit) defs.next();
+
                         if (defUnit instanceof DefinitionStmt) {
                             // If we are keeping a definition, then
                             // set the definition to be null.
-                            ((DefinitionStmt)defUnit).getRightOpBox().
-                                setValue(NullConstant.v());
+                            ((DefinitionStmt) defUnit).getRightOpBox().setValue(NullConstant
+                                .v());
                         } else {
                             // I can't imagine when this would
                             // be true?
@@ -155,17 +162,3 @@ public class DeadObjectEliminator extends BodyTransformer {
 
     private static DeadObjectEliminator instance = new DeadObjectEliminator();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

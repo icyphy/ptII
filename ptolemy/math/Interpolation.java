@@ -25,12 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// Interpolation
+
 /**
    This class provides algorithms to do interpolation. Currently, zero,
    first, and third order interpolations are supported. These are the
@@ -61,9 +61,7 @@ package ptolemy.math;
    @Pt.ProposedRating Yellow (yuhong)
    @Pt.AcceptedRating red (cxh)
 */
-
 public class Interpolation {
-
     /** Construct an instance of Interpolation using the default parameters.
      */
     public Interpolation() {
@@ -109,35 +107,36 @@ public class Interpolation {
      */
     public double interpolate(int index) {
         int numRefPoints = _indexes.length;
+
         if (numRefPoints != _values.length) {
             throw new IllegalStateException("Interpolation.interpolate(): "
-                    + "The index and value arrays do "
-                    + "not have the same length.");
+                + "The index and value arrays do "
+                + "not have the same length.");
         }
 
-        int largestIndex = _indexes[numRefPoints-1];
-        if (_period != 0 && _period <= largestIndex) {
+        int largestIndex = _indexes[numRefPoints - 1];
+
+        if ((_period != 0) && (_period <= largestIndex)) {
             throw new IllegalStateException("Interpolation.interpolate(): "
-                    + "The period is not 0 and not "
-                    + "greater than the "
-                    + "largest index.");
+                + "The period is not 0 and not " + "greater than the "
+                + "largest index.");
         }
 
-        if (index < 0 || index > largestIndex) {
+        if ((index < 0) || (index > largestIndex)) {
             if (_period == 0) {
                 return 0.0;
             } else {
                 // convert index to a value within [0, period-1]
                 if (index < 0) {
-                    index += ((-index/_period)+1) * _period;
+                    index += (((-index / _period) + 1) * _period);
                 }
+
                 index %= _period;
             }
         }
 
         // index is now within [0, period-1]. If it is outside the range of
         // the smallest and the largest index, values must be periodic.
-
         // Handle a special case where the number of reference points is
         // 1. The code for order 3 later won't work for this case.
         if (numRefPoints == 1) {
@@ -164,76 +163,90 @@ public class Interpolation {
             if (indexIndexStart != -1) {
                 return _values[indexIndexStart];
             } else {
-                return _values[numRefPoints-1];
+                return _values[numRefPoints - 1];
             }
         }
 
         // order must be 1 or 3, need at least the two points surrounding
         // the interpolation point.
-        int iStart, iEnd;
-        double vStart, vEnd;
+        int iStart;
+
+        // order must be 1 or 3, need at least the two points surrounding
+        // the interpolation point.
+        int iEnd;
+        double vStart;
+        double vEnd;
+
         if (indexIndexStart == -1) {
-            iStart = _indexes[numRefPoints-1] - _period;
-            vStart = _values[numRefPoints-1];
+            iStart = _indexes[numRefPoints - 1] - _period;
+            vStart = _values[numRefPoints - 1];
         } else {
             iStart = _indexes[indexIndexStart];
             vStart = _values[indexIndexStart];
         }
 
-        if (indexIndexStart == numRefPoints-1) {
+        if (indexIndexStart == (numRefPoints - 1)) {
             iEnd = _indexes[0] + _period;
             vEnd = _values[0];
         } else {
-            iEnd = _indexes[indexIndexStart+1];
-            vEnd = _values[indexIndexStart+1];
+            iEnd = _indexes[indexIndexStart + 1];
+            vEnd = _values[indexIndexStart + 1];
         }
 
         if (_order == 1) {
-            return vStart + (index-iStart)*(vEnd-vStart)/(iEnd-iStart);
+            return vStart
+            + (((index - iStart) * (vEnd - vStart)) / (iEnd - iStart));
         }
 
         // order is 3. Need the points before Start and the point after End
         // to compute the tangent at Start and End.
-        int iBeforeStart, iAfterEnd;
-        double vBeforeStart, vAfterEnd;
+        int iBeforeStart;
+
+        // order is 3. Need the points before Start and the point after End
+        // to compute the tangent at Start and End.
+        int iAfterEnd;
+        double vBeforeStart;
+        double vAfterEnd;
+
         if (indexIndexStart == -1) {
-            iBeforeStart = _indexes[numRefPoints-2] - _period;
-            vBeforeStart = _values[numRefPoints-2];
+            iBeforeStart = _indexes[numRefPoints - 2] - _period;
+            vBeforeStart = _values[numRefPoints - 2];
         } else if (indexIndexStart == 0) {
             if (_period > 0) {
-                iBeforeStart = _indexes[numRefPoints-1] - _period;
-                vBeforeStart = _values[numRefPoints-1];
+                iBeforeStart = _indexes[numRefPoints - 1] - _period;
+                vBeforeStart = _values[numRefPoints - 1];
             } else {
                 // Not periodic
                 iBeforeStart = _indexes[0] - 1;
                 vBeforeStart = 0.0;
             }
         } else {
-            iBeforeStart = _indexes[indexIndexStart-1];
-            vBeforeStart = _values[indexIndexStart-1];
+            iBeforeStart = _indexes[indexIndexStart - 1];
+            vBeforeStart = _values[indexIndexStart - 1];
         }
 
-        if (indexIndexStart == numRefPoints-1) {
+        if (indexIndexStart == (numRefPoints - 1)) {
             iAfterEnd = _indexes[1] + _period;
             vAfterEnd = _values[1];
-        } else if (indexIndexStart == numRefPoints-2) {
+        } else if (indexIndexStart == (numRefPoints - 2)) {
             if (_period > 0) {
                 iAfterEnd = _indexes[0] + _period;
                 vAfterEnd = _values[0];
             } else {
                 // Not periodic
-                iAfterEnd = _indexes[numRefPoints-1] + 1;
+                iAfterEnd = _indexes[numRefPoints - 1] + 1;
                 vAfterEnd = 0.0;
             }
         } else {
-            iAfterEnd = _indexes[indexIndexStart+2];
-            vAfterEnd = _values[indexIndexStart+2];
+            iAfterEnd = _indexes[indexIndexStart + 2];
+            vAfterEnd = _values[indexIndexStart + 2];
         }
 
         // computer the tangent at Start and End.
-        double tanBefore2Start = (vStart-vBeforeStart)/(iStart-iBeforeStart);
-        double tanStart2End = (vEnd-vStart)/(iEnd-iStart);
-        double tanEnd2After = (vAfterEnd-vEnd)/(iAfterEnd-iEnd);
+        double tanBefore2Start = (vStart - vBeforeStart) / (iStart
+            - iBeforeStart);
+        double tanStart2End = (vEnd - vStart) / (iEnd - iStart);
+        double tanEnd2After = (vAfterEnd - vEnd) / (iAfterEnd - iEnd);
 
         double tanStart = 0.5 * (tanBefore2Start + tanStart2End);
         double tanEnd = 0.5 * (tanStart2End + tanEnd2After);
@@ -248,11 +261,13 @@ public class Interpolation {
      */
     public void setIndexes(int[] indexes) {
         int prev = -1;
+
         for (int i = 0; i < indexes.length; i++) {
-            if (indexes[i] <= prev ) {
-                throw new IllegalArgumentException("Interpolation.setIndexes" +
-                        " index array is not increasing and non-negative.");
+            if (indexes[i] <= prev) {
+                throw new IllegalArgumentException("Interpolation.setIndexes"
+                    + " index array is not increasing and non-negative.");
             }
+
             prev = indexes[i];
         }
 
@@ -264,10 +279,11 @@ public class Interpolation {
      *  @exception IllegalArgumentException If the order is not 0, 1, or 3.
      */
     public void setOrder(int order) {
-        if (order != 0 && order != 1 && order != 3) {
-            throw new IllegalArgumentException("Interpolation.setOrder: " +
-                    "The order " + order + " is not valid.");
+        if ((order != 0) && (order != 1) && (order != 3)) {
+            throw new IllegalArgumentException("Interpolation.setOrder: "
+                + "The order " + order + " is not valid.");
         }
+
         _order = order;
     }
 
@@ -277,9 +293,10 @@ public class Interpolation {
      */
     public void setPeriod(int period) {
         if (period < 0) {
-            throw new IllegalArgumentException("Interpolation.setPeriod: " +
-                    "The period is negative.");
+            throw new IllegalArgumentException("Interpolation.setPeriod: "
+                + "The period is negative.");
         }
+
         _period = period;
     }
 
@@ -292,14 +309,12 @@ public class Interpolation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Return the Hermite curve interpolation. The arguments are: the
     // interpolation point index, the index/value/tangent of the starting
     // reference point, the index/value/tangent of the ending reference
     // point.
-    private double _hermite(int index,
-            int iStart, double vStart, double tanStart,
-            int iEnd, double vEnd, double tanEnd) {
+    private double _hermite(int index, int iStart, double vStart,
+        double tanStart, int iEnd, double vEnd, double tanEnd) {
         // forming the Hermite matrix M
         double[][] M = new double[4][4];
         double iStartSqr = iStart * iStart;
@@ -338,16 +353,15 @@ public class Interpolation {
         double[] coef = DoubleMatrixMath.multiply(Gh, MInverse);
 
         // compute the interpolated value
-        double indexSqr = index*index;
-        return coef[0]*indexSqr*index + coef[1]*indexSqr
-            + coef[2]*index + coef[3];
+        double indexSqr = index * index;
+        return (coef[0] * indexSqr * index) + (coef[1] * indexSqr)
+        + (coef[2] * index) + coef[3];
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private int[] _indexes = {0, 1};
-    private double[] _values = {1.0, 0.0};
+    private int[] _indexes = { 0, 1 };
+    private double[] _values = { 1.0, 0.0 };
     private int _period = 2;
     private int _order = 0;
 }

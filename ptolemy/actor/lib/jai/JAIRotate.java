@@ -26,8 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -41,18 +39,20 @@ import javax.media.jai.RenderedOp;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIRotate
+
 /**
    Rotate an image around a given point.  The amount of rotation is in
    degrees.  If the output is displayed, the image will be displayed the
@@ -66,9 +66,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIRotate extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,9 +76,8 @@ public class JAIRotate extends Transformer {
      *   actor with this name.
      */
     public JAIRotate(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
 
         degrees = new PortParameter(this, "degrees");
         degrees.setTypeEquals(BaseType.DOUBLE);
@@ -94,8 +91,7 @@ public class JAIRotate extends Transformer {
 
         output.setTypeEquals(BaseType.OBJECT);
 
-        subSampleBits =
-            new Parameter(this, "subSampleBits", new IntToken(8));
+        subSampleBits = new Parameter(this, "subSampleBits", new IntToken(8));
 
         xOrigin = new Parameter(this, "xOrigin", new IntToken(0));
         yOrigin = new Parameter(this, "yOrigin", new IntToken(0));
@@ -135,9 +131,10 @@ public class JAIRotate extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == interpolationType) {
             String typeName = interpolationType.getExpression();
+
             if (typeName.equals("bicubic")) {
                 _interpolationType = _BICUBIC;
             } else if (typeName.equals("bicubic2")) {
@@ -148,15 +145,14 @@ public class JAIRotate extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized interpolation type: " + typeName);
+                    "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == subSampleBits) {
-            _subSampleBits =
-                ((IntToken)subSampleBits.getToken()).intValue();
+            _subSampleBits = ((IntToken) subSampleBits.getToken()).intValue();
         } else if (attribute == xOrigin) {
-            _xOrigin = ((IntToken)xOrigin.getToken()).intValue();
+            _xOrigin = ((IntToken) xOrigin.getToken()).intValue();
         } else if (attribute == yOrigin) {
-            _yOrigin = ((IntToken)yOrigin.getToken()).intValue();
+            _yOrigin = ((IntToken) yOrigin.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -169,7 +165,7 @@ public class JAIRotate extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         degrees.update();
-        _degrees = ((DoubleToken)degrees.getToken()).doubleValue();
+        _degrees = ((DoubleToken) degrees.getToken()).doubleValue();
 
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
@@ -185,28 +181,36 @@ public class JAIRotate extends Transformer {
             _debug("oldImage max y " + oldImage.getMaxY());
         }
 
-        parameters.add((float)_xOrigin);
-        parameters.add((float)_yOrigin);
-        float angle = (float)(_degrees * (Math.PI/180.0F));
+        parameters.add((float) _xOrigin);
+        parameters.add((float) _yOrigin);
+
+        float angle = (float) (_degrees * (Math.PI / 180.0F));
         parameters.add(angle);
-        switch(_interpolationType) {
+
+        switch (_interpolationType) {
         case _BICUBIC:
             parameters.add(new InterpolationBicubic(_subSampleBits));
             break;
+
         case _BICUBIC2:
             parameters.add(new InterpolationBicubic2(_subSampleBits));
             break;
+
         case _BILINEAR:
             parameters.add(new InterpolationBilinear(_subSampleBits));
             break;
+
         case _NEARESTNEIGHBOR:
             parameters.add(new InterpolationNearest());
             break;
+
         default:
             throw new IllegalActionException(
-                    "Invalid value for interpolationType");
+                "Invalid value for interpolationType");
         }
+
         RenderedOp newImage = JAI.create("Rotate", parameters);
+
         if (_debugging) {
             _debug("newImage width " + newImage.getWidth());
             _debug("newImage height " + newImage.getHeight());
@@ -215,8 +219,10 @@ public class JAIRotate extends Transformer {
             _debug("newImage min y " + newImage.getMinY());
             _debug("newImage max y " + newImage.getMaxY());
         }
+
         output.send(0, new JAIImageToken(newImage));
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -37,8 +37,10 @@ import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SceneGraphToken
+
 /**
    A token that contains a SceneGraph.  This is used by the GR domain to get
    proper type checking across GR actors.
@@ -51,7 +53,6 @@ import ptolemy.kernel.util.IllegalActionException;
 
 */
 public class SceneGraphToken extends Token {
-
     public SceneGraphToken(Node node) {
         super();
         _node = node;
@@ -84,11 +85,12 @@ public class SceneGraphToken extends Token {
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof SceneGraphToken) {
             return new BooleanToken(this == token);
-        } else
+        } else {
             throw new IllegalActionException(
-                    "Equality test not supported between "
-                    + this.getClass().getName() + " and "
-                    + token.getClass().getName() + ".");
+                "Equality test not supported between "
+                + this.getClass().getName() + " and "
+                + token.getClass().getName() + ".");
+        }
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -103,7 +105,6 @@ public class SceneGraphToken extends Token {
     }
 
     public static class TestType implements Type, Serializable {
-
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -121,14 +122,13 @@ public class SceneGraphToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
-        public Token convert(Token token)
-                throws IllegalActionException {
+        public Token convert(Token token) throws IllegalActionException {
             if (token instanceof SceneGraphToken) {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                        + token +
-                        " into a scene graph token, which is not possible.");
+                    + token
+                    + " into a scene graph token, which is not possible.");
             }
         }
 
@@ -173,7 +173,6 @@ public class SceneGraphToken extends Token {
         public int getTypeHash() {
             return Type.HASH_INVALID;
         }
-
 
         /** Determine if this type corresponds to an instantiable token
          *  classes. A BaseType is instantiable if it does not correspond

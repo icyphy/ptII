@@ -28,7 +28,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -40,6 +39,7 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
 
+
 /** A base class for C code generators in Ptolemy II.
 
 @author Shuvra S. Bhattacharyya
@@ -49,9 +49,7 @@ import soot.Type;
 @Pt.AcceptedRating Red (ssb)
 
 */
-
 public abstract class CodeGenerator {
-
     /** Construct a new code generator */
     public CodeGenerator() {
         _context = new Context();
@@ -77,7 +75,6 @@ public abstract class CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /** Enclose a given string of text within appropriate delimiters to
      *  form a comment in the generated code.
      *  Also, append a new line after the comment.
@@ -99,14 +96,12 @@ public abstract class CodeGenerator {
         while (i.hasNext()) {
             String name = i.next().toString();
 
-            code = code + "#ifndef A_DEF_"+ name + "\n"
-                +"#define A_DEF_" + name + "\n"
-                +"typedef PCCG_ARRAY_INSTANCE_PTR " + name +";\n"
-                +"#endif\n";
+            code = code + "#ifndef A_DEF_" + name + "\n" + "#define A_DEF_"
+                + name + "\n" + "typedef PCCG_ARRAY_INSTANCE_PTR " + name
+                + ";\n" + "#endif\n";
         }
 
         return code;
-
     }
 
     /** Generate include directives for all types that are required for the
@@ -117,23 +112,27 @@ public abstract class CodeGenerator {
         StringBuffer headerCode = new StringBuffer();
 
         Iterator includeFiles = _context.getIncludeFiles();
+
         if (includeFiles.hasNext()) {
             headerCode.append(_comment("System, runtime and "
-                                      +"CSwitch-generated include files"));
+                    + "CSwitch-generated include files"));
         }
+
         while (includeFiles.hasNext()) {
             headerCode.append("#include ");
-            headerCode.append((String)(includeFiles.next()));
+            headerCode.append((String) (includeFiles.next()));
             headerCode.append("\n");
         }
 
         Iterator requiredTypes = _getRequiredIncludeFiles();
+
         if (requiredTypes.hasNext()) {
             headerCode.append("\n" + _comment("Converted classes"));
         }
+
         while (requiredTypes.hasNext()) {
             headerCode.append("#include \"");
-            headerCode.append((String)(requiredTypes.next()));
+            headerCode.append((String) (requiredTypes.next()));
             headerCode.append("\"\n");
         }
 
@@ -159,14 +158,12 @@ public abstract class CodeGenerator {
         //If return type is an array, record this
         //(If parameter type is an array, it is recorded by
         // _generateParameterTypeList
-
         if (returnType instanceof ArrayType) {
             _context.addArrayInstance(CNames.typeNameOf(returnType));
         }
 
         return header.toString();
     }
-
 
     /** Generate code for the parameter type list of a method,
      *  excluding parentheses.
@@ -177,14 +174,19 @@ public abstract class CodeGenerator {
         StringBuffer code = new StringBuffer();
         Iterator parameters = method.getParameterTypes().iterator();
         int numberOfParameters = 0;
+
         if (!method.isStatic()) {
             SootClass source = method.getDeclaringClass();
             code.append(CNames.instanceNameOf(method.getDeclaringClass()));
             numberOfParameters++;
         }
+
         while (parameters.hasNext()) {
-            if ((++numberOfParameters) > 1) code.append(", ");
-            Type parameterType = (Type)(parameters.next());
+            if ((++numberOfParameters) > 1) {
+                code.append(", ");
+            }
+
+            Type parameterType = (Type) (parameters.next());
             code.append(CNames.typeNameOf(parameterType));
 
             _updateRequiredTypes(parameterType);
@@ -193,6 +195,7 @@ public abstract class CodeGenerator {
                 _context.addArrayInstance(CNames.typeNameOf(parameterType));
             }
         }
+
         return code.toString();
     }
 
@@ -236,17 +239,18 @@ public abstract class CodeGenerator {
     protected void _updateRequiredTypes(Type type) {
         if (!_context.getDisableImports()) {
             SootClass source = null;
-            if (type instanceof RefType) {
-                source = ((RefType)type).getSootClass();
-            } else if ((type instanceof ArrayType) &&
-                    (((ArrayType)type).baseType instanceof RefType)) {
-                source = ((RefType)(((ArrayType)type).baseType)).getSootClass();
-            }
-            if (source != null) {
 
+            if (type instanceof RefType) {
+                source = ((RefType) type).getSootClass();
+            } else if ((type instanceof ArrayType)
+                    && (((ArrayType) type).baseType instanceof RefType)) {
+                source = ((RefType) (((ArrayType) type).baseType)).getSootClass();
+            }
+
+            if (source != null) {
                 if (!_requiredTypeMap.containsKey(source)) {
                     _requiredTypeMap.put(source,
-                            CNames.includeFileNameOf(source));
+                        CNames.includeFileNameOf(source));
                 }
             }
         }
@@ -261,7 +265,6 @@ public abstract class CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // Code generation context information.
     protected Context _context;
 
@@ -269,9 +272,6 @@ public abstract class CodeGenerator {
     // include file names.
     protected HashMap _requiredTypeMap = new HashMap();
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 }

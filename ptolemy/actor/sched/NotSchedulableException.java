@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 saving the actors as an enumeration, but this value was not
 used anywhere so I pulled out that code.
 */
-
 package ptolemy.actor.sched;
 
 import java.util.ArrayList;
@@ -38,8 +37,10 @@ import java.util.List;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NotSchedulableException
+
 /**
    This is a special case of the InvalidStateException such that a
    CompositeActor is not schedulable by a certain scheduler.
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.Nameable;
    @see ptolemy.kernel.util.InvalidStateException
 */
 public class NotSchedulableException extends InvalidStateException {
-
     /** Constructs an Exception with only a detail message.
      *  @param detail The message.
      */
@@ -75,7 +75,7 @@ public class NotSchedulableException extends InvalidStateException {
      *  @param detail The message.
      */
     public NotSchedulableException(Nameable nameable1, Nameable nameable2,
-            String detail) {
+        String detail) {
         super(nameable1, nameable2, detail);
     }
 
@@ -95,13 +95,13 @@ public class NotSchedulableException extends InvalidStateException {
      *  @param detail The message.
      *  @param actors The unschedulable actors.
      */
-    public NotSchedulableException(Collection actors,
-            Throwable cause, String detail) {
+    public NotSchedulableException(Collection actors, Throwable cause,
+        String detail) {
         super(actors, cause, detail);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Convert from an Enumeration to a List.
     //
     // JDK1.4 has a Collections.list(Enumeration) method
@@ -111,9 +111,11 @@ public class NotSchedulableException extends InvalidStateException {
     // http://java.sun.com/docs/books/tutorial/collections/interoperability/compatibility.html
     private static List _list(Enumeration objects) {
         List list = new ArrayList();
+
         while (objects.hasMoreElements()) {
             list.add(objects.nextElement());
         }
+
         return list;
     }
 }

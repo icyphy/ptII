@@ -29,13 +29,14 @@
    Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtMethodCallNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents method call nodes
@@ -71,7 +72,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtMethodCallNode extends ASTPtRootNode {
-
     public ASTPtMethodCallNode(int id) {
         super(id);
     }
@@ -88,14 +88,14 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
 
     public void jjtClose() {
         super.jjtClose();
+
         // We cannot assume anything about a method call.
         _isConstant = false;
     }
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitMethodCallNode(this);
     }
 

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.kernel;
 
 import java.util.ArrayList;
@@ -43,8 +42,10 @@ import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.util.Chain;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EntitySootClass
+
 /**
 
 @author Stephen Neuendorffer, Christopher Hylands
@@ -54,36 +55,37 @@ import soot.util.Chain;
 @Pt.AcceptedRating Red (cxh)
 */
 public class EntitySootClass extends SootClass {
-    public EntitySootClass(SootClass superClass,
-            String name, int modifier) {
+    public EntitySootClass(SootClass superClass, String name, int modifier) {
         super(name, modifier);
         setSuperclass(superClass);
 
         Type stringType = RefType.v("java.lang.String");
-        Type compositeEntityType =
-            RefType.v("ptolemy.kernel.CompositeEntity");
+        Type compositeEntityType = RefType.v("ptolemy.kernel.CompositeEntity");
         Type workspaceType = RefType.v("ptolemy.kernel.util.Workspace");
 
-        _initMethod = new SootMethod("__CGInit",
-                new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+        _initMethod = new SootMethod("__CGInit", new LinkedList(),
+                VoidType.v(), Modifier.PUBLIC);
         addMethod(_initMethod);
 
         // Now create constructors to call the superclass constructors,
         // and then the __CGInit method.
         for (Iterator methods = getSuperclass().getMethods().iterator();
-             methods.hasNext();) {
-            SootMethod method = (SootMethod)methods.next();
-            if (!method.getName().equals("<init>")) continue;
+                methods.hasNext();) {
+            SootMethod method = (SootMethod) methods.next();
+
+            if (!method.getName().equals("<init>")) {
+                continue;
+            }
+
             // create the new constructor.
-            SootMethod constructor = _createConstructor(this,
-                    method);
-            JimpleBody body = (JimpleBody)constructor.getActiveBody();
+            SootMethod constructor = _createConstructor(this, method);
+            JimpleBody body = (JimpleBody) constructor.getActiveBody();
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
+
             // Call the __CGInit method.
-            units.add(Jimple.v().newInvokeStmt(
-                              Jimple.v().newVirtualInvokeExpr(thisLocal,
-                                      _initMethod)));
+            units.add(Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(thisLocal,
+                        _initMethod)));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -100,7 +102,7 @@ public class EntitySootClass extends SootClass {
     // given method with the same arguments, and then calls the
     // shared _CGInit initialization method.
     private SootMethod _createConstructor(SootClass theClass,
-            SootMethod superConstructor) {
+        SootMethod superConstructor) {
         // Create the constructor.
         SootMethod constructor = new SootMethod("<init>",
                 superConstructor.getParameterTypes(),
@@ -108,11 +110,12 @@ public class EntitySootClass extends SootClass {
                 superConstructor.getModifiers());
 
         theClass.addMethod(constructor);
+
         // System.out.println("creating constructor = " +
         //        constructor.getSignature());
-
         // create empty body
         JimpleBody body = Jimple.v().newBody(constructor);
+
         // Add this and read the parameters into locals
         body.insertIdentityStmts();
         constructor.setActiveBody(body);
@@ -127,8 +130,8 @@ public class EntitySootClass extends SootClass {
         parameterList.remove(thisLocal);
 
         // Call the super constructor.
-        units.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
-                                                   thisLocal, superConstructor, parameterList)));
+        units.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(thisLocal,
+                    superConstructor, parameterList)));
 
         return constructor;
     }

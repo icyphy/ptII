@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import java.util.LinkedList;
@@ -49,6 +48,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Autocorrelation
@@ -113,9 +113,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class Autocorrelation extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -125,13 +123,12 @@ public class Autocorrelation extends SDFTransformer {
      *   actor with this name.
      */
     public Autocorrelation(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input_tokenConsumptionRate.setExpression("numberOfInputs");
 
-        numberOfInputs =
-            new Parameter(this, "numberOfInputs", new IntToken(256));
+        numberOfInputs = new Parameter(this, "numberOfInputs", new IntToken(256));
         numberOfInputs.setTypeEquals(BaseType.INT);
 
         numberOfLags = new Parameter(this, "numberOfLags", new IntToken(64));
@@ -140,8 +137,8 @@ public class Autocorrelation extends SDFTransformer {
         biased = new Parameter(this, "biased", new BooleanToken(false));
         biased.setTypeEquals(BaseType.BOOLEAN);
 
-        symmetricOutput =
-            new Parameter(this, "symmetricOutput", new BooleanToken(false));
+        symmetricOutput = new Parameter(this, "symmetricOutput",
+                new BooleanToken(false));
         symmetricOutput.setTypeEquals(BaseType.BOOLEAN);
 
         input.setTypeAtLeast(new FunctionTerm(input));
@@ -191,37 +188,33 @@ public class Autocorrelation extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == numberOfInputs
-                || attribute == numberOfLags
-                || attribute == symmetricOutput) {
+        throws IllegalActionException {
+        if ((attribute == numberOfInputs) || (attribute == numberOfLags)
+                || (attribute == symmetricOutput)) {
             _numberOfInputs = ((IntToken) numberOfInputs.getToken()).intValue();
             _numberOfLags = ((IntToken) numberOfLags.getToken()).intValue();
-            _symmetricOutput =
-                ((BooleanToken) symmetricOutput.getToken()).booleanValue();
+            _symmetricOutput = ((BooleanToken) symmetricOutput.getToken())
+                .booleanValue();
 
             if (_numberOfInputs <= 0) {
-                throw new IllegalActionException(
-                        this,
-                        "Invalid numberOfInputs: " + _numberOfInputs);
+                throw new IllegalActionException(this,
+                    "Invalid numberOfInputs: " + _numberOfInputs);
             }
 
             if (_numberOfLags <= 0) {
-                throw new IllegalActionException(
-                        this,
-                        "Invalid numberOfLags: " + _numberOfLags);
+                throw new IllegalActionException(this,
+                    "Invalid numberOfLags: " + _numberOfLags);
             }
 
             if (_symmetricOutput) {
-                _lengthOfOutput = 2 * _numberOfLags + 1;
+                _lengthOfOutput = (2 * _numberOfLags) + 1;
             } else {
                 _lengthOfOutput = 2 * _numberOfLags;
             }
 
-            if (_outputs == null || _lengthOfOutput != _outputs.length) {
+            if ((_outputs == null) || (_lengthOfOutput != _outputs.length)) {
                 _outputs = new Token[_lengthOfOutput];
             }
-
         } else {
             super.attributeChanged(attribute);
         }
@@ -234,8 +227,7 @@ public class Autocorrelation extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Autocorrelation newObject = (Autocorrelation) super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
         return newObject;
@@ -249,48 +241,51 @@ public class Autocorrelation extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        boolean biasedValue = ((BooleanToken)biased.getToken()).booleanValue();
+
+        boolean biasedValue = ((BooleanToken) biased.getToken()).booleanValue();
         Token[] inputValues = input.get(0, _numberOfInputs);
         int notSymmetric = _symmetricOutput ? 0 : 1;
+
         // NOTE: Is there a better way to determine whether the input
         // is complex?
         boolean complex = inputValues[0] instanceof ComplexToken;
+
         for (int i = _numberOfLags; i >= 0; i--) {
             Token sum = inputValues[0].zero();
-            for (int j = 0; j < _numberOfInputs - i; j++) {
+
+            for (int j = 0; j < (_numberOfInputs - i); j++) {
                 if (complex) {
-                    ComplexToken conjugate =
-                        new ComplexToken(
-                                ((ComplexToken) inputValues[j])
-                                .complexValue()
-                                .conjugate());
+                    ComplexToken conjugate = new ComplexToken(((ComplexToken) inputValues[j]).complexValue()
+                                                               .conjugate());
                     sum = sum.add(conjugate.multiply(inputValues[j + i]));
                 } else {
                     sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
                 }
             }
+
             if (biasedValue) {
-                _outputs[i + _numberOfLags - notSymmetric] =
-                    sum.divide(numberOfInputs.getToken());
+                _outputs[(i + _numberOfLags) - notSymmetric] = sum.divide(numberOfInputs
+                        .getToken());
             } else {
-                _outputs[i + _numberOfLags - notSymmetric] =
-                    sum.divide(new IntToken(_numberOfInputs - i));
+                _outputs[(i + _numberOfLags) - notSymmetric] = sum.divide(new IntToken(_numberOfInputs
+                            - i));
             }
         }
+
         // Now fill in the first half, which by symmetry is just
         // identical to what was just produced, or its conjugate if
         // the input is complex.
         for (int i = _numberOfLags - 1 - notSymmetric; i >= 0; i--) {
             if (complex) {
-                ComplexToken candidate =
-                    (ComplexToken) _outputs[2 * (_numberOfLags - notSymmetric)
-                            - i];
-                _outputs[i] =
-                    new ComplexToken(candidate.complexValue().conjugate());
+                ComplexToken candidate = (ComplexToken) _outputs[(2 * (_numberOfLags
+                    - notSymmetric)) - i];
+                _outputs[i] = new ComplexToken(candidate.complexValue()
+                                                        .conjugate());
             } else {
-                _outputs[i] = _outputs[2 * (_numberOfLags - notSymmetric) - i];
+                _outputs[i] = _outputs[(2 * (_numberOfLags - notSymmetric)) - i];
             }
         }
+
         output.broadcast(new ArrayToken(_outputs));
     }
 
@@ -304,6 +299,7 @@ public class Autocorrelation extends SDFTransformer {
             if (_debugging) {
                 _debug("Called prefire(), which returns false.");
             }
+
             return false;
         } else {
             return super.prefire();
@@ -316,9 +312,11 @@ public class Autocorrelation extends SDFTransformer {
      */
     public List typeConstraintList() {
         List result = super.typeConstraintList();
+
         if (result == null) {
             result = new LinkedList();
         }
+
         ArrayType outArrType = (ArrayType) output.getType();
         InequalityTerm elementTerm = outArrType.getElementTypeTerm();
         Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
@@ -329,7 +327,6 @@ public class Autocorrelation extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _numberOfInputs;
     private int _numberOfLags;
     private int _lengthOfOutput;
@@ -338,13 +335,11 @@ public class Autocorrelation extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // This class implements a monotonic function of the input port
     // type. The result of the function is the same as the input type
     // if is not Int or IntMatrix; otherwise, the result is Double
     // or DoubleMatrix, respectively.
     private class FunctionTerm extends MonotonicFunction {
-
         // The constructor takes a port argument so that the clone()
         // method can construct an instance of this class for the
         // input port on the clone.
@@ -360,6 +355,7 @@ public class Autocorrelation extends SDFTransformer {
          */
         public Object getValue() {
             Type inputType = _port.getType();
+
             if (inputType == BaseType.INT) {
                 return BaseType.DOUBLE;
             } else if (inputType == BaseType.INT_MATRIX) {
@@ -381,7 +377,6 @@ public class Autocorrelation extends SDFTransformer {
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
-
         private TypedIOPort _port;
     }
 }

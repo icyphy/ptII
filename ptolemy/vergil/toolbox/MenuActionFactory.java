@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import javax.swing.Action;
@@ -34,8 +33,10 @@ import javax.swing.JMenuItem;
 import ptolemy.kernel.util.NamedObj;
 import diva.gui.toolbox.JContextMenu;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MenuActionFactory
+
 /**
    A factory that adds a given action a given context menu.
 
@@ -55,10 +56,9 @@ public class MenuActionFactory implements MenuItemFactory {
      * parameters on the given target.
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
-        return menu.add(_action, (String)_action.getValue(Action.NAME));
+        return menu.add(_action, (String) _action.getValue(Action.NAME));
     }
 
     // The action that will be added to the context menu.
     private Action _action;
 }
-

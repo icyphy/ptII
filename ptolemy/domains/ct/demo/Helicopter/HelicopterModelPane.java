@@ -24,10 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.ct.demo.Helicopter;
 
-// Ptolemy imports
 import java.awt.GridLayout;
 import java.util.Iterator;
 
@@ -37,8 +35,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.ModelPane;
 import ptolemy.actor.gui.Placeable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HelicopterModelPane
+
 /**
    This class extends the ModelPane class to place the plots in the
    helicopter applet in a grid way.
@@ -51,7 +51,6 @@ import ptolemy.actor.gui.Placeable;
    @Pt.AcceptedRating Red (eal)
 */
 public class HelicopterModelPane extends ModelPane {
-
     /** Construct a panel for interacting with the specified Ptolemy II model.
      *  This uses the default layout, which is horizontal, and shows
      *  control buttons, top-level parameters, and director parameters.
@@ -79,11 +78,9 @@ public class HelicopterModelPane extends ModelPane {
      *  @param layout HORIZONTAL or VERTICAL layout.
      *  @param show Indicator of which controls to show.
      */
-    public HelicopterModelPane(final CompositeActor model, int layout,
-            int show) {
+    public HelicopterModelPane(final CompositeActor model, int layout, int show) {
         super(model, layout, show);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected method                  ////
@@ -99,6 +96,7 @@ public class HelicopterModelPane extends ModelPane {
             remove(_displays);
             _displays = null;
         }
+
         // place the placeable objects in the model
         _displays = new JPanel();
         _displays.setBackground(null);
@@ -108,10 +106,11 @@ public class HelicopterModelPane extends ModelPane {
         _displays.setBackground(null);
 
         // Put placeable objects in a reasonable place.
-        Iterator atomicEntities = model
-            .allAtomicEntityList().iterator();
+        Iterator atomicEntities = model.allAtomicEntityList().iterator();
+
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
+
             if (object instanceof Placeable) {
                 ((Placeable) object).place(_displays);
             }

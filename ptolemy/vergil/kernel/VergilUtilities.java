@@ -25,14 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel;
 
-import ptolemy.util.StringUtilities;
 import javax.swing.UIManager;
+
+import ptolemy.util.StringUtilities;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// VergilUtilities
+
 /**
    Utilities used by Vergil.
 
@@ -43,7 +45,6 @@ import javax.swing.UIManager;
    @Pt.AcceptedRating Red (cxh)
 */
 public class VergilUtilities {
-
     /** Instances of this class cannot be created.
      */
     private VergilUtilities() {
@@ -78,25 +79,23 @@ public class VergilUtilities {
         // should be used to detect a mac, with any non-null result
         // indicating that the machine is a mac. This approach is
         // independent of the string value which may change."
-
         // However, calling getProperty will likely fail in applets
         // or within the sandbox, so we use this method instead.
-
         try {
-            if (StringUtilities.getProperty("ptolemy.ptII.MacOS")
-                    .equals("true")) {
+            if (StringUtilities.getProperty("ptolemy.ptII.MacOS").equals("true")) {
                 System.out.println("ptolemy.ptII.MacOS = "
-                        + "true property detected");
+                    + "true property detected");
                 return true;
             }
         } catch (SecurityException ex) {
             if (!_printedSecurityExceptionMessage) {
                 _printedSecurityExceptionMessage = true;
                 System.out.println("Warning: Failed to get the "
-                        + "ptolemy.ptII.MacOS property "
-                        + "(-sandbox always causes this)");
+                    + "ptolemy.ptII.MacOS property "
+                    + "(-sandbox always causes this)");
             }
         }
+
         return UIManager.getLookAndFeel().getName().startsWith("Mac OS");
     }
 

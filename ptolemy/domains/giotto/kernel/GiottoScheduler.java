@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.giotto.kernel;
 
 import java.util.Comparator;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GiottoScheduler
+
 /**
    This class generates schedules for the actors in a CompositeActor
    according to the Giotto semantics.
@@ -89,7 +90,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (eal)
 */
 public class GiottoScheduler extends Scheduler {
-
     /** Construct a Giotto scheduler with no container (director)
      *  in the default workspace.
      */
@@ -119,22 +119,22 @@ public class GiottoScheduler extends Scheduler {
      */
     public static int getFrequency(Actor actor) {
         try {
-            Parameter parameter = (Parameter)
-                ((NamedObj) actor).getAttribute("frequency");
+            Parameter parameter = (Parameter) ((NamedObj) actor).getAttribute(
+                    "frequency");
 
             if (parameter != null) {
                 IntToken intToken = (IntToken) parameter.getToken();
 
                 return intToken.intValue();
-            } else
+            } else {
                 return _DEFAULT_GIOTTO_FREQUENCY;
+            }
         } catch (ClassCastException ex) {
             return _DEFAULT_GIOTTO_FREQUENCY;
         } catch (IllegalActionException ex) {
             return _DEFAULT_GIOTTO_FREQUENCY;
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -155,7 +155,7 @@ public class GiottoScheduler extends Scheduler {
      *  @return unit of time increment for director.
      */
     protected double _getMinTimeStep(double period) {
-        return period/_lcm;
+        return period / _lcm;
     }
 
     /** Return the scheduling sequence.
@@ -167,20 +167,18 @@ public class GiottoScheduler extends Scheduler {
      *   schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-        StaticSchedulingDirector director =
-            (StaticSchedulingDirector) getContainer();
-        CompositeActor compositeActor =
-            (CompositeActor) (director.getContainer());
+        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
+        CompositeActor compositeActor = (CompositeActor) (director.getContainer());
         List actorList = compositeActor.deepEntityList();
         int actorCount = actorList.size();
 
         if (actorCount < 1) {
             throw new NotSchedulableException("Could not get schedule, "
-                    + "the number of deeply contained entities for '"
-                    + compositeActor.getFullName() + "' is "
-                    + actorCount + ", which is less than 1."
-                    + "If you have empty composite actors, try adding an  actor"
-                    + "to the inside of one of the empty composite actors.");
+                + "the number of deeply contained entities for '"
+                + compositeActor.getFullName() + "' is " + actorCount
+                + ", which is less than 1."
+                + "If you have empty composite actors, try adding an  actor"
+                + "to the inside of one of the empty composite actors.");
         }
 
         int[] frequencyArray = new int[actorCount];
@@ -190,6 +188,7 @@ public class GiottoScheduler extends Scheduler {
         ListIterator actorListIterator = actorList.listIterator();
 
         int i = 0;
+
         while (actorListIterator.hasNext()) {
             Actor actor = (Actor) actorListIterator.next();
             iterateArray[i] = frequencyArray[i] = getFrequency(actor);
@@ -198,6 +197,7 @@ public class GiottoScheduler extends Scheduler {
 
         _lcm = _lcm(frequencyArray);
         _gcd = _gcd(frequencyArray);
+
         if (_debugging) {
             _debug("LCM of frequencies is " + _lcm);
             _debug("GCD of frequencies is " + _gcd);
@@ -205,109 +205,113 @@ public class GiottoScheduler extends Scheduler {
 
         for (i = 0; i < actorCount; i++) {
             intervalArray[i] = _lcm / frequencyArray[i];
+
             //System.out.println("The " + i + " actor has frequency " + frequencyArray[i] + " ----> " + intervalArray[i]);
         }
 
         // Compute schedule
         // based on the frequencyArray and the actorList
-
-
         Schedule schedule = new Schedule();
 
-        for (  _giottoSchedulerTime = 0; _giottoSchedulerTime < _lcm; ) {
+        for (_giottoSchedulerTime = 0; _giottoSchedulerTime < _lcm;) {
             Schedule fireAtSameTimeSchedule = new Schedule();
             actorListIterator = actorList.listIterator();
-            for (i = 0; i < actorCount; i++ ) {
+
+            for (i = 0; i < actorCount; i++) {
                 Actor actor = (Actor) actorListIterator.next();
 
-                if ( ((_giottoSchedulerTime % intervalArray[i]) == 0)
-                        &&
-                        (iterateArray[i] > 0)
-                     )
-                    {
-                        Firing firing = new Firing();
-                        firing.setActor(actor);
-                        fireAtSameTimeSchedule.add(firing);
-
-                    }
+                if (((_giottoSchedulerTime % intervalArray[i]) == 0)
+                        && (iterateArray[i] > 0)) {
+                    Firing firing = new Firing();
+                    firing.setActor(actor);
+                    fireAtSameTimeSchedule.add(firing);
+                }
             }
 
             _giottoSchedulerTime += _gcd;
+
             // there may be several null schedule in schedule...
             // and the time step is period / _lcm
             //System.out.println("the size of fireAtSameTimeSchedule is " + fireAtSameTimeSchedule.size());
             schedule.add(fireAtSameTimeSchedule);
         }
+
         //System.out.println("the size of schedule is " + schedule.size());
         return schedule;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // if they are correct, they should go the ptolemy.math package...
     private int _gcd(int[] array) {
         int count = array.length;
         int HighestNumber = array[0];
         int HoldX = 1;
-        int X, i, c = 1;
+        int X;
+        int i;
+        int c = 1;
 
-        for ( i = 1; i < count; ++i ) {
-            if ( array[i] == array[0] )
+        for (i = 1; i < count; ++i) {
+            if (array[i] == array[0]) {
                 ++c;
-            if ( array[i] > HighestNumber )
+            }
+
+            if (array[i] > HighestNumber) {
                 HighestNumber = array[i] / 2;
+            }
         }
 
-        if ( c == count )
+        if (c == count) {
             return array[0];
+        }
 
         X = 2;
         i = 0;
 
-        while ( true ) {
-
+        while (true) {
             // Check for Remainder
-            if ( (array[i] % X) != 0 ) {
+            if ((array[i] % X) != 0) {
                 X++;
                 i = 0;
             }
-
             // No remainder, passed
-            else
+            else {
                 ++i;
+            }
 
-            if ( i >= count ) {
+            if (i >= count) {
                 HoldX = X;
                 i = 0;
                 X++;
             }
-            if ( X >= HighestNumber + 1 )
+
+            if (X >= (HighestNumber + 1)) {
                 break;
+            }
         }
 
         return HoldX;
     }
 
-
     private int _lcm(int[] array) {
-
         int count = array.length;
+
         if (count < 1) {
             throw new RuntimeException(
-                    "Length array passed to _lcm() is less than 1?");
+                "Length array passed to _lcm() is less than 1?");
         }
+
         int X = array[0];
         int i = 0;
 
-        while ( true ) {
-
-            if ( (X % array[i]) == 0 ) {
-                if ( i >= count-1 )
+        while (true) {
+            if ((X % array[i]) == 0) {
+                if (i >= (count - 1)) {
                     break;
+                }
+
                 i++;
             }
-
             else {
                 X = X + 1;
                 i = 0;
@@ -319,16 +323,15 @@ public class GiottoScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _lcm = 1;
     private int _gcd = 1;
     private int _giottoSchedulerTime = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// GiottoActorComparator
+
     /* This class implements the Comparator interface for actors
        based on the <I>frequency</I> parameter of the actors.
        The frequency of an actor which does not have a <I>frequency</I>
@@ -339,9 +342,7 @@ public class GiottoScheduler extends Scheduler {
        compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater
        than A2's frequency.
     */
-
     private class GiottoActorComparator implements Comparator {
-
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -358,20 +359,19 @@ public class GiottoScheduler extends Scheduler {
          *   instance of Actor.
          */
         public int compare(Object actor1, Object actor2) {
-            if (actor1 != null && actor1 instanceof Actor &&
-                    actor2 != null && actor2 instanceof Actor) {
-
-                if (getFrequency((Actor)actor1)
-                        < getFrequency((Actor)actor2))
+            if ((actor1 != null) && actor1 instanceof Actor && (actor2 != null)
+                    && actor2 instanceof Actor) {
+                if (getFrequency((Actor) actor1) < getFrequency((Actor) actor2)) {
                     return -1;
-                else if (getFrequency((Actor)actor1)
-                        == getFrequency((Actor)actor2))
+                } else if (getFrequency((Actor) actor1) == getFrequency(
+                            (Actor) actor2)) {
                     return 0;
-                else
+                } else {
                     return 1;
-            } else
+                }
+            } else {
                 throw new ClassCastException();
+            }
         }
     }
-
 }

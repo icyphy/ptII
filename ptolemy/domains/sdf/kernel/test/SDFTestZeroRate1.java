@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.actor.lib.Transformer;
@@ -34,13 +33,14 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SDFTestZeroRate1
+
 /**
    A test actor for HDF/SDF. This actor contains parameters that make it
    easy to set the rates of the input and output ports. This actor
@@ -53,9 +53,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (vogel)
    @Pt.AcceptedRating Red (vogel)
 */
-
 public class SDFTestZeroRate1 extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,23 +63,20 @@ public class SDFTestZeroRate1 extends Transformer {
      *   actor with this name.
      */
     public SDFTestZeroRate1(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         value = new Parameter(this, "value", new IntToken(1));
 
         input_rate1 = new Parameter(this, "input_rate1", new IntToken(1));
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("input_rate1");
 
         output_rate1 = new Parameter(this, "output_rate1", new IntToken(1));
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setExpression("output_rate1");
+
         // Set the type constraint.
         output.setTypeAtLeast(value);
-
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,13 +88,9 @@ public class SDFTestZeroRate1 extends Transformer {
      *  then the director will be asked to redo type resolution.
      */
     public Parameter value;
-
     public Parameter input_rate1;
-
     public Parameter output_rate1;
-
     public Parameter input_tokenConsumptionRate;
-
     public Parameter output_tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////
@@ -112,9 +103,9 @@ public class SDFTestZeroRate1 extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SDFTestZeroRate1 newObject = (SDFTestZeroRate1)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SDFTestZeroRate1 newObject = (SDFTestZeroRate1) super.clone(workspace);
+
         // Set the type constraint.
         newObject.output.setTypeAtLeast(newObject.value);
         return newObject;
@@ -124,12 +115,13 @@ public class SDFTestZeroRate1 extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        for (int i = 0; i < ((IntToken)input_rate1.getToken()).intValue();
-             i++) {
+        for (int i = 0; i < ((IntToken) input_rate1.getToken()).intValue();
+                i++) {
             input.get(0);
         }
-        for (int i = 0; i < ((IntToken)output_rate1.getToken()).intValue();
-             i++) {
+
+        for (int i = 0; i < ((IntToken) output_rate1.getToken()).intValue();
+                i++) {
             output.send(0, value.getToken());
         }
     }
@@ -141,14 +133,15 @@ public class SDFTestZeroRate1 extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // debug sdf schedules:
-        SDFDirector dir = (SDFDirector)getDirector();
-        SDFScheduler scheduler = (SDFScheduler)dir.getScheduler();
+        SDFDirector dir = (SDFDirector) getDirector();
+        SDFScheduler scheduler = (SDFScheduler) dir.getScheduler();
+
         // For debugging the SDF scheduler...
         //StreamListener sa = new StreamListener();
         //scheduler.addDebugListener(sa);
         //
-
         // Get the SDF Director's scheduler.
         //        Scheduler s = dir.getScheduler();
         //Iterator allActors = s.getSchedule().actorIterator();
@@ -161,6 +154,4 @@ public class SDFTestZeroRate1 extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
 }

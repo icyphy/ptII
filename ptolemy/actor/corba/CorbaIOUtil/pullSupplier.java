@@ -8,9 +8,8 @@ package ptolemy.actor.corba.CorbaIOUtil;
  * Wednesday, April 16, 2003 5:05:14 PM PDT
  */
 
-
 /* A CORBA compatible interface for a pull supplier.
  */
-public interface pullSupplier extends pullSupplierOperations, org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity
-{
+public interface pullSupplier extends pullSupplierOperations,
+    org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity {
 } // interface pullSupplier

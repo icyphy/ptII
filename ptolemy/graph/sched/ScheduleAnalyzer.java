@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.graph.sched;
 
 import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ScheduleAnalyzer
+
 /**
    An interface for all the scheduling strategies on graphs.
    <p>
@@ -42,7 +43,6 @@ import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
    @author Shahrooz Shahparnia
 */
 public interface ScheduleAnalyzer extends GraphAnalyzer {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public classes                    ////
 

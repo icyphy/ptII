@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package jni;
 
-// Ptolemy imports
 import java.net.URL;
 
 import javax.swing.SwingUtilities;
@@ -40,10 +38,11 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.VergilErrorHandler;
 
-// Java imports
 
+// Java imports
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication
+
 /**
    This application opens run control panels for models specified on the
    command line.  The exact facilities that are available are determined
@@ -61,13 +60,12 @@ import ptolemy.vergil.VergilErrorHandler;
    @see ptolemy.actor.gui.RunTableau
 */
 public class VergilApplication extends MoMLApplication {
-
     /** Parse the specified command-line arguments, creating models
      *  and frames to interact with them.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public VergilApplication(String args[]) throws Exception {
+    public VergilApplication(String[] args) throws Exception {
         super(args);
 
         // Create register an error handler with the parser so that
@@ -83,7 +81,7 @@ public class VergilApplication extends MoMLApplication {
      *  command-line arguments.
      *  @param args The command-line arguments.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             new VergilApplication(args);
         } catch (Exception ex) {
@@ -97,6 +95,7 @@ public class VergilApplication extends MoMLApplication {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
+
             System.exit(0);
         }
     }
@@ -109,9 +108,9 @@ public class VergilApplication extends MoMLApplication {
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
-    protected Configuration _createDefaultConfiguration() throws Exception {
-        URL configurationURL =
-            new URL("ptolemy/configs/jni/configuration.xml");
+    protected Configuration _createDefaultConfiguration()
+        throws Exception {
+        URL configurationURL = new URL("ptolemy/configs/jni/configuration.xml");
         return _readConfiguration(configurationURL);
     }
 
@@ -121,7 +120,8 @@ public class VergilApplication extends MoMLApplication {
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
-    protected Configuration _createEmptyConfiguration() throws Exception {
+    protected Configuration _createEmptyConfiguration()
+        throws Exception {
         Configuration configuration = _createDefaultConfiguration();
 
         // FIXME: This code is Dog slow for some reason.
@@ -129,7 +129,8 @@ public class VergilApplication extends MoMLApplication {
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl);
-        Effigy doc = (Effigy)configuration.getEntity("directory.doc");
+
+        Effigy doc = (Effigy) configuration.getEntity("directory.doc");
         URL idurl = specToURL("ptolemy/configs/intro.htm");
         doc.identifier.setExpression(idurl.toExternalForm());
         return configuration;
@@ -140,8 +141,9 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
-    protected void _parseArgs(final String args[]) throws Exception {
+    protected void _parseArgs(final String[] args) throws Exception {
         _commandTemplate = "vergil [ options ] [file ...]";
+
         // NOTE: Java superstition dictates that if you want something
         // to work, you should invoke it in event thread.  Otherwise,
         // weird things happens at the user interface level.  This

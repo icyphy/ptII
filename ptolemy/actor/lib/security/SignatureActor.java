@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.security;
 
 import java.security.Provider;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SignatureActor
+
 /**
    A common base class for actors that use cryptographic signatures.
 
@@ -82,7 +83,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class SignatureActor extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  The Java virtual machine is queried for algorithm and provider
      *  choices and these choices are added to the appropriate parameters.
@@ -94,7 +94,7 @@ public class SignatureActor extends TypedAtomicActor {
      *   actor with this name.
      */
     public SignatureActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -106,23 +106,28 @@ public class SignatureActor extends TypedAtomicActor {
         provider = new StringParameter(this, "provider");
         provider.setExpression("SystemDefault");
         provider.addChoice("SystemDefault");
-        Provider [] providers = Security.getProviders();
+
+        Provider[] providers = Security.getProviders();
+
         for (int i = 0; i < providers.length; i++) {
             provider.addChoice(providers[i].getName());
         }
 
         signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
-        Iterator signatureAlgorithms =
-            Security.getAlgorithms("Signature").iterator();
+
+        Iterator signatureAlgorithms = Security.getAlgorithms("Signature")
+                                               .iterator();
+
         for (int i = 0; signatureAlgorithms.hasNext(); i++) {
-            String algorithmName = (String)signatureAlgorithms.next();
+            String algorithmName = (String) signatureAlgorithms.next();
+
             if (i == 0) {
                 signatureAlgorithm.setExpression(algorithmName);
             }
+
             signatureAlgorithm.addChoice(algorithmName);
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -163,14 +168,14 @@ public class SignatureActor extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == signatureAlgorithm) {
             _updateSignatureNeeded = true;
-            _signatureAlgorithm =
-                ((StringToken)signatureAlgorithm.getToken()).stringValue();
+            _signatureAlgorithm = ((StringToken) signatureAlgorithm.getToken())
+                .stringValue();
         } else if (attribute == provider) {
             _updateSignatureNeeded = true;
-            _provider = ((StringToken)provider.getToken()).stringValue();
+            _provider = ((StringToken) provider.getToken()).stringValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -227,7 +232,6 @@ public class SignatureActor extends TypedAtomicActor {
         // Usually, this method is called from initialize().
         // This method may end up being called in fire() if
         // the user changed attributes while the model is running.
-
         if (_updateSignatureNeeded) {
             try {
                 if (_provider.equalsIgnoreCase("SystemDefault")) {
@@ -238,17 +242,16 @@ public class SignatureActor extends TypedAtomicActor {
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to initialize Signature with algorithm: '"
-                        + _signatureAlgorithm + "', provider: '"
-                        + _provider + "'");
+                    "Failed to initialize Signature with algorithm: '"
+                    + _signatureAlgorithm + "', provider: '" + _provider + "'");
             }
+
             _updateSignatureNeeded = false;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                    Private Variables                      ////
-
     // Set to true if one of the parameters changed and we need to
     // call _updateSignature().
     private boolean _updateSignatureNeeded = true;

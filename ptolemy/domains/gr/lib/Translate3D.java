@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.lib;
 
 import javax.media.j3d.Node;
@@ -40,6 +39,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Translate3D
@@ -57,7 +57,6 @@ import ptolemy.kernel.util.NameDuplicationException;
     @Pt.AcceptedRating Red (chf)
 */
 public class Translate3D extends GRTransform {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -67,7 +66,7 @@ public class Translate3D extends GRTransform {
      *   actor with this name.
      */
     public Translate3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xTranslate = new TypedIOPort(this, "xTranslate", true, false);
@@ -77,14 +76,12 @@ public class Translate3D extends GRTransform {
         zTranslate = new TypedIOPort(this, "zTranslate", true, false);
         zTranslate.setTypeEquals(BaseType.DOUBLE);
 
-
-        initialXTranslation = new Parameter(this,
-                "initialXTranslation", new DoubleToken(0.0));
-        initialYTranslation = new Parameter(this,
-                "initialYTranslation", new DoubleToken(0.0));
-        initialZTranslation = new Parameter(this,
-                "initialZTranslation", new DoubleToken(0.0));
-
+        initialXTranslation = new Parameter(this, "initialXTranslation",
+                new DoubleToken(0.0));
+        initialYTranslation = new Parameter(this, "initialYTranslation",
+                new DoubleToken(0.0));
+        initialZTranslation = new Parameter(this, "initialZTranslation",
+                new DoubleToken(0.0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,7 +123,6 @@ public class Translate3D extends GRTransform {
      */
     public Parameter initialZTranslation;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -138,6 +134,7 @@ public class Translate3D extends GRTransform {
     public void fire() throws IllegalActionException {
         //  all state changes must be done in postfire()
         super.fire();
+
         boolean applyTransform = false;
         double xOffset = _initialXTranslation;
         double yOffset = _initialYTranslation;
@@ -169,22 +166,19 @@ public class Translate3D extends GRTransform {
         }
 
         if (isAccumulating) {
-            xOffset = xOffset + _accumulatedX - _initialXTranslation;
+            xOffset = (xOffset + _accumulatedX) - _initialXTranslation;
             _accumulatedX = xOffset;
-            yOffset = yOffset + _accumulatedY - _initialYTranslation;
+            yOffset = (yOffset + _accumulatedY) - _initialYTranslation;
             _accumulatedY = yOffset;
-            zOffset = zOffset + _accumulatedZ - _initialZTranslation;
+            zOffset = (zOffset + _accumulatedZ) - _initialZTranslation;
             _accumulatedZ = zOffset;
         }
 
-
         if (applyTransform) {
             Transform3D transform = new Transform3D();
-            transform.setTranslation(new Vector3d(xOffset,
-                                             yOffset, zOffset));
+            transform.setTranslation(new Vector3d(xOffset, yOffset, zOffset));
             _transformNode.setTransform(transform);
         }
-
     }
 
     /** Setup the initial translation.
@@ -193,20 +187,19 @@ public class Translate3D extends GRTransform {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _initialXTranslation = ((DoubleToken)
-                initialXTranslation.getToken()).doubleValue();
-        _initialYTranslation = ((DoubleToken)
-                initialYTranslation.getToken()).doubleValue();
-        _initialZTranslation = ((DoubleToken)
-                initialZTranslation.getToken()).doubleValue();
+        _initialXTranslation = ((DoubleToken) initialXTranslation.getToken())
+            .doubleValue();
+        _initialYTranslation = ((DoubleToken) initialYTranslation.getToken())
+            .doubleValue();
+        _initialZTranslation = ((DoubleToken) initialZTranslation.getToken())
+            .doubleValue();
 
         _transformNode = new TransformGroup();
         _transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
         Transform3D transform = new Transform3D();
         transform.setTranslation(new Vector3d(_initialXTranslation,
-                                         _initialYTranslation,
-                                         _initialZTranslation));
+                _initialYTranslation, _initialZTranslation));
         _transformNode.setTransform(transform);
 
         /*
@@ -243,13 +236,10 @@ public class Translate3D extends GRTransform {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected TransformGroup _transformNode;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private double _initialXTranslation;
     private double _initialYTranslation;
     private double _initialZTranslation;

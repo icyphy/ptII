@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.io.BufferedWriter;
@@ -55,8 +54,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Execute
+
 /**
    Execute a command as a separately running subprocess. A command
    is a single executable.  To get the get the effect of executing
@@ -104,7 +105,6 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Yellow (cxh) 2/24/04
 */
 public class Exec extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -114,14 +114,14 @@ public class Exec extends TypedAtomicActor {
      *   actor with this name.
      */
     public Exec(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Uncomment the next line to see debugging statements
         //addDebugListener(new ptolemy.kernel.util.StreamListener());
-
         command = new PortParameter(this, "command",
                 new StringToken("echo \"Hello, world.\""));
+
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
         new Parameter(command.getPort(), "_showName", BooleanToken.TRUE);
@@ -130,12 +130,12 @@ public class Exec extends TypedAtomicActor {
         directory.setExpression("$CWD");
 
         environment = new Parameter(this, "environment");
-        String [] labels = new String [] {"name", "value"};
-        Type [] values = new Type [] {BaseType.STRING, BaseType.STRING};
+
+        String[] labels = new String[] { "name", "value" };
+        Type[] values = new Type[] { BaseType.STRING, BaseType.STRING };
 
         // An array of records {{name = "", value = ""}}
-        environment.setTypeEquals(
-                new ArrayType(new RecordType(labels, values)));
+        environment.setTypeEquals(new ArrayType(new RecordType(labels, values)));
 
         // Array with an empty name and value means
         // default environment of the calling process.
@@ -261,24 +261,24 @@ public class Exec extends TypedAtomicActor {
         // deadlock with the UI when parameters are edited while
         // model is running.
         super.fire();
+
         String line = null;
 
         _exec();
-        if (input.numberOfSources() > 0
-                && input.hasToken(0)) {
-            if ((line = ((StringToken)input.get(0)).stringValue())
-                    != null) {
+
+        if ((input.numberOfSources() > 0) && input.hasToken(0)) {
+            if ((line = ((StringToken) input.get(0)).stringValue()) != null) {
                 if (_debugging) {
                     _debug("Exec: Input: '" + line + "'");
                 }
+
                 if (_inputBufferedWriter != null) {
                     try {
                         _inputBufferedWriter.write(line);
                         _inputBufferedWriter.flush();
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Problem writing input '"
-                                + command + "'");
+                            "Problem writing input '" + command + "'");
                     }
                 }
             }
@@ -292,15 +292,14 @@ public class Exec extends TypedAtomicActor {
                 // We could have a parameter that would enable
                 // or disable this.
                 throw new IllegalActionException(this,
-                        "Executing command \""
-                        + ((StringToken)command.getToken()).stringValue()
-                        + "\" returned a non-zero return value of "
-                        + processReturnCode);
+                    "Executing command \""
+                    + ((StringToken) command.getToken()).stringValue()
+                    + "\" returned a non-zero return value of "
+                    + processReturnCode);
             }
-
         } catch (InterruptedException interrupted) {
             throw new InternalErrorException(this, interrupted,
-                    "_process.waitFor() was interrupted");
+                "_process.waitFor() was interrupted");
         }
 
         String outputString = _outputGobbler.getAndReset();
@@ -323,6 +322,7 @@ public class Exec extends TypedAtomicActor {
         // NOTE: This method used to be synchronized, as
         // was the fire() method, but this caused deadlocks.  EAL
         super.stop();
+
         try {
             _terminateProcess();
         } catch (IllegalActionException ex) {
@@ -337,6 +337,7 @@ public class Exec extends TypedAtomicActor {
         // was the fire() method, but this caused deadlocks.  EAL
         super.stopFire();
         _stopFireRequested = true;
+
         try {
             _terminateProcess();
         } catch (IllegalActionException ex) {
@@ -356,12 +357,10 @@ public class Exec extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Execute a command, set _process to point to the subprocess
     // and set up _errorGobbler and _outputGobbler to read data.
     private void _exec() throws IllegalActionException {
         // FIXME: Exec, KeyStoreActor, JTextAreaExec have duplicate code.
-
         // This is a private method because fire() was getting too long.
         try {
             _stopFireRequested = false;
@@ -380,70 +379,64 @@ public class Exec extends TypedAtomicActor {
             // with a double quote so the substring is considered to
             // be a single token and are returned as a single array
             // element.
-            String [] commandArray = StringUtilities.tokenizeForExec(
-                    ((StringToken)command.getToken()).stringValue());
+            String[] commandArray = StringUtilities.tokenizeForExec(((StringToken) command
+                    .getToken()).stringValue());
 
             File directoryAsFile = directory.asFile();
 
             if (_debugging) {
                 _debug("About to exec \""
-                        + ((StringToken)command.getToken()).stringValue()
-                        + "\""
-                        + "\n in \"" + directoryAsFile
-                        + "\"\n with environment:");
+                    + ((StringToken) command.getToken()).stringValue() + "\""
+                    + "\n in \"" + directoryAsFile + "\"\n with environment:");
             }
 
             // Process the environment parameter.
-            ArrayToken environmentTokens = (ArrayToken)environment.getToken();
+            ArrayToken environmentTokens = (ArrayToken) environment.getToken();
 
             if (_debugging) {
                 _debug("environmentTokens: " + environmentTokens);
             }
-            String [] environmentArray = null;
+
+            String[] environmentArray = null;
+
             if (environmentTokens.length() >= 1) {
                 environmentArray = new String[environmentTokens.length()];
+
                 for (int i = 0; i < environmentTokens.length(); i++) {
-                    StringToken nameToken = (StringToken)
-                        (((RecordToken) environmentTokens.getElement(i))
-                                .get("name"));
-                    StringToken valueToken = (StringToken)
-                        (((RecordToken) environmentTokens.getElement(i))
-                                .get("value"));
-                    environmentArray[i] = nameToken.stringValue()
-                        + "=" + valueToken.stringValue();
+                    StringToken nameToken = (StringToken) (((RecordToken) environmentTokens
+                        .getElement(i)).get("name"));
+                    StringToken valueToken = (StringToken) (((RecordToken) environmentTokens
+                        .getElement(i)).get("value"));
+                    environmentArray[i] = nameToken.stringValue() + "="
+                        + valueToken.stringValue();
 
                     if (_debugging) {
-                        _debug("  " + i + ". \"" + environmentArray[i]
-                                + "\"");
+                        _debug("  " + i + ". \"" + environmentArray[i] + "\"");
                     }
 
-                    if ( i == 0 && environmentTokens.length() == 1
+                    if ((i == 0) && (environmentTokens.length() == 1)
                             && environmentArray[0].equals("=")) {
                         if (_debugging) {
                             _debug("There is only one element, "
-                                    + "it is a string of length 0,\n so we "
-                                    + "pass Runtime.exec() an null "
-                                    + "environment so that we use\n "
-                                    + "the default environment");
+                                + "it is a string of length 0,\n so we "
+                                + "pass Runtime.exec() an null "
+                                + "environment so that we use\n "
+                                + "the default environment");
                         }
+
                         environmentArray = null;
                     }
                 }
             }
 
-
             _process = runtime.exec(commandArray, environmentArray,
                     directoryAsFile);
 
             // Create two threads to read from the subprocess.
-            _outputGobbler =
-                new _StreamReaderThread(_process.getInputStream(),
-                        "Exec Stdout Gobbler-" + _streamReaderThreadCount++,
-                        this);
-            _errorGobbler =
-                new _StreamReaderThread(_process.getErrorStream(),
-                        "Exec Stderr Gobbler-" +  _streamReaderThreadCount++,
-                        this);
+            _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
+                    "Exec Stdout Gobbler-" + _streamReaderThreadCount++, this);
+            _errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
+                    "Exec Stderr Gobbler-" + _streamReaderThreadCount++, this);
             _errorGobbler.start();
             _outputGobbler.start();
 
@@ -452,12 +445,13 @@ public class Exec extends TypedAtomicActor {
                 _streamReaderThreadCount = 0;
             }
 
-            OutputStreamWriter inputStreamWriter =
-                new OutputStreamWriter(_process.getOutputStream());
+            OutputStreamWriter inputStreamWriter = new OutputStreamWriter(_process
+                    .getOutputStream());
             _inputBufferedWriter = new BufferedWriter(inputStreamWriter);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem executing the command '" + command.getExpression() + "'");
+                "Problem executing the command '" + command.getExpression()
+                + "'");
         }
     }
 
@@ -471,11 +465,9 @@ public class Exec extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // Private class that reads a stream in a thread and updates the
     // stringBuffer.
     private class _StreamReaderThread extends Thread {
-
         /** Create a _StreamReaderThread.
          *  @param inputStream The stream to read from.
          *  @param name The name of this StreamReaderThread,
@@ -483,15 +475,12 @@ public class Exec extends TypedAtomicActor {
          *  @param actor The parent actor of this thread, which
          *  is used in error messages.
          */
-        _StreamReaderThread(InputStream inputStream, String name,
-                Nameable actor) {
+        _StreamReaderThread(InputStream inputStream, String name, Nameable actor) {
             super(name);
             _inputStream = inputStream;
-            _inputStreamReader =
-                new InputStreamReader(_inputStream);
+            _inputStreamReader = new InputStreamReader(_inputStream);
             _actor = actor;
             _stringBuffer = new StringBuffer();
-
         }
 
         /** Read any remaining data in the input stream and return the
@@ -501,10 +490,9 @@ public class Exec extends TypedAtomicActor {
         public String getAndReset() {
             if (_debugging) {
                 try {
-                    _debug("getAndReset: Gobbler '" + getName()
-                            + "' Ready: " + _inputStreamReader.ready()
-                            + " Available: " + _inputStream.available());
-
+                    _debug("getAndReset: Gobbler '" + getName() + "' Ready: "
+                        + _inputStreamReader.ready() + " Available: "
+                        + _inputStream.available());
                 } catch (Exception ex) {
                     throw new InternalErrorException(ex);
                 }
@@ -516,20 +504,22 @@ public class Exec extends TypedAtomicActor {
             } catch (Throwable throwable) {
                 if (_debugging) {
                     _debug("WARNING: getAndReset(): _read() threw an "
-                            + "exception, which we are ignoring.\n"
-                            + throwable.getMessage());
+                        + "exception, which we are ignoring.\n"
+                        + throwable.getMessage());
                 }
             }
 
             String results = _stringBuffer.toString();
             _stringBuffer = new StringBuffer();
+
             try {
                 _inputStreamReader.close();
                 _inputStreamReaderClosed = true;
             } catch (Exception ex) {
-                throw new InternalErrorException(null, ex, getName()
-                        + " failed to close.");
+                throw new InternalErrorException(null, ex,
+                    getName() + " failed to close.");
             }
+
             return results;
         }
 
@@ -549,37 +539,30 @@ public class Exec extends TypedAtomicActor {
             // We read the data as a char[] instead of using readline()
             // so that we can get strings that do not end in end of
             // line chars.
-
-            char [] chars = new char[80];
+            char[] chars = new char[80];
             int length; // Number of characters read.
 
             try {
                 // Oddly, InputStreamReader.read() will return -1
                 // if there is no data present, but the string can still
                 // read.
-                while ((length = _inputStreamReader.read(chars, 0, 80))
-                        != -1
-                        && !_stopRequested
-                        && !_stopFireRequested
-                       ) {
+                while (((length = _inputStreamReader.read(chars, 0, 80)) != -1)
+                        && !_stopRequested && !_stopFireRequested) {
                     if (_debugging) {
                         // Note that ready might be false here since
                         // we already read the data.
-                        _debug("_read(): Gobbler '" + getName()
-                                + "' Ready: " + _inputStreamReader.ready()
-                                + " Value: '"
-                                + String.valueOf(chars, 0, length) + "'");
+                        _debug("_read(): Gobbler '" + getName() + "' Ready: "
+                            + _inputStreamReader.ready() + " Value: '"
+                            + String.valueOf(chars, 0, length) + "'");
                     }
 
                     _stringBuffer.append(chars, 0, length);
                 }
             } catch (Throwable throwable) {
                 throw new InternalErrorException(_actor, throwable,
-                        getName() + ": Failed while reading from "
-                        + _inputStream);
+                    getName() + ": Failed while reading from " + _inputStream);
             }
         }
-
 
         // The actor associated with this stream reader.
         private Nameable _actor;
@@ -599,7 +582,6 @@ public class Exec extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The subprocess gets its input from this BufferedWriter.
     private BufferedWriter _inputBufferedWriter;
 

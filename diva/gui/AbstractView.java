@@ -24,9 +24,11 @@
   COPYRIGHTENDKEY
 */
 package diva.gui;
+
 import java.awt.datatransfer.Clipboard;
 
 import javax.swing.JComponent;
+
 
 /**
  * An abstract implementation of the View interface that consists of
@@ -51,32 +53,32 @@ public abstract class AbstractView implements View {
     /** Close the view.
      * @exception Exception If the close operation fails.
      */
-    public void close () throws Exception {
+    public void close() throws Exception {
     }
 
     /** Get the currently selected objects from this view, if any,
      * and place them on the given clipboard.  If the view does not
      * support such an operation, then do nothing.
      */
-    public void copy (Clipboard c) {
+    public void copy(Clipboard c) {
     }
 
     /** Remove the currently selected objects from this view, if any,
      * and place them on the given clipboard.  If the view does not
      * support such an operation, then do nothing.
      */
-    public void cut (Clipboard c) {
+    public void cut(Clipboard c) {
     }
 
     /** Return the component that implements the display of this view.
      * The returned object should be a unique object that corresponds
      * to this view.
      */
-    public abstract JComponent getComponent ();
+    public abstract JComponent getComponent();
 
     /** Get the document that this view is viewing.
      */
-    public Document getDocument () {
+    public Document getDocument() {
         return _document;
     }
 
@@ -95,8 +97,6 @@ public abstract class AbstractView implements View {
      * such an operation, then do nothing.  This method is responsible
      * for copying the data.
      */
-    public void paste (Clipboard c) {
+    public void paste(Clipboard c) {
     }
 }
-
-

@@ -36,6 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 
+
 /**
  * A context for an application in the diva.gui infrastructure.  This class
  * represents an AppContext as a JFrame.  Generally, all this class does is
@@ -75,14 +76,14 @@ public class ApplicationContext extends JFrame implements AppContext {
     public ApplicationContext() {
         // Set the system look and feel.
         try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {}
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         // hook the exit action into the window closing.
-        addWindowListener(new WindowAdapter () {
+        addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
                     if (_exitAction != null) {
                         _exitAction.actionPerformed(null);
@@ -102,14 +103,14 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Get the image that represents this frame.
      */
-    public Image getIconImage () {
+    public Image getIconImage() {
         return super.getIconImage();
     }
 
     /**
      * Return the title of the context.
      */
-    public String getTitle () {
+    public String getTitle() {
         return super.getTitle();
     }
 
@@ -159,14 +160,14 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Set the title of the context.
      */
-    public void setTitle (String title) {
+    public void setTitle(String title) {
         super.setTitle(title);
     }
 
     /**
      * Set the icon that represents this frame.
      */
-    public void setIconImage (Image image) {
+    public void setIconImage(Image image) {
         super.setIconImage(image);
     }
 
@@ -177,6 +178,3 @@ public class ApplicationContext extends JFrame implements AppContext {
         super.setJMenuBar(menu);
     }
 }
-
-
-

@@ -25,6 +25,7 @@ PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
 */
 package ptolemy.data.unit;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,8 +33,10 @@ import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExpandPortNames
+
 /**
    Visit a UnitEquation and for each contained variable that represents a port
    substitute it with a variable that represents the port from
@@ -56,9 +59,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Red (rowland)
    @Pt.AcceptedRating Red (rowland)
 */
-
 public class ExpandPortNames extends EquationVisitor {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -68,7 +69,7 @@ public class ExpandPortNames extends EquationVisitor {
      * referenced in the equation.
      */
     public void expand(UnitEquation equation, ComponentEntity actor)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _actorPorts = actor.portList();
         equation.visit(this);
     }
@@ -81,30 +82,34 @@ public class ExpandPortNames extends EquationVisitor {
      * @see ptolemy.data.unit.EquationVisitor#_visitUnitTerm(UnitTerm)
      */
     protected Object _visitUnitTerm(UnitTerm uTerm)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (uTerm.isVariable()) {
             String portName = uTerm.getVariable();
+
             if (portName == null) {
                 throw new IllegalActionException(uTerm + " is not a variable");
             }
+
             Iterator iter = _actorPorts.iterator();
+
             while (iter.hasNext()) {
                 IOPort actorPort = (IOPort) iter.next();
+
                 if (actorPort.getName().equals(portName)) {
-                    uTerm.setVariable(
-                            actorPort.getName(
-                                    actorPort.getContainer().getContainer()));
+                    uTerm.setVariable(actorPort.getName(
+                            actorPort.getContainer().getContainer()));
                     return null;
                 }
             }
-            throw new IllegalActionException(
-                    "Can't find Model port " + portName);
+
+            throw new IllegalActionException("Can't find Model port "
+                + portName);
         }
+
         return null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     List _actorPorts;
 }

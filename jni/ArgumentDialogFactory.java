@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package jni;
 
 import java.awt.Component;
@@ -42,8 +41,11 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import diva.gui.toolbox.JContextMenu;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentDialogFactory
+
 /**
    A factory that creates a dialog to configure, add, or remove Arguments
    from objects.
@@ -55,7 +57,6 @@ import diva.gui.toolbox.JContextMenu;
    @Pt.AcceptedRating Red (vincent.arnould)
 */
 public class ArgumentDialogFactory implements MenuItemFactory {
-
     /** Construct an ArgumentDialogFactory. */
     public ArgumentDialogFactory() {
         super();
@@ -92,28 +93,26 @@ public class ArgumentDialogFactory implements MenuItemFactory {
                     // will not have the appropriate parent, and will disappear
                     // when put in the background.
                     Component parent = menu.getInvoker();
+
                     while (parent.getParent() != null) {
                         parent = parent.getParent();
                     }
+
                     if (parent instanceof Frame) {
                         //TRT begin changes
-                        new ArgumentConfigurerDialog(
-                                (Frame) parent,
-                                (Entity) target,
-                                _configuration);
-
+                        new ArgumentConfigurerDialog((Frame) parent,
+                            (Entity) target, _configuration);
                     } else {
-
                         System.out.println("No Frame");
 
-                        new ArgumentConfigurerDialog(
-                                null,
-                                (Entity) target,
-                                _configuration);
+                        new ArgumentConfigurerDialog(null, (Entity) target,
+                            _configuration);
+
                         //TRT end
                     }
                 }
             };
+
         return menu.add(action, name);
     }
 
@@ -126,6 +125,7 @@ public class ArgumentDialogFactory implements MenuItemFactory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /** The configuration.
      */
     private Configuration _configuration;

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.data.Token;
@@ -33,8 +32,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Register
+
 /**
    A register is a stateful actor with a trigger port that accepts
    read requests.
@@ -79,9 +80,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (eal)
    @see ptolemy.domains.de.lib.Sampler
 */
-
 public class Register extends Sampler {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -91,14 +90,13 @@ public class Register extends Sampler {
      *   actor with this name.
      */
     public Register(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-10\" y=\"-20\" "
-                + "width=\"20\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-10\" y=\"-20\" "
+            + "width=\"20\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,7 +116,7 @@ public class Register extends Sampler {
 
         // If the <i>initialValue</i> parameter was not set, or if the
         // width of the input has changed.
-        if (_lastInputs == null || _lastInputs.length != inputWidth) {
+        if ((_lastInputs == null) || (_lastInputs.length != inputWidth)) {
             _lastInputs = new Token[inputWidth];
         }
 
@@ -127,6 +125,7 @@ public class Register extends Sampler {
         if (trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
+
             for (int i = 0; i < commonWidth; i++) {
                 if (_lastInputs[i] != null) {
                     output.send(i, _lastInputs[i]);
@@ -144,6 +143,7 @@ public class Register extends Sampler {
                 _lastInputs[i] = input.get(i);
             }
         }
+
         // Consume the inputs we don't save.
         for (int i = commonWidth; i < inputWidth; i++) {
             while (input.hasToken(i)) {
@@ -158,9 +158,11 @@ public class Register extends Sampler {
      */
     public boolean prefire() throws IllegalActionException {
         boolean writeRequest = false;
+
         if (input.getWidth() > 0) {
-            writeRequest =  input.hasToken(0);
+            writeRequest = input.hasToken(0);
         }
+
         return writeRequest || super.prefire();
     }
 

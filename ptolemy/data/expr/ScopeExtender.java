@@ -28,15 +28,16 @@ COPYRIGHTENDKEY
 @AcceptedRating Red (liuxj)
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.List;
 
 import ptolemy.kernel.util.Attribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ScopeExtender
+
 /**
    A marker interface for attributes that extend their container's scope. Any
    parameter contained by an attribute implementing this interface has the same
@@ -46,9 +47,7 @@ import ptolemy.kernel.util.Attribute;
    @version $Id$
    @see ptolemy.data.expr.Variable
 */
-
 public interface ScopeExtender {
-
     /** Return a list of the attributes contained by this object.
      *  If there are no attributes, return an empty list.
      *  This method is read-synchronized on the workspace.
@@ -63,5 +62,4 @@ public interface ScopeExtender {
      *  @return The requested attribute if it is found, null otherwise.
      */
     public Attribute getAttribute(String name);
-
 }

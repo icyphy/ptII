@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Analyzer
+
 /**
    A base interface for all the analyzers.
    <p>
@@ -38,7 +39,6 @@ package ptolemy.graph.analysis.analyzer;
    @version $Id$
 */
 public interface Analyzer {
-
     /** Return a description of the analyzer.
      *
      *  @return Return a description of the analyzer.

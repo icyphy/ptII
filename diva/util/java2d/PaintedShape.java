@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.util.java2d;
 
 import java.awt.BasicStroke;
@@ -33,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+
 
 /** A utility class that paints a shape with an stroke and/or fill.
  * This class is intended for use as a low-level class to simplify
@@ -46,16 +46,14 @@ import java.awt.geom.Rectangle2D;
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public class PaintedShape extends AbstractPaintedGraphic {
-
     /** The paint for the fill.
      */
     public Paint fillPaint;
 
-
     /** Create a painted shape on the given Shape. The shape
      * will be painted as a black outline only.
      */
-    public PaintedShape (Shape shape) {
+    public PaintedShape(Shape shape) {
         this(shape, null, 1.0f, Color.black);
     }
 
@@ -63,14 +61,14 @@ public class PaintedShape extends AbstractPaintedGraphic {
      * will be filled with the given paint, but not painted with
      * an outline.
      */
-    public PaintedShape (Shape shape, Paint fillPaint) {
+    public PaintedShape(Shape shape, Paint fillPaint) {
         this(shape, fillPaint, 1.0f, null);
     }
 
     /** Create a painted shape on the given Shape.  The shape
      * will be outlined in black with the given width but not filled.
      */
-    public PaintedShape (Shape shape, float lineWidth) {
+    public PaintedShape(Shape shape, float lineWidth) {
         this(shape, null, lineWidth, Color.black);
     }
 
@@ -78,7 +76,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
      * will be filled with the given paint and outlined with
      * a black outline of the given width.
      */
-    public PaintedShape (Shape shape, Paint fillPaint, float lineWidth) {
+    public PaintedShape(Shape shape, Paint fillPaint, float lineWidth) {
         this(shape, fillPaint, lineWidth, Color.black);
     }
 
@@ -86,7 +84,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
      * will be outlined with an outline of the given color and
      * given width and not filled.
      */
-    public PaintedShape (Shape shape, float lineWidth, Paint strokePaint) {
+    public PaintedShape(Shape shape, float lineWidth, Paint strokePaint) {
         this(shape, null, lineWidth, strokePaint);
     }
 
@@ -94,7 +92,8 @@ public class PaintedShape extends AbstractPaintedGraphic {
      * will be filled with the given paint and outlined with
      * an outline of the given color and given width.
      */
-    public PaintedShape (Shape shape, Paint fillPaint, float lineWidth, Paint strokePaint) {
+    public PaintedShape(Shape shape, Paint fillPaint, float lineWidth,
+        Paint strokePaint) {
         this.shape = shape;
         setFillPaint(fillPaint);
         setStrokePaint(strokePaint);
@@ -103,11 +102,11 @@ public class PaintedShape extends AbstractPaintedGraphic {
 
     /** Get the line width
      */
-    public float getLineWidth () {
+    public float getLineWidth() {
         if (stroke == null) {
             return 0.0f;
         } else {
-            return ((BasicStroke)stroke).getLineWidth();
+            return ((BasicStroke) stroke).getLineWidth();
         }
     }
 
@@ -117,7 +116,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
      * geometry testing with GeneralPath in the first version of
      * JDK1.2.
      */
-    public boolean hit (Rectangle2D r) {
+    public boolean hit(Rectangle2D r) {
         // Hit testing on strokes doesn't appear to work too
         // well in JDK1.2, so we will cheat and ignore the width
         // of the stroke
@@ -136,21 +135,22 @@ public class PaintedShape extends AbstractPaintedGraphic {
      * geometry testing with GeneralPath in the first version of
      * JDK1.2.
      */
-    public boolean intersects (Rectangle2D r) {
+    public boolean intersects(Rectangle2D r) {
         return shape.intersects(r);
     }
 
     /** Paint the shape. The shape is redrawn with the current
      *  shape, fill, and stroke.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         // Fill it
         if (fillPaint != null) {
             g.setPaint(fillPaint);
             g.fill(shape);
         }
+
         // Stroke it
-        if (stroke != null && strokePaint != null) {
+        if ((stroke != null) && (strokePaint != null)) {
             g.setStroke(stroke);
             g.setPaint(strokePaint);
             g.draw(shape);
@@ -160,11 +160,12 @@ public class PaintedShape extends AbstractPaintedGraphic {
     /** Set the line width. If the line width is less than
      * or equal to zero, the stroke will be removed.
      */
-    public void setLineWidth (float lineWidth) {
+    public void setLineWidth(float lineWidth) {
         if (lineWidth <= 0.0) {
             stroke = null;
         } else {
-            if (stroke == null || lineWidth != ((BasicStroke)stroke).getLineWidth()) {
+            if ((stroke == null)
+                    || (lineWidth != ((BasicStroke) stroke).getLineWidth())) {
                 stroke = PaintedPath.getStroke(lineWidth);
             }
         }
@@ -184,5 +185,3 @@ public class PaintedShape extends AbstractPaintedGraphic {
         this.fillPaint = fillPaint;
     }
 }
-
-

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import java.util.List;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sampler
+
 /**
    Output the most recent input token when the <i>trigger</i> port
    receives a token.  If no token has been received on the <i>input</i>
@@ -82,9 +83,7 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.domains.de.lib.Inhibit
    @see ptolemy.domains.de.lib.Register
 */
-
 public class Sampler extends DETransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -94,24 +93,22 @@ public class Sampler extends DETransformer {
      *   actor with this name.
      */
     public Sampler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
-        // Leave type undeclared.
 
+        // Leave type undeclared.
         initialValue = new Parameter(this, "initialValue");
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"0,20 0,0\"/>\n"
-                + "<polyline points=\"-30,-0 -10,0 10,-7\"/>\n"
-                + "<polyline points=\"10,0 30,0\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<polyline points=\"0,20 0,0\"/>\n"
+            + "<polyline points=\"-30,-0 -10,0 10,-7\"/>\n"
+            + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
 
         StringAttribute cardinality = new StringAttribute(trigger, "_cardinal");
         cardinality.setExpression("SOUTH");
@@ -142,9 +139,8 @@ public class Sampler extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Sampler newObject = (Sampler)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Sampler newObject = (Sampler) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
 
         // This is not strictly needed (since it is always recreated
@@ -171,7 +167,7 @@ public class Sampler extends DETransformer {
 
         // If the <i>initialValue</i> parameter was not set, or if the
         // width of the input has changed.
-        if (_lastInputs == null || _lastInputs.length != inputWidth) {
+        if ((_lastInputs == null) || (_lastInputs.length != inputWidth)) {
             _lastInputs = new Token[inputWidth];
         }
 
@@ -193,14 +189,16 @@ public class Sampler extends DETransformer {
         if (trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
+
             for (int i = 0; i < commonWidth; i++) {
                 // Do not output anything if the <i>initialValue</i>
                 // parameter was not set and this actor has not
                 // received any inputs.
-                if (_lastInputs[i] != null)
+                if (_lastInputs[i] != null) {
                     // Output the most recent token, assuming the
                     // receiver has a FIFO behavior.
                     output.send(i, _lastInputs[i]);
+                }
             }
         }
     }
@@ -213,6 +211,7 @@ public class Sampler extends DETransformer {
      */
     public boolean prefire() throws IllegalActionException {
         super.prefire();
+
         // If the trigger input is not connected, never fire.
         if (trigger.getWidth() > 0) {
             return (trigger.hasToken(0));
@@ -227,12 +226,14 @@ public class Sampler extends DETransformer {
     public void preinitialize() throws IllegalActionException {
         if (initialValue.getToken() != null) {
             _lastInputs = new Token[input.getWidth()];
+
             for (int i = 0; i < input.getWidth(); i++) {
                 _lastInputs[i] = initialValue.getToken();
             }
         } else {
             _lastInputs = null;
         }
+
         super.preinitialize();
     }
 
@@ -254,7 +255,6 @@ public class Sampler extends DETransformer {
                 ineq = new Inequality(input.getTypeTerm(),
                         initialValue.getTypeTerm());
                 typeConstraints.add(ineq);
-
             }
         } catch (IllegalActionException ex) {
             // Errors in the initialValue parameter should already

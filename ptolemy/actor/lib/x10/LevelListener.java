@@ -25,8 +25,9 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.x10;
+
+import x10.Command;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
@@ -36,10 +37,11 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import x10.Command;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// LevelListener
+
 /**
    This actor will output an integer between 0 and 100 whenever a specified
    command with the specified house and unit code is detected.  If this actor
@@ -59,9 +61,7 @@ import x10.Command;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (ptolemy)
 */
-
 public class LevelListener extends Receiver {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +71,7 @@ public class LevelListener extends Receiver {
      *   actor with this name.
      */
     public LevelListener(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create output port.
@@ -135,6 +135,7 @@ public class LevelListener extends Receiver {
             byte function = sensedCommand.getFunctionByte();
             byte functionOfInterest = Command.BRIGHT;
             String commandValue = command.stringValue();
+
             if (!commandValue.equals("BRIGHT")) {
                 functionOfInterest = Command.DIM;
             }
@@ -143,11 +144,11 @@ public class LevelListener extends Receiver {
             int sensedUnitCode = sensedCommand.getUnitCode();
 
             String houseCodeValue = houseCode.stringValue();
-            int unitCodeValue = ((IntToken)unitCode.getToken()).intValue();
+            int unitCodeValue = ((IntToken) unitCode.getToken()).intValue();
 
             if (sensedHouseCode.equals(houseCodeValue)
-                    && sensedUnitCode == unitCodeValue
-                    && function == functionOfInterest) {
+                    && (sensedUnitCode == unitCodeValue)
+                    && (function == functionOfInterest)) {
                 level.send(0, new IntToken(sensedCommand.getLevel()));
             } else {
                 level.send(0, _NO_COMMAND_TOKEN);
@@ -159,7 +160,6 @@ public class LevelListener extends Receiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Token to produce when no command is detected.
     private IntToken _NO_COMMAND_TOKEN = new IntToken(-1);
 }

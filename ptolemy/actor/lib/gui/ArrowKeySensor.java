@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.gui;
 
 import java.awt.BorderLayout;
@@ -40,6 +39,7 @@ import javax.swing.KeyStroke;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -50,6 +50,7 @@ import diva.gui.toolbox.FocusMouseListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrowKeySensor
+
 /**
    Detect when the user presses or releases an arrow key and produce an
    integer on the corresponding output.
@@ -81,7 +82,6 @@ import diva.gui.toolbox.FocusMouseListener;
    @Pt.AcceptedRating Red (winthrop)
 */
 public class ArrowKeySensor extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -91,11 +91,10 @@ public class ArrowKeySensor extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrowKeySensor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Outputs
-
         upArrow = new TypedIOPort(this, "upArrow");
         upArrow.setTypeEquals(BaseType.INT);
         upArrow.setOutput(true);
@@ -131,14 +130,11 @@ public class ArrowKeySensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Broadcast the integer value 1 for each key pressed and 0 for
      *  each released.
      */
     public void fire() throws IllegalActionException {
-
         // Broadcast key presses.
-
         if (_upKeyPressed) {
             _upKeyPressed = false;
             upArrow.broadcast(new IntToken(1));
@@ -159,9 +155,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
             downArrow.broadcast(new IntToken(1));
         }
 
-
         // Broadcast key releases.
-
         if (_upKeyReleased) {
             _upKeyReleased = false;
             upArrow.broadcast(new IntToken(0));
@@ -181,7 +175,6 @@ public class ArrowKeySensor extends TypedAtomicActor {
             _downKeyReleased = false;
             downArrow.broadcast(new IntToken(0));
         }
-
     }
 
     /** Create the JFrame window capable of detecting the key-presses. */
@@ -219,9 +212,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
-
     private class MyFrame extends JFrame {
-
         /** Construct a frame.  After constructing this, it is
          *  necessary to call setVisible(true) to make the frame
          *  appear.  This is done by calling show() at the end of this
@@ -230,7 +221,6 @@ public class ArrowKeySensor extends TypedAtomicActor {
          *  @param entity The model to put in this frame.
          *  @param tableau The tableau responsible for this frame.  */
         public MyFrame() {
-
             // up-arrow call-backs
             ActionListener myUpPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -300,6 +290,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                 };
 
             getContentPane().setLayout(new BorderLayout());
+
             JLabel label = new JLabel("This window reads Arrow Key strokes. "
                     + "It must have the focus (be on top) to do this");
             getContentPane().add(label);
@@ -310,68 +301,55 @@ public class ArrowKeySensor extends TypedAtomicActor {
             //  .getActionMap().put(aCommmand, anAction);
             // with the String aCommand inserted to link them together.
             // See javax.swing.Jcomponent.registerKeyboardAction().
-
             // Registration of up-arrow call-backs.
-            label.registerKeyboardAction(myUpPressedListener,
-                    "UpPressed",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_UP, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+            label.registerKeyboardAction(myUpPressedListener, "UpPressed",
+                KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-            label.registerKeyboardAction(myUpReleasedListener,
-                    "UpReleased",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_UP, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+            label.registerKeyboardAction(myUpReleasedListener, "UpReleased",
+                KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of left-arrow call-backs.
-            label.registerKeyboardAction(myLeftPressedListener,
-                    "LeftPressed",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_LEFT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+            label.registerKeyboardAction(myLeftPressedListener, "LeftPressed",
+                KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_LEFT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                "LeftReleased",
+                KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of right-arrow call-backs.
             label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_RIGHT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                "RightPressed",
+                KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myRightReleasedListener,
-                    "RightReleased",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_RIGHT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                "RightReleased",
+                KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of down-arrow call-backs.
-            label.registerKeyboardAction(myDownPressedListener,
-                    "DownPressed",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_DOWN, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+            label.registerKeyboardAction(myDownPressedListener, "DownPressed",
+                KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased",
-                    KeyStroke.getKeyStroke(
-                            KeyEvent.VK_DOWN, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                "DownReleased",
+                KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);
             label.addMouseListener(new FocusMouseListener());
+
             // Set the default size.
             // Note that the location is of the frame, while the size
             // is of the scrollpane.
             pack();
             show();
         }
-
 
         ///////////////////////////////////////////////////////////////////
         ////                     private metods                        ////
@@ -389,11 +367,5 @@ public class ArrowKeySensor extends TypedAtomicActor {
                 throw new RuntimeException("-fireAt* catch-");
             }
         }
-
     }
 }
-
-
-
-
-

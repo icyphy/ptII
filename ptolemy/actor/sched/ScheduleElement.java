@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.sched;
 
 import java.util.Iterator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ScheduleElement
+
 /**
    This is an abstract base class for a schedule element. Instances of the
    Schedule and Firing subclasses are used to construct a static schedule.
@@ -57,9 +58,7 @@ import java.util.Iterator;
    @see ptolemy.actor.sched.Firing
    @see ptolemy.actor.sched.Schedule
 */
-
 public abstract class ScheduleElement {
-
     /** Construct a schedule element with an iteration count of 1 and
      *  with no parent schedule element. The constructor that takes
      *  a parameter should be used when constructing a schedule
@@ -151,6 +150,7 @@ public abstract class ScheduleElement {
      */
     protected void _incrementVersion() {
         _scheduleVersion++;
+
         if (_parent != null) {
             _parent._incrementVersion();
         }
@@ -166,7 +166,6 @@ public abstract class ScheduleElement {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The iteration count for this schedule element.
     private int _iterationCount = 1;
 

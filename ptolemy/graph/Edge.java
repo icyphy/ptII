@@ -23,11 +23,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph;
+
 
 ////////////////////////////////////////////////////////////////////////// //
 //Edge
+
 /**
    A weighted or unweighted edge for a directed or undirected graph.  The
    connectivity of edges is specified by <i>source</i> nodes and <i>sink</i>
@@ -55,7 +56,6 @@ package ptolemy.graph;
    @see ptolemy.graph.Node
 */
 public final class Edge extends Element {
-
     /** Construct an unweighted edge with a specified source node and sink node.
      *  @param source The source node.
      *  @param sink The sink node.
@@ -132,9 +132,11 @@ public final class Edge extends Element {
      */
     public String toString(boolean showWeight) {
         String result = "(" + _source + ", " + _sink;
+
         if (showWeight && hasWeight()) {
-            result += ", " + _weight;
+            result += (", " + _weight);
         }
+
         result += ")";
         return result;
     }
@@ -150,11 +152,9 @@ public final class Edge extends Element {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The sink node of the edge.
     private Node _sink;
 
     // The source node of the edge.
     private Node _source;
-
 }

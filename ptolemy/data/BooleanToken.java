@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
@@ -33,8 +32,10 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BooleanToken
+
 /*
   A token that contains a boolean variable. Arithmetic on booleans is
   that of a two-element Galois field (modulo two arithmetic). Thus,
@@ -51,10 +52,8 @@ import ptolemy.kernel.util.IllegalActionException;
   @Pt.ProposedRating Green (neuendor)
   @Pt.AcceptedRating Green (wbwu)
 */
-
 public class BooleanToken extends AbstractConvertibleToken
     implements BitwiseOperationToken {
-
     /** Construct a token with value false
      */
     public BooleanToken() {
@@ -105,13 +104,13 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return The boolean AND.
      */
     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(rightArgument instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("bitwiseAnd",
-                            this, rightArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "bitwiseAnd", this, rightArgument));
         }
-        return (BooleanToken)_multiply(rightArgument);
+
+        return (BooleanToken) _multiply(rightArgument);
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -126,13 +125,14 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return The boolean OR.
      */
     public BitwiseOperationToken bitwiseOr(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(rightArgument instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("bitwiseOr",
-                            this, rightArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "bitwiseOr", this, rightArgument));
         }
-        boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
+
+        boolean rightValue = ((BooleanToken) rightArgument).booleanValue();
+
         if (_value || rightValue) {
             return TRUE;
         } else {
@@ -145,13 +145,13 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return The boolean XOR.
      */
     public BitwiseOperationToken bitwiseXor(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(rightArgument instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("bitwiseXor",
-                            this, rightArgument));
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "bitwiseXor", this, rightArgument));
         }
-        return (BooleanToken)_add(rightArgument);
+
+        return (BooleanToken) _add(rightArgument);
     }
 
     /** Return the value as a boolean.
@@ -171,20 +171,20 @@ public class BooleanToken extends AbstractConvertibleToken
      *   a BooleanToken.
      */
     public static BooleanToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof BooleanToken) {
-            return (BooleanToken)token;
+            return (BooleanToken) token;
         }
 
         int compare = TypeLattice.compare(BaseType.BOOLEAN, token);
-        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(
-                            token, "boolean"));
+
+        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
+                    token, "boolean"));
         }
 
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "boolean"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "boolean"));
     }
 
     /** Return true if the argument's class is BooleanToken and it has the
@@ -199,9 +199,10 @@ public class BooleanToken extends AbstractConvertibleToken
             return false;
         }
 
-        if (((BooleanToken)object).booleanValue() == _value) {
+        if (((BooleanToken) object).booleanValue() == _value) {
             return true;
         }
+
         return false;
     }
 
@@ -234,6 +235,7 @@ public class BooleanToken extends AbstractConvertibleToken
         if (_value) {
             return 1;
         }
+
         return 0;
     }
 
@@ -312,7 +314,7 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return A new BooleanToken containing the result.
      */
     protected Token _add(Token rightArgument) {
-        return this.or((BooleanToken)rightArgument);
+        return this.or((BooleanToken) rightArgument);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -330,15 +332,14 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @exception IllegalActionException If the argument token is
      *  FALSE.
      */
-    protected Token _divide(Token rightArgument)
-            throws IllegalActionException {
-        boolean denomValue = ((BooleanToken)rightArgument).booleanValue();
+    protected Token _divide(Token rightArgument) throws IllegalActionException {
+        boolean denomValue = ((BooleanToken) rightArgument).booleanValue();
+
         if (denomValue) {
             return this;
         } else {
             throw new IllegalActionException("BooleanToken: division "
-                    + "by false-valued token (analogous to division by "
-                    + "zero).");
+                + "by false-valued token (analogous to division by " + "zero).");
         }
     }
 
@@ -358,7 +359,8 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return A token containing the result.
      */
     protected BooleanToken _isEqualTo(Token token) {
-        boolean argumentValue = ((BooleanToken)token).booleanValue();
+        boolean argumentValue = ((BooleanToken) token).booleanValue();
+
         if (_value == argumentValue) {
             return TRUE;
         } else {
@@ -375,10 +377,9 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return A new Token containing the result that is of the same
      *  class as this token.
      */
-    protected Token _modulo(Token rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("modulo", this, rightArgument));
+    protected Token _modulo(Token rightArgument) throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("modulo", this,
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -389,16 +390,16 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return A new BooleanToken containing the result.
      */
     protected Token _multiply(Token rightArgument)
-            throws IllegalActionException {
-        return this.and((BooleanToken)rightArgument);
+        throws IllegalActionException {
+        return this.and((BooleanToken) rightArgument);
     }
 
     /** Subtraction is not supported in Boolean algebras.
      */
     protected Token _subtract(Token rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("subtract", this, rightArgument));
+        throws IllegalActionException {
+        throw new IllegalActionException(notSupportedMessage("subtract", this,
+                rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.graph.sched;
 
 import ptolemy.graph.analysis.Analysis;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ScheduleAnalysis
+
 /**
    An analysis for schedules on graphs. The analyzer associate with this analysis
    which is supposed to implement the ScheduleAnalyzer interface generates a
@@ -69,7 +70,7 @@ public class ScheduleAnalysis extends Analysis {
      *  @return Return the schedule computed by the associated analyzer.
      */
     public Schedule schedule() {
-        return ((ScheduleAnalyzer)analyzer()).schedule();
+        return ((ScheduleAnalyzer) analyzer()).schedule();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

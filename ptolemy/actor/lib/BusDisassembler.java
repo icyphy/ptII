@@ -27,7 +27,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.Iterator;
@@ -39,8 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BusDisassembler
+
 /**
    Split the input bus relation into individual (possibly bus) output port
    relations. If the width of the first output port is W1, it receives the
@@ -60,9 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.actor.IORelation
 */
-
 public class BusDisassembler extends TypedAtomicActor {
-
     /** Construct a BusDisassembler with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,14 +71,13 @@ public class BusDisassembler extends TypedAtomicActor {
      *   actor with this name.
      */
     public BusDisassembler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"6\" " +
-                "height=\"40\" style=\"fill:black\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+            + "height=\"40\" style=\"fill:black\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -90,28 +88,30 @@ public class BusDisassembler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public void fire() throws IllegalActionException {
         int inputWidth = input.getWidth();
         Iterator outputPorts = outputPortList().iterator();
-        TypedIOPort outputPort = (TypedIOPort)
-            (outputPorts.hasNext() ? outputPorts.next() : null);
-        int outputWidth = outputPort != null ? outputPort.getWidth() : 0;
+        TypedIOPort outputPort = (TypedIOPort) (outputPorts.hasNext()
+            ? outputPorts.next() : null);
+        int outputWidth = (outputPort != null) ? outputPort.getWidth() : 0;
         int j = 0;
+
         for (int i = 0; i < inputWidth; i++) {
             if (input.hasToken(i)) {
                 Token t = input.get(i);
-                if (outputPort != null)
+
+                if (outputPort != null) {
                     outputPort.send(j, t);
+                }
             }
+
             if (outputPort != null) {
-                if (j < outputWidth - 1) {
+                if (j < (outputWidth - 1)) {
                     j++;
                 } else {
-                    outputPort = (TypedIOPort)
-                        (outputPorts.hasNext() ? outputPorts.next() : null);
-                    outputWidth = outputPort != null
-                        ? outputPort.getWidth() : 0;
+                    outputPort = (TypedIOPort) (outputPorts.hasNext()
+                        ? outputPorts.next() : null);
+                    outputWidth = (outputPort != null) ? outputPort.getWidth() : 0;
                     j = 0;
                 }
             }
@@ -120,12 +120,10 @@ public class BusDisassembler extends TypedAtomicActor {
 
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+
         if (inputPortList().size() > 1) {
-            throw new IllegalActionException
-                (this, "can have only one input port.");
+            throw new IllegalActionException(this,
+                "can have only one input port.");
         }
     }
-
-
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import java.util.Iterator;
@@ -47,6 +46,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CollisionDetector
@@ -166,7 +166,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.actor.lib.RecordDisassembler
 */
 public class CollisionDetector extends TypedAtomicActor {
-
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -180,33 +179,28 @@ public class CollisionDetector extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public CollisionDetector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure the ports.
         message = new WirelessIOPort(this, "message", true, false);
-        (new SingletonParameter(message, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(message, "_showName")).setToken(BooleanToken.TRUE);
 
         power = new TypedIOPort(this, "power", true, false);
         power.setTypeEquals(BaseType.DOUBLE);
-        (new SingletonParameter(power, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(power, "_showName")).setToken(BooleanToken.TRUE);
 
         duration = new TypedIOPort(this, "duration", true, false);
         duration.setTypeEquals(BaseType.DOUBLE);
-        (new SingletonParameter(duration, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(duration, "_showName")).setToken(BooleanToken.TRUE);
 
         received = new TypedIOPort(this, "received", false, true);
         received.setTypeSameAs(message);
-        (new SingletonParameter(received, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(received, "_showName")).setToken(BooleanToken.TRUE);
 
         collided = new TypedIOPort(this, "collided", false, true);
         collided.setTypeSameAs(message);
-        (new SingletonParameter(collided, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(collided, "_showName")).setToken(BooleanToken.TRUE);
 
         // Configure parameters.
         SNRThresholdInDB = new Parameter(this, "SNRThresholdInDB");
@@ -274,29 +268,27 @@ public class CollisionDetector extends TypedAtomicActor {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == SNRThresholdInDB) {
-            double SNRThresholdInDBValue = ((DoubleToken)
-                    SNRThresholdInDB.getToken()).doubleValue();
+            double SNRThresholdInDBValue = ((DoubleToken) SNRThresholdInDB
+                .getToken()).doubleValue();
+
             if (SNRThresholdInDBValue <= 0.0) {
                 throw new IllegalActionException(this,
-                        "SNRThresholdInDB is required to be positive. "
-                        + "Attempt to set it to: "
-                        + SNRThresholdInDBValue);
+                    "SNRThresholdInDB is required to be positive. "
+                    + "Attempt to set it to: " + SNRThresholdInDBValue);
             } else {
                 // Convert to linear scale.
-                _SNRThresholdInDB =
-                    Math.pow(10, SNRThresholdInDBValue/10);
+                _SNRThresholdInDB = Math.pow(10, SNRThresholdInDBValue / 10);
             }
-
         } else if (attribute == powerThreshold) {
-            _powerThreshold = ((DoubleToken)
-                    powerThreshold.getToken()).doubleValue();
+            _powerThreshold = ((DoubleToken) powerThreshold.getToken())
+                .doubleValue();
+
             if (_powerThreshold < 0.0) {
                 throw new IllegalActionException(this,
-                        "powerThreshold is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + _powerThreshold);
+                    "powerThreshold is required to be nonnegative. "
+                    + "Attempt to set it to: " + _powerThreshold);
             }
         } else {
             super.attributeChanged(attribute);
@@ -311,9 +303,8 @@ public class CollisionDetector extends TypedAtomicActor {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        CollisionDetector newObject = (CollisionDetector)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CollisionDetector newObject = (CollisionDetector) super.clone(workspace);
 
         newObject.received.setTypeSameAs(newObject.message);
         newObject.collided.setTypeSameAs(newObject.message);
@@ -334,22 +325,26 @@ public class CollisionDetector extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         Time currentTime = getDirector().getModelTime();
+
         if (_debugging) {
             _debug("---------------------------------");
             _debug("Current time is: " + currentTime);
         }
-        if (message.hasToken(0) && power.hasToken(0)
-                && duration.hasToken(0)) {
-            double powerValue = ((DoubleToken)
-                    power.get(0)).doubleValue();
+
+        if (message.hasToken(0) && power.hasToken(0) && duration.hasToken(0)) {
+            double powerValue = ((DoubleToken) power.get(0)).doubleValue();
+
             if (_debugging) {
                 _debug("Received message with power: " + powerValue);
             }
+
             if (powerValue < _powerThreshold) {
                 // The signal it too weak to be detected, simply drop it.
                 message.get(0);
                 duration.get(0);
+
                 if (_debugging) {
                     _debug("Message power is below threshold. Ignoring.");
                 }
@@ -360,11 +355,12 @@ public class CollisionDetector extends TypedAtomicActor {
                 reception.power = powerValue;
                 reception.arrivalTime = currentTime.getDoubleValue();
                 reception.collided = false;
-                reception.duration = ((DoubleToken)
-                        duration.get(0)).doubleValue();
+                reception.duration = ((DoubleToken) duration.get(0))
+                    .doubleValue();
+
                 if (_debugging) {
                     _debug("Message is above threshold and has duration: "
-                            + reception.duration);
+                        + reception.duration);
                 }
 
                 // Update the total power density.
@@ -381,25 +377,30 @@ public class CollisionDetector extends TypedAtomicActor {
                 getDirector().fireAt(this, time);
             }
         }
+
         // Loop through the prior receptions (and the new one)
         // to mark whether a message is collided according to the new total
         // power density. Also, any prior receptions that are now
         // expiring are sent to one of the two outputs.
         Iterator priorReceptions = _receptions.listIterator();
+
         while (priorReceptions.hasNext()) {
-            Reception priorReception = (Reception)priorReceptions.next();
+            Reception priorReception = (Reception) priorReceptions.next();
+
             if (_debugging) {
                 _debug("Checking reception with arrival time: "
-                        + priorReception.arrivalTime);
+                    + priorReception.arrivalTime);
             }
+
             // If the reception is now expiring, send it to one of the two
             // output ports.
             if (priorReception.expiration == currentTime.getDoubleValue()) {
                 if (_debugging) {
-                    _debug("Current time matches expiration " +
-                            "time of a prior message that arrived at: "
-                            + priorReception.arrivalTime);
+                    _debug("Current time matches expiration "
+                        + "time of a prior message that arrived at: "
+                        + priorReception.arrivalTime);
                 }
+
                 // The time matches a pending reception.
                 priorReceptions.remove();
 
@@ -407,40 +408,45 @@ public class CollisionDetector extends TypedAtomicActor {
                 _totalPower = _totalPower - priorReception.power;
 
                 // Quantization errors may take this negative. Do not allow.
-                if (_totalPower < 0.0) _totalPower = 0.0;
+                if (_totalPower < 0.0) {
+                    _totalPower = 0.0;
+                }
 
                 if (!priorReception.collided) {
                     received.send(0, priorReception.data);
+
                     if (_debugging) {
                         _debug("Message has been received: "
-                                + priorReception.data);
+                            + priorReception.data);
                     }
                 } else {
                     collided.send(0, priorReception.data);
+
                     if (_debugging) {
-                        _debug("Message has been lost: "
-                                + priorReception.data);
+                        _debug("Message has been lost: " + priorReception.data);
                     }
                 }
+
                 continue;
             }
 
             // Check the snr to see whether to mark this prior reception
             // collided.
             double powerWithoutThisOne = _totalPower - priorReception.power;
+
             // Quantization errors may make this negative.
             if (powerWithoutThisOne < 0.0) {
                 powerWithoutThisOne = 0.0;
             }
+
             double snr = priorReception.power / powerWithoutThisOne;
 
-            if (!priorReception.collided && snr <= _SNRThresholdInDB) {
+            if (!priorReception.collided && (snr <= _SNRThresholdInDB)) {
                 priorReception.collided = true;
+
                 if (_debugging) {
-                    _debug("Message now has a collision. SNR is: "
-                            + snr
-                            + ". Total power is: "
-                            + _totalPower);
+                    _debug("Message now has a collision. SNR is: " + snr
+                        + ". Total power is: " + _totalPower);
                 }
             }
         }
@@ -457,10 +463,10 @@ public class CollisionDetector extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private double _powerThreshold;
     private double _SNRThresholdInDB;
     private double _totalPower;
+
     // Record messages that have been received but
     // haven't completed transmission.
     private List _receptions = new LinkedList();

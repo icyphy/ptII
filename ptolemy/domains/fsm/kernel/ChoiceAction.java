@@ -24,11 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ChoiceAction
+
 /**
    An action implementing this interface is a choice action. When an FSMActor
    is fired, an enabled transition among the outgoing transitions of the
@@ -45,4 +46,5 @@ package ptolemy.domains.fsm.kernel;
    @see Transition
    @see FSMActor
 */
-public interface ChoiceAction {}
+public interface ChoiceAction {
+}

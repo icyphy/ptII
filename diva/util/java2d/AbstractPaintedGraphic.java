@@ -31,6 +31,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
+
 /**
  * An abstract implementation of the PaintedGraphic interface.
  * This class implements the common elements of the PaintedGraphic
@@ -41,7 +42,6 @@ import java.awt.geom.Rectangle2D;
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public abstract class AbstractPaintedGraphic implements PaintedGraphic {
-
     /** The stroke.
      */
     public Stroke stroke;
@@ -56,16 +56,16 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
 
     /** A static array of cached strokes
      */
-    private static BasicStroke _strokes[] = new BasicStroke[16];
+    private static BasicStroke[] _strokes = new BasicStroke[16];
 
     /** Get the line width.
      */
-    public abstract float getLineWidth ();
+    public abstract float getLineWidth();
 
     /** Get the bounding box of the shape when stroked. This method takes
      * account of the thickness of the stroke.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         // FIXME: these bounds REALLY need to be cached.  But it's
         // painful because of the public members.
         if (stroke == null) {
@@ -77,27 +77,24 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
             // stroke the shape.  We've had reports that this is no longer
             // necessary with JDK1.3.
             Rectangle2D rect = shape.getBounds2D();
-            int width = (int)((BasicStroke)stroke).getLineWidth() + 2;
+            int width = (int) ((BasicStroke) stroke).getLineWidth() + 2;
             return new Rectangle2D.Double(rect.getX() - width,
-                    rect.getY() - width,
-                    rect.getWidth() + width + width,
-                    rect.getHeight() + width + width);
+                rect.getY() - width, rect.getWidth() + width + width,
+                rect.getHeight() + width + width);
         } else {
             // For some reason (antialiasing?) the bounds returned by
             // BasicStroke is off by one.  This code works around it.
             // We've had reports that this is no longer
             // necessary with JDK1.3.
             Rectangle2D rect = stroke.createStrokedShape(shape).getBounds2D();
-            return new Rectangle2D.Double(rect.getX() - 1,
-                    rect.getY() - 1,
-                    rect.getWidth() + 2,
-                    rect.getHeight() + 2);
+            return new Rectangle2D.Double(rect.getX() - 1, rect.getY() - 1,
+                rect.getWidth() + 2, rect.getHeight() + 2);
         }
     }
 
     /** Get the stroke.
      */
-    public Stroke getStroke () {
+    public Stroke getStroke() {
         return stroke;
     }
 
@@ -106,11 +103,12 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
      * object, and can be used to save creating zillions of
      * Stroke objects.
      */
-    public static BasicStroke getStroke (int width) {
+    public static BasicStroke getStroke(int width) {
         if (width < _strokes.length) {
             if (_strokes[width] == null) {
                 _strokes[width] = new BasicStroke(width);
             }
+
             return _strokes[width];
         } else {
             return new BasicStroke(width);
@@ -122,9 +120,10 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
      * integer-valued and has a reasonably small width. This method
      * can be used to save creating zillions of Stroke objects.
      */
-    public static BasicStroke getStroke (float floatwidth) {
+    public static BasicStroke getStroke(float floatwidth) {
         int width = Math.round(floatwidth);
-        if ((float)width == floatwidth) {
+
+        if ((float) width == floatwidth) {
             return getStroke(width);
         } else {
             return new BasicStroke(floatwidth);
@@ -137,10 +136,9 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
      * geometry testing with GeneralPath in the first version of
      * JDK1.2.
      */
-    public abstract boolean hit (Rectangle2D r);
+    public abstract boolean hit(Rectangle2D r);
 
     /** Set the line width.
      */
-    public abstract void setLineWidth (float lineWidth);
+    public abstract void setLineWidth(float lineWidth);
 }
-

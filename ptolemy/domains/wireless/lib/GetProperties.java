@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import java.util.Iterator;
@@ -42,6 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// GetProperties
@@ -75,7 +75,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class GetProperties extends TypedAtomicActor {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -85,7 +84,7 @@ public class GetProperties extends TypedAtomicActor {
      *   actor with this name.
      */
     public GetProperties(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -93,10 +92,9 @@ public class GetProperties extends TypedAtomicActor {
         // Create and configure the ports.
         trigger = new TypedIOPort(this, "trigger", true, false);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:green\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,7 +119,6 @@ public class GetProperties extends TypedAtomicActor {
      *   an instance of WirelessIOPort, or if there is no such port.
      */
     public void fire() throws IllegalActionException {
-
         super.fire();
 
         // Read and discard the input token.
@@ -130,23 +127,26 @@ public class GetProperties extends TypedAtomicActor {
         }
 
         Iterator connectedPorts = trigger.sourcePortList().iterator();
+
         while (connectedPorts.hasNext()) {
-            IOPort port = (IOPort)connectedPorts.next();
+            IOPort port = (IOPort) connectedPorts.next();
+
             if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
-                Token propertiesValue =
-                    ((WirelessIOPort)port).getProperties(0);
+                Token propertiesValue = ((WirelessIOPort) port).getProperties(0);
 
                 // Do not send properties if the port has no destinations.
                 // This prevents run-time type errors from occurring.
-                if (propertiesValue != null && output.numberOfSinks() > 0) {
+                if ((propertiesValue != null) && (output.numberOfSinks() > 0)) {
                     output.send(0, propertiesValue);
                 }
+
                 return;
             }
         }
+
         throw new IllegalActionException(this,
-                "Could not find a port to get properties from.");
+            "Could not find a port to get properties from.");
     }
 
     /** Create receivers and set up the type constraints on the
@@ -155,27 +155,33 @@ public class GetProperties extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+
         // Disable default type inference.
         output.setTypeEquals(BaseType.UNKNOWN);
+
         Iterator connectedPorts = trigger.sourcePortList().iterator();
+
         while (connectedPorts.hasNext()) {
-            IOPort port = (IOPort)connectedPorts.next();
+            IOPort port = (IOPort) connectedPorts.next();
+
             if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
-                Entity container = (Entity)(port.getContainer());
-                String channelName
-                    = ((WirelessIOPort)port).outsideChannel.stringValue();
-                CompositeEntity container2 =
-                    (CompositeEntity)container.getContainer();
+                Entity container = (Entity) (port.getContainer());
+                String channelName = ((WirelessIOPort) port).outsideChannel
+                    .stringValue();
+                CompositeEntity container2 = (CompositeEntity) container
+                    .getContainer();
+
                 if (container2 == null) {
                     throw new IllegalActionException(this,
-                            "The container does not have a container.");
+                        "The container does not have a container.");
                 }
+
                 Entity channel = container2.getEntity(channelName);
+
                 if (channel instanceof AtomicWirelessChannel) {
-                    Parameter channelProperties =
-                        ((AtomicWirelessChannel)channel)
-                        .defaultProperties;
+                    Parameter channelProperties = ((AtomicWirelessChannel) channel).defaultProperties;
+
                     // Only set up the type constraint if the type of the
                     // of the properties field is known.
                     if (channelProperties.getType() != BaseType.UNKNOWN) {
@@ -183,14 +189,16 @@ public class GetProperties extends TypedAtomicActor {
                     }
                 } else {
                     throw new IllegalActionException(this,
-                            "The connected port does not refer to a "
-                            + "valid channel.");
+                        "The connected port does not refer to a "
+                        + "valid channel.");
                 }
+
                 return;
             }
         }
+
         throw new IllegalActionException(this,
-                "Could not find a port to get the type of the "
-                + "properties from.");
+            "Could not find a port to get the type of the "
+            + "properties from.");
     }
 }

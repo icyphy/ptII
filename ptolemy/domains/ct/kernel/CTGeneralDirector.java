@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.util.Time;
@@ -32,6 +31,7 @@ import ptolemy.actor.util.Time;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTGeneralDirector
+
 /**
    Interface for CT directors that defines the methods for lower
    level CT directors to access information of the upper level CT director.
@@ -44,8 +44,6 @@ import ptolemy.actor.util.Time;
 
 */
 public interface CTGeneralDirector {
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

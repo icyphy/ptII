@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
@@ -36,8 +35,10 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// IntToken
+
 /**
    A token that contains a signed 32-bit integer number.  Generally, this
    class handles overflow the same way that overflow Java native types
@@ -51,7 +52,6 @@ import ptolemy.math.Complex;
    @Pt.AcceptedRating Green (wbwu)
 */
 public class IntToken extends ScalarToken {
-
     /** Construct a token with integer 0.
      */
     public IntToken() {
@@ -85,7 +85,7 @@ public class IntToken extends ScalarToken {
      *  @return A Complex.
      */
     public Complex complexValue() {
-        return new Complex((double)_value);
+        return new Complex((double) _value);
     }
 
     /** Convert the specified token into an instance of IntToken.
@@ -102,40 +102,39 @@ public class IntToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static IntToken convert(Token token)
-            throws IllegalActionException {
+    public static IntToken convert(Token token) throws IllegalActionException {
         if (token instanceof IntToken) {
-            return (IntToken)token;
+            return (IntToken) token;
         }
 
         int compare = TypeLattice.compare(BaseType.INT, token);
-        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(
-                            token, "int"));
+
+        if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
+                    token, "int"));
         }
 
         compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
-        if (compare == CPO.SAME || compare == CPO.HIGHER) {
-            UnsignedByteToken unsignedByteToken =
-                UnsignedByteToken.convert(token);
+
+        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+            UnsignedByteToken unsignedByteToken = UnsignedByteToken.convert(token);
             IntToken result = new IntToken(unsignedByteToken.intValue());
-            result._unitCategoryExponents =
-                unsignedByteToken._copyOfCategoryExponents();
+            result._unitCategoryExponents = unsignedByteToken
+                ._copyOfCategoryExponents();
             return result;
         }
 
         // The argument is below UnsignedByteToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "int"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "int"));
     }
 
     /** Return the value in the token as a double.
      *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
-        return (double)_value;
+        return (double) _value;
     }
 
     /** Return true if the argument's class is IntToken and it has the
@@ -150,9 +149,10 @@ public class IntToken extends ScalarToken {
             return false;
         }
 
-        if (((IntToken)object).intValue() == _value) {
+        if (((IntToken) object).intValue() == _value) {
             return true;
         }
+
         return false;
     }
 
@@ -177,7 +177,6 @@ public class IntToken extends ScalarToken {
     public int intValue() {
         return _value;
     }
-
 
     /** Returns a token representing the result of shifting the bits
      *  of this token towards the most significant bit, filling the
@@ -205,7 +204,7 @@ public class IntToken extends ScalarToken {
      *  @return The int value contained in this token as a long.
      */
     public long longValue() {
-        return (long)_value;
+        return (long) _value;
     }
 
     /** Returns a new IntToken with value 1.
@@ -236,9 +235,11 @@ public class IntToken extends ScalarToken {
      */
     public String toString() {
         String unitString = "";
-        if ( !_isUnitless()) {
+
+        if (!_isUnitless()) {
             unitString = " * " + unitsString();
         }
+
         return Integer.toString(_value) + unitString;
     }
 
@@ -261,11 +262,13 @@ public class IntToken extends ScalarToken {
      */
     protected ScalarToken _absolute() {
         IntToken result;
+
         if (_value >= 0) {
             result = this;
         } else {
             result = new IntToken(-_value);
         }
+
         return result;
     }
 
@@ -276,7 +279,7 @@ public class IntToken extends ScalarToken {
      *  @return A new IntToken containing the result.
      */
     protected ScalarToken _add(ScalarToken rightArgument) {
-        int sum = _value + ((IntToken)rightArgument).intValue();
+        int sum = _value + ((IntToken) rightArgument).intValue();
         return new IntToken(sum);
     }
 
@@ -286,7 +289,7 @@ public class IntToken extends ScalarToken {
      *  @return The bitwise AND.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
-        int sum = _value & ((IntToken)rightArgument).intValue();
+        int sum = _value & ((IntToken) rightArgument).intValue();
         return new IntToken(sum);
     }
 
@@ -304,7 +307,7 @@ public class IntToken extends ScalarToken {
      *  @return The bitwise OR.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
-        int sum = _value | ((IntToken)rightArgument).intValue();
+        int sum = _value | ((IntToken) rightArgument).intValue();
         return new IntToken(sum);
     }
 
@@ -314,7 +317,7 @@ public class IntToken extends ScalarToken {
      *  @return The bitwise XOR.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
-        int sum = _value ^ ((IntToken)rightArgument).intValue();
+        int sum = _value ^ ((IntToken) rightArgument).intValue();
         return new IntToken(sum);
     }
 
@@ -325,7 +328,7 @@ public class IntToken extends ScalarToken {
      *  @return A new IntToken containing the result.
      */
     protected ScalarToken _divide(ScalarToken rightArgument) {
-        int quotient = _value / ((IntToken)rightArgument).intValue();
+        int quotient = _value / ((IntToken) rightArgument).intValue();
         return new IntToken(quotient);
     }
 
@@ -337,17 +340,15 @@ public class IntToken extends ScalarToken {
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
-    protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon) {
-
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.IntegerMatrixMath.within(); if this
         // implementation changes, also change the corresponding
         // implementation there.
-
-        double right = ((IntToken)rightArgument).doubleValue();
+        double right = ((IntToken) rightArgument).doubleValue();
         double left = doubleValue();
-        if (right > left + epsilon || right < left - epsilon) {
+
+        if ((right > (left + epsilon)) || (right < (left - epsilon))) {
             return BooleanToken.FALSE;
         } else {
             return BooleanToken.TRUE;
@@ -362,10 +363,9 @@ public class IntToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-            throws IllegalActionException {
-        IntToken convertedArgument = (IntToken)rightArgument;
-        return BooleanToken.getInstance(
-                _value < convertedArgument.intValue());
+        throws IllegalActionException {
+        IntToken convertedArgument = (IntToken) rightArgument;
+        return BooleanToken.getInstance(_value < convertedArgument.intValue());
     }
 
     /** Return a new token whose value is the value of this token
@@ -375,7 +375,7 @@ public class IntToken extends ScalarToken {
      *  @return A new IntToken containing the result.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument) {
-        int remainder = _value % ((IntToken)rightArgument).intValue();
+        int remainder = _value % ((IntToken) rightArgument).intValue();
         return new IntToken(remainder);
     }
 
@@ -386,7 +386,7 @@ public class IntToken extends ScalarToken {
      *  @return A new IntToken containing the result.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        int product = _value * ((IntToken)rightArgument).intValue();
+        int product = _value * ((IntToken) rightArgument).intValue();
         return new IntToken(product);
     }
 
@@ -397,7 +397,7 @@ public class IntToken extends ScalarToken {
      *  @return A new IntToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        int difference = _value - ((IntToken)rightArgument).intValue();
+        int difference = _value - ((IntToken) rightArgument).intValue();
         return new IntToken(difference);
     }
 

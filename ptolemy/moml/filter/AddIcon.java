@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AddIcon
+
 /** Certain actors have specialized icons that display the value of
     one of the parameters.  This filter adds icons to those actors when
     necessary.
@@ -49,7 +50,6 @@ import ptolemy.moml.MoMLParser;
     @Pt.AcceptedRating Red (cxh)
 */
 public class AddIcon implements MoMLFilter {
-
     /**  If the attributeName is "class" and attributeValue names a
      *        class that has had its port names changed between releases,
      *  then substitute in the new port names.
@@ -61,26 +61,24 @@ public class AddIcon implements MoMLFilter {
      *  @param attributeValue The value of the attribute.
      *  @return the value of the attributeValue argument.
      */
-    public String filterAttributeValue(NamedObj container,
-            String element, String attributeName, String attributeValue) {
-
+    public String filterAttributeValue(NamedObj container, String element,
+        String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
         // are not making the same comparison more than once.
-
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first
             return null;
         }
 
-
         if (attributeName.equals("name")) {
             // Save the name of the for later use if we see a "class"
             _lastNameSeen = attributeValue;
-            if (_currentlyProcessingActorThatMayNeedAnIcon &&
-                    attributeValue.equals("_icon")) {
+
+            if (_currentlyProcessingActorThatMayNeedAnIcon
+                    && attributeValue.equals("_icon")) {
                 // We are processing an annotation and it already
                 // has _icon
                 _currentlyProcessingActorThatMayNeedAnIcon = false;
@@ -92,31 +90,29 @@ public class AddIcon implements MoMLFilter {
         // is:
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
-
         if (attributeName.equals("class")) {
-            if (_actorsThatShouldHaveIcons
-                    .containsKey(attributeValue)) {
+            if (_actorsThatShouldHaveIcons.containsKey(attributeValue)) {
                 // We found a class that needs an _icon
                 _currentlyProcessingActorThatMayNeedAnIcon = true;
-                if (container != null ) {
-                    _currentActorFullName = container.getFullName()
-                        + "." + _lastNameSeen;
+
+                if (container != null) {
+                    _currentActorFullName = container.getFullName() + "."
+                        + _lastNameSeen;
                 } else {
                     _currentActorFullName = "." + _lastNameSeen;
                 }
-                _iconMoML = (String) _actorsThatShouldHaveIcons
-                    .get(attributeValue);
-            } else if ( _currentlyProcessingActorThatMayNeedAnIcon
-                    && container != null
-                    && !container.getFullName()
-                    .equals(_currentActorFullName)
-                    && !container.getFullName()
-                    .startsWith(_currentActorFullName)) {
+
+                _iconMoML = (String) _actorsThatShouldHaveIcons.get(attributeValue);
+            } else if (_currentlyProcessingActorThatMayNeedAnIcon
+                    && (container != null)
+                    && !container.getFullName().equals(_currentActorFullName)
+                    && !container.getFullName().startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 _currentlyProcessingActorThatMayNeedAnIcon = false;
             }
         }
+
         return attributeValue;
     }
 
@@ -126,18 +122,19 @@ public class AddIcon implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
-        if ( _currentlyProcessingActorThatMayNeedAnIcon
-                && elementName.equals("entity")
-                && container != null
+        throws Exception {
+        if (_currentlyProcessingActorThatMayNeedAnIcon
+                && elementName.equals("entity") && (container != null)
                 && container.getFullName().equals(_currentActorFullName)) {
-
             _currentlyProcessingActorThatMayNeedAnIcon = false;
+
             if (_parser == null) {
                 _parser = new MoMLParser();
             }
+
             // setContext calls parser.reset()
             _parser.setContext(container);
+
             try {
                 // Do not call parse(_iconMoML) here, since that method
                 // will fail if we are in an applet because it tries
@@ -145,8 +142,8 @@ public class AddIcon implements MoMLFilter {
                 _parser.parse(null, _iconMoML);
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
-                throw new IllegalActionException(null, ex, "Failed to parse\n"
-                        + _iconMoML);
+                throw new IllegalActionException(null, ex,
+                    "Failed to parse\n" + _iconMoML);
             }
         }
     }
@@ -155,22 +152,20 @@ public class AddIcon implements MoMLFilter {
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-        StringBuffer results =
-            new StringBuffer(getClass().getName()
-                    + ": Add specialized icons that display the value\n"
-                    + "of one of the parameters.\n"
-                    + "The affected actors are:\n"
-                             );
+        StringBuffer results = new StringBuffer(getClass().getName()
+                + ": Add specialized icons that display the value\n"
+                + "of one of the parameters.\n" + "The affected actors are:\n");
         Iterator actors = _actorsThatShouldHaveIcons.keySet().iterator();
+
         while (actors.hasNext()) {
-            results.append("\t" + (String)actors.next() + "\n");
+            results.append("\t" + (String) actors.next() + "\n");
         }
+
         return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Map of actors that should have _icon
     private static HashMap _actorsThatShouldHaveIcons;
 
@@ -198,36 +193,35 @@ public class AddIcon implements MoMLFilter {
 
         // In alphabetic order by actor class name.
         _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Const",
-                "<property name=\"_icon\" "
-                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
-                + "<property name=\"attributeName\" value=\"value\"/>\n"
-                + "<property name=\"displayWidth\" value=\"40\"/>\n"
-                + "</property>\n");
+            "<property name=\"_icon\" "
+            + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
+            + "<property name=\"attributeName\" value=\"value\"/>\n"
+            + "<property name=\"displayWidth\" value=\"40\"/>\n"
+            + "</property>\n");
 
         // In alphabetic order by actor class name.
         _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Expression",
-                "<property name=\"_icon\" "
-                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
-                + "<property name=\"attributeName\" value=\"expression\"/>\n"
-                + "<property name=\"displayWidth\" value=\"60\"/>\n"
-                + "</property>\n");
-
-        String functionIcon =
             "<property name=\"_icon\" "
+            + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
+            + "<property name=\"attributeName\" value=\"expression\"/>\n"
+            + "<property name=\"displayWidth\" value=\"60\"/>\n"
+            + "</property>\n");
+
+        String functionIcon = "<property name=\"_icon\" "
             + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
             + "<property name=\"attributeName\" value=\"function\"/>\n"
             + "</property>\n";
 
         _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.MathFunction",
-                functionIcon);
+            functionIcon);
 
         _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Scale",
-                "<property name=\"_icon\" "
-                + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
-                + "<property name=\"attributeName\" value=\"factor\"/>\n"
-                + "</property>\n");
+            "<property name=\"_icon\" "
+            + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
+            + "<property name=\"attributeName\" value=\"factor\"/>\n"
+            + "</property>\n");
 
         _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.TrigFunction",
-                functionIcon);
+            functionIcon);
     }
 }

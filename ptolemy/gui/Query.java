@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.gui;
 
 import java.awt.Color;
@@ -76,10 +75,13 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
+
 import ptolemy.kernel.util.InternalErrorException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Query
+
 /**
    Create a query with various types of entry boxes and controls.  Each type
    of entry box has a colon and space appended to the end of its label, to
@@ -99,7 +101,6 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Query extends JPanel {
-
     /** Construct a panel with no entries in it.
      */
     public Query() {
@@ -113,9 +114,9 @@ public class Query extends JPanel {
         _constraints.weightx = 1.0;
         _constraints.anchor = GridBagConstraints.NORTHWEST;
         _entryPanel.setLayout(_grid);
+
         // It's not clear whether the following has any real significance...
         // _entryPanel.setOpaque(true);
-
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _entryPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -138,14 +139,13 @@ public class Query extends JPanel {
         // sure to set the scroll pane's preferred size or use a
         // text area constructor that sets the number of rows and
         // columns for the text area."
-
         _messageArea.setBackground(null);
 
         _messageArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         _messageScrollPane = new JScrollPane(_messageArea);
-        _messageScrollPane.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        _messageScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
         // Get rid of the border.
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
         _messageScrollPane.getViewport().setBackground(null);
@@ -153,10 +153,9 @@ public class Query extends JPanel {
         // Useful for debugging:
         //_messageScrollPane.setBorder(
         //                    BorderFactory.createLineBorder(Color.pink));
-
         // We add the _messageScrollPane when we first use it.
-
         _entryScrollPane = new JScrollPane(_entryPanel);
+
         // Get rid of the border.
         _entryScrollPane.setBorder(BorderFactory.createEmptyBorder());
         _entryScrollPane.getViewport().setBackground(null);
@@ -179,11 +178,13 @@ public class Query extends JPanel {
     public void addCheckBox(String name, String label, boolean defaultValue) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
+
         JRadioButton checkbox = new JRadioButton();
         checkbox.setBackground(_background);
         checkbox.setOpaque(false);
         checkbox.setSelected(defaultValue);
         _addPair(name, lbl, checkbox, checkbox);
+
         // Add the listener last so that there is no notification
         // of the first value.
         checkbox.addItemListener(new QueryItemListener(name));
@@ -195,11 +196,8 @@ public class Query extends JPanel {
      *  @param values The list of possible choices.
      *  @param defaultChoice Default choice.
      */
-    public void addChoice(
-            String name,
-            String label,
-            String[] values,
-            String defaultChoice) {
+    public void addChoice(String name, String label, String[] values,
+        String defaultChoice) {
         addChoice(name, label, values, defaultChoice, false);
     }
 
@@ -211,14 +209,10 @@ public class Query extends JPanel {
      *  @param editable True if an arbitrary choice can be entered, in addition
      *  to the choices in values.
      */
-    public void addChoice(
-            String name,
-            String label,
-            String[] values,
-            String defaultChoice,
-            boolean editable) {
-        addChoice(name, label, values, defaultChoice, editable,
-                Color.white, Color.black);
+    public void addChoice(String name, String label, String[] values,
+        String defaultChoice, boolean editable) {
+        addChoice(name, label, values, defaultChoice, editable, Color.white,
+            Color.black);
     }
 
     /** Create a choice menu.
@@ -231,18 +225,15 @@ public class Query extends JPanel {
      *  @param background The background color for the editable part.
      *  @param foreground The foreground color for the editable part.
      */
-    public void addChoice(
-            String name,
-            String label,
-            String[] values,
-            String defaultChoice,
-            boolean editable,
-            final Color background,
-            final Color foreground) {
+    public void addChoice(String name, String label, String[] values,
+        String defaultChoice, boolean editable, final Color background,
+        final Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
+
         JComboBox combobox = new JComboBox(values);
         combobox.setEditable(editable);
+
         // NOTE: Typical of Swing, the following does not set
         // the background color. So we have to specify a
         // custom editor.  #$(#&$#(@#!!
@@ -257,6 +248,7 @@ public class Query extends JPanel {
             });
         combobox.setSelectedItem(defaultChoice);
         _addPair(name, lbl, combobox, combobox);
+
         // Add the listener last so that there is no notification
         // of the first value.
         combobox.addItemListener(new QueryItemListener(name));
@@ -271,6 +263,7 @@ public class Query extends JPanel {
     public void addDisplay(String name, String label, String theValue) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
+
         // NOTE: JLabel would be a reasonable choice here, but at
         // least in the current version of swing, JLabel.setText() does
         // not work.
@@ -285,15 +278,12 @@ public class Query extends JPanel {
      *  @param label The label to attach to the entry.
      *  @param defaultColor The default color to use.
      */
-    public void addColorChooser(
-            String name,
-            String label,
-            String defaultColor) {
-
+    public void addColorChooser(String name, String label, String defaultColor) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
-        QueryColorChooser colorChooser =
-            new QueryColorChooser(name, defaultColor);
+
+        QueryColorChooser colorChooser = new QueryColorChooser(name,
+                defaultColor);
         _addPair(name, lbl, colorChooser, colorChooser);
     }
 
@@ -307,22 +297,10 @@ public class Query extends JPanel {
      *   relative file names, or null to give absolute file name.
      *  @param startingDirectory The directory to open the file chooser in.
      */
-    public void addFileChooser(
-            String name,
-            String label,
-            String defaultName,
-            URI base,
-            File startingDirectory) {
-        addFileChooser(
-                name,
-                label,
-                defaultName,
-                base,
-                startingDirectory,
-                true,
-                false,
-                Color.white,
-                Color.black);
+    public void addFileChooser(String name, String label, String defaultName,
+        URI base, File startingDirectory) {
+        addFileChooser(name, label, defaultName, base, startingDirectory, true,
+            false, Color.white, Color.black);
     }
 
     /** Create a FileChooser with default colors (white in the foreground,
@@ -336,24 +314,11 @@ public class Query extends JPanel {
      *  @param allowFiles True if regular files may be chosen.
      *  @param allowDirectories True if directories may be chosen.
      */
-    public void addFileChooser(
-            String name,
-            String label,
-            String defaultName,
-            URI base,
-            File startingDirectory,
-            boolean allowFiles,
-            boolean allowDirectories) {
-        addFileChooser(
-                name,
-                label,
-                defaultName,
-                base,
-                startingDirectory,
-                allowFiles,
-                allowDirectories,
-                Color.white,
-                Color.black);
+    public void addFileChooser(String name, String label, String defaultName,
+        URI base, File startingDirectory, boolean allowFiles,
+        boolean allowDirectories) {
+        addFileChooser(name, label, defaultName, base, startingDirectory,
+            allowFiles, allowDirectories, Color.white, Color.black);
     }
 
     /** Create a FileChooser that selects files only, not directories.
@@ -366,24 +331,10 @@ public class Query extends JPanel {
      *  @param background The background color for the text entry box.
      *  @param foreground The foreground color for the text entry box.
      */
-    public void addFileChooser(
-            String name,
-            String label,
-            String defaultName,
-            URI base,
-            File startingDirectory,
-            Color background,
-            Color foreground) {
-        addFileChooser(
-                name,
-                label,
-                defaultName,
-                base,
-                startingDirectory,
-                true,
-                false,
-                background,
-                foreground);
+    public void addFileChooser(String name, String label, String defaultName,
+        URI base, File startingDirectory, Color background, Color foreground) {
+        addFileChooser(name, label, defaultName, base, startingDirectory, true,
+            false, background, foreground);
     }
 
     /** Create a FileChooser
@@ -398,29 +349,15 @@ public class Query extends JPanel {
      *  @param background The background color for the text entry box.
      *  @param foreground The foreground color for the text entry box.
      */
-    public void addFileChooser(
-            String name,
-            String label,
-            String defaultName,
-            URI base,
-            File startingDirectory,
-            boolean allowFiles,
-            boolean allowDirectories,
-            Color background,
-            Color foreground) {
-
+    public void addFileChooser(String name, String label, String defaultName,
+        URI base, File startingDirectory, boolean allowFiles,
+        boolean allowDirectories, Color background, Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
-        QueryFileChooser fileChooser =
-            new QueryFileChooser(
-                    name,
-                    defaultName,
-                    base,
-                    startingDirectory,
-                    allowFiles,
-                    allowDirectories,
-                    background,
-                    foreground);
+
+        QueryFileChooser fileChooser = new QueryFileChooser(name, defaultName,
+                base, startingDirectory, allowFiles, allowDirectories,
+                background, foreground);
         _addPair(name, lbl, fileChooser, fileChooser);
     }
 
@@ -446,14 +383,11 @@ public class Query extends JPanel {
      *  @param background The background color.
      *  @param foreground The foreground color.
      */
-    public void addLine(
-            String name,
-            String label,
-            String defaultValue,
-            Color background,
-            Color foreground) {
+    public void addLine(String name, String label, String defaultValue,
+        Color background, Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
+
         JTextField entryBox = new JTextField(defaultValue, _width);
         entryBox.setBackground(background);
         entryBox.setForeground(foreground);
@@ -512,15 +446,11 @@ public class Query extends JPanel {
      *  @param foreground The foreground color.
      *  @since Ptolemy II 3.1
      */
-    public void addPassword(
-            String name,
-            String label,
-            String defaultValue,
-            Color background,
-            Color foreground) {
-
+    public void addPassword(String name, String label, String defaultValue,
+        Color background, Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
+
         JPasswordField entryBox = new JPasswordField(defaultValue, _width);
         entryBox.setBackground(background);
         entryBox.setForeground(foreground);
@@ -550,8 +480,8 @@ public class Query extends JPanel {
      *  @param theValues The value of this text area
      */
     public void addTextArea(String name, String label, String theValue) {
-        addTextArea(name, label, theValue, Color.white, Color.black,
-                _height, _width);
+        addTextArea(name, label, theValue, Color.white, Color.black, _height,
+            _width);
     }
 
     /*  Create a text area.
@@ -561,13 +491,10 @@ public class Query extends JPanel {
      *  @param background The background color.
      *  @param foreground The foreground color.
      */
-    public void addTextArea(
-            String name,
-            String label,
-            String theValue,
-            Color background,
-            Color foreground) {
-        addTextArea(name, label, theValue, background, foreground, _height, _width);
+    public void addTextArea(String name, String label, String theValue,
+        Color background, Color foreground) {
+        addTextArea(name, label, theValue, background, foreground, _height,
+            _width);
     }
 
     /*  Create a text area with the specified height and width (in characters).
@@ -579,20 +506,16 @@ public class Query extends JPanel {
      *  @param height The height.
      *  @param width The width.
      */
-    public void addTextArea(
-            String name,
-            String label,
-            String theValue,
-            Color background,
-            Color foreground,
-            int height,
-            int width) {
+    public void addTextArea(String name, String label, String theValue,
+        Color background, Color foreground, int height, int width) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
+
         JTextArea textArea = new JTextArea(theValue, height, width);
         textArea.setEditable(true);
         textArea.setBackground(background);
         textArea.setForeground(foreground);
+
         QueryScrollPane textPane = new QueryScrollPane(textArea);
         _addPair(name, lbl, textPane, textPane);
         textArea.addFocusListener(new QueryFocusListener(name));
@@ -612,10 +535,14 @@ public class Query extends JPanel {
      *  @param listener The listener to add.
      */
     public void addQueryListener(QueryListener listener) {
-        if (_listeners == null)
+        if (_listeners == null) {
             _listeners = new Vector();
-        if (_listeners.contains(listener))
+        }
+
+        if (_listeners.contains(listener)) {
             return;
+        }
+
         _listeners.add(listener);
     }
 
@@ -626,13 +553,11 @@ public class Query extends JPanel {
      *  @param values The list of possible choices.
      *  @param defaultValue Default value.
      */
-    public void addRadioButtons(
-            String name,
-            String label,
-            String[] values,
-            String defaultValue) {
+    public void addRadioButtons(String name, String label, String[] values,
+        String defaultValue) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
+
         FlowLayout flow = new FlowLayout();
         flow.setAlignment(FlowLayout.LEFT);
 
@@ -646,22 +571,28 @@ public class Query extends JPanel {
         // which button is selected, so we have to go through a
         // song and dance here...
         JRadioButton[] buttons = new JRadioButton[values.length];
+
         for (int i = 0; i < values.length; i++) {
             JRadioButton checkbox = new JRadioButton(values[i]);
             buttons[i] = checkbox;
             checkbox.setBackground(_background);
+
             // The following (essentially) undocumented method does nothing...
             // checkbox.setContentAreaFilled(true);
             checkbox.setOpaque(false);
+
             if (values[i].equals(defaultValue)) {
                 checkbox.setSelected(true);
             }
+
             group.add(checkbox);
             buttonPanel.add(checkbox);
+
             // Add the listener last so that there is no notification
             // of the first value.
             checkbox.addActionListener(listener);
         }
+
         _addPair(name, lbl, buttonPanel, buttons);
     }
 
@@ -673,13 +604,11 @@ public class Query extends JPanel {
      *  @param initiallySelected The initially selected choices, or null
      *   to indicate that none are selected.
      */
-    public void addSelectButtons(
-            String name,
-            String label,
-            String[] values,
-            Set initiallySelected) {
+    public void addSelectButtons(String name, String label, String[] values,
+        Set initiallySelected) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
+
         FlowLayout flow = new FlowLayout();
         flow.setAlignment(FlowLayout.LEFT);
 
@@ -687,25 +616,33 @@ public class Query extends JPanel {
         JPanel buttonPanel = new JPanel(flow);
 
         QueryActionListener listener = new QueryActionListener(name);
+
         if (initiallySelected == null) {
             initiallySelected = new HashSet();
         }
+
         JRadioButton[] buttons = new JRadioButton[values.length];
+
         for (int i = 0; i < values.length; i++) {
             JRadioButton checkbox = new JRadioButton(values[i]);
             buttons[i] = checkbox;
             checkbox.setBackground(_background);
+
             // The following (essentially) undocumented method does nothing...
             // checkbox.setContentAreaFilled(true);
             checkbox.setOpaque(false);
+
             if (initiallySelected.contains(values[i])) {
                 checkbox.setSelected(true);
             }
+
             buttonPanel.add(checkbox);
+
             // Add the listener last so that there is no notification
             // of the first value.
             checkbox.addActionListener(listener);
         }
+
         _addPair(name, lbl, buttonPanel, buttons);
     }
 
@@ -719,27 +656,22 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the desired default value
      *   is not between the minimum and maximum.
      */
-    public void addSlider(
-            String name,
-            String label,
-            int defaultValue,
-            int minimum,
-            int maximum)
-            throws IllegalArgumentException {
+    public void addSlider(String name, String label, int defaultValue,
+        int minimum, int maximum) throws IllegalArgumentException {
         JLabel lbl = new JLabel(label + ": ");
+
         if (minimum > maximum) {
             int temp = minimum;
             minimum = maximum;
             maximum = temp;
         }
+
         if ((defaultValue > maximum) || (defaultValue < minimum)) {
-            throw new IllegalArgumentException(
-                    "Desired default "
-                    + "value \""
-                    + defaultValue
-                    + "\" does not fall "
-                    + "between the minimum and maximum.");
+            throw new IllegalArgumentException("Desired default " + "value \""
+                + defaultValue + "\" does not fall "
+                + "between the minimum and maximum.");
         }
+
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
         _addPair(name, lbl, slider, slider);
         slider.addChangeListener(new SliderListener(name));
@@ -758,7 +690,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public boolean booleanValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+        throws NoSuchElementException, IllegalArgumentException {
         return getBooleanValue(name);
     }
 
@@ -779,9 +711,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public double doubleValue(String name)
-            throws
-            IllegalArgumentException,
-            NoSuchElementException,
+        throws IllegalArgumentException, NoSuchElementException, 
             NumberFormatException {
         return getDoubleValue(name);
     }
@@ -798,20 +728,20 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public boolean getBooleanValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+        throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + "\" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + "\" in the query box.");
         }
+
         if (result instanceof JRadioButton) {
             return ((JRadioButton) result).isSelected();
         } else {
-            throw new IllegalArgumentException(
-                    "Item named \""
-                    + name
-                    + "\" is not a radio button, and hence does not have "
-                    + "a boolean value.");
+            throw new IllegalArgumentException("Item named \"" + name
+                + "\" is not a radio button, and hence does not have "
+                + "a boolean value.");
         }
     }
 
@@ -829,13 +759,15 @@ public class Query extends JPanel {
      *   This is a runtime exception, so it need not be declared explicitly.
      *  @since Ptolemy II 3.1
      */
-    public char [] getCharArrayValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+    public char[] getCharArrayValue(String name)
+        throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + "\" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + "\" in the query box.");
         }
+
         if (result instanceof JPasswordField) {
             // Calling JPasswordField.getText() is deprecated
             return ((JPasswordField) result).getPassword();
@@ -860,29 +792,27 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public double getDoubleValue(String name)
-            throws
-            IllegalArgumentException,
-            NoSuchElementException,
+        throws IllegalArgumentException, NoSuchElementException, 
             NumberFormatException {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + " \" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + " \" in the query box.");
         }
+
         if (result instanceof JPasswordField) {
             // Note that JPasswordField extends JTextField, so
             // we should check for JPasswordField first.
             throw new IllegalArgumentException("For security reasons, "
-                    + "calling getDoubleValue() on a password field is "
-                    + "not permitted.  Instead, call getCharArrayValue()");
+                + "calling getDoubleValue() on a password field is "
+                + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
             return (new Double(((JTextField) result).getText())).doubleValue();
         } else {
-            throw new IllegalArgumentException(
-                    "Item named \""
-                    + name
-                    + "\" is not a text line, and hence cannot be converted to "
-                    + "a double value.");
+            throw new IllegalArgumentException("Item named \"" + name
+                + "\" is not a text line, and hence cannot be converted to "
+                + "a double value.");
         }
     }
 
@@ -903,21 +833,21 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public int getIntValue(String name)
-            throws
-            IllegalArgumentException,
-            NoSuchElementException,
+        throws IllegalArgumentException, NoSuchElementException, 
             NumberFormatException {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + " \" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + " \" in the query box.");
         }
+
         if (result instanceof JPasswordField) {
             // Note that JPasswordField extends JTextField, so
             // we should check for JPasswordField first.
             throw new IllegalArgumentException("For security reasons, "
-                    + "calling getIntValue() on a password field is "
-                    + "not permitted.  Instead, call getCharArrayValue()");
+                + "calling getIntValue() on a password field is "
+                + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
             return (new Integer(((JTextField) result).getText())).intValue();
         } else if (result instanceof JSlider) {
@@ -928,21 +858,20 @@ public class Query extends JPanel {
             // Regrettably, ButtonGroup gives no way to determine
             // which button is selected, so we have to search...
             JRadioButton[] buttons = (JRadioButton[]) result;
+
             for (int i = 0; i < buttons.length; i++) {
                 if (buttons[i].isSelected()) {
                     return i;
                 }
             }
+
             // In theory, we shouldn't get here, but the compiler
             // is unhappy without a return.
             return -1;
         } else {
-            throw new IllegalArgumentException(
-                    "Item named \""
-                    + name
-                    + "\" is not a text line or slider, and hence "
-                    + "cannot be converted to "
-                    + "an integer value.");
+            throw new IllegalArgumentException("Item named \"" + name
+                + "\" is not a text line or slider, and hence "
+                + "cannot be converted to " + "an integer value.");
         }
     }
 
@@ -957,7 +886,6 @@ public class Query extends JPanel {
         // an empty space that is difficult to control the size of, which
         // requires us to set the maximum size to be the same as
         // the preferred size
-
         // If you change this, be sure to try applets that have both
         // horizontal and vertical layout.
         Dimension preferred = getPreferredSize();
@@ -999,12 +927,14 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      */
     public String getStringValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+        throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + " \" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + " \" in the query box.");
         }
+
         if (result instanceof JTextField) {
             return ((JTextField) result).getText();
         } else if (result instanceof QueryColorChooser) {
@@ -1015,6 +945,7 @@ public class Query extends JPanel {
             return ((JTextArea) result).getText();
         } else if (result instanceof JRadioButton) {
             JRadioButton radioButton = (JRadioButton) result;
+
             if (radioButton.isSelected()) {
                 return "true";
             } else {
@@ -1029,24 +960,28 @@ public class Query extends JPanel {
             // which button is selected, so we have to search...
             JRadioButton[] buttons = (JRadioButton[]) result;
             String toReturn = null;
+
             for (int i = 0; i < buttons.length; i++) {
                 if (buttons[i].isSelected()) {
-                    if (toReturn == null)
+                    if (toReturn == null) {
                         toReturn = buttons[i].getText();
-                    else
+                    } else {
                         toReturn = toReturn + ", " + buttons[i].getText();
+                    }
                 }
             }
-            if (toReturn == null)
+
+            if (toReturn == null) {
                 toReturn = "";
+            }
+
             return toReturn;
         } else if (result instanceof QueryScrollPane) {
             return ((QueryScrollPane) result).getText();
         } else {
-            throw new IllegalArgumentException(
-                    "Query class cannot generate"
-                    + " a string representation for entries of type "
-                    + result.getClass());
+            throw new IllegalArgumentException("Query class cannot generate"
+                + " a string representation for entries of type "
+                + result.getClass());
         }
     }
 
@@ -1068,9 +1003,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public int intValue(String name)
-            throws
-            IllegalArgumentException,
-            NoSuchElementException,
+        throws IllegalArgumentException, NoSuchElementException, 
             NumberFormatException {
         return getIntValue(name);
     }
@@ -1080,6 +1013,7 @@ public class Query extends JPanel {
      */
     public void notifyListeners() {
         Iterator names = _entries.keySet().iterator();
+
         while (names.hasNext()) {
             String name = (String) names.next();
             _notifyListeners(name);
@@ -1091,8 +1025,10 @@ public class Query extends JPanel {
      *  @param listener The listener to remove.
      */
     public void removeQueryListener(QueryListener listener) {
-        if (_listeners == null)
+        if (_listeners == null) {
             return;
+        }
+
         _listeners.remove(listener);
     }
 
@@ -1110,12 +1046,14 @@ public class Query extends JPanel {
      *   to the appropriate type.
      */
     public void set(String name, String value)
-            throws NoSuchElementException, IllegalArgumentException {
+        throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + " \" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + " \" in the query box.");
         }
+
         // FIXME: Surely there is a better way to do this...
         // We should define a set of inner classes, one for each entry type.
         // Currently, this has to be updated each time a new entry type
@@ -1138,10 +1076,13 @@ public class Query extends JPanel {
             // First, parse the value, which may be a comma-separated list.
             Set selectedValues = new HashSet();
             StringTokenizer tokenizer = new StringTokenizer(value, ",");
+
             while (tokenizer.hasMoreTokens()) {
                 selectedValues.add(tokenizer.nextToken().trim());
             }
+
             JRadioButton[] buttons = (JRadioButton[]) result;
+
             for (int i = 0; i < buttons.length; i++) {
                 if (selectedValues.contains(buttons[i].getText())) {
                     buttons[i].setSelected(true);
@@ -1154,11 +1095,11 @@ public class Query extends JPanel {
         } else if (result instanceof QueryFileChooser) {
             ((QueryFileChooser) result).setFileName(value);
         } else {
-            throw new IllegalArgumentException(
-                    "Query class cannot set"
-                    + " a string representation for entries of type "
-                    + result.getClass());
+            throw new IllegalArgumentException("Query class cannot set"
+                + " a string representation for entries of type "
+                + result.getClass());
         }
+
         // Record the new value as if it was the previously notified
         // value.  Thus, any future change from this value will trigger
         // notification.
@@ -1177,7 +1118,7 @@ public class Query extends JPanel {
      *   to the appropriate type.
      */
     public void setAndNotify(String name, String value)
-            throws NoSuchElementException, IllegalArgumentException {
+        throws NoSuchElementException, IllegalArgumentException {
         set(name, value);
         _notifyListeners(name);
     }
@@ -1188,8 +1129,10 @@ public class Query extends JPanel {
     public void setBackground(Color color) {
         super.setBackground(color);
         _background = color;
+
         // Set the background of any components that already exist.
         Component[] components = getComponents();
+
         for (int i = 0; i < components.length; i++) {
             if (!(components[i] instanceof JTextField)) {
                 components[i].setBackground(_background);
@@ -1208,21 +1151,22 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public void setBoolean(String name, boolean value)
-            throws NoSuchElementException, IllegalArgumentException {
+        throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + "\" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + "\" in the query box.");
         }
+
         if (result instanceof JRadioButton) {
             ((JRadioButton) result).setSelected(value);
         } else {
-            throw new IllegalArgumentException(
-                    "Item named \""
-                    + name
-                    + "\" is not a radio button, and hence does not have "
-                    + "a boolean value.");
+            throw new IllegalArgumentException("Item named \"" + name
+                + "\" is not a radio button, and hence does not have "
+                + "a boolean value.");
         }
+
         _notifyListeners(name);
     }
 
@@ -1234,8 +1178,11 @@ public class Query extends JPanel {
      *  @param columns The number of columns.
      */
     public void setColumns(int columns) {
-        if (columns <= 0)
-            throw new IllegalArgumentException("Query.setColumns() requires a strictly positive argument.");
+        if (columns <= 0) {
+            throw new IllegalArgumentException(
+                "Query.setColumns() requires a strictly positive argument.");
+        }
+
         _columns = columns;
     }
 
@@ -1252,22 +1199,23 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public void setDisplay(String name, String value)
-            throws NoSuchElementException, IllegalArgumentException {
+        throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + " \" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + " \" in the query box.");
         }
+
         if (result instanceof JTextArea) {
             JTextArea label = (JTextArea) result;
             label.setText(value);
         } else {
-            throw new IllegalArgumentException(
-                    "Item named \""
-                    + name
-                    + "\" is not a display, and hence cannot be set using "
-                    + "setDisplay().");
+            throw new IllegalArgumentException("Item named \"" + name
+                + "\" is not a display, and hence cannot be set using "
+                + "setDisplay().");
         }
+
         _notifyListeners(name);
     }
 
@@ -1279,14 +1227,17 @@ public class Query extends JPanel {
      */
     public void setEnabled(String name, boolean value) {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + " \" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + " \" in the query box.");
         }
+
         if (result instanceof JComponent) {
             ((JComponent) result).setEnabled(value);
         } else if (result instanceof JRadioButton[]) {
             JRadioButton[] buttons = (JRadioButton[]) result;
+
             for (int i = 0; i < buttons.length; i++) {
                 buttons[i].setEnabled(value);
             }
@@ -1306,20 +1257,21 @@ public class Query extends JPanel {
      */
     public void setLine(String name, String value) {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + " \" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + " \" in the query box.");
         }
+
         if (result instanceof JTextField) {
             JTextField line = (JTextField) result;
             line.setText(value);
         } else {
-            throw new IllegalArgumentException(
-                    "Item named \""
-                    + name
-                    + "\" is not a line, and hence cannot be set using "
-                    + "setLine().");
+            throw new IllegalArgumentException("Item named \"" + name
+                + "\" is not a line, and hence cannot be set using "
+                + "setLine().");
         }
+
         _notifyListeners(name);
     }
 
@@ -1336,13 +1288,16 @@ public class Query extends JPanel {
         }
 
         _messageArea.setText(message);
+
         // I'm not sure why we need to add 1 here?
         int lineCount = _messageArea.getLineCount() + 1;
+
         // Keep the line count to less than 30 lines.  If
         // we have more than 30 lines, we get a scroll bar.
         if (lineCount > 30) {
             lineCount = 30;
         }
+
         _messageArea.setRows(lineCount);
         _messageArea.setColumns(_width);
 
@@ -1363,21 +1318,23 @@ public class Query extends JPanel {
      */
     public void setSlider(String name, int value) {
         Object result = _entries.get(name);
+
         if (result == null) {
-            throw new NoSuchElementException(
-                    "No item named \"" + name + " \" in the query box.");
+            throw new NoSuchElementException("No item named \"" + name
+                + " \" in the query box.");
         }
+
         if (result instanceof JSlider) {
             JSlider theSlider = (JSlider) result;
+
             // Set the new slider position.
             theSlider.setValue(value);
         } else {
-            throw new IllegalArgumentException(
-                    "Item named \""
-                    + name
-                    + "\" is not a slider, and hence cannot be set using "
-                    + "setSlider().");
+            throw new IllegalArgumentException("Item named \"" + name
+                + "\" is not a slider, and hence cannot be set using "
+                + "setSlider().");
         }
+
         _notifyListeners(name);
     }
 
@@ -1407,6 +1364,7 @@ public class Query extends JPanel {
      */
     public void setToolTip(String name, String tip) {
         JLabel label = (JLabel) _labels.get(name);
+
         if (label != null) {
             label.setToolTipText(tip);
         }
@@ -1427,7 +1385,7 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      */
     public String stringValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+        throws NoSuchElementException, IllegalArgumentException {
         return getStringValue(name);
     }
 
@@ -1449,11 +1407,8 @@ public class Query extends JPanel {
      *  @param widget The interactive entry to the right of the label.
      *  @param entry The object that contains user data.
      */
-    protected void _addPair(
-            String name,
-            JLabel label,
-            Component widget,
-            Object entry) {
+    protected void _addPair(String name, JLabel label, Component widget,
+        Object entry) {
         // Surely there is a better layout manager in swing...
         // Note that Box and BoxLayout do not work because they do not
         // support gridded layout.
@@ -1463,11 +1418,13 @@ public class Query extends JPanel {
         _entryPanel.add(label);
 
         _constraints.insets = _noPadding;
-        if (_columns > 1 && ((_entries.size() + 1) % _columns != 0)) {
+
+        if ((_columns > 1) && (((_entries.size() + 1) % _columns) != 0)) {
             _constraints.gridwidth = 1;
         } else {
             _constraints.gridwidth = GridBagConstraints.REMAINDER;
         }
+
         _grid.setConstraints(widget, _constraints);
         _entryPanel.add(widget);
 
@@ -1476,6 +1433,7 @@ public class Query extends JPanel {
         _previous.put(name, getStringValue(name));
 
         Dimension preferredSize = _entryPanel.getPreferredSize();
+
         // Add some slop to the width to take in to account
         // the width of the vertical scrollbar.
         preferredSize.width += 25;
@@ -1485,6 +1443,7 @@ public class Query extends JPanel {
         preferredSize.height = _widgetsHeight;
 
         Toolkit tk = Toolkit.getDefaultToolkit();
+
         if (preferredSize.height > tk.getScreenSize().height) {
             // Fudge factor to keep this window smaller than the screen
             // height.  CGSUnitBase and the Code Generator are good tests.
@@ -1493,6 +1452,7 @@ public class Query extends JPanel {
         }
 
         _entryScrollPane.setPreferredSize(preferredSize);
+
         // Call revalidate for the scrollbar.
         _entryPanel.revalidate();
     }
@@ -1529,6 +1489,7 @@ public class Query extends JPanel {
         if (_listeners != null) {
             String previous = (String) _previous.get(name);
             String newValue = getStringValue(name);
+
             if (newValue.equals(previous)) {
                 return;
             }
@@ -1541,9 +1502,10 @@ public class Query extends JPanel {
             _previous.put(name, newValue);
 
             Enumeration listeners = _listeners.elements();
+
             while (listeners.hasMoreElements()) {
-                QueryListener queryListener =
-                    (QueryListener) (listeners.nextElement());
+                QueryListener queryListener = (QueryListener) (listeners
+                    .nextElement());
                 queryListener.changed(name);
             }
         }
@@ -1551,7 +1513,6 @@ public class Query extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The number of columns.
     private int _columns = 1;
 
@@ -1605,27 +1566,28 @@ public class Query extends JPanel {
         public QueryActionListener(String name) {
             _name = name;
         }
+
         /** Call all registered QueryListeners. */
         public void actionPerformed(ActionEvent e) {
             _notifyListeners(_name);
         }
+
         private String _name;
     }
 
     /** Panel containing an entry box and color chooser.
      */
     class QueryColorChooser extends Box implements ActionListener {
-        public QueryColorChooser(
-                String name,
-                String defaultColor) {
-
+        public QueryColorChooser(String name, String defaultColor) {
             super(BoxLayout.X_AXIS);
             _defaultColor = defaultColor;
             _entryBox = new JTextField(defaultColor, _width);
+
             JButton button = new JButton("Choose");
             button.addActionListener(this);
             add(_entryBox);
             add(button);
+
             // Add the listener last so that there is no notification
             // of the first value.
             _entryBox.addActionListener(new QueryActionListener(name));
@@ -1645,6 +1607,7 @@ public class Query extends JPanel {
 
             _name = name;
         }
+
         public void actionPerformed(ActionEvent e) {
             // Read the current color from the text field.
             String spec = getSelectedColor().trim();
@@ -1653,68 +1616,85 @@ public class Query extends JPanel {
             float green = 0f;
             float blue = 0f;
             float alpha = 1.0f;
+
             // If any exceptions occur during the attempt to parse,
             // then just use the default color.
             try {
                 int i = 0;
+
                 // Ignore any blank strings that this simple parsing produces.
                 while (specArray[i].trim().equals("")) {
                     i++;
                 }
+
                 if (specArray.length > i) {
                     red = Float.parseFloat(specArray[i]);
                 }
+
                 i++;
+
                 while (specArray[i].trim().equals("")) {
                     i++;
                 }
+
                 if (specArray.length > i) {
                     green = Float.parseFloat(specArray[i]);
                 }
+
                 i++;
+
                 while (specArray[i].trim().equals("")) {
                     i++;
                 }
+
                 if (specArray.length > i) {
                     blue = Float.parseFloat(specArray[i]);
                 }
+
                 i++;
+
                 while (specArray[i].trim().equals("")) {
                     i++;
                 }
+
                 if (specArray.length > i) {
                     alpha = Float.parseFloat(specArray[i]);
                 }
             } catch (Exception ex) {
                 // Ignore and use default color.
             }
-            Color newColor =
-                JColorChooser.showDialog(
-                        Query.this,
-                        "Choose Color",
-                        new Color(red, green, blue, alpha));
+
+            Color newColor = JColorChooser.showDialog(Query.this,
+                    "Choose Color", new Color(red, green, blue, alpha));
+
             if (newColor != null) {
                 float[] components = newColor.getRGBComponents(null);
                 StringBuffer string = new StringBuffer("{");
+
                 // Use the syntax of arrays.
                 for (int j = 0; j < components.length; j++) {
                     string.append(components[j]);
-                    if (j < components.length - 1) {
+
+                    if (j < (components.length - 1)) {
                         string.append(",");
                     } else {
                         string.append("}");
                     }
                 }
+
                 _entryBox.setText(string.toString());
                 _notifyListeners(_name);
             }
         }
+
         public String getSelectedColor() {
             return _entryBox.getText();
         }
+
         public void setColor(String name) {
             _entryBox.setText(name);
         }
+
         private JTextField _entryBox;
         private String _name;
         private String _defaultColor;
@@ -1723,41 +1703,35 @@ public class Query extends JPanel {
     /** Panel containing an entry box and file chooser.
      */
     class QueryFileChooser extends Box implements ActionListener {
-        public QueryFileChooser(
-                String name,
-                String defaultName,
-                URI base,
-                File startingDirectory,
-                boolean allowFiles,
-                boolean allowDirectories) {
-            this(name, defaultName, base, startingDirectory,
-                    allowFiles, allowDirectories,
-                    Color.white, Color.black);
+        public QueryFileChooser(String name, String defaultName, URI base,
+            File startingDirectory, boolean allowFiles, boolean allowDirectories) {
+            this(name, defaultName, base, startingDirectory, allowFiles,
+                allowDirectories, Color.white, Color.black);
         }
-        public QueryFileChooser(
-                String name,
-                String defaultName,
-                URI base,
-                File startingDirectory,
-                boolean allowFiles,
-                boolean allowDirectories,
-                Color background,
-                Color foreground) {
+
+        public QueryFileChooser(String name, String defaultName, URI base,
+            File startingDirectory, boolean allowFiles,
+            boolean allowDirectories, Color background, Color foreground) {
             super(BoxLayout.X_AXIS);
             _base = base;
             _startingDirectory = startingDirectory;
+
             if (!allowFiles && !allowDirectories) {
-                throw new IllegalArgumentException("QueryFileChooser: nothing to be chosen.");
+                throw new IllegalArgumentException(
+                    "QueryFileChooser: nothing to be chosen.");
             }
+
             _allowFiles = allowFiles;
             _allowDirectories = allowDirectories;
             _entryBox = new JTextField(defaultName, _width);
             _entryBox.setBackground(background);
             _entryBox.setForeground(foreground);
+
             JButton button = new JButton("Browse");
             button.addActionListener(this);
             add(_entryBox);
             add(button);
+
             // Add the listener last so that there is no notification
             // of the first value.
             _entryBox.addActionListener(new QueryActionListener(name));
@@ -1782,8 +1756,10 @@ public class Query extends JPanel {
             // NOTE: If the last argument is null, then choose a default dir.
             JFileChooser fileChooser = new JFileChooser(_startingDirectory);
             fileChooser.setApproveButtonText("Select");
+
             // FIXME: The following doesn't have any effect.
             fileChooser.setApproveButtonMnemonic('S');
+
             if (_allowFiles && _allowDirectories) {
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             } else if (_allowFiles && !_allowDirectories) {
@@ -1792,23 +1768,26 @@ public class Query extends JPanel {
             } else if (!_allowFiles && _allowDirectories) {
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             } else {
-                throw new InternalErrorException("QueryFileChooser: nothing to be chosen.");
+                throw new InternalErrorException(
+                    "QueryFileChooser: nothing to be chosen.");
             }
+
             int returnValue = fileChooser.showOpenDialog(Query.this);
+
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 if (_base == null) {
                     // Absolute file name.
                     try {
-                        _entryBox.setText(
-                                fileChooser.getSelectedFile().getCanonicalPath());
+                        _entryBox.setText(fileChooser.getSelectedFile()
+                                                     .getCanonicalPath());
                     } catch (IOException ex) {
                         // If we can't get a path, then just use the name.
-                        _entryBox.setText(
-                                fileChooser.getSelectedFile().getName());
+                        _entryBox.setText(fileChooser.getSelectedFile().getName());
                     }
                 } else {
                     // Relative file name.
                     File selectedFile = fileChooser.getSelectedFile();
+
                     // FIXME: There is a bug here under Windows XP
                     // at least... Sometimes, the drive ID (like c:)
                     // is lower case, and sometimes it's upper case.
@@ -1824,18 +1803,23 @@ public class Query extends JPanel {
                     } catch (IOException ex) {
                         // Ignore, since we can't do much about it anyway.
                     }
+
                     URI relativeURI = _base.relativize(selectedFile.toURI());
                     _entryBox.setText(relativeURI.toString());
                 }
+
                 _notifyListeners(_name);
             }
         }
+
         public String getSelectedFileName() {
             return _entryBox.getText();
         }
+
         public void setFileName(String name) {
             _entryBox.setText(name);
         }
+
         private URI _base;
         private JTextField _entryBox;
         private String _name;
@@ -1850,9 +1834,11 @@ public class Query extends JPanel {
         public QueryFocusListener(String name) {
             _name = name;
         }
+
         public void focusGained(FocusEvent e) {
             // Nothing to do.
         }
+
         public void focusLost(FocusEvent e) {
             // NOTE: Java's lame AWT has no reliable way
             // to take action on window closing, so this focus lost
@@ -1863,6 +1849,7 @@ public class Query extends JPanel {
             // This could be a problem for some users of this class.
             _notifyListeners(_name);
         }
+
         private String _name;
     }
 
@@ -1877,20 +1864,24 @@ public class Query extends JPanel {
         public void itemStateChanged(ItemEvent e) {
             _notifyListeners(_name);
         }
+
         private String _name;
     }
 
     /** Inner class to tie textArea to scroll pane */
     class QueryScrollPane extends JScrollPane {
         public JTextArea textArea;
+
         QueryScrollPane(JTextArea c) {
             super(c);
             textArea = c;
         }
+
         public String getText() {
             String retval = textArea.getText();
             return retval;
         }
+
         public void setText(String s) {
             textArea.setText(s);
         }
@@ -1902,10 +1893,12 @@ public class Query extends JPanel {
         public SliderListener(String name) {
             _name = name;
         }
+
         /** Call all registered QueryListeners. */
         public void stateChanged(ChangeEvent event) {
             _notifyListeners(_name);
         }
+
         private String _name;
     }
 }

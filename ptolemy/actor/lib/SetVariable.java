@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
@@ -36,8 +35,8 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -52,8 +51,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SetVariable
+
 /**
    Set the value of a variable contained by the container.  The result
    may occur at two different times, depending on the value of the
@@ -93,9 +94,8 @@ import ptolemy.util.MessageHandler;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (cxh)
 */
-public class SetVariable extends TypedAtomicActor
-    implements ChangeListener, ExplicitChangeContext {
-
+public class SetVariable extends TypedAtomicActor implements ChangeListener,
+    ExplicitChangeContext {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -105,7 +105,7 @@ public class SetVariable extends TypedAtomicActor
      *   actor with this name.
      */
     public SetVariable(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -145,9 +145,7 @@ public class SetVariable extends TypedAtomicActor
      *  @param change The change request.
      *  @param exception The exception that resulted.
      */
-    public void changeFailed(
-            ChangeRequest change,
-            java.lang.Exception exception) {
+    public void changeFailed(ChangeRequest change, java.lang.Exception exception) {
         MessageHandler.error("Failed to set variable.", exception);
     }
 
@@ -158,7 +156,7 @@ public class SetVariable extends TypedAtomicActor
     public Entity getContext() {
         try {
             if (delayed.getToken().equals(BooleanToken.TRUE)) {
-                return (Entity)toplevel();
+                return (Entity) toplevel();
             } else {
                 return this;
             }
@@ -178,12 +176,14 @@ public class SetVariable extends TypedAtomicActor
      */
     public Attribute getModifiedVariable() throws IllegalActionException {
         NamedObj container = (NamedObj) getContainer();
+
         if (container == null) {
             throw new IllegalActionException(this, "No container.");
         }
+
         String variableNameValue = variableName.getExpression();
-        Attribute attribute = container.getAttribute(
-                variableNameValue);
+        Attribute attribute = container.getAttribute(variableNameValue);
+
         if (attribute == null) {
             try {
                 workspace().getWriteAccess();
@@ -194,6 +194,7 @@ public class SetVariable extends TypedAtomicActor
                 workspace().doneWriting();
             }
         }
+
         return attribute;
     }
 
@@ -207,9 +208,11 @@ public class SetVariable extends TypedAtomicActor
     public List getModifiedVariables() throws IllegalActionException {
         Attribute attribute = getModifiedVariable();
         List list = new ArrayList(1);
+
         if (attribute instanceof Variable) {
             list.add(attribute);
         }
+
         return list;
     }
 
@@ -220,9 +223,10 @@ public class SetVariable extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             final Token value = input.get(0);
+
             if (delayed.getToken().equals(BooleanToken.TRUE)) {
-                ChangeRequest request =
-                    new ChangeRequest(this, "SetVariable change request") {
+                ChangeRequest request = new ChangeRequest(this,
+                        "SetVariable change request") {
                         protected void _execute() throws IllegalActionException {
                             _setValue(value);
                         }
@@ -237,6 +241,7 @@ public class SetVariable extends TypedAtomicActor
                 _setValue(value);
             }
         }
+
         return true;
     }
 
@@ -249,33 +254,35 @@ public class SetVariable extends TypedAtomicActor
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+
         Attribute attribute = getModifiedVariable();
+
         if (attribute instanceof Variable) {
-            ((Variable)attribute).setTypeAtLeast(input);
+            ((Variable) attribute).setTypeAtLeast(input);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _setValue(Token value) throws IllegalActionException {
         Attribute variable = getModifiedVariable();
+
         if (variable instanceof Variable) {
-            ((Variable)variable).setToken(value);
+            ((Variable) variable).setToken(value);
+
             // NOTE: If we don't call validate(), then the
             // change will not propagate to dependents.
-            ((Variable)variable).validate();
+            ((Variable) variable).validate();
         } else if (variable instanceof Settable) {
-            ((Settable)variable).setExpression(
-                    value.toString());
+            ((Settable) variable).setExpression(value.toString());
+
             // NOTE: If we don't call validate(), then the
             // change will not propagate to dependents.
-            ((Settable)variable).validate();
+            ((Settable) variable).validate();
         } else {
             throw new IllegalActionException(SetVariable.this,
-                    "Cannot set the value of the variable "
-                    + "named: "
-                    + variableName.getExpression());
+                "Cannot set the value of the variable " + "named: "
+                + variableName.getExpression());
         }
     }
 }

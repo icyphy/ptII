@@ -43,8 +43,10 @@ import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.geometry.Stripifier;
 import com.sun.j3d.utils.geometry.Triangulator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CircularSweep3D
+
 /** This actor contains the geometry and appearance specifications for a
 circularly swept object.  The output port is used to connect this
 actor to the Java3D scene graph. This actor will only have meaning
@@ -74,19 +76,18 @@ public class CircularSweep3D extends GRShadedShape {
      *   actor with this name.
      */
     public CircularSweep3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         polyline = new Parameter(this, "polyline",
-                new DoubleMatrixToken(
-                        new double[][] {{0.5, 0.25,
-                                         0.5, -0.25,
-                                         0.25, -0.25,
-                                         0.25, 0.25,
-                                         0.5, 0.25}}));
-        angleSpan = new Parameter(this,
-                "angleSpan", new DoubleToken(2*Math.PI));
+                new DoubleMatrixToken(new double[][] {
+                        {
+                            0.5, 0.25, 0.5, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5,
+                            0.25
+                        }
+                    }));
+        angleSpan = new Parameter(this, "angleSpan",
+                new DoubleToken(2 * Math.PI));
         slices = new Parameter(this, "slices", new IntToken(32));
     }
 
@@ -110,7 +111,6 @@ public class CircularSweep3D extends GRShadedShape {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -119,18 +119,19 @@ public class CircularSweep3D extends GRShadedShape {
      *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
-
         super._createModel();
+
         int numberOfSlices = _getSlices();
-        float data[] = _getPolyline();
+        float[] data = _getPolyline();
         int numberOfSweepVertices = _getVertexCount();
-        int numberOfQuads = (numberOfSweepVertices -1 ) * numberOfSlices;
+        int numberOfQuads = (numberOfSweepVertices - 1) * numberOfSlices;
         int totalVertices = numberOfQuads * 4;
         float[] polydata = new float[totalVertices * 3];
         double span = _getAngleSpan();
 
         int[] stripCount = new int[numberOfQuads];
         int i;
+
         for (i = 0; i < numberOfQuads; i++) {
             stripCount[i] = 4;
         }
@@ -138,34 +139,34 @@ public class CircularSweep3D extends GRShadedShape {
         int j;
         int k = 0;
         int m = 0;
-        for (i = 0; i < numberOfSweepVertices-1; i++) {
+
+        for (i = 0; i < (numberOfSweepVertices - 1); i++) {
             for (j = 0; j < numberOfSlices; j++) {
-                float cosFactor1 = (float) Math.cos(span*j/numberOfSlices);
-                float sinFactor1 = (float) Math.sin(span*j/numberOfSlices);
-                float cosFactor2 = (float) Math.cos(span*(j+1)/numberOfSlices);
-                float sinFactor2 = (float) Math.sin(span*(j+1)/numberOfSlices);
+                float cosFactor1 = (float) Math.cos((span * j) / numberOfSlices);
+                float sinFactor1 = (float) Math.sin((span * j) / numberOfSlices);
+                float cosFactor2 = (float) Math.cos((span * (j + 1)) / numberOfSlices);
+                float sinFactor2 = (float) Math.sin((span * (j + 1)) / numberOfSlices);
 
-
-                polydata[k]   = data[m] * cosFactor1;
-                polydata[k+1] = data[m+1];
-                polydata[k+2] = data[m] * sinFactor1;
+                polydata[k] = data[m] * cosFactor1;
+                polydata[k + 1] = data[m + 1];
+                polydata[k + 2] = data[m] * sinFactor1;
                 k = k + 3;
-                polydata[k]   = data[m] * cosFactor2;
-                polydata[k+1] = data[m+1];
-                polydata[k+2] = data[m] * sinFactor2;
+                polydata[k] = data[m] * cosFactor2;
+                polydata[k + 1] = data[m + 1];
+                polydata[k + 2] = data[m] * sinFactor2;
                 k = k + 3;
-                polydata[k]   = data[m+2] * cosFactor2;
-                polydata[k+1] = data[m+3];
-                polydata[k+2] = data[m+2] * sinFactor2;
+                polydata[k] = data[m + 2] * cosFactor2;
+                polydata[k + 1] = data[m + 3];
+                polydata[k + 2] = data[m + 2] * sinFactor2;
                 k = k + 3;
-                polydata[k]   = data[m+2] * cosFactor1;
-                polydata[k+1] = data[m+3];
-                polydata[k+2] = data[m+2] * sinFactor1;
+                polydata[k] = data[m + 2] * cosFactor1;
+                polydata[k + 1] = data[m + 3];
+                polydata[k + 2] = data[m + 2] * sinFactor1;
                 k = k + 3;
             }
+
             m = m + 2;
         }
-
 
         GeometryInfo gi = new GeometryInfo(GeometryInfo.POLYGON_ARRAY);
         gi.setCoordinates(polydata);
@@ -196,7 +197,6 @@ public class CircularSweep3D extends GRShadedShape {
         return (Node) _containedNode;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -205,9 +205,8 @@ public class CircularSweep3D extends GRShadedShape {
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
-    private double _getAngleSpan() throws IllegalActionException  {
+    private double _getAngleSpan() throws IllegalActionException {
         return ((DoubleToken) angleSpan.getToken()).doubleValue();
-
     }
 
     /** Return the polyline
@@ -216,14 +215,14 @@ public class CircularSweep3D extends GRShadedShape {
      *   can't be obtained
      */
     private float[] _getPolyline() throws IllegalActionException {
-        DoubleMatrixToken matrixToken =
-            ((DoubleMatrixToken) polyline.getToken());
-        int numberOfElements = matrixToken.getColumnCount()/2;
-        float[] data = new float[numberOfElements*2];
+        DoubleMatrixToken matrixToken = ((DoubleMatrixToken) polyline.getToken());
+        int numberOfElements = matrixToken.getColumnCount() / 2;
+        float[] data = new float[numberOfElements * 2];
 
-        for (int i = 0; i < numberOfElements * 2; i++) {
-            data[i] = (float) (matrixToken.getElementAt(0,i));
+        for (int i = 0; i < (numberOfElements * 2); i++) {
+            data[i] = (float) (matrixToken.getElementAt(0, i));
         }
+
         return data;
     }
 
@@ -242,15 +241,13 @@ public class CircularSweep3D extends GRShadedShape {
      *   be obtained
      */
     private int _getVertexCount() throws IllegalActionException {
-        DoubleMatrixToken matrixToken =
-            ((DoubleMatrixToken) polyline.getToken());
-        int numberOfElements = matrixToken.getColumnCount()/2;
+        DoubleMatrixToken matrixToken = ((DoubleMatrixToken) polyline.getToken());
+        int numberOfElements = matrixToken.getColumnCount() / 2;
 
         return numberOfElements;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Shape3D _containedNode;
 }

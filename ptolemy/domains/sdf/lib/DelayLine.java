@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import java.util.LinkedList;
@@ -43,8 +42,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DelayLine
+
 /**
    This actor reads tokens from its input port, and for each token read
    outputs an array that contains the current token as the first token,
@@ -63,9 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (yuhong)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class DelayLine extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,7 +74,7 @@ public class DelayLine extends SDFTransformer {
      *   actor with this name.
      */
     public DelayLine(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         initialValues = new Parameter(this, "initialValues");
@@ -107,7 +106,7 @@ public class DelayLine extends SDFTransformer {
      *   allowed on the specified attribute.
      */
     public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute != initialValues) {
             super.attributeTypeChanged(attribute);
         }
@@ -120,11 +119,10 @@ public class DelayLine extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         // Shift down.
-        System.arraycopy(
-                _delayLine, 0,
-                _delayLine, 1,
-                _delayLine.length - 1);
+        System.arraycopy(_delayLine, 0, _delayLine, 1, _delayLine.length - 1);
+
         // Read the next input.
         _delayLine[0] = input.get(0);
 
@@ -136,7 +134,7 @@ public class DelayLine extends SDFTransformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _delayLine = ((ArrayToken)initialValues.getToken()).arrayValue();
+        _delayLine = ((ArrayToken) initialValues.getToken()).arrayValue();
     }
 
     /** Return the type constraint that the type of the elements of the
@@ -146,9 +144,9 @@ public class DelayLine extends SDFTransformer {
     public List typeConstraintList() {
         List result = new LinkedList();
 
-        ArrayType outArrType = (ArrayType)output.getType();
+        ArrayType outArrType = (ArrayType) output.getType();
         InequalityTerm outputTerm = outArrType.getElementTypeTerm();
-        ArrayType valuesArrType = (ArrayType)initialValues.getType();
+        ArrayType valuesArrType = (ArrayType) initialValues.getType();
         InequalityTerm valuesTerm = valuesArrType.getElementTypeTerm();
 
         Inequality ineq1 = new Inequality(input.getTypeTerm(), outputTerm);
@@ -161,7 +159,5 @@ public class DelayLine extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Token[] _delayLine = null;
 }
-

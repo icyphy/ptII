@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.gui;
 
-// Java imports.
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
@@ -37,8 +35,10 @@ import javax.swing.JApplet;
 
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BasicJApplet
+
 /**
    Base class for swing applets.  This class provides basic management
    for background colors, a standardized mechanism for reporting errors
@@ -61,7 +61,6 @@ import ptolemy.util.MessageHandler;
    @Pt.AcceptedRating Red (eal)
 */
 public class BasicJApplet extends JApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -69,9 +68,9 @@ public class BasicJApplet extends JApplet {
      *  @return A string giving minimal information about Ptolemy II.
      */
     public String getAppletInfo() {
-        return "Ptolemy II swing-based applet.\n" +
-            "Ptolemy II comes from UC Berkeley, Department of EECS.\n" +
-            "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
+        return "Ptolemy II swing-based applet.\n"
+        + "Ptolemy II comes from UC Berkeley, Department of EECS.\n"
+        + "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
     }
 
     /** Describe the applet parameters. Derived classes should override
@@ -80,9 +79,9 @@ public class BasicJApplet extends JApplet {
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String pinfo[][] = {
-            {"background",    "#RRGGBB",    "color of the background"},
-        };
+        String[][] pinfo = {
+                { "background", "#RRGGBB", "color of the background" },
+            };
         return pinfo;
     }
 
@@ -95,20 +94,22 @@ public class BasicJApplet extends JApplet {
      *  background color is set to white.
      */
     public void init() {
-
         GraphicalMessageHandler.setContext(this);
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
         // Process the background parameter.
         _background = null;
+
         try {
             String colorSpecification = getParameter("background");
+
             if (colorSpecification != null) {
                 _background = Color.decode(colorSpecification);
             }
         } catch (Exception ex) {
             report("Warning: background parameter failed: ", ex);
         }
+
         setBackground(_background);
         getRootPane().setBackground(_background);
         getContentPane().setBackground(_background);
@@ -121,7 +122,7 @@ public class BasicJApplet extends JApplet {
      */
     public void report(Throwable throwable) {
         report(MessageHandler.shortDescription(throwable)
-                + " thrown by applet.", throwable);
+            + " thrown by applet.", throwable);
     }
 
     /** Report a message to the user.
@@ -134,8 +135,8 @@ public class BasicJApplet extends JApplet {
         } catch (Throwable throwable) {
             // Under JDK 1.4.2_04, we get NullPointerExceptions
             System.err.println("showStatus() threw a NullPointerException\n"
-                    + "This can happen if the Applet has already exited\n "
-                    + "because of an error or exception.\n");
+                + "This can happen if the Applet has already exited\n "
+                + "because of an error or exception.\n");
             throwable.printStackTrace();
         }
     }
@@ -152,16 +153,17 @@ public class BasicJApplet extends JApplet {
         // applet pops up, so be sure to print the stack trace to stderr.
         throwable.printStackTrace();
         MessageHandler.error(message, throwable);
+
         try {
             showStatus("exception occurred.");
         } catch (Throwable throwable2) {
             // Under JDK 1.4.2_04, we get NullPointerExceptions
             System.err.println("showStatus() threw an exception\n"
-                    + _stackTraceToString(throwable2)
-                    + "This can happen if the Applet has already exited\n "
-                    + "because of an error or exception.\n"
-                    + "The original error or exception was:\n"
-                    + _stackTraceToString(throwable));
+                + _stackTraceToString(throwable2)
+                + "This can happen if the Applet has already exited\n "
+                + "because of an error or exception.\n"
+                + "The original error or exception was:\n"
+                + _stackTraceToString(throwable));
         }
     }
 
@@ -178,8 +180,7 @@ public class BasicJApplet extends JApplet {
      *  @param second The second string array.
      *  @return A concatenated string array.
      */
-    protected String[][] _concatStringArrays(
-            String[][] first, String[][] second) {
+    protected String[][] _concatStringArrays(String[][] first, String[][] second) {
         String[][] newInfo = new String[first.length + second.length][];
         System.arraycopy(first, 0, newInfo, 0, first.length);
         System.arraycopy(second, 0, newInfo, first.length, second.length);

@@ -28,13 +28,14 @@ COPYRIGHTENDKEY
 Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtPowerNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents exponentiation nodes in
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtPowerNode extends ASTPtRootNode {
-
     public ASTPtPowerNode(int id) {
         super(id);
     }
@@ -61,8 +61,7 @@ public class ASTPtPowerNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitPowerNode(this);
     }
 }

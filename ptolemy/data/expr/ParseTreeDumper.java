@@ -31,8 +31,10 @@ import java.io.PrintStream;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeDumper
+
 /**
    This class implements a visitor that writes parse trees in the
    expression language.
@@ -44,11 +46,10 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.data.expr.ASTPtRootNode
 */
-
 public class ParseTreeDumper extends AbstractParseTreeVisitor {
-
     public void displayParseTree(ASTPtRootNode root) {
         _prefix = "";
+
         try {
             root.visit(this);
         } catch (IllegalActionException ex) {
@@ -59,69 +60,81 @@ public class ParseTreeDumper extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-            throws IllegalActionException  {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException  {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
-    public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException {
+
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitPowerNode(ASTPtPowerNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitProductNode(ASTPtProductNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitShiftNode(ASTPtShiftNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
-    public void visitSumNode(ASTPtSumNode node)
-            throws IllegalActionException {
+
+    public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _displayNode(node);
     }
+
     public void visitUnaryNode(ASTPtUnaryNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _displayNode(node);
     }
 
@@ -129,7 +142,7 @@ public class ParseTreeDumper extends AbstractParseTreeVisitor {
      *  the children of the node.
      */
     protected void _displayNode(ASTPtRootNode node)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (node.isEvaluated()) {
             String str = node.toString(_prefix) + ", Token type: ";
             str = str + node.getToken().getClass().getName() + ", Value: ";
@@ -137,14 +150,18 @@ public class ParseTreeDumper extends AbstractParseTreeVisitor {
         } else {
             _stream.println(node.toString(_prefix) + "  _ptToken is null");
         }
+
         _stream.println(" static type is " + node.getType());
+
         if (node.jjtGetNumChildren() > 0) {
             String oldPrefix = _prefix;
             _prefix = " " + oldPrefix;
+
             for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-                ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+                ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
                 child.visit(this);
             }
+
             _prefix = oldPrefix;
         }
     }

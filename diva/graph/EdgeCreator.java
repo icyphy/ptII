@@ -36,6 +36,7 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.AbstractInteractor;
 import diva.canvas.interactor.GrabHandle;
 
+
 /** An interactor that interactively drags edges from one node
  * to another.
  *
@@ -62,16 +63,14 @@ public abstract class EdgeCreator extends AbstractInteractor {
 
         // Add it to the editor
         // FIXME what about an error?
-        _controller.addEdge(edge,
-                source.getUserObject(),
-                ConnectorEvent.TAIL_END,
-                e.getLayerX(),
-                e.getLayerY());
+        _controller.addEdge(edge, source.getUserObject(),
+            ConnectorEvent.TAIL_END, e.getLayerX(), e.getLayerY());
 
         // Add it to the selection so it gets a manipulator, and
         // make events go to the grab-handle under the mouse
         Figure ef = _controller.getFigure(edge);
         _controller.getSelectionModel().addSelection(ef);
+
         ConnectorManipulator cm = (ConnectorManipulator) ef.getParent();
         GrabHandle gh = cm.getHeadHandle();
         layer.grabPointer(e, gh);
@@ -82,6 +81,3 @@ public abstract class EdgeCreator extends AbstractInteractor {
      */
     public abstract Object createEdge();
 }
-
-
-

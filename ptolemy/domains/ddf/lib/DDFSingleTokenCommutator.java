@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ddf.lib;
 
 import ptolemy.data.ArrayToken;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DDFSingleTokenCommutator
+
 /**
    The DDFSingleTokenCommutator has a multiport input port and an output
    port.  The types of the ports are undeclared and will be resolved by
@@ -59,8 +60,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Red (zgang)
    @Pt.AcceptedRating Red (cxh)
 */
-public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
-
+public class DDFSingleTokenCommutator extends SingleTokenCommutator {
     /** Construct an actor in the specified container with the specified name.
      *  @param container The container.
      *  @param name This is the name of this distributor within the container.
@@ -70,11 +70,10 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
      *   by the proposed container.
      */
     public DDFSingleTokenCommutator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
     }
@@ -99,9 +98,11 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
 
         Token[] rates = new IntToken[input.getWidth()];
         rates[0] = new IntToken(1);
+
         for (int i = 1; i < input.getWidth(); i++) {
             rates[i] = new IntToken(0);
         }
+
         input_tokenConsumptionRate.setToken(new ArrayToken(rates));
     }
 
@@ -111,20 +112,21 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
      *   IllegalActionException.
      */
     public boolean postfire() throws IllegalActionException {
-
         // Call postfire first so that current input position is updated.
         boolean postfireReturn = super.postfire();
 
         Token[] rates = new IntToken[input.getWidth()];
         int currentInputPosition = _getCurrentInputPosition();
         rates[currentInputPosition] = new IntToken(1);
+
         for (int i = 0; i < input.getWidth(); i++) {
-            if ( i != currentInputPosition)
+            if (i != currentInputPosition) {
                 rates[i] = new IntToken(0);
+            }
         }
+
         input_tokenConsumptionRate.setToken(new ArrayToken(rates));
 
         return postfireReturn;
     }
-
 }

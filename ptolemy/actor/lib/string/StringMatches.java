@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.string;
 
 import java.util.regex.Matcher;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringMatches
+
 /**
    Pattern match a string to a regular expression and output a true if it
    matches and a false if it does not. For a reference on regular
@@ -59,9 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (djstone)
    @Pt.AcceptedRating Green (eal)
 */
-
 public class StringMatches extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, this constructs
      *  the <i>pattern</i> and <i>matchString</i> PortParameters,
@@ -74,7 +73,7 @@ public class StringMatches extends TypedAtomicActor {
      *   actor with this name.
      */
     public StringMatches(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create one matchString portParameter, one matchString port,
@@ -82,14 +81,12 @@ public class StringMatches extends TypedAtomicActor {
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
-        (new SingletonParameter(pattern.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(pattern.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         matchString = new PortParameter(this, "matchString");
         matchString.setStringMode(true);
         matchString.setExpression("");
-        (new SingletonParameter(matchString.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(matchString.getPort(), "_showName")).setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -123,19 +120,18 @@ public class StringMatches extends TypedAtomicActor {
      *  into a regular expression.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         if (attribute == pattern) {
             try {
-                String patternValue
-                    = ((StringToken)pattern.getToken()).stringValue();
+                String patternValue = ((StringToken) pattern.getToken())
+                    .stringValue();
                 _pattern = Pattern.compile(patternValue);
             } catch (PatternSyntaxException ex) {
-                String patternValue
-                    = ((StringToken)pattern.getToken()).stringValue();
+                String patternValue = ((StringToken) pattern.getToken())
+                    .stringValue();
                 throw new IllegalActionException(this, ex,
-                        "Failed to compile regular expression \""
-                        + patternValue + "\"");
+                    "Failed to compile regular expression \"" + patternValue
+                    + "\"");
             }
         } else {
             super.attributeChanged(attribute);
@@ -152,15 +148,14 @@ public class StringMatches extends TypedAtomicActor {
         pattern.update();
         matchString.update();
 
-        String matchStringValue
-            = ((StringToken)matchString.getToken()).stringValue();
+        String matchStringValue = ((StringToken) matchString.getToken())
+            .stringValue();
         Matcher match = _pattern.matcher(matchStringValue);
         output.send(0, new BooleanToken(match.find()));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The pattern for the regular expression.
     private Pattern _pattern;
 }

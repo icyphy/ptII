@@ -24,15 +24,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.java;
 
 import soot.tagkit.AttributeValueException;
 import soot.tagkit.Tag;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypeTag
+
 /**
    A tag that references a ptolemy token type.  This tag is used
    to store information regarding the resolved ptolemy type of a
@@ -49,7 +49,6 @@ import soot.tagkit.Tag;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TypeTag implements Tag {
-
     /** Construct a new tag that refers to the given type.
      */
     public TypeTag(ptolemy.data.type.Type type) {
@@ -75,5 +74,4 @@ public class TypeTag implements Tag {
     }
 
     private ptolemy.data.type.Type _type;
-
 }

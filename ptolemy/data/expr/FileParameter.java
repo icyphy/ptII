@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data.expr;
 
 import java.io.BufferedReader;
@@ -45,6 +44,7 @@ import ptolemy.util.FileUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// FileParameter
+
 /**
    This is an attribute that specifies a file or URL.  The value of this
    attribute, accessed by getExpression(), is a string that names a file
@@ -135,7 +135,6 @@ import ptolemy.util.FileUtilities;
    @see URIAttribute
 */
 public class FileParameter extends StringParameter {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -150,7 +149,7 @@ public class FileParameter extends StringParameter {
      *   an attribute already in the container.
      */
     public FileParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -186,14 +185,14 @@ public class FileParameter extends StringParameter {
      */
     public File asFile() throws IllegalActionException {
         String name = stringValue();
+
         try {
             return FileUtilities.nameToFile(name, getBaseDirectory());
         } catch (IllegalArgumentException ex) {
             // Java 1.4.2 some times reports:
             //  java.lang.IllegalArgumentException: URI is not absolute
             throw new IllegalActionException(this, ex,
-                    "Failed to create a file with name '" + name
-                    + "'.");
+                "Failed to create a file with name '" + name + "'.");
         }
     }
 
@@ -211,11 +210,11 @@ public class FileParameter extends StringParameter {
         String name = stringValue();
 
         try {
-            return FileUtilities.nameToURL(
-                    name, getBaseDirectory(), getClass().getClassLoader());
+            return FileUtilities.nameToURL(name, getBaseDirectory(),
+                getClass().getClassLoader());
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot read file '" + name + "'");
+                "Cannot read file '" + name + "'");
         }
     }
 
@@ -225,9 +224,8 @@ public class FileParameter extends StringParameter {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        FileParameter newObject = (FileParameter)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FileParameter newObject = (FileParameter) super.clone(workspace);
         newObject._baseDirectory = null;
         newObject._reader = null;
         newObject._writer = null;
@@ -252,9 +250,11 @@ public class FileParameter extends StringParameter {
                 }
             }
         }
+
         if (_writer != null) {
             try {
                 _writer.flush();
+
                 if (_writer != FileUtilities.STD_OUT) {
                     _writer.close();
                 }
@@ -293,14 +293,11 @@ public class FileParameter extends StringParameter {
      */
     public BufferedReader openForReading() throws IllegalActionException {
         try {
-            _reader = FileUtilities.openForReading(
-                    stringValue(),
-                    getBaseDirectory(),
-                    getClass().getClassLoader());
+            _reader = FileUtilities.openForReading(stringValue(),
+                    getBaseDirectory(), getClass().getClassLoader());
             return _reader;
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot open file or URL");
+            throw new IllegalActionException(this, ex, "Cannot open file or URL");
         }
     }
 
@@ -339,14 +336,12 @@ public class FileParameter extends StringParameter {
      */
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
-            _writer = FileUtilities.openForWriting(
-                    stringValue(),
-                    getBaseDirectory(),
-                    append);
+            _writer = FileUtilities.openForWriting(stringValue(),
+                    getBaseDirectory(), append);
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot open file for writing");
+                "Cannot open file for writing");
         }
     }
 

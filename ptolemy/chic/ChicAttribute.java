@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.chic;
+
 
 // Ptolemy imports
 import ptolemy.actor.gui.style.TextStyle;
@@ -34,10 +34,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
-// Java imports
 
+// Java imports
 //////////////////////////////////////////////////////////////////////////
 //// ChicAttribute
+
 /**
    An attribute that has a string value which is meant to be used as an interface
    in Chic.
@@ -67,7 +68,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ChicAttribute extends StringAttribute {
-
     /** Construct an attribute with the given name contained by the specified
      *  container and annotate it with a TextStyle attribute. The container
      *  argument must not be null, or a NullPointerException will be thrown.
@@ -86,7 +86,7 @@ public class ChicAttribute extends StringAttribute {
      *   an attribute of different class already in the container.
      */
     public ChicAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         new TextStyle(this, "style");
@@ -126,15 +126,18 @@ public class ChicAttribute extends StringAttribute {
      *   ChicAttribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         ChicAttribute previous = null;
+
         if (container != null) {
-            previous =
-                (ChicAttribute)container.getAttribute(getName(), getClass());
+            previous = (ChicAttribute) container.getAttribute(getName(),
+                    getClass());
+
             if (previous != null) {
                 previous.setContainer(null);
             }
         }
+
         try {
             super.setContainer(container);
         } catch (IllegalActionException ex) {
@@ -142,23 +145,22 @@ public class ChicAttribute extends StringAttribute {
             if (previous != null) {
                 previous.setContainer(container);
             }
+
             throw ex;
         } catch (NameDuplicationException ex) {
             // Restore previous.
             if (previous != null) {
                 previous.setContainer(container);
             }
+
             throw ex;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 }

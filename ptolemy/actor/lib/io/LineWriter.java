@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.io;
 
 import java.io.File;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LineWriter
+
 /**
    This actor reads string-valued input tokens and writes them,
    one line at a time, to a specified file.  It does not
@@ -75,7 +76,6 @@ import ptolemy.util.MessageHandler;
    @Pt.AcceptedRating Red (liuj)
 */
 public class LineWriter extends Sink {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -85,7 +85,7 @@ public class LineWriter extends Sink {
      *   actor with this name.
      */
     public LineWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.STRING);
@@ -102,14 +102,12 @@ public class LineWriter extends Sink {
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
         confirmOverwrite.setToken(BooleanToken.TRUE);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-25\" y=\"-20\" "
-                + "width=\"50\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
-                + " 15,-10 15,10, -15,10\" "
-                + "style=\"fill:red\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+            + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
+            + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -146,11 +144,13 @@ public class LineWriter extends Sink {
      *   opened file cannot be closed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileName) {
             // Do not close the file if it is the same file.
-            String newFileName = ((StringToken)fileName.getToken()).stringValue();
-            if (_previousFileName != null
+            String newFileName = ((StringToken) fileName.getToken())
+                .stringValue();
+
+            if ((_previousFileName != null)
                     && !newFileName.equals(_previousFileName)) {
                 _previousFileName = newFileName;
                 fileName.close();
@@ -167,9 +167,8 @@ public class LineWriter extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        LineWriter newObject = (LineWriter)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        LineWriter newObject = (LineWriter) super.clone(workspace);
         newObject._writer = null;
         return newObject;
     }
@@ -186,36 +185,40 @@ public class LineWriter extends Sink {
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token token = input.get(0);
+
             if (_writer == null) {
-                boolean appendValue
-                    = ((BooleanToken)append.getToken()).booleanValue();
+                boolean appendValue = ((BooleanToken) append.getToken())
+                    .booleanValue();
 
                 if (!fileName.stringValue().equals("System.out")) {
                     // Only check for append and overwrite if the
                     // fileName is not "System.out"
                     // Open the file.
                     File file = fileName.asFile();
-                    boolean confirmOverwriteValue
-                        = ((BooleanToken)confirmOverwrite.getToken())
-                        .booleanValue();
+                    boolean confirmOverwriteValue = ((BooleanToken) confirmOverwrite
+                        .getToken()).booleanValue();
+
                     // Don't ask for confirmation in append mode, since there
                     // will be no loss of data.
                     if (file.exists() && !appendValue && confirmOverwriteValue) {
                         // Query for overwrite.
                         // FIXME: This should be called in the event thread!
                         // There is a chance of deadlock since it is not.
-                        if (!MessageHandler.yesNoQuestion(
-                                    "OK to overwrite " + file + "?")) {
+                        if (!MessageHandler.yesNoQuestion("OK to overwrite "
+                                    + file + "?")) {
                             throw new IllegalActionException(this,
-                                    "Please select another file name.");
+                                "Please select another file name.");
                         }
                     }
                 }
-                _writer = new PrintWriter(
-                        fileName.openForWriting(appendValue), true);
+
+                _writer = new PrintWriter(fileName.openForWriting(appendValue),
+                        true);
             }
+
             _writeToken(token);
         }
+
         return super.postfire();
     }
 
@@ -237,7 +240,7 @@ public class LineWriter extends Sink {
      */
     protected void _writeToken(Token token) {
         // In this base class, the cast is safe.
-        _writer.println(((StringToken)token).stringValue());
+        _writer.println(((StringToken) token).stringValue());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -251,5 +254,4 @@ public class LineWriter extends Sink {
 
     /** Previous value of fileName parameter. */
     private String _previousFileName;
-
 }

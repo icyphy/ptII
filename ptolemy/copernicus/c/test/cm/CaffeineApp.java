@@ -21,18 +21,16 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
-
 public class CaffeineApp {
-
     public static void main(String[] args) {
         float total = 1;
 
-        BenchmarkUnit units[] = new BenchmarkUnit[6];
+        BenchmarkUnit[] units = new BenchmarkUnit[6];
         units[0] = new BenchmarkUnit(new SieveAtom());
         units[1] = new BenchmarkUnit(new LoopAtom());
         units[2] = new BenchmarkUnit(new LogicAtom());
@@ -48,13 +46,10 @@ public class CaffeineApp {
             System.out.println(score);
 
             // We need the geometric mean.
-            total = total * (float)Math.exp(Math.log(score)/6);
+            total = total * (float) Math.exp(Math.log(score) / 6);
         }
 
         System.out.print("Overall score = ");
-        System.out.println((int)total);
-
-
+        System.out.println((int) total);
     }
-
 }

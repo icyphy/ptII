@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.graph;
 
 import java.util.ArrayList;
@@ -43,8 +42,10 @@ import ptolemy.graph.analysis.SinkNodeAnalysis;
 import ptolemy.graph.analysis.SourceNodeAnalysis;
 import ptolemy.graph.analysis.TransitiveClosureAnalysis;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DirectedGraph
+
 /**
    A directed graph.
    Some methods in this class have two versions, one that operates
@@ -65,7 +66,6 @@ import ptolemy.graph.analysis.TransitiveClosureAnalysis;
    @Pt.AcceptedRating Yellow (pwhitake)
 */
 public class DirectedGraph extends Graph {
-
     /** Construct an empty directed graph.
      */
     public DirectedGraph() {
@@ -102,7 +102,6 @@ public class DirectedGraph extends Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Find all the nodes that can be reached backward from the
      *  specified node.
      *  The reachable nodes do not include the argument unless
@@ -118,14 +117,18 @@ public class DirectedGraph extends Graph {
 
         int nodeLabel = nodeLabel(node);
         ArrayList nodes = new ArrayList(transitiveClosure.length);
+
         // Look at the corresponding column.
         Iterator graphNodes = nodes().iterator();
+
         while (graphNodes.hasNext()) {
-            Node next = (Node)(graphNodes.next());
+            Node next = (Node) (graphNodes.next());
+
             if (transitiveClosure[nodeLabel(next)][nodeLabel]) {
                 nodes.add(next);
             }
         }
+
         return nodes;
     }
 
@@ -145,11 +148,12 @@ public class DirectedGraph extends Graph {
      */
     public Object[] backwardReachableNodes(Object weight) {
         Collection sameWeightNodes = nodes(weight);
+
         if (sameWeightNodes.size() == 0) {
             throw new GraphWeightException(weight, null, this,
-                    "The specified weight is not a "
-                    + "node weight in this graph.");
+                "The specified weight is not a " + "node weight in this graph.");
         }
+
         return weightArray(backwardReachableNodes(sameWeightNodes));
     }
 
@@ -165,24 +169,30 @@ public class DirectedGraph extends Graph {
     public Collection backwardReachableNodes(Collection nodeCollection) {
         boolean[][] transitiveClosure = transitiveClosure();
         ArrayList reachableNodes = new ArrayList(transitiveClosure.length);
+
         // Compute the OR of the corresponding rows.
         Iterator graphNodes = nodes().iterator();
+
         while (graphNodes.hasNext()) {
-            Node nextGraphNode = (Node)graphNodes.next();
+            Node nextGraphNode = (Node) graphNodes.next();
             int nextLabel = nodeLabel(nextGraphNode);
             boolean reachable = false;
             Iterator nodes = nodeCollection.iterator();
+
             while (nodes.hasNext()) {
-                Node nextNode = (Node)nodes.next();
+                Node nextNode = (Node) nodes.next();
+
                 if (transitiveClosure[nextLabel][nodeLabel(nextNode)]) {
                     reachable = true;
                     break;
                 }
             }
+
             if (reachable) {
                 reachableNodes.add(nextGraphNode);
             }
         }
+
         return reachableNodes;
     }
 
@@ -199,10 +209,8 @@ public class DirectedGraph extends Graph {
      *  weights is not a node weight in this graph.
      */
     public Object[] backwardReachableNodes(Object[] weights) {
-        return weightArray(backwardReachableNodes(
-                                   nodes(Arrays.asList(weights))));
+        return weightArray(backwardReachableNodes(nodes(Arrays.asList(weights))));
     }
-
 
     /** Return the nodes that are in cycles. If there are multiple cycles,
      *  the nodes in all the cycles will be returned.
@@ -214,13 +222,16 @@ public class DirectedGraph extends Graph {
 
         ArrayList result = new ArrayList(transitiveClosure.length);
         Iterator nodes = nodes().iterator();
+
         while (nodes.hasNext()) {
-            Node next = (Node)nodes.next();
+            Node next = (Node) nodes.next();
             int label = nodeLabel(next);
+
             if (transitiveClosure[label][label]) {
                 result.add(next);
             }
         }
+
         return result;
     }
 
@@ -241,13 +252,14 @@ public class DirectedGraph extends Graph {
      *  the second node; false otherwise.
      */
     public boolean edgeExists(Node node1, Node node2) {
-
         Iterator outputEdges = outputEdges(node1).iterator();
+
         while (outputEdges.hasNext()) {
-            if (((Edge)(outputEdges.next())).sink() == node2) {
+            if (((Edge) (outputEdges.next())).sink() == node2) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -266,16 +278,20 @@ public class DirectedGraph extends Graph {
      */
     public boolean edgeExists(Object weight1, Object weight2) {
         Iterator sources = nodes(weight1).iterator();
+
         while (sources.hasNext()) {
-            Node candidateSource = (Node)sources.next();
+            Node candidateSource = (Node) sources.next();
             Iterator sinks = nodes(weight2).iterator();
+
             while (sinks.hasNext()) {
-                Node candidateSink = (Node)sinks.next();
+                Node candidateSink = (Node) sinks.next();
+
                 if (edgeExists(candidateSource, candidateSink)) {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -334,12 +350,15 @@ public class DirectedGraph extends Graph {
         Collection edgeCollection = this.outputEdges(n2);
         Iterator edges = edgeCollection.iterator();
         ArrayList commonEdges = new ArrayList();
+
         while (edges.hasNext()) {
-            Edge edge = (Edge)edges.next();
+            Edge edge = (Edge) edges.next();
+
             if (edge.sink() == n1) {
                 commonEdges.add(edge);
             }
         }
+
         return commonEdges;
     }
 
@@ -355,12 +374,15 @@ public class DirectedGraph extends Graph {
         Collection inputEdgeCollection = inputEdges(node);
         Iterator inputEdges = inputEdgeCollection.iterator();
         ArrayList result = new ArrayList(inputEdgeCollection.size());
+
         while (inputEdges.hasNext()) {
-            Node source = ((Edge)(inputEdges.next())).source();
+            Node source = ((Edge) (inputEdges.next())).source();
+
             if (!result.contains(source)) {
                 result.add(source);
             }
         }
+
         return result;
     }
 
@@ -378,12 +400,15 @@ public class DirectedGraph extends Graph {
         int label = nodeLabel(node);
         ArrayList result = new ArrayList(transitiveClosure.length);
         Iterator nodes = nodes().iterator();
+
         while (nodes.hasNext()) {
-            Node next = (Node)nodes.next();
+            Node next = (Node) nodes.next();
+
             if (transitiveClosure[label][nodeLabel(next)]) {
                 result.add(next);
             }
         }
+
         return result;
     }
 
@@ -400,10 +425,12 @@ public class DirectedGraph extends Graph {
      */
     public Object[] reachableNodes(Object weight) {
         Collection sameWeightNodes = nodes(weight);
+
         if (sameWeightNodes.size() == 0) {
             throw new GraphWeightException(weight, null, this,
-                    "The specified weight is not a node weight in this graph.");
+                "The specified weight is not a node weight in this graph.");
         }
+
         return weightArray(reachableNodes(sameWeightNodes));
     }
 
@@ -433,28 +460,35 @@ public class DirectedGraph extends Graph {
         boolean[][] transitiveClosure = transitiveClosure();
 
         int N = nodeCollection.size();
-        int labels[] = new int[N];
+        int[] labels = new int[N];
         Iterator nodes = nodeCollection.iterator();
+
         for (int i = 0; i < N; i++) {
-            labels[i] = nodeLabel((Node)nodes.next());
+            labels[i] = nodeLabel((Node) nodes.next());
         }
+
         ArrayList reachableNodes = new ArrayList(transitiveClosure.length);
+
         // Compute the OR of the corresponding rows.
         Iterator graphNodes = nodes().iterator();
+
         while (graphNodes.hasNext()) {
-            Node nextGraphNode = (Node)graphNodes.next();
+            Node nextGraphNode = (Node) graphNodes.next();
             int nextGraphLabel = nodeLabel(nextGraphNode);
             boolean reachable = false;
+
             for (int i = 0; i < N; i++) {
                 if (transitiveClosure[labels[i]][nextGraphLabel]) {
                     reachable = true;
                     break;
                 }
             }
+
             if (reachable) {
                 reachableNodes.add(nextGraphNode);
             }
         }
+
         return reachableNodes;
     }
 
@@ -466,13 +500,15 @@ public class DirectedGraph extends Graph {
         boolean[][] transitiveClosure = transitiveClosure();
 
         int N = nodeCount();
+
         if (transitiveClosure.length != N) {
             throw new GraphStateException("Graph inconsistency."
-                    + " A dump of the graph follows.\n" + this);
+                + " A dump of the graph follows.\n" + this);
         }
 
         // initially, no nodes have been added to an SCC
-        boolean addedToAnSCC[] = new boolean[N];
+        boolean[] addedToAnSCC = new boolean[N];
+
         for (int i = 0; i < N; i++) {
             addedToAnSCC[i] = false;
         }
@@ -487,16 +523,17 @@ public class DirectedGraph extends Graph {
             if (!addedToAnSCC[i]) {
                 ArrayList nodeList = new ArrayList();
                 sccNodeLists.add(nodeList);
+
                 Node node = node(i);
                 nodeList.add(node);
                 sccRepresentatives.add(node);
                 addedToAnSCC[i] = true;
+
                 for (int j = i + 1; j < N; j++) {
                     // given two nodes, the two are in the same SCC if they
                     // are mutually reachable
                     if (!addedToAnSCC[j]) {
-                        if (transitiveClosure[i][j] &&
-                                transitiveClosure[j][i]) {
+                        if (transitiveClosure[i][j] && transitiveClosure[j][i]) {
                             nodeList.add(node(j));
                             addedToAnSCC[j] = true;
                         }
@@ -509,30 +546,33 @@ public class DirectedGraph extends Graph {
         Collection sortedSCCRepresentatives;
 
         try {
-            sortedSCCRepresentatives =
-                topologicalSort(sccRepresentatives);
+            sortedSCCRepresentatives = topologicalSort(sccRepresentatives);
         } catch (GraphActionException ex) {
             throw new GraphStateException("nodes in different SCCs were"
-                    + " found to be strongly connected.");
+                + " found to be strongly connected.");
         }
 
         ArrayList sortedSCCNodeLists = new ArrayList();
 
         Iterator representatives = sortedSCCRepresentatives.iterator();
+
         for (int i = 0; i < numberOfSCCs; i++) {
-            Node sccRepresentative = (Node)(representatives.next());
+            Node sccRepresentative = (Node) (representatives.next());
+
             for (int j = 0; j < numberOfSCCs; j++) {
                 ArrayList nodeList = (ArrayList) (sccNodeLists.get(j));
+
                 if (nodeList.get(0) == sccRepresentative) {
                     sortedSCCNodeLists.add(nodeList);
                 }
             }
         }
 
-        DirectedGraph sccs[] = new DirectedGraph[numberOfSCCs];
+        DirectedGraph[] sccs = new DirectedGraph[numberOfSCCs];
+
         for (int i = 0; i < numberOfSCCs; i++) {
             ArrayList nodeList = (ArrayList) (sortedSCCNodeLists.get(i));
-            sccs[i] = (DirectedGraph)subgraph(nodeList);
+            sccs[i] = (DirectedGraph) subgraph(nodeList);
         }
 
         return sccs;
@@ -557,8 +597,8 @@ public class DirectedGraph extends Graph {
         // Thus, the number of self loop edges is simply the total number
         // of input and output edges minus the number of edges that
         // are connected to this node.
-        return inputEdgeCount(node) + outputEdgeCount(node) -
-            incidentEdgeCount(node);
+        return (inputEdgeCount(node) + outputEdgeCount(node))
+        - incidentEdgeCount(node);
     }
 
     /** Return the number of sink nodes in this graph.
@@ -575,7 +615,7 @@ public class DirectedGraph extends Graph {
      *  @see #sinkNodeCount()
      */
     public Collection sinkNodes() {
-        return (Collection)_sinkNodeAnalysis.nodes();
+        return (Collection) _sinkNodeAnalysis.nodes();
     }
 
     /** Return the number of source nodes in this graph.
@@ -592,7 +632,7 @@ public class DirectedGraph extends Graph {
      *  @see #sourceNodeCount()
      */
     public Collection sourceNodes() {
-        return (Collection)_sourceNodeAnalysis.nodes();
+        return (Collection) _sourceNodeAnalysis.nodes();
     }
 
     /** Return a list of disconnected subgraphs of this graph.
@@ -600,12 +640,14 @@ public class DirectedGraph extends Graph {
     public LinkedList subgraphs() {
         LinkedList subgraphList = new LinkedList();
         LinkedList remainingNodes = new LinkedList(nodes());
+
         while (!remainingNodes.isEmpty()) {
             DirectedGraph subgraph = new DirectedGraph();
-            Node node = (Node)remainingNodes.remove(0);
+            Node node = (Node) remainingNodes.remove(0);
             _connectedSubGraph(node, subgraph, remainingNodes);
             subgraphList.add(subgraph);
         }
+
         return subgraphList;
     }
 
@@ -635,12 +677,15 @@ public class DirectedGraph extends Graph {
         Collection outputEdgeCollection = outputEdges(node);
         Iterator outputEdges = outputEdgeCollection.iterator();
         ArrayList result = new ArrayList(outputEdgeCollection.size());
+
         while (outputEdges.hasNext()) {
-            Node sink = ((Edge)(outputEdges.next())).sink();
+            Node sink = ((Edge) (outputEdges.next())).sink();
+
             if (!result.contains(sink)) {
                 result.add(sink);
             }
         }
+
         return result;
     }
 
@@ -652,13 +697,14 @@ public class DirectedGraph extends Graph {
      */
     public DirectedAcyclicGraph toDirectedAcyclicGraph() {
         DirectedAcyclicGraph acyclicGraph;
+
         if (isAcyclic()) {
-            acyclicGraph = (DirectedAcyclicGraph)
-                cloneAs(new DirectedAcyclicGraph());
+            acyclicGraph = (DirectedAcyclicGraph) cloneAs(new DirectedAcyclicGraph());
         } else {
             throw new GraphTopologyException("This graph is not acyclic."
-                    + GraphException.graphDump(this));
+                + GraphException.graphDump(this));
         }
+
         return acyclicGraph;
     }
 
@@ -678,24 +724,27 @@ public class DirectedGraph extends Graph {
      *  @see #topologicalSort(Object[])
      */
     public List topologicalSort(Collection nodeCollection)
-            throws GraphActionException {
+        throws GraphActionException {
         boolean[][] transitiveClosure = transitiveClosure();
 
         int N = nodeCollection.size();
         Node[] nodeArray = new Node[N];
         Iterator nodes = nodeCollection.iterator();
         int i = 0;
+
         while (nodes.hasNext()) {
-            nodeArray[i++] = (Node)(nodes.next());
+            nodeArray[i++] = (Node) (nodes.next());
         }
-        for (i = 0; i < N-1; i++) {
-            for (int j = i+1; j < N; j++) {
+
+        for (i = 0; i < (N - 1); i++) {
+            for (int j = i + 1; j < N; j++) {
                 int label1 = nodeLabel(nodeArray[i]);
                 int label2 = nodeLabel(nodeArray[j]);
+
                 if (transitiveClosure[label2][label1]) {
                     if (transitiveClosure[label1][label2]) {
                         throw new GraphActionException("Attempted to"
-                                + " topologically sort cyclic nodes.");
+                            + " topologically sort cyclic nodes.");
                     } else {
                         // Swap nodes
                         Node node = nodeArray[i];
@@ -703,9 +752,9 @@ public class DirectedGraph extends Graph {
                         nodeArray[j] = node;
                     }
                 }
-
             }
         }
+
         return new ArrayList(Arrays.asList(nodeArray));
     }
 
@@ -721,10 +770,9 @@ public class DirectedGraph extends Graph {
      *   connected.
      *  @see #topologicalSort(Collection)
      */
-    public Object[] topologicalSort(Object[] weights) throws
-            GraphActionException {
-        return weightArray(topologicalSort(
-                                   nodes(Arrays.asList(weights))));
+    public Object[] topologicalSort(Object[] weights)
+        throws GraphActionException {
+        return weightArray(topologicalSort(nodes(Arrays.asList(weights))));
     }
 
     /** Return transitive closure for the graph.
@@ -747,9 +795,11 @@ public class DirectedGraph extends Graph {
      */
     protected void _connect(Edge edge, Node node) {
         super._connect(edge, node);
+
         if (edge.source() == node) {
             _outputEdgeList(node).add(edge);
         }
+
         if (edge.sink() == node) {
             _inputEdgeList(node).add(edge);
         }
@@ -763,39 +813,49 @@ public class DirectedGraph extends Graph {
      * @param graph The given graph.
      * @param remainingNodes Set of nodes that haven't been reached.
      */
-    protected void _connectedSubGraph (Node node, DirectedGraph graph,
-            Collection remainingNodes) {
+    protected void _connectedSubGraph(Node node, DirectedGraph graph,
+        Collection remainingNodes) {
         if (!graph.containsNode(node)) {
             graph.addNode(node);
             remainingNodes.remove(node);
         }
+
         // Handle source nodes.
         Iterator inputEdges = inputEdges(node).iterator();
+
         while (inputEdges.hasNext()) {
             Edge inputEdge = (Edge) inputEdges.next();
+
             if (!graph.containsEdge(inputEdge)) {
                 Node sourceNode = inputEdge.source();
+
                 if (!graph.containsNode(sourceNode)) {
                     graph.addNode(sourceNode);
-                    _connectedSubGraph (sourceNode, graph, remainingNodes);
+                    _connectedSubGraph(sourceNode, graph, remainingNodes);
                     remainingNodes.remove(sourceNode);
                 }
+
                 if (!graph.containsEdge(inputEdge)) {
                     graph.addEdge(sourceNode, node);
                 }
             }
         }
+
         // Handle sink nodes.
         Iterator outputEdges = outputEdges(node).iterator();
+
         while (outputEdges.hasNext()) {
             Edge outputEdge = (Edge) outputEdges.next();
+
             if (!graph.containsEdge(outputEdge)) {
                 Node sinkNode = outputEdge.sink();
+
                 if (!graph.containsNode(sinkNode)) {
                     graph.addNode(sinkNode);
-                    _connectedSubGraph (sinkNode, graph, remainingNodes);
+                    _connectedSubGraph(sinkNode, graph, remainingNodes);
                     remainingNodes.remove(sinkNode);
                 }
+
                 if (!graph.containsEdge(outputEdge)) {
                     graph.addEdge(node, sinkNode);
                 }
@@ -826,7 +886,6 @@ public class DirectedGraph extends Graph {
         _acyclicAnalysis = new CycleExistenceAnalysis(this);
         _sinkNodeAnalysis = new SinkNodeAnalysis(this);
         _sourceNodeAnalysis = new SourceNodeAnalysis(this);
-
     }
 
     /** Register a new node in the graph.
@@ -840,20 +899,20 @@ public class DirectedGraph extends Graph {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Return the list of input edges for a specified node.
     private ArrayList _inputEdgeList(Node node) {
-        return (ArrayList)_inputEdgeMap.get(node);
+        return (ArrayList) _inputEdgeMap.get(node);
     }
 
     // Return the list of output edges for a specified node.
     private ArrayList _outputEdgeList(Node node) {
-        return (ArrayList)_outputEdgeMap.get(node);
+        return (ArrayList) _outputEdgeMap.get(node);
     }
 
     // Remove an object from an ArrayList if it exists in the list.
     private void _removeIfPresent(ArrayList list, Object element) {
         int index;
+
         if ((index = list.indexOf(element)) != -1) {
             list.remove(index);
         }
@@ -861,7 +920,6 @@ public class DirectedGraph extends Graph {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A mapping from nodes into their lists of input edges.
     // Each key in this map is an instance of Node. Each value
     // is an instance of ArrayList whose elements are instances of Edge.
@@ -886,5 +944,4 @@ public class DirectedGraph extends Graph {
 
     // The graph analysis for computation of source nodes.
     private SourceNodeAnalysis _sourceNodeAnalysis;
-
 }

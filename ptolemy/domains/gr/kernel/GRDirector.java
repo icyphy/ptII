@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.kernel;
 
 import java.util.Iterator;
@@ -53,8 +52,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GRDirector
+
 /**
    GR is a domain for displaying three-dimensional graphics in Ptolemy
    II.  GR is an untimed domain in where actors are connected in an
@@ -80,7 +81,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating yellow (vogel)
 */
 public class GRDirector extends StaticSchedulingDirector {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -114,7 +114,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public GRDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -154,10 +154,10 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         _reset();
-        GRDirector newObject = (GRDirector)(super.clone(workspace));
+
+        GRDirector newObject = (GRDirector) (super.clone(workspace));
         return newObject;
     }
 
@@ -175,10 +175,11 @@ public class GRDirector extends StaticSchedulingDirector {
         // FIXME: This code works differently than all other
         // synchronizeToRealTime implementations.
         long currentTime = System.currentTimeMillis();
-        int frameRate =
-            ((IntToken)iterationTimeLowerBound.getToken()).intValue();
+        int frameRate = ((IntToken) iterationTimeLowerBound.getToken())
+            .intValue();
         long timeElapsed = currentTime - _lastIterationTime;
         long timeRemaining = frameRate - timeElapsed;
+
         if (timeRemaining > 0) {
             try {
                 java.lang.Thread.sleep(timeRemaining);
@@ -186,61 +187,72 @@ public class GRDirector extends StaticSchedulingDirector {
                 // Ignored.
             }
         }
+
         _lastIterationTime = currentTime;
 
         if (container == null) {
-            throw new InvalidStateException(this, getName()
-                    + " fired, but it has no container!");
+            throw new InvalidStateException(this,
+                getName() + " fired, but it has no container!");
         }
 
         Scheduler scheduler = getScheduler();
+
         if (scheduler == null) {
-            throw new IllegalActionException(this, "Attempted to fire "
-                    + "GR system with no scheduler");
+            throw new IllegalActionException(this,
+                "Attempted to fire " + "GR system with no scheduler");
         }
 
         Schedule schedule = scheduler.getSchedule();
 
         Iterator actors = schedule.actorIterator();
+
         while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
+            Actor actor = (Actor) actors.next();
 
             // If an actor returns true to prefire(), fire() and postfire()
             // will be called.
             if (_debugging) {
-                _debug(new FiringEvent(this, actor,
-                               FiringEvent.BEFORE_PREFIRE, 1));
+                _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_PREFIRE,
+                        1));
             }
+
             if (actor instanceof CompositeActor) {
                 CompositeActor compositeActor = (CompositeActor) actor;
-                Director  insideDirector = compositeActor.getDirector();
+                Director insideDirector = compositeActor.getDirector();
 
                 _insideDirector = insideDirector;
                 _pseudoTimeEnabled = true;
             }
+
             boolean flag = actor.prefire();
+
             if (_debugging) {
-                _debug(new FiringEvent(this, actor,
-                               FiringEvent.AFTER_PREFIRE, 1));
+                _debug(new FiringEvent(this, actor, FiringEvent.AFTER_PREFIRE, 1));
             }
+
             if (flag) {
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.BEFORE_FIRE, 1));
+                            FiringEvent.BEFORE_FIRE, 1));
                 }
+
                 actor.fire();
+
                 if (_debugging) {
+                    _debug(new FiringEvent(this, actor, FiringEvent.AFTER_FIRE,
+                            1));
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.AFTER_FIRE, 1));
-                    _debug(new FiringEvent(this, actor,
-                                   FiringEvent.BEFORE_POSTFIRE, 1));
+                            FiringEvent.BEFORE_POSTFIRE, 1));
                 }
+
                 actor.postfire();
+
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.AFTER_POSTFIRE, 1));
+                            FiringEvent.AFTER_POSTFIRE, 1));
                 }
             }
+
             // Make sure we reset the pseudotime flag.
             _pseudoTimeEnabled = false;
 
@@ -258,8 +270,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @param actor The actor to be fired.
      *  @param time The next time when the actor should be fired.
      */
-    public void fireAt(Actor actor, Time time)
-            throws IllegalActionException {
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
         setModelTime(time);
     }
 
@@ -324,32 +335,37 @@ public class GRDirector extends StaticSchedulingDirector {
         _buildActorTable();
         _iteration = 0;
 
-
         // Get the ViewScreen.
         ViewScreenInterface viewScreen = null;
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Iterator actors = container.deepEntityList().iterator();
+
         while (actors.hasNext()) {
-                Object actor = actors.next();
+            Object actor = actors.next();
+
             if (actor instanceof ViewScreenInterface) {
                 if (viewScreen != null) {
                     throw new IllegalActionException(this,
-                    "GR model cannot contain more than one view screen.");
+                        "GR model cannot contain more than one view screen.");
                 }
-                viewScreen = (ViewScreenInterface)actor;
+
+                viewScreen = (ViewScreenInterface) actor;
             }
         }
+
         if (viewScreen == null) {
             throw new IllegalActionException(this,
-                    "GR model does not contain a view screen.");
+                "GR model does not contain a view screen.");
         }
 
         // Set the view screen for all the actors.
         actors = container.deepEntityList().iterator();
+
         while (actors.hasNext()) {
-            NamedObj actor = (NamedObj)actors.next();
+            NamedObj actor = (NamedObj) actors.next();
+
             if (actor instanceof GRActor) {
-                    ((GRActor)actor)._setViewScreen((GRActor)viewScreen);
+                ((GRActor) actor)._setViewScreen((GRActor) viewScreen);
             }
         }
     }
@@ -389,19 +405,20 @@ public class GRDirector extends StaticSchedulingDirector {
      *  <i>iterations</i>.
      */
     public boolean postfire() throws IllegalActionException {
-
         // Note: actors return false on postfire(), if they wish never
         // to be fired again during the execution. This can be
         // interpreted as the actor being dead.
         // Also, fireAt() calls by the actor will be ignored.
-
         super.postfire();
+
         int totalIterations = ((IntToken) (iterations.getToken())).intValue();
         _iteration++;
+
         if ((totalIterations > 0) && (_iteration >= totalIterations)) {
             _iteration = 0;
             return false;
         }
+
         return true;
     }
 
@@ -417,7 +434,6 @@ public class GRDirector extends StaticSchedulingDirector {
         return true;
     }
 
-
     /** Preinitialize the actors associated with this director and
      *  initialize the number of iterations to zero.  The order in which
      *  the actors are preinitialized is non-deterministic.
@@ -427,17 +443,24 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+
         Scheduler scheduler = getScheduler();
-        if (scheduler == null)
-            throw new IllegalActionException("Attempted to initialize " +
-                    "GR system with no scheduler");
+
+        if (scheduler == null) {
+            throw new IllegalActionException("Attempted to initialize "
+                + "GR system with no scheduler");
+        }
+
         // force the schedule to be computed.
-        if (_debugging) _debug("Computing schedule");
+        if (_debugging) {
+            _debug("Computing schedule");
+        }
+
         try {
             scheduler.getSchedule();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to compute schedule:");
+                "Failed to compute schedule:");
         }
     }
 
@@ -452,9 +475,9 @@ public class GRDirector extends StaticSchedulingDirector {
         _reset();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
     /** Override the base class to indicate that this director does not
      *  need write access on the workspace during an iteration.
      *
@@ -464,10 +487,8 @@ public class GRDirector extends StaticSchedulingDirector {
         return false;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
     /** Create an actor table that caches all the actors directed by this
      *  director.  This method is called once in initialize().
@@ -475,9 +496,10 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     private void _buildActorTable() throws IllegalActionException {
         Scheduler currentScheduler = getScheduler();
+
         if (currentScheduler == null) {
-            throw new IllegalActionException(this, "Attempted to fire "
-                    + "GR system with no scheduler");
+            throw new IllegalActionException(this,
+                "Attempted to fire " + "GR system with no scheduler");
         }
 
         currentScheduler.getSchedule();
@@ -493,30 +515,21 @@ public class GRDirector extends StaticSchedulingDirector {
     private void _debugViewActorTable() throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         List entityList = container.entityList();
-        _debug("\nACTOR TABLE with " + entityList.size()
-                + " unique actors");
+        _debug("\nACTOR TABLE with " + entityList.size() + " unique actors");
         _debug("---------------------------------------");
+
         Iterator actors = entityList.iterator();
+
         while (actors.hasNext()) {
             ComponentEntity actor = (ComponentEntity) actors.next();
 
             if (!actor.isAtomic()) {
                 _debug(" **COMPOSITE** ");
             }
+
             _debug(" ");
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
     /** Most of the constructor initialization is relegated to this method.
      *  Initialization process includes :
@@ -532,10 +545,10 @@ public class GRDirector extends StaticSchedulingDirector {
             Class.forName("javax.vecmath.Tuple3f");
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                    "The GR domain requires that Java 3D be installed.\n" +
-                    "Java 3D can be downloaded from\n" +
-                    "http://java.sun.com/products/java-media/3D/\n" +
-                    "For details see $PTII/ptolemy/domains/gr/main.htm");
+                "The GR domain requires that Java 3D be installed.\n"
+                + "Java 3D can be downloaded from\n"
+                + "http://java.sun.com/products/java-media/3D/\n"
+                + "For details see $PTII/ptolemy/domains/gr/main.htm");
         }
 
         try {
@@ -546,19 +559,18 @@ public class GRDirector extends StaticSchedulingDirector {
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
             throw new InternalErrorException(this, ex,
-                    "Could not create Default scheduler.");
+                "Could not create Default scheduler.");
         }
 
         try {
-            iterations = new Parameter(this, "iterations",
-                    new IntToken(0));
+            iterations = new Parameter(this, "iterations", new IntToken(0));
             iterations.setTypeEquals(BaseType.INT);
             iterationTimeLowerBound = new Parameter(this,
                     "iterationTimeLowerBound", new IntToken(33));
             iterationTimeLowerBound.setTypeEquals(BaseType.INT);
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                    "Cannot create default iterations parameter.");
+                "Cannot create default iterations parameter.");
         }
 
         _reset();
@@ -567,21 +579,18 @@ public class GRDirector extends StaticSchedulingDirector {
     private void _reset() {
         _formerTimeFired = 0.0;
         _formerValidTimeFired = 0.0;
-        _lastIterationTime = (long)0;
+        _lastIterationTime = (long) 0;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The time when the previous valid prefire() was called
     private double _formerValidTimeFired;
 
     // The time when the previous valid or invalid prefire() was called
     private double _formerTimeFired;
-
     private long _lastIterationTime;
     private boolean _pseudoTimeEnabled = false;
     private Director _insideDirector;
     private int _iteration = 0;
-
 }

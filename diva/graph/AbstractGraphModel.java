@@ -27,9 +27,11 @@
 
 */
 package diva.graph;
+
 import javax.swing.SwingUtilities;
 
 import diva.graph.toolbox.GraphEventMulticaster;
+
 
 /**
  * An abstract implementation of the GraphModel interface that provides
@@ -48,8 +50,7 @@ public abstract class AbstractGraphModel implements GraphModel {
     /**
      * The list of graph listeners.
      */
-    protected GraphEventMulticaster _graphListeners =
-    new GraphEventMulticaster();
+    protected GraphEventMulticaster _graphListeners = new GraphEventMulticaster();
 
     /**
      * Add a graph listener to the model.  Graph listeners are
@@ -105,4 +106,3 @@ public abstract class AbstractGraphModel implements GraphModel {
         _dispatch = val;
     }
 }
-

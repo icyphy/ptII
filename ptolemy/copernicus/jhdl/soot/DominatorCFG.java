@@ -24,41 +24,43 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.soot;
 
+import soot.Body;
+import soot.SootMethod;
+import soot.Unit;
+
+import soot.jimple.AssignStmt;
+import soot.jimple.GotoStmt;
+import soot.jimple.IdentityStmt;
+import soot.jimple.IfStmt;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+
+import soot.jimple.internal.JReturnVoidStmt;
+
+import soot.toolkits.graph.Block;
+import soot.toolkits.graph.BriefBlockGraph;
+
 import ptolemy.copernicus.jhdl.*;
-
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Vector;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
-import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
-import ptolemy.copernicus.jhdl.soot.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
-import soot.Body;
-import soot.Unit;
-import soot.jimple.IfStmt;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.AssignStmt;
-import soot.jimple.GotoStmt;
-import soot.jimple.IdentityStmt;
-import soot.jimple.internal.JReturnVoidStmt;
-import soot.SootMethod;
-import soot.toolkits.graph.BriefBlockGraph;
-import soot.toolkits.graph.Block;
 
 //////////////////////////////////////////////////////////////////////////
 //// DominatorCFG
+
 /**
  * This class will take a Soot block and create a DirectedGraph.
  *
@@ -69,9 +71,7 @@ import soot.toolkits.graph.Block;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class DominatorCFG extends DirectedAcyclicCFG {
-
     DominatorCFG(SootMethod method) throws IllegalActionException {
         super(method);
         _init();
@@ -93,9 +93,8 @@ public class DominatorCFG extends DirectedAcyclicCFG {
       _init();
       }
     */
-
     public boolean dominates(Node d, Node n) {
-        return _dominators.dominates(d,n);
+        return _dominators.dominates(d, n);
     }
 
     public Node getImmediatePostDominator(Node n) {
@@ -108,18 +107,18 @@ public class DominatorCFG extends DirectedAcyclicCFG {
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("Dominators\n"+_dominators);
-        sb.append("Post Dominators\n"+_postDominators);
-        sb.append("Immediate Dominators\n"+
-                _dominators.immediateDominatorsString());
-        sb.append("Immediate Post Dominators\n"+
-                _postDominators.immediateDominatorsString());
+        sb.append("Dominators\n" + _dominators);
+        sb.append("Post Dominators\n" + _postDominators);
+        sb.append("Immediate Dominators\n"
+            + _dominators.immediateDominatorsString());
+        sb.append("Immediate Post Dominators\n"
+            + _postDominators.immediateDominatorsString());
         return sb.toString();
     }
 
     protected void _init() throws IllegalActionException {
         _dominators = new DominatorHashMap(this);
-        _postDominators = new DominatorHashMap(this,true);
+        _postDominators = new DominatorHashMap(this, true);
     }
 
     /**
@@ -142,33 +141,36 @@ public class DominatorCFG extends DirectedAcyclicCFG {
      *
      * @see DominatorCFG#createDominatorCFG(String[],boolean)
      **/
-    public static DominatorCFG createDominatorCFG(String args[],
-            boolean writeGraphs) {
-        soot.SootMethod testMethod =
-            ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
-        DominatorCFG _cfg=null;
+    public static DominatorCFG createDominatorCFG(String[] args,
+        boolean writeGraphs) {
+        soot.SootMethod testMethod = ptolemy.copernicus.jhdl.test.Test
+            .getSootMethod(args);
+        DominatorCFG _cfg = null;
+
         try {
             ConditionalControlCompactor.compact(testMethod);
             BooleanNotCompactor.compact(testMethod);
+
             soot.Body body = testMethod.retrieveActiveBody();
             BriefBlockGraph bbgraph = new BriefBlockGraph(body);
             _cfg = new DominatorCFG(bbgraph);
+
             if (writeGraphs) {
                 PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-                toDotty.writeDotFile(".", testMethod.getName(),_cfg);
+                toDotty.writeDotFile(".", testMethod.getName(), _cfg);
             }
         } catch (IllegalActionException e) {
             System.err.println(e);
             System.exit(1);
         }
+
         return _cfg;
     }
 
-    public static void main(String args[]) {
-        DominatorCFG dcfg = createDominatorCFG(args,true);
+    public static void main(String[] args) {
+        DominatorCFG dcfg = createDominatorCFG(args, true);
     }
 
     protected DominatorHashMap _dominators;
     protected DominatorHashMap _postDominators;
-
 }

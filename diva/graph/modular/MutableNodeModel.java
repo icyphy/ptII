@@ -25,6 +25,7 @@
 */
 package diva.graph.modular;
 
+
 /**
  * A node is an object that is contained by a graph
  * and is connected to other nodes by edges.  A node
@@ -37,7 +38,6 @@ package diva.graph.modular;
  * @Pt.AcceptedRating Red
  */
 public interface MutableNodeModel extends NodeModel {
-
     /**
      * Set the graph parent of the given node.  Implementors of this method
      * are also responsible for insuring that it is set properly as
@@ -45,6 +45,3 @@ public interface MutableNodeModel extends NodeModel {
      */
     public void setParent(Object node, Object composite);
 }
-
-
-

@@ -24,10 +24,10 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.geom.Rectangle2D;
+
 
 /** A ZList is an interface for objects that contain an ordered list
  * of figures in z-order. In addition to the methods inherited from
@@ -51,7 +51,6 @@ import java.awt.geom.Rectangle2D;
  * @Pt.AcceptedRating Yellow
  */
 public interface ZList extends FigureSet {
-
     /** Add a figure to the list. This interface does not define
      * where the new figure will be in the display order (i.e. at the
      * top, bottom, or somewhere else), although implementations may
@@ -60,7 +59,7 @@ public interface ZList extends FigureSet {
      * contained -- clients are therefore responsible for being
      * bug-free.
      */
-    public void add (Figure f);
+    public void add(Figure f);
 
     /** Insert a figure at the given position. To insert the figure
      *  just in front of some other figure, use getIndex() to get the
@@ -73,7 +72,7 @@ public interface ZList extends FigureSet {
      *  <p>Clients should assume that an implementation of this method
      *  does <i>not</i> check if the figure is already contained.
      */
-    public void add (int index, Figure f);
+    public void add(int index, Figure f);
 
     /** Removes all of the figures from this list.
      */
@@ -86,29 +85,29 @@ public interface ZList extends FigureSet {
      * of making this same test is to check if the parent of the figure
      * is the same object as this list.
      */
-    public boolean contains (Figure f);
+    public boolean contains(Figure f);
 
     /** Return the figure at the given index.
      *
      * @exception IndexOutOfBoundsException The index is out of range.
      */
-    public Figure get (int index);
+    public Figure get(int index);
 
     /** Get the bounding box of all the figures in this list.
      */
-    public Rectangle2D getBounds ();
+    public Rectangle2D getBounds();
 
     /** Get the figures that are entirely contained by the given
      * region.
      */
-    public GeometricSet getContainedFigures (Rectangle2D region);
+    public GeometricSet getContainedFigures(Rectangle2D region);
 
     /** Get the figures with bounding boxes that intersect the given
      * region. Note that the returned set may contained figures
      * that do not actually intersect the region -- this method only
      * looks at the bounding boxes.
      */
-    public GeometricSet getIntersectedFigures (Rectangle2D region);
+    public GeometricSet getIntersectedFigures(Rectangle2D region);
 
     /** Return the index of the given figure in the Z-list. Figures
      *  with a higher index are drawn behind figures with a lower index.
@@ -116,22 +115,22 @@ public interface ZList extends FigureSet {
      * @return The index of the given figure, or -1 if the figure
      * is not in this list.
      */
-    public int indexOf (Figure f);
+    public int indexOf(Figure f);
 
     /** Remove the given figure from this list.
      */
-    public void remove (Figure f);
+    public void remove(Figure f);
 
     /** Remove the figure at the given index from this list.
      *
      * @exception IndexOutOfBoundsException The index is out of range.
      */
-    public void remove (int index);
+    public void remove(int index);
 
     /** Replace the figure at the given index with the passed-in
      * figure.
      */
-    public void set (int index, Figure f);
+    public void set(int index, Figure f);
 
     /** Set the index of the given figure. That is, move it in the
      * display list to the given position. To move the figure to just
@@ -147,11 +146,9 @@ public interface ZList extends FigureSet {
      *
      * @exception IndexOutOfBoundsException The new index is out of range.
      */
-    public void setIndex (int index, Figure f);
+    public void setIndex(int index, Figure f);
 
     /** Return the number of elements in this list.
      */
-    public int getFigureCount ();
+    public int getFigureCount();
 }
-
-

@@ -24,28 +24,33 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.soot;
-
-import soot.Value;
-import soot.UnitPrinter;
-import soot.jimple.internal.AbstractIntBinopExpr;
-import soot.jimple.Jimple;
-import soot.util.Switch;
-import soot.jimple.ConditionExpr;
 
 
 // imports I need for copy
 import soot.IntType;
+import soot.Type;
+import soot.UnitPrinter;
+import soot.Value;
+import soot.ValueBox;
+
+import soot.jimple.ConditionExpr;
+import soot.jimple.Expr;
+import soot.jimple.Jimple;
+
+import soot.jimple.internal.AbstractIntBinopExpr;
+
+import soot.util.Switch;
+
+import java.util.ArrayList;
+
 //import soot.ToBriefString;
 import java.util.List;
-import java.util.ArrayList;
-import soot.jimple.Expr;
-import soot.Type;
-import soot.ValueBox;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractCompoundExpression
+
 /**
  * This class extends the CompoundBooleanExpression class and implements
  * a number of interfaces to be compatible with soot (i.e. Expr and
@@ -62,26 +67,28 @@ import soot.ValueBox;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
-public abstract class AbstractCompoundExpression extends CompoundBooleanExpression
-                                                         //implements Expr, ToBriefString {
-    implements Expr {
-
+public abstract class AbstractCompoundExpression
+    extends CompoundBooleanExpression implements Expr {
     public AbstractCompoundExpression(Value op1, Value op2) {
-        if (op1 instanceof ConditionExpr)
+        if (op1 instanceof ConditionExpr) {
             this.op1Box = Jimple.v().newConditionExprBox(op1);
-        else
+        } else {
             this.op1Box = Jimple.v().newArgBox(op1);
-        if (op2 instanceof ConditionExpr)
+        }
+
+        if (op2 instanceof ConditionExpr) {
             this.op2Box = Jimple.v().newConditionExprBox(op2);
-        else
+        } else {
             this.op2Box = Jimple.v().newArgBox(op2);
+        }
     }
-    public void apply(Switch sw) {}; //?
+
+    public void apply(Switch sw) {
+    }
+    ; //?
 
     // This is a copy of AbstractIntBinopExpr
-    public Type getType()
-    {
+    public Type getType() {
         return IntType.v();
     }
 
@@ -92,38 +99,31 @@ public abstract class AbstractCompoundExpression extends CompoundBooleanExpressi
     protected ValueBox op1Box;
     protected ValueBox op2Box;
 
-    public Value getOp1()
-    {
+    public Value getOp1() {
         return op1Box.getValue();
     }
 
-    public Value getOp2()
-    {
+    public Value getOp2() {
         return op2Box.getValue();
     }
 
-    public ValueBox getOp1Box()
-    {
+    public ValueBox getOp1Box() {
         return op1Box;
     }
 
-    public ValueBox getOp2Box()
-    {
+    public ValueBox getOp2Box() {
         return op2Box;
     }
 
-    public void setOp1(Value op1)
-    {
+    public void setOp1(Value op1) {
         op1Box.setValue(op1);
     }
 
-    public void setOp2(Value op2)
-    {
+    public void setOp2(Value op2) {
         op2Box.setValue(op2);
     }
 
-    public List getUseBoxes()
-    {
+    public List getUseBoxes() {
         List list = new ArrayList();
 
         list.addAll(op1Box.getValue().getUseBoxes());
@@ -134,38 +134,37 @@ public abstract class AbstractCompoundExpression extends CompoundBooleanExpressi
         return list;
     }
 
-    public boolean equivTo(Object o)
-    {
-        if (o instanceof AbstractCompoundExpression)
-            {
-                AbstractCompoundExpression abe = (AbstractCompoundExpression)o;
-                return op1Box.getValue().equivTo(abe.op1Box.getValue()) &&
-                    op2Box.getValue().equivTo(abe.op2Box.getValue()) &&
-                    getSymbol().equals(abe.getSymbol());
-            }
+    public boolean equivTo(Object o) {
+        if (o instanceof AbstractCompoundExpression) {
+            AbstractCompoundExpression abe = (AbstractCompoundExpression) o;
+            return op1Box.getValue().equivTo(abe.op1Box.getValue())
+            && op2Box.getValue().equivTo(abe.op2Box.getValue())
+            && getSymbol().equals(abe.getSymbol());
+        }
+
         return false;
     }
 
     /** Returns a hash code for this object, consistent with structural equality. */
-    public int equivHashCode()
-    {
-        return op1Box.getValue().equivHashCode() * 101 + op2Box.getValue().equivHashCode() + 17
-            ^ getSymbol().hashCode();
+    public int equivHashCode() {
+        return ((op1Box.getValue().equivHashCode() * 101)
+        + op2Box.getValue().equivHashCode() + 17) ^ getSymbol().hashCode();
     }
 
     /** Returns the unique symbol for an operator. */
     abstract public String getSymbol();
+
     //abstract public Object clone();
+    public String toString() {
+        Value op1 = op1Box.getValue();
+        Value op2 = op2Box.getValue();
+        String leftOp = op1.toString();
+        String rightOp = op2.toString();
 
-    public String toString()
-    {
-        Value op1 = op1Box.getValue(), op2 = op2Box.getValue();
-        String leftOp = op1.toString(), rightOp = op2.toString();
-
-        return "(" + leftOp + getSymbol() + rightOp +")";
+        return "(" + leftOp + getSymbol() + rightOp + ")";
     }
 
-    public void toString( UnitPrinter up ) {
+    public void toString(UnitPrinter up) {
         Value val1 = op1Box.getValue();
         Value val2 = op2Box.getValue();
 

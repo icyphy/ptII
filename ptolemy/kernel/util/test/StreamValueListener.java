@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.kernel.util.test;
 
 import java.io.OutputStream;
@@ -33,8 +32,10 @@ import java.io.PrintStream;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StreamValueListener
+
 /**
    A value listener that describes value changes on the standard output
    when the value of an object implementing Settable changes.
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.ValueListener;
    @see ptolemy.data.expr.Variable
 */
 public class StreamValueListener implements ValueListener {
-
     /** Create a value listener that sends messages to the standard output.
      */
     public StreamValueListener() {
@@ -69,7 +69,7 @@ public class StreamValueListener implements ValueListener {
      */
     public void valueChanged(Settable settable) {
         _output.println(settable + " changed, new expression: "
-                + settable.getExpression());
+            + settable.getExpression());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -77,5 +77,4 @@ public class StreamValueListener implements ValueListener {
 
     /** The PrintStream that we direct the output to. */
     protected PrintStream _output;
-
 }

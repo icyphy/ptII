@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -38,11 +37,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
-
 //////////////////////////////////////////////////////////////////////////
 //// TrigFunction
+
 /**
    Produce an output token on each firing with a value that is
    equal to the specified trigonometric function of the input.
@@ -104,7 +104,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see Scale
 */
 public class TrigFunction extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -114,7 +113,7 @@ public class TrigFunction extends Transformer {
      *   actor with this name.
      */
     public TrigFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // parameters
@@ -132,11 +131,10 @@ public class TrigFunction extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,9 +154,10 @@ public class TrigFunction extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == function) {
             String functionName = function.stringValue();
+
             if (functionName.equals("acos")) {
                 _function = _ACOS;
             } else if (functionName.equals("asin")) {
@@ -173,7 +172,7 @@ public class TrigFunction extends Transformer {
                 _function = _TAN;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized trigonometric function: " + functionName);
+                    "Unrecognized trigonometric function: " + functionName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -186,7 +185,7 @@ public class TrigFunction extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            double in = ((DoubleToken)input.get(0)).doubleValue();
+            double in = ((DoubleToken) input.get(0)).doubleValue();
             output.send(0, new DoubleToken(_doFunction(in)));
         }
     }
@@ -218,10 +217,12 @@ public class TrigFunction extends Transformer {
             // NOTE: inArray.length may be > count, in which case
             // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
+
             for (int i = 0; i < count; i++) {
-                double inputValue = ((DoubleToken)(inArray[i])).doubleValue();
+                double inputValue = ((DoubleToken) (inArray[i])).doubleValue();
                 _resultArray[i] = new DoubleToken(_doFunction(inputValue));
             }
+
             output.send(0, _resultArray, count);
             return COMPLETED;
         } else {
@@ -238,39 +239,44 @@ public class TrigFunction extends Transformer {
      */
     private double _doFunction(double in) {
         double result;
-        switch(_function) {
+
+        switch (_function) {
         case _ACOS:
             result = Math.acos(in);
             break;
+
         case _ASIN:
             result = Math.asin(in);
             break;
+
         case _ATAN:
             result = Math.atan(in);
             break;
+
         case _COS:
             result = Math.cos(in);
             break;
+
         case _SIN:
             result = Math.sin(in);
             break;
+
         case _TAN:
             result = Math.tan(in);
             break;
+
         default:
             throw new InternalErrorException(
-                    "Invalid value for _function private variable. "
-                    + "TrigFunction actor (" + getFullName()
-                    + ")"
-                    + " on function type " + _function);
+                "Invalid value for _function private variable. "
+                + "TrigFunction actor (" + getFullName() + ")"
+                + " on function type " + _function);
         }
+
         return result;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private DoubleToken[] _resultArray = new DoubleToken[1];
 
     // An indicator for the function to compute.

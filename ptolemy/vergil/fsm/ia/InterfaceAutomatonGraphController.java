@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm.ia;
 
 import java.awt.event.ActionEvent;
@@ -44,8 +43,10 @@ import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.fsm.FSMGraphController;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonGraphController
+
 /**
    A Graph Controller for interface automata models.  This controller adds
    the "Compose With" menu item to the Graph menu.
@@ -57,7 +58,6 @@ import ptolemy.vergil.fsm.FSMGraphController;
    @Pt.AcceptedRating Red (johnr)
 */
 public class InterfaceAutomatonGraphController extends FSMGraphController {
-
     /** Create a new controller with the specified directory of the current
      *  model. The directory is for setting the current directory of
      *  the file chooser invoked by the "Compose With" menu item.
@@ -84,12 +84,12 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
         // Add an item that does composition.
         // menu.addSeparator();
         diva.gui.GUIUtilities.addMenuItem(menu, _composeWithAction);
+
         // diva.gui.GUIUtilities.addToolBarButton(toolbar, _newStateAction);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The action for composing with another interface automaton.
     private ComposeWithAction _composeWithAction = new ComposeWithAction();
 
@@ -98,19 +98,17 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// ComposeWithAction
 
     /** An action to perform composition. */
     public class ComposeWithAction extends AbstractAction {
-
         /** Create a new action to perform composition. */
         public ComposeWithAction() {
             super("Compose With");
             putValue("tooltip", "Compose with another interface automaton");
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_C));
+                new Integer(KeyEvent.VK_C));
         }
 
         /** Compose with another interface automaton by first opening a file
@@ -122,7 +120,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
             // NOTE: This code is mostly copied from Top.
             JFileChooser fileDialog = new JFileChooser();
             fileDialog.setDialogTitle(
-                    "Select an interface automaton to compose with.");
+                "Select an interface automaton to compose with.");
 
             if (_directory != null) {
                 fileDialog.setCurrentDirectory(_directory);
@@ -132,13 +130,17 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                 // So we use the current directory instead.
                 // FIXME: Could this throw a security exception in an applet?
                 String cwd = StringUtilities.getProperty("user.dir");
+
                 if (cwd != null) {
                     fileDialog.setCurrentDirectory(new File(cwd));
                 }
             }
+
             int returnValue = fileDialog.showOpenDialog(getFrame());
+
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 _directory = fileDialog.getCurrentDirectory();
+
                 try {
                     // NOTE: It would be nice if it were possible to enter
                     // a URL in the file chooser, but Java's file chooser does
@@ -151,17 +153,16 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                     // but it seems to not work for relative file references:
                     // new URL("file", null, _directory.getAbsolutePath()
                     Configuration configuration = getConfiguration();
-                    Tableau newAutomatonTableau =
-                        configuration.openModel(url, url, url.toExternalForm());
+                    Tableau newAutomatonTableau = configuration.openModel(url,
+                            url, url.toExternalForm());
 
                     // compose the two interface automata and show result
-                    InterfaceAutomaton model1 =
-                        (InterfaceAutomaton)getFrame().getModel();
-                    InterfaceAutomatonGraphFrame graphFrame2 =
-                        (InterfaceAutomatonGraphFrame)
-                        newAutomatonTableau.getFrame();
-                    InterfaceAutomaton model2 =
-                        (InterfaceAutomaton)graphFrame2.getModel();
+                    InterfaceAutomaton model1 = (InterfaceAutomaton) getFrame()
+                                                                         .getModel();
+                    InterfaceAutomatonGraphFrame graphFrame2 = (InterfaceAutomatonGraphFrame) newAutomatonTableau
+                        .getFrame();
+                    InterfaceAutomaton model2 = (InterfaceAutomaton) graphFrame2
+                        .getModel();
 
                     InterfaceAutomaton composition = model1.compose(model2);
                     configuration.openModel(composition);

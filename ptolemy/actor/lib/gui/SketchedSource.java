@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import java.awt.Container;
@@ -52,8 +51,10 @@ import ptolemy.plot.EditablePlot;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SketchedSource
+
 /**
    This actor is a plotter that also produces as its output a
    signal that has been sketched by the user on the screen.
@@ -80,7 +81,6 @@ import ptolemy.plot.PlotBox;
    @Pt.AcceptedRating Red (vogel)
 */
 public class SketchedSource extends SequencePlotter implements EditListener {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -90,7 +90,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *   actor with this name.
      */
     public SketchedSource(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -115,8 +115,8 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         yTop = new Parameter(this, "yTop", new DoubleToken(1.0));
         yTop.setTypeEquals(BaseType.DOUBLE);
 
-        runOnModification = new Parameter(
-                this, "runOnModification", BooleanToken.FALSE);
+        runOnModification = new Parameter(this, "runOnModification",
+                BooleanToken.FALSE);
         runOnModification.setTypeEquals(BaseType.BOOLEAN);
 
         // Fill on wrapup no longer makes sense.
@@ -136,8 +136,8 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         // Set the initial token production parameter of the
         // output port so that this can be used in SDF in feedback
         // loops.
-        Parameter tokenInitProduction = new Parameter(
-                output, "tokenInitProduction");
+        Parameter tokenInitProduction = new Parameter(output,
+                "tokenInitProduction");
 
         // Use an expression here so change propagate.
         tokenInitProduction.setExpression("length");
@@ -191,19 +191,21 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *   is <i>length</i> and its value is not positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == length) {
-            int lengthValue = ((IntToken)length.getToken()).intValue();
+            int lengthValue = ((IntToken) length.getToken()).intValue();
+
             if (lengthValue < 0) {
                 throw new IllegalActionException(this,
-                        "length: value is required to be positive.");
+                    "length: value is required to be positive.");
             }
+
             if (lengthValue != _previousLengthValue) {
                 _previousLengthValue = lengthValue;
                 _initialTraceIsSet = false;
                 _showInitialTrace();
             }
-        } else if (attribute == yBottom || attribute == yTop) {
+        } else if ((attribute == yBottom) || (attribute == yTop)) {
             _setRanges();
         } else {
             super.attributeChanged(attribute);
@@ -216,9 +218,8 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  @exception CloneNotSupportedException If a derived class has an
      *   attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        SketchedSource newObject = (SketchedSource)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SketchedSource newObject = (SketchedSource) super.clone(workspace);
         _data = null;
         _dataModified = false;
         _count = 0;
@@ -234,19 +235,21 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  @param source The plot containing the modified data.
      *  @param dataset The data set that has been modified.
      */
-    public synchronized void editDataModified(
-            EditablePlot source, int dataset) {
-        if (dataset == 0 && !_settingInitialTrace) {
+    public synchronized void editDataModified(EditablePlot source, int dataset) {
+        if ((dataset == 0) && !_settingInitialTrace) {
             _dataModified = true;
-            _data = ((EditablePlot)plot).getData(0);
+            _data = ((EditablePlot) plot).getData(0);
 
             // Optionally execute the model here if it is idle.
             try {
-                boolean runValue = ((BooleanToken)runOnModification.getToken())
+                boolean runValue = ((BooleanToken) runOnModification.getToken())
                     .booleanValue();
+
                 if (runValue) {
                     Manager manager = getManager();
-                    if (manager != null && manager.getState() == Manager.IDLE) {
+
+                    if ((manager != null)
+                            && (manager.getState() == Manager.IDLE)) {
                         manager.startRun();
                     }
                 }
@@ -266,17 +269,21 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     public void fire() throws IllegalActionException {
         // Read the trigger input, if there is one.
         super.fire();
-        boolean periodicValue
-            = ((BooleanToken)periodic.getToken()).booleanValue();
+
+        boolean periodicValue = ((BooleanToken) periodic.getToken())
+            .booleanValue();
+
         // If this isn't periodic, then send zero only, since we already
         // sent out the entire waveform in the initialize method.
         if (!periodicValue) {
             output.send(0, _zero);
             return;
         }
-        ArrayToken arrayToken = (ArrayToken)initialTrace.getToken();
+
+        ArrayToken arrayToken = (ArrayToken) initialTrace.getToken();
         output.send(0, arrayToken.getElement(_count));
         _count++;
+
         if (_count == arrayToken.length()) {
             _count = 0;
             _updateInitialTrace();
@@ -295,14 +302,16 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         fillOnWrapup.setToken(BooleanToken.FALSE);
 
         super.initialize();
+
         if (!_initialTraceIsSet) {
             _showInitialTrace();
         }
+
         _updateInitialTrace();
 
         // Produce the data on the output so that this can be used in
         // feedback look in dataflow models.
-        ArrayToken arrayToken = (ArrayToken)initialTrace.getToken();
+        ArrayToken arrayToken = (ArrayToken) initialTrace.getToken();
         output.send(0, arrayToken.arrayValue(), arrayToken.length());
 
         _count = 0;
@@ -313,6 +322,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      */
     public void place(Container container) {
         super.place(container);
+
         if (container != null) {
             // Set the default signal value in the plot.
             try {
@@ -330,6 +340,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     public void preinitialize() throws IllegalActionException {
         // This code is copied from AtomicActor, since we can't call super.
         _stopRequested = false;
+
         // NOTE:  Receivers are also getting created
         // in connectionChanged().  Perhaps this is here to ensure
         // that the receivers are reset?
@@ -350,41 +361,52 @@ public class SketchedSource extends SequencePlotter implements EditListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Set the X and Y ranges of the plot.
     private void _setRanges() throws IllegalActionException {
-        if (plot == null) return;
-        double xInitValue = ((DoubleToken)xInit.getToken()).doubleValue();
-        double xUnitValue = ((DoubleToken)xUnit.getToken()).doubleValue();
-        int lengthValue = ((IntToken)length.getToken()).intValue();
+        if (plot == null) {
+            return;
+        }
+
+        double xInitValue = ((DoubleToken) xInit.getToken()).doubleValue();
+        double xUnitValue = ((DoubleToken) xUnit.getToken()).doubleValue();
+        int lengthValue = ((IntToken) length.getToken()).intValue();
         plot.setXRange(xInitValue, xUnitValue * lengthValue);
 
-        double yBottomValue = ((DoubleToken)yBottom.getToken()).doubleValue();
-        double yTopValue = ((DoubleToken)yTop.getToken()).doubleValue();
+        double yBottomValue = ((DoubleToken) yBottom.getToken()).doubleValue();
+        double yTopValue = ((DoubleToken) yTop.getToken()).doubleValue();
         plot.setYRange(yBottomValue, yTopValue);
     }
 
     // Show the initial value on the plot.
     // If the plot is null, return without doing anything.
     private void _showInitialTrace() throws IllegalActionException {
-        if (plot == null) return;
+        if (plot == null) {
+            return;
+        }
+
         try {
             // Prevent update of initialTrace parameter.
             _settingInitialTrace = true;
             _initialTraceIsSet = true;
-            int lengthValue = ((IntToken)length.getToken()).intValue();
-            ((Plot)plot).clear(0);
+
+            int lengthValue = ((IntToken) length.getToken()).intValue();
+            ((Plot) plot).clear(0);
+
             boolean connected = false;
-            ArrayToken defaultValues = (ArrayToken)initialTrace.getToken();
+            ArrayToken defaultValues = (ArrayToken) initialTrace.getToken();
+
             for (int i = 0; i < lengthValue; i++) {
                 double value = 0.0;
-                if (defaultValues != null && i < defaultValues.length()) {
-                    value = ((DoubleToken)defaultValues.getElement(i))
+
+                if ((defaultValues != null) && (i < defaultValues.length())) {
+                    value = ((DoubleToken) defaultValues.getElement(i))
                         .doubleValue();
                 }
-                ((Plot)plot).addPoint(0, (double)i, value, connected);
+
+                ((Plot) plot).addPoint(0, (double) i, value, connected);
                 connected = true;
             }
+
             _setRanges();
             plot.repaint();
         } finally {
@@ -395,14 +417,16 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     // Update the initial trace parameter if the sketch on screen has
     // been modified by the user.
     private synchronized void _updateInitialTrace()
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_dataModified) {
             try {
                 // Data has been modified on screen by the user.
                 Token[] record = new Token[_data[1].length];
+
                 for (int i = 0; i < _data[1].length; i++) {
                     record[i] = new DoubleToken(_data[1][i]);
                 }
+
                 ArrayToken newValue = new ArrayToken(record);
                 initialTrace.setToken(newValue);
             } finally {

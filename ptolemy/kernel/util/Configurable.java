@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.net.URL;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Configurable
+
 /**
    Objects that can be configured by reading a file or configuration information
    given as text, typically in XML format, should implement this interface.
@@ -69,7 +70,6 @@ import java.net.URL;
    @see ptolemy.actor.AtomicActor
 */
 public interface Configurable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -92,7 +92,7 @@ public interface Configurable {
      *  @exception Exception If something goes wrong.
      */
     public void configure(URL base, String source, String text)
-            throws Exception;
+        throws Exception;
 
     /** Return the input source that was specified the last time the configure
      *  method was called.

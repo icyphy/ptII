@@ -25,8 +25,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.wireless.lib.network.mac;
+
 import java.util.LinkedList;
 
 import ptolemy.actor.TypedIOPort;
@@ -43,9 +43,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 ////////////////////////////////////////////////////////////////////////=
 //
 //// TXCoordinationSta
+
 /**
    TXCoordination class is responsible for initiating a session. After a packet
    arrives from the network layer, TXCoordination will generate RTS if the packet
@@ -73,9 +75,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (czhong)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-
 public class TxCoordination extends MACActorBase {
-
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -91,12 +91,11 @@ public class TxCoordination extends MACActorBase {
      *   an actor already in the container.
      */
     public TxCoordination(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-
         // create ports
-        PduRequest =new TypedIOPort(this, "PduRequest", true, false);
+        PduRequest = new TypedIOPort(this, "PduRequest", true, false);
         PduRequest.setTypeEquals(BaseType.GENERAL);
 
         TXTXConfirm = new TypedIOPort(this, "TXTXConfirm", true, false);
@@ -116,11 +115,10 @@ public class TxCoordination extends MACActorBase {
 
         TXTXRequest = new TypedIOPort(this, "TXTXRequest", false, true);
         TXTXRequest.setTypeEquals(BaseType.GENERAL);
-
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
 
     /** Port receiving messages from the network layer
      */
@@ -151,228 +149,230 @@ public class TxCoordination extends MACActorBase {
      */
     public TypedIOPort TXTXRequest;
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
-
     public void fire() throws IllegalActionException {
         super.fire();
-        int kind=whoTimeout();        // check if a timer times out and which
-        Time currentTime =getDirector().getModelTime();
 
-        boolean isNetData=false;
+        int kind = whoTimeout(); // check if a timer times out and which
+        Time currentTime = getDirector().getModelTime();
 
-        if (PduRequest.hasToken(0))
-            {
-                isNetData=true;
-                RecordToken msg= (RecordToken)PduRequest.get(0);
+        boolean isNetData = false;
 
-                if (_txQueue.size() >= QueueSize) {
-                    if (_debugging) {
-                        _debug("Queue is full.");}
-                } else {
-                       _txQueue.add(msg);
+        if (PduRequest.hasToken(0)) {
+            isNetData = true;
+
+            RecordToken msg = (RecordToken) PduRequest.get(0);
+
+            if (_txQueue.size() >= QueueSize) {
+                if (_debugging) {
+                    _debug("Queue is full.");
+                }
+            } else {
+                _txQueue.add(msg);
+            }
+        }
+
+        switch (_currentState) {
+        case TxC_Idle:
+
+            boolean backoff = true;
+
+            if ((_mBkIP != null) && _mBkIP instanceof Variable) {
+                Token token = ((Variable) _mBkIP).getToken();
+                backoff = ((BooleanToken) token).booleanValue();
+            } //FIXME: assume it is instanceof variable.
+
+            if (isNetData && !backoff) {
+                _handleData();
+            } else if (BkDone.hasToken(0)) {
+                BkDone.get(0);
+                _checkQueue();
+            }
+
+            break;
+
+        case Wait_Rts_Backoff:
+
+            if (BkDone.hasToken(0)) {
+                RecordToken BkDoneMsg = (RecordToken) BkDone.get(0);
+
+                if (((IntToken) BkDoneMsg.get("cnt")).intValue() == -2) {
+                    TXTXRequest.send(0, _rtsdu);
+                    _currentState = Wait_Rts_Sent;
+                } else // channel is busy, need to backoff
+                 {
+                    _backoff(_ccw, -1);
+
+                    // modified standard here
+                    _cont = true;
+                    _currentState = TxC_Backoff;
                 }
             }
 
-        switch(_currentState)
-            {
-            case TxC_Idle:
-                boolean backoff = true;
-                if (_mBkIP != null && _mBkIP instanceof Variable) {
-                    Token token = ((Variable) _mBkIP).getToken();
-                    backoff = ((BooleanToken) token).booleanValue();
-                } //FIXME: assume it is instanceof variable.
-                if (isNetData && !backoff)
-                    {
-                    _handleData();
-                    }
-                else if (BkDone.hasToken(0))
-                {
-                     BkDone.get(0);
-                    _checkQueue();
+            break;
+
+        case Wait_Rts_Sent:
+
+            if (TXTXConfirm.hasToken(0)) {
+                TXTXConfirm.get(0);
+                _Trsp = setTimer(Timeout, currentTime.add(_CTSTimeout * 1e-6));
+                _currentState = Wait_Cts;
+            }
+
+            break;
+
+        case Wait_Cts:
+
+            if (kind == Timeout) {
+                if (_ccw != _aCWmax) {
+                    _ccw = (2 * _ccw) + 1;
                 }
-                break;
 
-            case Wait_Rts_Backoff:
-                if (BkDone.hasToken(0))
-                    {
-                        RecordToken BkDoneMsg= (RecordToken)BkDone.get(0);
-                        if (((IntToken)BkDoneMsg.get("cnt")).intValue()== -2)
-                            {
-                                TXTXRequest.send(0,_rtsdu);
-                                _currentState=Wait_Rts_Sent;
-                            }
-                        else // channel is busy, need to backoff
-                            {
-                                _backoff(_ccw,-1);
-                                // modified standard here
-                                _cont=true;
-                                _currentState=TxC_Backoff;
-                            }
-                    }
-                break;
+                // backoff before retry
+                _backoff(_ccw, -1);
 
-            case Wait_Rts_Sent:
-                if (TXTXConfirm.hasToken(0))
-                    {
-                        TXTXConfirm.get(0);
-                        _Trsp=setTimer(Timeout,currentTime.add(_CTSTimeout*1e-6));
-                        _currentState=Wait_Cts;
-                    }
-                break;
+                // need to reset it!!!
+                _slrc++;
 
+                if (_slrc == _dot11LongRetryLimit) {
+                    _ccw = _aCWmin;
 
-            case Wait_Cts:
-                if (kind==Timeout)
-                    {
-                        if (_ccw!=_aCWmax)
-                           {
-                            _ccw=2*_ccw+1;
-                           }
-                        // backoff before retry
-                        _backoff(_ccw,-1);
+                    // modified standard here
+                    _slrc = 0;
+                    _cont = false;
+                }
+                else {
+                    _cont = true;
+                }
 
-                        // need to reset it!!!
-                        _slrc++;
+                _currentState = TxC_Backoff;
+            } else if (GotAck.hasToken(0)) {
+                RecordToken GotCtsMsg = (RecordToken) GotAck.get(0);
 
-                        if (_slrc==_dot11LongRetryLimit)
-                            {
-                                _ccw=_aCWmin;
-                                // modified standard here
-                                _slrc=0;
-                                _cont=false;
-                            }
+                if (((IntToken) GotCtsMsg.get("kind")).intValue() == GotCts) {
+                    cancelTimer(_Trsp);
 
-                        else
-                            {
-                            _cont=true;
-                            }
-                        _currentState=TxC_Backoff;
-                    }
-                else if (GotAck.hasToken(0))
-                    {
-                        RecordToken GotCtsMsg=(RecordToken)GotAck.get(0);
-                        if ( ((IntToken)GotCtsMsg.get("kind")).intValue()==GotCts )
-                            {
-                                cancelTimer(_Trsp);
-                                Time endRx = new Time(getDirector(),
-                                    ((DoubleToken)GotCtsMsg.get("endRx")).doubleValue());
-                                _ssrc=0;
+                    Time endRx = new Time(getDirector(),
+                            ((DoubleToken) GotCtsMsg.get("endRx")).doubleValue());
+                    _ssrc = 0;
 
-                                setTimer(SifsTimeout, endRx.add(_dSifsDly*1e-6));
-                                int durId=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_sAckCtsLng/_mBrate;
-                                _setDurIdField(_tpdu,durId);
-                                _currentState=Wait_Cts_Sifs;
-                            }
-                    }
-                break;
+                    setTimer(SifsTimeout, endRx.add(_dSifsDly * 1e-6));
 
-            case Wait_Cts_Sifs:
-                if (kind==SifsTimeout)
-                    {
+                    int durId = _aSifsTime + _aPreambleLength
+                        + _aPlcpHeaderLength + (_sAckCtsLng / _mBrate);
+                    _setDurIdField(_tpdu, durId);
+                    _currentState = Wait_Cts_Sifs;
+                }
+            }
+
+            break;
+
+        case Wait_Cts_Sifs:
+
+            if (kind == SifsTimeout) {
+                _sendTxRequest();
+            }
+
+            break;
+
+        case Wait_Mpdu_Backoff:
+
+            if (BkDone.hasToken(0)) {
+                RecordToken BkDoneMsg = (RecordToken) BkDone.get(0);
+
+                if (((IntToken) BkDoneMsg.get("cnt")).intValue() == -2) {
                     _sendTxRequest();
-                    }
-                break;
+                } else {
+                    _backoff(_ccw, -1);
 
-            case Wait_Mpdu_Backoff:
-                if (BkDone.hasToken(0))
-                    {
-                        RecordToken BkDoneMsg= (RecordToken)BkDone.get(0);
-                        if (((IntToken)BkDoneMsg.get("cnt")).intValue()== -2)
-                            {
-                                _sendTxRequest();
-                            }
-                        else
-                            {
-                                _backoff(_ccw,-1);
-                                // modified standard here
-                                _cont=true;
-                                _currentState=TxC_Backoff;
-                            }
-                    }
-                break;
-
-            case Wait_Pdu_Sent:
-                if (TXTXConfirm.hasToken(0))
-                    {
-                        TXTXConfirm.get(0);
-                        // no need to wait for ACK for broadcast
-                        int Addr1=((IntToken)_tpdu.get("Addr1")).intValue();
-                        if (Addr1==mac_broadcast_addr)
-                            {
-                                _ssrc=0;
-                                _slrc=0;
-                                _ccw=_aCWmin;
-                                _cont=false;
-                                _backoff(_ccw,-1);
-                                _currentState=TxC_Backoff;
-                            }
-                        else
-                            {
-                                _Trsp=setTimer(Timeout,currentTime.add(_CTSTimeout*1e-6));
-                                _currentState=Wait_Ack;
-                            }
-                    }
-                break;
-
-            case Wait_Ack:
-                if (kind==Timeout)
-                    {
-                        if (_ccw!=_aCWmax)
-                           {
-                            _ccw=2*_ccw+1;
-                           }
-                        // backoff before retry
-                        _backoff(_ccw,-1);
-                        _ssrc++;
-                        //set retryBit=1;
-                        _setRetryField(_tpdu,1);
-                        if (_ssrc==_dot11ShortRetryLimit)
-                            {
-                                _ccw=_aCWmin;
-                                // modified standard here
-                                _ssrc=0;
-                                _cont=false;
-                            }
-                        else
-                            {
-                            _cont=true;
-                            }
-                        _currentState=TxC_Backoff;
-                    }
-                else if (GotAck.hasToken(0))
-                    {
-                        //NOTE: Charlie, you need to get the token here to
-                        //consume it. Otherwise, there is a deadlock at
-                        //this time.
-                        GotAck.get(0);
-                        _ssrc=0;
-                        _slrc=0;
-                        _ccw=_aCWmin;
-                        _cont=false;
-                        _backoff(_ccw,-1);
-                        _currentState=TxC_Backoff;
-                    }
-                break;
-
-            case TxC_Backoff:
-                if (BkDone.hasToken(0))
-                    BkDone.get(0);
-                    if (_cont)
-                        {
-                            _cont=false;
-                            _sendFrag();
-                        }
-                    else
-                        {
-                        _checkQueue();
-                        }
-                break;
+                    // modified standard here
+                    _cont = true;
+                    _currentState = TxC_Backoff;
+                }
             }
+
+            break;
+
+        case Wait_Pdu_Sent:
+
+            if (TXTXConfirm.hasToken(0)) {
+                TXTXConfirm.get(0);
+
+                // no need to wait for ACK for broadcast
+                int Addr1 = ((IntToken) _tpdu.get("Addr1")).intValue();
+
+                if (Addr1 == mac_broadcast_addr) {
+                    _ssrc = 0;
+                    _slrc = 0;
+                    _ccw = _aCWmin;
+                    _cont = false;
+                    _backoff(_ccw, -1);
+                    _currentState = TxC_Backoff;
+                } else {
+                    _Trsp = setTimer(Timeout,
+                            currentTime.add(_CTSTimeout * 1e-6));
+                    _currentState = Wait_Ack;
+                }
+            }
+
+            break;
+
+        case Wait_Ack:
+
+            if (kind == Timeout) {
+                if (_ccw != _aCWmax) {
+                    _ccw = (2 * _ccw) + 1;
+                }
+
+                // backoff before retry
+                _backoff(_ccw, -1);
+                _ssrc++;
+
+                //set retryBit=1;
+                _setRetryField(_tpdu, 1);
+
+                if (_ssrc == _dot11ShortRetryLimit) {
+                    _ccw = _aCWmin;
+
+                    // modified standard here
+                    _ssrc = 0;
+                    _cont = false;
+                } else {
+                    _cont = true;
+                }
+
+                _currentState = TxC_Backoff;
+            } else if (GotAck.hasToken(0)) {
+                //NOTE: Charlie, you need to get the token here to
+                //consume it. Otherwise, there is a deadlock at
+                //this time.
+                GotAck.get(0);
+                _ssrc = 0;
+                _slrc = 0;
+                _ccw = _aCWmin;
+                _cont = false;
+                _backoff(_ccw, -1);
+                _currentState = TxC_Backoff;
+            }
+
+            break;
+
+        case TxC_Backoff:
+
+            if (BkDone.hasToken(0)) {
+                BkDone.get(0);
+            }
+
+            if (_cont) {
+                _cont = false;
+                _sendFrag();
+            } else {
+                _checkQueue();
+            }
+
+            break;
+        }
     }
 
     /** Initialize the private variables.
@@ -382,258 +382,228 @@ public class TxCoordination extends MACActorBase {
         super.initialize();
         _txQueue = new LinkedList();
         _currentState = 0;
-        _dSifsDly=_aSifsTime-_aRxTxTurnaroundTime;
-        _ssrc=0;
-        _slrc=0;
-        _ccw=_aCWmin;
-        _seqNum=0;
-        _CTSTimeout=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_aSlotTime+
-            _sAckCtsLng/_mBrate;
+        _dSifsDly = _aSifsTime - _aRxTxTurnaroundTime;
+        _ssrc = 0;
+        _slrc = 0;
+        _ccw = _aCWmin;
+        _seqNum = 0;
+        _CTSTimeout = _aSifsTime + _aPreambleLength + _aPlcpHeaderLength
+            + _aSlotTime + (_sAckCtsLng / _mBrate);
 
         NamedObj macComposite = getContainer().getContainer();
+
         if (macComposite.getAttribute("mBkIP") != null) {
             _mBkIP = macComposite.getAttribute("mBkIP");
         } else {
             _mBkIP = null;
-            throw new IllegalActionException ("the MAC compositor " +
-                    "dosen't contain a parameter named mBkIP");
+            throw new IllegalActionException("the MAC compositor "
+                + "dosen't contain a parameter named mBkIP");
         }
-        // randomize node's time to go to TxC_Idle
-        _backoff(_ccw,-1);
 
+        // randomize node's time to go to TxC_Idle
+        _backoff(_ccw, -1);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-
-    private RecordToken _createPacket(int subtype,int duration,int RA, int TA)
-            throws IllegalActionException {
-        Token[] DataPacketValues={
-            new IntToken(0),
-            new IntToken(ControlType),
-            new IntToken(subtype),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(123),
-            new IntToken(duration),
-            new IntToken(RA),
-            new IntToken(TA),
-            new IntToken(160)};
-        RecordToken pkt=new RecordToken(RtsPacket, DataPacketValues);
-        return(pkt);
+    private RecordToken _createPacket(int subtype, int duration, int RA, int TA)
+        throws IllegalActionException {
+        Token[] DataPacketValues = {
+                new IntToken(0), new IntToken(ControlType),
+                new IntToken(subtype), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(123), new IntToken(duration), new IntToken(RA),
+                new IntToken(TA), new IntToken(160)
+            };
+        RecordToken pkt = new RecordToken(RtsPacket, DataPacketValues);
+        return (pkt);
     }
 
     private RecordToken _createDataPacket(RecordToken msg, int dest_addr)
-            throws IllegalActionException {
-        Token[] DataPacketValues={
-            new IntToken(0),
-            new IntToken(DataType),
-            new IntToken(Data),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(123),
-            new IntToken(_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_sAckCtsLng/_mBrate),
-            new IntToken(dest_addr),
-            new IntToken(getID()),
-            new IntToken(0),
-            new IntToken(_seqNum-_seqNum/4096*4096),
-            new IntToken(0),
-            new IntToken(0),
-            msg,
-            new IntToken(34*8+((IntToken)msg.get("Length")).intValue())};
+        throws IllegalActionException {
+        Token[] DataPacketValues = {
+                new IntToken(0), new IntToken(DataType), new IntToken(Data),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(123),
+                new IntToken(_aSifsTime + _aPreambleLength + _aPlcpHeaderLength
+                    + (_sAckCtsLng / _mBrate)), new IntToken(dest_addr),
+                new IntToken(getID()), new IntToken(0),
+                new IntToken(_seqNum - (_seqNum / 4096 * 4096)), new IntToken(0),
+                new IntToken(0), msg,
+                new IntToken((34 * 8)
+                    + ((IntToken) msg.get("Length")).intValue())
+            };
         _seqNum++;
-        RecordToken pkt=new RecordToken(DataPacket, DataPacketValues);
-        return(pkt);
-    }
 
+        RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
+        return (pkt);
+    }
 
     private RecordToken _setRetryField(RecordToken msg, int retryBit)
-            throws IllegalActionException {
-        Token[] DataPacketValues={
-            new IntToken(0),
-            new IntToken(DataType),
-            new IntToken(Data),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(retryBit),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(123),
-            msg.get("durId"),
-            msg.get("Addr1"),
-            msg.get("Addr2"),
-            new IntToken(0),
-            msg.get("SeqNum"),
-            new IntToken(0),
-            new IntToken(0),
-            msg.get("payload"),
-            msg.get("Length")};
+        throws IllegalActionException {
+        Token[] DataPacketValues = {
+                new IntToken(0), new IntToken(DataType), new IntToken(Data),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(retryBit), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(123),
+                msg.get("durId"), msg.get("Addr1"), msg.get("Addr2"),
+                new IntToken(0), msg.get("SeqNum"), new IntToken(0),
+                new IntToken(0), msg.get("payload"), msg.get("Length")
+            };
 
-        RecordToken pkt=new RecordToken(DataPacket, DataPacketValues);
-        return(pkt);
+        RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
+        return (pkt);
     }
 
-
     private RecordToken _setDurIdField(RecordToken msg, int durId)
-            throws IllegalActionException {
-        Token[] DataPacketValues={
-            new IntToken(0),
-            new IntToken(DataType),
-            new IntToken(Data),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            msg.get("retryBit"),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(123),
-            new IntToken(durId),
-            msg.get("Addr1"),
-            msg.get("Addr2"),
-            new IntToken(0),
-            msg.get("SeqNum"),
-            new IntToken(0),
-            new IntToken(0),
-            msg.get("payload"),
-            msg.get("Length")};
+        throws IllegalActionException {
+        Token[] DataPacketValues = {
+                new IntToken(0), new IntToken(DataType), new IntToken(Data),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                msg.get("retryBit"), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(123),
+                new IntToken(durId), msg.get("Addr1"), msg.get("Addr2"),
+                new IntToken(0), msg.get("SeqNum"), new IntToken(0),
+                new IntToken(0), msg.get("payload"), msg.get("Length")
+            };
 
-        RecordToken pkt=new RecordToken(DataPacket, DataPacketValues);
-        return(pkt);
+        RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
+        return (pkt);
     }
 
     private void _backoff(int ccw, int cnt) throws IllegalActionException {
-        Token[] getBackoffMsgValues={
-            new IntToken(Backoff),
-            new IntToken(ccw),
-            new IntToken(cnt)};
-        RecordToken event=new RecordToken(getBackoffMsgFields,getBackoffMsgValues);
+        Token[] getBackoffMsgValues = {
+                new IntToken(Backoff), new IntToken(ccw), new IntToken(cnt)
+            };
+        RecordToken event = new RecordToken(getBackoffMsgFields,
+                getBackoffMsgValues);
         getBackoff.send(0, event);
     }
 
     private void _sendTxRequest() throws IllegalActionException {
-        Token[] TxRequestMsgValues={
-            new IntToken(TxRequest),
-            _tpdu,
-            new IntToken(_mBrate*(int)1e6)};
+        Token[] TxRequestMsgValues = {
+                new IntToken(TxRequest), _tpdu,
+                new IntToken(_mBrate * (int) 1e6)
+            };
 
-        RecordToken copyTpdu=new RecordToken(TxRequestMsgFields,TxRequestMsgValues);
+        RecordToken copyTpdu = new RecordToken(TxRequestMsgFields,
+                TxRequestMsgValues);
         TXTXRequest.send(0, copyTpdu);
-        _currentState=Wait_Pdu_Sent;
+        _currentState = Wait_Pdu_Sent;
     }
 
     private void _sendFrag() throws IllegalActionException {
         // just to see if channel is idle
-        _backoff(0,0);
+        _backoff(0, 0);
+
         // no RTS is needed for broadcast
-        int length=((IntToken)_tpdu.get("Length")).intValue();
-        int retryBit=((IntToken)_tpdu.get("retryBit")).intValue();
-        int Addr1=((IntToken)_tpdu.get("Addr1")).intValue();
-        if (length > _dotllRTSThreshold && retryBit==0 && Addr1!=mac_broadcast_addr)
-           {
-            _currentState=Wait_Rts_Backoff;
-           }
-        else
-           {
-            _currentState=Wait_Mpdu_Backoff;
-           }
+        int length = ((IntToken) _tpdu.get("Length")).intValue();
+        int retryBit = ((IntToken) _tpdu.get("retryBit")).intValue();
+        int Addr1 = ((IntToken) _tpdu.get("Addr1")).intValue();
+
+        if ((length > _dotllRTSThreshold) && (retryBit == 0)
+                && (Addr1 != mac_broadcast_addr)) {
+            _currentState = Wait_Rts_Backoff;
+        } else {
+            _currentState = Wait_Mpdu_Backoff;
+        }
     }
 
     private void _handleData() throws IllegalActionException {
         int dest_addr;
-        RecordToken msg=(RecordToken)_txQueue.removeFirst();
-        int msg_kind=((IntToken)msg.get("kind")).intValue();
-        switch(msg_kind)
-            {
-            case netw_interest_msg:
-            case netw_data_msg:
-                dest_addr = ((IntToken)msg.get("toMACAddr")).intValue(); ;
-                break;
-            default: // everything else is broadcast
-                dest_addr = mac_broadcast_addr;
-            }
-        _tpdu=_createDataPacket(msg,dest_addr);
-        int length=((IntToken)_tpdu.get("Length")).intValue();
-        int Addr1=((IntToken)_tpdu.get("Addr1")).intValue();
+        RecordToken msg = (RecordToken) _txQueue.removeFirst();
+        int msg_kind = ((IntToken) msg.get("kind")).intValue();
 
-        int durId=3*(_aSifsTime+_aPreambleLength+_aPlcpHeaderLength)+(length+
-                2*_sAckCtsLng)/_mBrate;
+        switch (msg_kind) {
+        case netw_interest_msg:
+        case netw_data_msg:
+            dest_addr = ((IntToken) msg.get("toMACAddr")).intValue();
+            ;
+            break;
+
+        default: // everything else is broadcast
+            dest_addr = mac_broadcast_addr;
+        }
+
+        _tpdu = _createDataPacket(msg, dest_addr);
+
+        int length = ((IntToken) _tpdu.get("Length")).intValue();
+        int Addr1 = ((IntToken) _tpdu.get("Addr1")).intValue();
+
+        int durId = (3 * (_aSifsTime + _aPreambleLength + _aPlcpHeaderLength))
+            + ((length + (2 * _sAckCtsLng)) / _mBrate);
+
         // no RTS is needed for broadcast
-        if (length<= _dotllRTSThreshold || Addr1==mac_broadcast_addr) {
+        if ((length <= _dotllRTSThreshold) || (Addr1 == mac_broadcast_addr)) {
             //Note: Charlie, you didn't surround this if with {}, which causes the
             //else block below related to the if below. There are several of this kind
             // of errors...
-
             if (_debugging) {
-                _debug("RTS is not sent.");}
-        }    else
-                {
-                    RecordToken pdu=_createPacket(Rts,durId,
-                            dest_addr, getID());
-                    Token[] TxRequestMsgValues={
-                        new IntToken(TxRequest),
-                        pdu,
-                        new IntToken(_mBrate*(int)1e6)};
-                    _rtsdu=new RecordToken(TxRequestMsgFields,TxRequestMsgValues);
-                }
+                _debug("RTS is not sent.");
+            }
+        } else {
+            RecordToken pdu = _createPacket(Rts, durId, dest_addr, getID());
+            Token[] TxRequestMsgValues = {
+                    new IntToken(TxRequest), pdu,
+                    new IntToken(_mBrate * (int) 1e6)
+                };
+            _rtsdu = new RecordToken(TxRequestMsgFields, TxRequestMsgValues);
+        }
+
         _sendFrag();
     }
 
     private void _checkQueue() throws IllegalActionException {
-        if (_txQueue.size() > 0)
-           {
+        if (_txQueue.size() > 0) {
             _handleData();
-           }
-        else
-           {
-            _currentState=TxC_Idle;
-           }
+        } else {
+            _currentState = TxC_Idle;
+        }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    private int _dSifsDly;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private int _ccw;
 
-    private int _dSifsDly, _ccw, _slrc, _ssrc, _CTSTimeout, _seqNum;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private int _slrc;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private int _ssrc;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private int _CTSTimeout;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private int _seqNum;
     private boolean _cont;
-
-    private RecordToken _rtsdu, _tpdu;
+    private RecordToken _rtsdu;
+    private RecordToken _tpdu;
     private LinkedList _txQueue;
     private Timer _Trsp;
 
     // define states in FSM
-    private static final int TxC_Idle=0;
-    private static final int Wait_Mpdu_Backoff=1;
-    private static final int Wait_Pdu_Sent=2;
-    private static final int Wait_Ack=3;
-    private static final int TxC_Backoff=4;
-    private static final int Wait_Rts_Backoff=5;
-    private static final int Wait_Rts_Sent=6;
-    private static final int Wait_Cts=7;
-    private static final int Wait_Cts_Sifs=8;
-
-    private int _currentState=0;
-
-    private static final int Timeout=1;
-    private static final int SifsTimeout=2;
-    private static final int QueueSize=100;
-
+    private static final int TxC_Idle = 0;
+    private static final int Wait_Mpdu_Backoff = 1;
+    private static final int Wait_Pdu_Sent = 2;
+    private static final int Wait_Ack = 3;
+    private static final int TxC_Backoff = 4;
+    private static final int Wait_Rts_Backoff = 5;
+    private static final int Wait_Rts_Sent = 6;
+    private static final int Wait_Cts = 7;
+    private static final int Wait_Cts_Sifs = 8;
+    private int _currentState = 0;
+    private static final int Timeout = 1;
+    private static final int SifsTimeout = 2;
+    private static final int QueueSize = 100;
 }

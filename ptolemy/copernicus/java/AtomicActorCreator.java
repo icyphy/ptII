@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.java;
 
 import java.util.Map;
@@ -34,8 +32,10 @@ import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.kernel.Entity;
 import soot.SootClass;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActorCreator
+
 /**
 
 @author Stephen Neuendorffer
@@ -45,12 +45,10 @@ import soot.SootClass;
 @Pt.AcceptedRating Red (cxh)
 */
 public interface AtomicActorCreator {
-
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
      *  necessary.
      */
-    public SootClass createAtomicActor(
-            Entity entity, String newClassName,
-            ConstVariableModelAnalysis constAnalysis, Map options);
+    public SootClass createAtomicActor(Entity entity, String newClassName,
+        ConstVariableModelAnalysis constAnalysis, Map options);
 }

@@ -40,8 +40,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SaltAndPepper
+
 /** Randomly change values in a double matrix to 0.0 or 255.0.
 
 <p>This actor reads in a double matrix and then randomly changes
@@ -56,7 +58,6 @@ the image would appear to have Salt and Pepper scattered on it.
 @Pt.AcceptedRating Red (cxh)
 */
 public class SaltAndPepper extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,13 +67,12 @@ public class SaltAndPepper extends Transformer {
      *   actor with this name.
      */
     public SaltAndPepper(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        probability =
-            new Parameter(this, "probability", new DoubleToken("0.1F"));
+        probability = new Parameter(this, "probability", new DoubleToken("0.1F"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,9 +95,9 @@ public class SaltAndPepper extends Transformer {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == probability) {
-            _probability = ((DoubleToken)probability.getToken()).doubleValue();
+            _probability = ((DoubleToken) probability.getToken()).doubleValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -113,14 +113,16 @@ public class SaltAndPepper extends Transformer {
         super.fire();
 
         DoubleMatrixToken doubleMatrixToken = (DoubleMatrixToken) input.get(0);
-        double data[][] = doubleMatrixToken.doubleMatrix();
+        double[][] data = doubleMatrixToken.doubleMatrix();
         int width = doubleMatrixToken.getRowCount();
         int height = doubleMatrixToken.getColumnCount();
+
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 double value = Math.random();
+
                 if (value < _probability) {
-                    if (value < _probability/2) {
+                    if (value < (_probability / 2)) {
                         data[i][j] = 0.0F;
                     } else {
                         data[i][j] = 255.0F;
@@ -128,11 +130,11 @@ public class SaltAndPepper extends Transformer {
                 }
             }
         }
+
         output.send(0, new DoubleMatrixToken(data));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private double _probability;
 }

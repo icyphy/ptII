@@ -69,6 +69,7 @@ import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ViewScreen3D
 
@@ -80,9 +81,8 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 @Pt.ProposedRating Red (chf)
 @Pt.AcceptedRating Red (chf)
 */
-public class ViewScreen3D extends GRActor3D
-    implements Placeable, ViewScreenInterface {
-
+public class ViewScreen3D extends GRActor3D implements Placeable,
+    ViewScreenInterface {
     /** Construct a ViewScreen in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -96,7 +96,7 @@ public class ViewScreen3D extends GRActor3D
      *   CompositeActor and the name collides with an entity in the container.
      */
     public ViewScreen3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
@@ -104,31 +104,29 @@ public class ViewScreen3D extends GRActor3D
         sceneGraphIn.setTypeEquals(SceneGraphToken.TYPE);
         sceneGraphIn.setMultiport(true);
 
-        horizontalResolution = new Parameter(this,
-                "horizontalResolution", new IntToken(400));
+        horizontalResolution = new Parameter(this, "horizontalResolution",
+                new IntToken(400));
         horizontalResolution.setTypeEquals(BaseType.INT);
 
-        verticalResolution = new Parameter(this,
-                "verticalResolution", new IntToken(400));
+        verticalResolution = new Parameter(this, "verticalResolution",
+                new IntToken(400));
         verticalResolution.setTypeEquals(BaseType.INT);
 
-        rotatable = new Parameter(this,
-                "rotatable", new BooleanToken(true));
+        rotatable = new Parameter(this, "rotatable", new BooleanToken(true));
         rotatable.setTypeEquals(BaseType.BOOLEAN);
 
-        scalable = new Parameter(this,
-                "scalable", new BooleanToken(false));
+        scalable = new Parameter(this, "scalable", new BooleanToken(false));
         scalable.setTypeEquals(BaseType.BOOLEAN);
 
-        translatable = new Parameter(this,
-                "translatable", new BooleanToken(false));
+        translatable = new Parameter(this, "translatable",
+                new BooleanToken(false));
         translatable.setTypeEquals(BaseType.BOOLEAN);
 
-        showAxes = new Parameter(this,"showAxes", new BooleanToken(false));
+        showAxes = new Parameter(this, "showAxes", new BooleanToken(false));
         showAxes.setTypeEquals(BaseType.BOOLEAN);
 
-        iterationSynchronized = new Parameter(this,
-                "iterationSynchronized", new BooleanToken(false));
+        iterationSynchronized = new Parameter(this, "iterationSynchronized",
+                new BooleanToken(false));
         iterationSynchronized.setTypeEquals(BaseType.BOOLEAN);
 
         backgroundColor = new ColorAttribute(this, "backgroundColor");
@@ -136,7 +134,6 @@ public class ViewScreen3D extends GRActor3D
 
         _lastTransform = new Transform3D();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     Ports and Parameters                  ////
@@ -211,7 +208,8 @@ public class ViewScreen3D extends GRActor3D
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (_iterationSynchronized)  {
+
+        if (_iterationSynchronized) {
             _canvas.swap();
             _canvas.startRenderer();
             _canvas.stopRenderer();
@@ -235,7 +233,6 @@ public class ViewScreen3D extends GRActor3D
      *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
-
         super.initialize();
 
         // Create a frame, if necessary, along with the canvas and
@@ -248,14 +245,13 @@ public class ViewScreen3D extends GRActor3D
             _frame.toFront();
         }
 
-        Enumeration branches
-            = _simpleUniverse.getLocale().getAllBranchGraphs();
+        Enumeration branches = _simpleUniverse.getLocale().getAllBranchGraphs();
 
         while (branches.hasMoreElements()) {
             BranchGroup branchGroup = (BranchGroup) branches.nextElement();
+
             if (branchGroup.getCapability(BranchGroup.ALLOW_DETACH)) {
-                if (!(branchGroup instanceof
-                            com.sun.j3d.utils.universe.ViewingPlatform)) {
+                if (!(branchGroup instanceof com.sun.j3d.utils.universe.ViewingPlatform)) {
                     _simpleUniverse.getLocale().removeBranchGraph(branchGroup);
                 }
             }
@@ -264,13 +260,10 @@ public class ViewScreen3D extends GRActor3D
         _branchRoot = new BranchGroup();
         _branchRoot.setCapability(BranchGroup.ALLOW_DETACH);
 
-
         _userTransformation = new TransformGroup(_lastTransform);
-        _userTransformation.setCapability(
-                TransformGroup.ALLOW_TRANSFORM_WRITE);
+        _userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         _userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
         _branchRoot.addChild(_userTransformation);
-
 
         _bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
 
@@ -311,54 +304,57 @@ public class ViewScreen3D extends GRActor3D
         if (_shouldShowAxes()) {
             Sphere origin = new Sphere((float) 0.05);
             _userTransformation.addChild(origin);
-            Cylinder yAxis = new Cylinder((float)0.01, (float) 6.0);
+
+            Cylinder yAxis = new Cylinder((float) 0.01, (float) 6.0);
             _userTransformation.addChild(yAxis);
 
-            Cylinder xAxis = new Cylinder((float)0.01, (float) 6.0);
+            Cylinder xAxis = new Cylinder((float) 0.01, (float) 6.0);
             Transform3D rotation = new Transform3D();
             Quat4d quat = new Quat4d();
-            quat.set(new AxisAngle4d(0.0, 0.0, 1.0, Math.PI/2.0));
+            quat.set(new AxisAngle4d(0.0, 0.0, 1.0, Math.PI / 2.0));
             rotation.set(quat);
+
             TransformGroup xAxisGroup = new TransformGroup(rotation);
             xAxisGroup.addChild(xAxis);
             _userTransformation.addChild(xAxisGroup);
 
-            Cylinder zAxis = new Cylinder((float)0.01, (float) 6.0);
+            Cylinder zAxis = new Cylinder((float) 0.01, (float) 6.0);
             Transform3D rotation2 = new Transform3D();
             Quat4d quat2 = new Quat4d();
-            quat2.set(new AxisAngle4d(1.0, 0.0, 0.0, Math.PI/2.0));
+            quat2.set(new AxisAngle4d(1.0, 0.0, 0.0, Math.PI / 2.0));
             rotation2.set(quat2);
+
             TransformGroup zAxisGroup = new TransformGroup(rotation2);
             zAxisGroup.addChild(zAxis);
             _userTransformation.addChild(zAxisGroup);
         }
 
-
         // Setup the lights.
         BranchGroup lightRoot = new BranchGroup();
 
-        AmbientLight lightAmbient
-            = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
+        AmbientLight lightAmbient = new AmbientLight(new Color3f(0.8f, 0.8f,
+                    0.8f));
         lightAmbient.setInfluencingBounds(_bounds);
         lightRoot.addChild(lightAmbient);
 
         DirectionalLight lightDirectional = new DirectionalLight();
         lightDirectional.setInfluencingBounds(_bounds);
+
         Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
         direction.normalize();
         lightDirectional.setDirection(direction);
         lightDirectional.setColor(new Color3f(1.0f, 1.0f, 1.0f));
         lightRoot.addChild(lightDirectional);
 
-        _simpleUniverse.getViewer().getView()
-            .setLocalEyeLightingEnable(true);
+        _simpleUniverse.getViewer().getView().setLocalEyeLightingEnable(true);
         _simpleUniverse.addBranchGraph(lightRoot);
 
         if (_iterationSynchronized) {
-            if (_canvas != null) _canvas.stopRenderer();
+            if (_canvas != null) {
+                _canvas.stopRenderer();
+            }
         }
     }
-
 
     /** Set the container that this actor should display data in.  If
      * place is not called, then the actor will create its own frame
@@ -367,16 +363,22 @@ public class ViewScreen3D extends GRActor3D
     public void place(Container container) {
         _container = container;
 
-        if (_container == null) return;
+        if (_container == null) {
+            return;
+        }
+
         Container c = _container.getParent();
+
         while (c.getParent() != null) {
             c = c.getParent();
         }
+
         // If we had created a frame before, then blow it away.
         if (_frame != null) {
             _frame.dispose();
             _frame = null;
         }
+
         _createViewScreen();
     }
 
@@ -385,12 +387,18 @@ public class ViewScreen3D extends GRActor3D
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _userTransformation.getTransform(_lastTransform);
+
         if (_iterationSynchronized) {
             _canvas.stopRenderer();
             _canvas.swap();
-            if (_mouseRotate != null) _mouseRotate.stopped();
+
+            if (_mouseRotate != null) {
+                _mouseRotate.stopped();
+            }
+
             _canvas.startRenderer();
         }
+
         _isSceneGraphInitialized = false;
     }
 
@@ -409,8 +417,7 @@ public class ViewScreen3D extends GRActor3D
      * frame and use that.
      */
     protected void _createViewScreen() {
-        GraphicsConfiguration config =
-            SimpleUniverse.getPreferredConfiguration();
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
 
         int horizontalDimension = 400;
         int verticalDimension = 400;
@@ -427,9 +434,10 @@ public class ViewScreen3D extends GRActor3D
             _frame = new JFrame("ViewScreen");
             _frame.show();
             _frame.validate();
-            _frame.setSize(horizontalDimension+50, verticalDimension);
+            _frame.setSize(horizontalDimension + 50, verticalDimension);
             _container = _frame.getContentPane();
         }
+
         // Set the frame to be visible.
         if (_frame != null) {
             _frame.setVisible(true);
@@ -439,11 +447,11 @@ public class ViewScreen3D extends GRActor3D
         if (_canvas != null) {
             _container.remove(_canvas);
         }
+
         _canvas = new Canvas3D(config);
 
         _container.add("Center", _canvas);
-        _canvas.setSize(new Dimension(horizontalDimension,
-                                verticalDimension));
+        _canvas.setSize(new Dimension(horizontalDimension, verticalDimension));
         _simpleUniverse = new SimpleUniverse(_canvas);
         _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
 
@@ -504,12 +512,13 @@ public class ViewScreen3D extends GRActor3D
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
-        for (int i = 0 ; i < width; i++) {
-            SceneGraphToken objectToken = (SceneGraphToken)
-                sceneGraphIn.get(i);
+
+        for (int i = 0; i < width; i++) {
+            SceneGraphToken objectToken = (SceneGraphToken) sceneGraphIn.get(i);
             Node node = (Node) objectToken.getSceneGraphNode();
             _addChild(node);
         }
+
         _branchRoot.compile();
         _simpleUniverse.addBranchGraph(_branchRoot);
     }
@@ -522,7 +531,6 @@ public class ViewScreen3D extends GRActor3D
         }
     }
 
-
     /** Stop the internal Java3D renderer
      */
     protected void _stopRenderer() {
@@ -533,21 +541,19 @@ public class ViewScreen3D extends GRActor3D
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private boolean _isIterationSynchronized() throws IllegalActionException {
-        return ((BooleanToken)
-                iterationSynchronized.getToken()).booleanValue();
+        return ((BooleanToken) iterationSynchronized.getToken()).booleanValue();
     }
 
-    private boolean _isRotatable() throws IllegalActionException  {
+    private boolean _isRotatable() throws IllegalActionException {
         return ((BooleanToken) rotatable.getToken()).booleanValue();
     }
 
-    private boolean _isScalable() throws IllegalActionException  {
+    private boolean _isScalable() throws IllegalActionException {
         return ((BooleanToken) scalable.getToken()).booleanValue();
     }
 
-    private boolean _isTranslatable() throws IllegalActionException  {
+    private boolean _isTranslatable() throws IllegalActionException {
         return ((BooleanToken) translatable.getToken()).booleanValue();
     }
 
@@ -564,8 +570,8 @@ public class ViewScreen3D extends GRActor3D
         public void processStimulus(java.util.Enumeration criteria) {
             if (stopped != true) {
                 _viewContainer._startRenderer();
-
             }
+
             /* FIXME: experimental code for changing xforms
                double[] db = new double[16];
 
@@ -575,11 +581,9 @@ public class ViewScreen3D extends GRActor3D
                db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
                currXform.set(db);
             */
-
             super.processStimulus(criteria);
 
-
-            if (stopped != true ) {
+            if (stopped != true) {
                 _viewContainer._stopRenderer();
             }
         }
@@ -600,30 +604,32 @@ public class ViewScreen3D extends GRActor3D
            td.set(db);
            //currXform.set(db);
            }*/
-
         boolean stopped = false;
         ViewScreen3D _viewContainer;
     }
 
     protected BoundingSphere _bounds;
+
     // The main connection branch that connects to the universe
     protected BranchGroup _branchRoot;
+
     // The Java3D canvas component.
     protected Canvas3D _canvas;
+
     // The container set in the place() method, or the content pane of the
     // created frame if place was not called.
     protected Container _container;
+
     // The frame containing our canvas, if we created it.
     protected JFrame _frame;
+
     // True for manual rendering, false for default rendering.
     // Steve doesn't think this is entirely necessary.
     protected boolean _iterationSynchronized = false;
-
     protected Transform3D _lastTransform = new Transform3D();
-
     protected MouseRotateView _mouseRotate;
+
     // The Java3D universe, displayed inside the canvas.
     protected SimpleUniverse _simpleUniverse;
-
     protected TransformGroup _userTransformation = new TransformGroup();
 }

@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FunctionToken
+
 /** The interface for functions contained by function tokens.
 
 @author Xiaojun Liu, Steve Neuendorffer
@@ -40,9 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 @Pt.ProposedRating Yellow (liuxj)
 @Pt.AcceptedRating Red (liuxj)
 */
-
 public interface Function {
-
     /** Apply the function to the list of arguments, which are tokens.
      *  @param arguments The list of arguments.
      *  @return The result of applying the function to the given
@@ -71,4 +70,3 @@ public interface Function {
      */
     public String toString();
 }
-

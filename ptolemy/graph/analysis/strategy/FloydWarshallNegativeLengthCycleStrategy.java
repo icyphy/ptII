@@ -23,7 +23,6 @@
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import ptolemy.graph.DirectedGraph;
@@ -31,8 +30,10 @@ import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.NegativeLengthCycleAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FloydWarshallNegativeLengthCycleStrategy
+
 /**
    Analyzer to check if a given directed graph has a negative cycle using the
    Floyd-Warshall all pair shortest path algorithm.
@@ -45,10 +46,8 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    @author Shahrooz Shahparnia
    @version $Id$
 */
-
 public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
     implements NegativeLengthCycleAnalyzer {
-
     /** Constructs negative cycle detection analyzer for a given graph and
      *  given edge values.
      *
@@ -56,11 +55,11 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
      *  @param edgeLengths The lengths associated with the given graph.
      */
     public FloydWarshallNegativeLengthCycleStrategy(Graph graph,
-            ToDoubleMapping edgeLengths) {
+        ToDoubleMapping edgeLengths) {
         super(graph);
         _edgeLengths = edgeLengths;
-        _strategy = new FloydWarshallAllPairShortestPathStrategy
-            (graph, _edgeLengths);
+        _strategy = new FloydWarshallAllPairShortestPathStrategy(graph,
+                _edgeLengths);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -71,7 +70,7 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
      *  @return True if the graph has a negative cycle.
      */
     public boolean hasNegativeLengthCycle() {
-        return ((Boolean)_result()).booleanValue();
+        return ((Boolean) _result()).booleanValue();
     }
 
     /** Return a description of the analyzer.
@@ -80,7 +79,7 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
      */
     public String toString() {
         return "Negative Length analyzer"
-            + " based on the Floyd-Warshall algorithm.";
+        + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -105,18 +104,19 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
         double[][] allPairShortestPath = _strategy.shortestPathMatrix();
         boolean negativeCycle = false;
         int n = graph().nodeCount();
+
         for (int i = 0; i < n; i++) {
             if (allPairShortestPath[i][i] < 0) {
                 negativeCycle = true;
                 break;
             }
         }
+
         return new Boolean(negativeCycle);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The transitive closure analyzer used to check the existence of a negative
     // cycle in the associated graph.
     private FloydWarshallAllPairShortestPathStrategy _strategy;

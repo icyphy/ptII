@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -57,6 +56,7 @@ import soot.util.Chain;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstantLoopUnroller
+
 /**
    A Transformer that attempts to determine the bounds of a loop at compile
    time, and then unroll the loop.  In terms of code generation, the primary
@@ -72,7 +72,8 @@ import soot.util.Chain;
 public class ConstantLoopUnroller extends BodyTransformer {
     /** Construct a new transformer
      */
-    private ConstantLoopUnroller() {}
+    private ConstantLoopUnroller() {
+    }
 
     /** Return an instance of this transformer that will operate on
      *  the given model.  The model is assumed to already have been
@@ -85,16 +86,20 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ConstantLoopUnroller.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         Iterator classes = Scene.v().getApplicationClasses().iterator();
+
         while (classes.hasNext()) {
-            SootClass theClass = (SootClass)classes.next();
+            SootClass theClass = (SootClass) classes.next();
             Iterator methods = theClass.getMethods().iterator();
+
             while (methods.hasNext()) {
                 SootMethod m = (SootMethod) methods.next();
-                if (!m.isConcrete())
+
+                if (!m.isConcrete()) {
                     continue;
+                }
 
                 JimpleBody body = (JimpleBody) m.retrieveActiveBody();
 
@@ -103,36 +108,41 @@ public class ConstantLoopUnroller extends BodyTransformer {
         }
     }
 
-    protected void internalTransform(Body body,
-            String phaseName, Map options) {
+    protected void internalTransform(Body body, String phaseName, Map options) {
         Chain units = body.getUnits();
 
         BlockGraph graph = new CompleteBlockGraph(body);
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
-        for (Iterator blocks = graph.iterator();
-             blocks.hasNext();) {
-            Block block = (Block)blocks.next();
+
+        for (Iterator blocks = graph.iterator(); blocks.hasNext();) {
+            Block block = (Block) blocks.next();
+
             // filter out anything that doesn't look like a loop block.
-            if ((block.getPreds().size() != 1) ||
-                    (block.getSuccs().size() != 1)) {
-                continue;
-            }
-            // filter out anything that isn't attached to something
-            // that looks like a conditional jump.
-            Block conditional = (Block)block.getSuccs().get(0);
-            if (conditional != block.getPreds().get(0) ||
-                    conditional.getPreds().size() != 2 ||
-                    conditional.getSuccs().size() != 2) {
+            if ((block.getPreds().size() != 1)
+                    || (block.getSuccs().size() != 1)) {
                 continue;
             }
 
-            Block whilePredecessor = (Block)conditional.getPreds().get(0);
-            if (whilePredecessor == block) {
-                whilePredecessor = (Block)conditional.getPreds().get(1);
+            // filter out anything that isn't attached to something
+            // that looks like a conditional jump.
+            Block conditional = (Block) block.getSuccs().get(0);
+
+            if ((conditional != block.getPreds().get(0))
+                    || (conditional.getPreds().size() != 2)
+                    || (conditional.getSuccs().size() != 2)) {
+                continue;
             }
+
+            Block whilePredecessor = (Block) conditional.getPreds().get(0);
+
+            if (whilePredecessor == block) {
+                whilePredecessor = (Block) conditional.getPreds().get(1);
+            }
+
             System.out.println("block = " + block);
             System.out.println("cond = " + conditional);
             System.out.println("whilePredecessor = " + whilePredecessor);
@@ -141,83 +151,93 @@ public class ConstantLoopUnroller extends BodyTransformer {
             // Look through the conditional, and find the jump back to the
             // start of the block. It should be the only jump in the block.
             IfStmt jumpStmt = null;
-            for (Iterator stmts = conditional.iterator();
-                 stmts.hasNext();) {
-                Stmt stmt = (Stmt)stmts.next();
+
+            for (Iterator stmts = conditional.iterator(); stmts.hasNext();) {
+                Stmt stmt = (Stmt) stmts.next();
+
                 if (stmt instanceof IfStmt) {
-                    IfStmt ifStmt = (IfStmt)stmt;
-                    if (ifStmt.getTarget() ==  block.getHead()) {
+                    IfStmt ifStmt = (IfStmt) stmt;
+
+                    if (ifStmt.getTarget() == block.getHead()) {
                         if (jumpStmt == null) {
                             jumpStmt = ifStmt;
                         } else {
                             throw new RuntimeException(
-                                    "Two jumps in conditional!");
+                                "Two jumps in conditional!");
                         }
                     }
                 }
             }
+
             if (jumpStmt == null) {
                 continue;
             }
 
             // assume that the last statement in the body is the loop counter.
-            DefinitionStmt counterStmt = (DefinitionStmt)block.getTail();
+            DefinitionStmt counterStmt = (DefinitionStmt) block.getTail();
 
-            Local counterLocal = (Local)counterStmt.getLeftOp();
+            Local counterLocal = (Local) counterStmt.getLeftOp();
 
             // Determine the loop increment.
             int increment = 0;
+
             if (counterStmt.getRightOp() instanceof AddExpr) {
-                AddExpr addExpr = (AddExpr)counterStmt.getRightOp();
+                AddExpr addExpr = (AddExpr) counterStmt.getRightOp();
                 Value incrementValue;
+
                 if (addExpr.getOp1().equals(counterLocal)) {
                     incrementValue = addExpr.getOp2();
                 } else {
                     incrementValue = addExpr.getOp1();
                 }
-                if (!Evaluator.isValueConstantValued(incrementValue)) continue;
-                increment = ((IntConstant)
-                        Evaluator.getConstantValueOf(incrementValue)).value;
+
+                if (!Evaluator.isValueConstantValued(incrementValue)) {
+                    continue;
+                }
+
+                increment = ((IntConstant) Evaluator.getConstantValueOf(incrementValue)).value;
                 System.out.println("increment = " + increment);
             } else {
                 continue;
             }
 
-            BinopExpr conditionalExpr = (BinopExpr)jumpStmt.getCondition();
+            BinopExpr conditionalExpr = (BinopExpr) jumpStmt.getCondition();
 
             // Now determine the loop limit from the conditional block.
             Value limitValue;
+
             if (conditionalExpr.getOp1().equals(counterLocal)) {
                 limitValue = conditionalExpr.getOp2();
             } else {
                 limitValue = conditionalExpr.getOp1();
             }
+
             int limit;
+
             if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
-                limit = ((IntConstant)
-                        Evaluator.getConstantValueOf(limitValue)).value;
+                limit = ((IntConstant) Evaluator.getConstantValueOf(limitValue)).value;
                 System.out.println("limit = " + increment);
             } else {
                 continue;
             }
 
             // Lastly, find the initial value of the loop.
-            List defsList = localDefs.getDefsOfAt(
-                    counterLocal, whilePredecessor.getTail());
-            DefinitionStmt initializeStmt =
-                (DefinitionStmt)defsList.get(0);
+            List defsList = localDefs.getDefsOfAt(counterLocal,
+                    whilePredecessor.getTail());
+            DefinitionStmt initializeStmt = (DefinitionStmt) defsList.get(0);
             int initial;
+
             if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
-                initial = ((IntConstant)Evaluator.getConstantValueOf(
-                                   counterStmt.getRightOp())).value;
+                initial = ((IntConstant) Evaluator.getConstantValueOf(counterStmt
+                        .getRightOp())).value;
                 System.out.println("initial = " + initial);
             } else {
                 continue;
             }
+
             System.out.println("initial = " + initial);
             System.out.println("increment = " + increment);
             System.out.println("limit = " + increment);
-
 
             /*
               List conditionalLiveLocals = liveLocals.getLiveLocalsBefore(conditional.getHead());
@@ -372,24 +392,13 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
     private static boolean _blockContains(Block block, Object object) {
         for (Iterator i = block.iterator(); i.hasNext();) {
-            if (i.next().equals(object)) return true;
+            if (i.next().equals(object)) {
+                return true;
+            }
         }
+
         return false;
     }
 
     private static ConstantLoopUnroller instance = new ConstantLoopUnroller();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

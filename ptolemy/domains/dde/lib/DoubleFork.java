@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.lib;
 
 import ptolemy.actor.Receiver;
@@ -38,8 +37,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DoubleFork
+
 /**
    DoubleFork is a simple DDE actor with one input and two outputs. It
    has two multiport outputs - "output1" and "output2." The fire method of
@@ -53,9 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 
 */
-
 public class DoubleFork extends TypedAtomicActor {
-
     /** Construct a DoubleFork actor with the specified container
      *  and name.
      * @param container The TypedCompositeActor that contains this actor.
@@ -67,7 +66,7 @@ public class DoubleFork extends TypedAtomicActor {
      *  instantiating and specifying the type of this actor's ports.
      */
     public DoubleFork(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output1 = new TypedIOPort(this, "output1", false, true);
@@ -107,13 +106,16 @@ public class DoubleFork extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         Token token = null;
         Receiver[][] inputReceivers = input.getReceivers();
-        if ( inputReceivers.length == 0 ) {
+
+        if (inputReceivers.length == 0) {
             _continueIterations = false;
         }
-        for ( int i = 0; i < inputReceivers.length; i++ ) {
-            for ( int j = 0; j < inputReceivers[i].length; j++ ) {
-                DDEReceiver inputReceiver = (DDEReceiver)inputReceivers[i][j];
-                if ( inputReceiver.hasToken() ) {
+
+        for (int i = 0; i < inputReceivers.length; i++) {
+            for (int j = 0; j < inputReceivers[i].length; j++) {
+                DDEReceiver inputReceiver = (DDEReceiver) inputReceivers[i][j];
+
+                if (inputReceiver.hasToken()) {
                     token = inputReceiver.get();
                     output1.broadcast(token);
                 }
@@ -132,6 +134,5 @@ public class DoubleFork extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _continueIterations = true;
 }

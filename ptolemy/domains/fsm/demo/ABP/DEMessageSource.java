@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.fsm.demo.ABP;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -41,8 +40,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DEMessageSource
+
 /**
    Generate messages according to Poisson process.
 
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class DEMessageSource extends TypedAtomicActor {
-
     /** Constructor.
      *  @param container The composite actor that this actor belongs to.
      *  @param name The name of this actor.
@@ -64,7 +64,7 @@ public class DEMessageSource extends TypedAtomicActor {
      *   actor with this name.
      */
     public DEMessageSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
@@ -73,10 +73,10 @@ public class DEMessageSource extends TypedAtomicActor {
         next = new TypedIOPort(this, "next", true, false);
         next.setTypeEquals(BaseType.GENERAL);
         maxDelay = new Parameter(this, "maxDelay", new DoubleToken(0.5));
+
         //        next.delayTo(request);
         //        next.delayTo(output);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,9 +94,9 @@ public class DEMessageSource extends TypedAtomicActor {
         //        " initializing at time " + getCurrentTime());
         DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
-        dir.fireAt(this, now.add(
-                ((DoubleToken)maxDelay.getToken()).doubleValue() *
-                Math.random()));
+        dir.fireAt(this,
+            now.add(
+                ((DoubleToken) maxDelay.getToken()).doubleValue() * Math.random()));
     }
 
     /** If this is the first fire, output the request
@@ -106,19 +106,19 @@ public class DEMessageSource extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-
         if (_firstFire) {
             request.broadcast(new Token());
             _firstFire = false;
             return;
         }
-        DEDirector dir = (DEDirector)getDirector();
+
+        DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
-        double maxDelayValue =
-            ((DoubleToken)maxDelay.getToken()).doubleValue();
+        double maxDelayValue = ((DoubleToken) maxDelay.getToken()).doubleValue();
 
         if (next.hasToken(0)) {
             next.get(0);
+
             if (now.compareTo(_nextMsgTime) < 0) {
                 // ignore this
             } else {
@@ -130,7 +130,6 @@ public class DEMessageSource extends TypedAtomicActor {
 
             //System.out.println("DEMessageSource " + this.getFullName() +
             //        " next message " + "scheduled at " + _nextMsgTime);
-
         }
 
         if (now.compareTo(_nextMsgTime) == 0) {
@@ -140,7 +139,6 @@ public class DEMessageSource extends TypedAtomicActor {
             // this refire should be discarded
             return;
         }
-
     }
 
     /** Override the base class to declare that the <i>output</i>

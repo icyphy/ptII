@@ -24,15 +24,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.util;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UniqueVector
+
 /**
    This class is a Vector object that guarantees that an object is
    added only once. This method overrides the add and addAll methods
@@ -45,26 +46,34 @@ import java.util.Vector;
    @Pt.AcceptedRating Red (cxh)
 */
 public class UniqueVector extends Vector {
+    public UniqueVector() {
+        super();
+    }
 
-    public UniqueVector() { super(); }
-    public UniqueVector(int i) { super(i); }
+    public UniqueVector(int i) {
+        super(i);
+    }
+
     public UniqueVector(Collection c) {
         super(c.size());
         addAll(c);
     }
 
     public boolean add(Object o) {
-        if (!contains(o))
+        if (!contains(o)) {
             super.add(o);
+        }
+
         return true;
     }
 
     public boolean addAll(Collection c) {
-        if (c!= null)
-            for (Iterator i=c.iterator();i.hasNext();)
+        if (c != null) {
+            for (Iterator i = c.iterator(); i.hasNext();) {
                 add(i.next());
+            }
+        }
+
         return true;
     }
-
 }
-

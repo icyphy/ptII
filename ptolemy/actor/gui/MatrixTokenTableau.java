@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.util.Iterator;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MatrixTokenTableau
+
 /**
    A tableau representing matrix tokens in a top-level window with a table.
    This should be constructed using the provided factory, to ensure that
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.NamedObj;
    @see TokenEffigy
 */
 public class MatrixTokenTableau extends TokenTableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  Use setFrame() to specify the plot frame after construction.
      *  @param container The container.
@@ -62,7 +62,7 @@ public class MatrixTokenTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public MatrixTokenTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -77,7 +77,7 @@ public class MatrixTokenTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public MatrixTokenTableau(Effigy container, String name, TableauFrame frame)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, frame);
     }
 
@@ -90,8 +90,8 @@ public class MatrixTokenTableau extends TokenTableau {
      *  @param token The token to append.
      */
     public void append(Token token) {
-        if (_pane != null && token instanceof MatrixToken) {
-            _pane.display((MatrixToken)token);
+        if ((_pane != null) && token instanceof MatrixToken) {
+            _pane.display((MatrixToken) token);
         }
     }
 
@@ -102,10 +102,12 @@ public class MatrixTokenTableau extends TokenTableau {
     public void append(List list) {
         if (_pane != null) {
             Iterator tokens = list.iterator();
+
             while (tokens.hasNext()) {
                 Object token = tokens.next();
+
                 if (token instanceof MatrixToken) {
-                    _pane.display((MatrixToken)token);
+                    _pane.display((MatrixToken) token);
                 }
             }
         }
@@ -138,25 +140,28 @@ public class MatrixTokenTableau extends TokenTableau {
      *  @exception IllegalActionException If the frame cannot be created.
      */
     public void createFrame(TableauFrame frame) throws IllegalActionException {
-        TokenEffigy effigy = (TokenEffigy)getContainer();
+        TokenEffigy effigy = (TokenEffigy) getContainer();
+
         if (frame == null) {
             // The second argument prevents a status bar.
             frame = new TableauFrame(this, null);
         }
+
         setFrame(frame);
         _pane = new MatrixPane();
         frame.getContentPane().add(_pane);
+
         // Display current data.
         Iterator tokens = effigy.getTokens().iterator();
+
         while (tokens.hasNext()) {
             Object token = tokens.next();
-            _pane.display((MatrixToken)token);
+            _pane.display((MatrixToken) token);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The pane to display matrices.
     private MatrixPane _pane;
 
@@ -166,7 +171,6 @@ public class MatrixTokenTableau extends TokenTableau {
     /** A factory that creates a matrix token tableau.
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -176,7 +180,7 @@ public class MatrixTokenTableau extends TokenTableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -209,23 +213,28 @@ public class MatrixTokenTableau extends TokenTableau {
 
                 // First see whether the effigy already contains a
                 // TokenTableau.
-                TokenTableau tableau =
-                    (TokenTableau)effigy.getEntity("tokenTableau");
+                TokenTableau tableau = (TokenTableau) effigy.getEntity(
+                        "tokenTableau");
+
                 if (tableau != null) {
                     return tableau;
                 }
 
                 // Next, check compatibility of the data.
-                Iterator tokens = ((TokenEffigy)effigy).getTokens().iterator();
+                Iterator tokens = ((TokenEffigy) effigy).getTokens().iterator();
+
                 while (tokens.hasNext()) {
                     Object token = tokens.next();
-                    if (!MatrixTokenTableau.canDisplay((Token)token)) {
+
+                    if (!MatrixTokenTableau.canDisplay((Token) token)) {
                         return null;
                     }
                 }
-                return new MatrixTokenTableau(
-                        (TokenEffigy)effigy, "tokenTableau");
+
+                return new MatrixTokenTableau((TokenEffigy) effigy,
+                    "tokenTableau");
             }
+
             return null;
         }
     }

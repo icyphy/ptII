@@ -25,12 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// HandlesInternalLinks
+
 /**
    A marker interface to suppress generation of links in undo.
 
@@ -41,4 +41,5 @@ package ptolemy.moml;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-public interface HandlesInternalLinks {}
+public interface HandlesInternalLinks {
+}

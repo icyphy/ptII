@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ddf.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DDFOrderedMerge
+
 /**
    This actor merges two monotonically nondecreasing streams of tokens
    into one monotonically nondecreasing stream. On each firing, it reads
@@ -65,9 +66,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Red (zgang)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class DDFOrderedMerge extends OrderedMerge {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,17 +76,17 @@ public class DDFOrderedMerge extends OrderedMerge {
      *   actor with this name.
      */
     public DDFOrderedMerge(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        inputA_tokenConsumptionRate =
-            new Parameter(inputA, "tokenConsumptionRate");
+        inputA_tokenConsumptionRate = new Parameter(inputA,
+                "tokenConsumptionRate");
         inputA_tokenConsumptionRate.setToken(new IntToken(1));
         inputA_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputA_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
-        inputB_tokenConsumptionRate =
-            new Parameter(inputB, "tokenConsumptionRate");
+        inputB_tokenConsumptionRate = new Parameter(inputB,
+                "tokenConsumptionRate");
         inputB_tokenConsumptionRate.setToken(new IntToken(0));
         inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
@@ -123,10 +122,10 @@ public class DDFOrderedMerge extends OrderedMerge {
      *   IllegalActionException.
      */
     public boolean postfire() throws IllegalActionException {
-
         // Call postfire first so that next input port is updated.
         boolean postfireReturn = super.postfire();
         TypedIOPort nextPort = _getNextPort();
+
         if (nextPort == inputA) {
             inputA_tokenConsumptionRate.setToken(new IntToken(1));
             inputB_tokenConsumptionRate.setToken(new IntToken(0));
@@ -134,6 +133,7 @@ public class DDFOrderedMerge extends OrderedMerge {
             inputA_tokenConsumptionRate.setToken(new IntToken(0));
             inputB_tokenConsumptionRate.setToken(new IntToken(1));
         }
+
         return postfireReturn;
     }
 }

@@ -33,6 +33,7 @@ import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
 import diva.util.xml.XmlElement;
 
+
 /**
  * A test suite for XmlElement
  *
@@ -40,17 +41,16 @@ import diva.util.xml.XmlElement;
  * @version $Id$
  */
 public class XMLElementTest extends TestSuite {
-
     /** Constructor
      */
-    public XMLElementTest (TestHarness harness) {
+    public XMLElementTest(TestHarness harness) {
         setTestHarness(harness);
     }
 
     /**
      * runSuite()
      */
-    public void runSuite () {
+    public void runSuite() {
         testConstructor();
         testAttributes();
         testElements();
@@ -61,84 +61,105 @@ public class XMLElementTest extends TestSuite {
 
     /** Test construction of XmlElement
      */
-    public void testConstructor () {
+    public void testConstructor() {
         runTestCase(new TestCase("XmlElement constructor") {
                 XmlElement elt;
-                public void run () throws Exception {
+
+                public void run() throws Exception {
                     TreeMap attrs = new TreeMap();
                     attrs.put("name0", "value0");
                     attrs.put("name1", "value1");
                     elt = new XmlElement("element", attrs);
                 }
-                public void check () throws TestFailedException {
+
+                public void check() throws TestFailedException {
                     String result = "<element name0=\"value0\" name1=\"value1\"></element>\n";
                     assertEquals(result, elt.toString(),
-                            result  + " != " + elt.toString());
+                        result + " != " + elt.toString());
                 }
             });
     }
 
     /** Test attribute setting, getting, and removing
      */
-    public void testAttributes () {
+    public void testAttributes() {
         runTestCase(new TestCase("XmlElement attributes") {
                 XmlElement elt;
-                public void run () throws Exception {
+
+                public void run() throws Exception {
                     elt = new XmlElement("element");
                     elt.setAttribute("name0", "value0");
                     elt.setAttribute("name1", "value1");
                 }
-                public void check () throws TestFailedException {
-                    String result = "<element name0=\"value0\" name1=\"value1\"></element>\n";
-                    assertEquals(result, elt.toString(), result  + " != " + elt.toString());
 
-                    assertEquals("value0", elt.getAttribute("name0"), "Attribute name0");
-                    assertEquals("value1", elt.getAttribute("name1"), "Attribute name1");
+                public void check() throws TestFailedException {
+                    String result = "<element name0=\"value0\" name1=\"value1\"></element>\n";
+                    assertEquals(result, elt.toString(),
+                        result + " != " + elt.toString());
+
+                    assertEquals("value0", elt.getAttribute("name0"),
+                        "Attribute name0");
+                    assertEquals("value1", elt.getAttribute("name1"),
+                        "Attribute name1");
 
                     elt.setAttribute("name0", "value2");
-                    assertEquals("value2", elt.getAttribute("name0"), "Attribute name0 after setting");
+                    assertEquals("value2", elt.getAttribute("name0"),
+                        "Attribute name0 after setting");
 
                     result = "<element name1=\"value1\"></element>\n";
                     elt.removeAttribute("name0");
-                    assertEquals(result, elt.toString(), result  + " != " + elt.toString());
+                    assertEquals(result, elt.toString(),
+                        result + " != " + elt.toString());
                 }
             });
     }
 
     /** Test children manipulation
      */
-    public void testElements () {
+    public void testElements() {
         runTestCase(new TestCase("XmlElement children") {
-                XmlElement elt0, elt1,elt2;
+                XmlElement elt0;
+                XmlElement elt1;
+                XmlElement elt2;
 
-                public void init () throws Exception {
+                public void init() throws Exception {
                     elt0 = new XmlElement("element0");
                     elt1 = new XmlElement("element1");
                     elt2 = new XmlElement("element2");
                 }
-                public void run () throws Exception {
+
+                public void run() throws Exception {
                     elt0.addElement(elt1);
                     elt1.addElement(elt2);
                 }
-                public void check () throws TestFailedException {
-                    String result =
-                        "<element0>\n<element1>\n<element2></element2>\n</element1>\n</element0>\n";
-                    assertEquals(result, elt0.toString(), result  + " != " + elt0.toString());
 
-                    assertExpr(elt0.containsElement(elt1), "elt0.containsElement(elt1)");
-                    assertExpr(elt1.containsElement(elt2), "elt1.containsElement(elt2)");
+                public void check() throws TestFailedException {
+                    String result = "<element0>\n<element1>\n<element2></element2>\n</element1>\n</element0>\n";
+                    assertEquals(result, elt0.toString(),
+                        result + " != " + elt0.toString());
 
-                    assertExpr(!elt1.containsElement(elt0), "!elt1.containsElement(elt0)");
-                    assertExpr(!elt2.containsElement(elt1), "!elt2.containsElement(elt1)");
+                    assertExpr(elt0.containsElement(elt1),
+                        "elt0.containsElement(elt1)");
+                    assertExpr(elt1.containsElement(elt2),
+                        "elt1.containsElement(elt2)");
 
-                    assertExpr(!elt0.containsElement(elt2), "!elt0.containsElement(elt2)");
-                    assertExpr(!elt2.containsElement(elt0), "!elt2.containsElement(elt0)");
+                    assertExpr(!elt1.containsElement(elt0),
+                        "!elt1.containsElement(elt0)");
+                    assertExpr(!elt2.containsElement(elt1),
+                        "!elt2.containsElement(elt1)");
+
+                    assertExpr(!elt0.containsElement(elt2),
+                        "!elt0.containsElement(elt2)");
+                    assertExpr(!elt2.containsElement(elt0),
+                        "!elt2.containsElement(elt0)");
 
                     // No go ahead and remove some stuff
                     result = "<element0></element0>\n";
                     elt0.removeElement(elt1);
-                    assertEquals(result, elt0.toString(), result  + " != " + elt0.toString());
-                    assertExpr(!elt0.containsElement(elt1), "!elt0.containsElement(elt1)");
+                    assertEquals(result, elt0.toString(),
+                        result + " != " + elt0.toString());
+                    assertExpr(!elt0.containsElement(elt1),
+                        "!elt0.containsElement(elt1)");
                 }
             });
     }
@@ -149,9 +170,7 @@ public class XMLElementTest extends TestSuite {
     /** Create a default test harness and
      * run all tests on it.
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         new XMLElementTest(new TestHarness()).run();
     }
 }
-
-

@@ -25,8 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
-
 /* Some of this code is copied from Sun's sample code.  Hence:
  *
  * @(#)FrameAccess.java        1.5 01/03/13
@@ -57,7 +55,6 @@ COPYRIGHTENDKEY
  * facility. Licensee represents and warrants that it will not use or
  * redistribute the Software for such purposes.
  */
-
 package ptolemy.actor.lib.jmf;
 
 import java.util.Iterator;
@@ -96,6 +93,7 @@ import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// VideoCamera
+
 /**
    An actor that produces a sequence of frames from a video camera.
    This actor requires the Java Media Framework, and has been tested
@@ -110,7 +108,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red
 */
 public class VideoCamera extends Source implements ControllerListener {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -120,7 +117,7 @@ public class VideoCamera extends Source implements ControllerListener {
      *   actor with this name.
      */
     public VideoCamera(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         formatName = new StringAttribute(this, "formatName");
@@ -156,10 +153,9 @@ public class VideoCamera extends Source implements ControllerListener {
      * Controller Listener.
      */
     public void controllerUpdate(ControllerEvent evt) {
-
-        if (evt instanceof ConfigureCompleteEvent ||
-                evt instanceof RealizeCompleteEvent ||
-                evt instanceof PrefetchCompleteEvent) {
+        if (evt instanceof ConfigureCompleteEvent
+                || evt instanceof RealizeCompleteEvent
+                || evt instanceof PrefetchCompleteEvent) {
             synchronized (_waitSync) {
                 _stateTransitionOK = true;
                 _waitSync.notifyAll();
@@ -171,6 +167,7 @@ public class VideoCamera extends Source implements ControllerListener {
             }
         } else if (evt instanceof EndOfMediaEvent) {
             _processor.close();
+
             //System.exit(0);
         }
     }
@@ -182,6 +179,7 @@ public class VideoCamera extends Source implements ControllerListener {
     public void fire() throws IllegalActionException {
         super.fire();
         _bufferNew = _cameraCodec.getFrame();
+
         if (_bufferNew != null) {
             output.send(0, new JMFImageToken(_bufferNew));
         }
@@ -197,13 +195,14 @@ public class VideoCamera extends Source implements ControllerListener {
         // Set the video format type given which setting
         // the formatName parameter is set to.
         String typeName = formatName.getExpression();
+
         if (typeName.equals("YUV")) {
             _format = new YUVFormat();
         } else if (typeName.equals("RGB")) {
             _format = new RGBFormat();
         } else {
             throw new IllegalActionException(this,
-                    "Unrecognized interpolation type: " + typeName);
+                "Unrecognized interpolation type: " + typeName);
         }
 
         // Get the list of devices that are compatible with the
@@ -215,26 +214,28 @@ public class VideoCamera extends Source implements ControllerListener {
         // an exception.
         if (deviceList.size() == 0) {
             throw new IllegalActionException(this,
-                    "No video capture devices found by the "
-                    + "Java Media Framework.");
+                "No video capture devices found by the "
+                + "Java Media Framework.");
         }
 
         // List the devices in the debug window.
         if (_debugging) {
             _debug("--- Capture devices found:");
+
             Iterator devices = deviceList.iterator();
+
             while (devices.hasNext()) {
-                CaptureDeviceInfo device = (CaptureDeviceInfo)devices.next();
+                CaptureDeviceInfo device = (CaptureDeviceInfo) devices.next();
                 _debug(device.getName());
             }
+
             _debug("---");
         }
 
         // Choose the device from the device list.
         // FIXME: This isn't crashing gracefully at all.
-        CaptureDeviceInfo captureDeviceInfo
-            = (CaptureDeviceInfo) deviceList
-            .get(((IntToken)deviceNumber.getToken()).intValue());
+        CaptureDeviceInfo captureDeviceInfo = (CaptureDeviceInfo) deviceList
+            .get(((IntToken) deviceNumber.getToken()).intValue());
 
         // Create a locator for this device.
         MediaLocator locator = captureDeviceInfo.getLocator();
@@ -244,10 +245,10 @@ public class VideoCamera extends Source implements ControllerListener {
             _processor = Manager.createProcessor(locator);
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to create a processor for the media locator '"
-                    + locator + "'. Note that you may need to run jmfinit, "
-                    + "which is found in the JMF directory, for example "
-                    + "c:/Program Files/JMF2.1.1/bin");
+                "Failed to create a processor for the media locator '"
+                + locator + "'. Note that you may need to run jmfinit, "
+                + "which is found in the JMF directory, for example "
+                + "c:/Program Files/JMF2.1.1/bin");
         }
 
         // Make this a control listener.
@@ -255,9 +256,10 @@ public class VideoCamera extends Source implements ControllerListener {
 
         // Put the Processor into configured state.
         _processor.configure();
+
         if (!_waitForState(Processor.Configured)) {
             throw new IllegalActionException(
-                    "Failed to configure the processor.");
+                "Failed to configure the processor.");
         }
 
         // So I can use it as a player.
@@ -265,16 +267,17 @@ public class VideoCamera extends Source implements ControllerListener {
         _processor.setContentDescriptor(null);
 
         // Obtain the track controls.
-        TrackControl trackControls[] = _processor.getTrackControls();
+        TrackControl[] trackControls = _processor.getTrackControls();
 
         if (trackControls == null) {
             throw new IllegalActionException(
-                    "Failed to obtain track controls from the processor.");
+                "Failed to obtain track controls from the processor.");
         }
 
         // Search for the track control for the video track (vs. audio).
         // FIXME: We want the audio track too on a separate output, maybe.
         TrackControl videoTrack = null;
+
         for (int i = 0; i < trackControls.length; i++) {
             if (trackControls[i].getFormat() instanceof VideoFormat) {
                 videoTrack = trackControls[i];
@@ -286,7 +289,7 @@ public class VideoCamera extends Source implements ControllerListener {
         // video track, then we throw an exception here.
         if (videoTrack == null) {
             throw new IllegalActionException(
-                    "The input media does not contain a video track.");
+                "The input media does not contain a video track.");
         }
 
         // Displays the video format in the debug window.
@@ -297,27 +300,27 @@ public class VideoCamera extends Source implements ControllerListener {
         // Instantiate and set the frame access codec to the data flow path.
         try {
             _cameraCodec = new PreAccessCodec();
-            Codec codec[] = {_cameraCodec};
+
+            Codec[] codec = { _cameraCodec };
             videoTrack.setCodecChain(codec);
         } catch (UnsupportedPlugInException e) {
             throw new IllegalActionException(
-                    "The process does not support codec plug ins.");
+                "The process does not support codec plug ins.");
         }
 
         // Realize the processor.
         // After this is called, cannot make modifications to the processor,
         // such as format changes?
         _processor.prefetch();
+
         if (!_waitForState(Processor.Prefetched)) {
-            throw new IllegalActionException(
-                    "Failed to realize the processor.");
+            throw new IllegalActionException("Failed to realize the processor.");
         }
 
         // NOTE: Can get a visual component (which displays the video)
         // by calling _processor.getVisualComponent(), and a small control
         // panel with a pause button by calling
         // _processor.getControlPanelComponent().
-
         // Start the processor.
         // This will trigger callbacks to the codecs.
         _processor.start();
@@ -340,10 +343,13 @@ public class VideoCamera extends Source implements ControllerListener {
     protected boolean _waitForState(int state) {
         synchronized (_waitSync) {
             try {
-                while (_processor.getState() != state && _stateTransitionOK)
+                while ((_processor.getState() != state) && _stateTransitionOK) {
                     _waitSync.wait();
-            } catch (Exception e) {}
+                }
+            } catch (Exception e) {
+            }
         }
+
         return _stateTransitionOK;
     }
 
@@ -354,15 +360,13 @@ public class VideoCamera extends Source implements ControllerListener {
      *
      * A pass-through codec to access to individual frames.
      *********************************************************/
-
     public class PreAccessCodec implements Codec {
-
         public PreAccessCodec() throws IllegalActionException {
         }
+
         /**
          * Callback to access individual video frames.
          */
-
         synchronized void accessFrame(Buffer frame) {
             _frameBuffer = frame;
             _newFrame = true;
@@ -372,19 +376,21 @@ public class VideoCamera extends Source implements ControllerListener {
         /**
          * The code for a pass through codec.
          */
-
         synchronized Buffer getFrame() throws IllegalActionException {
             while (!_newFrame) {
                 try {
                     wait();
                 } catch (InterruptedException ex) {
-                    throw new IllegalActionException("Error");}
+                    throw new IllegalActionException("Error");
+                }
             }
+
             _newFrame = false;
             return _frameBuffer;
         }
 
-        Format input = null, output = null;
+        Format input = null;
+        Format output = null;
 
         public String getName() {
             return "Pre-Access Codec";
@@ -402,18 +408,18 @@ public class VideoCamera extends Source implements ControllerListener {
         public void reset() {
         }
 
-        public Format [] getSupportedInputFormats() {
-            return new Format[] {new YUVFormat(), new RGBFormat()};
+        public Format[] getSupportedInputFormats() {
+            return new Format[] { new YUVFormat(), new RGBFormat() };
         }
 
-        public Format [] getSupportedOutputFormats(Format in) {
-            if (in == null)
-                return new Format[] {new YUVFormat(), new RGBFormat()};
-            else {
+        public Format[] getSupportedOutputFormats(Format in) {
+            if (in == null) {
+                return new Format[] { new YUVFormat(), new RGBFormat() };
+            } else {
                 // If an input format is given, we use that input format
                 // as the output since we are not modifying the bit stream
                 // at all.
-                Format outs[] = new Format[1];
+                Format[] outs = new Format[1];
                 outs[0] = in;
                 return outs;
             }
@@ -444,15 +450,14 @@ public class VideoCamera extends Source implements ControllerListener {
         }
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private VideoFormat _format;
+
     // The java.awt.Image that we are producing
     private Buffer _bufferNew;
     private boolean _newFrame = false;
+
     // The video processor.
     private Processor _processor;
     private PreAccessCodec _cameraCodec;

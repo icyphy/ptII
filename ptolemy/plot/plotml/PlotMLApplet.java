@@ -41,6 +41,7 @@ import ptolemy.plot.PlotApplet;
 
 import com.microstar.xml.XmlException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLApplet
 
@@ -57,14 +58,12 @@ import com.microstar.xml.XmlException;
    @see ptolemy.plot.Plot
 */
 public class PlotMLApplet extends PlotApplet {
-
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PlotMLApplet 2.0: A data plotter.\n" +
-            "By: Edward A. Lee and\n " +
-            "Christopher Hylands\n" +
-            "($Id$)";
+        return "PlotMLApplet 2.0: A data plotter.\n"
+        + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
+        + "($Id$)";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -80,31 +79,35 @@ public class PlotMLApplet extends PlotApplet {
         // Create a buffered input stream so that mark and reset
         // are supported.
         BufferedInputStream bin = new BufferedInputStream(in);
+
         // Peek at the file...
         bin.mark(9);
+
         // Read 8 bytes in case 16-bit encoding is being used.
         byte[] peek = new byte[8];
         bin.read(peek);
         bin.reset();
+
         if ((new String(peek)).startsWith("<?xm")) {
             // file is an XML file.
             PlotMLParser parser = _newParser();
+
             try {
                 URL docBase = getDocumentBase();
                 parser.parse(docBase, bin);
             } catch (Exception ex) {
                 String msg;
+
                 if (ex instanceof XmlException) {
-                    XmlException xmlex = (XmlException)ex;
-                    msg =
-                        "PlotMLApplet: failed to parse PlotML data:\n"
-                        + "line: " + xmlex.getLine()
-                        + ", column: " + xmlex.getColumn()
-                        + "\nIn entity: " + xmlex.getSystemId()
-                        + "\n";
+                    XmlException xmlex = (XmlException) ex;
+                    msg = "PlotMLApplet: failed to parse PlotML data:\n"
+                        + "line: " + xmlex.getLine() + ", column: "
+                        + xmlex.getColumn() + "\nIn entity: "
+                        + xmlex.getSystemId() + "\n";
                 } else {
                     msg = "PlotMLApplet: failed to parse PlotML data:\n";
                 }
+
                 System.err.println(msg + ex.toString());
                 ex.printStackTrace();
             }
@@ -117,6 +120,6 @@ public class PlotMLApplet extends PlotApplet {
      *  redefine this method to return a different type of parser.
      */
     protected PlotMLParser _newParser() {
-        return new PlotMLParser((Plot)plot());
+        return new PlotMLParser((Plot) plot());
     }
 }

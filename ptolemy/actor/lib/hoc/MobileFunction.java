@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.hoc;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -39,6 +38,7 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// MobileFunction
+
 /**
    This actor extends the TypedAtomicActor. It applies a function to its inputs
    and outputs the results. But rather than has the function specified
@@ -56,8 +56,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-public class MobileFunction extends TypedAtomicActor{
-
+public class MobileFunction extends TypedAtomicActor {
     /** Construct a MobileFunction in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -65,10 +64,11 @@ public class MobileFunction extends TypedAtomicActor{
      *  @param workspace The workspace that will list the actor.
      */
     public MobileFunction(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);
+
         //function.setTypeAtMost(new FunctionType
         //        (new Type[]{BaseType.UNKNOWN}, BaseType.GENERAL));
         output = new TypedIOPort(this, "output", false, true);
@@ -85,10 +85,11 @@ public class MobileFunction extends TypedAtomicActor{
      *   an actor already in the container.
      */
     public MobileFunction(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);
+
         //function.setTypeAtMost(new FunctionType
         //        (new Type[]{BaseType.UNKNOWN}, BaseType.GENERAL));
         output = new TypedIOPort(this, "output", false, true);
@@ -96,6 +97,7 @@ public class MobileFunction extends TypedAtomicActor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
     /** The input port for incoming data.  The type of this port is
      *  undeclared, meaning that it will resolve to any data type.
      */
@@ -116,7 +118,6 @@ public class MobileFunction extends TypedAtomicActor{
      */
     public TypedIOPort output;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -127,13 +128,15 @@ public class MobileFunction extends TypedAtomicActor{
      *   the director's fire() method throws it, or if the actor is not
      *   opaque.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Invoking fire");
         }
+
         if (function.hasToken(0)) {
-            _function = (FunctionToken)function.get(0);
+            _function = (FunctionToken) function.get(0);
         }
+
         if (input.hasToken(0)) {
             if (_function == null) {
                 output.broadcast(input.get(0));
@@ -142,11 +145,10 @@ public class MobileFunction extends TypedAtomicActor{
                 // function only has one argument.  how to resolve type and type
                 // signature?
                 Token in = input.get(0);
-                Token [] argList = new Token [] {in};
+                Token[] argList = new Token[] { in };
                 Token t = _function.apply(argList);
                 output.broadcast(t);
             }
-
         }
     }
 
@@ -165,15 +167,17 @@ public class MobileFunction extends TypedAtomicActor{
         if (_debugging) {
             _debug("Invoking prefire");
         }
+
         if (input.hasToken(0) || function.hasToken(0)) {
             return true;
         }
+
         return false;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /** The most recently updated function to this actor.
      *
      */

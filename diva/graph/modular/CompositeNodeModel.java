@@ -25,6 +25,7 @@
 */
 package diva.graph.modular;
 
+
 /**
  * A graph is an object that contains nodes and
  * edges.  Edges are accessed through the nodes that
@@ -36,4 +37,3 @@ package diva.graph.modular;
  */
 public interface CompositeNodeModel extends NodeModel, CompositeModel {
 }
-

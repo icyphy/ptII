@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
@@ -34,8 +33,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Case
+
 /**
    An actor with several possible refinements.
 
@@ -46,7 +47,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Case extends AbstractCase {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -56,13 +56,12 @@ public class Case extends AbstractCase {
      *   actor with this name.
      */
     public Case(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     // FIXME: doc
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -80,17 +79,16 @@ public class Case extends AbstractCase {
     protected Actor _choose() {
         if (!_entityIterator.hasNext()) {
             _entityIterator = deepEntityList().iterator();
+
             if (!_entityIterator.hasNext()) {
                 return null;
             }
         }
-        return (Actor)_entityIterator.next();
-    }
 
+        return (Actor) _entityIterator.next();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private Iterator   _entityIterator;
+    private Iterator _entityIterator;
 }
-

@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package jni;
 
 import java.awt.Color;
@@ -46,6 +45,7 @@ import ptolemy.vergil.actor.ActorGraphTableau;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphTableau
+
 /**
    This is a graph editor for ptolemy models.  It constructs an instance
    of ThalesGraphFrame, which contains an editor pane based on diva.
@@ -58,7 +58,6 @@ import ptolemy.vergil.actor.ActorGraphTableau;
    @Pt.AcceptedRating Red (vincent.arnould)
 */
 public class ThalesGraphTableau extends ActorGraphTableau {
-
     /** Construct a ThalesGraphTableau object in the given workspace.
      *
      * @param workspace The workspace.
@@ -66,10 +65,9 @@ public class ThalesGraphTableau extends ActorGraphTableau {
      * @exception NameDuplicationException If thrown by the super class.
      */
     public ThalesGraphTableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
-
 
     /** Construct a ThalesGraphTableau object in the given container with
      *  the given name.
@@ -80,27 +78,29 @@ public class ThalesGraphTableau extends ActorGraphTableau {
      * CompositeEntity.
      * @exception NameDuplicationException If thrown by the super class.
      */
-    public ThalesGraphTableau(PtolemyEffigy container,
-            String name)
-            throws IllegalActionException, NameDuplicationException {
+    public ThalesGraphTableau(PtolemyEffigy container, String name)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (container instanceof PtolemyEffigy) {
             NamedObj model = container.getModel();
+
             if (model == null) {
                 return;
             }
+
             if (!(model instanceof CompositeEntity)) {
                 throw new IllegalActionException(this,
-                        "Cannot graphically edit a model "
-                        + "that is not a CompositeEntity. Model is a "
-                        + model);
+                    "Cannot graphically edit a model "
+                    + "that is not a CompositeEntity. Model is a " + model);
             }
-            CompositeEntity entity = (CompositeEntity)model;
+
+            CompositeEntity entity = (CompositeEntity) model;
 
             ThalesGraphFrame frame = new ThalesGraphFrame(entity, this);
             setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
+
             // Don't call setVisible() here, otherwise there will be no menus.
             // frame.setVisible(true);
         }
@@ -112,7 +112,6 @@ public class ThalesGraphTableau extends ActorGraphTableau {
     /** A factory that creates graph editing tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create an factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -122,7 +121,7 @@ public class ThalesGraphTableau extends ActorGraphTableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -143,12 +142,14 @@ public class ThalesGraphTableau extends ActorGraphTableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
-                ThalesGraphTableau tableau =
-                    (ThalesGraphTableau)effigy.getEntity("graphTableau");
+                ThalesGraphTableau tableau = (ThalesGraphTableau) effigy
+                    .getEntity("graphTableau");
+
                 if (tableau == null) {
-                    tableau = new ThalesGraphTableau(
-                            (PtolemyEffigy)effigy, "graphTableau");
+                    tableau = new ThalesGraphTableau((PtolemyEffigy) effigy,
+                            "graphTableau");
                 }
+
                 // Don't call show() here, it is called for us in
                 // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;
@@ -160,9 +161,6 @@ public class ThalesGraphTableau extends ActorGraphTableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The background color.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
-
-
 }

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import java.io.InputStream;
@@ -47,8 +46,10 @@ import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.plotml.HistogramMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HistogramPlotter
+
 /**
    A histogram plotter.  This plotter contains an instance of the Histogram
    class from the Ptolemy plot package as a public member.  A histogram
@@ -81,9 +82,7 @@ import ptolemy.plot.plotml.HistogramMLParser;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (cxh)
 */
-public class HistogramPlotter extends PlotterBase
-        implements Placeable {
-
+public class HistogramPlotter extends PlotterBase implements Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -93,7 +92,7 @@ public class HistogramPlotter extends PlotterBase
      *   actor with this name.
      */
     public HistogramPlotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -108,32 +107,20 @@ public class HistogramPlotter extends PlotterBase
         binOffset.setExpression("0.5");
         binOffset.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-12\" y=\"-12\" "
-                + "width=\"24\" height=\"24\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"2\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"8\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"14\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"-8\" y=\"2\" "
-                + "width=\"4\" height=\"10\" "
-                + "style=\"fill:red\"/>\n"
-                + "<rect x=\"-2\" y=\"-8\" "
-                + "width=\"4\" height=\"20\" "
-                + "style=\"fill:red\"/>\n"
-                + "<rect x=\"4\" y=\"-5\" "
-                + "width=\"4\" height=\"17\" "
-                + "style=\"fill:red\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
+            + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+            + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<rect x=\"-8\" y=\"2\" " + "width=\"4\" height=\"10\" "
+            + "style=\"fill:red\"/>\n" + "<rect x=\"-2\" y=\"-8\" "
+            + "width=\"4\" height=\"20\" " + "style=\"fill:red\"/>\n"
+            + "<rect x=\"4\" y=\"-5\" " + "width=\"4\" height=\"17\" "
+            + "style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -161,22 +148,25 @@ public class HistogramPlotter extends PlotterBase
      *  @exception IllegalActionException If the bin width is not positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == binWidth) {
-            double width = ((DoubleToken)binWidth.getToken()).doubleValue();
+            double width = ((DoubleToken) binWidth.getToken()).doubleValue();
+
             if (width <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Invalid bin width (must be positive): " + width);
+                    "Invalid bin width (must be positive): " + width);
             }
+
             if (plot instanceof Histogram) {
-                ((Histogram)plot).setBinWidth(width);
+                ((Histogram) plot).setBinWidth(width);
             }
         } else if (attribute == binOffset) {
-            double offset = ((DoubleToken)binOffset.getToken()).doubleValue();
+            double offset = ((DoubleToken) binOffset.getToken()).doubleValue();
+
             if (plot instanceof Histogram) {
-                ((Histogram)plot).setBinOffset(offset);
+                ((Histogram) plot).setBinOffset(offset);
             }
         } else {
             super.attributeChanged(attribute);
@@ -196,29 +186,35 @@ public class HistogramPlotter extends PlotterBase
      *   or if the configuration information is incorrect.
      */
     public void configure(URL base, String source, String text)
-            throws Exception {
+        throws Exception {
         if (plot instanceof Histogram) {
             _base = base;
             _source = source;
             _text = text;
-            HistogramMLParser parser = new HistogramMLParser((Histogram)plot);
-            if (source != null && !source.trim().equals("")) {
+
+            HistogramMLParser parser = new HistogramMLParser((Histogram) plot);
+
+            if ((source != null) && !source.trim().equals("")) {
                 URL xmlFile = new URL(base, source);
                 InputStream stream = xmlFile.openStream();
                 parser.parse(base, stream);
                 stream.close();
             }
-            if (text != null && !text.equals("")) {
+
+            if ((text != null) && !text.equals("")) {
                 // NOTE: Regrettably, the XML parser we are using cannot
                 // deal with having a single processing instruction at the
                 // outer level.  Thus, we have to strip it.
                 String trimmed = text.trim();
+
                 if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
                     trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
+
                     if (trimmed.startsWith("plotml")) {
                         trimmed = trimmed.substring(6).trim();
                         parser.parse(base, trimmed);
                     }
+
                     // If it's not a plotml processing instruction, ignore.
                 } else {
                     // Data is not enclosed in a processing instruction.
@@ -247,34 +243,39 @@ public class HistogramPlotter extends PlotterBase
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         if (plot == null) {
             // Place the histogram in its own frame.
             plot = _newPlot();
             plot.setTitle(getName());
             plot.setButtons(true);
         }
-        if (_frame == null && _container == null) {
+
+        if ((_frame == null) && (_container == null)) {
             // Need an effigy and a tableau so that menu ops work properly.
             Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                    "Cannot find effigy for top level: "
+                    + toplevel().getFullName());
             }
+
             try {
-                PlotEffigy plotEffigy = new PlotEffigy(
-                        containerEffigy, containerEffigy.uniqueName("plot"));
+                PlotEffigy plotEffigy = new PlotEffigy(containerEffigy,
+                        containerEffigy.uniqueName("plot"));
+
                 // The default identifier is "Unnamed", which is no good for
                 // two reasons: Wrong title bar label, and it causes a save-as
                 // to destroy the original window.
                 plotEffigy.identifier.setExpression(getFullName());
 
-                PlotWindowTableau tableau = new PlotWindowTableau(
-                        plotEffigy, "tableau");
+                PlotWindowTableau tableau = new PlotWindowTableau(plotEffigy,
+                        "tableau");
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
+                    "Error creating effigy and tableau");
             }
 
             _windowProperties.setProperties(_frame);
@@ -289,12 +290,14 @@ public class HistogramPlotter extends PlotterBase
             if (_plotSize != null) {
                 _plotSize.setSize(plot);
             }
+
             _frame.pack();
         } else {
             // Clear the histogram without clearing the axes.
             plot.clear(false);
             plot.repaint();
         }
+
         if (_frame != null) {
             // show() used to override manual placement by calling pack.
             // No more.
@@ -310,14 +313,17 @@ public class HistogramPlotter extends PlotterBase
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
+
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
-                DoubleToken curToken = (DoubleToken)input.get(i);
+                DoubleToken curToken = (DoubleToken) input.get(i);
                 double curValue = curToken.doubleValue();
+
                 // NOTE: Should we test before this cast?
-                ((Histogram)plot).addPoint(i, curValue);
+                ((Histogram) plot).addPoint(i, curValue);
             }
         }
+
         return super.postfire();
     }
 
@@ -329,6 +335,7 @@ public class HistogramPlotter extends PlotterBase
      */
     protected void _implementDeferredConfigurations() {
         super._implementDeferredConfigurations();
+
         // Configure the new histogram with parameter values, possibly
         // overriding those set in evaluating the deferred configure.
         try {

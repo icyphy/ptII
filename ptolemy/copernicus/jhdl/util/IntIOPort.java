@@ -26,21 +26,20 @@ COPYRIGHTENDKEY
 @ProposedRating Red (cxh)
 @AcceptedRating Red (cxh)
 */
-
 package ptolemy.copernicus.jhdl.util;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.IntToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public class IntIOPort extends TypedIOPort {
 
-    public IntIOPort(ComponentEntity container, String name,
-            boolean isInput, boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+public class IntIOPort extends TypedIOPort {
+    public IntIOPort(ComponentEntity container, String name, boolean isInput,
+        boolean isOutput)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
         setTypeEquals(BaseType.INT);
     }
@@ -52,7 +51,6 @@ public class IntIOPort extends TypedIOPort {
 
     public void sendInt(int i) throws IllegalActionException {
         IntToken it = new IntToken(i);
-        send(0,it);
+        send(0, it);
     }
-
 }

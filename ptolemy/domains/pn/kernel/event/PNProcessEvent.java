@@ -25,14 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.kernel.event;
+
 import ptolemy.actor.Actor;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessEvent
+
 /**
    An event passed from a process executing under the PN semantics to a
    PNProcessListener. This is used to
@@ -47,9 +49,7 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.ProposedRating Yellow (mudit)
    @Pt.AcceptedRating Red
 */
-
 public class PNProcessEvent {
-
     /** Create a new event
      *  @param actor The actor
      *  @param state The state of the actor, should be one of
@@ -70,12 +70,14 @@ public class PNProcessEvent {
      */
     public PNProcessEvent(Actor actor, int state, int cause) {
         _actor = actor;
-        if (state < PROCESS_BLOCKED || state > PROCESS_RUNNING) {
-            throw new InternalErrorException(
-                    "state '" + state + "' is incorrect, it must be one of "
-                    + PROCESS_BLOCKED + ", " + PROCESS_FINISHED + ", "
-                    + PROCESS_PAUSED + " or " + PROCESS_RUNNING);
+
+        if ((state < PROCESS_BLOCKED) || (state > PROCESS_RUNNING)) {
+            throw new InternalErrorException("state '" + state
+                + "' is incorrect, it must be one of " + PROCESS_BLOCKED + ", "
+                + PROCESS_FINISHED + ", " + PROCESS_PAUSED + " or "
+                + PROCESS_RUNNING);
         }
+
         _state = state;
         _cause = cause;
     }
@@ -118,8 +120,10 @@ public class PNProcessEvent {
         String result;
         String state = null;
         String cause = null;
+
         if (_state == PROCESS_BLOCKED) {
             state = "PROCESS_BLOCKED";
+
             if (_cause == BLOCKED_ON_DELAY) {
                 cause = "BLOCKED_ON_DELAY";
             } else if (_cause == BLOCKED_ON_MUTATION) {
@@ -128,49 +132,53 @@ public class PNProcessEvent {
                 cause = "BLOCKED_ON_READ";
             } else if (_cause == BLOCKED_ON_WRITE) {
                 cause = "BLOCKED_ON_WRITE";
-            } else cause = "BLOCKING_CAUSE_UNKNOWN";
-            result = "State of " + ((Entity)_actor).getFullName() + " is "
+            } else {
+                cause = "BLOCKING_CAUSE_UNKNOWN";
+            }
+
+            result = "State of " + ((Entity) _actor).getFullName() + " is "
                 + state + " and the cause = " + cause;
         } else if (_state == PROCESS_FINISHED) {
             state = "PROCESS_FINISHED";
+
             if (_cause == FINISHED_ABRUPTLY) {
                 cause = "FINISHED_ABRUPTLY";
             } else if (_cause == FINISHED_PROPERLY) {
                 cause = "FINISHED_PROPERLY";
             } else if (_cause == FINISHED_WITH_EXCEPTION) {
-                cause = "FINISHED_WITH_EXCEPTION with " +
-                    (_exception == null ? "null exception" :
-                            "exception " + _exception);
+                cause = "FINISHED_WITH_EXCEPTION with "
+                    + ((_exception == null) ? "null exception"
+                                            : ("exception " + _exception));
             } else {
                 cause = "FINISHED_CAUSE_UNKNOWN";
             }
-            result = "State of " + ((Entity)_actor).getFullName() + " is "
+
+            result = "State of " + ((Entity) _actor).getFullName() + " is "
                 + state + " and the cause = " + cause;
         } else if (_state == PROCESS_PAUSED) {
             state = "PROCESS_PAUSED";
-            result = "State of " + ((Entity)_actor).getFullName() + " is "
+            result = "State of " + ((Entity) _actor).getFullName() + " is "
                 + state;
         } else if (_state == PROCESS_RUNNING) {
             state = "PROCESS_RUNNING";
-            result = "State of " + ((Entity)_actor).getFullName() + " is "
+            result = "State of " + ((Entity) _actor).getFullName() + " is "
                 + state;
         } else {
             state = "UNKNOWN_PROCESS_STATE";
-            result = "State of " + ((Entity)_actor).getFullName() + " is "
+            result = "State of " + ((Entity) _actor).getFullName() + " is "
                 + state;
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                   public variables                  /////
-
     // These are legitimate causes
     public static final int BLOCKED_ON_DELAY = 111;
     public static final int BLOCKED_ON_MUTATION = 112;
     public static final int BLOCKED_ON_READ = 113;
     public static final int BLOCKED_ON_WRITE = 114;
-
     public static final int FINISHED_ABRUPTLY = 734;
     public static final int FINISHED_PROPERLY = 735;
     public static final int FINISHED_WITH_EXCEPTION = 736;
@@ -181,10 +189,8 @@ public class PNProcessEvent {
     public static final int PROCESS_PAUSED = 369;
     public static final int PROCESS_RUNNING = 370;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                   private variables                 /////
-
     private Actor _actor = null;
     private int _cause = 0;
     private Exception _exception = null;

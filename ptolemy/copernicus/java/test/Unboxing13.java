@@ -5,8 +5,8 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-public class Unboxing13 {
 
+public class Unboxing13 {
     IntToken inputToken;
     BitwiseOperationToken bitwiseoperationtoken;
 
@@ -16,13 +16,17 @@ public class Unboxing13 {
         inttoken = inputToken;
         bitwiseoperationtoken = inttoken;
         bitwiseoperationtoken = bitwiseoperationtoken.bitwiseNot();
+
         Token token = (Token) bitwiseoperationtoken;
-        if (!(token instanceof IntToken))
+
+        if (!(token instanceof IntToken)) {
             throw new RuntimeException("Token Exception");
+        }
+
         System.out.println("token = " + token.toString());
     }
 
-    public static void main(String args[]) throws IllegalActionException {
+    public static void main(String[] args) throws IllegalActionException {
         Unboxing13 object = new Unboxing13();
         object.fire();
     }

@@ -31,6 +31,7 @@ import diva.canvas.CanvasComponent;
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
 
+
 /**
  * A FigureDecorator implementation which simply acts as a
  * set of prototypes which can be instantiated according to
@@ -60,7 +61,7 @@ public class TypedDecorator extends FigureDecorator {
      * A typed decorator that uses a BasicHighlighter
      * as its default.
      */
-    public TypedDecorator () {
+    public TypedDecorator() {
         this(new BasicHighlighter());
     }
 
@@ -68,7 +69,7 @@ public class TypedDecorator extends FigureDecorator {
      * A typed decorator with the given decorator
      * as its default.
      */
-    public TypedDecorator (FigureDecorator defaultDecorator) {
+    public TypedDecorator(FigureDecorator defaultDecorator) {
         _defaultDecorator = defaultDecorator;
         _typedDecorators = new Hashtable();
     }
@@ -84,11 +85,13 @@ public class TypedDecorator extends FigureDecorator {
     /**
      * Return a new decorator, according to the type of the figure.
      */
-    public FigureDecorator newInstance (Figure f) {
-        FigureDecorator d = (FigureDecorator)_typedDecorators.get(f.getClass());
+    public FigureDecorator newInstance(Figure f) {
+        FigureDecorator d = (FigureDecorator) _typedDecorators.get(f.getClass());
+
         if (d != null) {
             return d.newInstance(f);
         }
+
         return _defaultDecorator.newInstance(d);
     }
 
@@ -104,10 +107,8 @@ public class TypedDecorator extends FigureDecorator {
      * is a bit clumsy, as this object is really a factory masquerading as
      * a figure.
      */
-    public void setParent (CanvasComponent fc) {
+    public void setParent(CanvasComponent fc) {
         throw new UnsupportedOperationException(
-                "TypedDecorator cannot be inserted into a figure tree");
+            "TypedDecorator cannot be inserted into a figure tree");
     }
 }
-
-

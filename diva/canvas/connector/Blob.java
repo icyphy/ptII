@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.connector;
 
 import java.awt.BasicStroke;
@@ -38,6 +37,7 @@ import java.awt.geom.Rectangle2D;
 
 import diva.util.java2d.Polygon2D;
 
+
 /** An object that draws a blob of some kind on the end of
  * a connector. The blob can be one of several styles, such
  * as circle or diamond, and can either be draw filled
@@ -48,7 +48,6 @@ import diva.util.java2d.Polygon2D;
  * @author  John Reekie
  */
 public class Blob implements ConnectorEnd {
-
     /** Specify a circle style
      */
     public final static int BLOB_CIRCLE = 47;
@@ -97,21 +96,21 @@ public class Blob implements ConnectorEnd {
     /**
      * Create a new circle blob at (0,0).
      */
-    public Blob () {
-        this(0,0,0,BLOB_CIRCLE);
+    public Blob() {
+        this(0, 0, 0, BLOB_CIRCLE);
     }
 
     /**
      * Create a new blob at (0,0) in the given style.
      */
-    public Blob (int style) {
-        this(0,0,0,style);
+    public Blob(int style) {
+        this(0, 0, 0, style);
     }
 
     /**
      * Create a new blob at the given coordinates and in the given style.
      */
-    public Blob (double x, double y, double normal, int style) {
+    public Blob(double x, double y, double normal, int style) {
         _originX = x;
         _originY = y;
         _normal = normal;
@@ -122,7 +121,7 @@ public class Blob implements ConnectorEnd {
     /** Get the bounding box of the shape used to draw
      * this connector end.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         if (_filled) {
             // No outline, just use the shape
             return _shape.getBounds2D();
@@ -135,39 +134,41 @@ public class Blob implements ConnectorEnd {
 
     /** Get the connection point into the given point
      */
-    public void getConnection (Point2D p) {
+    public void getConnection(Point2D p) {
         if (!_shapeValid) {
             reshape();
         }
+
         switch (_style) {
         case BLOB_CIRCLE:
-            p.setLocation(_originX + 2 * _unit, _originY);
+            p.setLocation(_originX + (2 * _unit), _originY);
             break;
 
         case BLOB_DIAMOND:
-            p.setLocation(_originX + 3 * _unit, _originY);
+            p.setLocation(_originX + (3 * _unit), _originY);
             break;
         }
+
         AffineTransform at = new AffineTransform();
         at.setToRotation(_normal, _originX, _originY);
-        at.transform(p,p);
+        at.transform(p, p);
     }
 
     /** Get the origin into the given point.
      */
-    public void getOrigin (Point2D p) {
+    public void getOrigin(Point2D p) {
         p.setLocation(_originX, _originY);
     }
 
     /** Get the size unit.
      */
-    public double getSizeUnit () {
+    public double getSizeUnit() {
         return _unit;
     }
 
     /** Get the style.
      */
-    public int getStyle () {
+    public int getStyle() {
         return _style;
     }
 
@@ -181,10 +182,11 @@ public class Blob implements ConnectorEnd {
      * the graphics context is already set up with the correct
      * paint and stroke.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (!_shapeValid) {
             reshape();
         }
+
         if (_filled) {
             g.fill(_shape);
         } else {
@@ -194,34 +196,29 @@ public class Blob implements ConnectorEnd {
 
     /** Recalculate the shape of the blob.
      */
-    public void reshape () {
+    public void reshape() {
         AffineTransform at = new AffineTransform();
         at.setToRotation(_normal, _originX, _originY);
 
         switch (_style) {
         case BLOB_CIRCLE:
-            _shape = new Ellipse2D.Double(
-                    _originX,
-                    _originY - _unit,
-                    2 * _unit,
-                    2 * _unit);
+            _shape = new Ellipse2D.Double(_originX, _originY - _unit,
+                    2 * _unit, 2 * _unit);
             break;
 
         case BLOB_DIAMOND:
+
             Polygon2D polygon = new Polygon2D.Float();
             polygon.moveTo(_originX, _originY);
-            polygon.lineTo(
-                    _originX + 1.5 * _unit,
-                    _originY - _unit);
-            polygon.lineTo(_originX + 3.0 * _unit, _originY);
-            polygon.lineTo(
-                    _originX + 1.5 * _unit,
-                    _originY + _unit);
+            polygon.lineTo(_originX + (1.5 * _unit), _originY - _unit);
+            polygon.lineTo(_originX + (3.0 * _unit), _originY);
+            polygon.lineTo(_originX + (1.5 * _unit), _originY + _unit);
             polygon.lineTo(_originX, _originY);
             polygon.closePath();
             _shape = polygon;
             break;
         }
+
         _shape = at.createTransformedShape(_shape);
     }
 
@@ -234,14 +231,14 @@ public class Blob implements ConnectorEnd {
     /** Set the normal of the blob. The argument is the
      * angle in radians away from the origin.
      */
-    public void setNormal (double angle) {
+    public void setNormal(double angle) {
         _normal = angle;
         _shapeValid = false;
     }
 
     /** Set the end-point of the blob.
      */
-    public void setOrigin (double x, double y) {
+    public void setOrigin(double x, double y) {
         translate(x - _originX, y - _originY);
     }
 
@@ -249,32 +246,31 @@ public class Blob implements ConnectorEnd {
      * depending on the style, but is generally half the width
      * of the blob.
      */
-    public void setSizeUnit (double s) {
+    public void setSizeUnit(double s) {
         _unit = s;
         _shapeValid = false;
     }
 
     /** Set the style.
      */
-    public void setStyle (int s) {
+    public void setStyle(int s) {
         _style = s;
         _shapeValid = false;
     }
 
     /** Translate the origin by the given amount.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         _originX += x;
         _originY += y;
+
         if (_shapeValid) {
             if (_shape instanceof Polygon2D) {
                 ((Polygon2D) _shape).translate(x, y);
             } else {
-                AffineTransform at = AffineTransform.getTranslateInstance(x,y);
+                AffineTransform at = AffineTransform.getTranslateInstance(x, y);
                 _shape = at.createTransformedShape(_shape);
             }
         }
     }
 }
-
-

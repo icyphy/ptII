@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.ArrayList;
@@ -44,8 +43,10 @@ import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.EntryPoints;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnreachableMethodRemover
+
 /**
    A transformer that removes methods that are not reachable.  Note that
    this is a fairly braindead implementation.  Specifically,
@@ -61,15 +62,17 @@ import soot.jimple.toolkits.callgraph.ReachableMethods;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
+
 // FIXME: This is currently unsafe, because method bodies
 // for context classes don't exist in the method call graph.
 // We need a lightweight way of getting the method call graph for
 // these methods without creating a JimpleBody which is expensive.
-
-public class UnreachableMethodRemover extends SceneTransformer implements HasPhaseOptions {
+public class UnreachableMethodRemover extends SceneTransformer
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
-    private UnreachableMethodRemover() {}
+    private UnreachableMethodRemover() {
+    }
 
     /* Return the instance of this transformer.
      */
@@ -91,7 +94,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("UnreachableMethodRemover.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
 
@@ -99,10 +102,11 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
         // interfaces are automatically reachable.
         HashSet forcedReachableMethodSet = new HashSet();
         forcedReachableMethodSet.addAll(EntryPoints.v().application());
+
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-            SootClass theClass = (SootClass)i.next();
+                i.hasNext();) {
+            SootClass theClass = (SootClass) i.next();
 
             // If we are in actor mode, then assert that all the
             // methods of the toplevel class are reachable.  We need a
@@ -113,30 +117,28 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
             //                 Set methodSet = _getMethodSet(theClass);
             //                 forcedReachableMethodSet.addAll(methodSet);
             //             }
-
             // Assume that any method that is part of an interface that this
             // object implements, is reachable.
             //  System.out.println("forcing interfaces of " + theClass);
             if (!theClass.isInterface()) {
                 for (Iterator interfaces = theClass.getInterfaces().iterator();
-                     interfaces.hasNext();) {
-                    SootClass theInterface = (SootClass)interfaces.next();
+                        interfaces.hasNext();) {
+                    SootClass theInterface = (SootClass) interfaces.next();
 
-                    _addMethodsFrom(forcedReachableMethodSet,
-                            theInterface, theClass);
-
+                    _addMethodsFrom(forcedReachableMethodSet, theInterface,
+                        theClass);
                 }
             }
         }
 
         //  System.out.println("forcedMethods = " + forcedReachableMethodSet);
-
         // Construct the graph of methods that are directly reachable
         // from any method.
         // Construct the graph of all method invocations, so we know what
         // method contains each invocation and what method(s) can be
         // targeted by that invocation.
         Scene.v().releaseCallGraph();
+
         CallGraph callGraph = Scene.v().getCallGraph();
         ReachableMethods reachables = new ReachableMethods(callGraph,
                 forcedReachableMethodSet);
@@ -144,38 +146,42 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
 
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-            SootClass theClass = (SootClass)i.next();
+                i.hasNext();) {
+            SootClass theClass = (SootClass) i.next();
 
             // Loop through all the methods...
             List methodList = new ArrayList(theClass.getMethods());
-            for (Iterator methods = methodList.iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+
+            for (Iterator methods = methodList.iterator(); methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
 
                 // And remove any methods that aren't reachable.
                 if (!reachables.contains(method)) {
-                    if (debug) System.out.println("removing method " + method);
+                    if (debug) {
+                        System.out.println("removing method " + method);
+                    }
+
                     theClass.removeMethod(method);
                 }
             }
         }
     }
+
     private void _addMethodsFrom(Set forcedReachableMethodSet,
-            SootClass theInterface, SootClass theClass) {
+        SootClass theInterface, SootClass theClass) {
         // Except for InequalityTerm...
-        if (theInterface.getName().equals(
-                    "ptolemy.graph.InequalityTerm")) {
+        if (theInterface.getName().equals("ptolemy.graph.InequalityTerm")) {
             return;
         }
+
         Set methodSet = _getMethodSet(theInterface);
-        for (Iterator methods = methodSet.iterator();
-             methods.hasNext();) {
-            SootMethod method = (SootMethod)
-                methods.next();
+
+        for (Iterator methods = methodSet.iterator(); methods.hasNext();) {
+            SootMethod method = (SootMethod) methods.next();
+
             try {
-                SootMethod classMethod = theClass.getMethod(
-                        (String)method.getSubSignature());
+                SootMethod classMethod = theClass.getMethod((String) method
+                        .getSubSignature());
                 forcedReachableMethodSet.add(classMethod);
             } catch (Exception ex) {
                 // Ignore..
@@ -183,9 +189,9 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
         }
 
         for (Iterator superInterfaces = theInterface.getInterfaces().iterator();
-             superInterfaces.hasNext();) {
+                superInterfaces.hasNext();) {
             _addMethodsFrom(forcedReachableMethodSet,
-                    (SootClass)superInterfaces.next(), theClass);
+                (SootClass) superInterfaces.next(), theClass);
         }
     }
 
@@ -193,31 +199,19 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
     private Set _getMethodSet(SootClass theClass) {
         Set methodSet = new HashSet();
         List methodList = new ArrayList(theClass.getMethods());
-        for (Iterator methods = methodList.iterator();
-             methods.hasNext();) {
-            SootMethod method = (SootMethod)methods.next();
+
+        for (Iterator methods = methodList.iterator(); methods.hasNext();) {
+            SootMethod method = (SootMethod) methods.next();
+
             if (method != null) {
-                System.out.println("Assuming method " +
-                        method + " is reachable");
+                System.out.println("Assuming method " + method
+                    + " is reachable");
                 methodSet.add(method);
             }
         }
+
         return methodSet;
     }
 
-    private static UnreachableMethodRemover instance =
-    new UnreachableMethodRemover();
+    private static UnreachableMethodRemover instance = new UnreachableMethodRemover();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -23,7 +23,6 @@
 
 
 */
-
 package ptolemy.graph.analysis;
 
 import java.util.List;
@@ -34,8 +33,10 @@ import ptolemy.graph.analysis.analyzer.CycleMeanAnalyzer;
 import ptolemy.graph.analysis.strategy.KarpCycleMeanStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CycleMeanAnalysis
+
 /**
    An analysis to calculate the maximum/minimum cycle mean of a directed
    cyclic graph.
@@ -71,7 +72,6 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    @see ptolemy.graph.analysis.MaximumProfitToCostRatioAnalysis
 */
 public class CycleMeanAnalysis extends Analysis {
-
     /** Construct a maximum cycle mean analysis associated with a graph with a
      *  default analyzer.
      *
@@ -104,7 +104,7 @@ public class CycleMeanAnalysis extends Analysis {
      *  maximum/minimum cycle means as an ordered list.
      */
     public List cycle() {
-        return ((CycleMeanAnalyzer)analyzer()).cycle();
+        return ((CycleMeanAnalyzer) analyzer()).cycle();
     }
 
     /** Return the maximum cycle mean value.
@@ -112,7 +112,7 @@ public class CycleMeanAnalysis extends Analysis {
      *  @return The maximum cycle mean value.
      */
     public double maximumCycleMean() {
-        return ((CycleMeanAnalyzer)analyzer()).maximumCycleMean();
+        return ((CycleMeanAnalyzer) analyzer()).maximumCycleMean();
     }
 
     /** Return minimum cycle mean value.
@@ -120,7 +120,7 @@ public class CycleMeanAnalysis extends Analysis {
      *  @return The minimum cycle mean value.
      */
     public double minimumCycleMean() {
-        return ((CycleMeanAnalyzer)analyzer()).minimumCycleMean();
+        return ((CycleMeanAnalyzer) analyzer()).minimumCycleMean();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -129,7 +129,7 @@ public class CycleMeanAnalysis extends Analysis {
      */
     public String toString() {
         return "Cycle mean analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel;
 
 import ptolemy.vergil.basic.IconController;
@@ -33,8 +32,10 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MoveAction;
 import diva.graph.GraphController;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AttributeController
+
 /**
    This class provides interaction with nodes that represent Ptolemy II
    attributes.  It provides a double click binding and context menu
@@ -51,7 +52,6 @@ import diva.graph.GraphController;
    @Pt.AcceptedRating Red (johnr)
 */
 public class AttributeController extends IconController {
-
     /** Create an attribute controller associated with the specified graph
      *  controller.  The attribute controller is given full access.
      *  @param controller The associated graph controller.
@@ -70,22 +70,20 @@ public class AttributeController extends IconController {
 
         if (access == FULL) {
             // Add to the context menu.
-            _menuFactory.addMenuItemFactory(
-                    new RenameDialogFactory());
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(new GetDocumentationAction()));
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(
-                    new MoveAction("Move to first (back)",
-                    MoveAction.TO_FIRST)));
+            _menuFactory.addMenuItemFactory(new RenameDialogFactory());
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    new GetDocumentationAction()));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    new MoveAction("Move to first (back)", MoveAction.TO_FIRST)));
+
             /* The following doesn't work, and seems confusing anyway.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(
                     new MoveAction("Move towards first", MoveAction.UP)));
             */
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     new MoveAction("Move to last (front)", MoveAction.TO_LAST)));
+
             /* The following doesn't work, and seems confusing anyway.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(

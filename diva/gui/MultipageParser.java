@@ -24,6 +24,7 @@
   COPYRIGHTENDKEY
 */
 package diva.gui;
+
 import java.io.CharArrayReader;
 import java.io.Reader;
 import java.io.StringReader;
@@ -59,8 +60,7 @@ public class MultipageParser extends HandlerBase {
     /**
      * The DTD for multipage models.
      */
-    public static final String DTD_1 =
-    "<!ELEMENT multipage (page*)> <!ATTLIST multipage title CDATA #REQUIRED> <!ELEMENT page (#PCDATA)> <!ATTLIST page title CDATA #REQUIRED num CDATA #REQUIRED>";
+    public static final String DTD_1 = "<!ELEMENT multipage (page*)> <!ATTLIST multipage title CDATA #REQUIRED> <!ELEMENT page (#PCDATA)> <!ATTLIST page title CDATA #REQUIRED num CDATA #REQUIRED>";
 
     /**
      * The string constant that specifies the title attribute of a
@@ -131,7 +131,7 @@ public class MultipageParser extends HandlerBase {
      * @see com.microstar.xml.XmlHandler#attribute
      */
     public void attribute(String name, String value, boolean isSpecified)
-            throws Exception {
+        throws Exception {
         _currentAttributes.put(name, value);
     }
 
@@ -142,9 +142,9 @@ public class MultipageParser extends HandlerBase {
      * the array.
      */
     public void charData(char[] chars, int offset, int length)
-            throws Exception {
-        Object model =
-            _modelParser.parse(new CharArrayReader(chars, offset, length));
+        throws Exception {
+        Object model = _modelParser.parse(new CharArrayReader(chars, offset,
+                    length));
         _currentPage.setModel(model);
     }
 
@@ -156,33 +156,28 @@ public class MultipageParser extends HandlerBase {
         if (name.equalsIgnoreCase(PAGE_TAG)) {
             _multi.addPage(_currentPage);
             _currentPage = null;
-        }
-        else if (name.equalsIgnoreCase(MULTIPAGE_TAG)) {
-        }
-        else {
+        } else if (name.equalsIgnoreCase(MULTIPAGE_TAG)) {
+        } else {
             String err = "Error: unknown end element \"" + name + "\"";
             throw new RuntimeException(err);
         }
     }
-
 
     /**
      * Handle the start of an element.  If this is the start of a
      * page, create a Page object and set its label (retrieve from
      * _currentAttributes table)
      */
-    public void startElement(String name)
-            throws Exception {
+    public void startElement(String name) throws Exception {
         if (name.equalsIgnoreCase(MULTIPAGE_TAG)) {
-        }
-        else if (name.equalsIgnoreCase(PAGE_TAG)) {
-            String label = (String)_currentAttributes.get(PAGE_TITLE_TAG);
+        } else if (name.equalsIgnoreCase(PAGE_TAG)) {
+            String label = (String) _currentAttributes.get(PAGE_TITLE_TAG);
+
             //page number is currently ignored.
-            String numstring = (String)_currentAttributes.get(PAGE_NUM_TAG);
+            String numstring = (String) _currentAttributes.get(PAGE_NUM_TAG);
             int num = Integer.valueOf(numstring).intValue();
             _currentPage = new BasicPage(_multi, label);
-        }
-        else {
+        } else {
             String err = "Error: unknown start element \"" + name + "\"";
             throw new RuntimeException(err);
         }
@@ -204,7 +199,7 @@ public class MultipageParser extends HandlerBase {
      * @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
-        if (publicID != null && publicID.equals(PUBLIC_ID)) {
+        if ((publicID != null) && publicID.equals(PUBLIC_ID)) {
             // This is the generic MoML DTD.
             return new StringReader(DTD_1);
         } else {
@@ -216,8 +211,8 @@ public class MultipageParser extends HandlerBase {
      * Parse the file (from reader) into the given multipage data structure.
      *
      */
-    public void parse (Reader reader, MultipageModel multi)
-            throws java.lang.Exception  {
+    public void parse(Reader reader, MultipageModel multi)
+        throws java.lang.Exception {
         _multi = multi;
 
         // create the parser
@@ -226,5 +221,3 @@ public class MultipageParser extends HandlerBase {
         _parser.parse(null, null, reader);
     }
 }
-
-

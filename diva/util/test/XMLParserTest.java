@@ -39,6 +39,7 @@ import diva.util.xml.XmlDocument;
 import diva.util.xml.XmlReader;
 import diva.util.xml.XmlWriter;
 
+
 /**
  * A test suite for XMLParser and XMLPrinter
  *
@@ -46,17 +47,16 @@ import diva.util.xml.XmlWriter;
  * @version $Id$
  */
 public class XMLParserTest extends TestSuite {
-
     /** Constructor
      */
-    public XMLParserTest (TestHarness harness) {
+    public XMLParserTest(TestHarness harness) {
         setTestHarness(harness);
     }
 
     /**
      * runSuite()
      */
-    public void runSuite () {
+    public void runSuite() {
         testParse();
     }
 
@@ -65,45 +65,57 @@ public class XMLParserTest extends TestSuite {
 
     /** Test construction of XMLParser
      */
-    public void testParse () {
+    public void testParse() {
         runTestCase(new TestCase("XMLParse parse") {
                 URL url;
                 XmlReader reader;
                 XmlWriter writer;
                 XmlDocument document;
                 String xmlout;
-                public void init () throws Exception {
+
+                public void init() throws Exception {
                     url = new URL("file:/java/diva/util/test/xml1.xml"); //FIXME
                     document = new XmlDocument(url);
                     reader = new XmlReader();
                     writer = new XmlWriter();
                 }
-                public void run () throws Exception {
+
+                public void run() throws Exception {
                     reader.parse(document);
+
                     Writer w = new StringWriter();
+
                     try {
                         writer.write(document, w);
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
+
                     xmlout = w.toString();
                 }
-                public void check () throws TestFailedException {
+
+                public void check() throws TestFailedException {
                     StringBuffer result = new StringBuffer();
                     BufferedReader input = null;
                     String line = null;
+
                     try {
-                        input = new BufferedReader(
-                                new FileReader("/java/diva/util/test/xml1.xml"));
+                        input = new BufferedReader(new FileReader(
+                                    "/java/diva/util/test/xml1.xml"));
                         line = input.readLine();
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
+
                     while (line != null) {
                         result.append(line);
                         result.append("\n");
+
                         try {
                             line = input.readLine();
-                        } catch (Exception e) {}
+                        } catch (Exception e) {
+                        }
                     }
-                    assertEquals(result, xmlout,
-                            result  + " != " + xmlout);
+
+                    assertEquals(result, xmlout, result + " != " + xmlout);
                 }
             });
     }
@@ -114,9 +126,7 @@ public class XMLParserTest extends TestSuite {
     /** Create a default test harness and
      * run all tests on it.
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         new XMLParserTest(new TestHarness()).run();
     }
 }
-
-

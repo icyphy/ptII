@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel;
 
 import java.util.Collections;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Relation
+
 /**
    A Relation links ports, and therefore the entities that contain them.
    To link a port to a relation, use the link() method
@@ -62,7 +63,6 @@ import ptolemy.kernel.util.Workspace;
    @see Entity
 */
 public class Relation extends NamedObj {
-
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -106,7 +106,7 @@ public class Relation extends NamedObj {
      *  @exception IllegalActionException If the name has a period.
      */
     public Relation(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace, name);
         _elementName = "relation";
     }
@@ -123,9 +123,8 @@ public class Relation extends NamedObj {
      *   be cloned.
      *  @return A new Relation.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Relation newObject = (Relation)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Relation newObject = (Relation) super.clone(workspace);
         newObject._portList = new CrossRefList(newObject);
         return newObject;
     }
@@ -138,13 +137,16 @@ public class Relation extends NamedObj {
     public List linkedPortList() {
         try {
             _workspace.getReadAccess();
+
             // Unfortunately, CrossRefList returns an enumeration only.
             // Use it to construct a list.
             LinkedList result = new LinkedList();
             Enumeration ports = _portList.getContainers();
+
             while (ports.hasMoreElements()) {
                 result.add(ports.nextElement());
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -162,13 +164,18 @@ public class Relation extends NamedObj {
         // This works by constructing a linked list and then returning it.
         try {
             _workspace.getReadAccess();
+
             LinkedList storedPorts = new LinkedList();
             Enumeration ports = _portList.getContainers();
 
             while (ports.hasMoreElements()) {
-                Port p = (Port)ports.nextElement();
-                if (p != except) storedPorts.add(p);
+                Port p = (Port) ports.nextElement();
+
+                if (p != except) {
+                    storedPorts.add(p);
+                }
             }
+
             return storedPorts;
         } finally {
             _workspace.doneReading();
@@ -224,18 +231,21 @@ public class Relation extends NamedObj {
     public void unlinkAll() {
         try {
             _workspace.getWriteAccess();
+
             // NOTE: Do not just use _portList.unlinkAll() because then the
             // containers of the ports are not notified of the change.
             // Also, have to first copy the ports references, then remove
             // them, to avoid a corrupted enumeration exception.
             int size = _portList.size();
-            Port portArray[] = new Port[size];
+            Port[] portArray = new Port[size];
             int i = 0;
             Enumeration ports = _portList.getContainers();
+
             while (ports.hasMoreElements()) {
-                Port p = (Port)ports.nextElement();
+                Port p = (Port) ports.nextElement();
                 portArray[i++] = p;
             }
+
             for (i = 0; i < size; i++) {
                 portArray[i].unlink(this);
             }
@@ -255,7 +265,7 @@ public class Relation extends NamedObj {
      *  @param port The port to link to.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected void _checkPort (Port port) throws IllegalActionException {
+    protected void _checkPort(Port port) throws IllegalActionException {
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -276,28 +286,39 @@ public class Relation extends NamedObj {
     protected String _description(int detail, int indent, int bracket) {
         try {
             _workspace.getReadAccess();
+
             String result;
-            if (bracket == 1 || bracket == 2) {
+
+            if ((bracket == 1) || (bracket == 2)) {
                 result = super._description(detail, indent, 1);
             } else {
                 result = super._description(detail, indent, 0);
             }
+
             if ((detail & LINKS) != 0) {
                 if (result.trim().length() > 0) {
                     result += " ";
                 }
+
                 // To avoid infinite loop, turn off the LINKS flag
                 // when querying the Ports.
                 detail &= ~LINKS;
                 result += "links {\n";
+
                 Enumeration linkedPorts = linkedPorts();
+
                 while (linkedPorts.hasMoreElements()) {
-                    Port port = (Port)linkedPorts.nextElement();
-                    result += port._description(detail, indent + 1, 2) + "\n";
+                    Port port = (Port) linkedPorts.nextElement();
+                    result += (port._description(detail, indent + 1, 2) + "\n");
                 }
-                result += _getIndentPrefix(indent) + "}";
+
+                result += (_getIndentPrefix(indent) + "}");
             }
-            if (bracket == 2) result += "}";
+
+            if (bracket == 2) {
+                result += "}";
+            }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -316,27 +337,24 @@ public class Relation extends NamedObj {
      *   and has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
-    protected NamedObj _getContainedObject(
-            NamedObj container, String relativeName)
-            throws IllegalActionException {
+    protected NamedObj _getContainedObject(NamedObj container,
+        String relativeName) throws IllegalActionException {
         if (!(container instanceof CompositeEntity)) {
-            throw new InternalErrorException(
-                    "Expected "
-                    + container.getFullName()
-                    + " to be an instance of ptolemy.kernel.CompositeEntity, "
-                    + "but it is " + container.getClass().getName());
+            throw new InternalErrorException("Expected "
+                + container.getFullName()
+                + " to be an instance of ptolemy.kernel.CompositeEntity, "
+                + "but it is " + container.getClass().getName());
         }
-        Relation candidate =
-            ((CompositeEntity)container).getRelation(relativeName);
-        if (candidate != null && !getClass().isInstance(candidate)) {
+
+        Relation candidate = ((CompositeEntity) container).getRelation(relativeName);
+
+        if ((candidate != null) && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this,
-                    "Expected "
-                    + candidate.getFullName()
-                    + " to be an instance of "
-                    + getClass().getName()
-                    + ", but it is "
-                    + candidate.getClass().getName());
+                "Expected " + candidate.getFullName()
+                + " to be an instance of " + getClass().getName()
+                + ", but it is " + candidate.getClass().getName());
         }
+
         return candidate;
     }
 

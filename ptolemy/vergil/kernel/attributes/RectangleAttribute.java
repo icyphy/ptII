@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Shape;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RectangleAttribute
+
 /**
    This is an attribute that is rendered as a rectangle.
    <p>
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class RectangleAttribute extends FilledShapeAttribute {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -67,7 +67,7 @@ public class RectangleAttribute extends FilledShapeAttribute {
      *   an attribute already in the container.
      */
     public RectangleAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         rounding = new Parameter(this, "rounding");
@@ -93,15 +93,17 @@ public class RectangleAttribute extends FilledShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == rounding) {
             // Make sure that the new rounding value is valid.
-            double roundingValue =
-                ((DoubleToken) rounding.getToken()).doubleValue();
+            double roundingValue = ((DoubleToken) rounding.getToken())
+                .doubleValue();
+
             if (roundingValue < 0.0) {
                 throw new IllegalActionException(this,
-                        "Invalid rounding value. Required to be non-negative.");
+                    "Invalid rounding value. Required to be non-negative.");
             }
+
             if (roundingValue != _roundingValue) {
                 _roundingValue = roundingValue;
                 _icon.setShape(_newShape());
@@ -119,29 +121,28 @@ public class RectangleAttribute extends FilledShapeAttribute {
      */
     protected Shape _newShape() {
         double roundingValue = 0.0;
+
         try {
             roundingValue = ((DoubleToken) rounding.getToken()).doubleValue();
         } catch (IllegalActionException ex) {
             // Ignore and use default.
         }
+
         double x = 0.0;
         double y = 0.0;
         double width = _widthValue;
         double height = _heightValue;
+
         if (_centeredValue) {
-            x = -width*0.5;
-            y = -height*0.5;
+            x = -width * 0.5;
+            y = -height * 0.5;
         }
+
         if (roundingValue == 0.0) {
             return new Rectangle2D.Double(x, y, width, height);
         } else {
-            return new RoundRectangle2D.Double(
-                    x,
-                    y,
-                    width,
-                    height,
-                    roundingValue,
-                    roundingValue);
+            return new RoundRectangle2D.Double(x, y, width, height,
+                roundingValue, roundingValue);
         }
     }
 

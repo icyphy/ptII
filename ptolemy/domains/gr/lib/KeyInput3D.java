@@ -46,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 /**
    An actor that listens for keys pressed on the viewscreen.
    @author C. Fong
@@ -55,10 +56,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (chf)
 */
 public class KeyInput3D extends GRActor3D {
-
     public KeyInput3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         keycode = new TypedIOPort(this, "keycode");
         keycode.setOutput(true);
@@ -67,19 +66,20 @@ public class KeyInput3D extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
     public TypedIOPort keycode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
+
         if (_hasData) {
-            keycode.send(0, new IntToken((int)_keycode));
+            keycode.send(0, new IntToken((int) _keycode));
+
             if (_debugging) {
-                _debug("KeyCode = " + (int)_keycode);
+                _debug("KeyCode = " + (int) _keycode);
             }
+
             _hasData = false;
         }
     }
@@ -95,16 +95,13 @@ public class KeyInput3D extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
     protected Node _getNodeObject() {
         return (Node) _userInputNode;
     }
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_viewScreen == null) {
-            throw new IllegalActionException(
-                    "GR error: no ViewScreen actor");
+            throw new IllegalActionException("GR error: no ViewScreen actor");
         } else {
             _viewScreen.addChild(_getNodeObject());
         }
@@ -122,15 +119,18 @@ public class KeyInput3D extends GRActor3D {
 
             while (criteria.hasMoreElements()) {
                 wakeup = (WakeupCriterion) criteria.nextElement();
-                event = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
+                event = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
+
                 for (int i = 0; i < event.length; i++) {
                     eventId = event[i].getID();
+
                     if (eventId == KeyEvent.KEY_PRESSED) {
                         _keycode = ((KeyEvent) event[i]).getKeyChar();
                         _hasData = true;
                     }
                 }
             }
+
             this.wakeupOn(new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED));
         }
     }

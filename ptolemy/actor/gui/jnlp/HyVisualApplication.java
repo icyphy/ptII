@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.jnlp;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// HyVisualApplication
@@ -57,7 +57,7 @@ package ptolemy.actor.gui.jnlp;
     @Pt.AcceptedRating Red (cxh)
 */
 public class HyVisualApplication extends MenuApplication {
-    public static void main(final String [] args) {
+    public static void main(final String[] args) {
         // See the class comment of MenuApplication
         // about why we set the security manager to null.
         System.setSecurityManager(null);

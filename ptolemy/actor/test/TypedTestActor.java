@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.test;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -33,8 +32,10 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypedTestActor
+
 /**
    A TypedTestActor is a simple atomic actor that is used for testing the actor
    package. It overrides the action methods with methods that record their
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TypedTestActor extends TypedAtomicActor {
-
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -61,7 +61,7 @@ public class TypedTestActor extends TypedAtomicActor {
      *   an entity already in the container.
      */
     public TypedTestActor(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -116,7 +116,6 @@ public class TypedTestActor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The list of action method invocations.
     private static StringBuffer _actions = new StringBuffer(1024);
 }

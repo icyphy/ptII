@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.fsm.modal;
 
 import ptolemy.actor.IOPort;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RefinementPort
+
 /**
    A port for controllers and refinements in modal models.  This port
    mirrors certain changes to it in the ports of the container of the container.
@@ -57,9 +58,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (liuxj)
 */
-
 public class RefinementPort extends TypedIOPort {
-
     /** Construct a port in the given workspace.
      *  @param workspace The workspace.
      *  @exception IllegalActionException If the port is not of an acceptable
@@ -84,7 +83,7 @@ public class RefinementPort extends TypedIOPort {
      *   a port already in the container.
      */
     public RefinementPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _checkWhetherMirrorIsInput();
     }
@@ -109,9 +108,10 @@ public class RefinementPort extends TypedIOPort {
      */
     public void link(Relation relation) throws IllegalActionException {
         super.link(relation);
+
         // NOTE: the following procedure is also performed in a modal port.
         if (isMultiport()) {
-            ((IORelation)relation).setWidth(0);
+            ((IORelation) relation).setWidth(0);
         }
     }
 
@@ -127,25 +127,33 @@ public class RefinementPort extends TypedIOPort {
      */
     public int moveDown() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveDown();
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveDown();
+                            ((IOPort) port).moveDown();
                             success = true;
                         }
                     }
                 }
+
                 // The mirror port(s), if there are any,
                 // will have called this method and achieved
                 // the moveDown. But if there are no mirror
@@ -154,6 +162,7 @@ public class RefinementPort extends TypedIOPort {
                     result = super.moveDown();
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
@@ -173,25 +182,33 @@ public class RefinementPort extends TypedIOPort {
      */
     public int moveToFirst() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveToFirst();
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveToFirst();
+                            ((IOPort) port).moveToFirst();
                             success = true;
                         }
                     }
                 }
+
                 // The mirror port(s), if there are any,
                 // will have called this method and achieved
                 // the moveToFirst. But if there are no mirror
@@ -200,6 +217,7 @@ public class RefinementPort extends TypedIOPort {
                     result = super.moveToFirst();
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
@@ -221,25 +239,33 @@ public class RefinementPort extends TypedIOPort {
      */
     public int moveToIndex(int index) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveToIndex(index);
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveToIndex(index);
+                            ((IOPort) port).moveToIndex(index);
                             success = true;
                         }
                     }
                 }
+
                 // The mirror port(s), if there are any,
                 // will have called this method and achieved
                 // the moveToIndex. But if there are no mirror
@@ -248,12 +274,12 @@ public class RefinementPort extends TypedIOPort {
                     result = super.moveToIndex(index);
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
         }
-
     }
 
     /** Move this object to the last position in the list
@@ -268,29 +294,38 @@ public class RefinementPort extends TypedIOPort {
      */
     public int moveToLast() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveToLast();
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveToLast();
+                            ((IOPort) port).moveToLast();
                             success = true;
                         }
                     }
                 }
+
                 if (!success) {
                     result = super.moveToLast();
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
@@ -311,33 +346,42 @@ public class RefinementPort extends TypedIOPort {
      */
     public int moveUp() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
+
             int result = -1;
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 result = super.moveUp();
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).moveUp();
+                            ((IOPort) port).moveUp();
                             success = true;
                         }
                     }
                 }
+
                 // The mirror port(s), if there are any,
                 // will have called this method and achieved
                 // the moveUp. But if there are no mirror
                 // ports, we need to do it here.
                 if (!success) {
-                        result = super.moveUp();
+                    result = super.moveUp();
                 }
             }
+
             return result;
         } finally {
             _mirrorDisable = disableStatus;
@@ -357,33 +401,44 @@ public class RefinementPort extends TypedIOPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
-        NamedObj oldContainer = (NamedObj)getContainer();
+        throws IllegalActionException, NameDuplicationException {
+        NamedObj oldContainer = (NamedObj) getContainer();
+
         if (container == oldContainer) {
             // Nothing to do.
             return;
         }
+
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Have already called the super class.
                 // This time, process the request.
                 super.setContainer(container);
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
+
                 if (oldContainer != null) {
                     Nameable modal = oldContainer.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port != null) {
                             port.setContainer(null);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setContainer(container);
+
+                if (!success) {
+                    super.setContainer(container);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -405,28 +460,36 @@ public class RefinementPort extends TypedIOPort {
      */
     public void setInput(boolean isInput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable
-                    || getContainer() == null
+
+            if (_mirrorDisable || (getContainer() == null)
                     || _automaticallyInput) {
                 // Do not mirror.
                 super.setInput(isInput);
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).setInput(isInput);
+                            ((IOPort) port).setInput(isInput);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setInput(isInput);
+
+                if (!success) {
+                    super.setInput(isInput);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -457,26 +520,35 @@ public class RefinementPort extends TypedIOPort {
      */
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Do not mirror.
                 super.setMultiport(isMultiport);
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).setMultiport(isMultiport);
+                            ((IOPort) port).setMultiport(isMultiport);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setMultiport(isMultiport);
+
+                if (!success) {
+                    super.setMultiport(isMultiport);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -493,28 +565,37 @@ public class RefinementPort extends TypedIOPort {
      *   with the same name in the container.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Do not mirror.
                 super.setName(name);
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port != null) {
                             port.setName(name);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setName(name);
+
+                if (!success) {
+                    super.setName(name);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -540,26 +621,35 @@ public class RefinementPort extends TypedIOPort {
      */
     public void setOutput(boolean isOutput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
+
         try {
             _workspace.getWriteAccess();
-            if (_mirrorDisable || getContainer() == null) {
+
+            if (_mirrorDisable || (getContainer() == null)) {
                 // Do not mirror.
                 super.setOutput(isOutput);
             } else {
                 _mirrorDisable = true;
+
                 boolean success = false;
                 Nameable container = getContainer();
+
                 if (container != null) {
                     Nameable modal = container.getContainer();
+
                     if (modal instanceof ModalModel) {
-                        Port port = ((ModalModel)modal).getPort(getName());
+                        Port port = ((ModalModel) modal).getPort(getName());
+
                         if (port instanceof IOPort) {
-                            ((IOPort)port).setOutput(isOutput);
+                            ((IOPort) port).setOutput(isOutput);
                             success = true;
                         }
                     }
                 }
-                if (!success) super.setOutput(isOutput);
+
+                if (!success) {
+                    super.setOutput(isOutput);
+                }
             }
         } finally {
             _mirrorDisable = disableStatus;
@@ -597,13 +687,16 @@ public class RefinementPort extends TypedIOPort {
         // Need to check whether there is a containing ModalModel,
         // and whether its mirror port is also an input.
         Nameable container = getContainer();
+
         if (container != null) {
             Nameable modal = container.getContainer();
+
             if (modal instanceof ModalModel) {
-                Port port = ((ModalModel)modal).getPort(getName());
+                Port port = ((ModalModel) modal).getPort(getName());
+
                 if (port instanceof IOPort) {
-                    if (!((IOPort)port).isInput()
-                            && ((IOPort)port).isOutput()) {
+                    if (!((IOPort) port).isInput()
+                            && ((IOPort) port).isOutput()) {
                         _automaticallyInput = true;
                     }
                 }

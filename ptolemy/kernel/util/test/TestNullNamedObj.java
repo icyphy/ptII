@@ -25,13 +25,13 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util.test;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// TestNullNamedObj.java
@@ -48,7 +48,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestNullNamedObj extends NamedObj {
-
     /** Construct an object in the default workspace with an empty string
      *  as its name. The object is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -98,7 +97,6 @@ public class TestNullNamedObj extends NamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Instance of a workspace that can be used if no other is specified.
     private static Workspace _defaultWorkspace = new Workspace();
 

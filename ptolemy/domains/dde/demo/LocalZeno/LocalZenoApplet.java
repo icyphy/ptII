@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import java.awt.BorderLayout;
@@ -75,6 +74,7 @@ import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LocalZenoApplet
 
@@ -89,7 +89,6 @@ import diva.graph.layout.LevelLayout;
  *  @Pt.AcceptedRating Red (davisj)
  */
 public class LocalZenoApplet extends PtolemyApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -200,59 +199,58 @@ public class LocalZenoApplet extends PtolemyApplet {
      *  actors and make connections.
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
-
+        throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         _toplevel = toplevel;
+
         DDEDirector director = new DDEDirector(toplevel, "DDE Director");
         director.stopTime.setExpression("90.0");
 
         // Instantiate the Actors
-        _clock = new ListenClock( toplevel, "Clock" );
-        _clock.values.setExpression( "{1, 1, 1}" );
-        _clock.period.setToken( new DoubleToken(20.0) );
-        _clock.offsets.setExpression( "{5.0, 10.0, 15.0}" );
-        _clock.stopTime.setToken( new DoubleToken(0.0) );
+        _clock = new ListenClock(toplevel, "Clock");
+        _clock.values.setExpression("{1, 1, 1}");
+        _clock.period.setToken(new DoubleToken(20.0));
+        _clock.offsets.setExpression("{5.0, 10.0, 15.0}");
+        _clock.stopTime.setToken(new DoubleToken(0.0));
 
-        _join1 = new ListenWire( toplevel, "UpperJoin" );
-        _fork1 = new ListenFork( toplevel, "UpperFork" );
-        _fBack1 = new ListenFeedBackDelay( toplevel, "UpperFeedBack" );
-        _join2 = new ListenWire( toplevel, "LowerJoin" );
-        _fork2 = new ListenFork( toplevel, "LowerFork" );
-        _fBack2 = new ZenoDelay( toplevel, "LowerFeedBack" );
+        _join1 = new ListenWire(toplevel, "UpperJoin");
+        _fork1 = new ListenFork(toplevel, "UpperFork");
+        _fBack1 = new ListenFeedBackDelay(toplevel, "UpperFeedBack");
+        _join2 = new ListenWire(toplevel, "LowerJoin");
+        _fork2 = new ListenFork(toplevel, "LowerFork");
+        _fBack2 = new ZenoDelay(toplevel, "LowerFeedBack");
 
-        _rcvr1 = new ListenSink( toplevel, "UpperRcvr" );
-        _rcvr2 = new ListenSink( toplevel, "LowerRcvr" );
+        _rcvr1 = new ListenSink(toplevel, "UpperRcvr");
+        _rcvr2 = new ListenSink(toplevel, "LowerRcvr");
 
-        _upperTime = new TimeAdvance( toplevel, "upperTime" );
-        _upperPlotter = new TimedPlotter( toplevel, "upperPlotter" );
+        _upperTime = new TimeAdvance(toplevel, "upperTime");
+        _upperPlotter = new TimedPlotter(toplevel, "upperPlotter");
 
-        _lowerTime = new TimeAdvance( toplevel, "lowerTime" );
-        _lowerPlotter = new TimedPlotter( toplevel, "lowerPlotter" );
+        _lowerTime = new TimeAdvance(toplevel, "lowerTime");
+        _lowerPlotter = new TimedPlotter(toplevel, "lowerPlotter");
 
         _fBack1.delay.setToken(new DoubleToken(4.5));
         _fBack2.delay.setToken(new DoubleToken(4.5));
 
         // Set up ports, relations and connections
-        Relation clkRelation =
-            toplevel.connect( _clock.output, _join1.input );
-        _join2.input.link( clkRelation );
+        Relation clkRelation = toplevel.connect(_clock.output, _join1.input);
+        _join2.input.link(clkRelation);
 
-        toplevel.connect( _join1.output, _fork1.input );
-        toplevel.connect( _fork1.output1, _rcvr1.input );
-        toplevel.connect( _fork1.output2, _fBack1.input );
-        toplevel.connect( _fBack1.output, _join1.input );
+        toplevel.connect(_join1.output, _fork1.input);
+        toplevel.connect(_fork1.output1, _rcvr1.input);
+        toplevel.connect(_fork1.output2, _fBack1.input);
+        toplevel.connect(_fBack1.output, _join1.input);
 
-        toplevel.connect( _join2.output, _fork2.input );
-        toplevel.connect( _fork2.output1, _rcvr2.input );
-        toplevel.connect( _fork2.output2, _fBack2.input );
-        toplevel.connect( _fBack2.output, _join2.input );
+        toplevel.connect(_join2.output, _fork2.input);
+        toplevel.connect(_fork2.output1, _rcvr2.input);
+        toplevel.connect(_fork2.output2, _fBack2.input);
+        toplevel.connect(_fBack2.output, _join2.input);
 
-        toplevel.connect( _fork1.output1, _upperTime.input );
-        toplevel.connect( _upperTime.output, _upperPlotter.input );
+        toplevel.connect(_fork1.output1, _upperTime.input);
+        toplevel.connect(_upperTime.output, _upperPlotter.input);
 
-        toplevel.connect( _fork2.output1, _lowerTime.input );
-        toplevel.connect( _lowerTime.output, _lowerPlotter.input );
+        toplevel.connect(_fork2.output1, _lowerTime.input);
+        toplevel.connect(_lowerTime.output, _lowerPlotter.input);
 
         return toplevel;
     }
@@ -262,53 +260,53 @@ public class LocalZenoApplet extends PtolemyApplet {
      *  different.
      */
     protected void _createView() {
-
-        getContentPane().setLayout(
-                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        getContentPane().setLayout(new BoxLayout(getContentPane(),
+                BoxLayout.Y_AXIS));
 
         // Create control panels.
         super._createView();
 
         // Panel for controls and plotter
         JPanel topPanel = new JPanel();
-        topPanel.setSize( new Dimension(600, 200) );
+        topPanel.setSize(new Dimension(600, 200));
         topPanel.setBackground(null);
 
         _plotPanel = new JPanel();
-        _plotPanel.setSize( new Dimension(600, 200) );
+        _plotPanel.setSize(new Dimension(600, 200));
         _plotPanel.setBackground(getBackground());
-        topPanel.add( _plotPanel );
+        topPanel.add(_plotPanel);
 
-        _upperPlotter.place( _plotPanel );
+        _upperPlotter.place(_plotPanel);
         _upperPlotter.plot.setTitle("Upper Branch");
         _upperPlotter.plot.setXRange(0.0, 90.0);
         _upperPlotter.plot.setYRange(-1.0, 1.0);
         _upperPlotter.plot.setSize(200, 150);
         _upperPlotter.plot.addLegend(0, "Time");
 
-        _lowerPlotter.place( _plotPanel );
+        _lowerPlotter.place(_plotPanel);
         _lowerPlotter.plot.setTitle("Lower Branch");
         _lowerPlotter.plot.setXRange(0.0, 90.0);
         _lowerPlotter.plot.setYRange(-1.0, 1.0);
         _lowerPlotter.plot.setSize(200, 150);
         _lowerPlotter.plot.addLegend(0, "Time");
 
-        getContentPane().add( topPanel );
+        getContentPane().add(topPanel);
 
-        _divaPanel = new JPanel( new BorderLayout() );
-        _divaPanel.setSize( new Dimension(600, 400) );
-        _divaPanel.setBackground( null );
-        getContentPane().add( _divaPanel );
+        _divaPanel = new JPanel(new BorderLayout());
+        _divaPanel.setSize(new Dimension(600, 400));
+        _divaPanel.setBackground(null);
+        getContentPane().add(_divaPanel);
 
         _graph = _constructDivaGraph();
+
         // display the graph.
         final GraphController gc = new LocalZenoGraphController();
         final GraphPane gp = new GraphPane(gc, _graph);
         _jgraph = new JGraph(gp);
-        _divaPanel.add(_jgraph );
+        _divaPanel.add(_jgraph);
 
-        StateListener listener =
-            new StateListener((GraphPane)_jgraph.getCanvasPane());
+        StateListener listener = new StateListener((GraphPane) _jgraph
+                .getCanvasPane());
         _join1.addDebugListener(listener);
         _join2.addDebugListener(listener);
         _fork1.addDebugListener(listener);
@@ -345,7 +343,6 @@ public class LocalZenoApplet extends PtolemyApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The Actors
     private ListenClock _clock;
     private ListenWire _join1;
@@ -376,14 +373,11 @@ public class LocalZenoApplet extends PtolemyApplet {
     // The Diva graph
     private MutableGraphModel _graph;
 
-
-
-
-
     ///////////////////////////////////////////////////////////////////
     //// LocalZenoGraphController
     public class LocalZenoGraphController extends BasicGraphController {
         private SelectionDragger _selectionDragger;
+
         /**
          * Create a new basic controller with default
          * node and edge interactors.
@@ -412,7 +406,6 @@ public class LocalZenoApplet extends PtolemyApplet {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     //// LocalEdgeRenderer
 
@@ -427,9 +420,8 @@ public class LocalZenoApplet extends PtolemyApplet {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
-            Arrowhead headArrow = new Arrowhead(
-                    headSite.getX(), headSite.getY(),
-                    headSite.getNormal());
+            Arrowhead headArrow = new Arrowhead(headSite.getX(),
+                    headSite.getY(), headSite.getNormal());
             c.setHeadEnd(headArrow);
             c.setUserObject(edge);
             return c;
@@ -438,13 +430,13 @@ public class LocalZenoApplet extends PtolemyApplet {
 
     ///////////////////////////////////////////////////////////////////
     //// StateListener
+
     /**
      * StateListener is an inner class that listens to state
      * events on the Ptolemy kernel and changes the color of
      * the nodes appropriately.
      */
     public class StateListener implements DebugListener {
-
         // The Pane
         GraphPane _graphPane;
 
@@ -463,34 +455,36 @@ public class LocalZenoApplet extends PtolemyApplet {
          */
         public void event(DebugEvent debugEvent) {
             // only trap ExecEvents.
-            if (!(debugEvent instanceof ExecEvent)) return;
+            if (!(debugEvent instanceof ExecEvent)) {
+                return;
+            }
+
             ExecEvent event = (ExecEvent) debugEvent;
             final ExecEvent.ExecEventType state = event.getState();
             NamedObj actor = event.getSource();
 
             // Get the corresponding graph node and its figure
             Object node = (Object) _nodeMap.get(actor);
-            LabelWrapper wrapper = (LabelWrapper)
-                _graphPane.getGraphController().getFigure(node);
-            final BasicFigure figure = (BasicFigure)
-                wrapper.getChild();
+            LabelWrapper wrapper = (LabelWrapper) _graphPane.getGraphController()
+                                                            .getFigure(node);
+            final BasicFigure figure = (BasicFigure) wrapper.getChild();
 
             // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                         public void run() {
-                            if (state == ExecEvent.WAITING)
+                            if (state == ExecEvent.WAITING) {
                                 figure.setFillPaint(Color.yellow);
-                            else if (state == ExecEvent.ACCESSING)
+                            } else if (state == ExecEvent.ACCESSING) {
                                 figure.setFillPaint(Color.green);
-                            else if (state == ExecEvent.BLOCKED)
+                            } else if (state == ExecEvent.BLOCKED) {
                                 figure.setFillPaint(Color.red);
-                            else
+                            } else {
                                 System.err.println("Unknown state: " + state);
+                            }
                         }
                     });
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -503,7 +497,6 @@ public class LocalZenoApplet extends PtolemyApplet {
      * ThreadRenderer draws the nodes to represent running threads.
      */
     public class ThreadRenderer implements NodeRenderer {
-
         /** The rectangle size
          */
         private double _size = 40;
@@ -520,18 +513,16 @@ public class LocalZenoApplet extends PtolemyApplet {
          * Return the rendered visual representation of this node.
          */
         public Figure render(Object n) {
-            ComponentEntity actor = (ComponentEntity)
-                _controller.getGraphModel().getSemanticObject(n);
+            ComponentEntity actor = (ComponentEntity) _controller.getGraphModel()
+                                                                 .getSemanticObject(n);
 
-            boolean isEllipse =
-                actor instanceof ListenWire
-                || actor instanceof ListenFork
-                || actor instanceof ListenClock
+            boolean isEllipse = actor instanceof ListenWire
+                || actor instanceof ListenFork || actor instanceof ListenClock
                 || actor instanceof ListenSink
                 || actor instanceof ListenFeedBackDelay;
 
-
             BasicFigure f;
+
             if (isEllipse) {
                 f = new BasicEllipse(0, 0, _size, _size);
                 f.setFillPaint(Color.blue);
@@ -539,6 +530,7 @@ public class LocalZenoApplet extends PtolemyApplet {
                 f = new BasicRectangle(0, 0, _size, _size);
                 f.setFillPaint(Color.pink);
             }
+
             String label = actor.getName();
             LabelWrapper w = new LabelWrapper(f, label);
             w.setAnchor(SwingConstants.SOUTH);

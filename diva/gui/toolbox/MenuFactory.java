@@ -27,6 +27,7 @@ package diva.gui.toolbox;
 
 import diva.canvas.Figure;
 
+
 /**
  * A factory for popup menus.  Use this class in conjunction with
  * a MenuCreator to implement context sensitive menus.
@@ -35,7 +36,6 @@ import diva.canvas.Figure;
  * @version $Id$
  */
 public interface MenuFactory {
-
     /**
      * Create an instance of the menu associated with this factory.
      * If no menu should be displayed, then return null.
@@ -43,5 +43,3 @@ public interface MenuFactory {
      */
     public JContextMenu create(Figure figure);
 }
-
-

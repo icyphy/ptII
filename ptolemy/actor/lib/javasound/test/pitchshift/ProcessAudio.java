@@ -30,8 +30,10 @@ package ptolemy.actor.lib.javasound.test.pitchshift;
 import ptolemy.media.javasound.SoundCapture;
 import ptolemy.media.javasound.SoundPlayback;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ProcessAudio
+
 /**
    Perform real-time pitch shifting of audio signals. This only works
    for audio signals that have either a unique pitch or no pitch at
@@ -68,9 +70,7 @@ import ptolemy.media.javasound.SoundPlayback;
    @Pt.AcceptedRating Red (vogel)
 */
 public class ProcessAudio implements Runnable {
-
     String errStr;
-
     Thread thread;
 
     // Set the default sample rate.
@@ -94,8 +94,10 @@ public class ProcessAudio implements Runnable {
         if ((errStr = message) != null) {
             System.err.println(errStr);
         }
+
         if (thread != null) {
             thread = null;
+
             // Now exit.
             System.exit(0);
         }
@@ -106,8 +108,6 @@ public class ProcessAudio implements Runnable {
         this.pitchScaleIn1 = pitchScaleIn;
     }
 
-
-
     // Set the sampling rate. Valid sampling rates are 11025, 22050, 44100.
     // This method should be the first method called in this class.
     public void setSamplingRate(double sr) {
@@ -115,13 +115,11 @@ public class ProcessAudio implements Runnable {
     }
 
     public void run() {
-
         // Capture specific stuff:
-
         int sampleSizeInBits = 16;
         int channels = 1;
 
-        int inBufferSize = 6000;  // Internal buffer size for capture.
+        int inBufferSize = 6000; // Internal buffer size for capture.
         int outBufferSize = 6000; // Internal buffer size for playback.
 
         // Amount of data to read or write from/to the internal buffer
@@ -129,20 +127,15 @@ public class ProcessAudio implements Runnable {
         // size!
         int getSamplesSize = 256;
 
-        SoundCapture soundCapture =
-            new SoundCapture((float)sampleRate, sampleSizeInBits,
-                    channels, inBufferSize,
-                    getSamplesSize);
+        SoundCapture soundCapture = new SoundCapture((float) sampleRate,
+                sampleSizeInBits, channels, inBufferSize, getSamplesSize);
 
         int putSamplesSize = getSamplesSize;
 
         // Construct a sound playback object that plays audio
         //through the computer's speaker.
-        SoundPlayback soundPlayback = new SoundPlayback((float)sampleRate,
-                sampleSizeInBits,
-                channels,
-                outBufferSize,
-                putSamplesSize);
+        SoundPlayback soundPlayback = new SoundPlayback((float) sampleRate,
+                sampleSizeInBits, channels, outBufferSize, putSamplesSize);
 
         // Initialize and begin real-time capture and playback.
         try {
@@ -152,29 +145,24 @@ public class ProcessAudio implements Runnable {
             System.err.println(ex);
         }
 
-
-        double[][] capturedSamplesArray =
-            new double[channels][getSamplesSize];
-
+        double[][] capturedSamplesArray = new double[channels][getSamplesSize];
 
         // Initialize the pitch detector.
-        int vectorSize = getSamplesSize*channels;
-        PitchDetector pd = new PitchDetector(vectorSize,
-                (int)sampleRate);
+        int vectorSize = getSamplesSize * channels;
+        PitchDetector pd = new PitchDetector(vectorSize, (int) sampleRate);
+
         // Initialize the pitch shifter.
-        PitchShift ps = new PitchShift((float)sampleRate);
+        PitchShift ps = new PitchShift((float) sampleRate);
 
         double[] currPitchArray;
 
         while (thread != null) {
             try {
-
                 // Read in some captured audio.
                 capturedSamplesArray = soundCapture.getSamples();
 
                 ///////////////////////////////////////////////////////////
                 //////   Do processing on audioInDoubleArray here     /////
-
                 currPitchArray = pd.performPitchDetect(capturedSamplesArray[0]);
 
                 capturedSamplesArray[0] = ps.performPitchShift(capturedSamplesArray[0],
@@ -182,16 +170,14 @@ public class ProcessAudio implements Runnable {
 
                 // Play the processed audio samples.
                 soundPlayback.putSamples(capturedSamplesArray);
-
             } catch (Exception e) {
                 shutDown("Error during playback: " + e);
                 break;
             }
         }
+
         // we reached the end of the stream.  let the data play out, then
         // stop and close the line.
-
         shutDown(null);
-
     }
 }

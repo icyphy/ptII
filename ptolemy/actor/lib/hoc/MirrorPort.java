@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.hoc;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MirrorPort
+
 /**
    This port mirrors the properties of an associated port. That is,
    if either this port or the associated port is changed by
@@ -59,7 +60,6 @@ import ptolemy.moml.MoMLChangeRequest;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class MirrorPort extends TypedIOPort {
-
     /** Create a new instance of a port.
      *  @param container The container for the port.
      *  @param name The name of the port.
@@ -69,7 +69,7 @@ public class MirrorPort extends TypedIOPort {
      *   of a port already in the container.
      */
     public MirrorPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -85,9 +85,8 @@ public class MirrorPort extends TypedIOPort {
      *   cannot be cloned.
      *  @see #exportMoML(Writer, int, String)
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        MirrorPort result = (MirrorPort)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MirrorPort result = (MirrorPort) super.clone(workspace);
         result._associatedPort = null;
         result._settingAssociatedPort = false;
         return result;
@@ -112,6 +111,7 @@ public class MirrorPort extends TypedIOPort {
     public void setAssociatedPort(MirrorPort port) {
         _associatedPort = port;
         port._associatedPort = this;
+
         // NOTE: The association is not propagated to derived
         // objects because we explicitly propagate all the changes.
     }
@@ -131,22 +131,19 @@ public class MirrorPort extends TypedIOPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
-        if (container == null
-                && _associatedPort != null
-                && _associatedPort.getContainer() != null) {
+
+        if ((container == null) && (_associatedPort != null)
+                && (_associatedPort.getContainer() != null)) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
             // change request will be issued because its container
             // is already null.
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this,
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
                     _associatedPort.getContainer(),
-                    "<deletePort name=\""
-                    + _associatedPort.getName()
-                    + "\"/>");
+                    "<deletePort name=\"" + _associatedPort.getName() + "\"/>");
             _associatedPort.getContainer().requestChange(request);
         }
     }
@@ -159,16 +156,15 @@ public class MirrorPort extends TypedIOPort {
      */
     public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
-        if (_associatedPort != null
-                && _associatedPort.isInput() != isInput) {
+
+        if ((_associatedPort != null) && (_associatedPort.isInput() != isInput)) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
             // change request will be issued because it already
             // has matching status.
             String value = isInput ? "true" : "false";
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this,
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
                     _associatedPort.getContainer(),
                     "<property name=\"input\" value=\"" + value + "\"/>");
             _associatedPort.getContainer().requestChange(request);
@@ -181,26 +177,26 @@ public class MirrorPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
-    public void setMultiport(boolean isMultiport)
-            throws IllegalActionException {
+    public void setMultiport(boolean isMultiport) throws IllegalActionException {
         super.setMultiport(isMultiport);
-        if (_associatedPort != null
-                && _associatedPort.isMultiport() != isMultiport) {
+
+        if ((_associatedPort != null)
+                && (_associatedPort.isMultiport() != isMultiport)) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
             // change request will be issued because it already
             // has matching status.
-            String value = isMultiport? "true" : "false";
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this,
+            String value = isMultiport ? "true" : "false";
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
                     _associatedPort.getContainer(),
                     "<property name=\"multiport\" value=\"" + value + "\"/>");
             _associatedPort.getContainer().requestChange(request);
         }
+
         // Set the associated port first, so that if it fails, we
         // don't change the status of this one either.
-        if (!_settingAssociatedPort && _associatedPort != null) {
+        if (!_settingAssociatedPort && (_associatedPort != null)) {
             try {
                 _settingAssociatedPort = true;
                 _associatedPort.setMultiport(isMultiport);
@@ -208,6 +204,7 @@ public class MirrorPort extends TypedIOPort {
                 _settingAssociatedPort = false;
             }
         }
+
         // Note that propagation is handled by the call below.
         super.setMultiport(isMultiport);
     }
@@ -216,19 +213,18 @@ public class MirrorPort extends TypedIOPort {
      *  if there is one.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setName(name);
-        if (_associatedPort != null
+
+        if ((_associatedPort != null)
                 && !_associatedPort.getName().equals(name)) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
             // change request will be issued because it already
             // has matching status.
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this,
-                    _associatedPort,
-                    "<rename name=\"" + name + "\"/>");
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    _associatedPort, "<rename name=\"" + name + "\"/>");
             _associatedPort.requestChange(request);
         }
     }
@@ -241,16 +237,16 @@ public class MirrorPort extends TypedIOPort {
      */
     public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
-        if (_associatedPort != null
-                && _associatedPort.isOutput() != isOutput) {
+
+        if ((_associatedPort != null)
+                && (_associatedPort.isOutput() != isOutput)) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no
             // change request will be issued because it already
             // has matching status.
             String value = isOutput ? "true" : "false";
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this,
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
                     _associatedPort.getContainer(),
                     "<property name=\"output\" value=\"" + value + "\"/>");
             _associatedPort.getContainer().requestChange(request);

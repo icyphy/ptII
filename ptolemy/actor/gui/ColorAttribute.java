@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Color;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ColorAttribute
+
 /**
    This is an attribute that specifies a color.  The value of this
    attribute is an array of four doubles in the form
@@ -55,7 +56,6 @@ import ptolemy.kernel.util.NamedObj;
 @Pt.AcceptedRating Red (cxh)
 */
 public class ColorAttribute extends Parameter {
-
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -70,7 +70,7 @@ public class ColorAttribute extends Parameter {
      *   an attribute already in the container.
      */
     public ColorAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
@@ -86,6 +86,7 @@ public class ColorAttribute extends Parameter {
         try {
             ArrayToken spec = (ArrayToken) getToken();
             int length = 0;
+
             if (spec != null) {
                 length = spec.length();
             }
@@ -99,15 +100,19 @@ public class ColorAttribute extends Parameter {
             if (length > 0) {
                 red = (float) ((DoubleToken) spec.getElement(0)).doubleValue();
             }
+
             if (length > 1) {
                 green = (float) ((DoubleToken) spec.getElement(1)).doubleValue();
             }
+
             if (length > 2) {
                 blue = (float) ((DoubleToken) spec.getElement(2)).doubleValue();
             }
+
             if (length > 3) {
                 alpha = (float) ((DoubleToken) spec.getElement(3)).doubleValue();
             }
+
             return new Color(red, green, blue, alpha);
         } catch (IllegalActionException ex) {
             // getToken() failed for some reason.

@@ -31,6 +31,7 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 
+
 /**
  * A model that captures the notion of a list of elements with a
  * single selected element. This is really just a
@@ -43,10 +44,9 @@ import javax.swing.DefaultComboBoxModel;
  * @Pt.AcceptedRating Red
  */
 public class ListDataModel extends DefaultComboBoxModel {
-
     /** Create a new model.
      */
-    public ListDataModel () {
+    public ListDataModel() {
         super();
     }
 
@@ -54,15 +54,17 @@ public class ListDataModel extends DefaultComboBoxModel {
      */
     public List getList() {
         ArrayList list = new ArrayList(getSize());
+
         for (int i = 0; i < getSize(); i++) {
             list.add(getElementAt(i));
         }
+
         return list;
     }
 
     /** Return an iterator over the elements in the model.
      */
-    public Iterator iterator () {
+    public Iterator iterator() {
         return getList().iterator();
     }
 
@@ -72,12 +74,12 @@ public class ListDataModel extends DefaultComboBoxModel {
     public boolean contains(Object o) {
         for (int i = 0; i < getSize(); i++) {
             Object o2 = getElementAt(i);
+
             if (o.equals(o2)) {
                 return true;
             }
         }
+
         return false;
     }
 }
-
-

@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
-// Java imports.
 import java.net.URL;
 
 import ptolemy.actor.CompositeActor;
@@ -47,6 +45,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplet
+
 /**
    This is an applet that constructs a Ptolemy II model from a MoML file.
    "MoML" stands for "Modeling Markup Language." It is an XML schema for
@@ -105,7 +104,6 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
    @Pt.AcceptedRating Red (eal)
 */
 public class MoMLApplet extends PtolemyApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -118,32 +116,31 @@ public class MoMLApplet extends PtolemyApplet {
         // Include the release and build number to aid in user support.
         String version = new String("Ptolemy II "
                 + VersionAttribute.CURRENT_VERSION);
-        String build = new String("\n(Build: $Id$)");
+        String build = new String(
+                "\n(Build: $Id$)");
+
         if (_toplevel != null) {
             String tip = Documentation.consolidate(_toplevel);
+
             if (tip != null) {
-                return version
-                    + " model given in MoML:\n" + tip
-                    + build;
+                return version + " model given in MoML:\n" + tip + build;
             } else {
-                return version
-                    + " model given in MoML."
-                    + build;
+                return version + " model given in MoML." + build;
             }
         }
+
         return "MoML applet for " + version
-            + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
-            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
-            + build;
+        + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
+        + "See http://ptolemy.eecs.berkeley.edu/ptolemyII" + build;
     }
 
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String newInfo[][] = {
-            {"modelURL", "", "URL for the MoML file"},
-        };
+        String[][] newInfo = {
+                { "modelURL", "", "URL for the MoML file" },
+            };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
@@ -155,7 +152,7 @@ public class MoMLApplet extends PtolemyApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+        throws Exception {
         // Filter out graphical classes.
         return _createModel(workspace, true);
     }
@@ -168,20 +165,20 @@ public class MoMLApplet extends PtolemyApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace,
-            boolean filterGraphicalClasses)
-            throws Exception {
-
+        boolean filterGraphicalClasses) throws Exception {
         // ptolemy.vergil.MoMLViewerApplet() calls this with
         // filterGraphicalClasses set to false.
-
         String modelURL = getParameter("modelURL");
+
         if (modelURL == null) {
             // For backward compatibility, try name "model".
             modelURL = getParameter("model");
+
             if (modelURL == null) {
                 throw new Exception("Applet does not not specify a modelURL.");
             }
         }
+
         // NOTE: Regrettably, Java's URL class is too dumb
         // to handle a fragment part of a URL.  Thus, if
         // there is one, we have to remove it.  Note that
@@ -190,6 +187,7 @@ public class MoMLApplet extends PtolemyApplet {
         // docs.
         int sharp = modelURL.indexOf("#");
         String fragment = null;
+
         if (sharp > 0) {
             fragment = modelURL.substring(sharp + 1);
             modelURL = modelURL.substring(0, sharp);
@@ -212,28 +210,36 @@ public class MoMLApplet extends PtolemyApplet {
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);
         _manager = null;
+
         NamedObj toplevel = parser.parse(docBase, xmlFile);
         _workspace = toplevel.workspace();
-        if (fragment != null && !fragment.trim().equals("")) {
+
+        if ((fragment != null) && !fragment.trim().equals("")) {
             // A fragment was specified, so we should look inside.
             ComponentEntity inside = null;
+
             if (toplevel instanceof CompositeEntity) {
-                inside = ((CompositeEntity)toplevel).getEntity(fragment);
+                inside = ((CompositeEntity) toplevel).getEntity(fragment);
             }
+
             if (inside == null) {
                 throw new IllegalActionException(toplevel,
-                        "No such contained entity: " + fragment);
+                    "No such contained entity: " + fragment);
             }
+
             toplevel = inside;
         } else if (toplevel instanceof CompositeActor) {
-            CompositeActor result = (CompositeActor)toplevel;
+            CompositeActor result = (CompositeActor) toplevel;
             _manager = result.getManager();
+
             if (_manager == null) {
                 _manager = new Manager(_workspace, "manager");
                 result.setManager(_manager);
             }
+
             _manager.addExecutionListener(this);
         }
+
         return toplevel;
     }
 }

@@ -7,18 +7,15 @@ package ptolemy.domains.ct.demo.Corba.util;
  * from CorbaActor.idl
  * Thursday, January 18, 2001 5:51:19 PM PST
  */
-
-public final class CorbaIllegalValueException extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity
-{
+public final class CorbaIllegalValueException
+    extends org.omg.CORBA.UserException
+    implements org.omg.CORBA.portable.IDLEntity {
     public String message = null;
 
-    public CorbaIllegalValueException ()
-    {
+    public CorbaIllegalValueException() {
     } // ctor
 
-    public CorbaIllegalValueException (String _message)
-    {
+    public CorbaIllegalValueException(String _message) {
         message = _message;
     } // ctor
-
 } // class CorbaIllegalValueException

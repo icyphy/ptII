@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.util.List;
@@ -34,6 +33,7 @@ import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractSettableAttribute
+
 /**
    This is an abstract base class for attributes that implement the
    Settable interface. In particular, it provides a default implementation
@@ -48,10 +48,8 @@ import java.util.List;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (hyzheng)
 */
-
-public abstract class AbstractSettableAttribute
-    extends Attribute implements Settable {
-
+public abstract class AbstractSettableAttribute extends Attribute
+    implements Settable {
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -87,7 +85,7 @@ public abstract class AbstractSettableAttribute
      *   an attribute already in the container.
      */
     public AbstractSettableAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -111,13 +109,15 @@ public abstract class AbstractSettableAttribute
             // Get the list of objects from which this is derived,
             // the first of which will be the immediate prototype.
             List prototypeList = getPrototypeList();
+
             if (prototypeList.size() > 0) {
-                return ((Settable)prototypeList.get(0)).getExpression();
+                return ((Settable) prototypeList.get(0)).getExpression();
             }
         } catch (IllegalActionException e) {
             // This should not occur.
             throw new InternalErrorException(e);
         }
+
         return _default;
     }
 
@@ -131,8 +131,7 @@ public abstract class AbstractSettableAttribute
      *   (not thrown in this base class).
      *  @see #getDefaultExpression()
      */
-    public void setExpression(String expression)
-            throws IllegalActionException {
+    public void setExpression(String expression) throws IllegalActionException {
         if (_default == null) {
             _default = expression;
         }

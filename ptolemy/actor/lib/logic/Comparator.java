@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.logic;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -41,11 +40,12 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 // NOTE: If you update the list of comparisons, then you will want
 // to update the list in actor/lib/logic/logic.xml.
-
 //////////////////////////////////////////////////////////////////////////
 //// Comparator
+
 /**
    Compare two double-valued inputs, and output the boolean result
    of the comparison.  The exact comparison performed is given by the
@@ -77,7 +77,6 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Green (neuendor)
 */
 public class Comparator extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.  Set the
      *  comparison to the default ("&gt;").  Set the types of
      *  the input ports to double, and the type of the output port
@@ -90,7 +89,7 @@ public class Comparator extends TypedAtomicActor {
      *   actor with this name.
      */
     public Comparator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -108,15 +107,13 @@ public class Comparator extends TypedAtomicActor {
         right.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"-30,-10, -10,-10, -10,0\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "<polyline points=\"-30,10, 10,10, 10,0\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "<polyline points=\"-30,-10, -10,-10, -10,0\" "
+            + "style=\"stroke:grey\"/>\n"
+            + "<polyline points=\"-30,10, 10,10, 10,0\" "
+            + "style=\"stroke:grey\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,7 +141,6 @@ public class Comparator extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Override the base class to determine which comparison is being
      *  specified.  Read the value of the comparison attribute and set
      *  the cached value appropriately.
@@ -152,10 +148,9 @@ public class Comparator extends TypedAtomicActor {
      *  @exception IllegalActionException If the comparison is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws  IllegalActionException {
-
+        throws IllegalActionException {
         if (attribute == tolerance) {
-            _tolerance = ((DoubleToken)tolerance.getToken()).doubleValue();
+            _tolerance = ((DoubleToken) tolerance.getToken()).doubleValue();
         } else if (attribute == comparison) {
             String comparisonName = comparison.getExpression().trim();
 
@@ -171,7 +166,7 @@ public class Comparator extends TypedAtomicActor {
                 _comparison = _EQ;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized comparison: " + comparisonName);
+                    "Unrecognized comparison: " + comparisonName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -185,35 +180,58 @@ public class Comparator extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         BooleanToken result = BooleanToken.FALSE;
-        double leftIn = ((DoubleToken)(left.get(0))).doubleValue();
-        double rightIn = ((DoubleToken)(right.get(0))).doubleValue();
+        double leftIn = ((DoubleToken) (left.get(0))).doubleValue();
+        double rightIn = ((DoubleToken) (right.get(0))).doubleValue();
 
-        switch(_comparison) {
+        switch (_comparison) {
         case _GT:
-            if (leftIn + _tolerance > rightIn) result = BooleanToken.TRUE;
-            break;
-        case _GE:
-            if (leftIn + _tolerance >= rightIn) result = BooleanToken.TRUE;
-            break;
-        case _LT:
-            if (leftIn < rightIn + _tolerance) result = BooleanToken.TRUE;
-            break;
-        case _LE:
-            if (leftIn <= rightIn + _tolerance) result = BooleanToken.TRUE;
-            break;
-        case _EQ:
-            if (leftIn <= rightIn + _tolerance
-                    && leftIn >= rightIn - _tolerance) {
+
+            if ((leftIn + _tolerance) > rightIn) {
                 result = BooleanToken.TRUE;
             }
+
             break;
+
+        case _GE:
+
+            if ((leftIn + _tolerance) >= rightIn) {
+                result = BooleanToken.TRUE;
+            }
+
+            break;
+
+        case _LT:
+
+            if (leftIn < (rightIn + _tolerance)) {
+                result = BooleanToken.TRUE;
+            }
+
+            break;
+
+        case _LE:
+
+            if (leftIn <= (rightIn + _tolerance)) {
+                result = BooleanToken.TRUE;
+            }
+
+            break;
+
+        case _EQ:
+
+            if ((leftIn <= (rightIn + _tolerance))
+                    && (leftIn >= (rightIn - _tolerance))) {
+                result = BooleanToken.TRUE;
+            }
+
+            break;
+
         default:
             throw new InternalErrorException(
-                    "Invalid value for _comparison private variable. "
-                    + "Comparator actor (" + getFullName()
-                    + ")"
-                    + " on comparison type " + _comparison);
+                "Invalid value for _comparison private variable. "
+                + "Comparator actor (" + getFullName() + ")"
+                + " on comparison type " + _comparison);
         }
+
         output.send(0, result);
     }
 
@@ -224,13 +242,15 @@ public class Comparator extends TypedAtomicActor {
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        if (!left.hasToken(0) || !right.hasToken(0)) return false;
+        if (!left.hasToken(0) || !right.hasToken(0)) {
+            return false;
+        }
+
         return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // An indicator for the comparison to compute.
     private int _comparison;
 

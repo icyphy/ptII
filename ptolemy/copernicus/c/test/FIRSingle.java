@@ -21,12 +21,11 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
-
 /* An FIR filter example for Java to C translation.
    @author Shuvra S. Bhattacharyya
    @version $Id$
@@ -45,7 +44,7 @@ public class FIRSingle {
      *  @param input The input array.
      *  @param output The output array.
      */
-    public void fire(float input[], float output[]) {
+    public void fire(float[] input, float[] output) {
         // Pointers into the input and output buffers
         int inputIndex = 0;
         int outputIndex = 0;
@@ -59,6 +58,7 @@ public class FIRSingle {
             if (--_mostRecent < 0) {
                 _mostRecent = _dataLength - 1;
             }
+
             _data[_mostRecent] = input[inputIndex++];
         }
 
@@ -71,22 +71,24 @@ public class FIRSingle {
 
                 // Compute the inner product.
                 for (int i = 0; i < _phaseLength; i++) {
-                    int tapsIndex = i * _interpolation+ phase;
+                    int tapsIndex = (i * _interpolation) + phase;
 
-                    int dataIndex = (_mostRecent + _decimation -
-                            inC + i)%(_dataLength);
+                    int dataIndex = ((_mostRecent + _decimation) - inC + i) % (_dataLength);
 
                     if (tapsIndex < _numberOfTaps) {
                         float _tapItem = _taps[tapsIndex];
                         float _dataItem = _data[dataIndex];
-                        _dataItem = _tapItem  * _dataItem;
+                        _dataItem = _tapItem * _dataItem;
                         outToken = outToken += _dataItem;
                     }
+
                     // else assume tap is zero, so do nothing.
                 }
+
                 output[outputIndex++] = outToken;
                 phase += _decimation;
             }
+
             phase -= _interpolation;
         }
     }
@@ -104,8 +106,8 @@ public class FIRSingle {
      *  @param decimationPhase The decimation phase.
      *
      */
-    public void initialize(float taps[], int numberOfTaps, float data[],
-            int interpolation, int decimation, int decimationPhase) {
+    public void initialize(float[] taps, int numberOfTaps, float[] data,
+        int interpolation, int decimation, int decimationPhase) {
         /* Copy the arguments */
         _taps = taps;
         _numberOfTaps = numberOfTaps;
@@ -115,13 +117,16 @@ public class FIRSingle {
         _decimationPhase = decimationPhase;
         _mostRecent = 0;
 
-        _phaseLength = (int)(numberOfTaps / _interpolation);
+        _phaseLength = (int) (numberOfTaps / _interpolation);
+
         if ((numberOfTaps % _interpolation) != 0) {
             _phaseLength++;
         }
-        for (int i = 0; i < _phaseLength; i++ ) {
+
+        for (int i = 0; i < _phaseLength; i++) {
             _data[i] = 0;
         }
+
         _dataLength = _phaseLength;
     }
 
@@ -145,7 +150,7 @@ public class FIRSingle {
     protected int _phaseLength;
 
     /** The delay line. */
-    protected float _data[];
+    protected float[] _data;
 
     /** The index into the delay line of the most recent input. */
     protected int _mostRecent;
@@ -154,5 +159,5 @@ public class FIRSingle {
     protected int _numberOfTaps;
 
     /** The filter coefficients */
-    protected float _taps[];
+    protected float[] _taps;
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -43,6 +42,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// WirelessToWired
@@ -72,7 +72,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class WirelessToWired extends TypedAtomicActor {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -82,12 +81,11 @@ public class WirelessToWired extends TypedAtomicActor {
      *   actor with this name.
      */
     public WirelessToWired(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         properties = new TypedIOPort(this, "properties", false, true);
-        (new SingletonParameter(properties, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(properties, "_showName")).setToken(BooleanToken.TRUE);
 
         // Create and configure the parameters.
         inputChannelName = new StringParameter(this, "inputChannelName");
@@ -99,13 +97,11 @@ public class WirelessToWired extends TypedAtomicActor {
 
         payload = new TypedIOPort(this, "payload", false, true);
         payload.setTypeSameAs(input);
-        (new SingletonParameter(payload, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(payload, "_showName")).setToken(BooleanToken.TRUE);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -140,9 +136,8 @@ public class WirelessToWired extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        WirelessToWired newObject = (WirelessToWired)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        WirelessToWired newObject = (WirelessToWired) (super.clone(workspace));
 
         // set the type constraints
         newObject.payload.setTypeSameAs(newObject.input);
@@ -155,14 +150,15 @@ public class WirelessToWired extends TypedAtomicActor {
      *  on the <i>payload</i> port.
      */
     public void fire() throws IllegalActionException {
-
         super.fire();
 
         if (input.hasToken(0)) {
             Token inputValue = input.get(0);
+
             if (_debugging) {
                 _debug("Input signal received: " + inputValue.toString());
             }
+
             payload.send(0, inputValue);
 
             // Do not send properties if the port has no destinations.
@@ -170,7 +166,9 @@ public class WirelessToWired extends TypedAtomicActor {
             if (properties.numberOfSinks() == 0) {
                 return;
             }
+
             Token propertiesValue = input.getProperties(0);
+
             if (propertiesValue != null) {
                 properties.send(0, propertiesValue);
             }
@@ -185,13 +183,14 @@ public class WirelessToWired extends TypedAtomicActor {
         super.preinitialize();
 
         // Find the channel.
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
+
         if (container != null) {
-            Entity channel = container.getEntity(
-                    inputChannelName.stringValue());
+            Entity channel = container.getEntity(inputChannelName.stringValue());
+
             if (channel instanceof AtomicWirelessChannel) {
-                Parameter channelProperties = ((AtomicWirelessChannel)channel)
-                    .defaultProperties;
+                Parameter channelProperties = ((AtomicWirelessChannel) channel).defaultProperties;
+
                 // Only set up the type constraint if the type of the
                 // of the properties field is known.
                 if (channelProperties.getType() != BaseType.UNKNOWN) {

@@ -28,6 +28,7 @@ package diva.util.java2d;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
+
 /** The interface for a set of utility classes that paint shapes
  * or other kinds of graphical objects. The purpose of these classes
  * is to provide a simple interface for basic graphical drawing
@@ -39,31 +40,24 @@ import java.awt.geom.Rectangle2D;
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public interface PaintedGraphic extends PaintedObject {
-
     /** Get the line width.
      */
-    public float getLineWidth ();
+    public float getLineWidth();
 
     /** Get the stroke.
      */
-    public Stroke getStroke ();
+    public Stroke getStroke();
 
     /** Test if this shape is hit by the given rectangle.  Any transparent
      * parts of the graphic are generally intersected, but not hit.
      */
-    public boolean hit (Rectangle2D r);
+    public boolean hit(Rectangle2D r);
 
     /** Test if this shape intersects the given rectangle.
      */
-    public boolean intersects (Rectangle2D r);
+    public boolean intersects(Rectangle2D r);
 
     /** Set the line width.
      */
-    public void setLineWidth (float lineWidth);
+    public void setLineWidth(float lineWidth);
 }
-
-
-
-
-
-

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fsm.kernel.test;
 
 import java.net.URL;
@@ -36,8 +35,10 @@ import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.domains.fsm.kernel.StatePair;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AlternatingSimulation
+
 /**
    Compute the alternating simulation of two interface automata.
    This class reads the MoML description of a super automaton and a sub automaton,
@@ -56,9 +57,7 @@ import ptolemy.moml.MoMLParser;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-
 public class AlternatingSimulation {
-
     /** Compute the alternating simulation from the sub automaton to the
      *  super one and list the result to stdout.
      *  @param superMoML The MoML file name for the super interface automaton.
@@ -67,49 +66,54 @@ public class AlternatingSimulation {
      *   state pairs.
      *  @exception Exception If the specified automata cannot be constructed.
      */
-    public AlternatingSimulation (String superMoML, String subMoML,
-            boolean onlyReacheable) throws Exception {
+    public AlternatingSimulation(String superMoML, String subMoML,
+        boolean onlyReacheable) throws Exception {
         // Construct the super automaton
         URL url = MoMLApplication.specToURL(superMoML);
+
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().
         MoMLParser parser = new MoMLParser();
-        InterfaceAutomaton superAutomaton =
-            (InterfaceAutomaton)parser.parse(url, url);
+        InterfaceAutomaton superAutomaton = (InterfaceAutomaton) parser.parse(url,
+                url);
         superAutomaton.addPorts();
 
         // Construct the sub automaton
         url = MoMLApplication.specToURL(subMoML);
+
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().  Also, a new instance
         // of MoMLParser must be used to parse each file, otherwise
         // the same automaton will be returned the second time parse() is
         // called.
         parser = new MoMLParser();
-        InterfaceAutomaton subAutomaton =
-            (InterfaceAutomaton)parser.parse(url, url);
+
+        InterfaceAutomaton subAutomaton = (InterfaceAutomaton) parser.parse(url,
+                url);
         subAutomaton.addPorts();
 
         // Compute alternating simulation
-        Set alternatingSimulation =
-            superAutomaton.computeAlternatingSimulation(subAutomaton);
+        Set alternatingSimulation = superAutomaton.computeAlternatingSimulation(subAutomaton);
+
         if (onlyReacheable) {
-            alternatingSimulation =
-                InterfaceAutomaton.reacheableAlternatingSimulation(
-                        alternatingSimulation, superAutomaton, subAutomaton);
+            alternatingSimulation = InterfaceAutomaton
+                .reacheableAlternatingSimulation(alternatingSimulation,
+                    superAutomaton, subAutomaton);
         }
 
         // Display result
         if (alternatingSimulation.isEmpty()) {
             System.out.println("No alternating simulation between the "
-                    + "specified automata.");
+                + "specified automata.");
         } else {
             System.out.println("Alternating simulation (state_in_"
-                    + superAutomaton.getName() + " - state_in_"
-                    + subAutomaton.getName() + "):");
+                + superAutomaton.getName() + " - state_in_"
+                + subAutomaton.getName() + "):");
+
             Iterator pairs = alternatingSimulation.iterator();
+
             while (pairs.hasNext()) {
-                StatePair pair = (StatePair)pairs.next();
+                StatePair pair = (StatePair) pairs.next();
                 System.out.println(pair.toString());
             }
         }
@@ -123,9 +127,10 @@ public class AlternatingSimulation {
      *  interface automaton.
      *  @param args The command line arguments.
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         boolean onlyReacheable = false;
-        String superMoML = null, subMoML = null;
+        String superMoML = null;
+        String subMoML = null;
 
         if (args.length == 2) {
             superMoML = args[0];
@@ -144,25 +149,23 @@ public class AlternatingSimulation {
             new AlternatingSimulation(superMoML, subMoML, onlyReacheable);
         } catch (Exception exception) {
             System.out.println(exception.getClass().getName() + ": "
-                    + exception.getMessage());
+                + exception.getMessage());
             exception.printStackTrace();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private static void _printUsageAndExit() {
         System.out.println("Usage: java ptolemy.domains.fsm.kernel."
-                + "test.AlternatingSimulation <-reacheable> "
-                + "<super_automaton.xml> <sub_automaton.xml>");
+            + "test.AlternatingSimulation <-reacheable> "
+            + "<super_automaton.xml> <sub_automaton.xml>");
         System.out.println("-reacheable indicates to only print out "
-                + "the reacheable alternating simulation state pairs. "
-                + "This is optional.");
+            + "the reacheable alternating simulation state pairs. "
+            + "This is optional.");
         System.out.println("super_automaton.xml and sub_automaton.xml "
-                + "are the MoML files for the super and sub automata. "
-                + "They must be present.");
+            + "are the MoML files for the super and sub automata. "
+            + "They must be present.");
         System.exit(1);
     }
 }
-

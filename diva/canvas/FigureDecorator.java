@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.Graphics2D;
@@ -35,6 +34,7 @@ import java.util.Iterator;
 
 import diva.util.NullIterator;
 import diva.util.UnitIterator;
+
 
 /** A FigureDecorator is a figure container that contains a single
  * child figure. The purpose of a FigureDecorator is to change or
@@ -49,7 +49,6 @@ import diva.util.UnitIterator;
  * @Pt.AcceptedRating Red
  */
 public abstract class FigureDecorator extends AbstractFigureContainer {
-
     /** The child
      */
     private Figure _child = null;
@@ -58,19 +57,19 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * for Decorators, but has to be here anyway. This method is
      * set same as calling setChild(f).
      */
-    public void add (Figure f) {
+    public void add(Figure f) {
         setChild(f);
     }
 
     /** Test if the given figure is the one contained by this decorator.
      */
-    public boolean contains (Figure f) {
+    public boolean contains(Figure f) {
         return f == _child;
     }
 
     /** Return an iteration containing the one child.
      */
-    public Iterator figures () {
+    public Iterator figures() {
         if (_child == null) {
             return new NullIterator();
         } else {
@@ -80,13 +79,13 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Return an iteration containing the one child.
      */
-    public Iterator figuresFromBack () {
+    public Iterator figuresFromBack() {
         return figures();
     }
 
     /** Return an iteration containing the one child.
      */
-    public Iterator figuresFromFront () {
+    public Iterator figuresFromFront() {
         return figures();
     }
 
@@ -94,7 +93,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * same as the child figure, if there is one, or a very small
      * rectangle if there isn't.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         if (_child == null) {
             return new Rectangle2D.Double();
         } else {
@@ -104,27 +103,27 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Get the child figure, or null if there isn't one.
      */
-    public Figure getChild () {
+    public Figure getChild() {
         return _child;
     }
 
     /** Get the container, which is defined as the lowest
      * ancestor that is not a FigureDecorator.
      */
-    public FigureContainer getContainer () {
+    public FigureContainer getContainer() {
         if (getParent() instanceof FigureDecorator) {
-            return ((FigureDecorator)getParent()).getContainer();
+            return ((FigureDecorator) getParent()).getContainer();
         } else {
-            return (FigureContainer)getParent();
+            return (FigureContainer) getParent();
         }
     }
 
     /** Get the decorated figure, which is defined as the highest
      * descendent that is not a decorator.
      */
-    public Figure getDecoratedFigure () {
+    public Figure getDecoratedFigure() {
         if (_child instanceof FigureDecorator) {
-            return ((FigureDecorator)_child).getDecoratedFigure();
+            return ((FigureDecorator) _child).getDecoratedFigure();
         } else {
             return _child;
         }
@@ -132,7 +131,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Return zero if there is no child, or one if there is.
      */
-    public int getFigureCount () {
+    public int getFigureCount() {
         if (_child == null) {
             return 0;
         } else {
@@ -144,7 +143,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * same as the child figure, if there is one, or a very small
      * rectangle if there isn't.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         if (_child == null) {
             return new Rectangle2D.Double();
         } else {
@@ -154,10 +153,9 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Test if the child is hit.
      */
-    public boolean hit (Rectangle2D r) {
+    public boolean hit(Rectangle2D r) {
         return _child.hit(r);
     }
-
 
     /** Create a new instance of this figure decorator, modeled
      * on this one. This is used by interaction code that needs to
@@ -166,12 +164,12 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * the new instance must <i>not</i> be wrapped around the figure,
      * since that should be done by the caller.
      */
-    public abstract FigureDecorator newInstance (Figure f);
+    public abstract FigureDecorator newInstance(Figure f);
 
     /** Paint the figure. By default, this method simply forwards the
      * paint request to the contained figure.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (_child != null) {
             _child.paint(g);
         }
@@ -180,12 +178,14 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
     /** Set the child figure. If there is already a child
      * figure, remove it from this container.
      */
-    public void setChild (Figure f) {
+    public void setChild(Figure f) {
         if (_child != null) {
             _child.repaint();
             _child.setParent(null);
         }
+
         _child = f;
+
         if (_child != null) {
             _child.setParent(this);
             _child.repaint();
@@ -198,7 +198,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * is the same as calling setChild(null). Otherwise, it does
      * nothing.
      */
-    public void remove (Figure f) {
+    public void remove(Figure f) {
         if (_child == f) {
             setChild(null);
         }
@@ -207,7 +207,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
     /** Replace the first figure, which must be a child, with the
      * second, which must not be a child.
      */
-    protected void replaceChild (Figure child, Figure replacement) {
+    protected void replaceChild(Figure child, Figure replacement) {
         _child = replacement;
     }
 
@@ -215,7 +215,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * this method simply forwards the paint request to the child
      * figure.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         if (_child != null) {
             _child.transform(at);
         }
@@ -224,7 +224,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
     /** Translate the figure by the given distance.  By default, this
      * method simply forwards the paint request to the child figure.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         if (_child != null) {
             _child.translate(x, y);
         }

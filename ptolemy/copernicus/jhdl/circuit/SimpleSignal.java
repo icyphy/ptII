@@ -24,24 +24,25 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.jhdl.circuit;
 
-import java.util.*;
+import soot.*;
 
-import ptolemy.copernicus.jhdl.util.*;
-import ptolemy.copernicus.jhdl.soot.*;
+import soot.jimple.*;
 
 import ptolemy.actor.*;
+import ptolemy.copernicus.jhdl.soot.*;
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-import soot.jimple.*;
-import soot.*;
+import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /**
  * Simple implementation of the Signal interface.
 
@@ -51,26 +52,40 @@ import soot.*;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
 */
-
 public class SimpleSignal implements Signal {
     public SimpleSignal(String name, int width) {
         _name = name;
         _width = width;
     }
+
     public SimpleSignal(String name) {
-        this(name,Signal.UNRESOLVED);
+        this(name, Signal.UNRESOLVED);
     }
-    public int getSignalWidth() { return _width; }
-    public void setSignalWidth(int width) { _width = width; }
+
+    public int getSignalWidth() {
+        return _width;
+    }
+
+    public void setSignalWidth(int width) {
+        _width = width;
+    }
+
     public boolean isResolved() {
-        if (_width != Signal.UNRESOLVED)
+        if (_width != Signal.UNRESOLVED) {
             return true;
+        }
+
         return false;
     }
+
     public String toString() {
-        return "Port:"+_name+"-"+_width;
+        return "Port:" + _name + "-" + _width;
     }
-    public String getName() { return _name; }
+
+    public String getName() {
+        return _name;
+    }
+
     protected String _name;
     protected int _width;
 }

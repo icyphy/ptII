@@ -23,7 +23,6 @@
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import java.util.Iterator;
@@ -34,8 +33,10 @@ import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FloydWarshallTransitiveClosureStrategy
+
 /**
    Computation of transitive closure of a directed graph using the
    Floyd-Warshall algorithm described in:
@@ -52,10 +53,8 @@ import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
    @author Shahrooz Shahparnia based on an initial implementation by Ming Yung Ko.
    @version $Id$
 */
-
 public class FloydWarshallTransitiveClosureStrategy
     extends FloydWarshallStrategy implements TransitiveClosureAnalyzer {
-
     /** Construct a transitive closure analysis for a given directed graph.
      *  @param graph The given directed graph.
      */
@@ -74,8 +73,8 @@ public class FloydWarshallTransitiveClosureStrategy
      *  @return True if such a path exists.
      */
     public boolean pathExistence(Node startNode, Node endNode) {
-        return _transitiveClosure[graph().nodeLabel(startNode)]
-            [graph().nodeLabel(endNode)];
+        return _transitiveClosure[graph().nodeLabel(startNode)][graph()
+                                                                    .nodeLabel(endNode)];
     }
 
     /** Return a description of the analyzer.
@@ -84,7 +83,7 @@ public class FloydWarshallTransitiveClosureStrategy
      */
     public String toString() {
         return "Transitive closure analyzer"
-            + " based on the Floyd-Warshall algorithm.";
+        + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Compute the transitive closure of the graph under analysis in the
@@ -97,9 +96,8 @@ public class FloydWarshallTransitiveClosureStrategy
      *  @return The transitive closure in the form of 2D array.
      */
     public boolean[][] transitiveClosureMatrix() {
-        return (boolean[][])_result();
+        return (boolean[][]) _result();
     }
-
 
     /** Check for validity of this strategy.
      *  A graph needs to be an instance of a {@link DirectedGraph} in order
@@ -121,21 +119,26 @@ public class FloydWarshallTransitiveClosureStrategy
      */
     protected Object _compute() {
         int size = graph().nodeCount();
+
         // Initialize transitiveClosure to the adjacency matrix
         _transitiveClosure = new boolean[size][size];
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 _transitiveClosure[i][j] = false;
             }
+
             Node node = graph().node(i);
-            Iterator outputEdges =
-                ((DirectedGraph)graph()).outputEdges(node).iterator();
+            Iterator outputEdges = ((DirectedGraph) graph()).outputEdges(node)
+                                    .iterator();
+
             while (outputEdges.hasNext()) {
-                int sinkLabel = ((DirectedGraph)graph()).
-                    nodeLabel(((Edge)outputEdges.next()).sink());
+                int sinkLabel = ((DirectedGraph) graph()).nodeLabel(((Edge) outputEdges
+                        .next()).sink());
                 _transitiveClosure[i][sinkLabel] = true;
             }
         }
+
         super._compute();
         return _transitiveClosure;
     }
@@ -145,17 +148,13 @@ public class FloydWarshallTransitiveClosureStrategy
      *  closure.
      */
     protected void _floydWarshallComputation(int k, int i, int j) {
-        _transitiveClosure[i][j] |= _transitiveClosure[i][k] &
-            _transitiveClosure[k][j];
+        _transitiveClosure[i][j] |= (_transitiveClosure[i][k]
+        & _transitiveClosure[k][j]);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A reference to the result of the computation to be shared between the
     // two protected methods.
     private boolean[][] _transitiveClosure;
 }
-
-

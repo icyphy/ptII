@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MaxIndex
+
 /**
    Produce the channel number of the largest of the inputs.
    This actor has one input port, which is multiport of type double
@@ -52,9 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (ssachs)
 */
-
 public class MaxIndex extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -65,7 +64,7 @@ public class MaxIndex extends Transformer {
      *   an actor already in the container.
      */
     public MaxIndex(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         input.setMultiport(true);
@@ -85,9 +84,11 @@ public class MaxIndex extends Transformer {
         double maxValue = Double.NEGATIVE_INFINITY;
         int maxIndex = -1;
         boolean foundFirst = false;
+
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 double val = ((DoubleToken) input.get(i)).doubleValue();
+
                 if (foundFirst) {
                     if (maxValue < val) {
                         maxValue = val;
@@ -100,6 +101,7 @@ public class MaxIndex extends Transformer {
                 }
             }
         }
+
         if (foundFirst) {
             output.send(0, new IntToken(maxIndex));
         }

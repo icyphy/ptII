@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Synchronizer
+
 /**
    This actor implements a token synchronizer.  It has one input port and
    one output port, both of which are multiports.  When at least one token
@@ -51,9 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (pwhitake)
    @Pt.AcceptedRating Yellow (pwhitake)
 */
-
 public class Synchronizer extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -64,7 +63,7 @@ public class Synchronizer extends Transformer {
      *   an actor already in the container.
      */
     public Synchronizer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
@@ -72,7 +71,6 @@ public class Synchronizer extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Consume exactly one token from each input channel and output
      *  the tokens on the corresponding output channels.
@@ -83,10 +81,11 @@ public class Synchronizer extends Transformer {
     public void fire() throws IllegalActionException {
         int outWidth = output.getWidth();
         int inWidth = input.getWidth();
+
         if (inWidth != outWidth) {
             throw new IllegalActionException(this,
-                    "Unequal synchronizer channels: " + inWidth +
-                    " inputs and " + outWidth + " outputs.");
+                "Unequal synchronizer channels: " + inWidth + " inputs and "
+                + outWidth + " outputs.");
         } else {
             for (int i = 0; i < inWidth; i++) {
                 output.send(i, input.get(i));
@@ -101,8 +100,11 @@ public class Synchronizer extends Transformer {
      */
     public boolean prefire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
-            if (!input.hasToken(i)) return false;
+            if (!input.hasToken(i)) {
+                return false;
+            }
         }
+
         return super.prefire();
     }
 }

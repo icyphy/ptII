@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.analysis.analyzer;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Transformer
+
 /**
    A base interface for transformers. Transformers are graph analyzers which
    transform a graph into another graph and they provide a bilateral way to
@@ -42,7 +43,6 @@ package ptolemy.graph.analysis.analyzer;
    @version $Id$
 */
 public interface Transformer extends GraphAnalyzer {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

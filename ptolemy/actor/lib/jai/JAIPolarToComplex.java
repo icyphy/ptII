@@ -27,7 +27,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import javax.media.jai.JAI;
@@ -40,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAIPolarToComplex
+
 /**
    Output a complex image with alternating real and imaginary bands.  This
    actor takes two inputs, an image representing the magnitude of the
@@ -59,9 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIPolarToComplex extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,7 +70,7 @@ public class JAIPolarToComplex extends TypedAtomicActor {
      *   actor with this name.
      */
     public JAIPolarToComplex(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         magnitude = new TypedIOPort(this, "magnitude", true, false);
@@ -81,7 +80,6 @@ public class JAIPolarToComplex extends TypedAtomicActor {
         magnitude.setTypeEquals(BaseType.OBJECT);
         phase.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,12 +114,12 @@ public class JAIPolarToComplex extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        JAIImageToken magnitudeToken = (JAIImageToken)magnitude.get(0);
-        JAIImageToken phaseToken = (JAIImageToken)phase.get(0);
+
+        JAIImageToken magnitudeToken = (JAIImageToken) magnitude.get(0);
+        JAIImageToken phaseToken = (JAIImageToken) phase.get(0);
         RenderedOp magnitude = magnitudeToken.getValue();
         RenderedOp phase = phaseToken.getValue();
-        RenderedOp newImage =
-            JAI.create("polartocomplex", magnitude, phase);
+        RenderedOp newImage = JAI.create("polartocomplex", magnitude, phase);
         output.send(0, new JAIImageToken(newImage));
     }
 }

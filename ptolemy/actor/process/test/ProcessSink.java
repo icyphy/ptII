@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.process.test;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -34,8 +33,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ProcessSink
+
 /**
    Base class for simple data sinks.  This class provides an input port,
    exposed as a public variable, and a clone method that ensures that the
@@ -49,9 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class ProcessSink extends Sink {
-
     /** Construct an actor with an input multiport.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,7 +60,7 @@ public class ProcessSink extends Sink {
      *   actor with this name.
      */
     public ProcessSink(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _name = name;
     }
@@ -73,11 +72,13 @@ public class ProcessSink extends Sink {
      */
     public void fire() throws IllegalActionException {
         Token token = input.get(0);
-        if ( token != null ) {
-            System.out.println(_name+": Just finished getting a token");
+
+        if (token != null) {
+            System.out.println(_name + ": Just finished getting a token");
         } else {
-            System.out.println(_name+": Get returned with no token");
+            System.out.println(_name + ": Get returned with no token");
         }
+
         /*
          */
     }
@@ -89,5 +90,4 @@ public class ProcessSink extends Sink {
     }
 
     private String _name;
-
 }

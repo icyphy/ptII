@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -40,6 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// WiredToWireless
@@ -57,7 +57,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class WiredToWireless extends TypedAtomicActor {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -67,19 +66,17 @@ public class WiredToWireless extends TypedAtomicActor {
      *   actor with this name.
      */
     public WiredToWireless(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         payload = new TypedIOPort(this, "payload", true, false);
-        (new SingletonParameter(payload, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(payload, "_showName")).setToken(BooleanToken.TRUE);
 
         properties = new TypedIOPort(this, "properties", true, false);
-        (new SingletonParameter(properties, "_showName"))
-                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(properties, "_showName")).setToken(BooleanToken.TRUE);
+
         // FIXME: This should be constrained to be a record token.
         // How to do that?
-
         // Create and configure the parameters.
         outputChannelName = new StringParameter(this, "outputChannelName");
         outputChannelName.setExpression("AtomicWirelessChannel");
@@ -89,10 +86,9 @@ public class WiredToWireless extends TypedAtomicActor {
         output.outsideChannel.setExpression("$outputChannelName");
         output.setTypeSameAs(payload);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -128,9 +124,8 @@ public class WiredToWireless extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        WiredToWireless newObject = (WiredToWireless)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        WiredToWireless newObject = (WiredToWireless) (super.clone(workspace));
 
         // set the type constraints
         newObject.output.setTypeSameAs(newObject.payload);
@@ -143,22 +138,25 @@ public class WiredToWireless extends TypedAtomicActor {
      *  no properties.
      */
     public void fire() throws IllegalActionException {
-
         super.fire();
 
         if (payload.hasToken(0)) {
             Token inputValue = payload.get(0);
+
             if (_debugging) {
                 _debug("Input data received: " + inputValue.toString());
             }
+
             if (properties.hasToken(0)) {
                 Token propertiesValue = properties.get(0);
+
                 // The following will throw an exception if the value is
                 // not a RecordToken.
                 output.outsideTransmitProperties.setToken(propertiesValue);
             } else {
-                output.outsideTransmitProperties.setToken((RecordToken)null);
+                output.outsideTransmitProperties.setToken((RecordToken) null);
             }
+
             output.send(0, inputValue);
         }
     }

@@ -50,6 +50,7 @@ import diva.canvas.JCanvas;
 import diva.canvas.demo.SimplePane;
 import diva.util.java2d.ShapeUtilities;
 
+
 /**
  * A canvas panner is a window that provides a mechanism to visualize
  * and manipulate a JCanvas object.  Unlike the JPanner class, this
@@ -76,8 +77,8 @@ public class JCanvasPanner extends JPanel {
     /**
      * The mouse listener on the panner that is responsible for scaling.
      */
-    //  private ScaleMouseListener _scaleMouseListener = new ScaleMouseListener();
 
+    //  private ScaleMouseListener _scaleMouseListener = new ScaleMouseListener();
 
     /**
      * Construct a new panner that is initially viewing
@@ -95,6 +96,7 @@ public class JCanvasPanner extends JPanel {
         setCanvas(target);
         addMouseListener(new PanMouseListener());
         addMouseMotionListener(new PanMouseListener());
+
         // NOTE: Removed this listener, since it didn't work well.  EAL
         // _scaleMouseListener = new ScaleMouseListener();
     }
@@ -104,10 +106,12 @@ public class JCanvasPanner extends JPanel {
      */
     public Rectangle2D getViewSize() {
         Rectangle2D viewRect = null;
+
         for (Iterator layers = _target.getCanvasPane().layers();
-             layers.hasNext();) {
-            CanvasLayer layer = (CanvasLayer)layers.next();
+                layers.hasNext();) {
+            CanvasLayer layer = (CanvasLayer) layers.next();
             Rectangle2D rect = layer.getLayerBounds();
+
             if (!rect.isEmpty()) {
                 if (viewRect == null) {
                     viewRect = rect;
@@ -116,6 +120,7 @@ public class JCanvasPanner extends JPanel {
                 }
             }
         }
+
         if (viewRect == null) {
             // We can't actually return an empty rectangle, because then
             // we get a bad transform.
@@ -129,20 +134,20 @@ public class JCanvasPanner extends JPanel {
      *  coordinates.
      */
     public Rectangle2D getVisibleSize() {
-        AffineTransform current =
-            _target.getCanvasPane().getTransformContext().getTransform();
+        AffineTransform current = _target.getCanvasPane().getTransformContext()
+                                         .getTransform();
         AffineTransform inverse;
+
         try {
             inverse = current.createInverse();
-        }
-        catch (NoninvertibleTransformException e) {
+        } catch (NoninvertibleTransformException e) {
             throw new RuntimeException(e.toString());
         }
+
         Dimension size = _target.getSize();
-        Rectangle2D visibleRect = new Rectangle2D.Double(0, 0,
-                size.getWidth(), size.getHeight());
-        return ShapeUtilities.transformBounds(visibleRect,
-                inverse);
+        Rectangle2D visibleRect = new Rectangle2D.Double(0, 0, size.getWidth(),
+                size.getHeight());
+        return ShapeUtilities.transformBounds(visibleRect, inverse);
     }
 
     /**
@@ -154,31 +159,35 @@ public class JCanvasPanner extends JPanel {
         // The total size of everything that is in the canvas.
         Rectangle2D viewRect = getViewSize();
         Rectangle2D visibleRect = getVisibleSize();
+
         // The total size of the panner.
         Rectangle myRect = _getInsetBounds();
 
         // The transform from the view to the panner.
-        AffineTransform forward =
-            CanvasUtilities.computeFitTransform(viewRect, myRect);
+        AffineTransform forward = CanvasUtilities.computeFitTransform(viewRect,
+                myRect);
+
         // Note that inverse is NOT computeFitTransform(myRect, viewRect);
         AffineTransform inverse;
+
         try {
             inverse = forward.createInverse();
-        }
-        catch (NoninvertibleTransformException e) {
+        } catch (NoninvertibleTransformException e) {
             throw new RuntimeException(e.toString());
         }
 
         Point2D newCenter = new Point2D.Double(x, y);
+
         // Transform the desired point.
         inverse.transform(newCenter, newCenter);
 
         // Place the center of the canvas at the desired point.
-        AffineTransform newTransform =
-            _target.getCanvasPane().getTransformContext().getTransform();
+        AffineTransform newTransform = _target.getCanvasPane()
+                                              .getTransformContext()
+                                              .getTransform();
 
         newTransform.translate(visibleRect.getCenterX() - newCenter.getX(),
-                visibleRect.getCenterY() - newCenter.getY());
+            visibleRect.getCenterY() - newCenter.getY());
 
         _target.getCanvasPane().setTransform(newTransform);
 
@@ -194,12 +203,15 @@ public class JCanvasPanner extends JPanel {
             //         removeMouseListener(_scaleMouseListener);
             //removeMouseMotionListener(_scaleMouseListener);
         }
+
         _target = target;
+
         if (_target != null) {
             //  _target.addChangeListener(_listener);
             //addMouseListener(_scaleMouseListener);
             //addMouseMotionListener(_scaleMouseListener);
         }
+
         repaint();
     }
 
@@ -214,26 +226,27 @@ public class JCanvasPanner extends JPanel {
         if (_target != null) {
             JCanvas canvas = _target;
             Rectangle2D viewRect = getViewSize();
-            //  System.out.println("viewRect = " + viewRect);
 
+            //  System.out.println("viewRect = " + viewRect);
             Rectangle myRect = _getInsetBounds();
 
-            AffineTransform forward =
-                CanvasUtilities.computeFitTransform(viewRect, myRect);
+            AffineTransform forward = CanvasUtilities.computeFitTransform(viewRect,
+                    myRect);
+
             // Also invert the current transform on the canvas.
-            AffineTransform current =
-                canvas.getCanvasPane().getTransformContext().getTransform();
+            AffineTransform current = canvas.getCanvasPane()
+                                            .getTransformContext().getTransform();
 
             AffineTransform inverse;
+
             try {
                 forward.concatenate(current.createInverse());
                 inverse = forward.createInverse();
-            }
-            catch (NoninvertibleTransformException e) {
+            } catch (NoninvertibleTransformException e) {
                 throw new RuntimeException(e.toString());
             }
 
-            Graphics2D g2d = (Graphics2D)g;
+            Graphics2D g2d = (Graphics2D) g;
             g2d.transform(forward);
             canvas.paint(g);
             g2d.transform(inverse);
@@ -243,14 +256,14 @@ public class JCanvasPanner extends JPanel {
             Dimension size = _target.getSize();
             Rectangle2D visibleRect = new Rectangle2D.Double(0, 0,
                     size.getWidth(), size.getHeight());
-            visibleRect =
-                ShapeUtilities.transformBounds(visibleRect, forward);
+            visibleRect = ShapeUtilities.transformBounds(visibleRect, forward);
 
             g.setColor(Color.red);
-            g.drawRect((int)visibleRect.getX(), (int)visibleRect.getY(),
-                    (int)visibleRect.getWidth(), (int)visibleRect.getHeight());
+            g.drawRect((int) visibleRect.getX(), (int) visibleRect.getY(),
+                (int) visibleRect.getWidth(), (int) visibleRect.getHeight());
 
             // NOTE: No longer meaningful, since always full space.
+
             /*      g.setColor(Color.blue);
                     Dimension d = canvas.getSize();
                     g.drawRect(0, 0, d.width, d.height);
@@ -265,12 +278,13 @@ public class JCanvasPanner extends JPanel {
     private Rectangle _getInsetBounds() {
         Dimension mySize = getSize();
         Insets insets = getInsets();
+
         // There is a little extra border...
         int border = 2;
-        Rectangle myRect =
-            new Rectangle(insets.left + border, insets.top + border,
-                    mySize.width - insets.top - insets.bottom - border,
-                    mySize.height - insets.left - insets.right - border);
+        Rectangle myRect = new Rectangle(insets.left + border,
+                insets.top + border,
+                mySize.width - insets.top - insets.bottom - border,
+                mySize.height - insets.left - insets.right - border);
         return myRect;
     }
 
@@ -278,18 +292,19 @@ public class JCanvasPanner extends JPanel {
     // panning the target in response to a mouse click on the panner.
     private class PanMouseListener extends MouseAdapter
         implements MouseMotionListener {
-
         public void mousePressed(MouseEvent evt) {
-            if (_target != null &&
-                    (evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
+            if ((_target != null)
+                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
+
         public void mouseMoved(MouseEvent evt) {
         }
+
         public void mouseDragged(MouseEvent evt) {
-            if (_target != null &&
-                    (evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
+            if ((_target != null)
+                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -380,13 +395,12 @@ public class JCanvasPanner extends JPanel {
       }
       }
     */
-
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         JFrame f = new JFrame();
 
         SimplePane rootPane = new SimplePane();
         JCanvas canvas = new JCanvas(rootPane);
-        canvas.setSize(200,200);
+        canvas.setSize(200, 200);
 
         JCanvasPanner pan = new JCanvasPanner(canvas);
         pan.setSize(50, 50);
@@ -398,5 +412,3 @@ public class JCanvasPanner extends JPanel {
         f.setVisible(true);
     }
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
 import java.awt.event.ActionEvent;
@@ -58,6 +57,7 @@ import diva.gui.toolbox.FigureIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// WithIconGraphController
+
 /**
    A base class for Ptolemy II graph controllers for objects that can have
    icons. This adds to the base class the context menu items "Edit Custom Icon"
@@ -70,7 +70,6 @@ import diva.gui.toolbox.FigureIcon;
    @Pt.AcceptedRating Red (johnr)
 */
 public abstract class WithIconGraphController extends BasicGraphController {
-
     /** Create a new controller.
      */
     public WithIconGraphController() {
@@ -120,26 +119,23 @@ public abstract class WithIconGraphController extends BasicGraphController {
      */
     protected void initializeInteraction() {
         super.initializeInteraction();
+
         GraphPane pane = getGraphPane();
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(_editIconAction));
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(_removeIconAction));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(_editIconAction));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(_removeIconAction));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** The edit custom icon action. */
-    protected static EditIconAction _editIconAction
-    = new EditIconAction();
+    protected static EditIconAction _editIconAction = new EditIconAction();
 
     /** The port controller. */
     protected NamedObjController _portController;
 
     /** The remove custom icon action. */
-    protected static RemoveIconAction _removeIconAction
-    = new RemoveIconAction();
+    protected static RemoveIconAction _removeIconAction = new RemoveIconAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -149,13 +145,11 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     ///////////////////////////////////////////////////////////////////
     //// NewPortAction
 
     /** An action to create a new port. */
     public class NewPortAction extends FigureAction {
-
         /** Create a new port that has the same input, output, and
          *  multiport properties as the specified port.  If the specified
          *  port is null, then a new port that is neither an input, an
@@ -166,52 +160,60 @@ public abstract class WithIconGraphController extends BasicGraphController {
          *  @param mnemonicKey The KeyEvent field for the mnemonic key to
          *   use in the menu.
          */
-        public NewPortAction(
-                IOPort prototype, String description, int mnemonicKey) {
+        public NewPortAction(IOPort prototype, String description,
+            int mnemonicKey) {
             super(description);
             _prototype = prototype;
+
             String dflt = "";
+
             // Creating the renderers this way is rather nasty..
             // Standard toolbar icons are 25x25 pixels.
             NodeRenderer renderer = _portController.getNodeRenderer();
             Object location = null;
+
             if (_prototype != null) {
                 location = _prototype.getAttribute("_location");
             }
+
             Figure figure = renderer.render(location);
 
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
             putValue(GUIUtilities.LARGE_ICON, icon);
 
             putValue("tooltip", description);
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(mnemonicKey));
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(mnemonicKey));
         }
 
         /** Create a new port. */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
+
             double x;
             double y;
-            if (getSourceType() == TOOLBAR_TYPE ||
-                    getSourceType() == MENUBAR_TYPE) {
+
+            if ((getSourceType() == TOOLBAR_TYPE)
+                    || (getSourceType() == MENUBAR_TYPE)) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = WithIconGraphController.this.getFrame();
+
                 if (frame != null) {
                     // Put in the middle of the visible part.
                     Point2D center = frame.getCenter();
+
                     if (_prototype != null) {
                         Rectangle2D visiblePart = frame.getVisibleRectangle();
+
                         if (_prototype.isInput() && _prototype.isOutput()) {
                             x = center.getX();
-                            y = visiblePart.getY()
-                                + visiblePart.getHeight() - _PORT_OFFSET;
+                            y = (visiblePart.getY() + visiblePart.getHeight())
+                                - _PORT_OFFSET;
                         } else if (_prototype.isInput()) {
                             x = visiblePart.getX() + _PORT_OFFSET;
                             y = center.getY();
                         } else if (_prototype.isOutput()) {
-                            x = visiblePart.getX()
-                                + visiblePart.getWidth() - _PORT_OFFSET;
+                            x = (visiblePart.getX() + visiblePart.getWidth())
+                                - _PORT_OFFSET;
                             y = center.getY();
                         } else {
                             x = center.getX();
@@ -225,20 +227,21 @@ public abstract class WithIconGraphController extends BasicGraphController {
                     // Put in the middle of the pane.
                     GraphPane pane = getGraphPane();
                     Point2D center = pane.getSize();
-                    x = center.getX()/2;
-                    y = center.getY()/2;
+                    x = center.getX() / 2;
+                    y = center.getY() / 2;
                 }
             } else {
                 // Transform
-                AffineTransform current =
-                    getGraphPane().getTransformContext().getTransform();
+                AffineTransform current = getGraphPane().getTransformContext()
+                                              .getTransform();
                 AffineTransform inverse;
+
                 try {
                     inverse = current.createInverse();
-                }
-                catch(NoninvertibleTransformException ex) {
+                } catch (NoninvertibleTransformException ex) {
                     throw new RuntimeException(ex.toString());
                 }
+
                 Point2D point = new Point2D.Double(getX(), getY());
 
                 inverse.transform(point, point);
@@ -246,37 +249,43 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 y = point.getY();
             }
 
-            AbstractBasicGraphModel graphModel =
-                (AbstractBasicGraphModel)getGraphModel();
+            AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) getGraphModel();
             final double[] point = SnapConstraint.constrainPoint(x, y);
             final NamedObj toplevel = graphModel.getPtolemyModel();
+
             if (!(toplevel instanceof Entity)) {
                 throw new InternalErrorException(
-                        "Cannot invoke NewPortAction on an object " +
-                        "that is not an instance of Entity.");
+                    "Cannot invoke NewPortAction on an object "
+                    + "that is not an instance of Entity.");
             }
+
             final String portName = toplevel.uniqueName("port");
             final String locationName = "_location";
+
             // Create the port.
             StringBuffer moml = new StringBuffer();
             moml.append("<port name=\"" + portName + "\">\n");
-            moml.append("<property name=\"" + locationName +
-                    "\" class=\"ptolemy.kernel.util.Location\"/>\n");
+            moml.append("<property name=\"" + locationName
+                + "\" class=\"ptolemy.kernel.util.Location\"/>\n");
+
             if (_prototype != null) {
                 if (_prototype.isInput()) {
                     moml.append("<property name=\"input\"/>");
                 }
+
                 if (_prototype.isOutput()) {
                     moml.append("<property name=\"output\"/>");
                 }
+
                 if (_prototype.isMultiport()) {
                     moml.append("<property name=\"multiport\"/>");
                 }
             }
+
             moml.append("</port>");
 
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(this, toplevel, moml.toString()) {
+            MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
+                    moml.toString()) {
                     protected void _execute() throws Exception {
                         super._execute();
 
@@ -290,15 +299,15 @@ public abstract class WithIconGraphController extends BasicGraphController {
                         // above, and presumably a reasonable GUI would
                         // provide no mechanism for creating a port on
                         // something that is not an entity.
-                        NamedObj newObject =
-                            ((Entity)toplevel).getPort(portName);
-                        Location location =
-                            (Location) newObject.getAttribute(locationName);
+                        NamedObj newObject = ((Entity) toplevel).getPort(portName);
+                        Location location = (Location) newObject.getAttribute(locationName);
                         location.setLocation(point);
                     }
                 };
+
             request.setUndoable(true);
             toplevel.requestChange(request);
+
             try {
                 request.waitForCompletion();
             } catch (Exception ex) {

@@ -25,6 +25,7 @@
 */
 package diva.graph.layout;
 
+
 /**
  * A layout engine which operates incrementally, based on the arrival
  * of new node information.  An incremental layout is simply a kind
@@ -36,7 +37,6 @@ package diva.graph.layout;
  * @Pt.AcceptedRating Red
  */
 public interface IncrementalLayout extends GlobalLayout {
-
     /** Called in response to the given edge being given a figure.
      */
     public void edgeDrawn(Object edge);
@@ -55,4 +55,3 @@ public interface IncrementalLayout extends GlobalLayout {
      */
     public void nodeMoved(Object node);
 }
-

@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelErrorHandler
+
 /**
    Interface for model error handlers.  A model error is an exception that is
    passed up the Ptolemy II hierarchy for handling until a container with
@@ -56,7 +57,6 @@ package ptolemy.kernel.util;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public interface ModelErrorHandler {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -68,8 +68,6 @@ public interface ModelErrorHandler {
      *  @exception IllegalActionException If the handler handles the
      *   error by throwing an exception.
      */
-    public boolean handleModelError(
-            NamedObj context,
-            IllegalActionException exception)
-            throws IllegalActionException;
+    public boolean handleModelError(NamedObj context,
+        IllegalActionException exception) throws IllegalActionException;
 }

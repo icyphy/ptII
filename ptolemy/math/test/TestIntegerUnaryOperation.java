@@ -30,9 +30,10 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math.test;
+
 import ptolemy.math.IntegerUnaryOperation;
+
 
 /** A operation taking one argument of type int, and producing a value of
     type int. This interface attempts to mimic a first-class function of
@@ -45,7 +46,6 @@ import ptolemy.math.IntegerUnaryOperation;
     @Pt.AcceptedRating Red (ctsay)
 */
 public class TestIntegerUnaryOperation implements IntegerUnaryOperation {
-
     /** Operate on the operand, returning a value of the same type. */
     public int operate(int operand) {
         return -operand;

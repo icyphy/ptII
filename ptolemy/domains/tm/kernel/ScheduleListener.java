@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.kernel;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ScheduleListener
+
 /**
    Interface for listeners that receive schedule messages.
 
@@ -42,7 +43,6 @@ package ptolemy.domains.tm.kernel;
 
 */
 public interface ScheduleListener {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -52,6 +52,6 @@ public interface ScheduleListener {
 
     static final int RESET_DISPLAY = -1;
     static final int TASK_SLEEPING = 1;
-    static final int TASK_BLOCKED  = 2;
-    static final int TASK_RUNNING  = 3;
+    static final int TASK_BLOCKED = 2;
+    static final int TASK_RUNNING = 3;
 }

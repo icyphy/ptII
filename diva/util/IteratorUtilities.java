@@ -27,6 +27,7 @@ package diva.util;
 
 import java.util.Iterator;
 
+
 /**
  * A collection of utilities dealing with iterators.
  *
@@ -37,7 +38,8 @@ import java.util.Iterator;
 public class IteratorUtilities {
     /** You can't instantiate this class.
      */
-    private IteratorUtilities() {}
+    private IteratorUtilities() {
+    }
 
     /** Return the first element in an iterator that
      * matches the given filter, or null if there isn't one.
@@ -45,10 +47,12 @@ public class IteratorUtilities {
     public static Object firstMatch(Iterator i, Filter f) {
         while (i.hasNext()) {
             Object o = i.next();
+
             if (f.accept(o)) {
                 return o;
             }
         }
+
         return null;
     }
 
@@ -58,10 +62,12 @@ public class IteratorUtilities {
     public static Object firstNotMatch(Iterator i, Filter f) {
         while (i.hasNext()) {
             Object o = i.next();
+
             if (!f.accept(o)) {
                 return o;
             }
         }
+
         return null;
     }
 
@@ -84,11 +90,10 @@ public class IteratorUtilities {
         System.out.print(prefix);
         System.out.println(desc);
         prefix = prefix + "    ";
+
         while (i.hasNext()) {
             System.out.print(prefix);
             System.out.println(i.next().toString());
         }
     }
 }
-
-

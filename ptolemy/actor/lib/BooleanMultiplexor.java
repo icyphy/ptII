@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,8 +36,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BooleanMultiplexor
+
 /**
    A type polymorphic multiplexor with boolean valued select.
    <p>If any input port has no token, the prefire method returns false and
@@ -61,9 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class BooleanMultiplexor extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -74,7 +73,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public BooleanMultiplexor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         trueInput = new TypedIOPort(this, "trueInput", true, false);
@@ -92,13 +91,16 @@ public class BooleanMultiplexor extends TypedAtomicActor {
     /** Input for tokens on the true path.  The type can be anything.
      */
     public TypedIOPort trueInput;
+
     /** Input for tokens on the false path.  The type can be anything.
      */
     public TypedIOPort falseInput;
+
     /** Input that selects one of the other input ports.  The type is
      *  BooleanToken.
      */
     public TypedIOPort select;
+
     /** The output port.  The type is at least the type of
      *  <i>trueInput</i> and <i>falseInput</i>
      */
@@ -135,9 +137,18 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if (!select.hasToken(0)) return false;
-        if (!trueInput.hasToken(0)) return false;
-        if (!falseInput.hasToken(0)) return false;
+        if (!select.hasToken(0)) {
+            return false;
+        }
+
+        if (!trueInput.hasToken(0)) {
+            return false;
+        }
+
+        if (!falseInput.hasToken(0)) {
+            return false;
+        }
+
         return super.prefire();
     }
 }

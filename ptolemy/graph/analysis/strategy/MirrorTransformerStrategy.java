@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import java.lang.reflect.Method;
@@ -35,8 +34,10 @@ import ptolemy.graph.Node;
 import ptolemy.graph.analysis.AnalysisException;
 import ptolemy.graph.analysis.analyzer.MirrorTransformer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MirrorTransformerStrategy
+
 /**
    A mirror transformer for graphs.
    <p>
@@ -51,10 +52,8 @@ import ptolemy.graph.analysis.analyzer.MirrorTransformer;
    @author Shahrooz Shahparnia based on a method by Ming Yung Ko.
    @version $Id$
 */
-
 public class MirrorTransformerStrategy extends CachedStrategy
     implements MirrorTransformer {
-
     /** Construct a transformer for a given graph.
      *  @param graph The given graph.
      */
@@ -124,14 +123,17 @@ public class MirrorTransformerStrategy extends CachedStrategy
      *  @return The mirror graph.
      */
     public Graph mirror(Graph graph, boolean cloneWeights) {
-        if (graph.getClass() != graph().getClass() ||
-                cloneWeights != _cloneWeights) {
+        if ((graph.getClass() != graph().getClass())
+                || (cloneWeights != _cloneWeights)) {
             reset();
         }
+
         _graph = graph;
+
         boolean tempCloneWeights = _cloneWeights;
         _cloneWeights = cloneWeights;
-        Graph result = (Graph)_result();
+
+        Graph result = (Graph) _result();
         _cloneWeights = tempCloneWeights;
         return result;
     }
@@ -172,45 +174,55 @@ public class MirrorTransformerStrategy extends CachedStrategy
     protected Object _compute() {
         String nameClone = new String("clone");
         Graph mirrorGraph = null;
+
         try {
-            mirrorGraph = (Graph)(_graph.getClass().newInstance());
+            mirrorGraph = (Graph) (_graph.getClass().newInstance());
         } catch (Exception exception) {
             throw new RuntimeException("Could not create an empty graph from "
-                    + "this one.\n" + exception + "\n");
+                + "this one.\n" + exception + "\n");
         }
+
         // create new nodes for the mirror
         Iterator nodes = graph().nodes().iterator();
+
         while (nodes.hasNext()) {
-            Node node = (Node)nodes.next();
+            Node node = (Node) nodes.next();
             Node mirrorNode = null;
+
             if (!node.hasWeight()) {
                 mirrorNode = new Node();
             } else {
                 Object mirrorWeight = null;
+
                 try {
                     // Clone weights of any type of object.
                     if (_cloneWeights) {
                         Object oldWeight = node.getWeight();
+
                         if (oldWeight instanceof Cloneable) {
                             /* Since clone() of Object is protected, it can't
                                be called publicly. The class Method is used
                                here to call public clone(). */
-                            Class[] argumentTypes = {};
-                            Method method = oldWeight.getClass().
-                                getMethod(nameClone, argumentTypes);
+                            Class[] argumentTypes = {  };
+                            Method method = oldWeight.getClass().getMethod(nameClone,
+                                    argumentTypes);
                             mirrorWeight = method.invoke(oldWeight, null);
-                        } else
+                        } else {
                             throw new RuntimeException();
-                    } else
+                        }
+                    } else {
                         mirrorWeight = node.getWeight();
+                    }
                 } catch (Exception e) {
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
                     throw new AnalysisException(
-                            "Can not clone the node weight.\n");
+                        "Can not clone the node weight.\n");
                 }
+
                 mirrorNode = new Node(mirrorWeight);
             }
+
             mirrorGraph.addNode(mirrorNode);
             _originalVersion.put(mirrorNode, node);
             _transformedVersion.put(node, mirrorNode);
@@ -218,40 +230,47 @@ public class MirrorTransformerStrategy extends CachedStrategy
 
         // create new edges for the mirror
         Iterator edges = graph().edges().iterator();
+
         while (edges.hasNext()) {
-            Edge edge = (Edge)edges.next();
+            Edge edge = (Edge) edges.next();
             Edge mirrorEdge = null;
-            Node mirrorSource = (Node)_transformedVersion.get(edge.source());
-            Node mirrorSink   = (Node)_transformedVersion.get(edge.sink());
+            Node mirrorSource = (Node) _transformedVersion.get(edge.source());
+            Node mirrorSink = (Node) _transformedVersion.get(edge.sink());
+
             if (!edge.hasWeight()) {
                 mirrorEdge = new Edge(mirrorSource, mirrorSink);
             } else {
                 Object mirrorWeight = null;
+
                 try {
                     // Clone weights of any type of object.
                     if (_cloneWeights) {
                         Object oldWeight = edge.getWeight();
+
                         if (oldWeight instanceof Cloneable) {
                             /* Since clone() of Object is protected, it can't
                                be called publicly. The class Method is used
                                here to call public clone(). */
-                            Class[] argumentTypes = {};
-                            Method method = oldWeight.getClass().
-                                getMethod(nameClone, argumentTypes);
+                            Class[] argumentTypes = {  };
+                            Method method = oldWeight.getClass().getMethod(nameClone,
+                                    argumentTypes);
                             mirrorWeight = method.invoke(oldWeight, null);
-                        } else
+                        } else {
                             throw new RuntimeException();
-                    } else
+                        }
+                    } else {
                         mirrorWeight = edge.getWeight();
+                    }
                 } catch (Exception e) {
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
                     throw new RuntimeException(
-                            "Can not clone the edge weight.\n");
+                        "Can not clone the edge weight.\n");
                 }
-                mirrorEdge =
-                    new Edge(mirrorSource, mirrorSink, mirrorWeight);
+
+                mirrorEdge = new Edge(mirrorSource, mirrorSink, mirrorWeight);
             }
+
             mirrorGraph.addEdge(mirrorEdge);
             _originalVersion.put(mirrorEdge, edge);
             _transformedVersion.put(edge, mirrorEdge);
@@ -262,10 +281,8 @@ public class MirrorTransformerStrategy extends CachedStrategy
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Graph _graph;
     private boolean _cloneWeights = false;
     private HashMap _originalVersion = new HashMap();
     private HashMap _transformedVersion = new HashMap();
 }
-

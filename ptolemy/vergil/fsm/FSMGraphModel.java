@@ -25,14 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.domains.fsm.kernel.State;
@@ -53,6 +46,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
+
 import diva.graph.GraphEvent;
 import diva.graph.GraphUtilities;
 import diva.graph.modular.EdgeModel;
@@ -60,8 +54,16 @@ import diva.graph.modular.MutableEdgeModel;
 import diva.graph.modular.NodeModel;
 import diva.util.NullIterator;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphModel
+
 /**
    A graph model for graphically manipulating ptolemy FSM models.
 
@@ -72,7 +74,6 @@ import diva.util.NullIterator;
    @Pt.AcceptedRating Red (johnr)
 */
 public class FSMGraphModel extends AbstractBasicGraphModel {
-
     /** Construct a new graph model whose root is the given composite entity.
      *  @param composite The top-level composite entity for the model.
      */
@@ -93,21 +94,24 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @exception GraphException If the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
-        if (!(getEdgeModel(edge) instanceof ArcModel)) return;
-        ArcModel model = (ArcModel)getEdgeModel(edge);
+        if (!(getEdgeModel(edge) instanceof ArcModel)) {
+            return;
+        }
+
+        ArcModel model = (ArcModel) getEdgeModel(edge);
         Object head = model.getHead(edge);
         Object tail = model.getTail(edge);
         model.removeEdge(edge);
+
         if (head != null) {
             GraphEvent e = new GraphEvent(eventSource,
-                    GraphEvent.EDGE_HEAD_CHANGED,
-                    edge, head);
+                    GraphEvent.EDGE_HEAD_CHANGED, edge, head);
             dispatchGraphEvent(e);
         }
+
         if (tail != null) {
             GraphEvent e = new GraphEvent(eventSource,
-                    GraphEvent.EDGE_TAIL_CHANGED,
-                    edge, tail);
+                    GraphEvent.EDGE_TAIL_CHANGED, edge, tail);
             dispatchGraphEvent(e);
         }
     }
@@ -119,8 +123,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     public String getDeleteEdgeMoML(Object edge) {
         // Note: the abstraction here is rather broken.  Ideally this
         // should look like getDeleteNodeMoML()
-        if (!(getEdgeModel(edge) instanceof ArcModel)) return "";
-        ArcModel model = (ArcModel)getEdgeModel(edge);
+        if (!(getEdgeModel(edge) instanceof ArcModel)) {
+            return "";
+        }
+
+        ArcModel model = (ArcModel) getEdgeModel(edge);
         return model.getDeleteEdgeMoML(edge);
     }
 
@@ -129,8 +136,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @return A valid MoML string.
      */
     public String getDeleteNodeMoML(Object node) {
-        if (!(getNodeModel(node) instanceof NamedObjNodeModel)) return "";
-        NamedObjNodeModel model = (NamedObjNodeModel)getNodeModel(node);
+        if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
+            return "";
+        }
+
+        NamedObjNodeModel model = (NamedObjNodeModel) getNodeModel(node);
         return model.getDeleteNodeMoML(node);
     }
 
@@ -156,13 +166,15 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      */
     public NodeModel getNodeModel(Object node) {
         if (node instanceof Locatable) {
-            Object container = ((Locatable)node).getContainer();
+            Object container = ((Locatable) node).getContainer();
+
             if (container instanceof ComponentEntity) {
                 return _stateModel;
             } else if (container instanceof ComponentPort) {
                 return _portModel;
             }
         }
+
         return super.getNodeModel(node);
     }
 
@@ -177,8 +189,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      */
     public Object getSemanticObject(Object element) {
         if (element instanceof Arc) {
-            return ((Arc)element).getRelation();
+            return ((Arc) element).getRelation();
         }
+
         return super.getSemanticObject(element);
     }
 
@@ -189,8 +202,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @exception GraphException If the operation fails.
      */
     public void removeNode(Object eventSource, Object node) {
-        if (!(getNodeModel(node) instanceof NamedObjNodeModel)) return;
-        NamedObjNodeModel model = (NamedObjNodeModel)getNodeModel(node);
+        if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
+            return;
+        }
+
+        NamedObjNodeModel model = (NamedObjNodeModel) getNodeModel(node);
         model.removeNode(eventSource, node);
     }
 
@@ -204,14 +220,16 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     public PortModel getPortModel() {
         return _portModel;
     }
+
     public StateModel getStateModel() {
         return _stateModel;
     }
+
     public ArcModel getArcModel() {
         return _arcModel;
     }
-    // End of FIXME.
 
+    // End of FIXME.
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -223,27 +241,32 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         // Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
         Iterator links = _linkSet.iterator();
-        while (links.hasNext()) {
-            Arc link = (Arc)links.next();
-            Relation relation = link.getRelation();
-            if (relation == null) continue;
-            // Check that the relation hasn't been removed.
 
+        while (links.hasNext()) {
+            Arc link = (Arc) links.next();
+            Relation relation = link.getRelation();
+
+            if (relation == null) {
+                continue;
+            }
+
+            // Check that the relation hasn't been removed.
             // If we do not do this, then redo will thrown an exception
             // if we open ct/demo/BouncingBall/BouncingBall.xml, look
             // inside the Ball Model composite actor,
             // delete the stop actor and then do undo and then redo.
-
             if (relation.getContainer() == null) {
                 link.setHead(null);
                 link.setTail(null);
                 links.remove();
                 continue;
             }
+
             boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
                     getRoot(), this);
             boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
                     getRoot(), this);
+
             // If the head or tail has been removed, then remove this link.
             if (!(headOK && tailOK)) {
                 Object headObj = getSemanticObject(link.getHead());
@@ -252,18 +275,20 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 link.setTail(null);
                 link.setRelation(null);
                 links.remove();
+
                 NamedObj container = getPtolemyModel();
+
                 // remove the relation  This should trigger removing the
                 // other link. This will only happen when we've deleted
                 // the state at one end of the model.
                 // Note that the source is NOT the graph model, so this
                 // will trigger the ChangeRequest listener to
                 // redraw the graph again.
-                MoMLChangeRequest request = new MoMLChangeRequest(
-                        container, container,
-                        "<deleteRelation name=\""
-                        + relation.getName(container)
+                MoMLChangeRequest request = new MoMLChangeRequest(container,
+                        container,
+                        "<deleteRelation name=\"" + relation.getName(container)
                         + "\"/>\n");
+
                 // Need to merge the undo for this request in with one that
                 // triggered it
                 request.setMergeWithPreviousUndo(true);
@@ -274,24 +299,27 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         }
 
         // Now create Links for links that may be new
-        Iterator relations = ((CompositeEntity)getPtolemyModel())
-            .relationList().iterator();
+        Iterator relations = ((CompositeEntity) getPtolemyModel()).relationList()
+                              .iterator();
+
         while (relations.hasNext()) {
-            _updateLinks((ComponentRelation)relations.next());
+            _updateLinks((ComponentRelation) relations.next());
         }
+
         return super._update();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Check to make sure that there is an Arc object representing
     // the given relation.
     private void _updateLinks(ComponentRelation relation) {
         Iterator links = _linkSet.iterator();
         Arc foundLink = null;
+
         while (links.hasNext()) {
-            Arc link = (Arc)links.next();
+            Arc link = (Arc) links.next();
+
             // only consider links that are associated with this relation.
             if (link.getRelation() == relation) {
                 foundLink = link;
@@ -300,44 +328,49 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         }
 
         // A link exists, so there is nothing to do.
-        if (foundLink != null) return;
+        if (foundLink != null) {
+            return;
+        }
 
         List linkedPortList = relation.linkedPortList();
+
         if (linkedPortList.size() != 2) {
             // Do nothing...  somebody else should take care of removing this,
             // because we have no way of representing it in this editor.
             return;
         }
-        Port port1 = (Port)linkedPortList.get(0);
-        Locatable location1 = _getLocation((NamedObj)port1.getContainer());
-        Port port2 = (Port)linkedPortList.get(1);
-        Locatable location2 = _getLocation((NamedObj)port2.getContainer());
+
+        Port port1 = (Port) linkedPortList.get(0);
+        Locatable location1 = _getLocation((NamedObj) port1.getContainer());
+        Port port2 = (Port) linkedPortList.get(1);
+        Locatable location2 = _getLocation((NamedObj) port2.getContainer());
 
         Arc link;
+
         try {
             link = new Arc();
+        } catch (Exception e) {
+            throw new InternalErrorException("Failed to create "
+                + "new link, even though one does not " + "already exist:"
+                + e.getMessage());
         }
-        catch (Exception e) {
-            throw new InternalErrorException(
-                    "Failed to create " +
-                    "new link, even though one does not " +
-                    "already exist:" + e.getMessage());
-        }
+
         link.setRelation(relation);
+
         // We have to get the direction of the arc correct.
-        if (((State)port1.getContainer()).incomingPort.equals(port1)) {
+        if (((State) port1.getContainer()).incomingPort.equals(port1)) {
             link.setHead(location1);
             link.setTail(location2);
         } else {
             link.setHead(location2);
             link.setTail(location1);
         }
+
         _linkSet.add(link);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The set of all links in the model.
     private Set _linkSet;
 
@@ -352,7 +385,6 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     /** The model for arcs between states.
      */
     public class ArcModel implements MutableEdgeModel {
-
         /** Return true if the head of the given edge can be attached to the
          *  given node.
          *  @param edge The edge to attach, which is assumed to be an arc.
@@ -362,8 +394,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         public boolean acceptHead(Object edge, Object node) {
             if (node instanceof Locatable) {
                 return true;
-            } else
+            } else {
                 return false;
+            }
         }
 
         /** Return true if the tail of the given edge can be attached to the
@@ -375,8 +408,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         public boolean acceptTail(Object edge, Object node) {
             if (node instanceof Locatable) {
                 return true;
-            } else
+            } else {
                 return false;
+            }
         }
 
         /** Return the head node of the given edge.
@@ -384,7 +418,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return The node that is the head of the specified edge.
          */
         public Object getHead(Object edge) {
-            return ((Arc)edge).getHead();
+            return ((Arc) edge).getHead();
         }
 
         /** Return a MoML String that will delete the given edge from the
@@ -392,12 +426,14 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteEdgeMoML(Object edge) {
-            final Arc link = (Arc)edge;
-            NamedObj linkHead = (NamedObj)link.getHead();
-            NamedObj linkTail = (NamedObj)link.getTail();
-            Relation linkRelation = (Relation)link.getRelation();
+            final Arc link = (Arc) edge;
+            NamedObj linkHead = (NamedObj) link.getHead();
+            NamedObj linkTail = (NamedObj) link.getTail();
+            Relation linkRelation = (Relation) link.getRelation();
+
             // This moml is parsed to execute the change
             StringBuffer moml = new StringBuffer();
+
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
             NamedObj container = getPtolemyModel();
@@ -405,35 +441,45 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             moml.append(_deleteRelation(container, linkRelation));
 
             // See whether refinement(s) need to be removed.
-            CompositeEntity master
-                = (CompositeEntity)linkRelation.getContainer();
+            CompositeEntity master = (CompositeEntity) linkRelation
+                .getContainer();
+
             // Nothing to do if there is no container.
             if (master != null) {
                 // Remove any referenced refinements that are not also
                 // referenced by other states.
                 TypedActor[] refinements = null;
+
                 try {
-                    refinements = ((Transition)linkRelation).getRefinement();
+                    refinements = ((Transition) linkRelation).getRefinement();
                 } catch (IllegalActionException e) {
                     // Ignore, no refinement to remove.
                 }
+
                 if (refinements != null) {
                     for (int i = 0; i < refinements.length; i++) {
                         TypedActor refinement = refinements[i];
+
                         // By default, if no other state or transition refers
                         // to this refinement, then we will remove it.
                         boolean removeIt = true;
-                        Iterator states
-                            = master.entityList(State.class).iterator();
+                        Iterator states = master.entityList(State.class)
+                                                .iterator();
+
                         while (removeIt && states.hasNext()) {
-                            State state = (State)states.next();
+                            State state = (State) states.next();
                             TypedActor[] stateRefinements = null;
+
                             try {
                                 stateRefinements = state.getRefinement();
                             } catch (IllegalActionException e1) {
                                 // Ignore, no refinement to check.
                             }
-                            if (stateRefinements == null) continue;
+
+                            if (stateRefinements == null) {
+                                continue;
+                            }
+
                             for (int j = 0; j < stateRefinements.length; j++) {
                                 if (stateRefinements[j] == refinement) {
                                     removeIt = false;
@@ -444,32 +490,41 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                         // Next check transitions.
                         Iterator transitions = master.relationList().iterator();
+
                         while (removeIt && transitions.hasNext()) {
-                            Relation transition = (Relation)transitions.next();
-                            if (transition == linkRelation
+                            Relation transition = (Relation) transitions.next();
+
+                            if ((transition == linkRelation)
                                     || !(transition instanceof Transition)) {
                                 continue;
                             }
+
                             TypedActor[] transitionRefinements = null;
+
                             try {
-                                transitionRefinements
-                                    = ((Transition)transition).getRefinement();
+                                transitionRefinements = ((Transition) transition)
+                                    .getRefinement();
                             } catch (IllegalActionException e1) {
                                 // Ignore, no refinement to check.
                             }
-                            if (transitionRefinements == null) continue;
+
+                            if (transitionRefinements == null) {
+                                continue;
+                            }
+
                             for (int j = 0; j < transitionRefinements.length;
-                                 j++) {
+                                    j++) {
                                 if (transitionRefinements[j] == refinement) {
                                     removeIt = false;
                                     break;
                                 }
                             }
                         }
+
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
-                                    + ((NamedObj)refinement).getName(container)
-                                    + "\"/>\n");
+                                + ((NamedObj) refinement).getName(container)
+                                + "\"/>\n");
                         }
                     }
                 }
@@ -483,7 +538,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return The node that is the tail of the specified edge.
          */
         public Object getTail(Object edge) {
-            return ((Arc)edge).getTail();
+            return ((Arc) edge).getTail();
         }
 
         /** Return true if this edge is directed.
@@ -501,17 +556,18 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param edge The edge, which is assumed to be an arc.
          */
         public void removeEdge(final Object edge) {
-            final Arc link = (Arc)edge;
-            Relation linkRelation = (Relation)link.getRelation();
+            final Arc link = (Arc) edge;
+            Relation linkRelation = (Relation) link.getRelation();
+
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
+
             // Make the request in the context of the container.
             final NamedObj container = getPtolemyModel();
             moml.append(_deleteRelation(container, linkRelation));
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(FSMGraphModel.this,
-                        container,
-                        moml.toString()) {
+
+            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
+                    container, moml.toString()) {
                     protected void _execute() throws Exception {
                         super._execute();
                         link.setHead(null);
@@ -523,7 +579,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
-                            Exception exception) {
+                        Exception exception) {
                         // Ignore... nothing we can do about it anyway.
                     }
 
@@ -545,12 +601,14 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *   be an icon.
          */
         public void setHead(final Object edge, final Object newArcHead) {
-            final Arc link = (Arc)edge;
-            NamedObj linkHead = (NamedObj)link.getHead();
-            NamedObj linkTail = (NamedObj)link.getTail();
-            Relation linkRelation = (Relation)link.getRelation();
+            final Arc link = (Arc) edge;
+            NamedObj linkHead = (NamedObj) link.getHead();
+            NamedObj linkTail = (NamedObj) link.getTail();
+            Relation linkRelation = (Relation) link.getRelation();
+
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
+
             // This moml is parsed in case the change fails.
             final StringBuffer failmoml = new StringBuffer();
             moml.append("<group>\n");
@@ -568,30 +626,30 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 } else {
                     // There will be a further connection, so preserve
                     // the relation.
-                    moml.append(_unlinkHead(container, linkHead,
-                                        linkRelation));
+                    moml.append(_unlinkHead(container, linkHead, linkRelation));
                 }
             }
 
             String relationName = null;
+
             if (newArcHead != null) {
                 // create moml to make the new link.
                 relationName = _linkHead(container, moml, failmoml,
-                        (NamedObj)newArcHead, linkTail, linkRelation);
+                        (NamedObj) newArcHead, linkTail, linkRelation);
             }
+
             moml.append("</group>\n");
             failmoml.append("</group>\n");
+
             final String relationNameToAdd = relationName;
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(FSMGraphModel.this,
-                        container,
-                        moml.toString()) {
+            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
+                    container, moml.toString()) {
                     protected void _execute() throws Exception {
                         super._execute();
                         link.setHead(newArcHead);
+
                         if (relationNameToAdd != null) {
-                            ComponentRelation relation = (ComponentRelation)
-                                ((CompositeEntity)getPtolemyModel())
+                            ComponentRelation relation = (ComponentRelation) ((CompositeEntity) getPtolemyModel())
                                 .getRelation(relationNameToAdd);
                             link.setRelation(relation);
                         }
@@ -601,27 +659,26 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
-                            Exception exception) {
+                        Exception exception) {
                         // If we fail here, then we remove the link entirely.
                         _linkSet.remove(link);
                         link.setHead(null);
                         link.setTail(null);
                         link.setRelation(null);
+
                         // and queue a new change request to clean up the model
                         // Note: JDK1.2.2 requires that this variable not be
                         // called request or we get a compile error.
-                        MoMLChangeRequest requestChange =
-                            new MoMLChangeRequest(FSMGraphModel.this,
-                                    container,
-                                    failmoml.toString());
+                        MoMLChangeRequest requestChange = new MoMLChangeRequest(FSMGraphModel.this,
+                                container, failmoml.toString());
+
                         // Fail moml execution not undoable
                         container.requestChange(requestChange);
                     }
 
                     public void changeExecuted(ChangeRequest change) {
                         if (GraphUtilities.isPartiallyContainedEdge(edge,
-                                    getRoot(),
-                                    FSMGraphModel.this)) {
+                                    getRoot(), FSMGraphModel.this)) {
                             _linkSet.add(edge);
                         } else {
                             _linkSet.remove(edge);
@@ -642,12 +699,14 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  be an icon.
          */
         public void setTail(final Object edge, final Object newArcTail) {
-            final Arc link = (Arc)edge;
-            NamedObj linkHead = (NamedObj)link.getHead();
-            NamedObj linkTail = (NamedObj)link.getTail();
-            Relation linkRelation = (Relation)link.getRelation();
+            final Arc link = (Arc) edge;
+            NamedObj linkHead = (NamedObj) link.getHead();
+            NamedObj linkTail = (NamedObj) link.getTail();
+            Relation linkRelation = (Relation) link.getRelation();
+
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
+
             // This moml is parsed in case the change fails.
             final StringBuffer failmoml = new StringBuffer();
             moml.append("<group>\n");
@@ -665,33 +724,32 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 } else {
                     // There will be a further connection, so preserve
                     // the relation.
-                    moml.append(_unlinkTail(container, linkTail,
-                                        linkRelation));
+                    moml.append(_unlinkTail(container, linkTail, linkRelation));
                 }
             }
 
             String relationName = null;
+
             if (newArcTail != null) {
                 // create moml to make the new links.
-                relationName = _linkTail(container, moml, failmoml,
-                        linkHead, (NamedObj)newArcTail, linkRelation);
+                relationName = _linkTail(container, moml, failmoml, linkHead,
+                        (NamedObj) newArcTail, linkRelation);
             }
+
             moml.append("</group>\n");
             failmoml.append("</group>\n");
 
             final String relationNameToAdd = relationName;
 
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(FSMGraphModel.this,
-                        container,
-                        moml.toString()) {
+            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
+                    container, moml.toString()) {
                     protected void _execute() throws Exception {
                         super._execute();
                         link.setTail(newArcTail);
+
                         if (relationNameToAdd != null) {
-                            link.setRelation(
-                                    ((CompositeEntity)getPtolemyModel())
-                                    .getRelation(relationNameToAdd));
+                            link.setRelation(((CompositeEntity) getPtolemyModel())
+                                .getRelation(relationNameToAdd));
                         }
                     }
                 };
@@ -699,27 +757,26 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
-                            Exception exception) {
+                        Exception exception) {
                         // If we fail here, then we remove the link entirely.
                         _linkSet.remove(link);
                         link.setHead(null);
                         link.setTail(null);
                         link.setRelation(null);
+
                         // and queue a new change request to clean up the model
                         // Note: JDK1.2.2 requires that this variable not be
                         // called request or we get a compile error.
-                        MoMLChangeRequest requestChange =
-                            new MoMLChangeRequest(FSMGraphModel.this,
-                                    container,
-                                    failmoml.toString());
+                        MoMLChangeRequest requestChange = new MoMLChangeRequest(FSMGraphModel.this,
+                                container, failmoml.toString());
+
                         // fail moml execution not undaoble
                         container.requestChange(requestChange);
                     }
 
                     public void changeExecuted(ChangeRequest change) {
                         if (GraphUtilities.isPartiallyContainedEdge(edge,
-                                    getRoot(),
-                                    FSMGraphModel.this)) {
+                                    getRoot(), FSMGraphModel.this)) {
                             _linkSet.add(edge);
                         } else {
                             _linkSet.remove(edge);
@@ -736,9 +793,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         /** Return moml to remove a relation in the specified container.
          */
         private String _deleteRelation(NamedObj container, Relation relation) {
-            return "<deleteRelation name=\""
-                + relation.getName(container)
-                + "\"/>\n";
+            return "<deleteRelation name=\"" + relation.getName(container)
+            + "\"/>\n";
         }
 
         /** Append moml to the given buffer that connects a link with the
@@ -751,101 +807,105 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  constructed link.
          */
         private String _linkHead(NamedObj container, StringBuffer moml,
-                StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
-                Relation linkRelation) {
-            if (linkHead != null && linkTail != null) {
-                NamedObj head = (NamedObj)getSemanticObject(linkHead);
-                NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+            StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
+            Relation linkRelation) {
+            if ((linkHead != null) && (linkTail != null)) {
+                NamedObj head = (NamedObj) getSemanticObject(linkHead);
+                NamedObj tail = (NamedObj) getSemanticObject(linkTail);
+
                 if (head instanceof State && tail instanceof State) {
                     // When we connect two states, we actually connect the
                     // appropriate ports.
-                    State headState = (State)head;
-                    State tailState = (State)tail;
-                    ComponentPort headPort =
-                        (ComponentPort)headState.incomingPort;
-                    ComponentPort tailPort =
-                        (ComponentPort)tailState.outgoingPort;
+                    State headState = (State) head;
+                    State tailState = (State) tail;
+                    ComponentPort headPort = (ComponentPort) headState.incomingPort;
+                    ComponentPort tailPort = (ComponentPort) tailState.outgoingPort;
                     NamedObj ptolemyModel = getPtolemyModel();
+
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
                     if (ptolemyModel != container) {
-                        String contextString = "<entity name=\"" +
-                            ptolemyModel.getName(container) +
-                            "\">\n";
+                        String contextString = "<entity name=\""
+                            + ptolemyModel.getName(container) + "\">\n";
                         moml.append(contextString);
                         failmoml.append(contextString);
                     }
+
                     boolean createdNewRelation = false;
                     String relationName = null;
+
                     if (linkRelation != null) {
                         // Pre-existing relation. Use it.
                         relationName = linkRelation.getName(ptolemyModel);
                     } else {
                         createdNewRelation = true;
+
                         // Linking two ports with a new relation.
                         relationName = ptolemyModel.uniqueName("relation");
+
                         // Set the exitAngle based on other relations.
                         // Count the number of connections between the
                         // headPort and the tailPort.
                         Iterator ports = tailPort.deepConnectedPortList()
-                            .iterator();
+                                                 .iterator();
                         int count = 0;
+
                         while (ports.hasNext()) {
-                            if (ports.next() == headPort) count++;
+                            if (ports.next() == headPort) {
+                                count++;
+                            }
                         }
+
                         // Increase the angle as the count increases.
                         // Any function of "count" will work here that starts
                         // at PI/5 and approaches something less than PI
                         // as count gets large.  Unfortunately, self-loops
                         // again have to be handled specially.
                         double angle;
-                        if (headPort.getContainer()
-                                != tailPort.getContainer()) {
-                            angle = Math.PI/5.0 + 1.5* Math.atan(0.3*count);
+
+                        if (headPort.getContainer() != tailPort.getContainer()) {
+                            angle = (Math.PI / 5.0)
+                                + (1.5 * Math.atan(0.3 * count));
                         } else {
-                            angle = Math.PI/3.0 - 0.75 * Math.atan(0.3*count);
+                            angle = (Math.PI / 3.0)
+                                - (0.75 * Math.atan(0.3 * count));
                         }
 
                         // Create the new relation.
                         // Note that we specify no class so that we use the
                         // container's factory method when this gets parsed
-                        moml.append("<relation name=\""
-                                + relationName
-                                + "\"><property name=\"exitAngle\" value=\""
-                                + angle
-                                + "\"/></relation>\n");
+                        moml.append("<relation name=\"" + relationName
+                            + "\"><property name=\"exitAngle\" value=\""
+                            + angle + "\"/></relation>\n");
                         moml.append("<link port=\""
-                                + tailPort.getName(ptolemyModel)
-                                + "\" relation=\""
-                                + relationName
-                                + "\"/>\n");
+                            + tailPort.getName(ptolemyModel) + "\" relation=\""
+                            + relationName + "\"/>\n");
                     }
+
                     moml.append("<link port=\""
-                            + headPort.getName(ptolemyModel)
-                            + "\" relation=\""
-                            + relationName
-                            + "\"/>\n");
+                        + headPort.getName(ptolemyModel) + "\" relation=\""
+                        + relationName + "\"/>\n");
+
                     // Record moml so that we can blow away these
                     // links in case we can't create them
-                    failmoml.append("<unlink port=\"" +
-                            headPort.getName(ptolemyModel) +
-                            "\" relation=\"" + relationName +
-                            "\"/>\n");
+                    failmoml.append("<unlink port=\""
+                        + headPort.getName(ptolemyModel) + "\" relation=\""
+                        + relationName + "\"/>\n");
+
                     if (linkRelation == null) {
                         failmoml.append("<unlink port=\""
-                                + tailPort.getName(ptolemyModel)
-                                + "\" relation=\""
-                                + relationName
-                                + "\"/>\n");
+                            + tailPort.getName(ptolemyModel) + "\" relation=\""
+                            + relationName + "\"/>\n");
                         failmoml.append("<deleteRelation name=\""
-                                + relationName
-                                + "\"/>\n");
+                            + relationName + "\"/>\n");
                     }
+
                     // close the context
                     if (ptolemyModel != container) {
                         moml.append("</entity>");
                         failmoml.append("</entity>");
                     }
+
                     if (createdNewRelation) {
                         return relationName;
                     } else {
@@ -853,8 +913,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     }
                 } else {
                     throw new RuntimeException(
-                            "Attempt to create a link between non-states: " +
-                            "Head = " + head + ", Tail = " + tail);
+                        "Attempt to create a link between non-states: "
+                        + "Head = " + head + ", Tail = " + tail);
                 }
             } else {
                 // No Linking to do.
@@ -872,79 +932,78 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  constructed link.
          */
         private String _linkTail(NamedObj container, StringBuffer moml,
-                StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
-                Relation linkRelation) {
+            StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
+            Relation linkRelation) {
             // NOTE: This method is almost identical to the previous
             // one, but just enough different that it isn't obvious
             // how to combine them into one method.
-            if (linkHead != null && linkTail != null) {
-                NamedObj head = (NamedObj)getSemanticObject(linkHead);
-                NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+            if ((linkHead != null) && (linkTail != null)) {
+                NamedObj head = (NamedObj) getSemanticObject(linkHead);
+                NamedObj tail = (NamedObj) getSemanticObject(linkTail);
+
                 if (head instanceof State && tail instanceof State) {
                     // When we connect two states, we actually connect the
                     // appropriate ports.
-                    State headState = (State)head;
-                    State tailState = (State)tail;
-                    ComponentPort headPort =
-                        (ComponentPort)headState.incomingPort;
-                    ComponentPort tailPort =
-                        (ComponentPort)tailState.outgoingPort;
+                    State headState = (State) head;
+                    State tailState = (State) tail;
+                    ComponentPort headPort = (ComponentPort) headState.incomingPort;
+                    ComponentPort tailPort = (ComponentPort) tailState.outgoingPort;
                     NamedObj ptolemyModel = getPtolemyModel();
+
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
                     if (ptolemyModel != container) {
                         String contextString = "<entity name=\""
-                            + ptolemyModel.getName(container)
-                            + "\">\n";
+                            + ptolemyModel.getName(container) + "\">\n";
                         moml.append(contextString);
                         failmoml.append(contextString);
                     }
+
                     boolean createdNewRelation = false;
                     String relationName = null;
+
                     if (linkRelation != null) {
                         // Pre-existing relation. Use it.
                         relationName = linkRelation.getName(ptolemyModel);
                     } else {
                         createdNewRelation = true;
+
                         // Linking two ports with a new relation.
                         relationName = ptolemyModel.uniqueName("relation");
+
                         // Note that we specify no class so that we use the
                         // container's factory method when this gets parsed
-                        moml.append("<relation name=\""
-                                + relationName
-                                + "\"/>\n");
-                        moml.append("<link port=\""
-                                + headPort.getName(ptolemyModel)
-                                + "\" relation=\""
-                                + relationName
-                                + "\"/>\n");
-                    }
-                    moml.append("<link port=\""
-                            + tailPort.getName(ptolemyModel)
-                            + "\" relation=\""
-                            + relationName
+                        moml.append("<relation name=\"" + relationName
                             + "\"/>\n");
+                        moml.append("<link port=\""
+                            + headPort.getName(ptolemyModel) + "\" relation=\""
+                            + relationName + "\"/>\n");
+                    }
+
+                    moml.append("<link port=\""
+                        + tailPort.getName(ptolemyModel) + "\" relation=\""
+                        + relationName + "\"/>\n");
+
                     // Record moml so that we can blow away these
                     // links in case we can't create them
-                    failmoml.append("<unlink port=\"" +
-                            tailPort.getName(ptolemyModel) +
-                            "\" relation=\"" + relationName +
-                            "\"/>\n");
+                    failmoml.append("<unlink port=\""
+                        + tailPort.getName(ptolemyModel) + "\" relation=\""
+                        + relationName + "\"/>\n");
+
                     if (linkRelation == null) {
                         failmoml.append("<unlink port=\""
-                                + headPort.getName(ptolemyModel)
-                                + "\" relation=\""
-                                + relationName
-                                + "\"/>\n");
+                            + headPort.getName(ptolemyModel) + "\" relation=\""
+                            + relationName + "\"/>\n");
                         failmoml.append("<deleteRelation name=\""
-                                + relationName
-                                + "\"/>\n");
+                            + relationName + "\"/>\n");
                     }
+
                     // close the context
                     if (ptolemyModel != container) {
                         moml.append("</entity>");
                         failmoml.append("</entity>");
                     }
+
                     if (createdNewRelation) {
                         return relationName;
                     } else {
@@ -952,8 +1011,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     }
                 } else {
                     throw new RuntimeException(
-                            "Attempt to create a link between non-states: " +
-                            "Head = " + head + ", Tail = " + tail);
+                        "Attempt to create a link between non-states: "
+                        + "Head = " + head + ", Tail = " + tail);
                 }
             } else {
                 // No Linking to do.
@@ -965,48 +1024,40 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  specified container.
          */
         private String _unlinkHead(NamedObj container, NamedObj linkHead,
-                Relation relation) {
-            NamedObj head = (NamedObj)getSemanticObject(linkHead);
-            State headState = (State)head;
-            ComponentPort headPort = (ComponentPort)headState.incomingPort;
-            return "<unlink port=\""
-                + headPort.getName(container)
-                + "\" relation=\""
-                + relation.getName(container)
-                + "\"/>\n";
+            Relation relation) {
+            NamedObj head = (NamedObj) getSemanticObject(linkHead);
+            State headState = (State) head;
+            ComponentPort headPort = (ComponentPort) headState.incomingPort;
+            return "<unlink port=\"" + headPort.getName(container)
+            + "\" relation=\"" + relation.getName(container) + "\"/>\n";
         }
 
         /** Return moml to unlink a relation with the given tail in the
          *  specified container.
          */
         private String _unlinkTail(NamedObj container, NamedObj linkTail,
-                Relation relation) {
-            NamedObj tail = (NamedObj)getSemanticObject(linkTail);
-            State tailState = (State)tail;
-            ComponentPort tailPort = (ComponentPort)tailState.outgoingPort;
-            return "<unlink port=\""
-                + tailPort.getName(container)
-                + "\" relation=\""
-                + relation.getName(container)
-                + "\"/>\n";
+            Relation relation) {
+            NamedObj tail = (NamedObj) getSemanticObject(linkTail);
+            State tailState = (State) tail;
+            ComponentPort tailPort = (ComponentPort) tailState.outgoingPort;
+            return "<unlink port=\"" + tailPort.getName(container)
+            + "\" relation=\"" + relation.getName(container) + "\"/>\n";
         }
     }
 
     /** The model for external ports.
      */
     public class PortModel extends NamedObjNodeModel {
-
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the port to be deleted.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-            NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-            NamedObj container = (NamedObj)deleteObj.getContainer();
+            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
+            NamedObj container = (NamedObj) deleteObj.getContainer();
 
-            String moml = "<deletePort name=\""
-                + deleteObj.getName()
+            String moml = "<deletePort name=\"" + deleteObj.getName()
                 + "\"/>\n";
             return moml;
         }
@@ -1018,7 +1069,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *   be the root of this graph model.
          */
         public Object getParent(Object node) {
-            return ((Locatable)node).getContainer().getContainer();
+            return ((Locatable) node).getContainer().getContainer();
         }
 
         /** Return an iterator over the edges coming into the given node.
@@ -1052,40 +1103,39 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  to be an icon.
          */
         public void removeNode(final Object eventSource, Object node) {
-            NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
+            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
             String elementName = null;
+
             if (deleteObj instanceof ComponentPort) {
                 // Object is an entity.
                 elementName = "deletePort";
             } else {
                 throw new InternalErrorException(
-                        "Attempt to remove a node that is not an Entity. " +
-                        "node = " + node);
+                    "Attempt to remove a node that is not an Entity. "
+                    + "node = " + node);
             }
 
             String moml = "<" + elementName + " name=\""
-                + ((NamedObj)deleteObj).getName() + "\"/>\n";
+                + ((NamedObj) deleteObj).getName() + "\"/>\n";
 
             // Make the request in the context of the container.
-            NamedObj container = (NamedObj)deleteObj.getContainer();
-            MoMLChangeRequest request
-                = new MoMLChangeRequest(FSMGraphModel.this, container, moml);
+            NamedObj container = (NamedObj) deleteObj.getContainer();
+            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
+                    container, moml);
             request.setUndoable(true);
             request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
-                            Exception exception) {
+                        Exception exception) {
                         // If we fail, then issue structureChanged.
                         dispatchGraphEvent(new GraphEvent(eventSource,
-                                                   GraphEvent.STRUCTURE_CHANGED,
-                                                   getRoot()));
+                                GraphEvent.STRUCTURE_CHANGED, getRoot()));
                     }
 
                     public void changeExecuted(ChangeRequest change) {
                         // If we succeed, then issue structureChanged, since
                         // this is likely connected to something.
                         dispatchGraphEvent(new GraphEvent(eventSource,
-                                                   GraphEvent.STRUCTURE_CHANGED,
-                                                   getRoot()));
+                                GraphEvent.STRUCTURE_CHANGED, getRoot()));
                     }
                 });
             request.setUndoable(true);
@@ -1093,54 +1143,66 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         }
     }
 
-
     /** The model for an icon that represent states.
      */
     public class StateModel extends NamedObjNodeModel {
-
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the state.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-            NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-            NamedObj container = (NamedObj)deleteObj.getContainer();
+            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
+            NamedObj container = (NamedObj) deleteObj.getContainer();
 
             StringBuffer moml = new StringBuffer("<group>\n");
 
-            moml.append("<deleteEntity name=\""
-                    + deleteObj.getName(container) + "\"/>\n");
+            moml.append("<deleteEntity name=\"" + deleteObj.getName(container)
+                + "\"/>\n");
 
-            CompositeEntity master = (CompositeEntity)deleteObj.getContainer();
+            CompositeEntity master = (CompositeEntity) deleteObj.getContainer();
+
             // Nothing to do if there is no container.
             if (master != null) {
                 // Remove any referenced refinements that are not also
                 // referenced by other states.
                 TypedActor[] refinements = null;
+
                 try {
-                    refinements = ((State)deleteObj).getRefinement();
+                    refinements = ((State) deleteObj).getRefinement();
                 } catch (IllegalActionException ex) {
                     // Ignore, no refinement to remove.
                 }
+
                 if (refinements != null) {
                     for (int i = 0; i < refinements.length; i++) {
                         TypedActor refinement = refinements[i];
+
                         // By default, if no other state or transition refers
                         // to this refinement, then we will remove it.
                         boolean removeIt = true;
-                        Iterator states
-                            = master.entityList(State.class).iterator();
+                        Iterator states = master.entityList(State.class)
+                                                .iterator();
+
                         while (removeIt && states.hasNext()) {
-                            State state = (State)states.next();
-                            if (state == deleteObj) continue;
+                            State state = (State) states.next();
+
+                            if (state == deleteObj) {
+                                continue;
+                            }
+
                             TypedActor[] stateRefinements = null;
+
                             try {
                                 stateRefinements = state.getRefinement();
                             } catch (IllegalActionException ex) {
                                 // Ignore, no refinement to check
                             }
-                            if (stateRefinements == null) continue;
+
+                            if (stateRefinements == null) {
+                                continue;
+                            }
+
                             for (int j = 0; j < stateRefinements.length; j++) {
                                 if (stateRefinements[j] == refinement) {
                                     removeIt = false;
@@ -1148,32 +1210,43 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 }
                             }
                         }
+
                         // Next check transitions.
                         Iterator transitions = master.relationList().iterator();
+
                         while (removeIt && transitions.hasNext()) {
-                            Relation transition = (Relation)transitions.next();
-                            if (!(transition instanceof Transition)) continue;
+                            Relation transition = (Relation) transitions.next();
+
+                            if (!(transition instanceof Transition)) {
+                                continue;
+                            }
+
                             TypedActor[] transitionRefinements = null;
+
                             try {
-                                transitionRefinements
-                                    = ((Transition)transition).getRefinement();
+                                transitionRefinements = ((Transition) transition)
+                                    .getRefinement();
                             } catch (IllegalActionException e) {
                                 // Ignore, no refinement to check.
                             }
-                            if (transitionRefinements == null) continue;
-                            for (int j = 0;
-                                 j < transitionRefinements.length;
-                                 j++) {
+
+                            if (transitionRefinements == null) {
+                                continue;
+                            }
+
+                            for (int j = 0; j < transitionRefinements.length;
+                                    j++) {
                                 if (transitionRefinements[j] == refinement) {
                                     removeIt = false;
                                     break;
                                 }
                             }
                         }
+
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
-                                    + ((NamedObj)refinement).getName(container)
-                                    + "\"/>\n");
+                                + ((NamedObj) refinement).getName(container)
+                                + "\"/>\n");
                         }
                     }
                 }
@@ -1189,7 +1262,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *   be the root of this graph model.
          */
         public Object getParent(Object node) {
-            return ((Locatable)node).getContainer().getContainer();
+            return ((Locatable) node).getContainer().getContainer();
         }
 
         /** Return an iterator over the edges coming into the given node.
@@ -1201,21 +1274,23 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *   the given node as their head.
          */
         public Iterator inEdges(Object node) {
-            Locatable icon = (Locatable)node;
-            Entity entity = (Entity)icon.getContainer();
+            Locatable icon = (Locatable) node;
+            Entity entity = (Entity) icon.getContainer();
 
             // Go through all the links, creating a list of
             // those we are connected to.
             List stateLinkList = new LinkedList();
             Iterator links = _linkSet.iterator();
-            while (links.hasNext()) {
-                Arc link = (Arc)links.next();
-                NamedObj head = (NamedObj)link.getHead();
 
-                if (head != null && head.equals(icon)) {
+            while (links.hasNext()) {
+                Arc link = (Arc) links.next();
+                NamedObj head = (NamedObj) link.getHead();
+
+                if ((head != null) && head.equals(icon)) {
                     stateLinkList.add(link);
                 }
             }
+
             return stateLinkList.iterator();
         }
 
@@ -1228,17 +1303,19 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *   the given node as their tail.
          */
         public Iterator outEdges(Object node) {
-            Locatable icon = (Locatable)node;
-            Entity entity = (Entity)icon.getContainer();
+            Locatable icon = (Locatable) node;
+            Entity entity = (Entity) icon.getContainer();
 
             // Go through all the links, creating a list of
             // those we are connected to.
             List stateLinkList = new LinkedList();
             Iterator links = _linkSet.iterator();
+
             while (links.hasNext()) {
-                Arc link = (Arc)links.next();
+                Arc link = (Arc) links.next();
                 Object tail = link.getTail();
-                if (tail != null && tail.equals(icon)) {
+
+                if ((tail != null) && tail.equals(icon)) {
                     stateLinkList.add(link);
                 }
             }
@@ -1250,7 +1327,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  to be a Locatable belonging to an entity.
          */
         public void removeNode(final Object eventSource, Object node) {
-            NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
+            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
 
             // First remove all the in and out edges.
             // This isn't done automatically by the Ptolemy kernel, because
@@ -1259,45 +1336,48 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             // domain, it makes no sense to have a relation with only one
             // link to it.  So we remove the relations.
             Iterator inEdges = inEdges(node);
+
             while (inEdges.hasNext()) {
                 disconnectEdge(eventSource, inEdges.next());
             }
+
             Iterator outEdges = outEdges(node);
+
             while (outEdges.hasNext()) {
                 disconnectEdge(eventSource, outEdges.next());
             }
+
             String elementName = null;
+
             if (deleteObj instanceof ComponentEntity) {
                 // Object is an entity.
                 elementName = "deleteEntity";
             } else {
                 throw new InternalErrorException(
-                        "Attempt to remove a node that is not an Entity. " +
-                        "node = " + node);
+                    "Attempt to remove a node that is not an Entity. "
+                    + "node = " + node);
             }
 
             String moml = "<" + elementName + " name=\""
-                + ((NamedObj)deleteObj).getName() + "\"/>\n";
+                + ((NamedObj) deleteObj).getName() + "\"/>\n";
 
             // Make the request in the context of the container.
-            NamedObj container = (NamedObj)deleteObj.getContainer();
-            MoMLChangeRequest request
-                = new MoMLChangeRequest(FSMGraphModel.this, container, moml);
+            NamedObj container = (NamedObj) deleteObj.getContainer();
+            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
+                    container, moml);
             request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
-                            Exception exception) {
+                        Exception exception) {
                         // If we fail, then issue structureChanged.
                         dispatchGraphEvent(new GraphEvent(eventSource,
-                                                   GraphEvent.STRUCTURE_CHANGED,
-                                                   getRoot()));
+                                GraphEvent.STRUCTURE_CHANGED, getRoot()));
                     }
 
                     public void changeExecuted(ChangeRequest change) {
                         // If we succeed, then issue structureChanged, since
                         // this is likely connected to something.
                         dispatchGraphEvent(new GraphEvent(eventSource,
-                                                   GraphEvent.STRUCTURE_CHANGED,
-                                                   getRoot()));
+                                GraphEvent.STRUCTURE_CHANGED, getRoot()));
                     }
                 });
             request.setUndoable(true);

@@ -25,8 +25,9 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.x10;
+
+import x10.Command;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -37,10 +38,11 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import x10.Command;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CommandListener
+
 /**
    This actor will output a <i>true</i> whenever a specified command with the
    specified house and unit code is detected.  Only commands that are present
@@ -71,9 +73,7 @@ import x10.Command;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (ptolemy)
 */
-
 public class CommandListener extends Receiver {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -83,11 +83,12 @@ public class CommandListener extends Receiver {
      *   actor with this name.
      */
     public CommandListener(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create output port.
         detected = new TypedIOPort(this, "detected", false, true);
+
         // Output true if detected is detected.
         detected.setTypeEquals(BaseType.BOOLEAN);
 
@@ -149,6 +150,7 @@ public class CommandListener extends Receiver {
             byte function = sensedCommand.getFunctionByte();
             byte functionOfInterest = Command.ON;
             String commandValue = command.stringValue();
+
             if (commandValue.equals("OFF")) {
                 functionOfInterest = Command.OFF;
             } else if (commandValue.equals("ALL_LIGHTS_ON")) {
@@ -158,15 +160,16 @@ public class CommandListener extends Receiver {
             } else if (commandValue.equals("ALL_UNITS_OFF")) {
                 functionOfInterest = Command.ALL_UNITS_OFF;
             }
+
             String sensedHouseCode = "" + sensedCommand.getHouseCode();
             int sensedUnitCode = sensedCommand.getUnitCode();
 
             String houseCodeValue = houseCode.stringValue();
-            int unitCodeValue = ((IntToken)unitCode.getToken()).intValue();
+            int unitCodeValue = ((IntToken) unitCode.getToken()).intValue();
 
             if (sensedHouseCode.equals(houseCodeValue)
-                    && sensedUnitCode == unitCodeValue
-                    && function == functionOfInterest) {
+                    && (sensedUnitCode == unitCodeValue)
+                    && (function == functionOfInterest)) {
                 detected.send(0, BooleanToken.TRUE);
             } else {
                 detected.send(0, BooleanToken.FALSE);

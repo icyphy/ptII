@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import ptolemy.data.IntToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// XYScope
+
 /**
    An X-Y plotter that plots with finite persistence.
    This plotter contains an instance of the Plot class
@@ -70,7 +71,6 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Yellow (neuendor)
 */
 public class XYScope extends XYPlotter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -80,7 +80,7 @@ public class XYScope extends XYPlotter {
      *   actor with this name.
      */
     public XYScope(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // set the parameters
@@ -106,12 +106,12 @@ public class XYScope extends XYPlotter {
      *  attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == persistence && plot != null) {
-            int persValue =
-                ((IntToken)persistence.getToken()).intValue();
+        throws IllegalActionException {
+        if ((attribute == persistence) && (plot != null)) {
+            int persValue = ((IntToken) persistence.getToken()).intValue();
+
             // NOTE: We assume the superclass ensures this cast is safe.
-            ((Plot)plot).setPointsPersistence(persValue);
+            ((Plot) plot).setPointsPersistence(persValue);
         } else {
             super.attributeChanged(attribute);
         }
@@ -122,13 +122,16 @@ public class XYScope extends XYPlotter {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        int persValue = ((IntToken)persistence.getToken()).intValue();
+
+        int persValue = ((IntToken) persistence.getToken()).intValue();
+
         // NOTE: We assume the superclass ensures this cast is safe.
-        ((Plot)plot).setPointsPersistence(persValue);
+        ((Plot) plot).setPointsPersistence(persValue);
         plot.repaint();
+
         // Override the default so that there are not gaps in the lines.
-        if (((Plot)plot).getMarksStyle().equals("none")) {
-            ((Plot)plot).setMarksStyle("pixels");
+        if (((Plot) plot).getMarksStyle().equals("none")) {
+            ((Plot) plot).setMarksStyle("pixels");
         }
     }
 

@@ -33,6 +33,7 @@ import diva.canvas.FigureDecorator;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 
+
 /**
  * A SelectionInteractor is attached to an object that can be put
  * into and out of a selection. Associated with each such role
@@ -55,7 +56,6 @@ import diva.canvas.event.MouseFilter;
  * @author John Reekie
  */
 public class SelectionInteractor extends CompositeInteractor {
-
     /** The selection model
      */
     private SelectionModel _selection;
@@ -72,7 +72,6 @@ public class SelectionInteractor extends CompositeInteractor {
      */
     private MouseFilter _toggleFilter = MouseFilter.alternateSelectionFilter;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
@@ -80,7 +79,7 @@ public class SelectionInteractor extends CompositeInteractor {
      * Create a new SelectionInteractor with a default selection model and
      * a default selection renderer.
      */
-    public SelectionInteractor () {
+    public SelectionInteractor() {
         super();
         setSelectionRenderer(new BasicSelectionRenderer());
         setSelectionModel(new BasicSelectionModel());
@@ -90,7 +89,7 @@ public class SelectionInteractor extends CompositeInteractor {
      * Create a new SelectionInteractor with the given selection model
      * and a null selection renderer.
      */
-    public SelectionInteractor (SelectionModel model) {
+    public SelectionInteractor(SelectionModel model) {
         super();
         setSelectionRenderer(new BasicSelectionRenderer());
         setSelectionModel(model);
@@ -103,30 +102,30 @@ public class SelectionInteractor extends CompositeInteractor {
      * Accept an event if it will be accepted by the selection
      * filters.
      */
-    public boolean accept (LayerEvent e) {
+    public boolean accept(LayerEvent e) {
         return _selectionFilter.accept(e) || _toggleFilter.accept(e)
-            || super.accept(e);
+        || super.accept(e);
     }
 
     /**
      * Get the mouse filter that controls when this selection
      * filter is activated.
      */
-    public MouseFilter getSelectionFilter () {
+    public MouseFilter getSelectionFilter() {
         return _selectionFilter;
     }
 
     /**
      * Get the selection model
      */
-    public SelectionModel getSelectionModel () {
+    public SelectionModel getSelectionModel() {
         return _selection;
     }
 
     /**
      * Get the selection renderer
      */
-    public SelectionRenderer getSelectionRenderer () {
+    public SelectionRenderer getSelectionRenderer() {
         return _renderer;
     }
 
@@ -134,7 +133,7 @@ public class SelectionInteractor extends CompositeInteractor {
      * Get the mouse filter that controls the toggling of
      * selections
      */
-    public MouseFilter getToggleFilter () {
+    public MouseFilter getToggleFilter() {
         return _toggleFilter;
     }
 
@@ -143,12 +142,14 @@ public class SelectionInteractor extends CompositeInteractor {
      * figure has a SelectionInteractor as its interactor, and that
      * the figure is in the SelectionModel of that interactor.
      */
-    public static boolean isSelected (LayerEvent e) {
+    public static boolean isSelected(LayerEvent e) {
         Figure f = e.getFigureSource();
+
         if (f.getInteractor() instanceof SelectionInteractor) {
             SelectionInteractor i = (SelectionInteractor) f.getInteractor();
             return i.getSelectionModel().containsSelection(f);
         }
+
         return false;
     }
 
@@ -156,23 +157,25 @@ public class SelectionInteractor extends CompositeInteractor {
      * item to or from the selection. If it's still in the selection,
      * pass the event to the superclass to handle.
      */
-    public void mousePressed (LayerEvent event) {
+    public void mousePressed(LayerEvent event) {
         if (!isEnabled()) {
             return;
         }
+
         Figure figure = event.getFigureSource();
         boolean isSelected = false;
         boolean isChanged = false;
+
         if (_selectionFilter.accept(event)) {
             // If the item is not already in the selection, clear
             // the selection and then add this one.
-            if ( !(_selection.containsSelection(figure))) {
+            if (!(_selection.containsSelection(figure))) {
                 _selection.clearSelection();
                 _selection.addSelection(figure);
                 isChanged = true;
             }
-            isSelected = true;
 
+            isSelected = true;
         } else if (_toggleFilter.accept(event)) {
             // Toggle the item
             if (_selection.containsSelection(figure)) {
@@ -181,21 +184,25 @@ public class SelectionInteractor extends CompositeInteractor {
                 _selection.addSelection(figure);
                 isSelected = true;
             }
+
             isChanged = true;
         }
 
         // Set the target of all attached drag interactors
-        if (_selection.getSelectionCount() > 0
+        if ((_selection.getSelectionCount() > 0)
                 && _selection.containsSelection(figure)) {
-            Object target[] = _selection.getSelectionAsArray();
+            Object[] target = _selection.getSelectionAsArray();
             Iterator i = interactors();
+
             while (i.hasNext()) {
                 Interactor interactor = (Interactor) i.next();
+
                 if (interactor instanceof DragInteractor) {
                     ((DragInteractor) interactor).setTargetArray(target);
                 }
             }
         }
+
         // Allow superclass to process event
         super.mousePressed(event);
 
@@ -225,7 +232,7 @@ public class SelectionInteractor extends CompositeInteractor {
      * two behaviors seemed more likely to be useful. (Also, that behaviour
      * is harder to implement because of interaction with the superclass.)
      */
-    public void setConsuming (boolean flag) {
+    public void setConsuming(boolean flag) {
         // This method is only here for documentation purposes
         super.setConsuming(flag);
     }
@@ -234,10 +241,11 @@ public class SelectionInteractor extends CompositeInteractor {
      * Set the selection model. The existing selection model is
      * cleared first.
      */
-    public void setSelectionModel (SelectionModel model) {
+    public void setSelectionModel(SelectionModel model) {
         if (_selection != null) {
             _selection.clearSelection();
         }
+
         _selection = model;
     }
 
@@ -259,7 +267,7 @@ public class SelectionInteractor extends CompositeInteractor {
      * This method nullifies any previous renderers set with
      * setSelectionRenderer();
      */
-    public void setPrototypeDecorator (FigureDecorator decorator) {
+    public void setPrototypeDecorator(FigureDecorator decorator) {
         _renderer = new BasicSelectionRenderer(decorator);
     }
 
@@ -270,7 +278,7 @@ public class SelectionInteractor extends CompositeInteractor {
      *
      * @deprecated Use setPrototypeDecorator instead
      */
-    public void setSelectionManipulator (Manipulator manipulator) {
+    public void setSelectionManipulator(Manipulator manipulator) {
         _renderer = new BasicSelectionRenderer(manipulator);
     }
 
@@ -279,7 +287,7 @@ public class SelectionInteractor extends CompositeInteractor {
      * but can be set here so that other objects that need to render
      * selected objects know how to do so.
      */
-    public void setSelectionRenderer (SelectionRenderer r) {
+    public void setSelectionRenderer(SelectionRenderer r) {
         _renderer = r;
     }
 
@@ -291,5 +299,3 @@ public class SelectionInteractor extends CompositeInteractor {
         _toggleFilter = f;
     }
 }
-
-

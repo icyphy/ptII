@@ -24,8 +24,10 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.test;
+
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
+
 
 /**
  * All the tests in this directory.
@@ -34,17 +36,16 @@ import diva.util.jester.TestSuite;
  * @version $Id$
  */
 public class All extends TestSuite {
-
     /** Constructor
      */
-    public All (TestHarness harness) {
+    public All(TestHarness harness) {
         setTestHarness(harness);
     }
 
     /**
      * runSuite()
      */
-    public void runSuite () {
+    public void runSuite() {
         // Test basic graph model graph
         // THIS HANGS!!!
         // new BasicGraphModelTest(getTestHarness(),
@@ -57,7 +58,8 @@ public class All extends TestSuite {
     /** Create a default test harness and
      * run all tests on it.
      */
-    public static void main (String argv[]) {
-        ; new All(new TestHarness()).run();
+    public static void main(String[] argv) {
+        ;
+        new All(new TestHarness()).run();
     }
 }

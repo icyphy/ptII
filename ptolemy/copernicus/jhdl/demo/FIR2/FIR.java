@@ -25,15 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.jhdl.demo.FIR2;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.FixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.FixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -44,10 +44,11 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.actor.TypedIOPort;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// FIR
+
 /**
    This actor implements a type polymorphic finite-impulse response
    filter with multirate capability. Since this filter operates on
@@ -108,7 +109,6 @@ import ptolemy.actor.TypedIOPort;
    @see ptolemy.data.Token
 */
 public class FIR extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -118,11 +118,12 @@ public class FIR extends TypedAtomicActor {
      *   actor with this name.
      */
     public FIR(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
+
         // Set type constraints.
         //          ArrayType paramType = (ArrayType)taps.getType();
         //          InequalityTerm elementTerm = paramType.getElementTypeTerm();
@@ -138,42 +139,36 @@ public class FIR extends TypedAtomicActor {
         _data0 = _zero;
         _data1 = _zero;
         _data2 = _zero;
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     public TypedIOPort input;
 
     /** The output port. By default, the type of this output is constrained
      *  to be at least that of the input.
      */
     public TypedIOPort output;
+
     //      /** The decimation ratio of the filter. This must contain an
     //       *  IntToken, and by default it has value one.
     //       */
     //      public Parameter decimation;
-
     //      /** The decimation phase of the filter. This must contain an
     //       *  IntToken, and by default it has value zero.
     //       */
     //      public Parameter decimationPhase;
-
     //      /** The interpolation ratio of the filter. This must contain an
     //       *  IntToken, and by default it has value one.
     //       */
     //      public Parameter interpolation;
-
     //      /** The taps of the filter. This has a type of ArrayToken.
     //       *  By default, it contains an array with a single integer one,
     //       *  meaning that the output of the filter is the same as the input.
     //       */
     //      public Parameter taps;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     //      /** Set a flag that causes recalculation of various local variables
     //       *  that are used in execution on the next invocation of fire().
     //       *  @param attribute The attribute that changed.
@@ -220,10 +215,8 @@ public class FIR extends TypedAtomicActor {
     //          } else if (attribute == taps) {
     //              ArrayToken tapsToken = (ArrayToken)(taps.getToken());
     //              _taps = tapsToken.arrayValue();
-
     //              // Get a token representing zero in the appropriate type.
     //              _zero = _taps[0].zero();
-
     //              _reinitializeNeeded = true;
     //          } else {
     //              super.attributeChanged(attribute);
@@ -237,9 +230,8 @@ public class FIR extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        FIR newObject = (FIR)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FIR newObject = (FIR) (super.clone(workspace));
 
         // Set the type constraints.
         //          ArrayType paramType = (ArrayType)newObject.taps.getType();
@@ -250,17 +242,13 @@ public class FIR extends TypedAtomicActor {
     }
 
     // FIXME: State update should occur in postfire.
-
     //      public void fire() throws IllegalActionException {
     //          int a,b,c,d;
-
     //          a=3;
     //          b=a*4;
-
     //          a=2;
     //          c=a+5;
     //          d=b-c;
-
     //          if (d > 8) {
     //              d=a*a;
     //          }
@@ -270,25 +258,23 @@ public class FIR extends TypedAtomicActor {
      *  @exception IllegalActionException If parameter values are invalid,
      *   or if there is no director, or if runtime type conflicts occur.
      */
-
     public void fire() throws IllegalActionException {
-
         // Phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decimationPhaseValue value.
         //int phase = 1 - 0 - 1;
-
         // Transfer _decimationValue inputs to _data[]
         //for (int inC = 1; inC <= 1; inC++) {
-        if (--_mostRecent < 0) _mostRecent = 2;
+        if (--_mostRecent < 0) {
+            _mostRecent = 2;
+        }
 
-        _data0=input.get(0);
+        _data0 = input.get(0);
 
         //          switch(_mostRecent) {
         //          case 0: _data0 = input.get(0); break;
         //          case 1: _data1 = input.get(0); break;
         //          case 2: _data2 = input.get(0);
         //          }
-
         //Until switch support is working, use a bunch of ifs (should be
         //identical in the results, however
         //          if (_mostRecent == 0) {
@@ -298,14 +284,11 @@ public class FIR extends TypedAtomicActor {
         //          } else if (_mostRecent == 2) {
         //              _data2 = input.get(0);
         //          }
-
         //Can't support arrays yet
         //_data[_mostRecent] = input.get(0);
         //}
-
         // Interpolate once for each input consumed
         //for (int inC = 1; inC <= 1; inC++) {
-
         // Produce however many outputs are required
         // for each input consumed
         //while (phase < 1) {
@@ -314,10 +297,8 @@ public class FIR extends TypedAtomicActor {
         // Compute the inner product.
         //          for (int i = 0; i < _phaseLength; i++) {
         //              int tapsIndex = i;
-
         //              int dataIndex =
         //                  (_mostRecent + i)%(_data.length);
-
         //              if (tapsIndex < _taps.length) {
         //                  _tapItem = _taps[tapsIndex];
         //                  _dataItem = _data[dataIndex];
@@ -326,17 +307,16 @@ public class FIR extends TypedAtomicActor {
         //              }
         //              // else assume tap is zero, so do nothing.
         //          }
-
         //// Manual unrolling of above FOR loop
         int tapsIndex = 0;
 
-        int dataIndex = (_mostRecent + 0)%(3);
+        int dataIndex = (_mostRecent + 0) % (3);
 
         if (tapsIndex < 3) {
             _tapItem = _taps0;
+
             //Man, I need to find a way to get arrays working...
             //_dataItem = _data[dataIndex];
-
             if (dataIndex == 0) {
                 _dataItem = _data0;
             } else if (dataIndex == 1) {
@@ -345,20 +325,16 @@ public class FIR extends TypedAtomicActor {
                 _dataItem = _data2;
             }
 
-            _dataItem = _tapItem.multiply( _dataItem );
-            _outToken = _outToken.add( _dataItem );
+            _dataItem = _tapItem.multiply(_dataItem);
+            _outToken = _outToken.add(_dataItem);
         }
 
         //          tapsIndex = 1;
-
         //          dataIndex = (_mostRecent + 1)%(3);
-
         //          if (tapsIndex < 3) {
         //              _tapItem = _taps1;
-
         //              //Man, I need to find a way to get arrays working...
         //              //_dataItem = _data[dataIndex];
-
         //              if (dataIndex == 0) {
         //                  _dataItem = _data0;
         //              } else if (dataIndex == 1) {
@@ -366,21 +342,15 @@ public class FIR extends TypedAtomicActor {
         //              } else if (dataIndex == 2) {
         //                  _dataItem = _data2;
         //              }
-
         //              _dataItem = _tapItem.multiply( _dataItem );
         //              _outToken = _outToken.add( _dataItem );
         //          }
-
         //          tapsIndex = 2;
-
         //          dataIndex = (_mostRecent + 2)%(3);
-
         //          if (tapsIndex < 3) {
         //              _tapItem = _taps2;
-
         //              //Man, I need to find a way to get arrays working...
         //              //_dataItem = _data[dataIndex];
-
         //              if (dataIndex == 0) {
         //                  _dataItem = _data0;
         //              } else if (dataIndex == 1) {
@@ -388,14 +358,11 @@ public class FIR extends TypedAtomicActor {
         //              } else if (dataIndex == 2) {
         //                  _dataItem = _data2;
         //              }
-
         //              _dataItem = _tapItem.multiply( _dataItem );
         //              _outToken = _outToken.add( _dataItem );
         //          }
-
         output.send(0, _outToken);
     }
-
 
     /** Return false if the input does not have enough tokens to fire.
      *  Otherwise, return what the superclass returns.
@@ -407,9 +374,11 @@ public class FIR extends TypedAtomicActor {
         // If an attribute has changed since the last fire(), or if
         // this is the first fire(), then reinitialize.
         //if (_reinitializeNeeded) _reinitialize();
-
-        if (input.hasToken(0, 1)) return true; //super.prefire();
-        else return false;
+        if (input.hasToken(0, 1)) {
+            return true; //super.prefire();
+        } else {
+            return false;
+        }
     }
 
     /** Perform domain-specific initialization by calling the
@@ -421,16 +390,17 @@ public class FIR extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // Must be sure to throw away the old data buffer.
         _data0 = _zero;
         _data1 = _zero;
         _data2 = _zero;
+
         //_reinitializeNeeded = true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     // Reinitialize local variables in response to changes in attributes.
     //      protected void _reinitialize() throws IllegalActionException {
     //  //          if (_decimationPhaseValue >= _decimationValue) {
@@ -438,12 +408,9 @@ public class FIR extends TypedAtomicActor {
     //  //                      "Invalid decimationPhase: " + _decimationPhaseValue
     //  //                      + ". Must be less than decimation: " + _decimationValue + ".");
     //  //          }
-
     //          //_phaseLength = (int)(_taps.length / _interpolationValue);
     //          _phaseLength = _taps.length;
-
     //          //if ((_taps.length % _interpolationValue) != 0) _phaseLength++;
-
     //          // Create new data array and initialize index into it.
     //          // Avoid losing the data if possible.
     //          // FIXME: data is thrown away if the filter length increases.  This
@@ -458,11 +425,11 @@ public class FIR extends TypedAtomicActor {
     //          }
     //          _reinitializeNeeded = false;
     //      }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** The delay line. */
+
     //protected Token[] _data;
 
     /** The index into the delay line of the most recent input. */
@@ -471,23 +438,29 @@ public class FIR extends TypedAtomicActor {
     /** The phaseLength is ceiling(length/interpolation), where
      *  length is the number of taps.
      */
+
     //protected int _phaseLength;
 
     /** Decimation value. */
+
     //protected int _decimationValue = 1;
 
     /** Interpolation value. */
+
     //protected int _interpolationValue = 1;
 
     /** DecimationPhase value. */
+
     //protected int _decimationPhaseValue = 0;
 
     /** Indicator that at least one attribute has been changed
      *  since the last initialization.
      */
+
     //protected boolean _reinitializeNeeded = true;
 
     /** Local cache of the tap values. */
+
     //protected Token[] _taps;
 
     /** Local cache of the zero token. */
@@ -495,22 +468,19 @@ public class FIR extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The tokens needed in FIR
     private Token _outToken;
     private Token _tapItem;
     private Token _dataItem;
 
-
     //Arrays don't work yet, so I'll just use 3 taps with regular fields
     protected Token _taps0;
     protected Token _taps1;
     protected Token _taps2;
-
     protected Token _data0;
     protected Token _data1;
     protected Token _data2;
 
     //    private static final int NUM_TAPS=3;
-    private int NUM_TAPS=3;
+    private int NUM_TAPS = 3;
 }

@@ -28,15 +28,16 @@ COPYRIGHTENDKEY
 Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.Map;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtLogicalNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents logical operator(&&, ||)
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtLogicalNode extends ASTPtRootNode {
-
     public ASTPtLogicalNode(int id) {
         super(id);
     }
@@ -80,9 +80,11 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         if (!super.isCongruent(node, renaming)) {
             return false;
         }
-        if (_lexicalToken.kind != ((ASTPtLogicalNode)node)._lexicalToken.kind) {
+
+        if (_lexicalToken.kind != ((ASTPtLogicalNode) node)._lexicalToken.kind) {
             return false;
         }
+
         return true;
     }
 
@@ -102,8 +104,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitLogicalNode(this);
     }
 

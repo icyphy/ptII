@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.io.IOException;
@@ -48,8 +47,10 @@ import java.util.Set;
 
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
+
 /**
    This is a base class for almost all Ptolemy II objects.
    <p>
@@ -128,11 +129,9 @@ import ptolemy.util.StringUtilities;
    @see Attribute
    @see Workspace
 */
-public class NamedObj implements
-                          Changeable, Cloneable, Debuggable,
-                          DebugListener, Derivable, MoMLExportable,
-                          ModelErrorHandler, Moveable, Serializable {
-
+public class NamedObj implements Changeable, Cloneable, Debuggable,
+    DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable,
+    Serializable {
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 
@@ -141,7 +140,7 @@ public class NamedObj implements
      *  the workspace. Increment the version number of the workspace.
      */
     public NamedObj() {
-        this((Workspace)null);
+        this((Workspace) null);
     }
 
     /** Construct an object in the default workspace with the given name.
@@ -151,8 +150,7 @@ public class NamedObj implements
      *  @param name Name of this object.
      *  @exception IllegalActionException If the name has a period.
      */
-    public NamedObj(String name)
-            throws IllegalActionException {
+    public NamedObj(String name) throws IllegalActionException {
         this(_DEFAULT_WORKSPACE, name);
     }
 
@@ -168,7 +166,9 @@ public class NamedObj implements
         if (workspace == null) {
             workspace = _DEFAULT_WORKSPACE;
         }
+
         _workspace = workspace;
+
         // Exception cannot occur, so we ignore. The object does not
         // have a container, and is not already on the workspace list.
         // NOTE: This does not need to be write-synchronized on the workspace
@@ -180,16 +180,15 @@ public class NamedObj implements
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                    "Internal error in NamedObj constructor!"
-                    + ex.getMessage());
+                "Internal error in NamedObj constructor!" + ex.getMessage());
         }
+
         try {
             setName("");
         } catch (KernelException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                    "Internal error in NamedObj constructor!"
-                    + ex.getMessage());
+                "Internal error in NamedObj constructor!" + ex.getMessage());
         }
     }
 
@@ -203,11 +202,13 @@ public class NamedObj implements
      *  @exception IllegalActionException If the name has a period.
      */
     public NamedObj(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (workspace == null) {
             workspace = _DEFAULT_WORKSPACE;
         }
+
         _workspace = workspace;
+
         // Exception cannot occur, so we ignore. The object does not
         // have a container, and is not already on the workspace list.
         // NOTE: This does not need to be write-synchronized on the workspace
@@ -219,16 +220,15 @@ public class NamedObj implements
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                    "Internal error in NamedObj constructor!"
-                    + ex.getMessage());
+                "Internal error in NamedObj constructor!" + ex.getMessage());
         }
+
         try {
             setName(name);
         } catch (NameDuplicationException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                    "Internal error in NamedObj constructor!"
-                    + ex.getMessage());
+                "Internal error in NamedObj constructor!" + ex.getMessage());
         }
     }
 
@@ -256,16 +256,18 @@ public class NamedObj implements
      */
     public void addChangeListener(ChangeListener listener) {
         NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             container.addChangeListener(listener);
         } else {
-            synchronized(_changeLock) {
+            synchronized (_changeLock) {
                 if (_changeListeners == null) {
                     _changeListeners = new LinkedList();
                 } else {
                     // In case there is a previous instance, remove it.
                     removeChangeListener(listener);
                 }
+
                 _changeListeners.add(0, new WeakReference(listener));
             }
         }
@@ -278,19 +280,21 @@ public class NamedObj implements
     public void addDebugListener(DebugListener listener) {
         // NOTE: This method needs to be synchronized to prevent two
         // threads from each creating a new _debugListeners list.
-        synchronized(this) {
+        synchronized (this) {
             if (_debugListeners == null) {
                 _debugListeners = new LinkedList();
             }
         }
+
         // NOTE: This has to be synchronized to prevent
         // concurrent modification exceptions.
-        synchronized(_debugListeners) {
+        synchronized (_debugListeners) {
             if (_debugListeners.contains(listener)) {
                 return;
             } else {
                 _debugListeners.add(listener);
             }
+
             _debugging = true;
         }
     }
@@ -306,7 +310,8 @@ public class NamedObj implements
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {}
+        throws IllegalActionException {
+    }
 
     /** Return a list of the attributes contained by this object.
      *  If there are no attributes, return an empty list.
@@ -316,9 +321,11 @@ public class NamedObj implements
     public List attributeList() {
         try {
             _workspace.getReadAccess();
+
             if (_attributes == null) {
                 _attributes = new NamedList();
             }
+
             return _attributes.elementList();
         } finally {
             _workspace.doneReading();
@@ -335,17 +342,22 @@ public class NamedObj implements
     public List attributeList(Class filter) {
         try {
             _workspace.getReadAccess();
+
             if (_attributes == null) {
                 _attributes = new NamedList();
             }
+
             List result = new LinkedList();
             Iterator attributes = _attributes.elementList().iterator();
+
             while (attributes.hasNext()) {
                 Object attribute = attributes.next();
+
                 if (filter.isInstance(attribute)) {
                     result.add(attribute);
                 }
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -360,7 +372,8 @@ public class NamedObj implements
      *   to this container (not thrown in this base class).
      */
     public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {}
+        throws IllegalActionException {
+    }
 
     /** Clone the object into the current workspace by calling the clone()
      *  method that takes a Workspace argument.
@@ -392,8 +405,7 @@ public class NamedObj implements
      *  @see #exportMoML(Writer, int, String)
      *  @see #setDeferringChangeRequests(boolean)
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         // NOTE: It is safe to clone an object into a different
         // workspace. It is not safe to move an object to a new
         // workspace, by contrast. The reason this is safe is that
@@ -404,7 +416,8 @@ public class NamedObj implements
         // created it and have not returned the reference.
         try {
             _workspace.getReadAccess();
-            NamedObj newObject = (NamedObj)super.clone();
+
+            NamedObj newObject = (NamedObj) super.clone();
 
             // During the cloning process, change requests might
             // be issued (e.g. in an actor's _addEntity() method).
@@ -430,33 +443,35 @@ public class NamedObj implements
             } else {
                 newObject._workspace = workspace;
             }
+
             newObject._fullNameVersion = -1;
 
             if (_attributes != null) {
                 Iterator parameters = _attributes.elementList().iterator();
+
                 while (parameters.hasNext()) {
-                    Attribute parameter = (Attribute)parameters.next();
-                    Attribute newParameter
-                        = (Attribute)parameter.clone(workspace);
+                    Attribute parameter = (Attribute) parameters.next();
+                    Attribute newParameter = (Attribute) parameter.clone(workspace);
+
                     try {
                         newParameter.setContainer(newObject);
                     } catch (KernelException exception) {
                         throw new CloneNotSupportedException(
-                                "Failed to clone attribute "
-                                + parameter.getFullName()
-                                + ": "
-                                + exception);
+                            "Failed to clone attribute "
+                            + parameter.getFullName() + ": " + exception);
                     }
                 }
             }
+
             if (_debugging) {
                 if (workspace == null) {
                     _debug("Cloned", getFullName(), "into default workspace.");
                 } else {
                     _debug("Cloned", getFullName(), "into workspace:",
-                            workspace.getFullName());
+                        workspace.getFullName());
                 }
             }
+
             newObject._elementName = _elementName;
             newObject._source = _source;
 
@@ -464,7 +479,6 @@ public class NamedObj implements
             // here, having the same override properties as the original
             // seems reasonable, so we leave this be.
             // newObject._override = null;
-
             // NOTE: The value for the classname and superclass isn't
             // correct if this cloning operation is meant to create
             // an extension rather than a clone.  A clone has exactly
@@ -507,17 +521,24 @@ public class NamedObj implements
     public boolean deepContains(NamedObj inside) {
         try {
             _workspace.getReadAccess();
+
             // Start with the inside and check its containers in sequence.
             if (inside != null) {
-                if (_workspace != inside._workspace) return false;
+                if (_workspace != inside._workspace) {
+                    return false;
+                }
+
                 Nameable container = inside.getContainer();
+
                 while (container != null) {
                     if (container == this) {
                         return true;
                     }
+
                     container = container.getContainer();
                 }
             }
+
             return false;
         } finally {
             _workspace.doneReading();
@@ -532,10 +553,12 @@ public class NamedObj implements
     public int depthInHierarchy() {
         int result = 0;
         Nameable container = getContainer();
+
         while (container != null) {
             result++;
             container = container.getContainer();
         }
+
         return result;
     }
 
@@ -585,13 +608,16 @@ public class NamedObj implements
      */
     public void executeChangeRequests() {
         NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             container.executeChangeRequests();
             return;
         }
+
         List copy = null;
-        synchronized(_changeLock) {
-            if (_changeRequests != null && _changeRequests.size() > 0) {
+
+        synchronized (_changeLock) {
+            if ((_changeRequests != null) && (_changeRequests.size() > 0)) {
                 // Copy the change requests lists because it may
                 // be modified during execution.
                 copy = new LinkedList(_changeRequests);
@@ -603,11 +629,13 @@ public class NamedObj implements
                 _changeRequests.clear();
             }
         }
+
         // NOTE: Have released the change lock, which makes it
         // safe to obtain other locks below.
         if (copy != null) {
             Iterator requests = copy.iterator();
             boolean previousDeferStatus = isDeferringChangeRequests();
+
             try {
                 // Get write access once on the outside, to make
                 // getting write access on each individual
@@ -619,12 +647,13 @@ public class NamedObj implements
                 // parameter values does not require write
                 // access to the workspace.
                 // _workspace.getWriteAccess();
-
                 // Defer change requests so that if changes are
                 // requested during execution, they get queued.
                 previousDeferStatus = setDeferringChangeRequests(true);
+
                 while (requests.hasNext()) {
-                    ChangeRequest change = (ChangeRequest)requests.next();
+                    ChangeRequest change = (ChangeRequest) requests.next();
+
                     // The following is a bad idea because there may be
                     // many fine-grain change requests in the list, and
                     // notification triggers expensive operations such
@@ -634,11 +663,12 @@ public class NamedObj implements
                     // make it harder to optimize Vergil so that it
                     // repaints only damaged regions of the screen.
                     change.setListeners(_changeListeners);
+
                     if (_debugging) {
                         _debug("-- Executing change request "
-                                + "with description: "
-                                + change.getDescription());
+                            + "with description: " + change.getDescription());
                     }
+
                     change.execute();
                 }
             } finally {
@@ -739,7 +769,8 @@ public class NamedObj implements
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
      */
-    public final void exportMoML(Writer output, int depth) throws IOException {
+    public final void exportMoML(Writer output, int depth)
+        throws IOException {
         exportMoML(output, depth, getName());
     }
 
@@ -787,34 +818,30 @@ public class NamedObj implements
      *  @see #getDerivedLevel()
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         // If the object is not persistent, or the MoML is
         // redundant with what would be propagated, then do
         // not generate any MoML.
         if (_isMoMLSuppressed(depth)) {
             return;
         }
+
         String className = getClassName();
-        if (depth == 0 && getContainer() == null) {
+
+        if ((depth == 0) && (getContainer() == null)) {
             // No container, and this is a top level moml element.
             // Generate header information.
             if (_elementName.equals("entity")) {
                 output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                        + "<!DOCTYPE " + _elementName + " PUBLIC "
-                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                        + "    \"http://ptolemy.eecs.berkeley.edu"
-                        + "/xml/dtd/MoML_1.dtd\">\n");
+                    + "<!DOCTYPE " + _elementName + " PUBLIC "
+                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                    + "    \"http://ptolemy.eecs.berkeley.edu"
+                    + "/xml/dtd/MoML_1.dtd\">\n");
             }
         }
 
-        output.write(_getIndentPrefix(depth)
-                + "<"
-                + _elementName
-                + " name=\""
-                + name
-                + "\" class=\""
-                + className
-                + "\"");
+        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
+            + name + "\" class=\"" + className + "\"");
 
         if (getSource() != null) {
             output.write(" source=\"" + getSource() + "\">\n");
@@ -825,8 +852,7 @@ public class NamedObj implements
         _exportMoMLContents(output, depth + 1);
 
         // Write the close of the element.
-        output.write(_getIndentPrefix(depth) + "</"
-                + _elementName + ">\n");
+        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
     /** Get the attribute with the given name. The name may be compound,
@@ -840,6 +866,7 @@ public class NamedObj implements
     public Attribute getAttribute(String name) {
         try {
             _workspace.getReadAccess();
+
             if (_attributes == null) {
                 // No attribute has been added to this NamedObj yet.
                 return null;
@@ -851,14 +878,17 @@ public class NamedObj implements
                     // include 'this' so that we know where the problem
                     // is occurring.
                     throw new InternalErrorException(this, null,
-                            "This should not be happening: getAttribute() "
-                            + "was called with a null name");
+                        "This should not be happening: getAttribute() "
+                        + "was called with a null name");
                 }
+
                 String[] subnames = _splitName(name);
+
                 if (subnames[1] == null) {
                     return (Attribute) _attributes.get(name);
                 } else {
-                    Attribute match = (Attribute)_attributes.get(subnames[0]);
+                    Attribute match = (Attribute) _attributes.get(subnames[0]);
+
                     if (match == null) {
                         return null;
                     } else {
@@ -884,17 +914,18 @@ public class NamedObj implements
      *   the specified name that is not an instance of the specified class.
      */
     public Attribute getAttribute(String name, Class attributeClass)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Attribute attribute = getAttribute(name);
+
         if (attribute != null) {
             if (!attributeClass.isInstance(attribute)) {
                 throw new IllegalActionException(attribute,
-                        "Expected attribute of class "
-                        + attributeClass.getName()
-                        + " but got attribute of class "
-                        + attribute.getClass().getName());
+                    "Expected attribute of class " + attributeClass.getName()
+                    + " but got attribute of class "
+                    + attribute.getClass().getName());
             }
         }
+
         return attribute;
     }
 
@@ -929,6 +960,7 @@ public class NamedObj implements
         if (_className == null) {
             _className = getClass().getName();
         }
+
         return _className;
     }
 
@@ -1000,14 +1032,18 @@ public class NamedObj implements
     public String getFullName() {
         try {
             _workspace.getReadAccess();
+
             if (_fullNameVersion == _workspace.getVersion()) {
                 return _fullNameCache;
             }
+
             // Cache is not valid. Recalculate full name.
             String fullName = getName();
+
             // Use a hash set to keep track of what we've seen already.
             Set visited = new HashSet();
             visited.add(this);
+
             Nameable container = getContainer();
 
             while (container != null) {
@@ -1018,12 +1054,14 @@ public class NamedObj implements
                     // exceptions.  InvalidStateException is a runtime
                     // exception, so it need not be declared.
                     throw new InvalidStateException(
-                            "Container contains itself!");
+                        "Container contains itself!");
                 }
+
                 fullName = container.getName() + "." + fullName;
                 visited.add(container);
                 container = container.getContainer();
             }
+
             _fullNameCache = "." + fullName;
             _fullNameVersion = _workspace.getVersion();
             return _fullNameCache;
@@ -1078,15 +1116,19 @@ public class NamedObj implements
         if (parent == null) {
             return getFullName();
         }
+
         try {
             _workspace.getReadAccess();
+
             StringBuffer name = new StringBuffer(getName());
+
             // Use a hash set to keep track of what we've seen already.
             Set visited = new HashSet();
             visited.add(this);
+
             Nameable container = getContainer();
 
-            while (container != null && container != parent) {
+            while ((container != null) && (container != parent)) {
                 if (visited.contains(container)) {
                     // Cannot use "this" as a constructor argument to the
                     // exception or we'll get stuck infinitely
@@ -1095,16 +1137,19 @@ public class NamedObj implements
                     // exceptions.  InvalidStateException is a runtime
                     // exception, so it need not be declared.
                     throw new InvalidStateException(
-                            "Container contains itself!");
+                        "Container contains itself!");
                 }
+
                 name.insert(0, ".");
                 name.insert(0, container.getName());
                 visited.add(container);
                 container = container.getContainer();
             }
+
             if (container == null) {
                 return getFullName();
             }
+
             return name.toString();
         } finally {
             _workspace.doneReading();
@@ -1126,26 +1171,30 @@ public class NamedObj implements
      *   name but the wrong class is found.
      *  @see Derivable
      */
-    public List getPrototypeList()
-            throws IllegalActionException {
+    public List getPrototypeList() throws IllegalActionException {
         List result = new LinkedList();
         NamedObj container = getContainer();
         String relativeName = getName();
+
         while (container != null) {
             if (container instanceof Instantiable) {
-                Instantiable parent = ((Instantiable)container).getParent();
+                Instantiable parent = ((Instantiable) container).getParent();
+
                 if (parent != null) {
                     // Check whether the parent has it...
-                    NamedObj prototype = _getContainedObject(
-                            (NamedObj)parent, relativeName);
+                    NamedObj prototype = _getContainedObject((NamedObj) parent,
+                            relativeName);
+
                     if (prototype != null) {
                         result.add(prototype);
                     }
                 }
             }
+
             relativeName = container.getName() + "." + relativeName;
             container = container.getContainer();
         }
+
         return result;
     }
 
@@ -1188,8 +1237,7 @@ public class NamedObj implements
      *  @see #setModelErrorHandler(ModelErrorHandler handler)
      */
     public boolean handleModelError(NamedObj context,
-            IllegalActionException exception)
-            throws IllegalActionException {
+        IllegalActionException exception) throws IllegalActionException {
         // FIXME: This code fails horribly when one forgets to add a
         // BasicModelErrorHandler at the toplevel of the model.  In
         // reality, this code should do what BasicModelErrorHandler
@@ -1200,10 +1248,13 @@ public class NamedObj implements
                 return true;
             }
         }
+
         ModelErrorHandler container = getContainer();
+
         if (container != null) {
             return container.handleModelError(context, exception);
         }
+
         return false;
     }
 
@@ -1216,9 +1267,11 @@ public class NamedObj implements
      */
     public boolean isDeferringChangeRequests() {
         NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             return container.isDeferringChangeRequests();
         }
+
         return _deferChangeRequests;
     }
 
@@ -1238,10 +1291,12 @@ public class NamedObj implements
         if (_override == null) {
             return false;
         }
+
         if (_override.size() != 1) {
             return false;
         }
-        int override = ((Integer)_override.get(0)).intValue();
+
+        int override = ((Integer) _override.get(0)).intValue();
         return (override == 0);
     }
 
@@ -1254,7 +1309,7 @@ public class NamedObj implements
      *  @see MoMLExportable
      */
     public boolean isPersistent() {
-        return (_isPersistent == null || _isPersistent.booleanValue());
+        return ((_isPersistent == null) || _isPersistent.booleanValue());
     }
 
     /** React to a debug message by relaying it to any registered
@@ -1409,9 +1464,11 @@ public class NamedObj implements
         if (_override != null) {
             _getDerivedList(null, true, false, this, 0, _override, null);
         }
+
         Iterator containedObjects = containedObjectsIterator();
+
         while (containedObjects.hasNext()) {
-            NamedObj containedObject = (NamedObj)containedObjects.next();
+            NamedObj containedObject = (NamedObj) containedObjects.next();
             containedObject.propagateValues();
         }
     }
@@ -1425,15 +1482,18 @@ public class NamedObj implements
      */
     public synchronized void removeChangeListener(ChangeListener listener) {
         NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             container.removeChangeListener(listener);
         } else {
-            synchronized(_changeLock) {
+            synchronized (_changeLock) {
                 if (_changeListeners != null) {
                     ListIterator listeners = _changeListeners.listIterator();
+
                     while (listeners.hasNext()) {
-                        WeakReference reference =
-                            (WeakReference)listeners.next();
+                        WeakReference reference = (WeakReference) listeners
+                            .next();
+
                         if (reference.get() == listener) {
                             listeners.remove();
                         } else if (reference.get() == null) {
@@ -1454,13 +1514,16 @@ public class NamedObj implements
         if (_debugListeners == null) {
             return;
         }
+
         // NOTE: This has to be synchronized to prevent
         // concurrent modification exceptions.
-        synchronized(_debugListeners) {
+        synchronized (_debugListeners) {
             _debugListeners.remove(listener);
+
             if (_debugListeners.size() == 0) {
                 _debugging = false;
             }
+
             return;
         }
     }
@@ -1483,6 +1546,7 @@ public class NamedObj implements
      */
     public void requestChange(ChangeRequest change) {
         NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             container.requestChange(change);
         } else {
@@ -1491,13 +1555,15 @@ public class NamedObj implements
             // this execution.  But we don't want to hold a lock on the
             // this NamedObj during execution of the change because this
             // could lead to deadlock.  So we synchronize to _changeLock.
-            synchronized(_changeLock) {
+            synchronized (_changeLock) {
                 // Queue the request.
                 // Create the list of requests if it doesn't already exist
                 if (_changeRequests == null) {
                     _changeRequests = new LinkedList();
                 }
+
                 _changeRequests.add(change);
+
                 if (!_deferChangeRequests) {
                     executeChangeRequests();
                 }
@@ -1535,18 +1601,21 @@ public class NamedObj implements
      */
     public boolean setDeferringChangeRequests(boolean isDeferring) {
         NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             return container.setDeferringChangeRequests(isDeferring);
         }
 
         // Make sure to avoid modification of this flag in the middle
         // of a change request or change execution.
-        synchronized(_changeLock) {
+        synchronized (_changeLock) {
             boolean result = _deferChangeRequests;
             _deferChangeRequests = isDeferring;
+
             if (isDeferring == false) {
                 executeChangeRequests();
             }
+
             // NOTE: The reason for returning the previous value is
             // avoid a race condition where the value can be changed
             // between a call to isDeferringChangeRequest() and this
@@ -1617,29 +1686,36 @@ public class NamedObj implements
      *   an object with this name.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         String oldName = "";
+
         if (_debugging) {
             oldName = getFullName();
         }
+
         if (name == null) {
             name = new String("");
         }
+
         if (name.equals(_name)) {
             // Nothing to do.
             return;
         }
+
         int period = name.indexOf(".");
+
         if (period >= 0) {
             throw new IllegalActionException(this,
-                    "Cannot set a name with a period: " + name);
+                "Cannot set a name with a period: " + name);
         }
+
         try {
             _workspace.getWriteAccess();
             _name = name;
         } finally {
             _workspace.doneWriting();
         }
+
         if (_debugging) {
             _debug("Changed name from " + oldName + " to " + getFullName());
         }
@@ -1710,12 +1786,15 @@ public class NamedObj implements
     public List sortContainedObjects(Collection filter) {
         LinkedList result = new LinkedList();
         Iterator containedObjects = containedObjectsIterator();
+
         while (containedObjects.hasNext()) {
-            NamedObj object = (NamedObj)containedObjects.next();
+            NamedObj object = (NamedObj) containedObjects.next();
+
             if (filter.contains(object)) {
                 result.add(object);
             }
         }
+
         return result;
     }
 
@@ -1723,7 +1802,7 @@ public class NamedObj implements
      *  with syntax "className {fullName}".
      *  @return The class name and the full name. */
     public String toString() {
-        return getClass().getName() + " {" + getFullName()+ "}";
+        return getClass().getName() + " {" + getFullName() + "}";
     }
 
     /** Return the top level of the containment hierarchy.
@@ -1731,9 +1810,11 @@ public class NamedObj implements
      */
     public NamedObj toplevel() {
         NamedObj result = this;
+
         while (result.getContainer() != null) {
-            result = (NamedObj)result.getContainer();
+            result = (NamedObj) result.getContainer();
         }
+
         return result;
     }
 
@@ -1752,12 +1833,16 @@ public class NamedObj implements
         if (prefix == null) {
             prefix = "null";
         }
+
         prefix = _stripNumericSuffix(prefix);
+
         String candidate = prefix;
         int uniqueNameIndex = 2;
+
         while (getAttribute(candidate) != null) {
             candidate = prefix + uniqueNameIndex++;
         }
+
         return candidate;
     }
 
@@ -1774,15 +1859,18 @@ public class NamedObj implements
     public void validateSettables() throws IllegalActionException {
         // This base class contains only attributes, so check those.
         Iterator attributes = attributeList().iterator();
+
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute) attributes.next();
+
             if (attribute instanceof Settable) {
                 try {
-                    ((Settable)attribute).validate();
+                    ((Settable) attribute).validate();
                 } catch (IllegalActionException ex) {
                     handleModelError(this, ex);
                 }
             }
+
             attribute.validateSettables();
         }
     }
@@ -1857,20 +1945,23 @@ public class NamedObj implements
      *   an instance of the expect class (in derived classes).
      */
     protected void _addAttribute(Attribute p)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         try {
             _workspace.getWriteAccess();
+
             try {
                 if (_attributes == null) {
                     _attributes = new NamedList();
                 }
+
                 _attributes.append(p);
             } catch (IllegalActionException ex) {
                 // This exception should not be thrown.
                 throw new InternalErrorException(
-                        "Internal error in NamedObj _addAttribute() method!"
-                        + ex.getMessage());
+                    "Internal error in NamedObj _addAttribute() method!"
+                    + ex.getMessage());
             }
+
             if (_debugging) {
                 _debug("Added attribute", p.getName(), "to", getFullName());
             }
@@ -1896,9 +1987,10 @@ public class NamedObj implements
      */
     protected void _attachText(String name, String text) {
         try {
-            SingletonConfigurableAttribute icon
-                = new SingletonConfigurableAttribute(this, name);
+            SingletonConfigurableAttribute icon = new SingletonConfigurableAttribute(this,
+                    name);
             icon.setPersistent(false);
+
             // The first argument below is the base w.r.t. which to open
             // relative references within the text, which doesn't make
             // sense in this case, so it's null. The second argument is
@@ -1906,10 +1998,8 @@ public class NamedObj implements
             icon.configure(null, null, text);
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                    "Error creating singleton attribute named "
-                    + name
-                    + " for "
-                    + getFullName());
+                "Error creating singleton attribute named " + name + " for "
+                + getFullName());
         }
     }
 
@@ -1922,34 +2012,33 @@ public class NamedObj implements
      *   getting the attribute
      */
     protected void _cloneFixAttributeFields(NamedObj newObject)
-            throws CloneNotSupportedException {
+        throws CloneNotSupportedException {
         // If the new object has any public fields whose name
         // matches that of an attribute, then set the public field
         // equal to the attribute.
         Class myClass = getClass();
-        Field fields[] = myClass.getFields();
+        Field[] fields = myClass.getFields();
+
         for (int i = 0; i < fields.length; i++) {
             try {
                 // VersionAttribute has a final field
-                if ( !Modifier.isFinal(fields[i].getModifiers())) {
+                if (!Modifier.isFinal(fields[i].getModifiers())) {
                     Object object = fields[i].get(this);
+
                     if (object instanceof Attribute) {
                         String name = ((NamedObj) object).getName(this);
-                        fields[i].set(newObject,
-                                newObject.getAttribute(name));
+                        fields[i].set(newObject, newObject.getAttribute(name));
                     }
                 }
             } catch (IllegalAccessException ex) {
                 // CloneNotSupportedException does not have a
                 // constructor that takes a cause argument, so we call
                 // initCause() and then throw.
-                CloneNotSupportedException cloneException =
-                    new CloneNotSupportedException(
-                            "The field associated with "
-                            + fields[i].getName()
-                            + " could not be automatically cloned because "
-                            + ex.getMessage() + ".  This can be caused if "
-                            + "the field is not defined in a public class.");
+                CloneNotSupportedException cloneException = new CloneNotSupportedException(
+                        "The field associated with " + fields[i].getName()
+                        + " could not be automatically cloned because "
+                        + ex.getMessage() + ".  This can be caused if "
+                        + "the field is not defined in a public class.");
 
                 cloneException.initCause(ex);
                 throw cloneException;
@@ -1967,14 +2056,17 @@ public class NamedObj implements
             // add more debug listeners...
             // Yes, this is slow, but hey, it's debug code.
             List list;
+
             // NOTE: This used to synchronize on this, which caused
             // deadlocks.  We use a more specialized lock now.
-            synchronized(_debugListeners) {
+            synchronized (_debugListeners) {
                 list = new ArrayList(_debugListeners);
             }
+
             Iterator listeners = list.iterator();
+
             while (listeners.hasNext()) {
-                ((DebugListener)listeners.next()).event(event);
+                ((DebugListener) listeners.next()).event(event);
             }
         }
     }
@@ -1991,14 +2083,17 @@ public class NamedObj implements
             // add more debug listeners...
             // Yes, this is slow, but hey, it's debug code.
             List list;
+
             // NOTE: This used to synchronize on this, which caused
             // deadlocks.  We use a more specialized lock now.
-            synchronized(_debugListeners) {
+            synchronized (_debugListeners) {
                 list = new ArrayList(_debugListeners);
             }
+
             Iterator listeners = list.iterator();
+
             while (listeners.hasNext()) {
-                ((DebugListener)listeners.next()).message(message);
+                ((DebugListener) listeners.next()).message(message);
             }
         }
     }
@@ -2042,8 +2137,8 @@ public class NamedObj implements
      *  @param part3 The third part of the message.
      *  @param part4 The fourth part of the message.
      */
-    protected final void _debug(String part1, String part2,
-            String part3, String part4) {
+    protected final void _debug(String part1, String part2, String part3,
+        String part4) {
         if (_debugging) {
             _debug(part1 + " " + part2 + " " + part3 + " " + part4);
         }
@@ -2067,38 +2162,55 @@ public class NamedObj implements
     protected String _description(int detail, int indent, int bracket) {
         try {
             _workspace.getReadAccess();
+
             String result = _getIndentPrefix(indent);
-            if (bracket == 1 || bracket == 2) result += "{";
+
+            if ((bracket == 1) || (bracket == 2)) {
+                result += "{";
+            }
+
             if ((detail & CLASSNAME) != 0) {
                 result += getClass().getName();
+
                 if ((detail & FULLNAME) != 0) {
                     result += " ";
                 }
             }
+
             if ((detail & FULLNAME) != 0) {
-                result += "{" + getFullName() + "}";
+                result += ("{" + getFullName() + "}");
             }
+
             if ((detail & ATTRIBUTES) != 0) {
                 if ((detail & (CLASSNAME | FULLNAME)) != 0) {
                     result += " ";
                 }
+
                 result += "attributes {\n";
+
                 // Do not recursively list attributes unless the DEEP
                 // bit is set.
                 if ((detail & DEEP) == 0) {
                     detail &= ~ATTRIBUTES;
                 }
+
                 if (_attributes != null) {
                     Iterator parameters = _attributes.elementList().iterator();
+
                     while (parameters.hasNext()) {
-                        Attribute parameter = (Attribute)parameters.next();
-                        result += parameter._description(detail, indent+1, 2) +
-                            "\n";
+                        Attribute parameter = (Attribute) parameters.next();
+                        result += (parameter._description(detail, indent + 1, 2)
+                        + "\n");
                     }
                 }
-                result += _getIndentPrefix(indent) + "}";
+
+                result += (_getIndentPrefix(indent) + "}");
             }
-            if (bracket == 2) result += "}";
+
+            if (bracket == 2) {
+                result += "}";
+            }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -2116,11 +2228,12 @@ public class NamedObj implements
      *  @see #exportMoML(Writer, int)
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         if (_attributes != null) {
             Iterator attributes = _attributes.elementList().iterator();
+
             while (attributes.hasNext()) {
-                Attribute attribute = (Attribute)attributes.next();
+                Attribute attribute = (Attribute) attributes.next();
                 attribute.exportMoML(output, depth);
             }
         }
@@ -2137,9 +2250,8 @@ public class NamedObj implements
      *  @exception IllegalActionException If the object exists
      *   and has the wrong class. Not thrown in this base class.
      */
-    protected NamedObj _getContainedObject(
-            NamedObj container, String relativeName)
-            throws IllegalActionException {
+    protected NamedObj _getContainedObject(NamedObj container,
+        String relativeName) throws IllegalActionException {
         return null;
     }
 
@@ -2178,12 +2290,12 @@ public class NamedObj implements
      *  @return Return true to suppress MoML export.
      */
     protected boolean _isMoMLSuppressed(int depth) {
-
         // Check whether suppression of MoML has been explicitly
         // requested.
         if (_isPersistent != null) {
             return !_isPersistent.booleanValue();
         }
+
         // Object is persistent, but export may still not
         // be required since the structure and values might
         // be implied by inheritance. However, if that
@@ -2196,10 +2308,10 @@ public class NamedObj implements
             // above in the hierarchy where we are exporting.
             return false;
         }
+
         // At this point, we know the object is implied.
         // However, we may need to export anyway because it
         // may have an overridden value.
-
         // Export MoML if the value of the object is
         // propagated in but from outside the scope
         // of the export.
@@ -2207,12 +2319,13 @@ public class NamedObj implements
             // Export MoML if the value of the object is
             // propagated in but from outside the scope
             // of the export.
-            if (_override.size() > depth + 1) {
+            if (_override.size() > (depth + 1)) {
                 return false;
             }
+
             // Export MoML if the value has been set directly.
-            if (_override.size() == 1
-                    && ((Integer)_override.get(0)).intValue() == 0) {
+            if ((_override.size() == 1)
+                    && (((Integer) _override.get(0)).intValue() == 0)) {
                 return false;
             }
         }
@@ -2220,8 +2333,10 @@ public class NamedObj implements
         // If any contained object wishes to have
         // MoML exported, then this object will export MoML.
         Iterator objects = containedObjectsIterator();
+
         while (objects.hasNext()) {
-            NamedObj object = (NamedObj)objects.next();
+            NamedObj object = (NamedObj) objects.next();
+
             if (!object._isMoMLSuppressed(depth + 1)) {
                 return false;
             }
@@ -2248,9 +2363,11 @@ public class NamedObj implements
      */
     protected void _markContentsDerived(int depth) {
         depth = depth + 1;
+
         Iterator objects = containedObjectsIterator();
+
         while (objects.hasNext()) {
-            NamedObj containedObject = (NamedObj)objects.next();
+            NamedObj containedObject = (NamedObj) objects.next();
             containedObject.setDerivedLevel(depth);
             containedObject._markContentsDerived(depth);
 
@@ -2259,7 +2376,7 @@ public class NamedObj implements
             // cloned from an object that had persistence
             // set to true), then override that and
             // reset to where persistence is unspecified.
-            if (containedObject._isPersistent != null
+            if ((containedObject._isPersistent != null)
                     && containedObject._isPersistent.booleanValue()) {
                 containedObject._isPersistent = null;
             }
@@ -2284,12 +2401,12 @@ public class NamedObj implements
      *   as this one.
      */
     protected NamedObj _propagateExistence(NamedObj container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
-            return (NamedObj)clone(container.workspace());
+            return (NamedObj) clone(container.workspace());
         } catch (CloneNotSupportedException e) {
             throw new IllegalActionException(this, e,
-                    "Failed to propagate instance.");
+                "Failed to propagate instance.");
         }
     }
 
@@ -2306,7 +2423,7 @@ public class NamedObj implements
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
+        throws IllegalActionException {
     }
 
     /** Remove the given attribute.
@@ -2318,10 +2435,11 @@ public class NamedObj implements
     protected void _removeAttribute(Attribute param) {
         try {
             _workspace.getWriteAccess();
-            _attributes.remove((Nameable)param);
+            _attributes.remove((Nameable) param);
+
             if (_debugging) {
                 _debug("Removed attribute", param.getName(), "from",
-                        getFullName());
+                    getFullName());
             }
         } finally {
             _workspace.doneWriting();
@@ -2338,12 +2456,14 @@ public class NamedObj implements
     protected static final String[] _splitName(String name) {
         String[] result = new String[2];
         int period = name.indexOf(".");
+
         if (period < 0) {
             result[0] = name;
         } else {
             result[0] = name.substring(0, period);
             result[1] = name.substring(period + 1);
         }
+
         return result;
     }
 
@@ -2359,25 +2479,21 @@ public class NamedObj implements
         // membership.
         int length = string.length();
         char[] chars = string.toCharArray();
+
         for (int i = length - 1; i >= 0; i--) {
             char current = chars[i];
-            if (current == '0'
-                    || current == '1'
-                    || current == '2'
-                    || current == '3'
-                    || current == '4'
-                    || current == '5'
-                    || current == '6'
-                    || current == '7'
-                    || current == '8'
-                    || current == '9'
-                    || current == '_') {
+
+            if ((current == '0') || (current == '1') || (current == '2')
+                    || (current == '3') || (current == '4') || (current == '5')
+                    || (current == '6') || (current == '7') || (current == '8')
+                    || (current == '9') || (current == '_')) {
                 length--;
             } else {
                 // Found a non-numeric, so we are done.
                 break;
             }
         }
+
         if (length < string.length()) {
             // Some stripping occurred.
             char[] result = new char[length];
@@ -2475,17 +2591,12 @@ public class NamedObj implements
      *  @exception IllegalActionException If propagate is true
      *   and propagation fails.
      */
-    private List _getDerivedList(
-            HashSet visited,
-            boolean propagate,
-            boolean force,
-            NamedObj context,
-            int depth,
-            List override,
-            String relativeName)
-            throws IllegalActionException {
+    private List _getDerivedList(HashSet visited, boolean propagate,
+        boolean force, NamedObj context, int depth, List override,
+        String relativeName) throws IllegalActionException {
         try {
             workspace().getReadAccess();
+
             LinkedList result = new LinkedList();
 
             // We may have visited this container already, in
@@ -2505,38 +2616,40 @@ public class NamedObj implements
                     return result;
                 }
             }
+
             visited.add(context);
 
             // Need to do deepest propagations
             // (those closest to the root of the tree) first.
             NamedObj container = context.getContainer();
+
             if (container != null) {
                 String newRelativeName;
+
                 if (relativeName == null) {
                     newRelativeName = context.getName();
                 } else {
                     newRelativeName = context.getName() + "." + relativeName;
                 }
+
                 // Create a new override list to pass to the container.
                 List newOverride = null;
+
                 if (propagate) {
                     newOverride = new LinkedList(override);
+
                     // If the override list is not long enough for the
                     // new depth, make it long enough. It should at most
                     // be one element short.
-                    if (newOverride.size() <= depth + 1) {
+                    if (newOverride.size() <= (depth + 1)) {
                         newOverride.add(new Integer(0));
                     }
                 }
-                result.addAll(_getDerivedList(
-                                      visited,
-                                      propagate,
-                                      force,
-                                      container,
-                                      depth + 1,
-                                      newOverride,
-                                      newRelativeName));
+
+                result.addAll(_getDerivedList(visited, propagate, force,
+                        container, depth + 1, newOverride, newRelativeName));
             }
+
             if (!(context instanceof Instantiable)) {
                 // This level can't possibly defer, so it has
                 // nothing to add.
@@ -2545,25 +2658,30 @@ public class NamedObj implements
 
             // Extract the current breadth from the list.
             int myBreadth = 0;
+
             if (propagate) {
-                myBreadth = ((Integer)override.get(depth)).intValue();
+                myBreadth = ((Integer) override.get(depth)).intValue();
             }
 
             // Iterate over the children.
-            List othersList = ((Instantiable)context).getChildren();
+            List othersList = ((Instantiable) context).getChildren();
+
             if (othersList != null) {
                 Iterator others = othersList.iterator();
+
                 while (others.hasNext()) {
-                    WeakReference reference = (WeakReference)others.next();
-                    NamedObj other = (NamedObj)reference.get();
+                    WeakReference reference = (WeakReference) others.next();
+                    NamedObj other = (NamedObj) reference.get();
+
                     if (other != null) {
                         // Found a deferral.
                         // Look for an object with the relative name.
                         NamedObj candidate = other;
+
                         if (relativeName != null) {
-                            candidate =
-                                _getContainedObject(other, relativeName);
+                            candidate = _getContainedObject(other, relativeName);
                         }
+
                         if (candidate == null) {
                             if (force) {
                                 // Need to get the container.
@@ -2571,16 +2689,17 @@ public class NamedObj implements
                                 // the relativeName?
                                 NamedObj remoteContainer = other;
                                 int lastPeriod = relativeName.lastIndexOf(".");
+
                                 if (lastPeriod > 0) {
-                                    String containerName
-                                        = relativeName.substring(
-                                                0, lastPeriod);
+                                    String containerName = relativeName
+                                        .substring(0, lastPeriod);
                                     remoteContainer = getContainer()
-                                        ._getContainedObject(
-                                                other, containerName);
+                                        ._getContainedObject(other,
+                                                containerName);
                                 }
-                                candidate =
-                                    _propagateExistence(remoteContainer);
+
+                                candidate = _propagateExistence(remoteContainer);
+
                                 // Indicate that the existence of the
                                 // candidate is implied by a
                                 // parent-child relationship at the
@@ -2591,13 +2710,13 @@ public class NamedObj implements
                                 // No candidate and no error.  In theory, we
                                 // should never reach this line.
                                 throw new InternalErrorException("Expected "
-                                        + other.getFullName()
-                                        + " to contain an object named "
-                                        + relativeName
-                                        + " of type "
-                                        + getClass().toString());
+                                    + other.getFullName()
+                                    + " to contain an object named "
+                                    + relativeName + " of type "
+                                    + getClass().toString());
                             }
                         }
+
                         // We may have done this already.  Check this
                         // by finding the object that will be affected by
                         // this propagation.
@@ -2613,13 +2732,12 @@ public class NamedObj implements
                         // determine whether the candidate object is
                         // shadowed, and if it is not, then apply the
                         // propagation change to it.
-
                         if (propagate) {
-
                             // Is it shadowed?  Create a new override
                             // list to pass to the candidate.
                             newOverride = new LinkedList(override);
                             newOverride.set(depth, new Integer(myBreadth + 1));
+
                             if (_isShadowed(candidate._override, newOverride)) {
                                 // Yes it is.
                                 continue;
@@ -2628,7 +2746,6 @@ public class NamedObj implements
                             // FIXME: If the following throws an
                             // exception, we have to somehow restore
                             // values of previous propagations.
-
                             _propagateValue(candidate);
 
                             // Set the override.
@@ -2642,14 +2759,9 @@ public class NamedObj implements
                         // existence of objects derived from this candidate
                         // will be determined by the depth of propagation from
                         // this candidate.
-                        result.addAll(candidate._getDerivedList(
-                                              visited,
-                                              propagate,
-                                              force,
-                                              candidate,
-                                              0,
-                                              newOverride,
-                                              null));
+                        result.addAll(candidate._getDerivedList(visited,
+                                propagate, force, candidate, 0, newOverride,
+                                null));
 
                         // Note that the above recursive call will
                         // add the candidate to the HashSet, so we
@@ -2657,6 +2769,7 @@ public class NamedObj implements
                     }
                 }
             }
+
             return result;
         } finally {
             workspace().doneReading();
@@ -2675,33 +2788,39 @@ public class NamedObj implements
         if (candidate == null) {
             return false;
         }
+
         if (changer == null) {
             // Probably it makes no sense for the second argument
             // to be null, but in case it is, we declare that there
             // is shadowing if it is.
             return true;
         }
+
         // If the the candidate object has a value that has been
         // set more locally (involving fewer levels of the hierarchy)
         // than the proposed changer path, then it is shadowed.
         if (candidate.size() < changer.size()) {
             return true;
         }
+
         // If the sizes are equal, then we need to compare the
         // elements of the list, starting with the last.
         if (candidate.size() == changer.size()) {
             int index = candidate.size() - 1;
-            while (index >= 0
+
+            while ((index >= 0)
                     && candidate.get(index).equals(changer.get(index))) {
                 index--;
             }
+
             if (index < 0) {
                 // The two lists are identical, so there be no shadowing.
                 return false;
             } else {
-                int candidateBreadth =
-                    ((Integer)candidate.get(index)).intValue();
-                int changerBreadth = ((Integer)changer.get(index)).intValue();
+                int candidateBreadth = ((Integer) candidate.get(index))
+                    .intValue();
+                int changerBreadth = ((Integer) changer.get(index)).intValue();
+
                 if (candidateBreadth < changerBreadth) {
                     return true;
                 }
@@ -2713,7 +2832,6 @@ public class NamedObj implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         friendly variables                 ////
-
     // The following is friendly to support the move* methods of
     // Attribute.
 
@@ -2769,7 +2887,6 @@ public class NamedObj implements
      *  ports, relations, and entities as well.
      */
     protected class ContainedObjectsIterator implements Iterator {
-
         /** Return true if the iteration has more elements.
          *  In this base class, this returns true if there are more
          *  attributes.
@@ -2779,6 +2896,7 @@ public class NamedObj implements
             if (_attributeListIterator == null) {
                 _attributeListIterator = attributeList().iterator();
             }
+
             return _attributeListIterator.hasNext();
         }
 
@@ -2790,6 +2908,7 @@ public class NamedObj implements
             if (_attributeListIterator == null) {
                 _attributeListIterator = attributeList().iterator();
             }
+
             return _attributeListIterator.next();
         }
 

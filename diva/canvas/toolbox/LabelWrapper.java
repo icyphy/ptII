@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.toolbox;
 
 import java.awt.Graphics2D;
@@ -38,6 +37,7 @@ import javax.swing.SwingConstants;
 import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
+
 
 /** A LabelWrapper is a figure that attaches a label to some other figure.
  * The location at which the label is attached can (in this class) be
@@ -56,7 +56,6 @@ import diva.canvas.Figure;
  * @author John Reekie
  */
 public class LabelWrapper extends AbstractFigure {
-
     /** The child
      */
     private Figure _child = null;
@@ -72,18 +71,19 @@ public class LabelWrapper extends AbstractFigure {
     /** Construct a new figure with the given child figure and
      * the given string.
      */
-    public LabelWrapper (Figure f, String label) {
+    public LabelWrapper(Figure f, String label) {
         _child = f;
         f.setParent(this);
 
         _label = new LabelFigure(label);
+
         Point2D pt = CanvasUtilities.getLocation(_child.getBounds(), _anchor);
         _label.translateTo(pt);
     }
 
     /** Get the bounds of this figure.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         Rectangle2D bounds = _child.getBounds();
         Rectangle2D.union(bounds, _label.getBounds(), bounds);
         return bounds;
@@ -91,14 +91,14 @@ public class LabelWrapper extends AbstractFigure {
 
     /** Get the child figure
      */
-    public Figure getChild () {
+    public Figure getChild() {
         return _child;
     }
 
     /** Get the label. This can be used to adjust the label
      * appearance, anchor, and so on.
      */
-    public LabelFigure getLabel () {
+    public LabelFigure getLabel() {
         return _label;
     }
 
@@ -106,20 +106,20 @@ public class LabelWrapper extends AbstractFigure {
      * of the child figure only -- the label is not included
      * in the shape.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         return _child.getShape();
     }
 
     /** We are hit if either the child or the figure is hit.
      */
-    public boolean hit (Rectangle2D r) {
+    public boolean hit(Rectangle2D r) {
         return _child.hit(r) || _label.hit(r);
     }
 
     /** Paint this figure
      */
-    public void paint (Graphics2D g) {
-        if (_child != null && isVisible()) {
+    public void paint(Graphics2D g) {
+        if ((_child != null) && isVisible()) {
             _child.paint(g);
             _label.paint(g);
         }
@@ -130,8 +130,9 @@ public class LabelWrapper extends AbstractFigure {
      * It can be any of the positioning constants defined
      * in SwingConstants.
      */
-    public void setAnchor (int anchor) {
+    public void setAnchor(int anchor) {
         this._anchor = anchor;
+
         Point2D pt = CanvasUtilities.getLocation(_child.getBounds(), anchor);
         repaint();
         _label.translateTo(pt);
@@ -140,13 +141,12 @@ public class LabelWrapper extends AbstractFigure {
 
     /** Transform the figure with the supplied transform.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         repaint();
         _child.transform(at);
+
         Point2D pt = CanvasUtilities.getLocation(_child.getBounds(), _anchor);
         _label.translateTo(pt);
         repaint();
     }
 }
-
-

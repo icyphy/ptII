@@ -79,9 +79,8 @@ import diva.canvas.toolbox.BasicFigure;
    @Pt.ProposedRating Yellow (ismael)
    @Pt.AcceptedRating Red (cxh)
 */
-public class ViewScreen2D extends GRActor2D
-    implements Placeable, ViewScreenInterface{
-
+public class ViewScreen2D extends GRActor2D implements Placeable,
+    ViewScreenInterface {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -95,7 +94,7 @@ public class ViewScreen2D extends GRActor2D
      *   CompositeActor and the name collides with an entity in the container.
      */
     public ViewScreen2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
@@ -103,43 +102,36 @@ public class ViewScreen2D extends GRActor2D
         sceneGraphIn.setTypeEquals(Scene2DToken.TYPE);
         sceneGraphIn.setMultiport(true);
 
-        horizontalPixels = new Parameter(this,
-                "horizontalPixels", new IntToken(400));
+        horizontalPixels = new Parameter(this, "horizontalPixels",
+                new IntToken(400));
         horizontalPixels.setTypeEquals(BaseType.INT);
 
-        verticalPixels = new Parameter(this,
-                "verticalPixels", new IntToken(400));
+        verticalPixels = new Parameter(this, "verticalPixels", new IntToken(400));
         verticalPixels.setTypeEquals(BaseType.INT);
 
-        upperLeftX = new Parameter(this,
-                "upperLeftX", new IntToken(0));
+        upperLeftX = new Parameter(this, "upperLeftX", new IntToken(0));
         upperLeftX.setTypeEquals(BaseType.INT);
 
-        upperLeftY = new Parameter(this,
-                "upperLeftY", new IntToken(400));
+        upperLeftY = new Parameter(this, "upperLeftY", new IntToken(400));
         upperLeftY.setTypeEquals(BaseType.INT);
 
-        lowerRightX = new Parameter(this,
-                "lowerRightX", new IntToken(400));
+        lowerRightX = new Parameter(this, "lowerRightX", new IntToken(400));
         lowerRightX.setTypeEquals(BaseType.INT);
 
-        lowerRightY = new Parameter(this,
-                "lowerRightY", new IntToken(0));
+        lowerRightY = new Parameter(this, "lowerRightY", new IntToken(0));
         lowerRightY.setTypeEquals(BaseType.INT);
 
-        rotatable = new Parameter(this,
-                "rotatable", new BooleanToken(true));
+        rotatable = new Parameter(this, "rotatable", new BooleanToken(true));
         rotatable.setTypeEquals(BaseType.BOOLEAN);
 
-        scalable = new Parameter(this,
-                "scalable", new BooleanToken(false));
+        scalable = new Parameter(this, "scalable", new BooleanToken(false));
         scalable.setTypeEquals(BaseType.BOOLEAN);
 
-        showAxes = new Parameter(this,"showAxes", new BooleanToken(false));
+        showAxes = new Parameter(this, "showAxes", new BooleanToken(false));
         showAxes.setTypeEquals(BaseType.BOOLEAN);
 
-        translatable = new Parameter(this,
-                "translatable", new BooleanToken(false));
+        translatable = new Parameter(this, "translatable",
+                new BooleanToken(false));
         translatable.setTypeEquals(BaseType.BOOLEAN);
 
         backgroundColor = new ColorAttribute(this, "backgroundColor");
@@ -221,7 +213,6 @@ public class ViewScreen2D extends GRActor2D
      */
     public Parameter lowerRightY;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -229,10 +220,10 @@ public class ViewScreen2D extends GRActor2D
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         // Repaint the entire canvas.  This ensures that drawing is
         // done correctly, despite the fact that all of the transform
         // calls on figures are happening outside of the swing thread.
-
         _canvas.repaint();
     }
 
@@ -250,7 +241,6 @@ public class ViewScreen2D extends GRActor2D
     public BasicFigure getCrosshairX() {
         return _crosshairX;
     }
-
 
     /** Return the vertical component of the crosshair which marks the
      * origin.
@@ -275,13 +265,11 @@ public class ViewScreen2D extends GRActor2D
         return _selectedFigure;
     }
 
-
     /** Initialize the execution.  Create the ViewScreen2D frame if
      *  it hasn't been set using the place() method.
      *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
-
         super.initialize();
 
         // Create a frame, if necessary, along with the canvas and
@@ -316,16 +304,22 @@ public class ViewScreen2D extends GRActor2D
     public void place(Container container) {
         _container = container;
 
-        if (_container == null) return;
+        if (_container == null) {
+            return;
+        }
+
         Container c = _container.getParent();
+
         while (c.getParent() != null) {
             c = c.getParent();
         }
+
         // If we had created a frame before, then blow it away.
         if (_frame != null) {
             _frame.dispose();
             _frame = null;
         }
+
         try {
             _createViewScreen2D();
         } catch (IllegalActionException ex) {
@@ -333,13 +327,11 @@ public class ViewScreen2D extends GRActor2D
         }
     }
 
-
     /** Update the state of this object to reflect which figure is
      *  currently selected in the viewscreen.
      * @param figure The figure currently selected.
      */
-    public void setSelectedFigure(Figure figure)
-    {
+    public void setSelectedFigure(Figure figure) {
         _selectedFigure = figure;
         System.out.println("setSelectedFigure Called");
     }
@@ -360,8 +352,9 @@ public class ViewScreen2D extends GRActor2D
      */
     protected void _addChild(Figure figure) throws IllegalActionException {
         if (figure.getInteractor() instanceof FigureInteractor) {
-            ((FigureInteractor)(figure.getInteractor())).setViewScreen(this);
+            ((FigureInteractor) (figure.getInteractor())).setViewScreen(this);
         }
+
         _layer.add(figure);
     }
 
@@ -386,9 +379,11 @@ public class ViewScreen2D extends GRActor2D
             _frame = new JFrame("ViewScreen2D");
             _frame.show();
             _frame.validate();
+
             //  _frame.setSize(horizontalDimension+50,verticalDimension);
             _container = _frame.getContentPane();
         }
+
         // Set the frame to be visible.
         if (_frame != null) {
             _frame.setVisible(true);
@@ -398,6 +393,7 @@ public class ViewScreen2D extends GRActor2D
         if (_canvas != null) {
             _container.remove(_canvas);
         }
+
         GraphicsPane pane = new GraphicsPane();
         _layer = pane.getForegroundLayer();
         _overlayLayer = new OverlayLayer();
@@ -406,54 +402,51 @@ public class ViewScreen2D extends GRActor2D
 
         _container.add("Center", _canvas);
         _canvas.setMinimumSize(new Dimension(horizontalDimension,
-                                       verticalDimension));
+                verticalDimension));
         _canvas.setMaximumSize(new Dimension(horizontalDimension,
-                                       verticalDimension));
+                verticalDimension));
         _canvas.setPreferredSize(new Dimension(horizontalDimension,
-                                         verticalDimension));
+                verticalDimension));
+
         if (_frame != null) {
             _frame.pack();
         }
 
-        double upperLeftXValue =
-            ((IntToken)upperLeftX.getToken()).doubleValue();
-        double upperLeftYValue =
-            ((IntToken)upperLeftY.getToken()).doubleValue();
-        double lowerRightXValue =
-            ((IntToken)lowerRightX.getToken()).doubleValue();
-        double lowerRightYValue =
-            ((IntToken)lowerRightY.getToken()).doubleValue();
-        java.awt.geom.Rectangle2D visibleRect =
-            new java.awt.geom.Rectangle2D.Double(
-                    upperLeftXValue,
-                    upperLeftYValue,
-                    lowerRightXValue - upperLeftXValue,
-                    lowerRightYValue - upperLeftYValue);
-        if (visibleRect.getHeight() == 0 || visibleRect.getWidth() == 0) {
-            throw new IllegalActionException(this, "The width and height " +
-                    "of the visible rectangle cannot be zero.");
+        double upperLeftXValue = ((IntToken) upperLeftX.getToken()).doubleValue();
+        double upperLeftYValue = ((IntToken) upperLeftY.getToken()).doubleValue();
+        double lowerRightXValue = ((IntToken) lowerRightX.getToken())
+            .doubleValue();
+        double lowerRightYValue = ((IntToken) lowerRightY.getToken())
+            .doubleValue();
+        java.awt.geom.Rectangle2D visibleRect = new java.awt.geom.Rectangle2D.Double(upperLeftXValue,
+                upperLeftYValue, lowerRightXValue - upperLeftXValue,
+                lowerRightYValue - upperLeftYValue);
+
+        if ((visibleRect.getHeight() == 0) || (visibleRect.getWidth() == 0)) {
+            throw new IllegalActionException(this,
+                "The width and height "
+                + "of the visible rectangle cannot be zero.");
         }
 
-        AffineTransform transform = CanvasUtilities.computeTransform(
-                visibleRect, _canvas.getBounds());
+        AffineTransform transform = CanvasUtilities.computeTransform(visibleRect,
+                _canvas.getBounds());
         System.out.println("transform = " + transform);
 
         //       _origin = new Point2D.Double(
         //                 _container.getWidth()/2, _container.getHeight()/2);
         //         pane.translate(_origin.x, _origin.y);
-
         pane.setTransform(transform);
         pane.setAntialiasing(true);
 
-        _crosshairX = new BasicFigure(
-                new java.awt.geom.Line2D.Double(0, 2, 0, -2));
-        _crosshairY = new BasicFigure(
-                new java.awt.geom.Line2D.Double(2, 0, -2, 0));
+        _crosshairX = new BasicFigure(new java.awt.geom.Line2D.Double(0, 2, 0,
+                    -2));
+        _crosshairY = new BasicFigure(new java.awt.geom.Line2D.Double(2, 0, -2,
+                    0));
         _overlayLayer.add(_crosshairX.getShape());
         _overlayLayer.add(_crosshairY.getShape());
 
         _eventHandler = new ViewScreen2DListener();
-        _eventLayer  = new EventLayer();
+        _eventLayer = new EventLayer();
         _eventLayer.addLayerListener(_eventHandler);
         _eventLayer.addLayerMotionListener(_eventHandler);
 
@@ -478,15 +471,15 @@ public class ViewScreen2D extends GRActor2D
         return ((IntToken) verticalPixels.getToken()).intValue();
     }
 
-    protected boolean _isRotatable() throws IllegalActionException  {
+    protected boolean _isRotatable() throws IllegalActionException {
         return ((BooleanToken) rotatable.getToken()).booleanValue();
     }
 
-    protected boolean _isScalable() throws IllegalActionException  {
+    protected boolean _isScalable() throws IllegalActionException {
         return ((BooleanToken) scalable.getToken()).booleanValue();
     }
 
-    protected boolean _isTranslatable() throws IllegalActionException  {
+    protected boolean _isTranslatable() throws IllegalActionException {
         return ((BooleanToken) translatable.getToken()).booleanValue();
     }
 
@@ -494,9 +487,9 @@ public class ViewScreen2D extends GRActor2D
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
-        for (int i = 0 ; i < width; i++) {
-            Scene2DToken sceneToken = (Scene2DToken)
-                sceneGraphIn.get(i);
+
+        for (int i = 0; i < width; i++) {
+            Scene2DToken sceneToken = (Scene2DToken) sceneGraphIn.get(i);
             Figure figure = sceneToken.getFigure();
             _addChild(figure);
         }
@@ -504,10 +497,8 @@ public class ViewScreen2D extends GRActor2D
 
     ///////////////////////////////////////////////////////////////////
     ////                       private inner classes               ////
-
-    public class ViewScreen2DListener
-        implements LayerListener, LayerMotionListener, KeyListener {
-
+    public class ViewScreen2DListener implements LayerListener,
+        LayerMotionListener, KeyListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -522,17 +513,14 @@ public class ViewScreen2D extends GRActor2D
             Iterator allFigures = _layer.figures();
 
             if (selectedFigure != null) {
-                ((FigureInteractor)selectedFigure.getInteractor())
-                    .keyPressed(e);
+                ((FigureInteractor) selectedFigure.getInteractor()).keyPressed(e);
+
                 while (allFigures.hasNext()) {
-                    AbstractFigure figure =
-                        ((AbstractFigure)allFigures.next());
+                    AbstractFigure figure = ((AbstractFigure) allFigures.next());
                     //if (selectedFigure.hit(figure.getFigure().getBounds()))
                     {
-
                         //((RectangularFigure2D)selectedFigure)
                         //.collision(), false);
-
                     }
                 }
             }
@@ -547,10 +535,8 @@ public class ViewScreen2D extends GRActor2D
 
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 _canvas.getCanvasPane().scale(_origin.x, _origin.y, .5, .5);
-
             }
         }
-
 
         /** Forward any keyReleased events to the figure which is
          * selected in the viewscreen.  Disable relocation of the
@@ -560,16 +546,15 @@ public class ViewScreen2D extends GRActor2D
          */
         public void keyReleased(KeyEvent e) {
             Figure selectedFigure = getSelectedFigure();
+
             if (selectedFigure != null) {
-                ((FigureInteractor)selectedFigure
-                        .getInteractor()).keyReleased(e);
+                ((FigureInteractor) selectedFigure.getInteractor()).keyReleased(e);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_O) {
                 _originRelocatable = true;
             }
         }
-
 
         /** Forward any keyTyped events to the figure which is
          *  selected in the viewscreen.  If no figure is selected,
@@ -581,10 +566,9 @@ public class ViewScreen2D extends GRActor2D
             Figure selectedFigure = getSelectedFigure();
 
             if (selectedFigure != null) {
-                ((FigureInteractor)selectedFigure.getInteractor()).keyTyped(e);
+                ((FigureInteractor) selectedFigure.getInteractor()).keyTyped(e);
             }
         }
-
 
         /** Included to comply with the LayerListener interface
          *  requirements.  This method does nothing in its current
@@ -593,7 +577,6 @@ public class ViewScreen2D extends GRActor2D
          */
         public void mouseClicked(LayerEvent e) {
         }
-
 
         /** Translate the origin of the viewScreen2D if the user drags the
          *  origin marker.  To enable this function, the user must hold
@@ -605,21 +588,17 @@ public class ViewScreen2D extends GRActor2D
 
             //Translate the origin while the mouse cursor is in the window
             //and the user is dragging the origin marker.
-            if (_originRelocatable && _mouseInWindow &&
-                    (getCrosshairX().getBounds().contains(e.getLayerPoint()) ||
-                            getCrosshairY().getBounds()
-                            .contains(e.getLayerPoint()) ||
-                            _mouseDragging == true)) {
-
+            if (_originRelocatable && _mouseInWindow
+                    && (getCrosshairX().getBounds().contains(e.getLayerPoint())
+                    || getCrosshairY().getBounds().contains(e.getLayerPoint())
+                    || (_mouseDragging == true))) {
                 _mouseDragging = true;
-                _canvas.setCursor(
-                        Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                _origin = (Point2D.Double)e.getLayerPoint();
+                _canvas.setCursor(Cursor.getPredefinedCursor(
+                        Cursor.CROSSHAIR_CURSOR));
+                _origin = (Point2D.Double) e.getLayerPoint();
                 _canvas.getCanvasPane().translate(_origin.x, _origin.y);
             }
-
         }
-
 
         /** Update the state of this object to reflect that the mouse
          * is in the viewscreen.
@@ -629,7 +608,6 @@ public class ViewScreen2D extends GRActor2D
             _mouseInWindow = true;
         }
 
-
         /** Update the state of this object to reflect that the mouse is
          * no longer in the viewscreen.
          */
@@ -637,14 +615,13 @@ public class ViewScreen2D extends GRActor2D
             _mouseInWindow = false;
         }
 
-
         /** Included to comply with the LayerMotionListener interface
          *  requirement.  This method does nothing in its current
          *  implementation.
          *  @param e The layer event generated by the informing layer.
          */
-        public void mouseMoved(LayerEvent e) {}
-
+        public void mouseMoved(LayerEvent e) {
+        }
 
         /** Update the status of any figures which were deselected by the
          *  user clicking on a blank area of the viewscreen.
@@ -652,15 +629,15 @@ public class ViewScreen2D extends GRActor2D
          */
         public void mousePressed(LayerEvent e) {
             Iterator figureIterator = _layer.figures();
+
             while (figureIterator.hasNext()) {
-                Figure figure = (Figure)figureIterator.next();
+                Figure figure = (Figure) figureIterator.next();
+
                 if (!figure.contains(e.getLayerPoint())) {
-                    ((FigureInteractor)figure.getInteractor())
-                        .setSelected(false);
+                    ((FigureInteractor) figure.getInteractor()).setSelected(false);
                 }
             }
         }
-
 
         /** Update the state of this object to reflect that the mouse is no
          *  longer being dragged.
@@ -668,14 +645,11 @@ public class ViewScreen2D extends GRActor2D
          */
         public void mouseReleased(LayerEvent e) {
             _mouseDragging = false;
-            _canvas.setCursor(
-                    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            _canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
-
 
         ///////////////////////////////////////////////////////////////////
         ////                         private fields                    ////
-
         // Whether or not the mousing is being dragged.
         private boolean _mouseDragging;
 
@@ -685,7 +659,6 @@ public class ViewScreen2D extends GRActor2D
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
     // The diva canvas component.
     private JCanvas _canvas;
 

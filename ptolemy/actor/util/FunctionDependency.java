@@ -27,7 +27,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.util;
 
 import java.util.Collection;
@@ -46,6 +45,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependency
@@ -84,7 +84,6 @@ import ptolemy.kernel.util.Workspace;
     @Pt.AcceptedRating Green (eal)
 */
 public abstract class FunctionDependency extends Attribute {
-
     /** Construct a FunctionDependency object for the given actor.
      *  @param container The container.
      *  @param name The name of this attribute.
@@ -96,6 +95,7 @@ public abstract class FunctionDependency extends Attribute {
     public FunctionDependency(Entity container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // NOTE:
         // Only actors have function dependencies.
         // Other entities, such as a State, do not.
@@ -131,21 +131,24 @@ public abstract class FunctionDependency extends Attribute {
      */
     public Set getDependentOutputPorts(IOPort inputPort) {
         _validate();
+
         // ensure that the input port is inside the dependency graph
         if (!inputPort.getContainer().equals(getContainer())) {
-            throw new InternalErrorException("The input port " +
-                inputPort.getName() + " does not belong to the " +
-                "actor " + getContainer().getName());
+            throw new InternalErrorException("The input port "
+                + inputPort.getName() + " does not belong to the " + "actor "
+                + getContainer().getName());
         }
-        Collection reachableOutputs =
-            _dependencyGraph.reachableNodes(
-            _dependencyGraph.node(inputPort));
+
+        Collection reachableOutputs = _dependencyGraph.reachableNodes(_dependencyGraph
+                .node(inputPort));
         Set dependentOutputPorts = new HashSet();
         Iterator outputs = reachableOutputs.iterator();
+
         while (outputs.hasNext()) {
-            Node node = (Node)outputs.next();
+            Node node = (Node) outputs.next();
             dependentOutputPorts.add(node.getWeight());
         }
+
         return dependentOutputPorts;
     }
 
@@ -156,21 +159,24 @@ public abstract class FunctionDependency extends Attribute {
      */
     public Set getInputPortsDependentOn(IOPort outputPort) {
         _validate();
+
         // ensure that the output port is inside the dependency graph
         if (!outputPort.getContainer().equals(getContainer())) {
-            throw new InternalErrorException("The output port " +
-                outputPort.getName() + " does not belong to the " +
-                "actor " + getContainer().getName());
+            throw new InternalErrorException("The output port "
+                + outputPort.getName() + " does not belong to the " + "actor "
+                + getContainer().getName());
         }
-        Collection backwardReachableInputs =
-            _dependencyGraph.backwardReachableNodes(
-            _dependencyGraph.node(outputPort));
+
+        Collection backwardReachableInputs = _dependencyGraph
+            .backwardReachableNodes(_dependencyGraph.node(outputPort));
         Set dependentInputPorts = new HashSet();
         Iterator inputs = backwardReachableInputs.iterator();
+
         while (inputs.hasNext()) {
-            Node node = (Node)inputs.next();
+            Node node = (Node) inputs.next();
             dependentInputPorts.add(node.getWeight());
         }
+
         return dependentInputPorts;
     }
 
@@ -194,16 +200,17 @@ public abstract class FunctionDependency extends Attribute {
      */
     protected final DirectedGraph _constructConnectedDependencyGraph() {
         // construct new directed graph
-        DirectedGraph dependencyGraph =
-            _constructDisconnectedDependencyGraph();
+        DirectedGraph dependencyGraph = _constructDisconnectedDependencyGraph();
 
         // For each input and output port pair, add a directed
         // edge going from the input port to the output port.
-        Iterator inputs = ((Actor)getContainer()).inputPortList().listIterator();
+        Iterator inputs = ((Actor) getContainer()).inputPortList().listIterator();
+
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
-            Iterator outputs =
-                ((Actor)getContainer()).outputPortList().listIterator();
+            Iterator outputs = ((Actor) getContainer()).outputPortList()
+                                .listIterator();
+
             while (outputs.hasNext()) {
                 // add an edge from the input port to the output port
                 dependencyGraph.addEdge(inputPort, outputs.next());
@@ -237,16 +244,21 @@ public abstract class FunctionDependency extends Attribute {
 
         // include all the externally visible ports of the associated actor
         // as nodes in the graph
-        Iterator inputs = ((Actor)getContainer()).inputPortList().listIterator();
+        Iterator inputs = ((Actor) getContainer()).inputPortList().listIterator();
+
         while (inputs.hasNext()) {
-            IOPort input = (IOPort)inputs.next();
+            IOPort input = (IOPort) inputs.next();
             dependencyGraph.addNodeWeight(input);
         }
-        Iterator outputs = ((Actor)getContainer()).outputPortList().listIterator();
+
+        Iterator outputs = ((Actor) getContainer()).outputPortList()
+                            .listIterator();
+
         while (outputs.hasNext()) {
-            IOPort output = (IOPort)outputs.next();
+            IOPort output = (IOPort) outputs.next();
             dependencyGraph.addNodeWeight(output);
         }
+
         return dependencyGraph;
     }
 
@@ -260,6 +272,7 @@ public abstract class FunctionDependency extends Attribute {
     protected final void _validate() {
         Workspace workspace = getContainer().workspace();
         long workspaceVersion = workspace.getVersion();
+
         if (_functionDependencyVersion != workspaceVersion) {
             try {
                 workspace.getReadAccess();
@@ -269,6 +282,7 @@ public abstract class FunctionDependency extends Attribute {
                 workspace.doneReading();
             }
         }
+
         // NOTE: the current design of the version control is
         // to synchronize with the workspace. It is based on the
         // assumption that only the topology change increases the
@@ -283,7 +297,6 @@ public abstract class FunctionDependency extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The version of the FunctionDependency, which is synchronized
     // to the version of the workspace.
     private long _functionDependencyVersion = -1;

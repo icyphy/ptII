@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.lib;
 
 import javax.media.j3d.Node;
@@ -38,6 +37,7 @@ import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTransform
@@ -55,7 +55,6 @@ import ptolemy.kernel.util.NameDuplicationException;
     @Pt.AcceptedRating Red (chf)
 */
 abstract public class GRTransform extends GRActor3D {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,8 +64,7 @@ abstract public class GRTransform extends GRActor3D {
      *   actor with this name.
      */
     public GRTransform(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
         sceneGraphIn.setInput(true);
@@ -77,8 +75,7 @@ abstract public class GRTransform extends GRActor3D {
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
 
-        accumulate = new Parameter(this,
-                "accumulate", new BooleanToken(false));
+        accumulate = new Parameter(this, "accumulate", new BooleanToken(false));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,7 +105,6 @@ abstract public class GRTransform extends GRActor3D {
         super.initialize();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -123,14 +119,15 @@ abstract public class GRTransform extends GRActor3D {
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
+
         for (int i = 0; i < width; i++) {
             if (sceneGraphIn.hasToken(i)) {
-                SceneGraphToken nodeToken = (SceneGraphToken)
-                    sceneGraphIn.get(i);
+                SceneGraphToken nodeToken = (SceneGraphToken) sceneGraphIn.get(i);
                 Node node = (Node) nodeToken.getSceneGraphNode();
                 _addChild(node);
             }
         }
+
         sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }
 }

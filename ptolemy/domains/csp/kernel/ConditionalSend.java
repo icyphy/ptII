@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.IOPort;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalSend
+
 /**
    Represents a guarded communication statement in which the
    communication is a send(). Thus is represents
@@ -110,9 +111,7 @@ import ptolemy.kernel.util.Nameable;
    <p>
    @see ptolemy.domains.csp.kernel.ConditionalBranch
 */
-
 public class ConditionalSend extends ConditionalBranch implements Runnable {
-
     /** Create a guarded communication with a send communication.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
@@ -127,38 +126,50 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalSend(boolean guard, IOPort port, int channel,
-            int branchID, Token token) throws IllegalActionException {
+        int branchID, Token token) throws IllegalActionException {
         super(guard, port, branchID);
+
         Receiver[][] receivers;
+
         try {
             port.workspace().getReadAccess();
+
             if (!port.isOutput()) {
-                throw new IllegalActionException(port, "ConditionalSend: " +
-                        "tokens only sent from an output port.");
+                throw new IllegalActionException(port,
+                    "ConditionalSend: "
+                    + "tokens only sent from an output port.");
             }
-            if (channel >= port.getWidth() || channel < 0) {
-                throw new IllegalActionException(port, "ConditionalSend: " +
-                        "channel index out of range.");
+
+            if ((channel >= port.getWidth()) || (channel < 0)) {
+                throw new IllegalActionException(port,
+                    "ConditionalSend: " + "channel index out of range.");
             }
+
             receivers = port.getRemoteReceivers();
-            if (receivers == null || receivers[channel] == null) {
-                throw new IllegalActionException(port, "ConditionalSend: " +
-                        "Trying to rendezvous with null receiver");
+
+            if ((receivers == null) || (receivers[channel] == null)) {
+                throw new IllegalActionException(port,
+                    "ConditionalSend: "
+                    + "Trying to rendezvous with null receiver");
             }
+
             if (receivers[channel].length != 1) {
-                throw new IllegalActionException(port, "ConditionalSend: " +
-                        "channel " + channel + " does not have exactly" +
-                        " one receiver");
+                throw new IllegalActionException(port,
+                    "ConditionalSend: " + "channel " + channel
+                    + " does not have exactly" + " one receiver");
             }
+
             if (!(receivers[channel][0] instanceof CSPReceiver)) {
-                throw new IllegalActionException(port,"ConditionalSend: " +
-                        "channel " + channel + " does not have a receiver " +
-                        "of type CSPReceiver." );
+                throw new IllegalActionException(port,
+                    "ConditionalSend: " + "channel " + channel
+                    + " does not have a receiver " + "of type CSPReceiver.");
             }
-            setReceiver( (CSPReceiver)receivers[channel][0] );
+
+            setReceiver((CSPReceiver) receivers[channel][0]);
         } finally {
             port.workspace().doneReading();
         }
+
         setToken(token);
     }
 
@@ -179,38 +190,51 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalSend(boolean guard, IOPort port, int channel,
-            int branchID, Token token, ConditionalBranchController cbc) throws IllegalActionException {
+        int branchID, Token token, ConditionalBranchController cbc)
+        throws IllegalActionException {
         super(guard, port, branchID, cbc);
+
         Receiver[][] receivers;
+
         try {
             port.workspace().getReadAccess();
+
             if (!port.isOutput()) {
-                throw new IllegalActionException(port, "ConditionalSend: " +
-                        "tokens only sent from an output port.");
+                throw new IllegalActionException(port,
+                    "ConditionalSend: "
+                    + "tokens only sent from an output port.");
             }
-            if (channel >= port.getWidth() || channel < 0) {
-                throw new IllegalActionException(port, "ConditionalSend: " +
-                        "channel index out of range.");
+
+            if ((channel >= port.getWidth()) || (channel < 0)) {
+                throw new IllegalActionException(port,
+                    "ConditionalSend: " + "channel index out of range.");
             }
+
             receivers = port.getRemoteReceivers();
-            if (receivers == null || receivers[channel] == null) {
-                throw new IllegalActionException(port, "ConditionalSend: " +
-                        "Trying to rendezvous with null receiver");
+
+            if ((receivers == null) || (receivers[channel] == null)) {
+                throw new IllegalActionException(port,
+                    "ConditionalSend: "
+                    + "Trying to rendezvous with null receiver");
             }
+
             if (receivers[channel].length != 1) {
-                throw new IllegalActionException(port, "ConditionalSend: " +
-                        "channel " + channel + " does not have exactly" +
-                        " one receiver");
+                throw new IllegalActionException(port,
+                    "ConditionalSend: " + "channel " + channel
+                    + " does not have exactly" + " one receiver");
             }
+
             if (!(receivers[channel][0] instanceof CSPReceiver)) {
-                throw new IllegalActionException(port,"ConditionalSend: " +
-                        "channel " + channel + " does not have a receiver " +
-                        "of type CSPReceiver." );
+                throw new IllegalActionException(port,
+                    "ConditionalSend: " + "channel " + channel
+                    + " does not have a receiver " + "of type CSPReceiver.");
             }
-            setReceiver( (CSPReceiver)receivers[channel][0] );
+
+            setReceiver((CSPReceiver) receivers[channel][0]);
         } finally {
             port.workspace().doneReading();
         }
+
         setToken(token);
     }
 
@@ -230,16 +254,17 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         try {
             CSPReceiver receiver = getReceiver();
             ConditionalBranchController controller = getController();
-            synchronized(receiver) {
+
+            synchronized (receiver) {
                 if (receiver._isConditionalSendWaiting()
-                        || receiver._isPutWaiting() ) {
+                        || receiver._isPutWaiting()) {
                     // Should never happen that a put or a ConditionalSend
                     // is already at the receiver.
-                    throw new InvalidStateException(
-                            ((Nameable)controller.getParent()).getName() +
-                            ": ConditionalSend branch trying to rendezvous " +
-                            "with a receiver that already has a put or a " +
-                            "ConditionalSend waiting.");
+                    throw new InvalidStateException(((Nameable) controller
+                        .getParent()).getName()
+                        + ": ConditionalSend branch trying to rendezvous "
+                        + "with a receiver that already has a put or a "
+                        + "ConditionalSend waiting.");
                 }
 
                 // MAIN LOOP
@@ -248,10 +273,10 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         controller._branchFailed(getID());
                         return;
                     } else if (receiver._isGetWaiting()) {
-                        _arriveAfterGet( receiver, controller );
+                        _arriveAfterGet(receiver, controller);
                         return;
                     } else if (receiver._isConditionalReceiveWaiting()) {
-                        if ( !_arriveAfterCondRec(receiver, controller) ) {
+                        if (!_arriveAfterCondRec(receiver, controller)) {
                             return;
                         }
                     } else {
@@ -282,8 +307,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected boolean _arriveAfterCondRec(CSPReceiver receiver,
-            ConditionalBranchController controller)
-            throws InterruptedException {
+        ConditionalBranchController controller) throws InterruptedException {
         // CASE 2: a conditionalReceive is already waiting.
         // As this conditionalSend arrived second, it has
         // to check if both branches are "first" and if
@@ -295,7 +319,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             // send side ok, need to check that receive
             // side also ok
             ConditionalBranchController side2 = receiver._getOtherController();
-            if (side2 != null && side2._isBranchFirst(receiver.getOtherID())) {
+
+            if ((side2 != null) && side2._isBranchFirst(receiver.getOtherID())) {
                 receiver.put(getToken());
                 receiver._setConditionalReceive(false, null, -1);
                 controller._branchSucceeded(getID());
@@ -306,6 +331,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 receiver.notifyAll();
             }
         }
+
         getController()._branchBlocked(this.getReceiver());
         getReceiver()._checkFlagsAndWait();
         getController()._branchUnblocked(this.getReceiver());
@@ -319,8 +345,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveAfterGet(CSPReceiver receiver,
-            ConditionalBranchController controller)
-            throws InterruptedException {
+        ConditionalBranchController controller) throws InterruptedException {
         // CASE 1: a get is already waiting
         // A get cannot disappear, so once enter this
         // part of the loop stay here until branch
@@ -336,6 +361,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 getReceiver()._checkFlagsAndWait();
                 getController()._branchUnblocked(this.getReceiver());
             }
+
             if (!isAlive()) {
                 controller._branchFailed(getID());
                 return;
@@ -350,8 +376,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveFirst(CSPReceiver receiver,
-            ConditionalBranchController controller)
-            throws InterruptedException {
+        ConditionalBranchController controller) throws InterruptedException {
         // CASE 3: ConditionalSend got here before a get or a
         // ConditionalReceive. Once enter this part of main
         // loop, do not leave.
@@ -359,12 +384,14 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         getController()._branchBlocked(this.getReceiver());
         getReceiver()._checkFlagsAndWait();
         getController()._branchUnblocked(this.getReceiver());
+
         while (true) {
             if (!isAlive()) {
                 // reset state of receiver controlling
                 // conditional rendezvous
                 receiver._setConditionalSend(false, null, -1);
                 controller._branchFailed(getID());
+
                 // wakes up a get if it is waiting
                 receiver.notifyAll();
                 return;
@@ -382,6 +409,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     receiver.notifyAll();
                 }
             }
+
             //cannot rendezvous this time, still alive
             getController()._branchBlocked(this.getReceiver());
             getReceiver()._checkFlagsAndWait();

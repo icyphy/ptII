@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.media.javasound;
 
 import java.io.IOException;
@@ -40,8 +39,10 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SoundCapture
+
 /**
    A buffer supporting the capturing of audio samples from a file or
    from the computer's audio input port.
@@ -118,9 +119,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
    @Pt.AcceptedRating Yellow (cxh)
    @see ptolemy.media.javasound.SoundPlayback
 */
-
 public class SoundCapture {
-
     /** Construct a sound capture object that captures audio from a computer's
      *  audio input port.  If this constructor is used, then it
      *  is important that getSamples() be
@@ -147,10 +146,10 @@ public class SoundCapture {
      *   be chosen smaller than <i>bufferSize</i>. Typical values
      *   are 1/2 to 1/16th of <i>bufferSize</i>.
      */
-    public SoundCapture(float sampleRate, int sampleSizeInBits,
-            int channels, int bufferSize,
-            int getSamplesSize) {
+    public SoundCapture(float sampleRate, int sampleSizeInBits, int channels,
+        int bufferSize, int getSamplesSize) {
         _isAudioCaptureActive = false;
+
         // Set mode to real-time.
         this._isRealTime = true;
         this._sampleSizeInBits = sampleSizeInBits;
@@ -179,9 +178,9 @@ public class SoundCapture {
      *  @param getSamplesSize The number of samples per channel
      *   returned by getSamples().
      */
-    public SoundCapture(String pathName,
-            int getSamplesSize) {
+    public SoundCapture(String pathName, int getSamplesSize) {
         _isAudioCaptureActive = false;
+
         // Set mode to "capture from file" (not real-time).
         this._isRealTime = false;
         this._pathName = pathName;
@@ -190,7 +189,6 @@ public class SoundCapture {
 
     ///////////////////////////////////////////////////////////////////
     ///  Public Methods                                         ///
-
 
     /** Return the number of audio channels. This method will
      *  return the number of audio channels, regardless of
@@ -216,9 +214,9 @@ public class SoundCapture {
         if (_isAudioCaptureActive == true) {
             return _channels;
         } else {
-            throw new IllegalStateException("SoundCapture: " +
-                    "getChannels() was called while audio capture was" +
-                    " inactive (startCapture() was never called).");
+            throw new IllegalStateException("SoundCapture: "
+                + "getChannels() was called while audio capture was"
+                + " inactive (startCapture() was never called).");
         }
     }
 
@@ -246,9 +244,9 @@ public class SoundCapture {
         if (_isAudioCaptureActive == true) {
             return _sampleRate;
         } else {
-            throw new IllegalStateException("SoundCapture: " +
-                    "getSampleRate() was called while audio capture was" +
-                    " inactive (startCapture() was never called).");
+            throw new IllegalStateException("SoundCapture: "
+                + "getSampleRate() was called while audio capture was"
+                + " inactive (startCapture() was never called).");
         }
     }
 
@@ -291,26 +289,23 @@ public class SoundCapture {
      *  inactive. That is, If startCapture() has not yet been called
      *  or if stopCapture() has already been called.
      */
-    public double[][] getSamples() throws IOException,
-            IllegalStateException {
+    public double[][] getSamples() throws IOException, IllegalStateException {
         if (_isAudioCaptureActive == true) {
             int numBytesRead;
+
             if (_isRealTime == true) {
                 // Real-time capture.
                 numBytesRead = _targetLine.read(_data, 0,
-                        _productionRate*_frameSizeInBytes);
-
+                        _productionRate * _frameSizeInBytes);
             } else {
                 // Capture audio from file.
-                numBytesRead =
-                    _properFormatAudioInputStream.read(_data);
+                numBytesRead = _properFormatAudioInputStream.read(_data);
             }
+
             if (numBytesRead == _data.length) {
                 // Convert byte array to double array.
-                _audioInDoubleArray =
-                    _byteArrayToDoubleArray(_data,
-                            _bytesPerSample,
-                            _channels);
+                _audioInDoubleArray = _byteArrayToDoubleArray(_data,
+                        _bytesPerSample, _channels);
                 return _audioInDoubleArray;
             } else if (numBytesRead != _data.length) {
                 // Read fewer samples than productionRate many samples.
@@ -318,22 +313,21 @@ public class SoundCapture {
                 // causes AudioInputStream.read(array) to sometimes
                 // return fewer bytes than requested, even though
                 // the end of the file has not yet been reached.
-                _audioInDoubleArray =
-                    _byteArrayToDoubleArray(_data,
-                            _bytesPerSample,
-                            _channels);
+                _audioInDoubleArray = _byteArrayToDoubleArray(_data,
+                        _bytesPerSample, _channels);
                 return _audioInDoubleArray;
             } else if (numBytesRead == -1) {
                 // Ran out of samples to play. This generally means
                 // that the end of the sound file has been reached.
                 return null;
             }
+
             return null;
         } else {
-            throw new IllegalStateException("SoundCapture: " +
-                    "getSamples() was called while audio capture was" +
-                    " inactive (startCapture() was never called or " +
-                    "stopCapture has already been called).");
+            throw new IllegalStateException("SoundCapture: "
+                + "getSamples() was called while audio capture was"
+                + " inactive (startCapture() was never called or "
+                + "stopCapture has already been called).");
         }
     }
 
@@ -382,30 +376,26 @@ public class SoundCapture {
      *  inactive. That is, If startCapture() has not yet been called
      *  or if stopCapture() has already been called.
      */
-    public int[][] getSamplesInt() throws IOException,
-            IllegalStateException {
+    public int[][] getSamplesInt() throws IOException, IllegalStateException {
         if (_isAudioCaptureActive == true) {
             int numBytesRead;
+
             if (_isRealTime == true) {
                 // Real-time capture.
                 numBytesRead = _targetLine.read(_data, 0,
-                        _productionRate*_frameSizeInBytes);
-
+                        _productionRate * _frameSizeInBytes);
             } else {
                 // Capture audio from file.
-                numBytesRead =
-                    _properFormatAudioInputStream.read(_data);
+                numBytesRead = _properFormatAudioInputStream.read(_data);
             }
+
             if (numBytesRead == _data.length) {
                 // Convert byte array to double array.
-                _audioInIntArray =
-                    _byteArrayToIntArray(_data,
-                            _bytesPerSample,
-                            _channels);
+                _audioInIntArray = _byteArrayToIntArray(_data, _bytesPerSample,
+                        _channels);
                 return _audioInIntArray;
             } else if (numBytesRead != _data.length) {
                 // Read fewer samples than productionRate many samples.
-
                 // FIXME: Output the samples that were read + zeros?
                 return null;
             } else if (numBytesRead == -1) {
@@ -413,12 +403,13 @@ public class SoundCapture {
                 // that the end of the sound file has been reached.
                 return null;
             }
+
             return null;
         } else {
-            throw new IllegalStateException("SoundCapture: " +
-                    "getSamples() was called while audio capture was" +
-                    " inactive (startCapture() was never called or " +
-                    "stopCapture has already been called).");
+            throw new IllegalStateException("SoundCapture: "
+                + "getSamples() was called while audio capture was"
+                + " inactive (startCapture() was never called or "
+                + "stopCapture has already been called).");
         }
     }
 
@@ -439,8 +430,7 @@ public class SoundCapture {
      *  @exception IllegalStateException If this method is called
      *  more than once between invocations of stopCapture().
      */
-    public void startCapture() throws IOException,
-            IllegalStateException {
+    public void startCapture() throws IOException, IllegalStateException {
         if (_isAudioCaptureActive == false) {
             // FIXME: check and throw Exceptions
             if (_isRealTime == true) {
@@ -448,12 +438,13 @@ public class SoundCapture {
             } else {
                 _startCaptureFromFile();
             }
+
             _isAudioCaptureActive = true;
         } else {
-            throw new IllegalStateException("SoundCapture: " +
-                    "startCapture() was called while audio capture was" +
-                    " already active (startCapture() was called " +
-                    "more than once between invocations of stopCapture()).");
+            throw new IllegalStateException("SoundCapture: "
+                + "startCapture() was called while audio capture was"
+                + " already active (startCapture() was called "
+                + "more than once between invocations of stopCapture()).");
         }
     }
 
@@ -475,15 +466,16 @@ public class SoundCapture {
                 // FIXME : is this correct?
                 _audioInputStream = null;
             }
+
             if (_properFormatAudioInputStream != null) {
                 _properFormatAudioInputStream.close();
 
                 // FIXME : is this correct?
                 _properFormatAudioInputStream = null;
             }
+
             // For real-time capture:
             if (_targetLine != null) {
-
                 if (_targetLine.isOpen() == true) {
                     _targetLine.stop();
                     _targetLine.close();
@@ -491,6 +483,7 @@ public class SoundCapture {
                 }
             }
         }
+
         _isAudioCaptureActive = false;
     }
 
@@ -518,24 +511,21 @@ public class SoundCapture {
         if (_isAudioCaptureActive == true) {
             return _sampleSizeInBits;
         } else {
-            throw new IllegalStateException("SoundCapture: " +
-                    "getSampleSizeInBits() was called while audio capture was" +
-                    " inactive (startCapture() was never called).");
+            throw new IllegalStateException("SoundCapture: "
+                + "getSampleSizeInBits() was called while audio capture was"
+                + " inactive (startCapture() was never called).");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _startCaptureRealTime() throws IOException {
-
         int frameSizeInBits = _sampleSizeInBits;
         double frameRate = _sampleRate;
         boolean signed = true;
         boolean bigEndian = true;
 
-        AudioFormat format = new AudioFormat(_sampleRate,
-                _sampleSizeInBits,
+        AudioFormat format = new AudioFormat(_sampleRate, _sampleSizeInBits,
                 _channels, signed, bigEndian);
 
         _frameSizeInBytes = format.getFrameSize();
@@ -551,20 +541,19 @@ public class SoundCapture {
         //            " not supported.");
         //    return;
         //}
-
         try {
             _targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
+
             // Note: 2nd parameter is the buffer size (in bytes).
             // Larger values increase latency but may be required if
             // garbage collection, etc. is an issue.
-            _targetLine.open(format, _bufferSize*_frameSizeInBytes);
+            _targetLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (LineUnavailableException ex) {
-            throw new IOException("Unable to open the line for " +
-                    "real-time audio capture: " + ex);
+            throw new IOException("Unable to open the line for "
+                + "real-time audio capture: " + ex);
         }
 
-        int targetBufferLengthInBytes = _productionRate *
-            _frameSizeInBytes;
+        int targetBufferLengthInBytes = _productionRate * _frameSizeInBytes;
 
         // The following works under Windows Java 1.3.0 RC2 but
         // not under Tritonus under Linux, so comment out.
@@ -574,17 +563,14 @@ public class SoundCapture {
         //            " not supported.");
         //    return;
         //}
-
         // Array of audio samples in byte format.
-        _data = new byte[_productionRate*_frameSizeInBytes];
+        _data = new byte[_productionRate * _frameSizeInBytes];
 
-        _bytesPerSample = _sampleSizeInBits/8;
+        _bytesPerSample = _sampleSizeInBits / 8;
 
         // Start the target data line
         _targetLine.start();
-
     }
-
 
     /* Perform necessary initialization to capture from a sound
      * file. The sound file is specified as a URL.
@@ -592,16 +578,13 @@ public class SoundCapture {
     private void _startCaptureFromFile() throws IOException {
         // Load audio from a URL.
         // Create a URL corresponding to the sound file location.
-        URL soundURL =
-            new URL(_pathName);
+        URL soundURL = new URL(_pathName);
 
         if (soundURL != null) {
             try {
-                _audioInputStream =
-                    AudioSystem.getAudioInputStream(soundURL);
+                _audioInputStream = AudioSystem.getAudioInputStream(soundURL);
             } catch (UnsupportedAudioFileException e) {
-                throw new IOException("Unsupported AudioFile :" +
-                        e);
+                throw new IOException("Unsupported AudioFile :" + e);
             }
         }
 
@@ -612,31 +595,30 @@ public class SoundCapture {
 
         // FIXME: is this correct?
         //_audioInputStream.reset();
-
         AudioFormat origFormat = _audioInputStream.getFormat();
+
         // Now convert to PCM_SIGNED_BIG_ENDIAN so that can get double
         // representation of samples.
         float sampleRate = origFormat.getSampleRate();
 
         _sampleSizeInBits = origFormat.getSampleSizeInBits();
-        _bytesPerSample = _sampleSizeInBits/8;
+        _bytesPerSample = _sampleSizeInBits / 8;
 
         _channels = origFormat.getChannels();
+
         boolean signed = true;
         boolean bigEndian = true;
-        AudioFormat format = new AudioFormat(sampleRate,
-                _sampleSizeInBits, _channels,
-                signed, bigEndian);
-        _properFormatAudioInputStream =
-            AudioSystem.getAudioInputStream(format, _audioInputStream);
+        AudioFormat format = new AudioFormat(sampleRate, _sampleSizeInBits,
+                _channels, signed, bigEndian);
+        _properFormatAudioInputStream = AudioSystem.getAudioInputStream(format,
+                _audioInputStream);
 
         _frameSizeInBytes = format.getFrameSize();
 
         // FIXME: is this correct?
         //_properFormatAudioInputStream.reset();
-
         // Array of audio samples in byte format.
-        _data = new byte[_productionRate*_frameSizeInBytes];
+        _data = new byte[_productionRate * _frameSizeInBytes];
 
         // Initialize the index to the first sample of the sound file.
         _index = 0;
@@ -655,23 +637,25 @@ public class SoundCapture {
      * array containing samples for channel m.
      */
     private double[][] _byteArrayToDoubleArray(byte[] byteArray,
-            int bytesPerSample,
-            int channels) {
-        int lengthInSamples = byteArray.length / (bytesPerSample*channels);
+        int bytesPerSample, int channels) {
+        int lengthInSamples = byteArray.length / (bytesPerSample * channels);
+
         // Check if we need to reallocate.
-        if ((channels != _doubleArray.length) ||
-                (lengthInSamples != _doubleArray[0].length)) {
+        if ((channels != _doubleArray.length)
+                || (lengthInSamples != _doubleArray[0].length)) {
             // Reallocate
             _doubleArray = new double[channels][lengthInSamples];
         }
+
         //double maxSampleReciprocal = 1/(Math.pow(2, 8 * bytesPerSample - 1));
         // Could use above line, but hopefully, code below will
         // be faster.
         double maxSampleReciprocal;
+
         if (bytesPerSample == 2) {
             // 1 / 32768
             maxSampleReciprocal = 3.0517578125e-5;
-        } else if (bytesPerSample == 1) {            // 1 / 128
+        } else if (bytesPerSample == 1) { // 1 / 128
             maxSampleReciprocal = 7.8125e-3;
         } else if (bytesPerSample == 3) {
             // 1 / 8388608
@@ -692,21 +676,24 @@ public class SoundCapture {
         }
 
         for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
-
             // For each channel,
             for (int currChannel = 0; currChannel < channels; currChannel++) {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
-                    _b[i] = byteArray[currSamp*bytesPerSample*channels +
-                            bytesPerSample*currChannel + i];
+                    _b[i] = byteArray[(currSamp * bytesPerSample * channels)
+                        + (bytesPerSample * currChannel) + i];
                 }
-                int result = (_b[0] >> 7) ;
-                for (int i = 0; i < bytesPerSample; i += 1)
+
+                int result = (_b[0] >> 7);
+
+                for (int i = 0; i < bytesPerSample; i += 1) {
                     result = (result << 8) + (_b[i] & 0xff);
-                _doubleArray[currChannel][currSamp] =
-                    ((double) result*maxSampleReciprocal);
+                }
+
+                _doubleArray[currChannel][currSamp] = ((double) result * maxSampleReciprocal);
             }
         }
+
         return _doubleArray;
     }
 
@@ -724,51 +711,58 @@ public class SoundCapture {
      * For each channel, m, intArray[m] is a single dimensional
      * array containing samples for channel m.
      */
-    private int[][] _byteArrayToIntArray(byte[] byteArray,
-            int bytesPerSample,
-            int channels) {
-        int lengthInSamples = byteArray.length / (bytesPerSample*channels);
+    private int[][] _byteArrayToIntArray(byte[] byteArray, int bytesPerSample,
+        int channels) {
+        int lengthInSamples = byteArray.length / (bytesPerSample * channels);
+
         // Check if we need to reallocate.
-        if ((channels != _doubleArray.length) ||
-                (lengthInSamples != _doubleArray[0].length)) {
+        if ((channels != _doubleArray.length)
+                || (lengthInSamples != _doubleArray[0].length)) {
             // Reallocate
             _intArray = new int[channels][lengthInSamples];
         }
+
         // Check if we need to reallocate.
         // FIXME: This test is really not needed since bytesPerSample
         // is set in the constructor. It should never change.
         if (bytesPerSample != _b.length) {
             _b = new byte[bytesPerSample];
         }
-        for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
+        for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
             // For each channel,
             for (int currChannel = 0; currChannel < channels; currChannel++) {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
-                    _b[i] = byteArray[currSamp*bytesPerSample*channels +
-                            bytesPerSample*currChannel + i];
+                    _b[i] = byteArray[(currSamp * bytesPerSample * channels)
+                        + (bytesPerSample * currChannel) + i];
                 }
-                int result = (_b[0] >> 7) ;
-                for (int i = 0; i < bytesPerSample; i += 1)
+
+                int result = (_b[0] >> 7);
+
+                for (int i = 0; i < bytesPerSample; i += 1) {
                     result = (result << 8) + (_b[i] & 0xff);
+                }
+
                 _intArray[currChannel][currSamp] = result;
             }
         }
+
         return _intArray;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private AudioInputStream  _properFormatAudioInputStream;
+    private AudioInputStream _properFormatAudioInputStream;
     private AudioInputStream _audioInputStream;
     private int _productionRate;
+
     // Array of audio samples in double format.
     private double[][] _audioInDoubleArray;
+
     // Array of audio samples in int format.
     private int[][] _audioInIntArray;
+
     // Array of audio samples in byte format.
     private byte[] _data;
     private int _index;

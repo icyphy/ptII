@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.java;
 
 import java.util.ArrayList;
@@ -39,7 +37,6 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
@@ -69,6 +66,7 @@ import soot.jimple.NewExpr;
 
 //////////////////////////////////////////////////////////////////////////
 //// ReplaceComplexParameters
+
 /**
    A Transformer that replaces complex parameters and attributes with a
    'simpler' parameter with normal parameter semantics.  This relies on
@@ -111,20 +109,19 @@ public class ReplaceComplexParameters extends SceneTransformer
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ReplaceComplexParameters.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         _options = options;
         _phaseName = phaseName;
         _debug = PhaseOptions.getBoolean(options, "debug");
 
         _replaceComplexParametersIn(ModelTransformer.getModelClass(), _model);
-
     }
 
     // Replac ComplexParameters and ParameterPorts in all classes,
     // starting at the bottom of the hierarchy...
-    private void _replaceComplexParametersIn(
-            SootClass modelClass, CompositeActor model) {
+    private void _replaceComplexParametersIn(SootClass modelClass,
+        CompositeActor model) {
         Director director = model.getDirector();
 
         copyAttributesOtherThanVariable(model);
@@ -136,28 +133,30 @@ public class ReplaceComplexParameters extends SceneTransformer
 
     public void copyAttributesOtherThanVariable(NamedObj object) {
         if (object instanceof CompositeActor) {
-            CompositeActor model = (CompositeActor)object;
+            CompositeActor model = (CompositeActor) object;
+
             // Loop over all the model instance classes.
             for (Iterator entities = model.deepEntityList().iterator();
-                 entities.hasNext();) {
-                ComponentEntity entity = (ComponentEntity)entities.next();
+                    entities.hasNext();) {
+                ComponentEntity entity = (ComponentEntity) entities.next();
+
                 // recurse.
                 copyAttributesOtherThanVariable(entity);
             }
         }
+
         // Don't copy attributes in ports, because ports don't have
         // classes, so there is no container class.
-//         if (object instanceof Entity) {
-//             Entity entity = (Entity)object;
-//             for (Iterator ports = entity.portList().iterator();
-//                  ports.hasNext();) {
-//                 Port port = (Port)ports.next();
-//                 copyAttributesOtherThanVariable(port);
-//             }
-//         }
-
+        //         if (object instanceof Entity) {
+        //             Entity entity = (Entity)object;
+        //             for (Iterator ports = entity.portList().iterator();
+        //                  ports.hasNext();) {
+        //                 Port port = (Port)ports.next();
+        //                 copyAttributesOtherThanVariable(port);
+        //             }
+        //         }
         if (object instanceof Attribute) {
-            Attribute attribute = (Attribute)object;
+            Attribute attribute = (Attribute) object;
 
             // Ignore attributes that are ignorable.
             if (ModelTransformer._isIgnorableAttribute(attribute)) {
@@ -168,29 +167,30 @@ public class ReplaceComplexParameters extends SceneTransformer
             //  if (attribute instanceof PortParameter) {
             //                 continue;
             //             }
-
             // If we have an attribute that derives from
             // stringAttribute, or Parameter then we need to grab some
             // code for it. (i.e. FileParameter, and FileParameter)
-            if ((attribute instanceof StringAttribute &&
-                        !attribute.getClass().equals(StringAttribute.class)) ||
-                    (attribute instanceof Parameter &&
-                            !attribute.getClass().equals(Parameter.class))) {
+            if ((attribute instanceof StringAttribute
+                    && !attribute.getClass().equals(StringAttribute.class))
+                    || (attribute instanceof Parameter
+                    && !attribute.getClass().equals(Parameter.class))) {
                 String className = attribute.getClass().getName();
 
                 if (_debug) {
                     System.out.println("ComplexAttribute = " + attribute
-                            + " Class = " + className);
+                        + " Class = " + className);
                 }
-                SootClass attributeClass =
-                    Scene.v().loadClassAndSupport(className);
+
+                SootClass attributeClass = Scene.v().loadClassAndSupport(className);
                 attributeClass.setLibraryClass();
-                String newClassName =
-                    ModelTransformer.getInstanceClassName(attribute, _options);
+
+                String newClassName = ModelTransformer.getInstanceClassName(attribute,
+                        _options);
 
                 // Create a new class for the attribute.
-                SootClass newClass = SootUtilities.copyClass(
-                        attributeClass, newClassName);
+                SootClass newClass = SootUtilities.copyClass(attributeClass,
+                        newClassName);
+
                 // Make sure that we generate code for the new class.
                 newClass.setApplicationClass();
 
@@ -199,9 +199,10 @@ public class ReplaceComplexParameters extends SceneTransformer
 
                 // Fold the copied class up to StringAttribute, or parameter
                 SootClass superClass = newClass.getSuperclass();
-                while (superClass != PtolemyUtilities.objectClass &&
-                        superClass != PtolemyUtilities.stringAttributeClass &&
-                        superClass != PtolemyUtilities.parameterClass) {
+
+                while ((superClass != PtolemyUtilities.objectClass)
+                        && (superClass != PtolemyUtilities.stringAttributeClass)
+                        && (superClass != PtolemyUtilities.parameterClass)) {
                     superClass.setLibraryClass();
                     SootUtilities.foldClass(newClass);
                     superClass = newClass.getSuperclass();
@@ -209,51 +210,50 @@ public class ReplaceComplexParameters extends SceneTransformer
 
                 // Remove problematic methods for PortParameter
                 if (newClass.declaresMethodByName("setContainer")) {
-                    SootMethod method =
-                        newClass.getMethodByName("setContainer");
+                    SootMethod method = newClass.getMethodByName("setContainer");
                     newClass.removeMethod(method);
                 }
+
                 if (newClass.declaresMethodByName("setName")) {
-                    SootMethod method =
-                        newClass.getMethodByName("setName");
+                    SootMethod method = newClass.getMethodByName("setName");
                     newClass.removeMethod(method);
                 }
+
                 if (newClass.declaresMethodByName("attributeChanged")) {
-                    SootMethod method =
-                        newClass.getMethodByName("attributeChanged");
+                    SootMethod method = newClass.getMethodByName(
+                            "attributeChanged");
                     newClass.removeMethod(method);
                 }
+
                 if (newClass.declaresFieldByName("_port")) {
-                    SootField field =
-                        newClass.getFieldByName("_port");
-                    Port port = ((PortParameter)attribute).getPort();
+                    SootField field = newClass.getFieldByName("_port");
+                    Port port = ((PortParameter) attribute).getPort();
                     field.addTag(new ValueTag(port));
                 }
 
                 // Add a container field to the generated class.
                 // FIXME: this doesn't work for UnitSystems, e.g.,
                 // since their container isn't associated with a class.
-                FieldsForEntitiesTransformer._createContainerField(
-                        newClass);
+                FieldsForEntitiesTransformer._createContainerField(newClass);
 
                 // Loop over all the methods and replace construction
                 // of the old attribute with construction of the
                 // copied class.
-                for (Iterator classes =
-                         Scene.v().getApplicationClasses().iterator();
-                     classes.hasNext();) {
-                    SootClass theClass = (SootClass)classes.next();
+                for (Iterator classes = Scene.v().getApplicationClasses()
+                                             .iterator(); classes.hasNext();) {
+                    SootClass theClass = (SootClass) classes.next();
+
                     if (theClass != newClass) {
                         _replaceObjectTypesInClass(theClass, attribute,
-                                attributeClass, newClass);
+                            attributeClass, newClass);
                     }
                 }
             }
         }
+
         // Loop over all the attributes of the actor
-        for (Iterator attributes =
-                 object.attributeList(Attribute.class).iterator();
-             attributes.hasNext();) {
+        for (Iterator attributes = object.attributeList(Attribute.class)
+                                         .iterator(); attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
 
             copyAttributesOtherThanVariable(attribute);
@@ -265,32 +265,41 @@ public class ReplaceComplexParameters extends SceneTransformer
     // namedObjAnalysis to pick up only references to the given
     // object.
     private void _replaceObjectTypesInClass(SootClass theClass,
-            NamedObj object, SootClass oldClass, SootClass newClass) {
+        NamedObj object, SootClass oldClass, SootClass newClass) {
         if (_debug) {
-            System.out.println("replacing objects in " + theClass
-                    + " for " + object);
+            System.out.println("replacing objects in " + theClass + " for "
+                + object);
         }
+
         // FIXME: deal with inner classes.
         // Find the field for the object and change it.
         Iterator fields = theClass.getFields().snapshotIterator();
+
         while (fields.hasNext()) {
-            SootField oldField = (SootField)fields.next();
+            SootField oldField = (SootField) fields.next();
+
             // Check that the field has a ValueTag that points to object.
-            NamedObj fieldObject = (NamedObj)ValueTag.getFieldObject(oldField);
+            NamedObj fieldObject = (NamedObj) ValueTag.getFieldObject(oldField);
+
             if (fieldObject != object) {
                 continue;
             }
+
             // Check that the field has the right type.
             Type type = oldField.getType();
+
             if (type instanceof RefType) {
-                SootClass refClass = ((RefType)type).getSootClass();
+                SootClass refClass = ((RefType) type).getSootClass();
+
                 if (refClass == oldClass) {
                     oldField.setType(RefType.v(newClass));
+
                     // we have to do this seemingly useless
                     // thing, since the scene caches a pointer
                     // to the field based on it's parameter types.
                     theClass.removeField(oldField);
                     theClass.addField(oldField);
+
                     //  } else if (refClass.getName()
                     //                         .startsWith(oldClass.getName())) {
                     //                     SootClass changeClass =
@@ -306,12 +315,13 @@ public class ReplaceComplexParameters extends SceneTransformer
                 }
             }
         }
-        ArrayList methodList = new ArrayList(theClass.getMethods());
-        for (Iterator methods = methodList.iterator();
-             methods.hasNext();) {
-            SootMethod newMethod = (SootMethod)methods.next();
-            //   System.out.println("newMethod = " + newMethod.getSignature());
 
+        ArrayList methodList = new ArrayList(theClass.getMethods());
+
+        for (Iterator methods = methodList.iterator(); methods.hasNext();) {
+            SootMethod newMethod = (SootMethod) methods.next();
+
+            //   System.out.println("newMethod = " + newMethod.getSignature());
             //             Type returnType = newMethod.getReturnType();
             //             if (returnType instanceof RefType &&
             //                     ((RefType)returnType).getSootClass() == oldClass) {
@@ -330,26 +340,26 @@ public class ReplaceComplexParameters extends SceneTransformer
             //                 }
             //             }
             //             newMethod.setParameterTypes(paramTypes);
-
             //             // we have to do this seemingly useless
             //             // thing, since the scene caches a pointer
             //             // to the method based on it's parameter types.
             //             theClass.removeMethod(newMethod);
             //             theClass.addMethod(newMethod);
-
             Body newBody = newMethod.retrieveActiveBody();
+
             // Analyze what object each local points to.
             NamedObjAnalysis analysis = new NamedObjAnalysis(newMethod,
                     ModelTransformer.getObjectForClass(theClass));
 
             for (Iterator locals = newBody.getLocals().iterator();
-                 locals.hasNext();) {
-                Local local = (Local)locals.next();
+                    locals.hasNext();) {
+                Local local = (Local) locals.next();
                 Type type = local.getType();
+
                 try {
-                    if (type instanceof RefType &&
-                            ((RefType)type).getSootClass() == oldClass &&
-                            object == analysis.getObject(local)) {
+                    if (type instanceof RefType
+                            && (((RefType) type).getSootClass() == oldClass)
+                            && (object == analysis.getObject(local))) {
                         local.setType(RefType.v(newClass));
                     }
                 } catch (Exception ex) {
@@ -360,27 +370,35 @@ public class ReplaceComplexParameters extends SceneTransformer
             }
 
             Iterator j = newBody.getUnits().iterator();
+
             while (j.hasNext()) {
-                Unit unit = (Unit)j.next();
+                Unit unit = (Unit) j.next();
+
                 // System.out.println("unit = " + unit);
                 Iterator boxes = unit.getUseBoxes().iterator();
+
                 while (boxes.hasNext()) {
-                    ValueBox box = (ValueBox)boxes.next();
+                    ValueBox box = (ValueBox) boxes.next();
                     Value value = box.getValue();
 
                     if (value instanceof InstanceFieldRef) {
                         // Fix references to fields
-                        InstanceFieldRef r = (InstanceFieldRef)value;
-                        if (object != analysis.getObject((Local)r.getBase())) {
+                        InstanceFieldRef r = (InstanceFieldRef) value;
+
+                        if (object != analysis.getObject((Local) r.getBase())) {
                             //    System.out.println("object = " + object);
                             //                             System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
                             //                             System.out.println("not equal!");
                             continue;
                         }
-                        if (SootUtilities.derivesFrom(oldClass, r.getField().getDeclaringClass()) &&
-                                newClass.declaresFieldByName(r.getField().getName())) {
+
+                        if (SootUtilities.derivesFrom(oldClass,
+                                    r.getField().getDeclaringClass())
+                                && newClass.declaresFieldByName(
+                                    r.getField().getName())) {
                             r.setField(newClass.getFieldByName(
-                                               r.getField().getName()));
+                                    r.getField().getName()));
+
                             //   System.out.println("fieldRef = " +
                             //              box.getValue());
                             //       } else if (r.getField().getDeclaringClass().getName()
@@ -394,23 +412,28 @@ public class ReplaceComplexParameters extends SceneTransformer
                         }
                     } else if (value instanceof CastExpr) {
                         // Fix casts
-                        CastExpr r = (CastExpr)value;
+                        CastExpr r = (CastExpr) value;
+
                         try {
-                            if (object != analysis.getObject((Local)r.getOp())) {
+                            if (object != analysis.getObject((Local) r.getOp())) {
                                 continue;
                             }
                         } catch (Exception ex) {
                             if (_debug) {
                                 System.out.println("Exception on cast = " + ex);
                             }
+
                             continue;
                         }
+
                         Type type = r.getType();
+
                         if (type instanceof RefType) {
-                            SootClass refClass =
-                                ((RefType)type).getSootClass();
+                            SootClass refClass = ((RefType) type).getSootClass();
+
                             if (refClass == oldClass) {
                                 r.setCastType(RefType.v(newClass));
+
                                 //    System.out.println("newValue = " +
                                 //        box.getValue());
                                 //                             } else if (refClass.getName().startsWith(
@@ -421,6 +444,7 @@ public class ReplaceComplexParameters extends SceneTransformer
                                 //                                 r.setCastType(RefType.v(changeClass));
                             }
                         }
+
                         //     } else if (value instanceof ThisRef) {
                         //                         // Fix references to 'this'
                         //                         ThisRef r = (ThisRef)value;
@@ -441,28 +465,34 @@ public class ReplaceComplexParameters extends SceneTransformer
                         //                         }
                     } else if (value instanceof InstanceInvokeExpr) {
                         // Fix up the method invokes.
-                        InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                        InstanceInvokeExpr r = (InstanceInvokeExpr) value;
+
                         try {
-                            if (object != analysis.getObject((Local)r.getBase())) {
+                            if (object != analysis.getObject(
+                                        (Local) r.getBase())) {
                                 //                                 System.out.println("object = " + object);
                                 //                                 System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
                                 //                                 System.out.println("not equal!");
-
                                 continue;
                             }
                         } catch (Exception ex) {
                             if (_debug) {
-                                System.out.println("Exception on invoke = " + ex);
+                                System.out.println("Exception on invoke = "
+                                    + ex);
                             }
+
                             continue;
                         }
-                        if (SootUtilities.derivesFrom(oldClass, r.getMethod().getDeclaringClass())) {
-                            if (newClass.declaresMethod(r.getMethod().getSubSignature())) {
-                                SootMethod replacementMethod =
-                                    newClass.getMethod(
-                                            r.getMethod().getSubSignature());
+
+                        if (SootUtilities.derivesFrom(oldClass,
+                                    r.getMethod().getDeclaringClass())) {
+                            if (newClass.declaresMethod(
+                                        r.getMethod().getSubSignature())) {
+                                SootMethod replacementMethod = newClass
+                                    .getMethod(r.getMethod().getSubSignature());
                                 r.setMethod(replacementMethod);
                             }
+
                             //                         } else if (r.getMethod().getDeclaringClass().getName().
                             //                                 startsWith(oldClass.getName())) {
                             //                             SootClass changeClass =
@@ -474,23 +504,30 @@ public class ReplaceComplexParameters extends SceneTransformer
                         }
                     } else if (value instanceof NewExpr) {
                         // Fix up the object creations.
-                        NewExpr r = (NewExpr)value;
+                        NewExpr r = (NewExpr) value;
+
                         if (!(unit instanceof AssignStmt)) {
                             continue;
                         }
-                        AssignStmt stmt = (AssignStmt)unit;
+
+                        AssignStmt stmt = (AssignStmt) unit;
+
                         try {
-                            if (object != analysis.getObject((Local)stmt.getLeftOp())) {
+                            if (object != analysis.getObject(
+                                        (Local) stmt.getLeftOp())) {
                                 continue;
                             }
                         } catch (Exception ex) {
                             if (_debug) {
                                 System.out.println("Exception on new = " + ex);
                             }
+
                             continue;
                         }
+
                         if (r.getBaseType().getSootClass() == oldClass) {
                             r.setBaseType(RefType.v(newClass));
+
                             //   System.out.println("newValue = " +
                             //           box.getValue());
                             //                         } else if (r.getBaseType().getSootClass().getName().
@@ -502,10 +539,12 @@ public class ReplaceComplexParameters extends SceneTransformer
                             //                             r.setBaseType(RefType.v(changeClass));
                         }
                     }
+
                     //    System.out.println("value = " + value);
                     //   System.out.println("class = " +
                     //            value.getClass().getName());
                 }
+
                 //   System.out.println("unit = " + unit);
             }
         }
@@ -516,17 +555,3 @@ public class ReplaceComplexParameters extends SceneTransformer
     private Map _options;
     private String _phaseName;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

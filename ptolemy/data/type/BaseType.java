@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.data.type;
 
 import java.io.Serializable;
@@ -46,12 +45,13 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.XMLToken;
-import ptolemy.data.expr.GeneralToken;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// BaseType
+
 /**
    The type of base token classes. This class provides a type safe
    enumeration of base types.
@@ -62,9 +62,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red
 */
-
 public abstract class BaseType implements Type, Serializable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -82,8 +80,7 @@ public abstract class BaseType implements Type, Serializable {
      *  @exception IllegalActionException If lossless conversion cannot
      *   be done.
      */
-    public abstract Token convert(Token t)
-            throws IllegalActionException;
+    public abstract Token convert(Token t) throws IllegalActionException;
 
     /** Determine if the argument represents the same BaseType as this
      *  object.
@@ -102,7 +99,7 @@ public abstract class BaseType implements Type, Serializable {
      *  @return An instance of BaseType.
      */
     public static Type forClassName(String className) {
-        return (Type)_classNameToType.get(className);
+        return (Type) _classNameToType.get(className);
     }
 
     /** Return an instance of this class with the specified name,
@@ -110,7 +107,7 @@ public abstract class BaseType implements Type, Serializable {
      *  @return An instance of BaseType.
      */
     public static Type forName(String name) {
-        return (Type)_nameToType.get(name);
+        return (Type) _nameToType.get(name);
     }
 
     /** Return the class for tokens that this basetype represents.
@@ -154,7 +151,7 @@ public abstract class BaseType implements Type, Serializable {
         }
 
         int typeInfo = TypeLattice.compare(this, type);
-        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+        return ((typeInfo == CPO.SAME) || (typeInfo == CPO.HIGHER));
     }
 
     /** Test if this Type is UNKNOWN.
@@ -175,6 +172,7 @@ public abstract class BaseType implements Type, Serializable {
         }
 
         int mod = _tokenClass.getModifiers();
+
         if (Modifier.isAbstract(mod)) {
             return false;
         }
@@ -203,7 +201,6 @@ public abstract class BaseType implements Type, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // NOTE: It may seem strange that these inner classes are built this
     // way instead of as anonymous classes...  As anonymous classes, the
     // fields cannot be appropriately typed, which makes type inference
@@ -217,15 +214,18 @@ public abstract class BaseType implements Type, Serializable {
         private UnknownType() {
             super(Void.TYPE, "unknown");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             // Since any type is a substitution instance of UNKNOWN, just
             // return the argument.
             return t;
         }
+
         public int getTypeHash() {
             return 0;
         }
     }
+
     public static final UnknownType UNKNOWN = new UnknownType();
 
     /** The boolean data type */
@@ -233,68 +233,74 @@ public abstract class BaseType implements Type, Serializable {
         private BooleanType() {
             super(BooleanToken.class, "boolean");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             return BooleanToken.convert(t);
         }
+
         public int getTypeHash() {
             return 1;
         }
     }
-    public static final BooleanType BOOLEAN = new BooleanType();
 
-    public static final UnsizedMatrixType.BooleanMatrixType BOOLEAN_MATRIX =
-    new UnsizedMatrixType.BooleanMatrixType();
+    public static final BooleanType BOOLEAN = new BooleanType();
+    public static final UnsizedMatrixType.BooleanMatrixType BOOLEAN_MATRIX = new UnsizedMatrixType.BooleanMatrixType();
 
     /** The unsigned byte data type */
     public static class UnsignedByteType extends BaseType {
         private UnsignedByteType() {
             super(UnsignedByteToken.class, "unsignedByte");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             return UnsignedByteToken.convert(t);
         }
+
         public int getTypeHash() {
             return 2;
         }
     }
-    public static final UnsignedByteType UNSIGNED_BYTE =
-    new UnsignedByteType();
+
+    public static final UnsignedByteType UNSIGNED_BYTE = new UnsignedByteType();
 
     /** The complex data type */
     public static class ComplexType extends BaseType {
         private ComplexType() {
             super(ComplexToken.class, "complex");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             return ComplexToken.convert(t);
         }
+
         public int getTypeHash() {
             return 3;
         }
     }
-    public static final ComplexType COMPLEX = new ComplexType();
 
-    public static final UnsizedMatrixType.ComplexMatrixType COMPLEX_MATRIX =
-    new UnsizedMatrixType.ComplexMatrixType();
+    public static final ComplexType COMPLEX = new ComplexType();
+    public static final UnsizedMatrixType.ComplexMatrixType COMPLEX_MATRIX = new UnsizedMatrixType.ComplexMatrixType();
 
     /** The double data type */
     public static class DoubleType extends BaseType {
         private DoubleType() {
             super(DoubleToken.class, "double");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             return DoubleToken.convert(t);
         }
+
         public int getTypeHash() {
             return 4;
         }
     }
-    public static final DoubleType DOUBLE = new DoubleType();
 
-    public static final UnsizedMatrixType.DoubleMatrixType DOUBLE_MATRIX =
-    new UnsizedMatrixType.DoubleMatrixType();
+    public static final DoubleType DOUBLE = new DoubleType();
+    public static final UnsizedMatrixType.DoubleMatrixType DOUBLE_MATRIX = new UnsizedMatrixType.DoubleMatrixType();
 
     /** The fix data type */
+
     //   public static class FixType extends BaseType {
     //         private FixType() {
     //             super(FixToken.class, "fixedpoint");
@@ -304,43 +310,43 @@ public abstract class BaseType implements Type, Serializable {
     //         }
     //     }
     public static final FixType FIX = FixType.BOTTOM; //new FixType();
-
-    public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX =
-    new UnsizedMatrixType.FixMatrixType();
+    public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX = new UnsizedMatrixType.FixMatrixType();
 
     /** The integer data type */
     public static class IntType extends BaseType {
         private IntType() {
             super(IntToken.class, "int");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             return IntToken.convert(t);
         }
+
         public int getTypeHash() {
             return 5;
         }
     }
-    public static final IntType INT = new IntType();
 
-    public static final UnsizedMatrixType.IntMatrixType INT_MATRIX =
-    new UnsizedMatrixType.IntMatrixType();
+    public static final IntType INT = new IntType();
+    public static final UnsizedMatrixType.IntMatrixType INT_MATRIX = new UnsizedMatrixType.IntMatrixType();
 
     /** The long integer data type */
     public static class LongType extends BaseType {
         private LongType() {
             super(LongToken.class, "long");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             return LongToken.convert(t);
         }
+
         public int getTypeHash() {
             return 6;
         }
     }
-    public static final LongType LONG = new LongType();
 
-    public static final UnsizedMatrixType.LongMatrixType LONG_MATRIX =
-    new UnsizedMatrixType.LongMatrixType();
+    public static final LongType LONG = new LongType();
+    public static final UnsizedMatrixType.LongMatrixType LONG_MATRIX = new UnsizedMatrixType.LongMatrixType();
 
     /** The matrix data type: The least upper bound of all the matrix types. */
     public static final TopMatrixType MATRIX = TopMatrixType.getInstance();
@@ -350,14 +356,17 @@ public abstract class BaseType implements Type, Serializable {
         private NumericalType() {
             super(Numerical.class, "numerical");
         }
+
         public Token convert(Token t) throws IllegalActionException {
-            throw new IllegalActionException("Cannot convert token " + t +
-                    " to type numerical, because numerical is not a concrete type.");
+            throw new IllegalActionException("Cannot convert token " + t
+                + " to type numerical, because numerical is not a concrete type.");
         }
+
         public int getTypeHash() {
             return 7;
         }
     }
+
     public static final NumericalType NUMERICAL = new NumericalType();
 
     /** The object data type */
@@ -365,13 +374,16 @@ public abstract class BaseType implements Type, Serializable {
         private ObjectType() {
             super(ObjectToken.class, "object");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             return ObjectToken.convert(t);
         }
+
         public int getTypeHash() {
             return 8;
         }
     }
+
     public static final ObjectType OBJECT = new ObjectType();
 
     /** The XmlToken data type */
@@ -379,13 +391,16 @@ public abstract class BaseType implements Type, Serializable {
         private XmlTokenType() {
             super(XMLToken.class, "xmltoken");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             return XMLToken.convert(t);
         }
+
         public int getTypeHash() {
             return 8;
         }
     }
+
     public static final XmlTokenType XMLTOKEN = new XmlTokenType();
 
     /** The scalar data type: The least upper bound of all the scalar types. */
@@ -393,14 +408,17 @@ public abstract class BaseType implements Type, Serializable {
         private ScalarType() {
             super(ScalarToken.class, "scalar");
         }
+
         public Token convert(Token t) throws IllegalActionException {
-            throw new IllegalActionException("Cannot convert token " + t +
-                    " to type scalar, because scalar is not a concrete type.");
+            throw new IllegalActionException("Cannot convert token " + t
+                + " to type scalar, because scalar is not a concrete type.");
         }
+
         public int getTypeHash() {
             return 9;
         }
     }
+
     public static final ScalarType SCALAR = new ScalarType();
 
     /** The string data type */
@@ -408,13 +426,16 @@ public abstract class BaseType implements Type, Serializable {
         private StringType() {
             super(StringToken.class, "string");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             return StringToken.convert(t);
         }
+
         public int getTypeHash() {
             return 10;
         }
     }
+
     public static final StringType STRING = new StringType();
 
     /** The general data type: The top of the lattice.  */
@@ -422,17 +443,21 @@ public abstract class BaseType implements Type, Serializable {
         private GeneralType() {
             super(Token.class, "general");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             // FIXME: what does converting to general MEAN?
             return t;
+
             //     throw new IllegalActionException("Cannot convert token "
             //         + t + " to type general, because general is not a "
             //         + concrete type.");
         }
+
         public int getTypeHash() {
             return 11;
         }
     }
+
     public static final GeneralType GENERAL = new GeneralType();
 
     /** The event data type */
@@ -440,22 +465,25 @@ public abstract class BaseType implements Type, Serializable {
         private EventType() {
             super(EventToken.class, "event");
         }
+
         public Token convert(Token t) throws IllegalActionException {
             // FIXME: what does converting to general MEAN?
             return t;
+
             //     throw new IllegalActionException("Cannot convert token "
             //         + t + " to type general, because general is not a "
             //         + concrete type.");
         }
+
         public int getTypeHash() {
             return 12;
         }
     }
+
     public static final EventType EVENT = new EventType();
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////
-
     // Add entries in this class to index the given name and class to
     // the given type.
     static void _addType(Type type, String name, Class theClass) {
@@ -465,16 +493,17 @@ public abstract class BaseType implements Type, Serializable {
         if (_nameToType == null) {
             _nameToType = new HashMap();
         }
+
         if (_classNameToType == null) {
             _classNameToType = new HashMap();
         }
+
         _nameToType.put(name, type);
         _classNameToType.put(theClass.getName(), type);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      private constructor                  ////
-
     // The constructor is private to make a type safe enumeration.
     private BaseType(Class c, String name) {
         _tokenClass = c;
@@ -484,7 +513,6 @@ public abstract class BaseType implements Type, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Class _tokenClass;
     private String _name;
 

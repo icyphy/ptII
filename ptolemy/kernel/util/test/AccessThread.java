@@ -27,17 +27,15 @@ COPYRIGHTENDKEY
 @ProposedRating Green (eal)
 
 */
-
 package ptolemy.kernel.util.test;
 
 import java.util.List;
 
 import ptolemy.kernel.util.InvalidStateException;
 
-public class AccessThread extends Thread {
 
-    public AccessThread(String name, List actions,
-            TestWorkspaceBase test) {
+public class AccessThread extends Thread {
+    public AccessThread(String name, List actions, TestWorkspaceBase test) {
         super(name);
         _actions = actions;
         _test = test;
@@ -55,7 +53,10 @@ public class AccessThread extends Thread {
         if (level >= _actions.size()) {
             return;
         }
-        AccessAction action = (AccessAction)_actions.get(level);;
+
+        AccessAction action = (AccessAction) _actions.get(level);
+        ;
+
         try {
             action.access();
             getAccess(level + 1);
@@ -72,5 +73,4 @@ public class AccessThread extends Thread {
 
     private List _actions;
     private TestWorkspaceBase _test;
-
 }

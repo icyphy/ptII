@@ -25,21 +25,22 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.jhdl.demo.Accumulate;
-import ptolemy.copernicus.jhdl.*;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.Token;
+import ptolemy.copernicus.jhdl.*;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Accum
+
 /** Add two integers.  This actor is a simple test for the JDHL/Ptolemy
     interface.
 
@@ -49,9 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxh)
 */
-
 public class Accum extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -62,7 +61,7 @@ public class Accum extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public Accum(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -74,7 +73,6 @@ public class Accum extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     public TypedIOPort input = null;
 
     /** Output port of type integer. */
@@ -82,8 +80,6 @@ public class Accum extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
     public void initialize() throws IllegalActionException {
         _state = new IntToken(0);
     }
@@ -98,7 +94,8 @@ public class Accum extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         _state = input.get(0).add(_state);
-        output.send(0,_state);
+        output.send(0, _state);
     }
+
     private Token _state;
 }

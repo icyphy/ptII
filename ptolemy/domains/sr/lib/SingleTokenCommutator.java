@@ -25,16 +25,18 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sr.lib;
+
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SingleTokenCommutator
+
 /**
    The SingleTokenCommutator has a multiport input port and an output
    port.  The types of the ports are undeclared and will be resolved by
@@ -51,9 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Yellow (cxh)
 */
-public class  SingleTokenCommutator   extends Transformer
-    implements SequenceActor {
-
+public class SingleTokenCommutator extends Transformer implements SequenceActor {
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport. Create
      *  the actor parameters.
@@ -66,7 +66,7 @@ public class  SingleTokenCommutator   extends Transformer
      *  by the proposed container.
      */
     public SingleTokenCommutator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
     }
@@ -101,6 +101,7 @@ public class  SingleTokenCommutator   extends Transformer
      */
     public boolean postfire() throws IllegalActionException {
         _currentInputPosition++;
+
         if (_currentInputPosition >= input.getWidth()) {
             _currentInputPosition = 0;
         }
@@ -114,6 +115,7 @@ public class  SingleTokenCommutator   extends Transformer
     /** Get the current input position.
      *  @return Current input position.
      */
+
     // This method is Added by Gang Zhou so that DDFSingleTokenCommutator
     // can inherit this class.
     protected int _getCurrentInputPosition() {
@@ -122,7 +124,6 @@ public class  SingleTokenCommutator   extends Transformer
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The channel number for the next input.
     private int _currentInputPosition;
 }

@@ -25,16 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui.test;
 
 import ptolemy.actor.gui.MoMLSimpleApplication;
 
 
-import java.io.File;
-
 /////////////////////////////////////////////////////////////////////////
 //// Rerun
+
 /**
 Run a MoML model over and over again.
 This class reads in a MoML file and executes it over and over again.
@@ -74,15 +72,13 @@ awk '{  t[NR] = $1;
 @Pt.AcceptedRating Red (cxh)
 */
 public class Rerun extends MoMLSimpleApplication {
-
-
-     /** Parse the xml file and run it.
-     *  @param xmlFileName A string that refers to an MoML file that
-     *  contains a Ptolemy II model.  The string should be
-     *  a relative pathname.
-     *  @exception Throwable If there was a problem parsing
-     *  or running the model.
-     */
+    /** Parse the xml file and run it.
+    *  @param xmlFileName A string that refers to an MoML file that
+    *  contains a Ptolemy II model.  The string should be
+    *  a relative pathname.
+    *  @exception Throwable If there was a problem parsing
+    *  or running the model.
+    */
     public Rerun(String xmlFileName) throws Throwable {
         super(xmlFileName);
     }
@@ -90,38 +86,40 @@ public class Rerun extends MoMLSimpleApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Create an instance of a single model and run it
      *  @param args The command-line arguments naming the .xml file to run
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             // Constructing the Rerun object runs the model once,
             // so we run it 100-1 more times.
             int runs = 99;
             String xmlFileName = null;
+
             if (args.length == 2) {
                 try {
                     runs = Integer.parseInt(args[0]) - 1;
                 } catch (Exception ex) {
                     System.err.println("Failed to parse '" + args[0]
-                            + "', using " + runs + " instead.");
+                        + "', using " + runs + " instead.");
                     ex.printStackTrace();
                 }
+
                 xmlFileName = args[1];
             } else {
                 if (args.length == 1) {
                     xmlFileName = args[0];
                 } else {
                     throw new IllegalArgumentException(
-                            "Usage: java -classpath $PTII ptolemy.actor.gui.test.Rerun [reRuns] model.xml\n"
-                            + "    Where reRuns is an integer, "
-                            + "defaults to 100");
-
+                        "Usage: java -classpath $PTII ptolemy.actor.gui.test.Rerun [reRuns] model.xml\n"
+                        + "    Where reRuns is an integer, "
+                        + "defaults to 100");
                 }
             }
+
             Rerun reRun = new Rerun(xmlFileName);
-            for ( int i = 0; i < runs; i++) {
+
+            for (int i = 0; i < runs; i++) {
                 reRun.rerun();
             }
         } catch (Throwable ex) {

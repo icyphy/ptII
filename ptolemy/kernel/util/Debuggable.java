@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Debuggable
+
 /**
    This is an interface for objects that debug listeners can be attached to.
 
@@ -41,9 +42,7 @@ package ptolemy.kernel.util;
    @see DebugListener
    @see DebugEvent
 */
-
 public interface Debuggable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -53,12 +52,10 @@ public interface Debuggable {
      */
     public void addDebugListener(DebugListener listener);
 
-
     /** Unregister a debug listener.  If the specified listener has not
      *  been previously registered, then do nothing.
      *  @param listener The listener to remove from the list of listeners
      *   to which debug messages are sent.
      */
     public void removeDebugListener(DebugListener listener);
-
 }

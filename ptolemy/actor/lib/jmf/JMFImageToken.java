@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.jmf;
 
 import java.awt.Image;
@@ -37,8 +36,10 @@ import ptolemy.data.ImageToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JMFImageToken
+
 /**
    A token that contains a javax.media.Buffer.  This token is used when
    dealing with images in the Java Media Framework (JMF) library.  Because
@@ -52,7 +53,6 @@ import ptolemy.data.type.Type;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JMFImageToken extends ImageToken {
-
     /** Construct a token with a specified Buffer
      */
     public JMFImageToken(Buffer value) {
@@ -67,10 +67,11 @@ public class JMFImageToken extends ImageToken {
      *  video format of the Buffer changes.
      */
     public Image asAWTImage() {
-        if (_bufferToImage == null || _videoFormat != _value.getFormat()) {
+        if ((_bufferToImage == null) || (_videoFormat != _value.getFormat())) {
             _videoFormat = (VideoFormat) _value.getFormat();
             _bufferToImage = new BufferToImage(_videoFormat);
         }
+
         _awtImage = _bufferToImage.createImage(_value);
         return _awtImage;
     }
@@ -100,11 +101,9 @@ public class JMFImageToken extends ImageToken {
     public String toString() {
         // FIXME: return a value that can be parsed by the expression language.
         Image image = asAWTImage();
-        return "{type=\"" + getClass()
-            + "\" width=\"" + image.getWidth(null)
-            + "\" height=\"" + image.getHeight(null)
-            + "\" format=\"" + _videoFormat
-            + "\"}";
+        return "{type=\"" + getClass() + "\" width=\"" + image.getWidth(null)
+        + "\" height=\"" + image.getHeight(null) + "\" format=\""
+        + _videoFormat + "\"}";
     }
 
     ///////////////////////////////////////////////////////////////////

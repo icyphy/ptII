@@ -28,6 +28,7 @@ package diva.canvas.interactor;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 
+
 /**
  * A grab handle for manipulating figures and so on. Grab-handles
  * are attached to Sites.
@@ -47,24 +48,22 @@ public interface GrabHandle extends Figure {
      * that approximately represents the distance from the
      * attachment point to the edge.
      */
-    public float getSize ();
+    public float getSize();
 
     /**
      * Reposition the grab-handle to its site
      */
-    public void relocate ();
+    public void relocate();
 
     /**
      * Set the site to which this grab-handle is attached.
      */
-    public void setSite (Site s);
+    public void setSite(Site s);
 
     /**
      * Set the "size" of the grab-handle.  The size is some dimension
      * that approximately represents the distance from the
      * attachment point to the edge.
      */
-    public void setSize (float size);
+    public void setSize(float size);
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.basic;
 
 import java.awt.Point;
@@ -47,8 +46,10 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.NodeDragInteractor;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor
+
 /**
    An interaction role that drags nodes that have locatable objects
    as semantic objects.  When the node is dragged, this interactor
@@ -67,14 +68,14 @@ import diva.graph.NodeDragInteractor;
    @Pt.AcceptedRating Red (johnr)
 */
 public class LocatableNodeDragInteractor extends NodeDragInteractor {
-
     /** Create a new interactor contained within the given controller.
      */
     public LocatableNodeDragInteractor(LocatableNodeController controller) {
         super(controller.getController());
         _controller = controller;
 
-        Point2D origin = new Point(0,0);
+        Point2D origin = new Point(0, 0);
+
         // Create a snap constraint with the default snap resolution.
         _snapConstraint = new SnapConstraint();
         appendConstraint(_snapConstraint);
@@ -93,7 +94,6 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         _dragStart = _getConstrainedPoint(e);
     }
 
-
     /** When the mouse is released after dragging, mark the frame modified
      *  and update the panner, and generate an undo entry for the move.
      *  If no movement has occured, then do nothing.
@@ -102,43 +102,43 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
     public void mouseReleased(LayerEvent e) {
         // We should factor out the common code in this method and in
         // transform().
-
         // Work out the transform the drag performed.
         double[] dragEnd = _getConstrainedPoint(e);
         double[] transform = new double[2];
         transform[0] = _dragStart[0] - dragEnd[0];
         transform[1] = _dragStart[1] - dragEnd[1];
 
-        if (transform[0] == 0.0 && transform[1] == 0.0) return;
+        if ((transform[0] == 0.0) && (transform[1] == 0.0)) {
+            return;
+        }
 
-        BasicGraphController graphController
-            = (BasicGraphController)_controller.getController();
-        BasicGraphFrame frame
-            = graphController.getFrame();
+        BasicGraphController graphController = (BasicGraphController) _controller
+            .getController();
+        BasicGraphFrame frame = graphController.getFrame();
 
-        SelectionModel model
-            = graphController.getSelectionModel();
-        AbstractBasicGraphModel graphModel
-            = (AbstractBasicGraphModel)graphController.getGraphModel();
-        Object selection[]
-            = model.getSelectionAsArray();
-        Object userObjects[]
-            = new Object[selection.length];
+        SelectionModel model = graphController.getSelectionModel();
+        AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) graphController
+            .getGraphModel();
+        Object[] selection = model.getSelectionAsArray();
+        Object[] userObjects = new Object[selection.length];
+
         // First get the user objects from the selection.
         for (int i = 0; i < selection.length; i++) {
-            userObjects[i] = ((Figure)selection[i]).getUserObject();
+            userObjects[i] = ((Figure) selection[i]).getUserObject();
         }
 
         // First make a set of all the semantic objects as they may
         // appear more than once
         HashSet namedObjSet = new HashSet();
+
         for (int i = 0; i < selection.length; i++) {
             if (selection[i] instanceof Figure) {
-                Object userObject = ((Figure)selection[i]).getUserObject();
-                if (graphModel.isEdge(userObject) ||
-                        graphModel.isNode(userObject)) {
-                    NamedObj actual
-                        = (NamedObj)graphModel.getSemanticObject(userObject);
+                Object userObject = ((Figure) selection[i]).getUserObject();
+
+                if (graphModel.isEdge(userObject)
+                        || graphModel.isNode(userObject)) {
+                    NamedObj actual = (NamedObj) graphModel.getSemanticObject(userObject);
+
                     if (actual != null) {
                         namedObjSet.add(actual);
                     } else {
@@ -146,8 +146,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                         // MoML and which may not be undoable.
                         // FIXME: This is no way to handle it...
                         System.out.println(
-                                "Object with no semantic object , class: "
-                                + userObject.getClass().getName());
+                            "Object with no semantic object , class: "
+                            + userObject.getClass().getName());
                     }
                 }
             }
@@ -157,9 +157,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // Note that the location has already been set by the mouseMoved()
         // call, but we need to do this so that the undo is generated and
         // so that the change propagates.
-
         // The toplevel is the container being edited.
-        final NamedObj toplevel = (NamedObj)graphModel.getRoot();
+        final NamedObj toplevel = (NamedObj) graphModel.getRoot();
 
         StringBuffer moml = new StringBuffer();
         StringBuffer undoMoml = new StringBuffer();
@@ -167,74 +166,84 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         undoMoml.append("<group>\n");
 
         Iterator elements = namedObjSet.iterator();
+
         while (elements.hasNext()) {
-            NamedObj element = (NamedObj)elements.next();
+            NamedObj element = (NamedObj) elements.next();
             List locationList = element.attributeList(Locatable.class);
+
             if (locationList.isEmpty()) {
                 // Nothing to do as there was no previous location
                 // attribute (applies to "unseen" relations)
                 continue;
             }
+
             // Set the new location attribute.
-            Locatable locatable = (Locatable)locationList.get(0);
+            Locatable locatable = (Locatable) locationList.get(0);
+
             // Give default values in case the previous locations value
             // has not yet been set
-            double[] newLocation = new double[]{0, 0};
+            double[] newLocation = new double[] { 0, 0 };
+
             if (locatable.getLocation() != null) {
                 newLocation = locatable.getLocation();
             }
+
             // NOTE: we use the transform worked out for the drag to
             // set the original MoML location
             double[] oldLocation = new double[2];
             oldLocation[0] = newLocation[0] + transform[0];
             oldLocation[1] = newLocation[1] + transform[1];
+
             // Create the MoML, wrapping the new location attribute
             // in an element refering to the container
             String containingElementName = element.getElementName();
-            String elementToMove = "<" + containingElementName + " name=\"" +
-                element.getName() + "\" >\n";
+            String elementToMove = "<" + containingElementName + " name=\""
+                + element.getName() + "\" >\n";
             moml.append(elementToMove);
             undoMoml.append(elementToMove);
 
             // NOTE: use the moml info element name here in case the
             // location is a vertex
-            String momlInfo = ((NamedObj)locatable).getElementName();
-            moml.append("<" + momlInfo + " name=\"" +
-                    locatable.getName() + "\" value=\"[" + newLocation[0] + ", " +
-                    newLocation[1] + "]\" />\n");
-            undoMoml.append("<" + momlInfo + " name=\"" +
-                    locatable.getName() + "\" value=\"[" + oldLocation[0] + ", " +
-                    oldLocation[1] + "]\" />\n");
+            String momlInfo = ((NamedObj) locatable).getElementName();
+            moml.append("<" + momlInfo + " name=\"" + locatable.getName()
+                + "\" value=\"[" + newLocation[0] + ", " + newLocation[1]
+                + "]\" />\n");
+            undoMoml.append("<" + momlInfo + " name=\"" + locatable.getName()
+                + "\" value=\"[" + oldLocation[0] + ", " + oldLocation[1]
+                + "]\" />\n");
             moml.append("</" + containingElementName + ">\n");
             undoMoml.append("</" + containingElementName + ">\n");
         }
+
         moml.append("</group>\n");
         undoMoml.append("</group>\n");
 
         final String finalUndoMoML = undoMoml.toString();
 
         // Request the change.
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, toplevel, moml.toString()) {
+        MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
+                moml.toString()) {
                 protected void _execute() throws Exception {
-                        super._execute();
+                    super._execute();
 
-                // Next create and register the undo entry;
-                // The MoML by itself will not cause an undo
-                // to register because the value is not changing.
-                // Note that this must be done inside the change
-                // request because write permission on the
-                // workspace is required to push an entry
-                // on the undo stack. If this is done outside
-                // the change request, there is a race condition
-                // on the undo, and a deadlock could result if
-                // the model is running.
-                MoMLUndoEntry newEntry = new MoMLUndoEntry(
-                        toplevel, finalUndoMoML.toString());
-                UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(toplevel);
-                undoInfo.push(newEntry);
-            }
-        };
+                    // Next create and register the undo entry;
+                    // The MoML by itself will not cause an undo
+                    // to register because the value is not changing.
+                    // Note that this must be done inside the change
+                    // request because write permission on the
+                    // workspace is required to push an entry
+                    // on the undo stack. If this is done outside
+                    // the change request, there is a race condition
+                    // on the undo, and a deadlock could result if
+                    // the model is running.
+                    MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel,
+                            finalUndoMoML.toString());
+                    UndoStackAttribute undoInfo = UndoStackAttribute
+                        .getUndoInfo(toplevel);
+                    undoInfo.push(newEntry);
+                }
+            };
+
         toplevel.requestChange(request);
 
         if (frame != null) {
@@ -266,22 +275,24 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // not ensure that all nodes in the selection get to an acceptable
         // quantized point, but there is no way to do that without
         // changing their relative positions.
-
         // NOTE: We cannot use the location attribute of the target objects
         // The problem is that the location as set during a drag is a
         // queued mutation.  So the translation we get isn't right.
-
         Iterator targets = targets();
         double[] originalUpperLeft = null;
+
         while (targets.hasNext()) {
             Figure figure = (Figure) targets.next();
             originalUpperLeft = new double[2];
             originalUpperLeft[0] = figure.getOrigin().getX();
             originalUpperLeft[1] = figure.getOrigin().getY();
+
             // Only snap the first figure in the set.
             break;
         }
+
         double[] snapTranslation;
+
         if (originalUpperLeft == null) {
             // No location found in the selection, so we just quantize
             // the translation.
@@ -293,6 +304,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             double[] newUpperLeft = new double[2];
             newUpperLeft[0] = originalUpperLeft[0] + x;
             newUpperLeft[1] = originalUpperLeft[1] + y;
+
             double[] snapLocation = _snapConstraint.constrain(newUpperLeft);
             snapTranslation = new double[2];
             snapTranslation[0] = snapLocation[0] - originalUpperLeft[0];
@@ -315,9 +327,11 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // selected at the same time as a locatable node.
         try {
             targets = targets();
+
             while (targets.hasNext()) {
                 Figure figure = (Figure) targets.next();
                 Object node = figure.getUserObject();
+
                 if (_controller.getController().getGraphModel().isNode(node)) {
                     // NOTE: This used to get the location and then set it,
                     // but since the returned value is the internal array,
@@ -336,13 +350,14 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Returns a constrained point from the given event
     private double[] _getConstrainedPoint(LayerEvent e) {
         Iterator targets = targets();
         double[] result = new double[2];
+
         if (targets.hasNext()) {
-            Figure figure = (Figure)targets.next();
+            Figure figure = (Figure) targets.next();
+
             // The transform context is always (0,0) so no use
             // NOTE: this is a bit of hack, needed to allow the undo of
             // the movement of vertexes by themselves
@@ -350,6 +365,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             result[1] = e.getLayerY();
             return _snapConstraint.constrain(result);
         }
+
         /*
          * else {
          * AffineTransform transform
@@ -365,7 +381,6 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private LocatableNodeController _controller;
 
     // Used to undo a locatable node movement

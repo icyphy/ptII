@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ci.kernel;
 
 import java.util.Iterator;
@@ -39,8 +38,10 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CIReceiver
+
 /**
    An implementation of the ptolemy.actor.Receiver interface for the CI
    domain. This receiver provides a FIFO buffer between an active actor
@@ -60,7 +61,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (liuxj)
 */
 public class CIReceiver extends AbstractReceiver {
-
     /** Construct an empty receiver.
      *  @param director The director that creates this receiver.
      */
@@ -82,10 +82,12 @@ public class CIReceiver extends AbstractReceiver {
      *  @exception ptolemy.actor.NoTokenException If there is no token.
      */
     public synchronized Token get() throws NoTokenException {
-        if (_tokens.size() == 0)
+        if (_tokens.size() == 0) {
             throw new NoTokenException(getContainer(),
-                    "No more tokens in the CI receiver.");
-        return (Token)_tokens.removeFirst();
+                "No more tokens in the CI receiver.");
+        }
+
+        return (Token) _tokens.removeFirst();
     }
 
     /** Return true. The receiver acts as an infinite FIFO buffer.
@@ -149,27 +151,31 @@ public class CIReceiver extends AbstractReceiver {
      *  @exception NoRoomException If the token array cannot be put.
      */
     public synchronized void putArray(Token[] tokenArray, int numberOfTokens)
-            throws NoRoomException {
+        throws NoRoomException {
         for (int i = 0; i < numberOfTokens; i++) {
             _tokens.add(tokenArray[i]);
         }
+
         _notify();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _initialize() {
         IOPort port = getContainer();
         _isPush = CIDirector._isPushPort(port);
-        _actor = (Actor)port.getContainer();
+        _actor = (Actor) port.getContainer();
         _isAsyncPullSink = !_isPush && CIDirector._isActive(_actor);
+
         Iterator sourcePorts = port.sourcePortList().iterator();
+
         if (sourcePorts.hasNext()) {
-            port = (IOPort)sourcePorts.next();
-            Actor actor = (Actor)port.getContainer();
+            port = (IOPort) sourcePorts.next();
+
+            Actor actor = (Actor) port.getContainer();
             _isAsyncPushSink = _isPush && CIDirector._isActive(actor);
         }
+
         _initialized = true;
     }
 
@@ -182,6 +188,7 @@ public class CIReceiver extends AbstractReceiver {
         if (!_initialized) {
             _initialize();
         }
+
         if (_isPush) {
             if (_isAsyncPushSink) {
                 _director._addAsyncPushedActor(_actor);
@@ -209,7 +216,6 @@ public class CIReceiver extends AbstractReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The CI director that created this receiver.
     private CIDirector _director;
 
@@ -218,7 +224,6 @@ public class CIReceiver extends AbstractReceiver {
 
     // List for storing tokens.
     private LinkedList _tokens = new LinkedList();
-
     private boolean _initialized = false;
 
     // True if an active actor put token in this receiver.
@@ -229,5 +234,4 @@ public class CIReceiver extends AbstractReceiver {
 
     // True if this receiver is in a push input port.
     private boolean _isPush = false;
-
 }

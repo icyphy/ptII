@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 /**
  * A panel that graphically represents the Dining Philosophers.
  * This contains all the objects and controls the whole thing.
@@ -36,15 +35,14 @@ COPYRIGHTENDKEY
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Panel;
 
-class TablePanel extends Panel {
 
+class TablePanel extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -56,73 +54,67 @@ class TablePanel extends Panel {
         Coordinate newOrigin;
 
         synchronized (this) {
-
             Dimension d = this.getSize();
-            newOrigin = new Coordinate (d.width / 2, d.height / 2);
+            newOrigin = new Coordinate(d.width / 2, d.height / 2);
 
             /*
              * Test to see if the panel has been resized. If so then all
              * coordinates must be recalculated.
              */
-            if (! newOrigin.equals(origin)) {
+            if (!newOrigin.equals(origin)) {
                 origin = newOrigin;
                 initPos();
             }
 
             // draw the table.
-            g.drawOval(origin.X - tableR,
-                    origin.Y - tableR, tableR * 2, tableR * 2);
+            g.drawOval(origin.X - tableR, origin.Y - tableR, tableR * 2,
+                tableR * 2);
 
             for (int i = 0; i < 5; i++) {
                 // draw each philosopher.
                 if (_philosophers[i].gotLeft && _philosophers[i].gotRight) {
-
-                    g.fillOval(philsLoc[i].pos.X,
-                            philsLoc[i].pos.Y, 2 * pR, 2 * pR);
+                    g.fillOval(philsLoc[i].pos.X, philsLoc[i].pos.Y, 2 * pR,
+                        2 * pR);
                 } else {
-                    g.drawOval(philsLoc[i].pos.X,
-                            philsLoc[i].pos.Y, 2 * pR, 2 * pR);
+                    g.drawOval(philsLoc[i].pos.X, philsLoc[i].pos.Y, 2 * pR,
+                        2 * pR);
                 }
 
                 int j = (i - 1 + 5) % 5;
-                if (! (_philosophers[i].gotLeft ||
-                            _philosophers[j].gotRight)) {
+
+                if (!(_philosophers[i].gotLeft || _philosophers[j].gotRight)) {
                     // chopstick is on the table.
                     g.drawLine(chopsticksLoc[i].pos[0].X,
-                            chopsticksLoc[i].pos[0].Y,
-                            chopsticksLoc[i].pos[1].X,
-                            chopsticksLoc[i].pos[1].Y);
-                }
-                else {
+                        chopsticksLoc[i].pos[0].Y, chopsticksLoc[i].pos[1].X,
+                        chopsticksLoc[i].pos[1].Y);
+                } else {
                     if (_philosophers[i].gotLeft) {
                         // the philosopher on the right has it.
                         g.drawLine(philsLoc[i].leftPos[0].X,
-                                philsLoc[i].leftPos[0].Y,
-                                philsLoc[i].leftPos[1].X,
-                                philsLoc[i].leftPos[1].Y);
+                            philsLoc[i].leftPos[0].Y, philsLoc[i].leftPos[1].X,
+                            philsLoc[i].leftPos[1].Y);
+
                         if (_philosophers[j].waitingRight) {
                             // the philosopher on the left is waiting for it.
                             g.fillOval(philsLoc[j].rightPos[1].X - 2,
-                                    philsLoc[j].rightPos[1].Y - 2, 4, 4);
+                                philsLoc[j].rightPos[1].Y - 2, 4, 4);
                         }
-                    }
-                    else {
+                    } else {
                         // the philosopher on the left has it.
                         g.drawLine(philsLoc[j].rightPos[0].X,
-                                philsLoc[j].rightPos[0].Y,
-                                philsLoc[j].rightPos[1].X,
-                                philsLoc[j].rightPos[1].Y);
+                            philsLoc[j].rightPos[0].Y,
+                            philsLoc[j].rightPos[1].X, philsLoc[j].rightPos[1].Y);
+
                         if (_philosophers[i].waitingLeft) {
                             // the philosopher on the right is waiting for it.
                             g.fillOval(philsLoc[i].leftPos[1].X - 2,
-                                    philsLoc[i].leftPos[1].Y - 2, 4, 4);
+                                philsLoc[i].leftPos[1].Y - 2, 4, 4);
                         }
                     }
                 }
             }
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -139,16 +131,17 @@ class TablePanel extends Panel {
      */
     protected void _initialize(Philosopher[] philosophers) {
         _philosophers = philosophers;
+
         for (int i = 0; i < 5; i++) {
             philsLoc[i] = new PhilosopherCoords();
             chopsticksLoc[i] = new ChopstickCoords();
         }
+
         initPos();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Coordinates of chopsticks
     private ChopstickCoords[] chopsticksLoc = new ChopstickCoords[5];
 
@@ -160,20 +153,26 @@ class TablePanel extends Panel {
      * Constants used to draw the table and philosophers.
      * They allow geometry changes to be made easily.
      */
+
     // The origin coordinate.
     private Coordinate origin = new Coordinate(100, 100);
+
     // Radius of the philosophers
     private final int pR = 10;
+
     // Polar position of the philosophers
     private final double r1 = 70d;
+
     // Polar position of the chopsticks
     private final double r2 = 25d;
+
     // Polar position of the chopsticks from the philosophers when in use
     private final double r3 = 15d;
+
     // Length of the chopsticks
     private final double l = 10d;
     private final int tableGap = 30;
-    private final int tableR = (int)r1 - tableGap;
+    private final int tableR = (int) r1 - tableGap;
 
     /**
      * Sets all the coordinates of the chopsticks and philosophers.
@@ -182,23 +181,28 @@ class TablePanel extends Panel {
      */
     private void initPos() {
         // frequently used sin and cos values.
-        double cos18 = Math.cos(Math.PI * 18d / 180d);
-        double sin18 = Math.sin(Math.PI * 18d / 180d);
-        double cos36 = Math.cos(Math.PI * 36d / 180d);
-        double sin36 = Math.sin(Math.PI * 36d / 180d);
+        double cos18 = Math.cos((Math.PI * 18d) / 180d);
+        double sin18 = Math.sin((Math.PI * 18d) / 180d);
+        double cos36 = Math.cos((Math.PI * 36d) / 180d);
+        double sin36 = Math.sin((Math.PI * 36d) / 180d);
 
-        Coordinate p, q, l_1, l_2, r_1, r_2;
+        Coordinate p;
+        Coordinate q;
+        Coordinate l_1;
+        Coordinate l_2;
+        Coordinate r_1;
+        Coordinate r_2;
 
         p = new Coordinate(origin.X - pR, origin.Y - (int) r1 - pR);
         l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18),
                 p.Y + pR + (int) (r3 * cos18));
         l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18),
                 p.Y + pR + (int) ((r3 + l) * cos18));
-        r_1 = new Coordinate(p.X + pR - (int) (r3 * sin18),
+        r_1 = new Coordinate((p.X + pR) - (int) (r3 * sin18),
                 p.Y + pR + (int) (r3 * cos18));
-        r_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * sin18),
+        r_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * sin18),
                 p.Y + pR + (int) ((r3 + l) * cos18));
-        philsLoc[0].setPos(p,  l_1,  l_2, r_1, r_2);
+        philsLoc[0].setPos(p, l_1, l_2, r_1, r_2);
         p = new Coordinate(origin.X - (int) (r1 * cos18) - pR,
                 origin.Y - (int) (r1 * sin18) - pR);
         l_1 = new Coordinate(p.X + pR + (int) r3, p.Y + pR);
@@ -209,35 +213,35 @@ class TablePanel extends Panel {
                 p.Y + pR + (int) ((r3 + l) * sin36));
         philsLoc[1].setPos(p, l_1, l_2, r_1, r_2);
         p = new Coordinate(origin.X - (int) (r1 * sin36) - pR,
-                origin.Y + (int) (r1 * cos36) - pR);
+                (origin.Y + (int) (r1 * cos36)) - pR);
         l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18),
-                p.Y + pR - (int) (r3 * cos18));
+                (p.Y + pR) - (int) (r3 * cos18));
         l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18),
-                p.Y + pR - (int) ((r3 + l) * cos18));
+                (p.Y + pR) - (int) ((r3 + l) * cos18));
         r_1 = new Coordinate(p.X + pR + (int) (r3 * cos36),
-                p.Y + pR - (int) (r3 * sin36));
+                (p.Y + pR) - (int) (r3 * sin36));
         r_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * cos36),
-                p.Y + pR - (int) ((r3 + l) * sin36));
+                (p.Y + pR) - (int) ((r3 + l) * sin36));
         philsLoc[2].setPos(p, l_1, l_2, r_1, r_2);
-        p = new Coordinate(origin.X + (int) (r1 * sin36) - pR,
-                origin.Y + (int) (r1 * cos36) - pR);
-        l_1 = new Coordinate(p.X + pR - (int) (r3 * cos36),
-                p.Y + pR - (int) (r3 * sin36));
-        l_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * cos36),
-                p.Y + pR - (int) ((r3 + l) * sin36));
-        r_1 = new Coordinate(p.X + pR - (int) (r3 * sin18),
-                p.Y + pR - (int) (r3 * cos18));
-        r_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * sin18),
-                p.Y + pR - (int) ((r3 + l) * cos18));
+        p = new Coordinate((origin.X + (int) (r1 * sin36)) - pR,
+                (origin.Y + (int) (r1 * cos36)) - pR);
+        l_1 = new Coordinate((p.X + pR) - (int) (r3 * cos36),
+                (p.Y + pR) - (int) (r3 * sin36));
+        l_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * cos36),
+                (p.Y + pR) - (int) ((r3 + l) * sin36));
+        r_1 = new Coordinate((p.X + pR) - (int) (r3 * sin18),
+                (p.Y + pR) - (int) (r3 * cos18));
+        r_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * sin18),
+                (p.Y + pR) - (int) ((r3 + l) * cos18));
         philsLoc[3].setPos(p, l_1, l_2, r_1, r_2);
-        p = new Coordinate(origin.X + (int) (r1 * cos18) - pR,
+        p = new Coordinate((origin.X + (int) (r1 * cos18)) - pR,
                 origin.Y - (int) (r1 * sin18) - pR);
-        l_1 = new Coordinate(p.X + pR - (int) (r3 * cos36),
+        l_1 = new Coordinate((p.X + pR) - (int) (r3 * cos36),
                 p.Y + pR + (int) (r3 * sin36));
-        l_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * cos36),
+        l_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * cos36),
                 p.Y + pR + (int) ((r3 + l) * sin36));
-        r_1 = new Coordinate(p.X + pR - (int) r3, p.Y + pR);
-        r_2 = new Coordinate(p.X + pR - (int) (r3 + l), p.Y + pR);
+        r_1 = new Coordinate((p.X + pR) - (int) r3, p.Y + pR);
+        r_2 = new Coordinate((p.X + pR) - (int) (r3 + l), p.Y + pR);
         philsLoc[4].setPos(p, l_1, l_2, r_1, r_2);
 
         p = new Coordinate(origin.X + (int) (r2 * sin36),
@@ -267,9 +271,7 @@ class TablePanel extends Panel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // Inner Classes implementing the coordinates
-
     public class ChopstickCoords {
         Coordinate[] pos = new Coordinate[2];
 
@@ -285,7 +287,7 @@ class TablePanel extends Panel {
         Coordinate pos;
 
         public void setPos(Coordinate p, Coordinate l_1, Coordinate l_2,
-                Coordinate r_1, Coordinate r_2) {
+            Coordinate r_1, Coordinate r_2) {
             pos = p;
             leftPos[0] = l_1;
             leftPos[1] = l_2;

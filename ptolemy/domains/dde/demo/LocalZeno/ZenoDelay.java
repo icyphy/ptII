@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import ptolemy.kernel.CompositeEntity;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ZenoDelay
+
 /**
    ZenoDelay is an extension of ListenFeedBackDelay with an overridden
    getDelay() method that approximates a Zeno condition.
@@ -49,12 +50,10 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.domains.dde.kernel.NullToken
 */
 public class ZenoDelay extends ListenFeedBackDelay {
-
     /** Construct a ZenoDelay actor with no container and a name
      *  that is an empty string.
      */
-    public ZenoDelay()
-            throws IllegalActionException, NameDuplicationException {
+    public ZenoDelay() throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -63,7 +62,7 @@ public class ZenoDelay extends ListenFeedBackDelay {
      * @param workspace The workspace for this ZenoDelay actor.
      */
     public ZenoDelay(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -77,7 +76,7 @@ public class ZenoDelay extends ListenFeedBackDelay {
      *  superclass throws a NameDuplicationException .
      */
     public ZenoDelay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -93,20 +92,19 @@ public class ZenoDelay extends ListenFeedBackDelay {
      *  exceeded 50.0.
      */
     public double getDelay() throws IllegalActionException {
-        if ( _cntr < 1000 ) {
-            if ( getDirector().getModelTime().getDoubleValue() < 50.0 ) {
+        if (_cntr < 1000) {
+            if (getDirector().getModelTime().getDoubleValue() < 50.0) {
                 return super.getDelay();
             } else {
                 _cntr++;
                 return 0.001;
             }
         }
+
         return super.getDelay();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private int _cntr = 0;
-
 }

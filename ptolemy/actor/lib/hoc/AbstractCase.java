@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.hoc;
 
 import java.io.IOException;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AbstractCase
+
 /**
 
 Abstract base class for a composite actor with several possible refinements.
@@ -54,7 +55,6 @@ Abstract base class for a composite actor with several possible refinements.
 @Pt.AcceptedRating Red (eal)
 */
 public abstract class AbstractCase extends TypedCompositeActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -64,7 +64,7 @@ public abstract class AbstractCase extends TypedCompositeActor {
      *   actor with this name.
      */
     public AbstractCase(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _director = new CaseDirector(this, "CaseDirector");
 
@@ -91,25 +91,28 @@ public abstract class AbstractCase extends TypedCompositeActor {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-
+        throws IOException {
         Iterator attributes = attributeList().iterator();
+
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute) attributes.next();
+
             if (attribute != _director) {
                 attribute.exportMoML(output, depth);
             }
         }
 
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            Port port = (Port)ports.next();
+            Port port = (Port) ports.next();
             port.exportMoML(output, depth);
         }
 
         Iterator entities = entityList().iterator();
+
         while (entities.hasNext()) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
+            ComponentEntity entity = (ComponentEntity) entities.next();
             entity.exportMoML(output, depth);
         }
     }
@@ -126,7 +129,6 @@ public abstract class AbstractCase extends TypedCompositeActor {
     /** Our director.
      */
     private class CaseDirector extends Director {
-
         /** Construct a director in the given container with the given name.
          *  @param container The container.
          *  @param name The name of this director.
@@ -136,7 +138,7 @@ public abstract class AbstractCase extends TypedCompositeActor {
          *   contains an entity with the specified name.
          */
         public CaseDirector(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -170,15 +172,16 @@ public abstract class AbstractCase extends TypedCompositeActor {
          */
         public boolean prefire() throws IllegalActionException {
             _currentChoice = _choose();
+
             if (_currentChoice == null) {
                 return false;
             }
+
             return _currentChoice.prefire();
         }
 
         ///////////////////////////////////////////////////////////////
         ////                     private variable                  ////
-
         // The current choice.
         private Actor _currentChoice;
     }

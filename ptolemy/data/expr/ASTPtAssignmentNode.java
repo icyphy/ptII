@@ -29,13 +29,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Created : May 1998
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtAssignmentNode
+
 /**
 
 <p>
@@ -48,7 +49,6 @@ import ptolemy.kernel.util.IllegalActionException;
 @see java.lang.Math
 */
 public class ASTPtAssignmentNode extends ASTPtRootNode {
-
     public ASTPtAssignmentNode(int id) {
         super(id);
     }
@@ -59,31 +59,35 @@ public class ASTPtAssignmentNode extends ASTPtRootNode {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public String getAssignment() {
         ParseTreeWriter writer = new ParseTreeWriter();
-        return getIdentifier() + "=" +
-            writer.printParseTree(getExpressionTree());
+        return getIdentifier() + "="
+        + writer.printParseTree(getExpressionTree());
     }
 
     public ASTPtRootNode getExpressionTree() {
         Node n = jjtGetChild(1);
-        if (!(n instanceof ASTPtRootNode))
+
+        if (!(n instanceof ASTPtRootNode)) {
             return null;
-        else
-            return (ASTPtRootNode)n;
+        } else {
+            return (ASTPtRootNode) n;
+        }
     }
 
     public String getIdentifier() {
         Node n = jjtGetChild(0);
-        if (!(n instanceof ASTPtLeafNode))
+
+        if (!(n instanceof ASTPtLeafNode)) {
             return null;
-        else
-            return ((ASTPtLeafNode)n).getName();
+        } else {
+            return ((ASTPtLeafNode) n).getName();
+        }
     }
 
     public void jjtClose() {
         super.jjtClose();
+
         // We cannot assume that the result of a function call is
         // constant, even when the arguments to the function are.
         _isConstant = false;
@@ -91,9 +95,7 @@ public class ASTPtAssignmentNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitAssignmentNode(this);
     }
 }
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import java.util.List;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Previous
+
 /**
    On each iteration, this actor produces the token received on the previous
    iteration. On the first iteration, it produces the token given by the
@@ -64,7 +65,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Previous extends DETransformer {
-
     /** Construct an actor with the specified container and name.
      *  @param container The composite actor to contain this one.
      *  @param name The name of this actor.
@@ -74,7 +74,7 @@ public class Previous extends DETransformer {
      *   actor with this name.
      */
     public Previous(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         initialValue = new Parameter(this, "initialValue");
     }
@@ -99,9 +99,11 @@ public class Previous extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         if (_previous != null) {
             output.send(0, _previous);
         }
+
         if (input.hasToken(0)) {
             _tempPrevious = input.get(0);
         }
@@ -113,6 +115,7 @@ public class Previous extends DETransformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // Note that this might be null, if it has not been set.
         _previous = initialValue.getToken();
         _tempPrevious = null;
@@ -142,6 +145,7 @@ public class Previous extends DETransformer {
                         output.getTypeTerm());
                 typeConstraints.add(ineq);
             }
+
             Inequality ineq2 = new Inequality(input.getTypeTerm(),
                     output.getTypeTerm());
             typeConstraints.add(ineq2);
@@ -151,6 +155,7 @@ public class Previous extends DETransformer {
             // of the base class.
             throw new InternalErrorException("Bad initialValue value!");
         }
+
         return typeConstraints;
     }
 
@@ -165,7 +170,6 @@ public class Previous extends DETransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Previous input.
     private Token _previous;
 

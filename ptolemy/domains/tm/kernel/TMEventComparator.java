@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.kernel;
 
 import ptolemy.actor.util.CQComparator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TMEventComparator
+
 /**
    A comparator for TM events. This class extends CQComparator so that
    it can be used by CalendarQueue. This class ignores all the configuration
@@ -43,9 +44,7 @@ import ptolemy.actor.util.CQComparator;
    @Pt.ProposedRating Yellow (liuj)
    @Pt.AcceptedRating Yellow (janneck)
 */
-
 public class TMEventComparator implements CQComparator {
-
     /** Compare the two argument for order. Return -1, 0, or 1
      *  if the first argument is less than,
      *  equal to, or greater than the second.
@@ -61,7 +60,7 @@ public class TMEventComparator implements CQComparator {
      *  an instance of TMEvent.
      */
     public final int compare(Object object1, Object object2) {
-        return((TMEvent) object1).compareTo(object2);
+        return ((TMEvent) object1).compareTo(object2);
     }
 
     /** Given an event, return the virtual index of
@@ -77,9 +76,8 @@ public class TMEventComparator implements CQComparator {
      *
      */
     public final long getVirtualBinNumber(Object event) {
-        return (long)((TMEvent) event).priority();
+        return (long) ((TMEvent) event).priority();
     }
-
 
     /** Do nothing.
      *
@@ -95,11 +93,6 @@ public class TMEventComparator implements CQComparator {
     public void setZeroReference(Object zeroReference) {
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
-
 }
-
-

@@ -26,9 +26,6 @@
 
 
 */
-
-
-
 package ptolemy.copernicus.c;
 
 import java.io.File;
@@ -44,6 +41,7 @@ import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
 
+
 /** A class that generates the other required files in the
     transitive closure.
 
@@ -53,9 +51,7 @@ import soot.Type;
     @Pt.ProposedRating Red (ankush)
     @Pt.AcceptedRating Red (ankush)
 */
-
 public class RequiredFileGenerator {
-
     /** Generate the .h files for all classes in the transitive closure of
      * the given class, and the .c files for required classes only. A class
      * is considered "required" if it contains at least one method that is
@@ -65,27 +61,26 @@ public class RequiredFileGenerator {
      *  @exception IOException If  file I/O errors occur.
      */
     public static void generateTransitiveClosureOf(String classPath,
-            String className)
-            throws IOException {
-
+        String className) throws IOException {
         String compileMode = Options.v().get("compileMode");
         boolean verbose = Options.v().getBoolean("verbose");
 
         if (!compileMode.equals("singleClass")) {
             // Generate headers for only required classes.
             Iterator j = getRequiredClasses().iterator();
+
             //Iterator j = Scene.v().getClasses().iterator();
             while (j.hasNext()) {
-                String nextClassName=((SootClass)j.next()).getName();
+                String nextClassName = ((SootClass) j.next()).getName();
                 _generateHeaders(classPath, nextClassName);
             }
-
 
             // Generate only the .c files for everything in the transitive
             // closure.
             Iterator i = getRequiredClasses().iterator();
+
             while (i.hasNext()) {
-                String nextClassName=((SootClass)i.next()).getName();
+                String nextClassName = ((SootClass) i.next()).getName();
 
                 if (verbose) {
                     System.out.println(nextClassName);
@@ -93,11 +88,8 @@ public class RequiredFileGenerator {
 
                 _generateC(classPath, nextClassName);
             }
-
-
         }
     }
-
 
     /** Appends the list of C files corresponding to user classes to a
      * given StringBuffer and returns the list of C files corresponding to
@@ -111,21 +103,22 @@ public class RequiredFileGenerator {
 
         // Generate all source files for user classes.
         Iterator i = RequiredFileGenerator.getRequiredClasses().iterator();
-        while (i.hasNext()) {
-            SootClass nextClass = (SootClass)i.next();
 
-            String name = MakeFileGenerator.classNameToMakeFileName(
-                    nextClass.getName());
+        while (i.hasNext()) {
+            SootClass nextClass = (SootClass) i.next();
+
+            String name = MakeFileGenerator.classNameToMakeFileName(nextClass
+                    .getName());
 
             // Go over each name. If it is not a system class, add it to
             // "sources" else add it to libSources.
             if (!CNames.isSystemClass(nextClass.getName())) {
                 code.append("\t" + name + ".c\\\n");
-            }
-            else {
+            } else {
                 libSources.add(name);
             }
         }
+
         return libSources;
     }
 
@@ -145,18 +138,18 @@ public class RequiredFileGenerator {
         _pruneLevel = Options.v().getInt("pruneLevel");
 
         switch (_pruneLevel) {
-        case 0 :
+        case 0:
             _pruneLevel0(classPath, className);
             break;
-        case 1 :
+
+        case 1:
             _pruneLevel1(classPath, className);
             break;
-        default :
+
+        default:
             throw new RuntimeException("Level " + _pruneLevel
-                    + " pruning not supported!");
+                + " pruning not supported!");
         }
-
-
     }
 
     /** Returns whether a given class is required or not.
@@ -164,11 +157,9 @@ public class RequiredFileGenerator {
      *  @return True if it is a required class.
      */
     public static boolean isRequired(SootClass source) {
-        if (Options.v().get("compileMode").equals("full")
-                && (_pruneLevel > 0)) {
+        if (Options.v().get("compileMode").equals("full") && (_pruneLevel > 0)) {
             return _requiredClasses.contains(source);
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -178,11 +169,9 @@ public class RequiredFileGenerator {
      *  @return True if it is a required field.
      */
     public static boolean isRequired(SootField field) {
-        if (Options.v().get("compileMode").equals("full")
-                && (_pruneLevel >0) ) {
+        if (Options.v().get("compileMode").equals("full") && (_pruneLevel > 0)) {
             return _requiredFields.contains(field);
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -193,11 +182,9 @@ public class RequiredFileGenerator {
      *  @return True if it is a required method.
      */
     public static boolean isRequired(SootMethod method) {
-        if (Options.v().get("compileMode").equals("full")
-                && (_pruneLevel >0) ) {
+        if (Options.v().get("compileMode").equals("full") && (_pruneLevel > 0)) {
             return _requiredMethods.contains(method);
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -209,15 +196,14 @@ public class RequiredFileGenerator {
      */
     public static boolean isRequired(Type type) {
         if (type instanceof RefType) {
-            SootClass sootClass = ((RefType)type).getSootClass();
+            SootClass sootClass = ((RefType) type).getSootClass();
+
             if (isRequired(sootClass)) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -239,7 +225,6 @@ public class RequiredFileGenerator {
     private static void _pruneLevel1(String classPath, String className) {
         SootClass source = Scene.v().getSootClass(className);
 
-
         CallGraphPruner pruner = new CallGraphPruner(source);
         _requiredMethods = pruner.getReachableMethods();
         _requiredClasses = pruner.getReachableClasses();
@@ -253,9 +238,9 @@ public class RequiredFileGenerator {
         @param verbose Whether routine messages should be generated.
     */
     private static void _generateC(String classPath, String className) {
-
         // Initialize code generation.
         Scene.v().setSootClassPath(classPath);
+
         CodeFileGenerator cGenerator = new CodeFileGenerator();
 
         String code;
@@ -271,16 +256,16 @@ public class RequiredFileGenerator {
         // Generate the .c file.
         if (Options.v().get("compileMode").equals("full")) {
             if (verbose) {
-                if (FileHandler.exists(fileName+".c")) {
-                    System.out.println( "\texists: overwriting "+fileName+".c");
-                }
-                else {
-                    System.out.println( "\tcreating: " +fileName+".c");
-
+                if (FileHandler.exists(fileName + ".c")) {
+                    System.out.println("\texists: overwriting " + fileName
+                        + ".c");
+                } else {
+                    System.out.println("\tcreating: " + fileName + ".c");
                 }
             }
+
             code = cGenerator.generate(sootClass);
-            FileHandler.write(fileName+".c", code);
+            FileHandler.write(fileName + ".c", code);
         }
     }
 
@@ -292,8 +277,7 @@ public class RequiredFileGenerator {
      *  @param verbose Whether routine messages should be generated.
      */
     private static void _generateHeaders(String classPath, String className)
-            throws IOException {
-
+        throws IOException {
         // Initialize code generation.
         Scene.v().setSootClassPath(classPath);
 
@@ -303,6 +287,7 @@ public class RequiredFileGenerator {
         String code;
 
         Scene.v().loadClassAndSupport(className);
+
         SootClass sootClass = Scene.v().getSootClass(className);
         CNames.setup();
 
@@ -311,62 +296,60 @@ public class RequiredFileGenerator {
         fileName = CNames.classNameToFileName(className);
 
         boolean verbose = Options.v().getBoolean("verbose");
+
         // Create any parent directories, if required.
-        if (fileName.lastIndexOf('/')>0) {
+        if (fileName.lastIndexOf('/') > 0) {
             // The file requires some directories.
             if (verbose) {
                 System.out.println(className);
             }
 
             File dummyFile = new File(fileName.substring(0,
-                                              fileName.lastIndexOf('/')));
+                        fileName.lastIndexOf('/')));
             dummyFile.mkdirs();
         }
-
 
         // Generate the stub header file.
         if (FileHandler.exists(fileName
                     + StubFileGenerator.stubFileNameSuffix())) {
             code = sGenerator.generate(sootClass);
-            String name = fileName
-                + StubFileGenerator.stubFileNameSuffix();
 
-            FileHandler.write(name, code);
-
-            if (verbose) System.out.println( "\texists: overwriting " + fileName
-                    + StubFileGenerator.stubFileNameSuffix());
-        }
-        else {
-            code = sGenerator.generate(sootClass);
-            String name = fileName
-                + StubFileGenerator.stubFileNameSuffix();
+            String name = fileName + StubFileGenerator.stubFileNameSuffix();
 
             FileHandler.write(name, code);
 
             if (verbose) {
-                System.out.println( "\tcreated: " + name);
+                System.out.println("\texists: overwriting " + fileName
+                    + StubFileGenerator.stubFileNameSuffix());
+            }
+        } else {
+            code = sGenerator.generate(sootClass);
+
+            String name = fileName + StubFileGenerator.stubFileNameSuffix();
+
+            FileHandler.write(name, code);
+
+            if (verbose) {
+                System.out.println("\tcreated: " + name);
             }
         }
-
 
         // Generate the .h file.
-        if (FileHandler.exists(fileName+".h")) {
+        if (FileHandler.exists(fileName + ".h")) {
             hGenerator = new HeaderFileGenerator();
             code = hGenerator.generate(sootClass);
-            FileHandler.write(fileName+".h", code);
-
+            FileHandler.write(fileName + ".h", code);
 
             if (verbose) {
-                System.out.println( "\texists: overwriting " + fileName + ".h");
+                System.out.println("\texists: overwriting " + fileName + ".h");
             }
-        }
-        else {
+        } else {
             hGenerator = new HeaderFileGenerator();
             code = hGenerator.generate(sootClass);
-            FileHandler.write(fileName+".h", code);
+            FileHandler.write(fileName + ".h", code);
 
             if (verbose) {
-                System.out.println( "\tcreated: " + fileName + ".h");
+                System.out.println("\tcreated: " + fileName + ".h");
             }
         }
     }
@@ -378,4 +361,3 @@ public class RequiredFileGenerator {
     // What level of pruning is required.
     private static int _pruneLevel;
 }
-

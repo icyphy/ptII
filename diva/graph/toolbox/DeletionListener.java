@@ -35,6 +35,7 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
+
 /**
  * This class provides deletion support for most simple JGraph
  * components.  Associate this class with some action (such as a key
@@ -54,15 +55,16 @@ public class DeletionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JGraph jgraph = (JGraph) e.getSource();
         GraphPane graphPane = jgraph.getGraphPane();
-        GraphController controller =
-            (GraphController)graphPane.getGraphController();
+        GraphController controller = (GraphController) graphPane
+            .getGraphController();
         GraphModel graphModel = controller.getGraphModel();
         SelectionModel model = controller.getSelectionModel();
-        Object selection[] = model.getSelectionAsArray();
-        Object userObjects[] = new Object[selection.length];
+        Object[] selection = model.getSelectionAsArray();
+        Object[] userObjects = new Object[selection.length];
+
         // First remove the selection.
         for (int i = 0; i < selection.length; i++) {
-            userObjects[i] = ((Figure)selection[i]).getUserObject();
+            userObjects[i] = ((Figure) selection[i]).getUserObject();
             model.removeSelection(selection[i]);
         }
 
@@ -70,16 +72,18 @@ public class DeletionListener implements ActionListener {
         // then removing the nodes might remove some of the edges.
         for (int i = 0; i < userObjects.length; i++) {
             Object userObject = userObjects[i];
+
             if (graphModel.isEdge(userObject)) {
                 controller.removeEdge(userObject);
             }
         }
+
         for (int i = 0; i < selection.length; i++) {
             Object userObject = userObjects[i];
+
             if (graphModel.isNode(userObject)) {
                 controller.removeNode(userObject);
             }
         }
     }
 }
-

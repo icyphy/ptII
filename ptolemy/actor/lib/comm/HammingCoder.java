@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// HammingCoder
+
 /**
    Encode the information symbols into Hamming code.
    Let <i>k</i> denotes parameter <i>uncodedRate</i> and <i>n</i> denotes
@@ -80,9 +81,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class HammingCoder extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -93,7 +92,7 @@ public class HammingCoder extends Transformer {
      *   actor with this name.
      */
     public HammingCoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         uncodedRate = new Parameter(this, "uncodedRate");
@@ -127,7 +126,6 @@ public class HammingCoder extends Transformer {
      */
     public Parameter codedRate;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -138,27 +136,31 @@ public class HammingCoder extends Transformer {
      *  or <i>uncodedRate</i> is not positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == codedRate) {
-            _codeSizeValue = ((IntToken)codedRate.getToken()).intValue();
-            if (_codeSizeValue <= 0 ) {
+            _codeSizeValue = ((IntToken) codedRate.getToken()).intValue();
+
+            if (_codeSizeValue <= 0) {
                 throw new IllegalActionException(this,
-                        "codedRate must be positive.");
+                    "codedRate must be positive.");
             }
+
             // set the output production rate.
             _outputRate.setToken(new IntToken(_codeSizeValue));
         } else if (attribute == uncodedRate) {
-            _uncodeSizeValue =
-                ((IntToken)uncodedRate.getToken()).intValue();
-            if (_uncodeSizeValue < 1 ) {
+            _uncodeSizeValue = ((IntToken) uncodedRate.getToken()).intValue();
+
+            if (_uncodeSizeValue < 1) {
                 throw new IllegalActionException(this,
-                        "uncodedRate must be non-negative.");
+                    "uncodedRate must be non-negative.");
             }
+
             // Set a flag indicating the private variables
             // _uncodeSizeValue and/or _codeSizeValue is invalid,
             // but do not compute the value until all parameters
             // have been set.
             _parameterInvalid = true;
+
             // Set the input comsumption rate.
             _inputRate.setToken(new IntToken(_uncodeSizeValue));
         } else {
@@ -173,54 +175,60 @@ public class HammingCoder extends Transformer {
      *  output port.
      */
     public void fire() throws IllegalActionException {
-
         if (_parameterInvalid) {
             if (_uncodeSizeValue >= _codeSizeValue) {
                 throw new IllegalActionException(this,
-                        "codedRate must be greater than uncodedRate.");
+                    "codedRate must be greater than uncodedRate.");
             }
+
             _order = _codeSizeValue - _uncodeSizeValue;
-            if (_codeSizeValue != (1 << _order) - 1) {
+
+            if (_codeSizeValue != ((1 << _order) - 1)) {
                 throw new IllegalActionException(this,
-                        "Invalid pair of uncodedRate and codedRate.");
+                    "Invalid pair of uncodedRate and codedRate.");
             }
+
             // Generate P.
             _parityMatrix = new int[_uncodeSizeValue][_order];
 
             int flag = 0;
             int index = 0;
-            for (int i = 1; i <= _codeSizeValue; i ++) {
-                if (i == 1 << flag) {
-                    flag ++;
+
+            for (int i = 1; i <= _codeSizeValue; i++) {
+                if (i == (1 << flag)) {
+                    flag++;
                 } else {
                     for (int j = 0; j < _order; j++) {
-                        _parityMatrix[index][j]
-                            = i >> (_order - j - 1) & 1;
+                        _parityMatrix[index][j] = (i >> (_order - j - 1)) & 1;
                     }
-                    index ++;
+
+                    index++;
                 }
             }
+
             _parameterInvalid = false;
         }
 
         // Read from the input; set up output size.
-        Token[] inputToken = (Token[])input.get(0, _uncodeSizeValue);
+        Token[] inputToken = (Token[]) input.get(0, _uncodeSizeValue);
         BooleanToken[] result = new BooleanToken[_codeSizeValue];
 
         for (int i = 0; i < _uncodeSizeValue; i++) {
-            result[i] = (BooleanToken)inputToken[i];
+            result[i] = (BooleanToken) inputToken[i];
         }
 
         // Compute parities.
         int[] parity = new int[_order];
+
         // Initialize.
         for (int i = 0; i < _order; i++) {
             parity[i] = 0;
         }
+
         for (int i = 0; i < _uncodeSizeValue; i++) {
             for (int j = 0; j < _order; j++) {
-                parity[j] = parity[j] ^
-                    ((result[i].booleanValue() ? 1:0) & _parityMatrix[i][j]);
+                parity[j] = parity[j]
+                    ^ ((result[i].booleanValue() ? 1 : 0) & _parityMatrix[i][j]);
             }
         }
 
@@ -228,12 +236,12 @@ public class HammingCoder extends Transformer {
         for (int i = 0; i < _order; i++) {
             result[i + _uncodeSizeValue] = new BooleanToken((parity[i] == 1));
         }
+
         output.broadcast(result, result.length);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Consumption rate of the input port.
     private Parameter _inputRate;
 

@@ -25,11 +25,11 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.demo.QR;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
 
@@ -42,10 +42,7 @@ retrieve data in the array.
 @Pt.ProposedRating Red (kienhuis)
 @Pt.AcceptedRating Red (kienhuis)
 */
-
-
 public class ArrayIndex {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -59,8 +56,8 @@ public class ArrayIndex {
         @param in_1 an index value.
         @return a key representing the index vector.
     */
-    public String atKey(int i_1 ) {
-        String key =  "(" + i_1 + ")";
+    public String atKey(int i_1) {
+        String key = "(" + i_1 + ")";
         return key;
     }
 
@@ -70,8 +67,8 @@ public class ArrayIndex {
         @param in_2 an index value.
         @return a key representing the index vector.
     */
-    public String atKey(int i_1, int i_2 ) {
-        String key =  "(" + i_1 + "," + i_2 + ")";
+    public String atKey(int i_1, int i_2) {
+        String key = "(" + i_1 + "," + i_2 + ")";
         return key;
     }
 
@@ -82,8 +79,8 @@ public class ArrayIndex {
         @param in_3 an index value.
         @return a key representing the index vector.
     */
-    public String atKey(int i_1, int i_2, int i_3 ) {
-        String key =  "(" + i_1 + "," + i_2 + "," + i_3 +  ")";
+    public String atKey(int i_1, int i_2, int i_3) {
+        String key = "(" + i_1 + "," + i_2 + "," + i_3 + ")";
         return key;
     }
 
@@ -95,9 +92,8 @@ public class ArrayIndex {
         @param in_4 an index value.
         @return a key representing the index vector.
     */
-    public String atKey(int i_1, int i_2, int i_3, int i_4 ) {
-        String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
-            +")";
+    public String atKey(int i_1, int i_2, int i_3, int i_4) {
+        String key = "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4 + ")";
         return key;
     }
 
@@ -110,9 +106,9 @@ public class ArrayIndex {
         @param in_5 an index value.
         @return a key representing the index vector.
     */
-    public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5 ) {
-        String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
-            + "," + i_5 + ")";
+    public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5) {
+        String key = "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4 + "," + i_5
+            + ")";
         return key;
     }
 
@@ -126,10 +122,9 @@ public class ArrayIndex {
         @param in_6 an index value.
         @return a key representing the index vector.
     */
-    public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5,
-            int i_6 ) {
-        String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
-            + "," + i_5 + "," + i_6  + ")";
+    public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5, int i_6) {
+        String key = "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4 + "," + i_5
+            + "," + i_6 + ")";
         return key;
     }
 
@@ -137,11 +132,13 @@ public class ArrayIndex {
         @param aKey the key.
         @return the stored value.
     */
-    public double retrieve(String aKey ) {
-        Double value = (Double) _map.get( aKey );
-        if ( value == null ) {
-            throw new Error(" --- NULL Value retrieved for key " + aKey );
+    public double retrieve(String aKey) {
+        Double value = (Double) _map.get(aKey);
+
+        if (value == null) {
+            throw new Error(" --- NULL Value retrieved for key " + aKey);
         }
+
         return value.doubleValue();
     }
 
@@ -150,7 +147,7 @@ public class ArrayIndex {
         @param aKey the key.
     */
     public void store(double aValue, String aKey) {
-        _map.put( aKey, new Double(aValue) );
+        _map.put(aKey, new Double(aValue));
     }
 
     /** Read in a matrix with a given name and store it into a
@@ -162,12 +159,12 @@ public class ArrayIndex {
      *
      *  @param file The filename.
      */
-    public void ReadMatrix(String filename ) {
-        if ( filename == "U_1000x16" ) {
+    public void ReadMatrix(String filename) {
+        if (filename == "U_1000x16") {
             for (int i = 0; i < 500; i++) {
                 for (int j = 0; j < 16; j++) {
-                    String key = atKey(i+1, j+1);
-                    _map.put(key, new Double( SourceMatrix.sourcematrix_0[i][j] ));
+                    String key = atKey(i + 1, j + 1);
+                    _map.put(key, new Double(SourceMatrix.sourcematrix_0[i][j]));
                 }
             }
         } else {
@@ -175,10 +172,9 @@ public class ArrayIndex {
             for (int i = 0; i < 64; i++) {
                 for (int j = 0; j < 64; j++) {
                     String key = atKey(i, j);
-                    _map.put(key, new Double( 0.0 ));
+                    _map.put(key, new Double(0.0));
                 }
             }
-
         }
     }
 
@@ -186,7 +182,7 @@ public class ArrayIndex {
         name. Currently not further implemented.
         @param filename the filename.
     */
-    public void WriteMatrix(String filename ) {
+    public void WriteMatrix(String filename) {
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -198,6 +194,4 @@ public class ArrayIndex {
 
     /** Associative Array that is used to store and retrieve data. */
     private Map _map = new HashMap();
-
-
 }

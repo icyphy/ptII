@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.toolbox;
 
 import diva.canvas.GraphicsPane;
@@ -34,6 +33,7 @@ import diva.canvas.interactor.Manipulator;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.canvas.interactor.SelectionRenderer;
+
 
 /** A basic controller implementation. This controller creates a
  * useful and common interaction that can be used in simple
@@ -46,7 +46,6 @@ import diva.canvas.interactor.SelectionRenderer;
  * @author         John Reekie
  */
 public class BasicController {
-
     /** The interactor that drags objects by default
      */
     private DragInteractor _dragInteractor;
@@ -69,7 +68,7 @@ public class BasicController {
 
     /** Create a new controller for the given pane
      */
-    public BasicController (GraphicsPane pane) {
+    public BasicController(GraphicsPane pane) {
         _pane = pane;
 
         // Create the selection interactor
@@ -77,8 +76,8 @@ public class BasicController {
 
         // Create a selection drag-selector
         _selectionDragger = new SelectionDragger(pane);
-        _selectionDragger.addSelectionModel(
-                _selectionInteractor.getSelectionModel());
+        _selectionDragger.addSelectionModel(_selectionInteractor
+            .getSelectionModel());
 
         // Add the drag interactor to the selection interactor so
         // selected items are dragged
@@ -86,30 +85,29 @@ public class BasicController {
         _dragInteractor.setSelectiveEnabled(true);
         _dragInteractor.setMouseFilter(new MouseFilter(1, 0, 0));
         _selectionInteractor.addInteractor(_dragInteractor);
-
     }
 
     /** Get the drag interactor
      */
-    public DragInteractor getDragInteractor () {
+    public DragInteractor getDragInteractor() {
         return _dragInteractor;
     }
 
     /** Get the selection interactor
      */
-    public SelectionDragger getSelectionDragger () {
+    public SelectionDragger getSelectionDragger() {
         return _selectionDragger;
     }
 
     /** Get the selection renderer
      */
-    public SelectionRenderer getSelectionRenderer () {
+    public SelectionRenderer getSelectionRenderer() {
         return _selectionInteractor.getSelectionRenderer();
     }
 
     /** Get the selection interactor
      */
-    public SelectionInteractor getSelectionInteractor () {
+    public SelectionInteractor getSelectionInteractor() {
         return _selectionInteractor;
     }
 
@@ -118,16 +116,14 @@ public class BasicController {
      * This method nullifies any previous renderers set with
      * setSelectionRenderer();
      */
-    public void setSelectionManipulator (Manipulator manipulator) {
+    public void setSelectionManipulator(Manipulator manipulator) {
         _selectionInteractor.setPrototypeDecorator(manipulator);
     }
 
     /** Set the selection renderer. Selected figures will be highlighted
      * with this renderer.
      */
-    public void setSelectionRenderer (SelectionRenderer renderer) {
+    public void setSelectionRenderer(SelectionRenderer renderer) {
         _selectionInteractor.setSelectionRenderer(renderer);
     }
 }
-
-

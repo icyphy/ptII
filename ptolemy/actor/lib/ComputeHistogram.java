@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -45,8 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ComputeHistogram
+
 /**
    Compute a histogram.
    <p>
@@ -77,7 +78,6 @@ import ptolemy.kernel.util.Settable;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ComputeHistogram extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -87,7 +87,7 @@ public class ComputeHistogram extends TypedAtomicActor {
      *   actor with this name.
      */
     public ComputeHistogram(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -112,8 +112,7 @@ public class ComputeHistogram extends TypedAtomicActor {
         inputCount.setExpression("10");
         inputCount.setTypeEquals(BaseType.INT);
 
-        input_tokenConsumptionRate =
-            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("inputCount");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
@@ -161,19 +160,20 @@ public class ComputeHistogram extends TypedAtomicActor {
      *  @exception IllegalActionException If the bin width is not positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == minimumValue ||
-                attribute == maximumValue ||
-                attribute == numberOfBins) {
-            _minimumValue = ((DoubleToken)minimumValue.getToken()).doubleValue();
-            _maximumValue = ((DoubleToken)maximumValue.getToken()).doubleValue();
-            _numberOfBins = ((IntToken)numberOfBins.getToken()).intValue();
+        throws IllegalActionException {
+        if ((attribute == minimumValue) || (attribute == maximumValue)
+                || (attribute == numberOfBins)) {
+            _minimumValue = ((DoubleToken) minimumValue.getToken()).doubleValue();
+            _maximumValue = ((DoubleToken) maximumValue.getToken()).doubleValue();
+            _numberOfBins = ((IntToken) numberOfBins.getToken()).intValue();
 
             double width = (_maximumValue - _minimumValue) / _numberOfBins;
+
             if (width <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Invalid bin width (must be positive): " + width);
+                    "Invalid bin width (must be positive): " + width);
             }
+
             _binWidth = width;
             _bins = new int[_numberOfBins];
         } else {
@@ -191,21 +191,24 @@ public class ComputeHistogram extends TypedAtomicActor {
 
         inputCount.update();
 
-        int count = ((IntToken)inputCount.getToken()).intValue();
+        int count = ((IntToken) inputCount.getToken()).intValue();
+
         for (int i = 0; i < count; i++) {
             if (input.hasToken(0)) {
-                DoubleToken curToken = (DoubleToken)input.get(0);
+                DoubleToken curToken = (DoubleToken) input.get(0);
                 double curValue = curToken.doubleValue();
 
                 _addPoint(curValue);
-
             }
         }
+
         // Send the output array.
         Token[] values = new Token[_bins.length];
+
         for (int i = 0; i < _bins.length; i++) {
             values[i] = new IntToken(_bins[i]);
         }
+
         output.send(0, new ArrayToken(values));
 
         return super.postfire();
@@ -219,28 +222,25 @@ public class ComputeHistogram extends TypedAtomicActor {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        int count = ((IntToken)inputCount.getToken()).intValue();
+        int count = ((IntToken) inputCount.getToken()).intValue();
         return (input.hasToken(0, count) && super.prefire());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _addPoint(double value) {
         // Calculate the bin number.
-        int bin =
-            (int)(Math.round(
-                (value - (_minimumValue + _binWidth * 0.5)) / _binWidth));
-        if (bin >= 0 && bin < _numberOfBins) {
+        int bin = (int) (Math.round((value
+                - (_minimumValue + (_binWidth * 0.5))) / _binWidth));
+
+        if ((bin >= 0) && (bin < _numberOfBins)) {
             _bins[bin]++;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
     private int[] _bins;
-
     private double _minimumValue;
     private double _maximumValue;
     private double _binWidth;

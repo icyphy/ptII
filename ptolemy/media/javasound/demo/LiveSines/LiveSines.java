@@ -26,14 +26,15 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.media.javasound.demo.LiveSines;
 
 import java.io.IOException;
 
 import ptolemy.media.javasound.LiveSound;
 
+
 ////////////////////////////////////////////////////
+
 /**
    A simple application that demonstrates the use of LiveSound.  This
    application synthesizes and plays a simple harmonic signal, using simple
@@ -47,19 +48,18 @@ import ptolemy.media.javasound.LiveSound;
    @Pt.AcceptedRating Red (vogel)
 */
 public class LiveSines {
-
     public static void main(String[] args) {
-
         // The pitch of the signal to synthesize.
         double fundamental1_Hz = 220;
 
         // The pitch of the signal to synthesize.
-        double fundamental2_Hz = 220*1.5;
+        double fundamental2_Hz = 220 * 1.5;
 
         int sampleRate = 44100; // in Hz
         int sampleSizeInBits = 16;
         int channels = 2; // stereo.
         int outBufferSize = 4096; // Internal buffer size for playback.
+
         // Amount of data to read or write from/to the internal buffer
         // at a time. This should be set smaller than the internal buffer
         // size!
@@ -68,8 +68,8 @@ public class LiveSines {
         try {
             LiveSound.setSampleRate(sampleRate);
             LiveSound.setChannels(channels);
-            System.out.println("Attempting to set playback buffer size: " +
-                    outBufferSize + " samples.");
+            System.out.println("Attempting to set playback buffer size: "
+                + outBufferSize + " samples.");
             LiveSound.setBufferSize(outBufferSize);
             LiveSound.setBitsPerSample(sampleSizeInBits);
             LiveSound.setTransferSize(putSamplesSize);
@@ -81,46 +81,42 @@ public class LiveSines {
         }
 
         double[][] samplesArray = new double[channels][putSamplesSize];
+
         // keep track of time, used in calculating the sine wave values.
         double[] samples = new double[channels];
 
-        System.out.println("                           Actual size: " +
-                LiveSound.getBufferSizePlayback() + " samples.");
+        System.out.println("                           Actual size: "
+            + LiveSound.getBufferSizePlayback() + " samples.");
 
         try {
             int channelNumber;
+
             // Loop forever.
             while (true) {
                 for (int i = 0; i < putSamplesSize; i++) {
                     channelNumber = 0; //Left channel.
+
                     // Generate a harmonic signal.
-                    samplesArray[channelNumber][i] =
-                        Math.sin(fundamental1_Hz * 2 * Math.PI *
-                                samples[channelNumber]) * 0.1 +
-                        Math.sin(2 * fundamental1_Hz * 2 * Math.PI *
-                                samples[channelNumber]) * 0.3 +
-                        Math.sin(3 * fundamental1_Hz * 2 * Math.PI *
-                                samples[channelNumber]) * 0.3 +
-                        Math.sin(4 * fundamental1_Hz * 2 * Math.PI *
-                                samples[channelNumber]) * 0.2;
+                    samplesArray[channelNumber][i] = (Math.sin(fundamental1_Hz * 2 * Math.PI * samples[channelNumber]) * 0.1)
+                        + (Math.sin(2 * fundamental1_Hz * 2 * Math.PI * samples[channelNumber]) * 0.3)
+                        + (Math.sin(3 * fundamental1_Hz * 2 * Math.PI * samples[channelNumber]) * 0.3)
+                        + (Math.sin(4 * fundamental1_Hz * 2 * Math.PI * samples[channelNumber]) * 0.2);
+
                     // Increment time for the signal on this channel.
-                    samples[channelNumber] = samples[channelNumber] +
-                        1.0 / sampleRate;
+                    samples[channelNumber] = samples[channelNumber]
+                        + (1.0 / sampleRate);
 
                     channelNumber = 1; //Right channel.
+
                     // Generate a harmonic signal.
-                    samplesArray[channelNumber][i] =
-                        Math.sin(fundamental2_Hz * 2 * Math.PI *
-                                samples[channelNumber]) * 0.4 +
-                        Math.sin(2 * fundamental2_Hz * 2 * Math.PI *
-                                samples[channelNumber]) * 0.3 +
-                        Math.sin(3 * fundamental2_Hz * 2 * Math.PI *
-                                samples[channelNumber]) * 0.25 +
-                        Math.sin(4 * fundamental2_Hz * 2 * Math.PI *
-                                samples[channelNumber]) * 0.2;
+                    samplesArray[channelNumber][i] = (Math.sin(fundamental2_Hz * 2 * Math.PI * samples[channelNumber]) * 0.4)
+                        + (Math.sin(2 * fundamental2_Hz * 2 * Math.PI * samples[channelNumber]) * 0.3)
+                        + (Math.sin(3 * fundamental2_Hz * 2 * Math.PI * samples[channelNumber]) * 0.25)
+                        + (Math.sin(4 * fundamental2_Hz * 2 * Math.PI * samples[channelNumber]) * 0.2);
+
                     // Increment time for the signal on this channel.
-                    samples[channelNumber] = samples[channelNumber] +
-                        1.0 / sampleRate;
+                    samples[channelNumber] = samples[channelNumber]
+                        + (1.0 / sampleRate);
                 }
 
                 // Play the processed audio samples.
@@ -132,6 +128,7 @@ public class LiveSines {
                     break;
                 }
             }
+
             LiveSound.stopPlayback(_producer);
         } catch (Exception ex) {
             System.err.println(ex);

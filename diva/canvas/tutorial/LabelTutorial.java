@@ -29,7 +29,6 @@
 
  *
  */
-
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -52,6 +51,7 @@ import diva.canvas.toolbox.LabelFigure;
 import diva.canvas.toolbox.LabelWrapper;
 import diva.gui.BasicFrame;
 
+
 /**
  * This tutorial illustrates how to use LabelFigure and related classes.
  *
@@ -59,7 +59,6 @@ import diva.gui.BasicFrame;
  * @version $Id$
  */
 public class LabelTutorial {
-
     // The JCanvas
     private JCanvas canvas;
 
@@ -74,9 +73,9 @@ public class LabelTutorial {
 
     /** Create a JCanvas and put it into a window
      */
-    public LabelTutorial () {
+    public LabelTutorial() {
         canvas = new JCanvas();
-        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
         // Create a controller to do the work.
         controller = new BasicController(graphicsPane);
@@ -84,7 +83,7 @@ public class LabelTutorial {
 
         // Create the window
         BasicFrame frame = new BasicFrame("Simple canvas tutorial", canvas);
-        frame.setSize(600,400);
+        frame.setSize(600, 400);
         frame.setVisible(true);
     }
 
@@ -93,64 +92,43 @@ public class LabelTutorial {
      * be in the wrong locations: but they are the anchor of the
      * label itself, not the displayed square, so they are correct.
      */
-    public void createLabels () {
+    public void createLabels() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // The data to display
-        int anchors[] = {
-            SwingConstants.CENTER,
-            SwingConstants.NORTH,
-            SwingConstants.NORTH_EAST,
-            SwingConstants.EAST,
-            SwingConstants.SOUTH_EAST,
-            SwingConstants.SOUTH,
-            SwingConstants.SOUTH_WEST,
-            SwingConstants.WEST,
-            SwingConstants.NORTH_WEST};
+        int[] anchors = {
+                SwingConstants.CENTER, SwingConstants.NORTH,
+                SwingConstants.NORTH_EAST, SwingConstants.EAST,
+                SwingConstants.SOUTH_EAST, SwingConstants.SOUTH,
+                SwingConstants.SOUTH_WEST, SwingConstants.WEST,
+                SwingConstants.NORTH_WEST
+            };
 
-        String labels[] = {
-            "center",
-            "north",
-            "north-east",
-            "east",
-            "south-east",
-            "south",
-            "south-west",
-            "west",
-            "north-west"};
+        String[] labels = {
+                "center", "north", "north-east", "east", "south-east", "south",
+                "south-west", "west", "north-west"
+            };
 
-        String fonts[] = {
-            "Dialog",
-            "DialogInput",
-            "Monospaced",
-            "Serif",
-            "SansSerif",
-            "Symbol",
-            "Times",
-            "Courier",
-            "Helvetica"};
+        String[] fonts = {
+                "Dialog", "DialogInput", "Monospaced", "Serif", "SansSerif",
+                "Symbol", "Times", "Courier", "Helvetica"
+            };
 
-        int styles[] = {
-            Font.PLAIN,
-            Font.BOLD,
-            Font.ITALIC,
-            Font.BOLD | Font.ITALIC,
-            Font.PLAIN,
-            Font.BOLD,
-            Font.ITALIC,
-            Font.BOLD | Font.ITALIC,
-            Font.PLAIN};
-
+        int[] styles = {
+                Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC,
+                Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC,
+                Font.PLAIN
+            };
 
         // Draw a rectangle to position them
-        BasicRectangle square = new BasicRectangle(160,80,120,120);
+        BasicRectangle square = new BasicRectangle(160, 80, 120, 120);
         square.setStrokePaint(Color.gray);
         layer.add(square);
 
         // Create the labels
         for (int i = 0; i < anchors.length; i++) {
-            LabelFigure labelFigure = new LabelFigure(
-                    labels[i], fonts[i], styles[i], 20);
+            LabelFigure labelFigure = new LabelFigure(labels[i], fonts[i],
+                    styles[i], 20);
 
             // Set the anchor
             labelFigure.setAnchor(anchors[i]);
@@ -165,8 +143,7 @@ public class LabelTutorial {
             labelFigure.setInteractor(defaultInteractor);
 
             // Draw a small circle there so we can see it
-            Figure mark = new BasicEllipse(
-                    pt.getX()-2, pt.getY()-2, 4, 4,
+            Figure mark = new BasicEllipse(pt.getX() - 2, pt.getY() - 2, 4, 4,
                     Color.red);
             layer.add(mark);
         }
@@ -176,15 +153,15 @@ public class LabelTutorial {
      * This simple illustrates the fact that labels can be easily
      * attached to any arbitrary figure.
      */
-    public void createLabeledWrappers () {
+    public void createLabeledWrappers() {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
-        Figure a = new BasicEllipse(420,100,100,50);
+        Figure a = new BasicEllipse(420, 100, 100, 50);
         LabelWrapper wrapperA = new LabelWrapper(a, "Foo!\nBar!\nBaz!");
         layer.add(wrapperA);
         wrapperA.setInteractor(defaultInteractor);
 
-        Figure b = new BasicRectangle(460,200,50,40, Color.green);
+        Figure b = new BasicRectangle(460, 200, 50, 40, Color.green);
         LabelWrapper wrapperB = new LabelWrapper(b, "Bar!");
         wrapperB.setAnchor(SwingConstants.SOUTH_WEST);
         wrapperB.getLabel().setAnchor(SwingConstants.NORTH_WEST);
@@ -194,7 +171,7 @@ public class LabelTutorial {
 
     /** Main function
      */
-    public static void main (String argv[]) {
+    public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -205,5 +182,3 @@ public class LabelTutorial {
             });
     }
 }
-
-

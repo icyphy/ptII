@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayAppend
+
 /**
    An actor that appends ArrayTokens together.  This actor has a single input
    multiport, and a single output port.  The types on the input and the output
@@ -53,9 +54,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (celaine)
    @Pt.AcceptedRating Green (cxh)
 */
-
 public class ArrayAppend extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,7 +64,7 @@ public class ArrayAppend extends Transformer {
      *   actor with this name.
      */
     public ArrayAppend(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // The input is a multiport.
@@ -86,9 +85,8 @@ public class ArrayAppend extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ArrayAppend newObject = (ArrayAppend)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayAppend newObject = (ArrayAppend) (super.clone(workspace));
 
         // Set the type constraints.
         newObject.output.setTypeAtLeast(newObject.input);
@@ -104,25 +102,24 @@ public class ArrayAppend extends Transformer {
     public void fire() throws IllegalActionException {
         // NOTE: This is efficient for 2 or 3 input channels, but for
         // many channels it ends up copying each array twice.
-        Token array[] = null;
+        Token[] array = null;
+
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                ArrayToken token = (ArrayToken)input.get(i);
+                ArrayToken token = (ArrayToken) input.get(i);
+
                 if (array == null) {
                     array = token.arrayValue();
                 } else {
-                    Token newArray[] =
-                        new Token[array.length + token.length()];
-                    System.arraycopy(array, 0,
-                            newArray, 0, array.length);
-                    System.arraycopy(token.arrayValue(), 0,
-                            newArray, array.length, token.length());
+                    Token[] newArray = new Token[array.length + token.length()];
+                    System.arraycopy(array, 0, newArray, 0, array.length);
+                    System.arraycopy(token.arrayValue(), 0, newArray,
+                        array.length, token.length());
                     array = newArray;
                 }
             }
         }
+
         output.send(0, new ArrayToken(array));
     }
 }
-
-

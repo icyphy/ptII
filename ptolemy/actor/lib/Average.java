@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -37,8 +36,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Average
+
 /**
    Output the average of the inputs after the last time a true token is
    received at the reset port.
@@ -62,9 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class Average extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,7 +73,7 @@ public class Average extends Transformer {
      *   actor with this name.
      */
     public Average(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setTypeEquals(BaseType.BOOLEAN);
@@ -109,10 +108,12 @@ public class Average extends Transformer {
     public void fire() throws IllegalActionException {
         _latestSum = _sum;
         _latestCount = _count + 1;
+
         // Check whether to reset.
         for (int i = 0; i < reset.getWidth(); i++) {
             if (reset.hasToken(i)) {
-                BooleanToken r = (BooleanToken)reset.get(i);
+                BooleanToken r = (BooleanToken) reset.get(i);
+
                 if (r.booleanValue()) {
                     // Being reset at this firing.
                     _latestSum = null;
@@ -120,13 +121,16 @@ public class Average extends Transformer {
                 }
             }
         }
+
         if (input.hasToken(0)) {
             Token in = input.get(0);
+
             if (_latestSum == null) {
                 _latestSum = in;
             } else {
                 _latestSum = _latestSum.add(in);
             }
+
             Token out = _latestSum.divide(new IntToken(_latestCount));
             output.broadcast(out);
         }
@@ -153,7 +157,6 @@ public class Average extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private Token _sum;
     private Token _latestSum;
     private int _count = 0;

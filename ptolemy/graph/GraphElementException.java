@@ -22,12 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphElementException
+
 /**
    The exception of accessing graph elements in wrong ways. This exception
    could be caused by accessing nonexistent elements or elements with incorrect
@@ -40,7 +40,6 @@ package ptolemy.graph;
    @Pt.AcceptedRating Red (ssb)
 */
 public class GraphElementException extends GraphException {
-
     /** Constructor for a given message.
      *  @param message The message.
      */
@@ -53,8 +52,7 @@ public class GraphElementException extends GraphException {
      *  @param graph The graph accessed.
      *  @param message The exception message.
      */
-    public GraphElementException(
-            Element element, Graph graph, String message) {
+    public GraphElementException(Element element, Graph graph, String message) {
         super(_argumentsToString(element, graph, message));
     }
 
@@ -70,7 +68,7 @@ public class GraphElementException extends GraphException {
     static public void checkNode(Node node, Graph graph) {
         if (!graph.containsNode(node)) {
             throw new GraphElementException("Reference to a node that is "
-                    + "not in the graph.\n" + elementDump(node, graph));
+                + "not in the graph.\n" + elementDump(node, graph));
         }
     }
 
@@ -83,7 +81,7 @@ public class GraphElementException extends GraphException {
     static public void checkEdge(Edge edge, Graph graph) {
         if (!graph.containsEdge(edge)) {
             throw new GraphElementException("Reference to an edge that is "
-                    + "not in the graph.\n" + elementDump(edge, graph));
+                + "not in the graph.\n" + elementDump(edge, graph));
         }
     }
 
@@ -96,9 +94,8 @@ public class GraphElementException extends GraphException {
      *  @param message The exception message given by users.
      *  @return The desired exception message.
      */
-    static private String _argumentsToString(
-            Element element, Graph graph, String message) {
+    static private String _argumentsToString(Element element, Graph graph,
+        String message) {
         return message + elementDump(element, graph);
     }
 }
-

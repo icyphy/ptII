@@ -35,6 +35,7 @@ import diva.canvas.connector.Connector;
 import diva.canvas.connector.ConnectorTarget;
 import diva.canvas.interactor.Interactor;
 
+
 /**
  * Specifies the interface for objects that manage creation
  * of and interaction with graph edges. GraphControllers
@@ -45,7 +46,6 @@ import diva.canvas.interactor.Interactor;
  * @Pt.AcceptedRating      Red
  */
 public interface EdgeController {
-
     /** Add an edge to this graph editor and render it from the given
      * tail node to an autonomous site at the given location. Give the
      * new edge the given semanticObject.  The "end" flag is either
@@ -54,8 +54,7 @@ public interface EdgeController {
      * valid site on the node's figure.
      * @see diva.canvas.connector.ConnectorEvent
      */
-    public void addEdge(Object edge, Object node,
-            int end, double x, double y);
+    public void addEdge(Object edge, Object node, int end, double x, double y);
 
     /**
      * Add an edge to this graph between the given tail and head
@@ -82,6 +81,7 @@ public interface EdgeController {
      * Get the target used to find sites on nodes to connect to.
      */
     public ConnectorTarget getConnectorTarget();
+
     /**
      * Get the graph controller that this controller is contained in.
      */
@@ -108,12 +108,12 @@ public interface EdgeController {
      * starting point of an edge) and the manipulator's connector target, which
      * is used after the connector is being dragged.
      */
-    public void setConnectorTarget (ConnectorTarget t);
+    public void setConnectorTarget(ConnectorTarget t);
 
     /**
      * Set the interactor given to edge figures.
      */
-    public void setEdgeInteractor (Interactor interactor);
+    public void setEdgeInteractor(Interactor interactor);
 
     /**
      * Set the edge renderer for this view.
@@ -122,9 +122,6 @@ public interface EdgeController {
 
     /** Render the edge on the given layer between the two sites.
      */
-    public Connector render(Object edge, FigureLayer layer,
-            Site tailSite, Site headSite);
-
+    public Connector render(Object edge, FigureLayer layer, Site tailSite,
+        Site headSite);
 }
-
-

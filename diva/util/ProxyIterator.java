@@ -23,9 +23,10 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 */
-
 package diva.util;
+
 import java.util.Iterator;
+
 
 /**
  * An iterator that takes another iterator, and iterates
@@ -50,5 +51,3 @@ public class ProxyIterator extends IteratorAdapter {
         return _iterator.next();
     }
 }
-
-

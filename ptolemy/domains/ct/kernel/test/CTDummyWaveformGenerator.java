@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package ptolemy.domains.ct.kernel.test;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -36,8 +37,10 @@ import ptolemy.domains.ct.kernel.CTWaveformGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyEventInterpreter
+
 /**
    Dummy actor that implements CTWaveformGenerator interface.
    @author   Jie Liu
@@ -48,31 +51,29 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 */
 public class CTDummyWaveformGenerator extends TypedAtomicActor
-    implements CTWaveformGenerator{
+    implements CTWaveformGenerator {
     /** Constructor
      */
     public CTDummyWaveformGenerator(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
         input.setOutput(false);
         input.setTypeEquals(BaseType.DOUBLE);
-        new Parameter(input, "signalType",
-                new StringToken("DISCRETE"));
+        new Parameter(input, "signalType", new StringToken("DISCRETE"));
         input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
-        new Parameter(output, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Dummy method. Do nothing.
      */
     public void consumeCurrentEvents() {

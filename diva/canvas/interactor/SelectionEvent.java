@@ -30,6 +30,7 @@ import java.util.Iterator;
 import diva.util.IteratorAdapter;
 import diva.util.NullIterator;
 
+
 /**
  * An event representing a change in the graph selection
  * model. The event contains all the information to mirror
@@ -62,7 +63,8 @@ public class SelectionEvent extends java.util.EventObject {
      * given source, representing the given selection
      * additions, removals, and primary selection.
      */
-    public SelectionEvent(Object source, Object[] added, Object[] removed, Object primary) {
+    public SelectionEvent(Object source, Object[] added, Object[] removed,
+        Object primary) {
         this(source);
         set(added, removed, primary);
     }
@@ -82,13 +84,14 @@ public class SelectionEvent extends java.util.EventObject {
     public Iterator getSelectionAdditions() {
         if (_added == null) {
             return new NullIterator();
-        }
-        else {
+        } else {
             return new IteratorAdapter() {
                     int i = 0;
+
                     public boolean hasNext() {
                         return (i < _added.length);
                     }
+
                     public Object next() {
                         return _added[i++];
                     }
@@ -103,13 +106,14 @@ public class SelectionEvent extends java.util.EventObject {
     public Iterator getSelectionRemovals() {
         if (_removed == null) {
             return new NullIterator();
-        }
-        else {
+        } else {
             return new IteratorAdapter() {
                     int i = 0;
+
                     public boolean hasNext() {
                         return (i < _removed.length);
                     }
+
                     public Object next() {
                         return _removed[i++];
                     }
@@ -133,5 +137,3 @@ public class SelectionEvent extends java.util.EventObject {
         _primary = primary;
     }
 }
-
-

@@ -27,6 +27,7 @@ package diva.canvas.interactor;
 
 import java.util.Iterator;
 
+
 /**
  * A model for graph selections.  Listeners can add themselves
  * to the model and are notified by SelectionEvents when
@@ -127,7 +128,4 @@ public interface SelectionModel {
      * SINGLE_SELECTION or MULTIPLE_SELECTION.
      */
     public void setSelectionMode(int mode);
-
 }
-
-

@@ -7,20 +7,17 @@ package ptolemy.actor.corba.util;
  * from CorbaActor.idl
  * Thursday, January 18, 2001 7:07:58 PM PST
  */
-
-public final class CorbaUnknownParamException extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity
-{
+public final class CorbaUnknownParamException
+    extends org.omg.CORBA.UserException
+    implements org.omg.CORBA.portable.IDLEntity {
     public String paramName = null;
     public String message = null;
 
-    public CorbaUnknownParamException ()
-    {
+    public CorbaUnknownParamException() {
     } // ctor
 
-    public CorbaUnknownParamException (String _paramName, String _message)
-    {
+    public CorbaUnknownParamException(String _paramName, String _message) {
         paramName = _paramName;
         message = _message;
     } // ctor
-
 } // class CorbaUnknownParamException

@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Slicer
+
 /**
    The Slicer functions as a decoder of the LineCoder. The parameter
    <i>table</i> and <i>wordLength</i> has the same meaning as in LineCoder,
@@ -64,7 +65,6 @@ import ptolemy.math.Complex;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Slicer extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,7 +74,7 @@ public class Slicer extends Transformer {
      *   actor with this name.
      */
     public Slicer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.COMPLEX);
@@ -87,11 +87,10 @@ public class Slicer extends Transformer {
         table = new Parameter(this, "table");
         table.setTypeEquals(new ArrayType(BaseType.COMPLEX));
         table.setExpression("{-1.0, 1.0}");
-        //attributeChanged(table);
 
+        //attributeChanged(table);
         wordLength = new Parameter(this, "wordLength", new IntToken(1));
         wordLength.setTypeEquals(BaseType.INT);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,23 +117,29 @@ public class Slicer extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        ComplexToken inputToken = ((ComplexToken)input.get(0));
+
+        ComplexToken inputToken = ((ComplexToken) input.get(0));
         int index = 0;
-        double distance = _computeEuclideanDistance
-            (_table[0], inputToken.complexValue());
+        double distance = _computeEuclideanDistance(_table[0],
+                inputToken.complexValue());
+
         for (int i = 1; i < _size; i++) {
-            double tempDistance = _computeEuclideanDistance
-                (_table[i], inputToken.complexValue());
+            double tempDistance = _computeEuclideanDistance(_table[i],
+                    inputToken.complexValue());
+
             if (tempDistance < distance) {
                 index = i;
                 distance = tempDistance;
             }
         }
+
         BooleanToken[] result = new BooleanToken[_wordLength];
+
         for (int i = 0; i < _wordLength; i++) {
             result[i] = new BooleanToken((index & 1) == 1);
             index = index >> 1;
         }
+
         output.broadcast(result, _wordLength);
     }
 
@@ -146,11 +151,12 @@ public class Slicer extends Transformer {
         super.preinitialize();
 
         // FIXME: Handle mutations.
-        _wordLength = ((IntToken)(wordLength.getToken())).intValue();
+        _wordLength = ((IntToken) (wordLength.getToken())).intValue();
         _outputRate.setToken(new IntToken(_wordLength));
 
-        ArrayToken tableToken = (ArrayToken)table.getToken();
+        ArrayToken tableToken = (ArrayToken) table.getToken();
         _size = 1 << _wordLength;
+
         if (tableToken.length() < _size) {
             /*
             throw new IllegalActionException(this, "Table parameter must " +
@@ -159,10 +165,12 @@ public class Slicer extends Transformer {
             */
             _size = tableToken.length();
         }
+
         _table = new Complex[_size];
-        for (int i = 0; i < _size; i++)
-            _table[i] = ((ComplexToken)tableToken.getElement(i))
-                .complexValue();
+
+        for (int i = 0; i < _size; i++) {
+            _table[i] = ((ComplexToken) tableToken.getElement(i)).complexValue();
+        }
     }
 
     /** Compute the Euclidean distance between two complex numbers.
@@ -170,15 +178,13 @@ public class Slicer extends Transformer {
      *  @param y The second complex number.
      *  @return The distance.
      */
-    private double _computeEuclideanDistance(
-            Complex x, Complex y) {
+    private double _computeEuclideanDistance(Complex x, Complex y) {
         Complex z = x.subtract(y);
         return z.magnitude();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Local cache of these parameter values.
     private int _wordLength;
     private int _size;
@@ -189,5 +195,4 @@ public class Slicer extends Transformer {
 
     // Production rate of the output port.
     private Parameter _outputRate;
-
 }

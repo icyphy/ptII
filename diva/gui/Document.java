@@ -32,6 +32,7 @@ import java.net.URL;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
+
 /**
  * Document is an interface that captures the notion of a document in
  * a graphical application. Typically, documents are associated with
@@ -43,12 +44,11 @@ import javax.swing.undo.UndoableEditSupport;
  * @version $Id$
  */
 public interface Document {
-
     /** Add a property change listener to this document. Changes to
      * certain elements of the state of the Document require that
      * registered property change listeners be notified of the change.
      */
-    public void addPropertyChangeListener (PropertyChangeListener listener);
+    public void addPropertyChangeListener(PropertyChangeListener listener);
 
     /** Close the document. Do not attempt to save the document first
      * or do any other user-interface things like that. This method
@@ -60,11 +60,11 @@ public interface Document {
      *
      * @exception Exception If the close operation fails.
      */
-    public void close () throws Exception;
+    public void close() throws Exception;
 
     /** Get the application that this document belongs to.
      */
-    public Application getApplication ();
+    public Application getApplication();
 
     /**
      * Return the undoable edit support.  You need this to post edits.
@@ -82,7 +82,7 @@ public interface Document {
      *
      * @see #getURL()
      */
-    public File getFile ();
+    public File getFile();
 
     /** Get the title of this document
      */
@@ -100,7 +100,7 @@ public interface Document {
      *
      * @see #getFile()
      */
-    public URL getURL ();
+    public URL getURL();
 
     /** Test the "dirty" flag.  If changes made to a document
      * haven't been saved, this flag is set to true.
@@ -110,23 +110,23 @@ public interface Document {
     /** Test the "editable" flag. In general, editors should only allow
      * a document's data to be changed if this flag is set.
      */
-    public boolean isEditable ();
+    public boolean isEditable();
 
     /** Test the "writable" flag. In general, editors should only allow
      * a document's data to be written to storage if this flag is set.
      */
-    public boolean isWritable ();
+    public boolean isWritable();
 
     /** Open the document from its current file or URL. Throw an
      * exception if the operation failed.
      *
      * @exception Exception If the close operation fails.
      */
-    public void open () throws Exception;
+    public void open() throws Exception;
 
     /** Remove a property change listener from this document.
      */
-    public void removePropertyChangeListener (PropertyChangeListener listener);
+    public void removePropertyChangeListener(PropertyChangeListener listener);
 
     /** Save the document to its current file or URL.  Throw an
      * exception if the operation failed. Reasons for failure might
@@ -136,7 +136,7 @@ public interface Document {
      *
      * @exception Exception If the save operation fails.
      */
-    public void save () throws Exception;
+    public void save() throws Exception;
 
     /** Save the document to the given file.  Throw an exception if
      * the operation failed. Return true if successful, false if
@@ -147,7 +147,7 @@ public interface Document {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
-    public void saveAs (File file) throws Exception;
+    public void saveAs(File file) throws Exception;
 
     /** Save the document to the given URL.  Throw an exception if the
      * operation failed.  Do <i>not</i> change the URL attribute to
@@ -157,18 +157,18 @@ public interface Document {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
-    public void saveAs (URL url) throws Exception;
+    public void saveAs(URL url) throws Exception;
 
     /** Set the "editable" flag. Fire a property change event
      * to registered listeners.
      */
-    public void setEditable (boolean flag);
+    public void setEditable(boolean flag);
 
     /** Set the file that this document saves itself to. This is a
      * low-level method and should only be used by storage policy
      * classes. Fire a property change listener to registered listeners.
      */
-    public void setFile (File file);
+    public void setFile(File file);
 
     /** Set the "dirty" flag.  Fire a property change event to
      * registered listeners.
@@ -179,12 +179,10 @@ public interface Document {
      * low-level method and should only be used by storage policy
      * classes. Fire a property change listener to registered listeners.
      */
-    public void setURL (URL url);
+    public void setURL(URL url);
 
     /** Set the "writable" flag. Fire a property change event
      * to registered listeners.
      */
-    public void setWritable (boolean flag);
+    public void setWritable(boolean flag);
 }
-
-

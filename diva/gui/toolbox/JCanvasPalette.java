@@ -27,6 +27,7 @@ package diva.gui.toolbox;
 
 import diva.canvas.JCanvas;
 
+
 /**
  * A "palette" of figures that can be dragged onto another
  * JComponent.
@@ -37,5 +38,3 @@ import diva.canvas.JCanvas;
 public class JCanvasPalette extends JCanvas {
     // FIXME
 }
-
-

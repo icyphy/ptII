@@ -25,6 +25,7 @@
 */
 package diva.util.xml;
 
+
 /**
  * An XmlBuilder is an interface that can be implemented by classes
  * that convert between XmlElements and some internal
@@ -49,7 +50,7 @@ public interface XmlBuilder {
      *   public Graph build (XmlELement elt, String type);
      * </pre>
      */
-    public Object build (XmlElement elt, String type) throws Exception;
+    public Object build(XmlElement elt, String type) throws Exception;
 
     /** Delegate builders can be used to build/generate for objects
      * that are unknown by the current builder, as might be the
@@ -61,7 +62,5 @@ public interface XmlBuilder {
 
     /** Given an object, produce an XML representation of it.
      */
-    public XmlElement generate (Object obj) throws Exception;
+    public XmlElement generate(Object obj) throws Exception;
 }
-
-

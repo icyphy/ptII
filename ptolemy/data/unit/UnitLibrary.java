@@ -36,8 +36,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UnitLibrary
+
 /** A Library containing definitions of commonly used units.
 
     Currently, the Unit library is static in the sense that it is
@@ -53,7 +55,6 @@ import ptolemy.moml.MoMLParser;
     @Pt.AcceptedRating Red (rowland)
 */
 public class UnitLibrary {
-
     public UnitLibrary() {
     }
 
@@ -80,19 +81,29 @@ public class UnitLibrary {
      */
     public static Unit getBaseUnit(int catNum) {
         Vector library = UnitLibrary.getLibrary();
+
         for (int i = 0; i < library.size(); i++) {
             Unit lUnit = (Unit) (library.elementAt(i));
-            if (lUnit.getScale() != 1.0)
+
+            if (lUnit.getScale() != 1.0) {
                 continue;
-            int ltype[] = lUnit.getType();
-            if (ltype[catNum] != 1.0)
-                continue;
-            for (int j = 0; j < UnitLibrary.getNumCategories(); j++) {
-                if (j != catNum && ltype[j] != 0)
-                    continue;
             }
+
+            int[] ltype = lUnit.getType();
+
+            if (ltype[catNum] != 1.0) {
+                continue;
+            }
+
+            for (int j = 0; j < UnitLibrary.getNumCategories(); j++) {
+                if ((j != catNum) && (ltype[j] != 0)) {
+                    continue;
+                }
+            }
+
             return lUnit;
         }
+
         return null;
     }
 
@@ -103,19 +114,24 @@ public class UnitLibrary {
      */
     public static Unit getClosestUnit(Unit unit) {
         Vector possibles = getUnitsByType(unit);
+
         if (possibles.isEmpty()) {
             return null;
         }
+
         double scalarDistance = Double.MAX_VALUE;
         Unit retv = null;
+
         for (int i = 0; i < possibles.size(); i++) {
             Unit possible = (Unit) (possibles.elementAt(i));
             double distance = Math.abs(possible.getScale() - unit.getScale());
+
             if (distance < scalarDistance) {
                 scalarDistance = distance;
                 retv = possible;
             }
         }
+
         return retv;
     }
 
@@ -146,11 +162,15 @@ public class UnitLibrary {
      */
     public static Unit getUnit(Unit unit) {
         Unit retv = getClosestUnit(unit);
-        if (retv == null)
+
+        if (retv == null) {
             return null;
+        }
+
         if (Math.abs(retv.getScale() - unit.getScale()) < 1.0E-8) {
             return retv;
         }
+
         return null;
     }
 
@@ -161,15 +181,18 @@ public class UnitLibrary {
      */
     public static Unit getUnitByName(String name) {
         Vector library = getLibrary();
+
         for (int i = 0; i < library.size(); i++) {
             Unit lUnit = (Unit) (library.elementAt(i));
             Vector names = lUnit.getLabels();
+
             for (int j = 0; j < names.size(); j++) {
                 if (((String) (names.elementAt(j))).equals(name)) {
                     return lUnit;
                 }
             }
         }
+
         return null;
     }
 
@@ -180,18 +203,20 @@ public class UnitLibrary {
     public static Vector getUnitsByType(Unit unit) {
         Vector retv = new Vector();
         Vector library = UnitLibrary.getLibrary();
+
         for (int i = 0; i < library.size(); i++) {
             Unit lUnit = (Unit) (library.elementAt(i));
+
             if (lUnit.hasSameType(unit)) {
                 retv.add(lUnit);
             }
         }
+
         return retv;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private static boolean _debug = false;
     private static int _numCats;
     private static UParser _parser;
@@ -199,12 +224,16 @@ public class UnitLibrary {
 
     static {
         _parser = new UParser();
+
         MoMLParser momlParser = new MoMLParser();
         UnitSystem us = null;
+
         try {
             NamedObj container = new NamedObj();
             momlParser.setContext(container);
+
             URL inURL = MoMLApplication.specToURL("ptolemy/data/unit/SI.xml");
+
             // Strangely, the XmlParser does not want as base the
             // directory containing the file, but rather the
             // file itself.
@@ -214,11 +243,10 @@ public class UnitLibrary {
 
             us = (UnitSystem) (container.getAttribute("SI"));
         } catch (Throwable throwable) {
-            throw new InternalErrorException(
-                    null,
-                    throwable,
-                    "Failed to initialize statics in UnitLibrary");
+            throw new InternalErrorException(null, throwable,
+                "Failed to initialize statics in UnitLibrary");
         }
+
         // Initialize the Library.
         _unitsLibrary = new Vector();
         _numCats = UnitUtilities.getNumCategories();
@@ -231,6 +259,7 @@ public class UnitLibrary {
 
         while (oldStyleUnits.hasNext()) {
             Object oldStyleUnit = oldStyleUnits.next();
+
             if (oldStyleUnit instanceof BaseUnit) {
                 BaseUnit baseUnit = (BaseUnit) oldStyleUnit;
                 Unit basicUnit = new Unit(baseUnit);
@@ -238,21 +267,27 @@ public class UnitLibrary {
             } else if (oldStyleUnit instanceof Parameter) {
                 String name = ((Parameter) oldStyleUnit).getName();
                 String expr = ((Parameter) oldStyleUnit).getExpression();
-                UnitNameExprPair pair =
-                    enclosingObject.new UnitNameExprPair(name, expr);
+                UnitNameExprPair pair = enclosingObject.new UnitNameExprPair(name,
+                        expr);
                 pairs.add(pair);
             }
         }
+
         boolean madeChange = true;
+
         while (!pairs.isEmpty() && madeChange) {
             madeChange = false;
+
             Iterator iter = pairs.iterator();
+
             while (iter.hasNext()) {
                 UnitNameExprPair pair = (UnitNameExprPair) (iter.next());
                 String expr = pair.getUExpr();
+
                 try {
                     UnitExpr uExpr = _parser.parseUnitExpr(expr);
                     Unit unit = uExpr.reduce().getSingleUnit();
+
                     if (unit != null) {
                         unit.setPrimaryLabel(pair.getName());
                         iter.remove();
@@ -264,8 +299,10 @@ public class UnitLibrary {
                 }
             }
         }
+
         if (_debug) {
             Vector units = getLibrary();
+
             for (int i = 0; i < units.size(); i++) {
                 System.out.println(((Unit) (units.elementAt(i))).toString());
             }
@@ -281,7 +318,6 @@ public class UnitLibrary {
      *
      */
     private class UnitNameExprPair {
-
         public UnitNameExprPair(String n, String ue) {
             _name = n;
             _uExpr = ue;

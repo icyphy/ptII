@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -47,8 +46,10 @@ import diva.canvas.JCanvas;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.graph.GraphPane;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// EditIconFrame
+
 /**
    This is an icon editor frame for Ptolemy II models.
    <p>
@@ -65,7 +66,6 @@ import diva.graph.GraphPane;
    @Pt.AcceptedRating Red (johnr)
 */
 public class EditIconFrame extends BasicGraphFrame {
-
     /** Construct a frame to edit the specified icon.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -95,10 +95,8 @@ public class EditIconFrame extends BasicGraphFrame {
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public EditIconFrame(
-            EditorIcon entity,
-            Tableau tableau,
-            LibraryAttribute defaultLibrary) {
+    public EditIconFrame(EditorIcon entity, Tableau tableau,
+        LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
         _dropTarget.setDropIntoEnabled(false);
@@ -119,11 +117,12 @@ public class EditIconFrame extends BasicGraphFrame {
      */
     public void zoomReset() {
         JCanvas canvas = _jgraph.getGraphPane().getCanvas();
-        AffineTransform current =
-            canvas.getCanvasPane().getTransformContext().getTransform();
+        AffineTransform current = canvas.getCanvasPane().getTransformContext()
+                                        .getTransform();
         current.setToScale(_ZOOM_SCALE, _ZOOM_SCALE);
         canvas.getCanvasPane().setTransform(current);
         setCenter(new Point2D.Double(0.0, 0.0));
+
         if (_graphPanner != null) {
             _graphPanner.repaint();
         }
@@ -155,22 +154,25 @@ public class EditIconFrame extends BasicGraphFrame {
      */
     protected CompositeEntity _createDefaultLibrary(Workspace workspace) {
         Configuration configuration = getConfiguration();
+
         if (configuration != null) {
-            CompositeEntity result = (CompositeEntity)
-                configuration.getEntity("icon editor library");
+            CompositeEntity result = (CompositeEntity) configuration.getEntity(
+                    "icon editor library");
+
             if (result == null) {
                 // Create a default library by directly reading the
                 // default XML description.
-                URL source = getClass().getClassLoader().getResource(
-                        "ptolemy/vergil/kernel/attributes/iconEditorLibrary.xml");
+                URL source = getClass().getClassLoader().getResource("ptolemy/vergil/kernel/attributes/iconEditorLibrary.xml");
                 MoMLParser parser = new MoMLParser(workspace);
+
                 try {
-                    result = (CompositeEntity)parser.parse(null, source);
+                    result = (CompositeEntity) parser.parse(null, source);
                 } catch (Exception e) {
                     throw new InternalErrorException(
-                            "Unable to open default icon editor library: " + e);
+                        "Unable to open default icon editor library: " + e);
                 }
             }
+
             return result;
         } else {
             return null;
@@ -185,6 +187,7 @@ public class EditIconFrame extends BasicGraphFrame {
         _controller = new EditIconGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
+
         ActorGraphModel graphModel = new ActorGraphModel(getModel());
         return new GraphPane(_controller, graphModel);
     }
@@ -194,16 +197,18 @@ public class EditIconFrame extends BasicGraphFrame {
     protected void _drawReferenceBox() {
         // The background layer is a FigureLayer, despite the fact that
         // getBackgroundLayer() only returns a CanvasLayer.
-        FigureLayer layer = (FigureLayer)_jgraph.getGraphPane().getBackgroundLayer();
+        FigureLayer layer = (FigureLayer) _jgraph.getGraphPane()
+                                                 .getBackgroundLayer();
         layer.setVisible(true);
-        BasicRectangle reference = new BasicRectangle(-30.0, -20.0, 60.0, 40.0, 0.1f);
+
+        BasicRectangle reference = new BasicRectangle(-30.0, -20.0, 60.0, 40.0,
+                0.1f);
         reference.setStrokePaint(Color.BLUE);
         layer.add(reference);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private EditIconGraphController _controller;
 
     // The delay time specified that last time animation was set.

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JVMTableau
+
 /**
    A tableau that displays Java Virtual Machine information such
    as the version number and other properties
@@ -60,7 +61,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class JVMTableau extends Tableau {
-
     /** Create a new control panel displaying the JVM properties
      *  The tableau is itself an entity contained by the effigy
      *  and having the specified name.  The frame is not made visible
@@ -73,11 +73,12 @@ public class JVMTableau extends Tableau {
      *   an entity with the specified name.
      */
     public JVMTableau(PtolemyEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         NamedObj model = container.getModel();
 
-        JVMFrame frame = new JVMFrame((CompositeEntity)model, this);
+        JVMFrame frame = new JVMFrame((CompositeEntity) model, this);
         setFrame(frame);
     }
 
@@ -87,7 +88,6 @@ public class JVMTableau extends Tableau {
     /** The frame that is created by an instance of JVMTableau.
      */
     public class JVMFrame extends PtolemyFrame {
-
         /** Construct a frame to display JVM properties.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
@@ -100,11 +100,11 @@ public class JVMTableau extends Tableau {
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public JVMFrame(final CompositeEntity model, Tableau tableau)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(model, tableau);
+
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
-
 
             // Display total memory and free memory.
             final JTextArea memoryArea = new JTextArea("", 1, 100);
@@ -128,30 +128,29 @@ public class JVMTableau extends Tableau {
 
             try {
                 Properties properties = System.getProperties();
-                Enumeration propertyNamesEnumeration =
-                    properties.propertyNames();
+                Enumeration propertyNamesEnumeration = properties.propertyNames();
+
                 // Sort by property name
-                ArrayList propertyNamesList =
-                    Collections.list(propertyNamesEnumeration);
+                ArrayList propertyNamesList = Collections.list(propertyNamesEnumeration);
                 Collections.sort(propertyNamesList);
 
                 Iterator propertyNames = propertyNamesList.iterator();
+
                 while (propertyNames.hasNext()) {
-                    String propertyName = (String)propertyNames.next();
+                    String propertyName = (String) propertyNames.next();
                     propertyBuffer.append(propertyName + " = "
-                            + properties
-                            .getProperty(propertyName)
-                            + lineSeparator);
+                        + properties.getProperty(propertyName) + lineSeparator);
                 }
             } catch (java.security.AccessControlException accessControl) {
                 propertyBuffer.append("AccessControlException, probably from "
-                        + "System.getProperties():\n" +
-                        accessControl);
+                    + "System.getProperties():\n" + accessControl);
             }
-            final JTextArea messageArea =
-                new JTextArea(propertyBuffer.toString(), 20, 100);
+
+            final JTextArea messageArea = new JTextArea(propertyBuffer.toString(),
+                    20, 100);
 
             messageArea.setEditable(false);
+
             JScrollPane scrollPane = new JScrollPane(messageArea);
             component.add(scrollPane);
             getContentPane().add(component, BorderLayout.CENTER);
@@ -161,7 +160,6 @@ public class JVMTableau extends Tableau {
     /** A factory that creates a control panel to display JVM Properties.
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -171,7 +169,7 @@ public class JVMTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -193,12 +191,13 @@ public class JVMTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau
-                JVMTableau tableau =
-                    (JVMTableau)effigy.getEntity("JVMTableau");
+                JVMTableau tableau = (JVMTableau) effigy.getEntity("JVMTableau");
+
                 if (tableau == null) {
-                    tableau = new JVMTableau(
-                            (PtolemyEffigy)effigy, "JVMTableau");
+                    tableau = new JVMTableau((PtolemyEffigy) effigy,
+                            "JVMTableau");
                 }
+
                 return tableau;
             } else {
                 return null;
@@ -208,27 +207,20 @@ public class JVMTableau extends Tableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Update the memory statistics in textArea.
     private void updateMemoryStatistics(JTextArea textArea) {
         // Report memory usage statistics.
         Runtime runtime = Runtime.getRuntime();
-        long totalMemory = runtime.totalMemory()/1024;
-        long freeMemory = runtime.freeMemory()/1024;
-        long maxMemory = runtime.maxMemory()/1024;
+        long totalMemory = runtime.totalMemory() / 1024;
+        long freeMemory = runtime.freeMemory() / 1024;
+        long maxMemory = runtime.maxMemory() / 1024;
 
-        textArea.setText("Memory: "
-                + totalMemory + "K Free: "
-                + freeMemory + "K ("
-                + Math.round( (((double)freeMemory)/
-                                      ((double)totalMemory))
-                        * 100.0)
-                + "%) Max: "
-                + maxMemory + "K ("
-                + Math.round( (((double)totalMemory)/
-                                      ((double)maxMemory))
-                        * 100.0)
-                + "%)");
-
+        textArea.setText("Memory: " + totalMemory + "K Free: " + freeMemory
+            + "K ("
+            + Math.round(
+                (((double) freeMemory) / ((double) totalMemory)) * 100.0)
+            + "%) Max: " + maxMemory + "K ("
+            + Math.round(
+                (((double) totalMemory) / ((double) maxMemory)) * 100.0) + "%)");
     }
 }

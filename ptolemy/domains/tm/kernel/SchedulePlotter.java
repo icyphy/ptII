@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.tm.kernel;
 
 import java.awt.Frame;
@@ -52,6 +51,7 @@ import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////
 //// SchedulePlotter
+
 /**
    This attribute is a visible attribute that when configured (by double
    clicking on it or by invoking Configure in the context menu) it displays
@@ -66,9 +66,7 @@ import ptolemy.plot.Plot;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-
 public class SchedulePlotter extends Attribute implements ScheduleListener {
-
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -78,15 +76,15 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
      *   an attribute already in the container.
      */
     public SchedulePlotter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
-                + "style=\"fill:blue\"/>"
-                + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\nplot the schedule.</text></svg>");
+        _attachText("_iconDescription",
+            "<svg>\n"
+            + "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
+            + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
+            + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+            + "Double click to\nplot the schedule.</text></svg>");
 
         new SchedulePlotterEditorFactory(this, "_editorFactory");
 
@@ -99,24 +97,21 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
             // We need to check if the container is a CompositeActor
             // because the reference to SchedulePlotter in tmentities.xml
             // is not a CompositeActor
-            Director director = ((CompositeActor)container).getDirector();
+            Director director = ((CompositeActor) container).getDirector();
+
             if (!(director instanceof TMDirector)) {
                 throw new IllegalActionException("Director '" + director
-                        + "' is not a TMDirector, so adding a SchedulePlotter "
-                        + "makes no sense");
+                    + "' is not a TMDirector, so adding a SchedulePlotter "
+                    + "makes no sense");
             }
-            ((TMDirector)director).addScheduleListener(this);
 
+            ((TMDirector) director).addScheduleListener(this);
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////        public variables and parameters                    ////
-
-
     public Plot plot;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -132,12 +127,14 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                 if (_taskMap != null) {
                     Object taskID = _taskMap.get(actorName);
                     int id;
-                    if (taskID == null) {
 
+                    if (taskID == null) {
                         id = _taskMap.size();
+
                         final int finalid = id;
                         _taskMap.put(actorName, new Integer(id));
                         _taskState.add(new Integer(0));
+
                         // Note: addLegend is not intended to be
                         // called from outside the swing thread.
                         Runnable doAddPoint = new Runnable() {
@@ -145,15 +142,17 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                                     plot.addLegend(finalid, actorName);
                                 }
                             };
-                        synchronized(plot) {
+
+                        synchronized (plot) {
                             plot.deferIfNecessary(doAddPoint);
                         }
                     } else {
                         id = ((Integer) taskID).intValue();
                     }
+
                     int _oldState = ((Integer) _taskState.get(id)).intValue();
-                    plot.addPoint(id, time, id  + _oldState/2.1, true);
-                    plot.addPoint(id, time, id + scheduleEvent/2.1, true);
+                    plot.addPoint(id, time, id + (_oldState / 2.1), true);
+                    plot.addPoint(id, time, id + (scheduleEvent / 2.1), true);
                     _taskState.set(id, new Integer(scheduleEvent));
                     plot.fillPlot();
                     plot.repaint();
@@ -165,22 +164,16 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
     private HashMap _taskMap;
     private ArrayList _taskState;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class SchedulePlotterEditorFactory extends EditorFactory {
-
         public SchedulePlotterEditorFactory(NamedObj _container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(_container, name);
         }
 
@@ -191,10 +184,10 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
          */
         public void createEditor(NamedObj object, Frame parent) {
             try {
-                Configuration configuration
-                    = ((TableauFrame)parent).getConfiguration();
+                Configuration configuration = ((TableauFrame) parent)
+                    .getConfiguration();
 
-                NamedObj container = (NamedObj)object.getContainer();
+                NamedObj container = (NamedObj) object.getContainer();
 
                 _taskMap = new HashMap();
                 _taskState = new ArrayList();
@@ -205,19 +198,17 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                 // We put the plotter as a sub-effigy of the toplevel effigy,
                 // so that it closes when the model is closed.
                 Effigy effigy = Configuration.findEffigy(toplevel());
-                PlotEffigy schedulePlotterEffigy =
-                    new PlotEffigy(effigy,
-                            container.uniqueName("schedulePlotterEffigy"));
+                PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy,
+                        container.uniqueName("schedulePlotterEffigy"));
                 schedulePlotterEffigy.setPlot(plot);
                 schedulePlotterEffigy.identifier.setExpression("TM Schedule");
 
                 configuration.createPrimaryTableau(schedulePlotterEffigy);
 
                 plot.setVisible(true);
-
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
-                        "Cannot create Schedule Plotter");
+                    "Cannot create Schedule Plotter");
             }
         }
     }

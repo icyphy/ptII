@@ -58,6 +58,7 @@ import javax.swing.JPanel;
 
 import diva.gui.BasicFrame;
 
+
 /**
  * A Visio-style tab box that uses a "window shade" metaphor instead
  * of a tabbed folder metaphor.  This class implements virtually the
@@ -91,7 +92,7 @@ public class JShadePane extends JPanel {
      * Adds a component represented by a title button with no icon.
      * Cover method for insertShade().
      */
-    public void addShade (String title, Component shade) {
+    public void addShade(String title, Component shade) {
         addShade(title, null, shade);
     }
 
@@ -99,7 +100,7 @@ public class JShadePane extends JPanel {
      * Adds a component represented by a title and/or icon, either
      * of which can be null. Cover method for insertShade().
      */
-    public void addShade (String title, Icon icon, Component shade) {
+    public void addShade(String title, Icon icon, Component shade) {
         insertShade(title, icon, shade, null, getShadeCount());
     }
 
@@ -107,32 +108,31 @@ public class JShadePane extends JPanel {
      * Adds a component and tooltip represented by a title and/or icon,
      * either of which can be null. Cover method for insertShade().
      */
-    public void addShade (String title, Icon icon, Component shade, String tip) {
+    public void addShade(String title, Icon icon, Component shade, String tip) {
         insertShade(title, icon, shade, tip, getShadeCount());
     }
 
     /**
      * Return the index of the selected shade, or -1 if there is none.
      */
-    public int getSelectedIndex () {
+    public int getSelectedIndex() {
         return _selectedIndex;
     }
 
     /**
      * Return the number of shades in this pane.
      */
-    public int getShadeCount () {
+    public int getShadeCount() {
         return _shades.size();
     }
-
 
     /**
      * Returns the tab title at the given index.
      *
      * @see #setTitleAt
      */
-    public String getTitleAt (int index) {
-        return ((Shade)_shades.get(index))._button.getText();
+    public String getTitleAt(int index) {
+        return ((Shade) _shades.get(index))._button.getText();
     }
 
     /**
@@ -140,8 +140,8 @@ public class JShadePane extends JPanel {
      *
      * @see #setIconAt
      */
-    public Icon getIconAt (int index) {
-        return ((Shade)_shades.get(index))._button.getIcon();
+    public Icon getIconAt(int index) {
+        return ((Shade) _shades.get(index))._button.getIcon();
     }
 
     /**
@@ -149,8 +149,8 @@ public class JShadePane extends JPanel {
      *
      * @see #setDisabledIconAt
      */
-    public Icon getDisabledIconAt (int index) {
-        return ((Shade)_shades.get(index))._button.getDisabledIcon();
+    public Icon getDisabledIconAt(int index) {
+        return ((Shade) _shades.get(index))._button.getDisabledIcon();
     }
 
     /**
@@ -158,8 +158,8 @@ public class JShadePane extends JPanel {
      *
      * @see #setBackgroundAt
      */
-    public Color getBackgroundAt (int index) {
-        return ((Shade)_shades.get(index)).getBackground();
+    public Color getBackgroundAt(int index) {
+        return ((Shade) _shades.get(index)).getBackground();
     }
 
     /**
@@ -167,8 +167,8 @@ public class JShadePane extends JPanel {
      *
      * @see #setForegroundAt
      */
-    public Color getForegroundAt (int index) {
-        return ((Shade)_shades.get(index)).getForeground();
+    public Color getForegroundAt(int index) {
+        return ((Shade) _shades.get(index)).getForeground();
     }
 
     /**
@@ -177,26 +177,27 @@ public class JShadePane extends JPanel {
      *
      * @see #setEnabledAt
      */
-    public boolean isEnabledAt (int index) {
-        return ((Shade)_shades.get(index)).isEnabled();
+    public boolean isEnabledAt(int index) {
+        return ((Shade) _shades.get(index)).isEnabled();
     }
 
     /**
      * Returns the component at the given index.
      */
-    public Component getComponentAt (int index) {
-        return ((Shade)_shades.get(index))._component;
+    public Component getComponentAt(int index) {
+        return ((Shade) _shades.get(index))._component;
     }
 
     /**
      * Returns the index of the shade with the given title.
      */
-    public int indexOfShade (String title) {
+    public int indexOfShade(String title) {
         for (int i = 0; i < getShadeCount(); i++) {
-            if (getTitleAt(i).equals(title == null? "" : title)) {
+            if (getTitleAt(i).equals((title == null) ? "" : title)) {
                 return i;
             }
         }
+
         return -1;
     }
 
@@ -205,14 +206,13 @@ public class JShadePane extends JPanel {
      * at the specified index.  Either the title or the icon can
      * be null, but not both.
      */
-    public void insertShade (String title, Icon icon,
-            Component component, String tip, int index) {
-
+    public void insertShade(String title, Icon icon, Component component,
+        String tip, int index) {
         Icon disabledIcon = null;
-        if (icon != null && icon instanceof ImageIcon) {
-            disabledIcon = new ImageIcon(
-                    GrayFilter.createDisabledImage(
-                            ((ImageIcon)icon).getImage()));
+
+        if ((icon != null) && icon instanceof ImageIcon) {
+            disabledIcon = new ImageIcon(GrayFilter.createDisabledImage(
+                        ((ImageIcon) icon).getImage()));
         }
 
         JButton button = new JButton(title, icon);
@@ -232,14 +232,16 @@ public class JShadePane extends JPanel {
         if (_shades.size() == 1) {
             _selectedIndex = 0;
         }
+
         refresh();
     }
 
     /**
      * Refresh the layout.
      */
-    protected void refresh () {
+    protected void refresh() {
         super.removeAll();
+
         GridBagLayout gbl = new GridBagLayout();
         setLayout(gbl);
 
@@ -250,7 +252,7 @@ public class JShadePane extends JPanel {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
         for (int i = 0; i <= _selectedIndex; i++) {
-            Shade p = (Shade)_shades.get(i);
+            Shade p = (Shade) _shades.get(i);
             gbl.setConstraints(p._button, gbc);
             add(p._button);
         }
@@ -259,7 +261,8 @@ public class JShadePane extends JPanel {
             gbc.fill = GridBagConstraints.BOTH;
             gbc.weightx = 1.0;
             gbc.weighty = 1.0;
-            Shade p = (Shade)_shades.get(_selectedIndex);
+
+            Shade p = (Shade) _shades.get(_selectedIndex);
             gbl.setConstraints(p._component, gbc);
             add(p._component);
         }
@@ -268,8 +271,8 @@ public class JShadePane extends JPanel {
         gbc.weightx = 0.0;
         gbc.weighty = 0.0;
 
-        for (int i = _selectedIndex+1; i < getShadeCount(); i++) {
-            Shade p = (Shade)_shades.get(i);
+        for (int i = _selectedIndex + 1; i < getShadeCount(); i++) {
+            Shade p = (Shade) _shades.get(i);
             gbl.setConstraints(p._button, gbc);
             add(p._button);
         }
@@ -278,11 +281,10 @@ public class JShadePane extends JPanel {
         repaint();
     }
 
-
     /**
      * Remove all of the shades.
      */
-    public void removeAll () {
+    public void removeAll() {
         _shades.clear();
         setSelectedIndex(-1); //calls refresh
     }
@@ -290,17 +292,17 @@ public class JShadePane extends JPanel {
     /**
      * Remove the shade at the given index.
      */
-    public void removeShadeAt (int index) {
+    public void removeShadeAt(int index) {
         _shades.remove(index);
 
         // If we are removing the currently selected tab AND
         // it happens to be the last tab in the bunch, then
         // select the previous tab
         int shadeCount = getShadeCount();
+
         if (getSelectedIndex() >= shadeCount) {
             setSelectedIndex(shadeCount - 1); //calls refresh()
-        }
-        else {
+        } else {
             refresh();
         }
     }
@@ -308,46 +310,46 @@ public class JShadePane extends JPanel {
     /**
      * Set the background color at the given index.
      */
-    public void setBackgroundAt (int index, Color background) {
-        Shade p = (Shade)(_shades.get(index));
+    public void setBackgroundAt(int index, Color background) {
+        Shade p = (Shade) (_shades.get(index));
         p._button.setBackground(background);
     }
 
     /**
      * Set the disabled icon for the button at the given index.
      */
-    public void setDisabledIconAt (int index, Icon icon) {
-        Shade p = (Shade)(_shades.get(index));
+    public void setDisabledIconAt(int index, Icon icon) {
+        Shade p = (Shade) (_shades.get(index));
         p._button.setDisabledIcon(icon);
     }
 
     /**
      * Set the enabledness of the shade at the given index.
      */
-    public void setEnabledAt (int index, boolean enabled) {
-        Shade p = (Shade)(_shades.get(index));
+    public void setEnabledAt(int index, boolean enabled) {
+        Shade p = (Shade) (_shades.get(index));
         p._button.setEnabled(enabled);
+
         //FIXME - what is the right behavior if this
         //        is the current selection?
     }
-
 
     /**
      * Set the foreground color at the given index.
      */
-    public void setForegroundAt (int index, Color foreground) {
-        Shade p = (Shade)(_shades.get(index));
+    public void setForegroundAt(int index, Color foreground) {
+        Shade p = (Shade) (_shades.get(index));
         p._button.setForeground(foreground);
+
         //FIXME - what is the right behavior if this
         //        is the current selection?
     }
 
-
     /**
      * Set the disabled icon for the button at the given index.
      */
-    public void setIconAt (int index, Icon icon) {
-        Shade p = (Shade)(_shades.get(index));
+    public void setIconAt(int index, Icon icon) {
+        Shade p = (Shade) (_shades.get(index));
         p._button.setIcon(icon);
     }
 
@@ -356,34 +358,33 @@ public class JShadePane extends JPanel {
      * causes the pane to refresh its display to show
      * the selected pane's component.
      */
-    public void setSelectedIndex (int index) {
-        if (index != _selectedIndex) {  //(index >= 0) &&
+    public void setSelectedIndex(int index) {
+        if (index != _selectedIndex) { //(index >= 0) &&
             System.out.println("SELECTING: " + _selectedIndex);
             _selectedIndex = index;
         }
+
         refresh(); //FIXME - shouldn't need to do this every time?
     }
 
     /**
      * Set the title string at the given index.
      */
-    public void setTitleAt (int index, String title) {
-        Shade p = (Shade)(_shades.get(index));
+    public void setTitleAt(int index, String title) {
+        Shade p = (Shade) (_shades.get(index));
         p._button.setText(title);
     }
 
     /**
      * Borrowed from JTabbedPane.  Holds all the info about each shade.
      */
-    private class Shade extends AccessibleContext
-        implements Serializable, Accessible, AccessibleComponent {
-
+    private class Shade extends AccessibleContext implements Serializable,
+        Accessible, AccessibleComponent {
         JShadePane _parent;
         JButton _button;
         Component _component;
 
         Shade(JShadePane parent, JButton button, Component component) {
-
             setAccessibleParent(_parent);
             _button = button;
             _parent = parent;
@@ -392,6 +393,7 @@ public class JShadePane extends JPanel {
             if (_component instanceof Accessible) {
                 AccessibleContext ac;
                 ac = ((Accessible) _component).getAccessibleContext();
+
                 if (ac != null) {
                     ac.setAccessibleParent(this);
                 }
@@ -401,7 +403,6 @@ public class JShadePane extends JPanel {
         ///////////////////////////////////////////////////////
         // Accessibility support
         ///////////////////////////////////////////////////////
-
         public AccessibleContext getAccessibleContext() {
             return this;
         }
@@ -422,10 +423,13 @@ public class JShadePane extends JPanel {
             AccessibleStateSet states;
             states = _parent.getAccessibleContext().getAccessibleStateSet();
             states.add(AccessibleState.SELECTABLE);
+
             int i = _parent.indexOfShade(_button.getText());
+
             if (i == _parent.getSelectedIndex()) {
                 states.add(AccessibleState.SELECTED);
             }
+
             return states;
         }
 
@@ -438,7 +442,8 @@ public class JShadePane extends JPanel {
         }
 
         public Accessible getAccessibleChild(int i) {
-            return (_component instanceof Accessible) ? (Accessible)_component : null;
+            return (_component instanceof Accessible) ? (Accessible) _component
+                                                      : null;
         }
 
         public Locale getLocale() {
@@ -452,7 +457,6 @@ public class JShadePane extends JPanel {
         public void addFocusListener(FocusListener l) {
             throw new UnsupportedOperationException("FIXME");
         }
-
 
         public Color getBackground() {
             return _button.getBackground();
@@ -549,7 +553,8 @@ public class JShadePane extends JPanel {
         }
 
         public Accessible getAccessibleAt(Point p) {
-            return (_component instanceof Accessible) ? (Accessible)_component : null;
+            return (_component instanceof Accessible) ? (Accessible) _component
+                                                      : null;
         }
 
         public boolean isFocusTraversable() {
@@ -565,7 +570,7 @@ public class JShadePane extends JPanel {
         }
     }
 
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         final JShadePane sp = new JShadePane();
         sp.addShade("Foo", new JLabel("foo's component"));
         sp.addShade("Bar", new JLabel("bar's component"));
@@ -575,7 +580,6 @@ public class JShadePane extends JPanel {
         JFrame f = new BasicFrame("Shade test");
         f.getContentPane().add("Center", sp);
 
-
         JPanel btns = new JPanel();
         f.getContentPane().add("South", btns);
 
@@ -583,6 +587,7 @@ public class JShadePane extends JPanel {
         b1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int i = sp.getSelectedIndex();
+
                     if (i >= 0) {
                         sp.removeShadeAt(i);
                     }
@@ -593,7 +598,8 @@ public class JShadePane extends JPanel {
         JButton b2 = new JButton("rm sel-1");
         b2.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    int i = sp.getSelectedIndex()-1;
+                    int i = sp.getSelectedIndex() - 1;
+
                     if (i >= 0) {
                         sp.removeShadeAt(i);
                     }
@@ -605,7 +611,8 @@ public class JShadePane extends JPanel {
         b3.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int i = sp.getSelectedIndex() + 1;
-                    if (i >= 1 && i < sp.getShadeCount()) {
+
+                    if ((i >= 1) && (i < sp.getShadeCount())) {
                         sp.removeShadeAt(i);
                     }
                 }
@@ -624,6 +631,7 @@ public class JShadePane extends JPanel {
         b5.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int i = sp.getSelectedIndex();
+
                     if (i >= 0) {
                         boolean en = sp.isEnabledAt(i);
                         sp.setEnabledAt(i, !en);
@@ -635,7 +643,8 @@ public class JShadePane extends JPanel {
         JButton b6 = new JButton("toggle sel-1");
         b6.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    int i = sp.getSelectedIndex()-1;
+                    int i = sp.getSelectedIndex() - 1;
+
                     if (i >= 0) {
                         boolean en = sp.isEnabledAt(i);
                         sp.setEnabledAt(i, !en);
@@ -644,9 +653,7 @@ public class JShadePane extends JPanel {
             });
         btns.add(b6);
 
-        f.setSize(600,400);
+        f.setSize(600, 400);
         f.setVisible(true);
     }
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.Iterator;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ArrayElement
+
 /**
    Extract an element from an array.  This actor reads an array from the
    <i>input</i> port and sends one of its elements to the <i>output</i>
@@ -65,9 +66,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (celaine)
    @Pt.AcceptedRating Green (cxh)
 */
-
 public class ArrayElement extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -77,12 +76,13 @@ public class ArrayElement extends Transformer {
      *   actor with this name.
      */
     public ArrayElement(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // set type constraints.
         input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType inputArrayType = (ArrayType)input.getType();
+
+        ArrayType inputArrayType = (ArrayType) input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
 
@@ -111,11 +111,11 @@ public class ArrayElement extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ArrayElement newObject = (ArrayElement)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayElement newObject = (ArrayElement) super.clone(workspace);
         newObject.input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType inputArrayType = (ArrayType)newObject.input.getType();
+
+        ArrayType inputArrayType = (ArrayType) newObject.input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
@@ -132,15 +132,18 @@ public class ArrayElement extends Transformer {
         // that if an index token is provided that it is consumed even
         // if there is no input token.
         index.update();
-        int indexValue = ((IntToken)index.getToken()).intValue();
+
+        int indexValue = ((IntToken) index.getToken()).intValue();
+
         if (input.hasToken(0)) {
-            ArrayToken token = (ArrayToken)input.get(0);
-            if (indexValue < 0 || indexValue >= token.length()) {
+            ArrayToken token = (ArrayToken) input.get(0);
+
+            if ((indexValue < 0) || (indexValue >= token.length())) {
                 throw new IllegalActionException(this,
-                        "index " + indexValue
-                        + " is out of range for the input "
-                        + "array, which has length " + token.length());
+                    "index " + indexValue + " is out of range for the input "
+                    + "array, which has length " + token.length());
             }
+
             output.send(0, token.getElement(indexValue));
         }
     }
@@ -154,12 +157,13 @@ public class ArrayElement extends Transformer {
      */
     public List typeConstraintList() {
         Type inputType = input.getType();
+
         if (inputType == BaseType.UNKNOWN) {
             input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        } else if ( !(inputType instanceof ArrayType)) {
+        } else if (!(inputType instanceof ArrayType)) {
             throw new IllegalStateException("ArrayElement.typeConstraintList: "
-                    + "The input type, " + inputType.toString() + " is not an "
-                    + "array type.");
+                + "The input type, " + inputType.toString() + " is not an "
+                + "array type.");
         }
 
         // NOTE: superclass will put in type constraints for
@@ -168,22 +172,23 @@ public class ArrayElement extends Transformer {
 
         // collect constraints from contained Typeables
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            Typeable port = (Typeable)ports.next();
+            Typeable port = (Typeable) ports.next();
             result.addAll(port.typeConstraintList());
         }
 
         Iterator typeables = attributeList(Typeable.class).iterator();
+
         while (typeables.hasNext()) {
-            Typeable typeable = (Typeable)typeables.next();
+            Typeable typeable = (Typeable) typeables.next();
             result.addAll(typeable.typeConstraintList());
         }
 
         // Add type constraint for the input.
-        ArrayType inputArrayType = (ArrayType)input.getType();
+        ArrayType inputArrayType = (ArrayType) input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        Inequality inequality = new Inequality(elementTerm,
-                output.getTypeTerm());
+        Inequality inequality = new Inequality(elementTerm, output.getTypeTerm());
 
         result.add(inequality);
         return result;

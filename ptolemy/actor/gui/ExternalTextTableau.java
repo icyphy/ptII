@@ -28,14 +28,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExternalTextTableau
+
 /**
    A tableau representing an external text editor (for now emacs only, with
    the gnuserv package installed).<p>
@@ -59,7 +60,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ExternalTextTableau extends TextEditorTableau {
-
     /** Construct a new tableau for the model represented by the given effigy.
      *  @param container The container.
      *  @param name The name.
@@ -69,7 +69,7 @@ public class ExternalTextTableau extends TextEditorTableau {
      *   attribute already in the container.
      */
     public ExternalTextTableau(TextEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -82,12 +82,12 @@ public class ExternalTextTableau extends TextEditorTableau {
      *  @param flag False to make the tableau uneditable.
      */
     public void setEditable(boolean flag) {
-        ((ExternalTextEffigy)getContainer()).setModifiable(flag);
+        ((ExternalTextEffigy) getContainer()).setModifiable(flag);
     }
 
     /** Make this tableau visible - by calling show() on the container
      * (ExternalTextEffigy). */
     public void show() {
-        ((ExternalTextEffigy)getContainer()).show();
+        ((ExternalTextEffigy) getContainer()).show();
     }
 }

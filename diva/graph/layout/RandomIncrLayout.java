@@ -24,8 +24,10 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.layout;
+
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+
 
 /**
  * Randomly place newly-added nodes within the target viewport.  This
@@ -75,22 +77,31 @@ public class RandomIncrLayout implements IncrementalLayout {
      */
     public void nodeDrawn(Object node) {
         if (getLayoutTarget().isNodeVisible(node)) {
-            Rectangle2D vp = getLayoutTarget().getViewport(getLayoutTarget().getGraphModel().getParent(node));
+            Rectangle2D vp = getLayoutTarget().getViewport(getLayoutTarget()
+                                                               .getGraphModel()
+                                                               .getParent(node));
             Rectangle2D bounds = getLayoutTarget().getBounds(node);
+
             for (int i = 0; i < NUM_ITER; i++) {
-                double x = vp.getX() +
-                    Math.abs(Math.random()) * vp.getWidth();
-                double y = vp.getY() +
-                    Math.abs(Math.random()) * vp.getHeight();
+                double x = vp.getX()
+                    + (Math.abs(Math.random()) * vp.getWidth());
+                double y = vp.getY()
+                    + (Math.abs(Math.random()) * vp.getHeight());
 
                 LayoutUtilities.place(getLayoutTarget(), node, x, y);
                 bounds = getLayoutTarget().getBounds(node);
+
                 boolean overlap = false;
                 Iterator j = getLayoutTarget().intersectingNodes(bounds);
+
                 while (j.hasNext()) {
-                    Object n2 = (Object)j.next();
-                    if (node != n2) { overlap = false; }
+                    Object n2 = (Object) j.next();
+
+                    if (node != n2) {
+                        overlap = false;
+                    }
                 }
+
                 if (!overlap) {
                     break;
                 }
@@ -125,6 +136,3 @@ public class RandomIncrLayout implements IncrementalLayout {
         _global.layout(composite);
     }
 }
-
-
-

@@ -24,13 +24,13 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.connector;
 
 import java.awt.geom.Rectangle2D;
 
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
+
 
 /** A concrete implementation of Site that is located in the
  * center of the bounding box of a figure. This is a utility class
@@ -41,7 +41,6 @@ import diva.canvas.Figure;
  * @author         John Reekie
  */
 public class CenterSite extends AbstractSite {
-
     /** The id
      */
     private int _id;
@@ -55,26 +54,26 @@ public class CenterSite extends AbstractSite {
      *
      * FIXME: This should be deprecated? Use the constructor that takes an ID.
      */
-    public CenterSite (Figure figure) {
-        this(figure,0);
+    public CenterSite(Figure figure) {
+        this(figure, 0);
     }
 
     /** Create a new site on the given figure and with the given ID
      */
-    public CenterSite (Figure figure, int id) {
+    public CenterSite(Figure figure, int id) {
         this._id = id;
         this._parentFigure = figure;
     }
 
     /** Get the figure to which this site is attached.
      */
-    public Figure getFigure () {
+    public Figure getFigure() {
         return _parentFigure;
     }
 
     /** Get the ID of this site.
      */
-    public int getID () {
+    public int getID() {
         return _id;
     }
 
@@ -82,19 +81,17 @@ public class CenterSite extends AbstractSite {
      * is located in the center of the parent figure's bounding
      * box.
      */
-    public double getX () {
+    public double getX() {
         Rectangle2D bounds = _parentFigure.getBounds();
-        return bounds.getX() + bounds.getWidth()/2;
+        return bounds.getX() + (bounds.getWidth() / 2);
     }
 
     /** Get the y-coordinate of the site.  The site
      * is located in the center of the parent figure's bounding
      * box.
      */
-    public double getY () {
+    public double getY() {
         Rectangle2D bounds = _parentFigure.getBounds();
-        return bounds.getY() + bounds.getHeight()/2;
+        return bounds.getY() + (bounds.getHeight() / 2);
     }
 }
-
-

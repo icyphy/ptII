@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.gui;
 
 import java.util.List;
@@ -37,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LevelSkippingTableauFactory
+
 /**
    This class is an attribute that creates a tableau to view an object
    contained by the model associated with the specified effigy.
@@ -54,7 +55,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (eal)
 */
 public class LevelSkippingTableauFactory extends TableauFactory {
-
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -64,7 +64,7 @@ public class LevelSkippingTableauFactory extends TableauFactory {
      *   an attribute already in the container.
      */
     public LevelSkippingTableauFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         entityName = new StringParameter(this, "entityName");
@@ -98,23 +98,29 @@ public class LevelSkippingTableauFactory extends TableauFactory {
         if (!(effigy instanceof PtolemyEffigy)) {
             return null;
         }
-        NamedObj model = ((PtolemyEffigy)effigy).getModel();
+
+        NamedObj model = ((PtolemyEffigy) effigy).getModel();
+
         if (model instanceof CompositeEntity) {
             String name = entityName.stringValue();
             NamedObj toOpen = null;
+
             if (!name.trim().equals("")) {
-                toOpen = ((CompositeEntity)model).getEntity(name);
+                toOpen = ((CompositeEntity) model).getEntity(name);
             } else {
-                List entities = ((CompositeEntity)model).entityList();
+                List entities = ((CompositeEntity) model).entityList();
+
                 if (entities.size() > 0) {
-                    toOpen = (NamedObj)entities.get(0);
+                    toOpen = (NamedObj) entities.get(0);
                 }
             }
+
             if (toOpen != null) {
-                Configuration configuration = (Configuration)effigy.toplevel();
+                Configuration configuration = (Configuration) effigy.toplevel();
                 return configuration.openModel(toOpen);
             }
         }
+
         return null;
     }
 }

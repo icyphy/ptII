@@ -26,20 +26,19 @@
  COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib.network.mac;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DataPump
@@ -65,7 +64,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class DataPump extends MACActorBase {
-
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -79,7 +77,7 @@ public class DataPump extends MACActorBase {
      *   an actor already in the container.
      */
     public DataPump(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure the ports.
@@ -115,7 +113,6 @@ public class DataPump extends MACActorBase {
      */
     public TypedIOPort RXTXRequest;
 
-
     /** The input port for the channel status massage from the
      *  reception block.
      */
@@ -148,9 +145,9 @@ public class DataPump extends MACActorBase {
      */
     public TypedIOPort toBackoff;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -159,9 +156,8 @@ public class DataPump extends MACActorBase {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        DataPump newObject = (DataPump)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DataPump newObject = (DataPump) super.clone(workspace);
         return newObject;
     }
 
@@ -173,6 +169,7 @@ public class DataPump extends MACActorBase {
         super.fire();
 
         Director director = getDirector();
+
         if (TXTXRequest.hasToken(0)) {
             _inputMessage = (RecordToken) TXTXRequest.get(0);
             _source = FromProtocolTx;
@@ -184,27 +181,30 @@ public class DataPump extends MACActorBase {
         } else if (PHYLayerConfirm.hasToken(0)) {
             _inputMessage = (RecordToken) PHYLayerConfirm.get(0);
         }
+
         if (_inputMessage != null) {
-            _messageType = ((IntToken)
-                    _inputMessage.get("kind")).intValue();
+            _messageType = ((IntToken) _inputMessage.get("kind")).intValue();
+
             switch (_state) {
             case Tx_Idle:
+
                 //_getMsgType();
-                switch(_messageType) {
+                switch (_messageType) {
                 case TxRequest:
+
                     //Note: in OMNET++, the phy layer are strangely put
                     // in the channel module. The "channel" field are used
                     // for specifying a channel. We don't need it here. Yang
                     //channel = _inputMessage.get("channel").intValue();
-
-
-                    _pdu = (RecordToken)(_inputMessage.get("pdu"));
+                    _pdu = (RecordToken) (_inputMessage.get("pdu"));
                     _toBackoff(Busy);
-                    int length = ((IntToken)_pdu.get("Length")).intValue();
-                    int rate = ((IntToken)_inputMessage.get("rate")).intValue();
-                    Token[] value = {new IntToken(TxStart),
-                                     new IntToken(length),
-                                     new IntToken(rate)};
+
+                    int length = ((IntToken) _pdu.get("Length")).intValue();
+                    int rate = ((IntToken) _inputMessage.get("rate")).intValue();
+                    Token[] value = {
+                            new IntToken(TxStart), new IntToken(length),
+                            new IntToken(rate)
+                        };
                     toPHYLayer.send(0, new RecordToken(TxStartMsgFields, value));
                     _state = Wait_TxStart;
 
@@ -216,30 +216,39 @@ public class DataPump extends MACActorBase {
                     _toBackoff(_messageType);
                     break;
                 }
+
                 break;
 
             case Wait_TxStart:
+
                 if (_messageType == TxStartConfirm) {
-                    Token[] values = {new IntToken(TxData), _pdu};
+                    Token[] values = { new IntToken(TxData), _pdu };
                     RecordToken newPdu = new RecordToken(TxDataMsgFields, values);
                     toPHYLayer.send(0, newPdu);
                     _state = Wait_TxEnd;
-
                 }
+
                 break;
 
             case Wait_TxEnd:
+
                 if (_messageType == TxEnd) {
-                    Token[] value = {new IntToken(TxConfirm)};
-                    RecordToken confirm = new RecordToken(TxConfirmMsgFields, value);
-                    if (_source == FromProtocolTx)
+                    Token[] value = { new IntToken(TxConfirm) };
+                    RecordToken confirm = new RecordToken(TxConfirmMsgFields,
+                            value);
+
+                    if (_source == FromProtocolTx) {
                         TXTXConfirm.send(0, confirm);
-                    else
+                    } else {
                         RXTXConfirm.send(0, confirm);
+                    }
+
                     _state = Tx_Idle;
                 }
+
                 break;
             }
+
             _inputMessage = null;
             _messageType = UNKNOWN;
         }
@@ -253,6 +262,7 @@ public class DataPump extends MACActorBase {
         _state = 0;
         _source = 0;
         _inputMessage = null;
+
         //_message = null;
         _messageType = UNKNOWN;
         _pdu = null;
@@ -273,10 +283,9 @@ public class DataPump extends MACActorBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _toBackoff(int kind) throws IllegalActionException {
         // send idle/busy event to the backoff block
-        Token[] value = {new IntToken(kind)};
+        Token[] value = { new IntToken(kind) };
         RecordToken t = new RecordToken(CSMsgFields, value);
         toBackoff.send(0, t);
     }
@@ -298,19 +307,15 @@ public class DataPump extends MACActorBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     //Define the states of the inside FSM.
-    private static final int Tx_Idle    = 0;
+    private static final int Tx_Idle = 0;
     private static final int Wait_TxStart = 1;
     private static final int Wait_TxEnd = 2;
-
-
-    private int _state=0;
+    private int _state = 0;
     private int _source = 0;
     private static final int FromProtocolTx = 0;
     private static final int FromProtocolRx = 1;
     private RecordToken _pdu;
-
     private RecordToken _inputMessage;
     private int _messageType;
     private double _currentTime;
-
 }

@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import java.util.ArrayList;
@@ -35,8 +34,10 @@ import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SinkNodeStrategy
+
 /**
    Computation of sink nodes in a graph.
    The collection returned cannot be modified.
@@ -51,10 +52,7 @@ import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
    @author Ming Yung Ko, Shahrooz Shahparnia
    @version $Id$
 */
-
-public class SinkNodeStrategy extends CachedStrategy
-    implements SinkNodeAnalyzer {
-
+public class SinkNodeStrategy extends CachedStrategy implements SinkNodeAnalyzer {
     /** Construct a sink node analysis for a given graph.
      *  @param graph The given graph.
      */
@@ -70,7 +68,7 @@ public class SinkNodeStrategy extends CachedStrategy
      *  @return The sink nodes.
      */
     public List nodes() {
-        return (List)_result();
+        return (List) _result();
     }
 
     /** Return a description of sink nodes.
@@ -80,7 +78,7 @@ public class SinkNodeStrategy extends CachedStrategy
     public String toString() {
         String result = "Sink node analysis for the following graph.\n"
             + graph().toString();
-        result += "The sink nodes are:\n" + _result();
+        result += ("The sink nodes are:\n" + _result());
         return result;
     }
 
@@ -104,12 +102,15 @@ public class SinkNodeStrategy extends CachedStrategy
     protected Object _compute() {
         ArrayList sinkNodes = new ArrayList();
         Iterator nodes = graph().nodes().iterator();
+
         while (nodes.hasNext()) {
-            Node node = (Node)nodes.next();
-            if (((DirectedGraph)graph()).outputEdgeCount(node) == 0) {
+            Node node = (Node) nodes.next();
+
+            if (((DirectedGraph) graph()).outputEdgeCount(node) == 0) {
                 sinkNodes.add(node);
             }
         }
+
         return sinkNodes;
     }
 
@@ -118,6 +119,6 @@ public class SinkNodeStrategy extends CachedStrategy
      *  @return The analysis result in unmodifiable form.
      */
     protected Object _convertResult() {
-        return Collections.unmodifiableList((List)_result());
+        return Collections.unmodifiableList((List) _result());
     }
 }

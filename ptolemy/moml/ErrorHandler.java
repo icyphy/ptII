@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.moml;
 
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ErrorHandler
+
 /**
    Interface for error handlers for the MoMLParser class.
 
@@ -43,7 +44,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public interface ErrorHandler {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,10 +71,7 @@ public interface ErrorHandler {
      *  @return CONTINUE to skip this element, CANCEL to abort processing
      *   of the XML, or RETHROW to request that the exception be rethrown.
      */
-    public int handleError(
-            String element,
-            NamedObj context,
-            Throwable exception);
+    public int handleError(String element, NamedObj context, Throwable exception);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////

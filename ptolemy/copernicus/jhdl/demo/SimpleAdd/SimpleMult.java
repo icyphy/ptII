@@ -25,15 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.copernicus.jhdl.demo.SimpleAdd;
-
-import ptolemy.copernicus.jhdl.*;
-import ptolemy.copernicus.jhdl.util.IntIOPort;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.Token;
+import ptolemy.copernicus.jhdl.*;
+import ptolemy.copernicus.jhdl.util.IntIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.*;
@@ -41,8 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SimpleMult
+
 /** Add two integers.  This actor is a simple test for the JDHL/Ptolemy
     interface.
 
@@ -52,9 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxh)
 */
-
 public class SimpleMult extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -65,13 +62,12 @@ public class SimpleMult extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public SimpleMult(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input1 = new IntIOPort(this, "input1", true, false);
         input2 = new IntIOPort(this, "input2", true, false);
         output = new IntIOPort(this, "output", false, true);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,7 +95,6 @@ public class SimpleMult extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         //output.send(0,input1.get(0).add(input2.get(0)));
-
         int i1 = input1.getInt();
         int i2 = input2.getInt();
 
@@ -107,6 +102,4 @@ public class SimpleMult extends TypedAtomicActor {
 
         output.sendInt(o);
     }
-
-
 }

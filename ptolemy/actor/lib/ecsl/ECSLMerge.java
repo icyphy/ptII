@@ -25,23 +25,17 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.ecsl;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ECSLMerge
+
 /**
    Merge for use with ECSL.
 
@@ -51,9 +45,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class ECSLMerge extends Transformer {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -64,7 +56,7 @@ public class ECSLMerge extends Transformer {
      *   an actor already in the container.
      */
     public ECSLMerge(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);

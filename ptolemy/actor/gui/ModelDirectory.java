@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.util.Iterator;
@@ -38,8 +37,10 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ModelDirectory
+
 /**
    A directory of open models. An instance of this class is contained
    by a Configuration. Each open model is represented by an instance of
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.StringAttribute;
    @see Tableau
 */
 public class ModelDirectory extends CompositeEntity {
-
     /** Construct a model directory with the specified container and name.
      *  @param container The configuration that contains this directory.
      *  @param name The name of the directory.
@@ -71,7 +71,7 @@ public class ModelDirectory extends CompositeEntity {
      *   an entity already in the container.
      */
     public ModelDirectory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -86,15 +86,21 @@ public class ModelDirectory extends CompositeEntity {
      */
     public Effigy getEffigy(String identifier) {
         Iterator entities = entityList(Effigy.class).iterator();
+
         while (entities.hasNext()) {
-            Effigy entity = (Effigy)entities.next();
-            StringAttribute id =
-                (StringAttribute)entity.getAttribute("identifier");
+            Effigy entity = (Effigy) entities.next();
+            StringAttribute id = (StringAttribute) entity.getAttribute(
+                    "identifier");
+
             if (id != null) {
                 String idString = id.getExpression();
-                if (idString.equals(identifier)) return entity;
+
+                if (idString.equals(identifier)) {
+                    return entity;
+                }
             }
         }
+
         return null;
     }
 
@@ -116,7 +122,9 @@ public class ModelDirectory extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
+
         List remainingEntities = entityList(Effigy.class);
+
         if (remainingEntities.size() == 0) {
             try {
                 setContainer(null);
@@ -127,14 +135,14 @@ public class ModelDirectory extends CompositeEntity {
             if (remainingEntities.size() == 1) {
                 // Check to see whether what remains is only the configuration.
                 Object remaining = remainingEntities.get(0);
+
                 if (remaining instanceof PtolemyEffigy) {
-                    if (((PtolemyEffigy)remaining).getModel()
-                            instanceof Configuration) {
+                    if (((PtolemyEffigy) remaining).getModel() instanceof Configuration) {
                         try {
                             setContainer(null);
                         } catch (KernelException ex) {
                             throw new InternalErrorException(
-                                    "Cannot remove directory!");
+                                "Cannot remove directory!");
                         }
                     }
                 }
@@ -145,26 +153,28 @@ public class ModelDirectory extends CompositeEntity {
             // no longer has a UI.  If this happens, then we want to remove
             // the directory, triggering the application to exit.
             boolean anyTableau = false;
+
             // Check to see if the remaining effigies have any tableaux.
             for (Iterator effigies = remainingEntities.iterator();
-                 effigies.hasNext() && !anyTableau;) {
-                Effigy effigy = (Effigy)effigies.next();
+                    effigies.hasNext() && !anyTableau;) {
+                Effigy effigy = (Effigy) effigies.next();
+
                 if (effigy.numberOfOpenTableaux() > 0) {
                     anyTableau = true;
                 }
             }
+
             // If we can't find any tableau for any of the effigies, then exi
             if (!anyTableau) {
                 try {
                     // This gets reentrant...  Ugh..
                     for (Iterator effigies = remainingEntities.iterator();
-                         effigies.hasNext();) {
-                        Effigy effigy = (Effigy)effigies.next();
+                            effigies.hasNext();) {
+                        Effigy effigy = (Effigy) effigies.next();
                         effigy.setContainer(null);
                     }
                 } catch (KernelException ex) {
-                    throw new InternalErrorException(
-                            "Cannot remove directory!");
+                    throw new InternalErrorException("Cannot remove directory!");
                 }
             }
         }

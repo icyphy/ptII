@@ -39,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.canvas.toolbox.BasicFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RectangularFigure2D
+
 /**
    A base class for actors that create figures based on rectangular
    bounding boxes, such as rectangles, rounded rectangles, and ellipses.
@@ -55,7 +57,6 @@ import diva.canvas.toolbox.BasicFigure;
    @Pt.AcceptedRating Red (chf)
 */
 public abstract class RectangularFigure2D extends GRShape2D {
-
     /** Construct an actor with the given container and name.
      *  Initialize the position and size of the figure.
      *  @param container The container.
@@ -66,7 +67,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
      *   actor with this name.
      */
     public RectangularFigure2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xPosition = new Parameter(this, "xPosition", new DoubleToken(0.0));
@@ -85,19 +86,15 @@ public abstract class RectangularFigure2D extends GRShape2D {
      * @param attribute The attribute which changed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-
-        if ((attribute == xPosition
-                    || attribute == yPosition
-                    || attribute == width
-                    || attribute == height)
-                && _viewScreen != null) {
+        throws IllegalActionException {
+        if (((attribute == xPosition) || (attribute == yPosition)
+                || (attribute == width) || (attribute == height))
+                && (_viewScreen != null)) {
             _updateFigure();
         }
 
         super.attributeChanged(attribute);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -105,7 +102,6 @@ public abstract class RectangularFigure2D extends GRShape2D {
     /** The initial x position (of type double) of the figure, before
      * additional transformations.  The default value is 0.0.
      */
-
     public Parameter xPosition;
 
     /** The initial y position (of type double) of the figure, before
@@ -125,7 +121,6 @@ public abstract class RectangularFigure2D extends GRShape2D {
      */
     public Parameter height;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -135,7 +130,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
      *  @exception IllegalActionException If a parameter is not valid.
      */
     protected abstract BasicFigure _createFigure()
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Return the offset in a single axis by which to move the rectangle
      *  so that the figure is centered at the cartesian origin.
@@ -146,10 +141,9 @@ public abstract class RectangularFigure2D extends GRShape2D {
      * an exception.
      */
     protected double _getCenterOffset(Parameter dimension)
-            throws IllegalActionException {
-        return ((DoubleToken)dimension.getToken()).doubleValue()/-2.0;
+        throws IllegalActionException {
+        return ((DoubleToken) dimension.getToken()).doubleValue() / -2.0;
     }
-
 
     /** Return the center point of the rectangle as a Point.Double.
      * @return The rectangle's center point as a Point.Double.
@@ -157,9 +151,8 @@ public abstract class RectangularFigure2D extends GRShape2D {
      * an exception.
      */
     protected Point.Double _getCenterPoint() throws IllegalActionException {
-        return new Point.Double(
-                ((DoubleToken)xPosition.getToken()).doubleValue(),
-                ((DoubleToken)yPosition.getToken()).doubleValue());
+        return new Point.Double(((DoubleToken) xPosition.getToken())
+            .doubleValue(), ((DoubleToken) yPosition.getToken()).doubleValue());
     }
 
     /** Calculate the lower left point of the rectangle as a Point.Double.
@@ -169,10 +162,10 @@ public abstract class RectangularFigure2D extends GRShape2D {
      */
     protected Point.Double _getCornerPoint() throws IllegalActionException {
         Point.Double center = _getCenterPoint();
-        return new Point.Double(center.getX() +
-                ((DoubleToken)width.getToken()).doubleValue()/2.0,
-                (center.getY() +
-                        ((DoubleToken)height.getToken()).doubleValue()/2.0));
+        return new Point.Double(center.getX()
+            + (((DoubleToken) width.getToken()).doubleValue() / 2.0),
+            (center.getY()
+            + (((DoubleToken) height.getToken()).doubleValue() / 2.0)));
     }
 
     /** Update the figure's position and size when the user changes

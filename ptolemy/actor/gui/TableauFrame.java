@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Image;
@@ -59,8 +58,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TableauFrame
+
 /**
    This is a top-level window associated with a tableau that has
    a menubar and status bar. Derived classes should add components
@@ -86,7 +87,6 @@ import ptolemy.util.MessageHandler;
    @Pt.AcceptedRating Yellow (celaine)
 */
 public class TableauFrame extends Top {
-
     /** Construct an empty top-level frame.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -128,12 +128,15 @@ public class TableauFrame extends Top {
      */
     public Configuration getConfiguration() {
         NamedObj tableau = getTableau();
+
         if (tableau != null) {
             NamedObj toplevel = tableau.toplevel();
+
             if (toplevel instanceof Configuration) {
                 return (Configuration) toplevel;
             }
         }
+
         return null;
     }
 
@@ -142,6 +145,7 @@ public class TableauFrame extends Top {
      */
     public ModelDirectory getDirectory() {
         Configuration configuration = getConfiguration();
+
         if (configuration != null) {
             return configuration.getDirectory();
         } else {
@@ -156,6 +160,7 @@ public class TableauFrame extends Top {
         if (_tableau != null) {
             return (Effigy) _tableau.getContainer();
         }
+
         return null;
     }
 
@@ -168,6 +173,7 @@ public class TableauFrame extends Top {
      */
     public PtolemyEffigy getEffigy(NamedObj model) {
         Configuration configuration = getConfiguration();
+
         if (configuration != null) {
             return configuration.getEffigy(model);
         } else {
@@ -190,6 +196,7 @@ public class TableauFrame extends Top {
      */
     public boolean isModified() {
         Effigy effigy = getEffigy();
+
         if (effigy != null) {
             return effigy.isModified();
         } else {
@@ -206,6 +213,7 @@ public class TableauFrame extends Top {
      */
     public void setModified(boolean modified) {
         Effigy effigy = getEffigy();
+
         if (effigy != null) {
             effigy.setModified(modified);
         } else {
@@ -245,15 +253,14 @@ public class TableauFrame extends Top {
         // NOTE: We take some care here to ensure that this window is
         // only opened once.
         ModelDirectory directory = getDirectory();
-        if (directory != null) {
 
+        if (directory != null) {
             try {
                 Configuration configuration = getConfiguration();
-                FileParameter aboutAttribute =
-                    (FileParameter) configuration.getAttribute(
-                            "_about",
-                            FileParameter.class);
+                FileParameter aboutAttribute = (FileParameter) configuration
+                    .getAttribute("_about", FileParameter.class);
                 URL doc;
+
                 if (aboutAttribute != null) {
                     doc = aboutAttribute.asURL();
                 } else {
@@ -264,32 +271,36 @@ public class TableauFrame extends Top {
                 // configuration.openModel(null, doc, doc.toExternalForm());
                 // However, in this case, we want a smaller size, so we do
                 // something custom.
-
                 // Check to see whether the model is already open.
                 Effigy effigy = directory.getEffigy(doc.toExternalForm());
+
                 if (effigy == null) {
                     // No main welcome window.  Create one.
-                    EffigyFactory effigyFactory =
-                        new HTMLEffigyFactory(directory.workspace());
-                    effigy =
-                        effigyFactory.createEffigy(directory, (URL) null, doc);
+                    EffigyFactory effigyFactory = new HTMLEffigyFactory(directory
+                            .workspace());
+                    effigy = effigyFactory.createEffigy(directory, (URL) null,
+                            doc);
 
                     effigy.identifier.setExpression(doc.toExternalForm());
                     effigy.uri.setURL(doc);
+
                     // If this fails, we do not want the effigy
                     // in the directory.
                     try {
                         // Create a tableau if there is a tableau factory.
-                        TableauFactory factory =
-                            (TableauFactory) getConfiguration().getAttribute(
-                                    "tableauFactory");
+                        TableauFactory factory = (TableauFactory) getConfiguration()
+                                                                      .getAttribute("tableauFactory");
+
                         if (factory != null) {
                             Tableau tableau = factory.createTableau(effigy);
+
                             if (tableau == null) {
                                 throw new Exception("Can't create Tableau.");
                             }
+
                             // The first tableau is a master.
                             tableau.setMaster(true);
+
                             // NOTE: This size is the same as what's in
                             // the welcome window XML files in configs.
                             tableau.size.setExpression("[650, 350]");
@@ -308,6 +319,7 @@ public class TableauFrame extends Top {
             } catch (Exception ex) {
             }
         }
+
         // Don't report any errors.  Just use the default.
         super._about();
     }
@@ -317,39 +329,47 @@ public class TableauFrame extends Top {
      */
     protected void _addMenus() {
         super._addMenus();
+
         if (_tableau != null) {
             // Start with the File:New menu.
             // Check to see if we have an effigy factory, and whether it
             // is capable of creating blank effigies.
             final Configuration configuration = getConfiguration();
-            EffigyFactory effigyFactory =
-                (EffigyFactory) configuration.getEntity("effigyFactory");
+            EffigyFactory effigyFactory = (EffigyFactory) configuration
+                .getEntity("effigyFactory");
             boolean canCreateBlank = false;
             final ModelDirectory directory = getDirectory();
-            if (effigyFactory != null && directory != null) {
-                List factoryList =
-                    effigyFactory.entityList(EffigyFactory.class);
+
+            if ((effigyFactory != null) && (directory != null)) {
+                List factoryList = effigyFactory.entityList(EffigyFactory.class);
                 Iterator factories = factoryList.iterator();
+
                 while (factories.hasNext()) {
-                    final EffigyFactory factory =
-                        (EffigyFactory) factories.next();
-                    if (!factory.canCreateBlankEffigy())
+                    final EffigyFactory factory = (EffigyFactory) factories
+                        .next();
+
+                    if (!factory.canCreateBlankEffigy()) {
                         continue;
+                    }
+
                     canCreateBlank = true;
+
                     String name = factory.getName();
                     ActionListener menuListener = new ActionListener() {
                             public void actionPerformed(ActionEvent event) {
                                 Effigy effigy = null;
+
                                 try {
                                     effigy = factory.createEffigy(directory);
                                 } catch (Exception ex) {
-                                    MessageHandler.error(
-                                            "Could not create new effigy",
-                                            ex);
+                                    MessageHandler.error("Could not create new effigy",
+                                        ex);
                                 }
+
                                 configuration.createPrimaryTableau(effigy);
                             }
                         };
+
                     JMenuItem item = new JMenuItem(name);
                     item.setActionCommand(name);
                     item.setMnemonic(name.charAt(0));
@@ -357,6 +377,7 @@ public class TableauFrame extends Top {
                     ((JMenu) _fileMenuItems[2]).add(item);
                 }
             }
+
             if (canCreateBlank) {
                 // Enable the "New" item in the File menu.
                 _fileMenuItems[2].setEnabled(true);
@@ -364,8 +385,10 @@ public class TableauFrame extends Top {
 
             // Next do the View menu.
             Effigy tableauContainer = (Effigy) _tableau.getContainer();
+
             if (tableauContainer != null) {
                 _factoryContainer = tableauContainer.getTableauFactory();
+
                 if (_factoryContainer != null) {
                     // If setTableau() has been called on the effigy,
                     // then there are multiple possible views of data
@@ -374,16 +397,17 @@ public class TableauFrame extends Top {
                     _viewMenu = new JMenu("View");
                     _viewMenu.setMnemonic(KeyEvent.VK_V);
                     _menubar.add(_viewMenu);
+
                     ViewMenuListener viewMenuListener = new ViewMenuListener();
-                    Iterator factories =
-                        _factoryContainer
-                        .attributeList(TableauFactory.class)
-                        .iterator();
+                    Iterator factories = _factoryContainer.attributeList(TableauFactory.class)
+                                                          .iterator();
+
                     while (factories.hasNext()) {
-                        TableauFactory factory =
-                            (TableauFactory) factories.next();
+                        TableauFactory factory = (TableauFactory) factories
+                            .next();
                         String name = factory.getName();
                         JMenuItem item = new JMenuItem(name);
+
                         // The "action command" is available to the listener.
                         item.setActionCommand(name);
                         item.setMnemonic(name.charAt(0));
@@ -410,6 +434,7 @@ public class TableauFrame extends Top {
         }
 
         Effigy masterEffigy = getEffigy().masterEffigy();
+
         // If the top-level effigy has any open tableau that
         // is not this one, and this one is not a master,
         // then simply close.  No need to prompt
@@ -417,9 +442,12 @@ public class TableauFrame extends Top {
         if (!_tableau.isMaster()) {
             List tableaux = masterEffigy.entityList(Tableau.class);
             Iterator tableauxIterator = tableaux.iterator();
+
             while (tableauxIterator.hasNext()) {
                 Tableau tableau = (Tableau) tableauxIterator.next();
-                if (!(tableau instanceof DialogTableau) && (tableau != _tableau)) {
+
+                if (!(tableau instanceof DialogTableau)
+                        && (tableau != _tableau)) {
                     // NOTE: We use dispose() here rather than just hiding the
                     // window.  This ensures that derived classes can react to
                     // windowClosed events rather than overriding the
@@ -429,8 +457,8 @@ public class TableauFrame extends Top {
                 }
             }
         }
-        // If we get here, there was no other tableau.
 
+        // If we get here, there was no other tableau.
         // NOTE: Do not use the superclass method so we can
         // check for children of the model.
         // NOTE: We use dispose() here rather than just hiding the
@@ -439,7 +467,8 @@ public class TableauFrame extends Top {
         // windowClosing behavior given here.
         if (isModified()) {
             int reply = _queryForSave();
-            if (reply == _DISCARDED || reply == _FAILED) {
+
+            if ((reply == _DISCARDED) || (reply == _FAILED)) {
                 // If the model has children, then
                 // issue a warning that those children will
                 // persist.  Give the user the chance to cancel.
@@ -447,11 +476,13 @@ public class TableauFrame extends Top {
                     return false;
                 }
             }
+
             if (reply == _SAVED) {
                 dispose();
                 return true;
             } else if (reply == _DISCARDED) {
                 dispose();
+
                 // If the changes were discarded, then we want
                 // to mark the model unmodified, so we don't get
                 // asked again if somehow the model is re-opened.
@@ -461,12 +492,14 @@ public class TableauFrame extends Top {
                 // chosen to not save the changes, so the next time
                 // this is opened, it should be read again from the file.
                 try {
-                                        MoMLParser.purgeModelRecord(masterEffigy.uri.getURL());
-                                } catch (MalformedURLException e) {
-                                        // Ignore... Hopefully will be harmless.
-                                }
-                    return true;
+                    MoMLParser.purgeModelRecord(masterEffigy.uri.getURL());
+                } catch (MalformedURLException e) {
+                    // Ignore... Hopefully will be harmless.
+                }
+
+                return true;
             }
+
             return false;
         } else {
             // Window is not modified, so just dispose.
@@ -489,17 +522,17 @@ public class TableauFrame extends Top {
      *  @return True if it is OK to write the model to the file.
      */
     protected boolean _confirmFile(Entity model, File file)
-            throws MalformedURLException {
+        throws MalformedURLException {
         URL newURL = file.toURL();
         String newKey = newURL.toExternalForm();
         Effigy previousOpen = getDirectory().getEffigy(newKey);
+
         // If there is a previous open, and it's not the same,
         // then we need to close the previous.
         // If we do save as to the same file, then we will get
         // the current effigy, and we don't want to close it.
-        if (previousOpen != null && previousOpen != getEffigy()) {
+        if ((previousOpen != null) && (previousOpen != getEffigy())) {
             // The destination file is already open.
-
             // NOTE: If the model being saved is a submodel of the
             // model associated with previousOpen, then we will close
             // it before we save it, which will result in an error
@@ -509,11 +542,13 @@ public class TableauFrame extends Top {
             // is specified, then check it. Otherwise check the
             // effigies.
             boolean containmentError = false;
+
             if (model != null) {
                 if (previousOpen instanceof PtolemyEffigy) {
-                    NamedObj possibleContainer
-                            = ((PtolemyEffigy)previousOpen).getModel();
-                    if (possibleContainer != null
+                    NamedObj possibleContainer = ((PtolemyEffigy) previousOpen)
+                        .getModel();
+
+                    if ((possibleContainer != null)
                             && possibleContainer.deepContains(model)) {
                         containmentError = true;
                     }
@@ -523,10 +558,10 @@ public class TableauFrame extends Top {
                     containmentError = true;
                 }
             }
+
             if (containmentError) {
-                MessageHandler.error(
-                        "Cannot replace a model with a submodel." +
-                        " Please choose a different file name.");
+                MessageHandler.error("Cannot replace a model with a submodel."
+                    + " Please choose a different file name.");
                 return false;
             }
 
@@ -534,21 +569,15 @@ public class TableauFrame extends Top {
                 // Bring any visible tableaux to the foreground,
                 // then ask if it's OK to discard the changes?
                 previousOpen.showTableaux();
-                String confirm =
-                    "Unsaved changes in "
-                    + file.getName()
+
+                String confirm = "Unsaved changes in " + file.getName()
                     + ". OK to discard changes?";
+
                 // Show a MODAL dialog
-                int selected =
-                    JOptionPane.showOptionDialog(
-                            this,
-                            confirm,
-                            "Discard changes?",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            null,
-                            null);
+                int selected = JOptionPane.showOptionDialog(this, confirm,
+                        "Discard changes?", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, null, null);
+
                 if (selected == 1) {
                     return false;
                 }
@@ -564,28 +593,24 @@ public class TableauFrame extends Top {
                 // query when it is closed.
                 previousOpen.setModified(false);
             }
+
             previousOpen.closeTableaux();
         }
 
         if (file.exists()) {
             // Ask for confirmation before overwriting a file.
             String query = "Overwrite " + file.getName() + "?";
+
             // Show a MODAL dialog
-            int selected =
-                JOptionPane.showOptionDialog(
-                        this,
-                        query,
-                        "Overwrite file?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        null,
-                        null);
+            int selected = JOptionPane.showOptionDialog(this, query,
+                    "Overwrite file?", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
 
             if (selected == 1) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -596,34 +621,46 @@ public class TableauFrame extends Top {
      */
     protected void _exit() {
         ModelDirectory directory = getDirectory();
-        if (directory == null)
+
+        if (directory == null) {
             return;
+        }
+
         Iterator effigies = directory.entityList(Effigy.class).iterator();
+
         while (effigies.hasNext()) {
             Effigy effigy = (Effigy) effigies.next();
-            if (!effigy.closeTableaux())
+
+            if (!effigy.closeTableaux()) {
                 return;
+            }
+
             try {
                 effigy.setContainer(null);
             } catch (Exception ex) {
                 throw new InternalErrorException(
-                        "Unable to set effigy container to null! " + ex);
+                    "Unable to set effigy container to null! " + ex);
             }
         }
+
         // Some of the effigies closed may have triggered other
         // effigies being opened (if they were unnamed, and a saveAs()
         // was triggered).  So we need to close those now.
         // This is just a repeat of the above.
         effigies = directory.entityList(Effigy.class).iterator();
+
         while (effigies.hasNext()) {
             Effigy effigy = (Effigy) effigies.next();
-            if (!effigy.closeTableaux())
+
+            if (!effigy.closeTableaux()) {
                 return;
+            }
+
             try {
                 effigy.setContainer(null);
             } catch (Exception ex) {
                 throw new InternalErrorException(
-                        "Unable to set effigy container to null! " + ex);
+                    "Unable to set effigy container to null! " + ex);
             }
         }
     }
@@ -638,15 +675,16 @@ public class TableauFrame extends Top {
             // Note that PtolemyIISmallIcon.gif is also in doc/img.
             // We place a duplicate copy here to make it easy to ship
             // jar files that contain all the appropriate images.
-            URL url =
-                getClass().getResource(
-                        "/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
+            URL url = getClass().getResource("/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
+
             if (url == null) {
                 return null;
             }
+
             Toolkit tk = Toolkit.getDefaultToolkit();
             _defaultIconImage = tk.createImage(url);
         }
+
         return _defaultIconImage;
     }
 
@@ -658,12 +696,15 @@ public class TableauFrame extends Top {
      */
     protected String _getName() {
         Effigy effigy = getEffigy();
+
         if (effigy != null) {
             URI uri = effigy.uri.getURI();
+
             if (uri != null) {
                 return uri.toString();
             }
         }
+
         return "Unnamed";
     }
 
@@ -678,16 +719,16 @@ public class TableauFrame extends Top {
     protected void _help() {
         try {
             Configuration configuration = getConfiguration();
-            FileParameter helpAttribute =
-                (FileParameter) configuration.getAttribute(
-                        "_help",
-                        FileParameter.class);
+            FileParameter helpAttribute = (FileParameter) configuration
+                .getAttribute("_help", FileParameter.class);
             URL doc;
+
             if (helpAttribute != null) {
                 doc = helpAttribute.asURL();
             } else {
                 doc = getClass().getClassLoader().getResource(helpFile);
             }
+
             configuration.openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {
             _about();
@@ -703,22 +744,22 @@ public class TableauFrame extends Top {
      */
     protected void _read(URL url) throws Exception {
         if (_tableau == null) {
-            throw new Exception(
-                    "No associated Tableau!" + " Can't open a file.");
+            throw new Exception("No associated Tableau!"
+                + " Can't open a file.");
         }
+
         // NOTE: Used to use for the first argument the following, but
         // it seems to not work for relative file references:
         // new URL("file", null, _directory.getAbsolutePath()
         Nameable configuration = _tableau.toplevel();
+
         if (configuration instanceof Configuration) {
-            ((Configuration) configuration).openModel(
-                    url,
-                    url,
-                    url.toExternalForm());
+            ((Configuration) configuration).openModel(url, url,
+                url.toExternalForm());
         } else {
             throw new InternalErrorException(
-                    "Expected top-level to be a Configuration: "
-                    + _tableau.toplevel().getFullName());
+                "Expected top-level to be a Configuration: "
+                + _tableau.toplevel().getFullName());
         }
     }
 
@@ -731,11 +772,14 @@ public class TableauFrame extends Top {
      */
     protected boolean _save() {
         if (_tableau == null) {
-            throw new InternalErrorException("No associated Tableau! Can't save.");
+            throw new InternalErrorException(
+                "No associated Tableau! Can't save.");
         }
+
         Effigy effigy = getEffigy();
         File file = effigy.getWritableFile();
-        if ((effigy != null && !effigy.isModifiable()) || file == null) {
+
+        if (((effigy != null) && !effigy.isModifiable()) || (file == null)) {
             return _saveAs();
         } else {
             try {
@@ -757,17 +801,17 @@ public class TableauFrame extends Top {
      */
     protected boolean _saveAs() {
         if (_tableau == null) {
-            throw new InternalErrorException("No associated Tableau! Can't save.");
+            throw new InternalErrorException(
+                "No associated Tableau! Can't save.");
         }
+
         // Use the strategy pattern here to create the actual
         // dialog so that subclasses can customize this dialog.
         JFileChooser fileDialog = _saveAsFileDialog();
 
         if (_initialSaveAsFileName != null) {
-            fileDialog.setSelectedFile(
-                    new File(
-                            fileDialog.getCurrentDirectory(),
-                            _initialSaveAsFileName));
+            fileDialog.setSelectedFile(new File(
+                    fileDialog.getCurrentDirectory(), _initialSaveAsFileName));
         }
 
         // Show the dialog.
@@ -780,34 +824,40 @@ public class TableauFrame extends Top {
                 if (!_confirmFile(null, file)) {
                     return false;
                 }
+
                 URL newURL = file.toURL();
                 String newKey = newURL.toExternalForm();
 
                 _directory = fileDialog.getCurrentDirectory();
                 _writeFile(file);
+
                 // The original file will still be open, and has not
                 // been saved, so we do not change its modified status.
                 // setModified(false);
-
                 // Open a new window on the model.
                 getConfiguration().openModel(newURL, newURL, newKey);
+
                 // If the tableau was unnamed before, then we need
                 // to close this window after doing the save.
                 Effigy effigy = getEffigy();
+
                 if (effigy != null) {
                     String id = effigy.identifier.getExpression();
+
                     if (id.equals("Unnamed")) {
                         // This will have the effect of closing all the
                         // tableaux associated with the unnamed model.
                         effigy.setContainer(null);
                     }
                 }
+
                 return true;
             } catch (Exception ex) {
                 report("Error in save as.", ex);
                 return false;
             }
         }
+
         // FIXME: Is this right? Presumably the user hit cancel...
         return true;
     }
@@ -820,8 +870,10 @@ public class TableauFrame extends Top {
      */
     protected void _writeFile(File file) throws IOException {
         Tableau tableau = getTableau();
+
         if (tableau != null) {
             Effigy effigy = (Effigy) tableau.getContainer();
+
             if (effigy != null) {
                 // Ensure that if we do ever try to call this method,
                 // that it is the top effigy that is written.
@@ -829,6 +881,7 @@ public class TableauFrame extends Top {
                 return;
             }
         }
+
         throw new IOException("Cannot find an effigy to delegate writing.");
     }
 
@@ -855,14 +908,17 @@ public class TableauFrame extends Top {
      */
     private boolean _checkForDerivedObjects() {
         Effigy effigy = getEffigy();
+
         if (effigy instanceof PtolemyEffigy) {
-            NamedObj model = ((PtolemyEffigy)effigy).getModel();
+            NamedObj model = ((PtolemyEffigy) effigy).getModel();
+
             if (model instanceof Instantiable) {
                 // NOTE: We are assuming that only the top-level
                 // can defer outside the model. This is currently
                 // true. Will it always be true?
-                List children = ((Instantiable)model).getChildren();
-                if (children != null && children.size() > 0) {
+                List children = ((Instantiable) model).getChildren();
+
+                if ((children != null) && (children.size() > 0)) {
                     StringBuffer confirm = new StringBuffer(
                             "Warning: This model defines a class, "
                             + "and there are open models with instances\n"
@@ -870,44 +926,45 @@ public class TableauFrame extends Top {
                             + "this model:\n");
                     Iterator instances = children.iterator();
                     int length = confirm.length();
+
                     while (instances.hasNext()) {
-                        WeakReference reference =
-                            (WeakReference)instances.next();
-                        Instantiable instance = (Instantiable)reference.get();
+                        WeakReference reference = (WeakReference) instances
+                            .next();
+                        Instantiable instance = (Instantiable) reference.get();
+
                         if (instance != null) {
                             confirm.append(instance.getFullName());
                             confirm.append(";");
+
                             int newLength = confirm.length();
-                            if (newLength - length > 50) {
+
+                            if ((newLength - length) > 50) {
                                 confirm.append("\n");
                                 length = confirm.length();
                             }
                         }
                     }
+
                     confirm.append("\nContinue?");
+
                     // Show a MODAL dialog
-                    int selected =
-                        JOptionPane.showOptionDialog(
-                                this,
-                                confirm,
-                                "Warning: Instances or Subclasses",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                null,
-                                null);
+                    int selected = JOptionPane.showOptionDialog(this, confirm,
+                            "Warning: Instances or Subclasses",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, null, null, null);
+
                     if (selected == 1) {
                         return false;
                     }
                 }
             }
         }
+
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The container of view factories, if one has been found.
     private TableauFactory _factoryContainer = null;
 
@@ -924,7 +981,6 @@ public class TableauFrame extends Top {
      *  pre-specified list of extensions.
      */
     class ExtensionFileFilter extends FileFilter {
-
         /** Construct a file filter that filters out all files that do
          *  not have one of the extensions in the given list.
          *  @param extensionList A list of extensions, each of which is
@@ -950,20 +1006,25 @@ public class TableauFrame extends Top {
 
             String fileOrDirectoryName = fileOrDirectory.getName();
             int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+
             if (dotIndex == -1) {
                 return false;
             }
+
             String extension = fileOrDirectoryName.substring(dotIndex + 1);
 
             if (extension != null) {
                 Iterator extensions = _extensions.iterator();
+
                 while (extensions.hasNext()) {
                     String matchExtension = (String) extensions.next();
+
                     if (extension.equalsIgnoreCase(matchExtension)) {
                         return true;
                     }
                 }
             }
+
             return false;
         }
 
@@ -973,24 +1034,27 @@ public class TableauFrame extends Top {
             Iterator extensions = _extensions.iterator();
             int extensionNumber = 1;
             int size = _extensions.size();
+
             while (extensions.hasNext()) {
                 String extension = (String) extensions.next();
                 result.append(".");
                 result.append(extension);
-                if (extensionNumber < size - 1) {
+
+                if (extensionNumber < (size - 1)) {
                     result.append(", ");
                 } else if (extensionNumber < size) {
                     result.append(" and ");
                 }
+
                 extensionNumber++;
             }
+
             result.append(" files");
             return result.toString();
         }
 
         ///////////////////////////////////////////////////////////////
         ////                     private variables                 ////
-
         // The list of acceptable file extensions.
         private List _extensions;
     }
@@ -1004,14 +1068,14 @@ public class TableauFrame extends Top {
             if (_factoryContainer != null) {
                 JMenuItem target = (JMenuItem) e.getSource();
                 String actionCommand = target.getActionCommand();
-                TableauFactory factory =
-                    (TableauFactory) _factoryContainer.getAttribute(
-                            actionCommand);
+                TableauFactory factory = (TableauFactory) _factoryContainer
+                    .getAttribute(actionCommand);
+
                 if (factory != null) {
                     Effigy tableauContainer = (Effigy) _tableau.getContainer();
+
                     try {
-                        Tableau tableau =
-                            factory.createTableau(tableauContainer);
+                        Tableau tableau = factory.createTableau(tableauContainer);
                         tableau.show();
                     } catch (Throwable throwable) {
                         // Copernicus might throw a java.lang.Error if
@@ -1020,6 +1084,7 @@ public class TableauFrame extends Top {
                     }
                 }
             }
+
             // NOTE: The following should not be needed, but jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.io.PrintStream;
@@ -34,8 +33,10 @@ import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// KernelException
+
 /**
    Base class for Ptolemy exceptions.  This class extends the basic
    JavaException with a constructor that can take a Nameable as
@@ -66,7 +67,6 @@ import java.util.Iterator;
    @Pt.AcceptedRating Green (cxh)
 */
 public class KernelException extends Exception {
-
     /** Construct an exception with a no specific detail message. */
     public KernelException() {
         this(null, null, null, null);
@@ -81,8 +81,7 @@ public class KernelException extends Exception {
      *  @param object2 The second object.
      *  @param detail The message.
      */
-    public KernelException(Nameable object1, Nameable object2,
-            String detail) {
+    public KernelException(Nameable object1, Nameable object2, String detail) {
         this(object1, object2, null, detail);
     }
 
@@ -100,8 +99,8 @@ public class KernelException extends Exception {
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
-    public KernelException(Nameable object1, Nameable object2,
-            Throwable cause, String detail) {
+    public KernelException(Nameable object1, Nameable object2, Throwable cause,
+        String detail) {
         _setMessage(generateMessage(object1, object2, cause, detail));
         _setCause(cause);
     }
@@ -131,7 +130,7 @@ public class KernelException extends Exception {
      *  @return A properly formatted message
      */
     public static String generateMessage(Nameable object1, Nameable object2,
-            Throwable cause, String detail) {
+        Throwable cause, String detail) {
         String object1String = getFullName(object1);
         String object2String = getFullName(object2);
         String whereString = null;
@@ -141,11 +140,9 @@ public class KernelException extends Exception {
         // argument was the empty string, so if the return value of
         // getFullName() is the empty string, then the argument was
         // null, so we adjust accordingly.
-
         if (!object1String.equals("")) {
             if (!object2String.equals("")) {
-                whereString = "  in "
-                    + object1String + " and " + object2String;
+                whereString = "  in " + object1String + " and " + object2String;
             } else {
                 whereString = "  in " + object1String;
             }
@@ -154,6 +151,7 @@ public class KernelException extends Exception {
                 whereString = "  in " + object2String;
             }
         }
+
         return generateMessage(whereString, cause, detail);
     }
 
@@ -172,24 +170,27 @@ public class KernelException extends Exception {
      *  @param detail The detail message.
      *  @return A properly formatted message
      */
-    public static String generateMessage(Collection objects,
-            Throwable cause, String detail) {
+    public static String generateMessage(Collection objects, Throwable cause,
+        String detail) {
         StringBuffer prefixBuffer = new StringBuffer("  in ");
         Iterator objectIterator = objects.iterator();
+
         while (objectIterator.hasNext()) {
             Object object = objectIterator.next();
+
             if (object instanceof Nameable) {
-                prefixBuffer.append(
-                        KernelException.getFullName((Nameable)object));
+                prefixBuffer.append(KernelException.getFullName(
+                        (Nameable) object));
             } else {
-                prefixBuffer.append(
-                        "<Object of class " + object.getClass().getName()
-                        + ">");
+                prefixBuffer.append("<Object of class "
+                    + object.getClass().getName() + ">");
             }
+
             if (objectIterator.hasNext()) {
                 prefixBuffer.append(", ");
             }
         }
+
         return generateMessage(prefixBuffer.toString(), cause, detail);
     }
 
@@ -212,40 +213,31 @@ public class KernelException extends Exception {
      *  @param detail The message.
      *  @return A properly formatted message
      */
-    public static String generateMessage(String whereString,
-            Throwable cause, String detail) {
+    public static String generateMessage(String whereString, Throwable cause,
+        String detail) {
         // We need this method to support the constructors
         // in InvalidStateException that take Enumerations and Lists.
-
         // Using 'boolean ? if true : if false' is usually frowned
         // upon, but in this case, the alternatives are a very large
         // and complex if/else tree or else the creation of a bunch
         // of temporary strings with a smaller if/else tree.
-        boolean whereNullOrEmpty
-            = (whereString == null || whereString.equals(""));
-        boolean detailNullOrEmpty
-            = (detail == null || detail.equals(""));
-        return
-            // Do we print the detail?
-            (detailNullOrEmpty ?
-                    "" : detail)
-
-            // Do we add a \n?
-            + (!whereNullOrEmpty && !detailNullOrEmpty ?
-                    "\n" : "")
-
-            // Do we print the whereString?
-            + (whereNullOrEmpty ?
-                    "" : whereString)
-
-            // Do we add a \n?
-            + ((!whereNullOrEmpty || !detailNullOrEmpty) && cause != null ?
-                    "\n" : "")
-
-            // Do we print the cause?
-            + ((cause == null) ?
-                    "" : ("Because:\n" + (cause.getMessage() != null ?
-                                  cause.getMessage() : cause.toString())));
+        boolean whereNullOrEmpty = ((whereString == null)
+            || whereString.equals(""));
+        boolean detailNullOrEmpty = ((detail == null) || detail.equals(""));
+        return 
+        // Do we print the detail?
+        (detailNullOrEmpty ? "" : detail)
+        // Do we add a \n?
+        + ((!whereNullOrEmpty && !detailNullOrEmpty) ? "\n" : "")
+        // Do we print the whereString?
+        + (whereNullOrEmpty ? "" : whereString)
+        // Do we add a \n?
+        + (((!whereNullOrEmpty || !detailNullOrEmpty) && (cause != null))
+        ? "\n" : "")
+        // Do we print the cause?
+        + ((cause == null) ? ""
+                           : ("Because:\n"
+        + ((cause.getMessage() != null) ? cause.getMessage() : cause.toString())));
     }
 
     /** Get the cause of this exception.
@@ -280,6 +272,7 @@ public class KernelException extends Exception {
             return "";
         } else {
             String name = getName(object);
+
             // First, check for recursive containment by calling getFullName().
             try {
                 object.getFullName();
@@ -288,15 +281,19 @@ public class KernelException extends Exception {
                 // name of the immediate object.
                 return name;
             }
+
             // Without recursive containment, we can elaborate the name.
             Nameable container = object.getContainer();
+
             if (container == null) {
                 return "." + name;
             }
+
             while (container != null) {
                 name = getName(container) + "." + name;
                 container = container.getContainer();
             }
+
             name = "." + name;
             return name;
         }
@@ -326,7 +323,8 @@ public class KernelException extends Exception {
         } else {
             String name;
             name = object.getName();
-            if (name == null || name.equals("")) {
+
+            if ((name == null) || name.equals("")) {
                 // If NamedObj.setName() throws an exception, then the
                 // nameable object might be non-null, but the name might
                 // not yet have been set and getName() might return null.
@@ -335,6 +333,7 @@ public class KernelException extends Exception {
                 // will trigger this sort of error.
                 return "<Unnamed Object>";
             }
+
             return name;
         }
     }
@@ -372,10 +371,12 @@ public class KernelException extends Exception {
      */
     public void printStackTrace(PrintWriter printWriter) {
         super.printStackTrace(printWriter);
+
         if (_cause != null) {
             printWriter.print("Caused by: ");
             _cause.printStackTrace(printWriter);
         }
+
         printWriter.flush();
     }
 
@@ -432,7 +433,6 @@ public class KernelException extends Exception {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The detail message
     private String _message;
 

@@ -29,6 +29,7 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+
 /**
  * An improved version of a popup menu that works well for context menus.
  *
@@ -62,7 +63,7 @@ public class JContextMenu extends JPopupMenu {
      * action's name and is enabled by default.
      */
     public JMenuItem add(Action action, String tooltip) {
-        String label = (String)action.getValue(Action.NAME);
+        String label = (String) action.getValue(Action.NAME);
         return add(action, tooltip, label, true);
     }
 
@@ -73,12 +74,14 @@ public class JContextMenu extends JPopupMenu {
      * "menuItem" property.  The menu item's text is set to be "label",
      * and is disabled or enabled according to "isEnabled."
      */
-    public JMenuItem add(Action action,
-            String tooltip, String label, boolean isEnabled) {
+    public JMenuItem add(Action action, String tooltip, String label,
+        boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
         }
+
         action.putValue("tooltip", tooltip);
+
         JMenuItem item = add(action);
         item.setText(label);
         item.setEnabled(isEnabled);
@@ -96,5 +99,3 @@ public class JContextMenu extends JPopupMenu {
 
     private Object _target;
 }
-
-

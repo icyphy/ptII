@@ -71,8 +71,10 @@ import quicktime.util.RawEncodedImage;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MovieViewScreen2D
+
 /**
    A sink actor that renders a two-dimensional scene into a display screen, and
    saves it as a movie using Apple's Quicktime for Java.
@@ -83,9 +85,8 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
    @Pt.ProposedRating Red (chf)
    @Pt.AcceptedRating Red (chf)
 */
-public class MovieViewScreen3D extends ViewScreen3D
-    implements StdQTConstants, Errors {
-
+public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
+    Errors {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -99,7 +100,7 @@ public class MovieViewScreen3D extends ViewScreen3D
      *   CompositeActor and the name collides with an entity in the container.
      */
     public MovieViewScreen3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileName = new FileParameter(this, "fileName");
@@ -108,9 +109,7 @@ public class MovieViewScreen3D extends ViewScreen3D
         frameRate = new Parameter(this, "frameRate");
         frameRate.setTypeEquals(BaseType.INT);
         frameRate.setExpression("30");
-
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     Ports and Parameters                  ////
@@ -136,30 +135,26 @@ public class MovieViewScreen3D extends ViewScreen3D
     public void fire() throws IllegalActionException {
         super.fire();
 
-        _frameNumber ++;
+        _frameNumber++;
+
         try {
             // Paint the frame.
             _imageDrawer.redraw(null);
 
             // Compress it.
             CompressedFrameInfo info = _videoSequence.compressFrame(_gw,
-                    _videoSize,
-                    codecFlagUpdatePrevious,
-                    _compressedFrame);
+                    _videoSize, codecFlagUpdatePrevious, _compressedFrame);
             boolean isKeyFrame = info.getSimilarity() == 0;
-            System.out.println("f#:" + _frameNumber + ",kf="
-                    + isKeyFrame + ",sim=" + info.getSimilarity());
+            System.out.println("f#:" + _frameNumber + ",kf=" + isKeyFrame
+                + ",sim=" + info.getSimilarity());
 
             ImageDescription desc = _videoSequence.getDescription();
 
             // Add it to the video stream.
-            _videoMedia.addSample(_imageHandle,
-                    0, // dataOffset,
-                    info.getDataSize(),
-                    600 / _frameRateValue, // frameDuration, in 1/600ths of a second.
-                    desc,
-                    1, // one sample
-                    (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
+            _videoMedia.addSample(_imageHandle, 0, // dataOffset,
+                info.getDataSize(), 600 / _frameRateValue, // frameDuration, in 1/600ths of a second.
+                desc, 1, // one sample
+                (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -174,12 +169,14 @@ public class MovieViewScreen3D extends ViewScreen3D
         _frameNumber = 0;
         _frameWidth = _getHorizontalPixels();
         _frameHeight = _getVerticalPixels();
+
         try {
             QTSession.open();
 
             Frame frame = new Frame("foo");
             QTCanvas canv = new QTCanvas(QTCanvas.kInitialSize, 0.5F, 0.5F);
             frame.add("Center", canv);
+
             Painter painter = new Painter();
             _imageDrawer = new QTImageDrawer(painter,
                     new Dimension(_frameWidth, _frameHeight),
@@ -190,8 +187,7 @@ public class MovieViewScreen3D extends ViewScreen3D
 
             frame.pack();
             _file = new QTFile(fileName.asFile());
-            _movie = Movie.createMovieFile(_file,
-                    kMoviePlayer,
+            _movie = Movie.createMovieFile(_file, kMoviePlayer,
                     createMovieFileDeleteCurFile
                     | createMovieFileDontCreateResFile);
 
@@ -199,38 +195,33 @@ public class MovieViewScreen3D extends ViewScreen3D
             // add content
             //
             System.out.println("Doing Video Track");
-            int kNoVolume        = 0;
+
+            int kNoVolume = 0;
             int kVidTimeScale = 600;
 
-            _videoTrack = _movie.addTrack(_frameWidth,
-                    _frameHeight, kNoVolume);
+            _videoTrack = _movie.addTrack(_frameWidth, _frameHeight, kNoVolume);
             _videoMedia = new VideoMedia(_videoTrack, kVidTimeScale);
 
             _videoMedia.beginEdits();
 
             _videoSize = new QDRect(_frameWidth, _frameHeight);
             _gw = new QDGraphics(_videoSize);
-            int size = QTImage.getMaxCompressionSize(_gw,
-                    _videoSize,
-                    _gw.getPixMap().getPixelSize(),
-                    codecNormalQuality,
-                    kAnimationCodecType,
-                    CodecComponent.anyCodec);
+
+            int size = QTImage.getMaxCompressionSize(_gw, _videoSize,
+                    _gw.getPixMap().getPixelSize(), codecNormalQuality,
+                    kAnimationCodecType, CodecComponent.anyCodec);
             _imageHandle = new QTHandle(size, true);
             _imageHandle.lock();
             _compressedFrame = RawEncodedImage.fromQTHandle(_imageHandle);
 
-            _frameRateValue = ((IntToken)frameRate.getToken()).intValue();
-            _videoSequence = new CSequence(_gw,
-                    _videoSize,
-                    _gw.getPixMap().getPixelSize(),
-                    kAnimationCodecType,
-                    CodecComponent.bestFidelityCodec,
-                    codecNormalQuality,
-                    codecNormalQuality,
-                    _frameRateValue,        //1 key frame every second
+            _frameRateValue = ((IntToken) frameRate.getToken()).intValue();
+            _videoSequence = new CSequence(_gw, _videoSize,
+                    _gw.getPixMap().getPixelSize(), kAnimationCodecType,
+                    CodecComponent.bestFidelityCodec, codecNormalQuality,
+                    codecNormalQuality, _frameRateValue, //1 key frame every second
                     null, //cTab,
                     0);
+
             ImageDescription desc = _videoSequence.getDescription();
 
             _imageDrawer.setRedrawing(true);
@@ -250,24 +241,25 @@ public class MovieViewScreen3D extends ViewScreen3D
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
         try {
             _videoMedia.endEdits();
 
-            int kTrackStart        = 0;
-            int kMediaTime         = 0;
-            int kMediaRate        = 1;
+            int kTrackStart = 0;
+            int kMediaTime = 0;
+            int kMediaRate = 1;
             _videoTrack.insertMedia(kTrackStart, kMediaTime,
-                    _videoMedia.getDuration(), kMediaRate);
+                _videoMedia.getDuration(), kMediaRate);
 
             // Save movie to file.
             OpenMovieFile outStream = OpenMovieFile.asWrite(_file);
             _movie.addResource(outStream, movieInDataForkResID, _file.getName());
             outStream.close();
             System.out.println("Finished movie");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         QTSession.close();
     }
 
@@ -278,15 +270,14 @@ public class MovieViewScreen3D extends ViewScreen3D
     protected void _createViewScreen() {
         super._createViewScreen();
 
-        GraphicsConfiguration config =
-            SimpleUniverse.getPreferredConfiguration();
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
 
         _offScreenCanvas = new Canvas3D(config, true);
         _offScreenCanvas.getScreen3D().setSize(_canvas.getScreen3D().getSize());
-        _offScreenCanvas.getScreen3D().setPhysicalScreenWidth(
-                _canvas.getScreen3D().getPhysicalScreenWidth());
-        _offScreenCanvas.getScreen3D().setPhysicalScreenHeight(
-                _canvas.getScreen3D().getPhysicalScreenHeight());
+        _offScreenCanvas.getScreen3D().setPhysicalScreenWidth(_canvas.getScreen3D()
+                                                                     .getPhysicalScreenWidth());
+        _offScreenCanvas.getScreen3D().setPhysicalScreenHeight(_canvas.getScreen3D()
+                                                                      .getPhysicalScreenHeight());
 
         // attach the offscreen canvas to the view
         _canvas.getView().addCanvas3D(_offScreenCanvas);
@@ -294,22 +285,22 @@ public class MovieViewScreen3D extends ViewScreen3D
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     private class Painter implements Paintable {
         private Rectangle[] ret = new Rectangle[1];
 
         public void newSizeNotified(QTImageDrawer drawer, Dimension d) {
             ret[0] = new Rectangle(_frameWidth, _frameHeight);
         }
+
         public Rectangle[] paint(Graphics g) {
             Point location = _canvas.getLocationOnScreen();
             _offScreenCanvas.setOffScreenLocation(location);
-            BufferedImage image =
-                new BufferedImage(_frameWidth, _frameHeight,
-                        BufferedImage.TYPE_INT_ARGB);
 
-            ImageComponent2D buffer =
-                new ImageComponent2D(ImageComponent.FORMAT_RGBA, image);
+            BufferedImage image = new BufferedImage(_frameWidth, _frameHeight,
+                    BufferedImage.TYPE_INT_ARGB);
+
+            ImageComponent2D buffer = new ImageComponent2D(ImageComponent.FORMAT_RGBA,
+                    image);
 
             _offScreenCanvas.setOffScreenBuffer(buffer);
             _offScreenCanvas.renderOffScreenBuffer();
@@ -325,7 +316,6 @@ public class MovieViewScreen3D extends ViewScreen3D
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private Canvas3D _offScreenCanvas;
     private Movie _movie;
     private QTImageDrawer _imageDrawer;
@@ -342,4 +332,3 @@ public class MovieViewScreen3D extends ViewScreen3D
     private int _frameNumber;
     private int _frameRateValue;
 }
-

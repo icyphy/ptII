@@ -16,13 +16,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
 /*
  * Modified by the Sable Research Group and others 1997-2003.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
-
 /* Reference Version: $SootVersion: 1.2.3.dev.4 $ */
 package ptolemy.copernicus.kernel;
 
@@ -52,111 +50,120 @@ import soot.jimple.toolkits.callgraph.InstanceInvokeEdgesPred;
 import soot.jimple.toolkits.callgraph.Targets;
 import soot.jimple.toolkits.invoke.AccessManager;
 
+
 /** Uses the Scene's currently-active InvokeGraph to statically bind monomorphic call sites. */
-public class InvocationBinder extends SceneTransformer
-{
+public class InvocationBinder extends SceneTransformer {
     private static InvocationBinder instance = new InvocationBinder();
-    private InvocationBinder() {}
 
-    public static InvocationBinder v() { return instance; }
+    private InvocationBinder() {
+    }
 
-    public String getDefaultOptions()
-    {
+    public static InvocationBinder v() {
+        return instance;
+    }
+
+    public String getDefaultOptions() {
         return "insert-null-checks insert-redundant-casts allowed-modifier-changes:unsafe VTA-passes:0";
     }
 
-    public String getDeclaredOptions()
-    {
+    public String getDeclaredOptions() {
         return "insert-null-checks insert-redundant-casts allowed-modifier-changes VTA-passes";
     }
 
-    protected void internalTransform(String phaseName, Map options)
-    {
-        System.out.println("InvocationBinder.internalTransform(" +
-                phaseName + ", " + options + ")");
+    protected void internalTransform(String phaseName, Map options) {
+        System.out.println("InvocationBinder.internalTransform(" + phaseName
+            + ", " + options + ")");
 
-        Filter instanceInvokesFilter = new Filter( new InstanceInvokeEdgesPred() );
+        Filter instanceInvokesFilter = new Filter(new InstanceInvokeEdgesPred());
         String modifierOptions = "unsafe";
         HashMap instanceToStaticMap = new HashMap();
 
         Scene.v().releaseCallGraph();
+
         CallGraph cg = Scene.v().getCallGraph();
 
         Iterator classesIt = Scene.v().getApplicationClasses().iterator();
+
         while (classesIt.hasNext()) {
-            SootClass c = (SootClass)classesIt.next();
+            SootClass c = (SootClass) classesIt.next();
 
             LinkedList methodsList = new LinkedList();
             methodsList.addAll(c.getMethods());
 
             while (!methodsList.isEmpty()) {
-                SootMethod container = (SootMethod)methodsList.removeFirst();
+                SootMethod container = (SootMethod) methodsList.removeFirst();
 
                 if (!container.isConcrete()) {
                     // System.out.println("skipping " + container + ": not concrete");
                     continue;
                 }
-                if (!instanceInvokesFilter.wrap( cg.edgesOutOf(container) ).hasNext())
+
+                if (!instanceInvokesFilter.wrap(cg.edgesOutOf(container))
+                                              .hasNext()) {
                     continue;
+                }
 
-                JimpleBody b = (JimpleBody)container.getActiveBody();
+                JimpleBody b = (JimpleBody) container.getActiveBody();
 
-                List unitList = new ArrayList(); unitList.addAll(b.getUnits());
+                List unitList = new ArrayList();
+                unitList.addAll(b.getUnits());
+
                 Iterator unitIt = unitList.iterator();
 
                 while (unitIt.hasNext()) {
-                    Stmt s = (Stmt)unitIt.next();
-                    if (!s.containsInvokeExpr())
+                    Stmt s = (Stmt) unitIt.next();
+
+                    if (!s.containsInvokeExpr()) {
                         continue;
+                    }
 
-                    InvokeExpr ie = (InvokeExpr)s.getInvokeExpr();
+                    InvokeExpr ie = (InvokeExpr) s.getInvokeExpr();
 
-                    if (ie instanceof StaticInvokeExpr ||
-                            ie instanceof SpecialInvokeExpr) {
+                    if (ie instanceof StaticInvokeExpr
+                            || ie instanceof SpecialInvokeExpr) {
                         // System.out.println("skipping " + container + ":" +
                         //        s + ": not virtual");
-
                         continue;
                     }
 
-                    Iterator targets = new Targets( cg.edgesOutOf(s) );
+                    Iterator targets = new Targets(cg.edgesOutOf(s));
 
-                    if (!targets.hasNext() ) continue;
-                    SootMethod target = (SootMethod)targets.next();
-                    if (targets.hasNext() ) continue;
+                    if (!targets.hasNext()) {
+                        continue;
+                    }
+
+                    SootMethod target = (SootMethod) targets.next();
+
+                    if (targets.hasNext()) {
+                        continue;
+                    }
 
                     // Ok, we have an Interface or VirtualInvoke going to 1.
-
-                    if (!AccessManager.ensureAccess(container, target, modifierOptions)) {
+                    if (!AccessManager.ensureAccess(container, target,
+                                modifierOptions)) {
                         // System.out.println("skipping: no access");
-
                         continue;
                     }
+
                     if (!target.isConcrete()) {
                         //  System.out.println("skipping: not concrete");
-
                         continue;
                     }
 
                     // HACK! because the callgraph seems to be
                     // incorrect in soot 2.0.1
-                    if (!Scene.v().getApplicationClasses().contains(
-                                target.getDeclaringClass())) {
+                    if (!Scene.v().getApplicationClasses().contains(target
+                                .getDeclaringClass())) {
                         continue;
                     }
 
                     // Change the InterfaceInvoke or VirtualInvoke to
                     // a new VirtualInvoke.
                     ValueBox box = s.getInvokeExprBox();
-                    box.setValue(
-                            Jimple.v().newVirtualInvokeExpr(
-                                    (Local)((InstanceInvokeExpr)ie).getBase(),
-                                    target,
-                                    ie.getArgs()));
+                    box.setValue(Jimple.v().newVirtualInvokeExpr((Local) ((InstanceInvokeExpr) ie)
+                            .getBase(), target, ie.getArgs()));
                 }
             }
         }
     }
 }
-
-

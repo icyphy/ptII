@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.data.type;
 
 import ptolemy.data.FunctionToken;
@@ -34,8 +33,10 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FunctionType
+
 /**
    A class representing the type of a FunctionToken.
 
@@ -45,9 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.ProposedRating Red (neuendor)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class FunctionType extends StructuredType {
-
     /** Construct a new FunctionType with the specified argument types
      *  and the given return type.  To leave the types of some fields
      *  undeclared, use BaseType.UNKNOWN.  To construct the type for a
@@ -61,10 +60,12 @@ public class FunctionType extends StructuredType {
      */
     public FunctionType(Type[] types, Type returnType) {
         _argTypeTerms = new FieldTypeTerm[types.length];
+
         for (int i = 0; i < types.length; i++) {
             FieldTypeTerm fieldType = new FieldTypeTerm(types[i]);
             _argTypeTerms[i] = fieldType;
         }
+
         _returnTypeTerm = new FieldTypeTerm(returnType);
     }
 
@@ -81,17 +82,20 @@ public class FunctionType extends StructuredType {
         } else {
             // construct the labels and declared types array
             Type[] types = new Type[_argTypeTerms.length];
+
             for (int i = 0; i < types.length; i++) {
                 types[i] = getArgType(i);
             }
-            FunctionType newObj =
-                new FunctionType(types, getReturnType());
+
+            FunctionType newObj = new FunctionType(types, getReturnType());
+
             try {
                 newObj.updateType(this);
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(null, ex,
-                        "Failed to update new instance.");
+                    "Failed to update new instance.");
             }
+
             return newObj;
         }
     }
@@ -105,18 +109,18 @@ public class FunctionType extends StructuredType {
      *   cannot be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-
-        if ( !isCompatible(token.getType())) {
-            throw new IllegalArgumentException(
-                    Token.notSupportedConversionMessage(
-                            token, this.toString()));
+        if (!isCompatible(token.getType())) {
+            throw new IllegalArgumentException(Token
+                .notSupportedConversionMessage(token, this.toString()));
         }
+
         // FIXME: This should actually return a new Function that
         // includes the appropriate argument and return value
         // conversions.
-
         return token;
+
         //   if (false) {
+
         /*FunctionToken functionToken = (FunctionToken)token;
         // The converted token has the same set of labels as the argument.
         // That is, fields not in this type are not cut off.
@@ -161,7 +165,7 @@ public class FunctionType extends StructuredType {
             return false;
         }
 
-        FunctionType functionType = (FunctionType)object;
+        FunctionType functionType = (FunctionType) object;
 
         if (getArgCount() != functionType.getArgCount()) {
             return false;
@@ -170,6 +174,7 @@ public class FunctionType extends StructuredType {
         for (int i = 0; i < getArgCount(); i++) {
             Type myType = this.getArgType(i);
             Type argType = functionType.getArgType(i);
+
             if (!myType.equals(argType)) {
                 return false;
             }
@@ -192,13 +197,16 @@ public class FunctionType extends StructuredType {
      *  @return a Type.
      */
     public Type getArgType(int i) {
-        if (i < 0 || i >= _argTypeTerms.length) {
+        if ((i < 0) || (i >= _argTypeTerms.length)) {
             return null;
         }
+
         FieldTypeTerm fieldType = _argTypeTerms[i];
+
         if (fieldType == null) {
             return null;
         }
+
         return fieldType._resolvedType;
     }
 
@@ -237,16 +245,16 @@ public class FunctionType extends StructuredType {
     public void initialize(Type type) {
         try {
             for (int i = 0; i < getArgCount(); i++) {
-                FieldTypeTerm fieldType = (FieldTypeTerm)getArgTypeTerm(i);
+                FieldTypeTerm fieldType = (FieldTypeTerm) getArgTypeTerm(i);
+
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
                 }
             }
         } catch (IllegalActionException iae) {
-            throw new InternalErrorException(
-                    "FunctionType.initialize: Cannot " +
-                    "initialize the element type to " + type + " " +
-                    iae.getMessage());
+            throw new InternalErrorException("FunctionType.initialize: Cannot "
+                + "initialize the element type to " + type + " "
+                + iae.getMessage());
         }
     }
 
@@ -261,11 +269,11 @@ public class FunctionType extends StructuredType {
             return true;
         }
 
-        if ( !(type instanceof FunctionType)) {
+        if (!(type instanceof FunctionType)) {
             return false;
         }
 
-        FunctionType argumentFunctionType = (FunctionType)type;
+        FunctionType argumentFunctionType = (FunctionType) type;
 
         // The given type cannot be losslessly converted to this type
         // if it does not contain the same number of arguments.
@@ -275,13 +283,13 @@ public class FunctionType extends StructuredType {
 
         // Loop through all of the fields of this type...
         for (int i = 0; i < getArgCount(); i++) {
-            Type argumentFieldTypeTerm =
-                argumentFunctionType.getArgType(i);
+            Type argumentFieldTypeTerm = argumentFunctionType.getArgType(i);
 
             // The given function type cannot be losslessly converted
             // to this type if the individual arguments are not
             // compatible.
             Type thisFieldTypeTerm = getArgType(i);
+
             if (!argumentFieldTypeTerm.isCompatible(thisFieldTypeTerm)) {
                 return false;
             }
@@ -300,11 +308,13 @@ public class FunctionType extends StructuredType {
         for (int i = 0; i < getArgCount(); i++) {
             FieldTypeTerm fieldType = getArgTypeTerm(i);
             Type type = fieldType._declaredType;
+
             // Return false if the field is not constant.
             if (!type.isConstant()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -317,11 +327,13 @@ public class FunctionType extends StructuredType {
         // Loop through all of the fields of this type...
         for (int i = 0; i < getArgCount(); i++) {
             Type type = getArgType(i);
+
             // Return false if the field is not instantiable.
             if (!type.isInstantiable()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -338,7 +350,7 @@ public class FunctionType extends StructuredType {
             return false;
         }
 
-        FunctionType functionType = (FunctionType)type;
+        FunctionType functionType = (FunctionType) type;
 
         // Check that the argument counts are the same
         int argCount = getArgCount();
@@ -351,14 +363,14 @@ public class FunctionType extends StructuredType {
         for (int i = 0; i < getArgCount(); i++) {
             Type myArgType = getArgType(i);
             Type argType = functionType.getArgType(i);
+
             if (!myArgType.isSubstitutionInstance(argType)) {
                 return false;
             }
         }
 
         // Check the return type.
-        if (!getReturnType().isSubstitutionInstance(
-                    functionType.getReturnType())) {
+        if (!getReturnType().isSubstitutionInstance(functionType.getReturnType())) {
             return false;
         }
 
@@ -373,12 +385,15 @@ public class FunctionType extends StructuredType {
     public String toString() {
         // construct the string representation of this token.
         String s = "(function(";
+
         for (int i = 0; i < getArgCount(); i++) {
             if (i != 0) {
                 s += ", ";
             }
-            s += "a" + i + ":" + getArgType(i);
+
+            s += ("a" + i + ":" + getArgType(i));
         }
+
         return s + ") " + getReturnType() + ")";
     }
 
@@ -392,36 +407,36 @@ public class FunctionType extends StructuredType {
      *   FunctionType or it does not have the same structure as this one.
      */
     public void updateType(StructuredType newType)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (this.isConstant()) {
             if (this.equals(newType)) {
                 return;
             } else {
-                throw new IllegalActionException("FunctionType.updateType: " +
-                        "This type is a constant and the argument is not the" +
-                        " same as this type. This type: " + this.toString() +
-                        " argument: " + newType.toString());
+                throw new IllegalActionException("FunctionType.updateType: "
+                    + "This type is a constant and the argument is not the"
+                    + " same as this type. This type: " + this.toString()
+                    + " argument: " + newType.toString());
             }
         }
 
         // This type is a variable.
-        if ( !this.isSubstitutionInstance(newType)) {
+        if (!this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("FunctionType.updateType: "
-                    + "Cannot update this type to the new type.");
+                + "Cannot update this type to the new type.");
         }
 
         // Loop through all of the fields of this type...
         for (int i = 0; i < getArgCount(); i++) {
             FieldTypeTerm argTypeTerm = getArgTypeTerm(i);
+
             if (argTypeTerm.isSettable()) {
-                Type newArgType =
-                    ((FunctionType)newType).getArgType(i);
+                Type newArgType = ((FunctionType) newType).getArgType(i);
                 argTypeTerm.setValue(newArgType);
             }
         }
 
         if (_returnTypeTerm.isSettable()) {
-            _returnTypeTerm.setValue(((FunctionType)newType).getReturnType());
+            _returnTypeTerm.setValue(((FunctionType) newType).getReturnType());
         }
     }
 
@@ -442,20 +457,20 @@ public class FunctionType extends StructuredType {
      *   not a FunctionType.
      */
     protected int _compare(StructuredType type) {
-        if ( !(type instanceof FunctionType)) {
-            throw new IllegalArgumentException("FunctionType.compare: " +
-                    "The argument is not a FunctionType.");
+        if (!(type instanceof FunctionType)) {
+            throw new IllegalArgumentException("FunctionType.compare: "
+                + "The argument is not a FunctionType.");
         }
 
         if (this.equals(type)) {
             return CPO.SAME;
         }
 
-        if (_isLessThanOrEqualTo(this, (FunctionType)type)) {
+        if (_isLessThanOrEqualTo(this, (FunctionType) type)) {
             return CPO.LOWER;
         }
 
-        if (_isLessThanOrEqualTo((FunctionType)type, this)) {
+        if (_isLessThanOrEqualTo((FunctionType) type, this)) {
             return CPO.HIGHER;
         }
 
@@ -478,21 +493,21 @@ public class FunctionType extends StructuredType {
      *   not a FunctionType.
      */
     protected StructuredType _greatestLowerBound(StructuredType type) {
-        if ( !(type instanceof FunctionType)) {
+        if (!(type instanceof FunctionType)) {
             throw new IllegalArgumentException(
-                    "FunctionType.greatestLowerBound: The argument is not a " +
-                    "FunctionType.");
+                "FunctionType.greatestLowerBound: The argument is not a "
+                + "FunctionType.");
         }
 
-        FunctionType functionType = (FunctionType)type;
+        FunctionType functionType = (FunctionType) type;
 
         // construct the GLB FunctionToken
         int argCount = getArgCount();
 
-        if ( functionType.getArgCount() != argCount ) {
+        if (functionType.getArgCount() != argCount) {
             throw new IllegalArgumentException(
-                    "Types are not comparable because they have" +
-                    " different numbers of arguments");
+                "Types are not comparable because they have"
+                + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -500,17 +515,19 @@ public class FunctionType extends StructuredType {
         for (int i = 0; i < argCount; i++) {
             Type type1 = getArgType(i);
             Type type2 = functionType.getArgType(i);
+
             if (type1 == null) {
                 types[i] = type2;
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type)TypeLattice.lattice().greatestLowerBound(
-                        type1, type2);
+                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(type1,
+                        type2);
             }
         }
-        Type returnType = (Type)TypeLattice.lattice().greatestLowerBound(
-                getReturnType(), functionType.getReturnType());
+
+        Type returnType = (Type) TypeLattice.lattice().greatestLowerBound(getReturnType(),
+                functionType.getReturnType());
 
         return new FunctionType(types, returnType);
     }
@@ -524,20 +541,20 @@ public class FunctionType extends StructuredType {
      *   not a FunctionType.
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
-        if ( !(type instanceof FunctionType)) {
+        if (!(type instanceof FunctionType)) {
             throw new IllegalArgumentException("FunctionType.leastUpperBound: "
-                    + "The argument is not a FunctionType.");
+                + "The argument is not a FunctionType.");
         }
 
-        FunctionType functionType = (FunctionType)type;
+        FunctionType functionType = (FunctionType) type;
 
         // construct the LUB FunctionToken
         int argCount = getArgCount();
 
-        if ( functionType.getArgCount() != argCount ) {
+        if (functionType.getArgCount() != argCount) {
             throw new IllegalArgumentException(
-                    "Types are not comparable because they have" +
-                    " different numbers of arguments");
+                "Types are not comparable because they have"
+                + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -545,31 +562,31 @@ public class FunctionType extends StructuredType {
         for (int i = 0; i < argCount; i++) {
             Type type1 = getArgType(i);
             Type type2 = functionType.getArgType(i);
+
             if (type1 == null) {
                 types[i] = type2;
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type)TypeLattice.lattice().leastUpperBound(
-                        type1, type2);
+                types[i] = (Type) TypeLattice.lattice().leastUpperBound(type1,
+                        type2);
             }
         }
-        Type returnType = (Type)TypeLattice.lattice().leastUpperBound(
-                getReturnType(), functionType.getReturnType());
+
+        Type returnType = (Type) TypeLattice.lattice().leastUpperBound(getReturnType(),
+                functionType.getReturnType());
 
         return new FunctionType(types, returnType);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Test if the first FunctionType is less than or equal to the second
     private boolean _isLessThanOrEqualTo(FunctionType t1, FunctionType t2) {
-
         // construct the LUB FunctionToken
         int argCount = t1.getArgCount();
 
-        if ( t2.getArgCount() != argCount ) {
+        if (t2.getArgCount() != argCount) {
             return false;
         }
 
@@ -578,7 +595,8 @@ public class FunctionType extends StructuredType {
             Type type1 = t1.getArgType(i);
             Type type2 = t2.getArgType(i);
             int result = TypeLattice.compare(type1, type2);
-            if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
+
+            if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
                 return false;
             }
         }
@@ -588,30 +606,27 @@ public class FunctionType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Mapping from label to field information.
     private FieldTypeTerm[] _argTypeTerms;
-
     private FieldTypeTerm _returnTypeTerm;
+
     // the representative in the type lattice is the empty function.
-    private static FunctionType _representative =
-    new FunctionType(new Type[0], BaseType.UNKNOWN);
+    private static FunctionType _representative = new FunctionType(new Type[0],
+            BaseType.UNKNOWN);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     // A class that encapsulates the declared and resolved types of a
     // field and implements the InequalityTerm interface.
     private class FieldTypeTerm implements InequalityTerm {
-
         // Construct an instance of FieldTypeTerm.
         private FieldTypeTerm(Type declaredType) {
             try {
-                _declaredType = (Type)declaredType.clone();
+                _declaredType = (Type) declaredType.clone();
                 _resolvedType = _declaredType;
             } catch (CloneNotSupportedException cnse) {
-                throw new InternalErrorException("FunctionType.FieldTypeTerm: " +
-                        "The specified type cannot be cloned.");
+                throw new InternalErrorException("FunctionType.FieldTypeTerm: "
+                    + "The specified type cannot be cloned.");
             }
         }
 
@@ -642,6 +657,7 @@ public class FunctionType extends StructuredType {
                 variable[0] = this;
                 return variable;
             }
+
             return (new InequalityTerm[0]);
         }
 
@@ -653,20 +669,20 @@ public class FunctionType extends StructuredType {
          */
         public void initialize(Object e) throws IllegalActionException {
             if (!isSettable()) {
-                throw new IllegalActionException("FunctionType$FieldTypeTerm." +
-                        "initialize: The type is not settable.");
+                throw new IllegalActionException("FunctionType$FieldTypeTerm."
+                    + "initialize: The type is not settable.");
             }
 
             if (!(e instanceof Type)) {
                 throw new IllegalActionException("FieldTypeTerm.initialize: "
-                        + "The argument is not a Type.");
+                    + "The argument is not a Type.");
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
-                _resolvedType = (Type)e;
+                _resolvedType = (Type) e;
             } else {
                 // this field type is a structured type.
-                ((StructuredType)_resolvedType).initialize((Type)e);
+                ((StructuredType) _resolvedType).initialize((Type) e);
             }
         }
 
@@ -692,30 +708,29 @@ public class FunctionType extends StructuredType {
          *   the declared field type.
          */
         public void setValue(Object e) throws IllegalActionException {
-            if ( !isSettable()) {
+            if (!isSettable()) {
                 throw new IllegalActionException(
-                        "FunctionType$FieldTypeTerm.setValue: The type is not " +
-                        "settable.");
+                    "FunctionType$FieldTypeTerm.setValue: The type is not "
+                    + "settable.");
             }
 
-            if ( !_declaredType.isSubstitutionInstance((Type)e)) {
+            if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("FieldTypeTerm.setValue: "
-                        + "Cannot update the field type of this FunctionType "
-                        + "to the new type."
-                        + " Field type: " + _declaredType.toString()
-                        + ", New type: " + e.toString());
+                    + "Cannot update the field type of this FunctionType "
+                    + "to the new type." + " Field type: "
+                    + _declaredType.toString() + ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
                 try {
-                    _resolvedType = (Type)((Type)e).clone();
+                    _resolvedType = (Type) ((Type) e).clone();
                 } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
-                            "FunctionType$FieldTypeTerm.setValue: " +
-                            "The specified type cannot be cloned.");
+                        "FunctionType$FieldTypeTerm.setValue: "
+                        + "The specified type cannot be cloned.");
                 }
             } else {
-                ((StructuredType)_resolvedType).updateType((StructuredType)e);
+                ((StructuredType) _resolvedType).updateType((StructuredType) e);
             }
         }
 
@@ -728,9 +743,7 @@ public class FunctionType extends StructuredType {
 
         ///////////////////////////////////////////////////////////////
         ////                  private inner variables              ////
-
         private Type _declaredType = null;
         private Type _resolvedType = null;
     }
 }
-

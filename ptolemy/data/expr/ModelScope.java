@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.expr;
 
 import java.util.HashSet;
@@ -37,8 +36,10 @@ import java.util.Set;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ModelScope
+
 /**
    An abstract class that is useful for implementing expression language
    scopes for Ptolemy models.
@@ -50,42 +51,45 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (liuxj)
    @see ptolemy.data.expr.PtParser
 */
-
 public abstract class ModelScope implements ParserScope {
-
     /** Return a list of variable names in scope for variables in the
      * given container.  Exclude the given variable from being
      * considered in scope.
      */
-    public static Set getAllScopedVariableNames(
-            Variable exclude, NamedObj container) {
+    public static Set getAllScopedVariableNames(Variable exclude,
+        NamedObj container) {
         List variableList = container.attributeList(Variable.class);
         variableList.remove(exclude);
+
         Set nameSet = new HashSet();
-        for (Iterator variables = variableList.iterator();
-             variables.hasNext();) {
-            Variable variable = (Variable)variables.next();
+
+        for (Iterator variables = variableList.iterator(); variables.hasNext();) {
+            Variable variable = (Variable) variables.next();
             nameSet.add(variable.getName());
         }
 
         // Get variables higher in scope.  Moving up the hierarchy
         // terminates when the container is null.
-        NamedObj aboveContainer = (NamedObj)container.getContainer();
+        NamedObj aboveContainer = (NamedObj) container.getContainer();
+
         if (aboveContainer != null) {
             nameSet.addAll(getAllScopedVariableNames(exclude, aboveContainer));
         }
 
         // Get variables in scope extenders.  Moving down the scope
         // extenders terminates at hierarchy leaves.
-        Iterator extenders =
-            container.attributeList(ScopeExtender.class).iterator();
+        Iterator extenders = container.attributeList(ScopeExtender.class)
+                                      .iterator();
+
         while (extenders.hasNext()) {
-            ScopeExtender extender = (ScopeExtender)extenders.next();
+            ScopeExtender extender = (ScopeExtender) extenders.next();
+
             // It would be nice if ScopeExtender and NamedObj were common in
             // some way to avoid this cast.
             nameSet.addAll(getAllScopedVariableNames(exclude,
-                                   (NamedObj)extender));
+                    (NamedObj) extender));
         }
+
         return nameSet;
     }
 
@@ -100,47 +104,50 @@ public abstract class ModelScope implements ParserScope {
      *  @param container The container to search upwards from.
      *  @param name The variable name to search for.
      */
-    public static Variable getScopedVariable(
-            Variable exclude, NamedObj container, String name) {
-
+    public static Variable getScopedVariable(Variable exclude,
+        NamedObj container, String name) {
         String insideName = name.replaceAll("::", ".");
 
         while (container != null) {
             Variable result = _searchIn(exclude, container, insideName);
+
             if (result != null) {
                 return result;
             } else {
-                container = (NamedObj)container.getContainer();
+                container = (NamedObj) container.getContainer();
             }
         }
+
         return null;
     }
 
     // Search in the container for an attribute with the given name.
     // Search recursively in any instance of ScopeExtender in the
     // container.
-    private static Variable _searchIn(Variable exclude,
-            NamedObj container, String name) {
+    private static Variable _searchIn(Variable exclude, NamedObj container,
+        String name) {
         Attribute result = container.getAttribute(name);
-        if (result != null
-                && result instanceof Variable
-                && result != exclude) {
-            return (Variable)result;
+
+        if ((result != null) && result instanceof Variable
+                && (result != exclude)) {
+            return (Variable) result;
         } else {
-            Iterator extenders =
-                container.attributeList(ScopeExtender.class).iterator();
+            Iterator extenders = container.attributeList(ScopeExtender.class)
+                                          .iterator();
+
             while (extenders.hasNext()) {
-                ScopeExtender extender = (ScopeExtender)extenders.next();
+                ScopeExtender extender = (ScopeExtender) extenders.next();
                 result = extender.getAttribute(name);
-                if (result != null
-                        && result instanceof Variable
-                        && result != exclude) {
-                    return (Variable)result;
+
+                if ((result != null) && result instanceof Variable
+                        && (result != exclude)) {
+                    return (Variable) result;
                 }
+
                 return null;
             }
         }
+
         return null;
     }
 }
-

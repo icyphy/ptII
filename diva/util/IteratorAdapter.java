@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.util;
+
 import java.util.Iterator;
+
 
 /**
  * An iterator that implements the Iterator, intended for
@@ -37,14 +39,16 @@ import java.util.Iterator;
  */
 public class IteratorAdapter implements Iterator {
     public boolean hasNext() {
-        throw new UnsupportedOperationException("This method must be overridden");
+        throw new UnsupportedOperationException(
+            "This method must be overridden");
     }
+
     public Object next() {
-        throw new UnsupportedOperationException("This method must be overridden");
+        throw new UnsupportedOperationException(
+            "This method must be overridden");
     }
+
     public void remove() {
         throw new UnsupportedOperationException("Can't remove element");
     }
 }
-
-

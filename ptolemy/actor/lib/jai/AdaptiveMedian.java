@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import ptolemy.actor.lib.Transformer;
@@ -39,6 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// AdaptiveMedian
@@ -69,9 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class AdaptiveMedian extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -81,7 +79,7 @@ public class AdaptiveMedian extends Transformer {
      *   actor with this name.
      */
     public AdaptiveMedian(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
@@ -106,12 +104,13 @@ public class AdaptiveMedian extends Transformer {
      *  not an odd integer.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == maxWindowSize) {
-            _maxWindowSize = ((IntToken)maxWindowSize.getToken()).intValue();
-            if (_maxWindowSize%2 == 0) {
+            _maxWindowSize = ((IntToken) maxWindowSize.getToken()).intValue();
+
+            if ((_maxWindowSize % 2) == 0) {
                 throw new IllegalActionException(this,
-                        "Window Size must be odd!!");
+                    "Window Size must be odd!!");
             }
         } else {
             super.attributeChanged(attribute);
@@ -124,37 +123,38 @@ public class AdaptiveMedian extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         DoubleMatrixToken doubleMatrixToken = (DoubleMatrixToken) input.get(0);
-        double data[][] = doubleMatrixToken.doubleMatrix();
+        double[][] data = doubleMatrixToken.doubleMatrix();
         int width = doubleMatrixToken.getRowCount();
         int height = doubleMatrixToken.getColumnCount();
-        double outputData[][] = new double[width][height];
+        double[][] outputData = new double[width][height];
         int windowSize = 3;
+
         // Iterate over each pixel.
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 while (true) {
-                    int dist = (windowSize - 1)/2;
+                    int dist = (windowSize - 1) / 2;
 
                     // Check if we can create a region of interest or
                     // not.  If we can't (i.e. we are at or near the
                     // edge of an image) then just keep the data.
-
-                    if ((i - dist < 0) || (j - dist < 0)
-                            || (i + dist >= width) || (j + dist >= height)) {
+                    if (((i - dist) < 0) || ((j - dist) < 0)
+                            || ((i + dist) >= width) || ((j + dist) >= height)) {
                         outputData[i][j] = data[i][j];
                         windowSize = 3;
                         break;
-                    }
-                    else {
-                        double temp[][] = new double[windowSize][windowSize];
+                    } else {
+                        double[][] temp = new double[windowSize][windowSize];
+
                         // Create a local region of interest around the pixel.
                         for (int k = (i - dist); k <= (i + dist); k++) {
                             for (int l = (j - dist); l <= (j + dist); l++) {
-                                temp[k - (i - dist)][l - (j - dist)] =
-                                    data[k][l];
+                                temp[k - (i - dist)][l - (j - dist)] = data[k][l];
                             }
                         }
+
                         double median = _getMedian(temp, windowSize);
                         double max = _getMaximum(temp, windowSize);
                         double min = _getMinimum(temp, windowSize);
@@ -170,20 +170,17 @@ public class AdaptiveMedian extends Transformer {
                         // output the medium because there is a very
                         // good chance that the pixel was noised.
                         // After this, the window size is reset.
-
                         if ((median > min) && (median < max)) {
                             if ((data[i][j] > min) && (data[i][j] < max)) {
                                 outputData[i][j] = data[i][j];
                                 windowSize = 3;
                                 break;
-                            }
-                            else {
+                            } else {
                                 outputData[i][j] = median;
                                 windowSize = 3;
                                 break;
                             }
                         } else if (windowSize < _maxWindowSize) {
-
                             // If this statement is reached, this
                             // means that the median was equal to
                             // either the minimum or the maximum (or
@@ -191,15 +188,12 @@ public class AdaptiveMedian extends Transformer {
                             // interest had constant intensity.
                             // Increase the window size, if it is less
                             // than the maximum window size.
-
                             windowSize = windowSize + 2;
                         } else {
-
                             // If this statement is reached, we've
                             // already hit the maximum window size, in
                             // which case, just output the data and
                             // reset the window size.
-
                             outputData[i][j] = data[i][j];
                             windowSize = 3;
                             break;
@@ -208,6 +202,7 @@ public class AdaptiveMedian extends Transformer {
                 }
             }
         }
+
         output.send(0, new DoubleMatrixToken(outputData));
     }
 
@@ -218,6 +213,7 @@ public class AdaptiveMedian extends Transformer {
      */
     private double _getMaximum(double[][] input, int size) {
         double maximum = input[0][0];
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (input[i][j] > maximum) {
@@ -225,34 +221,39 @@ public class AdaptiveMedian extends Transformer {
                 }
             }
         }
+
         return maximum;
     }
 
     /** Find the median value in a region of interest.
      */
     private double _getMedian(double[][] input, int size) {
-        double[] median = new double[size*size];
+        double[] median = new double[size * size];
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                median[i*size + j] = input[i][j];
+                median[(i * size) + j] = input[i][j];
             }
         }
-        for (int i = 0; i < size*size; i++) {
-            for (int j = 0; j < size*size - 1; j++) {
-                if (median[j] > median[j+1]) {
+
+        for (int i = 0; i < (size * size); i++) {
+            for (int j = 0; j < ((size * size) - 1); j++) {
+                if (median[j] > median[j + 1]) {
                     double temporaryValue = median[j];
-                    median[j] = median[j+1];
-                    median[j+1] = temporaryValue;
+                    median[j] = median[j + 1];
+                    median[j + 1] = temporaryValue;
                 }
             }
         }
-        return median[(size*size-1)/2];
+
+        return median[((size * size) - 1) / 2];
     }
 
     /** Find the minimum value in a region of interest.
      */
     private double _getMinimum(double[][] input, int size) {
         double minimum = input[0][0];
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (input[i][j] < minimum) {
@@ -260,12 +261,12 @@ public class AdaptiveMedian extends Transformer {
                 }
             }
         }
+
         return minimum;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The largest window size.
     private int _maxWindowSize;
 }

@@ -25,16 +25,18 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel.test;
+
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Integrator
+
 /**
    A wrapper of CTBaseIntegrator. The only purpose of this actor is
    that it is in the ct.lib package.
@@ -55,7 +57,7 @@ public class CTTestIntegrator extends CTBaseIntegrator {
      * @exception IllegalActionException If there was an internal problem.
      */
     public CTTestIntegrator(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -65,7 +67,7 @@ public class CTTestIntegrator extends CTBaseIntegrator {
     /** call to balance the history.
      */
     public void balanceHistory() {
-        double stepsize =((CTDirector)getDirector()).getCurrentStepSize();
+        double stepsize = ((CTDirector) getDirector()).getCurrentStepSize();
         _history.rebalance(stepsize);
     }
 }

@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib;
-
 
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
@@ -42,8 +40,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Triangulator
+
 /**
    Given inputs that represent the location of a sensor and the time at
    which those sensors detect an event, this actor outputs the location
@@ -96,9 +96,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (ptolemy)
 */
-
 public class Triangulator extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -108,14 +106,16 @@ public class Triangulator extends TypedAtomicActor {
      *   actor with this name.
      */
     public Triangulator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input = new TypedIOPort (this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
+
         TypeAttribute inputType = new TypeAttribute(input, "type");
         inputType.setExpression("{location = {double}, time = double}");
 
-        output = new TypedIOPort (this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
+
         TypeAttribute outputType = new TypeAttribute(output, "type");
         outputType.setExpression("{double}");
 
@@ -180,20 +180,22 @@ public class Triangulator extends TypedAtomicActor {
         super.fire();
 
         while (input.hasToken(0)) {
-            RecordToken recordToken = (RecordToken)input.get(0);
+            RecordToken recordToken = (RecordToken) input.get(0);
 
-            ArrayToken locationArray = (ArrayToken)recordToken.get("location");
+            ArrayToken locationArray = (ArrayToken) recordToken.get("location");
+
             if (locationArray.length() < 2) {
                 throw new IllegalActionException(this,
-                        "Input is malformed: location field does not "
-                        + "have two entries.");
+                    "Input is malformed: location field does not "
+                    + "have two entries.");
             }
-            double locationX =
-                ((DoubleToken)locationArray.getElement(0)).doubleValue();
-            double locationY =
-                ((DoubleToken)locationArray.getElement(1)).doubleValue();
 
-            double time = ((DoubleToken)recordToken.get("time")).doubleValue();
+            double locationX = ((DoubleToken) locationArray.getElement(0))
+                .doubleValue();
+            double locationY = ((DoubleToken) locationArray.getElement(1))
+                .doubleValue();
+
+            double time = ((DoubleToken) recordToken.get("time")).doubleValue();
 
             // First check whether the location matches one already in the
             // buffer.  At the same time, identify the entry with the
@@ -202,20 +204,24 @@ public class Triangulator extends TypedAtomicActor {
             int oldestTimeIndex = 0;
             double oldestTime = Double.POSITIVE_INFINITY;
             double newestTime = Double.NEGATIVE_INFINITY;
+
             for (int i = 0; i < 3; i++) {
-                if (_locationsX[i] == locationX
-                        && _locationsY[i] == locationY) {
+                if ((_locationsX[i] == locationX)
+                        && (_locationsY[i] == locationY)) {
                     _times[i] = time;
                     foundMatch = true;
                 }
+
                 if (_times[i] < oldestTime) {
                     oldestTime = _times[i];
                     oldestTimeIndex = i;
                 }
+
                 if (_times[i] > newestTime) {
                     newestTime = _times[i];
                 }
             }
+
             if (!foundMatch) {
                 _locationsX[oldestTimeIndex] = locationX;
                 _locationsY[oldestTimeIndex] = locationY;
@@ -224,6 +230,7 @@ public class Triangulator extends TypedAtomicActor {
                 // Have to recalculate the oldest time now
                 // since it has changed.
                 oldestTime = Double.POSITIVE_INFINITY;
+
                 for (int i = 0; i < 3; i++) {
                     if (_times[i] < oldestTime) {
                         oldestTime = _times[i];
@@ -237,34 +244,29 @@ public class Triangulator extends TypedAtomicActor {
             // will be infinity if we have not seen three observations
             // from three distinct locations.
             double timeSpan = newestTime - oldestTime;
-            double timeWindowValue
-                = ((DoubleToken)timeWindow.getToken()).doubleValue();
+            double timeWindowValue = ((DoubleToken) timeWindow.getToken())
+                .doubleValue();
+
             if (timeSpan > timeWindowValue) {
                 // We do not have enough data.
                 return;
             }
 
             // Get signal speed, from the signalPropagationSpeed parameter.
-            double speed = ((DoubleToken)(signalPropagationSpeed.getToken()))
+            double speed = ((DoubleToken) (signalPropagationSpeed.getToken()))
                 .doubleValue();
+
             // FIXME: Pass in the arrays for scalability.
             // FIXME: Replace naked 3 everywhere.
-            double[] result = _locate(
-                    _locationsX[0],
-                    _locationsY[0],
-                    _times[0],
-                    _locationsX[1],
-                    _locationsY[1],
-                    _times[1],
-                    _locationsX[2],
-                    _locationsY[2],
-                    _times[2],
-                    speed);
+            double[] result = _locate(_locationsX[0], _locationsY[0],
+                    _times[0], _locationsX[1], _locationsY[1], _times[1],
+                    _locationsX[2], _locationsY[2], _times[2], speed);
 
             if (Double.isInfinite(result[2]) || Double.isNaN(result[2])) {
                 // Result is not valid (inconsistent data).
                 return;
             }
+
             Token[] resultArray = new Token[2];
             resultArray[0] = new DoubleToken(result[0]);
             resultArray[1] = new DoubleToken(result[1]);
@@ -288,7 +290,6 @@ public class Triangulator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     //  Check whether the calculated location and time of a sound event is
     //  consistent with the observations.
     // @param result The calculated location and time of a sound event.
@@ -304,25 +305,22 @@ public class Triangulator extends TypedAtomicActor {
     // @param v The speed of sound propagation.
     // @return True if the calculated location and time is consistent with the
     //  observations.
-    private static boolean _checkResult(double[] result,
-            double x1, double y1, double t1,
-            double x2, double y2, double t2,
-            double x3, double y3, double t3,
-            double v) {
-        if (result[2] > t1 || result[2] > t2 || result[2] > t3) {
+    private static boolean _checkResult(double[] result, double x1, double y1,
+        double t1, double x2, double y2, double t2, double x3, double y3,
+        double t3, double v) {
+        if ((result[2] > t1) || (result[2] > t2) || (result[2] > t3)) {
             return false;
         }
-        double tdiff1 =
-            Math.abs(_distance(x1, y1,
-                             result[0], result[1])/v - (t1 - result[2]));
-        double tdiff2 =
-            Math.abs(_distance(x2, y2,
-                             result[0], result[1])/v - (t2 - result[2]));
-        double tdiff3 =
-            Math.abs(_distance(x3, y3,
-                             result[0], result[1])/v - (t3 - result[2]));
+
+        double tdiff1 = Math.abs((_distance(x1, y1, result[0], result[1]) / v)
+                - (t1 - result[2]));
+        double tdiff2 = Math.abs((_distance(x2, y2, result[0], result[1]) / v)
+                - (t2 - result[2]));
+        double tdiff3 = Math.abs((_distance(x3, y3, result[0], result[1]) / v)
+                - (t3 - result[2]));
+
         // FIXME: make the check threshold a parameter?
-        if (tdiff1 > 1e-5 || tdiff2 > 1e-5 || tdiff3 > 1e-5) {
+        if ((tdiff1 > 1e-5) || (tdiff2 > 1e-5) || (tdiff3 > 1e-5)) {
             return false;
         } else {
             return true;
@@ -336,9 +334,8 @@ public class Triangulator extends TypedAtomicActor {
      *  @param y2 The second y coordinate.
      *  @return The distance.
      */
-    private static double _distance(
-            double x1, double y1, double x2, double y2) {
-        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    private static double _distance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
     }
 
     /** Calculate the location and time of a sound event from the given
@@ -371,56 +368,59 @@ public class Triangulator extends TypedAtomicActor {
      * @return The location and time of the sound event consistent with
      *  the observations.
      */
-    private static double[] _locate(
-            double x1, double y1, double t1,
-            double x2, double y2, double t2,
-            double x3, double y3, double t3,
-            double v) {
+    private static double[] _locate(double x1, double y1, double t1, double x2,
+        double y2, double t2, double x3, double y3, double t3, double v) {
         double[] result = new double[3];
         double v2 = v * v;
         double[][] m = {
-            { 2 * (x2 - x1), 2 * (y2 - y1) },
-            { 2 * (x3 - x1), 2 * (y3 - y1) }
-        };
+                { 2 * (x2 - x1), 2 * (y2 - y1) },
+                { 2 * (x3 - x1), 2 * (y3 - y1) }
+            };
         double[] b = { 2 * v2 * (t2 - t1), 2 * v2 * (t3 - t1) };
         double[] c = {
-            t1 * t1 * v2 - t2 * t2 * v2 + x2 * x2 - x1 * x1 + y2 * y2 - y1 * y1,
-            t1 * t1 * v2 - t3 * t3 * v2 + x3 * x3 - x1 * x1 + y3 * y3 - y1 * y1
-        };
+                (((t1 * t1 * v2) - (t2 * t2 * v2) + (x2 * x2)) - (x1 * x1)
+                + (y2 * y2)) - (y1 * y1),
+                (((t1 * t1 * v2) - (t3 * t3 * v2) + (x3 * x3)) - (x1 * x1)
+                + (y3 * y3)) - (y1 * y1)
+            };
+
         // FIXME: what if det_m is 0? That is, the three sensors are located on
         // a straight line.
-        double det_m = m[0][0] * m[1][1] - m[1][0] * m[0][1];
+        double det_m = (m[0][0] * m[1][1]) - (m[1][0] * m[0][1]);
         double[][] m_inv = {
-            { m[1][1] / det_m, -m[0][1] / det_m },
-            { -m[1][0] / det_m, m[0][0] / det_m }
-        };
+                { m[1][1] / det_m, -m[0][1] / det_m },
+                { -m[1][0] / det_m, m[0][0] / det_m }
+            };
         double[] m_inv_b = {
-            m_inv[0][0] * b[0] + m_inv[0][1] * b[1],
-            m_inv[1][0] * b[0] + m_inv[1][1] * b[1]
-        };
+                (m_inv[0][0] * b[0]) + (m_inv[0][1] * b[1]),
+                (m_inv[1][0] * b[0]) + (m_inv[1][1] * b[1])
+            };
         double[] m_inv_c = {
-            m_inv[0][0] * c[0] + m_inv[0][1] * c[1],
-            m_inv[1][0] * c[0] + m_inv[1][1] * c[1]
-        };
-        double ea = m_inv_b[0] * m_inv_b[0] + m_inv_b[1] * m_inv_b[1] - v2;
-        double eb = 2 * m_inv_b[0] * (m_inv_c[0] - x1)
-            + 2 * m_inv_b[1] * (m_inv_c[1] - y1) + 2 * v2 * t1;
-        double ec = (m_inv_c[0] - x1) * (m_inv_c[0] - x1)
-            + (m_inv_c[1] - y1) * (m_inv_c[1] - y1) - t1 * t1 * v2;
-        double delta = eb * eb - 4 * ea * ec;
+                (m_inv[0][0] * c[0]) + (m_inv[0][1] * c[1]),
+                (m_inv[1][0] * c[0]) + (m_inv[1][1] * c[1])
+            };
+        double ea = ((m_inv_b[0] * m_inv_b[0]) + (m_inv_b[1] * m_inv_b[1]))
+            - v2;
+        double eb = (2 * m_inv_b[0] * (m_inv_c[0] - x1))
+            + (2 * m_inv_b[1] * (m_inv_c[1] - y1)) + (2 * v2 * t1);
+        double ec = (((m_inv_c[0] - x1) * (m_inv_c[0] - x1))
+            + ((m_inv_c[1] - y1) * (m_inv_c[1] - y1))) - (t1 * t1 * v2);
+        double delta = (eb * eb) - (4 * ea * ec);
+
         //System.out.println("delta is " + delta);
         if (delta >= 0) {
             result[2] = (-eb + Math.sqrt(delta)) / ea / 2;
-            result[0] = m_inv_b[0] * result[2] + m_inv_c[0];
-            result[1] = m_inv_b[1] * result[2] + m_inv_c[1];
+            result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
+            result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
+
             if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v)) {
                 return result;
             } else {
                 result[2] = (-eb - Math.sqrt(delta)) / ea / 2;
-                result[0] = m_inv_b[0] * result[2] + m_inv_c[0];
-                result[1] = m_inv_b[1] * result[2] + m_inv_c[1];
-                if (_checkResult(result, x1, y1, t1, x2, y2, t2,
-                            x3, y3, t3, v)) {
+                result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
+                result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
+
+                if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v)) {
                     return result;
                 } else {
                     result[0] = Double.NEGATIVE_INFINITY;
@@ -431,8 +431,9 @@ public class Triangulator extends TypedAtomicActor {
             }
         } else {
             result[2] = -eb / ea / 2;
-            result[0] = m_inv_b[0] * result[2] + m_inv_c[0];
-            result[1] = m_inv_b[1] * result[2] + m_inv_c[1];
+            result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
+            result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
+
             if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v)) {
                 return result;
             } else {
@@ -446,7 +447,6 @@ public class Triangulator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Buffer of three readings.
     private double[] _locationsX = new double[3];
     private double[] _locationsY = new double[3];

@@ -37,6 +37,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 
+
 /**
  * A class for managing resources. This class is an extension to the
  * standard ResourceBundle that allows you to construct
@@ -57,6 +58,7 @@ public class RelativeBundle extends ResourceBundle {
     // FIXME If the parent is another RelativeBundle, it may have a different
     // loader argument.  This doesn't work properly because that loader
     // argument is ignored.
+
     /** The class that is to be used to look up URL resources
      * from this bundle.
      */
@@ -97,19 +99,21 @@ public class RelativeBundle extends ResourceBundle {
      * resource file in the same directory as the application classes,
      * so the properties files doesn't need the "resources/" strings.
      */
-    public RelativeBundle (String baseName, Class loader,
-            ResourceBundle overrides) {
+    public RelativeBundle(String baseName, Class loader,
+        ResourceBundle overrides) {
         try {
             _delegate = ResourceBundle.getBundle(baseName, Locale.getDefault());
         } catch (MissingResourceException e) {
-            System.err.println( baseName + ".properties not found");
+            System.err.println(baseName + ".properties not found");
             System.exit(1);
         }
+
         if (loader == null) {
             _loader = getClass();
         } else {
             _loader = loader;
         }
+
         if (overrides != null) {
             setParent(overrides);
         }
@@ -117,15 +121,16 @@ public class RelativeBundle extends ResourceBundle {
 
     /** Get a resource as an absolute URL.
      */
-    public URL getResource (String key) {
+    public URL getResource(String key) {
         String s = getString(key);
+
         // Web Start requires using getClassLoader.
         return _loader.getResource(s);
     }
 
     /** Get a resource as an input stream.
      */
-    public InputStream getResourceAsStream (String key) {
+    public InputStream getResourceAsStream(String key) {
         String s = getString(key);
         return _loader.getResourceAsStream(s);
     }
@@ -133,22 +138,25 @@ public class RelativeBundle extends ResourceBundle {
     /** Get a resource as an image icon. Return null if not found.
      * (Or should this throw an exception?)
      */
-    public ImageIcon getImageIcon (String key) {
-        ImageIcon icon = (ImageIcon)_imageIcons.get(key);
+    public ImageIcon getImageIcon(String key) {
+        ImageIcon icon = (ImageIcon) _imageIcons.get(key);
+
         if (icon == null) {
             URL url = getResource(key);
+
             if (url != null) {
                 icon = new ImageIcon(url);
                 _imageIcons.put(key, icon);
             }
         }
+
         return icon;
     }
 
     /** Get a resource as an image. Return null if not found.
      * (Or should this throw an exception?)
      */
-    public Image getImage (String key) {
+    public Image getImage(String key) {
         URL url = getResource(key);
 
         if (url != null) {
@@ -156,13 +164,14 @@ public class RelativeBundle extends ResourceBundle {
             Image img = tk.getImage(url);
             return img;
         }
+
         return null;
     }
 
     /** Get an object from a ResourceBundle.
      */
     protected Object handleGetObject(String key)
-            throws MissingResourceException {
+        throws MissingResourceException {
         try {
             return _delegate.getObject(key);
         } catch (MissingResourceException ex) {
@@ -172,9 +181,7 @@ public class RelativeBundle extends ResourceBundle {
 
     /** Get an enumeration over the keys
      */
-    public Enumeration getKeys () {
+    public Enumeration getKeys() {
         return _delegate.getKeys();
     }
 }
-
-

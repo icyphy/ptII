@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.copernicus.kernel;
 
 import java.io.File;
@@ -38,6 +36,7 @@ import soot.Printer;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassWriter
@@ -58,7 +57,9 @@ import soot.SootClass;
 */
 public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
     private static ClassWriter instance = new ClassWriter();
-    private ClassWriter() {}
+
+    private ClassWriter() {
+    }
 
     public static ClassWriter v() {
         return instance;
@@ -75,7 +76,6 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
     public String getDeclaredOptions() {
         return "debug outDir";
     }
-
 
     /** Write out the class file.
      *  This transform can be used to take snapshots, and is
@@ -97,31 +97,31 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
      *  file should be written
      */
     protected void internalTransform(String phaseName, Map options) {
-        System.out.println("ClassWriter.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("ClassWriter.internalTransform(" + phaseName + ", "
+            + options + ")");
 
         String outDir = PhaseOptions.getString(options, "outDir");
 
         if (!outDir.equals("")) {
             File outDirFile = new File(outDir);
+
             if (!outDirFile.isDirectory()) {
                 outDirFile.mkdirs();
             }
         }
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-             classes.hasNext();) {
-            SootClass theClass = (SootClass)classes.next();
+                classes.hasNext();) {
+            SootClass theClass = (SootClass) classes.next();
+
             try {
                 Printer.v().write(theClass, outDir);
             } catch (Exception ex) {
                 // If we get an IOException, we might not have any idea
                 // of which directory was problematic
-                throw new RuntimeException("Creating class file for '" +
-                        theClass + "' in directory '" + outDir + "' failed",
-                        ex);
+                throw new RuntimeException("Creating class file for '"
+                    + theClass + "' in directory '" + outDir + "' failed", ex);
             }
         }
     }
 }
-

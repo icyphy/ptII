@@ -25,7 +25,6 @@
  COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.wireless.lib.network.mac;
 
 import java.util.Random;
@@ -46,6 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Backoff
 
@@ -60,7 +60,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (pjb2e)
 */
 public class Backoff extends MACActorBase {
-
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -74,7 +73,7 @@ public class Backoff extends MACActorBase {
      *   an actor already in the container.
      */
     public Backoff(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure the ports.
@@ -98,11 +97,9 @@ public class Backoff extends MACActorBase {
      */
     public TypedIOPort fromDataPump;
 
-
     /** The input port for backoff message from the Protocol control block.
      */
     public TypedIOPort getBackoff;
-
 
     /** The output port that produces messages that
      *  indicate the backoff is done.
@@ -125,6 +122,7 @@ public class Backoff extends MACActorBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -133,9 +131,8 @@ public class Backoff extends MACActorBase {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Backoff newObject = (Backoff)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Backoff newObject = (Backoff) super.clone(workspace);
         return newObject;
     }
 
@@ -145,10 +142,13 @@ public class Backoff extends MACActorBase {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         int ct = 0;
         Director director = getDirector();
         _currentTime = director.getModelTime();
-        int kind=whoTimeout();
+
+        int kind = whoTimeout();
+
         // if a timer is processed, should not consume the message token
         // kind = -1 means no timer event.
         if (kind == -1) {
@@ -157,82 +157,95 @@ public class Backoff extends MACActorBase {
             } else if (fromDataPump.hasToken(0)) {
                 _inputMessage = (RecordToken) fromDataPump.get(0);
             }
-            if (_inputMessage != null) {
-                _messageType = ((IntToken)
-                        _inputMessage.get("kind")).intValue();
 
+            if (_inputMessage != null) {
+                _messageType = ((IntToken) _inputMessage.get("kind")).intValue();
             }
         }
 
         switch (_state) {
         case No_Backoff:
+
             switch (_messageType) {
             case Backoff:
                 _setAttribute(_mBkIP, new BooleanToken(true));
-                _cnt = ((IntToken)_inputMessage.get("cnt")).intValue();
-                if (_cnt<0) {
-                    int ccw = ((IntToken)_inputMessage.get("ccw")).intValue();
+                _cnt = ((IntToken) _inputMessage.get("cnt")).intValue();
+
+                if (_cnt < 0) {
+                    int ccw = ((IntToken) _inputMessage.get("ccw")).intValue();
                     _slotCnt = _generateRandom(ccw);
-                } else
+                } else {
                     _slotCnt = _cnt;
-                if (_status == Idle)
+                }
+
+                if (_status == Idle) {
                     _startBackoff();
-                else {
+                } else {
                     _cnt = 1; //backoff done will return with -1; another backoff will follow
                     _state = Channel_Busy;
                 }
+
                 break;
+
             case Idle:
-                _status=Idle;
+                _status = Idle;
                 break;
 
             case Busy:
-                _status=Busy;
+                _status = Busy;
                 break;
             }
+
             break;
 
         case Channel_Busy:
-            switch(_messageType) {
-                // modify standard here
+
+            switch (_messageType) {
+            // modify standard here
             case Idle:
                 _startBackoff();
                 break;
-                // end modification
 
+            // end modification
             case Cancel:
                 _backoffDone(_slotCnt);
                 break;
             }
+
             break;
 
         case Channel_Idle:
+
             // modify standard here
-            if (kind == BackoffTimeOut)
-                {
-                    if (_cnt == 0)
-                        ct = -2;
-                    else
-                        ct = -1;
-                    _backoffDone(ct);
+            if (kind == BackoffTimeOut) {
+                if (_cnt == 0) {
+                    ct = -2;
+                } else {
+                    ct = -1;
                 }
-            switch(_messageType) {
-                // modify standard here
+
+                _backoffDone(ct);
+            }
+
+            switch (_messageType) {
+            // modify standard here
             case Busy:
-                _slotCnt -= (int)(_currentTime.subtract(_backoffStartTime)
-                    .getDoubleValue()*1e6/_aSlotTime);
+                _slotCnt -= (int) ((_currentTime.subtract(_backoffStartTime)
+                                                .getDoubleValue() * 1e6) / _aSlotTime);
                 cancelTimer(_BackoffTimer);
                 _state = Channel_Busy;
-                _status=Busy;
+                _status = Busy;
                 break;
-                // end modification
 
+            // end modification
             case Cancel:
                 _backoffDone(_slotCnt);
                 break;
             }
+
             break;
         }
+
         _inputMessage = null;
         _messageType = UNKNOWN;
     }
@@ -242,13 +255,17 @@ public class Backoff extends MACActorBase {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        long sd = ((LongToken)(seed.getToken())).longValue();
-        if (sd != (long)0) {
+
+        long sd = ((LongToken) (seed.getToken())).longValue();
+
+        if (sd != (long) 0) {
             _random.setSeed(sd);
         } else {
             _random.setSeed(System.currentTimeMillis() + hashCode());
         }
+
         _inputMessage = null;
+
         //_message = null;
         _messageType = UNKNOWN;
         _status = Busy;
@@ -256,14 +273,14 @@ public class Backoff extends MACActorBase {
         _backoffStartTime = new Time(getDirector());
 
         NamedObj macComposite = getContainer().getContainer();
+
         if (macComposite.getAttribute("mBkIP") != null) {
             _mBkIP = macComposite.getAttribute("mBkIP");
         } else {
             _mBkIP = null;
-            throw new IllegalActionException ("the MAC compositor " +
-                    "dosen't contain a parameter named mBkIP");
+            throw new IllegalActionException("the MAC compositor "
+                + "dosen't contain a parameter named mBkIP");
         }
-
     }
 
     /** Override the base class to declare that the <i>BKDone</i>
@@ -280,11 +297,11 @@ public class Backoff extends MACActorBase {
     ////                         private methods                   ////
     private int _generateRandom(int ccw) {
         double r = _random.nextDouble();
-        return (int)Math.ceil(ccw * r);
+        return (int) Math.ceil(ccw * r);
     }
 
     private void _backoffDone(int cnt) throws IllegalActionException {
-        Token[] value = {new IntToken(BkDone), new IntToken(cnt)};
+        Token[] value = { new IntToken(BkDone), new IntToken(cnt) };
         BKDone.send(0, new RecordToken(BackoffDoneMsgFields, value));
         _setAttribute(_mBkIP, new BooleanToken(false));
         _state = No_Backoff;
@@ -293,35 +310,28 @@ public class Backoff extends MACActorBase {
     private void _startBackoff() throws IllegalActionException {
         _backoffStartTime = _currentTime;
         _BackoffTimer = setTimer(BackoffTimeOut,
-            _currentTime.add(_slotCnt*_aSlotTime*1e-6));
+                _currentTime.add(_slotCnt * _aSlotTime * 1e-6));
         _state = Channel_Idle;
-        _status=Idle;
+        _status = Idle;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     //Define the states of the inside FSM.
-    private static final int No_Backoff   = 0;
+    private static final int No_Backoff = 0;
     private static final int Channel_Busy = 1;
     private static final int Channel_Idle = 2;
-
-    private int _state=0;
+    private int _state = 0;
     private int _slotCnt;
     private int _cnt;
     private int _status;
-
-
     private Timer _BackoffTimer;
+
     // timer types
-    private static final int BackoffTimeOut=0;
-
+    private static final int BackoffTimeOut = 0;
     private Time _backoffStartTime;
-
     private RecordToken _inputMessage;
     private int _messageType;
     private Time _currentTime;
-
     protected Random _random = new Random();
-
 }

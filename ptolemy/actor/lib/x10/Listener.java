@@ -25,8 +25,9 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.x10;
+
+import x10.Command;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.StringToken;
@@ -34,10 +35,11 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import x10.Command;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Listener
+
 /** Monitor the X10 network for any and all commands and output a string
  *  description of the command.
  *
@@ -47,9 +49,7 @@ import x10.Command;
 @Pt.ProposedRating Green (eal)
 @Pt.AcceptedRating Yellow (ptolemy)
  */
-
 public class Listener extends Receiver {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -59,7 +59,7 @@ public class Listener extends Receiver {
      *   actor with this name.
      */
     public Listener(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create output port.
@@ -98,7 +98,6 @@ public class Listener extends Receiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Empty string token.
     private StringToken _EMPTY_STRING = new StringToken("");
 }

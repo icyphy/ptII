@@ -28,13 +28,14 @@ COPYRIGHTENDKEY
 Created : December 2000
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtArrayConstructNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents array construction using
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtArrayConstructNode extends ASTPtRootNode {
-
     public ASTPtArrayConstructNode(int id) {
         super(id);
     }
@@ -61,8 +61,7 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitArrayConstructNode(this);
     }
 }

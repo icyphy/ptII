@@ -24,9 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.fairdf.kernel;
-
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,8 +51,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FairDFDirector
+
 /**
 
 This director implements a variant of dataflow that guarantees a
@@ -77,23 +77,21 @@ and it restores the queues to their original state.
 @ProposedRating Red (janneck)
 @AcceptedRating Red (reviewmoderator)
  */
-
 public class FairDFDirector extends Director {
-
     public FairDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         init();
     }
 
     public FairDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         init();
     }
 
     public FairDFDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         init();
     }
@@ -102,15 +100,18 @@ public class FairDFDirector extends Director {
         super.initialize();
 
         // get my contained actors
-        CompositeActor container = (CompositeActor)this.getContainer();
+        CompositeActor container = (CompositeActor) this.getContainer();
         List entities = container.entityList();
         actors = new ArrayList();
-        for (Iterator i = entities.iterator(); i.hasNext(); ) {
+
+        for (Iterator i = entities.iterator(); i.hasNext();) {
             Object e = i.next();
+
             if (e instanceof Actor) {
                 actors.add(e);
             }
         }
+
         iterationCount = 0;
     }
 
@@ -122,7 +123,6 @@ public class FairDFDirector extends Director {
      * @return Always returns what <tt>super.prefire()</tt> returns.
      * @exception IllegalActionException If thrown by <tt>super.prefire()</tt>
      */
-
     public boolean prefire() throws IllegalActionException {
         reFire = false;
         return super.prefire();
@@ -132,15 +132,20 @@ public class FairDFDirector extends Director {
         if (reFire) {
             rollbackReceivers();
         }
+
         reFire = true;
 
         List unfiredActors = new ArrayList(actors);
         firedActors = new HashSet();
+
         boolean hasFired = true;
+
         while (hasFired) {
             hasFired = false;
-            for (ListIterator i = unfiredActors.listIterator(); i.hasNext(); ) {
-                Actor a = (Actor)i.next();
+
+            for (ListIterator i = unfiredActors.listIterator(); i.hasNext();) {
+                Actor a = (Actor) i.next();
+
                 if (a.prefire()) {
                     a.fire();
                     i.remove();
@@ -153,14 +158,17 @@ public class FairDFDirector extends Director {
 
     public boolean postfire() throws IllegalActionException {
         commitReceivers();
-        for (Iterator i = firedActors.iterator(); i.hasNext(); ) {
-            Actor a = (Actor)i.next();
+
+        for (Iterator i = firedActors.iterator(); i.hasNext();) {
+            Actor a = (Actor) i.next();
             a.postfire();
         }
 
         iterationCount += 1;
-        int iterationLimit = ((IntToken)(iterations.getToken())).intValue();
-        if (iterationLimit > 0 && iterationCount >= iterationLimit) {
+
+        int iterationLimit = ((IntToken) (iterations.getToken())).intValue();
+
+        if ((iterationLimit > 0) && (iterationCount >= iterationLimit)) {
             iterationCount = 0;
             return false;
         }
@@ -190,10 +198,11 @@ public class FairDFDirector extends Director {
      * were committed.
      */
     private void rollbackReceivers() {
-        for (Iterator i = modifiedReceivers.iterator(); i.hasNext(); ) {
-            FairDFReceiver r = (FairDFReceiver)i.next();
+        for (Iterator i = modifiedReceivers.iterator(); i.hasNext();) {
+            FairDFReceiver r = (FairDFReceiver) i.next();
             r.rollback();
         }
+
         modifiedReceivers.clear();
     }
 
@@ -201,10 +210,11 @@ public class FairDFDirector extends Director {
      * Commit the changes made to all receivers instantiated by this director.
      */
     private void commitReceivers() {
-        for (Iterator i = modifiedReceivers.iterator(); i.hasNext(); ) {
-            FairDFReceiver r = (FairDFReceiver)i.next();
+        for (Iterator i = modifiedReceivers.iterator(); i.hasNext();) {
+            FairDFReceiver r = (FairDFReceiver) i.next();
             r.commit();
         }
+
         modifiedReceivers.clear();
     }
 
@@ -216,7 +226,6 @@ public class FairDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
      *  equal to zero, then the execution will never return false in postfire,
@@ -224,24 +233,18 @@ public class FairDFDirector extends Director {
      * <p>
      *  The default value is an IntToken with the value zero.
      */
-
     public Parameter iterations;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
-
     private Set modifiedReceivers = new HashSet();
     private List actors = null;
-
     private Collection firedActors = null;
-    private boolean    reFire = false;
+    private boolean reFire = false;
     private int iterationCount;
 
     ///////////////////////////////////////////////////////////////////
     ////                         nested & inner classes            ////
-
-
 
     /**
      * This receiver implements a queue that realizes a
@@ -250,16 +253,16 @@ public class FairDFDirector extends Director {
      * it back to the last state that has been committed.
      */
     class FairDFReceiver extends AbstractReceiver {
-
         ///////////////////////////////////////////////////////////////////
         //// implement: AbstractReceiver                               ////
         ///////////////////////////////////////////////////////////////////
-
         public Token get() throws NoTokenException {
-            if (next >= queue.size())
-                throw new NoTokenException("Attempt to read from an empty queue.");
+            if (next >= queue.size()) {
+                throw new NoTokenException(
+                    "Attempt to read from an empty queue.");
+            }
 
-            Token v = (Token)queue.get(next++);
+            Token v = (Token) queue.get(next++);
             notifyReceiverChange(this);
             return v;
         }
@@ -277,7 +280,7 @@ public class FairDFDirector extends Director {
         }
 
         public boolean hasToken(int i) {
-            return (next + i - 1) < queue.size();
+            return ((next + i) - 1) < queue.size();
         }
 
         /** Clear this receiver of any contained tokens.
@@ -295,7 +298,6 @@ public class FairDFDirector extends Director {
         ///////////////////////////////////////////////////////////////////
         ////                      FairDFReceiver                          ////
         ///////////////////////////////////////////////////////////////////
-
         FairDFReceiver() {
             super();
         }
@@ -304,23 +306,27 @@ public class FairDFDirector extends Director {
             super(container);
         }
 
-        void  rollback() {
-            for (int i = 0; i < added; i++)
+        void rollback() {
+            for (int i = 0; i < added; i++) {
                 queue.remove(queue.size() - 1);
+            }
+
             next = 0;
             added = 0;
         }
 
-        void  commit() {
-            for (int i = 0; i < next; i++)
+        void commit() {
+            for (int i = 0; i < next; i++) {
                 queue.remove(0);
+            }
+
             next = 0;
             added = 0;
         }
 
         private List queue = new ArrayList();
-        private int  next = 0;
-        private int  added = 0;
+        private int next = 0;
+        private int added = 0;
     }
 
     /**
@@ -333,15 +339,12 @@ public class FairDFDirector extends Director {
      * <p>
      * <bf>NOTE:</bf> This class is currently not used, and hence redundant.
      */
-
     static class SimpleFairDFReceiver extends AbstractReceiver {
-
         ///////////////////////////////////////////////////////////////////
         //// implement: AbstractReceiver                               ////
         ///////////////////////////////////////////////////////////////////
-
         public Token get() throws NoTokenException {
-            Token v = (Token)queue.get(0);
+            Token v = (Token) queue.get(0);
             queue.remove(0);
             return v;
         }
@@ -375,7 +378,6 @@ public class FairDFDirector extends Director {
         ///////////////////////////////////////////////////////////////////
         //// SimpleFairDFReceiver                                         ////
         ///////////////////////////////////////////////////////////////////
-
         SimpleFairDFReceiver() {
             super();
         }

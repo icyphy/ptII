@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.javasound;
 
 import java.io.IOException;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.javasound.LiveSound;
 
+
 /////////////////////////////////////////////////////////////////
 //// AudioCapture
+
 /**
    This actor sequentially outputs audio samples that are captured
    from the audio input port of the computer. The audio input port
@@ -106,7 +107,6 @@ import ptolemy.media.javasound.LiveSound;
    @see ptolemy.media.javasound.SoundWriter
 */
 public class AudioCapture extends LiveSoundActor {
-
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the parameters and initialize them to their default values.
@@ -119,7 +119,7 @@ public class AudioCapture extends LiveSoundActor {
      *   actor with this name.
      */
     public AudioCapture(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -130,8 +130,7 @@ public class AudioCapture extends LiveSoundActor {
         output.setTypeEquals(BaseType.DOUBLE);
         output.setMultiport(true);
 
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression("transferSize");
     }
@@ -167,10 +166,10 @@ public class AudioCapture extends LiveSoundActor {
 
         if (LiveSound.isCaptureActive()) {
             throw new IllegalActionException(this,
-                    "This actor cannot start audio capture because " +
-                    "another actor currently has access to the audio " +
-                    "capture resource. Only one AudioCapture actor may " +
-                    "be used at a time.");
+                "This actor cannot start audio capture because "
+                + "another actor currently has access to the audio "
+                + "capture resource. Only one AudioCapture actor may "
+                + "be used at a time.");
         }
 
         try {
@@ -180,9 +179,8 @@ public class AudioCapture extends LiveSoundActor {
             LiveSound.startCapture(this);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot initialize audio capture.");
+                "Cannot initialize audio capture.");
         }
-
     }
 
     /** Capture and output a single audio sample on each channel.
@@ -207,24 +205,27 @@ public class AudioCapture extends LiveSoundActor {
         }
 
         int count = _transferSize;
+
         if (count > _audioSendArray.length) {
             _audioSendArray = new DoubleToken[count];
         }
+
         try {
             // Read in audio data.
             _audioInDoubleArray = LiveSound.getSamples(this);
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot capture audio.");
+            throw new IllegalActionException(this, ex, "Cannot capture audio.");
         }
+
         for (int j = 0; j < _channels; j++) {
             // Convert to DoubleToken.
             for (int element = 0; element < count; element++) {
-                _audioSendArray[element] = new DoubleToken(
-                        _audioInDoubleArray[j][element]);
+                _audioSendArray[element] = new DoubleToken(_audioInDoubleArray[j][element]);
             }
+
             output.send(j, _audioSendArray, count);
         }
+
         return true;
     }
 
@@ -233,20 +234,20 @@ public class AudioCapture extends LiveSoundActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
         // Stop capturing audio.
         if (LiveSound.isCaptureActive()) {
             try {
                 LiveSound.stopCapture(this);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Error stopping audio capture.");
+                    "Error stopping audio capture.");
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private double[][] _audioInDoubleArray;
     private DoubleToken[] _audioSendArray = new DoubleToken[1];
 }

@@ -38,6 +38,7 @@ import diva.util.Filter;
 import diva.util.FilteredIterator;
 import diva.util.IteratorUtilities;
 
+
 /**
  * An XmlElement is a node of a tree representing an XML file.
  * It is a concrete class. An XmlReader object will construct a
@@ -51,7 +52,6 @@ import diva.util.IteratorUtilities;
  * @version $Id$
  */
 public class XmlElement {
-
     /** The child elements of this element. Could be a LinkedList
      * instead, I suppose...
      */
@@ -120,7 +120,7 @@ public class XmlElement {
      * Return an enumeration over the names of the attributes
      * in this schematic. There is no order guarantee on the attributes.
      */
-    public Iterator attributeNames () {
+    public Iterator attributeNames() {
         return _attributes.keySet().iterator();
     }
 
@@ -129,14 +129,14 @@ public class XmlElement {
      * is included mainly to allow test suites to be written. In
      * general, check the parent of the child.
      */
-    public boolean containsElement (XmlElement elt) {
+    public boolean containsElement(XmlElement elt) {
         return _children.contains(elt);
     }
 
     /**
      * Return the number of child elements.
      */
-    public int elementCount () {
+    public int elementCount() {
         return _children.size();
     }
 
@@ -145,7 +145,7 @@ public class XmlElement {
      * The elements are generated in the order in which they were
      * added.
      */
-    public Iterator elements () {
+    public Iterator elements() {
         return _children.iterator();
     }
 
@@ -155,10 +155,11 @@ public class XmlElement {
      *
      *  @return an Iterator of XmlElements
      */
-    public Iterator elements (final String type) {
-        return new FilteredIterator(elements(), new Filter () {
-                public boolean accept (Object o) {
-                    return ((XmlElement)o)._type.equals(type);
+    public Iterator elements(final String type) {
+        return new FilteredIterator(elements(),
+            new Filter() {
+                public boolean accept(Object o) {
+                    return ((XmlElement) o)._type.equals(type);
                 }
             });
     }
@@ -167,7 +168,7 @@ public class XmlElement {
      * Return the value of the attribute with the given name,
      * or null if there isn't one.
      */
-    public String getAttribute (String name) {
+    public String getAttribute(String name) {
         return (String) _attributes.get(name);
     }
 
@@ -179,7 +180,7 @@ public class XmlElement {
      * you add any attributes to this list, you must be sure that the
      * value is a String.
      */
-    public Map getAttributeMap () {
+    public Map getAttributeMap() {
         return _attributes;
     }
 
@@ -191,7 +192,7 @@ public class XmlElement {
      * elements to this list, you MUST call the setParent() method
      * of that element with this object.
      */
-    public List getChildList () {
+    public List getChildList() {
         return _children;
     }
 
@@ -200,9 +201,10 @@ public class XmlElement {
      * or null if there isn't one.
      */
     public XmlElement getElement(final String type) {
-        return (XmlElement) IteratorUtilities.firstMatch(elements(), new Filter() {
-                public boolean accept (Object o) {
-                    return ((XmlElement)o)._type.equals(type);
+        return (XmlElement) IteratorUtilities.firstMatch(elements(),
+            new Filter() {
+                public boolean accept(Object o) {
+                    return ((XmlElement) o)._type.equals(type);
                 }
             });
     }
@@ -212,11 +214,12 @@ public class XmlElement {
      * and name, or null if there isn't one.
      */
     public XmlElement getElement(final String type, final String name) {
-        return (XmlElement) IteratorUtilities.firstMatch(elements(), new Filter() {
-                public boolean accept (Object o) {
+        return (XmlElement) IteratorUtilities.firstMatch(elements(),
+            new Filter() {
+                public boolean accept(Object o) {
                     XmlElement elt = (XmlElement) o;
                     return elt._type.equals(type)
-                        && elt.getAttribute("name").equals(name);
+                    && elt.getAttribute("name").equals(name);
                 }
             });
     }
@@ -246,7 +249,7 @@ public class XmlElement {
     /**
      * Test if this element has the attribute with the given name.
      */
-    public boolean hasAttribute (String name) {
+    public boolean hasAttribute(String name) {
         return _attributes.containsKey(name);
     }
 
@@ -270,7 +273,7 @@ public class XmlElement {
      * Throw an exception if there is no attribute with the
      * given name in this schematic.
      */
-    public void setAttribute (String name, String value) {
+    public void setAttribute(String name, String value) {
         _attributes.put(name, value);
     }
 
@@ -300,9 +303,12 @@ public class XmlElement {
      */
     public String toString() {
         StringWriter sw = new StringWriter();
+
         try {
             writeXML(sw, "");
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
+
         return sw.toString();
     }
 
@@ -311,33 +317,39 @@ public class XmlElement {
      */
     public void writeXML(Writer out, String prefix) throws IOException {
         out.write(prefix + "<" + getType());
+
         Iterator attrs = attributeNames();
+
         while (attrs.hasNext()) {
             String name = (String) attrs.next();
             String value = getAttribute(name);
             out.write(" " + name + "=\"" + value + "\"");
         }
+
         String pcdata = getPCData();
-        if (elementCount() > 0 || pcdata.length() > 0) {
+
+        if ((elementCount() > 0) || (pcdata.length() > 0)) {
             out.write(">");
+
             if (elementCount() > 0) {
                 Iterator children = elements();
                 out.write("\n");
+
                 while (children.hasNext()) {
                     XmlElement child = (XmlElement) children.next();
                     child.writeXML(out, prefix + "    ");
                 }
+
                 out.write(prefix);
             }
+
             if (pcdata.length() > 0) {
                 out.write(pcdata);
             }
-            out.write("</" + getType() + ">\n");
 
+            out.write("</" + getType() + ">\n");
         } else {
             out.write("/>\n");
         }
     }
 }
-
-

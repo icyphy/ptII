@@ -26,7 +26,6 @@ PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -49,8 +48,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// JAITranslate
+
 /**
    Moves the origin of an image.  Typically, images in JAI, when created,
    have as their origin, (0, 0) in the top left corner.  This actor moves
@@ -67,9 +68,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAITranslate extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -79,7 +78,7 @@ public class JAITranslate extends Transformer {
      *   actor with this name.
      */
     public JAITranslate(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xShift = new Parameter(this, "xShift", new DoubleToken("0.0F"));
@@ -89,8 +88,7 @@ public class JAITranslate extends Transformer {
         interpolationType.setExpression("bilinear");
         _interpolationType = _BILINEAR;
 
-        subSampleBits =
-            new Parameter(this, "subSampleBits", new IntToken(8));
+        subSampleBits = new Parameter(this, "subSampleBits", new IntToken(8));
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -107,7 +105,6 @@ public class JAITranslate extends Transformer {
     /** The subsample precision.  The default value of this parameter
      *  is the integer value 8.
      */
-
     public Parameter subSampleBits;
 
     /** The shift amount in the horizontal direction.  A positive
@@ -131,9 +128,10 @@ public class JAITranslate extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == interpolationType) {
             String typeName = interpolationType.getExpression();
+
             if (typeName.equals("bicubic")) {
                 _interpolationType = _BICUBIC;
             } else if (typeName.equals("bicubic2")) {
@@ -144,15 +142,14 @@ public class JAITranslate extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized interpolation type: " + typeName);
+                    "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == xShift) {
-            _xShift = ((DoubleToken)xShift.getToken()).doubleValue();
+            _xShift = ((DoubleToken) xShift.getToken()).doubleValue();
         } else if (attribute == yShift) {
-            _yShift = ((DoubleToken)yShift.getToken()).doubleValue();
+            _yShift = ((DoubleToken) yShift.getToken()).doubleValue();
         } else if (attribute == subSampleBits) {
-            _subSampleBits =
-                ((IntToken)subSampleBits.getToken()).intValue();
+            _subSampleBits = ((IntToken) subSampleBits.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -165,6 +162,7 @@ public class JAITranslate extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
@@ -179,26 +177,31 @@ public class JAITranslate extends Transformer {
         }
 
         parameters.addSource(oldImage);
-        parameters.add((float)_xShift);
-        parameters.add((float)_yShift);
+        parameters.add((float) _xShift);
+        parameters.add((float) _yShift);
 
-        switch(_interpolationType) {
+        switch (_interpolationType) {
         case _BICUBIC:
             parameters.add(new InterpolationBicubic(_subSampleBits));
             break;
+
         case _BICUBIC2:
             parameters.add(new InterpolationBicubic2(_subSampleBits));
             break;
+
         case _BILINEAR:
             parameters.add(new InterpolationBilinear(_subSampleBits));
             break;
+
         case _NEARESTNEIGHBOR:
             parameters.add(new InterpolationNearest());
             break;
+
         default:
             throw new IllegalActionException(
-                    "Invalid value for interpolationType");
+                "Invalid value for interpolationType");
         }
+
         RenderedOp newImage = JAI.create("translate", parameters, null);
 
         if (_debugging) {
@@ -233,5 +236,4 @@ public class JAITranslate extends Transformer {
     private static final int _BICUBIC2 = 1;
     private static final int _BILINEAR = 2;
     private static final int _NEARESTNEIGHBOR = 3;
-
 }

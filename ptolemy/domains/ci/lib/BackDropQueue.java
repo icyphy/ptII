@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ci.lib;
 
 import java.util.LinkedList;
@@ -40,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Queue
+
 /**
    an push-pull FIFO queue.
 
@@ -52,7 +53,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class BackDropQueue extends CIActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,7 +62,7 @@ public class BackDropQueue extends CIActor {
      *   actor with this name.
      */
     public BackDropQueue(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(false);
         output.setMultiport(false);
@@ -77,7 +77,11 @@ public class BackDropQueue extends CIActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    public TypedIOPort length, dropped;
+    public TypedIOPort length;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    public TypedIOPort dropped;
     public Parameter capacity;
 
     ///////////////////////////////////////////////////////////////////
@@ -86,7 +90,8 @@ public class BackDropQueue extends CIActor {
     /**
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
-        int c = ((IntToken)capacity.getToken()).intValue();
+        int c = ((IntToken) capacity.getToken()).intValue();
+
         if (input.hasToken(0)) {
             if (_queue.size() < c) {
                 _queue.add(input.get(0));
@@ -95,8 +100,9 @@ public class BackDropQueue extends CIActor {
                 dropped.broadcast(token);
             }
         } else {
-            output.broadcast((Token)_queue.removeFirst());
+            output.broadcast((Token) _queue.removeFirst());
         }
+
         IntToken t = new IntToken(_queue.size());
         length.broadcast(t);
     }
@@ -107,6 +113,7 @@ public class BackDropQueue extends CIActor {
      */
     public boolean prefire() throws IllegalActionException {
         super.prefire();
+
         // In case this actor is removed from
         // asyncPulledActors list to _pulledActors.
         if (input.hasToken(0)) {
@@ -114,7 +121,8 @@ public class BackDropQueue extends CIActor {
                 enableActor();
             }
         }
-        return (input.hasToken(0) || _queue.size() > 0);
+
+        return (input.hasToken(0) || (_queue.size() > 0));
     }
 
     public void preinitialize() throws IllegalActionException {
@@ -124,10 +132,7 @@ public class BackDropQueue extends CIActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private LinkedList _queue = null;
 
     // private IntToken t = null;
-
-
 }

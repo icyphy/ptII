@@ -37,6 +37,7 @@ import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasLayer;
 
+
 /**
  * A figure that embeds swing components in canvas drawings.
  *
@@ -48,6 +49,7 @@ public class SwingWrapper extends AbstractFigure {
     /**
      * The high-res version of the bounding box
      */
+
     /// private Rectangle2D _bounds;
 
     /**
@@ -59,7 +61,7 @@ public class SwingWrapper extends AbstractFigure {
      * Construct a new swing wrapper instance
      * to wrap the given component.
      */
-    public SwingWrapper (JComponent c) {
+    public SwingWrapper(JComponent c) {
         super();
         setComponent(c);
     }
@@ -68,7 +70,7 @@ public class SwingWrapper extends AbstractFigure {
      * the inherited method to take account of the thickness of
      * the stroke, if there is one.
      */
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         // We really want to return the high-res version of the bounding box
         return _component.getBounds();
     }
@@ -77,21 +79,21 @@ public class SwingWrapper extends AbstractFigure {
      * Return the component that this is
      * wrapping.
      */
-    public JComponent getComponent () {
+    public JComponent getComponent() {
         return _component;
     }
 
     /**
      * Get the shape of this figure.
      */
-    public Shape getShape () {
+    public Shape getShape() {
         return getBounds();
     }
 
     /**
      * Ask the wrapped component to paint itself.
      */
-    public void paint (Graphics2D g) {
+    public void paint(Graphics2D g) {
         if (isVisible()) {
             //Rectangle2D bounds = getBounds();
             //System.out.println("Painting component: " + bounds); //DEBUG
@@ -103,13 +105,11 @@ public class SwingWrapper extends AbstractFigure {
             //finally {
             //    cg.dispose();
             //}
-
             // This compiles but doesn't work right:
             _component.paint(g);
 
             // This is supposed to work right but doesn't compile:
             // _component.paintComponent(g);
-
             // Nor does this:
             //ComponentUI ui = UIManager.getUI(_component);
             //if (ui != null) {
@@ -129,7 +129,7 @@ public class SwingWrapper extends AbstractFigure {
      * with the given component and reshape/repaint
      * the figure.
      */
-    public void setComponent (JComponent c) {
+    public void setComponent(JComponent c) {
         _component = c;
 
         // Set the component's size to its preferred size
@@ -138,17 +138,20 @@ public class SwingWrapper extends AbstractFigure {
         // If the figure is already in a layer, set the canvas
         // as the parent of the component
         CanvasLayer layer = getLayer();
+
         if (layer != null) {
             layer.getCanvasPane().getCanvas().add(_component);
         }
+
         repaint();
     }
 
     /** Set the parent of this figure. This method overrides the
      * inherited method to deal with the Swing component hierarchy.
      */
-    public void setParent (CanvasComponent fc) {
+    public void setParent(CanvasComponent fc) {
         super.setParent(fc);
+
         if (_component.getParent() == null) {
             CanvasLayer layer = getLayer();
             layer.getCanvasPane().getCanvas().setLayout(null);
@@ -163,24 +166,23 @@ public class SwingWrapper extends AbstractFigure {
      * that are not shape-preserving, such as shears and
      * rotations.
      */
-    public void transform (AffineTransform at) {
+    public void transform(AffineTransform at) {
         throw new UnsupportedOperationException("FIXME");
     }
 
     /**
      * Translate the figure by the given distance.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         repaint();
 
         // This is not really right -- we want to keep a high-res
         // version of the bounding box
         if (_component != null) {
             Point p = _component.getLocation();
-            _component.setLocation(p.x + (int)x, p.y + (int)y);
+            _component.setLocation(p.x + (int) x, p.y + (int) y);
         }
+
         repaint();
     }
 }
-
-

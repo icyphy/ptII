@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 import java.io.Serializable;
@@ -33,8 +32,10 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Rounding
+
 /**
    The Rounding class provides a type safe enumeration of strategies for
    handling loss of numeric resolution. Rounding is typically resolved when
@@ -90,7 +91,6 @@ import java.util.Map;
    @Pt.AcceptedRating Red
 */
 public abstract class Rounding implements Cloneable, Serializable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -117,7 +117,7 @@ public abstract class Rounding implements Cloneable, Serializable {
      *  @return An instance of Rounding or null.
      */
     public static Rounding forName(String name) {
-        return (Rounding)_nameToRounding.get(name);
+        return (Rounding) _nameToRounding.get(name);
     }
 
     /** Return an instance of this class with the specified name,
@@ -126,13 +126,15 @@ public abstract class Rounding implements Cloneable, Serializable {
      *  @exception IllegalArgumentException If the string does not
      *   match one of the known strategies.
      */
-    public static Rounding getName(String name)
-            throws IllegalArgumentException {
-        Rounding rounding = (Rounding)_nameToRounding.get(name);
-        if (rounding != null)
+    public static Rounding getName(String name) throws IllegalArgumentException {
+        Rounding rounding = (Rounding) _nameToRounding.get(name);
+
+        if (rounding != null) {
             return rounding;
-        throw new IllegalArgumentException(
-                "Unknown rounding strategy \"" + name + "\"." );
+        }
+
+        throw new IllegalArgumentException("Unknown rounding strategy \""
+            + name + "\".");
     }
 
     /** Return a hash code value for this object.
@@ -149,6 +151,7 @@ public abstract class Rounding implements Cloneable, Serializable {
      *  @param type An instance of Rounding.
      *  @return True if the argument is compatible with this type.
      */
+
     //    public boolean isCompatible(Rounding type) {
     //        if (this == UNKNOWN) {
     //            return true;
@@ -165,8 +168,11 @@ public abstract class Rounding implements Cloneable, Serializable {
             intPart = intPart.subtract(BigInteger.ONE);
             fracPart += 1.0;
         }
-        if (!_roundUp(intPart, fracPart))
+
+        if (!_roundUp(intPart, fracPart)) {
             return intPart;
+        }
+
         return intPart.add(BigInteger.ONE);
     }
 
@@ -179,7 +185,6 @@ public abstract class Rounding implements Cloneable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // NOTE: It may seem strange that these inner classes are built this
     // way instead of as anonymous classes...  This code was copied from
     // ptolemy.data.type.BaseType where an explanation that was valid
@@ -190,10 +195,12 @@ public abstract class Rounding implements Cloneable, Serializable {
         private General() {
             super("general");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
             return fracPart >= 0.5;
         }
     }
+
     public static final General GENERAL = new General();
 
     /** The round towards plus infinity rounding strategy */
@@ -201,10 +208,12 @@ public abstract class Rounding implements Cloneable, Serializable {
         private RoundCeiling() {
             super("ceiling");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
             return fracPart > 0.0;
         }
     }
+
     public static final RoundCeiling CEILING = new RoundCeiling();
 
     /** The round towards zero rounding strategy */
@@ -212,13 +221,16 @@ public abstract class Rounding implements Cloneable, Serializable {
         private RoundDown() {
             super("down");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
-            if (intPart.signum() >= 0)
+            if (intPart.signum() >= 0) {
                 return false;
-            else
+            } else {
                 return fracPart > 0.0;
+            }
         }
     }
+
     public static final RoundDown DOWN = new RoundDown();
 
     /** The round towards minus infinity (truncate) rounding strategy */
@@ -227,10 +239,12 @@ public abstract class Rounding implements Cloneable, Serializable {
             super("floor");
             _addRounding(this, "truncate");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
             return false;
         }
     }
+
     public static final RoundFloor FLOOR = new RoundFloor();
     public static final RoundFloor TRUNCATE = FLOOR;
 
@@ -240,14 +254,15 @@ public abstract class Rounding implements Cloneable, Serializable {
         private RoundHalfCeiling() {
             super("half_ceiling");
             _addRounding(this, "nearest");
-            _addRounding(this, "round");            // For compatibility
+            _addRounding(this, "round"); // For compatibility
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
             return fracPart >= 0.5;
         }
     }
-    public static final RoundHalfCeiling HALF_CEILING =
-    new RoundHalfCeiling();
+
+    public static final RoundHalfCeiling HALF_CEILING = new RoundHalfCeiling();
     public static final RoundHalfCeiling NEAREST = HALF_CEILING;
 
     /** The round to nearest and halves towards zero rounding strategy */
@@ -255,15 +270,18 @@ public abstract class Rounding implements Cloneable, Serializable {
         private RoundHalfDown() {
             super("half_down");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
-            if (fracPart != 0.5)
+            if (fracPart != 0.5) {
                 return fracPart > 0.5;
-            else if (intPart.signum() >= 0)
+            } else if (intPart.signum() >= 0) {
                 return false;
-            else
+            } else {
                 return fracPart > 0.0;
+            }
         }
     }
+
     public static final RoundHalfDown HALF_DOWN = new RoundHalfDown();
 
     /** The round to nearest and halves towards the even value (convergent)
@@ -273,12 +291,16 @@ public abstract class Rounding implements Cloneable, Serializable {
             super("half_even");
             _addRounding(this, "convergent");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
-            if (fracPart != 0.5)
+            if (fracPart != 0.5) {
                 return fracPart > 0.5;
+            }
+
             return intPart.testBit(0);
         }
     }
+
     public static final RoundHalfEven HALF_EVEN = new RoundHalfEven();
     public static final RoundHalfEven CONVERGENT = HALF_EVEN;
 
@@ -288,10 +310,12 @@ public abstract class Rounding implements Cloneable, Serializable {
         private RoundHalfFloor() {
             super("half_floor");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
             return fracPart > 0.5;
         }
     }
+
     public static final RoundHalfFloor HALF_FLOOR = new RoundHalfFloor();
 
     /** The round to nearest and halves away from zero rounding strategy */
@@ -299,15 +323,18 @@ public abstract class Rounding implements Cloneable, Serializable {
         private RoundHalfUp() {
             super("half_up");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
-            if (fracPart != 0.5)
+            if (fracPart != 0.5) {
                 return fracPart > 0.5;
-            else if (intPart.signum() >= 0)
+            } else if (intPart.signum() >= 0) {
                 return fracPart > 0.0;
-            else
+            } else {
                 return false;
+            }
         }
     }
+
     public static final RoundHalfUp HALF_UP = new RoundHalfUp();
 
     /** The no rounding necessary rounding strategy */
@@ -315,27 +342,33 @@ public abstract class Rounding implements Cloneable, Serializable {
         private RoundUnnecessary() {
             super("unnecessary");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
-            if (fracPart != 0.0)
+            if (fracPart != 0.0) {
                 throw new ArithmeticException("Rounding necessary.");
+            }
+
             return false;
         }
     }
-    public static final RoundUnnecessary UNNECESSARY =
-    new RoundUnnecessary();
+
+    public static final RoundUnnecessary UNNECESSARY = new RoundUnnecessary();
 
     /** The round away from zero rounding strategy */
     public static class RoundUp extends Rounding {
         private RoundUp() {
             super("up");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
-            if (intPart.signum() >= 0)
+            if (intPart.signum() >= 0) {
                 return fracPart > 0.0;
-            else
+            } else {
                 return false;
+            }
         }
     }
+
     public static final RoundUp UP = new RoundUp();
 
     /** The unknown rounding strategy at the bottom of the rounding
@@ -344,15 +377,16 @@ public abstract class Rounding implements Cloneable, Serializable {
         private Unknown() {
             super("unknown");
         }
+
         protected boolean _roundUp(BigInteger intPart, double fracPart) {
             return fracPart >= 0.5;
         }
     }
+
     public static final Unknown UNKNOWN = new Unknown();
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////
-
     // The constructor is protected to make a type safe enumeration.
     protected Rounding(String name) {
         _name = name;
@@ -365,12 +399,10 @@ public abstract class Rounding implements Cloneable, Serializable {
     /** Return true if intPart should be incremented to represent
      *  the rounded value of intPart + fracPart, which is positive.
      */
-    protected abstract boolean _roundUp(BigInteger intPart,
-            double fracPart);
+    protected abstract boolean _roundUp(BigInteger intPart, double fracPart);
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////
-
     // Add entries in this class to index the given name to
     // the given rounding type.
     static void _addRounding(Rounding type, String name) {
@@ -380,12 +412,12 @@ public abstract class Rounding implements Cloneable, Serializable {
         if (_nameToRounding == null) {
             _nameToRounding = new HashMap();
         }
+
         _nameToRounding.put(name, type);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private String _name;
 
     // A map from rounding type name to the rounding type for all rounding

@@ -26,13 +26,16 @@ COPYRIGHTENDKEY
 @ProposedRating Red (cxh)
 @AcceptedRating Red (cxh)
 */
-
 package ptolemy.copernicus.jhdl.util;
 
-import java.util.*;
 import soot.*;
+
 import soot.jimple.*;
+
 import soot.util.*;
+
+import java.util.*;
+
 
 /**
  * Control flow label
@@ -56,14 +59,13 @@ class Label {
             _level = _parent._level + 1;
             _parent.addChild(this, branch);
         }
-
     }
 
     public void addChild(Label child, boolean branch) {
         if (branch) {
-            _trueChild=child;
+            _trueChild = child;
         } else {
-            _falseChild=child;
+            _falseChild = child;
         }
     }
 
@@ -93,7 +95,6 @@ class Label {
     //      public ConditionExpr beginCondition() {
     //          return _beginCondition;
     //      }
-
     public ConditionExpr endCondition() {
         //return _endCondition;
         return null;
@@ -108,7 +109,6 @@ class Label {
      * Which branch of the parent is this label?
      */
     protected boolean _branch;
-
     protected Label _trueChild;
     protected Label _falseChild;
 
@@ -127,7 +127,7 @@ class Label {
      * A Label can have an end condition, where this label is "split" into
      * two new, longer labels
      */
-    //protected ConditionExpr _beginCondition = null;
 
+    //protected ConditionExpr _beginCondition = null;
     protected SuperBlock _block;
 }

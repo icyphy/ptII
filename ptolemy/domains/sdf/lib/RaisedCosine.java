@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.ArrayToken;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.math.DoubleUnaryOperation;
 import ptolemy.math.SignalProcessing;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RaisedCosine
+
 /**
    This actor implements an FIR filter with
    a raised cosine or square-root raised cosine frequency response.
@@ -112,9 +113,7 @@ import ptolemy.math.SignalProcessing;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class RaisedCosine extends FIR {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -124,15 +123,14 @@ public class RaisedCosine extends FIR {
      *   actor with this name.
      */
     public RaisedCosine(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         length = new Parameter(this, "length", new IntToken(64));
         interpolation.setToken(new IntToken(16));
         excessBW = new Parameter(this, "excessBW", new DoubleToken(1.0));
         root = new Parameter(this, "root", new BooleanToken(false));
-        symbolInterval =
-            new Parameter(this, "symbolInterval", new IntToken(16));
+        symbolInterval = new Parameter(this, "symbolInterval", new IntToken(16));
 
         // Hide taps from UI.
         taps.setVisibility(Settable.NONE);
@@ -173,9 +171,9 @@ public class RaisedCosine extends FIR {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == excessBW || attribute == length
-                || attribute == root || attribute == symbolInterval) {
+        throws IllegalActionException {
+        if ((attribute == excessBW) || (attribute == length)
+                || (attribute == root) || (attribute == symbolInterval)) {
             _initialize();
         } else {
             super.attributeChanged(attribute);
@@ -185,37 +183,37 @@ public class RaisedCosine extends FIR {
     // Initialize the state of the actor based on the current state of the
     // parameters.
     private void _initialize() throws IllegalActionException {
-        double excessBWValue =
-            ((DoubleToken)(excessBW.getToken())).doubleValue();
-        int symbolIntervalValue =
-            ((IntToken)(symbolInterval.getToken())).intValue();
-        int lengthValue = ((IntToken)(length.getToken())).intValue();
-        boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
+        double excessBWValue = ((DoubleToken) (excessBW.getToken()))
+            .doubleValue();
+        int symbolIntervalValue = ((IntToken) (symbolInterval.getToken()))
+            .intValue();
+        int lengthValue = ((IntToken) (length.getToken())).intValue();
+        boolean sqrt = ((BooleanToken) (root.getToken())).booleanValue();
+
         if (excessBWValue < 0.0) {
             throw new IllegalActionException(this,
-                    "Excess bandwidth was "
-                    + excessBWValue
-                    + " which is not greater than or equal to zero.");
+                "Excess bandwidth was " + excessBWValue
+                + " which is not greater than or equal to zero.");
         }
+
         if (lengthValue <= 0) {
-            throw new IllegalActionException(this, "Length was " +
-                    lengthValue + " which is not greater than zero.");
+            throw new IllegalActionException(this,
+                "Length was " + lengthValue
+                + " which is not greater than zero.");
         }
 
         double center = lengthValue * 0.5;
 
-        DoubleUnaryOperation raisedCosineSampleGenerator = sqrt ?
-            (DoubleUnaryOperation)
-            new SignalProcessing.SqrtRaisedCosineSampleGenerator(
-                    symbolIntervalValue, excessBWValue) :
-            (DoubleUnaryOperation)
-            new SignalProcessing.RaisedCosineSampleGenerator(
-                    symbolIntervalValue, excessBWValue);
+        DoubleUnaryOperation raisedCosineSampleGenerator = sqrt
+            ? (DoubleUnaryOperation) new SignalProcessing.SqrtRaisedCosineSampleGenerator(symbolIntervalValue,
+                excessBWValue)
+            : (DoubleUnaryOperation) new SignalProcessing.RaisedCosineSampleGenerator(symbolIntervalValue,
+                excessBWValue);
 
-        double[] tapsArray =
-            SignalProcessing.sampleWave(lengthValue, -center, 1.0,
-                    raisedCosineSampleGenerator);
+        double[] tapsArray = SignalProcessing.sampleWave(lengthValue, -center,
+                1.0, raisedCosineSampleGenerator);
         Token[] tapsArrayToken = new Token[tapsArray.length];
+
         for (int i = 0; i < tapsArray.length; i++) {
             tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
         }

@@ -26,14 +26,15 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CTStatefulActor
+
 /**
    Interface for actors that have states. The state of the actor can be
    marked (saved). The saved state can be restored so that an actor can go
@@ -53,16 +54,14 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Green (yuhong)
 */
 public interface CTStatefulActor extends Actor {
-
     /** Implementations of this method should go to the marked state.
      *  If there's no marked state, throws an exception.
      *  @exception IllegalActionException If there were no marked state.
      */
-    public void goToMarkedState() throws IllegalActionException ;
+    public void goToMarkedState() throws IllegalActionException;
 
     /** Implementations of this method should mark the current state
      *  of the actor.
      */
     public void markState();
-
 }

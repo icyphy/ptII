@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.util.ArrayList;
@@ -34,8 +33,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 ////
+
 /** PtolemyThread
     PtolemyThread extends Thread by adding rudimentary debugging capability.
 
@@ -46,7 +47,6 @@ import java.util.List;
     @Pt.AcceptedRating Green (liuj)
 */
 public class PtolemyThread extends Thread implements Debuggable {
-
     /** Construct a new PtolemyThread object. This constructor has the
      *  same effect as PtolemyThread(null, null, <i>generatedName</i>), where
      *  <i>generatedName</i> is a newly generated name. Automatically generated
@@ -117,6 +117,7 @@ public class PtolemyThread extends Thread implements Debuggable {
     public PtolemyThread(ThreadGroup group, String name) {
         super(group, name);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -134,6 +135,7 @@ public class PtolemyThread extends Thread implements Debuggable {
                 return;
             }
         }
+
         _debugListeners.add(listener);
         _debugging = true;
     }
@@ -149,10 +151,13 @@ public class PtolemyThread extends Thread implements Debuggable {
         if (_debugListeners == null) {
             return;
         }
+
         _debugListeners.remove(listener);
+
         if (_debugListeners.size() == 0) {
             _debugging = false;
         }
+
         return;
     }
 
@@ -170,12 +175,15 @@ public class PtolemyThread extends Thread implements Debuggable {
             // add more debug listeners...
             // Yes, this is slow, but hey, it's debug code.
             List list;
-            synchronized(this) {
+
+            synchronized (this) {
                 list = new ArrayList(_debugListeners);
             }
+
             Iterator listeners = list.iterator();
+
             while (listeners.hasNext()) {
-                ((DebugListener)listeners.next()).event(event);
+                ((DebugListener) listeners.next()).event(event);
             }
         }
     }
@@ -198,12 +206,15 @@ public class PtolemyThread extends Thread implements Debuggable {
             // add more debug listeners...
             // Yes, this is slow, but hey, it's debug code.
             List list;
-            synchronized(this) {
+
+            synchronized (this) {
                 list = new ArrayList(_debugListeners);
             }
+
             Iterator listeners = list.iterator();
+
             while (listeners.hasNext()) {
-                ((DebugListener)listeners.next()).message(message);
+                ((DebugListener) listeners.next()).message(message);
             }
         }
     }

@@ -32,6 +32,7 @@ import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 
+
 /** A Connector that draws itself in a straight line.
  *
  * @version $Id$
@@ -40,7 +41,6 @@ import diva.canvas.TransformContext;
  * @Pt.AcceptedRating  Red
  */
 public class StraightConnector extends AbstractConnector {
-
     /** The transformed positions of the start and end of the
      * line, for use by the label positioning code.
      */
@@ -51,7 +51,7 @@ public class StraightConnector extends AbstractConnector {
      * sites. The connector is drawn with a width of one
      * and in black.
      */
-    public StraightConnector (Site tail, Site head) {
+    public StraightConnector(Site tail, Site head) {
         super(tail, head);
         setShape(new Line2D.Double());
         route();
@@ -60,10 +60,9 @@ public class StraightConnector extends AbstractConnector {
     /** Tell the connector to reposition its label if it has one.
      * The label is currently only positioned at the center of the arc.
      */
-    public void repositionLabel () {
+    public void repositionLabel() {
         if (getLabelFigure() != null) {
-            Point2D pt = new Point2D.Double(
-                    (_headPt.getX() + _tailPt.getX()) / 2,
+            Point2D pt = new Point2D.Double((_headPt.getX() + _tailPt.getX()) / 2,
                     (_headPt.getY() + _tailPt.getY()) / 2);
             getLabelFigure().translateTo(pt);
             getLabelFigure().autoAnchor(getShape());
@@ -73,11 +72,12 @@ public class StraightConnector extends AbstractConnector {
     /** Tell the connector to route itself between the
      * current positions of the head and tail sites.
      */
-    public void route () {
+    public void route() {
         TransformContext currentContext = getTransformContext();
         Site headSite = getHeadSite();
         Site tailSite = getTailSite();
-        Point2D headPt, tailPt;
+        Point2D headPt;
+        Point2D tailPt;
 
         repaint();
 
@@ -93,13 +93,18 @@ public class StraightConnector extends AbstractConnector {
         }
 
         // Figure out the centers of the attached figures
-        Point2D tailCenter, headCenter;
+        Point2D tailCenter;
+
+        // Figure out the centers of the attached figures
+        Point2D headCenter;
+
         if (tailSite.getFigure() != null) {
             tailCenter = CanvasUtilities.getCenterPoint(tailSite.getFigure(),
                     currentContext);
         } else {
             tailCenter = tailPt;
         }
+
         if (headSite.getFigure() != null) {
             headCenter = CanvasUtilities.getCenterPoint(headSite.getFigure(),
                     currentContext);
@@ -136,17 +141,19 @@ public class StraightConnector extends AbstractConnector {
 
         // Adjust for decorations on the ends
         if (getHeadEnd() != null) {
-            getHeadEnd().setNormal(angle+Math.PI);
+            getHeadEnd().setNormal(angle + Math.PI);
             getHeadEnd().setOrigin(headPt.getX(), headPt.getY());
             getHeadEnd().getConnection(headPt);
         }
+
         if (getTailEnd() != null) {
             getTailEnd().setNormal(angle);
             getTailEnd().setOrigin(tailPt.getX(), tailPt.getY());
             getTailEnd().getConnection(tailPt);
         }
+
         // Change the line shape
-        ((Line2D)getShape()).setLine(tailPt, headPt);
+        ((Line2D) getShape()).setLine(tailPt, headPt);
 
         // Move the label
         repositionLabel();
@@ -158,17 +165,17 @@ public class StraightConnector extends AbstractConnector {
      * controllers may wish to translate connectors when the
      * sites at both ends are moved the same distance.
      */
-    public void translate (double x, double y) {
+    public void translate(double x, double y) {
         repaint();
+
         Line2D line = (Line2D) getShape();
-        line.setLine(
-                line.getX1()+x, line.getY1()+y,
-                line.getX2()+x, line.getY2()+y);
+        line.setLine(line.getX1() + x, line.getY1() + y, line.getX2() + x,
+            line.getY2() + y);
+
         if (getLabelFigure() != null) {
             getLabelFigure().translate(x, y);
         }
+
         repaint();
     }
 }
-
-

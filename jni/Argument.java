@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package jni;
 
 import java.io.IOException;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Argument
+
 /**
    An Argument is a native function argument associated to a GenericJNIActor
    @author V.Arnould, Thales
@@ -52,12 +53,11 @@ import ptolemy.util.StringUtilities;
    @see jni.GenericJNIActor
 */
 public class Argument extends AbstractSettableAttribute {
-
     /** Creates a new instance of Argument with the given name
      * for the given GenericJNIActor
      */
     public Argument(GenericJNIActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -76,8 +76,7 @@ public class Argument extends AbstractSettableAttribute {
      *  same listener to be notified twice of a value update.
      *  @param listener The listener to add.
      */
-    public void addValueListener(
-            ptolemy.kernel.util.ValueListener listener) {
+    public void addValueListener(ptolemy.kernel.util.ValueListener listener) {
     }
 
     /** Export the Argument in a property MoML. If this object is not
@@ -85,40 +84,32 @@ public class Argument extends AbstractSettableAttribute {
      *  @exception IOException If an IO error occurs
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
-        String value = getExpression();
-        output.write(
-                _getIndentPrefix(depth)
-                + "<"
-                + _elementName
-                + " name=\""
-                + name.trim()
-                + "\" class=\""
-                + getClassName().trim()
-                + "\" value=\""
-                + value.trim()
-                + "\" >\n");
-        _exportMoMLContents(output, depth + 1);
-        output.write(
-                _getIndentPrefix(depth) + "</"
-                + _elementName + ">\n");
-    }
 
+        String value = getExpression();
+        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
+            + name.trim() + "\" class=\"" + getClassName().trim()
+            + "\" value=\"" + value.trim() + "\" >\n");
+        _exportMoMLContents(output, depth + 1);
+        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
+    }
 
     /** Get the C type of the argument as a pointer if it is an array.
      *  @return the _cType attribute in pointer
      */
     public String getC2Type() {
         String ret = _cType;
+
         if (_cType.endsWith("[]")) {
-            if (StringUtilities.getProperty("os.name")
-                    .startsWith("SunOS")) {
+            if (StringUtilities.getProperty("os.name").startsWith("SunOS")) {
             }
-            ret = _cType.substring(0, _cType.length()-2) + " *";
+
+            ret = _cType.substring(0, _cType.length() - 2) + " *";
         }
+
         return ret;
     }
 
@@ -130,17 +121,17 @@ public class Argument extends AbstractSettableAttribute {
      */
     public String getC2TypeHack() {
         String returnValue = getC2Type();
-        if (StringUtilities.getProperty("os.name")
-                .startsWith("SunOS")) {
+
+        if (StringUtilities.getProperty("os.name").startsWith("SunOS")) {
             if (returnValue.startsWith("long")) {
                 return "int *";
             }
-        } else if (StringUtilities.getProperty("os.name")
-                .startsWith("Linux")) {
+        } else if (StringUtilities.getProperty("os.name").startsWith("Linux")) {
             if (returnValue.startsWith("long")) {
                 return "jint *";
             }
         }
+
         return returnValue;
     }
 
@@ -164,14 +155,9 @@ public class Argument extends AbstractSettableAttribute {
      * @return the string containing the argument specifications
      */
     public String getExpression() {
-        String ret =
-            new Boolean(isInput()).toString()
-            + ","
-            + new Boolean(isOutput()).toString()
-            + ","
-            + new Boolean(isReturn()).toString()
-            + ","
-            + getCType();
+        String ret = new Boolean(isInput()).toString() + ","
+            + new Boolean(isOutput()).toString() + ","
+            + new Boolean(isReturn()).toString() + "," + getCType();
         return ret;
     }
 
@@ -180,33 +166,31 @@ public class Argument extends AbstractSettableAttribute {
      */
     public String getJNIType() {
         String returnJNIType = "";
+
         if (_cType.endsWith("[]")) {
             returnJNIType = "Array";
         }
+
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnJNIType = "jboolean" + returnJNIType;
-        } else if (_cType.equals("short")
-                || _cType.startsWith("short")) {
+        } else if (_cType.equals("short") || _cType.startsWith("short")) {
             // a C char is 8 bits. a java char is 16 bits,
             // so we use jbyte
             returnJNIType = "jchar" + returnJNIType;
-        } else if (_cType.equals("long")
-                || _cType.startsWith("long")) {
+        } else if (_cType.equals("long") || _cType.startsWith("long")) {
             // a C long is 32 bits. a java long is 64 bits,
             // so we use jint
             returnJNIType = "jint" + returnJNIType;
-        } else if (_cType.equals("double")
-                || _cType.startsWith("double")) {
+        } else if (_cType.equals("double") || _cType.startsWith("double")) {
             returnJNIType = "jdouble" + returnJNIType;
-        } else if (_cType.equals("void")
-                || _cType.startsWith("void")) {
+        } else if (_cType.equals("void") || _cType.startsWith("void")) {
             returnJNIType = "void" + returnJNIType;
         } else {
-            MessageHandler.error(
-                    "JNIType unavailable for '"
-                    + _cType + "': not convertible JNI type");
+            MessageHandler.error("JNIType unavailable for '" + _cType
+                + "': not convertible JNI type");
             returnJNIType = "void";
         }
+
         return returnJNIType;
     }
 
@@ -215,42 +199,43 @@ public class Argument extends AbstractSettableAttribute {
      */
     public String getJType() {
         String returnJType = "";
+
         //if it's an array
         if (_cType.endsWith("[]")) {
             returnJType = "[]";
         }
+
         // a C char is 8 bits unsigned. a java char is 16 bits,
         // so we use boolean which is 8 bits unsigned
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnJType = "boolean" + returnJType;
-        } else if (_cType.equals("short") ||
-                _cType.startsWith("short")) {
+        } else if (_cType.equals("short") || _cType.startsWith("short")) {
             // a C short is 16 bits unsigned, a java short is 16 bits
             // but not unsigned,
             // so we use char which is 16bits unsigned.
             returnJType = "char" + returnJType;
-        } else if (_cType.equals("long") ||
-                _cType.startsWith("long")) {
+        } else if (_cType.equals("long") || _cType.startsWith("long")) {
             // a C long is 32 bits unsigned. a java long is 64 bits,
             // so we use int which is 32 , but not unsigned !! TBF
             returnJType = "int" + returnJType;
-        } else if (_cType.equals("double") ||
-                _cType.startsWith("double")) {
+        } else if (_cType.equals("double") || _cType.startsWith("double")) {
             // double is 64 bits in C and in Java, so no problem
             returnJType = "double" + returnJType;
-        } else if (_cType.equals("void") ||
-                _cType.startsWith("void")) {
+        } else if (_cType.equals("void") || _cType.startsWith("void")) {
             // for the functions with a void return
             returnJType = "void";
         } else {
             // FIXME: I guess we are printing a warning using
             // the MessageHandler and then returning void here?
             try {
-                MessageHandler.warning("Type = "
-                        + _cType + " not convertible in JavaType");
-            } catch (Exception e) {}
+                MessageHandler.warning("Type = " + _cType
+                    + " not convertible in JavaType");
+            } catch (Exception e) {
+            }
+
             returnJType = "void";
         }
+
         return returnJType;
     }
 
@@ -259,19 +244,24 @@ public class Argument extends AbstractSettableAttribute {
      */
     public String getKind() {
         String returnValue = "";
+
         //set Kind
         if (isInput()) {
             returnValue = "input";
         }
+
         if (isOutput() && !isInput()) {
             returnValue = "output";
         }
+
         if (isOutput() && isInput()) {
             returnValue = "input,output";
         }
+
         if (isReturn()) {
             returnValue = "return";
         }
+
         return returnValue;
     }
 
@@ -279,31 +269,29 @@ public class Argument extends AbstractSettableAttribute {
      *  @return the corresponding Java class
      */
     public String getType() {
-
         String returnCType = "";
+
         if (_cType.endsWith("[]")) {
             returnCType = "[]";
         }
+
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnCType = "Boolean" + returnCType;
-        } else if (_cType.equals("short")
-                || _cType.startsWith("short")) {
+        } else if (_cType.equals("short") || _cType.startsWith("short")) {
             returnCType = "Byte" + returnCType;
-        } else if (_cType.equals("long")
-                || _cType.startsWith("long")) {
-            returnCType = "Integer"+ returnCType;
-        } else if (_cType.equals("double")
-                || _cType.startsWith("double")) {
+        } else if (_cType.equals("long") || _cType.startsWith("long")) {
+            returnCType = "Integer" + returnCType;
+        } else if (_cType.equals("double") || _cType.startsWith("double")) {
             returnCType = "Double" + returnCType;
-        } else if (_cType.equals("void")
-                || _cType.startsWith("void")) {
+        } else if (_cType.equals("void") || _cType.startsWith("void")) {
             returnCType = "Object" + returnCType;
         } else {
             // FIXME: why is this code not like the code above
-            MessageHandler.error("Type = "
-                    + _cType + " not convertible in JavaClass");
+            MessageHandler.error("Type = " + _cType
+                + " not convertible in JavaClass");
             returnCType = "Object";
         }
+
         return returnCType;
     }
 
@@ -339,8 +327,7 @@ public class Argument extends AbstractSettableAttribute {
      *  this settable object changes.
      *  @param listener The listener to remove.
      */
-    public void removeValueListener(ptolemy.kernel.util.ValueListener
-            listener) {
+    public void removeValueListener(ptolemy.kernel.util.ValueListener listener) {
     }
 
     /** Set the C type of the argument with the given string
@@ -348,7 +335,6 @@ public class Argument extends AbstractSettableAttribute {
     public void setCType(String cType) {
         _cType = cType.trim();
     }
-
 
     /** Specify the container, adding the entity to the list
      *  of entities in the container.
@@ -386,24 +372,23 @@ public class Argument extends AbstractSettableAttribute {
      *   collides with a name already in the container.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-
-        if (container != null && _workspace != container.workspace()) {
-            throw new IllegalActionException(
-                    this,
-                    container,
-                    "Cannot set container because workspaces are different.");
+        throws IllegalActionException, NameDuplicationException {
+        if ((container != null) && (_workspace != container.workspace())) {
+            throw new IllegalActionException(this, container,
+                "Cannot set container because workspaces are different.");
         }
+
         try {
             _workspace.getWriteAccess();
             _checkContainer((GenericJNIActor) container);
+
             // NOTE: The following code is quite tricky.
             // It is very careful
             // to leave a consistent state even
             // in the face of unexpected
             // exceptions.  Be very careful if modifying it.
-            GenericJNIActor previousContainer =
-                (GenericJNIActor) getContainer();
+            GenericJNIActor previousContainer = (GenericJNIActor) getContainer();
+
             if (previousContainer == container) {
                 return;
             }
@@ -412,11 +397,14 @@ public class Argument extends AbstractSettableAttribute {
             // we have not yet changed any state.
             if (container != null) {
                 ((GenericJNIActor) container)._addArgument(this);
+
                 if (previousContainer == null) {
                     _workspace.remove(this);
                 }
             }
+
             _container = (GenericJNIActor) container;
+
             if (previousContainer != null) {
                 // This is safe now because it does not
                 // throw an exception.
@@ -434,36 +422,33 @@ public class Argument extends AbstractSettableAttribute {
         try {
             super.setExpression(expression);
             _value = expression;
-            StringTokenizer tokenizer = new StringTokenizer(
-                    _value, ",");
+
+            StringTokenizer tokenizer = new StringTokenizer(_value, ",");
+
             try {
-                setInput(new Boolean(tokenizer.nextToken()
-                                 .toString()).booleanValue());
-                setOutput(new Boolean(tokenizer.nextToken()
-                                  .toString()).booleanValue());
-                setReturn(new Boolean(tokenizer.nextToken()
-                                  .toString()).booleanValue());
+                setInput(new Boolean(tokenizer.nextToken().toString())
+                    .booleanValue());
+                setOutput(new Boolean(tokenizer.nextToken().toString())
+                    .booleanValue());
+                setReturn(new Boolean(tokenizer.nextToken().toString())
+                    .booleanValue());
                 setCType(tokenizer.nextToken().toString());
-            } catch(java.util.NoSuchElementException e) {}
+            } catch (java.util.NoSuchElementException e) {
+            }
+
             validate();
         } catch (IllegalActionException e) {
-            MessageHandler.error(
-                    "TRT error! Bad expression for Argument "
-                    + getName(), e);
+            MessageHandler.error("TRT error! Bad expression for Argument "
+                + getName(), e);
         }
     }
 
     /** Set the expression of the argument from its attributes
      */
     public void setExpression() {
-        String ret =
-            new Boolean(isInput()).toString()
-            + ","
-            + new Boolean(isOutput()).toString()
-            + ","
-            + new Boolean(isReturn()).toString()
-            + ","
-            + getCType();
+        String ret = new Boolean(isInput()).toString() + ","
+            + new Boolean(isOutput()).toString() + ","
+            + new Boolean(isReturn()).toString() + "," + getCType();
         setExpression(ret);
     }
 
@@ -484,36 +469,39 @@ public class Argument extends AbstractSettableAttribute {
         } else {
             this.setInput(false);
         }
+
         if (selectedValues.equals("output")) {
             this.setOutput(true);
         } else {
             this.setOutput(false);
         }
+
         if (selectedValues.equals("return")) {
             this.setReturn(true);
         } else {
             this.setReturn(false);
         }
+
         if (selectedValues.equals("input, output")) {
             this.setInput(true);
             this.setOutput(true);
         }
+
         // FIXME: this should throw an exception not call MessageHandler
         // directly.
         if (selectedValues.equals("input, return")) {
-            MessageHandler.error(
-                    "An argument can't be input "
-                    + "and return at the same time.");
+            MessageHandler.error("An argument can't be input "
+                + "and return at the same time.");
         }
+
         if (selectedValues.equals("output, return")) {
-            MessageHandler.error(
-                    "An argument can't be output "
-                    + "and return or in at the same time.");
+            MessageHandler.error("An argument can't be output "
+                + "and return or in at the same time.");
         }
+
         if (selectedValues.equals("input, output, return")) {
-            MessageHandler.error(
-                    "An argument can't be in-out "
-                    + "and return at the same time.");
+            MessageHandler.error("An argument can't be in-out "
+                + "and return at the same time.");
         }
     }
 
@@ -533,8 +521,7 @@ public class Argument extends AbstractSettableAttribute {
 
     /** This is for derivates of Attribute set the Visibility
      */
-    public void setVisibility(ptolemy.kernel.util.
-            Settable.Visibility v) {
+    public void setVisibility(ptolemy.kernel.util.Settable.Visibility v) {
     }
 
     /** Notify the container that an attribute has changed
@@ -542,8 +529,10 @@ public class Argument extends AbstractSettableAttribute {
      */
     public void validate() throws IllegalActionException {
         NamedObj container = (NamedObj) getContainer();
-        if (container != null)
+
+        if (container != null) {
             container.attributeChanged(this);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -559,17 +548,14 @@ public class Argument extends AbstractSettableAttribute {
      *   an acceptable class.  Not thrown in this base class.
      */
     protected void _checkContainer(GenericJNIActor container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(container instanceof GenericJNIActor)) {
-            throw new IllegalActionException(
-                    this,
-                    container,
-                    "Cannot place arguments on entities "
-                    + container.getClass().getName()
-                    + ", which are not GenericJNIActor.");
+            throw new IllegalActionException(this, container,
+                "Cannot place arguments on entities "
+                + container.getClass().getName()
+                + ", which are not GenericJNIActor.");
         }
     }
-
 
     /** Check that the specified type is a suitable type for
      *  this entity.
@@ -577,26 +563,20 @@ public class Argument extends AbstractSettableAttribute {
      *   an acceptable C type.  Not thrown in this base class.
      */
     protected void _checkType() {
-        if (_cType.startsWith("char")
-                || _cType.startsWith("long")
-                || _cType.startsWith("short")
-                || _cType.startsWith("double")) {
-            if (isOutput()&&!isInput()&&!_cType.endsWith("[]")) {
-                MessageHandler.error(
-                        "An argument can't be "
-                        + "output with a simple type.");
+        if (_cType.startsWith("char") || _cType.startsWith("long")
+                || _cType.startsWith("short") || _cType.startsWith("double")) {
+            if (isOutput() && !isInput() && !_cType.endsWith("[]")) {
+                MessageHandler.error("An argument can't be "
+                    + "output with a simple type.");
                 setInput(true);
             }
+
             return;
         } else {
-            MessageHandler.error(
-                    "The type : "
-                    + _cType
-                    + " is not supported. Types supported:"
-                    + "\nchar, long (unsigned)"
-                    + " , short, double"
-                    + "\nThe JNI code generation"
-                    + " will not work");
+            MessageHandler.error("The type : " + _cType
+                + " is not supported. Types supported:"
+                + "\nchar, long (unsigned)" + " , short, double"
+                + "\nThe JNI code generation" + " will not work");
             setCType("");
         }
     }
@@ -611,8 +591,8 @@ public class Argument extends AbstractSettableAttribute {
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
-        ((Settable)destination).setExpression(getExpression());
+        throws IllegalActionException {
+        ((Settable) destination).setExpression(getExpression());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -641,5 +621,4 @@ public class Argument extends AbstractSettableAttribute {
     /** @serial The entity that contains this entity.
      */
     private GenericJNIActor _container;
-
 }

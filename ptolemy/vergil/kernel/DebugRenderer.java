@@ -25,13 +25,13 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.kernel;
 
 import java.awt.Color;
 
 import diva.canvas.FigureDecorator;
 import diva.canvas.toolbox.BasicHighlighter;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DebugRenderer
@@ -46,7 +46,6 @@ import diva.canvas.toolbox.BasicHighlighter;
    @Pt.AcceptedRating Red (celaine)
 */
 public class DebugRenderer extends AnimationRenderer {
-
     /** Create a new selection renderer with the default prototype
      *  decorator.
      */
@@ -63,6 +62,4 @@ public class DebugRenderer extends AnimationRenderer {
     public DebugRenderer(FigureDecorator decorator) {
         _prototypeDecorator = decorator;
     }
-
-
 }

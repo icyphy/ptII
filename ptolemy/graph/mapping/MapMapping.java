@@ -22,13 +22,14 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.mapping;
 
 import java.util.Map;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MapMapping
+
 /** A Mapping that is based on a Map. The domain of the Mapping is the
     set of keys in the Map. MapMappings are immutable in the
     sense that the underlying Map cannot be changed (although the keys and
@@ -41,7 +42,6 @@ import java.util.Map;
     @version $Id$
 */
 public abstract class MapMapping implements Mapping {
-
     /** Construct a MapMapping from a given Map.
      *  Modifications to the argument Map after construction
      *  of this mapping will be reflected in the Mapping.
@@ -63,7 +63,8 @@ public abstract class MapMapping implements Mapping {
         if ((object == null) || (object.getClass() != getClass())) {
             return false;
         }
-        return _map.equals(((MapMapping)object)._map);
+
+        return _map.equals(((MapMapping) object)._map);
     }
 
     /** Return the hash code of this MapMapping. The hash code is
@@ -90,12 +91,11 @@ public abstract class MapMapping implements Mapping {
      */
     public String toString() {
         return getClass().getName() + "based on the following Map\n"
-            + _map.toString() + "\n";
+        + _map.toString() + "\n";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     // The Map that this Mapping is based on.
     protected Map _map;
 }

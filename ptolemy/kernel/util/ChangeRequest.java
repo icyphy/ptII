@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.lang.ref.WeakReference;
@@ -33,8 +32,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ChangeRequest
+
 /**
    Abstract base class for change requests.  A change request is any
    modification to a model that might be performed during execution of the
@@ -63,7 +64,6 @@ import java.util.List;
    @see ChangeListener
 */
 public abstract class ChangeRequest {
-
     /** Construct a request with the specified source and description.
      *  The description is a string that is used to report the change,
      *  typically to the user in a debugging environment.
@@ -95,6 +95,7 @@ public abstract class ChangeRequest {
         if (_localListeners == null) {
             _localListeners = new LinkedList();
         }
+
         // NOTE: We do not use weak references for these
         // listeners because an instance of ChangeRequest
         // is typically a transitory object.
@@ -122,25 +123,31 @@ public abstract class ChangeRequest {
     public final synchronized void execute() {
         if (!_pending) {
             throw new InternalErrorException(
-                    "Attempted to execute a change request "
-                    + "that had already been executed.");
+                "Attempted to execute a change request "
+                + "that had already been executed.");
         }
+
         _exception = null;
+
         // This flag is set if an exception is caught.  If the exception
         // is reported to any listeners set with setListeners, then
         // the flag is reset to false.  If we get to the end and the
         // flag is still true, then we write out to standard error.
         boolean needToReport = false;
+
         try {
             _execute();
         } catch (Exception ex) {
             needToReport = true;
             _exception = ex;
         }
+
         if (_localListeners != null) {
             Iterator listeners = _localListeners.iterator();
+
             while (listeners.hasNext()) {
-                ChangeListener listener = (ChangeListener)listeners.next();
+                ChangeListener listener = (ChangeListener) listeners.next();
+
                 if (_exception == null) {
                     listener.changeExecuted(this);
                 } else {
@@ -150,39 +157,46 @@ public abstract class ChangeRequest {
                 }
             }
         }
+
         if (_listeners != null) {
             Iterator listeners = _listeners.iterator();
+
             while (listeners.hasNext()) {
                 Object listener = listeners.next();
+
                 if (listener instanceof WeakReference) {
-                    listener = ((WeakReference)listener).get();
+                    listener = ((WeakReference) listener).get();
                 }
+
                 if (listener instanceof ChangeListener) {
                     if (_exception == null) {
-                        ((ChangeListener)listener).changeExecuted(this);
+                        ((ChangeListener) listener).changeExecuted(this);
                     } else {
                         needToReport = false;
-                        ((ChangeListener)listener).changeFailed(
-                                this, _exception);
+                        ((ChangeListener) listener).changeFailed(this,
+                            _exception);
                     }
                 }
             }
         }
+
         if (needToReport) {
             if (_exception != null) {
                 // We used to print to stderr, but printing to stderr
                 // is a bug if we have a UI, so we throw an InternalError.
-
                 // If the _source is a Nameable, we use it in the Exception.
                 Nameable object = null;
+
                 if (_source instanceof Nameable) {
-                    object = (Nameable)_source;
+                    object = (Nameable) _source;
                 }
+
                 throw new InternalErrorException(object, _exception,
-                        "ChangeRequest failed (NOTE: there is no "
-                        + "ChangeListener):\n" + _description);
+                    "ChangeRequest failed (NOTE: there is no "
+                    + "ChangeListener):\n" + _description);
             }
         }
+
         _pending = false;
         notifyAll();
     }
@@ -348,14 +362,16 @@ public abstract class ChangeRequest {
      *  @exception Exception If the execution of the change request
      *   throws it.
      */
-    public final synchronized void waitForCompletion() throws Exception {
+    public final synchronized void waitForCompletion()
+        throws Exception {
         while (_pending) {
             wait();
         }
+
         if (_exception != null) {
             // Note the use of fillInStackTrace, so that the exception
             // appears to come from within the change request.
-            throw (Exception)(_exception.fillInStackTrace());
+            throw (Exception) (_exception.fillInStackTrace());
         }
     }
 
@@ -370,7 +386,6 @@ public abstract class ChangeRequest {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A description of the change.
     private String _description;
 

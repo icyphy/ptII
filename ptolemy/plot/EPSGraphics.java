@@ -26,8 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot;
 
-import ptolemy.util.StringUtilities;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -45,8 +43,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Hashtable;
 
+import ptolemy.util.StringUtilities;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// EPSGraphics
+
 /**
    Graphics class supporting EPS export from plots.
    If this is used from within an applet, then the output goes to the standard
@@ -63,9 +65,7 @@ import java.util.Hashtable;
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class EPSGraphics extends Graphics {
-
     /** Constructor for a graphics object that writes encapsulated
      *  PostScript to the specified output stream.  If the out argument is
      *  null, then it writes to standard output (it would write it to
@@ -81,8 +81,8 @@ public class EPSGraphics extends Graphics {
         _out = out;
         _buffer.append("%!PS-Adobe-3.0 EPSF-3.0\n");
         _buffer.append("%%Creator: UC Berkeley Plot Package\n");
-        _buffer.append("%%BoundingBox: 50 50 " + (50+width) + " "
-                + (50+height) +"\n");
+        _buffer.append("%%BoundingBox: 50 50 " + (50 + width) + " "
+            + (50 + height) + "\n");
         _buffer.append("%%Pages: 1\n");
         _buffer.append("%%Page: 1 1\n");
         _buffer.append("%%LanguageLevel: 2\n");
@@ -90,7 +90,6 @@ public class EPSGraphics extends Graphics {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public void clearRect(int x, int y, int width, int height) {
     }
 
@@ -107,8 +106,8 @@ public class EPSGraphics extends Graphics {
     public void dispose() {
     }
 
-    public void drawArc(int x, int y, int width, int height,
-            int startAngle, int arcAngle) {
+    public void drawArc(int x, int y, int width, int height, int startAngle,
+        int arcAngle) {
     }
 
     public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
@@ -116,36 +115,28 @@ public class EPSGraphics extends Graphics {
     }
 
     public boolean drawImage(Image img, int x, int y, int width, int height,
-            ImageObserver observer) {
+        ImageObserver observer) {
         return true;
     }
 
     public boolean drawImage(Image img, int x, int y, Color bgcolor,
-            ImageObserver observer) {
+        ImageObserver observer) {
         return true;
     }
 
-    public boolean drawImage(Image img, int x, int y, int width,
-            int height, Color bgcolor, ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, int width, int height,
+        Color bgcolor, ImageObserver observer) {
         return true;
     }
 
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
-            int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
+        int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         return true;
     }
 
-    public boolean drawImage(Image img,
-            int dx1,
-            int dy1,
-            int dx2,
-            int dy2,
-            int sx1,
-            int sy1,
-            int sx2,
-            int sy2,
-            Color bgcolor,
-            ImageObserver observer) {
+    public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
+        int sx1, int sy1, int sx2, int sy2, Color bgcolor,
+        ImageObserver observer) {
         return true;
     }
 
@@ -164,7 +155,7 @@ public class EPSGraphics extends Graphics {
         _buffer.append("stroke\n");
     }
 
-    public void drawPolyline(int xPoints[], int yPoints[], int nPoints) {
+    public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
     }
 
     /** Draw a closed polygon defined by arrays of x and y coordinates.
@@ -176,7 +167,7 @@ public class EPSGraphics extends Graphics {
      *  @param yPoints An array of y coordinates.
      *  @param nPoints The total number of vertices.
      */
-    public void drawPolygon(int xPoints[], int yPoints[], int nPoints) {
+    public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
         if (!_polygon(xPoints, yPoints, nPoints)) {
             return;
         } else {
@@ -190,13 +181,14 @@ public class EPSGraphics extends Graphics {
      *  @param width The width of the oval to be filled.
      *  @param height The height of the oval to be filled.
      */
+
     // FIXME: Currently, this ignores the fourth argument and draws a circle
     // with diameter given by the third argument.
     public void drawOval(int x, int y, int width, int height) {
-        int radius = width/2;
+        int radius = width / 2;
         Point center = _convert(x + radius, y + radius);
-        _buffer.append("newpath " + center.x + " " + center.y + " "
-                + radius + " 0 360 arc closepath stroke\n");
+        _buffer.append("newpath " + center.x + " " + center.y + " " + radius
+            + " 0 360 arc closepath stroke\n");
     }
 
     public void drawRect(int x, int y, int width, int height) {
@@ -210,16 +202,16 @@ public class EPSGraphics extends Graphics {
     }
 
     public void drawRoundRect(int x, int y, int width, int height,
-            int arcWidth, int arcHeight) {
+        int arcWidth, int arcHeight) {
     }
 
     public void drawString(java.text.AttributedCharacterIterator iterator,
-            int x, int y) {
+        int x, int y) {
         // FIXME: This method is present in the graphics class in JDK1.2,
         // but not in JDK1.1.
         throw new RuntimeException(
-                "Sorry, drawString(java.text.AttributedCharacterIterator, " +
-                "int , int) is not implemented in EPSGraphics");
+            "Sorry, drawString(java.text.AttributedCharacterIterator, "
+            + "int , int) is not implemented in EPSGraphics");
     }
 
     /** Draw a string.  "(" is converted to "\(" and
@@ -231,17 +223,20 @@ public class EPSGraphics extends Graphics {
     public void drawString(String str, int x, int y) {
         Point start = _convert(x, y);
         _buffer.append("" + start.x + " " + start.y + " moveto\n");
-        if (str.indexOf("(") > -1 && str.indexOf("\\(") == -1) {
+
+        if ((str.indexOf("(") > -1) && (str.indexOf("\\(") == -1)) {
             str = StringUtilities.substitute(str, "(", "\\(");
         }
-        if (str.indexOf(")") > -1 && str.indexOf("\\)") == -1) {
+
+        if ((str.indexOf(")") > -1) && (str.indexOf("\\)") == -1)) {
             str = StringUtilities.substitute(str, ")", "\\)");
         }
+
         _buffer.append("(" + str + ") show\n");
     }
 
-    public void fillArc(int x, int y, int width, int height,
-            int startAngle, int arcAngle) {
+    public void fillArc(int x, int y, int width, int height, int startAngle,
+        int arcAngle) {
     }
 
     /** Draw a filled polygon defined by arrays of x and y coordinates.
@@ -253,7 +248,7 @@ public class EPSGraphics extends Graphics {
      *  @param yPoints An array of y coordinates.
      *  @param nPoints The total number of vertices.
      */
-    public void fillPolygon(int xPoints[], int yPoints[], int nPoints) {
+    public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
         if (!_polygon(xPoints, yPoints, nPoints)) {
             return;
         } else {
@@ -267,13 +262,14 @@ public class EPSGraphics extends Graphics {
      *  @param width The width of the oval to be filled.
      *  @param height The height of the oval to be filled.
      */
+
     // FIXME: Currently, this ignores the fourth argument and draws a circle
     // with diameter given by the third argument.
     public void fillOval(int x, int y, int width, int height) {
-        int radius = width/2;
+        int radius = width / 2;
         Point center = _convert(x + radius, y + radius);
-        _buffer.append("newpath " + center.x + " " + center.y + " "
-                + radius + " 0 360 arc closepath fill\n");
+        _buffer.append("newpath " + center.x + " " + center.y + " " + radius
+            + " 0 360 arc closepath fill\n");
     }
 
     /** Fill the specified rectangle and draw a thin outline around it.
@@ -297,12 +293,13 @@ public class EPSGraphics extends Graphics {
         _buffer.append("" + (-width) + " 0 rlineto\n");
         _buffer.append("closepath gsave fill grestore\n");
         _buffer.append("0.5 setlinewidth 0 setgray [] 0 setdash stroke\n");
+
         // reset the gray scale to black
         _buffer.append("1 setlinewidth\n");
     }
 
     public void fillRoundRect(int x, int y, int width, int height,
-            int arcWidth, int arcHeight) {
+        int arcWidth, int arcHeight) {
     }
 
     public Shape getClip() {
@@ -326,14 +323,19 @@ public class EPSGraphics extends Graphics {
     }
 
     public void setFont(Font font) {
-        if (font == null) return;
+        if (font == null) {
+            return;
+        }
+
         int size = font.getSize();
         boolean bold = font.isBold();
+
         if (bold) {
             _buffer.append("/Helvetica-Bold findfont\n");
         } else {
             _buffer.append("/Helvetica findfont\n");
         }
+
         _buffer.append("" + size + " scalefont setfont\n");
         _currentFont = font;
     }
@@ -363,20 +365,23 @@ public class EPSGraphics extends Graphics {
             _buffer.append("0.5 setlinewidth\n");
         } else {
             if (_linepattern.containsKey(c)) {
-                _buffer.append((String)_linepattern.get(c) + " 0 setdash\n");
+                _buffer.append((String) _linepattern.get(c) + " 0 setdash\n");
                 _buffer.append("1 setlinewidth\n");
             } else {
                 _buffer.append("0 setgray\n");
+
                 // construct a new line pattern.
                 if (_patternIndex >= _patterns.length) {
                     _patternIndex = 0;
                 }
+
                 _buffer.append(_patterns[_patternIndex] + " 0 setdash\n");
                 _buffer.append("1 setlinewidth\n");
                 _linepattern.put(c, _patterns[_patternIndex]);
                 _patternIndex++;
             }
         }
+
         _currentColor = c;
     }
 
@@ -392,9 +397,9 @@ public class EPSGraphics extends Graphics {
      */
     public void showpage() {
         _buffer.append("showpage\n");
+
         if (_out != null) {
-            PrintWriter output = new PrintWriter(
-                    new BufferedOutputStream(_out));
+            PrintWriter output = new PrintWriter(new BufferedOutputStream(_out));
 
             output.println(_buffer.toString());
             output.flush();
@@ -404,6 +409,7 @@ public class EPSGraphics extends Graphics {
             if (_clipboard == null) {
                 _clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             }
+
             StringSelection sel = new StringSelection(_buffer.toString());
             _clipboard.setContents(sel, sel);
         }
@@ -414,23 +420,27 @@ public class EPSGraphics extends Graphics {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Convert the screen coordinate system to that of postscript.
     private Point _convert(int x, int y) {
-        return new Point(x+50, _height+50 - y);
+        return new Point(x + 50, (_height + 50) - y);
     }
 
     // Draw a closed polygon defined by arrays of x and y coordinates.
     // Return false if arguments are misformed.
-    private boolean _polygon(int xPoints[], int yPoints[], int nPoints) {
-        if (nPoints < 3 || xPoints.length < nPoints
-                || yPoints.length < nPoints) return false;
+    private boolean _polygon(int[] xPoints, int[] yPoints, int nPoints) {
+        if ((nPoints < 3) || (xPoints.length < nPoints)
+                || (yPoints.length < nPoints)) {
+            return false;
+        }
+
         Point start = _convert(xPoints[0], yPoints[0]);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
+
         for (int i = 1; i < nPoints; i++) {
             Point vertex = _convert(xPoints[i], yPoints[i]);
             _buffer.append("" + vertex.x + " " + vertex.y + " lineto\n");
         }
+
         return true;
     }
 
@@ -442,28 +452,29 @@ public class EPSGraphics extends Graphics {
         int red = _currentColor.getRed();
         int green = _currentColor.getGreen();
         int blue = _currentColor.getBlue();
+
         // Scaling constants so that fully saturated R, G, or B appear
         // different.
-        double bluescale = 0.6;    // darkest
+        double bluescale = 0.6; // darkest
         double redscale = 0.8;
-        double greenscale = 1.0;   // lightest
-        double fullscale = Math.sqrt(255.0*255.0*(bluescale*bluescale
-                                             + redscale*redscale + greenscale*greenscale));
-        double graylevel = Math.sqrt((double)(red*red*redscale*redscale
-                                             + blue*blue*bluescale*bluescale
-                                             + green*green*greenscale*greenscale))/fullscale;
+        double greenscale = 1.0; // lightest
+        double fullscale = Math.sqrt(255.0 * 255.0 * ((bluescale * bluescale)
+                + (redscale * redscale) + (greenscale * greenscale)));
+        double graylevel = Math.sqrt((double) ((red * red * redscale * redscale)
+                + (blue * blue * bluescale * bluescale)
+                + (green * green * greenscale * greenscale))) / fullscale;
         _buffer.append("" + graylevel + " setgray\n");
+
         // NOTE -- for debugging, output color spec in comments
-        _buffer.append("%---- rgb: " + red + " " +
-                green + " " + blue +"\n");
+        _buffer.append("%---- rgb: " + red + " " + green + " " + blue + "\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Color _currentColor = Color.black;
     private Font _currentFont;
-    private int _width, _height;
+    private int _width;
+    private int _height;
     private Hashtable _linepattern = new Hashtable();
     private OutputStream _out;
     private StringBuffer _buffer = new StringBuffer();
@@ -472,17 +483,9 @@ public class EPSGraphics extends Graphics {
     // Default line patterns.
     // FIXME: Need at least 11 of these.
     static private String[] _patterns = {
-        "[]",
-        "[1 1]",
-        "[4 4]",
-        "[4 4 1 4]",
-        "[2 2]",
-        "[4 2 1 2 1 2]",
-        "[5 3 2 3]",
-        "[3 3]",
-        "[4 2 1 2 2 2]",
-        "[1 2 5 2 1 2 1 2]",
-        "[4 1 2 1]",
-    };
+            "[]", "[1 1]", "[4 4]", "[4 4 1 4]", "[2 2]", "[4 2 1 2 1 2]",
+            "[5 3 2 3]", "[3 3]", "[4 2 1 2 2 2]", "[1 2 5 2 1 2 1 2]",
+            "[4 1 2 1]",
+        };
     private int _patternIndex = 0;
 }

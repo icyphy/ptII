@@ -24,7 +24,9 @@
   COPYRIGHTENDKEY
 */
 package diva.util;
+
 import java.util.Iterator;
+
 
 /**
  * An iterator that takes an iterator over objects that themselves
@@ -45,6 +47,7 @@ public abstract class IteratorIterator extends IteratorAdapter {
      */
     public IteratorIterator(Iterator i) {
         _iterator = i;
+
         if (_iterator.hasNext()) {
             _subiterator = iterator(_iterator.next());
         }
@@ -59,13 +62,14 @@ public abstract class IteratorIterator extends IteratorAdapter {
                 _subiterator = iterator(_iterator.next());
             }
         }
+
         return (_subiterator != null);
     }
 
     /* Convert an object returned by the top-level iterator
      * into a sub-iterator.
      */
-    abstract protected Iterator iterator (Object o);
+    abstract protected Iterator iterator(Object o);
 
     /* Return the next object.
      */
@@ -73,11 +77,11 @@ public abstract class IteratorIterator extends IteratorAdapter {
         while (!_subiterator.hasNext()) {
             _subiterator = iterator(_iterator.next());
         }
+
         if (_subiterator == null) {
             throw new RuntimeException("Ack! No more elements");
         }
+
         return (_subiterator.next());
     }
 }
-
-

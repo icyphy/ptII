@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
 
 import java.util.List;
@@ -33,6 +32,7 @@ import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Instantiable
+
 /**
    This interface is for objects that can be instantiated.  Such objects serve a
    role similar to "classes" in Java and other object oriented languages.
@@ -74,9 +74,7 @@ import java.util.List;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (neuendor)
 */
-
 public interface Instantiable extends Derivable {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -125,8 +123,8 @@ public interface Instantiable extends Derivable {
      *   an object already in the container.
      */
     public Instantiable instantiate(NamedObj container, String name)
-            throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException;
+        throws CloneNotSupportedException, IllegalActionException, 
+            NameDuplicationException;
 
     /** Return true if this object is a class definition, which means that
      *  it can be instantiated.

@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.pn.kernel.event;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessListener
+
 /**
    An PNProcessListener is able to receive PNProcessEvents that are issued
    during the execution of a process by a ProcessThread or director in PN.
@@ -48,9 +49,7 @@ package ptolemy.domains.pn.kernel.event;
    @Pt.ProposedRating Yellow (mudit)
    @Pt.AcceptedRating Red
 */
-
 public interface PNProcessListener {
-
     /** Called to report that the execution of a process finished. The
      *  wrapup sequence may or may not have completed normally.   The
      *  execution event will contain a reference to the actor corresponding
@@ -69,5 +68,4 @@ public interface PNProcessListener {
      *  @param event A PNProcessEvent that contains a reference to an actor.
      */
     public void processStateChanged(PNProcessEvent event);
-
 }

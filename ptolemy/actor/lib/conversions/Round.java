@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.lib.Transformer;
@@ -40,11 +39,12 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
-
 //////////////////////////////////////////////////////////////////////////
 //// Round
+
 /**
    Produce an output token on each firing with a value that is
    equal to the specified rounded value of the input.
@@ -66,9 +66,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Green (chf)
    @Pt.AcceptedRating Green (janneck)
 */
-
 public class Round extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,7 +76,7 @@ public class Round extends Transformer {
      *   by the proposed container.
      */
     public Round(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -90,10 +88,9 @@ public class Round extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<circle cx=\"0\" cy=\"0\" r=\"17\""
-                + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<circle cx=\"0\" cy=\"0\" r=\"17\""
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,16 +104,16 @@ public class Round extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == function) {
             String functionName = function.getExpression();
+
             if (functionName.equals("ceil")) {
                 _function = _CEIL;
             } else if (functionName.equals("floor")) {
@@ -127,7 +124,7 @@ public class Round extends Transformer {
                 _function = _TRUNCATE;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized rounding function: " + functionName);
+                    "Unrecognized rounding function: " + functionName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -140,7 +137,7 @@ public class Round extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        double in = ((DoubleToken)input.get(0)).doubleValue();
+        double in = ((DoubleToken) input.get(0)).doubleValue();
         output.send(0, new IntToken(_doFunction(in)));
     }
 
@@ -170,10 +167,12 @@ public class Round extends Transformer {
             // NOTE: inArray.length may be > count, in which case
             // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
+
             for (int i = 0; i < count; i++) {
-                double value = ((DoubleToken)(inArray[i])).doubleValue();
+                double value = ((DoubleToken) (inArray[i])).doubleValue();
                 _resultArray[i] = new IntToken(_doFunction(value));
             }
+
             output.send(0, _resultArray, count);
             return COMPLETED;
         } else {
@@ -189,6 +188,7 @@ public class Round extends Transformer {
         if (!input.hasToken(0)) {
             return false;
         }
+
         return super.prefire();
     }
 
@@ -201,38 +201,42 @@ public class Round extends Transformer {
      */
     private int _doFunction(double in) {
         int result;
-        switch(_function) {
+
+        switch (_function) {
         case _CEIL:
             result = (int) Math.ceil(in);
             break;
+
         case _FLOOR:
             result = (int) Math.floor(in);
             break;
+
         case _ROUND:
             result = (int) Math.round(in);
             break;
+
         case _TRUNCATE:
-            if ( in > 0) {
+
+            if (in > 0) {
                 result = (int) Math.floor(in);
             } else {
                 result = (int) Math.ceil(in);
             }
+
             break;
+
         default:
             throw new InvalidStateException(
-                    "Invalid value for _function private variable. "
-                    + "Round actor (" + getFullName()
-                    + ")"
-                    + " on function type " + _function);
+                "Invalid value for _function private variable. "
+                + "Round actor (" + getFullName() + ")" + " on function type "
+                + _function);
         }
+
         return result;
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private IntToken[] _resultArray = new IntToken[0];
 
     // An indicator for the function to compute.

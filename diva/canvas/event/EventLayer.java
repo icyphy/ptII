@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas.event;
 
 import java.awt.AWTEvent;
@@ -34,6 +33,7 @@ import java.util.Iterator;
 
 import diva.canvas.CanvasLayer;
 import diva.canvas.interactor.Interactor;
+
 
 /** An event layer is a canvas layer that accepts mouse events.
  * It is designed to be layered over or under other layers, such
@@ -56,7 +56,6 @@ import diva.canvas.interactor.Interactor;
  * @author         John Reekie
  */
 public class EventLayer extends CanvasLayer implements EventAcceptor {
-
     /** The enabled flag.
      */
     private boolean _enabled = true;
@@ -88,28 +87,28 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
      * Add an interactor to this interactor. The added interactor
      * will have events forwarded to it if it accepts the event.
      */
-    public void addInteractor (Interactor i) {
+    public void addInteractor(Interactor i) {
         _interactors.add(i);
     }
 
     /** Add the given layer listener to this dispatcher.
      */
     public void addLayerListener(LayerListener l) {
-        layerListener = LayerEventMulticaster.add(layerListener,l);
+        layerListener = LayerEventMulticaster.add(layerListener, l);
     }
 
     /** Add the given layer motion listener to this dispatcher.
      */
     public void addLayerMotionListener(LayerMotionListener l) {
-        layerMotionListener = LayerEventMulticaster.add(layerMotionListener,l);
+        layerMotionListener = LayerEventMulticaster.add(layerMotionListener, l);
     }
 
     /** Dispatch an AWT event on this layer. Currently only
      * layer events are handled.
      */
-    public void dispatchEvent (AWTEvent event) {
+    public void dispatchEvent(AWTEvent event) {
         if (event instanceof LayerEvent) {
-            processLayerEvent((LayerEvent)event);
+            processLayerEvent((LayerEvent) event);
         } else {
             // FIXME
             System.out.println("Bad event: " + event);
@@ -119,14 +118,14 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
     /**
      * Return an interactor over the attached interactors.
      */
-    public Iterator interactors () {
+    public Iterator interactors() {
         return _interactors.iterator();
     }
 
     /** Test the consuming flag of this layer. If this flag is
      * set, the layer consumes all input events.
      */
-    public boolean isConsuming () {
+    public boolean isConsuming() {
         return _consuming;
     }
 
@@ -134,7 +133,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
      *  does not indicate whether the layer is actually enabled,
      * as its pane or one if its ancestors may not be enabled.
      */
-    public boolean isEnabled () {
+    public boolean isEnabled() {
         return _enabled;
     }
 
@@ -151,33 +150,39 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
         // Process layer events
         if (layerListener != null) {
             int id = event.getID();
-            switch(id) {
+
+            switch (id) {
             case MouseEvent.MOUSE_PRESSED:
                 layerListener.mousePressed(event);
                 break;
+
             case MouseEvent.MOUSE_DRAGGED:
                 layerListener.mouseDragged(event);
                 break;
+
             case MouseEvent.MOUSE_RELEASED:
                 layerListener.mouseReleased(event);
                 break;
+
             case MouseEvent.MOUSE_CLICKED:
                 layerListener.mouseClicked(event);
                 break;
             }
         }
 
-
         // Process layer motion events
         if (layerMotionListener != null) {
             int id = event.getID();
-            switch(id) {
+
+            switch (id) {
             case MouseEvent.MOUSE_MOVED:
                 layerMotionListener.mouseMoved(event);
                 break;
+
             case MouseEvent.MOUSE_EXITED:
                 layerMotionListener.mouseExited(event);
                 break;
+
             case MouseEvent.MOUSE_ENTERED:
                 layerMotionListener.mouseEntered(event);
                 break;
@@ -185,11 +190,13 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
         }
 
         int id = event.getID();
+
         // Pass the event to attached interactors
-        switch(id) {
+        switch (id) {
         case MouseEvent.MOUSE_PRESSED:
+
             // Find what interactor will grab the event.
-            for (Iterator i = _interactors.iterator(); i.hasNext(); ) {
+            for (Iterator i = _interactors.iterator(); i.hasNext();) {
                 Interactor interactor = (Interactor) i.next();
 
                 if (interactor.accept(event)) {
@@ -198,26 +205,36 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
                     break;
                 }
             }
+
             break;
+
         case MouseEvent.MOUSE_DRAGGED:
+
             if (_currentInteractor != null) {
                 _currentInteractor.mouseDragged(event);
             }
+
             break;
 
         case MouseEvent.MOUSE_RELEASED:
+
             if (_currentInteractor != null) {
                 _currentInteractor.mouseReleased(event);
             }
+
             _currentInteractor = null;
             break;
+
         case MouseEvent.MOUSE_CLICKED:
+
             if (_currentInteractor != null) {
                 _currentInteractor.mouseClicked(event);
             }
+
             _currentInteractor = null;
             break;
         }
+
         if (_consuming) {
             event.consume();
         }
@@ -226,7 +243,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
     /**
      * Remove the given interactor from this interactor.
      */
-    public void removeInteractor (Interactor i) {
+    public void removeInteractor(Interactor i) {
         _interactors.remove(i);
     }
 
@@ -239,23 +256,21 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
     /** Remove the given layer motion listener from this dispatcher.
      */
     public void removeLayerMotionListener(LayerMotionListener l) {
-        layerMotionListener = LayerEventMulticaster.remove(layerMotionListener, l);
+        layerMotionListener = LayerEventMulticaster.remove(layerMotionListener,
+                l);
     }
 
     /** Set the consuming flag of this layer.  If this flag is
      * set, the layer consumes all input events.
      */
-    public void setConsuming (boolean flag) {
+    public void setConsuming(boolean flag) {
         _consuming = flag;
     }
 
     /** Set the enabled flag of this layer. If the flag is false,
      * then the layer will not respond to user input events.
      */
-    public void setEnabled (boolean flag) {
+    public void setEnabled(boolean flag) {
         _enabled = flag;
     }
 }
-
-
-

@@ -30,6 +30,7 @@ import java.util.Iterator;
 
 import diva.canvas.event.EventLayer;
 
+
 /**
  * A CanvasPane which has a default set of layers that are
  * useful for interactive drawing and editing applications.
@@ -88,7 +89,7 @@ public class GraphicsPane extends CanvasPane {
      * The container of layers, makes it easier to
      * do iterators.
      */
-    protected CanvasLayer _layers[];
+    protected CanvasLayer[] _layers;
 
     /*
      * The layers
@@ -116,8 +117,8 @@ public class GraphicsPane extends CanvasPane {
 
         // Background layer is a figure layer
         _backgroundLayer = new FigureLayer();
-        ((FigureLayer)_backgroundLayer).setVisible(false);
-        ((FigureLayer)_backgroundLayer).setEnabled(false);
+        ((FigureLayer) _backgroundLayer).setVisible(false);
+        ((FigureLayer) _backgroundLayer).setEnabled(false);
 
         // Foreground figures
         _foregroundLayer = foregroundLayer;
@@ -173,18 +174,21 @@ public class GraphicsPane extends CanvasPane {
     /** Return an iteration of the layers, in event-processing order
      * (that is, from front to back).
      */
-    public Iterator layersFromFront () {
+    public Iterator layersFromFront() {
         return new Iterator() {
                 int cursor = 0;
+
                 public boolean hasNext() {
                     return cursor < _layers.length;
                 }
+
                 public Object next() {
                     return _layers[cursor++];
                 }
+
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Cannot delete layer from graphics pane");
+                        "Cannot delete layer from graphics pane");
                 }
             };
     }
@@ -192,25 +196,28 @@ public class GraphicsPane extends CanvasPane {
     /** Return an iteration of the layers, in redraw order (that is,
      * from back to front).
      */
-    public Iterator layersFromBack () {
+    public Iterator layersFromBack() {
         return new Iterator() {
-                int cursor = _layers.length-1;
+                int cursor = _layers.length - 1;
+
                 public boolean hasNext() {
                     return cursor >= 0;
                 }
+
                 public Object next() {
                     return _layers[cursor--];
                 }
+
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Cannot delete layer from graphics pane");
+                        "Cannot delete layer from graphics pane");
                 }
             };
     }
 
     /** Set the background event layer
      */
-    public void setBackgroundEventLayer (EventLayer l) {
+    public void setBackgroundEventLayer(EventLayer l) {
         _nullifyLayer(_backgroundEventLayer);
         _backgroundEventLayer = l;
         _initNewLayer(l);
@@ -219,7 +226,7 @@ public class GraphicsPane extends CanvasPane {
 
     /** Set the background figure layer
      */
-    public void setBackgroundLayer (CanvasLayer l) {
+    public void setBackgroundLayer(CanvasLayer l) {
         _nullifyLayer(_backgroundLayer);
         _backgroundLayer = l;
         _initNewLayer(l);
@@ -228,7 +235,7 @@ public class GraphicsPane extends CanvasPane {
 
     /** Set the foreground figure layer
      */
-    public void setForegroundLayer (FigureLayer l) {
+    public void setForegroundLayer(FigureLayer l) {
         _nullifyLayer(_foregroundLayer);
         _foregroundLayer = l;
         _initNewLayer(l);
@@ -237,7 +244,7 @@ public class GraphicsPane extends CanvasPane {
 
     /** Set the overlay layer
      */
-    public void setOverlayLayer (OverlayLayer l) {
+    public void setOverlayLayer(OverlayLayer l) {
         _nullifyLayer(_overlayLayer);
         _overlayLayer = l;
         _initNewLayer(l);
@@ -246,7 +253,7 @@ public class GraphicsPane extends CanvasPane {
 
     /** Set the foreground event layer
      */
-    public void setForegroundEventLayer (EventLayer l) {
+    public void setForegroundEventLayer(EventLayer l) {
         _nullifyLayer(_foregroundEventLayer);
         _foregroundEventLayer = l;
         _initNewLayer(l);
@@ -255,8 +262,9 @@ public class GraphicsPane extends CanvasPane {
 
     /** Rebuild the array of layers for use by iterators
      */
-    protected void _rebuildLayerArray () {
+    protected void _rebuildLayerArray() {
         _layers = new CanvasLayer[5];
+
         int cursor = 0;
         _layers[cursor++] = _foregroundEventLayer;
         _layers[cursor++] = _overlayLayer;
@@ -265,5 +273,3 @@ public class GraphicsPane extends CanvasPane {
         _layers[cursor++] = _backgroundEventLayer;
     }
 }
-
-

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.DataBuffer;
@@ -43,11 +42,12 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 // NOTE: If you update the list of types, then you will want
 // to update the list in actor/lib/jai/jai.xml.
-
 //////////////////////////////////////////////////////////////////////////
 //// JAIDataConvert
+
 /**
    An actor that converts the data in an image to a new type.  This is
    commonly used when other actors, for instance the DCT, do not preserve
@@ -63,9 +63,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class JAIDataConvert extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,7 +73,7 @@ public class JAIDataConvert extends Transformer {
      *   actor with this name.
      */
     public JAIDataConvert(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         dataFormat = new StringAttribute(this, "dataFormat");
@@ -103,9 +101,10 @@ public class JAIDataConvert extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == dataFormat) {
             String dataFormatName = dataFormat.getExpression();
+
             if (dataFormatName.equals("byte")) {
                 _dataFormat = _BYTE;
             } else if (dataFormatName.equals("double")) {
@@ -120,7 +119,7 @@ public class JAIDataConvert extends Transformer {
                 _dataFormat = _USHORT;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized data type: " + dataFormatName);
+                    "Unrecognized data type: " + dataFormatName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -132,11 +131,13 @@ public class JAIDataConvert extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
         ParameterBlock parameters = new ParameterBlock();
         parameters.addSource(oldImage);
         parameters.add(_getDataType());
+
         RenderedOp newImage = JAI.create("format", parameters);
         output.send(0, new JAIImageToken(newImage));
     }
@@ -149,37 +150,44 @@ public class JAIDataConvert extends Transformer {
      */
     private int _getDataType() {
         int result;
-        switch(_dataFormat) {
+
+        switch (_dataFormat) {
         case _BYTE:
             result = DataBuffer.TYPE_BYTE;
             break;
+
         case _DOUBLE:
             result = DataBuffer.TYPE_DOUBLE;
             break;
+
         case _FLOAT:
             result = DataBuffer.TYPE_FLOAT;
             break;
+
         case _INT:
             result = DataBuffer.TYPE_INT;
             break;
+
         case _SHORT:
             result = DataBuffer.TYPE_SHORT;
             break;
+
         case _USHORT:
             result = DataBuffer.TYPE_USHORT;
             break;
+
         default:
             throw new InternalErrorException(this, null,
-                    "Invalid value for _dataFormat private variable. "
-                    + "JAIDataConvert actor (" + getFullName()
-                    + ") on data type " + _dataFormat);
+                "Invalid value for _dataFormat private variable. "
+                + "JAIDataConvert actor (" + getFullName() + ") on data type "
+                + _dataFormat);
         }
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // An indicator for the data type to convert to.
     private int _dataFormat;
 

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.vergil.kernel;
 
 import java.util.Iterator;
@@ -36,8 +35,10 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.NamedObjNodeModel;
 import diva.util.NullIterator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AttributeNodeModel
+
 /**
    A model for an attribute as a diva graph node.
    This is used for visible attributes.
@@ -49,18 +50,15 @@ import diva.util.NullIterator;
    @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class AttributeNodeModel extends NamedObjNodeModel {
-
     /** Return a MoML String that will delete the given node from the
      *  Ptolemy model.
      *  @return A valid MoML string.
      */
     public String getDeleteNodeMoML(Object node) {
-        NamedObj attribute = (NamedObj)((Locatable)node).getContainer();
-        NamedObj container = (NamedObj)attribute.getContainer();
+        NamedObj attribute = (NamedObj) ((Locatable) node).getContainer();
+        NamedObj container = (NamedObj) attribute.getContainer();
 
-        return "<deleteProperty name=\""
-            + attribute.getName()
-            + "\"/>\n";
+        return "<deleteProperty name=\"" + attribute.getName() + "\"/>\n";
     }
 
     /** Return the graph parent of the given node.
@@ -69,7 +67,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *   the root of the graph.
      */
     public Object getParent(Object node) {
-        return ((Locatable)node).getContainer().getContainer();
+        return ((Locatable) node).getContainer().getContainer();
     }
 
     /** Return an iterator over the edges coming into the given node.
@@ -96,14 +94,14 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *  @param node The node.
      */
     public void removeNode(final Object eventSource, final Object node) {
-        NamedObj attribute = (NamedObj)((Locatable)node).getContainer();
-        NamedObj container = (NamedObj)attribute.getContainer();;
+        NamedObj attribute = (NamedObj) ((Locatable) node).getContainer();
+        NamedObj container = (NamedObj) attribute.getContainer();
+        ;
 
         String moml = getDeleteNodeMoML(node);
 
         // Note: The source is NOT the graph model.
-        ChangeRequest request
-            = new MoMLChangeRequest(this, container, moml);
+        ChangeRequest request = new MoMLChangeRequest(this, container, moml);
         container.requestChange(request);
     }
 }

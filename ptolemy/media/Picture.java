@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.media;
 
 import java.awt.Canvas;
@@ -34,6 +33,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ColorModel;
 import java.awt.image.MemoryImageSource;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Picture
@@ -50,7 +50,6 @@ import java.awt.image.MemoryImageSource;
     @Pt.AcceptedRating Red (cxh)
 */
 public class Picture extends Canvas {
-
     /** Create an image with the specified width and height, in pixels.
      *  @param width The width in pixels.
      *  @param height The height in pixels.
@@ -87,12 +86,13 @@ public class Picture extends Canvas {
      *  now OK to display the new image.
      */
     public void displayImage() {
-        if (_imageSource == null && _image == null) {
+        if ((_imageSource == null) && (_image == null)) {
             _imageSource = new MemoryImageSource(_width, _height,
                     ColorModel.getRGBdefault(), _pixels, 0, _width);
             _imageSource.setAnimated(true);
             _image = createImage(_imageSource);
         }
+
         if (_imageSource != null) {
             _imageSource.newPixels();
         }
@@ -133,15 +133,16 @@ public class Picture extends Canvas {
      *   match.
      */
     public void setImage(int[] pixels) throws IllegalArgumentException {
-        if (pixels.length != _width*_height) {
+        if (pixels.length != (_width * _height)) {
             throw new IllegalArgumentException(
-                    "setImage: Specified image size does not"
-                    + "match that of the component.");
+                "setImage: Specified image size does not"
+                + "match that of the component.");
         }
+
         _pixels = pixels;
+
         if (_imageSource != null) {
-            _imageSource.newPixels(pixels,
-                    ColorModel.getRGBdefault(), 0, _width);
+            _imageSource.newPixels(pixels, ColorModel.getRGBdefault(), 0, _width);
         }
     }
 
@@ -157,12 +158,19 @@ public class Picture extends Canvas {
      *  @param intensity The value of the pixel.
      */
     public void setPixel(int row, int col, int intensity) {
-        if (row < 0 || row >= _height || col < 0 || col >= _width) return;
-        if (intensity < 0) intensity = 0;
-        else if (intensity > 255) intensity = 255;
+        if ((row < 0) || (row >= _height) || (col < 0) || (col >= _width)) {
+            return;
+        }
+
+        if (intensity < 0) {
+            intensity = 0;
+        } else if (intensity > 255) {
+            intensity = 255;
+        }
+
         // Alpha, red, green, blue, where alpha controls transparency.
-        _pixels[(row*_width) + col] = (255 << 24) |
-            (intensity << 16) | (intensity << 8) | intensity;
+        _pixels[(row * _width) + col] = (255 << 24) | (intensity << 16)
+            | (intensity << 8) | intensity;
     }
 
     /** Set the specified pixel to the given color value, where each color
@@ -179,20 +187,31 @@ public class Picture extends Canvas {
      *  @param blue The blue value of the pixel.
      */
     public void setPixel(int row, int col, int red, int green, int blue) {
-        if (row < 0 || row >= _height || col < 0 || col >= _width) return;
+        if ((row < 0) || (row >= _height) || (col < 0) || (col >= _width)) {
+            return;
+        }
 
-        if (red < 0) red = 0;
-        else if (red > 255) red = 255;
+        if (red < 0) {
+            red = 0;
+        } else if (red > 255) {
+            red = 255;
+        }
 
-        if (green < 0) green = 0;
-        else if (green > 255) green = 255;
+        if (green < 0) {
+            green = 0;
+        } else if (green > 255) {
+            green = 255;
+        }
 
-        if (blue < 0) blue = 0;
-        else if (blue > 255) blue = 255;
+        if (blue < 0) {
+            blue = 0;
+        } else if (blue > 255) {
+            blue = 255;
+        }
 
         // Alpha, red, green, blue, where alpha controls transparency.
-        _pixels[(row*_width) + col]
-            = (255 << 24) | (red << 16) | (green << 8) | blue;
+        _pixels[(row * _width) + col] = (255 << 24) | (red << 16)
+            | (green << 8) | blue;
     }
 
     /** Override the base class to prevent blanking, which causes flashing
@@ -205,8 +224,11 @@ public class Picture extends Canvas {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    private int _width;
 
-    private int _width, _height;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private int _height;
     private int[] _pixels;
     private Image _image;
     private MemoryImageSource _imageSource;

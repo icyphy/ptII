@@ -27,9 +27,10 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math.test;
+
 import ptolemy.math.LongBinaryOperation;
+
 
 /** A operation taking two operands of type long, and producing a value of
     type long. This interface attempts to mimic a first-class function of two
@@ -42,7 +43,6 @@ import ptolemy.math.LongBinaryOperation;
     @Pt.AcceptedRating Red (ctsay)
 */
 public class TestLongBinaryOperation implements LongBinaryOperation {
-
     /** Operate on the operands, returning a value of the same
      *  type. Note that the operation need not be commutative.
      */

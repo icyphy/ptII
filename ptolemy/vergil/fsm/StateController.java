@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.fsm;
 
 import java.awt.Toolkit;
@@ -57,8 +56,10 @@ import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StateController
+
 /**
    This class provides interaction with nodes that represent states in an
    FSM graph.  It provides a double click binding to edit the parameters
@@ -73,7 +74,6 @@ import diva.gui.GUIUtilities;
    @Pt.AcceptedRating Red (johnr)
 */
 public class StateController extends AttributeController {
-
     /** Create a state controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
@@ -95,8 +95,8 @@ public class StateController extends AttributeController {
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _lookInsideAction));
         }
     }
 
@@ -108,11 +108,12 @@ public class StateController extends AttributeController {
      */
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
+
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_lookInsideAction));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _lookInsideAction));
         }
     }
 
@@ -142,29 +143,34 @@ public class StateController extends AttributeController {
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside");
+
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_L,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
-        public void actionPerformed(ActionEvent e) {
 
+        public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                        "Cannot look inside without a configuration.");
+                    "Cannot look inside without a configuration.");
                 return;
             }
+
             super.actionPerformed(e);
+
             NamedObj target = getTarget();
+
             // If the target is not an instance of State, do nothing.
             if (target instanceof State) {
                 try {
-                    TypedActor[] refinements = ((State)target).getRefinement();
-                    if (refinements != null && refinements.length > 0) {
+                    TypedActor[] refinements = ((State) target).getRefinement();
+
+                    if ((refinements != null) && (refinements.length > 0)) {
                         for (int i = 0; i < refinements.length; i++) {
                             // Open each refinement.
-                            _configuration.openModel((NamedObj)refinements[i]);
+                            _configuration.openModel((NamedObj) refinements[i]);
                         }
                     } else {
                         MessageHandler.error("State has no refinement.");
@@ -183,29 +189,33 @@ public class StateController extends AttributeController {
             super();
             _model = model;
         }
+
         public Figure render(Object n) {
-            Locatable location = (Locatable)n;
+            Locatable location = (Locatable) n;
             final NamedObj object = (NamedObj) location.getContainer();
             EditorIcon icon;
+
             try {
                 // In theory, there shouldn't be more than one
                 // icon, but if there are, use the last one.
                 List icons = object.attributeList(EditorIcon.class);
+
                 // Check to see whether there is an icon that has been created,
                 // but not inserted.
                 if (icons.size() == 0) {
-                    XMLIcon alreadyCreated =
-                        (XMLIcon) _iconsPendingContainer.get(object);
+                    XMLIcon alreadyCreated = (XMLIcon) _iconsPendingContainer
+                        .get(object);
+
                     if (alreadyCreated != null) {
                         icons.add(alreadyCreated);
                     }
                 }
+
                 if (icons.size() > 0) {
-                    icon = (EditorIcon)icons.get(icons.size() - 1);
+                    icon = (EditorIcon) icons.get(icons.size() - 1);
                 } else {
                     // NOTE: This code is the same as in
                     // IconController.IconRenderer.
-
                     // NOTE: This used to directly create an XMLIcon within
                     // the container "object". However, this is not cosher,
                     // since we may not be able to get write access on the
@@ -235,36 +245,40 @@ public class StateController extends AttributeController {
                     // result in creation of yet another figure before this
                     // method even returns!
                     final EditorIcon finalIcon = icon;
-                    ChangeRequest request =
-                        new ChangeRequest(
-                                _model,
-                                "Set the container of a new XMLIcon.") {
+                    ChangeRequest request = new ChangeRequest(_model,
+                            "Set the container of a new XMLIcon.") {
                             // NOTE: The KernelException should not be thrown,
                             // but if it is, it will be handled properly.
                             protected void _execute() throws KernelException {
                                 _iconsPendingContainer.remove(object);
+
                                 // If the icon already has a container, do nothing.
-                                if (finalIcon.getContainer() != null)
+                                if (finalIcon.getContainer() != null) {
                                     return;
+                                }
+
                                 // If the container already has an icon, do nothing.
-                                if (object.getAttribute("_icon") != null)
+                                if (object.getAttribute("_icon") != null) {
                                     return;
+                                }
+
                                 finalIcon.setContainer(object);
                             }
                         };
+
                     request.setPersistent(false);
                     object.requestChange(request);
                 }
             } catch (KernelException ex) {
-                throw new InternalErrorException("could not create icon " +
-                        "in " + object + " even " +
-                        "though one did not exist");
+                throw new InternalErrorException("could not create icon "
+                    + "in " + object + " even " + "though one did not exist");
             }
 
             Figure figure = icon.createFigure();
             figure.setToolTipText(object.getName());
             return figure;
         }
+
         private GraphModel _model;
     }
 }

@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.gui.Configuration;
@@ -43,6 +42,7 @@ import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plotter
+
 /**
    Base class for plotters.  This class contains an instance of the
    Plot class from the Ptolemy plot package as a public member.
@@ -69,7 +69,6 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Green (cxh)
 */
 public class Plotter extends PlotterBase {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -79,11 +78,10 @@ public class Plotter extends PlotterBase {
      *   actor with this name.
      */
     public Plotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        startingDataset = new Parameter(this, "startingDataset",
-                new IntToken(0));
+        startingDataset = new Parameter(this, "startingDataset", new IntToken(0));
         startingDataset.setTypeEquals(BaseType.INT);
     }
 
@@ -105,13 +103,13 @@ public class Plotter extends PlotterBase {
      *   superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == startingDataset) {
-            if (((IntToken)startingDataset.getToken()).intValue() < 0) {
+            if (((IntToken) startingDataset.getToken()).intValue() < 0) {
                 throw new IllegalActionException(this,
-                        "startingDataset: negative value is not allowed.");
+                    "startingDataset: negative value is not allowed.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -129,34 +127,41 @@ public class Plotter extends PlotterBase {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         if (plot == null) {
             // Create a new plot.
             plot = _newPlot();
             plot.setTitle(getName());
             plot.setButtons(true);
         }
-        if (_frame == null && _container == null) {
+
+        if ((_frame == null) && (_container == null)) {
             // Need an effigy and a tableau so that menu ops work properly.
             Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                    "Cannot find effigy for top level: "
+                    + toplevel().getFullName());
             }
+
             try {
-                PlotEffigy plotEffigy = new PlotEffigy(
-                        containerEffigy, containerEffigy.uniqueName("plot"));
+                PlotEffigy plotEffigy = new PlotEffigy(containerEffigy,
+                        containerEffigy.uniqueName("plot"));
+
                 // The default identifier is "Unnamed", which is no good for
                 // two reasons: Wrong title bar label, and it causes a save-as
                 // to destroy the original window.
                 plotEffigy.identifier.setExpression(getFullName());
-                PlotWindowTableau tableau = new PlotWindowTableau(
-                        plotEffigy, "tableau");
+
+                PlotWindowTableau tableau = new PlotWindowTableau(plotEffigy,
+                        "tableau");
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
+                    "Error creating effigy and tableau");
             }
+
             _windowProperties.setProperties(_frame);
             _implementDeferredConfigurations();
 
@@ -169,20 +174,24 @@ public class Plotter extends PlotterBase {
             if (_plotSize != null) {
                 _plotSize.setSize(plot);
             }
+
             _frame.pack();
         } else {
             if (plot instanceof Plot) {
-                int width = ((Plot)plot).getNumDataSets();
-                int offset = ((IntToken)startingDataset.getToken()).intValue();
+                int width = ((Plot) plot).getNumDataSets();
+                int offset = ((IntToken) startingDataset.getToken()).intValue();
+
                 for (int i = width - 1; i >= 0; i--) {
-                    ((Plot)plot).clear(i + offset);
+                    ((Plot) plot).clear(i + offset);
                 }
+
                 plot.repaint();
             } else {
                 plot.clear(false);
                 plot.repaint();
             }
         }
+
         if (_frame != null) {
             // show() used to call pack, which would override any manual
             // changes in placement. No more.

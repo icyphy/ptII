@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.Attribute;
@@ -34,8 +33,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SingletonParameter
+
 /**
    This subclass of Parameter is identical to Parameter except that it
    is a singleton, meaning that when its container is set, if the container
@@ -48,9 +49,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class SingletonParameter extends Parameter {
-
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will use the
@@ -67,7 +66,7 @@ public class SingletonParameter extends Parameter {
      *   a parameter already in the container.
      */
     public SingletonParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -98,14 +97,17 @@ public class SingletonParameter extends Parameter {
      *   SingletonConfigurableAttribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
+
         if (container != null) {
             previous = container.getAttribute(getName());
+
             if (previous != null) {
                 previous.setContainer(null);
             }
         }
+
         try {
             super.setContainer(container);
         } catch (IllegalActionException ex) {
@@ -113,12 +115,14 @@ public class SingletonParameter extends Parameter {
             if (previous != null) {
                 previous.setContainer(container);
             }
+
             throw ex;
         } catch (NameDuplicationException ex) {
             // Restore previous.
             if (previous != null) {
                 previous.setContainer(container);
             }
+
             throw ex;
         }
     }

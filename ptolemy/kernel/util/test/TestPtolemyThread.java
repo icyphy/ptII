@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util.test;
 
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.PtolemyThread;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestPtolemyThread
+
 /** This class is used to test the protected _debug() method in
     kernel.util.PtolemyThread.
     @author Christopher Hylands
@@ -42,8 +43,6 @@ import ptolemy.kernel.util.PtolemyThread;
     @Pt.AcceptedRating Red (cxheecs.berkeley.edu)
 */
 public class TestPtolemyThread extends PtolemyThread {
-
-
     /** Construct a new TestPtolemyThread object. This constructor has
      *  the same effect as TestPtolemyThread(null, null,
      *  <i>generatedName</i>), where <i>generatedName</i> is a newly

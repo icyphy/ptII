@@ -26,7 +26,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.dde.demo.HelloWorld;
 
 import java.util.LinkedList;
@@ -35,8 +34,10 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Punctuation
+
 /**
    A demo actor that outputs a StringToken for each real token
    that it consumes.
@@ -48,7 +49,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Punctuation extends StringOut {
-
     /** Construct a Punctuation actor with the specified container and
      *  name.
      * @param container The container of this actor.
@@ -59,7 +59,7 @@ public class Punctuation extends StringOut {
      *  superclass throws a NameDuplicationException .
      */
     public Punctuation(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _punctuation = new LinkedList();
     }
@@ -70,31 +70,28 @@ public class Punctuation extends StringOut {
     /** Set up the string values that this actor will output.
      */
     public LinkedList setUpStrings() {
+        _punctuation.addLast("!");
 
-        _punctuation.addLast( "!" );
+        _punctuation.addLast("!");
 
-        _punctuation.addLast( "!" );
+        _punctuation.addLast(" ");
 
-        _punctuation.addLast( " " );
+        _punctuation.addLast(" ");
 
-        _punctuation.addLast( " " );
+        _punctuation.addLast(" ");
 
-        _punctuation.addLast( " " );
+        _punctuation.addLast(" ");
 
-        _punctuation.addLast( " " );
+        _punctuation.addLast(" ");
 
-        _punctuation.addLast( " " );
+        _punctuation.addLast(" ");
 
-        _punctuation.addLast( " " );
-
-        _punctuation.addLast( "." );
+        _punctuation.addLast(".");
 
         return _punctuation;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private LinkedList _punctuation;
-
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.lib.Clock;
@@ -39,8 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousClock
+
 /**
    This is a clock source used in continuous-time (CT) domain.
    It extends the clock actor in ptolemy/actor/lib directory
@@ -70,9 +71,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
-
 public class ContinuousClock extends Clock {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -82,17 +81,19 @@ public class ContinuousClock extends Clock {
      *   actor with this name.
      */
     public ContinuousClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         defaultValue = new Parameter(this, "defaultValue");
         defaultValue.setExpression("0");
+
         // Override the signal type to be CONTINUOUS to indicate
         // that this actor produce outputs with state semantics.
-        ((Parameter)output.getAttribute("signalType"))
-            .setToken(new StringToken("CONTINUOUS"));
+        ((Parameter) output.getAttribute("signalType")).setToken(new StringToken(
+                "CONTINUOUS"));
+
         // Override of the trigger signal type to CONTINUOUS.
-        ((Parameter)trigger.getAttribute("signalType"))
-            .setToken(new StringToken("CONTINUOUS"));
+        ((Parameter) trigger.getAttribute("signalType")).setToken(new StringToken(
+                "CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,9 +117,10 @@ public class ContinuousClock extends Clock {
         // override how this is done.
         _updateTentativeValues();
         output.send(0, _tentativeCurrentValue);
+
         if (_debugging) {
-            _debug("Output: " + _currentValue + " at " +
-            getDirector().getModelTime() + ".");
+            _debug("Output: " + _currentValue + " at "
+                + getDirector().getModelTime() + ".");
         }
     }
 
@@ -141,9 +143,10 @@ public class ContinuousClock extends Clock {
      */
     public void preinitialize() throws IllegalActionException {
         if (!(getDirector() instanceof CTDirector)) {
-            throw new IllegalActionException("ContinuousClock can only" +
-                    " be used inside CT domain.");
+            throw new IllegalActionException("ContinuousClock can only"
+                + " be used inside CT domain.");
         }
+
         super.preinitialize();
     }
 
@@ -156,7 +159,7 @@ public class ContinuousClock extends Clock {
         // Since start time and stop time are registered as breakpoints.
         // If the current execution is not a discrete phase execution,
         // simply returns true.
-        if (!((CTDirector)getDirector()).isDiscretePhase()) {
+        if (!((CTDirector) getDirector()).isDiscretePhase()) {
             // Unlike what is defined in the super.postfire, continuous clock
             // requires that the current time passes the stop time.
             // That is, not only discrete phase execution, but also the continuous
@@ -165,18 +168,20 @@ public class ContinuousClock extends Clock {
                 if (_debugging) {
                     _debug(" --- Postfire returns false.");
                 }
+
                 return false;
             } else {
                 if (_debugging) {
                     _debug(" --- Postfire returns true.");
                 }
+
                 return true;
             }
         }
 
         // Get the current time and period.
         Time currentTime = getDirector().getModelTime();
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
         if (_debugging) {
             _debug("--- Postfiring at time " + currentTime + ".");
@@ -196,25 +201,21 @@ public class ContinuousClock extends Clock {
         // for some time, as might happen for example in a hybrid system).
         // But do not do this if we are before the first iteration.
         if (_tentativeCycleCount > 0) {
-            while (_tentativeCycleStartTime.add(periodValue).compareTo(
-                currentTime) <= 0) {
-                _tentativeCycleStartTime
-                    = _tentativeCycleStartTime.add(periodValue);
+            while (_tentativeCycleStartTime.add(periodValue).compareTo(currentTime) <= 0) {
+                _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
             }
 
             // Adjust the phase if time has moved beyond the current phase.
             // Synchronize the _tentativePhase with the currentTime considering
             // the time resolution.
-
             // Note that in CTDirector, the time resolution causes troubles.
             // For example, if currentTime is slightly smaller than the
             // expected break point, it should be treated as a break point
             // as what the director does in processBreakPoints method.
+            Time currentPhaseTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
 
-           Time currentPhaseTime =
-               _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
-           // Adjust the phase if time has moved beyond the current phase.
-           if (currentTime.compareTo(currentPhaseTime) == 0) {
+            // Adjust the phase if time has moved beyond the current phase.
+            if (currentTime.compareTo(currentPhaseTime) == 0) {
                 if (_tPlus) {
                     if (_debugging) {
                         _debug("phase is: tPlus");
@@ -225,27 +226,24 @@ public class ContinuousClock extends Clock {
 
                     if (_tentativePhase >= _offsets.length) {
                         _tentativePhase = 0;
+
                         // Schedule the first firing in the next period.
-                        _tentativeCycleStartTime =
-                            _tentativeCycleStartTime.add(periodValue);
+                        _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+
                         // Indicate that the cycle count should increase.
                         _tentativeCycleCountIncrement++;
                     }
 
                     if (_offsets[_tentativePhase] >= periodValue) {
                         throw new IllegalActionException(this,
-                                "Offset number "
-                                + _tentativePhase
-                                + " with value "
-                                + _offsets[_tentativePhase]
-                                + " must be strictly less than the "
-                                + "period, which is "
-                                + periodValue);
+                            "Offset number " + _tentativePhase + " with value "
+                            + _offsets[_tentativePhase]
+                            + " must be strictly less than the "
+                            + "period, which is " + periodValue);
                     }
 
                     _tMinus = !_tMinus;
                     _tPlus = !_tPlus;
-
                 } else if (_tMinus) {
                     if (_debugging) {
                         _debug("phase is: tMinus");
@@ -256,14 +254,13 @@ public class ContinuousClock extends Clock {
 
                     _tMinus = !_tMinus;
                     _tPlus = !_tPlus;
-
                 }
 
                 // Schedule the next firing in this period.
                 // NOTE: In the TM domain, this may not occur if we have
                 // missed a deadline.  As a consequence, the clock will stop.
-                _tentativeNextFiringTime
-                    = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+                _tentativeNextFiringTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
@@ -272,16 +269,15 @@ public class ContinuousClock extends Clock {
 
         // If we are beyond the number of cycles requested, then
         // change the output value to zero.
-
         // FIXME: If the current time is bigger than the stop time,
         // the super class of clock, the TimedSource will return false
         // at its postfire mathod. And the model will stop firing all
         // its components. So, the following code does not get called.
-
-        int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
+        int cycleLimit = ((IntToken) numberOfCycles.getToken()).intValue();
 
         Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
-        if ((cycleLimit > 0 && currentTime.compareTo(stopTime) >= 0)
+
+        if (((cycleLimit > 0) && (currentTime.compareTo(stopTime) >= 0))
                 || _tentativeDone) {
             _tentativeCurrentValue = defaultValue.getToken();
         }
@@ -293,19 +289,22 @@ public class ContinuousClock extends Clock {
         // That is, not only discrete phase execution, but also the continuous
         // phase execution is performed.
         if (currentTime.compareTo(getModelStopTime()) > 0) {
-            if (_debugging)
+            if (_debugging) {
                 _debug(" --- Postfire returns false.");
+            }
+
             return false;
         }
 
-        if (_debugging)
+        if (_debugging) {
             _debug(" --- Postfire returns true.");
+        }
+
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Boolean variables indicating the phases beside the break point.
     private boolean _tMinus;
     private boolean _tPlus;

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.vergil;
 
 import java.util.Iterator;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnimatorApplet
+
 /**
    An applet that demonstrates the Ptolemy II type system.
    This applet identifies attributes whose names match entity names,
@@ -62,9 +63,7 @@ import ptolemy.moml.MoMLChangeRequest;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class TypeAnimatorApplet extends MoMLViewerApplet {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -76,6 +75,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      */
     public void managerStateChanged(Manager manager) {
         super.managerStateChanged(manager);
+
         // FIXME this is a workaround for a bug in the type system where
         // type listeners are not properly notified when the type is
         // a structured type.
@@ -102,38 +102,43 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      *  @return  The model that was created
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+        throws Exception {
         _toplevel = super._createModel(workspace);
+
         if (_toplevel instanceof CompositeEntity) {
-            CompositeEntity toplevel = (CompositeEntity)_toplevel;
+            CompositeEntity toplevel = (CompositeEntity) _toplevel;
             TypeListener typeListener = new PortTypeListener();
             Iterator entities = toplevel.entityList().iterator();
+
             while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
+                Entity entity = (Entity) entities.next();
                 Iterator ports = entity.portList().iterator();
+
                 while (ports.hasNext()) {
-                    TypedIOPort port = (TypedIOPort)ports.next();
+                    TypedIOPort port = (TypedIOPort) ports.next();
                     port.addTypeListener(typeListener);
                 }
             }
         }
+
         return _toplevel;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Update the type designator for all ports contained by
     // entities contained by the toplevel.
     private void _updateAllTypeDisplays() {
         if (_toplevel instanceof CompositeEntity) {
-            CompositeEntity toplevel = (CompositeEntity)_toplevel;
+            CompositeEntity toplevel = (CompositeEntity) _toplevel;
             Iterator entities = toplevel.entityList().iterator();
+
             while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
+                Entity entity = (Entity) entities.next();
                 Iterator ports = entity.portList().iterator();
+
                 while (ports.hasNext()) {
-                    TypedIOPort port = (TypedIOPort)ports.next();
+                    TypedIOPort port = (TypedIOPort) ports.next();
                     _updateTypeDisplay(port);
                 }
             }
@@ -147,34 +152,31 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
         String portName = port.getName(_toplevel);
         String labelName = portName.replace('.', '_');
         Attribute label = _toplevel.getAttribute(labelName);
+
         if (label != null) {
-            Configurable config = (Configurable)
-                label.getAttribute("_iconDescription");
+            Configurable config = (Configurable) label.getAttribute(
+                    "_iconDescription");
+
             if (config != null) {
-                String moml = "<property name="
-                    + "\"_iconDescription\" "
+                String moml = "<property name=" + "\"_iconDescription\" "
                     + "class=\"ptolemy.kernel.util"
                     + ".SingletonConfigurableAttribute\">"
                     + "<configure><svg><text x=\"20\" "
                     + "style=\"font-size:14; font-family:sanserif; "
-                    + "fill:red\" y=\"20\">"
-                    + port.getType()
+                    + "fill:red\" y=\"20\">" + port.getType()
                     + "</text></svg></configure></property>";
-                label.requestChange(new MoMLChangeRequest(
-                                            this, label, moml));
+                label.requestChange(new MoMLChangeRequest(this, label, moml));
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // The local listener class
     private class PortTypeListener implements TypeListener {
-
         // Called to indicate that a type has changed.
         public void typeChanged(final TypeEvent event) {
-            TypedIOPort port = (TypedIOPort)event.getSource();
+            TypedIOPort port = (TypedIOPort) event.getSource();
             _updateTypeDisplay(port);
         }
     }

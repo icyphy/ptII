@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptolemy.graph.analysis.strategy;
 
 import java.util.ArrayList;
@@ -34,8 +33,10 @@ import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.SelfLoopAnalyzer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SelfLoopAnalyzer
+
 /**
    Computation of self-loops in a graph.
    The returned collection cannot be modified.
@@ -50,10 +51,7 @@ import ptolemy.graph.analysis.analyzer.SelfLoopAnalyzer;
    @author Shuvra S. Bhattacharyya, Shahrooz Shahparnia
    @version $Id$
 */
-
-public class SelfLoopStrategy extends CachedStrategy
-    implements SelfLoopAnalyzer {
-
+public class SelfLoopStrategy extends CachedStrategy implements SelfLoopAnalyzer {
     /** Construct an instance of this strategy for a given graph.
      *
      *  @param graph The given graph.
@@ -70,7 +68,7 @@ public class SelfLoopStrategy extends CachedStrategy
      *  @return The self-loop edges.
      */
     public List edges() {
-        return (List)_result();
+        return (List) _result();
     }
 
     /** Return a description of the analyzer.
@@ -85,7 +83,6 @@ public class SelfLoopStrategy extends CachedStrategy
      *
      *  @return True since this strategy is always valid.
      */
-
     public boolean valid() {
         return true;
     }
@@ -101,12 +98,15 @@ public class SelfLoopStrategy extends CachedStrategy
     protected Object _compute() {
         ArrayList selfLoopEdges = new ArrayList();
         Iterator edges = graph().edges().iterator();
+
         while (edges.hasNext()) {
-            Edge edge = (Edge)edges.next();
+            Edge edge = (Edge) edges.next();
+
             if (edge.isSelfLoop()) {
                 selfLoopEdges.add(edge);
             }
         }
+
         return selfLoopEdges;
     }
 
@@ -116,6 +116,6 @@ public class SelfLoopStrategy extends CachedStrategy
      *  @return The analysis result in unmodifiable form.
      */
     protected Object _convertResult() {
-        return Collections.unmodifiableList((List)_result());
+        return Collections.unmodifiableList((List) _result());
     }
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
@@ -44,8 +43,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Recorder
+
 /**
    Record all input tokens for later querying.  This actor can be used for
    testing configurations of actors.  It can also be used in programs that
@@ -68,9 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class Recorder extends Sink {
-
     /** Construct an actor with an input multiport that can accept any
      *  Token.
      *  @param container The container.
@@ -81,7 +80,7 @@ public class Recorder extends Sink {
      *   actor with this name.
      */
     public Recorder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         capacity = new Parameter(this, "capacity", new IntToken(-1));
@@ -117,20 +116,26 @@ public class Recorder extends Sink {
      */
     public List getHistory(int channel) {
         ArrayList result = new ArrayList();
+
         if (_records != null) {
             result.ensureCapacity(_records.size());
+
             Iterator firings = _records.iterator();
+
             while (firings.hasNext()) {
-                Token[] record = (Token[])firings.next();
+                Token[] record = (Token[]) firings.next();
+
                 if (channel < record.length) {
                     if (record[channel] != null) {
                         result.add(record[channel]);
                         continue;
                     }
                 }
+
                 result.add(_bottom);
             }
         }
+
         return result;
     }
 
@@ -141,10 +146,11 @@ public class Recorder extends Sink {
      *  @return The latest input token.
      */
     public Token getLatest(int channel) {
-        if (_latest == null || channel >= _latest.length ||
-                _latest[channel] == null) {
-            return(_bottom);
+        if ((_latest == null) || (channel >= _latest.length)
+                || (_latest[channel] == null)) {
+            return (_bottom);
         }
+
         return (_latest[channel]);
     }
 
@@ -193,6 +199,7 @@ public class Recorder extends Sink {
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
         Token[] record = new Token[width];
+
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
@@ -200,24 +207,27 @@ public class Recorder extends Sink {
                 _count++;
             }
         }
-        int capacityValue = ((IntToken)(capacity.getToken())).intValue();
+
+        int capacityValue = ((IntToken) (capacity.getToken())).intValue();
+
         if (capacityValue != 0) {
             _records.add(record);
-            _timeRecord.add(new Double(
-                getDirector().getModelTime().getDoubleValue()));
-            if (capacityValue > 0 && _records.size() > capacityValue) {
+            _timeRecord.add(new Double(getDirector().getModelTime()
+                                           .getDoubleValue()));
+
+            if ((capacityValue > 0) && (_records.size() > capacityValue)) {
                 // Remove the first element.
                 _records.remove(0);
                 _timeRecord.remove(0);
             }
         }
+
         _latest = record;
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Count of events seen.
     private int _count = 0;
 

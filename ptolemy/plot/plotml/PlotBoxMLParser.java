@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.plot.plotml;
 
 import java.io.BufferedReader;
@@ -43,8 +42,10 @@ import com.microstar.xml.HandlerBase;
 import com.microstar.xml.XmlException;
 import com.microstar.xml.XmlParser;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PlotBoxMLParser
+
 /**
    This class constructs a plot from specifications
    in PlotML (Plot Markup Language), which is an XML language.
@@ -62,7 +63,6 @@ import com.microstar.xml.XmlParser;
    @Pt.AcceptedRating Red (cxh)
 */
 public class PlotBoxMLParser extends HandlerBase {
-
     /** Construct an parser to parse commands for the specified plot object.
      *  @param plot The plot object to which to apply the commands.
      */
@@ -74,7 +74,8 @@ public class PlotBoxMLParser extends HandlerBase {
     /** Protected constructor allows derived classes to set _plot
      *  differently.
      */
-    protected PlotBoxMLParser() {}
+    protected PlotBoxMLParser() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -92,11 +93,13 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @exception XmlException If the name or value is null.
      */
     public void attribute(String name, String value, boolean specified)
-            throws XmlException {
-        if (name == null) throw new XmlException("Attribute has no name",
-                _currentExternalEntity(),
-                _parser.getLineNumber(),
+        throws XmlException {
+        if (name == null) {
+            throw new XmlException("Attribute has no name",
+                _currentExternalEntity(), _parser.getLineNumber(),
                 _parser.getColumnNumber());
+        }
+
         // NOTE: value may be null if attribute default is #IMPLIED.
         if (value != null) {
             _attributes.put(name, value);
@@ -145,6 +148,7 @@ public class PlotBoxMLParser extends HandlerBase {
             _plot.setXLabel(_currentCharData.toString());
         } else if (elementName.equals("xLog")) {
             _plot.setXLog(true);
+
             // xRange and yRange are dealt with in startElement().
         } else if (elementName.equals("yLabel")) {
             _plot.setYLabel(_currentCharData.toString());
@@ -162,8 +166,8 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @param column The approximate column number of the error.
      *  @exception XmlException If called.
      */
-    public void error(String message, String systemID,
-            int line, int column) throws XmlException {
+    public void error(String message, String systemID, int line, int column)
+        throws XmlException {
         throw new XmlException(message, _currentExternalEntity(), line, column);
     }
 
@@ -193,7 +197,9 @@ public class PlotBoxMLParser extends HandlerBase {
     public void parse(URL base, Reader reader) throws Exception {
         _parser.setHandler(this);
         _base = base;
+
         Reader buffered = new BufferedReader(reader);
+
         if (base == null) {
             _parser.parse(null, null, buffered);
         } else {
@@ -226,8 +232,8 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
-        if (publicID != null &&
-                publicID.equals("-//UC Berkeley//DTD PlotML 1//EN")) {
+        if ((publicID != null)
+                && publicID.equals("-//UC Berkeley//DTD PlotML 1//EN")) {
             // This is the generic MoML DTD.
             return new StringReader(PlotML_DTD_1);
         } else {
@@ -256,26 +262,28 @@ public class PlotBoxMLParser extends HandlerBase {
         try {
             // NOTE: The elements are alphabetical below...
             if (elementName.equals("size")) {
-                String spec = (String)_attributes.get("height");
+                String spec = (String) _attributes.get("height");
                 _checkForNull(spec, "No height argument for element \"size\"");
+
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
                 int height = (Integer.valueOf(spec)).intValue();
 
-                spec = (String)_attributes.get("width");
+                spec = (String) _attributes.get("width");
                 _checkForNull(spec, "No width argument for element \"size\"");
+
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
                 int width = (Integer.valueOf(spec)).intValue();
 
                 _plot.setSize(width, height);
-
             } else if (elementName.equals("tick")) {
-                String label = (String)_attributes.get("label");
+                String label = (String) _attributes.get("label");
                 _checkForNull(label, "No label for element \"tick\"");
 
-                String spec = (String)_attributes.get("position");
+                String spec = (String) _attributes.get("position");
                 _checkForNull(spec, "No position for element \"tick\"");
+
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
                 double position = (Double.valueOf(spec)).doubleValue();
@@ -285,64 +293,60 @@ public class PlotBoxMLParser extends HandlerBase {
                 } else {
                     _plot.addYTick(label, position);
                 }
-
             } else if (elementName.equals("title")) {
                 _currentCharData = new StringBuffer();
-
             } else if (elementName.equals("xLabel")) {
                 _currentCharData = new StringBuffer();
-
             } else if (elementName.equals("xRange")) {
-                String spec = (String)_attributes.get("min");
+                String spec = (String) _attributes.get("min");
                 _checkForNull(spec, "No min argument for element \"xRange\"");
+
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
                 double min = (Double.valueOf(spec)).doubleValue();
 
-                spec = (String)_attributes.get("max");
+                spec = (String) _attributes.get("max");
                 _checkForNull(spec, "No max argument for element \"xRange\"");
+
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
                 double max = (Double.valueOf(spec)).doubleValue();
 
                 _plot.setXRange(min, max);
-
             } else if (elementName.equals("xTicks")) {
                 _xtick = true;
-
             } else if (elementName.equals("yLabel")) {
                 _currentCharData = new StringBuffer();
-
             } else if (elementName.equals("yRange")) {
-                String spec = (String)_attributes.get("min");
+                String spec = (String) _attributes.get("min");
                 _checkForNull(spec, "No min argument for element \"yRange\"");
+
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
                 double min = (Double.valueOf(spec)).doubleValue();
 
-                spec = (String)_attributes.get("max");
+                spec = (String) _attributes.get("max");
                 _checkForNull(spec, "No max argument for element \"yRange\"");
+
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
                 double max = (Double.valueOf(spec)).doubleValue();
 
                 _plot.setYRange(min, max);
-
             } else if (elementName.equals("yTicks")) {
                 _xtick = false;
             }
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
-                throw (XmlException)ex;
+                throw (XmlException) ex;
             } else {
                 String msg = "XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.toString();
-                throw new XmlException(msg,
-                        _currentExternalEntity(),
-                        _parser.getLineNumber(),
-                        _parser.getColumnNumber());
+                throw new XmlException(msg, _currentExternalEntity(),
+                    _parser.getLineNumber(), _parser.getColumnNumber());
             }
         }
+
         _attributes.clear();
     }
 
@@ -366,7 +370,6 @@ public class PlotBoxMLParser extends HandlerBase {
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/plot/plotml/plotml.dtd.  If modified, it needs to be also
     // updated at ptweb/archive/plotml.dtd.
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -375,12 +378,10 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @param message The message to issue if the reference is null.
      */
     protected void _checkForNull(Object object, String message)
-            throws XmlException {
+        throws XmlException {
         if (object == null) {
-            throw new XmlException(message,
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
+            throw new XmlException(message, _currentExternalEntity(),
+                _parser.getLineNumber(), _parser.getColumnNumber());
         }
     }
 
@@ -389,13 +390,13 @@ public class PlotBoxMLParser extends HandlerBase {
      *   or null if none.
      */
     protected String _currentExternalEntity() {
-        return (String)_externalEntities.peek();
+        return (String) _externalEntities.peek();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
-
     // NOTE: Do not use HashMap here to maintain Java 1.1 compatibility.
+
     /** Attributes associated with an entity. */
     protected Hashtable _attributes;
 
@@ -410,7 +411,6 @@ public class PlotBoxMLParser extends HandlerBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The URL w.r.t. which to resolve external references.
     private URL _base;
 

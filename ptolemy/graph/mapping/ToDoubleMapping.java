@@ -22,11 +22,12 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.mapping;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ToDoubleMultipleMapping
+
 /**
    A mapping from objects into multiple double values.
 
@@ -37,8 +38,6 @@ package ptolemy.graph.mapping;
    @version $Id$
 */
 public interface ToDoubleMapping extends Mapping {
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

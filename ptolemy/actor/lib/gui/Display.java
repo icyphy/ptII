@@ -25,7 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.lib.gui;
 
 import java.awt.Color;
@@ -61,8 +60,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Display
+
 /**
    Display the values of the tokens arriving on the input channels in a
    text area on the screen.  Each input token is written on a
@@ -92,7 +93,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (vogel)
 */
 public class Display extends Sink implements Placeable {
-
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -102,8 +102,9 @@ public class Display extends Sink implements Placeable {
      *   actor with this name.
      */
     public Display(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // Set the type of the input port.
         input.setTypeEquals(BaseType.GENERAL);
 
@@ -115,25 +116,22 @@ public class Display extends Sink implements Placeable {
         title = new StringAttribute(this, "title");
         title.setExpression("");
 
-        _windowProperties = new WindowPropertiesAttribute(
-                this, "_windowProperties");
+        _windowProperties = new WindowPropertiesAttribute(this,
+                "_windowProperties");
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-15\" "
-                + "width=\"40\" height=\"30\" "
-                + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-15\" y=\"-10\" "
-                + "width=\"30\" height=\"20\" "
-                + "style=\"fill:white\"/>\n"
-                + "<line x1=\"-13\" y1=\"-6\" x2=\"-4\" y2=\"-6\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "<line x1=\"-13\" y1=\"-2\" x2=\"0\" y2=\"-2\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "<line x1=\"-13\" y1=\"2\" x2=\"-8\" y2=\"2\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "<line x1=\"-13\" y1=\"6\" x2=\"4\" y2=\"6\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-15\" "
+            + "width=\"40\" height=\"30\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-15\" y=\"-10\" " + "width=\"30\" height=\"20\" "
+            + "style=\"fill:white\"/>\n"
+            + "<line x1=\"-13\" y1=\"-6\" x2=\"-4\" y2=\"-6\" "
+            + "style=\"stroke:grey\"/>\n"
+            + "<line x1=\"-13\" y1=\"-2\" x2=\"0\" y2=\"-2\" "
+            + "style=\"stroke:grey\"/>\n"
+            + "<line x1=\"-13\" y1=\"2\" x2=\"-8\" y2=\"2\" "
+            + "style=\"stroke:grey\"/>\n"
+            + "<line x1=\"-13\" y1=\"6\" x2=\"4\" y2=\"6\" "
+            + "style=\"stroke:grey\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -165,19 +163,23 @@ public class Display extends Sink implements Placeable {
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == rowsDisplayed) {
-            int numRows = ((IntToken)rowsDisplayed.getToken()).intValue();
+            int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
+
             if (numRows <= 0) {
                 throw new IllegalActionException(this,
-                        "rowsDisplayed: requires a positive value.");
+                    "rowsDisplayed: requires a positive value.");
             }
+
             if (numRows != _previousNumRows) {
                 _previousNumRows = numRows;
+
                 if (textArea != null) {
                     textArea.setRows(numRows);
+
                     if (_frame != null) {
                         _frame.pack();
                         _frame.show();
@@ -185,16 +187,19 @@ public class Display extends Sink implements Placeable {
                 }
             }
         } else if (attribute == columnsDisplayed) {
-            int numColumns =
-                ((IntToken)columnsDisplayed.getToken()).intValue();
+            int numColumns = ((IntToken) columnsDisplayed.getToken()).intValue();
+
             if (numColumns <= 0) {
                 throw new IllegalActionException(this,
-                        "columnsDisplayed: requires a positive value.");
+                    "columnsDisplayed: requires a positive value.");
             }
+
             if (numColumns != _previousNumColumns) {
                 _previousNumColumns = numColumns;
+
                 if (textArea != null) {
                     textArea.setColumns(numColumns);
+
                     if (_frame != null) {
                         _frame.show();
                     }
@@ -210,9 +215,8 @@ public class Display extends Sink implements Placeable {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Display newObject = (Display)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Display newObject = (Display) super.clone(workspace);
         newObject.textArea = null;
         return newObject;
     }
@@ -235,36 +239,42 @@ public class Display extends Sink implements Placeable {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         if (textArea == null) {
             // No container has been specified for display.
             // Place the text area in its own frame.
             // Need an effigy and a tableau so that menu ops work properly.
             Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                    "Cannot find effigy for top level: "
+                    + toplevel().getFullName());
             }
+
             try {
-                TextEffigy textEffigy = TextEffigy.newTextEffigy(
-                        containerEffigy, "");
+                TextEffigy textEffigy = TextEffigy.newTextEffigy(containerEffigy,
+                        "");
+
                 // The default identifier is "Unnamed", which is no good for
                 // two reasons: Wrong title bar label, and it causes a save-as
                 // to destroy the original window.
                 textEffigy.identifier.setExpression(getFullName());
-                DisplayWindowTableau tableau = new DisplayWindowTableau(
-                        textEffigy, "tableau");
+
+                DisplayWindowTableau tableau = new DisplayWindowTableau(textEffigy,
+                        "tableau");
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
+                    "Error creating effigy and tableau");
             }
+
             textArea = _frame.text;
-            int numRows =
-                ((IntToken)rowsDisplayed.getToken()).intValue();
+
+            int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
             textArea.setRows(numRows);
-            int numColumns =
-                ((IntToken)columnsDisplayed.getToken()).intValue();
+
+            int numColumns = ((IntToken) columnsDisplayed.getToken()).intValue();
             textArea.setColumns(numColumns);
             _windowProperties.setProperties(_frame);
             _frame.pack();
@@ -272,12 +282,14 @@ public class Display extends Sink implements Placeable {
             // Erase previous text.
             textArea.setText(null);
         }
+
         if (_frame != null) {
             // show() used to override manual placement by calling pack.
             // No more.
             _frame.show();
             _frame.toFront();
         }
+
         /*
           int tab = ((IntToken)tabSize.getToken()).intValue();
           // NOTE: As of jdk 1.3beta the following is ignored.
@@ -303,14 +315,19 @@ public class Display extends Sink implements Placeable {
         if (_container == null) {
             // Reset everything.
             // NOTE: _remove() doesn't work here.  Why?
-            if (_frame != null) _frame.dispose();
+            if (_frame != null) {
+                _frame.dispose();
+            }
+
             _frame = null;
             _scrollPane = null;
             textArea = null;
             return;
         }
+
         textArea = new JTextArea();
         _scrollPane = new JScrollPane(textArea);
+
         // java.awt.Component.setBackground(color) says that
         // if the color "parameter is null then this component
         // will inherit the  background color of its parent."
@@ -320,18 +337,20 @@ public class Display extends Sink implements Placeable {
 
         _container.add(_scrollPane);
         textArea.setBackground(Color.white);
+
         String titleSpec = title.getExpression();
+
         if (!titleSpec.trim().equals("")) {
-            _scrollPane.setBorder(
-                    BorderFactory.createTitledBorder(titleSpec));
+            _scrollPane.setBorder(BorderFactory.createTitledBorder(titleSpec));
         }
+
         try {
-            int numRows =
-                ((IntToken)rowsDisplayed.getToken()).intValue();
+            int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
             textArea.setRows(numRows);
-            int numColumns =
-                ((IntToken)columnsDisplayed.getToken()).intValue();
+
+            int numColumns = ((IntToken) columnsDisplayed.getToken()).intValue();
             textArea.setColumns(numColumns);
+
             // Note that in an applet, you may see problems where
             // the text area is obscured by the horizontal scroll
             // bar.  The solution is to make the applet wider
@@ -341,6 +360,7 @@ public class Display extends Sink implements Placeable {
         } catch (IllegalActionException ex) {
             // Ignore, and use default number of rows.
         }
+
         // Make sure the text is not editable.
         textArea.setEditable(false);
     }
@@ -352,21 +372,30 @@ public class Display extends Sink implements Placeable {
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
+
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
+
                 // If the window has been deleted, read the rest of the inputs.
-                if (textArea == null) continue;
-                String value = token.toString();
-                // If the value is a pure string, strip the quotation marks.
-                if ((value.length() > 1) && value.startsWith("\"") &&
-                        value.endsWith("\"")) {
-                    value = value.substring(1, value.length()-1);
+                if (textArea == null) {
+                    continue;
                 }
+
+                String value = token.toString();
+
+                // If the value is a pure string, strip the quotation marks.
+                if ((value.length() > 1) && value.startsWith("\"")
+                        && value.endsWith("\"")) {
+                    value = value.substring(1, value.length() - 1);
+                }
+
                 textArea.append(value);
 
                 // Append a newline character.
-                if (width > i + 1) textArea.append("\n");
+                if (width > (i + 1)) {
+                    textArea.append("\n");
+                }
 
                 // Regrettably, the default in swing is that the top
                 // of the textArea is visible, not the most recent text.
@@ -375,8 +404,8 @@ public class Display extends Sink implements Placeable {
                 // caret position (despite the fact that the caret
                 // is already where want it).
                 try {
-                    int lineOffset = textArea
-                        .getLineStartOffset(textArea.getLineCount() - 1);
+                    int lineOffset = textArea.getLineStartOffset(textArea
+                            .getLineCount() - 1);
                     textArea.setCaretPosition(lineOffset);
                 } catch (BadLocationException ex) {
                     // Ignore ... worst case is that the scrollbar
@@ -384,9 +413,11 @@ public class Display extends Sink implements Placeable {
                 }
             }
         }
+
         if (textArea != null) {
             textArea.append("\n");
         }
+
         return super.postfire();
     }
 
@@ -407,10 +438,11 @@ public class Display extends Sink implements Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
         super.setContainer(container);
-        if (container != previousContainer && previousContainer != null) {
+
+        if ((container != previousContainer) && (previousContainer != null)) {
             _remove();
         }
     }
@@ -426,12 +458,13 @@ public class Display extends Sink implements Placeable {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {
             _windowProperties.recordProperties(_frame);
         }
+
         super._exportMoMLContents(output, depth);
     }
 
@@ -444,7 +477,7 @@ public class Display extends Sink implements Placeable {
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     if (textArea != null) {
-                        if (_container != null && _scrollPane != null) {
+                        if ((_container != null) && (_scrollPane != null)) {
                             _container.remove(_scrollPane);
                             _container.invalidate();
                             _container.repaint();
@@ -458,7 +491,6 @@ public class Display extends Sink implements Placeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The container for the text display, if there is one.
     private Container _container;
 
@@ -484,7 +516,6 @@ public class Display extends Sink implements Placeable {
      *  Display upon closing, and also records the size of the display.
      */
     private class DisplayWindow extends TextEditor {
-
         /** Construct an empty text editor with the specified title.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
@@ -503,6 +534,7 @@ public class Display extends Sink implements Placeable {
             if (_frame != null) {
                 _windowProperties.setProperties(_frame);
             }
+
             super._close();
             place(null);
             return true;
@@ -512,7 +544,6 @@ public class Display extends Sink implements Placeable {
     /** Version of TextEditorTableau that creates DisplayWindow.
      */
     private class DisplayWindowTableau extends Tableau {
-
         /** Construct a new tableau for the model represented by the
          *  given effigy.
          *  @param container The container.
@@ -523,15 +554,20 @@ public class Display extends Sink implements Placeable {
          *   attribute already in the container.
          */
         public DisplayWindowTableau(TextEffigy container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
+
             String title = Display.this.title.getExpression();
+
             if (title.trim().equals("")) {
                 title = Display.this.getFullName();
             }
+
             frame = new DisplayWindow(title);
+
             // Also need to set the title of this Tableau.
             setTitle(title);
+
             // Make sure that the effigy and the text area use the same
             // Document (so that they contain the same data).
             frame.text.setDocument(container.getDocument());

@@ -29,13 +29,14 @@
    Created : May 1998
 
 */
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionalIfNode
+
 /**
    The parse tree created from the expression string consists of a
    hierarchy of node objects. This class represents functional if-then-else
@@ -54,7 +55,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.data.Token
 */
 public class ASTPtFunctionalIfNode extends ASTPtRootNode {
-
     public ASTPtFunctionalIfNode(int id) {
         super(id);
     }
@@ -65,8 +65,7 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
+    public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitFunctionalIfNode(this);
     }
 }

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.tree;
 
 import java.util.Collections;
@@ -35,8 +34,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FullTreeModel
+
 /**
    A tree model for Ptolemy II models.  Nodes in this tree contain
    the following child elements, in this order:
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (johnr)
 */
 public class FullTreeModel extends ClassAndEntityTreeModel {
-
     /** Create a new tree model with the specified root.
      *  @param root The root of the tree.
      */
@@ -88,10 +88,10 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
         List relations = _relations(parent);
         int numRelations = relations.size();
 
-        if (index >= numAttributes + numPorts + numRelations) {
+        if (index >= (numAttributes + numPorts + numRelations)) {
             return super.getChild(parent,
-                    index - numAttributes - numPorts - numRelations);
-        } else if (index >= numAttributes + numPorts) {
+                index - numAttributes - numPorts - numRelations);
+        } else if (index >= (numAttributes + numPorts)) {
             return relations.get(index - numAttributes - numPorts);
         } else if (index >= numAttributes) {
             return ports.get(index - numAttributes);
@@ -120,7 +120,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
         int numRelations = relations.size();
 
         return numAttributes + numPorts + numRelations
-            + super.getChildCount(parent);
+        + super.getChildCount(parent);
     }
 
     /** Return the index of the given child within the given parent.
@@ -128,10 +128,10 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
      *  @return The index of the specified child.
      */
     public int getIndexOfChild(Object parent, Object child) {
-
         List attributes = _attributes(parent);
 
         int index = attributes.indexOf(child);
+
         if (index >= 0) {
             return index;
         } else {
@@ -139,7 +139,9 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
             List ports = _ports(parent);
 
             index = ports.indexOf(child);
+
             int numAttributes = attributes.size();
+
             if (index >= 0) {
                 return index + numAttributes;
             } else {
@@ -147,13 +149,16 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
                 List relations = _relations(parent);
 
                 index = relations.indexOf(child);
+
                 int numPorts = ports.size();
+
                 if (index >= 0) {
                     return index + numAttributes + numPorts;
                 } else {
                     // Not an attribute, port, or relation. Defer to base
                     // class.
                     index = super.getIndexOfChild(parent, child);
+
                     if (index >= 0) {
                         int numRelations = relations.size();
                         return index + numAttributes + numPorts + numRelations;
@@ -161,6 +166,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
                 }
             }
         }
+
         return -1;
     }
 
@@ -171,10 +177,17 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
      */
     public boolean isLeaf(Object object) {
         // FIXME: Ignoring setFilter for now.
+        if (_attributes(object).size() > 0) {
+            return false;
+        }
 
-        if (_attributes(object).size() > 0) return false;
-        if (_ports(object).size() > 0) return false;
-        if (_relations(object).size() > 0) return false;
+        if (_ports(object).size() > 0) {
+            return false;
+        }
+
+        if (_relations(object).size() > 0) {
+            return false;
+        }
 
         return super.isLeaf(object);
     }
@@ -191,7 +204,8 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
         if (!(object instanceof NamedObj)) {
             return Collections.EMPTY_LIST;
         }
-        return ((NamedObj)object).attributeList();
+
+        return ((NamedObj) object).attributeList();
     }
 
     /** Return the list of ports, or an empty list if there are none.
@@ -203,7 +217,8 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
         if (!(object instanceof Entity)) {
             return Collections.EMPTY_LIST;
         }
-        return ((Entity)object).portList();
+
+        return ((Entity) object).portList();
     }
 
     /** Return the list of relations, or an empty list if there are none.
@@ -215,6 +230,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
         if (!(object instanceof CompositeEntity)) {
             return Collections.EMPTY_LIST;
         }
-        return ((CompositeEntity)object).relationList();
+
+        return ((CompositeEntity) object).relationList();
     }
 }

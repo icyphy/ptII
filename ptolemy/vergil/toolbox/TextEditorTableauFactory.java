@@ -27,7 +27,6 @@
 
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.util.Iterator;
@@ -47,8 +46,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorTableauFactory
+
 /**
    This class is an attribute that creates a text editor to edit a specified
    string attribute in the container of this attribute.  It is similar to
@@ -62,10 +63,8 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (ptolemy)
    @see TextEditorConfigureFactory
 */
-public class TextEditorTableauFactory
-    extends TableauFactory
+public class TextEditorTableauFactory extends TableauFactory
     implements TextEditorFactory {
-
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -75,7 +74,7 @@ public class TextEditorTableauFactory
      *   an attribute already in the container.
      */
     public TextEditorTableauFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -129,56 +128,51 @@ public class TextEditorTableauFactory
         if (!(effigy instanceof PtolemyEffigy)) {
             return null;
         }
+
         NamedObj object = ((PtolemyEffigy) effigy).getModel();
-        Attribute attribute =
-            object.getAttribute(attributeName.getExpression());
+        Attribute attribute = object.getAttribute(attributeName.getExpression());
+
         if (!(attribute instanceof StringAttribute)) {
-            throw new IllegalActionException(
-                    object,
-                    "Expected "
-                    + object.getFullName()
-                    + " to contain a StringAttribute named "
-                    + attributeName.getExpression()
-                    + ", but it does not.");
+            throw new IllegalActionException(object,
+                "Expected " + object.getFullName()
+                + " to contain a StringAttribute named "
+                + attributeName.getExpression() + ", but it does not.");
         }
 
         // effigy may already contain a texteffigy.
         TextEffigy textEffigy = null;
         Iterator subEffigies = effigy.entityList(TextEffigy.class).iterator();
+
         while (subEffigies.hasNext()) {
             textEffigy = (TextEffigy) subEffigies.next();
         }
+
         if (textEffigy == null) {
-            textEffigy =
-                TextEffigy.newTextEffigy(
-                        effigy,
-                        ((StringAttribute) attribute).getExpression());
+            textEffigy = TextEffigy.newTextEffigy(effigy,
+                    ((StringAttribute) attribute).getExpression());
         }
+
         // textEffigy may already have a tableau.
-        Iterator tableaux =
-            textEffigy.entityList(TextEditorTableau.class).iterator();
+        Iterator tableaux = textEffigy.entityList(TextEditorTableau.class)
+                                      .iterator();
+
         if (tableaux.hasNext()) {
-            return (TextEditorTableau)tableaux.next();
+            return (TextEditorTableau) tableaux.next();
         }
 
         // Need a new tableau, so create an editor for it.
         if (_editor == null) {
             int numberOfRows = ((IntToken) rowsDisplayed.getToken()).intValue();
-            int numberOfColumns =
-                ((IntToken) columnsDisplayed.getToken()).intValue();
-            _editor =
-                new TextEditorForStringAttributes(
-                        this,
-                        (StringAttribute) attribute,
-                        numberOfRows,
-                        numberOfColumns,
-                        "Editor for "
-                        + attributeName.getExpression()
-                        + " of "
-                        + getContainer().getFullName());
+            int numberOfColumns = ((IntToken) columnsDisplayed.getToken())
+                .intValue();
+            _editor = new TextEditorForStringAttributes(this,
+                    (StringAttribute) attribute, numberOfRows, numberOfColumns,
+                    "Editor for " + attributeName.getExpression() + " of "
+                    + getContainer().getFullName());
         }
-        TextEditorTableau tableau =
-            new TextEditorTableau(textEffigy, "_tableau", _editor);
+
+        TextEditorTableau tableau = new TextEditorTableau(textEffigy,
+                "_tableau", _editor);
         return tableau;
     }
 
@@ -190,12 +184,12 @@ public class TextEditorTableauFactory
         if (_editor != null) {
             return _editor.text.getText();
         }
+
         return null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Keep track of an open editor so that it isn't opened more than
     // once.
     private TextEditorForStringAttributes _editor;

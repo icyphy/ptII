@@ -22,13 +22,14 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 */
-
 package ptolemy.graph.mapping;
 
 import java.util.Map;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ToDoubleMapMapping
+
 /** A ToDoubleMapping that is based on a Map. The values in the Map
     must be instances of Double. ToDoubleMapMappings are immutable in the
     sense that the underlying Map cannot be changed (although the keys and
@@ -41,7 +42,6 @@ import java.util.Map;
     @version $Id$
 */
 public class ToDoubleMapMapping extends MapMapping implements ToDoubleMapping {
-
     /** Construct a ToDoubleMapMapping from a given map. The values in the map
      *  must be instances of Double; otherwise, unpredictable behavior
      *  may result. Modifications to the argument Map after construction
@@ -65,8 +65,8 @@ public class ToDoubleMapMapping extends MapMapping implements ToDoubleMapping {
      *  @return True if the given object is in the domain of this Mapping.
      */
     public boolean inDomain(Object object) {
-        return ((_map.containsKey(object)) &&
-                (_map.get(object) instanceof Double));
+        return ((_map.containsKey(object))
+        && (_map.get(object) instanceof Double));
     }
 
     /** Return the double value that is associated with given object under
@@ -82,7 +82,7 @@ public class ToDoubleMapMapping extends MapMapping implements ToDoubleMapping {
      *  domain of the mapping.
      */
     public double toDouble(Object object) {
-        return ((Double)(_map.get(object))).doubleValue();
+        return ((Double) (_map.get(object))).doubleValue();
     }
 
     public Object toObject(Object object) {

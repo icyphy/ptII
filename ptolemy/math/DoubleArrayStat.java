@@ -26,13 +26,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 import java.util.Random;
 
+
 ///////////////////////////////////////////////////////////////
 //// DoubleArrayStat
+
 /**
    This class provides a library for statistical operations on arrays of
    doubles.
@@ -47,9 +48,9 @@ import java.util.Random;
    @Pt.AcceptedRating Red (ctsay)
 */
 public class DoubleArrayStat extends DoubleArrayMath {
-
     // Protected constructor prevents construction of this class.
-    protected DoubleArrayStat() {}
+    protected DoubleArrayStat() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -68,12 +69,11 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return A new array of doubles.
      */
     public static final double[] autoCorrelation(double[] x, int N,
-            int startLag, int endLag) {
+        int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
         double[] returnValue = new double[outputLength];
 
         for (int lag = startLag; lag <= endLag; lag++) {
-
             // Find the most efficient and correct place to start the summation
             int start = Math.max(0, -lag);
 
@@ -85,7 +85,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             double sum = 0.0;
 
             for (int i = start; i < limit; i++) {
-                sum += x[i] * x[i + lag];
+                sum += (x[i] * x[i + lag]);
             }
 
             returnValue[lag - startLag] = sum;
@@ -93,7 +93,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         return returnValue;
     }
-
 
     /** Return the auto-correlation of an array at a certain lag value,
      *  summing over a certain number of samples
@@ -107,7 +106,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return A double, Rxx[lag].
      */
     public static double autoCorrelationAt(double[] x, int N, int lag) {
-
         // Find the most efficient and correct place to start the summation
         int start = Math.max(0, -lag);
 
@@ -119,7 +117,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         double sum = 0.0;
 
         for (int i = start; i < limit; i++) {
-            sum += x[i] * x[i + lag];
+            sum += (x[i] * x[i + lag]);
         }
 
         return sum;
@@ -140,12 +138,11 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return A new array of doubles.
      */
     public static final double[] crossCorrelation(double[] x, double[] y,
-            int N, int startLag, int endLag) {
+        int N, int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
         double[] returnValue = new double[outputLength];
 
         for (int lag = startLag; lag <= endLag; lag++) {
-
             // Find the most efficient and correct place to start the summation
             int start = Math.max(0, -lag);
 
@@ -157,7 +154,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             double sum = 0.0;
 
             for (int i = start; i < limit; i++) {
-                sum += x[i] * y[i + lag];
+                sum += (x[i] * y[i + lag]);
             }
 
             returnValue[lag - startLag] = sum;
@@ -177,9 +174,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param lag An integer indicating the lag value (may be negative).
      *  @return A double, Rxy[lag].
      */
-    public static double crossCorrelationAt(double[] x, double[] y,
-            int N, int lag) {
-
+    public static double crossCorrelationAt(double[] x, double[] y, int N,
+        int lag) {
         // Find the most efficient and correct place to start the summation
         int start = Math.max(0, -lag);
 
@@ -191,7 +187,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         double sum = 0.0;
 
         for (int i = start; i < limit; i++) {
-            sum += x[i] * y[i + lag];
+            sum += (x[i] * y[i + lag]);
         }
 
         return sum;
@@ -220,14 +216,15 @@ public class DoubleArrayStat extends DoubleArrayMath {
         for (int i = 0; i < length; i++) {
             if (p[i] < 0.0) {
                 throw new IllegalArgumentException(
-                        "ptolemy.math.DoubleArrayStat.entropy() : " +
-                        "Negative probability encountered.");
+                    "ptolemy.math.DoubleArrayStat.entropy() : "
+                    + "Negative probability encountered.");
             } else if (p[i] == 0.0) {
                 // do nothing
             } else {
-                h -= p[i] * ExtendedMath.log2(p[i]);
+                h -= (p[i] * ExtendedMath.log2(p[i]));
             }
         }
+
         return h;
     }
 
@@ -246,6 +243,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         if (array.length < 1) {
             return 1.0;
         }
+
         return Math.pow(productOfElements(array), 1.0 / array.length);
     }
 
@@ -268,7 +266,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  representation of the corresponding index.
      */
     public static final Object[] maxAndIndex(double[] array) {
-
         int length = _nonZeroLength(array, "DoubleArrayStat.maxAndIndex");
         int maxIndex = 0;
 
@@ -280,6 +277,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
                 maxIndex = i;
             }
         }
+
         return new Object[] { new Double(maxElement), new Integer(maxIndex) };
     }
 
@@ -310,7 +308,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  representation of the corresponding index.
      */
     public static final Object[] minAndIndex(double[] array) {
-
         int length = _nonZeroLength(array, "DoubleArrayStat.minAndIndex");
         int minIndex = 0;
 
@@ -322,6 +319,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
                 minIndex = i;
             }
         }
+
         return new Object[] { new Double(minElement), new Integer(minIndex) };
     }
 
@@ -330,9 +328,11 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double productOfElements(double[] array) {
         double product = 1.0;
+
         for (int i = 0; i < array.length; i++) {
             product *= array[i];
         }
+
         return product;
     }
 
@@ -351,6 +351,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         for (int i = 0; i < N; i++) {
             returnValue[i] = (_random.nextDouble() < p) ? 1.0 : 0.0;
         }
+
         return returnValue;
     }
 
@@ -367,12 +368,14 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         for (int i = 0; i < N; i++) {
             double r;
+
             do {
                 r = _random.nextDouble();
             } while (r == 0.0);
 
             returnValue[i] = -Math.log(r) / lambda;
         }
+
         return returnValue;
     }
 
@@ -382,7 +385,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  This algorithm is from [1].
      */
     public static final double[] randomGaussian(double mean,
-            double standardDeviation, int N) {
+        double standardDeviation, int N) {
         double[] returnValue = new double[N];
 
         if (_random == null) {
@@ -390,8 +393,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
         }
 
         for (int i = 0; i < N; i++) {
-            returnValue[i] = mean + _random.nextGaussian()*standardDeviation;
+            returnValue[i] = mean
+                + (_random.nextGaussian() * standardDeviation);
         }
+
         return returnValue;
     }
 
@@ -408,7 +413,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         for (int i = 0; i < N; i++) {
             double j;
-            double u, p, f;
+            double u;
+            double p;
+            double f;
 
             j = 0.0;
             f = p = Math.exp(-mean);
@@ -422,6 +429,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
             returnValue[i] = j;
         }
+
         return returnValue;
     }
 
@@ -441,8 +449,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
         }
 
         for (int i = 0; i < N; i++) {
-            returnValue[i] = _random.nextDouble() * range + a;
+            returnValue[i] = (_random.nextDouble() * range) + a;
         }
+
         return returnValue;
     }
 
@@ -464,8 +473,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  random variable.
      */
     public static final double relativeEntropy(double[] p, double[] q) {
-
         _nonZeroLength(p, "DoubleArrayStat.relativeEntropy");
+
         int length = _commonLength(p, q, "DoubleArrayStat.relativeEntropy");
 
         double d = 0.0;
@@ -473,16 +482,17 @@ public class DoubleArrayStat extends DoubleArrayMath {
         for (int i = 0; i < length; i++) {
             if ((p[i] < 0.0) || (q[i] < 0.0)) {
                 throw new IllegalArgumentException(
-                        "ptolemy.math.DoubleArrayStat.relativeEntropy() : " +
-                        "Negative probability encountered.");
+                    "ptolemy.math.DoubleArrayStat.relativeEntropy() : "
+                    + "Negative probability encountered.");
             } else if (p[i] == 0.0) {
                 // do nothing
             } else if (q[i] == 0.0) {
                 return Double.POSITIVE_INFINITY;
             } else {
-                d += p[i] * ExtendedMath.log2(p[i] / q[i]);
+                d += (p[i] * ExtendedMath.log2(p[i] / q[i]));
             }
         }
+
         return d;
     }
 
@@ -521,9 +531,11 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double sumOfElements(double[] array) {
         double sum = 0.0;
+
         for (int i = 0; i < array.length; i++) {
             sum += array[i];
         }
+
         return sum;
     }
 
@@ -555,25 +567,25 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  sample variance is taken on an array of length less than 2.
      */
     public static double variance(double[] array, boolean sample) {
-
         int length = _nonZeroLength(array, "DoubleArrayStat.variance");
 
         if (sample && (array.length < 2)) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.DoubleArrayStat.variance() : " +
-                    "sample variance and standard deviation of an array " +
-                    "of length less than 2 are not defined.");
+                "ptolemy.math.DoubleArrayStat.variance() : "
+                + "sample variance and standard deviation of an array "
+                + "of length less than 2 are not defined.");
         }
 
         double ex2 = 0.0;
         double sum = 0.0;
+
         for (int i = 0; i < length; i++) {
-            ex2 += array[i] * array[i];
+            ex2 += (array[i] * array[i]);
             sum += array[i];
         }
 
         double norm = sample ? (length - 1) : length;
-        double sumSquaredOverLength = sum * sum / length;
+        double sumSquaredOverLength = (sum * sum) / length;
         return (ex2 - sumSquaredOverLength) / norm;
     }
 
@@ -588,15 +600,15 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return The length of the array.
      */
     protected static final int _nonZeroLength(final double[] array,
-            String methodName) {
+        String methodName) {
         if (array == null) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input array is null.");
+            throw new IllegalArgumentException("ptolemy.math." + methodName
+                + "() : input array is null.");
         }
 
         if (array.length <= 0) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input array has length 0.");
+            throw new IllegalArgumentException("ptolemy.math." + methodName
+                + "() : input array has length 0.");
         }
 
         return array.length;
@@ -604,7 +616,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Common instance of Random to be shared by all methods that need
     // a random number.  If we do not share a single Random, then
     // under Windows, closely spaced calls to nextGaussian() on two

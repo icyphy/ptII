@@ -24,12 +24,14 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.toolbox;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import diva.graph.GraphEvent;
 import diva.graph.GraphListener;
+
 
 /**
  * A list of GraphListeners which is smart enough to call the correct
@@ -64,33 +66,36 @@ public class GraphEventMulticaster implements GraphListener {
      * the appropriate method based on the event's ID.
      */
     public void dispatchEvent(GraphEvent e) {
-        switch(e.getID()) {
+        switch (e.getID()) {
         case GraphEvent.EDGE_HEAD_CHANGED:
             edgeHeadChanged(e);
             break;
+
         case GraphEvent.EDGE_TAIL_CHANGED:
             edgeTailChanged(e);
             break;
+
         case GraphEvent.NODE_ADDED:
             nodeAdded(e);
             break;
+
         case GraphEvent.NODE_REMOVED:
             nodeRemoved(e);
             break;
+
         case GraphEvent.STRUCTURE_CHANGED:
             structureChanged(e);
             break;
         }
     }
 
-
     /**
      * Dispatch the edgeHeadChanged() event to the
      * listeners.
      */
     public void edgeHeadChanged(GraphEvent e) {
-        for (Iterator i = listeners(); i.hasNext(); ) {
-            GraphListener l = (GraphListener)i.next();
+        for (Iterator i = listeners(); i.hasNext();) {
+            GraphListener l = (GraphListener) i.next();
             l.edgeHeadChanged(e);
         }
     }
@@ -100,8 +105,8 @@ public class GraphEventMulticaster implements GraphListener {
      * listeners.
      */
     public void edgeTailChanged(GraphEvent e) {
-        for (Iterator i = listeners(); i.hasNext(); ) {
-            GraphListener l = (GraphListener)i.next();
+        for (Iterator i = listeners(); i.hasNext();) {
+            GraphListener l = (GraphListener) i.next();
             l.edgeTailChanged(e);
         }
     }
@@ -117,8 +122,8 @@ public class GraphEventMulticaster implements GraphListener {
      * Dispatch the nodeAdded() event to each of the listeners.
      */
     public void nodeAdded(GraphEvent e) {
-        for (Iterator i = listeners(); i.hasNext(); ) {
-            GraphListener l = (GraphListener)i.next();
+        for (Iterator i = listeners(); i.hasNext();) {
+            GraphListener l = (GraphListener) i.next();
             l.nodeAdded(e);
         }
     }
@@ -127,8 +132,8 @@ public class GraphEventMulticaster implements GraphListener {
      * Dispatch the nodeRemoved() event to each of the listeners.
      */
     public void nodeRemoved(GraphEvent e) {
-        for (Iterator i = listeners(); i.hasNext(); ) {
-            GraphListener l = (GraphListener)i.next();
+        for (Iterator i = listeners(); i.hasNext();) {
+            GraphListener l = (GraphListener) i.next();
             l.nodeRemoved(e);
         }
     }
@@ -145,11 +150,9 @@ public class GraphEventMulticaster implements GraphListener {
      * Dispatch the structureChanged() event to each of the listeners.
      */
     public void structureChanged(GraphEvent e) {
-        for (Iterator i = listeners(); i.hasNext(); ) {
-            GraphListener l = (GraphListener)i.next();
+        for (Iterator i = listeners(); i.hasNext();) {
+            GraphListener l = (GraphListener) i.next();
             l.structureChanged(e);
         }
     }
 }
-
-

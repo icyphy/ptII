@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java;
 
 import java.util.Collections;
@@ -59,6 +58,7 @@ import soot.jimple.VirtualInvokeExpr;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExceptionEliminator
+
 /**
    Replace instances of Ptolemy exceptions with instances of plain old
    RuntimeException.  This transformation is primarily useful from a memory
@@ -71,7 +71,8 @@ import soot.jimple.VirtualInvokeExpr;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class ExceptionEliminator extends SceneTransformer implements HasPhaseOptions {
+public class ExceptionEliminator extends SceneTransformer
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private ExceptionEliminator(CompositeActor model) {
@@ -101,47 +102,50 @@ public class ExceptionEliminator extends SceneTransformer implements HasPhaseOpt
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
-        System.out.println("ExceptionEliminator.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("ExceptionEliminator.internalTransform(" + phaseName
+            + ", " + options + ")");
 
         _obfuscate = PhaseOptions.getBoolean(options, "obfuscate");
+
         // Loop over all the classes
-
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-
+                i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
+
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+                    methods.hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
 
                 // System.out.println("method = " + method);
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
+
                 for (Iterator traps = body.getTraps().iterator();
-                     traps.hasNext();) {
-                    Trap trap = (Trap)traps.next();
+                        traps.hasNext();) {
+                    Trap trap = (Trap) traps.next();
                     SootClass exception = trap.getException();
+
                     if (_isPtolemyException(exception)) {
                         trap.setException(PtolemyUtilities.exceptionClass);
                     }
                 }
+
                 _replaceExceptions(body);
             }
         }
     }
 
     private boolean _isPtolemyException(SootClass exceptionClass) {
-        if (SootUtilities.derivesFrom(
-                    exceptionClass,
+        if (SootUtilities.derivesFrom(exceptionClass,
                     PtolemyUtilities.kernelExceptionClass)) {
             return true;
         }
-        if (SootUtilities.derivesFrom(
-                    exceptionClass,
+
+        if (SootUtilities.derivesFrom(exceptionClass,
                     PtolemyUtilities.kernelRuntimeExceptionClass)) {
             return true;
         }
+
         return false;
     }
 
@@ -149,72 +153,87 @@ public class ExceptionEliminator extends SceneTransformer implements HasPhaseOpt
     // or initializer with a plain old RuntimeException.
     private void _replaceExceptions(JimpleBody body) {
         for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
-            Stmt unit = (Stmt)units.next();
+                units.hasNext();) {
+            Stmt unit = (Stmt) units.next();
 
             // If any box is removable, then remove the statement.
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                 boxes.hasNext();) {
-                ValueBox box = (ValueBox)boxes.next();
+                    boxes.hasNext();) {
+                ValueBox box = (ValueBox) boxes.next();
+
                 // FIXME: This is currently way too simple.
                 Value value = box.getValue();
                 Type type = value.getType();
+
                 if (value instanceof NewExpr) {
                     // Fix kernel exceptions to be runtime exceptions.
-                    NewExpr expr = (NewExpr)value;
+                    NewExpr expr = (NewExpr) value;
                     SootClass exceptionClass = expr.getBaseType().getSootClass();
-                    if (_isPtolemyException(exceptionClass)) {
-                        expr.setBaseType(
-                                RefType.v(PtolemyUtilities.runtimeExceptionClass));
 
+                    if (_isPtolemyException(exceptionClass)) {
+                        expr.setBaseType(RefType.v(
+                                PtolemyUtilities.runtimeExceptionClass));
                     }
                 } else if (value instanceof CastExpr) {
                     CastExpr expr = (CastExpr) value;
                     Type castType = expr.getCastType();
-                    if (castType instanceof RefType &&
-                            _isPtolemyException(((RefType)castType).getSootClass())) {
-                        expr.setCastType(RefType.v(PtolemyUtilities.runtimeExceptionClass));
+
+                    if (castType instanceof RefType
+                            && _isPtolemyException(
+                                ((RefType) castType).getSootClass())) {
+                        expr.setCastType(RefType.v(
+                                PtolemyUtilities.runtimeExceptionClass));
                     }
                 } else if (value instanceof SpecialInvokeExpr) {
                     // Fix the exception constructors.
-                    SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-                    SootClass exceptionClass =
-                        ((RefType)expr.getBase().getType()).getSootClass();
+                    SpecialInvokeExpr expr = (SpecialInvokeExpr) value;
+                    SootClass exceptionClass = ((RefType) expr.getBase()
+                                                              .getType())
+                        .getSootClass();
+
                     if (_isPtolemyException(exceptionClass)) {
                         Value foundArg = null;
+
                         for (Iterator args = expr.getArgs().iterator();
-                             args.hasNext();) {
-                            Value arg = (Value)args.next();
-                            if (arg.getType().equals(RefType.v(PtolemyUtilities.stringClass))) {
+                                args.hasNext();) {
+                            Value arg = (Value) args.next();
+
+                            if (arg.getType().equals(RefType.v(
+                                            PtolemyUtilities.stringClass))) {
                                 foundArg = arg;
                                 break;
                             }
                         }
-                        if (foundArg == null || _obfuscate) {
-                            box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                                 (Local)expr.getBase(),
-                                                 PtolemyUtilities.runtimeExceptionConstructor,
-                                                 Collections.EMPTY_LIST));
+
+                        if ((foundArg == null) || _obfuscate) {
+                            box.setValue(Jimple.v().newSpecialInvokeExpr((Local) expr
+                                    .getBase(),
+                                    PtolemyUtilities.runtimeExceptionConstructor,
+                                    Collections.EMPTY_LIST));
                         } else {
-                            box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                                 (Local)expr.getBase(),
-                                                 PtolemyUtilities.runtimeExceptionStringConstructor,
-                                                 foundArg));
+                            box.setValue(Jimple.v().newSpecialInvokeExpr((Local) expr
+                                    .getBase(),
+                                    PtolemyUtilities.runtimeExceptionStringConstructor,
+                                    foundArg));
                         }
                     }
                 } else if (value instanceof VirtualInvokeExpr) {
-                    VirtualInvokeExpr expr = (VirtualInvokeExpr)value;
+                    VirtualInvokeExpr expr = (VirtualInvokeExpr) value;
                     Type exceptionType = expr.getBase().getType();
+
                     if (exceptionType instanceof RefType) {
-                        SootClass exceptionClass =
-                            ((RefType)exceptionType).getSootClass();
+                        SootClass exceptionClass = ((RefType) exceptionType)
+                            .getSootClass();
+
                         if (_isPtolemyException(exceptionClass)) {
                             SootMethod method = expr.getMethod();
+
                             if (method.getName().equals("getMessage")) {
                                 if (unit instanceof InvokeStmt) {
                                     body.getUnits().remove(unit);
                                 } else {
-                                    box.setValue(StringConstant.v("PtolemyException"));
+                                    box.setValue(StringConstant.v(
+                                            "PtolemyException"));
                                 }
                             }
                         }
@@ -227,17 +246,3 @@ public class ExceptionEliminator extends SceneTransformer implements HasPhaseOpt
     private CompositeActor _model;
     private boolean _obfuscate;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

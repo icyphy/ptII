@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
 
 import java.util.ArrayList;
@@ -44,8 +43,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActor
+
 /**
    An AtomicActor is an executable entity that cannot itself contain
    other actors. The Ports of AtomicActors are constrained to be IOPorts.
@@ -64,7 +65,6 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.actor.IOPort
 */
 public class AtomicActor extends ComponentEntity implements Actor {
-
     /** Construct an actor in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -97,7 +97,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *   an entity already in the container.
      */
     public AtomicActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -117,9 +117,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        AtomicActor newObject = (AtomicActor)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        AtomicActor newObject = (AtomicActor) super.clone(workspace);
+
         // Reset to force reinitialization of cache.
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
@@ -134,15 +134,16 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_debugging) {
             _debug("Connections changed on port: " + port.getName());
         }
+
         if (port instanceof IOPort) {
-            IOPort castPort = (IOPort)port;
-            if (castPort.isInput() && getDirector() != null) {
+            IOPort castPort = (IOPort) port;
+
+            if (castPort.isInput() && (getDirector() != null)) {
                 try {
                     castPort.createReceivers();
-                } catch(IllegalActionException ex) {
+                } catch (IllegalActionException ex) {
                     // Should never happen.
-                    throw new InternalErrorException(
-                            "cannot create receivers.");
+                    throw new InternalErrorException("cannot create receivers.");
                 }
             }
         }
@@ -167,9 +168,11 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public Director getDirector() {
         Nameable container = getContainer();
+
         if (container instanceof Actor) {
-            return ((Actor)container).getDirector();
+            return ((Actor) container).getDirector();
         }
+
         return null;
     }
 
@@ -189,23 +192,23 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public FunctionDependency getFunctionDependency() {
         // If the functionDependency object is not constructed,
         // construct a FunctionDependencyOfAtomicActor object.
-        FunctionDependency functionDependency
-            = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
+        FunctionDependency functionDependency = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
+
         if (functionDependency == null) {
             try {
-                functionDependency
-                    = new FunctionDependencyOfAtomicActor(
-                        this, FunctionDependency.UniqueName);
+                functionDependency = new FunctionDependencyOfAtomicActor(this,
+                        FunctionDependency.UniqueName);
             } catch (NameDuplicationException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a" +
-                        "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a"
+                    + "function dependency object for " + getName());
             } catch (IllegalActionException e) {
                 // This should not happen.
-                throw new InternalErrorException("Failed to construct a" +
-                        "function dependency object for " + getName());
+                throw new InternalErrorException("Failed to construct a"
+                    + "function dependency object for " + getName());
             }
         }
+
         return functionDependency;
     }
 
@@ -216,10 +219,13 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public Manager getManager() {
         try {
             _workspace.getReadAccess();
+
             Nameable container = getContainer();
+
             if (container instanceof Actor) {
-                return ((Actor)container).getManager();
+                return ((Actor) container).getManager();
             }
+
             return null;
         } finally {
             _workspace.doneReading();
@@ -247,15 +253,19 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_inputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
+
                 // Update the cache.
                 List inputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
+
                 while (ports.hasNext()) {
-                    IOPort p = (IOPort)ports.next();
-                    if ( p.isInput()) {
+                    IOPort p = (IOPort) ports.next();
+
+                    if (p.isInput()) {
                         inputPorts.add(p);
                     }
                 }
+
                 // Create an arrayList, since the cache will not be
                 // modified.  This reduces memory usage.
                 _cachedInputPorts = new ArrayList(inputPorts);
@@ -264,6 +274,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
                 _workspace.doneReading();
             }
         }
+
         return _cachedInputPorts;
     }
 
@@ -291,15 +302,21 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_debugging) {
             _debug("Called iterate(" + count + ")");
         }
+
         int n = 0;
-        while (n++ < count && !_stopRequested) {
+
+        while ((n++ < count) && !_stopRequested) {
             if (prefire()) {
                 fire();
-                if (!postfire()) return Executable.STOP_ITERATING;
+
+                if (!postfire()) {
+                    return Executable.STOP_ITERATING;
+                }
             } else {
                 return Executable.NOT_READY;
             }
         }
+
         if (_stopRequested) {
             return Executable.STOP_ITERATING;
         } else {
@@ -322,6 +339,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+
             IOPort port = new IOPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
@@ -342,10 +360,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public Receiver newReceiver() throws IllegalActionException {
         Director director = getDirector();
+
         if (director == null) {
             throw new IllegalActionException(this,
-                    "Cannot create a receiver without a director.");
+                "Cannot create a receiver without a director.");
         }
+
         return director.newReceiver();
     }
 
@@ -357,14 +377,18 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_outputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
+
                 List outputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
+
                 while (ports.hasNext()) {
-                    IOPort p = (IOPort)ports.next();
-                    if ( p.isOutput()) {
+                    IOPort p = (IOPort) ports.next();
+
+                    if (p.isOutput()) {
                         outputPorts.add(p);
                     }
                 }
+
                 // Create an arrayList, since the cache will not be
                 // modified.  This reduces memory usage.
                 _cachedOutputPorts = new ArrayList(outputPorts);
@@ -373,6 +397,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
                 _workspace.doneReading();
             }
         }
+
         return _cachedOutputPorts;
     }
 
@@ -393,6 +418,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_debugging) {
             _debug("Called postfire()");
         }
+
         return !_stopRequested;
     }
 
@@ -409,6 +435,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_debugging) {
             _debug("Called prefire(), which returns true");
         }
+
         return true;
     }
 
@@ -427,12 +454,13 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_debugging) {
             _debug("Called preinitialize()");
         }
+
         _stopRequested = false;
+
         // NOTE:  Receivers are also getting created
         // in connectionChanged().  Perhaps this is here to ensure
         // that the receivers are reset?
         _createReceivers();
-
     }
 
     /** Prune the dependency declarations, which by default state
@@ -464,8 +492,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
      */
     public void removeDependency(IOPort input, IOPort output) {
-        FunctionDependencyOfAtomicActor functionDependency
-            = (FunctionDependencyOfAtomicActor) getFunctionDependency();
+        FunctionDependencyOfAtomicActor functionDependency = (FunctionDependencyOfAtomicActor) getFunctionDependency();
         functionDependency.removeDependency(input, output);
     }
 
@@ -479,9 +506,10 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // Invalidate the schedule and type resolution of the old director.
         Director oldDirector = getDirector();
+
         if (oldDirector != null) {
             oldDirector.invalidateSchedule();
             oldDirector.invalidateResolvedTypes();
@@ -490,6 +518,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         super.setContainer(container);
 
         Director director = getDirector();
+
         // Invalidate the schedule and type resolution of the new director.
         if (director != null) {
             director.invalidateSchedule();
@@ -508,6 +537,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public void stop() {
         _stopRequested = true;
+
         if (_debugging) {
             _debug("Called stop()");
         }
@@ -534,6 +564,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_debugging) {
             _debug("Called terminate()");
         }
+
         stop();
     }
 
@@ -570,11 +601,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *   name already in the entity.
      */
     protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
-                    "Incompatible port class for this entity.");
+                "Incompatible port class for this entity.");
         }
+
         super._addPort(port);
     }
 
@@ -583,8 +615,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     protected void _createReceivers() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
+            IOPort inputPort = (IOPort) inputPorts.next();
             inputPort.createReceivers();
         }
     }
@@ -597,8 +630,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
     private transient List _cachedInputPorts;

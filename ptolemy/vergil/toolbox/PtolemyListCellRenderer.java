@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.toolbox;
 
 import java.awt.Component;
@@ -34,6 +33,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
 import ptolemy.kernel.util.NamedObj;
+
 
 /**
    A list cell renderer for Ptolemy objects.
@@ -45,18 +45,17 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (johnr)
 */
 public class PtolemyListCellRenderer extends DefaultListCellRenderer {
+    public Component getListCellRendererComponent(JList list, Object value,
+        int index, boolean isSelected, boolean cellHasFocus) {
+        DefaultListCellRenderer component = (DefaultListCellRenderer) super
+            .getListCellRendererComponent(list, value, index, isSelected,
+                cellHasFocus);
 
-    public Component getListCellRendererComponent(
-            JList list, Object value, int index,
-            boolean isSelected, boolean cellHasFocus) {
-
-        DefaultListCellRenderer component = (DefaultListCellRenderer)
-            super.getListCellRendererComponent(list, value,
-                    index, isSelected, cellHasFocus);
         if (value instanceof NamedObj) {
             NamedObj object = (NamedObj) value;
             component.setText(object.getName());
         }
+
         return component;
     }
 }

@@ -35,12 +35,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.codegen.c.actor.lib;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 
-import ptolemy.util.FileUtilities;
-
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.util.FileUtilities;
 
 /**
  * @author Jackie

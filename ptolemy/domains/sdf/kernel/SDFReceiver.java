@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.sdf.kernel;
 
 import java.util.Enumeration;
@@ -39,8 +38,10 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SDFReceiver
+
 /**
    A first-in, first-out (FIFO) queue receiver with variable capacity and
    optional history. Tokens are put into the receiver with the put() method,
@@ -61,7 +62,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ArrayFIFOQueue
 */
 public class SDFReceiver extends AbstractReceiver {
-
     /** Construct an empty receiver with no container.
      */
     public SDFReceiver() {
@@ -94,7 +94,7 @@ public class SDFReceiver extends AbstractReceiver {
      *   not accept this receiver.
      */
     public SDFReceiver(IOPort container, int size)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(container);
         _queue = new ArrayFIFOQueue(size);
     }
@@ -118,9 +118,10 @@ public class SDFReceiver extends AbstractReceiver {
         if (_queue.isEmpty()) {
             // The queue is empty.
             throw new NoTokenException(getContainer(),
-                    "Attempt to get token from an empty QueueReceiver.");
+                "Attempt to get token from an empty QueueReceiver.");
         }
-        return (Token)_queue.take();
+
+        return (Token) _queue.take();
     }
 
     /** Return a token in the receiver or its history. If the offset
@@ -143,12 +144,12 @@ public class SDFReceiver extends AbstractReceiver {
      */
     public Token get(int offset) {
         try {
-            return (Token)_queue.get(offset);
+            return (Token) _queue.get(offset);
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
-                    "Offset " + offset + " out of range with " + _queue.size()
-                    + " tokens in the receiver and " + _queue.historySize()
-                    + " in history.");
+                "Offset " + offset + " out of range with " + _queue.size()
+                + " tokens in the receiver and " + _queue.historySize()
+                + " in history.");
         }
     }
 
@@ -166,10 +167,11 @@ public class SDFReceiver extends AbstractReceiver {
     public Token[] getArray(int count) {
         // Check if we need to reallocate the cached
         // token array.
-        if (_tokenArray == null || count != _tokenArray.length) {
+        if ((_tokenArray == null) || (count != _tokenArray.length)) {
             // Reallocate token array.
             _tokenArray = new Token[count];
         }
+
         _queue.takeArray(_tokenArray, count);
         return _tokenArray;
     }
@@ -215,13 +217,15 @@ public class SDFReceiver extends AbstractReceiver {
     public boolean hasRoom(int tokens) throws IllegalArgumentException {
         if (tokens < 1) {
             throw new IllegalArgumentException("The argument "
-                    + "must not be negative. It was: " + tokens);
+                + "must not be negative. It was: " + tokens);
         }
+
         if (_queue.getCapacity() == INFINITE_CAPACITY) {
             // Queue has infinite capacity, so it can accept any
             // finite number of tokens.
             return true;
         }
+
         return (_queue.size() + tokens) <= _queue.getCapacity();
     }
 
@@ -245,8 +249,9 @@ public class SDFReceiver extends AbstractReceiver {
     public boolean hasToken(int tokens) throws IllegalArgumentException {
         if (tokens < 0) {
             throw new IllegalArgumentException("The argument "
-                    + "must not be negative. It was: " + tokens);
+                + "must not be negative. It was: " + tokens);
         }
+
         return _queue.size() >= tokens;
     }
 
@@ -287,7 +292,7 @@ public class SDFReceiver extends AbstractReceiver {
     public void put(Token token) {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
-                    "Queue is at capacity. Cannot put a token.");
+                "Queue is at capacity. Cannot put a token.");
         }
     }
 
@@ -306,13 +311,13 @@ public class SDFReceiver extends AbstractReceiver {
      *  @exception IndexOutOfBoundException If the array does not contain
      *  at least count elements.
      */
-    public void putArray(Token token[], int count) {
+    public void putArray(Token[] token, int count) {
         // Note: There has been a suggestion that this method also be
         // able to take an offset.  When we figure out how to use this,
         // we should implement it.
         if (!_queue.putArray(token, count)) {
             throw new NoRoomException(getContainer(),
-                    "Queue is at capacity. Cannot put a token.");
+                "Queue is at capacity. Cannot put a token.");
         }
     }
 
@@ -328,7 +333,7 @@ public class SDFReceiver extends AbstractReceiver {
             _queue.setCapacity(capacity);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(getContainer(), ex,
-                    "Failed to set capacity to " + capacity);
+                "Failed to set capacity to " + capacity);
         }
     }
 
@@ -345,15 +350,14 @@ public class SDFReceiver extends AbstractReceiver {
      *  @see #historyElements()
      *  @see #historySize()
      */
-    public void setHistoryCapacity(int capacity)
-            throws IllegalActionException {
+    public void setHistoryCapacity(int capacity) throws IllegalActionException {
         // As of Ptolemy II 2.0.1, we are not using the SDFReceiver.*History*
         // methods, but these are here for future use.
         try {
             _queue.setHistoryCapacity(capacity);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(getContainer(), ex,
-                    "Failed to set history capacity to " + capacity);
+                "Failed to set history capacity to " + capacity);
         }
     }
 
@@ -370,12 +374,10 @@ public class SDFReceiver extends AbstractReceiver {
     /** A constant indicating that the capacity of the receiver is
      *  unbounded.
      */
-    public static final int INFINITE_CAPACITY =
-    ArrayFIFOQueue.INFINITE_CAPACITY;
+    public static final int INFINITE_CAPACITY = ArrayFIFOQueue.INFINITE_CAPACITY;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The queue containing the receiver data.
     private ArrayFIFOQueue _queue;
 

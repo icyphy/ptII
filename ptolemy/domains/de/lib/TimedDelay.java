@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.util.CalendarQueue;
@@ -41,8 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TimedDelay
+
 /**
    This actor delays the input by a specified amount of time. The amount
    of the time is required to be non-negative and has a default value 1.0.
@@ -83,7 +84,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class TimedDelay extends DETransformer {
-
     /** Construct an actor with the specified container and name.
      *  Constrain that the output type to be the same as the input type.
      *  @param container The composite entity to contain this one.
@@ -94,8 +94,9 @@ public class TimedDelay extends DETransformer {
      *   actor with this name.
      */
     public TimedDelay(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         // NOTE: The _init method is used to allow classes that extend
         // this class to reconfig their settings. This may not be a
         // good pattern.
@@ -125,13 +126,13 @@ public class TimedDelay extends DETransformer {
      *  @exception IllegalActionException If the delay is negative.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == delay) {
-            double newDelay = ((DoubleToken)(delay.getToken())).doubleValue();
+            double newDelay = ((DoubleToken) (delay.getToken())).doubleValue();
+
             if (newDelay < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative delay: "
-                        + newDelay);
+                    "Cannot have negative delay: " + newDelay);
             } else {
                 _delay = newDelay;
             }
@@ -147,9 +148,8 @@ public class TimedDelay extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        TimedDelay newObject = (TimedDelay)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        TimedDelay newObject = (TimedDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
@@ -160,7 +160,6 @@ public class TimedDelay extends DETransformer {
      *  input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
-
         super.fire();
 
         // consume input
@@ -178,17 +177,21 @@ public class TimedDelay extends DETransformer {
         // is delayed to the next available firing at the current time.
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
+
         if (_delayedOutputTokens.size() > 0) {
-            TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
+            TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens.get();
             Time eventTime = earliestEvent.timeStamp;
+
             if (eventTime.equals(currentTime)) {
-                _currentOutput = (Token)earliestEvent.contents;
+                _currentOutput = (Token) earliestEvent.contents;
                 output.send(0, _currentOutput);
             } else {
                 // no tokens to be produced at the current time.
             }
         }
-        if (_delay == 0 && _currentInput != null && _currentOutput == null) {
+
+        if ((_delay == 0) && (_currentInput != null)
+                && (_currentOutput == null)) {
             output.send(0, _currentInput);
             _currentInput = null;
         }
@@ -201,8 +204,8 @@ public class TimedDelay extends DETransformer {
         super.initialize();
         _currentInput = null;
         _currentOutput = null;
-        _delayedOutputTokens = new CalendarQueue(
-                new TimedEvent.TimeComparator(this.getDirector()));
+        _delayedOutputTokens = new CalendarQueue(new TimedEvent.TimeComparator(
+                    this.getDirector()));
     }
 
     /** Process the current input if it has not been processed. Schedule
@@ -213,27 +216,31 @@ public class TimedDelay extends DETransformer {
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         Time delayToTime = currentTime.add(_delay);
+
         // Remove the token that is sent at the current time.
         if (_delayedOutputTokens.size() > 0) {
             if (_currentOutput != null) {
                 _delayedOutputTokens.take();
             }
         }
+
         // Handle the refiring of the multiple tokens
         // that are scheduled to be produced at the same time.
         if (_delayedOutputTokens.size() > 0) {
-            TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
+            TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens.get();
             Time eventTime = earliestEvent.timeStamp;
+
             if (eventTime.equals(currentTime)) {
                 getDirector().fireAt(this, currentTime);
             }
         }
+
         // Process the current input if it is not processed.
         if (_currentInput != null) {
-            _delayedOutputTokens.put(
-                    new TimedEvent(delayToTime, _currentInput));
+            _delayedOutputTokens.put(new TimedEvent(delayToTime, _currentInput));
             getDirector().fireAt(this, delayToTime);
         }
+
         return super.postfire();
     }
 
@@ -254,10 +261,10 @@ public class TimedDelay extends DETransformer {
      *  named "delay".
      */
     protected void _init()
-            throws IllegalActionException, NameDuplicationException  {
+        throws IllegalActionException, NameDuplicationException {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
-        _delay = ((DoubleToken)delay.getToken()).doubleValue();
+        _delay = ((DoubleToken) delay.getToken()).doubleValue();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui.ptjacl;
 
 import java.awt.BorderLayout;
@@ -46,8 +45,10 @@ import tcl.lang.Interp;
 import tcl.lang.ReflectObject;
 import tcl.lang.TclException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TclShellTableau
+
 /**
    A tableau that provides a Tcl Shell for interacting with Ptjacl,
    a 100% Java implementation of Tcl
@@ -58,9 +59,7 @@ import tcl.lang.TclException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class TclShellTableau extends Tableau
-    implements ShellInterpreter {
-
+public class TclShellTableau extends Tableau implements ShellInterpreter {
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
      *  and having the specified name.  The frame is not made visible
@@ -73,30 +72,28 @@ public class TclShellTableau extends Tableau
      *   an entity with the specified name.
      */
     public TclShellTableau(TclShellEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         TclShellFrame frame = new TclShellFrame(this);
         setFrame(frame);
 
         try {
-
             //
             _tclInterp.setVar("panelShell",
-                    ReflectObject.newInstance(_tclInterp,
-                            ShellTextArea.class,
-                            frame._shellTextArea), 0);
-            _tclInterp.eval("proc puts {s} {"
-                    + "global panelShell; "
-                    + "$panelShell appendJTextArea $s\\n}");
-            // FIXME: what about user initializations in ~/.tclrc?
+                ReflectObject.newInstance(_tclInterp, ShellTextArea.class,
+                    frame._shellTextArea), 0);
+            _tclInterp.eval("proc puts {s} {" + "global panelShell; "
+                + "$panelShell appendJTextArea $s\\n}");
 
+            // FIXME: what about user initializations in ~/.tclrc?
             // Source Ptolemy specific initializations.
-            _tclInterp.eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
+            _tclInterp.eval(
+                "if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
         } catch (TclException ex) {
             throw new IllegalActionException(this, ex,
-                    "Could not initialize the "
-                    + "tcl interpreter:\n"
-                    + _tclInterp.getResult().toString());
+                "Could not initialize the " + "tcl interpreter:\n"
+                + _tclInterp.getResult().toString());
         }
     }
 
@@ -113,7 +110,7 @@ public class TclShellTableau extends Tableau
             _tclInterp.eval(command);
             return _tclInterp.getResult().toString();
         } catch (TclException ex) {
-            return _tclInterp.getVar("errorInfo", null,0).toString();
+            return _tclInterp.getVar("errorInfo", null, 0).toString();
         }
     }
 
@@ -128,11 +125,9 @@ public class TclShellTableau extends Tableau
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The Tcl interpreter
     // FIXME: Perhaps the interpreter should be in its own thread?
     private Interp _tclInterp = new Interp();
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -140,7 +135,6 @@ public class TclShellTableau extends Tableau
     /** The frame that is created by an instance of TclShellTableau.
      */
     public class TclShellFrame extends TableauFrame {
-
         /** Construct a frame to display the TclShell window.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
@@ -153,7 +147,7 @@ public class TclShellTableau extends Tableau
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public TclShellFrame(Tableau tableau)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(tableau);
 
             JPanel component = new JPanel();
@@ -168,24 +162,22 @@ public class TclShellTableau extends Tableau
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////
-
         protected void _help() {
             try {
-                URL doc = getClass().getClassLoader().getResource(
-                        "ptolemy/actor/gui/ptjacl/help.htm");
+                URL doc = getClass().getClassLoader().getResource("ptolemy/actor/gui/ptjacl/help.htm");
                 getConfiguration().openModel(null, doc, doc.toExternalForm());
             } catch (Exception ex) {
                 System.out.println("TclShellTableau._help(): " + ex);
                 _about();
             }
         }
+
         public ShellTextArea _shellTextArea;
     }
 
     /** A factory that creates a control panel to display a Tcl Shell
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -195,7 +187,7 @@ public class TclShellTableau extends Tableau
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -215,9 +207,8 @@ public class TclShellTableau extends Tableau
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?
             if (effigy instanceof TclShellEffigy) {
-                return new TclShellTableau(
-                        (TclShellEffigy)effigy,
-                        "TclShellTableau");
+                return new TclShellTableau((TclShellEffigy) effigy,
+                    "TclShellTableau");
             } else {
                 return null;
             }

@@ -26,7 +26,6 @@
    @ProposedRating Red
    @AcceptedRating Red
 */
-
 package ptolemy.domains.dt.kernel.test;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -41,33 +40,30 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 public class TwoPort extends TypedAtomicActor {
-
     public TwoPort(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
-
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input1 = new TypedIOPort(this,"input1");
+        input1 = new TypedIOPort(this, "input1");
         input1.setInput(true);
         input1.setTypeEquals(BaseType.DOUBLE);
 
-
-        input2 = new TypedIOPort(this,"input2");
+        input2 = new TypedIOPort(this, "input2");
         input2.setInput(true);
         input2.setTypeEquals(BaseType.DOUBLE);
 
-        output1 = new TypedIOPort(this,"output1");
+        output1 = new TypedIOPort(this, "output1");
         output1.setOutput(true);
         output1.setTypeEquals(BaseType.DOUBLE);
 
-        output2 = new TypedIOPort(this,"output2");
+        output2 = new TypedIOPort(this, "output2");
         output2.setOutput(true);
         output2.setTypeEquals(BaseType.DOUBLE);
 
         inrate1 = new Parameter(this, "inrate1", new IntToken(1));
         _inrate1 = 1;
 
-        inrate2= new Parameter(this, "inrate2", new IntToken(1));
+        inrate2 = new Parameter(this, "inrate2", new IntToken(1));
         _inrate2 = 1;
 
         outrate1 = new Parameter(this, "outrate1", new IntToken(1));
@@ -76,20 +72,20 @@ public class TwoPort extends TypedAtomicActor {
         outrate2 = new Parameter(this, "outrate2", new IntToken(1));
         _outrate2 = 1;
 
-        input1_tokenConsumptionRate =
-            new Parameter(input1, "tokenConsumptionRate");
+        input1_tokenConsumptionRate = new Parameter(input1,
+                "tokenConsumptionRate");
         input1_tokenConsumptionRate.setExpression("inrate1");
 
-        input2_tokenConsumptionRate =
-            new Parameter(input2, "tokenConsumptionRate");
+        input2_tokenConsumptionRate = new Parameter(input2,
+                "tokenConsumptionRate");
         input2_tokenConsumptionRate.setExpression("inrate2");
 
-        output1_tokenProductionRate =
-            new Parameter(output1, "tokenProductionRate");
+        output1_tokenProductionRate = new Parameter(output1,
+                "tokenProductionRate");
         output1_tokenProductionRate.setExpression("outrate1");
 
-        output2_tokenProductionRate =
-            new Parameter(output2, "tokenProductionRate");
+        output2_tokenProductionRate = new Parameter(output2,
+                "tokenProductionRate");
         output2_tokenProductionRate.setExpression("outrate2");
     }
 
@@ -103,12 +99,10 @@ public class TwoPort extends TypedAtomicActor {
     /** The output port. This has type BooleanToken. */
     public TypedIOPort output1;
     public TypedIOPort output2;
-
     public Parameter inrate1;
     public Parameter inrate2;
     public Parameter outrate1;
     public Parameter outrate2;
-
     public Parameter input1_tokenConsumptionRate;
     public Parameter input2_tokenConsumptionRate;
     public Parameter output1_tokenProductionRate;
@@ -116,7 +110,6 @@ public class TwoPort extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Consume a single IntToken on the input. Produce 32 consecutive
      *  BooleanTokens on the output port which is the bitwise
@@ -127,15 +120,13 @@ public class TwoPort extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If there is no director.
      */
-
-    public final void fire() throws IllegalActionException  {
+    public final void fire() throws IllegalActionException {
         int i;
 
-        _inrate1 = ((IntToken)inrate1.getToken()).intValue();
-        _inrate2 = ((IntToken)inrate2.getToken()).intValue();
-        _outrate1 = ((IntToken)outrate1.getToken()).intValue();
-        _outrate2 = ((IntToken)outrate2.getToken()).intValue();
-
+        _inrate1 = ((IntToken) inrate1.getToken()).intValue();
+        _inrate2 = ((IntToken) inrate2.getToken()).intValue();
+        _outrate1 = ((IntToken) outrate1.getToken()).intValue();
+        _outrate2 = ((IntToken) outrate2.getToken()).intValue();
 
         if (input1.getWidth() >= 1) {
             for (i = 0; i < _inrate1; i++) {
@@ -152,6 +143,7 @@ public class TwoPort extends TypedAtomicActor {
         for (i = 0; i < _outrate1; i++) {
             output1.send(0, new DoubleToken(i));
         }
+
         for (i = 0; i < _outrate2; i++) {
             output2.send(0, new DoubleToken(i));
         }

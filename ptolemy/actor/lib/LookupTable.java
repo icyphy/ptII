@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LookupTable
+
 /**
    Output to the <i>output</i> port the value in the array of tokens
    specified by the <i>table</i> parameter at the index specified by the
@@ -70,7 +71,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class LookupTable extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -80,7 +80,7 @@ public class LookupTable extends Transformer {
      *   actor with this name.
      */
     public LookupTable(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set parameters.
@@ -90,7 +90,8 @@ public class LookupTable extends Transformer {
         // Set type constraints.
         input.setTypeEquals(BaseType.INT);
         table.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        ArrayType tableType = (ArrayType)table.getType();
+
+        ArrayType tableType = (ArrayType) table.getType();
         InequalityTerm elemTerm = tableType.getElementTypeTerm();
         output.setTypeAtLeast(elemTerm);
     }
@@ -113,13 +114,12 @@ public class LookupTable extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        LookupTable newObject = (LookupTable)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        LookupTable newObject = (LookupTable) (super.clone(workspace));
 
         // One of the Parameters contains ArrayTokens, so we need
         // to handle cloning it.
-        ArrayType tableType = (ArrayType)newObject.table.getType();
+        ArrayType tableType = (ArrayType) newObject.table.getType();
         InequalityTerm elemTerm = tableType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elemTerm);
 
@@ -135,10 +135,12 @@ public class LookupTable extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ArrayToken token = (ArrayToken)table.getToken();
+            ArrayToken token = (ArrayToken) table.getToken();
+
             if (token != null) {
-                int indexValue = ((IntToken)input.get(0)).intValue();
-                if (indexValue >= 0 && indexValue < token.length()) {
+                int indexValue = ((IntToken) input.get(0)).intValue();
+
+                if ((indexValue >= 0) && (indexValue < token.length())) {
                     output.broadcast(token.getElement(indexValue));
                 }
             }

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import ptolemy.domains.dde.lib.DoubleFork;
@@ -37,6 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ListenFork
+
 /**
    A DoubleFork actor that can notify an ExecEventListener of ExecEvents.
    In particular, the listener will be notified each time the prefire(),
@@ -55,9 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.actor.gui.ExecEvent
    @see ptolemy.actor.gui.ExecEventListener
 */
-
 public class ListenFork extends DoubleFork {
-
     /** Construct a ListenFork actor with the specified container
      *  and name.
      * @param cont The TypedCompositeActor that contains this actor.
@@ -69,7 +67,7 @@ public class ListenFork extends DoubleFork {
      *  instantiating and specifying the type of this actor's ports.
      */
     public ListenFork(CompositeEntity cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }
 
@@ -86,13 +84,15 @@ public class ListenFork extends DoubleFork {
      *  with the thread activity of this method.
      */
     public boolean postfire() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.WAITING) );
+        _debug(new ExecEvent(this, ExecEvent.WAITING));
+
         try {
             Thread.sleep(100);
-        } catch(InterruptedException e) {
-            throw new IllegalActionException(this, "InternalError "
-                    + "exception during a sleeping thread.");
+        } catch (InterruptedException e) {
+            throw new IllegalActionException(this,
+                "InternalError " + "exception during a sleeping thread.");
         }
+
         return super.postfire();
     }
 
@@ -106,13 +106,15 @@ public class ListenFork extends DoubleFork {
      *  with the thread activity of this method.
      */
     public boolean prefire() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
+        _debug(new ExecEvent(this, ExecEvent.ACCESSING));
+
         try {
             Thread.sleep(100);
-        } catch(InterruptedException e) {
-            throw new IllegalActionException(this, "InternalError "
-                    + "exception during a sleeping thread.");
+        } catch (InterruptedException e) {
+            throw new IllegalActionException(this,
+                "InternalError " + "exception during a sleeping thread.");
         }
+
         return super.prefire();
     }
 
@@ -122,7 +124,7 @@ public class ListenFork extends DoubleFork {
      *  the execution of the wrapup method of this actor's superclass.
      */
     public void wrapup() throws IllegalActionException {
-        _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
+        _debug(new ExecEvent(this, ExecEvent.BLOCKED));
         super.wrapup();
     }
 }

@@ -23,7 +23,6 @@
  Created on 01 sept. 2003
 
 */
-
 /*
  * Created on 01 sept. 2003
  *
@@ -40,6 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.tree.ClassAndEntityTreeModel;
 
+
 /**
  <p>Titre : NavigationTreeModel</p>
  <p>Description : used to represent all the entities of a MoML file</p>
@@ -51,7 +51,6 @@ import ptolemy.vergil.tree.ClassAndEntityTreeModel;
  @Pt.AcceptedRating @AcceptedRating
  */
 public class NavigationTreeModel extends ClassAndEntityTreeModel {
-
     public NavigationTreeModel(NamedObj root) {
         super(root);
     }
@@ -63,12 +62,15 @@ public class NavigationTreeModel extends ClassAndEntityTreeModel {
      *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
-        if (!(object instanceof CompositeEntity))
+        if (!(object instanceof CompositeEntity)) {
             return true;
+        }
         // NOTE: The following is probably not a good idea because it
         // will force evaluation of the contents of a Library prematurely.
-        else if (((CompositeEntity) object).numberOfEntities() == 0)
+        else if (((CompositeEntity) object).numberOfEntities() == 0) {
             return true;
+        }
+
         return false;
     }
 
@@ -110,9 +112,10 @@ public class NavigationTreeModel extends ClassAndEntityTreeModel {
     public void expandPath(TreePath aPath, boolean collapse) {
         for (Iterator it = listeners.iterator(); it.hasNext();) {
             NavigationPTree aTree = (NavigationPTree) it.next();
+
             if (collapse) {
                 aTree.collapsePath(aPath);
-            }else {
+            } else {
                 aTree.expandPath(aPath);
             }
         }

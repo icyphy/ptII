@@ -22,7 +22,6 @@
   Created on 8 juil. 2003
 
 */
-
 package thales.vergil;
 
 import java.net.URL;
@@ -35,8 +34,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.VergilApplication;
 import thales.actor.gui.SingleWindowHTMLViewer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SingleWindowApplication
+
 /**
    Main entry point for the SingleWindow mode.
 
@@ -47,7 +48,6 @@ import thales.actor.gui.SingleWindowHTMLViewer;
    @Pt.AcceptedRating Red (cxh)
 */
 public class SingleWindowApplication extends VergilApplication {
-
     //Main Frame
     public static SingleWindowHTMLViewer _mainFrame;
 
@@ -60,7 +60,6 @@ public class SingleWindowApplication extends VergilApplication {
     }
 
     public static void main(String[] args) {
-
         try {
             new SingleWindowApplication(args);
         } catch (Exception ex) {
@@ -74,6 +73,7 @@ public class SingleWindowApplication extends VergilApplication {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
+
             System.exit(0);
         }
     }
@@ -81,14 +81,17 @@ public class SingleWindowApplication extends VergilApplication {
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.MoMLApplication#_createDefaultConfiguration()
      */
-    protected Configuration _createDefaultConfiguration() throws Exception {
-        return _readConfiguration(specToURL("thales/configs/singleWindow/singleWindowConfiguration.xml"));
+    protected Configuration _createDefaultConfiguration()
+        throws Exception {
+        return _readConfiguration(specToURL(
+                "thales/configs/singleWindow/singleWindowConfiguration.xml"));
     }
 
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.MoMLApplication#_createEmptyConfiguration()
      */
-    protected Configuration _createEmptyConfiguration() throws Exception {
+    protected Configuration _createEmptyConfiguration()
+        throws Exception {
         Configuration configuration = _createDefaultConfiguration();
 
         try {
@@ -98,10 +101,12 @@ public class SingleWindowApplication extends VergilApplication {
         }
 
         // FIXME: This code is Dog slow for some reason.
-        URL inurl = specToURL("thales/configs/singleWindow/singleWindowWelcomeWindow.xml");
+        URL inurl = specToURL(
+                "thales/configs/singleWindow/singleWindowWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl);
+
         Effigy doc = (Effigy) configuration.getEntity("directory.doc");
         URL idurl = specToURL("ptolemy/configs/full/intro.htm");
         doc.identifier.setExpression(idurl.toExternalForm());
@@ -112,5 +117,4 @@ public class SingleWindowApplication extends VergilApplication {
 
         return configuration;
     }
-
 }

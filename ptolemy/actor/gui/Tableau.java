@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.actor.gui;
 
 import java.awt.Frame;
@@ -43,8 +42,10 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Tableau
+
 /**
    A tableau is a visual representation of a Ptolemy II model in a top-level
    window.  This class represents such a top level window.  The top-level
@@ -65,7 +66,6 @@ import ptolemy.util.StringUtilities;
    @see Effigy
 */
 public class Tableau extends CompositeEntity {
-
     /** Construct a tableau in the specified workspace.
      *  @param workspace The workspace.
      *  @exception IllegalActionException If an error occurs creating
@@ -74,7 +74,7 @@ public class Tableau extends CompositeEntity {
      *   created an attribute with name "size" (should not occur).
      */
     public Tableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
         size = new SizeAttribute(this, "size");
@@ -89,7 +89,7 @@ public class Tableau extends CompositeEntity {
      *   an entity already in the container.
      */
     public Tableau(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         size = new SizeAttribute(this, "size");
@@ -114,8 +114,8 @@ public class Tableau extends CompositeEntity {
      *   class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == size && _frame != null) {
+        throws IllegalActionException {
+        if ((attribute == size) && (_frame != null)) {
             size.setSize(_frame);
         } else {
             super.attributeChanged(attribute);
@@ -130,8 +130,7 @@ public class Tableau extends CompositeEntity {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Tableau newObject = (Tableau) super.clone(workspace);
         newObject._frame = null;
         return newObject;
@@ -144,13 +143,14 @@ public class Tableau extends CompositeEntity {
      */
     public boolean close() {
         JFrame frame = getFrame();
+
         if (frame instanceof TableauFrame) {
             // NOTE: Calling a protected method, but this class is in the
             // same package.
-            if (!((TableauFrame) frame)._close())
+            if (!((TableauFrame) frame)._close()) {
                 return false;
-        } else if (
-                (this instanceof DialogTableau)
+            }
+        } else if ((this instanceof DialogTableau)
                 && (frame instanceof PortConfigurerDialog)) {
             if (!((PortConfigurerDialog) frame).close()) {
                 return false;
@@ -158,6 +158,7 @@ public class Tableau extends CompositeEntity {
         } else if (frame != null) {
             frame.dispose();
         }
+
         return true;
     }
 
@@ -182,9 +183,9 @@ public class Tableau extends CompositeEntity {
     public String getTitle() {
         if (_title == null) {
             Effigy effigy = (Effigy) getContainer();
+
             // Abbreviate the title to 80 chars for use on the Mac.
-            return StringUtilities.abbreviate(
-                    effigy.identifier.getExpression());
+            return StringUtilities.abbreviate(effigy.identifier.getExpression());
         } else {
             return _title;
         }
@@ -227,10 +228,11 @@ public class Tableau extends CompositeEntity {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (container == null) {
             Effigy oldContainer = (Effigy) getContainer();
             super.setContainer(container);
+
             // Blow away the frame.
             if (_frame != null) {
                 // Note that we call hide instead of dispose . . .
@@ -239,7 +241,7 @@ public class Tableau extends CompositeEntity {
                 _frame.hide();
             }
 
-            if (isMaster() && oldContainer != null) {
+            if (isMaster() && (oldContainer != null)) {
                 // Window is a master.  Close the model which will close all
                 // other tableaux.
                 oldContainer.setContainer(null);
@@ -247,10 +249,8 @@ public class Tableau extends CompositeEntity {
         } else if (container instanceof Effigy) {
             super.setContainer(container);
         } else {
-            throw new IllegalActionException(
-                    this,
-                    container,
-                    "The container can only be set to an " + "instance of Effigy");
+            throw new IllegalActionException(this, container,
+                "The container can only be set to an " + "instance of Effigy");
         }
     }
 
@@ -293,11 +293,13 @@ public class Tableau extends CompositeEntity {
                         (Tableau.this).setContainer(null);
                     } catch (KernelException ex) {
                         try {
-                            MessageHandler.warning("Cannot remove tableau: " + ex);
+                            MessageHandler.warning("Cannot remove tableau: "
+                                + ex);
                         } catch (CancelException exception) {
                         }
                     }
                 }
+
                 // NOTE: We do not want to do the same in windowClosing()
                 // because this will override saving if modified as implemented
                 // in Top.
@@ -320,6 +322,7 @@ public class Tableau extends CompositeEntity {
      */
     public void setTitle(String title) {
         _title = StringUtilities.abbreviate(title);
+
         if (_frame != null) {
             _frame.setTitle(getTitle());
         }
@@ -331,11 +334,14 @@ public class Tableau extends CompositeEntity {
      */
     public void show() {
         JFrame frame = getFrame();
+
         if (frame != null) {
             if (!frame.isVisible()) {
                 size.setSize(frame);
+
                 // NOTE: This used to override the location that might
                 // have been set in the _windowProperties attribute.
+
                 /*
                   if (frame instanceof Top) {
                   ((Top)frame).centerOnScreen();
@@ -343,6 +349,7 @@ public class Tableau extends CompositeEntity {
                 */
                 frame.pack();
                 frame.setVisible(true);
+
                 // NOTE: The above calls Component.show()...
                 // We used to override Top.show() (Top extends JFrame)
                 // to call pack(), but this had the unfortunate side
@@ -357,6 +364,7 @@ public class Tableau extends CompositeEntity {
                 // when Vergil starts up is the wrong size.
                 frame.pack();
             }
+
             // Deiconify the window.
             frame.setState(Frame.NORMAL);
             frame.toFront();

@@ -24,17 +24,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.copernicus.java.test;
 
-import ptolemy.copernicus.kernel.*;
-import ptolemy.actor.*;
-import soot.*;
-import ptolemy.copernicus.java.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+
+import ptolemy.copernicus.java.TypeSpecializerAnalysis;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import soot.Scene;
+import soot.SootClass;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// TestSpecializeTypesMain
+
 /**
    Test for type specialization.
 
@@ -45,18 +48,20 @@ import java.util.*;
    @Pt.AcceptedRating Red (cxh)
 */
 public class TestSpecializeTypesMain {
-
     /** First argument is the output directory.
      *  Second argument is the class name.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         PtolemyUtilities.loadSootReferences();
+
         SootClass theClass = Scene.v().loadClassAndSupport(args[0]);
         theClass.setApplicationClass();
-        TypeSpecializerAnalysis analysis =
-            new TypeSpecializerAnalysis(theClass, new HashSet());
+
+        TypeSpecializerAnalysis analysis = new TypeSpecializerAnalysis(theClass,
+                new HashSet());
+
         for (Iterator variables = analysis.getSolverVariables();
-            variables.hasNext();) {
+                variables.hasNext();) {
             System.out.println(variables.next().toString());
         }
     }

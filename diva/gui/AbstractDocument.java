@@ -33,6 +33,7 @@ import java.net.URL;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
+
 /**
  * An abstract implementation of the Document interface.
  * This class implements the common elements of the Document
@@ -75,7 +76,6 @@ public abstract class AbstractDocument implements Document {
     /** The undo manager that maintains a list of edits.
      */
     private UndoManager _undoManager = null;
-
     private UndoableEditSupport _editSupport = null;
 
     /** Construct a document that is owned by the given application
@@ -90,10 +90,11 @@ public abstract class AbstractDocument implements Document {
      * certain elements of the state will cause all registered
      * property listeners to be notified.
      */
-    public void addPropertyChangeListener (PropertyChangeListener listener) {
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
         if (_propertyChange == null) {
             _propertyChange = new PropertyChangeSupport(this);
         }
+
         _propertyChange.addPropertyChangeListener(listener);
     }
 
@@ -121,12 +122,12 @@ public abstract class AbstractDocument implements Document {
      *
      * @exception Exception If the close operation fails.
      */
-    public void close () throws Exception {
+    public void close() throws Exception {
     }
 
     /** Get the application that this document belongs to.
      */
-    public Application getApplication () {
+    public Application getApplication() {
         return _application;
     }
 
@@ -136,7 +137,7 @@ public abstract class AbstractDocument implements Document {
      *
      * @see #getURL()
      */
-    public File getFile () {
+    public File getFile() {
         return _file;
     }
 
@@ -172,7 +173,7 @@ public abstract class AbstractDocument implements Document {
      *
      * @see #getFile()
      */
-    public URL getURL () {
+    public URL getURL() {
         return _url;
     }
 
@@ -187,7 +188,7 @@ public abstract class AbstractDocument implements Document {
      * allow a document's data to be changed if this flag is set. This
      * flag is true by default.
      */
-    public boolean isEditable () {
+    public boolean isEditable() {
         return _editable;
     }
 
@@ -195,7 +196,7 @@ public abstract class AbstractDocument implements Document {
      * allow a document's data to be written to storage if this flag
      * is set.  This flag is true by default.
      */
-    public boolean isWritable () {
+    public boolean isWritable() {
         return _writable;
     }
 
@@ -204,11 +205,11 @@ public abstract class AbstractDocument implements Document {
      *
      * @exception Exception If the close operation fails.
      */
-    public abstract void open () throws Exception;
+    public abstract void open() throws Exception;
 
     /** Remove a property change listener from this document.
      */
-    public void removePropertyChangeListener (PropertyChangeListener listener) {
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
         _propertyChange.removePropertyChangeListener(listener);
     }
 
@@ -217,7 +218,7 @@ public abstract class AbstractDocument implements Document {
      *
      * @exception Exception If the save operation fails.
      */
-    public abstract void save () throws Exception;
+    public abstract void save() throws Exception;
 
     /** Save the document to the given file.  Return true if
      * successful, false if not. Do <i>not</i> change the file
@@ -228,7 +229,7 @@ public abstract class AbstractDocument implements Document {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
-    public abstract void saveAs (File file) throws Exception;
+    public abstract void saveAs(File file) throws Exception;
 
     /** Save the document to the given file.  Throw an exception if
      * the operation failed. Return true if successful, false if
@@ -239,16 +240,17 @@ public abstract class AbstractDocument implements Document {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
-    public abstract void saveAs (URL url) throws Exception;
+    public abstract void saveAs(URL url) throws Exception;
 
     /** Set the file that this document saves itself to. This is a
      * low-level method and should only be used by storage policy
      * classes. Fire a property change listener to registered
      * listeners.
      */
-    public void setFile (File file) {
+    public void setFile(File file) {
         File old = _file;
         _file = file;
+
         if (_propertyChange != null) {
             _propertyChange.firePropertyChange("file", old, file);
         }
@@ -259,9 +261,10 @@ public abstract class AbstractDocument implements Document {
      * classes. Fire a property change listener to registered
      * listeners.
      */
-    public void setURL (URL url) {
+    public void setURL(URL url) {
         URL old = _url;
         _url = url;
+
         if (_propertyChange != null) {
             _propertyChange.firePropertyChange("url", old, url);
         }
@@ -270,9 +273,10 @@ public abstract class AbstractDocument implements Document {
     /** Set the "editable" flag. Fire a property change event
      * to registered listeners.
      */
-    public void setEditable (boolean flag) {
+    public void setEditable(boolean flag) {
         boolean old = _editable;
         _editable = flag;
+
         if (_propertyChange != null) {
             _propertyChange.firePropertyChange("editable", old, flag);
         }
@@ -281,9 +285,10 @@ public abstract class AbstractDocument implements Document {
     /** Set the "dirty" flag.  Fire a property change event to
      * registered listeners.
      */
-    public void setDirty (boolean flag) {
+    public void setDirty(boolean flag) {
         boolean old = _dirty;
         _dirty = flag;
+
         if (_propertyChange != null) {
             _propertyChange.firePropertyChange("dirty", old, flag);
         }
@@ -292,13 +297,12 @@ public abstract class AbstractDocument implements Document {
     /** Set the "writable" flag. Fire a property change event
      * to registered listeners.
      */
-    public void setWritable (boolean flag) {
+    public void setWritable(boolean flag) {
         boolean old = _writable;
         _writable = flag;
+
         if (_propertyChange != null) {
             _propertyChange.firePropertyChange("writable", old, flag);
         }
     }
 }
-
-

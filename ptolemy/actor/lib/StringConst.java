@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.data.type.BaseType;
@@ -33,8 +32,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StringConst
+
 /**
    Produce a constant output of type string. This is similar to the base
    class Const, which can also produce a string output, but this has the
@@ -51,9 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Red (bilung)
 */
-
 public class StringConst extends Const {
-
     /** Construct a constant source with the given container and name.
      *  Create the <i>value</i> parameter, initialize its value.
      *  @param container The container.
@@ -64,7 +63,7 @@ public class StringConst extends Const {
      *   actor with this name.
      */
     public StringConst(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         value.setExpression("");
@@ -73,11 +72,9 @@ public class StringConst extends Const {
         // Set the type constraint.
         output.setTypeEquals(BaseType.STRING);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" "
-                + "style=\"fill:lightBlue\"/>\n" +
-                "</svg>\n");
-
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+            + "width=\"60\" height=\"20\" " + "style=\"fill:lightBlue\"/>\n"
+            + "</svg>\n");
     }
 }

@@ -27,7 +27,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.giotto.cgc;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -42,8 +41,10 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CActorBase
+
 /**
    This is a base class for actors that are intended to be used with an
    instance of GiottoCEmachineFrameworkGenerator, an attribute that is
@@ -69,7 +70,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CActorBase extends TypedAtomicActor {
-
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -79,11 +79,12 @@ public class CActorBase extends TypedAtomicActor {
      */
     public CActorBase(Workspace workspace) {
         super(workspace);
+
         try {
             _init();
         } catch (KernelException e) {
             throw new InternalErrorException(
-                    "Error constructing parameters of CActorBase.");
+                "Error constructing parameters of CActorBase.");
         }
     }
 
@@ -95,13 +96,14 @@ public class CActorBase extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
+
     /* Two separate constructors are used because I'm not sure if
      * one is redundant. Edward tried removing the constructor above
      * but that created anexception when being tha class was being
      * instantiated from CActor.xml. Therefore I put it back.
      */
     public CActorBase(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init();
     }
@@ -132,6 +134,7 @@ public class CActorBase extends TypedAtomicActor {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+
             CPort port = new CPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
@@ -163,41 +166,37 @@ public class CActorBase extends TypedAtomicActor {
      *   the name of another port already in the actor.
      */
     protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // In the future, this method can be changed to allow IOPort to be
         // added. In that case, the type system just ignores instances of
         // IOPort during type checking. Since there is no intended application
         // for that change yet, constrain the port to be TypedIOPort for now.
         if (!(port instanceof CPort)) {
             throw new IllegalActionException(this, port,
-                    "Incompatible port class for this actor.");
+                "Incompatible port class for this actor.");
         }
+
         super._addPort(port);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         source = new FileParameter(this, "source");
-        source.setExpression("$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
+        source.setExpression(
+            "$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
+
         // Should this be visible?
         // source.setVisibility(Settable.EXPERT);
-
         frequency = new Parameter(this, "frequency");
         frequency.setExpression("1");
         frequency.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<text x=\"-16\" y=\"5\" "
-                + "style=\"font-size:18\">\n"
-                + "CActor\n"
-                + "</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-16\" y=\"5\" " + "style=\"font-size:18\">\n"
+            + "CActor\n" + "</text>\n" + "</svg>\n");
     }
 }

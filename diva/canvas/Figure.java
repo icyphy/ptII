@@ -24,7 +24,6 @@
   COPYRIGHTENDKEY
   *
   */
-
 package diva.canvas;
 
 import java.awt.Shape;
@@ -34,6 +33,7 @@ import java.awt.geom.Rectangle2D;
 
 import diva.canvas.interactor.Interactor;
 import diva.util.UserObjectContainer;
+
 
 /** A Figure is a persistent object drawn on the screen.
  * This interface roots a small tree of interfaces that define
@@ -46,26 +46,25 @@ import diva.util.UserObjectContainer;
  * @Pt.AcceptedRating Yellow
  */
 public interface Figure extends VisibleComponent, UserObjectContainer {
-
     /** Test whether this figure contains the point given. The point
      * given is in the enclosing transform context.
      */
-    public boolean contains (Point2D p);
+    public boolean contains(Point2D p);
 
     /** Get the bounding box of this figure. The result rectangle is
      *  given in the enclosing transform context.  The returned rectangle
      *  may be an internally cached shape, and should not be modified.
      */
-    public Rectangle2D getBounds ();
+    public Rectangle2D getBounds();
 
     /** Return the interactor of this figure. Return
      *  null if there isn't one.
      */
-    public Interactor getInteractor ();
+    public Interactor getInteractor();
 
     /** Get the most immediate layer containing this figure.
      */
-    public CanvasLayer getLayer ();
+    public CanvasLayer getLayer();
 
     /** Return the origin of the figure in the enclosing transform
      *  context.  This might be, for example, the center of the figure,
@@ -73,25 +72,25 @@ public interface Figure extends VisibleComponent, UserObjectContainer {
      *  the pieces of the figure are defined.
      *  @return The origin of the figure.
      */
-    public Point2D getOrigin ();
+    public Point2D getOrigin();
 
     /** Return the parent of this figure. Return null if the figure
      *  does not have a parent.  (Note that a figure with no parent
      *  can exist, but it will not be displayed, as it must be in a
      *  layer for the figure canvas to ever call its paint method.)
      */
-    public CanvasComponent getParent ();
+    public CanvasComponent getParent();
 
     /** Get the outline shape of this figure. The outline shape is
      *  used for things like highlighting. The result shape is given
      *  in the enclosing transform context.
      */
-    public Shape getShape ();
+    public Shape getShape();
 
     /** Return the tooltip string for this figure, or null if the figure
      *  does not have a tooltip.
      */
-    public String getToolTipText ();
+    public String getToolTipText();
 
     /** Test if this figure is "hit" by the given rectangle. This is the
      *  same as intersects if the interior of the figure is not
@@ -103,18 +102,18 @@ public interface Figure extends VisibleComponent, UserObjectContainer {
      * <p>(This method would be better named <b>hits</b>, but
      * the name <b>hit</b> is consistent with java.awt.Graphics2D.)
      */
-    public boolean hit (Rectangle2D r);
+    public boolean hit(Rectangle2D r);
 
     /** Test if this figure intersects the given rectangle. The
      *  rectangle is given in the enclosing transform context.
      */
-    public boolean intersects (Rectangle2D r);
+    public boolean intersects(Rectangle2D r);
 
     /** Set the interactor of this figure. Once a figure has an
      *  interactor given to it, it will respond to events
      *  on the canvas, in the ways determined by the interactor.
      */
-    public void setInteractor (Interactor interactor);
+    public void setInteractor(Interactor interactor);
 
     /** Set the parent of this figure.  A null argument means that the
      * figure is being removed from its parent. No checks are performed
@@ -122,22 +121,20 @@ public interface Figure extends VisibleComponent, UserObjectContainer {
      * responsibility of the caller to do this. This method is not intended
      * for public use, and should never be called by client code.
      */
-    public void setParent (CanvasComponent fc);
+    public void setParent(CanvasComponent fc);
 
     /** Set the tooltip string for this figure.  If the string is null, then
      *  the figure will not have a tooltip.
      */
-    public void setToolTipText (String s);
+    public void setToolTipText(String s);
 
     /** Transform the figure with the supplied transform. This can
      *  be used to perform arbitrary translation, scaling, shearing, and
      *  rotation operations.
      */
-    public void transform (AffineTransform at);
+    public void transform(AffineTransform at);
 
     /** Move the figure the indicated distance.
      */
-    public void translate (double x, double y);
+    public void translate(double x, double y);
 }
-
-

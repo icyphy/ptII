@@ -26,11 +26,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 import java.util.LinkedList;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Clone
+
 /**
 
 A simple class for testing that the clone() function.
@@ -42,21 +43,17 @@ A simple class for testing that the clone() function.
 @Pt.AcceptedRating Red (ssb)
 
 */
-
-public class  Clone implements Cloneable{
-
-    public static void main(String args[]) {
+public class Clone implements Cloneable {
+    public static void main(String[] args) {
         Clone object = new Clone();
         Clone object2 = null;
 
         // Implicit use of "super".
         try {
-            object2 = (Clone)object.clone();
-        }
-        catch (CloneNotSupportedException e) {
+            object2 = (Clone) object.clone();
+        } catch (CloneNotSupportedException e) {
         }
 
         System.out.println(object.hashCode() == object2.hashCode());
-
     }
 }

@@ -30,6 +30,7 @@ import java.util.Iterator;
 
 import diva.graph.GraphModel;
 
+
 /**
  * The basic set of information necessary to layout a graph: a mapping
  * the graph data structure to aspects of its visual representation,
@@ -101,6 +102,7 @@ public interface LayoutTarget {
      * target's view given an incremental change in one of its
      * endpoints.
      */
+
     //    public void reroute(Edge e);
 
     /**
@@ -109,5 +111,3 @@ public interface LayoutTarget {
      */
     public void translate(Object node, double dx, double dy);
 }
-
-

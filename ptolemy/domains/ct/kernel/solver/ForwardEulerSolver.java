@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.kernel.solver;
 
 import ptolemy.data.DoubleToken;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ForwardEulerSolver
+
 /**
    The Forward Euler ODE solver. For ODE
    <pre>
@@ -58,7 +59,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public class ForwardEulerSolver extends FixedStepSolver {
-
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -78,6 +78,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
      */
     public ForwardEulerSolver(Workspace workspace) {
         super(workspace);
+
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
@@ -94,15 +95,17 @@ public class ForwardEulerSolver extends FixedStepSolver {
      *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_getRoundCount() == 0) {
             // During the first round, use the current derivative to predict
             // the states at currentModelTime + currentStepSize. The predicted
             // states are the initial guesses for fixed-point iteration.
-            CTDirector director = (CTDirector)getContainer();
+            CTDirector director = (CTDirector) getContainer();
             double tentativeState = integrator.getState();
             double f = integrator.getDerivative();
-            tentativeState = tentativeState + f*(director.getCurrentStepSize());
+            tentativeState = tentativeState
+                + (f * (director.getCurrentStepSize()));
+
             // Set converged to false such that the integrator will be refired
             // again to check convergence of resolved states.
             _voteForConverged(false);
@@ -112,14 +115,13 @@ public class ForwardEulerSolver extends FixedStepSolver {
             // During the second round, store the derivative for the next
             // integration. Because the default converged is true, we do not set
             // it to true again here.
-            double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
+            double f = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setTentativeDerivative(f);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // static name.
-    private static final String _DEFAULT_NAME="CT_Forward_Euler_Solver" ;
+    private static final String _DEFAULT_NAME = "CT_Forward_Euler_Solver";
 }

@@ -25,10 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
-// Ptolemy imports.
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,8 +44,10 @@ import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Philosopher in the Dining Philosophers demo.
+
 /**
    A philosopher sits at a table with 4 other philosophers. Between
    each two philosophers there is a fork. A Philosopher eats when he has
@@ -74,7 +74,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Philosopher extends CSPActor {
-
     /** Construct a Philosopher in the specified container with the
      *  specified name.  The name must be unique within the container or
      *  an exception is thrown. The container argument must not be null, or a
@@ -95,7 +94,7 @@ public class Philosopher extends CSPActor {
      *   an entity already in the container.
      */
     public Philosopher(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         leftIn = new TypedIOPort(this, "leftIn", true, false);
         leftOut = new TypedIOPort(this, "leftOut", false, true);
@@ -156,6 +155,7 @@ public class Philosopher extends CSPActor {
         if (_listeners == null) {
             _listeners = new LinkedList();
         }
+
         _listeners.add(newListener);
     }
 
@@ -174,12 +174,13 @@ public class Philosopher extends CSPActor {
         Token t = new IntToken(0);
         double interval = 0.0;
         double rate = 1;
+
         try {
             while (true) {
-                rate = ((DoubleToken)thinking.getToken()).doubleValue();
-                interval = (int)(_random.nextDouble()*rate*1000);
-                interval = interval/1000;
-                Thread.sleep((long)interval*1000);
+                rate = ((DoubleToken) thinking.getToken()).doubleValue();
+                interval = (int) (_random.nextDouble() * rate * 1000);
+                interval = interval / 1000;
+                Thread.sleep((long) interval * 1000);
                 delay(interval);
 
                 // Obtain the forks
@@ -202,10 +203,11 @@ public class Philosopher extends CSPActor {
                     waitingLeft = false;
                     _notifyListeners();
                 }
-                rate = ((DoubleToken)eating.getToken()).doubleValue();
-                interval = (int)(_random.nextDouble()*rate*2000);
-                interval = interval/1000;
-                Thread.sleep((long)interval*1000);
+
+                rate = ((DoubleToken) eating.getToken()).doubleValue();
+                interval = (int) (_random.nextDouble() * rate * 2000);
+                interval = interval / 1000;
+                Thread.sleep((long) interval * 1000);
                 delay(interval);
 
                 // Release the forks.
@@ -217,8 +219,8 @@ public class Philosopher extends CSPActor {
                 _notifyListeners();
             }
         } catch (NoTokenException ex) {
-            throw new IllegalActionException(getName() + ": cannot " +
-                    "get token.");
+            throw new IllegalActionException(getName() + ": cannot "
+                + "get token.");
         } catch (InterruptedException ex) {
             // Terminating the fire().
         }
@@ -246,7 +248,6 @@ public class Philosopher extends CSPActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // Variables that are used by the applet to get the state of
     // the philosopher.
     public boolean gotLeft = false;
@@ -265,16 +266,16 @@ public class Philosopher extends CSPActor {
             // No listeners to notify.
             return;
         }
+
         Iterator listeners = _listeners.iterator();
+
         while (listeners.hasNext()) {
-            ((PhilosopherListener)listeners.next()).philosopherChanged();
+            ((PhilosopherListener) listeners.next()).philosopherChanged();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private List _listeners;
-
     private static Random _random = new Random();
 }

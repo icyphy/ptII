@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -47,8 +46,10 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// UpdatedValueIcon
+
 /**
    An icon that displays the value of an attribute of the container,
    updating it as the value of the value of the attribute is updated.
@@ -64,7 +65,6 @@ import diva.canvas.toolbox.LabelFigure;
    @Pt.AcceptedRating Red (johnr)
 */
 public class UpdatedValueIcon extends AttributeValueIcon {
-
     /** Create a new icon with the given name in the given container.
      *  The container is required to implement Settable, or an exception
      *  will be thrown.
@@ -72,7 +72,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      *  @param name The name of this attribute.
      */
     public UpdatedValueIcon(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -85,7 +85,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == attributeName) {
             // If we were previously associated with an attribute,
             // remove the listener.
@@ -93,15 +93,19 @@ public class UpdatedValueIcon extends AttributeValueIcon {
                 _associatedAttribute.removeValueListener(this);
                 _associatedAttribute = null;
             }
-            NamedObj container = (NamedObj)getContainer();
+
+            NamedObj container = (NamedObj) getContainer();
+
             if (container != null) {
-                Attribute candidateAttribute = container.getAttribute(
-                        attributeName.getExpression());
+                Attribute candidateAttribute = container.getAttribute(attributeName
+                        .getExpression());
+
                 if (candidateAttribute instanceof Settable) {
-                    _associatedAttribute = (Settable)candidateAttribute;
+                    _associatedAttribute = (Settable) candidateAttribute;
                     _associatedAttribute.addValueListener(this);
                 }
             }
+
             _updateFigures();
         } else {
             super.attributeChanged(attribute);
@@ -116,16 +120,17 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        UpdatedValueIcon newObject = (UpdatedValueIcon)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        UpdatedValueIcon newObject = (UpdatedValueIcon) super.clone(workspace);
         newObject._associatedAttribute = null;
+
         // Find the new associated attribute for the clone.
         try {
             newObject.attributeChanged(newObject.attributeName);
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
+
         return newObject;
     }
 
@@ -136,15 +141,17 @@ public class UpdatedValueIcon extends AttributeValueIcon {
     public Figure createBackgroundFigure() {
         // Measure width of a character.  Unfortunately, this
         // requires generating a label figure that we will not use.
-        LabelFigure label = new LabelFigure("m",
-                _labelFont, 1.0, SwingConstants.CENTER);
+        LabelFigure label = new LabelFigure("m", _labelFont, 1.0,
+                SwingConstants.CENTER);
         Rectangle2D stringBounds = label.getBounds();
+
         try {
-            int numberOfCharacters
-                = ((IntToken)displayWidth.getToken()).intValue();
+            int numberOfCharacters = ((IntToken) displayWidth.getToken())
+                .intValue();
+
             // NOTE: Padding of 20.
-            int width = (int)
-                (stringBounds.getWidth() * numberOfCharacters + 20);
+            int width = (int) ((stringBounds.getWidth() * numberOfCharacters)
+                + 20);
             return new BasicRectangle(0, 0, width, 30, Color.white, 1);
         } catch (IllegalActionException ex) {
             // Should not be thrown.
@@ -182,8 +189,9 @@ public class UpdatedValueIcon extends AttributeValueIcon {
                 public void run() {
                     String string = _displayString();
                     Iterator figures = _liveFigureIterator();
+
                     while (figures.hasNext()) {
-                        LabelFigure figure = (LabelFigure)figures.next();
+                        LabelFigure figure = (LabelFigure) figures.next();
                         figure.setString(string);
                     }
                 }

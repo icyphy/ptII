@@ -42,6 +42,7 @@ import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.geometry.Stripifier;
 import com.sun.j3d.utils.geometry.Triangulator;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Torus3D
 
@@ -70,16 +71,14 @@ public class Torus3D extends GRShadedShape {
      *   actor with this name.
      */
     public Torus3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        angleSpan =
-            new Parameter(this, "angleSpan", new DoubleToken(2*Math.PI));
+        angleSpan = new Parameter(this, "angleSpan",
+                new DoubleToken(2 * Math.PI));
         slices = new Parameter(this, "slices", new IntToken(28));
-        crossSectionRadius =
-            new Parameter(this, "crossSectionRadius", new DoubleToken(0.15));
-        hullRadius =
-            new Parameter(this, "hullRadius", new DoubleToken(0.75));
+        crossSectionRadius = new Parameter(this, "crossSectionRadius",
+                new DoubleToken(0.15));
+        hullRadius = new Parameter(this, "hullRadius", new DoubleToken(0.75));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,12 +112,12 @@ public class Torus3D extends GRShadedShape {
      *  be obtained.
      */
     protected void _createModel() throws IllegalActionException {
-
         super._createModel();
+
         int numberOfSlices = _getSlices();
-        float data[] = new float[numberOfSlices * 2];
+        float[] data = new float[numberOfSlices * 2];
         int numberOfSweepVertices = numberOfSlices;
-        int numberOfQuads = (numberOfSweepVertices -1 ) * numberOfSlices;
+        int numberOfQuads = (numberOfSweepVertices - 1) * numberOfSlices;
         int totalVertices = numberOfQuads * 4;
         float[] polydata = new float[totalVertices * 3];
         double span = _getAngleSpan();
@@ -127,49 +126,52 @@ public class Torus3D extends GRShadedShape {
 
         int[] stripCount = new int[numberOfQuads];
 
-        int i, j, k, m;
+        int i;
+        int j;
+        int k;
+        int m;
+
         for (i = 0; i < numberOfQuads; i++) {
             stripCount[i] = 4;
         }
 
         j = 0;
-        for (i = 0; i < numberOfSlices ; i++) {
-            double theta = Math.PI - 2 * Math.PI * i / (numberOfSlices - 1);
-            data[j++] = outerRadius +
-                innerRadius * (float) Math.cos(theta);
+
+        for (i = 0; i < numberOfSlices; i++) {
+            double theta = Math.PI - ((2 * Math.PI * i) / (numberOfSlices - 1));
+            data[j++] = outerRadius + (innerRadius * (float) Math.cos(theta));
             data[j++] = innerRadius * (float) Math.sin(theta);
         }
 
-
         k = m = 0;
-        for (i = 0; i < numberOfSweepVertices - 1;i++) {
-            for (j = 0; j<numberOfSlices; j++) {
-                float cosFactor1 = (float) Math.cos(span*j/numberOfSlices);
-                float sinFactor1 = (float) Math.sin(span*j/numberOfSlices);
-                float cosFactor2 = (float) Math.cos(span*(j+1)/numberOfSlices);
-                float sinFactor2 = (float) Math.sin(span*(j+1)/numberOfSlices);
 
+        for (i = 0; i < (numberOfSweepVertices - 1); i++) {
+            for (j = 0; j < numberOfSlices; j++) {
+                float cosFactor1 = (float) Math.cos((span * j) / numberOfSlices);
+                float sinFactor1 = (float) Math.sin((span * j) / numberOfSlices);
+                float cosFactor2 = (float) Math.cos((span * (j + 1)) / numberOfSlices);
+                float sinFactor2 = (float) Math.sin((span * (j + 1)) / numberOfSlices);
 
-                polydata[k]   = data[m] * cosFactor1;
-                polydata[k+1] = data[m+1];
-                polydata[k+2] = data[m] * sinFactor1;
+                polydata[k] = data[m] * cosFactor1;
+                polydata[k + 1] = data[m + 1];
+                polydata[k + 2] = data[m] * sinFactor1;
                 k = k + 3;
-                polydata[k]   = data[m] * cosFactor2;
-                polydata[k+1] = data[m+1];
-                polydata[k+2] = data[m] * sinFactor2;
+                polydata[k] = data[m] * cosFactor2;
+                polydata[k + 1] = data[m + 1];
+                polydata[k + 2] = data[m] * sinFactor2;
                 k = k + 3;
-                polydata[k]   = data[m+2] * cosFactor2;
-                polydata[k+1] = data[m+3];
-                polydata[k+2] = data[m+2] * sinFactor2;
+                polydata[k] = data[m + 2] * cosFactor2;
+                polydata[k + 1] = data[m + 3];
+                polydata[k + 2] = data[m + 2] * sinFactor2;
                 k = k + 3;
-                polydata[k]   = data[m+2] * cosFactor1;
-                polydata[k+1] = data[m+3];
-                polydata[k+2] = data[m+2] * sinFactor1;
+                polydata[k] = data[m + 2] * cosFactor1;
+                polydata[k + 1] = data[m + 3];
+                polydata[k + 2] = data[m + 2] * sinFactor1;
                 k = k + 3;
             }
+
             m = m + 2;
         }
-
 
         GeometryInfo gi = new GeometryInfo(GeometryInfo.POLYGON_ARRAY);
         gi.setCoordinates(polydata);
@@ -201,7 +203,6 @@ public class Torus3D extends GRShadedShape {
         return (Node) _containedNode;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -210,9 +211,8 @@ public class Torus3D extends GRShadedShape {
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
-    private double _getAngleSpan() throws IllegalActionException  {
+    private double _getAngleSpan() throws IllegalActionException {
         return ((DoubleToken) angleSpan.getToken()).doubleValue();
-
     }
 
     /** Return the radius of the cross section
@@ -222,7 +222,7 @@ public class Torus3D extends GRShadedShape {
      */
     private float _getCrossSectionRadius() throws IllegalActionException {
         return (float) ((DoubleToken) crossSectionRadius.getToken())
-            .doubleValue();
+        .doubleValue();
     }
 
     /** Return the radius of the outer hull

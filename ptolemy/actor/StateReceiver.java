@@ -25,11 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// StateReceiver
+
 /**
    This is a marker interface for receivers that have <i>state</i> semantics.
    That is, whenever a get method is called on this receiver, the
@@ -50,7 +51,5 @@ package ptolemy.actor;
    @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
-
-public interface StateReceiver{}
-
-
+public interface StateReceiver {
+}

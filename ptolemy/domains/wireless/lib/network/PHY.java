@@ -1,4 +1,3 @@
-
 /* Implements a physical layer (PHY)
 
 Copyright (c) 2004-2005 The Regents of the University of California.
@@ -26,9 +25,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
-
 package ptolemy.domains.wireless.lib.network;
+
 import java.util.Iterator;
 
 import ptolemy.actor.IOPort;
@@ -51,6 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////////////////////////////////////////////////////////////////////////=
 //
 //// PHY
+
 /**
    The PHY class implements a physical layer which does the following:
    1) collision detection;
@@ -71,9 +70,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (czhong)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-
 public class PHY extends NetworkActorBase {
-
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -88,11 +85,10 @@ public class PHY extends NetworkActorBase {
      *   an actor already in the container.
      */
     public PHY(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Configure PHY layer parameters.
-
         aPreambleLength = new Parameter(this, "aPreambleLength");
         aPreambleLength.setTypeEquals(BaseType.INT);
         aPreambleLength.setExpression("20");
@@ -110,31 +106,28 @@ public class PHY extends NetworkActorBase {
         sensitivity.setTypeEquals(BaseType.DOUBLE);
         sensitivity.setExpression("0.0");
 
-
         // create ports
-        fromMAC =new TypedIOPort(this, "fromMAC", true, false);
+        fromMAC = new TypedIOPort(this, "fromMAC", true, false);
         fromMAC.setTypeEquals(BaseType.GENERAL);
 
-        fromChannel=new TypedIOPort(this, "fromChannel", true, false);
+        fromChannel = new TypedIOPort(this, "fromChannel", true, false);
         fromChannel.setTypeEquals(BaseType.GENERAL);
 
-        toMAC =new TypedIOPort(this, "toMAC", false,true);
+        toMAC = new TypedIOPort(this, "toMAC", false, true);
         toMAC.setTypeEquals(BaseType.GENERAL);
 
-        channelStatus =new TypedIOPort(this, "channelStatus", false,true);
+        channelStatus = new TypedIOPort(this, "channelStatus", false, true);
         channelStatus.setTypeEquals(BaseType.GENERAL);
 
-        PHYConfirm = new TypedIOPort(this, "PHYConfirm", false,true);
+        PHYConfirm = new TypedIOPort(this, "PHYConfirm", false, true);
         PHYConfirm.setTypeEquals(BaseType.GENERAL);
 
-        toChannel = new TypedIOPort(this, "toChannel", false,true);
+        toChannel = new TypedIOPort(this, "toChannel", false, true);
         toChannel.setTypeEquals(BaseType.GENERAL);
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
     // all time are in the unit of microseconds
 
     /** The size of the Preamble header in a frame. The Preamble
@@ -165,10 +158,8 @@ public class PHY extends NetworkActorBase {
      */
     public Parameter sensitivity;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
 
     /** Port receiving messages from the MAC
      */
@@ -194,176 +185,180 @@ public class PHY extends NetworkActorBase {
      */
     public TypedIOPort toChannel;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public void fire() throws IllegalActionException {
         super.fire();
-        int oldnum=_numBusyTimers;
-        int kind=whoTimeout2();        // check if a timer times out and which
-        Time currentTime=getDirector().getModelTime();
-        if ( oldnum>0 && _numBusyTimers==0 )
-          {
-             // update channel status
-             RecordToken ChannelStatusMsg =new RecordToken(SignalMsgFields,
-                  new Token [] {new IntToken(Idle)} );
-             channelStatus.send(0,ChannelStatusMsg);
-          }
 
-        double power=0, duration=-1;
+        int oldnum = _numBusyTimers;
+        int kind = whoTimeout2(); // check if a timer times out and which
+        Time currentTime = getDirector().getModelTime();
+
+        if ((oldnum > 0) && (_numBusyTimers == 0)) {
+            // update channel status
+            RecordToken ChannelStatusMsg = new RecordToken(SignalMsgFields,
+                    new Token[] { new IntToken(Idle) });
+            channelStatus.send(0, ChannelStatusMsg);
+        }
+
+        double power = 0;
+        double duration = -1;
         RecordToken msg;
 
-        switch(_currentState)
-            {
-            case PHY_Idle:
-                if (fromChannel.hasToken(0))
-                    {
-                        _data = (RecordToken)fromChannel.get(0);
-                        // the input port may not be a WirelessIOPort, but the port it is
-                        // connected to is
-                        Iterator connectedPorts = fromChannel.sourcePortList().iterator();
-                        while (connectedPorts.hasNext()) {
-                           IOPort port = (IOPort)connectedPorts.next();
-                           if (port.isInput() && port instanceof WirelessIOPort) {
-                              // Found the port.
-                              RecordToken properties=(RecordToken)((WirelessIOPort)port).getProperties(0);
-                              power=((DoubleToken)properties.get("power")).doubleValue();
-                              duration=((DoubleToken)properties.get("duration")).doubleValue();
-                              break;
-                            }
-                         }
+        switch (_currentState) {
+        case PHY_Idle:
 
-                        // let us be a little picky about receiving a message
-                        if (power > _sensitivity && ( (_interference == 0.0) ||
-                              (power / _interference > _SNRThresholdInDB) )  )
-                          {
-                            if (_debugging) {
-                                Token dbg=new DoubleToken(power / _interference );
-                                _debug(getFullName()+"Receiving a message."+dbg.toString());}
-                            // The PHY will receive this message
-                            setTimer2(RxDone, currentTime.add(duration), power);
+            if (fromChannel.hasToken(0)) {
+                _data = (RecordToken) fromChannel.get(0);
 
-                            // update channel status
-                            _numBusyTimers++;
-                            if (_numBusyTimers==1)
-                              {
-                                 RecordToken ChannelStatusMsg =new RecordToken(SignalMsgFields,
-                                               new Token [] {new IntToken(Busy)} );
-                                 channelStatus.send(0,ChannelStatusMsg);
-                              }
-                            // send RxStart to the MAC
-                            Token[] RxStartValues = {
-                                new IntToken(RxStart),
-                                _data.get("rate")};
-                            RecordToken RxStartMsg =new RecordToken(RxStartMsgFields, RxStartValues);
-                            toMAC.send(0, RxStartMsg);
+                // the input port may not be a WirelessIOPort, but the port it is
+                // connected to is
+                Iterator connectedPorts = fromChannel.sourcePortList().iterator();
 
-                            // remember the power of the received message
-                            _receivedPower = power;
-                            _currentState=Receive;
-                          }
-                        else
-                          {
-                             // this is also an interference
-                             // add every conversation in the network to this giant table
-                             setTimer2(InterferenceDone,
-                                currentTime.add(duration), power);
-                             // update interference
-                             _interference= _interference+power;
-                          }
+                while (connectedPorts.hasNext()) {
+                    IOPort port = (IOPort) connectedPorts.next();
+
+                    if (port.isInput() && port instanceof WirelessIOPort) {
+                        // Found the port.
+                        RecordToken properties = (RecordToken) ((WirelessIOPort) port)
+                            .getProperties(0);
+                        power = ((DoubleToken) properties.get("power"))
+                            .doubleValue();
+                        duration = ((DoubleToken) properties.get("duration"))
+                            .doubleValue();
+                        break;
                     }
-                else if (fromMAC.hasToken(0))
-                    {
-                        msg= (RecordToken)fromMAC.get(0);
-                        if (((IntToken)msg.get("kind")).intValue() == TxStart)
-                             {_startTransmission(msg);}
+                }
+
+                // let us be a little picky about receiving a message
+                if ((power > _sensitivity)
+                        && ((_interference == 0.0)
+                        || ((power / _interference) > _SNRThresholdInDB))) {
+                    if (_debugging) {
+                        Token dbg = new DoubleToken(power / _interference);
+                        _debug(getFullName() + "Receiving a message."
+                            + dbg.toString());
                     }
 
-                break;
+                    // The PHY will receive this message
+                    setTimer2(RxDone, currentTime.add(duration), power);
 
-            case Receive:
-                if (kind == RxDone ) // MUST check the timer first
-                    {
-                        // send RxData to the MAC
-                        Token[] RxDataValues = {
-                            new IntToken(RxData),
-                            _data.get("data")};
-                        RecordToken RxDataMsg =new RecordToken(RxDataMsgFields, RxDataValues);
-                        toMAC.send(0, RxDataMsg);
+                    // update channel status
+                    _numBusyTimers++;
 
-                        // send RxEnd to the MAC
-                        Token[] RxEndValues = {
-                            new IntToken(RxEnd),
-                            new IntToken(_rxStatus)};
-                        RecordToken RxEndMsg =new RecordToken(RxEndMsgFields, RxEndValues);
-                        toMAC.send(0, RxEndMsg);
-
-                        _currentState=PHY_Idle;
-                    }
-                else if (fromChannel.hasToken(0))
-                    {   // This message is an interference
-                        _handleInterference();
-
-                        // check collision
-                        if (_receivedPower / _interference <= _SNRThresholdInDB)
-                           {_rxStatus=Error;}
-                    }
-                else if (fromMAC.hasToken(0))
-                    {
-                        msg= (RecordToken)fromMAC.get(0);
-                        if (((IntToken)msg.get("kind")).intValue() == TxStart)
-                             {
-                                 _startTransmission(msg);
-
-                                 // abort the current reception and send RxEnd to the MAC
-                                 Token[] RxEndValues = {
-                                     new IntToken(RxEnd),
-                                     new IntToken(Error)}; // set the status to Error
-                                 RecordToken RxEndMsg =new RecordToken(RxEndMsgFields, RxEndValues);
-                                 toMAC.send(0, RxEndMsg);
-                             }
-                    }
-                break;
-
-            case Transmit:
-                if (kind == TxDone) // MUST check the timer first
-                    {
-                        // send TxEnd to the MAC
-                        RecordToken TxEndMsg =new RecordToken(SignalMsgFields, new Token [] {
-                                               new IntToken(TxEnd)});
-                        PHYConfirm.send(0, TxEndMsg);
-
-                        _currentState=PHY_Idle;
-                    }
-                else if (fromChannel.hasToken(0))
-                    {   // This message is an interference
-                        _handleInterference();
-                    }
-                else if (fromMAC.hasToken(0))
-                    {
-                        msg= (RecordToken)fromMAC.get(0);
-                        if ( ((IntToken)msg.get("kind")).intValue() == TxData )
-                             {
-                                 // send the data to the channel
-                                 Token[] ChMsgValues = {
-                                     new IntToken(_txRate),
-                                     msg.get("pdu")};
-                                 RecordToken ChMsg =new RecordToken(ChMsgFields, ChMsgValues);
-                                 toChannel.send(0, ChMsg);
-
-                                 // update the parameter: duration
-                                 _duration = (Variable) getContainer().getContainer().
-                                              getAttribute("duration");
-                                 _duration.setToken(new DoubleToken(_txDuration));;
-
-                                 setTimer2(TxDone,
-                                    currentTime.add(_txDuration), 0.0);
-                             }
+                    if (_numBusyTimers == 1) {
+                        RecordToken ChannelStatusMsg = new RecordToken(SignalMsgFields,
+                                new Token[] { new IntToken(Busy) });
+                        channelStatus.send(0, ChannelStatusMsg);
                     }
 
-                break;
-           }
+                    // send RxStart to the MAC
+                    Token[] RxStartValues = {
+                            new IntToken(RxStart), _data.get("rate")
+                        };
+                    RecordToken RxStartMsg = new RecordToken(RxStartMsgFields,
+                            RxStartValues);
+                    toMAC.send(0, RxStartMsg);
+
+                    // remember the power of the received message
+                    _receivedPower = power;
+                    _currentState = Receive;
+                } else {
+                    // this is also an interference
+                    // add every conversation in the network to this giant table
+                    setTimer2(InterferenceDone, currentTime.add(duration), power);
+
+                    // update interference
+                    _interference = _interference + power;
+                }
+            } else if (fromMAC.hasToken(0)) {
+                msg = (RecordToken) fromMAC.get(0);
+
+                if (((IntToken) msg.get("kind")).intValue() == TxStart) {
+                    _startTransmission(msg);
+                }
+            }
+
+            break;
+
+        case Receive:
+
+            if (kind == RxDone) // MUST check the timer first
+             {
+                // send RxData to the MAC
+                Token[] RxDataValues = { new IntToken(RxData), _data.get("data") };
+                RecordToken RxDataMsg = new RecordToken(RxDataMsgFields,
+                        RxDataValues);
+                toMAC.send(0, RxDataMsg);
+
+                // send RxEnd to the MAC
+                Token[] RxEndValues = {
+                        new IntToken(RxEnd), new IntToken(_rxStatus)
+                    };
+                RecordToken RxEndMsg = new RecordToken(RxEndMsgFields,
+                        RxEndValues);
+                toMAC.send(0, RxEndMsg);
+
+                _currentState = PHY_Idle;
+            } else if (fromChannel.hasToken(0)) { // This message is an interference
+                _handleInterference();
+
+                // check collision
+                if ((_receivedPower / _interference) <= _SNRThresholdInDB) {
+                    _rxStatus = Error;
+                }
+            } else if (fromMAC.hasToken(0)) {
+                msg = (RecordToken) fromMAC.get(0);
+
+                if (((IntToken) msg.get("kind")).intValue() == TxStart) {
+                    _startTransmission(msg);
+
+                    // abort the current reception and send RxEnd to the MAC
+                    Token[] RxEndValues = {
+                            new IntToken(RxEnd), new IntToken(Error)
+                        }; // set the status to Error
+                    RecordToken RxEndMsg = new RecordToken(RxEndMsgFields,
+                            RxEndValues);
+                    toMAC.send(0, RxEndMsg);
+                }
+            }
+
+            break;
+
+        case Transmit:
+
+            if (kind == TxDone) // MUST check the timer first
+             {
+                // send TxEnd to the MAC
+                RecordToken TxEndMsg = new RecordToken(SignalMsgFields,
+                        new Token[] { new IntToken(TxEnd) });
+                PHYConfirm.send(0, TxEndMsg);
+
+                _currentState = PHY_Idle;
+            } else if (fromChannel.hasToken(0)) { // This message is an interference
+                _handleInterference();
+            } else if (fromMAC.hasToken(0)) {
+                msg = (RecordToken) fromMAC.get(0);
+
+                if (((IntToken) msg.get("kind")).intValue() == TxData) {
+                    // send the data to the channel
+                    Token[] ChMsgValues = { new IntToken(_txRate), msg.get(
+                                "pdu") };
+                    RecordToken ChMsg = new RecordToken(ChMsgFields, ChMsgValues);
+                    toChannel.send(0, ChMsg);
+
+                    // update the parameter: duration
+                    _duration = (Variable) getContainer().getContainer()
+                                               .getAttribute("duration");
+                    _duration.setToken(new DoubleToken(_txDuration));
+                    ;
+
+                    setTimer2(TxDone, currentTime.add(_txDuration), 0.0);
+                }
+            }
+
+            break;
+        }
     }
 
     /** Initialize the private variables.
@@ -373,14 +368,13 @@ public class PHY extends NetworkActorBase {
         super.initialize();
         _currentState = PHY_Idle;
         _interference = 0.0;
-        _numBusyTimers =0;
+        _numBusyTimers = 0;
+
         // initialize the channel status in the MAC
-        RecordToken ChannelStatusMsg =new RecordToken(SignalMsgFields,
-            new Token [] {new IntToken(Idle)} );
-        channelStatus.send(0,ChannelStatusMsg);
-
+        RecordToken ChannelStatusMsg = new RecordToken(SignalMsgFields,
+                new Token[] { new IntToken(Idle) });
+        channelStatus.send(0, ChannelStatusMsg);
     }
-
 
     /** If the specified attribute is changed,
      *  check that a positive number is given. Otherwise,
@@ -390,64 +384,57 @@ public class PHY extends NetworkActorBase {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int temp = 0;
 
         if (attribute == aPreambleLength) {
-            temp = ((IntToken)
-                    aPreambleLength.getToken()).intValue();
+            temp = ((IntToken) aPreambleLength.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "preamble Length is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "preamble Length is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aPreambleLength = temp;
             }
         } else if (attribute == aPlcpHeaderLength) {
-            temp = ((IntToken)
-                    aPlcpHeaderLength.getToken()).intValue();
+            temp = ((IntToken) aPlcpHeaderLength.getToken()).intValue();
+
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "PLCPHeader Length is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + temp);
+                    "PLCPHeader Length is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aPlcpHeaderLength = temp;
             }
         } else if (attribute == SNRThresholdInDB) {
-            double SNRThresholdInDBValue = ((DoubleToken)
-                    SNRThresholdInDB.getToken()).doubleValue();
+            double SNRThresholdInDBValue = ((DoubleToken) SNRThresholdInDB
+                .getToken()).doubleValue();
+
             // Convert to linear scale.
-            _SNRThresholdInDB =
-                    Math.pow(10, SNRThresholdInDBValue/10);
+            _SNRThresholdInDB = Math.pow(10, SNRThresholdInDBValue / 10);
         } else if (attribute == sensitivity) {
-            _sensitivity = ((DoubleToken)
-                    sensitivity.getToken()).doubleValue();
+            _sensitivity = ((DoubleToken) sensitivity.getToken()).doubleValue();
+
             if (_sensitivity < 0.0) {
                 throw new IllegalActionException(this,
-                        "sensitivity is required to be nonnegative. "
-                        + "Attempt to set it to: "
-                        + _sensitivity);
+                    "sensitivity is required to be nonnegative. "
+                    + "Attempt to set it to: " + _sensitivity);
             }
         } else {
             super.attributeChanged(attribute);
         }
-
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    protected ExtendedTimer setTimer2(int kind, Time expirationTime,
+        double power) throws IllegalActionException {
+        ExtendedTimer timer = new ExtendedTimer();
+        timer.kind = kind;
+        timer.expirationTime = expirationTime;
+        timer.power = power;
 
-    protected ExtendedTimer setTimer2(int kind,
-        Time expirationTime, double power)
-            throws IllegalActionException {
-
-        ExtendedTimer timer=new ExtendedTimer();
-        timer.kind=kind;
-        timer.expirationTime=expirationTime;
-        timer.power=power;
         // put all timers of this object into a queue
         _timersSet.add(timer);
         getDirector().fireAt(this, expirationTime);
@@ -458,12 +445,14 @@ public class PHY extends NetworkActorBase {
      *  from the timers set. If no match is found, do nothing.
      */
     protected void cancelTimer2(ExtendedTimer timerToCancel)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Iterator timers = _timersSet.iterator();
+
         // iterate through the queue to find the timer to be canceled
         while (timers.hasNext()) {
             ExtendedTimer timer = (ExtendedTimer) timers.next();
-            if (timer==timerToCancel) {
+
+            if (timer == timerToCancel) {
                 _timersSet.remove(timer);
                 break;
             }
@@ -479,97 +468,103 @@ public class PHY extends NetworkActorBase {
      *  @exception IllegalActionException If thrown by
      *  getDirector().getCurrentTime().
      */
-    protected int whoTimeout2()
-            throws IllegalActionException {
+    protected int whoTimeout2() throws IllegalActionException {
         // find the 1st timer expired
         Iterator timers = _timersSet.iterator();
+
         while (timers.hasNext()) {
             ExtendedTimer timer = (ExtendedTimer) timers.next();
-            if (timer.expirationTime==getDirector().getModelTime())
-                {
-                    // update interference
-                    if (timer.kind == InterferenceDone)
-                      {
-                         _interference = _interference - timer.power;
-                         // Quantization errors may make this negative. Do not allow.
-                         if (_interference< 0.0) {_interference= 0.0;}
-                      }
 
-                    if ( ((timer.kind == InterferenceDone)||(
-                        timer.kind == RxDone)) && timer.power > _sensitivity )
-                         {_numBusyTimers--;}
+            if (timer.expirationTime == getDirector().getModelTime()) {
+                // update interference
+                if (timer.kind == InterferenceDone) {
+                    _interference = _interference - timer.power;
 
-                    // remove it from the set no matter that
-                    // it will be processed or ignored
-                    timers.remove();
-                    return timer.kind;
+                    // Quantization errors may make this negative. Do not allow.
+                    if (_interference < 0.0) {
+                        _interference = 0.0;
+                    }
                 }
+
+                if (((timer.kind == InterferenceDone) || (timer.kind == RxDone))
+                        && (timer.power > _sensitivity)) {
+                    _numBusyTimers--;
+                }
+
+                // remove it from the set no matter that
+                // it will be processed or ignored
+                timers.remove();
+                return timer.kind;
+            }
         }
+
         return UNKNOWN;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    private void _handleInterference() throws IllegalActionException {
+        double power = 0.5;
+        double duration = -1;
+        ;
+        fromChannel.get(0); // consume the token
 
-    private void _handleInterference() throws IllegalActionException
-    {
-       double power=0.5,duration=-1;;
-            fromChannel.get(0); // consume the token
         Iterator connectedPorts = fromChannel.sourcePortList().iterator();
+
         while (connectedPorts.hasNext()) {
-            IOPort port = (IOPort)connectedPorts.next();
+            IOPort port = (IOPort) connectedPorts.next();
+
             if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
-                RecordToken properties=(RecordToken)((WirelessIOPort)port).getProperties(0);
-               power=((DoubleToken)properties.get("power")).doubleValue();
-               duration=((DoubleToken)properties.get("duration")).doubleValue();
-               break;
-             }
-         }
+                RecordToken properties = (RecordToken) ((WirelessIOPort) port)
+                    .getProperties(0);
+                power = ((DoubleToken) properties.get("power")).doubleValue();
+                duration = ((DoubleToken) properties.get("duration"))
+                    .doubleValue();
+                break;
+            }
+        }
 
-            Time currentTime=getDirector().getModelTime();
-            // add every conversation in the network to this giant table
-            setTimer2(InterferenceDone, currentTime.add(duration), power);
+        Time currentTime = getDirector().getModelTime();
 
-            // update interference
-            _interference= _interference+power;
+        // add every conversation in the network to this giant table
+        setTimer2(InterferenceDone, currentTime.add(duration), power);
 
-            // update channel status
-            if (power > _sensitivity)
-              {
-                _numBusyTimers++;
-              }
-            if (_numBusyTimers==1)
-              {
-                Token [] value={new IntToken(Busy)};
-                RecordToken ChannelStatusMsg =new RecordToken(SignalMsgFields, value);
-                channelStatus.send(0,ChannelStatusMsg);
-              }
+        // update interference
+        _interference = _interference + power;
 
+        // update channel status
+        if (power > _sensitivity) {
+            _numBusyTimers++;
+        }
+
+        if (_numBusyTimers == 1) {
+            Token[] value = { new IntToken(Busy) };
+            RecordToken ChannelStatusMsg = new RecordToken(SignalMsgFields,
+                    value);
+            channelStatus.send(0, ChannelStatusMsg);
+        }
     }
 
-     private void _startTransmission(RecordToken msg)
-              throws IllegalActionException
-    {
-            _txRate=((IntToken)msg.get("rate")).intValue();
-            int length =((IntToken)msg.get("length")).intValue();
-            // compute the duration of this packet ( with the PHY overhead added)
-            _txDuration=(double)length/_txRate+(_aPreambleLength+
-                           _aPlcpHeaderLength)*1e-6;
+    private void _startTransmission(RecordToken msg)
+        throws IllegalActionException {
+        _txRate = ((IntToken) msg.get("rate")).intValue();
 
-            // send TxStartConfirm to the MAC
+        int length = ((IntToken) msg.get("length")).intValue();
 
-            RecordToken TxStartConfirmMsg =new RecordToken(SignalMsgFields, new Token[] {
-                                            new IntToken(TxStartConfirm)});
-            PHYConfirm.send(0, TxStartConfirmMsg);
-            _currentState=Transmit;
+        // compute the duration of this packet ( with the PHY overhead added)
+        _txDuration = ((double) length / _txRate)
+            + ((_aPreambleLength + _aPlcpHeaderLength) * 1e-6);
+
+        // send TxStartConfirm to the MAC
+        RecordToken TxStartConfirmMsg = new RecordToken(SignalMsgFields,
+                new Token[] { new IntToken(TxStartConfirm) });
+        PHYConfirm.send(0, TxStartConfirmMsg);
+        _currentState = Transmit;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // extend the default timer to link the additional info (e.g. power) to a timer
     protected class ExtendedTimer {
         public int kind;
@@ -577,54 +572,43 @@ public class PHY extends NetworkActorBase {
         public double power;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     //the local varibles for the parameters of this actor.
     protected int _aPreambleLength;
     protected int _aPlcpHeaderLength;
-    protected double _sensitivity, _SNRThresholdInDB ;
+    protected double _sensitivity;
+    protected double _SNRThresholdInDB;
 
     // message formats
-    protected static final String[] RxStartMsgFields
-            ={"kind", "rxRate"};
-    protected static final String[] RxEndMsgFields
-            ={"kind", "status"};
-    protected static final String[] RxDataMsgFields
-            ={"kind", "pdu"};
-    protected static final String[] SignalMsgFields
-            ={"kind"};
-
-    protected static final String[] ChMsgFields
-            ={"rate", "data"};
+    protected static final String[] RxStartMsgFields = { "kind", "rxRate" };
+    protected static final String[] RxEndMsgFields = { "kind", "status" };
+    protected static final String[] RxDataMsgFields = { "kind", "pdu" };
+    protected static final String[] SignalMsgFields = { "kind" };
+    protected static final String[] ChMsgFields = { "rate", "data" };
 
     // time that a packet uses the channel
     protected Variable _duration = null;
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private RecordToken _data;
     private ExtendedTimer _chMsg;
-    private double _txDuration, _receivedPower;
-    private int    _rxStatus, _txRate;
+    private double _txDuration;
+    private double _receivedPower;
+    private int _rxStatus;
+    private int _txRate;
     private double _interference;
-    private int    _numBusyTimers;
+    private int _numBusyTimers;
 
     // define states in FSM
-    private static final int PHY_Idle=0; // not use Idle as state name
-    private static final int Receive=1;
-    private static final int Transmit=2;
-
-    private int _currentState=PHY_Idle;
+    private static final int PHY_Idle = 0; // not use Idle as state name
+    private static final int Receive = 1;
+    private static final int Transmit = 2;
+    private int _currentState = PHY_Idle;
 
     // timer types
-    private static final int RxDone=1;
-    private static final int InterferenceDone=2;
-    private static final int TxDone=3;
-
+    private static final int RxDone = 1;
+    private static final int InterferenceDone = 2;
+    private static final int TxDone = 3;
 }
-

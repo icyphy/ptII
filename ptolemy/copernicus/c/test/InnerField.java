@@ -29,8 +29,8 @@
 
 */
 
-
 /// NestedExceptions
+
 /***
     A simple program to exceptions across methods.
 
@@ -52,6 +52,7 @@ public class InnerField {
         outer.publicField = 0;
         outer._protectedField = 1;
         outer._privateField = 2;
+
         Inner a = outer.new Inner();
         a.checkAccess();
     }
@@ -64,10 +65,4 @@ public class InnerField {
             System.out.println(_privateField);
         }
     }
-
 }
-
-
-
-
-

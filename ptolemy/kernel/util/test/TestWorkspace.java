@@ -26,13 +26,14 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.kernel.util.test;
 
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TestWorkspace
+
 /**
    This object implements a thread that obtains read permission to
    a workspace three times sequentially, then obtains write permission.
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.Workspace;
 
 */
 public class TestWorkspace extends Thread {
-
     public static void main(String[] args) {
         Workspace w = new Workspace("test");
         TestWorkspace tw = new TestWorkspace("test", w);
@@ -66,24 +66,29 @@ public class TestWorkspace extends Thread {
         for (int i = 0; i < 3; i++) {
             try {
                 _workspace.getReadAccess();
-                _profile += _name + ".getReadAccess()\n";
+                _profile += (_name + ".getReadAccess()\n");
+
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException ex) {}
+                } catch (InterruptedException ex) {
+                }
             } finally {
                 _workspace.doneReading();
-                _profile += _name + ".doneReading()\n";
+                _profile += (_name + ".doneReading()\n");
             }
         }
+
         try {
             _workspace.getWriteAccess();
-            _profile += _name + ".getWriteAccess()\n";
+            _profile += (_name + ".getWriteAccess()\n");
+
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException ex) {}
+            } catch (InterruptedException ex) {
+            }
         } finally {
             _workspace.doneWriting();
-            _profile += _name + ".doneWriting()\n";
+            _profile += (_name + ".doneWriting()\n");
         }
     }
 

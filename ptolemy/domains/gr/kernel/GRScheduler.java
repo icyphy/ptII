@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.gr.kernel;
 
 import java.util.HashSet;
@@ -49,8 +48,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+
 /////////////////////////////////////////////////////////////////////
 //// GRScheduler
+
 /**
 
 A scheduler that implements scheduling of the active parts of a GR
@@ -66,7 +67,6 @@ Scheduling is done by performing a topological sort on all the actors.
 @Pt.AcceptedRating yellow (vogel)
 */
 public class GRScheduler extends Scheduler {
-
     /** Construct a scheduler with no container (director)
      *  in the default workspace, the name of the scheduler is
      *  "GRScheduler".
@@ -84,11 +84,12 @@ public class GRScheduler extends Scheduler {
      */
     public GRScheduler(Workspace workspace) {
         super(workspace);
+
         try {
             setName(_STATIC_NAME);
         } catch (KernelException ex) {
             throw new InternalErrorException(
-                    "Internal error when setting name to a GRScheduler");
+                "Internal error when setting name to a GRScheduler");
         }
     }
 
@@ -106,7 +107,7 @@ public class GRScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public GRScheduler(Director container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -131,58 +132,64 @@ public class GRScheduler extends Scheduler {
         // FIXME: should check whether graph is connected
         // FIXME: should check whether multiple output ports are
         //        connected to the same broadcast relation.
-
         // Clear the graph
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
-        GRDirector director = (GRDirector)getContainer();
+        GRDirector director = (GRDirector) getContainer();
+
         if (director == null) {
             return null;
         }
 
         // If there is no container, there are no actors
-        CompositeActor container = (CompositeActor)(director.getContainer());
+        CompositeActor container = (CompositeActor) (director.getContainer());
+
         if (container == null) {
             return null;
         }
 
         CompositeActor castContainer = (CompositeActor) container;
 
-
         // First, include all actors as nodes in the graph.
         // get all the contained actors.
         List entities = castContainer.deepEntityList();
         Iterator actors = entities.iterator();
-        int actorCount =  entities.size();
+        int actorCount = entities.size();
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             dag.addNodeWeight(actor);
         }
 
         actors = castContainer.deepEntityList().iterator();
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
 
             // Find the successors of the actor
             Set successors = new HashSet();
             Iterator outports = actor.outputPortList().iterator();
+
             while (outports.hasNext()) {
                 IOPort outPort = (IOPort) outports.next();
-                Iterator sinkPorts =
-                    outPort.sinkPortList().iterator();
+                Iterator sinkPorts = outPort.sinkPortList().iterator();
+
                 while (sinkPorts.hasNext()) {
-                    IOPort sinkPort = (IOPort)sinkPorts.next();
+                    IOPort sinkPort = (IOPort) sinkPorts.next();
+
                     if (sinkPort.isOutput()) {
                         // Skip this port, since its part of the container
                         continue;
                     }
-                    Actor sinkActor = (Actor)sinkPort.getContainer();
+
+                    Actor sinkActor = (Actor) sinkPort.getContainer();
                     successors.add(sinkActor);
                 }
             }
 
             // Add the edge in the DAG
             Iterator succeedingActors = successors.iterator();
+
             while (succeedingActors.hasNext()) {
                 Actor connectedActor = (Actor) succeedingActors.next();
                 dag.addEdge(actor, connectedActor);
@@ -196,14 +203,19 @@ public class GRScheduler extends Scheduler {
         if (!dag.isAcyclic()) {
             Object[] cycleNodes = dag.cycleNodes();
             StringBuffer names = new StringBuffer();
+
             for (int i = 0; i < cycleNodes.length; i++) {
                 if (cycleNodes[i] instanceof Nameable) {
-                    if (i > 0) names.append(", ");
-                    names.append(((Nameable)cycleNodes[i]).getFullName());
+                    if (i > 0) {
+                        names.append(", ");
+                    }
+
+                    names.append(((Nameable) cycleNodes[i]).getFullName());
                 }
             }
+
             throw new NotSchedulableException(this,
-                    "GR graph is not acyclic: " + names.toString());
+                "GR graph is not acyclic: " + names.toString());
         }
 
         if (dag.top() == null) {
@@ -212,7 +224,8 @@ public class GRScheduler extends Scheduler {
 
         Schedule schedule = new Schedule();
         Object[] sorted = dag.topologicalSort();
-        for (int counter = 0; counter < actorCount ;counter++) {
+
+        for (int counter = 0; counter < actorCount; counter++) {
             Firing firing = new Firing();
             firing.setActor((Actor) sorted[counter]);
             schedule.add(firing);
@@ -229,7 +242,6 @@ public class GRScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The static name of the scheduler
     private static final String _STATIC_NAME = "GRScheduler";
 }

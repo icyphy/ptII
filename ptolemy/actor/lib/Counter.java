@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,8 +36,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Counter
+
 /**
    This actor implements an up-down counter of received tokens.  Whenever
    a token is received from the <i>increment</i> input, the internal
@@ -57,9 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Yellow (neuendor)
 */
-
 public class Counter extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -69,7 +68,7 @@ public class Counter extends TypedAtomicActor {
      *   actor with this name.
      */
     public Counter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         increment = new TypedIOPort(this, "increment", true, false);
         increment.setTypeEquals(BaseType.GENERAL);
@@ -120,6 +119,7 @@ public class Counter extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         _latestCount = _count;
         _consumed = false;
+
         // Check the increment port.
         for (int i = 0; i < increment.getWidth(); i++) {
             if (increment.hasToken(i)) {
@@ -128,6 +128,7 @@ public class Counter extends TypedAtomicActor {
                 _consumed = true;
             }
         }
+
         // Check the decrement port.
         for (int i = 0; i < decrement.getWidth(); i++) {
             if (decrement.hasToken(i)) {
@@ -136,6 +137,7 @@ public class Counter extends TypedAtomicActor {
                 _consumed = true;
             }
         }
+
         // Produce an output if we consumed an input.
         if (_consumed) {
             Token out = new IntToken(_latestCount);
@@ -161,7 +163,6 @@ public class Counter extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private int _count = 0;
     private int _latestCount = 0;
     private boolean _consumed;

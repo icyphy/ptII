@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.data;
 
 import org.w3c.dom.Document;
@@ -37,9 +36,9 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 
-
 //////////////////////////////////////////////////////////////////////////
 //// XmlToken
+
 /**
    A token that contains a xml document.
 
@@ -52,9 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Red (neuendor)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class XMLToken extends Token {
-
     /** Construct an empty token.
      */
     public XMLToken() {
@@ -75,6 +72,7 @@ public class XMLToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Convert the specified token into an instance of XMLToken.
      *  If the specified token is not an instance of XMLToken,
      *  an exception is thrown.
@@ -83,14 +81,13 @@ public class XMLToken extends Token {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static XMLToken convert(Token token)
-            throws IllegalActionException {
+    public static XMLToken convert(Token token) throws IllegalActionException {
         if (token instanceof XMLToken) {
-            return (XMLToken)token;
+            return (XMLToken) token;
         }
 
-        throw new IllegalActionException(
-                notSupportedConversionMessage(token, "xmltoken"));
+        throw new IllegalActionException(notSupportedConversionMessage(token,
+                "xmltoken"));
     }
 
     /** Return the dom document parsed from the xml string.
@@ -113,6 +110,7 @@ public class XMLToken extends Token {
     public String toString() {
         return _toString;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -124,9 +122,8 @@ public class XMLToken extends Token {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isCloseTo(
-            Token rightArgument, double epsilon)
-            throws IllegalActionException {
+    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
+        throws IllegalActionException {
         return _isEqualTo(rightArgument);
     }
 
@@ -139,15 +136,14 @@ public class XMLToken extends Token {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isEqualTo(Token rightArgument)
-            throws IllegalActionException {
-        StringToken convertedArgument = (StringToken)rightArgument;
-        return BooleanToken.getInstance(
-                toString().compareTo(convertedArgument.toString()) == 0);
+        throws IllegalActionException {
+        StringToken convertedArgument = (StringToken) rightArgument;
+        return BooleanToken.getInstance(toString().compareTo(convertedArgument
+                .toString()) == 0);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Document _doc;
     private String _toString;
 }

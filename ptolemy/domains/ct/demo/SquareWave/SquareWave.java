@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ct.demo.SquareWave;
 
 import ptolemy.actor.IORelation;
@@ -44,6 +43,7 @@ import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////
 //// SquareWave
+
 /**
    The square wave response of any transfer function. This simple CT
    system demonstrate the use of ODE solvers and the
@@ -58,18 +58,17 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Red (cxh)
 */
 public class SquareWave extends TypedCompositeActor {
-
     /** Construct the model
      */
     public SquareWave(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         // Create the model.
         super(workspace);
         setName("LinearSystem");
-        CTMultiSolverDirector dir= new CTMultiSolverDirector(this, "DIR");
-        //dir.addDebugListener(new StreamListener());
 
+        CTMultiSolverDirector dir = new CTMultiSolverDirector(this, "DIR");
+
+        //dir.addDebugListener(new StreamListener());
         // Top level Parameters
         period = new Parameter(this, "period", new DoubleToken(2.0));
 
@@ -81,19 +80,21 @@ public class SquareWave extends TypedCompositeActor {
         Clock sqwv = new Clock(this, "SQWV");
         sqwv.period.setExpression("period");
         sqwv.values.setExpression("{2.0, -2.0}");
-        ContinuousTransferFunction tf = new ContinuousTransferFunction(
-                this, "TransferFunction");
+
+        ContinuousTransferFunction tf = new ContinuousTransferFunction(this,
+                "TransferFunction");
         tf.numerator.setExpression("numerator");
         tf.denominator.setExpression("denominator");
+
         TimedPlotter responsePlot = new TimedPlotter(this, "Plot");
         responsePlot.plot = new Plot();
         responsePlot.plot.setGrid(true);
         responsePlot.plot.setXRange(0.0, 6.0);
         responsePlot.plot.setYRange(-2.0, 2.0);
         responsePlot.plot.setSize(500, 350);
-        responsePlot.plot.addLegend(0,"response");
+        responsePlot.plot.addLegend(0, "response");
 
-        IORelation r1 = (IORelation)connect(sqwv.output, tf.input, "R1");
+        IORelation r1 = (IORelation) connect(sqwv.output, tf.input, "R1");
         connect(tf.output, responsePlot.input, "R2");
         responsePlot.input.link(r1);
 
@@ -106,16 +107,9 @@ public class SquareWave extends TypedCompositeActor {
         dir.stopTime.setToken(new DoubleToken(6.0));
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
     public Parameter period;
-
     public Parameter numerator;
-
     public Parameter denominator;
-
 }
-

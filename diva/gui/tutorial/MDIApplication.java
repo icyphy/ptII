@@ -40,6 +40,7 @@ import diva.gui.View;
 import diva.gui.ViewAdapter;
 import diva.gui.ViewEvent;
 
+
 /**
  * An abstract superclass for applications that use an MDI (multiple
  * document interface) style of presentation. This class manages the
@@ -57,7 +58,6 @@ import diva.gui.ViewEvent;
  * @version $Id$
  */
 public abstract class MDIApplication extends AbstractApplication {
-
     // This class used to be in the parent directory, but only the
     // tutorial needed it, so we moved it.
 
@@ -79,6 +79,7 @@ public abstract class MDIApplication extends AbstractApplication {
 
         // Add the component to the frame
         getMDIContext().addContentPane(v.getTitle(), component);
+
         // Yuk we need hash tables to map components to views ek
         _viewMap.put(component, v);
     }
@@ -88,7 +89,7 @@ public abstract class MDIApplication extends AbstractApplication {
      * create, initialize, and then return a View object that
      * wraps a JComponent.
      */
-    public abstract View createView (Document d);
+    public abstract View createView(Document d);
 
     /** Get the MDI frame -- type-specific version of
      * getApplicationFrame().
@@ -99,7 +100,7 @@ public abstract class MDIApplication extends AbstractApplication {
 
     /** Get the Document displayed by the given component.
      */
-    public View getView (JComponent c) {
+    public View getView(JComponent c) {
         return (View) _viewMap.get(c);
     }
 
@@ -109,7 +110,7 @@ public abstract class MDIApplication extends AbstractApplication {
      * This method assumes that setCurrentView will be called
      * subsequently on another view.
      */
-    public void removeView (View v) {
+    public void removeView(View v) {
         super.removeView(v);
 
         // Remove the display.
@@ -124,8 +125,9 @@ public abstract class MDIApplication extends AbstractApplication {
     /** Set the given document to be the current document, and raise
      * the internal window that corresponds to that component.
      */
-    public void setCurrentView (View v) {
+    public void setCurrentView(View v) {
         super.setCurrentView(v);
+
         if (v != null) {
             getMDIContext().setCurrentContentPane(v.getComponent());
         }
@@ -135,6 +137,7 @@ public abstract class MDIApplication extends AbstractApplication {
         public void viewSelected(ViewEvent e) {
             JComponent jc = e.getView();
             View view = getView(jc);
+
             // FIXME: for some reason, closing
             //        a view also causes that view
             //        to be selected after it is
@@ -146,9 +149,11 @@ public abstract class MDIApplication extends AbstractApplication {
                 }
             }
         }
+
         public void viewClosing(ViewEvent e) {
             JComponent jc = e.getView();
             View view = getView(jc);
+
             // FIXME: avoid circular loop with the
             // removeDocument method (if the
             // file is closed from the menu,
@@ -156,11 +161,10 @@ public abstract class MDIApplication extends AbstractApplication {
             // the internal pane
             if (viewList().contains(view)) {
                 closeView(view);
+
                 //workaround for combobox model bug
                 setCurrentView(getCurrentView());
             }
         }
     }
 }
-
-

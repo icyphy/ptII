@@ -25,13 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.Actor;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranchActor
+
 /**
    ConditionalBranchActor is an actor that contain a controller to manage
    the conditional branches for performing conditional communication within
@@ -46,7 +47,6 @@ import ptolemy.actor.Actor;
    @see ConditionalBranchController
 */
 public interface ConditionalBranchActor extends Actor {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.tree;
 
 import java.awt.Component;
@@ -44,6 +43,7 @@ import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 
+
 /**
    A tree cell renderer for Ptolemy objects.  This renderer renders
    the icon of an object, if it has one.
@@ -55,7 +55,6 @@ import ptolemy.vergil.icon.XMLIcon;
    @Pt.AcceptedRating Red (johnr)
 */
 public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
-
     /** Create a new rendition for the given object.  The rendition is
      *  the default provided by the base class with the text set to
      *  the name of the node (if it is an object implementing Nameable).
@@ -65,15 +64,16 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
      *  use that.  Otherwise, consolidate all the Documentation
      *  attributes and use those.
      */
-    public Component getTreeCellRendererComponent(JTree tree,
-            Object value, boolean selected, boolean expanded, boolean leaf,
-            int row, boolean hasFocus) {
+    public Component getTreeCellRendererComponent(JTree tree, Object value,
+        boolean selected, boolean expanded, boolean leaf, int row,
+        boolean hasFocus) {
+        DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
+            .getTreeCellRendererComponent(tree, value, selected, expanded,
+                leaf, row, hasFocus);
 
-        DefaultTreeCellRenderer component = (DefaultTreeCellRenderer)
-                super.getTreeCellRendererComponent(tree, value,
-                selected, expanded, leaf, row, hasFocus);
         if (value instanceof NamedObj) {
             NamedObj object = (NamedObj) value;
+
             // Fix the background colors because transparent
             // labels don't work quite right.
             if (!selected) {
@@ -87,8 +87,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 StringBuffer buffer = new StringBuffer();
                 buffer.append(object.getName());
                 buffer.append("=");
-                buffer.append(((Settable)object).getExpression());
-                component.setText(buffer.toString().replace('\n',' '));
+                buffer.append(((Settable) object).getExpression());
+                component.setText(buffer.toString().replace('\n', ' '));
             } else {
                 component.setText(object.getName());
             }
@@ -101,25 +101,27 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 // Only if an object has an icon, an icon description, or
                 // a small icon description is it rendered in the tree.
                 List iconList = object.attributeList(EditorIcon.class);
-                if (iconList.size() > 0
-                        || object.getAttribute("_iconDescription") != null
-                        || object.getAttribute("_smallIconDescription")
-                        != null) {
+
+                if ((iconList.size() > 0)
+                        || (object.getAttribute("_iconDescription") != null)
+                        || (object.getAttribute("_smallIconDescription") != null)) {
                     // NOTE: this code is similar to that in IconController.
                     EditorIcon icon = null;
+
                     try {
                         if (iconList.size() == 0) {
                             icon = new XMLIcon(object, "_icon");
                             icon.setPersistent(false);
                         } else {
-                            icon = (EditorIcon)iconList.get(
-                                    iconList.size() - 1);
+                            icon = (EditorIcon) iconList.get(iconList.size()
+                                    - 1);
                         }
                     } catch (KernelException ex) {
                         throw new InternalErrorException(
-                                "could not create icon in " + object +
-                                " even though one did not previously exist.");
+                            "could not create icon in " + object
+                            + " even though one did not previously exist.");
                     }
+
                     // Wow.. this is a confusing line of code.. :)
                     component.setIcon(icon.createIcon());
                 }
@@ -128,14 +130,16 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 // which means no tooltip for those. Does calling it
                 // force expansion of the library?
                 Attribute tooltipAttribute = object.getAttribute("tooltip");
-                if (tooltipAttribute != null
+
+                if ((tooltipAttribute != null)
                         && tooltipAttribute instanceof Documentation) {
                     // FIXME: This doesn't work with calling this
                     // on either this or component.
-                    this.setToolTipText(
-                            ((Documentation)tooltipAttribute).getValue());
+                    this.setToolTipText(((Documentation) tooltipAttribute)
+                        .getValue());
                 } else {
                     String tip = Documentation.consolidate(object);
+
                     if (tip != null) {
                         // FIXME: This doesn't work with calling this
                         // on either this or component.
@@ -144,6 +148,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 }
             }
         }
+
         return component;
     }
 }

@@ -30,7 +30,6 @@
 
 
 */
-
 package diva.graph.tutorial;
 
 import java.awt.GridLayout;
@@ -54,6 +53,7 @@ import diva.graph.layout.RandomLayout;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
 
+
 /**
  * This turotial expands on the simple tutorial and turns it into
  * a more complete graph editor.  Along with the editing window,
@@ -74,7 +74,7 @@ public class EditorTutorial {
     /**
      * Pop up an empty graph editing window.
      */
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         final AppContext context = new BasicFrame("Editor Tutorial");
         context.setSize(800, 600);
 
@@ -88,12 +88,14 @@ public class EditorTutorial {
 
     public EditorTutorial(AppContext context) {
         _model = new BasicGraphModel();
+
         GraphPane pane = new GraphPane(new BasicGraphController(), _model);
         _editor = new JGraph(pane);
         context.getContentPane().add("Center", _editor);
-        _target =
-            new BasicLayoutTarget(_editor.getGraphPane().getGraphController());
+        _target = new BasicLayoutTarget(_editor.getGraphPane()
+                                               .getGraphController());
         _layout = new LevelLayout(_target);
+
         LayoutWidget lw = new LayoutWidget(_target, _model.getRoot(), true);
         context.getContentPane().add("South", lw);
     }
@@ -193,19 +195,17 @@ public class EditorTutorial {
 
         private class SelectionListener implements java.awt.event.ActionListener {
             public void actionPerformed(ActionEvent e) {
-                String name = (String)_layoutList.getSelectedItem();
+                String name = (String) _layoutList.getSelectedItem();
             }
         }
 
-        private class LayoutActionListener implements java.awt.event.ActionListener {
+        private class LayoutActionListener
+            implements java.awt.event.ActionListener {
             public void actionPerformed(ActionEvent e) {
-                String name = (String)_layoutList.getSelectedItem();
-                GlobalLayout l = (GlobalLayout)_nameMap.get(name);
+                String name = (String) _layoutList.getSelectedItem();
+                GlobalLayout l = (GlobalLayout) _nameMap.get(name);
                 l.layout(_graph);
             }
         }
     }
 }
-
-
-

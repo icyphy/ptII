@@ -25,12 +25,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// Fraction
+
 /**
    A class for representing fractions.  Fractions are immutable and
    maintained in lowest terms, with a positive denominator.   Thus,
@@ -69,9 +69,10 @@ public class Fraction extends Object {
      * zero.
      */
     public Fraction(int Numerator, int Denominator) {
-        if (Denominator == 0)
-            throw new ArithmeticException("Illegal Fraction: " +
-                    "cannot have denominator of zero.");
+        if (Denominator == 0) {
+            throw new ArithmeticException("Illegal Fraction: "
+                + "cannot have denominator of zero.");
+        }
 
         _num = Numerator;
         _den = Denominator;
@@ -99,8 +100,8 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms.
      */
     public Fraction add(Fraction b) {
-        Fraction f = new Fraction(
-                _num * b._den + _den * b._num, _den * b._den);
+        Fraction f = new Fraction((_num * b._den) + (_den * b._num),
+                _den * b._den);
         return f;
     }
 
@@ -110,8 +111,10 @@ public class Fraction extends Object {
      *  a value of zero.
      */
     public Fraction divide(Fraction b) {
-        if (b.equals(ZERO)) throw new ArithmeticException(
-                "Division by zero!");
+        if (b.equals(ZERO)) {
+            throw new ArithmeticException("Division by zero!");
+        }
+
         Fraction f = new Fraction(_num * b._den, _den * b._num);
         return f;
     }
@@ -123,11 +126,12 @@ public class Fraction extends Object {
     public boolean equals(Object b) {
         // The Fractions are already in lowest terms, so we just compare the
         // numerator and denominator
-        if (b instanceof Fraction)
-            return ((_num == ((Fraction) b)._num) &&
-                    (_den == ((Fraction) b)._den));
-        else
+        if (b instanceof Fraction) {
+            return ((_num == ((Fraction) b)._num)
+            && (_den == ((Fraction) b)._den));
+        } else {
             return false;
+        }
     }
 
     /** Return the denominator of this fraction.
@@ -152,10 +156,10 @@ public class Fraction extends Object {
                 this.getDenominator());
         int thisScaled = this.multiply(new Fraction(gcd, 1)).getNumerator();
         int inputScaled = testInput.multiply(new Fraction(gcd, 1)).getNumerator();
+
         if (thisScaled > inputScaled) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -166,8 +170,10 @@ public class Fraction extends Object {
      *  in which case the multiplicative inverse cannot be represented.
      */
     public Fraction inverse() {
-        if (equals(ZERO)) throw new ArithmeticException(
-                "Inverse of zero is undefined!");
+        if (equals(ZERO)) {
+            throw new ArithmeticException("Inverse of zero is undefined!");
+        }
+
         Fraction f = new Fraction(_den, _num);
         return f;
     }
@@ -177,10 +183,11 @@ public class Fraction extends Object {
      *  If both of the numbers are negative, then the LCM is positive.
      *  the LCM is least in terms of absolute value.
      */
+
     //FIXME: should this go someplace better?
     public static int lcm(int u, int v) {
         int gcd = ExtendedMath.gcd(u, v);
-        int result = u * v / gcd;
+        int result = (u * v) / gcd;
         return result;
     }
 
@@ -204,8 +211,8 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms
      */
     public Fraction subtract(Fraction b) {
-        Fraction f = new Fraction(
-                _num * b._den - _den * b._num, _den * b._den);
+        Fraction f = new Fraction((_num * b._den) - (_den * b._num),
+                _den * b._den);
         return f;
     }
 
@@ -213,9 +220,10 @@ public class Fraction extends Object {
      *  @return The double value.
      */
     public double toDouble() {
-        double numerator, denominator;
-        numerator = (double)_num;
-        denominator = (double)_den;
+        double numerator;
+        double denominator;
+        numerator = (double) _num;
+        denominator = (double) _den;
         return numerator / denominator;
     }
 
@@ -223,9 +231,10 @@ public class Fraction extends Object {
      *  @return The float value.
      */
     public float toFloat() {
-        float numerator, denominator;
-        numerator = (float)_num;
-        denominator = (float)_den;
+        float numerator;
+        float denominator;
+        numerator = (float) _num;
+        denominator = (float) _den;
         return numerator / denominator;
     }
 
@@ -248,6 +257,7 @@ public class Fraction extends Object {
         int factor = ExtendedMath.gcd(_num, _den);
         _num = _num / factor;
         _den = _den / factor;
+
         // Standardize the sign
         if (_den < 0) {
             _den = -_den;

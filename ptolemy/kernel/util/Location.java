@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.util;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
@@ -36,8 +36,10 @@ import java.util.StringTokenizer;
 
 import ptolemy.util.StringUtilities;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Location
+
 /**
    An attribute that represents a location of a node in a schematic.
 
@@ -56,9 +58,7 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Green (cxh)
    @Pt.AcceptedRating Green (cxh)
 */
-public class Location extends SingletonAttribute
-        implements Locatable {
-
+public class Location extends SingletonAttribute implements Locatable {
     // FIXME: Note that this class does not extend from StringAttribute
     // because it is a singleton.  Thus, there is a bunch of code
     // duplication here.  The fix would be to modify StringAttribute
@@ -84,7 +84,7 @@ public class Location extends SingletonAttribute
      *   an attribute already in the container.
      */
     public Location(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -100,6 +100,7 @@ public class Location extends SingletonAttribute
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
         }
+
         if (!_valueListeners.contains(listener)) {
             _valueListeners.add(listener);
         }
@@ -112,9 +113,9 @@ public class Location extends SingletonAttribute
      *  @exception CloneNotSupportedException If the base class throws it.
      *  @return A new Location.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Location newObject = (Location)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Location newObject = (Location) super.clone(workspace);
+
         // Copy the location so that the reference in the new object
         // does not refer to the same array.
         if (_location == null) {
@@ -124,6 +125,7 @@ public class Location extends SingletonAttribute
             newObject._location = new double[length];
             System.arraycopy(_location, 0, newObject._location, 0, length);
         }
+
         newObject._valueListeners = null;
         return newObject;
     }
@@ -148,33 +150,26 @@ public class Location extends SingletonAttribute
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         // If the object is not persistent, and we are not
         // at level 0, do nothing.
         if (_isMoMLSuppressed(depth)) {
             return;
         }
+
         String value = getExpression();
         String valueTerm = "";
-        if (value != null && !value.equals("")) {
-            valueTerm = " value=\"" +
-                StringUtilities.escapeForXML(value) + "\"";
+
+        if ((value != null) && !value.equals("")) {
+            valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
+                + "\"";
         }
 
         // It might be better to use multiple writes here for performance.
-        output.write(_getIndentPrefix(depth)
-                + "<"
-                + _elementName
-                + " name=\""
-                + name
-                + "\" class=\""
-                + getClassName()
-                + "\""
-                + valueTerm
-                + ">\n");
+        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
+            + name + "\" class=\"" + getClassName() + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
-        output.write(_getIndentPrefix(depth) + "</"
-                + _elementName + ">\n");
+        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
     /** Return the default value of this Settable,
@@ -190,13 +185,15 @@ public class Location extends SingletonAttribute
     public String getDefaultExpression() {
         try {
             List prototypeList = getPrototypeList();
+
             if (prototypeList.size() > 0) {
-                return ((Settable)prototypeList.get(0)).getExpression();
+                return ((Settable) prototypeList.get(0)).getExpression();
             }
         } catch (IllegalActionException e) {
             // This should not occur.
             throw new InternalErrorException(e);
         }
+
         return _default;
     }
 
@@ -224,16 +221,20 @@ public class Location extends SingletonAttribute
             // will not return something that is parseable by setExpression()
             return _expression;
         }
-        if (_location == null || _location.length == 0) {
+
+        if ((_location == null) || (_location.length == 0)) {
             return "";
         }
+
         // We tack on { } around the value that is returned so that it
         // can be passed to setExpression().
         StringBuffer result = new StringBuffer("{");
-        for (int i = 0; i < _location.length - 1; i++) {
+
+        for (int i = 0; i < (_location.length - 1); i++) {
             result.append(_location[i]);
             result.append(", ");
         }
+
         result.append(_location[_location.length - 1] + "}");
         return result.toString();
     }
@@ -278,6 +279,7 @@ public class Location extends SingletonAttribute
         if (_default == null) {
             _default = expression;
         }
+
         _expression = expression;
         _expressionSet = true;
     }
@@ -292,14 +294,15 @@ public class Location extends SingletonAttribute
      *  is called.
      *  @see #getLocation()
      */
-    public void setLocation(double[] location)
-            throws IllegalActionException {
+    public void setLocation(double[] location) throws IllegalActionException {
         _expressionSet = false;
+
         if (_setLocation(location)) {
             // If the location was modified in _setLocation(),
             // then make sure the new value is exported in MoML.
             setPersistent(true);
         }
+
         propagateValue();
     }
 
@@ -318,9 +321,11 @@ public class Location extends SingletonAttribute
      */
     public String toString() {
         String className = getClass().getName();
+
         if (_location == null) {
             return "(" + className + ", Location = null)";
         }
+
         return "(" + className + ", Location = " + getExpression() + ")";
     }
 
@@ -337,7 +342,9 @@ public class Location extends SingletonAttribute
         if (!_expressionSet) {
             return;
         }
+
         double[] location;
+
         if (_expression == null) {
             location = new double[2];
             location[0] = 0.0;
@@ -345,17 +352,20 @@ public class Location extends SingletonAttribute
         } else {
             // Parse the specification: a comma specified list of doubles,
             // optionally surrounded by square or curly brackets.
-            StringTokenizer tokenizer =
-                new StringTokenizer(_expression, ",[]{}");
+            StringTokenizer tokenizer = new StringTokenizer(_expression, ",[]{}");
             location = new double[tokenizer.countTokens()];
+
             int count = tokenizer.countTokens();
+
             for (int i = 0; i < count; i++) {
                 String next = tokenizer.nextToken().trim();
                 location[i] = Double.parseDouble(next);
             }
         }
+
         // Set and notify.
         _setLocation(location);
+
         // FIXME: If _setLocation() returns true, should we call
         // setModifiedFromClass() like we do elsewhere?
     }
@@ -373,10 +383,10 @@ public class Location extends SingletonAttribute
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // NOTE: Cannot use the _location value because the
         // expression may not have yet been evaluated.
-        ((Location)destination).setExpression(getExpression());
+        ((Location) destination).setExpression(getExpression());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -389,18 +399,19 @@ public class Location extends SingletonAttribute
      *  throws it.
      */
     private boolean _setLocation(double[] location)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // If the location is unchanged, return false.
-        if (_location != null
-                && location != null
-                && _location.length == location.length) {
+        if ((_location != null) && (location != null)
+                && (_location.length == location.length)) {
             boolean match = true;
+
             for (int i = 0; i < location.length; i++) {
                 if (_location[i] != location[i]) {
                     match = false;
                     break;
                 }
             }
+
             if (match) {
                 return false;
             }
@@ -418,23 +429,26 @@ public class Location extends SingletonAttribute
             _location[i] = location[i];
         }
 
-        NamedObj container = (NamedObj)getContainer();
+        NamedObj container = (NamedObj) getContainer();
+
         if (container != null) {
             container.attributeChanged(this);
         }
+
         if (_valueListeners != null) {
             Iterator listeners = _valueListeners.iterator();
+
             while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
+                ValueListener listener = (ValueListener) listeners.next();
                 listener.valueChanged(this);
             }
         }
+
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The default value.
     private String _default = null;
 
@@ -445,7 +459,7 @@ public class Location extends SingletonAttribute
     private boolean _expressionSet = false;
 
     // The location.
-    private double[] _location = {0.0, 0.0};
+    private double[] _location = { 0.0, 0.0 };
 
     // Listeners for changes in value.
     private List _valueListeners;

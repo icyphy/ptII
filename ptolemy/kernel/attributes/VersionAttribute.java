@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.kernel.attributes;
 
 import java.util.Iterator;
@@ -40,8 +39,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// VersionAttribute
+
 /**
    A nonpersistent attribute that identifies the version of an object.
    This attribute does not export MoML
@@ -76,9 +77,7 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class VersionAttribute
-    extends StringAttribute implements Comparable {
-
+public class VersionAttribute extends StringAttribute implements Comparable {
     /** Construct an object in the default workspace with the empty string
      *  as its name. The object is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
@@ -108,7 +107,7 @@ public class VersionAttribute
      *   an attribute already in the container.
      */
     public VersionAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _tupleList = new LinkedList();
         setVisibility(Settable.NONE);
@@ -140,25 +139,28 @@ public class VersionAttribute
         VersionAttribute version = (VersionAttribute) object;
         Iterator versionTuples = version.iterator();
         Iterator tuples;
+
         if (_tupleList == null) {
             tuples = null;
         } else {
             tuples = _tupleList.iterator();
         }
+
         while (versionTuples.hasNext()
-                || (tuples != null && tuples.hasNext())) {
-            String versionTuple, tuple;
+                || ((tuples != null) && tuples.hasNext())) {
+            String versionTuple;
+            String tuple;
 
             // FIXME: deal with * and + in the JNLP Version String spec.
-
             // Normalize the shortest tuple by padding with 0
             if (versionTuples.hasNext()) {
-                versionTuple = (String)versionTuples.next();
+                versionTuple = (String) versionTuples.next();
             } else {
                 versionTuple = "0";
             }
-            if (tuples != null && tuples.hasNext()) {
-                tuple = (String)tuples.next();
+
+            if ((tuples != null) && tuples.hasNext()) {
+                tuple = (String) tuples.next();
             } else {
                 tuple = "0";
             }
@@ -166,11 +168,11 @@ public class VersionAttribute
             // If both elements can be parsed as Java ints, then
             // compare them as ints.  If not, then compare them
             // as Strings.
-
             try {
                 // Try parsing as ints.
                 int tupleInt = Integer.parseInt(tuple);
                 int versionInt = Integer.parseInt(versionTuple);
+
                 if (tupleInt < versionInt) {
                     return -1;
                 } else if (tupleInt > versionInt) {
@@ -179,6 +181,7 @@ public class VersionAttribute
             } catch (NumberFormatException ex) {
                 // Compare as Strings.
                 int compare = tuple.compareTo(versionTuple);
+
                 if (compare < 0) {
                     return -1;
                 } else if (compare > 0) {
@@ -186,6 +189,7 @@ public class VersionAttribute
                 }
             }
         }
+
         return 0;
     }
 
@@ -201,9 +205,11 @@ public class VersionAttribute
         if (_tupleList == null) {
             return super.equals(object);
         }
+
         if (object instanceof VersionAttribute) {
             return (compareTo(object) == 0);
         }
+
         return false;
     }
 
@@ -235,16 +241,18 @@ public class VersionAttribute
      *  @exception IllegalActionException If the argument contains a
      *   space, which violates the JNLP Version format specification.
      */
-    public void setExpression(String expression)
-            throws IllegalActionException {
+    public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
-        if (expression.indexOf(' ') != -1 ) {
+
+        if (expression.indexOf(' ') != -1) {
             throw new IllegalActionException(this,
-                    "Versions cannot contain spaces: '"
-                    + expression + "'");
+                "Versions cannot contain spaces: '" + expression + "'");
         }
+
         _tupleList = new LinkedList();
+
         StringTokenizer tokenizer = new StringTokenizer(expression, ".-_");
+
         while (tokenizer.hasMoreTokens()) {
             _tupleList.add(tokenizer.nextToken());
         }
@@ -252,7 +260,6 @@ public class VersionAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
 
     /** The VersionAttribute that contains the version of the Ptolemy II
      *  release that is currently running.  This variable may be read
@@ -284,15 +291,13 @@ public class VersionAttribute
             CURRENT_VERSION = new VersionAttribute("5.0-alpha");
         } catch (Exception ex) {
             throw new ExceptionInInitializerError(
-                    "Failed to create CURRENT_VERSION: "
-                    + KernelException.stackTraceToString(ex));
+                "Failed to create CURRENT_VERSION: "
+                + KernelException.stackTraceToString(ex));
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A List representation of the version.
     private List _tupleList;
 }

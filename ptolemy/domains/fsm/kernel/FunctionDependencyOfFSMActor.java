@@ -26,15 +26,16 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfFSMActor
+
 /** An instance of FunctionDependencyOfFSMActor describes the function
     dependency relation between the externally visible ports of an FSM
     actor.
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
     @Pt.AcceptedRating Red (hyzheng)
 */
 public class FunctionDependencyOfFSMActor extends FunctionDependency {
-
     /** Construct a FunctionDependencyOfFSMActor in the given actor.
      *  @param fsmActor The associated FSM actor.
      *  @param name The name of the FunctionDependency.
