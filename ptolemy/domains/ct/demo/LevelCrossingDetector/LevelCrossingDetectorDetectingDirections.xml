@@ -246,6 +246,8 @@ crossing detectors.</text></svg></configure>
     <entity name="Events" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="both, rising, falling, both">
+        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={603, 465, 417, 273}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[409, 218]">
@@ -262,7 +264,7 @@ crossing detectors.</text></svg></configure>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="5.0"/>
-<yRange min="-0.4" max="0.95"/>
+<yRange min="-0.5" max="1.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
