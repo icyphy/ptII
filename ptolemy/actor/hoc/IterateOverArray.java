@@ -1,6 +1,6 @@
 /* An actor that iterates a contained actor over input arrays.
 
- Copyright (c) 1997-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -128,6 +128,7 @@ to reverse the changes.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 3.1
 */
 public class IterateOverArray extends TypedCompositeActor
         implements DropListener {
@@ -142,6 +143,7 @@ public class IterateOverArray extends TypedCompositeActor
      *  local director initially, and its executive director will be simply
      *  the director of the container.
      *  You should set a director before attempting to execute it.
+
      *
      *  @param container The container actor.
      *  @param name The name of this actor.
@@ -156,7 +158,8 @@ public class IterateOverArray extends TypedCompositeActor
         getMoMLInfo().className = "ptolemy.actor.hoc.IterateOverArray";
         new IterateDirector(this, uniqueName("IterateDirector"));
 
-        _iterationCount = new Variable(this, "iterationCount", new IntToken(0));
+        _iterationCount =
+              new Variable(this, "iterationCount", new IntToken(0));
         _iterationCount.setTypeEquals(BaseType.INT);
 
         _attachText("_iconDescription", "<svg>\n" +
@@ -247,7 +250,8 @@ public class IterateOverArray extends TypedCompositeActor
 
                     // Add commands to delete parameters that are associated
                     // with a deleted entity.
-                    Iterator attributes = attributeList(Parameter.class).iterator();
+                    Iterator attributes =
+                        attributeList(Parameter.class).iterator();
                     while (attributes.hasNext()) {
                         Attribute attribute = (Attribute)attributes.next();
                         if (attribute == _iterationCount) continue;
@@ -274,8 +278,9 @@ public class IterateOverArray extends TypedCompositeActor
 
                     // Add commands to add parameters as needed.
                     // We do only parameters, not all Settables because only
-                    // parameters can propogate the values down the hierarchy.
-                    attributes = entity.attributeList(Parameter.class).iterator();
+                    // parameters can propagate the values down the hierarchy.
+                    attributes =
+                        entity.attributeList(Parameter.class).iterator();
                     while (attributes.hasNext()) {
                         Parameter attribute = (Parameter)attributes.next();
                         // Add the attribute if there isn't one already.
@@ -288,8 +293,9 @@ public class IterateOverArray extends TypedCompositeActor
                             command.append(attribute.getName());
                             command.append("\" class=\"");
                             if (attribute instanceof PortParameter) {
-                                command.append(
-                                "ptolemy.actor.hoc.IterateOverArray$IteratePortParameter");
+                                command.append("ptolemy.actor.hoc."
+                                        + "IterateOverArray$"
+                                        + "IteratePortParameter");
                             } else {
                                 command.append("ptolemy.data.expr.Parameter");
                             }
@@ -297,7 +303,8 @@ public class IterateOverArray extends TypedCompositeActor
                             // NOTE: In theory, this shouldn't be necessary...
                             if (attribute.isStringMode()) {
                                 command.append(StringUtilities.escapeForXML(
-                                        ((StringToken)attribute.getToken()).stringValue()));
+                                        ((StringToken)attribute.getToken())
+                                        .stringValue()));
                             } else {
                                 command.append(StringUtilities.escapeForXML(
                                         attribute.getExpression()));
@@ -313,26 +320,34 @@ public class IterateOverArray extends TypedCompositeActor
                                 Attribute containedAttribute
                                         = (Attribute)containedAttributes.next();
                                 command.append(containedAttribute.exportMoML());
-                                if (containedAttribute.getName().equals("_stringMode")) {
+                                if (containedAttribute.getName()
+                                        .equals("_stringMode")) {
                                     foundStringMode = true;
                                 }
                             }
                             if (!foundStringMode && attribute.isStringMode()) {
-                                command.append("<property name=\"_stringMode\" "
-                                + "class=\"ptolemy.kernel.util.Attribute\"/>");
+                                command.append(
+                                        "<property name=\"_stringMode\" "
+                                        + "class=\"ptolemy.kernel.util."
+                                        + "Attribute\"/>");
                             }
 
                             // If the original Parameter has hardwired
-                            // choices, then we should create a choice attribute here.
+                            // choices, then we should create a choice
+                            // attribute here.
+
                             String[] choices = attribute.getChoices();
                             if (choices != null && choices.length > 0) {
                                 command.append("<property name=\"");
                                 command.append(attribute.uniqueName("style"));
-                                command.append("\" class=\"ptolemy.actor.gui.style.EditableChoiceStyle\">");
+                                command.append("\" class=\"ptolemy.actor.gui."
+                                        + "style.EditableChoiceStyle\">");
                                 for (int i = 0; i < choices.length; i++) {
                                     command.append("<property name=\"");
                                     command.append(choices[i]);
-                                    command.append("\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+                                    command.append("\" class=\"ptolemy.kernel."
+                                            + "util.StringAttribute\""
+                                            + "value=\"");
                                     command.append(choices[i]);
                                     command.append("\"/>");
                                 }
@@ -405,17 +420,16 @@ public class IterateOverArray extends TypedCompositeActor
                         command.append("\">");
                         if (insidePort instanceof IOPort) {
                             IOPort castPort = (IOPort)insidePort;
-                            command.append("<property name=\"multiport\" value=\"");
-                            command.append(castPort.isMultiport());
-                            command.append("\"/>");
-
-                            command.append("<property name=\"input\" value=\"");
-                            command.append(castPort.isInput());
-                            command.append("\"/>");
-
-                            command.append("<property name=\"output\" value=\"");
-                            command.append(castPort.isOutput());
-                            command.append("\"/>");
+                            command.append(
+                                    "<property name=\"multiport\" value=\""
+                                    + castPort.isMultiport()
+                                    + "\"/>"
+                                    + "<property name=\"input\" value=\""
+                                    + castPort.isInput()
+                                    + "\"/>"
+                                    + "<property name=\"output\" value=\""
+                                    + castPort.isOutput()
+                                    + "\"/>");
                         }
                         command.append("</port>\n");
 
@@ -425,9 +439,12 @@ public class IterateOverArray extends TypedCompositeActor
                         // deleted. Thus, we need to recreate them.
                         // Presumably, there are no inside relations now, so
                         // we can use any suitable names.
-                        // NOTE: This is only needed if the port already exists.
-                        // If the port gets created by newPort(), then newPort()
-                        // will take care of setting of the connections.
+
+                        // NOTE: This is only needed if the port
+                        // already exists.  If the port gets created
+                        // by newPort(), then newPort() will take care
+                        // of setting of the connections.
+
                         if (getPort(name) != null) {
                             String relationName = "insideRelation" + count++;
                             command.append("<relation name=\"");
@@ -440,16 +457,19 @@ public class IterateOverArray extends TypedCompositeActor
                             command.append(relationName);
                             command.append("\"/>\n");
 
-                            command.append("<link port=\"");
-                            command.append(insidePort.getName(IterateOverArray.this));
-                            command.append("\" relation=\"");
-                            command.append(relationName);
-                            command.append("\"/>\n");
+                            command.append("<link port=\""
+                                    + insidePort.getName(IterateOverArray.this)
+                                    + "\" relation=\""
+                                    + relationName
+                                    + "\"/>\n");
                         }
                     }
 
                     command.append("</entity>\n</group>\n");
-                    // The MoML command is the description of the change request.
+
+                    // The MoML command is the description of the
+                    // change request.
+
                     setDescription(command.toString());
 
                     // Uncomment the following to see the (rather complicated)
@@ -528,7 +548,7 @@ public class IterateOverArray extends TypedCompositeActor
      *  @param sourcePort The source port.
      *  @param destinationPortList A list of destination ports.
      *  @return A list of instances of Inequality indicating the
-     *   type constraints that are not satistfied.
+     *   type constraints that are not satisfied.
      */
     protected List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
@@ -547,7 +567,7 @@ public class IterateOverArray extends TypedCompositeActor
                 if (!isUndeclared) {
                     // both source/destination ports are declared,
                     // check type
-                    Type destDeclared = destinationPort.getType();
+                    Type destinationDeclared = destinationPort.getType();
 
                     int compare;
                     // If the source port belongs to me, then we want to
@@ -555,16 +575,27 @@ public class IterateOverArray extends TypedCompositeActor
                     // destination.
                     if(sourcePort.getContainer() == this
                             && destinationPort.getContainer() != this) {
-                        // The source port belongs to me, but not the destination.
-                        Type srcElementType = ((ArrayType)srcDeclared).getElementType();
-                        compare = TypeLattice.compare(srcElementType, destDeclared);
+
+                        // The source port belongs to me, but not the
+                        // destination.
+
+                        Type srcElementType =
+                            ((ArrayType)srcDeclared).getElementType();
+                        compare = TypeLattice.compare(srcElementType,
+                                destinationDeclared);
                     } else if(sourcePort.getContainer() != this
                             && destinationPort.getContainer() == this) {
-                        // The destination port belongs to me, but not the source.
-                        Type destElementType = ((ArrayType)destDeclared).getElementType();
-                        compare = TypeLattice.compare(srcDeclared, destElementType);
+
+                        // The destination port belongs to me, but not
+                        // the source.
+
+                        Type destinationElementType
+                            = ((ArrayType)destinationDeclared).getElementType();
+                        compare = TypeLattice.compare(srcDeclared,
+                                destinationElementType);
                     } else {
-                        compare = TypeLattice.compare(srcDeclared, destDeclared);
+                        compare = TypeLattice.compare(srcDeclared,
+                                destinationDeclared);
                     }
                     if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                         Inequality inequality = new Inequality(
@@ -584,7 +615,9 @@ public class IterateOverArray extends TypedCompositeActor
      */
     protected void _removePort(Port port) {
         super._removePort(port);
-        // FIXME: Will undo work for this?  Should this be done as a change request?
+
+        // FIXME: Will undo work for this?  Should this be done as a
+        // change request?
 
         // The cast is safe because all my ports are instances of IOPort.
         Iterator relations = ((IOPort)port).insideRelationList().iterator();
@@ -644,8 +677,9 @@ public class IterateOverArray extends TypedCompositeActor
                     Inequality ineq1 = new Inequality(sourcePort.getTypeTerm(),
                             destinationPort.getTypeTerm());
                     result.add(ineq1);
-                    Inequality ineq2 = new Inequality(destinationPort.getTypeTerm(),
-                            sourcePort.getTypeTerm());
+                    Inequality ineq2 =
+                        new Inequality(destinationPort.getTypeTerm(),
+                                sourcePort.getTypeTerm());
                     result.add(ineq2);
                 } else if (sourcePort.getContainer().equals(this)) {
                     if (sourcePort.sourcePortList().size() == 0) {
@@ -660,8 +694,10 @@ public class IterateOverArray extends TypedCompositeActor
                         + ", but it had type: "
                         + sourcePortType);
                     }
-                    InequalityTerm elementTerm = ((ArrayType)sourcePortType).getElementTypeTerm();
-                    Inequality ineq = new Inequality(elementTerm, destinationPort.getTypeTerm());
+                    InequalityTerm elementTerm =
+                        ((ArrayType)sourcePortType).getElementTypeTerm();
+                    Inequality ineq = new Inequality(elementTerm,
+                            destinationPort.getTypeTerm());
                     result.add(ineq);
                 } else if (destinationPort.getContainer().equals(this)) {
                     Type destinationPortType = destinationPort.getType();
@@ -672,8 +708,10 @@ public class IterateOverArray extends TypedCompositeActor
                         + ", but it had type: "
                         + destinationPortType);
                     }
-                    InequalityTerm elementTerm = ((ArrayType)destinationPortType).getElementTypeTerm();
-                    Inequality ineq = new Inequality(sourcePort.getTypeTerm(), elementTerm);
+                    InequalityTerm elementTerm =
+                        ((ArrayType)destinationPortType).getElementTypeTerm();
+                    Inequality ineq =
+                        new Inequality(sourcePort.getTypeTerm(), elementTerm);
                     result.add(ineq);
                 }
             }
@@ -732,8 +770,8 @@ public class IterateOverArray extends TypedCompositeActor
         /** Create a new instance of the director for IterateOverArray.
          *  @param container The container for the director.
          *  @param name The name of the director.
-         *  @throws IllegalActionException Should not be thrown.
-         *  @throws NameDuplicationException Should not be thrown.
+         *  @exception IllegalActionException Not thrown in this base class.
+         *  @exception NameDuplicationException Not thrown in this base class.
          */
         public IterateDirector(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
@@ -784,9 +822,11 @@ public class IterateOverArray extends TypedCompositeActor
                                 FiringEvent.AFTER_ITERATE,
                                 iterationCount));
                     }
-                    // Should return if there is no more input data, irrespective
-                    // of return value of perfire() of the actor, which
-                    // is not reliable.
+
+                    // Should return if there is no more input data,
+                    // irrespective of return value of prefire() of
+                    // the actor, which is not reliable.
+
                     boolean outOfData = true;
                     Iterator inPorts = actor.inputPortList().iterator();
                     while (inPorts.hasNext()) {
@@ -878,7 +918,7 @@ public class IterateOverArray extends TypedCompositeActor
          *  This method extracts tokens from the input array and
          *  provides them sequentially to the corresponding ports
          *  of the contained actor.
-         *  @exception IllegalActionException Should not be thrown.
+         *  @exception IllegalActionException Not thrown in this base class.
          *  @param port The port to transfer tokens from.
          *  @return True if at least one data token is transferred.
          */
@@ -918,7 +958,7 @@ public class IterateOverArray extends TypedCompositeActor
         /** Transfer data from the inside receivers of an output port of the
          *  container to the ports it is connected to on the outside.
          *  This method packages the available tokens into a single array.
-         *  @exception IllegalActionException Should not be thrown.
+         *  @exception IllegalActionException Not thrown in this base class.
          *  @param port The port to transfer tokens from.
          *  @return True if at least one data token is transferred.
          *  @see IOPort#transferOutputs
@@ -934,7 +974,8 @@ public class IterateOverArray extends TypedCompositeActor
                         list.add(t);
                     }
                     if(list.size() != 0) {
-                        Token[] tokens = (Token[])list.toArray(new Token[list.size()]);
+                        Token[] tokens =
+                            (Token[])list.toArray(new Token[list.size()]);
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring output to "
@@ -988,13 +1029,14 @@ public class IterateOverArray extends TypedCompositeActor
          *  @param channelIndex The index of the channel, from 0 to width-1
          *  @param token The token to send
          *  @exception NoRoomException If there is no room in the receiver.
-         *  @exception IllegalActionException Not thrown in this class.
+         *  @exception IllegalActionException Not thrown in this base class.
          */
         public void sendInside(int channelIndex, Token token)
                 throws IllegalActionException, NoRoomException {
             Receiver[][] farReceivers;
             if (_debugging) {
-                _debug("send inside to channel " + channelIndex + ": " + token);
+                _debug("send inside to channel " + channelIndex + ": "
+                        + token);
             }
             try {
                 try {
@@ -1020,7 +1062,8 @@ public class IterateOverArray extends TypedCompositeActor
                 }
                 for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                     TypedIOPort port =
-                        (TypedIOPort)farReceivers[channelIndex][j].getContainer();
+                        (TypedIOPort)farReceivers[channelIndex][j]
+                        .getContainer();
                     Token newToken = port.convert(token);
                     farReceivers[channelIndex][j].put(newToken);
                 }
@@ -1063,8 +1106,8 @@ public class IterateOverArray extends TypedCompositeActor
         /** Create a new instance of a port for IterateOverArray.
          *  @param container The container for the port.
          *  @param name The name of the port.
-         *  @throws IllegalActionException Should not be thrown.
-         *  @throws NameDuplicationException Should not be thrown.
+         *  @exception IllegalActionException Not thrown in this base class.
+         *  @exception NameDuplicationException Not thrown in this base class.
          */
         public IteratePort(IterateOverArray container, String name)
                 throws IllegalActionException, NameDuplicationException {
@@ -1090,7 +1133,7 @@ public class IterateOverArray extends TypedCompositeActor
         /** Override the base class to convert the token to the element
          *  type rather than to the type of the port.
          *  @param token The token to convert.
-         *  @exception IllegalActionException If the convertion is
+         *  @exception IllegalActionException If the conversion is
          *   invalid.
          */
         public Token convert(Token token) throws IllegalActionException {
@@ -1114,13 +1157,14 @@ public class IterateOverArray extends TypedCompositeActor
          *  @param channelIndex The index of the channel, from 0 to width-1
          *  @param token The token to send
          *  @exception NoRoomException If there is no room in the receiver.
-         *  @exception IllegalActionException Not thrown in this class.
+         *  @exception IllegalActionException Not thrown in this base class.
          */
         public void sendInside(int channelIndex, Token token)
                 throws IllegalActionException, NoRoomException {
             Receiver[][] farReceivers;
             if (_debugging) {
-                _debug("send inside to channel " + channelIndex + ": " + token);
+                _debug("send inside to channel " + channelIndex + ": "
+                        + token);
             }
             try {
                 try {
@@ -1146,7 +1190,8 @@ public class IterateOverArray extends TypedCompositeActor
                 }
                 for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                     TypedIOPort port =
-                        (TypedIOPort)farReceivers[channelIndex][j].getContainer();
+                        (TypedIOPort)farReceivers[channelIndex][j]
+                        .getContainer();
                     Token newToken = port.convert(token);
                     farReceivers[channelIndex][j].put(newToken);
                 }
@@ -1313,28 +1358,32 @@ public class IterateOverArray extends TypedCompositeActor
             return false;
         }
 
-        /** If the specified container is of type TypedActor, then create an
-         *  associated instance of IterateParameterPort and set the protected variable
-         *  _port equal to that port.
+        /** If the specified container is of type TypedActor, then
+         *  create an associated instance of IterateParameterPort and
+         *  set the protected variable _port equal to that port.
+         *
          *  @param container The container for the port.
          *  @param name The name for the port.
-         *  @throws IllegalActionException If the port cannot be contained by
-         *   specified container.
-         *  @throws NameDuplicationException If a name collision occurs.
+         *  @exception IllegalActionException If the port cannot be
+         *   contained by specified container.
+         *  @exception NameDuplicationException If a name collision occurs.
          */
         protected void _createParameterPort(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             if (container instanceof TypedActor) {
-                // If we get to here, we know the container is a ComponentEntity,
-                // so the cast is safe.
-                _port = new IterateParameterPort((ComponentEntity)container, name);
-                // NOTE: The following two statements are not necessary, since
-                // the port will discover this parameter when it's setContainer()
-                // method is called.  Moreover, doing this again is not a good
-                // idea, since the setTypeSameAs() method will just add an
-                // extra (redundant) set of constraints.  This will cause
-                // the clone tests to fail, since cloning does not produce
-                // the extra set of constraints.
+                // If we get to here, we know the container is a
+                // ComponentEntity, so the cast is safe.
+                _port = new IterateParameterPort((ComponentEntity)container,
+                        name);
+
+                // NOTE: The following two statements are not
+                // necessary, since the port will discover this
+                // parameter when it's setContainer() method is
+                // called.  Moreover, doing this again is not a good
+                // idea, since the setTypeSameAs() method will just
+                // add an extra (redundant) set of constraints.  This
+                // will cause the clone tests to fail, since cloning
+                // does not produce the extra set of constraints.
                 // _port._parameter = this;
                 // _port.setTypeSameAs(this);
             }
