@@ -1,0 +1,32 @@
+#!/bin/sh
+
+awk '$0 ~ /<entity name="Const" class="ptolemy.actor.lib.Const">/ {
+	    sawConst=1
+	    nf=split($0,f,")
+	    constName = f[1]
+	}
+     $0 ~ /<property name="value" class="ptolemy.data.expr.Parameter"/{
+	    if (sawConst == 1) {
+		sawConst = 0
+		nf=split($0,f,")
+		value=f[nf]
+		const[constName] = value
+	    }
+	}    
+    $0 ~ /<entity name="NonStrictTest6" class="ptolemy.actor.lib.NonStrictTest">/ {sawNonStrictTest=1
+	    nf=split($0,f,")
+	    nonStrictName = f[1]
+	}
+    $0 ~ /<property name="correctValues" class="ptolemy.data.expr.Parameter" value="/ {
+	    if (sawNonStrictTest == 1) {
+		sawNonStrictTest = 0
+		nf=split($0,f,")
+		value=f[nf]
+		nonStrictName[nonStrictName] = value
+	    }
+	}
+
+     ' $1	
+
+
+
