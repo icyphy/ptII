@@ -68,6 +68,7 @@ JSRCS = \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java \
 	Parameter.java \
+	ParameterEvent.java \
 	ParameterListener.java \
 	UtilityFunctions.java
 
