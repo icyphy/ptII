@@ -73,4 +73,8 @@ public class UnitCategory extends Attribute {
         UnitUtilities.registerUnitCategory(
                 ((BaseUnit)this.getContainer()).getName());
     }
+
+        public BaseUnit getBaseUnit() {
+                return (BaseUnit)(getContainer());
+        }
 }
