@@ -605,13 +605,14 @@ public class SDFPortInliner implements PortInliner {
             ptolemy.data.type.Type type = (ptolemy.data.type.Type) types.next();
             Local typeLocal = null;
 
-            //   if (!port.getType().equals(type)) {
-            typeLocal = PtolemyUtilities.buildConstantTypeLocal(body, stmt, type);
+            if (_forceConversions || !port.getType().equals(type)) {
+                typeLocal = PtolemyUtilities.buildConstantTypeLocal(body,
+                        stmt, type);
+            }
 
-            // }
-            Value bufferSizeValue = _getBufferAndSize(body, stmt, port, type,
-                    channelValue, bufferLocal, _portToTypeNameToBufferField,
-                    false);
+            Value bufferSizeValue = _getBufferAndSize(body,
+                    stmt, port, type, channelValue, bufferLocal,
+                    _portToTypeNameToBufferField, false);
 
             _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal,
                     channelValue, bufferSizeValue, _portToIndexArrayField);
@@ -770,12 +771,13 @@ public class SDFPortInliner implements PortInliner {
             ptolemy.data.type.Type type = (ptolemy.data.type.Type) types.next();
             Local typeLocal = null;
 
-            //   if (!port.getType().equals(type)) {
-            typeLocal = PtolemyUtilities.buildConstantTypeLocal(body, stmt, type);
+            if (_forceConversions || !port.getType().equals(type)) {
+                typeLocal = PtolemyUtilities.buildConstantTypeLocal(body,
+                        stmt, type);
+            }
 
-            // }
-            Value bufferSizeValue = _getBufferAndSize(body, stmt, port, type,
-                    channelValue, bufferLocal,
+            Value bufferSizeValue = _getBufferAndSize(body,
+                    stmt, port, type, channelValue, bufferLocal,
                     _portToTypeNameToInsideBufferField, true);
 
             _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal,
@@ -1662,6 +1664,8 @@ public class SDFPortInliner implements PortInliner {
 
         return bufferSize;
     }
+    
+    private boolean _forceConversions = true;
 
     private boolean _debug;
     private CompositeActor _model;
