@@ -73,17 +73,11 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
                 .equals("ptolemy.vergil.icon.ValueIcon")
                 || attributeValue
                 .equals("ptolemy.vergil.basic.NodeControllerFactory")
-                   ) {
-            return "ptolemy.kernel.util.Attribute";
-        } else if (attributeValue
+                || attributeValue
                 .equals("ptolemy.vergil.icon.AttributeValueIcon")
                 || attributeValue
                 .equals("ptolemy.vergil.icon.BoxedValueIcon")) {
-            // We return null here instead of returning 
-            // "ptolemy.kernel.util.Attribute" because if we do not return
-            // null, then ptII/ptolemy/vergil/test/VergilConfiguration.tcl
-            // will fail.
-            return null;
+            return "ptolemy.kernel.util.Attribute";
         }
         return attributeValue;
     } 
