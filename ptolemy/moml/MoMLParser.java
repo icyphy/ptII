@@ -1336,33 +1336,24 @@ public class MoMLParser extends HandlerBase {
                 _unrecognized.add(elementName);
             }
         } catch (InvocationTargetException ex) {
-            // NOTE: While debugging, we print a stack trace here.
-            // This is because XmlException loses it.
-            // System.err.println("******** original error:");
-            // ex.printStackTrace();
-
             // A constructor or method invoked via reflection has
             // triggered an exception.
-            String msg = "XML element \"" + elementName
-                + "\" triggers exception:\n  "
-                + ex.getTargetException().toString();
-                throw new XmlException(msg,
-                        _currentExternalEntity(),
-                        _parser.getLineNumber(),
-                        _parser.getColumnNumber());
+            throw new XmlException(
+                    "XML element \"" + elementName
+                    + "\" triggers exception:\n  "
+                    + KernelException.stackTraceToString(
+                            ex.getTargetException()),
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
         } catch (Exception ex) {
-            // NOTE: While debugging, we print a stack trace here.
-            // This is because XmlException loses it.
-            // System.err.println("******** original error:");
-            // ex.printStackTrace();
-
             if (ex instanceof XmlException) {
                 throw (XmlException)ex;
             } else {
-                String msg = "XML element \"" + elementName
-                    + "\" triggers exception:\n  " + ex.toString();
-
-                throw new XmlException(msg,
+                throw new XmlException(
+                        "XML element \"" + elementName
+                        + "\" triggers exception:\n  "
+                        + KernelException.stackTraceToString(ex),
                         _currentExternalEntity(),
                         _parser.getLineNumber(),
                         _parser.getColumnNumber());
