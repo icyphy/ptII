@@ -7,10 +7,21 @@
       <group>
 <doc>Conversion actors</doc>
 
-<entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything"/>
+  <entity name="BooleanToAnything"
+          class="ptolemy.actor.lib.conversions.BooleanToAnything">
+  </entity>
 
-<entity name="BitsToInt" class="ptolemy.domains.sdf.lib.BitsToInt">
-</entity>
+  <entity name="BitsToInt"
+          class="ptolemy.domains.sdf.lib.BitsToInt">
+  </entity>
+
+  <entity name="CartesianToComplex"
+          class="ptolemy.actor.lib.conversions.CartesianToComplex">
+  </entity>
+
+  <entity name="CartesianToPolar"
+          class="ptolemy.actor.lib.conversions.CartesianToPolar">
+  </entity>
 
   <entity name="ComplexToPolar"
           class="ptolemy.actor.lib.conversions.ComplexToPolar">
@@ -83,14 +94,6 @@
 
   <entity name="PolarToCartesian"
           class="ptolemy.actor.lib.conversions.PolarToCartesian">
-  </entity>
-
-  <entity name="CartesianToComplex"
-          class="ptolemy.actor.lib.conversions.CartesianToComplex">
-  </entity>
-
-  <entity name="CartesianToPolar"
-          class="ptolemy.actor.lib.conversions.CartesianToPolar">
   </entity>
 
   <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
