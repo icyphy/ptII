@@ -78,5 +78,3 @@ demo:
 pool: 
 	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII pool.xml > bar.xml
 
-sundemo:
-	$(JAVA) -classpath ".;$(CLASSPATH)" DOMEcho poolExample.xml

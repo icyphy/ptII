@@ -414,7 +414,7 @@ high := pumpHigh</value>
 							</regnode>
 						</regnode>
 						<attribute kind="Kind">
-							<value>input</value>
+							<value>Controlled</value>
 						</attribute>
 						<attribute kind="MaxValue" status="meta">
 							<value>0</value>
