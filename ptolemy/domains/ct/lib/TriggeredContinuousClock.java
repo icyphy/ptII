@@ -126,7 +126,9 @@ public class TriggeredContinuousClock extends ContinuousClock {
         // be reset.
         if (start.getWidth() > 0) {
             if (start.hasToken(0)) {
-                if (_debugging)_debug("Received a start input.");
+                if (_debugging){
+                    _debug("Received a start input.");
+                }
                 start.get(0);
                 // Indicate to postfire() that it can call fireAt().
                 _tentativeDone = false;
@@ -141,7 +143,9 @@ public class TriggeredContinuousClock extends ContinuousClock {
         // Check stop
         if (stop.getWidth() > 0) {
             if (stop.hasToken(0)) {
-                if (_debugging)_debug("Received a stop input.");
+                if (_debugging){
+                    _debug("Received a stop input.");
+                }
                 stop.get(0);
                 _tentativeDone = true;
                 _tentativeCycleCount = 0;

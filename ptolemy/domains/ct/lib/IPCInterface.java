@@ -40,11 +40,13 @@ package ptolemy.domains.ct.lib;
    @Pt.AcceptedRating Red (cxh)
 */
 public interface IPCInterface {
-    /** Return the name of the tool
+    /** Return the name of the tool.
+     *  @return The name of the tool.
      */
     public String getToolName();
 
     /** Return the external tool process.
+     *  @return The external tool process.
      */
     public Process getToolProcess();
 }

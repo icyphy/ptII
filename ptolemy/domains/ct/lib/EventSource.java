@@ -218,6 +218,7 @@ public class EventSource extends TypedAtomicActor {
 
     /** Return true if this actor is scheduled to fire at the current time.
      *  @return True if this actor is scheduled to fire at the current time.
+     *  @exception IllegalActionException If thrown by the super class.
      */
     public boolean prefire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();

@@ -61,6 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    <li>If rate is less than <i>fallingSlewRate</i>, the output is
    <pre>
    y(k) = (t(k)-t(k-1))*fallingSlewRate + y(k-1)
+   </pre>
    <li>Otherwise, just output the input.
    <P>
    This actor works as a (continuous) nonlinear function. It does not

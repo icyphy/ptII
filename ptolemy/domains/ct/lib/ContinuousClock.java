@@ -35,7 +35,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTWaveformGenerator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -72,7 +71,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (hyzheng)
 */
 
-public class ContinuousClock extends Clock implements CTWaveformGenerator {
+public class ContinuousClock extends Clock {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -113,9 +112,11 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
         _updateTentativeValues();
-        output.send(0, _currentValue);
-        if (_debugging)_debug("Output: " + _currentValue + " at " + 
+        output.send(0, _tentativeCurrentValue);
+        if (_debugging) {
+            _debug("Output: " + _currentValue + " at " + 
             getDirector().getModelTime() + ".");
+        }
     }
 
     /** Schedule the first firing and initialize local variables.
@@ -158,12 +159,14 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
             // That is, not only discrete phase execution, but also the continuous
             // phase execution is performed.
             if (getDirector().getModelTime().compareTo(getModelStopTime()) > 0) {
-                if (_debugging) 
+                if (_debugging) {
                     _debug(" --- Postfire returns false.");
+                }
                 return false;
             } else {
-                if (_debugging) 
+                if (_debugging) {
                     _debug(" --- Postfire returns true.");
+                }
                 return true;
             }
         }
@@ -178,8 +181,7 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
 
         // Use Time.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
-        _tentativeNextFiringTime 
-            = Time.NEGATIVE_INFINITY;
+        _tentativeNextFiringTime = Time.NEGATIVE_INFINITY;
 
         // By default, the cycle count will not be incremented.
         _tentativeCycleCountIncrement = 0;
@@ -211,7 +213,9 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
            // Adjust the phase if time has moved beyond the current phase.
            if (currentTime.compareTo(currentPhaseTime) == 0) {
                 if (_tPlus) {
-                    if (_debugging)_debug("phase is: tPlus");
+                    if (_debugging) {
+                        _debug("phase is: tPlus");
+                    }
 
                     // Increment to the next phase.
                     _tentativePhase++;
@@ -240,7 +244,9 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
                     _tPlus = !_tPlus;
 
                 } else if (_tMinus) {
-                    if (_debugging) _debug("phase is: tMinus");
+                    if (_debugging) {
+                        _debug("phase is: tMinus");
+                    }
 
                     // Phase boundary.  Change the current value.
                     _tentativeCurrentValue = _getValue(_tentativePhase);
@@ -272,7 +278,8 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
         
         Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
-        if (cycleLimit > 0 && currentTime.compareTo(stopTime) >= 0) {
+        if ((cycleLimit > 0 && currentTime.compareTo(stopTime) >= 0)
+                || _tentativeDone) {
             _tentativeCurrentValue = defaultValue.getToken();
         }
 

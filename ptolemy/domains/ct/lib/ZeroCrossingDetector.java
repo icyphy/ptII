@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ZeroCrossingDetector
 /**
-   A event detector that converts continuous signals to discrete events when
+   An event detector that converts continuous signals to discrete events when
    the continuous signal crosses zero. This actor is a syntactic sugar
    for LevelCrossDetector with level to be 0.0.
 

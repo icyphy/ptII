@@ -45,18 +45,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CTPeriodicSampler
 /**
-   Generate discrete events by periodically sampling a CT signal.
-
-   <p>This actor periodically sample the input signal and generate events
-   which has the value of the input signal. The sampling rate is given by
-   parameter "samplePeriod", which has default value 0.1.
-   The actor has a multi-input port and a multi-output port. Signals in
+   This actor generates discrete events by periodically sampling a CT signal.
+   The events have the values of the input signal at the sampling times. The 
+   sampling rate is given by parameter "samplePeriod", which has default value 
+   0.1. The actor has a multi-input port and a multi-output port. Signals in
    each input channel are sampled and produced to corresponding output
    channel.
-   @author Jie Liu
+   
+   @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (liuj)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (cxh)
 */
 public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
@@ -80,11 +79,9 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
-        new Parameter(input, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
         output.setMultiport(true);
-        new Parameter(output, "signalType",
-                new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("DISCRETE"));
         _samplePeriod = (double)0.1;
         samplePeriod = new Parameter(this,
                 "samplePeriod", new DoubleToken(_samplePeriod));
@@ -102,8 +99,8 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The parameter for the sampling period; the type is double; the
-     *  default value is 1.0.
+    /** The parameter for the sampling period. It contains a double token
+     *  whose default value is 0.1.
      */
     public Parameter samplePeriod;
 
@@ -129,8 +126,9 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
         }
     }
 
-    /** Emit the current event if there is one. The value of the event
-     *  is the sample of the input signal.
+    /** Generate a discrete event if the current time is one of the sampling
+     *  times. The value of the event is the value of the input signal at the
+     *  current time.
      *  @exception IllegalActionException If the transfer of tokens failed.
      */
     public void fire() throws IllegalActionException {
@@ -143,16 +141,18 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
                     output.send(i, token);
-                    if (_debugging) 
+                    if (_debugging) {
                         _debug(getFullName(), " sends event: " + token
                             + " to channel " + i  
                             + ", at: " + getDirector().getModelTime());
+                    }
                 }
             }
         }
     }
 
-    /** Return true if there is a current event.
+    /** Return true if there is a current event. In other words, the current
+     *  time is one of the sampling times.
      *  @return If there is a discrete event to emit.
      */
     public boolean hasCurrentEvent() {
@@ -160,7 +160,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
         if (director.getModelTime().compareTo(_nextSamplingTime) == 0) {
             _hasCurrentEvent = true;
             if (_debugging && _verbose) {
-                _debug(getFullName(), " has event at: "
+                _debug(getFullName(), " has an event at: "
                     + director.getModelTime() + ".");
             }
         } else {
@@ -178,24 +178,27 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
         super.initialize();
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getModelTime();
-        if (_debugging) _debug(getFullName() + ": next sampling time = "
-                + _nextSamplingTime);
+        if (_debugging) {
+            _debug("Next sampling time is at " + _nextSamplingTime);
+        }
     }
 
     /** Set the next sampling time and return true.
-     *  It computes the next sampling time,
-     *  and registers it as a breakpoint.
+     *  It computes the next sampling time, and registers it as a breakpoint.
      *  @return True.
+     *  @throws IllegalActionException If the next sampling time can not be
+     *  set as a breakpoint.
      */
     public boolean postfire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
         if ((director.getExecutionPhase() == 
-            CTExecutionPhase.GENERATING_EVENTS_PHASE) && hasCurrentEvent()) {
+                CTExecutionPhase.GENERATING_EVENTS_PHASE) 
+            && hasCurrentEvent()) {
             // register for the next event.
             _nextSamplingTime = _nextSamplingTime.add(_samplePeriod);
-            if (_debugging)
-                _debug(getFullName(), "request fire at "
-                        + _nextSamplingTime);
+            if (_debugging){
+                _debug("Request refiring at " + _nextSamplingTime);
+            }
             getDirector().fireAt(this, _nextSamplingTime);
         }
         return true;
@@ -203,9 +206,6 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // the local copy of the sample period.
-    private double _samplePeriod;
 
     // flag indicating if there is a current event. 
     // NOTE: this variable should be only used inside the hasCurrentEvent
@@ -215,4 +215,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
 
     // the next sampling time.
     private Time _nextSamplingTime;
+
+    // the local copy of the sample period.
+    private double _samplePeriod;
 }

@@ -54,15 +54,16 @@ import ptolemy.kernel.util.Workspace;
    <i>errorTolerance</i>), this actor outputs a discrete event with the value as
    <i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the 
    actor outputs a discrete event with the value as the level threshold.
-   This actor controls the integration step size to accurately resolve the time
-   at which the level crossing occurs. So, this actor is only used in Continuous
-   Time domain.
+   <p>
+   This actor controls the step size such that level crossings never
+   occur during an integration. So, this actor is only used in Continuous-Time 
+   domain.
 
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public class LevelCrossingDetector extends Transformer
     implements CTStepSizeControlActor, CTEventGenerator {
@@ -82,16 +83,15 @@ public class LevelCrossingDetector extends Transformer
     public LevelCrossingDetector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Parameter(input, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
+        
         output.setTypeAtLeast(input);
-        new Parameter(output, "signalType",
-                new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("DISCRETE"));
+        
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(false);
         trigger.setTypeEquals(BaseType.DOUBLE);
-        new Parameter(trigger, "signalType",
-                new StringToken("CONTINUOUS"));
+        new Parameter(trigger, "signalType", new StringToken("CONTINUOUS"));
 
         level = new Parameter(this, "level", new DoubleToken(0.0));
         level.setTypeEquals(BaseType.DOUBLE);
@@ -104,9 +104,9 @@ public class LevelCrossingDetector extends Transformer
                 new DoubleToken(0.0));
         output.setTypeAtLeast(defaultEventValue);
 
-        useEventValue = new Parameter(this, "useEventValue");
-        useEventValue.setTypeEquals(BaseType.BOOLEAN);
-        useEventValue.setToken(BooleanToken.FALSE);
+        usingDefaultEventValue = new Parameter(this, "useEventValue");
+        usingDefaultEventValue.setTypeEquals(BaseType.BOOLEAN);
+        usingDefaultEventValue.setToken(BooleanToken.FALSE);
 
         _errorTolerance = (double)1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
@@ -117,10 +117,9 @@ public class LevelCrossingDetector extends Transformer
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-   /** The parameter that specifies the default output event value
-     *  if the input port is not connected to anything. If the
-     *  input is connected, this value is ignored.
-     *  By default, it contains a DoubleToken of value 0.0.
+    /** A parameter that specifies the value of output events
+     *  if the <i>useEventValue</i> parameter is checked. By default, 
+     *  it contains a DoubleToken of 0.0.
      */
     public Parameter defaultEventValue;
 
@@ -150,13 +149,13 @@ public class LevelCrossingDetector extends Transformer
     /** The parameter that indicates whether to use the default event
      *  value.
      */
-    public Parameter useEventValue;
+    public Parameter usingDefaultEventValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Update the attribute if it has been changed. If the attribute
-     *  is <i>errorTolerance<i> then update the local cache.
+     *  is <i>errorTolerance</i> or <i>level</i>, then update the local cache.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the attribute change failed.
      */
@@ -183,60 +182,52 @@ public class LevelCrossingDetector extends Transformer
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
+     *  an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         LevelCrossingDetector newObject = (LevelCrossingDetector)
             super.clone(workspace);
-        // Set the type constraint.
+        // Set the type constraints.
         newObject.output.setTypeAtLeast(newObject.input);
         newObject.output.setTypeAtLeast(newObject.defaultEventValue);
         return newObject;
     }
 
-    /** Consume the trigger token. 
-     *  If the current execution is in a continuous phase, do nothing.
-     *  If the current execution is in a discrete phase, use the trigger token 
-     *  to find whether a level crossing happens in the current iteration. 
-     *  If there is a crossing, output a discrete event. The value of this
-     *  event may be the specified level, or the default event value if the
-     *  useEventValue is configured true.
-     *  @exception IllegalActionException If no token is available.
+    /** Produce a discrete event if level crossing happens. If the current 
+     *  execution is in a continuous phase, the current trigger is recorded but 
+     *  no event can be produced. If the current execution is in a discrete 
+     *  phase, the current and previous trigger tokens are compared to find 
+     *  whether a level crossing happens. If there is a crossing, a discrete 
+     *  event is generated. 
+     *  <p>
+     *  The value of this event may be the specified level, or the default 
+     *  event value if the usingDefaultEventValue is configured true (checked).
+     *  @exception IllegalActionException If can not get token from the trigger 
+     *  port or can not send token through the output port.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        //consume the input.
+        //record the input.
         _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
         if (_debugging) {
-            _debug("Consuming trigger Token " + _thisTrigger);
+            _debug("Consuming a trigger token: " + _thisTrigger);
         }
 
-        // This operation is only performed during discrete phase.
-        // NOTE: This way to generate events is different from 
-        // CTPeriodicSampler, where discrete events are generated
-        // at the end of a continuous phase execution. The reason
-        // is the difference between breakpoint and detected event.
-        // A breakpoint is an event that is guaranteed to happen,
-        // while a detected event is not. Therefore, the strategy to
-        // handle detected events is to defer their production into
-        // the discrete phase execution. In continuous phase execution,
-        // we only detect when the possible events can happen and 
-        // choose the earliest one to schedule a discrete phase 
-        // execution.
         CTDirector director = (CTDirector)getDirector();
+        // FIXME: Should this be CTExecutionPhase.GENERATING_EVENTS_PHASE?
         if (director.isDiscretePhase()) {
             if (_debugging && _verbose) {
                 _debug("This is a discrete phase execution.");
             }
             // There are two conditions when an event is generated.
-            // 1. There is a discontinuity at the current time.
+            // 1. There is a discontinuity at the current time; OR
             // 2. By linear interpolation, an event is located at the current
             // time.
             if (((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0) 
                 || hasCurrentEvent()) {
                 // Emit an event.
-                if (((BooleanToken)useEventValue.getToken()).booleanValue()) {
+                if (((BooleanToken)usingDefaultEventValue.getToken()).booleanValue()) {
                     output.send(0, defaultEventValue.getToken());
                     if (_debugging) {
                         _debug("Emitting an event with a default value: " 
@@ -283,15 +274,17 @@ public class LevelCrossingDetector extends Transformer
             _debug("The current trigger is " + _thisTrigger);
         }
         // If the level is crossed and the current trigger is very close
-        // to the level, the current step size is accurate. Otherwise,
-        // the current step size is too big.
+        // to the level, the current step size is accurate. 
+        // If the current trigger is equal to the level threshold, the current
+        // step size is accurate. 
+        // Otherwise, the current step size is too big.
         if ((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0) {
             // Preinitialize method ensures the cast to be safe.
             CTDirector director = (CTDirector)getDirector();
             if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
                 // The current time is when the event happens.
                 if (_debugging)
-                    _debug("Event is detected at "
+                    _debug("Event is detected at " 
                             + getDirector().getModelTime());
                 _eventNow = true;
                 _eventMissed = false;
@@ -339,6 +332,7 @@ public class LevelCrossingDetector extends Transformer
     /** Prepare for the next iteration, by making the current trigger
      *  token to be the history trigger token.
      *  @return True always.
+     *  @throws IllegalActionException If thrown by the super class.
      */
     public boolean postfire() throws IllegalActionException {
         _lastTrigger = _thisTrigger;
@@ -388,7 +382,10 @@ public class LevelCrossingDetector extends Transformer
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // the level crossing threshold.
+    /** The level threshold this actor detects.
+     */
+    // The variable is proetected because ZeroCrossingDetector needs access
+    // to this variable.
     protected double _level;
 
     ///////////////////////////////////////////////////////////////////
