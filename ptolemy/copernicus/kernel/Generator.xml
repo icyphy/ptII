@@ -78,9 +78,9 @@ $Id$
 
      <property name="targetPath" 
                class="ptolemy.data.expr.Variable"
-	       value="&quot;ptolemy/copernicus/java/cg/&quot; + model"
+	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/cg/&quot; + model"
 	       >
-	       <doc>The path relative to 'root' directory to generate code in. The default is derived from the value of targetPackage.</doc>
+	       <doc>The path relative to 'root' directory to generate code in. The default is derived from the value of codeGenerator + targetPackage.</doc>
      </property>
 
 
