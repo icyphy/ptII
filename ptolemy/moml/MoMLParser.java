@@ -292,8 +292,14 @@ public class MoMLParser extends HandlerBase {
 		 _skipRendition = false;
 	     }
 	} else if (elementName.equals("configure")) {
-            ((Configurable)_current).configure(
-                    _base, _configureSource, _currentCharData.toString());
+            try {
+                ((Configurable)_current).configure(
+                        _base, _configureSource, _currentCharData.toString());
+            } catch (NoClassDefFoundError ex) {
+                // If we are running without a display and diva.jar
+                // is not in the classpath, then we may get" 
+                // "java.lang.NoClassDefFoundError: diva/canvas/Figure"
+            }
         } else if (elementName.equals("doc")) {
             if (_currentDocName == null) {
                 _currentDocName = "_doc_";
