@@ -66,7 +66,8 @@ class PNInterleavingExample {
         //Maybe a nice method that set all star parameters and links all ports
         IOPort portout = (IOPort)_interleave.getPort("output");
         IOPort portin = (IOPort)_alternate.getPort("input");
-        IORelation queue = (IORelation)myUniverse.connect(portin, portout, "QX");
+        IORelation queue =
+            (IORelation)myUniverse.connect(portin, portout, "QX");
         //portin.getQueue().setCapacity(1);
 
         //portout = (PNOutPort)_interleave.getPort("output");
