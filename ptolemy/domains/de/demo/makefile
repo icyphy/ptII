@@ -43,6 +43,8 @@ include $(CONFIG)
 
 CLASSPATH = ../../../..
 
+TYPACKAGE_DIR = ptolemy/domains/de/demo
+
 JSRCS = \
 	ClockApplet.java \
 	ClockSystem.java
@@ -71,13 +73,14 @@ MISC_FILES =	#doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
+OPTIONAL_FILES = \
+	clockapplet.jar	
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass
+all: jclass clockapplet.jar
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
@@ -94,6 +97,103 @@ Exponential: $(EXTRA_SRCS) jclass Exponential.tcl
 
 docs: javadocs
 
+# Classfiles used by the ClockApplet demo
+CLOCK_CLASSFILES = \
+	collections/Assertable.class \
+	collections/CEImpl.class \
+	collections/Cell.class \
+	collections/Collection.class \
+	collections/CollectionEnumeration.class \
+	collections/Comparator.class \
+	collections/CorruptedEnumerationException.class \
+	collections/IllegalElementException.class \
+	collections/ImplementationCheckable.class \
+	collections/LLCell.class \
+	collections/LLCellEnumeration.class \
+	collections/LinkedList.class \
+	collections/Predicate.class \
+	collections/Seq.class \
+	collections/SortableCollection.class \
+	collections/UpdatableCollection.class \
+	collections/UpdatableImpl.class \
+	collections/UpdatableSeq.class \
+	collections/UpdatableSeqImpl.class \
+	ptolemy/actor/Actor.class \
+	ptolemy/actor/ActorListener.class \
+	ptolemy/actor/AtomicActor.class \
+	ptolemy/actor/CompositeActor.class \
+	ptolemy/actor/Director.class \
+	ptolemy/actor/Executable.class \
+	ptolemy/actor/IOPort.class \
+	ptolemy/actor/IORelation.class \
+	ptolemy/actor/Receiver.class \
+	ptolemy/actor/util/CQComparator.class \
+	'ptolemy/actor/util/CalendarQueue$$CQEntry.class' \
+	'ptolemy/actor/util/CalendarQueue$$EntryComparator.class' \
+	'ptolemy/actor/util/CalendarQueue$$SortedLinkedList.class' \
+	ptolemy/actor/util/CalendarQueue.class \
+	ptolemy/actor/util/FIFOQueue.class \
+	ptolemy/data/DoubleToken.class \
+	ptolemy/data/IntToken.class \
+	ptolemy/data/ScalarToken.class \
+	ptolemy/data/Token.class \
+	ptolemy/data/TokenPublisher.class \
+	'ptolemy/domains/de/demo/ClockApplet$$GoButtonListener.class' \
+	'ptolemy/domains/de/demo/ClockApplet$$StopTimeListener.class' \
+	ptolemy/domains/de/demo/ClockApplet.class \
+	ptolemy/domains/de/demo/ClockApplet.class \
+	ptolemy/domains/de/kernel/DECQComparator.class \
+	'ptolemy/domains/de/kernel/DECQDirector$$DEEvent.class' \
+	ptolemy/domains/de/kernel/DECQDirector.class \
+	ptolemy/domains/de/kernel/DEDelta.class \
+	ptolemy/domains/de/kernel/DEIOPort.class \
+	ptolemy/domains/de/kernel/DEReceiver.class \
+	ptolemy/domains/de/kernel/DESortKey.class \
+	ptolemy/domains/de/lib/DEClock.class \
+	ptolemy/domains/de/lib/DEPlot.class \
+	ptolemy/domains/de/lib/DEPoisson.class \
+	ptolemy/domains/de/lib/DEWaitingTime.class \
+	ptolemy/graph/DirectedGraph.class \
+	ptolemy/graph/Graph.class \
+	ptolemy/kernel/ComponentEntity.class \
+	ptolemy/kernel/ComponentPort.class \
+	ptolemy/kernel/ComponentRelation.class \
+	ptolemy/kernel/CompositeEntity.class \
+	ptolemy/kernel/Entity.class \
+	ptolemy/kernel/Port.class \
+	ptolemy/kernel/Relation.class \
+	ptolemy/kernel/mutation/Mutation.class \
+	ptolemy/kernel/mutation/MutationListener.class \
+	ptolemy/kernel/util/Attribute.class \
+	'ptolemy/kernel/util/CrossRefList$$CrossRef.class' \
+	'ptolemy/kernel/util/CrossRefList$$CrossRefEnumeration.class' \
+	ptolemy/kernel/util/CrossRefList.class \
+	ptolemy/kernel/util/IllegalActionException.class \
+	ptolemy/kernel/util/InternalErrorException.class \
+	ptolemy/kernel/util/InvalidStateException.class \
+	ptolemy/kernel/util/KernelException.class \
+	ptolemy/kernel/util/NameDuplicationException.class \
+	ptolemy/kernel/util/Nameable.class \
+	ptolemy/kernel/util/NamedList.class \
+	ptolemy/kernel/util/NamedObj.class \
+	ptolemy/kernel/util/NoSuchItemException.class \
+	'ptolemy/kernel/util/Workspace$$ReadDepth.class' \
+	ptolemy/kernel/util/Workspace.class \
+	ptolemy/plot/CmdLineArgException.class \
+	ptolemy/plot/Plot.class \
+	'ptolemy/plot/PlotBox$$DragListener.class' \
+	'ptolemy/plot/PlotBox$$FillButtonListener.class' \
+	'ptolemy/plot/PlotBox$$ZoomListener.class' \
+	ptolemy/plot/PlotBox.class \
+	ptolemy/plot/PlotPoint.class \
+
+# Jar file consisting of classes used by an applet.  Basically,
+# everything but Message and Pxgraph.
+clockapplet.jar: $(JSRCS) $(JCLASS)
+	(cd $(CLASSPATH); \
+		$(JAR) cf \
+		$(TYPACKAGE_DIR)/clockapplet.jar \
+		$(CLOCK_CLASSFILES))
 depend:
 	@echo "no dependencies in this directory"
 
