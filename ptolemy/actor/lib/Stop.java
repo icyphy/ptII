@@ -46,7 +46,8 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
 An actor that stops execution of a model when it receives a true token
 on any input channel. This is accomplished by calling finish() on the
 manager, which requests that the current iteration be completed and
-then the model execution be halted.
+then the model execution be halted. If the input is not connected to
+anything, then this actor requests a stop whenever it fires.
 <p>
 When exactly this stops the execution depends on the domain.
 For example, in DE, if an event with time stamp <i>T</i> and
@@ -117,6 +118,8 @@ public class Stop extends Sink {
 
     /** Read one token from each input channel that has a token,
      *  and if any token is true, call finish() on the manager.
+     *  If nothing at all is connected to the input port, then
+     *  call finish() unconditionally.
      *  @exception IllegalActionException If there is no director or
      *   if there is no manager, or if the container is not a
      *   CompositeActor.
@@ -124,6 +127,9 @@ public class Stop extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
+        if (input.getWidth() == 0) {
+            result = true;
+        }
         // NOTE: We need to consume data on all channels that have data.
         // If we don't then DE will go into an infinite loop.
         for (int i = 0; i < input.getWidth(); i++) {
