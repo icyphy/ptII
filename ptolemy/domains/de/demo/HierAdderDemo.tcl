@@ -54,7 +54,7 @@
 # boundary is not involved in type checking. The lower block is a
 # wormhole, its port will be resolved to Int.
 #
-# The demo show the following:
+# The demo shows the following:
 # (1) Type resolution of polymorphic actor (Adder)
 # (2) Ports with different types can be connected together:
 #     The two ports connected with the Adder input have different types.
