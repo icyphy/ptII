@@ -75,22 +75,26 @@ EXTRA_SRCS =   PtParser.jjt $(JSRCS)
 # want make checkjunk to barf on them.
 MISC_FILES =	# doc test
 
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =  \
+# OPTIONAL_JSRCS files are created by javacc.  
+# javadoc generates html for file in $(OPTIONAL_JSRCS)
+OPTIONAL_JSRCS = \
 	ASCII_CharStream.java \
 	JJTPtParserState.java \
 	Node.java \
 	ParseException.java \
 	PtParser.java \
-	PtParser.jj \
 	PtParserConstants.java \
 	PtParserTokenManager.java \
 	PtParserTreeConstants.java \
 	SimpleNode.java \
 	Token.java \
-	TokenMgrError.java \
-	#codeDoc
+	TokenMgrError.java
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =  \
+	$(OPTIONAL_JSRCS) \
+	PtParser.jj
 
 JCLASS = $(JSRCS:%.java=%.class)
 
