@@ -70,8 +70,10 @@ all: sources jclass $(JZIP)
 install: sources jclass javadocs $(JZIP) 
 docs: javadocs
 
-tests:: $(EXTRA_SRCS)
+tests:: $(EXTRA_SRCS) test_example test_serializable
+test_example:
 	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSystem
+test_serializable:
 	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSerializable write
 	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSerializable
 
