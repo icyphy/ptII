@@ -331,10 +331,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     "Inferred run length = " + runlength);
             if(runlength < 0 ) {
                 throw new InvalidStateException(this, "Outside domain"
-                        + " time collapse."
-                        + " current time " + _outsideTime
-                        + " next iteration time " + nextIterTime);
+                        + " time going backward."
+                        + " Current time = " + _outsideTime
+                        + ", but the next iteration time = " + nextIterTime);
             }
+            if (runlength == 0 ) {
+                // This only happens when the current time of the outside
+                // domain is the stop time. So return false and stop 
+                // executing.
+                return false;
+            }
+    
             if(_debugging) _debug( "Current Time " + getCurrentTime()
                     + "Outside domain current time " + _outsideTime
                     + " next iteration time " + nextIterTime
