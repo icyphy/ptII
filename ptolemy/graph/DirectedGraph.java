@@ -27,8 +27,11 @@
 */
 
 package pt.graph;
+
+import pt.kernel.util.InvalidStateException;
+
 import java.util.*;
-import pt.kernel.InvalidStateException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectedGraph
