@@ -175,7 +175,7 @@ JDOCMEMORY =	-J-Xmx132m
 JDOCTAG = 	-tag Pt.AcceptedRating -tag Pt.ProposedRating
 
 # Javadoc taglet
-JDOCTAGLET =	-tagletpath $PTII -taglet doc.doclets.RatingTaglet
+JDOCTAGLET =	-tagletpath $(PTII) -taglet doc.doclets.RatingTaglet
 
 # Doccheck is a doclet that checks for bugs
 # Location of the doccheck jar file, available from
