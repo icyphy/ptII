@@ -34,6 +34,8 @@ package ptolemy.data.expr;
 import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.Vector;
+import java.io.ByteArrayInputStream;
+import java.io.FileReader;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixParser
@@ -229,7 +231,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
 
   static public void ReInit(java.io.InputStream stream) {
     jj_input_stream.ReInit(stream, 1, 1);
-    MatrixParserTokenManager.ReInit(jj_input_stream);
+    token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jjtree.reset();
@@ -255,7 +257,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
 
   static public void ReInit(java.io.Reader stream) {
     jj_input_stream.ReInit(stream, 1, 1);
-    MatrixParserTokenManager.ReInit(jj_input_stream);
+    token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jjtree.reset();
@@ -290,7 +292,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
   static final private Token jj_consume_token(int kind) throws ParseException {
     Token oldToken;
     if ((oldToken = token).next != null) token = token.next;
-    else token = token.next = MatrixParserTokenManager.getNextToken();
+    else token = token.next = token_source.getNextToken();
     jj_ntk = -1;
     if (token.kind == kind) {
       jj_gen++;
@@ -303,7 +305,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
 
   static final public Token getNextToken() {
     if (token.next != null) token = token.next;
-    else token = token.next = MatrixParserTokenManager.getNextToken();
+    else token = token.next = token_source.getNextToken();
     jj_ntk = -1;
     jj_gen++;
     return token;
@@ -313,14 +315,14 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
     Token t = token;
     for (int i = 0; i < index; i++) {
       if (t.next != null) t = t.next;
-      else t = t.next = MatrixParserTokenManager.getNextToken();
+      else t = t.next = token_source.getNextToken();
     }
     return t;
   }
 
   static final private int jj_ntk() {
     if ((jj_nt=token.next) == null)
-      return (jj_ntk = (token.next=MatrixParserTokenManager.getNextToken()).kind);
+      return (jj_ntk = (token.next=token_source.getNextToken()).kind);
     else
       return (jj_ntk = jj_nt.kind);
   }
