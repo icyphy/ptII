@@ -69,10 +69,11 @@ test Port-1.1 {Get information about an instance of Port} {
   fields:        
   methods:       connectedPorts {description int} {equals java.lang.Obje
     ct} getClass getContainer getFullName getName hashCode 
-    {link pt.kernel.Relation} linkedRelations notify notify
-    All numLinks {setContainer pt.kernel.Entity} {setName j
-    ava.lang.String} toString {unlink pt.kernel.Relation} u
-    nlinkAll wait {wait long} {wait long int} workspace
+    {isLinked pt.kernel.Relation} {link pt.kernel.Relation}
+     linkedRelations notify notifyAll numLinks {setContaine
+    r pt.kernel.Entity} {setName java.lang.String} toString
+     {unlink pt.kernel.Relation} unlinkAll wait {wait long}
+     {wait long int} workspace
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String} {pt.kernel.Port pt.kernel.Workspace}

@@ -66,12 +66,12 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
 } {{
   class:         pt.kernel.ComponentPort
   fields:        
-  methods:       {_checkRelation pt.kernel.Relation} {_outside pt.kernel
-    .Nameable} connectedPorts deepConnectedPorts deepInside
-    Ports {description int} {equals java.lang.Object} getCl
-    ass getContainer getFullName getName hashCode insidePor
-    ts insideRelations {isDeeplyConnected pt.kernel.Compone
-    ntPort} {liberalLink pt.kernel.Relation} {link pt.kerne
+  methods:       connectedPorts deepConnectedPorts deepInsidePorts {desc
+    ription int} {equals java.lang.Object} getClass getCont
+    ainer getFullName getName hashCode insidePorts insideRe
+    lations {isDeeplyConnected pt.kernel.ComponentPort} {is
+    InsideLinked pt.kernel.Relation} {isLinked pt.kernel.Re
+    lation} {liberalLink pt.kernel.Relation} {link pt.kerne
     l.Relation} linkedRelations notify notifyAll numInsideL
     inks numLinks {setContainer pt.kernel.Entity} {setName 
     java.lang.String} toString {unlink pt.kernel.Relation} 
