@@ -49,7 +49,7 @@ import ptolemy.kernel.util.*;
 //// ConvolutionalCoder
 /**
 Generate a convolutional code by passing the information sequence to be
-transimitted through a linear finite-state shift register.
+transmitted through a linear finite-state shift register.
 The initial state of the shift register is given by the <i>initial</i>
 parameter, which should be a non-negative integer.
 The number of bits per time that should be shifted into and along the
@@ -63,9 +63,10 @@ line should be taken to compute the exclusive-ored parity.
 The result is also produced in an array. The n-th element is the parity
 corresponding to the n-th polynomial.
 <p>
-Note in this actor types of input and output ports are set to be boolean.
-True and false are converted to 1 and 0 before computing the parity.
-The result is converted back to boolean to send to the output port.
+Note in this actor types of input and output port are set to be boolean
+and boolean array, respectively. True and false are converted to 1 and 0
+before computing the parity. The results are converted back to boolean
+to form a boolean array, and then sent to the output port.
 <p>
 The leading zero in each polynomial indicates an octal number.
 The order is simply the index of the highest-order non-zero in the polynomial,
@@ -79,7 +80,7 @@ is 30 (recall that indexing for the order starts at zero, and we cannot
 use the sign bit).
 <p>
 For more information on convolutional codes, see Proakis, Digital
-Communications, Fourth Edition, McGraw-Hill, Inc., 2001, pp. 471-477.
+Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
 <p>
 @author Edward A. Lee and Rachel Zhou
 @version $Id$
@@ -126,7 +127,7 @@ public class ConvolutionalCoder extends SDFTransformer {
       *  binary coefficients. The coefficients indicate the presence (1)
       *  or absence (0) of a tap in the shift register. Each element
       *  of this array parameter should be a positive integer.
-      *  Its default value is the integer {03}.
+      *  The array's default value is {03}.
       */
     public Parameter polynomialArray;
 
@@ -152,8 +153,8 @@ public class ConvolutionalCoder extends SDFTransformer {
      *  <i>polynomailArray</i>, then verify that each of its elements is
      *  a positive integer.
      *  @exception IllegalActionException If <i>initial</i> is negative
-     *  or <i>constraintLength</i> is non-positive or non-positive or any
-     *  element of <i>polynomialArray</i> is non-positive.
+     *  or <i>constraintLength</i> is non-positive or any element of
+     *  <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -188,11 +189,11 @@ public class ConvolutionalCoder extends SDFTransformer {
     /** Read "<i>constraintLength</i>" bits from the input port and shift
      *  them into the shift register. Compute the parity for each polynomial
      *  specified in <i>polynomialArray</i>. If the parity is 1, convert it
-     *  to "true"; otherwise convert it to "false". Send these values in a
-     *  array to the output. The n-th element corresponds to the parity of
-     *  of the n-th polynomial.
+     *  to "true"; otherwise convert it to "false". Send these boolean
+     *  values in an array to the output. The n-th element corresponds to
+     *  the parity computed using the n-th polynomial.
      */
-    public void fire() throws IllegalActionException {  
+    public void fire() throws IllegalActionException {
         _latestShiftReg = _shiftReg;
 
         // Read from the input port.

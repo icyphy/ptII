@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 748}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
     </property>
@@ -24,7 +24,7 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Use the Scrambler to generate pseudo-random bit sequence.(No input)
 The two scramblers have same polynomial but different initial states of shift register.
-Thus, they should produce nearly orthogonal code.
+Thus, they should produce nearly orthogonal codes.
 Dot-product should be -1.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
