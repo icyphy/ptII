@@ -139,7 +139,9 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
 	regsub -all {.*apps/apps.xml.*} $lineout2 {} lineout3
 	# Filter out jmf
 	regsub -all {.*jmf/jmf.xml.*} $lineout3 {} lineout4
-	puts $outfd $lineout4    }
+	# Filter out interactive icons
+	regsub -all {.*lib/interactive.xml.*} $lineout4 {} lineout5
+	puts $outfd $lineout5    }
     close $infd
     close $outfd
 
