@@ -48,6 +48,10 @@ if [ -z "$PTII" ]; then
 	PTII="$PTII_DEFAULT"
 	export PTII
     fi
+    if [ ! -d "$PTII/ptolemy/plot" ]; then
+	echo "$0: Could not find '$PTII/ptolemy/plot'.  Perhaps your PTII"
+	echo " variable is not set properly?"
+    fi	
 fi
 
 # We can start up either PxgraphApplication, EditablePlotMLApplication, or
