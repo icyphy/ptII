@@ -358,6 +358,28 @@ public class EntityLibrary
         return super.getEntity(name);
     }
 
+    /** Return the input source that was specified the last time the configure
+     *  method was called.
+     *  @return The string representation of the input URL, or null if the
+     *  no source has been used to configure this object, or null if no
+     *  external source need be used to configure this object.
+     */
+    public String getSource() {
+        return _source;
+    }
+
+    /** Return the text string that represents the current configuration of
+     *  this object.  Note that any configuration that was previously
+     *  specified using the source attribute need not be represented here
+     *  as well.
+     *  @return A configuration string, or null if no configuration 
+     *  has been used to configure this object, or null if no
+     *  configuration string need be used to configure this object.
+     */
+    public String getText() {
+        return _text;
+    }
+
     /** Return the number of contained entities. This overrides the base class
      *  to first populate the library, if necessary, by calling populate().
      *  Note that this may result in a runtime exception being thrown
