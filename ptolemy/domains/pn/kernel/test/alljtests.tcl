@@ -1,6 +1,6 @@
 # CAUTION: automatically generated file by a rule in ptcommon.mk
 # This file will source all the Tcl files that use Java. 
-# This file will source the .itcl files list in the
+# This file will source the tcl files list in the
 # makefile SIMPLE_JTESTS and GRAPHICAL_JTESTS variables
 # This file is different from all.itcl in that all.itcl
 # will source all the .itcl files in the current directory
@@ -16,7 +16,7 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"BasePNDirector.tcl PNDirector.tcl" != ""} {foreach i [list BasePNDirector.tcl PNDirector.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
+if {"BasePNDirector.tcl PNDirector.tcl PNQueueReceiver.tcl" != ""} {foreach i [list BasePNDirector.tcl PNDirector.tcl PNQueueReceiver.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
 puts stderr dummy.tcl
 cd "$savedir"
 if [ file exists dummy.tcl ] {source dummy.tcl}
