@@ -562,7 +562,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *  value to the specified integer.  The resulting variable is not
      *  persistent and not editable, but will be visible to the user.
      *  If the variable does exist, then just set its value.
-     *  @param port The port.
+     *  @param container The container.
      *  @param name Name of the variable.
      *  @param value The value.
      *  @exception If the variable exists and its value cannot be set.
