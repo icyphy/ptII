@@ -1005,12 +1005,14 @@ public class ComplexArrayMath {
     }
 
     /** Return true if all the distances between corresponding elements
-     *  <i>array1</i> and <i>array2</i> are all less than or equal to the corresponding
-     *  elements in <i>maxError</i>. If both arrays are empty, return true.
+     *  <i>array1</i> and <i>array2</i> are all less than or equal to
+     *  the corresponding elements in <i>maxError</i>. If both arrays
+     *  are empty, return true.
      *  <p>
      *  @param array1 The first array.
      *  @param array2 The second array.
-     *  @param maxError The array of thresholds for the magnitudes of the difference.
+     *  @param maxError The array of thresholds for the magnitudes of
+     *   the difference.
      *  @return True if all the distances between corresponding elements
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
      *  the corresponding elements in <i>maxError</i>.
@@ -1028,8 +1030,8 @@ public class ComplexArrayMath {
 
 	    if (maxError[i] < 0) {
 		throw new IllegalArgumentException(
-			 "ComplexArrayMath.within requires that the third argument "
-			  + "be non-negative.");
+			 "ComplexArrayMath.within requires that the third "
+			  + "argument be non-negative.");
 	    }
 
             double realDifference = array1[i].real - array2[i].real;
