@@ -1629,6 +1629,7 @@ public class MoMLParser extends HandlerBase {
 
                 // Parse port
                 ComponentPort port = _getPort(portName, context);
+          
                 // Save to help generate undo MoML
                 int origNumOutsideLinks = port.numLinks();
                 int origNumInsideLinks = port.numInsideLinks();
@@ -1641,6 +1642,7 @@ public class MoMLParser extends HandlerBase {
                             relationName + "\" in " + context.getFullName());
                     relation = (ComponentRelation)tmpRelation;
                 }
+
                 // Get the index if given
                 int insertAt = -1;
                 if (insertAtSpec != null) {
@@ -2198,25 +2200,28 @@ public class MoMLParser extends HandlerBase {
 
             } else if (elementName.equals("unlink")) {
                 String portName = (String)_attributes.get("port");
-                _checkForNull(portName, "No port for element \"link\"");
+                _checkForNull(portName, "No port for element \"unlink\"");
                 String relationName = (String)_attributes.get("relation");
                 String indexSpec = (String)_attributes.get("index");
-                String insideIndexSpec = (String)_attributes.get("insideIndex");
+                String insideIndexSpec = 
+                    (String)_attributes.get("insideIndex");
 
                 _checkClass(_current, CompositeEntity.class,
                         "Element \"unlink\" found inside an element that "
                         + "is not a CompositeEntity. It is: "
                         + _current);
 
-                CompositeEntity context = (CompositeEntity)_current;
-
-                // Parse port
-                ComponentPort port = _getPort(portName, context);
-
                 int countArgs = 0;
-                if (indexSpec != null) countArgs++;
-                if (insideIndexSpec != null) countArgs++;
-                if (relationName != null) countArgs++;
+                // Check that one of the required arguments is given
+                if (indexSpec != null) {
+                    countArgs++;
+                }
+                if (insideIndexSpec != null) {
+                    countArgs++;
+                }
+                if (relationName != null) {
+                    countArgs++;
+                }
                 if (countArgs != 1) {
                     throw new XmlException(
                             "Element unlink requires exactly one of "
@@ -2226,9 +2231,14 @@ public class MoMLParser extends HandlerBase {
                             _parser.getColumnNumber());
                 }
 
+                CompositeEntity context = (CompositeEntity)_current;
+
+                // Parse port
+                ComponentPort port = _getPort(portName, context);
+
+                // Get relation if given
                 CompositeEntity container = (CompositeEntity)_current;
                 if (relationName != null) {
-                    // Get relation
                     Relation tmpRelation = context.getRelation(relationName);
                     _checkForNull(tmpRelation, "No relation named \"" +
                             relationName + "\" in " + context.getFullName());
@@ -2236,12 +2246,26 @@ public class MoMLParser extends HandlerBase {
 
                     // Handle the undoable aspect
                     if (_undoEnabled && _undoContext.isUndoable()) {
-                        ArrayList filter = new ArrayList(2);
-                        filter.add(relation);
-                        filter.add(port);
-                        String replicaLinkMoML = container.exportLinks(0,
-                                filter);
-                        _undoContext.appendUndoMoML(replicaLinkMoML);
+                        // Get the relation at the given index
+                        List linkedRelations = port.linkedRelationList();
+                        int index = linkedRelations.indexOf(tmpRelation);
+                        if(index != -1) {
+                            // Linked on the outside...
+                            _undoContext.appendUndoMoML("<link port=\"" +
+                                    portName + "\" insertAt=\"" +
+                                    index + "\" relation=\"" +
+                                    relationName + "\" />\n");
+                        } else {
+                            List insideLinkedRelations =
+                                port.insideRelationList();
+                            index = insideLinkedRelations.indexOf(tmpRelation);
+                    
+                            // Linked on the inside.
+                            _undoContext.appendUndoMoML("<link port=\"" +
+                                    portName + "\" insertInsideAt=\"" +
+                                    index + "\" relation=\"" +
+                                    relationName + "\" />\n");
+                        }
                     }
                     port.unlink(relation);
                 } else if (indexSpec != null) {
@@ -2262,7 +2286,7 @@ public class MoMLParser extends HandlerBase {
                         // link is inserted
                         if (r != null) {
                             _undoContext.appendUndoMoML("relation=\"" +
-                                    r.getName() + "\" ");
+                                    r.getName(context) + "\" ");
                         }
                         _undoContext.appendUndoMoML(" />\n");
                     }
@@ -2284,7 +2308,7 @@ public class MoMLParser extends HandlerBase {
                         // link is inserted
                         if (r != null) {
                             _undoContext.appendUndoMoML("relation=\"" +
-                                    r.getName() + "\" ");
+                                    r.getName(context) + "\" ");
                         }
                         _undoContext.appendUndoMoML(" />\n");
                     }
@@ -2469,6 +2493,7 @@ public class MoMLParser extends HandlerBase {
         NamedObj context = undoable.getUndoContext();
         setContext(context);
         String undoableMoML = undoable.getUndoMoML();
+        //  System.out.println("undo MoML = " + undoableMoML);
         // Mark this parse as being undone via a redo
         _undoIsRedo = true;
         try {
@@ -3058,8 +3083,9 @@ public class MoMLParser extends HandlerBase {
                 // local entity MoML, then generate replicaLinkMoML for
                 // the outside links.
                 if (portContainer instanceof CompositeEntity) {
-                    // Get the containing compositeEntity as this is needed for the
-                    // generating the link MoML and level crossing links below
+                    // Get the containing compositeEntity as this is
+                    // needed for the generating the link MoML and
+                    // level crossing links below
                     CompositeEntity composite = (CompositeEntity)portContainer;
                     ComponentPort compPort = (ComponentPort)toDelete;
                     List insideRelationsList = compPort.insideRelationList();
