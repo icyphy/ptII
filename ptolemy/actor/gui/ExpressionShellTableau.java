@@ -90,6 +90,9 @@ public class ExpressionShellTableau extends Tableau
      *  @exception Exception If something goes wrong processing the command.
      */
     public String evaluateCommand(String command) throws Exception {
+        if (command.trim().equals("")) {
+            return "";
+        }
         PtParser parser = new PtParser();
         ASTPtRootNode node = parser.generateSimpleAssignmentParseTree(command);
         String targetName = null;
