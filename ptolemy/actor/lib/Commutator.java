@@ -66,6 +66,7 @@ run time, the schedule will be recalculated if necessary.
 
 @author Mudit Goel, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class Commutator extends Transformer implements SequenceActor {
 

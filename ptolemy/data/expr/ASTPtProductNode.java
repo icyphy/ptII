@@ -46,6 +46,7 @@ the parse tree.
 
 @author Neil Smyth, Bart Kienhuis
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token

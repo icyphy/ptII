@@ -113,6 +113,7 @@ I. Korn, <i>Digital Communications</i>, Van Nostrand Reinhold, New York, 1985.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class RaisedCosine extends FIR {

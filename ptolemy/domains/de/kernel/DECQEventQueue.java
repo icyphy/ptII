@@ -53,6 +53,7 @@ a reasonable distribution of time stamps.
 
 @author Lukito Muliadi, Edward A. Lee, Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see DEReceiver
 @see ptolemy.actor.util.CalendarQueue
 @see DEEventQueue

@@ -77,6 +77,7 @@ process has been received.
 
 @author Mudit Goel, John S. Davis II
 @version $Id$
+@since Ptolemy II 0.2
 @see QueueReceiver
 @see ptolemy.actor.QueueReceiver
 */

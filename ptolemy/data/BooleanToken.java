@@ -43,6 +43,7 @@ import ptolemy.data.type.*;
  *
  * @author Neil Smyth, Yuhong Xiong, Edward A. Lee
  * @version $Id$
+ * @since Ptolemy II 0.2
 */
 
 public class BooleanToken extends Token {

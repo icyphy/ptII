@@ -43,6 +43,7 @@ variable.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 @see InequalityTerm
 */
 

@@ -100,6 +100,7 @@ the first timed-blocked process can be awakened.
 
 @author Mudit Goel
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TimedPNDirector extends BasePNDirector {
 

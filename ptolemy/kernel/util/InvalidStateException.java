@@ -47,6 +47,7 @@ so occurrence is a bug.
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class InvalidStateException extends KernelRuntimeException {
 

@@ -79,6 +79,7 @@ constrain the container by overriding _checkContainer().
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.TypedIOPort
 @see ptolemy.actor.TypedIORelation
 @see ptolemy.actor.TypedActor

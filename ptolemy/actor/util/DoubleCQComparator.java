@@ -42,6 +42,7 @@ CalendarQueue.
 
 @author Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 @see CQComparator
 @see CalendarQueue
 */

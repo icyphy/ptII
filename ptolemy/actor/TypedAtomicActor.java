@@ -69,6 +69,7 @@ subclass.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.AtomicActor
 @see ptolemy.actor.TypedCompositeActor
 @see ptolemy.actor.TypedIOPort

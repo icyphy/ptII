@@ -45,6 +45,7 @@ import ptolemy.data.type.*;
  *
  * @author Neil Smyth, Yuhong Xiong
  * @version $Id$
+ * @since Ptolemy II 0.2
  */
 public class IntToken extends ScalarToken {
 

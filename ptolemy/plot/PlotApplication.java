@@ -97,6 +97,7 @@ have, then alter the above accordingly.
 @see PlotBox
 @author Christopher Hylands and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class PlotApplication extends PlotFrame {
 

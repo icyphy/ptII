@@ -135,6 +135,7 @@ will be thrown if schedules are requested.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.sched.Scheduler
 */
 

@@ -53,6 +53,7 @@ before these have happened.
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 public interface Executable {
 

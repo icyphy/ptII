@@ -47,6 +47,7 @@ so fractions with a zero in the denominator are not allowed (including 0/0).
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class Fraction extends Object {
     /** Create a new fraction with the value zero (0/1).

@@ -46,6 +46,7 @@ conversion can be achieved without loss of information.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 */
 public abstract class MatrixToken extends Token {
 

@@ -55,6 +55,7 @@ emitted for exciting the event generating and the output schedule.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public interface CTDynamicActor extends Actor{
     /** Implementations of this method should emit the tentative outputs.

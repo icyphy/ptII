@@ -40,6 +40,7 @@ A token holder with capacity one.
 
 @author Jie Liu, Edward A. Lee, Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class Mailbox extends AbstractReceiver {
 

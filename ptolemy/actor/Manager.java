@@ -115,6 +115,7 @@ to the manager via the requestChange() method.
 @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
 // Contributors: Mudit Goel, John S. Davis II
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class Manager extends NamedObj implements Runnable {

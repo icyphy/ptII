@@ -58,6 +58,7 @@ TerminateProcessException is thrown.
 <p>
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class CSPBuffer extends CSPActor {

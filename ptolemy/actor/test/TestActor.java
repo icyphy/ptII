@@ -42,6 +42,7 @@ invocation in a list.
 
 @author Edward A. Lee, Mudit Goel
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TestActor extends AtomicActor {
 

@@ -44,6 +44,7 @@ tree.
 
 @author Neil Smyth
 @version$Id$
+@since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token

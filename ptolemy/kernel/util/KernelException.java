@@ -58,6 +58,7 @@ method, but not the public initCause() method that JDK1.4 has
 @see KernelRuntimeException
 @author John S. Davis, II, Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class KernelException extends Exception {
 

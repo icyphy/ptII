@@ -51,6 +51,7 @@ versa, as both have 64 bit representations in Java.
 @see java.text.NumberFormat
 @author Neil Smyth, Yuhong Xiong, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class DoubleToken extends ScalarToken {
 

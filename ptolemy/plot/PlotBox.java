@@ -205,6 +205,7 @@ it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 @author Edward A. Lee, Christopher Hylands
 @contributor Jun Wu (jwu@inin.com.au)
 @version $Id$
+@since Ptolemy II 0.2
  */
 public class PlotBox extends JPanel implements Printable {
 

@@ -107,6 +107,7 @@ second to check that the rendezvous can proceed(see case 2).
 <p>
 @author  Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 <p>
 @see ptolemy.domains.csp.kernel.ConditionalBranch
 */

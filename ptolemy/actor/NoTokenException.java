@@ -43,6 +43,7 @@ Receiver interface to determine if there is a token waiting.
 
 @author Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 @see Receiver
 */
 public class NoTokenException extends KernelRuntimeException {

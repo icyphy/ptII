@@ -75,6 +75,7 @@ NOTE: A reset input for this actor would be useful.  This would reset
 the iterations count, to cause the pulse to emerge again.
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class Pulse extends SequenceSource {

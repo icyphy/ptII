@@ -55,6 +55,7 @@ than simply removed. By default, the history capacity is zero.
 
 @author Edward A. Lee, Lukito Muliadi, Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.util.FIFOQueue
 */
 public class QueueReceiver extends AbstractReceiver {

@@ -72,6 +72,7 @@ normally invalidate the schedule when mutations occur.
 
 @author Jie Liu, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.sched.Schedule
 */
 

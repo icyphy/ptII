@@ -107,6 +107,7 @@ and getAuxVariables() methods.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see ODESolver
 @see CTDirector
 */

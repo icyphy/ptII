@@ -58,6 +58,7 @@ override the _checkContainer() method.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TypedIORelation extends IORelation {
 

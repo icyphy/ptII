@@ -48,6 +48,7 @@ A token that contains a Complex.
 @see ptolemy.math.Complex
 @author Yuhong Xiong, Neil Smyth, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class ComplexToken extends ScalarToken {
 

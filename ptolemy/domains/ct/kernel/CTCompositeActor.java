@@ -64,6 +64,7 @@ like this one that implement the CTStepSizeControlActor interface.
 
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see CTStepSizeControlActor
 @see CTTransparentDirector
 */

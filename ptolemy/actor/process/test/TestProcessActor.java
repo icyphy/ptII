@@ -43,6 +43,7 @@ return false in the postfire after the first invocation of fire method.
 
 @author Edward A. Lee, Mudit Goel
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TestProcessActor extends TestActor {
 

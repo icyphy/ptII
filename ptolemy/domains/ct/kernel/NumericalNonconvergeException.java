@@ -40,6 +40,7 @@ typically in the process of finding the fixed point solution of an
 algebraic equation. This is a RuntimeException.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class NumericalNonconvergeException extends InvalidStateException {
     /** Constructs an Exception with only a detail message.

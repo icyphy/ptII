@@ -123,6 +123,7 @@ dependents on individual directors.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.Director
 */
 public abstract class CTDirector extends StaticSchedulingDirector {

@@ -111,6 +111,7 @@ newRelation(), _addRelation(), and _addEntity().
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.IOPort
 @see ptolemy.actor.IORelation
 @see ptolemy.kernel.ComponentEntity

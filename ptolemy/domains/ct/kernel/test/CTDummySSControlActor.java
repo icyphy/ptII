@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 Dummy actor for step size control. SISO.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CTDummySSControlActor extends TypedAtomicActor
     implements CTStepSizeControlActor{

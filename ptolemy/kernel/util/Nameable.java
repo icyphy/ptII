@@ -47,6 +47,7 @@ the descriptions returned by the description() method.
 
 @author Christopher Hylands, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public interface Nameable {

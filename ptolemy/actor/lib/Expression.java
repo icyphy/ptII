@@ -111,6 +111,7 @@ removing a port that the expression depends on.
 
 @author Xiaojun Liu, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class Expression extends TypedAtomicActor {

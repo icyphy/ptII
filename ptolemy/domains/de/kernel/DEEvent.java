@@ -62,6 +62,7 @@ compareTo() method from the Comparable interface.
 <p>
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 @see DEReceiver
 @see ptolemy.actor.util.CalendarQueue
 @see DEDirector

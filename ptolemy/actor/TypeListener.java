@@ -42,6 +42,7 @@ changes by receiving instances of TypeEvent in the typeChanged() method.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 @see TypeEvent
 @see ptolemy.actor.TypedIOPort#addTypeListener
 @see ptolemy.actor.TypedIOPort#removeTypeListener

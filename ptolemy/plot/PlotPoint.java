@@ -40,6 +40,7 @@ import java.io.Serializable;
  * A simple structure for storing a plot point.
  * @author Edward A. Lee
  * @version $Id$
+ * @since Ptolemy II 0.2
  */
 public class PlotPoint implements Serializable {
 

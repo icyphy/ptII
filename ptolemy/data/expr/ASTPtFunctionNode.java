@@ -132,6 +132,7 @@ as described above.
 @author Neil Smyth and Edward A. Lee
 @author Zoltan Kemenczy, Research in Motion Limited
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token

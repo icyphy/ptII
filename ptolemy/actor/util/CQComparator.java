@@ -44,6 +44,7 @@ Thus, merely being able to compare entries is not sufficient.
 
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.util.CalendarQueue
 @see java.util.Comparator
 */

@@ -52,6 +52,7 @@ while this exception is used for passing of information to the threads.
 
 @author Neil Smyth, Mudit Goel
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TerminateProcessException extends RuntimeException {
 

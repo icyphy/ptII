@@ -41,6 +41,7 @@ import ptolemy.data.type.BaseType;
 For testing schedules.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CTDummySISOActor extends TypedAtomicActor{
     /** Constructor

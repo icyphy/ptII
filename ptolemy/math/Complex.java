@@ -57,6 +57,7 @@ and borrowed elements from each of them:
 </ul>
 @author Edward A. Lee, Jeff Tsay
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class Complex implements Cloneable, Serializable {
 

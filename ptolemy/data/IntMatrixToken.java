@@ -46,6 +46,7 @@ A token that contains a 2-D int matrix.
 
 @author Yuhong Xiong, Jeff Tsay
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class IntMatrixToken extends MatrixToken {
 

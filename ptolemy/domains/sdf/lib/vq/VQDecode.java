@@ -55,6 +55,7 @@ a table lookup into the codebook.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 // FIXME This should be generalized to a Table-lookup actor.
 public class VQDecode extends Transformer {

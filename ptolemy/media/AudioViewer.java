@@ -61,6 +61,7 @@ Display sound files.
 @see PlotApplication
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class AudioViewer extends PlotApplication {
 

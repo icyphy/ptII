@@ -43,6 +43,7 @@ Receiver interface to determine whether there is room for a token.
 
 @author Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 @see Receiver
 */
 public class NoRoomException extends KernelRuntimeException {

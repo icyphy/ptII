@@ -87,6 +87,7 @@ field is set once in the constructor and immutable afterwards.
 @see PlotBox
 @author Christopher Hylands and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class PlotFrame extends JFrame {
 

@@ -53,6 +53,7 @@ will respect them.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 public final class SDFIOPort extends TypedIOPort {
 

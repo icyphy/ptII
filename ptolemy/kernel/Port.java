@@ -66,6 +66,7 @@ the protected method _checkContainer().
 
 @author Mudit Goel, Edward A. Lee, Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see Entity
 @see Relation
 */

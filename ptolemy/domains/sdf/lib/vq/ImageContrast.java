@@ -47,6 +47,7 @@ pixel between 0 and 255.
 
 @author Michael Leung, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class ImageContrast extends Transformer {

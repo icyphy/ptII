@@ -41,6 +41,7 @@ This class constructs a system from the Ptolemy II design document, Figure 8,
 saves it to a file and then reloads it.
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TestSerializable {
 

@@ -66,6 +66,7 @@ children of each node before resolving the type of the current node.
 
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
 */

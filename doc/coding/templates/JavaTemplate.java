@@ -35,6 +35,7 @@ package MyPackageName;
 Description of the class
 @author yourname
 @version $Id$
+@since Ptolemy II 0.2
 @see classname
 @see full-classname
 */

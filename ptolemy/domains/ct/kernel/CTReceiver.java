@@ -48,6 +48,7 @@ method will return false, until a token is put into this receiver.
 
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CTReceiver extends Mailbox {
 

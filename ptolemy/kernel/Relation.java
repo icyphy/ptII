@@ -58,6 +58,7 @@ to throw an exception.
 
 @author Edward A. Lee, Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 @see Port
 @see Entity
 */

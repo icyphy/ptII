@@ -53,6 +53,7 @@ If no URL is given, then a sample plot is generated.
 
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 @see PlotBox
 @see Plot
  */

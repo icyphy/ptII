@@ -50,6 +50,7 @@ could be added if needed.
 
 @author John S. Davis II, Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class NameDuplicationException extends KernelException {
 

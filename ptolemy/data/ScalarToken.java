@@ -56,6 +56,7 @@ resulting token will be computed automatically.
 
 @author Yuhong Xiong, Mudit Goel
 @version $Id$
+@since Ptolemy II 0.2
 */
 public abstract class ScalarToken extends Token {
 

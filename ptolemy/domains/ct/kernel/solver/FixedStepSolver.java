@@ -45,6 +45,7 @@ all fixed-step-size solvers.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public abstract class FixedStepSolver extends ODESolver {
     /** Construct a solver in the default workspace with an empty

@@ -114,6 +114,7 @@ vol. 3, pp. 275-279, Nov. 1994. <br>
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class HTVQEncode extends Transformer {

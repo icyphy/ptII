@@ -17,6 +17,7 @@ package com.microstar.xml;
   * @author Copyright (c) 1997, 1998 by Microstar Software Ltd.
   * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
   * @version 1.1
+  * @since Ptolemy II 0.2
   * @see XmlParser
   * @see HandlerBase
   */

@@ -46,6 +46,7 @@ A token that contains a 2-D double matrix.
 
 @author Yuhong Xiong, Jeff Tsay, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class DoubleMatrixToken extends MatrixToken {
 

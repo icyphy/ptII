@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 Dummy actor that implement the CTDynamicActor interface. SISO.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CTDummyDynamicActor extends TypedAtomicActor
     implements CTDynamicActor{

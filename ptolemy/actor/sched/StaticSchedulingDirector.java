@@ -59,6 +59,7 @@ so that the schedule does not have to be recomputed.
 
 @author Jie Liu, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.Director
 @see Scheduler
 @see Schedule

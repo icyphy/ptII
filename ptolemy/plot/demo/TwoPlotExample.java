@@ -55,6 +55,7 @@ java -classpath ../../.. ptolemy.plot.demo.TwoPlotExample
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TwoPlotExample extends JFrame {
 

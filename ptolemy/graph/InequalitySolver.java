@@ -62,6 +62,7 @@ LUB or GLB of some elements does not exist, an Exception is thrown.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 // Note: To make it easier to reference the above paper, some of the

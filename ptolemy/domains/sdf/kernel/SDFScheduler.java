@@ -126,6 +126,7 @@ is somewhat conservative in this respect.
 
 @author Stephen Neuendorffer and Brian Vogel
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class SDFScheduler extends Scheduler {
     /** Construct a scheduler with no container(director)

@@ -41,6 +41,7 @@ import ptolemy.plot.*;
  *
  *  @author Edward A. Lee, Christopher Hylands
  *  @version $Id$
+ *  @since Ptolemy II 0.2
  */
 public class PlotLiveDemoApplet extends PlotLiveApplet {
 

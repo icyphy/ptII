@@ -62,6 +62,7 @@ types of the arguments.
 
 @author  Neil Smyth, Christopher Hylands, Bart Kienhuis, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class UtilityFunctions {
 

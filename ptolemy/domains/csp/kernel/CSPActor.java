@@ -106,6 +106,7 @@ import ptolemy.kernel.util.Workspace;
    <p>
 @author Neil Smyth, Bilung Lee
 @version $Id$
+@since Ptolemy II 0.2
 @see ConditionalBranch
 @see ConditionalReceive
 @see ConditionalSend

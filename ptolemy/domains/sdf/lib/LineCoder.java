@@ -52,6 +52,7 @@ A line coder, which converts a sequence of booleans into symbols.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class LineCoder extends SDFTransformer {

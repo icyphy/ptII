@@ -48,6 +48,7 @@ A token that contains a 2-D Complex matrix.
 @see ptolemy.math.Complex
 @author Yuhong Xiong, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class ComplexMatrixToken extends MatrixToken {
 

@@ -42,6 +42,7 @@ implementations of event generator are samplers, event detectors, etc.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public interface CTEventGenerator extends Actor{
 

@@ -121,6 +121,7 @@ the protected method _checkContainer().
 
 @authors Edward A. Lee, Jie Liu, Neil Smyth, Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class IOPort extends ComponentPort {
 

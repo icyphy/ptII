@@ -43,6 +43,7 @@ import ptolemy.data.type.BaseType;
 Dummy actor that implements the CTEventGenerator interface. SISO
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 
 */
 public class CTDummyEventGenerator extends TypedAtomicActor

@@ -58,6 +58,7 @@ mechanism and buttons remain live.
 
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
  */
 public abstract class PlotLive extends Plot implements Runnable {
 

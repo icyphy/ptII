@@ -159,6 +159,7 @@ The derived class Parameter is fully visible by default.
 
 @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 
 @see ptolemy.data.Token
 @see ptolemy.data.expr.PtParser

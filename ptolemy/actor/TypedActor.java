@@ -45,6 +45,7 @@ an actor.  The ports on a TypedActor are constrainted to be TypedIOPorts.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.TypedCompositeActor
 @see ptolemy.actor.TypedAtomicActor
 @see ptolemy.actor.TypedIOPort

@@ -58,6 +58,7 @@ input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class ImageDisplay extends Sink implements Placeable {

@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 Dummy actor for source actor. One output, no input.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CTDummySource extends TypedAtomicActor{
     /** Constructor

@@ -38,6 +38,7 @@ This class is used to test protected method(s) in CompositeEntity.java
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TestCompositeEntity extends CompositeEntity {
     public String uniqueEntityName() {

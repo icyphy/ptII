@@ -47,6 +47,7 @@ port does not belong to the entity.
 
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class IllegalActionException extends KernelException {
 

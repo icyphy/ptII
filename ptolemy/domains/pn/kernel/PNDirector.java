@@ -84,6 +84,7 @@ Currently this director does not properly deal with topology mutations.
 
 @author Mudit Goel
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class PNDirector extends BasePNDirector {
 

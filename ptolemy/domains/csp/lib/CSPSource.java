@@ -52,6 +52,7 @@ indefinitely. The default value of tokenLimit is -1.
 
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 
 */
 

@@ -38,6 +38,7 @@ E.g., attempt to remove a port by name and no such port exists.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class NoSuchItemException extends KernelException {
     /** Construct an exception with a detail message.

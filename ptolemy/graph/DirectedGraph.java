@@ -56,6 +56,7 @@ individual weights or arrays of weights.
 @author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya,
 Shahrooz Shahparnia
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class DirectedGraph extends Graph {
 

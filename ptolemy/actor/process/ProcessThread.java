@@ -72,6 +72,7 @@ is called at the end of the run() method, i.e. before the thread terminates.
 
 @author Mudit Goel, Neil Smyth, John S. Davis II
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class ProcessThread extends PtolemyThread {
 

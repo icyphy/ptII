@@ -100,6 +100,7 @@ which will result in faster execution.
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class Director extends Attribute implements Executable {
 

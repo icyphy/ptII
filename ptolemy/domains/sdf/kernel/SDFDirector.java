@@ -107,6 +107,7 @@ vectorizationFactor parameter is an IntToken with value one.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class SDFDirector extends StaticSchedulingDirector {
 

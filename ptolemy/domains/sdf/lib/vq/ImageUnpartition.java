@@ -48,6 +48,7 @@ will be placed in row-scanned order from top to bottom into the output image.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class ImageUnpartition extends Transformer {

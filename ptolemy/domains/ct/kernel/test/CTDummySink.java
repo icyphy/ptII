@@ -41,6 +41,7 @@ import ptolemy.data.type.BaseType;
 Dummy actor for sink. Multi-input, no output.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 
 */
 public class CTDummySink extends TypedAtomicActor{

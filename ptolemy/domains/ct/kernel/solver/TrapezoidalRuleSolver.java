@@ -62,6 +62,7 @@ to find x(t+h) and x'(t+h).
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TrapezoidalRuleSolver extends ODESolver {
 

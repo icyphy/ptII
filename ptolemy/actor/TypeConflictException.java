@@ -52,6 +52,7 @@ or contain terms with unacceptable value, such as BaseType.UNKNOWN.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TypeConflictException extends KernelException {
 

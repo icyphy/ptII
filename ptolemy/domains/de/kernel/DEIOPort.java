@@ -60,6 +60,7 @@ the base class, TypedIOPort, then the data they send is sent with zero delay.
 
 @authors Lukito Muliadi, Edward A. Lee, Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class DEIOPort extends TypedIOPort {
 

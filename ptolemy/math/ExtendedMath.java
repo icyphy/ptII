@@ -41,6 +41,7 @@ beyond those provided by the Java Math class.
 
 @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class ExtendedMath {
 

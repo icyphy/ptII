@@ -78,6 +78,7 @@ to a topology from multiple threads.  The workspace is immutable
 
 @author John S. Davis II, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.kernel.Port
 @see ptolemy.kernel.Relation
 */

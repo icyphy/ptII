@@ -70,6 +70,7 @@ are solely controlled by the director based on the initial
 step size parameter, ODE solvers, and predictable breakpoints.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public interface CTStepSizeControlActor extends Actor{
 

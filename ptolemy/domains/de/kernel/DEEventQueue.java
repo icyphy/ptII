@@ -49,6 +49,7 @@ a FIFO way.
 
 @author Lukito Muliadi, Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see DEReceiver
 @see ptolemy.actor.util.CalendarQueue
 @see DEDirector

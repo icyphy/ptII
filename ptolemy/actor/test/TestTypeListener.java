@@ -42,6 +42,7 @@ The call to getMessage() clears the message.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TestTypeListener implements TypeListener {
 

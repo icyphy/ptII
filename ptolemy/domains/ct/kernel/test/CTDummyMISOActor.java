@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 Description of the class
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CTDummyMISOActor extends TypedAtomicActor{
     /** Constructor

@@ -59,6 +59,7 @@ it is transparently doubled in size.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 public final class ArrayFIFOQueue implements Cloneable {
 

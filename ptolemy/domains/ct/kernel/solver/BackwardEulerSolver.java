@@ -63,6 +63,7 @@ step sizes when the fixed-point iteration does not converge.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class BackwardEulerSolver extends FixedStepSolver {
 

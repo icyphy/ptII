@@ -39,6 +39,7 @@ newPlot() to return a concrete instance of PlotLive.
 
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
  */
 public class PlotLiveApplet extends PlotApplet {
 

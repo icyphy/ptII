@@ -54,6 +54,7 @@ table. (as was mentioned in the previous paragraph)
 
 @author Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class PtolemyThread extends Thread {
 

@@ -50,6 +50,7 @@ of any token type that supports addition.
 
 @author Yuhong Xiong, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class Ramp extends SequenceSource {

@@ -53,6 +53,7 @@ toString() method returns the String "present".
 
 @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 
 */
 public class Token implements Serializable {

@@ -41,6 +41,7 @@ import ptolemy.data.type.BaseType;
 /**
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CTDummyStatefulActor extends TypedAtomicActor
     implements CTStatefulActor {

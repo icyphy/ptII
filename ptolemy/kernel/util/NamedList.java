@@ -64,6 +64,7 @@ is only used for error reporting.
 
 @author Mudit Goel, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 @see Nameable
 */
 public final class NamedList implements Cloneable, Serializable {

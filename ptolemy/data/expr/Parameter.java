@@ -55,6 +55,7 @@ by calling setVisibility().
 
 @author Neil Smyth, Edward A. Lee, Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.2
 
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token

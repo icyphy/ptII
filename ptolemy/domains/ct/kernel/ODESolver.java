@@ -76,6 +76,7 @@ They get these parameters from the director. So the same set of parameters
 are shared by all the solvers in a simulation.
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public abstract class ODESolver extends NamedObj {
 

@@ -42,6 +42,7 @@ A token that contains a 2-D boolean matrix.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class BooleanMatrixToken extends MatrixToken {
 

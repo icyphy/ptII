@@ -58,6 +58,7 @@ time and understands the meaning of step size.
 
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see CTMultiSolverDirector
 @see CTTransparentDirector
 */

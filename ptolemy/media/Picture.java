@@ -47,6 +47,7 @@ of the set methods, and call displayImage().
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class Picture extends Canvas {
 

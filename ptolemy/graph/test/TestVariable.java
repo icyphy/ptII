@@ -41,6 +41,7 @@ This term has name, which is used for printing test result.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class TestVariable implements InequalityTerm {

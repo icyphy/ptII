@@ -63,6 +63,7 @@ import ptolemy.kernel.util.InvalidStateException;
 
    @author Yuhong Xiong
    @version $Id$
+   @since Ptolemy II 0.2
 */
 
 // The methods greatestLowerBound, downSet, greatestElement share the

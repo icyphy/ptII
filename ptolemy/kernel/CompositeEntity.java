@@ -91,6 +91,7 @@ appropriate subclass.
 
 @author John S. Davis II, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CompositeEntity extends ComponentEntity {
 

@@ -101,6 +101,7 @@ please consult the Ptolemy II design document (or contact nsmyth@eecs)
 <p>
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 
 @see ptolemy.data.expr.ASTPtBitwiseNode
 @see ptolemy.data.expr.ASTPtFunctionNode

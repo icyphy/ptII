@@ -50,6 +50,7 @@ goToMarkedState() method is called after that, the marked states
 should be restored.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public interface CTStatefulActor extends Actor {
 

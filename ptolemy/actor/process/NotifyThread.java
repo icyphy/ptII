@@ -49,6 +49,7 @@ notifyAll on.
 <p>
 @author Neil Smyth, Mudit Goel
 @version $Id$
+@since Ptolemy II 0.2
 
 */
 

@@ -78,6 +78,7 @@ Otherwise, unpredictable behavior may result.
 
 @author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu, Shahrooz Shahparnia
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.graph.Edge
 @see ptolemy.graph.Node
 */

@@ -59,6 +59,7 @@ its standard output to a file.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class EPSGraphics extends Graphics {

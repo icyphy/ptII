@@ -112,6 +112,7 @@ we can predict in advance that no write access will be needed.
 
 @author Edward A. Lee, Mudit Goel, Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public final class Workspace implements Nameable, Serializable {

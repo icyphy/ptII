@@ -52,6 +52,7 @@ Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
 
 @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay, Elaine Cheong
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class SignalProcessing {
 

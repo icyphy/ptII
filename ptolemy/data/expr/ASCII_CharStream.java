@@ -37,6 +37,7 @@ contain only ASCII characters (without unicode processing).
 
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public final class ASCII_CharStream

@@ -68,6 +68,7 @@ concurrency.
 
 @author Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 @see DEActor
 */
 public abstract class DEThreadActor extends DEActor implements Runnable {

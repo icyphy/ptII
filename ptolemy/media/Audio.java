@@ -78,6 +78,7 @@ does not give any access to the audio data itself.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class Audio {

@@ -44,6 +44,7 @@ change listeners to notify them about the change.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 @see TypeListener
 */
 

@@ -49,6 +49,7 @@ been suspended.
 
 @author Steve Neuendorffer, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 @see Manager
 */
 

@@ -73,6 +73,7 @@ the local truncation error.
 
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class ExplicitRK23Solver extends ODESolver {
 

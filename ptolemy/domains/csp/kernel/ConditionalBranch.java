@@ -97,6 +97,7 @@ is assumed to be contained by the container of the port.
 <p>
 @author  Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public abstract class ConditionalBranch {

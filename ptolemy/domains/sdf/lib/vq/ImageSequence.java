@@ -72,6 +72,7 @@ for loading images.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class ImageSequence extends Source {
 

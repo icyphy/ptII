@@ -48,6 +48,7 @@ one of the strings will be changed.
 
 @author Edward A. Lee, Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class StringToken extends Token {
 

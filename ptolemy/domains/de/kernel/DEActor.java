@@ -53,6 +53,7 @@ DE domain.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.Actor
 */
 public abstract class DEActor extends TypedAtomicActor

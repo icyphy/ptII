@@ -44,6 +44,7 @@ Totally ordered set with no repeated elements (
 elements that the comparator returns 0).
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class TotallyOrderedSet {
     /** Construct the set with the given comparator. comparator is a blank

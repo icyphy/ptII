@@ -114,6 +114,7 @@ changes might not be compatible with the current listener mechanism.<p>
 
 @author Mudit Goel
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class BasePNDirector extends CompositeProcessDirector {
 

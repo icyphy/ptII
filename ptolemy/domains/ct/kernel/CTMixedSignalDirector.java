@@ -88,6 +88,7 @@ following two times, the fire end time and the first detected event time.
 
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Construct a director in the default workspace with an empty string

@@ -58,6 +58,7 @@ and has stability problem for some systems.
 
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class ForwardEulerSolver extends FixedStepSolver {
 

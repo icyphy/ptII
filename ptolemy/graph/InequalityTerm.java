@@ -46,6 +46,7 @@ of this interface.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 @see CPO
 */
 

@@ -47,6 +47,7 @@ This is a special case of the InvalidStateException such that a
 CompositeActor is not schedulable by a certain scheduler.
 @author Jie Liu, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.kernel.util.InvalidStateException
 */
 public class NotSchedulableException extends InvalidStateException {

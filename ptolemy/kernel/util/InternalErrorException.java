@@ -41,6 +41,7 @@ so that it does not have to be declared.
 
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class InternalErrorException extends KernelRuntimeException {
 

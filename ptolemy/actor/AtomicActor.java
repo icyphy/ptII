@@ -61,6 +61,7 @@ actor does nothing in the action methods (prefire, fire, ...).
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.CompositeActor
 @see ptolemy.actor.IOPort
 */

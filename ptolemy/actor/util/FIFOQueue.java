@@ -54,6 +54,7 @@ capacity is zero.
 
 @author Edward A. Lee, Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class FIFOQueue implements Cloneable {
 

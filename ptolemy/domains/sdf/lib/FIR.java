@@ -101,6 +101,7 @@ For more information about polyphase filters, see F. J. Harris,
 
 @author Edward A. Lee, Bart Kienhuis, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.data.Token
 */
 public class FIR extends SDFTransformer {

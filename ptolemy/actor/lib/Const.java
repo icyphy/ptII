@@ -46,6 +46,7 @@ is that of <i>value</i> parameter.
 
 @author Yuhong Xiong, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class Const extends Source {

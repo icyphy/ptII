@@ -37,6 +37,7 @@ package ptolemy.domains.ct.lib;
 Interface for actors that support inter-process communication.
 @author  Jie Liu, William Wu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public interface IPCInterface {
     /** Return the external tool process.

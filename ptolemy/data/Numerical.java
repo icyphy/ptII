@@ -39,6 +39,7 @@ type hierarchy.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 */
 public interface Numerical {
 }

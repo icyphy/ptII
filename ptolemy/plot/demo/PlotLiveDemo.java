@@ -44,6 +44,7 @@ import javax.swing.JFrame;
  *
  * @author Edward A. Lee
  * @version $Id$
+ * @since Ptolemy II 0.2
  */
 public class PlotLiveDemo extends PlotLive {
 

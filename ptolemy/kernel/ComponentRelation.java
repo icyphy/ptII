@@ -69,6 +69,7 @@ override the protected _checkContainer() method.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class ComponentRelation extends Relation {
 

@@ -60,6 +60,7 @@ and ConditionalReceive branches to know when they can proceed.
 <p>
 @author Neil Smyth, John S. Davis II
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {

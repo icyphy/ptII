@@ -103,6 +103,7 @@ description.
 
 @author Mudit Goel, Edward A. Lee, Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class NamedObj implements Nameable, Debuggable,

@@ -69,6 +69,7 @@ token into at least one of the receivers contained by the actor.
 
 @author Lukito Muliadi, Edward A. Lee, Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
  */
 public class DEReceiver extends AbstractReceiver {
 

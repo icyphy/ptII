@@ -51,6 +51,7 @@ method defaults to false.
 
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class CSPSink extends AtomicActor {
 

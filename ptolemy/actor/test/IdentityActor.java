@@ -43,6 +43,7 @@ with the name "input" and "output" respectively.
 
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class IdentityActor extends AtomicActor {
     /** Create a new actor in the specified container with the specified

@@ -42,6 +42,7 @@ functionality in AtomicActor and CompositeActor.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.CompositeActor
 @see ptolemy.actor.AtomicActor
 */

@@ -48,6 +48,7 @@ are row scanned from the top of input image.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class ImagePartition extends Transformer {

@@ -66,6 +66,7 @@ of the list.
 @author Geroncio Galicia
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.2
 */
 public final class CrossRefList implements Serializable  {
 

@@ -37,6 +37,7 @@ problems with the data to be plotted.
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.2
  */
 class PlotDataException extends Throwable {
     public PlotDataException() { super(); }

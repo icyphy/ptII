@@ -86,6 +86,7 @@ _checkContainer().
 
 @author Yuhong Xiong, Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 */
 
 public class TypedIOPort extends IOPort implements Typeable {

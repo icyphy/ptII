@@ -47,6 +47,7 @@ NOTE: This is a very primitive test.  It does not check very much.
 
 @author Edward A. Lee, Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.2
 
 */
 public class PtestWorkspace extends PtolemyThread {

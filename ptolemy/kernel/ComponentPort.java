@@ -91,6 +91,7 @@ ComponentEntity, they should override _checkContainer().
 
 @author Edward A. Lee, Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class ComponentPort extends Port {
 

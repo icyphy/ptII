@@ -107,6 +107,7 @@ deadlock that caused the changes to be carried out.
 <p>
 @author Neil Smyth, Mudit Goel, John S. Davis II
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.actor.Director
 */
 public class CSPDirector extends CompositeProcessDirector {

@@ -43,6 +43,7 @@ A token that contains a 2-D long matrix.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.2
 */
 public class LongMatrixToken extends MatrixToken {
 

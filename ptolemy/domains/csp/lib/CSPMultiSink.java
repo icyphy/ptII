@@ -54,6 +54,7 @@ at the start of each firing.
 
 @author Neil Smyth
 @version $Id$
+@since Ptolemy II 0.2
 @see ptolemy.domains.csp.kernel.CSPActor
 */
 public class CSPMultiSink extends CSPActor {

@@ -70,6 +70,7 @@ CompositeProcessDirector must be used.
 <P>
 @author Mudit Goel, Neil Smyth, John S. Davis II
 @version $Id$
+@since Ptolemy II 0.2
 @see Director
 */
 public class ProcessDirector extends Director {

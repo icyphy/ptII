@@ -56,6 +56,7 @@ than simply removed. By default, the history capacity is zero.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.2
 @see ArrayFIFOQueue
 */
 public class SDFReceiver extends AbstractReceiver {
