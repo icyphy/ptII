@@ -170,7 +170,9 @@ public class ComponentPort extends Port {
         }
     }
 
-    /** Deeply enumerate the ports linked on the inside to this port.
+    /** Deeply enumerate the ports connected on the inside to this port.
+     *  A port is connected on the inside to this port if it is connected
+     *  via a relation that linked on the inside to this port.
      *  If there are no such ports, then enumerate just this port.
      *  All ports enumerated are opaque, in that they have no
      *  inside links.  Note that the returned enumeration could
@@ -251,6 +253,8 @@ public class ComponentPort extends Port {
     }
 
     /** Enumerate the ports connected on the inside to this port.
+     *  A port is connected on the inside to this port if it is connected
+     *  via a relation that linked on the inside to this port.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
@@ -267,6 +271,8 @@ public class ComponentPort extends Port {
     }
 
     /** Enumerate the relations linked on the inside to this port.
+     *  A relation is linked on the inside if it is contained (directly
+     *  or indirectly) by the container of this port.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentRelation objects.
      */	
