@@ -57,7 +57,7 @@ C_FILES = \
 	testDeux.c \
 	testTrois.c
 
-H_FILES = $(JSRCS:%.c=%.h)
+H_FILES = $(C_FILES:%.c=%.h)
 
 OTHER_FILES_TO_BE_JARED = \
 	$(MODELS) \
