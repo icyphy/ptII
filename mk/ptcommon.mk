@@ -392,8 +392,8 @@ jsrestore:
 	if [ -d jsoriginal -a "$(JSRCS)" != "" ]; then \
 		echo "Running jsrestore in `pwd`"; \
 		$(JSRESTORE) $(JSRCS); \
-		-rm -f jsoriginal/README; \
-		-rmdir jsoriginal; \
+		rm -f jsoriginal/README; \
+		rmdir jsoriginal; \
 		$(MAKE) clean; \
 	else \
 		echo "no jsoriginal directory, or no java sources"; \
