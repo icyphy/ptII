@@ -51,9 +51,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
+# We don't include Corba/Corba.jar because we don't ship Corba.
 PTCLASSALLJARS = \
 	BouncingBall/BouncingBall.jar \
-	Corba/Corba.jar \
 	Helicopter/Helicopter.jar \
 	Lorenz/Lorenz.jar \
 	SigmaDelta/SigmaDelta.jar \
