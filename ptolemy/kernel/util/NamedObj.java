@@ -42,7 +42,6 @@ a descriptor.
   this work fall within the scope of 17 U.S.C. A7 105. <P>
 
 @version $Id$
-@version @(#)JavaTemplate.java	1.6	02/14/97
 @see classname
 @see full-classname */
 public abstract class NamedObj {
@@ -52,7 +51,7 @@ public abstract class NamedObj {
      * @exception full-classname description
      */	
     public NamedObj() {
-        this(null, null, null);
+        this("", null, "");
     }
 
     /** Constructor with 3 arguments - Set the name, parent, 
@@ -82,15 +81,6 @@ public abstract class NamedObj {
         return nm;
     }
 
-    /** Get the name of the object (calls method getName)
-     * @see full-classname/method-name
-     * @return The object name
-     * @exception full-classname description
-     */	
-    public String name() {
-        return getName();
-    }
-
     /** Get the descriptor
      * @see full-classname/method-name
      * @return The descriptor
@@ -100,15 +90,6 @@ public abstract class NamedObj {
         return dscrptr;
     }
 
-    /** Get the descriptor (calls method getDescriptor)
-     * @see full-classname/method-name
-     * @return The descriptor
-     * @exception full-classname description
-     */	
-    public String descriptor() {
-        return getDescriptor();
-    }
-
     /** Get the parent block
      * @see full-classname/method-name
      * @return The parent block
@@ -116,15 +97,6 @@ public abstract class NamedObj {
      */	
     public Block getParent() {
         return prnt;
-    }
-
-    /** Get the parent block (calls method getParent)
-     * @see full-classname/method-name
-     * @return The parent block
-     * @exception full-classname description
-     */	
-    public Block parent() {
-        return getParent();
     }
 
     /** Specify the specific instance's place in the
@@ -142,16 +114,6 @@ public abstract class NamedObj {
      * @exception full-classname description 
      */
     abstract public String getFullName();
-
-    /**  Specify the specific instance's place in the
-     * universe-galaxy-star hierarchy (calls method getFullName). 
-     * @see full-classname/method-name
-     * @return The full object name
-     * @exception full-classname description 
-     */
-    public String fullName() {
-        return getFullName();
-    }
 
     /** Set the object name
      * @see full-classname/method-name
