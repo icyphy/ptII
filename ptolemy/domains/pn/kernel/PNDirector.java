@@ -57,8 +57,9 @@ public class PNDirector extends Director {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Creates a thread for each PN star and handles deadlocks and terminates
-     * @exception IllegalActionException is thrown by submethods 
+    /** Creates a thread for each new PN actor, initializes the actors and starts
+     *  the threads corresponding to each new actor.
+     * @returns true
      */
     public boolean prefire() { //throws IllegalActionException {        
         synchronized(workspace()) {
@@ -85,6 +86,11 @@ public class PNDirector extends Director {
         }
     }
 
+    /** This handles deadlocks in the PN systems and sets the complete flag
+     *  to true or false depending on whether it detected a real deadlock or
+     *  a mutation respectively
+     * @exception IllegalActionException should not be thrown.
+     */
     public void fire() throws IllegalActionException {
         setComplete(_handleDeadlock());
         if (_debug > 5) System.out.println(
@@ -92,11 +98,15 @@ public class PNDirector extends Director {
         return;
     }
     
+    /** Does nothing for PN */
     public void postfire() {
         //_terminateAll();
         return;
     }
 
+    /** returns the threadGroup in which all the threads corresponding to 
+     *  PN actors are started.
+     */
     public ThreadGroup getProcessGroup() {
         return _processGroup;
     }
@@ -110,6 +120,7 @@ public class PNDirector extends Director {
     }
     
     /** Increments the no of queues blocked on read. Also checks for deadlocks 
+     * @param recep is the receptionist/queue that is blocking on a read
      */
     public void readBlock(Receptionist recep) {
         synchronized(workspace()) {
@@ -122,6 +133,7 @@ public class PNDirector extends Director {
     }
  
     /** Decreases the number of queues blocked on a read
+     * @param recep is the receptionist/queue being unblocked on a read
      */
     public void readUnblock(Receptionist recep) {
         synchronized(workspace()) {
@@ -132,7 +144,9 @@ public class PNDirector extends Director {
         }
     }
 
-    /** This is obsolete. Should go. Please donot use it anymore. */
+    /** This is obsolete. Should go. Please donot use it anymore. 
+     * @param mutate true to indicate mutation
+     */
     public void setMutate(boolean mutate) {
         synchronized(workspace()) {
             _mutate = mutate;
@@ -151,7 +165,18 @@ public class PNDirector extends Director {
             workspace().notifyAll();
         }
     }
+
+    /** This should go. Currently this notifies the director to process new actors
+     */
+    public void startNewActors() {
+        synchronized(workspace()) {
+            workspace().notifyAll();
+            return;
+        }
+    }
     
+    /** This terminates all the actors in the corresponding CompositeActor
+     */
     public void wrapup() {
         _terminateAll();
         return;
@@ -162,9 +187,7 @@ public class PNDirector extends Director {
      * @param latest input port that blocked the corresponding output star
      *  on a write.
      */
-    public void writeBlock(Receptionist recep) 
-	    throws IllegalActionException {
-        //The exception should never be thrown!!
+    public void writeBlock(Receptionist recep) {
         synchronized(workspace()) {
             _writeBlockCount++;
 	    _writeblockedQs.insertFirst(recep);
@@ -176,18 +199,12 @@ public class PNDirector extends Director {
 
     /** If the stars can be blocked on a write, then unblock it and 
      *  decrement the number of stars blocked on write.
+     * @param recep is the receptionist/queue being unblocked
      */
     public void writeUnblock(Receptionist recep) {
         synchronized(workspace()) {
             _writeBlockCount--;
 	    _writeblockedQs.removeOneOf(recep);
-            return;
-        }
-    }
-
-    public void startNewActors() {
-        synchronized(workspace()) {
-            workspace().notifyAll();
             return;
         }
     }
@@ -380,5 +397,85 @@ public class PNDirector extends Director {
     private LinkedList _writeblockedQs = new LinkedList();
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
