@@ -42,7 +42,8 @@ import ptolemy.kernel.util.NamedObj;
    This class defines the structure of events in Ptolemy II DE domain.
    Conceptually, an event in the Ptolemy II DE domain contains
    a token and a tag.  In addition, the event has a destination,
-   which is an actor and possibly a receiver (for non-pure events).
+   which is an actor (for pure events) and possibly a receiver (for non-pure 
+   events).
    A pure event has no destination receiver and no token, so methods
    for accessing those return null.
    The tag consists of a time stamp, a microstep, and a depth.
@@ -82,15 +83,14 @@ public final class DEEvent implements Comparable {
     public DEEvent(Receiver receiver, Token token, Time timeStamp,
             int microstep, int depth) {
         _receiver = receiver;
-        // FIXME: should we check whether the receiver is null?
-        // When the receiver is null, it is actually a Pure Event.
-        // We should use another constructor.
         if (receiver!= null) {
             _ioPort = (IOPort) receiver.getContainer();
             _actor = (Actor) _ioPort.getContainer();
         } else {
-            _ioPort = null;
-            _actor = null;
+            // When the receiver is null, it may be a Pure Event.
+            // We should use another constructor.
+            throw new NullPointerException("Can not construct a non-pure " +
+                    "event with a null receiver.");
         }
         _token = token;
         _timeStamp = timeStamp;
@@ -113,7 +113,8 @@ public final class DEEvent implements Comparable {
         _receiverDepth = depth;
     }
     
-    /** Return the destination actor for this event.
+    /** Return the destination actor for this event. 
+     *  NOTE: The destination actor can not be null.
      *  @return The destination actor.
      */
     public final Actor actor() {
@@ -173,6 +174,7 @@ public final class DEEvent implements Comparable {
 
     /** Return true if this event has the same tag with the specified one.  
      *  @param event The event to compare against.
+     *  @return Ture if this event has the same tag with the specified one.
      */
     public final boolean hasTheSameTagAs(DEEvent event) {
         return (_timeStamp.equals(event._timeStamp)) &&
@@ -182,6 +184,8 @@ public final class DEEvent implements Comparable {
     /** Return true if this event has the same tag with the specified one,
      *  and their depths are the same.
      *  @param event The event to compare against.
+     *  @return True if this event has the same tag with the specified one,
+     *  and their depths are the same.
      */
     public final boolean hasTheSameTagAndDepthAs(DEEvent event) {
         return hasTheSameTagAs(event) &&
@@ -189,21 +193,22 @@ public final class DEEvent implements Comparable {
     }
 
     /** Return the ioPort of the destination actor for this event.
+     *  NOTE: For pure events, the destination ioPort can be null.
      *  @return The destination ioPort.
      */
     public final IOPort ioPort() {
         return _ioPort;
     }
 
-    /** Compare the tag of this event with the specified and return true
-     *  if they are equal and false otherwise.  This is provided along
-     *  with compareTo() because it is slightly faster when all you need
-     *  to know is whether the events are simultaneous.
+    /** Return true if this event is simultaneous with the given event.
+     *  This method is a little bit different from the 
+     *  {@link #hasTheSameTagAndDepthAs(DEEvent)} method where this method 
+     *  always returns true if either event is a pure event.  
      *  @param event The event to compare against.
+     *  @return True if this event is simultaneous with the given event.
      */
     public final boolean isSimultaneousWith(DEEvent event) {
-        return ( _timeStamp == event._timeStamp) &&
-            ( _microstep == event._microstep) &&
+        return hasTheSameTagAs(event) &&
             // simultaneous token events or pure events
             ( _receiverDepth == event._receiverDepth ||
                 _receiver == null || event.receiver() == null);
@@ -216,8 +221,8 @@ public final class DEEvent implements Comparable {
         return _microstep;
     }
 
-    /** Return the destination receiver of this event. If the event is pure,
-     *  then return null.
+    /** Return the destination receiver of this event.
+     *  NOTE: For pure events, the destination receiver can be null.
      *  @return The destination receiver
      */
     public final Receiver receiver() {
