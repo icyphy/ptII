@@ -78,7 +78,9 @@ OPTIONAL_FILES = \
 	compat2 \
 	compatDemo2 \
 	compat3 \
-	compatDemo3
+	compatDemo3 \
+	compat4 \
+	compatDemo4
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
@@ -317,7 +319,7 @@ compatDemo4:
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass compat compatDemo compat2 compatDemo2 compat3 compatDemo3 compat4 compat4Demo $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass compat compatDemo compat2 compatDemo2 compat3 compatDemo3 compat4 compatDemo4 $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl 
 
 # Run vergil on each of the demos in compatDemo
