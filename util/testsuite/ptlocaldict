@@ -165,6 +165,7 @@ Scriptics
 Shang
 Shankar
 Shilman
+Sinegen
 Simulink
 Sinopoli
 Smyth
@@ -256,9 +257,11 @@ dequeue
 developer.netscape.com
 dfm
 doc
+docs
 doctoc
 downsampled
 downsampling
+dtd
 eal
 edu
 eecs
@@ -273,6 +276,7 @@ gigascale
 gigasource
 gigavault
 gsrc
+gui
 gz
 gzcat
 gzipped
@@ -328,6 +332,7 @@ mikele
 mkdir
 mkgroup
 mkpasswd
+moml
 msdn
 mudit
 namespace
@@ -398,5 +403,6 @@ website
 workaround
 www
 www.scriptics.com
+xml
 xraylith
 yuhong
