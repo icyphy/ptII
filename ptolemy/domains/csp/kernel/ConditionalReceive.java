@@ -132,7 +132,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         _init(port, channel);
     }
 
-    /** Create a guarded communication with a get() communication.
+    /** Create a guarded communication with a get() communication. This
+     *  constructor allows actors which are not CSPActors access to
+     *  CSP functionality by providing their own ConditionalBranchController.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
      *  @param port The IOPort containing the channel (and thus receiver)
@@ -141,6 +143,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *   trying to rendezvous with.
      *  @param branch The identification number assigned to this branch
      *   upon creation by the CSPActor.
+     *  @param cbc The ConditionalBranchController that this branch uses.
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
@@ -202,7 +205,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         } catch (TerminateProcessException ex) {
             getController()._branchFailed(getID());
         } finally {
-            getReceiver()._setConditionalReceive(false, null);
+            getReceiver()._setConditionalReceive(false, null, -1);
         }
     }
 
@@ -227,12 +230,17 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
     protected boolean _arriveAfterConditionalSend(CSPReceiver receiver,
             ConditionalBranchController controller)
             throws InterruptedException {
+        System.out.println(Thread.currentThread().getName() + ":\n"
+                    + "isfirst: " + controller._isBranchFirst(getID()) + "\n"
+                    + "isputwaiting: " + receiver._isPutWaiting()
+                    + "isothersidefirst: "
+                    + receiver._getOtherController()._isBranchFirst(receiver.getOtherID()));
         if (controller._isBranchFirst(getID())) {
             // receive side ok, need to check that send
             // side also ok
-            if (receiver._getOtherController()._isBranchFirst(getID())) {
+            if (receiver._getOtherController()._isBranchFirst(receiver.getOtherID())) {
                 setToken( receiver.get() );
-                receiver._setConditionalSend(false, null);
+                receiver._setConditionalSend(false, null, -1);
                 controller._branchSucceeded(getID());
                 return false;
             } else {
@@ -285,27 +293,34 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
     protected void _arriveFirst(CSPReceiver receiver,
             ConditionalBranchController controller)
             throws InterruptedException {
-        receiver._setConditionalReceive(true, controller);
+        receiver._setConditionalReceive(true, controller, getID());
         getController()._branchBlocked(this.getReceiver());
         getReceiver()._checkFlagsAndWait();
         getController()._branchUnblocked(this.getReceiver());
         while (true) {
+            System.out.println(Thread.currentThread().getName() + ":\n"
+                    + "isalive:" + isAlive() + "\n"
+                    + "isfirst: " + controller._isBranchFirst(getID()) + "\n"
+                    + "isputwaiting: " + receiver._isPutWaiting());
             if (!isAlive()) {
                 // reset state of receiver
-                receiver._setConditionalReceive(false, null);
+                receiver._setConditionalReceive(false, null, -1);
                 controller._branchFailed(getID());
                 // wakes up a put if it is waiting
                 receiver.notifyAll();
                 return;
-            } else if (receiver._isPutWaiting()) {
-                if (controller._isBranchFirst(getID())) {
+            } else if (controller._isBranchFirst(getID())) {
+                if (receiver._isPutWaiting()) {
                     // I am the branch that succeeds
                     // Note that need to reset ConditionalSend
                     // flag BEFORE doing put.
-                    receiver._setConditionalReceive(false, null);
+                    receiver._setConditionalReceive(false, null, -1);
                     setToken( receiver.get() );
                     controller._branchSucceeded(getID());
                     return;
+                } else {
+                    controller._releaseFirst(getID());
+                    receiver.notifyAll();
                 }
             }
             //can't rendezvous this time, but still alive

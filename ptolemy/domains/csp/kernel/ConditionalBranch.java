@@ -128,6 +128,25 @@ public abstract class ConditionalBranch {
             ((ConditionalBranchActor)tmp).getConditionalBranchController();
     }
 
+    /** Create a guarded communication statement. This class contains
+     *  all of the information necessary to carry out a guarded
+     *  communication statement, with the exception of the type of
+     *  communication. The receiver is set in the subclass as it
+     *  is subject to communication specific tests.
+     *
+     *  This constructor allows actors which do not implement the
+     *  ConditionalBranchActor interface access to CSP functionality
+     *  by passing their own ConditionalBranchController.
+     *  @param guard The guard for the guarded communication statement
+     *   represented by this object.
+     *  @param port The IOPort that contains the channel to
+     *   try an communicate through.
+     *  @param branchID The identification number assigned to this branch
+     *   upon creation by the CSPActor.
+     *  @param cbc The ConditionalBranchController associated with this branch.
+     *  @exception IllegalActionException If the actor that contains
+     *   the port is not of type CSPActor.
+     */
     public ConditionalBranch(boolean guard, IOPort port, int branchID, ConditionalBranchController cbc)
             throws IllegalActionException {
         _branchID = branchID;
@@ -203,7 +222,7 @@ public abstract class ConditionalBranch {
 
     /** Set the CSPReceiver this branch is trying to rendezvous with.
      *  This method should only be called from derived classes.
-     *  @param receiver The CSPReceiver this branch is trying to rendezvous
+     *  @param rec The CSPReceiver this branch is trying to rendezvous
      *  with.
      */
     void setReceiver(CSPReceiver rec) {

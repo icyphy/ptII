@@ -137,7 +137,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 }
 
                 _checkFlags();
-                prepareToBlock(branch);
+                markBlocked(branch);
                 // _getDirector()._actorBlocked(this);
                 blocked = true;
                 while (_isGetWaiting()) {
@@ -149,7 +149,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // lead to a deadlock false alarm. This should
                 // be done as soon as setGetWaiting(false) is
                 // called.
-                wakeUpBlockedPartner();
+                markUnblocked();
                 // _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 tmp = _token;
@@ -163,7 +163,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, woken up and terminated.
                 // register process as being unblocked
-                wakeUpBlockedPartner();
+                markUnblocked();
                 // _getDirector()._actorUnBlocked(this);
             }
         }
@@ -324,20 +324,29 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         return _writeBlocked;
     }
 
-    /**
+    /** If this receiver is involved in a branch, then mark the receiver
+     *  blocked; otherwise mark the actor blocked.
      */
-    public synchronized void prepareToBlock(Branch branch) {
+    public synchronized void markBlocked(Branch branch) {
         if ( branch != null ) {
             branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
-            /*
-              CSPDirector director = ((CSPDirector)((Actor)
-              (getContainer().getContainer())).getDirector());
-            */
             _getDirector()._actorBlocked(this);
             _otherBranch = branch;
         }
+    }
+
+    /** If this receiver is involved in a branch, then mark the receiver
+     *  unblocked; otherwise mark the actor unblocked.
+     */
+    public synchronized void markUnblocked() {
+        if ( _otherBranch != null ) {
+            _otherBranch.registerReceiverUnBlocked(this);
+        } else {
+            _getDirector()._actorUnBlocked(this);
+        }
+        notifyAll();
     }
 
     /** Put a token into the mailbox receiver and specify a null
@@ -394,7 +403,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 }
 
                 _checkFlags();
-                prepareToBlock(branch);
+                markBlocked(branch);
                 // _getDirector()._actorBlocked(this);
                 blocked = true;
                 while (_isPutWaiting()) {
@@ -406,7 +415,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // lead to a deadlock false alarm. This should
                 // be done as soon as setGetWaiting(false) is
                 // called.
-                wakeUpBlockedPartner();
+                markUnblocked();
                 // _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 _setRendezvousComplete(true);
@@ -420,7 +429,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, awakened and terminated.
                 // register process as being unblocked
-                wakeUpBlockedPartner();
+                markUnblocked();
                 // _getDirector()._actorUnBlocked(this);
             }
         }
@@ -433,8 +442,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     public synchronized void requestFinish() {
         _modelFinished = true;
         // Need to reset the state of the receiver.
-        _setConditionalReceive(false, null);
-        _setConditionalSend(false, null);
+        _setConditionalReceive(false, null, -1);
+        _setConditionalSend(false, null, -1);
         _setPutWaiting(false);
         _setGetWaiting(false);
         _setRendezvousComplete(false);
@@ -452,21 +461,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         _boundaryDetector.reset();
     }
 
-    /**
-     */
-    public synchronized void wakeUpBlockedPartner() {
-        if ( _otherBranch != null ) {
-            _otherBranch.registerReceiverUnBlocked(this);
-        } else {
-            /*
-              CSPDirector director = ((CSPDirector)((Actor)
-              (getContainer().getContainer())).getDirector());
-            */
-            _getDirector()._actorUnBlocked(this);
-
-        }
-        notifyAll();
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -508,6 +502,12 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     protected ConditionalBranchController _getOtherController() {
         return _otherController;
     }
+
+
+    protected int getOtherID() {
+        return _otherID;
+    }
+
 
     /** Flag indicating whether or not a ConditionalReceive is trying
      *  to rendezvous with this receiver.
@@ -552,11 +552,14 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   receiver so that if a ConditionalReceive arrives, it can easily
      *   check whether the ConditionalSend branch was the first
      *   branch of its conditional construct(CIF or CDO) to succeed.
+     *  @param otherID The branch ID of the branch requesting the
+     *   conditional send.
      */
     protected synchronized void _setConditionalSend(boolean v,
-            ConditionalBranchController p) {
+            ConditionalBranchController p, int otherID) {
         _conditionalSendWaiting = v;
         _otherController = p;
+        _otherID = otherID;
     }
 
     /** Set a flag so that a ConditionalSend branch knows whether or
@@ -568,11 +571,14 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   receiver so that if a ConditionalSend arrives, it can easily
      *   check whether the ConditionalReceive branch was the first
      *   branch of its conditional construct(CIF or CDO) to succeed.
+     *  @param otherID The branch ID of the branch requesting the
+     *   conditional receive.
      */
     protected synchronized void _setConditionalReceive(boolean v,
-            ConditionalBranchController p) {
+            ConditionalBranchController p, int otherID) {
         _conditionalReceiveWaiting = v;
         _otherController = p;
+        _otherID = otherID;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -669,6 +675,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     // obsolete when implement containment
     private ConditionalBranchController _otherController = null;
+
+    private int _otherID = -1;
 
     // Flag indicating whether or not a conditional receive is waiting
     // to rendezvous.
