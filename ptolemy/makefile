@@ -95,7 +95,7 @@ MISC_FILES = util kernel plot graph moml data actor gui math media	\
 	$(PTCOPERNICUS_DIR) \
 	$(PTMATLAB_DIR)	domains vergil configs
 
-OPTIONAL_FILES = apps hsif jni matlab
+OPTIONAL_FILES = apps cal hsif matlab
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
