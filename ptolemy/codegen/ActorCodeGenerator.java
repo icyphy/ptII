@@ -104,9 +104,11 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         Class actorClass = actor.getClass();
 
-        File sourceFile = SearchPath.NAMED_PATH.openSource(actorClass.getName());
-
-        if (sourceFile == null) {
+        File sourceFile; 
+        try {
+            sourceFile =
+                SearchPath.NAMED_PATH.openSource(actorClass.getName());
+        } catch (IOException e) {
             throw new RuntimeException("source code not found for " +
                     "actor " + actor);
         }
@@ -171,12 +173,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
      *  conversion of Ptolemy semantics to Extended Java.
      */
     public void pass2(String sourceName, ActorCodeGeneratorInfo actorInfo) {
-
-        File sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
-
-        if (sourceFile == null) {
-            throw new RuntimeException("regenerated source code not found for " +
-                    "entity " + actorInfo.actor + " in source file " + sourceName);
+        File sourceFile;
+        try {
+            sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
+        } catch (IOException e) {
+            throw new RuntimeException("regenerated source code not found " +
+                    "for entity " + actorInfo.actor + 
+                    " in source file " + sourceName);
         }
 
         String filename = sourceFile.toString();
@@ -227,11 +230,12 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
      */
     public void pass3(String sourceName) {
 
-        File sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
-
-        if (sourceFile == null) {
-            throw new RuntimeException("regenerated source code not found for " +
-                    "source file " + sourceName);
+        File sourceFile;
+        try {
+            sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
+        } catch (IOException e) {
+            throw new RuntimeException("pass3 failed to open source for " +
+                    sourceName + ": " + e);
         }
 
         String filename = sourceFile.toString();
@@ -294,7 +298,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 	    System.out.println("ActorCodeGenerator.pass3(): " + 
 			       "openSource(" +className +")");
 
-	    File file = SearchPath.NAMED_PATH.openSource(className);
+            File file;
+            try {
+                file = SearchPath.NAMED_PATH.openSource(className);
+            } catch (IOException e) {
+                throw new RuntimeException("pass3 failed to open source for " +
+                        className + ": " + e);
+            }
 
 
 	    // Don't use reflection here, we want to read the file back in,
@@ -444,7 +454,14 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                 fileName = superDecl.fullName(File.separatorChar);
 
                 // assume we are using the named package
-                File file = SearchPath.NAMED_PATH.openSource(fileName);
+                File file;
+                try {
+                    file = SearchPath.NAMED_PATH.openSource(fileName);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to open source for " +
+                            fileName + ": " + e);
+                }
+
 
                 unitNode =
                     (CompileUnitNode) StaticResolution.loadFile(file,
