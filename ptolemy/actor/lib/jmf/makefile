@@ -54,6 +54,7 @@ JSRCS = \
 	ColorFinder.java \
 	JMFImageToken.java \
 	MovieReader.java \
+	MovieWriter.java \
 	PlaySound.java \
 	StreamLoader.java \
 	VideoCamera.java \

@@ -15,7 +15,20 @@
 
 	<entity name="MovieReader" class="ptolemy.actor.lib.jmf.MovieReader">
 	</entity>	
-	
+
+	<entity name="MovieWriter" class="ptolemy.actor.lib.jmf.MovieWriter">
+	<property name="fileType">
+	  <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="AVI" value="AVI"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="MPEG" value="MPEG"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="QUICKTIME" value="QUICKTIME"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>
+	      </property>  
+	</entity>	
+
 	<entity name="PlaySound" class="ptolemy.actor.lib.jmf.PlaySound">
 	</entity>	
 	
@@ -23,7 +36,7 @@
 	</entity>
 
 	<entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
-	  	  <property name="formatName">
+	<property name="formatName">
 	  <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
 	          <property name="RGB" value="RGB"
 	      	            class="ptolemy.kernel.util.StringAttribute"/>
