@@ -1,6 +1,6 @@
 /* A weighted edge for a directed or undirected graph.
 
- Copyright (c) 2001 The University of Maryland  
+ Copyright (c) 2001 The University of Maryland
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,7 +44,7 @@ are allowed.
 <p>An arbitrary object can be associated with an edge as the "weight"
 of the edge.
 
-@author Shuvra S. Bhattacharyya 
+@author Shuvra S. Bhattacharyya
 @version $Id$
 @see ptolemy.graph.Node
 */
@@ -68,13 +68,13 @@ public class Edge {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the sink node of the edge 
-     *  @return the sink node. 
+    /** Return the sink node of the edge
+     *  @return the sink node.
      */
     public Node sink() {return _sink;}
-    
-    /** Return the source node of the edge 
-     *  @return the source node. 
+
+    /** Return the source node of the edge
+     *  @return the source node.
      */
     public Node source() {return _source;}
 
@@ -87,8 +87,8 @@ public class Edge {
      *  method argument is <em>false</em>.
      *  @param showWeight include a string representation of the edge
      *  weight in the edge's string representation.
-     *  @return the edge's string representation. 
-     */  
+     *  @return the edge's string representation.
+     */
     public String toString(boolean showWeight) {
         String result = new String("(" + _source + ", " + _sink);
         if (showWeight) {
@@ -100,23 +100,23 @@ public class Edge {
         return result;
     }
 
-    /** Return a string representation of the edge. Include information 
+    /** Return a string representation of the edge. Include information
      *  about the edge weight.
      *  @see #toString(boolean)
-     */ 
+     */
     public String toString() {
         return toString(true);
     }
 
-    /** Return the weight of the edge 
-     *  @return the edge weight. 
+    /** Return the weight of the edge
+     *  @return the edge weight.
      */
     public Object weight() {return _weight;}
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
-   
-    // The sink node of the edge. 
+
+    // The sink node of the edge.
     private Node _sink;
 
     // The source node of the edge.

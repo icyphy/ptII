@@ -35,7 +35,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// Graph 
+//// Graph
 /**
 A basic weighted graph.
 
@@ -145,11 +145,11 @@ public class Graph {
             throw new IllegalArgumentException("Graph.add: Object is " +
                     "already in the graph.");
         }
-        Node node = new Node(o); 
+        Node node = new Node(o);
         _nodes.add(node);
 
         // Add the node to the node table with key equal to the node weight.
-        _nodeTable.put(o, node);   
+        _nodeTable.put(o, node);
 
         _recomputeIdentifiers = true;
     }
@@ -187,7 +187,7 @@ public class Graph {
         Edge edge = new Edge(getNode(o1), getNode(o2), new Object());
         _edges.add(edge);
     }
-    
+
     /** Add a weighted edge between two nodes.  An arbitrary Object
      *  can be assigned as the edge weight. If the edge is
      *  subsequently operated on as a directed edge, its orientation
@@ -268,7 +268,7 @@ public class Graph {
     public Iterator getEdgeIterator() {
         return _edges.iterator();
     }
-     
+
     /** Return all the edges in this graph in the form of a 2-D Object
      *  array. Each row of the array represents an edge, corresponding
      *  to a successful <code>addEdge</code> call, but the order of
@@ -311,15 +311,15 @@ public class Graph {
      */
     public final Node getNode(Object o) {
         Object associatedObject = _nodeTable.get(o);
-        if (associatedObject == null) 
+        if (associatedObject == null)
             throw new IllegalArgumentException("Graph.getNode(): " +
                     "the weight \"" + o.toString() +
                     "\" is not associated with a node in this graph.");
         else if (!(associatedObject instanceof Node))
             throw new IllegalArgumentException("Graph.getNode: " +
                     "the weight \"" + o.toString() +
-                    "\" maps to an object of type " + 
-                    associatedObject.getClass().getName() + 
+                    "\" maps to an object of type " +
+                    associatedObject.getClass().getName() +
                     "\n(it should map to a Node)");
         else return (Node)associatedObject;
     }
@@ -338,7 +338,7 @@ public class Graph {
     public Iterator getNodeIterator() {
         return _nodes.iterator();
     }
-     
+
     /** Return all the node weights in this graph in the form of an
      *  Objects array.  The Objects are the ones passed in successful
      *  <code>add</code> calls.
@@ -350,7 +350,7 @@ public class Graph {
         Object[] nodeWeights = new Object[_nodes.size()];
         Iterator nodes = _nodes.iterator();
         while (nodes.hasNext()) {
-            nodeWeights[count++] = ((Node)(nodes.next())).weight(); 
+            nodeWeights[count++] = ((Node)(nodes.next())).weight();
         }
         return nodeWeights;
     }
@@ -373,7 +373,7 @@ public class Graph {
            if (node.outputEdgeCount() == 0) sinkList.add(node);
        }
        Node[] sinks = new Node[sinkList.size()];
-       return (Node[]) (sinkList.toArray(sinks)); 
+       return (Node[]) (sinkList.toArray(sinks));
     }
 
     /** Return the source nodes of this graph. A node is a source node
@@ -395,7 +395,7 @@ public class Graph {
            if (node.inputEdgeCount() == 0) sourceList.add(node);
        }
        Node[] sources = new Node[sourceList.size()];
-       return (Node[]) (sourceList.toArray(sources)); 
+       return (Node[]) (sourceList.toArray(sources));
     }
 
     /** Remove an edge from the graph.
@@ -443,8 +443,8 @@ public class Graph {
             }
         }
         _recomputeIdentifiers = true;
-    } 
-    
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -485,7 +485,7 @@ public class Graph {
         return (Node)(_nodes.get(identifier));
     }
 
-    /** Return the node identifier of the specified node. See 
+    /** Return the node identifier of the specified node. See
      *  {@link #_enumerateNodes()}.
      *  @param o an Object (node weight) representing a graph node.
      *  @return the node identifier.
@@ -501,9 +501,9 @@ public class Graph {
                    "\" is not a node weight in this graph, or a node " +
                    "identifier has not yet been determined for it.\n");
        }
- 
+
        return v.intValue();
-    } 
+    }
 
     /** Return the weight of a given node in the graph.
      *  @param node the graph node.
@@ -512,7 +512,7 @@ public class Graph {
      *  in this graph.
      */
     protected final Object _getNodeObject(Node node) {
-        if (!_nodes.contains(node)) 
+        if (!_nodes.contains(node))
 	        throw new IllegalArgumentException("Graph._getNodeObject: \"" +
                     node + "\" is not a node in this graph");
         else return node.weight();
@@ -561,9 +561,9 @@ public class Graph {
     private HashMap _nodeIdTable;
 
     // Translation from node weight to node. The keys of this HashMap
-    // are the unique weights (of type Object) associated with the graph nodes, 
+    // are the unique weights (of type Object) associated with the graph nodes,
     // and the values are
-    // the corresponding node objects (of type {@link Node}).  
+    // the corresponding node objects (of type {@link Node}).
     private HashMap _nodeTable;
 
     // A flag that indicates whether or not node identifiers need to

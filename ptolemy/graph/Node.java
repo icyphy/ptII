@@ -1,6 +1,6 @@
 /* A weighted node for an undirected or directed graph.
 
- Copyright (c) 2001 The University of Maryland  
+ Copyright (c) 2001 The University of Maryland
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -69,15 +69,15 @@ same time, except for self loop edges, which should be attached twice
 Otherwise, unpredictable behavior may result.
 
 <p>Note that nodes and edge lists in nodes should normally be
-manipulated (created or modified) only by classes of graphs that contain them. 
+manipulated (created or modified) only by classes of graphs that contain them.
 
-@author Shuvra S. Bhattacharyya 
+@author Shuvra S. Bhattacharyya
 @version $Id$
 @see ptolemy.graph.Edge
 */
 public class Node {
 
-    /** Construct a node with a null node weight. 
+    /** Construct a node with a null node weight.
      */
     public Node() {
         _weight = null;
@@ -86,7 +86,7 @@ public class Node {
         _incidentEdges = new ArrayList();
     }
 
-    /** Construct a node with a given node weight. 
+    /** Construct a node with a given node weight.
      */
     public Node(Object weight) {
         this();
@@ -98,7 +98,7 @@ public class Node {
 
     /** Attach an undirected edge to be incident to this node. If the
      *  edge is operated on subsequently as a directed edge, it will be
-     *  treated as an input edge. 
+     *  treated as an input edge.
      *  @param edge the incident edge to attach.
      */
     public void addIncidentEdge(Edge edge) {
@@ -138,7 +138,7 @@ public class Node {
      *  @return the number of incident edges.
      */
     public int incidentEdgeCount() {return _incidentEdges.size();}
-    
+
     /** Return an iterator over the set of all edges that are incident
      *  to this node.  For a node in a directed graph, this returns an
      *  iterator over the union of all input and output edges
@@ -150,12 +150,12 @@ public class Node {
     public Iterator incidentEdges() {
         return _incidentEdges.iterator();
     }
-    
+
     /** Return the number of input edges of this node.
      *  @return the number of input edges.
      */
     public int inputEdgeCount() {return _inputEdges.size();}
-    
+
     /** Return an iterator over the set of all input edges of this
      *  node.  More precisely, the method returns an iterator over the
      *  set of all edges that were attached to this node using either
@@ -172,7 +172,7 @@ public class Node {
      *  @return the number of output edges.
      */
     public int outputEdgeCount() {return _outputEdges.size();}
-    
+
     /** Return an iterator over the set of all output edges of this
      *  node.  More precisely, the method returns an iterator over the
      *  set of all edges that were attached to this node using
@@ -190,7 +190,7 @@ public class Node {
      *  output edge). Do nothing if the specified edge is not incident
      *  to the node to begin with.
      *
-     *  @param edge the edge. 
+     *  @param edge the edge.
      */
     public void removeEdge(Edge edge) {
         _removeIfPresent(_incidentEdges, edge);
@@ -205,7 +205,7 @@ public class Node {
         return _inputEdges.size() + _outputEdges.size()
             - _incidentEdges.size();
     }
-   
+
     /** Return a string representation of the node.
      *  The string representation is simply a representation of the node
      *  weight (or the string "null" if the weight is <em>null</em>).
@@ -213,8 +213,8 @@ public class Node {
     public String toString() {
         if (_weight == null) return "null";
         else return _weight.toString();
-    } 
- 
+    }
+
     /** Return the weight that has been associated with this node.
      *  @return the associated weight.
      */

@@ -48,7 +48,7 @@ A directed graph and some graph algorithms.
 NOTE: This class is a starting point for implementing graph algorithms,
 more methods will be added.
 
-@author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya 
+@author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya
 @version $Id$
 */
 
@@ -154,7 +154,7 @@ public class DirectedGraph extends Graph {
         }
         return result;
     }
-    
+
     /** Find all the nodes that can be reached backward from the
      *  specified node.
      *  The reachable nodes do not include the argument unless
@@ -393,7 +393,7 @@ public class DirectedGraph extends Graph {
 
         int numberOfSCCs = sccNodeLists.size();
         Object sortedSCCRepresentatives[];
-        
+
         try {
             sortedSCCRepresentatives =
                 attemptTopologicalSort(sccRepresentatives.toArray());
@@ -401,7 +401,7 @@ public class DirectedGraph extends Graph {
             throw new InternalErrorException("Objects in different SCCs were"
                     + " found to be strongly connected.");
         }
- 
+
         ArrayList sortedSCCNodeLists = new ArrayList();
 
         for (int i = 0; i < numberOfSCCs; i++) {

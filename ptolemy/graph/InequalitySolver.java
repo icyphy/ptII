@@ -141,7 +141,7 @@ public class InequalitySolver {
 	}
 	results.append("}\n");
 	return results.toString();
-    } 
+    }
 
     /** Solve the set of inequalities for the greatest solution.
      *  If the set of inequalities is definite (when solving for the greatest
