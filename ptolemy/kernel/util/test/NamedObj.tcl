@@ -348,7 +348,7 @@ test NamedObj-11.1 {Test exportMoML} {
     $a exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="A" class="ptolemy.kernel.util.NamedObj">
     <property name="A1" class="ptolemy.kernel.util.Attribute">
         <property name="A2" class="ptolemy.kernel.util.Attribute">
@@ -364,7 +364,7 @@ test NamedObj-11.2 {Test deferMoMLDefinitionTo} {
     $b exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="A" class=".A">
     <property name="A1" class="ptolemy.kernel.util.Attribute">
         <property name="A2" class="ptolemy.kernel.util.Attribute">
@@ -378,7 +378,7 @@ test NamedObj-11.3 {Test referTo of a class} {
     $b exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="A" extends=".A">
     <property name="A1" class="ptolemy.kernel.util.Attribute">
         <property name="A2" class="ptolemy.kernel.util.Attribute">
@@ -410,7 +410,7 @@ test NamedObj-11.6 {Test exportMoML Writer} {
     list $stdoutResults
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="AA" class="ptolemy.kernel.util.NamedObj">
     <property name="AA1" class="ptolemy.kernel.util.Attribute">
         <property name="AA2" class="ptolemy.kernel.util.Attribute">
