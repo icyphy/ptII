@@ -9,7 +9,14 @@
         <entity name="RealTimePlotter"
                 class="ptolemy.actor.lib.gui.RealTimePlotter"/>
 	<entity name="Sleep"
-                class="ptolemy.actor.lib.Sleep"/>
+                class="ptolemy.actor.lib.Sleep">
+         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
 	<entity name="VariableSleep"
                 class="ptolemy.actor.lib.VariableSleep"/>
         <entity name="WallClockTime"

@@ -1,4 +1,4 @@
-/* Extract minimum element from an array.
+/* An actor that outputs the average of the input array.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -23,8 +23,6 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -33,10 +31,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -48,20 +45,20 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// ArrayMinimum
+//// ArrayAverage
 /**
-Extract the minimum element from an array.  This actor reads an array
-from the <i>input</i> port and sends the smallest of its elements to the
-<i>output</i> port.  The index of the smallest element (closest to minus
-infinity) is sent to the <i>index</i> output port. If there is more than
-one entry in the array with the minimum value, then the index of the
-first such entry is what is produced.
+Compute the average of the elements in an array.  This actor reads an
+array from the <i>input</i> port and sends the average of its elements 
+to the <i>output</i> port. The output data type is at least the
+type of the elements of the input array.  The elements of the input
+array have to support addition and division by an integer, or an
+exception will be thrown in the fire() method.
 
 @author Mark Oliver and Edward A. Lee
-@version $Id$
+@version $ID: ArrayAverage.java,v0.1 2003/07/01
 */
 
-public class ArrayMinimum extends Transformer {
+public class ArrayAverage extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -71,48 +68,35 @@ public class ArrayMinimum extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ArrayMinimum(CompositeEntity container, String name)
+    public ArrayAverage(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-        // Create index port
-        index = new TypedIOPort(this, "index", false, true);
-        index.setTypeEquals(BaseType.INT);
+        
+        // set type constraints.
+        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        ArrayType inputArrayType = (ArrayType)input.getType();
+        InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The port producing the index of the largest element.
-     *  This is port has type int.
-     */
-    public TypedIOPort index;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Consume at most one array from the input port and produce
-     *  the minimum of its elements on the <i>output</i> port and the index
-     *  of that element on the <i>index</i> port.  If there is no token
-     *  on the input, then no output is produced.
+     *  the average of its elements on the <i>output</i> port.  
+     *  If there is no token on the input, or if the input array
+     *  is empty, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        int indexValue = 0;
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken)input.get(0);
-            ScalarToken currentMin = (ScalarToken)token.getElement(indexValue);
-            ScalarToken temp = null;
-            int i;
-            for (i = indexValue+1; i < token.length(); i++) {
-                temp = (ScalarToken)token.getElement(i);
-                if (currentMin.isGreaterThan(temp).booleanValue() == true) {
-                    indexValue = i;
-                    currentMin = temp;
-                }
+            if (token.length() == 0) return;
+            Token sum = (Token)token.getElement(0);
+            for (int i = 1; i < token.length(); i++) {
+                sum = sum.add( token.getElement(i) );
             }
-            output.send(0, currentMin);
-            index.broadcast(new IntToken(indexValue));
+            output.send(0, sum.divide(new IntToken(token.length())));
         }
     }
 

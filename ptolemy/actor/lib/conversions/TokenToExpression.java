@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
@@ -39,11 +39,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// TokenToExpression
 /**
-This actor reads a string expression from the input port and outputs
-the token resulting from the evaluation.  The type of the output port
-defaults to general, meaning that the only output will be a pure
-event.  In order to usefully use this class, the type of the output
-port must be set to the type of the expression that is expected.
+This actor reads a token from the input port and outputs a string token
+whose value is an expression that can be parsed to yield the input token.
+For example, if the input is itself a string token, the output will be a
+new string token whose value is the value of the input string token surrounded
+by double quotation marks. The input data type is undeclared, so this actor
+can accept any input.
 
 @author  Steve Neuendorffer
 @version $Id$
@@ -70,10 +71,9 @@ public class TokenToExpression extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output the data read in the preinitialize() or postfire() if
-     *  there is any.
-     *  @exception IllegalActionException If there's no director, or
-     *   if the expression read from the file cannot be parsed.
+    /** Output a string token whose value is an expression representing
+     *  the value of the input token. 
+     *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
         String string = input.get(0).toString();
@@ -81,7 +81,7 @@ public class TokenToExpression extends Converter {
     }
 
     /** Return true if and only if an input is present.
-     *  @exception IllegalActionException If there's no director, or
+     *  @exception IllegalActionException If there is no director, or
      *   if no connection has been made to the input.
      */
     public boolean prefire() throws IllegalActionException {

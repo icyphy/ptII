@@ -30,10 +30,10 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -79,13 +79,13 @@ public class ArrayExtract extends Transformer {
         output.setTypeAtLeast(input);
 
         // Set parameters.
-        sourcePosition = new Parameter(this, "sourcePosition");
+        sourcePosition = new PortParameter(this, "sourcePosition");
         sourcePosition.setExpression("0");
-        extractLength = new Parameter(this, "extractLength");
+        extractLength = new PortParameter(this, "extractLength");
         extractLength.setExpression("1");
-        destinationPosition = new Parameter(this, "destinationPosition");
+        destinationPosition = new PortParameter(this, "destinationPosition");
         destinationPosition.setExpression("0");
-        outputArrayLength = new Parameter(this, "outputArrayLength");
+        outputArrayLength = new PortParameter(this, "outputArrayLength");
         outputArrayLength.setExpression("1");
     }
 
@@ -96,27 +96,27 @@ public class ArrayExtract extends Transformer {
      *  This is a non-negative integer that defaults to 0, and is
      *  required to be less than the length of the input array.
      */
-    public Parameter sourcePosition;
+    public PortParameter sourcePosition;
 
     /** The length of the segment of the input array that is copied
      *  to the output. This is a non-negative integer that defaults
      *  to 1. The sum of it and the <i>sourcePosition</i> is
      *  required to be less than or equal to the length of the input array.
      */
-    public Parameter extractLength;
+    public PortParameter extractLength;
 
     /** The index into the output array at which to start copying.
      *  This is a non-negative integer that defaults to 0, and is
      *  required to be less than the length of the output array.
      */
-    public Parameter destinationPosition;
+    public PortParameter destinationPosition;
 
     /** The total length of the output array.
      *  This is a non-negative integer that defaults to 1.  It is
      *  required to be at least <i>destinationPosition</i> plus
      *  <i>extractLength</i>.
      */
-    public Parameter outputArrayLength;
+    public PortParameter outputArrayLength;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -144,8 +144,10 @@ public class ArrayExtract extends Transformer {
      *   is out of range.
      */
     public void fire() throws IllegalActionException {
-        // NOTE: We could use attributeChange, but we rely on java to
-        // miss accessing the array.
+        sourcePosition.update();
+        extractLength.update();
+        destinationPosition.update();
+        outputArrayLength.update();
         if (input.hasToken(0)) {
             Token[] inputArray = ((ArrayToken)input.get(0)).arrayValue();
             int sourcePositionValue = ((IntToken)sourcePosition
@@ -179,5 +181,3 @@ public class ArrayExtract extends Transformer {
         }
     }
 }
-
-

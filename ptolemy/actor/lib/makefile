@@ -92,11 +92,13 @@ JSRCS = \
 	AbsoluteValue.java \
 	Accumulator.java \
 	ArrayAppend.java \
+	ArrayAverage.java \
 	ArrayElement.java \
 	ArrayExtract.java \
 	ArrayLength.java \
 	ArrayMaximum.java \
 	ArrayMinimum.java \
+	ArraySort.java \
 	Average.java \
 	Bernoulli.java \
 	BooleanMultiplexor.java \

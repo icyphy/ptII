@@ -79,18 +79,15 @@ public class ExpressionToToken extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output the data read in the preinitialize() or postfire() if
-     *  there is any.
-     *  @exception IllegalActionException If there's no director, or
+    /** Output a token that results from evaluating the expression given
+     *  by the input string token.
+     *  @exception IllegalActionException If there is no director, or
      *   if the expression read from the input cannot be parsed.
      */
     public void fire() throws IllegalActionException {
         String string = ((StringToken)input.get(0)).stringValue();
         Token result;
         try {
-            // Note that the parser is NOT retained, since in most
-            // cases the expression doesn't change, and the parser
-            // requires a large amount of memory.
             if(_parser == null) {
                 _parser = new PtParser();
             }
@@ -118,7 +115,7 @@ public class ExpressionToToken extends Converter {
     }
 
     /** Return true if and only if an input is present.
-     *  @exception IllegalActionException If there's no director, or
+     *  @exception IllegalActionException If there is no director, or
      *   if no connection has been made to the input.
      */
     public boolean prefire() throws IllegalActionException {
@@ -137,7 +134,7 @@ public class ExpressionToToken extends Converter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
+    ////                        inner classes                      ////
 
     private class ExpressionScope extends ModelScope {
 
@@ -176,6 +173,9 @@ public class ExpressionToToken extends Converter {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+    
     private PtParser _parser = null;
     private ParseTreeEvaluator _parseTreeEvaluator = null;
     private ParserScope _scope = null;
