@@ -42,6 +42,9 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/ptCal.jar
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Handle assertions with -source 1.4
+JFLAGS =	$(JDEBUG) $(JOPTIMIZE) -source 1.4
+
 # Used to build jar files
 PTPACKAGE = 	util
 PTCLASSJAR =	$(PTPACKAGE).jar
