@@ -35,7 +35,10 @@ import ptolemy.data.*;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
@@ -277,7 +280,8 @@ public class UtilityFunctions {
 	 *  length.  The first element of the output array is the <i>initial</i>
 	 *  argument, the second is the result of applying the function to
 	 *  <i>initial</i>, the third is the result of applying the function to
-	 *  that result, etc.
+	 *  that result, etc.  The <i>length</i> argument is required to be
+     *  greater than 1.
 	 *  @param function A single-argument function to iterate.
 	 *  @param length The length of the resulting array.
 	 *  @param initial The first element of the result.
@@ -286,22 +290,68 @@ public class UtilityFunctions {
 	 *  @exception IllegalActionException If the specified function does not
 	 * 	 take exactly one argument, or if an error occurs applying the function.
 	 */
-    public ArrayToken iterate(FunctionToken function, int length, Token initial)
+    public static ArrayToken iterate(
+            FunctionToken function, int length, Token initial)
             throws IllegalActionException {
         int arity = function.getNumberOfArguments();
         if (arity != 1) {
             throw new IllegalActionException(
             "iterate() can only be used on functions that take one argument.");
+        } else if (length < 2) {
+            throw new IllegalActionException(
+            "iterate() requires the length argument to be greater than 1.");
         } else {
-		    ArrayToken result = null;
+		    Token[] result = new Token[length];
             Token iterate = initial;
-	        result.add(iterate);
+	        result[0] = initial;
 	        for (int i = 1; i < length; i++ ) {
                 LinkedList arglist = new LinkedList();
                 arglist.add(iterate);
                 iterate = function.apply(arglist);
+                result[i] = iterate;
             }
-			return result;
+			return new ArrayToken(result);
+        }
+    }
+    
+    /** Return the return type of the iterate method, given the types
+     *  of the argument.
+     *  @param functionType The type of the function to iterate.
+     *  @param lengthType The type of the length argument.
+     *  @param initialType The type of the first element of the result.
+     *  @return The type of the result.
+     *  @exception IllegalActionException If the specified function does not
+     *   take exactly one argument, or if the type signature of the function
+     *   is not compatible with the other arguments.
+     */
+    public static Type iterateReturnType(
+            Type functionType, Type lengthType, Type initialType)
+            throws IllegalActionException {
+        if (functionType instanceof FunctionType) {
+            FunctionType castFunctionType = (FunctionType)functionType;
+            if (castFunctionType.getArgCount() != 1) {
+                throw new IllegalActionException(
+                "iterate() can only be used on functions that take one argument.");
+            } else {
+                Type argType = castFunctionType.getArgType(0);
+                int comparison = TypeLattice.compare(initialType, argType);
+                if (comparison != CPO.LOWER && comparison != CPO.SAME) {
+                    throw new IllegalActionException(
+                    "iterate(): specified initial value is not compatible with"
+                    + " function argument type.");  
+                }
+                Type resultType = castFunctionType.getReturnType();
+                int comparison2 = TypeLattice.compare(resultType, argType);
+                if (comparison2 != CPO.LOWER && comparison2 != CPO.SAME) {
+                    throw new IllegalActionException(
+                    "iterate(): invalid function: function return type is not"
+                    + " compatible with function argument type.");  
+                }
+                return new ArrayType(
+                        TypeLattice.leastUpperBound(resultType, initialType));
+            }
+        } else {
+            return BaseType.UNKNOWN;
         }
     }
 
@@ -420,28 +470,28 @@ public class UtilityFunctions {
 	        throws IllegalActionException {
         int arity = function.getNumberOfArguments();
         ArrayToken result = null;
-        if (BaseType.SCALAR.isCompatible(array.getElementType())){
-                if (arity != 1) {
-                    throw new IllegalActionException(
-                        "function can not be applied to the array token due to invalid signature.");
-                } else{
-                    for (int i = 0; i < array.length(); i++) {
-                        ScalarToken args = (ScalarToken)array.getElement(i);
-                        LinkedList arglist = new LinkedList();
-                        arglist.add(args);
-                        result.add(function.apply(arglist));
-                    }
-                }
-        } else {
+        if (arity == 1) {
             for (int i = 0; i < array.length(); i++) {
-                ArrayToken args = (ArrayToken)array.getElement(i);
+                Token args = (Token)array.getElement(i);
                 LinkedList arglist = new LinkedList();
-                if (args.length() != arity) {
+                arglist.add(args);
+                result.add(function.apply(arglist));
+            } 
+         } else {
+            for (int i = 0; i < array.length(); i++) {
+                Token args = (Token)array.getElement(i);
+                if(! (args instanceof ArrayToken)) {
+					throw new IllegalActionException(
+                    "Invalid arguments to map(): mismatched arity.");   
+                }
+                LinkedList arglist = new LinkedList();
+                ArrayToken castArgs = (ArrayToken) args;
+                if (castArgs.length()!= arity) {
                     throw new IllegalActionException(
-                        "function can not be applied to the array token due to invalid signature.");
+                        "Invalid arguments to map(): mismatched arity.");
                 } else{
                     for (int j = 1; j< arity; j++) {
-                        arglist.add(args.getElement(j));
+                        arglist.add(castArgs.getElement(j));
                     }
                     result.add(function.apply(arglist));
                 }
