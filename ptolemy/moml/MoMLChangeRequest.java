@@ -180,6 +180,18 @@ public class MoMLChangeRequest extends ChangeRequest {
     public void setMergeWithPreviousUndo(boolean mergeWithPrevious) {
         _mergeWithPreviousUndo = mergeWithPrevious;
     }
+    
+    /** Specify whether or not to report errors via the handler
+     *  that is registered with the parser. By default, if this
+     *  method is not called, errors will be reported. Note that in either
+     *  case, exceptions will be reported to any change listeners
+     *  that are registered with this object via their changeFailed()
+     *  method.
+     *  @param report False to disable error reporting.
+     */
+    public void setReportErrorsToHandler(boolean report) {
+        _reportToHandler = report;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -224,7 +236,12 @@ public class MoMLChangeRequest extends ChangeRequest {
             if (_undoable) {
                 _parser.setUndoable(true);
             }
+            ErrorHandler handler = MoMLParser.getErrorHandler();
+            if (!_reportToHandler) {
+                MoMLParser.setErrorHandler(null);
+            }
             _parser.parse(_base, getDescription());
+            MoMLParser.setErrorHandler(handler);
         } finally {
             _parser._propagating = false;
         }
@@ -284,6 +301,10 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     // Indicator of whether this request is the result of a propagating change.
     private boolean _propagating = false;
+    
+    // Flag indicating whether to report to the handler registered
+    // with the parser.
+    private boolean _reportToHandler = false;
 
     // Flag indicating if this change is undoable or not
     private boolean _undoable = false;
