@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+@AcceptedRating Yellow (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;

@@ -23,21 +23,27 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+@AcceptedRating Yellow (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.ComponentEntity;
 
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 
 import java.util.List;
 import java.util.Iterator;
@@ -47,13 +53,22 @@ import java.util.LinkedList;
 //// State
 /**
 A State has two ports: one for linking incoming transitions, the other for
-outgoing transitions. In a modal model, a State can be refined by a
-TypedActor.
+outgoing transitions. When the FSMActor containing a state is the mode
+controller of a modal model, the state can be refined by a TypedActor. The
+refinement must have the same container as the FSMActor. During execution
+of a modal model, only the mode controller and the refinement of the current
+state of the mode controller react to input to the modal model and produce
+output. The outgoing transitions from a state are either preemptive or
+non-preemptive. When a modal model is fired, if a preemptive transition
+from the current state of the mode controller is chosen, the refinement of
+the current state is not fired. Otherwise the refinement is fired before
+choosing a non-preemptive transition.
 
 @author Xiaojun Liu
 @version $Id$
 @see Transition
 @see FSMActor
+@see FSMDirector
 */
 public class State extends ComponentEntity {
 
@@ -61,31 +76,95 @@ public class State extends ComponentEntity {
      *  composite entity. The container argument must not be null, or a
      *  NullPointerException will be thrown. This state will use the
      *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
      *  Increment the version of the workspace.
      *  This constructor write-synchronizes on the workspace.
-     *  @param container The container entity.
-     *  @param name The name of the entity.
-     *  @exception IllegalActionException If the entity cannot be contained
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
-     *   an state already in the container.
+     *   that of an entity already in the container.
      */
     public State(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        incomingPort = new ComponentPort(this, "IncomingPort");
-        outgoingPort = new ComponentPort(this, "OutgoingPort");
+        incomingPort = new ComponentPort(this, "incomingPort");
+        outgoingPort = new ComponentPort(this, "outgoingPort");
+        refinementName = new Parameter(this, "refinementName");
+        refinementName.setTypeEquals(BaseType.STRING);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The port linking incoming transitions.
+     */
+    public ComponentPort incomingPort = null;
+
+    /** The port linking outgoing transitions.
+     */
+    public ComponentPort outgoingPort = null;
+
+    /** Parameter specifying the name of the refinement. The refinement
+     *  must be a TypedActor and have the same container as the FSMActor
+     *  containing this state, otherwise an exception will be thrown
+     *  when getRefinement() is called. This parameter contains a null
+     *  token when the state is not refined.
+     */
+    public Parameter refinementName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the refinement of this state.
-     *  @return A TypedActor refining this state.
+    /** React to a change in an attribute. If the changed attribute is
+     *  the <i>refinementName</i> parameter, record the change but do
+     *  not check whether there is a TypedActor with the specified name
+     *  and having the same container as the FSMActor containing this
+     *  state.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If thrown by the superclass
+     *   attributeChanged() method.
      */
-    public TypedActor getRefinement() {
-        return _refinement;
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        super.attributeChanged(attribute);
+        if (attribute == refinementName) {
+            _refinementVersion = -1;
+        }
+    }
+
+    /** Return the refinement of this state. The name of the refinement
+     *  is contained in the refinementName parameter. The refinement must
+     *  have the same container as the FSMActor containing this state,
+     *  otherwise this method will return null.
+     *  This method is read-synchronized on the workspace.
+     *  @return A TypedActor refining this state.
+     *  @exception IllegalActionException If the refinementName parameter
+     *   does not contain a valid token.
+     */
+    public TypedActor getRefinement() throws IllegalActionException {
+        if (_refinementVersion == workspace().getVersion()) {
+            return _refinement;
+        }
+        try {
+            workspace().getReadAccess();
+            StringToken tok = (StringToken)refinementName.getToken();
+            if (tok != null) {
+                String refName = tok.toString();
+                FSMActor cont = (FSMActor)getContainer();
+                TypedCompositeActor contContainer =
+                        (TypedCompositeActor)cont.getContainer();
+                _refinement = (TypedActor)contContainer.getEntity(refName);
+            } else {
+                _refinement = null;
+            }
+            _refinementVersion = workspace().getVersion();
+            return _refinement;
+        } finally {
+            workspace().doneReading();
+        }            
     }
 
     /** Return the list of non-preemptive outgoing transitions from
@@ -115,7 +194,7 @@ public class State extends ComponentEntity {
      *  base class setContainer() method. A null argument will remove
      *  the state from its container.
      *
-     *  @param entity The proposed container.
+     *  @param container The proposed container.
      *  @exception IllegalActionException If the state would result
      *   in a recursive containment structure, or if
      *   this state and container are not in the same workspace, or
@@ -147,7 +226,7 @@ public class State extends ComponentEntity {
     public void setRefinement(TypedActor refinement)
             throws IllegalActionException {
         if (refinement == null) {
-            _refinement = null;
+            refinementName.setToken(null);
             return;
         }
         if (!(refinement instanceof Nameable)) {
@@ -160,19 +239,9 @@ public class State extends ComponentEntity {
                     "The refinement of a state must have the same container "
                     + "as the FSMActor containing the state.");
         }
-        _refinement = refinement;
+        String refName = ((Nameable)refinement).getName();
+        refinementName.setToken(new StringToken(refName));
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The port linking incoming transitions.
-     */
-    public ComponentPort incomingPort = null;
-
-    /** The port linking outgoing transitions.
-     */
-    public ComponentPort outgoingPort = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -208,8 +277,11 @@ public class State extends ComponentEntity {
     // Cached list of preemptive outgoing transitions from this state.
     private List _preemptiveTransitionList = new LinkedList();
 
-    // The refinement of this state.
+    // Cached reference to the refinement of this state.
     private TypedActor _refinement = null;
+
+    // Version of the cached reference to the refinement.
+    private long _refinementVersion = -1;
 
     // Version of cached transition lists.
     private long _transitionListVersion = -1;

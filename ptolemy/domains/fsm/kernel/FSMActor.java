@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+@AcceptedRating Yellow (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -33,6 +33,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.TypedActor;
 
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -45,6 +46,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedCompositeActor;
@@ -53,6 +55,8 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Typeable;
+import ptolemy.data.type.BaseType;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -69,31 +73,41 @@ An FSMActor contains a set of states and transitions. A transition has
 a guard expression and a trigger expression. A transition is enabled and
 can be taken when its guard is true. A transition is triggered and must be
 taken when its trigger is true. A transition can contain a set of actions.
-The actions are executed when the FSMActor is fired or postfired and the
-transition is taken.
+<p>
+When an FSMActor is fired, the outgoing transitions of the current state
+are examined. An IllegalActionException is thrown if there is more than one
+enabled transition. If there is exactly one enabled transition then it is
+chosen and the choice actions contained by the transition are executed.
+An FSMActor does not change state during successive firings in one iteration
+in order to support domains that iterate to a fixed point. When the FSMActor
+is postfired, the chosen transition of the latest firing of the actor is
+committed. The commit actions contained by the transition are executed and
+the current state of the actor is set to the destination state of the
+transition.
 <p>
 An FSMActor enters its initial state during initialization. There are two
 ways to set the initial state: one is by calling setInitialState(), the
 other is by putting the name of the initial state in a StringToken, and
-setting the initialState parameter with this token. The first way has
-precedence.
+setting the initialStateName parameter with this token.
 <p>
-For each input port, an FSMActor creates two variables which can be referenced
-in guard and trigger expressions: a status variable with name portname$S, and
-a value variable with name portname$V. When an FSMActor is fired, it will set
-portname$S = port.hasToken(); portname$V = portname$S ? port.getToken() : null.
-<p>
-An FSMActor does not change state during successive firings in one iteration.
-In each firing, outgoing transitions from the current state are examined, and
-actions on the enabled transition are executed. An FSMActor only changes state
-in postfire(), where the new state is the destination state of the transition
-enabled in the last firing.
+An FSMActor contains a set of variables for the input ports that can be
+referenced in the guard and trigger expressions of transitions. If an input
+port is a single port, two variables are created: one is input status
+variable with name "<i>portName</i>_S"; the other is input value variable
+with name "<i>portName</i>_V". The input status variable always contains a
+BooleanToken. When this actor is fired, the status variable is set to true
+if the port has a token, false otherwise. The input value variable always
+contains the token received from the port, or null if the port has no token.
+If the given port is a multiport, a status variable and a value variable are
+created for each channel. The status variable is named
+"<i>portName</i>_<i>channelIndex</i>_S". The value variable is named
+"<i>portName</i>_<i>channelIndex</i>_V".
 <p>
 An FSMActor can be used in a modal model to represent the mode control logic.
 A state can have a TypedActor refinement. A transition in an FSMActor can be
-preemptive or non-preemptive. When a preemptive transition is taken, the
-refinement of its source state is not fired. A non-preemptive transition is
-only taken after the refinement of its source state is fired.
+preemptive or non-preemptive. When a preemptive transition is chosen, the
+refinement of its source state is not fired. A non-preemptive transition can
+only be chosen after the refinement of its source state is fired.
 
 @author Xiaojun Liu
 @version $Id$
@@ -119,27 +133,28 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public FSMActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        initialState = new Parameter(this, "InitialState");
+        initialStateName = new Parameter(this, "InitialStateName");
+        initialStateName.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
-     *  the initialState parameter, set the initial state of this actor
-     *  to the state named with the value of the parameter. If this
+     *  the initialStateName parameter, set the initial state of this
+     *  actor to the state named with the value of the parameter. If this
      *  actor does not contain such a state, throw an exception.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the changed attribute is
-     *   the initialState parameter and this actor does not contain a
+     *   the initialStateName parameter and this actor does not contain a
      *   state named with the value of the parameter, or if thrown by
      *   the superclass attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
-        if (attribute == initialState) {
-            StringToken tok = (StringToken)initialState.getToken();
+        if (attribute == initialStateName) {
+            StringToken tok = (StringToken)initialStateName.getToken();
             State state = (State)getEntity(tok.toString());
             if (state == null) {
                 throw new IllegalActionException(this,
@@ -152,7 +167,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Return the current state of this actor.
-     *  @return Current state.
+     *  @return The current state.
      */
     public State currentState() {
         return _currentState;
@@ -160,17 +175,20 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Set the values of input variables. Choose the enabled transition
      *  among the outgoing transitions of the current state. Throw an
-     *  exception if there are more than one transitions enabled.
+     *  exception if there is more than one transition enabled.
      *  Otherwise, execute the choice actions contained by the chosen
      *  transition.
-     *  @exception IllegalActionException If there are more than one
-     *   transitions enabled.
+     *  @exception IllegalActionException If there is more than one
+     *   transition enabled.
      */
     public void fire() throws IllegalActionException {
         Iterator inports = inputPortList().iterator();
         while (inports.hasNext()) {
             TypedIOPort p = (TypedIOPort)inports.next();
-            _setInputVariables(p);
+            int width = p.getWidth();
+            for (int channel = 0; channel < width; ++channel) {
+                _setInputVariables(p, channel);
+            }
         }
         List trList = _currentState.outgoingPort.linkedRelationList();
         _chooseTransition(trList);
@@ -223,15 +241,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         getDirector().initialize(this);
     }
 
-    /** Return an enumeration of the input ports.
-     *  This method is read-synchronized on the workspace.
-     *  @deprecated Use inputPortList() instead;
-     *  @return An enumeration of input TypedIOPort objects.
-     */
-    public Enumeration inputPorts() {
-        return Collections.enumeration(inputPortList());
-    }
-
     /** Return a list of the input ports.
      *  This method is read-synchronized on the workspace.
      *  @return A list of input TypedIOPort objects.
@@ -256,6 +265,15 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             }
         }
         return _cachedInputPorts;
+    }
+
+    /** Return an enumeration of the input ports.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use inputPortList() instead;
+     *  @return An enumeration of input TypedIOPort objects.
+     */
+    public Enumeration inputPorts() {
+        return Collections.enumeration(inputPortList());
     }
 
     /** Create a new TypedIOPort with the specified name.
@@ -297,15 +315,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         return dir.newReceiver();
     }
 
-    /** Return an enumeration of the output ports.
-     *  This method is read-synchronized on the workspace.
-     *  @deprecated Use outputPortList() instead.
-     *  @return An enumeration of output TypedIOPort objects.
-     */
-    public Enumeration outputPorts() {
-        return Collections.enumeration(outputPortList());
-    }
-
     /** Return a list of the output ports.
      *  This method is read-synchronized on the workspace.
      *  @return A list of output TypedIOPort objects.
@@ -330,8 +339,17 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         return _cachedOutputPorts;
     }
 
-    /** Execute actions on the last enabled transition. Change state
-     *  to the destination state of the last enabled transition.
+    /** Return an enumeration of the output ports.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use outputPortList() instead.
+     *  @return An enumeration of output TypedIOPort objects.
+     */
+    public Enumeration outputPorts() {
+        return Collections.enumeration(outputPortList());
+    }
+
+    /** Execute actions on the last chosen transition. Change state
+     *  to the destination state of the last chosen transition.
      *
      *  @return True.
      *  @exception IllegalActionException If any action throws it.
@@ -358,6 +376,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         _createReceivers();
         _createInputVariables();
         _gotoInitialState();
+        _buildConnectionMaps();
     }
 
     /** Reset current state to the initial state. Throw an
@@ -366,6 +385,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public void reset() throws IllegalActionException {
         _gotoInitialState();
+        _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
     }
 
     /** Override the base class to ensure that the proposed container
@@ -376,7 +396,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  the mode controller of the director, set the controller of the
      *  director to null if the proposed container is not the current
      *  container.
-     *  @param entity The proposed container.
+     *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
      *   this actor and container are not in the same workspace, or
@@ -406,7 +426,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Set the initial state. When this actor is initialized or reset,
      *  its current state is set to the initial state.
-     *  The value of the initialState parameter of this actor is set with
+     *  The value of the initialStateName parameter of this actor is set with
      *  the name of the initial state.
      *  An IllegalActionException is thrown if the argument is not contained
      *  by this actor.
@@ -422,7 +442,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     + "FSMActor.");
         }
         _initialState = state;
-        initialState.setToken(new StringToken(state.getName()));
+        initialStateName.setToken(new StringToken(state.getName()));
     }
 
     /** Do nothing.
@@ -442,67 +462,51 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
     }
 
-    /** Return the type constraints of this actor.
-     *  The constraints have the form of a list of inequalities.
-     *  In this base class, the implementation of type constraints
-     *  is that the type of any input port that does not have its type
-     *  declared must be less than or equal to the type of any output port
-     *  that does not have its type declared.
-     *  In addition, this method also collects type constraints from the
-     *  contained Typeables (ports, variables, and parameters).
+    /** Return the type constraints of this actor. The constraints
+     *  have the form of a list of inequalities. This method collects
+     *  type constraints from the contained Typeables (ports, variables,
+     *  and parameters). In addition, type constraints from all the
+     *  transitions are added. These constraints are determined by the
+     *  guard and trigger expressions of transitions, and actions
+     *  contained by the transitions.
      *  This method is read-synchronized on the workspace.
      *  @return a list of inequalities.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList()  {
-        /*try {
-          _workspace.getReadAccess();
+    public List typeConstraintList() {
+        try {
+            _workspace.getReadAccess();
+            List result = new LinkedList();
 
-          List result = new LinkedList();
-          Enumeration inPorts = inputPorts();
-          while (inPorts.hasMoreElements()) {
-          TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
-          boolean isUndeclared = inport.getTypeTerm().isSettable();
-          if (isUndeclared) {
-          // inport has undeclared type
-          Enumeration outPorts = outputPorts();
-          while (outPorts.hasMoreElements()) {
-          TypedIOPort outport =
-          (TypedIOPort)outPorts.nextElement();
+            // Collect constraints from contained Typeables.
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                Typeable port = (Typeable)ports.next();
+                result.addAll(port.typeConstraintList());
+            }
 
-          isUndeclared = outport.getTypeTerm().isSettable();
-          if (isUndeclared && inport != outport) {
-          // output also undeclared, not bi-directional port,
-          Inequality ineq = new Inequality(
-          inport.getTypeTerm(),
-          outport.getTypeTerm());
-          result.add(ineq);
-          }
-          }
-          }
-          }
+            Iterator attrib = attributeList(Typeable.class).iterator();
+            while (attrib.hasNext()) {
+                Typeable att = (Typeable)attrib.next();
+                result.addAll(att.typeConstraintList());
+            }
 
-          // collect constraints from contained Typeables
-          Enumeration ports = getPorts();
-          while (ports.hasMoreElements()) {
-          Typeable port = (Typeable)ports.nextElement();
-          result.addAll(port.typeConstraintList());
-          }
+            // Collect constraints from all transitions.
+            Iterator trs = relationList().iterator();
+            while (trs.hasNext()) {
+                Relation tr = (Relation)trs.next();
+                attrib = tr.attributeList(Typeable.class).iterator();
+                while (attrib.hasNext()) {
+                    Typeable att = (Typeable)attrib.next();
+                    result.addAll(att.typeConstraintList());
+                }
+            }
 
-          Enumeration attrib = getAttributes();
-          while (attrib.hasMoreElements()) {
-          Attribute att = (Attribute)attrib.nextElement();
-          if (att instanceof Typeable) {
-          result.addAll(((Typeable)att).typeConstraintList());
-          }
-          }
+            return result;
 
-          return result;
-
-          } finally {
-          _workspace.doneReading();
-          }*/
-        return new LinkedList();
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Return the type constraints of this actor.
@@ -513,7 +517,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @deprecated Use typeConstraintList() instead.
      */
     public Enumeration typeConstraints()  {
-	return Collections.enumeration(typeConstraintList());
+        return Collections.enumeration(typeConstraintList());
     }
 
     /** Do nothing.  Derived classes override this method to define
@@ -531,7 +535,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Parameter containing name of initial state.
      */
-    public Parameter initialState = null;
+    public Parameter initialStateName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -581,12 +585,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Return the enabled transition among the given list of transitions
      *  and execute the choice actions contained by the transition.
-     *  Throw an exception if more than one transitions are enabled.
+     *  Throw an exception if there is more than one transition enabled.
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
-     *  @exception IllegalActionException If more than one transitions
-     *   are enabled, or if thrown by any choice action contained by the
-     *   enabled transition.
+     *  @exception IllegalActionException If there is more than one 
+     *   transition enabled, or if thrown by any choice action contained
+     *   by the enabled transition.
      */
     protected Transition _chooseTransition(List transitionList)
             throws IllegalActionException {
@@ -631,37 +635,23 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             action.execute();
         }
         _currentState = _lastChosenTransition.destinationState();
-    }
-
-    /** Execute all commit actions contained by the given transition.
-     *  Change current state to the destination state of the transition.
-     *  @param transition A transition.
-     *  @exception IllegalActionException If any commit action throws it.
-     */
-    protected void _commitTransition(Transition transition)
-            throws IllegalActionException {
-        Iterator actions = transition.commitActionList().iterator();
-        while (actions.hasNext()) {
-            Action action = (Action)actions.next();
-            action.execute();
-        }
-        _currentState = transition.destinationState();
+        _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
     }
 
     /** Create input variables for the port. The variables are contained
      *  by this actor and can be referenced in the guard and trigger
      *  expressions of transitions.
      *  If the given port is a single port, two variables are created:
-     *  one is input status variable with name "port_name$S"; the other is
-     *  input value variable with name "port_name$V". The input status
-     *  variable always contains a BooleanToken. When this actor is fired,
-     *  The status variable is set to true if the port has a token, false
-     *  otherwise. The input value variable always contains the token
-     *  received from the port, or null if the port has no token.
+     *  one is input status variable with name "<i>portName</i>_S"; the
+     *  other is input value variable with name "<i>portName</i>_V". The
+     *  input status variable always contains a BooleanToken. When this
+     *  actor is fired, the status variable is set to true if the port has
+     *  a token, false otherwise. The input value variable always contains
+     *  the token received from the port, or null if the port has no token.
      *  If the given port is a multiport, a status variable and a value
      *  variable are created for each channel. The status variable is
-     *  named "port_name#channel_index$S". The value variable is named
-     *  "port_name#channel_index$V".
+     *  named "<i>portName</i>_<i>channelIndex</i>_S". The value variable
+     *  is named "<i>portName</i>_<i>channelIndex</i>_V".
      *  If a variable to be created has the same name as an attribute
      *  already contained by this actor, the attribute will be removed
      *  from this actor by setting its container to null.
@@ -695,9 +685,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         for (int chIndex = 0; chIndex < width; ++chIndex) {
             String vName = null;
             if (addChIndex) {
-                vName = port.getName() + "#" + chIndex + "$S";
+                vName = port.getName() + "_" + chIndex + "_S";
             } else {
-                vName = port.getName() + "$S";
+                vName = port.getName() + "_S";
             }
             Attribute a = getAttribute(vName);
             try {
@@ -712,9 +702,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                         + ex.getMessage());
             }
             if (addChIndex) {
-                vName = port.getName() + "#" + chIndex + "$V";
+                vName = port.getName() + "_" + chIndex + "_V";
             } else {
-                vName = port.getName() + "$V";
+                vName = port.getName() + "_V";
             }
             a = getAttribute(vName);
             try {
@@ -729,6 +719,28 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             }
         }
         _inputVariableMap.put(port, pVars);
+    }
+
+    /** Return true if the channel of the port is connected to an output
+     *  port of the refinement of current state. If the current state
+     *  does not have refinement, return false.
+     *  @param port An input port of this actor.
+     *  @param channel A channel of the input port.
+     *  @return True if the channel of the port is connected to an output
+     *   port of the refinement of current state.
+     *  @exception IllegalActionException If the refinement specified for
+     *   one of the states is not valid.
+     */
+    protected boolean _isRefinementOutput(TypedIOPort port, int channel)
+            throws IllegalActionException {
+        if (_currentState.getRefinement() == null) {
+            return false;
+        }
+        if (_connectionMapsVersion != workspace().getVersion()) {
+            _buildConnectionMaps();
+        }
+        boolean[] flags = (boolean[])_currentConnectionMap.get(port);
+        return flags[channel];
     }
 
     /** Remove the input variables created for the port.
@@ -764,14 +776,15 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
     }
 
-    /** Set the input variables for the port.
+    /** Set the input variables for the channel of the port.
      *  @see #_createInputVariables(TypedIOPort port)
-     *  @param port A port.
+     *  @param port An input port of this actor.
+     *  @param channel A channel of the input port.
      *  @exception IllegalActionException If the port is not contained by
      *   this actor, or if the port is not an input port, or if the value
      *   variable cannot take the token read from the port.
      */
-    protected void _setInputVariables(TypedIOPort port)
+    protected void _setInputVariables(TypedIOPort port, int channel)
             throws IllegalActionException {
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
@@ -784,24 +797,19 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     + "that is not input.");
         }
         int width = port.getWidth();
-        if (width == 0) {
-            return;
-        }
         Variable[][] pVars = (Variable[][])_inputVariableMap.get(port);
         if (pVars == null) {
             throw new InternalErrorException(getName() + ": "
                     + "Cannot find input variables for port "
                     + port.getName() + ".\n");
         }
-        for (int chIndex = 0; chIndex < width; ++chIndex) {
-            boolean t = port.hasToken(chIndex);
-            Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
-            pVars[chIndex][0].setToken(tok);
-            if (t == false) {
-                pVars[chIndex][1].setToken(null);
-            } else {
-                pVars[chIndex][1].setToken(port.get(chIndex));
-            }
+        boolean t = port.hasToken(channel);
+        Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
+        pVars[channel][0].setToken(tok);
+        if (t == false) {
+            pVars[channel][1].setToken(null);
+        } else {
+            pVars[channel][1].setToken(port.get(channel));
         }
     }
 
@@ -813,6 +821,65 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /*  Build for each state a map from input ports to boolean flags
+     *  indicating whether a channel is connected to an output port
+     *  of the refinement of the state.
+     *  This method is read-synchronized on the workspace.
+     *  @exception IllegalActionException If the refinement specified
+     *   for one of the states is not valid.
+     */
+    private void _buildConnectionMaps() throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            if (_connectionMaps == null) {
+                _connectionMaps = new HashMap();
+            } else {
+                // Remove any existing maps.
+                _connectionMaps.clear();
+            }
+            // Create a map for each state.
+            Iterator states = entityList().iterator();
+            State st = null;
+            while (states.hasNext()) {
+                st = (State)states.next();
+                Map stMap = new HashMap();
+                TypedActor ref = st.getRefinement();
+                // Determine the boolean flags for each input port.
+                Iterator inports = inputPortList().iterator();
+                while (inports.hasNext()) {
+                    IOPort inport = (IOPort)inports.next();
+                    boolean[] flags = new boolean[inport.getWidth()];
+                    if (ref == null) {
+                        java.util.Arrays.fill(flags, false);
+                        stMap.put(inport, flags);
+                        continue;
+                    }
+                    Iterator rels = inport.linkedRelationList().iterator();
+                    int chindex = 0;
+                    while (rels.hasNext()) {
+                        IORelation rel = (IORelation)rels.next();
+                        boolean linked = false;
+                        Iterator outports = ref.outputPortList().iterator();
+                        while (outports.hasNext()) {
+                            IOPort outport = (IOPort)outports.next();
+                            linked = linked | outport.isLinked(rel);
+                        }
+                        for (int j = 0; j < rel.getWidth(); ++j) {
+                            flags[chindex+j] = linked;
+                        }
+                        chindex += rel.getWidth();
+                    }
+                    stMap.put(inport, flags);
+                }
+                _connectionMaps.put(st, stMap);
+            }
+            _connectionMapsVersion = workspace().getVersion();
+            _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
+        } finally {
+            workspace().doneReading();
+        }
+    }
 
     /*  Create input variables for each input port.
      */
@@ -842,10 +909,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
     }
 
-    /** Set the current state to initial state. There are two ways
+    /*  Set the current state to initial state. There are two ways
      *  to set the initial state: one is by calling setInitialState(),
      *  the other is by putting the name of the initial state in a
-     *  StringToken, and setting the initialState parameter with this
+     *  StringToken, and setting the initialStateName parameter with this
      *  token.
      *  An exception will be thrown if initial state is not set.
      *  @exception IllegalActionException If initial state is not set.
@@ -866,6 +933,19 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     private transient LinkedList _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
     private transient LinkedList _cachedOutputPorts;
+
+    // Stores for each state a map from input ports to boolean flags
+    // indicating whether a channel is connected to an output port
+    // of the refinement of the state.
+    private Map _connectionMaps = null;
+
+    // Version of the connection maps.
+    private long _connectionMapsVersion = -1;
+
+    // The map from input ports to boolean flags indicating whether a
+    // channel is connected to an output port of the refinement of the
+    // current state.
+    private Map _currentConnectionMap = null;
 
     // Current state.
     private State _currentState = null;

@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+@AcceptedRating Yellow (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -34,14 +34,15 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.expr.Variable;
 
 //////////////////////////////////////////////////////////////////////////
 //// Action
 /**
 An Action is contained by a Transition in an FSMActor.
 <p>
-When the FSMActor is fired, a transition among the outgoing transitions
-of the current state is chosen if it is enabled. The choice actions
+When the FSMActor is fired, an enabled transition among the outgoing
+transitions of the current state is chosen. The choice actions
 contained by the chosen transition are executed. An action is a choice
 action if it implements the ChoiceAction marker interface. A choice
 action may be executed more than once during an iteration in domains
@@ -52,6 +53,12 @@ of the actor is committed. The commit actions contained by the transition
 are executed and the current state of the actor is set to the destination
 state of the transition. An action is a commit action if it implements the
 CommitAction marker interface.
+<p>
+An action creates a variable in the transition containing the action. The
+variable can be used by derived classes for expression evaluation. The name
+of the variable is obtained by prepending an underscore to the name of the
+action. The scope of the variable includes all the variables and parameters
+in the FSMActor containing the transition that contains the action.
 
 @author Xiaojun Liu
 @version $Id$
@@ -59,27 +66,32 @@ CommitAction marker interface.
 @see CommitAction
 @see Transition
 @see FSMActor
+@see ptolemy.data.expr.Variable
 */
 public abstract class Action extends Attribute {
 
-    /** Construct an action with the given name contained by the specified
-     *  transition. The transition argument must not be null, or a
-     *  NullPointerException will be thrown.  This action will use the
-     *  workspace of the transition for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  The object is added to the directory of the workspace
-     *  if the container is null.
+    /** Construct an action with the given name contained by the
+     *  specified transition. The transition argument must not be
+     *  null, or a NullPointerException will be thrown. This action
+     *  will use the workspace of the transition for synchronization
+     *  and version counts. If the name argument is null, then the
+     *  name is set to the empty string. A variable is created in
+     *  the transition. The name of the variable is obtained by
+     *  prepending an underscore to the name of this action.
      *  Increment the version of the workspace.
      *  @param transition The transition.
      *  @param name The name of this action.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
+     *  @exception IllegalActionException If the action is not of an
+     *   acceptable class for the container, or if the name contains
+     *   a period.
+     *  @exception NameDuplicationException If the transition already
+     *   has an attribute with the name or that obtained by prepending
+     *   an underscore to the name.
      */
     public Action(Transition transition, String name)
             throws IllegalActionException, NameDuplicationException {
         super(transition, name);
+        _evaluationVariable = new Variable(transition, "_" + name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -91,18 +103,21 @@ public abstract class Action extends Attribute {
      */
     abstract public void execute() throws IllegalActionException;
 
-    /** Override the base class to ensure that the proposed container
-     *  is an instance of Transition or null. If it is, call the
-     *  base class setContainer() method. A null argument will remove
-     *  the action from its container.
+    /** Set the container of this action and make the variable for
+     *  expression evaluation be contained by the proposed container.
+     *  The proposed container must be an instance of Transition or
+     *  null, otherwise an IllegalActionException will be thrown. A
+     *  null argument will remove the action and the variable for
+     *  expression evaluation from their container.
      *
-     *  @param entity The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this action and container are not in the same workspace, or
-     *   if the argument is not a Transition or null.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If setting the container
+     *   would result in a recursive containment structure, or if this
+     *   action and container are not in the same workspace, or if the
+     *   argument is not an instance of Transition or null.
      *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this action.
+     *   an attribute with the name of this action or the variable for
+     *   expression evaluation.
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
@@ -113,6 +128,35 @@ public abstract class Action extends Attribute {
                     "Transition.");
         }
         super.setContainer(container);
+        if (_evaluationVariable != null) {
+            _evaluationVariable.setContainer(container);
+        }
     }
+
+    /** Set the name of this action. If a null argument is given the
+     *  name is set to an empty string. Change the name of the variable
+     *  for expression evaluation to that obtained by prepending an
+     *  underscore to the name.
+     *  Increment the version of the workspace.
+     *  This method is write-synchronized on the workspace.
+     *  @param name The new name.
+     *  @exception IllegalActionException If the name contains a period.
+     *  @exception NameDuplicationException If the container of this
+     *   action already contains an attribute with the name or that
+     *   obtained by prepending an underscore to the name.
+     */
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
+        super.setName(name);
+        if (_evaluationVariable != null) {
+            _evaluationVariable.setName("_" + name);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // The variable for expression evaluation.
+    protected Variable _evaluationVariable = null;
 
 }

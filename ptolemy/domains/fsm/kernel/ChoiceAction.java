@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+@AcceptedRating Yellow (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -33,8 +33,8 @@ package ptolemy.domains.fsm.kernel;
 //// ChoiceAction
 /**
 An action implementing this interface is a choice action. When an FSMActor
-is fired, a transition among the outgoing transitions of the current state
-is chosen if it is enabled. The choice actions contained by the chosen
+is fired, an enabled transition among the outgoing transitions of the
+current state is chosen. The choice actions contained by the chosen
 transition are executed. A choice action may be executed more than once
 during an iteration in domains with fixed-point semantics.
 

@@ -56,6 +56,7 @@ PTCLASSALLJAR = kernel.jar
 
 JSRCS = \
 	Action.java \
+	BroadcastOutput.java \
 	ChoiceAction.java \
 	CommitAction.java \
 	FSMActor.java \
@@ -68,6 +69,7 @@ JSRCS = \
 	HDFFSMState.java \
 	HDFFSMTransition.java \
 	NewFSMDirector.java \
+	ProduceOutput.java \
 	State.java \
 	Transition.java \
 	TransitionAction.java

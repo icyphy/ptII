@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+@AcceptedRating Yellow (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -39,7 +39,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 
 import java.util.List;
 import java.util.Iterator;
@@ -49,15 +50,16 @@ import java.util.LinkedList;
 //// Transition
 /**
 A Transition has a source state and a destination state. A transition has
-a guard expression and a trigger expression. The trigger of a transition
-should imply the guard. A transition is enabled and can be taken when its
-guard is true. A transition is triggered and must be taken when its trigger
-is true.
+a guard expression and a trigger expression. Both expressions should evaluate
+to a boolean value. The trigger of a transition must be true whenever the 
+guard is true. A transition is enabled and can be taken when its guard is true.
+A transition is triggered and must be taken when its trigger is true.
 <p>
-A transition can contain a set of actions. The actions are executed when
-the FSMActor containing the transition is fired and the transition is chosen,
-or when the FSMActor is postfired and the transition is the last chosen
-transition.
+A transition can contain a set of actions. An action is either a ChoiceAction
+or a CommitAction. The choice actions are executed when the FSMActor
+containing the transition is fired and the transition is chosen. The commit
+actions are executed when the FSMActor is postfired and the transition is the
+last chosen transition.
 <p>
 A transition can be preemptive or non-preemptive. When a preemptive transition
 is chosen, the refinement of its source State is not fired. A non-preemptive
@@ -86,16 +88,18 @@ public class Transition extends ComponentRelation {
     public Transition(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // Create the variables for evaluating guard and trigger.
-        _guardVar = new Variable(this, "_Guard");
-        _triggerVar = new Variable(this, "_Trigger");
+        // Create the parameters for evaluating guard and trigger.
+        guard = new Parameter(this, "Guard");
+        guard.setTypeEquals(BaseType.BOOLEAN);
+        trigger = new Parameter(this, "Trigger");
+        trigger.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the list of choice actions contained by this transition.
-     *  @return A list of choice actions.
+     *  @return The list of choice actions contained by this transition.
      */
     public List choiceActionList() {
         if (_actionListsVersion != workspace().getVersion()) {
@@ -105,7 +109,7 @@ public class Transition extends ComponentRelation {
     }
 
     /** Return the list of commit actions contained by this transition.
-     *  @return A list of commit actions.
+     *  @return The list of commit actions contained by this transition.
      */
     public List commitActionList() {
         if (_actionListsVersion != workspace().getVersion()) {
@@ -115,7 +119,7 @@ public class Transition extends ComponentRelation {
     }
 
     /** Return the destination state of this transition.
-     *  @return A State.
+     *  @return The destination state of this transition.
      */
     public State destinationState() {
         if (_stateVersion != workspace().getVersion()) {
@@ -124,43 +128,54 @@ public class Transition extends ComponentRelation {
         return _destinationState;
     }
 
-    /** Return the guard expression.
+    /** Return the guard expression. The guard expression should evaluate 
+     *  to a boolean value.
      *  @return The guard expression.
      */
     public String getGuardExpression() {
-        return _guardVar.getExpression();
+        return guard.getExpression();
     }
 
-    /** Return the trigger expression.
+    /** Return the trigger expression. The trigger expression should evaluate
+     *  to a boolean value.
      *  @return The trigger expression.
      */
     public String getTriggerExpression() {
-        return _triggerVar.getExpression();
+        return trigger.getExpression();
     }
 
     /** Return true if the transition is enabled, that is the guard is true.
-     *  @return A boolean.
-     *  @exception IllegalActionException If thrown when evaluating guard.
+     *  @return True if the transition is enabled.
+     *  @exception IllegalActionException If thrown when evaluating the guard.
      */
     public boolean isEnabled() throws IllegalActionException {
-        Token tok = _guardVar.getToken();
+        Token tok = guard.getToken();
         return ((BooleanToken)tok).booleanValue();
     }
 
     /** Return true if this transition is preemptive.
-     *  @return A boolean.
+     *  @return True if this transition is preemptive.
      */
     public boolean isPreemptive() {
         return _preemptive;
     }
 
     /** Return true if the transition is triggered.
-     *  @return A boolean.
-     *  @exception IllegalActionException If thrown when evaluating trigger.
+     *  @return True if the transition is triggered.
+     *  @exception IllegalActionException If thrown when evaluating the
+     *   trigger, or the trigger is true but the guard is false.
      */
     public boolean isTriggered() throws IllegalActionException {
-        Token tok = _triggerVar.getToken();
-        return ((BooleanToken)tok).booleanValue();
+        Token tok = trigger.getToken();
+        boolean result = ((BooleanToken)tok).booleanValue();
+        tok = guard.getToken();
+        boolean g = ((BooleanToken)tok).booleanValue();
+        if (result == true && g == false) {
+            throw new IllegalActionException(this, "The trigger: "
+                    + getTriggerExpression() + " is true but the guard: "
+                    + getGuardExpression() + " is false.");
+        }
+        return result;
     }
 
     /** Override the base class to ensure that the proposed container
@@ -168,13 +183,13 @@ public class Transition extends ComponentRelation {
      *  base class setContainer() method. A null argument will remove
      *  the transition from its container.
      *
-     *  @param entity The proposed container.
+     *  @param container The proposed container.
      *  @exception IllegalActionException If the transition would result
      *   in a recursive containment structure, or if
      *   this transition and container are not in the same workspace, or
      *   if the argument is not a FSMActor or null.
      *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this transition.
+     *   an relation with the name of this transition.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
@@ -187,31 +202,33 @@ public class Transition extends ComponentRelation {
         super.setContainer(container);
     }
 
-    /** Set the guard expression.
+    /** Set the guard expression. The guard expression should evaluate 
+     *  to a boolean value.
      *  @param expression The guard expression.
      */
     public void setGuardExpression(String expression) {
-        _guardVar.setExpression(expression);
+        guard.setExpression(expression);
     }
 
     /** If the argument is true, set the transition to be preemptive.
      *  Increment the version number of the workspace.
-     *  @param t True to set the transition preemptive.
+     *  @param flag True to set the transition preemptive.
      */
-    public void setPreemptive(boolean t) {
-        _preemptive = t;
+    public void setPreemptive(boolean flag) {
+        _preemptive = flag;
         workspace().incrVersion();
     }
 
-    /** Set the trigger expression.
+    /** Set the trigger expression. The trigger expression should evaluate 
+     *  to a boolean value.
      *  @param expression The trigger expression.
      */
     public void setTriggerExpression(String expression) {
-        _triggerVar.setExpression(expression);
+        trigger.setExpression(expression);
     }
 
     /** Return the source state of this transition.
-     *  @return A State.
+     *  @return The source state of this transition.
      */
     public State sourceState() {
         if (_stateVersion != workspace().getVersion()) {
@@ -219,6 +236,15 @@ public class Transition extends ComponentRelation {
         }
         return _sourceState;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    // Parameter for evaluating guard.
+    public Parameter guard = null;
+
+    // Parameter for evaluating trigger.
+    public Parameter trigger = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -325,9 +351,6 @@ public class Transition extends ComponentRelation {
     // Cached destination state of this transition.
     private State _destinationState = null;
 
-    // Variable for evaluating guard.
-    private Variable _guardVar = null;
-
     // Set to true when the transition is preemptive.
     private boolean _preemptive = false;
 
@@ -336,8 +359,5 @@ public class Transition extends ComponentRelation {
 
     // Version of cached source/destination state.
     private long _stateVersion = -1;
-
-    // Variable for evaluating trigger.
-    private Variable _triggerVar = null;
 
 }
