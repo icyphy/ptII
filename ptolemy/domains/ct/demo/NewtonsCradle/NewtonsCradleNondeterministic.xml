@@ -624,7 +624,7 @@ inside the modal model to see more detailed explanation.
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.060676264655">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.4055663029353, 188.9486493053962}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.4055663029354, 188.9486493053962}">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -747,10 +747,6 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="probability" class="ptolemy.data.expr.Parameter" value="1.0">
-                    <property name="style" class="ptolemy.actor.gui.style.LineStyle">
-                    </property>
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
