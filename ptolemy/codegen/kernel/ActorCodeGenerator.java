@@ -28,18 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
-import java.lang.reflect.Constructor;
-import java.util.Iterator;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
-import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorCodeGenerator
@@ -57,5 +47,11 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    public void generateFireCode(CodeStream stream); 
+    /** Generate into the specified code stream the code associated
+     *  with one firing of the container composite actor.
+     *  @param code The code stream into which to generate the code.
+     *  @throws IllegalActionException If something goes wrong.
+     */
+    public void generateFireCode(StringBuffer stream)
+            throws IllegalActionException;
 }

@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.c.actor.lib;
 
-import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,30 +43,24 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
    @Pt.AcceptedRating Red (eal)
    
 */
-public class Scale extends CCodeGeneratorHelper 
-             implements ActorCodeGenerator {
+public class Scale extends CCodeGeneratorHelper {
 
-	/**
+	/** FIXME
 	 * 
 	 */
 	public Scale(ptolemy.actor.lib.Scale actor) {
-		_actor = actor;		
+        super(actor);
 	}
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-	public void generateFireCode(CodeStream stream) {
-        _addCode(_codeBlock, stream);
-
+	public void generateFireCode(StringBuffer stream) {
+        stream.append(_codeBlock);
 	}
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
 
     protected String _codeBlock = "$ref(output) = $val(factor) * $ref(input); \n";
-    
-    protected ptolemy.actor.lib.Scale _actor;
-    
-
 }

@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGeneratorHelper
@@ -40,13 +43,41 @@ package ptolemy.codegen.kernel;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (eal)
 */
-public class CodeGeneratorHelper {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    protected void _addCode(String codeBlock, CodeStream stream) {
-        stream.put(codeBlock);
+public class CodeGeneratorHelper implements ActorCodeGenerator {
+    
+    /** FIXME
+     */
+    public CodeGeneratorHelper(NamedObj component) {
+    	_component = component;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** FIXME
+     */
+    public void generateFireCode(StringBuffer stream) throws IllegalActionException {
+    }
+
+    /** FIXME
+     */
+    public void generateInitializeCode(StringBuffer code) throws IllegalActionException {
+    }
+
+    /** FIXME
+     */
+    public void generateWrapupCode(StringBuffer code) throws IllegalActionException {
+    }
+
+    /** FIXME
+     */
+    public NamedObj getComponent() {
+        return _component;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** The associated component. */
+    private NamedObj _component;
 }

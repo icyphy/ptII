@@ -32,7 +32,9 @@ import java.lang.reflect.Constructor;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
@@ -52,7 +54,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */
-public class StaticSchedulingCodeGenerator extends CodeGenerator {
+public class StaticSchedulingCodeGenerator
+        extends CodeGenerator implements ActorCodeGenerator {
 
 	/** Create a new instance of the C code generator.
 	 *  @param container The container.
@@ -71,7 +74,39 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    public void generateFireCode(CodeStream stream) 
+    /** Generate the body code that lies between initialize and wrapup.
+     *  In this base class, nothing is generated.
+     */
+    public void generateBodyCode(StringBuffer code) throws IllegalActionException {
+        generateFireCode(code);
+    }
+
+    /** Generate code.  This is the main entry point.
+     *  FIXME: more
+     */
+    public void generateCode(StringBuffer code) throws IllegalActionException {
+        // If necessary, create a manager.
+        Actor container = ((Actor)getContainer());
+        Manager manager = container.getManager();
+        if (manager == null) {
+            CompositeActor toplevel = (CompositeActor)
+                    ((NamedObj)container).toplevel();
+        	toplevel.setManager(new Manager(
+                    toplevel.workspace(), "Manager"));
+        }
+        container.preinitialize();
+        
+        super.generateCode(code);
+    }
+
+    /** Generate into the specified code stream the code associated
+     *  with one firing of the container composite actor. This is
+     *  created by stringing together the code for the contained
+     *  actors in the order given by the schedule obtained from the
+     *  director of the container.
+     *  @param code The code stream into which to generate the code.
+     */
+    public void generateFireCode(StringBuffer code) 
             throws IllegalActionException {
         
         CompositeEntity model = (CompositeEntity)getContainer();
@@ -148,7 +183,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator {
                         + ". Its helper class does not implement CodeFactory.");
             }
             ActorCodeGenerator castHelperObject = (ActorCodeGenerator)helperObject;
-            castHelperObject.generateFireCode(stream);
+            castHelperObject.generateFireCode(code);
         }
     }
     

@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
+import ptolemy.kernel.util.NamedObj;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CCodeGeneratorHelper
@@ -42,6 +44,12 @@ package ptolemy.codegen.kernel;
 */
 
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
+    
+    /** FIXME
+     */
+    public CCodeGeneratorHelper(NamedObj component) {
+    	super(component);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

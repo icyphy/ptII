@@ -28,23 +28,17 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
-import java.lang.reflect.Constructor;
-import java.util.Iterator;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
-import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ComponentCodeGenerator
 
-/** FIXME
+/** Interface for components that can generate code.
+ *  Classes that implement this interface are helper classes, closely associated
+ *  with a specific Ptolemy II component (such as an actor), and able to generate
+ *  code in some language to implement the functionality of that component.
  * 
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Rachel Zhou
  *  @version $Id$
@@ -57,5 +51,24 @@ public interface ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    // FIXME 
+    /** Generate into the specified code stream the code associated
+     *  with initialization of the container composite actor.
+     *  @param code The code stream into which to generate the code.
+     *  @throws IllegalActionException If something goes wrong.
+     */
+    public void generateInitializeCode(StringBuffer code)
+            throws IllegalActionException; 
+
+    /** Generate into the specified code stream the code associated
+     *  with wrapping up the container composite actor.
+     *  @param code The code stream into which to generate the code.
+     *  @throws IllegalActionException If something goes wrong.
+     */
+    public void generateWrapupCode(StringBuffer code)
+            throws IllegalActionException; 
+    
+    /** Return the associated component.
+     *  @return The component for which this is a helper to generate code.
+     */
+    public NamedObj getComponent();
 }
