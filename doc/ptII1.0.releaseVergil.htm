@@ -17,9 +17,10 @@ than 100 characters.  If you do not have GNU tar, you can obtain
 source and selected binaries from 
 ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 
-<li> If all the demos are run, the memory size seems to grow to about
+<li> Under the Java 1.3 Plug-in,
+if all the demos are run, the memory size seems to grow to about
 87Mb and then the process hangs.
-
+The workaround is to update to JDK 1.3.1 beta.
 </menu>
 
 
@@ -29,6 +30,11 @@ ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 <li>The Expression actor does not properly propagate type constraints in
 an expression-dependent fashion. It works correctly for double-valued
 expressions of double-valued inputs.
+
+<li> The Ptolemy parameter parser uses comma "," to separate elements
+in an array.  This causes problems when Ptolemy is run on
+European machines that use a comma "1,0" instead of a period "1.0"
+in floating point numbers.
 
 <li> The readFile() parameter function does not work with applets.
 
