@@ -262,7 +262,11 @@ public class Plotter extends TypedAtomicActor
 
     /** If the plot has not already been created, create it.
      *  If configurations specified by a call to configure() have not yet
-     *  been processed, process them.
+     *  been processed, process them. Clear the data sets that this
+     *  actor is responsible for (starting with the one indexed
+     *  by <i>startingDataset</i>, up to <i>startingDataset</i> +
+     *  <i>width</i> - 1, where <i>width</i> is the width of the
+     *  input port.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -354,6 +358,20 @@ public class Plotter extends TypedAtomicActor
         } catch (IllegalActionException ex) {
             // Safe to ignore because user would
             // have already been alerted.
+        }
+    }
+
+    /** Clear the plot, if there is one.  Notice that unlike
+     *  initialize(), this clears the entire plot.
+     *  @see #initialize()
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        if (plot != null) {
+            // This clears the axes as well.
+            plot.clear(true);
+            plot.repaint();
         }
     }
 
