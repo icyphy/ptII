@@ -88,7 +88,7 @@ public class ThrowModelError extends Sink {
 
     /** Read one token from each input channel that has a token,
      *  and if any token is true, invoke the model error handler.
-     *  @exception IllegalActionException If FIXME
+     *  @exception IllegalActionException If thrown by the parent class.
      *  @return Whatever the base class returns (probably true).
      */
     public boolean postfire() throws IllegalActionException {
@@ -103,7 +103,8 @@ public class ThrowModelError extends Sink {
             }
         }
         if (result) {
-            handleModelError(this, new IllegalActionException(this, message.getExpression()));
+            handleModelError(this,
+                    new IllegalActionException(this, message.getExpression()));
         }
         return super.postfire();
     }

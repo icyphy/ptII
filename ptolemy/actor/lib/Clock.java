@@ -281,7 +281,8 @@ public class Clock extends TimedSource {
 
             // Adjust the phase if time has moved beyond the current phase.
             // FIXME: why using while but not if?
-            while (currentTime >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
+            while (currentTime
+                    >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
 
                 // Phase boundary.  Change the current value.
                 _tentativeCurrentValue = _getValue(_tentativePhase);
@@ -313,7 +314,9 @@ public class Clock extends TimedSource {
                 // missed a deadline.  As a consequence, the clock will stop.
                 _tentativeNextFiringTime
                     = _tentativeCycleStartTime + _offsets[_tentativePhase];
-                if (_debugging) _debug("next firing is at " + _tentativeNextFiringTime);
+                if (_debugging) {
+                    _debug("next firing is at " + _tentativeNextFiringTime);
+                }
             }
         }
 

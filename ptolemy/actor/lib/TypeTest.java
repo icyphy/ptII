@@ -155,7 +155,8 @@ public class TypeTest extends Discard {
             }
             ArrayList portNames = new ArrayList();
             ArrayList portTypes = new ArrayList();
-            for (Iterator ports = entity.portList().iterator(); ports.hasNext();) {
+            for (Iterator ports = entity.portList().iterator();
+                 ports.hasNext();) {
                 TypedIOPort port = (TypedIOPort)ports.next();
                 portNames.add(port.getName());
                 portTypes.add(new StringToken(port.getType().toString()));
@@ -164,12 +165,15 @@ public class TypeTest extends Discard {
                 portActorNameList.add(entity.getName());
                 portAssignments.add(
                         new RecordToken(
-                                (String[])portNames.toArray(new String[portNames.size()]),
-                                (Token[])portTypes.toArray(new Token[portTypes.size()])));
+                                (String[])portNames
+                                .toArray(new String[portNames.size()]),
+                                (Token[])portTypes
+                                .toArray(new Token[portTypes.size()])));
             }
             ArrayList paramNames = new ArrayList();
             ArrayList paramTypes = new ArrayList();
-            for (Iterator params = entity.attributeList(Parameter.class).iterator();
+            for (Iterator params =
+                     entity.attributeList(Parameter.class).iterator();
                  params.hasNext();) {
                 Parameter param = (Parameter) params.next();
                 paramNames.add(param.getName());
