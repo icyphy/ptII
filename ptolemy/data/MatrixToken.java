@@ -36,7 +36,7 @@ import ptolemy.math.Complex;
 Abstract base class for tokens that contain a 2-D array.
 This class defines methods for type conversion among different matrix
 tokens. The implementation in this base class just throws an exception.
-Derived class should override the methods that the corresponding
+Derived classes should override those methods where the corresponding
 conversion can be achieved without loss of information.
 
 @author Yuhong Xiong
@@ -58,20 +58,6 @@ public abstract class MatrixToken extends Token {
 	String str = "complexMatrix method not supported on "
 		+ this.getClass().getName() + " objects.";
 	throw new IllegalActionException(str);
-    }
-
-    /** Convert the specified token into an instance of MatrixToken.
-     *  Since MatrixToken is not in the type hierarchy, we just throw
-     *  an exception.
-     *  @parameter A Token.
-     *  @return A MatrixToken.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     */
-    public static Token convert(Token token)
-	    throws IllegalActionException {
-	throw new IllegalActionException("MatrixToken.convert: method " +
-		"not supported on MatrixToken.");
     }
 
     /** Return the content of this token as a 2-D double array.
@@ -118,30 +104,13 @@ public abstract class MatrixToken extends Token {
     }
 
     /** Return the number of columns of the contained matrix.
-     *  In this base class, we just throw an exception.
-     *  @return An integer.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
+     *  @return An integer representing the number of columns.
      */
-    public int numColumns()
-	    throws IllegalActionException {
-	String str = "numColumns method not supported on "
-		+ this.getClass().getName() + " objects.";
-	throw new IllegalActionException(str);
-    }
+    public abstract int getColumnCount();
 
     /** Return the number of rows of the contained matrix.
-     *  In this base class, we just throw an exception.
-     *  @return An integer.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
+     *  @return An integer representing the number of rows.
      */
-    public int numRows()
-	    throws IllegalActionException {
-	String str = "numRows method not supported on "
-		+ this.getClass().getName() + " objects.";
-	throw new IllegalActionException(str);
-    }
-
+    public abstract int getRowCount();
 }
 
