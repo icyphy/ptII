@@ -45,9 +45,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj)
-   @Pt.AcceptedRating Green (eal)
-   @see ptolemy.actor.Actor
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public abstract class DEActor extends TypedAtomicActor
     implements SequenceActor, TimedActor {

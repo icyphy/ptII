@@ -54,7 +54,7 @@ import ptolemy.kernel.util.InternalErrorException;
     Before firing an actor, the director is expected to put at least one
     token into at least one of the receivers contained by the actor.
 
-    @author Lukito Muliadi, Edward A. Lee, Jie Liu
+    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
     @version $Id$
     @since Ptolemy II 0.2
     @Pt.ProposedRating Yellow (hyzheng)
@@ -71,7 +71,7 @@ public class DEReceiver extends AbstractReceiver {
     /** Construct an empty DEReceiver with the specified container.
      *  @param container The container.
      *  @exception IllegalActionException If the container does
-     *   not accept this receiver.
+     *  not accept this receiver.
      */
     public DEReceiver(IOPort container) throws IllegalActionException {
         super(container);
@@ -87,11 +87,12 @@ public class DEReceiver extends AbstractReceiver {
     }
 
     /** Get the first token from the receiver. The token returned is one that
-     *  was put in the receiver with a time stamp equal to or earlier than
-     *  the current time.  Note that there might be multiple such
-     *  tokens in the receiver. In that case, FIFO behaviour is used with
-     *  respect to the put() method. If there is no such token, throw an
-     *  exception. This method is synchronized since the actor may not
+     *  was put in the receiver with a timestamp equal to or earlier than
+     *  the current time. If there is no token, throw an exception. If this 
+     *  receiver contains more than one event, the oldest event is removed 
+     *  first. In other words, this receiver has a FIFO behavior.  
+     *  <p>
+     *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
      *  @return A token.
      *  @exception NoTokenException If there are no more tokens. This is
@@ -141,19 +142,16 @@ public class DEReceiver extends AbstractReceiver {
     }
 
     /** Put a token into this receiver and post a trigger event to the director.
-     *  The director will be responsible to dequeue the trigger event at at
+     *  The director will be responsible to dequeue the trigger event at 
      *  the correct timestamp and microstep and invoke the corresponding actor
-     *  whose input port contains this receiver.   
-     *  This method is synchronized since the actor may not
-     *  execute in the same thread as the director.
+     *  whose input port contains this receiver. This receiver may contain 
+     *  more than one events. This method is synchronized since the actor 
+     *  may not execute in the same thread as the director.
      *  @param token The token to be put.
      */
     public synchronized void put(Token token) {
         try {
             DEDirector dir = _getDirector();
-            // Instead of put tokens into global event queue, 
-            // put triggers into the global event queue.
-            //dir._enqueueEvent(this, token, dir.getModelTime());
             dir._enqueueEvent(getContainer(), dir.getModelTime());
             _tokens.add(token);
         } catch (IllegalActionException ex) {

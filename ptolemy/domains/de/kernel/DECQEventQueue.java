@@ -42,17 +42,18 @@ import ptolemy.kernel.util.InvalidStateException;
 /**
    A calendar queue implementation of the DE event queue. 
    This queue stores DE events in the order of their time stamps, 
-   microsteps and depths of their destination actors. {@link DEEventQueue}.
+   microsteps and depths of their destination actors. See {@link DEEventQueue} 
+   for more explanation of the order of DE events.
    <P>
    Its complexity is theoretically O(1) for both enqueue and dequeue 
-   operations, assuming a reasonable distribution of time stamps. 
+   operations, assuming a reasonable distribution of time stamps. See
    {@link ptolemy.actor.util.CalendarQueue}.
 
-   @author Lukito Muliadi, Edward A. Lee, Jie Liu
+   @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj)
-   @Pt.AcceptedRating Green (cxh)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public class DECQEventQueue implements DEEventQueue {
 

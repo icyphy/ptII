@@ -1,4 +1,4 @@
-/* A DE event in the Ptolemy II DE domain.
+/* A DE event in the DE domain.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -30,38 +30,39 @@ package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
-import ptolemy.data.Token;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEEvent
 
 /**
-   This class defines the structure of events in Ptolemy II DE domain.
-   Conceptually, a DE event contains a token and a tag.  
+   This class defines the structure of events in the DE domain.
+   Conceptually, a DE event is a trigger that contains a tag and a reference to
+   its destination actor. The purpose of a DE event is to schedule its 
+   destination actor to fire at the timestamp and microstep specified by 
+   its tag.   
    <p>
-   A tag consists of a timestamp and a microstep. The timestamp is the model
-   time when the event exists. The microstep represents the index of a sequence
-   of simultaneous events at a model time. 
+   A tag is a tuple of a timestamp and a microstep. The timestamp is the model
+   time when the event exists. The microstep defines the order of a sequence
+   of (simultaneous) events that exist at the same model time. 
    <p>
-   A DE event is associated with a destination actor, ioPort, and receiver. A 
-   DE event can be a pure event, which is used to schedule an actor to fire at 
-   a particular tag. A pure DE event has its desitination ioPort and receiver 
-   as null. A DE event can also be a trigger event, which is associated with an
-   IO port, where none of the desitinations should be null.  
-   <p>
+   A DE event is associated with a destination, which is either an actor or 
+   an IO port of an actor. A DE event, whose destination is an actor, is 
+   called a <i>pure</i> event. A pure event does not have a desitination IO 
+   port. A DE event, whose destination is an IO port, is called a <i>trigger</i> 
+   event. Apprently, a trigger event has a destination actor. 
+   <p> 
    A DE event also has a depth, which is the topology information of its 
-   destinations. For a pure event, the depth is that of the destination actor.
-   For a trigger event, the depth is that of the destination io port. A larger 
-   value of depth represents a lower priority when processing events with 
-   the same tag. 
+   destinations. For a pure event, the depth is that of its destination actor.
+   For a trigger event, the depth is about its destination IO port. A larger 
+   value of depth indicates a lower priority when simulator processes events 
+   with the same tag. 
    <p>
    Two DE events can be compared to see which one happens first. The order 
    is defined by the relationship between their time stamps, microsteps, and 
-   depths. {@link DEEventQueue}. DE events can be compared by using the 
-   compareTo method.
+   depths. See {@link DEEventQueue} for more details. DE events can be compared 
+   by using the compareTo method.
    <p>
    @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
    @version $Id$
@@ -71,40 +72,8 @@ import ptolemy.kernel.util.NamedObj;
 */
 public final class DEEvent implements Comparable {
 
-    // FIXME: a DE event does not need the _token field nor the _receiver field.
-    
-    /** Construct a data DE event with the specified destination receiver,
-     *  token, time stamp, microstep, and depth. 
-     *  @param receiver The destination receiver.
-     *  @param token The transferred token.
-     *  @param timeStamp The current model time when the event occurs.
-     *  @param microstep The index of this event in a sequence of event at the 
-     *  current time stamp.
-     *  @param depth The topological depth of this event.
-     *  @exception NullPointerException If the receiver is null or is
-     *   not contained by a port contained by an actor.
-     */
-    public DEEvent(Receiver receiver, Token token, Time timeStamp,
-            int microstep, int depth) {
-        if (receiver!= null) {
-            // Infer the io port and actor from the given receiver.
-            _ioPort = (IOPort) receiver.getContainer();
-            _actor = (Actor) _ioPort.getContainer();
-        } else {
-            // If the receiver is null, it may be a Pure Event.
-            // In which case, the other constructor should be used.
-            throw new NullPointerException("Can not construct a data or token " 
-                    + "event with a null receiver.");
-        }
-        _receiver = receiver;
-        _token = token;
-        _timeStamp = timeStamp;
-        _microstep = microstep;
-        _depth = depth;
-    }
-
-    /** Construct a pure event with the specified destination actor, time
-     *  stamp, microstep, and depth.
+    /** Construct a pure event with the specified destination actor, 
+     *  timestamp, microstep, and depth.
      *  @param actor The destination actor
      *  @param timeStamp The time when the event occurs.
      *  @param microstep The phase of execution within a fixed time.
@@ -113,15 +82,13 @@ public final class DEEvent implements Comparable {
     public DEEvent(Actor actor, Time timeStamp, int microstep, int depth) {
         _actor = actor;
         _ioPort = null;
-        _receiver = null;
-        _token = null;
-        _timeStamp = timeStamp;
+        _timestamp = timeStamp;
         _microstep = microstep;
         _depth = depth;
     }
     
-    /** Construct a trigger event with the specified destination IO port, time
-     *  stamp, microstep, and depth.
+    /** Construct a trigger event with the specified destination IO port, 
+     *  timestamp, microstep, and depth.
      *  @param ioPort The destination IO port.
      *  @param timeStamp The time when the event occurs.
      *  @param microstep The phase of execution within a fixed time.
@@ -130,9 +97,7 @@ public final class DEEvent implements Comparable {
     public DEEvent(IOPort ioPort, Time timeStamp, int microstep, int depth) {
         _actor = (Actor)ioPort.getContainer();
         _ioPort = ioPort;
-        _receiver = null;
-        _token = null;
-        _timeStamp = timeStamp;
+        _timestamp = timeStamp;
         _microstep = microstep;
         _depth = depth;
     }
@@ -145,8 +110,8 @@ public final class DEEvent implements Comparable {
     }
 
     /** Compare this event with the argument event for an order.
-     *  See compareTo(DEEvent event) for the comparison rules.
-     *  The argument event has to be an instance of DEEvent. Otherwise,a
+     *  See {@link #compareTo(DEEvent event)} for the comparison rules.
+     *  The argument event has to be an instance of DEEvent. Otherwise, a
      *  ClassCastException will be thrown.
      *
      *  @param event The event to compare against.
@@ -159,19 +124,19 @@ public final class DEEvent implements Comparable {
     }
 
     /** Compare the tag and depth of this event with those of the argument 
-     *  event for an order. Return -1, 0, or 1 if this event will be handled 
+     *  event for an order. Return -1, 0, or 1 if this event happens 
      *  earlier than, the same time as, or later than the argument event.
-     *  
-     *  Their time stamps are compared first. If the two time stamps are not 
+     *  <p>
+     *  Their time stamps are compared first. If the two timestamps are not 
      *  the same, their order defines the events' order. Otherwise, the 
      *  microsteps of events are compared for an order, where the smaller 
      *  microstep, the earlier the event. If the events have the same microstep,
      *  their depths are compared. The smaller depth, the earlier the event. 
-     *  If the two events have the same tags and depths, they will be processed
-     *  together. 
+     *  If the two events have the same tags and depths, they happen at the
+     *  same time. 
      *
-     * @param event The event to compare against.
-     * @return -1, 0, or 1, depends on the order of the events.
+     *  @param event The event to compare against.
+     *  @return -1, 0, or 1, depends on the order of the events.
      */
     public final int compareTo(DEEvent event) {
 
@@ -192,9 +157,9 @@ public final class DEEvent implements Comparable {
         }
     }
 
-    /** Return the depth of this event. For a pure event, it is the position of 
-     *  the destination actor in the topological sort. For a data event, it is
-     *  the position of the destination io port.
+    /** Return the depth of this event. For a pure event, it is the depth of 
+     *  the destination actor in the topological sort. For a trigger event, it 
+     *  is the depth of the destination IO port.
      *  @return The depth of this event.
      */
     public final int depth() {
@@ -217,12 +182,11 @@ public final class DEEvent implements Comparable {
      *  and their depths are the same.
      */
     public final boolean hasTheSameTagAndDepthAs(DEEvent event) {
-        return hasTheSameTagAs(event) 
-            && (depth() == event.depth());
+        return hasTheSameTagAs(event) && (depth() == event.depth());
     }
 
-    /** Return the destination io port of this event.
-     *  For pure events, the destination ioPort is null.
+    /** Return the destination IO port of this event. Note that
+     *  for a pure event, the destination IO Port is null.
      *  @return The destination ioPort.
      */
     public final IOPort ioPort() {
@@ -236,27 +200,11 @@ public final class DEEvent implements Comparable {
         return _microstep;
     }
 
-    /** Return the destination receiver of this event.
-     *  For pure events, the destination receiver is null.
-     *  @return The destination receiver
-     */
-    public final Receiver receiver() {
-        return _receiver;
-    }
-
-    /** Return the time stamp.
-     *  @return The time stamp.
+    /** Return the timestamp.
+     *  @return The timestamp.
      */
     public final Time timeStamp() {
-        return _timeStamp;
-    }
-
-    /** Return the token contained by this event. For a pure event, the token
-     *  is null.
-     *  @return The token in this event.
-     */
-    public final Token token() {
-        return _token;
+        return _timestamp;
     }
 
     /** Return a description of the event, including the the tag, depth,
@@ -265,11 +213,11 @@ public final class DEEvent implements Comparable {
      */
     public String toString() {
         if (_ioPort != null) {
-            return "DEEvent(token= " + _token + ", time= " + _timeStamp 
+            return "DEEvent(time= " + _timestamp + ", microstep= " + _microstep 
                 + ", dest= " + ((NamedObj)_actor).getFullName() + "." 
                 + _ioPort.getName() + ").";
         } else {
-            return "DEEvent(token= " + _token + ", time= " + _timeStamp 
+            return "DEEvent(time= " + _timestamp + ", microstep= " + _microstep 
                 + ", dest= " + ((NamedObj)_actor).getFullName() + ")" 
                 + " -- A PURE EVENT.";
         }
@@ -293,21 +241,15 @@ public final class DEEvent implements Comparable {
     // The destination actor.
     private Actor _actor;
 
-    // The destination io port.
+    // The depth of this event.
+    private int _depth;
+
+    // The destination IO port.
     private IOPort _ioPort;
 
     // The microstep of this event.
     private int _microstep;
 
-    // The destination receiver.
-    private Receiver _receiver;
-
-    // The depth of this event.
-    private int _depth;
-
-    // The time stamp of the event.
-    private Time _timeStamp;
-
-    // The token contained by this event.
-    private Token _token;
+    // The timestamp of the event.
+    private Time _timestamp;
 }

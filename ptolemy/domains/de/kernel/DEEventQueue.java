@@ -35,21 +35,28 @@ import ptolemy.kernel.util.InvalidStateException;
 //////////////////////////////////////////////////////////////////////////
 //// DEEventQueue
 /**
-   This interface defines the global event queue used by DE directors
-   to sort and manage DE events. DE events are sorted according to their time
-   stamps, microstep and the depth of the destination actor.
-   One DE event is said to be earlier than another, if it has
-   a smaller time stamp, or when the time stamps are identical,
-   it has a smaller microstep, or when both time stamps and
-   microsteps are identical, it has a smaller depth.
-   If all three entries are identical, the DE events are stored in
-   the order they are added into this event queue.
+   This interface defines an event queue used by DE directors to sort and 
+   manage DE events. 
+   <p>
+   DE events are sorted according to their time stamps, microsteps, and the 
+   depths of the destination actors. One DE event is said to be earlier than 
+   another, if it has a smaller time stamp, or when the time stamps are 
+   identical, it has a smaller microstep, or when both time stamps and
+   microsteps are identical, it has a smaller depth. If all three entries are 
+   identical, then these two DE events are called identitcal. 
+   <p>
+   This interface defines a few methods to manage the event queue, including
+   adding a new event into the queue, getting the earliest event of the queue.
+   A correct implementation of this interface should not allow identitcal 
+   events. In particular, when adding a new event, the event is not added if 
+   the event is already in the queue. Also note that calling get() method does 
+   not delete events from event queue but calling take() method does. 
 
-   @author Lukito Muliadi, Jie Liu
+   @author Lukito Muliadi, Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj)
-   @Pt.AcceptedRating Green (cxh)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
    @see DEEvent
 */
 public interface DEEventQueue extends Debuggable {
@@ -73,7 +80,8 @@ public interface DEEventQueue extends Debuggable {
      */
     public boolean isEmpty();
 
-    /** Enqueue a DE event into the event queue.
+    /** Enqueue a DE event into the event queue. If the event is already 
+     *  contained in the queue, this method does nothing. 
      *  @param deEvent The DE event to be put into the queue.
      *  @exception IllegalActionException If the event cannot be enqueued.
      */
@@ -84,7 +92,8 @@ public interface DEEventQueue extends Debuggable {
      */
     public int size();
     
-    /** Dequeue the earliest DE event in this event queue.
+    /** Return the earliest DE event in this event queue. The returned event
+     *  is deleted from the event queue. 
      *  @return The earliest DE event in the event queue.
      *  @exception InvalidStateException If the queue is empty.
      */

@@ -53,7 +53,6 @@ JSRCS = DEActor.java \
 	DEDirector.java \
 	DEEvent.java \
 	DEEventQueue.java \
-	DEIOPort.java \
 	DEReceiver.java\
 	DEThreadActor.java 
 
