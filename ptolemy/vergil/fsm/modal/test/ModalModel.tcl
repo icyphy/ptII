@@ -67,7 +67,7 @@ test ModalModel-1.1 {Create a ModalModel} {
 
     # Filter out graphical classes while inside MoMLParser so that
     # these test will run at night.
-    $parser setMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
