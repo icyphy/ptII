@@ -678,17 +678,6 @@ public class DEDirector extends Director {
         super.initialize();
         _exceedStopTime = false;
         _realStartTime = System.currentTimeMillis();
-        // FIXME: the following statement may not be necessary.
-        // Because whenever an event (acturally only a pure event) can
-        // be inserted into the event queue during the initialize phase.
-        // The fireAt method should be smart enough to request
-        // refiring of this container.
-        // Request a firing to the outer director if the queue is not empty.
-        if (_isEmbedded() && !_eventQueue.isEmpty()) {
-            if (_debugging) _debug("DE director requests refiring" +
-                    " because of nonempty event queue.");
-            _requestFiring();
-        }
     }
 
     /** Indicate that the topological depth of the ports in the model may
@@ -1354,8 +1343,9 @@ public class DEDirector extends Director {
             _debug("enqueue a pure event: ", ((NamedObj)actor).getName(),
                 "time = " + time + " microstep = " + microstep + " depth = "
                 + depth);
-        // Register the pure event.
-        _eventQueue.put(new DEEvent(actor, time, microstep, depth));
+        // Register the new pure event.
+        DEEvent newEvent = new DEEvent(actor, time, microstep, depth); 
+        _eventQueue.put(newEvent);
     }
 
     /** Put an event into the event queue with the specified destination
