@@ -89,19 +89,12 @@ test ProcessDirector-4.1 {Test _makeDirectorOf} {
 ######################################################################
 ####
 #
-puts "Commented out ProcessDirector-5.1 {Test action methods}, it was hanging"
-#test ProcessDirector-5.1 {Test action methods} {
-#    # NOTE: Uses the setup above
-#    set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
-#    set a2 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A2]
-#    $a1 clear
-#    $manager run
-#    lsort [$a1 getRecord]
-#    
-#} {W.E0.A1.fire W.E0.A1.initialize W.E0.A1.postfire W.E0.A1.prefire W.E0.A1.wrapup W.E0.A2.fire W.E0.A2.initialize W.E0.A2.postfire W.E0.A2.prefire W.E0.A2.wrapup}
-
-
-
-
-
+test ProcessDirector-5.1 {Test action methods} {
+    # NOTE: Uses the setup above
+    set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
+    set a2 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A2]
+    $manager run
+    lsort [$a1 getRecord]
+    
+} {W.E0.A1.fire W.E0.A1.initialize W.E0.A1.postfire W.E0.A1.prefire W.E0.A1.wrapup W.E0.A2.fire W.E0.A2.initialize W.E0.A2.postfire W.E0.A2.prefire W.E0.A2.wrapup}
 

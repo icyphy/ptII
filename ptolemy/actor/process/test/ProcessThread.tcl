@@ -77,27 +77,23 @@ test ProcessThread-3.1 {Test state methods} {
 ######################################################################
 ####
 #
-puts "Commented out ProcessThread-3.2 {Test action methods}, it was hanging"
-#test ProcessThread-3.2 {Test action methods} {
-#    set manager [java::new ptolemy.actor.Manager manager]
-#    set e0 [java::new ptolemy.actor.CompositeActor]
-#    set d1 [java::new ptolemy.actor.process.ProcessDirector $e0 director]
-#    $e0 setName E0
-#    $e0 setManager $manager
-#    set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
-#    $a1 clear
-#    $manager run
-#    $a1 getRecord
-#    
-#} {.E0.A1.initialize
-#.E0.A1.prefire
-#.E0.A1.fire
-#.E0.A1.postfire
-#.E0.A1.wrapup
-#}
-
-
-
+test ProcessThread-3.2 {Test action methods} {
+    set manager [java::new ptolemy.actor.Manager manager]
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    set d1 [java::new ptolemy.actor.process.ProcessDirector $e0 director]
+    $e0 setName E0
+    $e0 setManager $manager
+    set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
+    $a1 clear
+    $manager run
+    $a1 getRecord
+    
+} {.E0.A1.initialize
+.E0.A1.prefire
+.E0.A1.fire
+.E0.A1.postfire
+.E0.A1.wrapup
+}
 
 
 
