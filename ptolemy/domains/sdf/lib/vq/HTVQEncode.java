@@ -51,6 +51,7 @@ public final class HTVQEncode extends SDFAtomicActor {
 
         super(container, name);
         SDFIOPort outputport = (SDFIOPort) newPort("index");
+
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 3168);
         outputport.setDeclaredType(IntToken.class);
@@ -61,7 +62,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         inputport.setDeclaredType(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook", 
-                new StringToken("/users/neuendor/htvq/usc_hvq_s5.dat"));
+                new StringToken("../lib/vq/data/usc_hvq_s5.dat"));
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
         new Parameter(this, "XPartitionSize", new IntToken("4"));

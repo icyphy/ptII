@@ -127,7 +127,7 @@ public class HTVQApplet extends Applet implements Runnable {
             HTVQEncode encode = new HTVQEncode(c, "Encoder");
             encode.setBaseURL(getDocumentBase());
             VQDecode decode = new VQDecode(c, "Decoder");
-            encode.setBaseURL(getDocumentBase());
+            decode.setBaseURL(getDocumentBase());
             ImageUnpartition unpart = new ImageUnpartition(c, "Unpart");
             ImageDisplay consumer = new ImageDisplay(c, "Compressed");
             ImageDisplay original = new ImageDisplay(c, "Original");
@@ -159,7 +159,11 @@ public class HTVQApplet extends Applet implements Runnable {
             ex.printStackTrace();
         }
         validate();
-    }
+	DebugListener debugger = new DebugListener();
+	Debug.register(debugger);
+	
+	Debug.println("testing");
+ }
 
     /** Run the simulation.
      */
@@ -169,7 +173,7 @@ public class HTVQApplet extends Applet implements Runnable {
                 // Start the CurrentTimeThread.
             //             Thread ctt = new CurrentTimeThread();
             //  ctt.start();
-
+	
             validate();
                 _manager.run();
 
