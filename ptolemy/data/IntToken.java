@@ -162,7 +162,7 @@ public class IntToken extends ScalarToken {
      *  divided by the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion. If two integers are divided,
-     *  the result may or may not be an integer.
+     *  the result will be an integer which is the quotient.
      *  @param divisor The token to divide this Token by
      *  @exception IllegalActionException If the passed token is
      *  not of a type that can be divide this Tokens value by in a
@@ -175,20 +175,10 @@ public class IntToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return divisor.divideReverse(this);
             } else if (divisor instanceof IntToken) {
-                double result = _value / ((IntToken)divisor).doubleValue();
-                if ((result - (int)result) == 0) {
-                    return new IntToken((int)result);
-                } else {
-                    return new DoubleToken(result);
-                }
+		return new IntToken(_value / ((IntToken)divisor).intValue());
             } else if (typeInfo == CPO.HIGHER) {
                 IntToken tmp = (IntToken)this.convert(divisor);
-                double result = _value / tmp.doubleValue();
-                if ((result - (int)result) == 0) {
-                    return new IntToken((int)result);
-                } else {
-                    return new DoubleToken(result);
-                }
+		return new IntToken(_value / (tmp.intValue()));
             } else {
                 throw new Exception();
             }
@@ -210,14 +200,10 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token divideReverse(Token dividend) throws IllegalActionException {
+    public Token divideReverse(Token dividend)
+	    throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(dividend);
-        double result = tmp.intValue() / _value;
-        if (result == (int)result) {
-            return new IntToken((int)result);
-        } else {
-            return new DoubleToken(result);
-        }
+	return new IntToken(tmp.intValue() / _value);
     }
 
     /** Return the value in the token as a double.
