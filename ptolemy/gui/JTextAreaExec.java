@@ -69,8 +69,8 @@ public class JTextAreaExec extends JPanel {
 
 	_jTextArea = new JTextArea("", 20, 100);
 	_jTextArea.setEditable(false);
-	JScrollPane scrollPane = new JScrollPane(_jTextArea);
-	add(scrollPane);
+	JScrollPane jScrollPane = new JScrollPane(_jTextArea);
+	add(jScrollPane);
 
         setBorder(BorderFactory.createTitledBorder(
                       BorderFactory.createLineBorder(Color.black),
@@ -130,6 +130,8 @@ public class JTextAreaExec extends JPanel {
 		// we do not need to call
 		// System.getProperties("line.separator")
 		_jTextArea.append(text + '\n');
+		// Scroll down as we generate text.
+		_jTextArea.setCaretPosition(_jTextArea.getText().length());
             }
         };
         SwingUtilities.invokeLater(doAppendJTextArea);
