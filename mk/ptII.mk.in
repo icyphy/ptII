@@ -202,7 +202,7 @@ JDOCFLAGS = 	-author -version $(JDOCCHECKFLAGS) $(JDOCTAG) $(JDOCTAGLET)
 JAR =		$(PTJAVA_DIR)/bin/jar
 
 # Command to run that indexes a jar file named tmp.jar
-# Usually it looks like '"$(JAR)" -i tmp.jar'
+# Usually it looks like '"$(JAR)" -i $@'
 JAR_INDEX =	@JAR_INDEX@
 
 # The 'java' interpreter.

@@ -325,8 +325,9 @@ $(PTCLASSJAR): $(JSRCS) $(JCLASS)
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
 	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
-	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .; $(JAR_INDEX))
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	$(JAR_INDEX)
 	rm -rf $(PTJAR_TMPDIR)
 
 subjars:
@@ -358,8 +359,9 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	done
 	rm -rf $(PTJAR_TMPDIR)/META-INF
 	@echo "Creating $@"
-	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .; $(JAR_INDEX))
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	$(JAR_INDEX)
 	rm -rf $(PTJAR_TMPDIR)
 
 
@@ -379,8 +381,9 @@ $(PTAUXALLJAR): $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	done
 	rm -rf $(PTJAR_TMPDIR)/META-INF
 	@echo "Creating $@"
-	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .; $(JAR_INDEX))
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	$(JAR_INDEX)
 	rm -rf $(PTJAR_TMPDIR)
 
 ##############
