@@ -412,38 +412,64 @@ public abstract class TableauFrame extends Top {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
 
-            if (file.exists()) {
-                // Ask for confirmation before overwriting a file.
-                String query = "Overwrite " + file.getName() + "?";
-                // Show a MODAL dialog
-                int selected = JOptionPane.showOptionDialog(
-                        this,
-                        query,
-                        "Save Changes?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, 
-                        null,
-                        null,
-                        null);
-        
-                if (selected == 1) {
-                    return false;
-                }
-            }
-
-	    _directory = fileDialog.getCurrentDirectory();
-            try {
-                _writeFile(file);
-                setModified(false);
-            } catch (IOException ex) {
-                report("Error writing file", ex);
-                return false;
-            }
-
-            // Open a new window on the model.
             try {
                 URL newURL = file.toURL();
                 String newKey = newURL.toExternalForm();
+                Effigy previousOpen = getDirectory().getEffigy(newKey);
+                if (previousOpen != null) {
+                    // The destination file is already open.
+                    if (previousOpen.isModified()) {
+                        // Bring any visible tableaux to the foreground,
+                        // then ask if it's OK to discard the changes?
+                        previousOpen.showTableaux();
+                        String confirm = "Unsaved changes in " + file.getName()
+                        + ". OK to discard changes?";
+                        // Show a MODAL dialog
+                        int selected = JOptionPane.showOptionDialog(
+                                this,
+                                confirm,
+                                "Discard changes?",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE, 
+                                null,
+                                null,
+                                null);
+                        if (selected == 1) {
+                            return false;
+                        }
+                        // Mark unmodified so that we don't get another
+                        // query when it is close.
+                        previousOpen.setModified(false);
+                    }
+                    previousOpen.closeTableaux();
+                }
+                
+                if (file.exists()) {
+                    // Ask for confirmation before overwriting a file.
+                    String query = "Overwrite " + file.getName() + "?";
+                    // Show a MODAL dialog
+                    int selected = JOptionPane.showOptionDialog(
+                            this,
+                            query,
+                            "Overwrite file?",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, 
+                            null,
+                            null,
+                            null);
+        
+                    if (selected == 1) {
+                        return false;
+                    }
+                }
+
+                _directory = fileDialog.getCurrentDirectory();
+                _writeFile(file);
+                // The original file will still be open, and has not
+                // been saved, so we do not change its modified status.
+                // setModified(false);
+
+                // Open a new window on the model.
                 getConfiguration().openModel(newURL, newURL, newKey);
                 // If the tableau was unnamed before, then we need
                 // to close this window after doing the save.
@@ -457,7 +483,8 @@ public abstract class TableauFrame extends Top {
                     }
                 }
             } catch (Exception ex) {
-                MessageHandler.error("Error in save as.",ex);
+                report("Error in save as.", ex);
+                return false;
             }
         }
         return true;
