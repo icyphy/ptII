@@ -99,14 +99,14 @@ test Scheduler-4.2 {Test setValid and isValid} {
 ####
 #
 test Scheduler-5.1 {Scheduling tests} {
-    set manager [java::new ptolemy.actor.Manager]
-    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector]
-    $director setName Director
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
+	    $w Director]
     set toplevel [java::new ptolemy.actor.CompositeActor $w]
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.actor.sched.Scheduler]
+    set scheduler [java::new ptolemy.actor.sched.Scheduler $w]
     $director setScheduler $scheduler
 
     set a1 [java::new ptolemy.actor.test.TestActor $toplevel A1]

@@ -143,6 +143,10 @@ public class StaticSchedulingDirector extends Director {
      */
     public void setScheduler(Scheduler scheduler)
             throws IllegalActionException {
+        if (scheduler != null && workspace() != scheduler.workspace()) {
+            throw new IllegalActionException(this, scheduler,
+                    "Cannot set scheduler because workspaces are different.");
+        }
         try {
             workspace().getWriteAccess();
             // If there was a previous director, we need to reset it.

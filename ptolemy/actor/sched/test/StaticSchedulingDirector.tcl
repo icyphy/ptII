@@ -79,8 +79,10 @@ test StaticSchedulingDirector-4.1 {Test setScheduler and getScheduler} {
     set s0 [java::new ptolemy.actor.sched.Scheduler]
     $d1 setScheduler $s0
     set s1 [$d1 getScheduler]
-    list [$s0 getFullName] [$s1 getFullName]
-} {.D1.Scheduler .D1.Scheduler}
+    set s2 [java::new ptolemy.actor.sched.Scheduler]
+    catch {[$d3 setScheduler $s2]} err1
+    list [$s0 getFullName] [$s1 getFullName] $err1
+} {.D1.Scheduler .D1.Scheduler {ptolemy.kernel.util.IllegalActionException: W.D3 and .Scheduler: Cannot set scheduler because workspaces are different.}}
 
 ######################################################################
 ####
