@@ -56,7 +56,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 120, 709, 459}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 120, 709, 466}}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -271,7 +271,7 @@ function. Try Look Inside after running it.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 413, 508, 348}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 413, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -291,7 +291,7 @@ function. Try Look Inside after running it.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="6.0"/>
-<yRange min="-2.2017970200682586" max="2.1983769583314916"/>
+<yRange min="-2.2018020567740253" max="2.1991269468058525"/>
 </plot>?>
         </configure>
     </entity>
