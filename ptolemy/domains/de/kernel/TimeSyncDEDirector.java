@@ -44,7 +44,8 @@ import ptolemy.kernel.util.Workspace;
 import java.util.StringTokenizer;
 import java.io.IOException;
 import java.io.DataOutputStream;
-import java.io.DataInputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 
@@ -192,10 +193,11 @@ public class TimeSyncDEDirector extends DEDirector {
         // Uncomment to have a debug listener.
         //addDebugListener(new StreamListener());
 
-        String host = timeBaseHost.getToken().toString();
+        String host = ((StringToken)timeBaseHost.getToken()).stringValue();
         try {
             Socket socket = new Socket(host, 80);
-            DataInputStream in = new DataInputStream(socket.getInputStream());
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
             DataOutputStream out =
                 new DataOutputStream(socket.getOutputStream());
             out.writeBytes("get /bin/1451dot2/read"
