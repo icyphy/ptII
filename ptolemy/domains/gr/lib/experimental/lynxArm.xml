@@ -2,12 +2,12 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="robot arm" extends="ptolemy.actor.TypedCompositeActor">
-    <director name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
+    <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
         </property>
-    </director>
+    </property>
     <port name="out" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_location0" class="ptolemy.moml.Location">
@@ -81,14 +81,14 @@
         </port>
     </entity>
     <class name="lower limb12" extends="ptolemy.actor.TypedCompositeActor">
-        <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-        </director>
+        </property>
         <port name="port10" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -738,14 +738,14 @@
         </port>
     </entity>
     <class name="upper limb0" extends="ptolemy.actor.TypedCompositeActor">
-        <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-        </director>
+        </property>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -1553,14 +1553,14 @@
         </port>
     </entity>
     <class name="wrist0" extends="ptolemy.actor.TypedCompositeActor">
-        <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-        </director>
+        </property>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -2221,14 +2221,14 @@
         <link port="Translate3D22.output" relation="relation24"/>
     </class>
     <class name="gripper0" extends="ptolemy.actor.TypedCompositeActor">
-        <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-        </director>
+        </property>
         <port name="port1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -2986,14 +2986,14 @@
         </port>
     </entity>
     <class name="stand0" extends="ptolemy.actor.TypedCompositeActor">
-        <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-        </director>
+        </property>
         <port name="port7" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -3206,14 +3206,14 @@
         <link port="Translate3D1.output" relation="relation7"/>
     </class>
     <class name="shoulder base0" extends="ptolemy.actor.TypedCompositeActor">
-        <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-        </director>
+        </property>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">

@@ -312,10 +312,10 @@ test FSMActor-9.1 {test working with MoML} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="" class="ptolemy.actor.TypedCompositeActor">
-    <director name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-    </director>
+    </property>
     <entity name="fsm" class="ptolemy.domains.fsm.kernel.FSMActor">
         <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;plusOne&quot;">
         </property>
