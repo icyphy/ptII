@@ -898,6 +898,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
     {ptolemy.kernel.util.SingletonConfigurableAttribute {.._iconDescription} attributes {
     }}
 } ports {
+} classes {
 } entities {
     {ptolemy.actor.TypedAtomicActor {..source} attributes {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {..source._iconDescription} attributes {

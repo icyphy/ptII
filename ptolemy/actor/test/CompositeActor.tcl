@@ -219,6 +219,7 @@ test CompositeActor-7.1 {Test clone and description} {
     } configuration {{width 0}} receivers {
     } remotereceivers {
     }}
+} classes {
 } entities {
     {ptolemy.actor.CompositeActor {.E3.E5} attributes {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {.E3.E5._iconDescription} attributes {
@@ -228,6 +229,7 @@ test CompositeActor-7.1 {Test clone and description} {
             }}
         }}
     } ports {
+    } classes {
     } entities {
     } relations {
     }}
