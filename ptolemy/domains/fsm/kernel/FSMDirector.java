@@ -617,21 +617,21 @@ public class FSMDirector extends Director
         _currentLocalReceiverMap =
             (Map)_localReceiverMaps.get(controller.currentState());
 
-        ChangeRequest request =
-            new ChangeRequest(this, "increment workspace version by 1") {
+        // Note, we increment the workspace version such that the
+        // function dependencies will be reconstructed. This design 
+        // is based on that each time one transition happens, the 
+        // new refinement takes place of the modal model for 
+        // execution, consequently, the model structure changes.
+        if (_enabledTransition != null) {
+            ChangeRequest request =
+                new ChangeRequest(this, "increment workspace version by 1") {
                 protected void _execute() throws KernelException {
-                    // Note, we increment the workspace version such that the
-                    // function dependencies will be reconstructed. This design 
-                    // is based on that each time one transition happens, the 
-                    // new refinement takes place of the modal model for 
-                    // execution, consequently, the model structure changes.
-                    if (_enabledTransition != null) {
-                        ((NamedObj) getContainer()).workspace().incrVersion();
-                    }
+                    ((NamedObj) getContainer()).workspace().incrVersion();
                 }
             };
-        request.setPersistent(false);
-        getContainer().requestChange(request);
+            request.setPersistent(false);
+            getContainer().requestChange(request);
+        }
         
         return result && !_stopRequested;
     }
