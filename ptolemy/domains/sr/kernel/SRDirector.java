@@ -356,6 +356,7 @@ public class SRDirector extends StaticSchedulingDirector {
             if (_isFiringAllowed(actor)) {
                 if (!_hasCompletedFiring(actor)) {
                     _debug("    SRDirector is firing", _getNameOf(actor));
+
                     // Whether all inputs are known must be checked before
                     // firing to handle cases with self-loops.
                     boolean allInputsKnownBeforeFiring =
@@ -441,18 +442,18 @@ public class SRDirector extends StaticSchedulingDirector {
         _lastNumOfActorsAllowedToFire = currentNumOfActorsAllowedToFire;
         _lastNumOfKnownReceivers = currentNumOfKnownReceivers;
 
-        _debug("  previousNumOfActorsAllowedToFire is",
-                String.valueOf(previousNumOfActorsAllowedToFire));
-        _debug("  currentNumOfActorsAllowedToFire is",
-                String.valueOf(currentNumOfActorsAllowedToFire));
-
-        _debug("  previousNumOfKnownReceivers is",
-                String.valueOf(previousNumOfKnownReceivers));
-        _debug("  currentNumOfKnownReceivers is",
-                String.valueOf(currentNumOfKnownReceivers));
-
-        _debug("  total number of receivers is",
-                String.valueOf(_receivers.size()));
+        if (_debugging) {
+            _debug("  previousNumOfActorsAllowedToFire is",
+                    String.valueOf(previousNumOfActorsAllowedToFire));
+            _debug("  currentNumOfActorsAllowedToFire is",
+                    String.valueOf(currentNumOfActorsAllowedToFire));
+            _debug("  previousNumOfKnownReceivers is",
+                    String.valueOf(previousNumOfKnownReceivers));
+            _debug("  currentNumOfKnownReceivers is",
+                    String.valueOf(currentNumOfKnownReceivers));
+            _debug("  total number of receivers is",
+                    String.valueOf(_receivers.size()));
+        }
 
         // Note that having zero actors to fire is not sufficient for 
         // convergence.  Some actors may fire in the next phase if

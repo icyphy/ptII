@@ -4,8 +4,6 @@ To Do:
 respond to review
 talk to xiaojun
 
-wrap debugs in an if statement
-all NonStrictActors must check isKnown() before calling hasToken()
 write NonStrictSelect actor - prefire monotonicity
     only requires that the selected input is known
 code review
