@@ -30,6 +30,7 @@ package pt.kernel;
 import java.util.Hashtable;
 import java.util.Enumeration;
 import collections.UpdatableBag;
+import pt.exceptions.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
@@ -45,7 +46,8 @@ public class Relation extends Node {
      */	
     public Relation() {
 	 super();
-	 _buffer = null;
+	 _shorts = null;
+	 _shortAdditionCount = 0;
     }
 
     /** 
@@ -53,80 +55,117 @@ public class Relation extends Node {
      */	
     public Relation(String name) {
 	 super(name);
-	 _buffer = null;
+	 _shorts = null;
+	 _shortAdditionCount = 0;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Add a source port. If this is a source Relation, first verify
-     *  that no other source port has already been set. 
-     * @param port The port which will be added as a source port.
-     * @return Return true if the port was successfully added. Return
-     * false if this is a source Relation and the source was already
-     * set (in which case changeSourcePort() should be used). 
-     */	
-    /*
-    public boolean addSourcePort(Port port) {
-	Port genPortWithDuplicateName;
-	if( isSource() && _sourcePorts == null ) {
-	     genPortWithDuplicateName = (Port)
-		  _sourcePorts.put( port.getName(), port.newConnection() ); 
-	     if( genPortWithDuplicateName != null ) {
-		  //FIXME: Throw exception.
-	     }
-	     return true;
-	} else if( isDestination() ) {
-	     genPortWithDuplicateName = (Port)
-		  _destinationPorts.put( port.getName(), port.newConnection() );
-	     if( genPortWithDuplicateName != null ) {
-		  //FIXME: Throw exception.
-	     }
-	     return true;
+    /** Add a Port to this Relation.
+     * @param newPort The Port being added to this Relation.
+     * @exception NameDuplicationException This exception is thrown if an
+     * attempt is made to store two objects with identical names in the
+     * same container.
+     */
+    public void addPort(Port newPort) throws NameDuplicationException {
+	if( isPortAMember( newPort.getName() ) ) {
+	     return;
 	}
-	return false;
+	createNewDanglingShort( newPort );
+        return;
     }
-    */
 
-    /** If this is a destination Relation, make the Port argument the
-     *  new destination port. 
-     * @param port The port which will become the new destinatino port.
-     * @return Return true if successful. Return false if this is 
-     * not a destination Relation. 
-     */	
-    /*
-    public boolean changeDestinationPort(Port port) {
-	if( isDestination() ) {
-	     _destinationPorts.clear();
-	     // _destinationPorts.insertFirst( port.newConnection() ); 
-	     _destinationPorts.put( port.getName(), port.newConnection() ); 
-	     return true;
+    /** Connect two ports to each other through this Relation.
+     * @param port1 This Port will be connected to port2. 
+     * @param port2 This Port will be connected to port1. 
+     * @exception NameDuplicationException This exception is thrown if an
+     * attempt is made to store two objects with identical names in the
+     * same container.
+     */
+    public void connectPorts(Port port1, Port port2) 
+	throws NameDuplicationException {
+
+	boolean port1Membership;
+	boolean port2Membership;
+
+	port1Membership = isPortAMember( port1.getName() );
+	port2Membership = isPortAMember( port2.getName() );
+
+	if( port1Membership == false && port2Membership == false ) {
+	     Short aShort;
+	     aShort = createNewDanglingShort( port1 );
+	     connectShortToPort( aShort, port2 );
+
+	} else if( port1Membership == true && port2Membership == false ) {
+	     Short port1Short;
+	     port1Short = getDanglingShort( port1.getName() );
+	     if( port1Short == null ) {
+		  port1Short = createNewDanglingShort( port1 );
+	     }
+	     connectShortToPort( port1Short, port2 );
+
+	} else if( port1Membership == false && port2Membership == true ) {
+	     Short port2Short;
+	     port2Short = getDanglingShort( port2.getName() );
+	     if( port2Short == null ) {
+		  port2Short = createNewDanglingShort( port2 );
+	     }
+	     connectShortToPort( port2Short, port1 );
+
+	} else { 
+	     Short port1Short, port2Short;
+
+	     port1Short = getDanglingShort( port1.getName() );
+	     if( port1Short != null ) {
+	          connectShortToPort( port1Short, port2 );
+		  return;
+	     } 
+
+	     port2Short = getDanglingShort( port2.getName() );
+	     if( port2Short != null ) {
+	          connectShortToPort( port2Short, port1 );
+		  return;
+	     }
+	}
+
+	// Both ports have connections, neither of which are dangling.
+	Short port1Short;
+	port1Short = createNewDanglingShort( port1 ); 
+	connectShortToPort( port1Short, port2 );
+        return;
+    }
+
+    /** Determine if a Port is a member of any of the Shorts.
+     * @param portName The name of the Port for which membership is in question.
+     * @return Returns true if the Port is a member; returns false otherwise.
+     */
+    public boolean isPortAMember(String portName) {
+	Short aShort; 
+	Enumeration enum = _shorts.elements();
+
+	if( _shorts == null ) {
+	     _shorts = new Hashtable();
+	}
+	while( enum.hasMoreElements() ) {
+	     aShort = (Short)enum.nextElement();
+	     if( aShort.isPortConnected( portName ) ) {
+		  return true;
+	     }
 	}
         return false;
     }
-    */
 
-    /** If this is a source Relation, make the Port argument the
-     *  new source port. 
-     * @param port The port which will become the new source port.
-     * @return Return true if successful. Return false if this is 
-     * not a source Relation. 
-     */	
-    /*
-    public boolean changeSourcePort(Port port) {
-	Port genPortWithDuplicateName;
-	if( isSource() ) {
-	     _sourcePorts.clear();
-	     genPortWithDuplicateName = (Port)
-		  _sourcePorts.put( port.getName(), port.newConnection() ); 
-	     if( genPortWithDuplicateName != null ) {
-		  //FIXME: Throw exception.
-	     }
-	     return true;
-	}
-        return false;
+    /** Description
+     * @see full-classname#method-name()
+     * @param parameter-name description
+     * @param parameter-name description
+     * @return description
+     * @exception full-classname description
+     */
+    public int APublicMethod() {
+        return 1;
     }
-    */
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
@@ -137,15 +176,73 @@ public class Relation extends Node {
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
+    /* Connect a new Port to a Short. 
+     */
+    private void connectShortToPort(Short aShort, Port newPort ) 
+	throws NameDuplicationException {
+	aShort.connectPort( newPort );
+        return;
+    }
+
+    /* Create a new dangling Short for a Port. A dangling Short is one 
+     * which has only one Port connected to it. 
+     */
+    private Short createNewDanglingShort(Port port) 
+	throws NameDuplicationException {
+	if( _shorts == null ) {
+	     _shorts = new Hashtable();
+	}
+	Short newShort = new Short( createNewName() );
+	newShort.connectPort( port );
+	_shorts.put( newShort.getName(), newShort );
+
+        return newShort;
+    }
+
+    /* Create a unique name for a new Short. Names are of the form 
+     * "short#num" where "num" is an enumeration of the order in which the
+     * Short in question was added.
+     */
+    private String createNewName() {
+	_shortAdditionCount++;
+        String name;
+        name = "short" + "#" + _shortAdditionCount;
+        return name;
+    }
+
+    /* Determine if a Port has a dangling short. 
+     */
+    private Short getDanglingShort(String portName) {
+	Short aShort; 
+	Enumeration enum = _shorts.elements();
+
+	if( _shorts == null ) {
+	     return null;
+	}
+	while( enum.hasMoreElements() ) {
+	     aShort = (Short)enum.nextElement();
+	     if( aShort.isPortConnected( portName ) ) {
+		  aShort.isDangling();
+		  return aShort;
+	     }
+	}
+        return null;
+    }
+
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* The buffer which holds particles as they travel through the
-     * the Relation. Note that this buffer has no delay properties
-     * associated with it at this level. Derived versions of this
-     * class might.
+    /* The Shorts are the elemental connection units upon which a 
+     * Relation is based. 
      */
-    private UpdatableBag _buffer;
+    private Hashtable _shorts;
+
+    /* This is a count of Ports that have been added to MultiPort. Note that
+     * this only increments, even if Ports are removed. This variable is
+     * used for creating unique Port names.
+     */
+    private int _shortAdditionCount;
 }
 
 
