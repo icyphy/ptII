@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/net
 
-DIRS =
+DIRS =		demo
 
 # Root of the Java directory
 ROOT =          ../../../..
