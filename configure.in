@@ -453,6 +453,10 @@ fi
 #       check to see if $PTII/vendors/sun/j2me_cldc exists
 #--------------------------------------------------------------------
 
+# PTKVM_DIR is set to jspaces and used in 
+# $PTII/ptolemy/makefile if kvm was found
+PTKVM_DIR=
+#
 # We only need to look for kvm if $PTII/ptolemy/kvm exists
 if test ! -d "$PTII/ptolemy/kvm"; then
     AC_MSG_RESULT([$PTII/ptolemy/kvm is not present, so we need not
@@ -505,6 +509,10 @@ Kvm can be downloaded from http://java.sun.com/products/cldc'])
 	# Note that we don't substitute in the $(PTII) or $(KVM_DIR) here
 	KVM_DIR='$(PTII)/vendors/sun/kvm'
    	KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
+    else 
+	# Set to kvm and used in 
+	# $PTII/ptolemy/makefile if kvm was found
+	PTKVM_DIR=kvm
     fi    
 fi
 
@@ -558,6 +566,10 @@ AC_SUBST(PTJAVA_DIR)
 # Set to jspaces and used in 
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 AC_SUBST(PTJSPACES_DIR)
+
+# Set to kvm and used in 
+# $PTII/ptolemy/makefile if kvm was found
+AC_SUBST(PTKVM_DIR)
 
 # Set to lego and used in 
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
