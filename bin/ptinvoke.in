@@ -760,7 +760,7 @@ and run:
 	SINGLE_WINDOW_JARS=
 	if [ "$1" = "-single" ]; then
 	    shift
-	    SINGLE_WINDOW_JARS=${CLASSPATHSEPARATOR}${PTII}/lib/xml-apis.jar${CLASSPATHSEPARATOR}${PTII}/lib/xercesImpl.jar
+	    #SINGLE_WINDOW_JARS=${CLASSPATHSEPARATOR}${PTII}/lib/xml-apis.jar${CLASSPATHSEPARATOR}${PTII}/lib/xercesImpl.jar
 	    javastartupclass=thales.vergil.SingleWindowApplication
         fi
 
