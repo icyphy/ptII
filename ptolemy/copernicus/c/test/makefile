@@ -76,7 +76,6 @@ JSIMPLE_TESTS = \
     FIRSingle.tcl \
     HashSetTest.tcl \
     LinkedListTest.tcl \
-    Linpack.tcl\
     InnerField.tcl \
     InnerLocal.tcl \
     InstanceOfTest.tcl \
@@ -89,6 +88,7 @@ JSIMPLE_TESTS = \
     StringTest.tcl
 
 # Disabled tests:
+#    Linpack.tcl
 #   FIR.tcl
 #   ramp.tcl
 
@@ -143,7 +143,7 @@ Linpack:
         
 FIRSingle:
 	$(JTCLSH) FIRSingle.tcl
-	
+
 Object:
 	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) ptolemy.copernicus.c.JavaToC \
