@@ -1184,7 +1184,10 @@ public class Variable extends Attribute implements Typeable, Settable {
             _setTokenAndNotify(result);
         } catch (IllegalActionException ex) {
             _needsEvaluation = true;
-            throw ex;
+            throw new IllegalActionException(this,
+            "Error evaluating expression \""
+            + _currentExpression
+            + "\":\n" + ex);
         } finally {
 	    _dependencyLoop = false;
 	    workspace().doneReading();

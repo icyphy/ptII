@@ -120,6 +120,11 @@ public class ASTPtProductNode extends ASTPtRootNode {
             // Resolve the rest of the expression.
             result = _childTokens[0];
 
+            if (result == null) {
+                throw new IllegalActionException(
+                        "Found null value in expression!");
+            }
+
             itr = _tokens.listIterator(0);
             index = 1;
             while( itr.hasNext() ) {
