@@ -35,6 +35,7 @@ import java.net.URL;
 
 import javax.media.Buffer;
 import javax.media.ConfigureCompleteEvent;
+import javax.media.Controller;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
 import javax.media.EndOfMediaEvent;
@@ -151,7 +152,7 @@ public class MovieReader extends Source implements ControllerListener {
 
         _player.realize();
 
-        if (!_waitForState(_player.Realized)) {
+        if (!_waitForState(Controller.Realized)) {
             throw new IllegalActionException(null,
                     "Failed to realize player");
         }
@@ -176,7 +177,7 @@ public class MovieReader extends Source implements ControllerListener {
 
         _player.prefetch();
         
-        if (!_waitForState(_player.Prefetched)) {
+        if (!_waitForState(Controller.Prefetched)) {
             throw new IllegalActionException(null,
                     "Failed to prefetch player");
         }

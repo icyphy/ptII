@@ -376,7 +376,7 @@ public class MobileModel extends TypedCompositeActor {
     private void _createDirector() throws IllegalActionException{
         try {
             String directorName =((StringToken) director.getToken()).stringValue();
-            Class directorClass = director.getClass().forName(directorName);
+            Class directorClass = Class.forName(directorName);
             //System.out.println("find the class for the specified director.");
             Class[] argClasses = new Class[2];
             argClasses[0] = CompositeEntity.class;
