@@ -297,6 +297,8 @@ public class PlotBox extends JPanel implements Printable {
             _xMin = 0;
             _xRangeGiven = false;
             _yRangeGiven = false;
+            _originalXRangeGiven = false;
+            _originalYRangeGiven = false;
             _rangesGivenByZooming = false;
             _xlog = false;
             _ylog = false;
@@ -1283,7 +1285,7 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public static final String PTPLOT_RELEASE = "5.1p1";
+    public static final String PTPLOT_RELEASE = "5.1p2";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -2292,7 +2294,6 @@ public class PlotBox extends JPanel implements Printable {
                     int color = dataset % _colors.length;
                     graphics.setColor(_colors[color]);
                 }
-                // FIXME: The following fails when printing.
                 _drawPoint(graphics, dataset, urx-3, ypos-3, false);
 
                 graphics.setColor(_foreground);
