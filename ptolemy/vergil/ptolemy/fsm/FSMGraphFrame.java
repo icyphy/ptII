@@ -53,6 +53,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyTop;
 import ptolemy.actor.gui.RunTableau;
 import ptolemy.actor.gui.style.EditableChoiceStyle;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.moml.Locatable;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLParser;
@@ -158,8 +159,8 @@ import javax.swing.SwingUtilities;
 */
 public class FSMGraphFrame extends GraphFrame {
    
-    public FSMGraphFrame(CompositeEntity entity) {
-	super(entity);
+    public FSMGraphFrame(CompositeEntity entity, Tableau tableau) {
+	super(entity, tableau);
     }
 	    
     ///////////////////////////////////////////////////////////////////

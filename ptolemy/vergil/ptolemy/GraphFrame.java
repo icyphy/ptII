@@ -167,10 +167,6 @@ notation as a a factory
 public abstract class GraphFrame extends PtolemyTop
     implements Printable, ClipboardOwner {
    
-    public GraphFrame(CompositeEntity entity) {
-        this(entity, null);
-    }
-
     public GraphFrame(CompositeEntity entity, Tableau tableau) {
         super(tableau);
 

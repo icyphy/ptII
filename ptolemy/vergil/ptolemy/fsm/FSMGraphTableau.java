@@ -127,10 +127,9 @@ public class FSMGraphTableau extends Tableau {
         }
 	CompositeEntity entity = (CompositeEntity)model;
 	
-	FSMGraphFrame frame = new FSMGraphFrame(entity);
-	frame.setBackground(BACKGROUND_COLOR);
+	FSMGraphFrame frame = new FSMGraphFrame(entity, this);
 	setFrame(frame);
-	frame.setTableau(this);
+	frame.setBackground(BACKGROUND_COLOR);
 	frame.pack(); 
 	frame.centerOnScreen();
 	frame.setVisible(true);

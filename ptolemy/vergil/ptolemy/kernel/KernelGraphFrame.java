@@ -46,12 +46,14 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DocumentationViewerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyTop;
 import ptolemy.actor.gui.RunTableau;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.style.EditableChoiceStyle;
 import ptolemy.moml.Locatable;
 import ptolemy.moml.Location;
@@ -162,8 +164,8 @@ notation as a a factory
 */
 public class KernelGraphFrame extends GraphFrame {
    
-    public KernelGraphFrame(CompositeEntity entity) {
-	super(entity);
+    public KernelGraphFrame(CompositeEntity entity, Tableau tableau) {
+	super(entity, tableau);
     }
 	    
     ///////////////////////////////////////////////////////////////////
@@ -196,87 +198,21 @@ public class KernelGraphFrame extends GraphFrame {
 	// FIXME make a service.
 	_directorModel = new DefaultComboBoxModel();
 	try {
-	    // FIXME MoMLize
-	    Director dir;
-	    dir = new ptolemy.domains.sdf.kernel.SDFDirector();
-	    dir.setName("SDF");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.dt.kernel.DTDirector();
-	    dir.setName("DT");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.pn.kernel.PNDirector();
-	    dir.setName("PN");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.de.kernel.DEDirector();
-	    dir.setName("DE");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.csp.kernel.CSPDirector();
-	    dir.setName("CSP");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.dde.kernel.DDEDirector();
-	    dir.setName("DDE");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.fsm.kernel.FSMDirector();
-	    dir.setName("FSM");
-	    _directorModel.addElement(dir);
-
-	    dir = new ptolemy.domains.ct.kernel.CTMixedSignalDirector();
-	    dir.setName("CT");
-	    Parameter solver;
-	    solver = (Parameter)dir.getAttribute("ODESolver");
-	    EditableChoiceStyle style;
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
-	    new Parameter(style, "choice1", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
-
-	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
-	    new Parameter(style, "choice1", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
-            _directorModel.addElement(dir);
-
-            dir = new ptolemy.domains.ct.kernel.CTEmbeddedDirector();	    
-	    dir.setName("CTEmbedded");
-	    //Parameter solver;
-	    solver = (Parameter)dir.getAttribute("ODESolver");
-	    //EditableChoiceStyle style;
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
-	    new Parameter(style, "choice1", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
-
-	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
-	    new Parameter(style, "choice1", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
-	    _directorModel.addElement(dir);
-
-	    dir = new ptolemy.domains.giotto.kernel.GiottoDirector();
-	    dir.setName("Giotto");
-	    _directorModel.addElement(dir);
-            dir = new ptolemy.domains.rtp.kernel.RTPDirector();
-	    dir.setName("RTP");
-	    _directorModel.addElement(dir);
+	    Configuration configuration = 
+		(Configuration)getTableau().toplevel();
+	    CompositeEntity directorLibrary = 
+		(CompositeEntity)configuration.getEntity("directorLibrary");
+	    Iterator directors = 
+		directorLibrary.entityList(Director.class).iterator();
+	    while(directors.hasNext()) {
+		Director director = (Director)directors.next();
+		_directorModel.addElement(director);
+	    }
 	}
 	catch (Exception ex) {
 	    MessageHandler.error("Director combobox creation failed", ex);
 	}
-	//FIXME find these names somehow.
+
 	_directorComboBox = new JComboBox(_directorModel);
 	_directorComboBox.setRenderer(new PtolemyListCellRenderer());
 	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());

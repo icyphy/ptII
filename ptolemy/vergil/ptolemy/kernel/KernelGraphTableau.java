@@ -130,10 +130,9 @@ public class KernelGraphTableau extends Tableau {
         }
 	CompositeEntity entity = (CompositeEntity)model;
 	
-	KernelGraphFrame frame = new KernelGraphFrame(entity);
-	frame.setBackground(BACKGROUND_COLOR);
+	KernelGraphFrame frame = new KernelGraphFrame(entity, this);
 	setFrame(frame);
-	frame.setTableau(this);
+	frame.setBackground(BACKGROUND_COLOR);
 	frame.pack(); 
 	frame.centerOnScreen();
 	frame.setVisible(true);
