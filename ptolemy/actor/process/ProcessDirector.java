@@ -461,7 +461,7 @@ public class ProcessDirector extends Director {
     }
 
     /** Return true if the count of active processes equals the number
-     *  of stopped threads.  Otherwise return false. 
+     *  of stopped threads.  Otherwise return false.
      *
      *  @return true if there are no active processes in the container.
      */

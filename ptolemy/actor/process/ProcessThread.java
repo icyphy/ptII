@@ -120,7 +120,7 @@ public class ProcessThread extends PtolemyThread {
 	boolean iterate = true;
 	try {
 	    while (iterate) {
-                // If a stop has been requested, then 
+                // If a stop has been requested, then
                 if(_threadStopRequested) {
                     // Tell the director we're stopped
                     _director._actorHasStopped();
@@ -145,7 +145,7 @@ public class ProcessThread extends PtolemyThread {
             // Process was terminated.
         } catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
-        } 
+        }
         finally {
             try {
  		wrapup();
