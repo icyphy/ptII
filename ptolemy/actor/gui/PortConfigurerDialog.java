@@ -60,7 +60,7 @@ not return until the user dismisses the dialog.
 @version $Id$
 */
 public class PortConfigurerDialog extends ComponentDialog
-        implements ChangeListener {
+    implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  Several buttons are added to the dialog.
@@ -129,10 +129,10 @@ public class PortConfigurerDialog extends ComponentDialog
                         String moml = "<deletePort name=\""
                             + port.getName(container) + "\"/>\n";
 
-                        ChangeRequest request =
-                            new MoMLChangeRequest(this, container, moml);
-                        container.addChangeListener(this);
-                        container.requestChange(request);
+                            ChangeRequest request =
+                                new MoMLChangeRequest(this, container, moml);
+                            container.addChangeListener(this);
+                            container.requestChange(request);
                     }
                 }
             }
@@ -239,10 +239,10 @@ public class PortConfigurerDialog extends ComponentDialog
             String moml = "<port name=\""
                 + newName
                 + "\""
-                + classMoml
-                + "/>";
-            _target.addChangeListener(this);
-            _target.requestChange(new MoMLChangeRequest(this, _target, moml));
+                    + classMoml
+                    + "/>";
+                    _target.addChangeListener(this);
+                    _target.requestChange(new MoMLChangeRequest(this, _target, moml));
         }
         return dialog;
     }
@@ -255,7 +255,7 @@ public class PortConfigurerDialog extends ComponentDialog
 
     // Button labels.
     private static String[] _moreButtons
-            = {"Commit", "Add", "Remove", "Help", "Cancel"};
+    = {"Commit", "Add", "Remove", "Help", "Cancel"};
 
     // The owner window.
     private Frame _owner;

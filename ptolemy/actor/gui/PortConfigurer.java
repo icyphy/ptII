@@ -96,7 +96,7 @@ public class PortConfigurer extends Query implements QueryListener {
 
                 String typeEntryName = port.getName() + " type";
                 addLine(typeEntryName, typeEntryName,
-                         port.getType().toString());
+                        port.getType().toString());
             }
 	}
     }

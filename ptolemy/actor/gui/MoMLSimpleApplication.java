@@ -48,7 +48,7 @@ so we can't use MoMLApplication for non-graphical simulations.
 @version $Id$
 */
 public class MoMLSimpleApplication {
-     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Create an instance of a single model and run it
