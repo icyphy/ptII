@@ -62,7 +62,7 @@ to prevent overflow of the internal audio buffer.
 The output is of type DoubleToken, and semantically, one output
 token is produced on each channel, on each firing, corresponding
 to the number of audio channels. In the actual implementation,
-serveral tokens may be produced on each channel, on each
+several tokens may be produced on each channel, on each
 firing, in order to
 improve performance. The number of tokens produced on each
 channel on each firing is set by parameter <i>tokenProductionRate</i>.
@@ -83,10 +83,10 @@ resolution.
 channels.
 <li><i>bufferSize</i> may be set to optimize latency.
 This controls the delay from the time audio sample are read by this
-actor until the audio is acutally heard at the speaker. A lower
+actor until the audio is actually heard at the speaker. A lower
 bound on the latency is given by
 (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
-Ideally, the smallest value that gives acceptable performance (no unerflow)
+Ideally, the smallest value that gives acceptable performance (no underflow)
 should be used.
 <li><i>tokenProductionRate</i> may be set to optimize
 performance.
@@ -105,12 +105,12 @@ performance.
 <p>The sound file is not periodically repeated by this actor.
 postfire()
 will therefore return false when the end of the sound file is reached.
-<p>There are security issues involed with accessing files.
+<p>There are security issues involved with accessing files.
 Applications have no restrictions. Applets, however, are
 only allowed access to files specified by a URL and located
 on the machine from which the applet is loaded. The
 .java.policy file may be modified to grant applets more
-privleges, if desired.
+privileges, if desired.
 <p>
 Note: Requires Java 2 v1.3.0 RC1 or later.
 @author Brian K. Vogel
@@ -124,7 +124,7 @@ public class AudioSource extends SDFAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
-     *  the parameters and initialize them to their default vaules.
+     *  the parameters and initialize them to their default values.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -174,7 +174,7 @@ public class AudioSource extends SDFAtomicActor {
      *  <p>(1) The microphone or line in port. To capture from
      *  this source, set <i>source</i> to "mic". This is the
      *  default behavior.
-     *  <p>(2) A soundfile loaded from a URL. To capture from
+     *  <p>(2) A sound file loaded from a URL. To capture from
      *  this source, set <i>source</i> to "URL"
      *  <p>(3) A soundfile loaded from the native file system. To
      *  capture from this source, set <i>source</i> to "file"
@@ -236,7 +236,7 @@ public class AudioSource extends SDFAtomicActor {
      *  smallest value that gives acceptable performance (no overflow)
      *  should be used. The value should be chosen larger than the
      *  production rate of this actor.
-     *  The defulat value is 4096.
+     *  The default value is 4096.
      *  <p>
      *  Note that it is only necessary to set this parameter for the
      *  case where audio is captured in real-time from the microphone
@@ -344,8 +344,8 @@ public class AudioSource extends SDFAtomicActor {
 	    //System.out.println("AudioSource: postfire(): returning true");
 	    return true;
 	} else {
-	    // Read was unsuccessfull.
-	    // Ouput array of zeros and return false.
+	    // Read was unsuccessful.
+	    // Output array of zeros and return false.
 
 	    // This generally means
 	    // that the end of the sound file has been reached.
@@ -381,7 +381,7 @@ public class AudioSource extends SDFAtomicActor {
 
     /** Check parameters and begin the sound capture process. If the
      *  capture source is a sound file, the file is reopened and
-     *  caputre is reset to the begining of the file.
+     *  capture is reset to the beginning of the file.
      *  @exception IllegalActionException If the parameters
      *             are out of range.
      */
