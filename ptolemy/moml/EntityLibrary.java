@@ -479,7 +479,8 @@ public class EntityLibrary
 	    // bug in the ptolemy.kernel.Exception* classes or in JDK1.3.1
 	    // Note that under JDK1.4, the stack trace is printed in
 	    // both cases.
-            throw new InvalidStateException(this, ex, "Failed to populate Library");
+            throw new InvalidStateException(this, ex,
+                    "Failed to populate Library");
         } finally {
             _populating = false;
         }
