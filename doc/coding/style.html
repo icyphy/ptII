@@ -1,0 +1,212 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>Programming Style for Ptolemy II</title>
+</head>
+<body bgcolor="#faf0e6">
+<h1>Programming Style for Ptolemy II</h1>
+<p>
+The following programming style will be followed in the Ptolemy II project.
+Please submit comments or suggestions to eal@eecs.berkeley.edu.
+<ol>
+<li><a href="#indentation">Indentation</a>
+<li><a href="#comment conventions">Comment conventions</a>
+<li><a href="#naming conventions">Naming conventions</a>
+<li><a href="#global variables">Global variables</a>
+<li><a href="#java exceptions conventions">Java exceptions conventions</a>
+<li><a href="#documentation conventions">Documentation conventions</a>
+<li><a href="#copyright conventions">Copyright and acknowledgements</a>
+<li><a href="#proofreading">Proofreading </a>
+</ol>
+
+<h2><a name="indentation">Indentation</a></h2>
+
+Tabs are 8 characters.  Do not override this in your text editor.
+Nested statements should be indented 4 characters, as in:
+<pre>
+public class NamedObj implements Nameable, Serializable, Cloneable {
+
+    /** Construct an object in the default workspace with an empty string
+     *  as its name. The object is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     */
+    public NamedObj() {
+        this(_defaultworkspace, "");
+    }
+</pre>
+Closing brackets should be on a line by themselves, aligned with
+the beginning of the line that contains the open bracket.
+<p>
+Long lines (which are common, especially for Tk commands)
+should be broken up into many small lines.  Continuation lines
+are indented by 8 characters, as in
+<pre>
+        $prefix.m.edit.menu add command &#92
+                -label "Select All" &#92
+                -underline 0 &#92
+                -accelerator "C-/" &#92
+                -command "$this selectall"
+</pre>
+Notice that the line breaks are carefully chosen so
+that the options are easy to identify.  Avoid the following
+variant:
+
+<pre>
+        $prefix.m.edit.menu add command &#92
+                -label "Select All" &#92
+                -underline 0 -accelerator "C-/" &#92
+                -command "$this selectall"
+</pre>
+Glancing at this, it is easy to miss the <CODE>-accelerator</CODE>
+option.
+
+In Java, you can often use the <CODE>+</CODE> operator to concatenate
+<CODE>Strings</CODE> together:
+<pre>
+	return "This is a really " +
+	       "long string";
+</pre>
+
+<h2><a name="comment conventions">Comment conventions</a></h2>
+
+<MENU>
+<LI> Comments should include honest information about the limitations of
+the object definition.
+
+<LI> Comments should be complete sentences and complete thoughts.
+
+</MENU>
+
+
+<h2><a name="naming conventions">Naming conventions</a></h2>
+
+<p>In Java, there is no limit to name sizes (as it should be).
+Do not hesitate to use long names.
+
+ <P>Method and variable names that are <CODE>protected</CODE> 
+or <CODE>private</CODE>
+a leading underscore "<CODE>_</CODE>".
+(i.e. <CODE>_protectedMethod()</CODE>, <CODE>_privateMethod()</CODE>.
+
+ <P>Method names should have internal capitalization and start with
+a lower case letter (i.e. <CODE>aPublicMethod()</CODE>).
+
+ <P>If possible, variables should not use internal capitalization,
+unless the name is long.  This makes it easier to distinguish between
+methods and variables.  However, avoiding capitalization in variable
+names is up to the implementer.
+
+ <P>Method and variable names should avoid using underscores internally. 
+
+<h2><a name="java exceptions conventions">Java exceptions conventions</a></h2>
+Java exception classes that are part of the <CODE>pt.kernel.util</CODE> package
+in <A HREF="../../pt/kernel/util"><CODE>$PTII/pt/kernel/util</CODE></A> should
+follow these conventions.
+<MENU>
+<LI> All <CODE>pt</CODE> package exceptions should extend
+<A HREF="../../pt/kernel/util/KernelException.java">KernelException</A>
+so that we can catch these exceptions at runtime.  By having a hierarchy
+of exceptions, we can differentiate between generic Java exceptions and
+exceptions that the pt package has thrown.
+
+<LI> Exceptions should be defined in the same package as the classes
+that throw them.  The exceptions in java.lang follow this convention.
+
+<LI> In Java, most Exceptions have two constructors, a nullary constructor
+and a constructor that takes a String detail argument.
+ <br> In the Ptolemy II kernel, Exceptions have these two constructors
+as well as constructors that take one or two NamedObj arguments.
+The purpose of the NamedObj arguments is to provide a uniform interface
+and look and feel to exception messages.
+
+
+<LI> When throwing an exception, it is best if the detail message is
+a complete sentence that includes a string that describes to object
+that caused the exception.  For example
+<PRE>
+throw MyException(this, "The list already contains an element named `" + 
+	getElementName() +"'.");
+</PRE>
+
+</MENU>
+
+
+<h2><a name="copyright conventions">Copyright and Acknowledgements</a></h2>
+
+We would prefer to be able to release Ptolemy II with the 
+<A HREF="../../copyright">standard UC Berkeley copyright</A>,
+which allows for subsequent commercialization.
+However, this is a large project, and we should use existing
+code as much as possible.  The following scenarios are possible:
+<ul>
+<li> An uncopyrighted program (public domain) is used either verbatim
+or as inspiration.  In this case, it is essential to acknowledge the
+author and institution originating the code, but this has no effect
+on our copyright policy.
+
+<li> A copylefted program (under the Gnu public license) is used
+as inspiration.  If there is no verbatim code used, then it
+is sufficient (and necessary) to acknowledge the author and
+institution.
+
+<li> A copylefted program or portion of a program is used verbatim.
+This will place the entire Tycho program under the Gnu public license,
+and therefore should be done only with good reason.  However, we are
+not averse to doing this.  If you include copylefted code,
+<em>be sure to identify every line of code that is borrowed in this
+way</em>.  This will allow us (or someone else) to later rewrite this
+code and liberate Tycho from the copyleft.
+
+</ul>
+In all cases, any foreign code that you use should be carefully
+read and tested.  Yes, it should be read!
+Preferably, it should be reformatted to fit our programming
+style, but if it is a large piece of code, it is probably not
+worth doing.  We will need to devise a scheme to avoid
+confusing the automatic documentation generator.
+If it is Tcl/Tk code, it <em>must</em> be ported to Tk 4.0
+(a nontrivial task).  If it is not Itcl code, it should
+be carefully searched for namespace violations.
+
+ <P>If your file is based on a file that has non-UC Berkeley
+copyrights, then you should be sure to include the copyrights.
+
+<h3><a name="SCCS and copyrights">SCCS and copyrights</a></h3>
+
+Currently we are using the <CODE>&#37Q&#37</CODE> SCCS
+directive to adjust the copyright dates automatically.  The
+copyright should have <CODE>&#37Q&#37</CODE>
+as the ending date of the copyright:
+<CODE>1995-&#37Q&#37</CODE>
+The Tycho interface to SCCS takes care of interpreting the
+<CODE>&#37Q&#37</CODE>.
+
+ <P>If your file is a rewrite of a previously copyrighted file from UC
+Berkeley, then you should include the date from that file.
+
+<h2><a name="proofreading">Proofreading</a></h2>
+
+Software has become a publication medium.  People will read your code.
+Your name is on it, so you want to be proud of it.  It seems that most
+people stop working on the code when it "works."  This is like stopping
+work on a paper when what it says is correct, and not worrying at all
+about how it is said.  PROOFREAD YOUR CODE AFTER YOU'VE GOT IT WORKING.
+ <p>
+<a href="$PTII/util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> is a script that will indicate problems with your <CODE>.java</CODE>
+files.  To run it, type
+<pre>
+$PTII/util/testsuite/chkjava *.java
+</pre>
+ <p>You should also spell check your code with <CODE>spell *.java</CODE>.
+
+<p>
+<a href="../../doc/index.html">Ptolemy II Home Page</a><br>
+<HR>
+Copyright &#169 1995-, The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>eal@eecs.berkeley.edu</author>,
+<author>cxh@eecs.berkeley.edu</author>
+</body>
+</html>
