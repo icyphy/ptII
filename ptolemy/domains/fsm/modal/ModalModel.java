@@ -391,6 +391,16 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
 
         // configure the directorClass parameter
         directorClass = new StringParameter(this, "directorClass");
+        
+        // Set the director to the default. Note that doing
+        // this manually rather than in attributeChanged() prevents
+        // attributeChanged() from issuing a change request
+        // (because the director class matches the default).
+        // Issuing a change request during construction is
+        // problematic because it causes the Vergil library
+        // to close when you first open a sublibrary containing
+        // an instance of ModalModel.
+        new FSMDirector(this, "_Director");
 
         // NOTE: If there is a container for this ModalModel, and it
         // has a director, then we get the default value from that
