@@ -115,7 +115,7 @@ public class ModalPort extends TypedIOPort {
                 }
                 // Remove the relation as well.
                 ComponentRelation relation = (ComponentRelation)
-                        model.getRelation(getName() + "Relation");
+                    model.getRelation(getName() + "Relation");
                 if (relation != null) {
                     relation.setContainer(null);
                 }

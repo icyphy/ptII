@@ -114,9 +114,9 @@ public class AudioReader extends URLReader {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 	sourceURL.setExpression("&quot;file:///&quot; "
-				+ "+ property(&quot;ptolemy.ptII.dir&quot;) "
-				+ "+ &quot;/ptolemy/actor/lib/javasound/"
-				+ "test/voice.wav&quot;");
+                + "+ property(&quot;ptolemy.ptII.dir&quot;) "
+                + "+ &quot;/ptolemy/actor/lib/javasound/"
+                + "test/voice.wav&quot;");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -188,7 +188,7 @@ public class AudioReader extends URLReader {
 		_getSamplesArrayPointer++;
 		// Check if we still have at least one sample left.
 		if ((_audioInDoubleArray[0].length
-		     - _getSamplesArrayPointer) <= 0) {
+                        - _getSamplesArrayPointer) <= 0) {
 		    // We just ran out of samples.
 		    _haveASample = false;
 		}
@@ -254,8 +254,8 @@ public class AudioReader extends URLReader {
 		_soundReader.closeFile();
 	    } catch (IOException ex) {
 		throw new IllegalActionException(this,
-						 "Problem closing SoundReader:"
-						 + ex);
+                        "Problem closing SoundReader:"
+                        + ex);
 	    }
 	}
     }
@@ -281,9 +281,9 @@ public class AudioReader extends URLReader {
 			_soundReader.closeFile();
 		    } catch (IOException ex) {
 			throw new IllegalActionException(this,
-							 "Cannot close "
-							 + "SoundReader: "
-							 + ex);
+                                "Cannot close "
+                                + "SoundReader: "
+                                + ex);
 		    }
 		}
 		// Load audio from a URL.
@@ -295,12 +295,12 @@ public class AudioReader extends URLReader {
 		int getSamplesArraySize = 64;
 		try {
 		    _soundReader = new SoundReader(theURL,
-					       getSamplesArraySize);
+                            getSamplesArraySize);
 		} catch (IOException ex) {
 		    throw new IllegalActionException(this,
-						     "Cannot open URL '"
-						     + theURL + "':"
-						     + ex);
+                            "Cannot open URL '"
+                            + theURL + "':"
+                            + ex);
 		}
 		// Read the number of audio channels and set
 		// parameter accordingly.

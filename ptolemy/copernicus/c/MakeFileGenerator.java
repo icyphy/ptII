@@ -67,10 +67,10 @@ public class MakeFileGenerator
         Iterator i = _classNameList(classPath,className).iterator();
         code.append("SOURCES = $(RUNTIME)/runtime.c $(RUNTIME)/array.c\\\n");
         while (i.hasNext())
-        {
-            String name = _classNameToMakeFileName((String)i.next());
-            code.append("\t"+name+".c\\\n");
-        }
+            {
+                String name = _classNameToMakeFileName((String)i.next());
+                code.append("\t"+name+".c\\\n");
+            }
         code.append("\n");//takes care of blank line for last "\"
 
 
@@ -97,14 +97,14 @@ public class MakeFileGenerator
         code.append("\trm $(OBJECTS);\n");
 
         code.append("# DO NOT DELETE THIS LINE "
-                    + " -- make depend depends on it.\n\n");
+                + " -- make depend depends on it.\n\n");
 
         FileHandler.write(className+".make",code.toString());
 
     }
 
-protected static LinkedList _classNameList(String classPath, String className)
-    //returns a list of the names of all classses in the transitive closure
+    protected static LinkedList _classNameList(String classPath, String className)
+            //returns a list of the names of all classses in the transitive closure
     {
         LinkedList names = new LinkedList();
 
@@ -113,32 +113,32 @@ protected static LinkedList _classNameList(String classPath, String className)
 
         Iterator i = Scene.v().getClasses().iterator();
         while (i.hasNext())
-        {
-            SootClass thisClass = (SootClass)i.next();
-            names.add(thisClass.getName());
-        }
+            {
+                SootClass thisClass = (SootClass)i.next();
+                names.add(thisClass.getName());
+            }
 
         return names;
 
     }
 
-// finds filename corresponding to class and replaces
-// "$" with "$$" for compatibility
-protected static String _classNameToMakeFileName(String className)
+    // finds filename corresponding to class and replaces
+    // "$" with "$$" for compatibility
+    protected static String _classNameToMakeFileName(String className)
     {
         StringBuffer name = new StringBuffer(
-            RequiredFileGenerator.classNameToFileName(className));
+                RequiredFileGenerator.classNameToFileName(className));
 
         for (int j=0;j<name.length();j++)
-        {
-            if (name.charAt(j)=='$')
             {
-                name.insert(j,"$");
-                j++;
+                if (name.charAt(j)=='$')
+                    {
+                        name.insert(j,"$");
+                        j++;
+                    }
+                //replace "$" with "$$"
+                //so that makefile interprets names correctly
             }
-            //replace "$" with "$$"
-            //so that makefile interprets names correctly
-        }
 
         return name.toString();
     }

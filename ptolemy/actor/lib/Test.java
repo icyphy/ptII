@@ -164,7 +164,7 @@ public class Test extends Sink {
     public boolean postfire() throws IllegalActionException {
 	int width = input.getWidth();
 	if (_numberOfInputTokensSeen
-	    >= ((ArrayToken)(correctValues.getToken())).length()) {
+                >= ((ArrayToken)(correctValues.getToken())).length()) {
 	    // Consume and discard input values.  We are beyond the end
 	    // of the correctValues array.
 	    for (int i = 0; i < width; i++) {
@@ -212,7 +212,7 @@ public class Test extends Sink {
 	    }
 	    Token token = input.get(i);
 	    if (token.isCloseTo(reference[i], _tolerance).booleanValue()
-		== false)
+                    == false)
 		throw new IllegalActionException(this,
                         "Test fails in iteration " + _numberOfInputTokensSeen
                         + ".\n"

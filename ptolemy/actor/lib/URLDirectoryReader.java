@@ -219,7 +219,7 @@ public class URLDirectoryReader extends URLReader {
      *  URL
      */
     private String [] _list(String source, String endsWith)
-	throws IllegalActionException {
+            throws IllegalActionException {
 	if (source.startsWith("file:")) {
 	    return _listFile(source, endsWith);
 	} else {
@@ -227,10 +227,10 @@ public class URLDirectoryReader extends URLReader {
 		return _listFileOrURL(source, endsWith);
 	    } catch (Exception ex) {
 		throw new IllegalActionException("Could not open '" + source
-						 + ": "
-						 + KernelException
-						 .stackTraceToString(ex));
-						 }
+                        + ": "
+                        + KernelException
+                        .stackTraceToString(ex));
+            }
 	}
     }
 
@@ -247,7 +247,7 @@ public class URLDirectoryReader extends URLReader {
      *  nor a directory, or if there is some other problem.
      */
     private String [] _listFile(String source, String endsWith)
-	throws IllegalActionException {
+            throws IllegalActionException {
 	try {
 	    URL sourceURL = new URL(source);
 
@@ -265,7 +265,7 @@ public class URLDirectoryReader extends URLReader {
 		    for (int i = 0; i < files.length; i++) {
 			String filename = files[i].getName();
 			if (endsWith == null || endsWith.length() == 0
-			    || filename.endsWith(endsWith)) {
+                                || filename.endsWith(endsWith)) {
 			    resultsList.add(source + filename);
 			}
 		    }
@@ -275,17 +275,17 @@ public class URLDirectoryReader extends URLReader {
 		    return new String[] {file.toString()};
 		} else {
 		    throw new IllegalActionException("'" + source
-						     + "' is neither a file "
-						     + "or a directory?");
+                            + "' is neither a file "
+                            + "or a directory?");
 		}
 	    } else {
 		// FIXME: handle urls here.
 		throw new IllegalActionException("'" + source + "' does not "
-						 + "have the file: protocol");
+                        + "have the file: protocol");
 	    }
 	} catch (Exception ex) {
 	    throw new IllegalActionException("Could not open '" + source
-					     + "' :" + ex);
+                    + "' :" + ex);
 	}
     }
 
@@ -309,26 +309,26 @@ public class URLDirectoryReader extends URLReader {
      *  the file: protocol, or if the source is neither a file
      *  nor a directory, or if there is some other problem.  */
     private static String [] _listFileOrURL(String source, String endsWith)
-	throws MalformedURLException, IOException {
+            throws MalformedURLException, IOException {
 	URL url = new URL(source);
 	URLConnection urlConnection = url.openConnection();
 	String contentType = urlConnection.getContentType();
 	if (!contentType.startsWith("text/html")
-	    && !contentType.startsWith("text/plain") ) {
+                && !contentType.startsWith("text/plain") ) {
 	    throw new RuntimeException("Could not parse '" + source
-				       + "', it is not \"text/html\", "
-				       + "or \"text/plain\", it is: "
-				       + urlConnection.getContentType());
+                    + "', it is not \"text/html\", "
+                    + "or \"text/plain\", it is: "
+                    + urlConnection.getContentType());
 	}
 	BufferedReader in =
 	    new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 	if (!contentType.startsWith("text/plain")
-	    && !urlConnection.getURL().toString().endsWith("/")) {
+                && !urlConnection.getURL().toString().endsWith("/")) {
 	    // text/plain urls need not end with /, but
 	    // text/html urls _must_ end with / since the web server
 	    // will rewrite them for us.
 	    throw new RuntimeException("Could not parse '" + source
-				       + "', it does not end with '/'");
+                    + "', it does not end with '/'");
 
 	}
 
@@ -351,7 +351,7 @@ public class URLDirectoryReader extends URLReader {
 	while ((line = in.readLine()) != null) {
 	    line = line.trim();
 	    if (line.startsWith("<BODY")
-		|| line.startsWith("<body")) {
+                    || line.startsWith("<body")) {
 		sawBody = true;
 	    } else {
 		if (sawBody) {
@@ -379,10 +379,10 @@ public class URLDirectoryReader extends URLReader {
 					// here to verify that the target
 					// exists.
 					if (endsWith == null
-					    || endsWith.length() == 0
-					    || target.endsWith(endsWith)) {
+                                                || endsWith.length() == 0
+                                                || target.endsWith(endsWith)) {
 					    resultsList.add(source
-							    + target);
+                                                    + target);
 					}
 					sawHREF = false;
 				    }

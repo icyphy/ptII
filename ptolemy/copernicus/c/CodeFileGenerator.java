@@ -197,27 +197,27 @@ public class CodeFileGenerator extends CodeGenerator {
             code.append("\n" + _indent(1) +
                     _comment("Initialization of string constants"));
             while (stringConstants.hasNext())
-            {
-                StringBuffer value = new StringBuffer(
-                                        stringConstants.next().toString());
-                //replace all incidences of " with \" to prevent bad characters
-                //between quotes
-                for (int i=0; i<value.length(); i++)
                 {
-                    if (value.charAt(i)=='"')
-                    {
-                        value.insert(i,"\\");
-                        i++;
-                    }
-                }
+                    StringBuffer value = new StringBuffer(
+                            stringConstants.next().toString());
+                    //replace all incidences of " with \" to prevent bad characters
+                    //between quotes
+                    for (int i=0; i<value.length(); i++)
+                        {
+                            if (value.charAt(i)=='"')
+                                {
+                                    value.insert(i,"\\");
+                                    i++;
+                                }
+                        }
 
-                String identifier = _context.getIdentifier(value.toString());
-                code.append(_indent(1) + identifier + " = (" + stringType +
-                        ")(malloc(sizeof struct " + stringType + "));\n");
-                code.append(_indent(1) + stringStructure + "->"
-                        + stringInitializer
-                        + "(" + identifier + ", \"" + value + "\");\n");
-            }
+                    String identifier = _context.getIdentifier(value.toString());
+                    code.append(_indent(1) + identifier + " = (" + stringType +
+                            ")(malloc(sizeof struct " + stringType + "));\n");
+                    code.append(_indent(1) + stringStructure + "->"
+                            + stringInitializer
+                            + "(" + identifier + ", \"" + value + "\");\n");
+                }
         }
 
         // Invoke the static initializer method for the class if it exists.
@@ -227,7 +227,7 @@ public class CodeFileGenerator extends CodeGenerator {
             code.append("\n" + _indent(1)
                     + _comment("Static initializer method"));
             code.append(_indent(1) +
-                            CNames.functionNameOf(initializer) + "();\n");
+                    CNames.functionNameOf(initializer) + "();\n");
         }
 
         // Set up the superclass pointer.
@@ -255,7 +255,7 @@ public class CodeFileGenerator extends CodeGenerator {
         if (method.isConcrete() && !(method.isNative())) {
             StringBuffer code = new StringBuffer();
             String description = "Function that implements Method " +
-                    method.getSubSignature();
+                method.getSubSignature();
             code.append(_comment(description));
             JimpleBody body = (JimpleBody)(method.retrieveActiveBody());
             CSwitch visitor = new CSwitch(_context);
@@ -280,16 +280,16 @@ public class CodeFileGenerator extends CodeGenerator {
             }
 
             for (parameterIndex = 0;parameterIndex < method.getParameterCount();
-                    parameterIndex++)
-            {
-                if (parameterCount > 0) code.append(", ");
-                Local local = body.getParameterLocal(parameterIndex);
-                parameterAndThisLocals.add(local);
-                Type parameterType = local.getType();
-                code.append(CNames.typeNameOf(parameterType) + " "
-                        + CNames.localNameOf(local));
-                _updateRequiredTypes(parameterType);
-            }
+                 parameterIndex++)
+                {
+                    if (parameterCount > 0) code.append(", ");
+                    Local local = body.getParameterLocal(parameterIndex);
+                    parameterAndThisLocals.add(local);
+                    Type parameterType = local.getType();
+                    code.append(CNames.typeNameOf(parameterType) + " "
+                            + CNames.localNameOf(local));
+                    _updateRequiredTypes(parameterType);
+                }
             code.append(")\n{\n");
 
             // Generate local declarations.
@@ -335,21 +335,21 @@ public class CodeFileGenerator extends CodeGenerator {
             code.append(_indent(1)+"int caller_epc = epc;\n");
 
             if (tracker.trapsExist())
-            {
-                code.append(_indent(1)+"i72706427_Exception exception_id;\n");
-                //FIXME: generate this  ixxyywhatever automatically
-            }
+                {
+                    code.append(_indent(1)+"i72706427_Exception exception_id;\n");
+                    //FIXME: generate this  ixxyywhatever automatically
+                }
 
 
             code.append("\n"+_indent(1)
-                        +"memcpy(caller_env, env, sizeof(jmp_buf));\n");
+                    +"memcpy(caller_env, env, sizeof(jmp_buf));\n");
 
             if (tracker.trapsExist())
-            {
-                code.append(_indent(1)+"epc = setjmp(env);\n");
-                code.append(_indent(1)+"if (epc == 0)\n");
-                code.append(_indent(1)+"{\n");
-            }
+                {
+                    code.append(_indent(1)+"epc = setjmp(env);\n");
+                    code.append(_indent(1)+"if (epc == 0)\n");
+                    code.append(_indent(1)+"{\n");
+                }
 
 
             //exception-catching in body
@@ -362,12 +362,12 @@ public class CodeFileGenerator extends CodeGenerator {
 
                 //code for begin Unit in exceptions
                 if (tracker.trapsExist()&&tracker.isBeginUnit(unit))
-                {
-                    tracker.beginUnitEncountered(unit);
-                    code.append(_indent(2)+"epc = "+ tracker.getEpc()+";\n");
-                    code.append(_indent(2)+"/*Trap " +tracker.beginIndexOf(unit)
+                    {
+                        tracker.beginUnitEncountered(unit);
+                        code.append(_indent(2)+"epc = "+ tracker.getEpc()+";\n");
+                        code.append(_indent(2)+"/*Trap " +tracker.beginIndexOf(unit)
                                 +" begins. */\n");
-                }
+                    }
 
 
                 //actual unit code
@@ -379,91 +379,91 @@ public class CodeFileGenerator extends CodeGenerator {
 
                 //code for end unit in exceptions
                 if (tracker.trapsExist()&&tracker.isEndUnit(unit))
-                {
-                    code.append(_indent(2)+"/* That was end unit for trap "+
+                    {
+                        code.append(_indent(2)+"/* That was end unit for trap "+
                                 tracker.endIndexOf(unit)+" */\n");
-                    tracker.endUnitEncountered(unit);
-                    code.append(_indent(2)+"epc = "+tracker.getEpc()+";\n");
+                        tracker.endUnitEncountered(unit);
+                        code.append(_indent(2)+"epc = "+tracker.getEpc()+";\n");
 
-                }
+                    }
 
                 //code for handler unit in exceptions
                 if (tracker.trapsExist()&&tracker.isHandlerUnit(unit))
-                {
-                    code.append(_indent(2)+"/* Handler Unit for Trap "+
+                    {
+                        code.append(_indent(2)+"/* Handler Unit for Trap "+
                                 tracker.handlerIndexOf(unit)+" */\n");
-                }
+                    }
 
             }
 
             //epilogue
             if (tracker.trapsExist())
-            {
-                code.append(_indent(1)+"}\n");
-
-                code.append(_indent(1)+"else\n");
-                code.append(_indent(1)+"{\n");
-
-                //code for mapping a trap name to an exception
-                code.append(_indent(2)+
-                            "/* Map exception_id to exception_type */\n");
-                code.append(_indent(2)+
-                            "strcpy(exception_type, (char *) exception_id);\n");
-                //FIXME: This is not the correct mapping
-
-                //code for mapping an exception type to its handler
-                code.append("\n"+_indent(2)+
-                            "/* Map exception_type to handler */\n");
-                code.append(_indent(2)+"switch (epc)\n");
-                code.append(_indent(2)+"{\n");
-                for (int i = 0;i<= (tracker.getEpc()-1); i++)
                 {
-                    code.append(_indent(3)+"case "+(i)+":\n");
-                    if (tracker.getHandlerUnitList(i).size()>0)
-                    {
-                        Iterator j = tracker.getTrapsForEpc(i).listIterator();
+                    code.append(_indent(1)+"}\n");
 
-                        code.append(_indent(4));
-                        while (j.hasNext())
-                            {
-                                Trap currentTrap = (Trap)j.next();
-                                code.append("if (strcmp(exception_type, \""+
-                                        currentTrap.getException()+"\"))\n");
-                                code.append(_indent(4)+"{\n");
-                                code.append(_indent(5)+"goto " +
-                                  visitor.getLabel(currentTrap.getHandlerUnit())
-                                    +";\n");
-                                code.append(_indent(4)+"}\n");
-                                code.append(_indent(4)+"else ");
-                            }
+                    code.append(_indent(1)+"else\n");
+                    code.append(_indent(1)+"{\n");
 
-                        //for the last else
-                        code.append("\n"+_indent(4)+"{\n");
-                        code.append(_indent(5)+
-                            "longjmp(caller_env, caller_epc);\n");
-                        code.append(_indent(5)+
-                                    "/* unhandled exception: "+
-                                    "return control to caller */\n");
-                        code.append(_indent(4)+"}\n");
-                    }
-                    else
-                    {
-                        code.append(_indent(4)+
-                            "/* No active Traps for this epc. */\n");
+                    //code for mapping a trap name to an exception
+                    code.append(_indent(2)+
+                            "/* Map exception_id to exception_type */\n");
+                    code.append(_indent(2)+
+                            "strcpy(exception_type, (char *) exception_id);\n");
+                    //FIXME: This is not the correct mapping
 
-                    }
+                    //code for mapping an exception type to its handler
+                    code.append("\n"+_indent(2)+
+                            "/* Map exception_type to handler */\n");
+                    code.append(_indent(2)+"switch (epc)\n");
+                    code.append(_indent(2)+"{\n");
+                    for (int i = 0;i<= (tracker.getEpc()-1); i++)
+                        {
+                            code.append(_indent(3)+"case "+(i)+":\n");
+                            if (tracker.getHandlerUnitList(i).size()>0)
+                                {
+                                    Iterator j = tracker.getTrapsForEpc(i).listIterator();
 
-                }
-                code.append(_indent(3)+
+                                    code.append(_indent(4));
+                                    while (j.hasNext())
+                                        {
+                                            Trap currentTrap = (Trap)j.next();
+                                            code.append("if (strcmp(exception_type, \""+
+                                                    currentTrap.getException()+"\"))\n");
+                                            code.append(_indent(4)+"{\n");
+                                            code.append(_indent(5)+"goto " +
+                                                    visitor.getLabel(currentTrap.getHandlerUnit())
+                                                    +";\n");
+                                            code.append(_indent(4)+"}\n");
+                                            code.append(_indent(4)+"else ");
+                                        }
+
+                                    //for the last else
+                                    code.append("\n"+_indent(4)+"{\n");
+                                    code.append(_indent(5)+
+                                            "longjmp(caller_env, caller_epc);\n");
+                                    code.append(_indent(5)+
+                                            "/* unhandled exception: "+
+                                            "return control to caller */\n");
+                                    code.append(_indent(4)+"}\n");
+                                }
+                            else
+                                {
+                                    code.append(_indent(4)+
+                                            "/* No active Traps for this epc. */\n");
+
+                                }
+
+                        }
+                    code.append(_indent(3)+
                             "default: longjmp(caller_env, caller_epc);\n");
 
-                code.append(_indent(2)+"}\n");
+                    code.append(_indent(2)+"}\n");
 
 
-                code.append(_indent(1)+"}\n");
+                    code.append(_indent(1)+"}\n");
 
 
-            }
+                }
 
             // Trailer code
             code.append("} ");

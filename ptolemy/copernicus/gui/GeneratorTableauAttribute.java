@@ -154,7 +154,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 
         compileOptions = new StringAttribute(this, "compileOptions");
         compileOptions.setExpression("-classpath \""
-				     + defaultClasspath + "\"");
+                + defaultClasspath + "\"");
         doc = new Documentation(compileOptions, "tooltip");
         doc.setValue("Options to pass to the compiler.");
 
@@ -178,9 +178,9 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 		    canonicalDefaultDirectory
 		    .substring(canonicalPtIIDirectory.length());
 		packageNameString = (packagePath
-				     .replace('/', '.')).replace('\\', '.');
+                        .replace('/', '.')).replace('\\', '.');
 		if (packageNameString.indexOf('.') == 0
-		    && packageNameString.length() >= 2) {
+                        && packageNameString.length() >= 2) {
 		    // Strip off the leading . in the package.
 		    packageNameString = packageNameString.substring(1);
 		}
@@ -267,26 +267,26 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             super.clone(workspace);
 
 	/*
-	// We use reflection here so that we don't have to edit
-	// this method every time we add a field.
-	Field fields [] = getClass().getFields();
-	String fieldValue;
-	for (int i = 0; i < fields.length; i++) {
-	    try {
-		if (fields[i].get(newObject) instanceof StringAttribute
-		    || fields[i].get(newObject) instanceof Parameter) {
-                    fields[i].set(newObject,
-				  newObject.getAttribute(fields[i].getName()));
-		}
-	    } catch (IllegalAccessException e) {
-                throw new CloneNotSupportedException(e.getMessage() +
-                        ": " + fields[i].getName());
-	    }
-	}
-	System.out.println("GenerateTableauAttribute.clone(): "
-			   + newObject);
+          // We use reflection here so that we don't have to edit
+          // this method every time we add a field.
+          Field fields [] = getClass().getFields();
+          String fieldValue;
+          for (int i = 0; i < fields.length; i++) {
+          try {
+          if (fields[i].get(newObject) instanceof StringAttribute
+          || fields[i].get(newObject) instanceof Parameter) {
+          fields[i].set(newObject,
+          newObject.getAttribute(fields[i].getName()));
+          }
+          } catch (IllegalAccessException e) {
+          throw new CloneNotSupportedException(e.getMessage() +
+          ": " + fields[i].getName());
+          }
+          }
+          System.out.println("GenerateTableauAttribute.clone(): "
+          + newObject);
 
-	return newObject;
+          return newObject;
 	*/
 	// Alphabetical
         newObject.codeGenerator = (StringAttribute)
@@ -347,7 +347,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 		fieldValue = "IllegalAccessException?";
 	    }
 	    results.append(fields[i].getName() + " " + fieldValue
-			   + "\n");
+                    + "\n");
 	}
 	return results.toString();
     }

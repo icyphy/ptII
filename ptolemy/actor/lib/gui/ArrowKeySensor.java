@@ -85,7 +85,7 @@ occurred since the actor was last fired.  <p>
 public class ArrowKeySensor extends TypedAtomicActor {
 
     public ArrowKeySensor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Outputs
@@ -217,7 +217,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_upKeyReleased = false;
 			tryCallingFireAtCurrentTime();
 		    }
-	    };
+                };
 
             ActionListener myUpReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -225,7 +225,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_upKeyPressed = false;
 			tryCallingFireAtCurrentTime();
 		    }
-	    };
+                };
 
 	    // left-arrow callbacks
             ActionListener myLeftPressedListener = new ActionListener() {
@@ -234,7 +234,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_leftKeyReleased = false;
 			tryCallingFireAtCurrentTime();
 		    }
-	    };
+                };
 
             ActionListener myLeftReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -242,7 +242,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_leftKeyPressed = false;
 			tryCallingFireAtCurrentTime();
 		    }
-	    };
+                };
 
 	    // right-arrow callbacks
             ActionListener myRightPressedListener = new ActionListener() {
@@ -251,7 +251,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_rightKeyReleased = false;
 			tryCallingFireAtCurrentTime();
 		    }
-	    };
+                };
 
             ActionListener myRightReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -259,7 +259,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_rightKeyPressed = false;
 			tryCallingFireAtCurrentTime();
 		    }
-	    };
+                };
 
 	    // down-arrow callbacks
             ActionListener myDownPressedListener = new ActionListener() {
@@ -268,7 +268,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_downKeyReleased = false;
 			tryCallingFireAtCurrentTime();
 		    }
-	    };
+                };
 
             ActionListener myDownReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -276,7 +276,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_downKeyPressed = false;
 			tryCallingFireAtCurrentTime();
 		    }
-	    };
+                };
 
             getContentPane().setLayout(new BorderLayout());
             JLabel label = new JLabel("Copy and/or Paste here!");
@@ -293,52 +293,52 @@ public class ArrowKeySensor extends TypedAtomicActor {
             label.registerKeyboardAction(myUpPressedListener,
                     "UpPressed",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, false),
+                            KeyEvent.VK_UP, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myUpReleasedListener,
                     "UpReleased",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, true),
+                            KeyEvent.VK_UP, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 	    // Registration of left-arrow callbacks.
             label.registerKeyboardAction(myLeftPressedListener,
                     "LeftPressed",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, false),
+                            KeyEvent.VK_LEFT, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myLeftReleasedListener,
                     "LeftReleased",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, true),
+                            KeyEvent.VK_LEFT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 	    // Registration of right-arrow callbacks.
             label.registerKeyboardAction(myRightPressedListener,
                     "RightPressed",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, false),
+                            KeyEvent.VK_RIGHT, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myRightReleasedListener,
                     "RightReleased",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, true),
+                            KeyEvent.VK_RIGHT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 	    // Registration of down-arrow callbacks.
             label.registerKeyboardAction(myDownPressedListener,
                     "DownPressed",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, false),
+                            KeyEvent.VK_DOWN, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myDownReleasedListener,
                     "DownReleased",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, true),
+                            KeyEvent.VK_DOWN, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);

@@ -109,7 +109,7 @@ public class Minimum extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-     /** Clone the actor into the specified workspace. This calls the
+    /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the type constraints.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.

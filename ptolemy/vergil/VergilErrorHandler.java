@@ -89,30 +89,30 @@ public class VergilErrorHandler implements ErrorHandler {
             NamedObj context,
             Throwable exception) {
 
-       if (_skipping) {
-           return CONTINUE;
-       }
-       // Get the context w.r.t. which the dialog should be iconified.
-       // FIXME: This pattern window actually is never set.
-       Component parentWindow = GraphicalMessageHandler.getContext();
+        if (_skipping) {
+            return CONTINUE;
+        }
+        // Get the context w.r.t. which the dialog should be iconified.
+        // FIXME: This pattern window actually is never set.
+        Component parentWindow = GraphicalMessageHandler.getContext();
 
-       String message = "Error encountered in:\n"
-               + element
-               + "\n"
-               + exception.getMessage();
+        String message = "Error encountered in:\n"
+            + element
+            + "\n"
+            + exception.getMessage();
 
-       Object[] messageArray = new Object[1];
-       messageArray[0] = message;
+        Object[] messageArray = new Object[1];
+        messageArray[0] = message;
 
-       if (context == null) {
-           // Top-level object, so continuing is not an option.
-           messageArray[0] = message
-                   + "\nThis is a top-level element, so cannot continue.";
-           Object[] options = {"Display stack trace",
-			       "Cancel"};
+        if (context == null) {
+            // Top-level object, so continuing is not an option.
+            messageArray[0] = message
+                + "\nThis is a top-level element, so cannot continue.";
+            Object[] options = {"Display stack trace",
+                                "Cancel"};
 
-           // Show the MODAL dialog
-           int selected = JOptionPane.showOptionDialog(
+            // Show the MODAL dialog
+            int selected = JOptionPane.showOptionDialog(
                     parentWindow,
                     messageArray,
                     "Error",
@@ -122,24 +122,24 @@ public class VergilErrorHandler implements ErrorHandler {
                     options,
                     options[0]);
 
-	   if (selected == 0) {
-		  return _showStackTrace(parentWindow,
-					 false,
-					 false,
-					 exception,
-					 message);
-	   }
-           return CANCEL;
-       } else {
-           if (_skippingEnabled) {
-               Object[] options = {
-                       "Skip element",
-                       "Skip remaining errors",
-		       "Display stack trace",
-                       "Cancel"};
+            if (selected == 0) {
+                return _showStackTrace(parentWindow,
+                        false,
+                        false,
+                        exception,
+                        message);
+            }
+            return CANCEL;
+        } else {
+            if (_skippingEnabled) {
+                Object[] options = {
+                    "Skip element",
+                    "Skip remaining errors",
+                    "Display stack trace",
+                    "Cancel"};
 
-               // Show a MODAL dialog
-               int selected = JOptionPane.showOptionDialog(
+                // Show a MODAL dialog
+                int selected = JOptionPane.showOptionDialog(
                         parentWindow,
                         messageArray,
                         "Error",
@@ -149,26 +149,26 @@ public class VergilErrorHandler implements ErrorHandler {
                         options,
                         options[0]);
 
-	       if (selected == 3) {
-                   return CANCEL;
-               } else if (selected == 2) {
-		   return _showStackTrace(parentWindow,
-					  true,
-					  _skippingEnabled,
-					  exception,
-					  message);
-               } else if (selected == 1) {
-                   _skipping = true;
-               }
-               return CONTINUE;
-           } else {
-               // Skipping is not enabled.
-               Object[] options = {"Skip element",
-				   "Display stack trace",
-				   "Cancel"};
+                if (selected == 3) {
+                    return CANCEL;
+                } else if (selected == 2) {
+                    return _showStackTrace(parentWindow,
+                            true,
+                            _skippingEnabled,
+                            exception,
+                            message);
+                } else if (selected == 1) {
+                    _skipping = true;
+                }
+                return CONTINUE;
+            } else {
+                // Skipping is not enabled.
+                Object[] options = {"Skip element",
+                                    "Display stack trace",
+                                    "Cancel"};
 
-               // Show the MODAL dialog
-               int selected = JOptionPane.showOptionDialog(
+                // Show the MODAL dialog
+                int selected = JOptionPane.showOptionDialog(
                         parentWindow,
                         messageArray,
                         "Error",
@@ -178,18 +178,18 @@ public class VergilErrorHandler implements ErrorHandler {
                         options,
                         options[0]);
 
-               if (selected == 1) {
-		  return _showStackTrace(parentWindow,
-					     false,
-					     _skippingEnabled,
-					     exception,
-					     message);
-	       } else if (selected == 2) {
-                   return CANCEL;
-               }
-               return CONTINUE;
-           }
-       }
+                if (selected == 1) {
+                    return _showStackTrace(parentWindow,
+                            false,
+                            _skippingEnabled,
+                            exception,
+                            message);
+                } else if (selected == 2) {
+                    return CANCEL;
+                }
+                return CONTINUE;
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -210,10 +210,10 @@ public class VergilErrorHandler implements ErrorHandler {
      *   of the XML.
      */
     private int _showStackTrace(Component context,
-				boolean skipElement,
-				boolean skippingEnabled,
-				Throwable exception,
-				String info) {
+            boolean skipElement,
+            boolean skippingEnabled,
+            Throwable exception,
+            String info) {
         // FIXME: Eventually, the dialog should
         // be able to email us a bug report.
 	// FIXME: The user should be able to click on the links and
@@ -222,8 +222,8 @@ public class VergilErrorHandler implements ErrorHandler {
         // Show the stack trace in a scrollable text area.
 
         JTextArea text = new JTextArea(KernelException
-				       .stackTraceToString(exception),
-				       60, 80);
+                .stackTraceToString(exception),
+                60, 80);
         JScrollPane scrollPane = new JScrollPane(text);
         scrollPane.setPreferredSize(new Dimension(600, 300));
         text.setCaretPosition(0);
@@ -238,8 +238,8 @@ public class VergilErrorHandler implements ErrorHandler {
             string = exception.getMessage();
         }
         message[0] = ((string.length() > 400)
-		      ? (string.substring(0, 400 - 3) + "...")
-		      : string);
+                ? (string.substring(0, 400 - 3) + "...")
+                : string);
 
         message[1] = scrollPane;
 
@@ -256,13 +256,13 @@ public class VergilErrorHandler implements ErrorHandler {
 	}
         // Show the MODAL dialog
 	int selected = JOptionPane.showOptionDialog(context,
-						    message,
-						    "Stack trace",
-						    JOptionPane.YES_NO_OPTION,
-						    JOptionPane.ERROR_MESSAGE,
-						    null,
-						    options,
-						    options[0]);
+                message,
+                "Stack trace",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.ERROR_MESSAGE,
+                null,
+                options,
+                options[0]);
 	if (selected == options.length - 1 ) {
 	    // The last button is the Cancel button.
 	    return CANCEL;

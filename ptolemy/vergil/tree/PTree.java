@@ -83,22 +83,22 @@ public class PTree extends JTree {
     {
 	public void dragGestureRecognized(DragGestureEvent e) {
 	    final DragSourceListener dsl = new DragSourceListener() {
-		public void dragDropEnd(DragSourceDropEvent dsde) {}
-		public void dragEnter(DragSourceDragEvent dsde) {
-		    DragSourceContext context = dsde.getDragSourceContext();
-		    //intersection of the users selected action, and the
-		    //source and target actions
-		    int myaction = dsde.getDropAction();
-		    if ( (myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
-			context.setCursor(DragSource.DefaultCopyDrop);
-		    } else {
-			context.setCursor(DragSource.DefaultCopyNoDrop);
-		    }
-		}
-		public void dragExit(DragSourceEvent dse) {}
-		public void dragOver(DragSourceDragEvent dsde) {}
-		public void dropActionChanged(DragSourceDragEvent dsde) {}
-	    };
+                    public void dragDropEnd(DragSourceDropEvent dsde) {}
+                    public void dragEnter(DragSourceDragEvent dsde) {
+                        DragSourceContext context = dsde.getDragSourceContext();
+                        //intersection of the users selected action, and the
+                        //source and target actions
+                        int myaction = dsde.getDropAction();
+                        if ( (myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
+                            context.setCursor(DragSource.DefaultCopyDrop);
+                        } else {
+                            context.setCursor(DragSource.DefaultCopyNoDrop);
+                        }
+                    }
+                    public void dragExit(DragSourceEvent dse) {}
+                    public void dragOver(DragSourceDragEvent dsde) {}
+                    public void dropActionChanged(DragSourceDragEvent dsde) {}
+                };
 
 	    Component source = e.getComponent();
 	    if (source instanceof JTree) {

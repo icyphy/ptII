@@ -87,7 +87,7 @@ public class Commutator extends Transformer implements SequenceActor {
         input.setMultiport(true);
         output_tokenProductionRate =
             new Parameter(output, "tokenProductionRate",
-                new IntToken(0));
+                    new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////

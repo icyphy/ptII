@@ -104,12 +104,12 @@ public class CircuitTransformer extends SceneTransformer {
             new HashMutableDirectedGraph();
         // Loop over all the actor instance classes.
         for (Iterator i = _model.entityList().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
             SootClass entityClass =
-                        Scene.v().loadClassAndSupport(className);
+                Scene.v().loadClassAndSupport(className);
 
             CircuitAnalysis analysis =
                 new CircuitAnalysis(entity, entityClass);
@@ -117,16 +117,16 @@ public class CircuitTransformer extends SceneTransformer {
                 analysis.getOperatorGraph();
 
             for (Iterator nodes = operatorGraph.getNodes().iterator();
-                nodes.hasNext();) {
+                 nodes.hasNext();) {
                 Object node = nodes.next();
                 combinedGraph.addNode(node);
             }
             for (Iterator nodes = operatorGraph.getNodes().iterator();
-                nodes.hasNext();) {
+                 nodes.hasNext();) {
                 Object node = nodes.next();
                 List succList = new LinkedList(operatorGraph.getSuccsOf(node));
                 for (Iterator succs = succList.iterator();
-                    succs.hasNext();) {
+                     succs.hasNext();) {
                     Object succ = succs.next();
                     combinedGraph.addEdge(node, succ);
                 }
@@ -137,15 +137,15 @@ public class CircuitTransformer extends SceneTransformer {
 
         // Connect the combined graph.
         for (Iterator entities = _model.entityList().iterator();
-            entities.hasNext();) {
+             entities.hasNext();) {
             TypedAtomicActor actor = (TypedAtomicActor)entities.next();
 
             for (Iterator ports = actor.outputPortList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
 
                 for (Iterator remoteports = port.connectedPortList().iterator();
-                    remoteports.hasNext();) {
+                     remoteports.hasNext();) {
                     IOPort remotePort = (IOPort)remoteports.next();
                     combinedGraph.addEdge(port, remotePort);
                     removeSet.add(port);
@@ -156,14 +156,14 @@ public class CircuitTransformer extends SceneTransformer {
 
         // remove the extra nodes for ports.
         for (Iterator nodes = removeSet.iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             // Then remove the node.
             for (Iterator preds = combinedGraph.getPredsOf(node).iterator();
-                preds.hasNext();) {
+                 preds.hasNext();) {
                 Object pred = preds.next();
                 for (Iterator succs = combinedGraph.getSuccsOf(node).iterator();
-                    succs.hasNext();) {
+                     succs.hasNext();) {
                     Object succ = succs.next();
                     combinedGraph.addEdge(pred, succ);
                 }
@@ -172,17 +172,17 @@ public class CircuitTransformer extends SceneTransformer {
 
         // Remove all the nodes that were not required above.
         for (Iterator nodes = removeSet.iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             List predList = new LinkedList(combinedGraph.getPredsOf(node));
             for (Iterator preds = predList.iterator();
-                preds.hasNext();) {
+                 preds.hasNext();) {
                 Object pred = preds.next();
                 combinedGraph.removeEdge(pred, node);
             }
             List succList = new LinkedList(combinedGraph.getSuccsOf(node));
             for (Iterator succs = succList.iterator();
-                succs.hasNext();) {
+                 succs.hasNext();) {
                 Object succ = succs.next();
                 combinedGraph.removeEdge(node, succ);
             }

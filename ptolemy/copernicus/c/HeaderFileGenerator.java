@@ -163,15 +163,15 @@ public class HeaderFileGenerator extends CodeGenerator {
                 "Inherited/overridden methods");
         _context.clearDisableImports();
         String introducedMethods =
-                _generateMethodPointers(
-                MethodListGenerator.getNewMethods(source),
-                "New public and protected methods")
-                + _generateMethodPointers(
-                MethodListGenerator.getConstructors(source),
-                "Constructors")
-                + _generateMethodPointers(
-                MethodListGenerator.getPrivateMethods(source),
-                "Private methods");
+            _generateMethodPointers(
+                    MethodListGenerator.getNewMethods(source),
+                    "New public and protected methods")
+            + _generateMethodPointers(
+                    MethodListGenerator.getConstructors(source),
+                    "Constructors")
+            + _generateMethodPointers(
+                    MethodListGenerator.getPrivateMethods(source),
+                    "Private methods");
         if (((_context.getSingleClassMode()) || inheritedMethods.equals("")) &&
                 introducedMethods.equals("")) {
             bodyCode.append(_comment("Empty method table"));
@@ -307,8 +307,8 @@ public class HeaderFileGenerator extends CodeGenerator {
         Iterator fields = source.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1)
-                + "/* Public and protected fields defined in "
-                + source.getName() + " */\n";
+            + "/* Public and protected fields defined in "
+            + source.getName() + " */\n";
 
         // Generate public and protected fields
         while (fields.hasNext()) {
@@ -326,11 +326,11 @@ public class HeaderFileGenerator extends CodeGenerator {
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
             if (field.isPrivate() &&!(Modifier.isStatic(field.getModifiers())))
-            {
-                if (insertedFields == 0) fieldCode.append(header);
-                fieldCode.append(_generateField(field));
-                insertedFields++;
-            }
+                {
+                    if (insertedFields == 0) fieldCode.append(header);
+                    fieldCode.append(_generateField(field));
+                    insertedFields++;
+                }
         }
 
         return fieldCode.toString();
@@ -343,7 +343,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         Iterator fields = superClass.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1) +
-                _comment("Fields inherited from " + superClass.getName());
+            _comment("Fields inherited from " + superClass.getName());
 
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
@@ -429,7 +429,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         if (classes  == null) {
             if (source.hasSuperclass()) {
                 classes = (LinkedList)
-                        (_getSuperClasses(source.getSuperclass()).clone());
+                    (_getSuperClasses(source.getSuperclass()).clone());
                 classes.add(source.getSuperclass());
                 _superClasses.put(source, classes);
             } else {
@@ -445,12 +445,12 @@ public class HeaderFileGenerator extends CodeGenerator {
     // The end of a comment for generated code that is to be
     // commented-out.
     private static final String _closeComment =
-            "***********************************/\n";
+    "***********************************/\n";
 
     // The beginning of a comment for generated code that is to be
     // commented-out.
     private static final String _openComment =
-            "/***********************************\n";
+    "/***********************************\n";
 
     // Mapping from classes into lists of superclasses as computed by
     // {@link #_getSuperClasses(SootClass)}.

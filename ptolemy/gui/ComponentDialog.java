@@ -164,49 +164,49 @@ public class ComponentDialog extends JDialog {
 
         // The following code is based on Sun's CustomDialog example...
         _optionPane.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent e) {
-                String prop = e.getPropertyName();
+                public void propertyChange(PropertyChangeEvent e) {
+                    String prop = e.getPropertyName();
 
-                // PropertyChange is an extremely non-selective listener,
-                // so we have to filter...
-                if (isVisible()
-                        && (e.getSource() == _optionPane)
-                        && (prop.equals(JOptionPane.VALUE_PROPERTY)
-                        ||  prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
+                    // PropertyChange is an extremely non-selective listener,
+                    // so we have to filter...
+                    if (isVisible()
+                            && (e.getSource() == _optionPane)
+                            && (prop.equals(JOptionPane.VALUE_PROPERTY)
+                                    ||  prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
 
-                    Object value = _optionPane.getValue();
+                        Object value = _optionPane.getValue();
 
-                    // Ignore reset.
-                    if (value == JOptionPane.UNINITIALIZED_VALUE) return;
+                        // Ignore reset.
+                        if (value == JOptionPane.UNINITIALIZED_VALUE) return;
 
-                    // Reset the JOptionPane's value.
-                    // If you don't do this, then if the user
-                    // presses the same button next time, no
-                    // property change event will be fired.
-                    // Note that this seems to trigger the listener
-                    // again, so the previous line is essential.
-                    _optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
+                        // Reset the JOptionPane's value.
+                        // If you don't do this, then if the user
+                        // presses the same button next time, no
+                        // property change event will be fired.
+                        // Note that this seems to trigger the listener
+                        // again, so the previous line is essential.
+                        _optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
 
-                    if (value instanceof String) {
-                        // A button was pressed...
-                        _buttonPressed = (String)value;
+                        if (value instanceof String) {
+                            // A button was pressed...
+                            _buttonPressed = (String)value;
+                        }
+
+                        // Close the window.
+                        setVisible(false);
+
+                        // Take any action that might be associated with
+                        // window closing.
+                        _handleClosing();
+
+                        // Java's AWT yields random results if we do this.
+                        // And anyway, it doesn't work.  Components still don't
+                        // have their ComponentListener methods called to indicate
+                        // that they have become invisible.
+                        // dispose();
                     }
-
-                    // Close the window.
-                    setVisible(false);
-
-                    // Take any action that might be associated with
-                    // window closing.
-                    _handleClosing();
-
-                    // Java's AWT yields random results if we do this.
-                    // And anyway, it doesn't work.  Components still don't
-                    // have their ComponentListener methods called to indicate
-                    // that they have become invisible.
-                    // dispose();
                 }
-            }
-        });
+            });
 
         getContentPane().add(_optionPane);
         pack();
@@ -232,10 +232,10 @@ public class ComponentDialog extends JDialog {
         // Catch closing events so that components are notified if
         // the window manager is used to close the window.
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                _handleClosing();
-            }
-        });
+                public void windowClosing(WindowEvent e) {
+                    _handleClosing();
+                }
+            });
 
         // Make the window visible.
         setVisible(true);

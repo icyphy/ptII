@@ -133,7 +133,7 @@ public class EntityTreeModel implements TreeModel {
      */
     public void setRoot(NamedObj root) {
         if (_root != null) {
-           _root.removeChangeListener(_rootListener);
+            _root.removeChangeListener(_rootListener);
         }
 	_root = root;
         if (_root != null) {

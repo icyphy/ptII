@@ -88,7 +88,7 @@ public class Scale extends Transformer {
 	// set the type constraints.
 	output.setTypeAtLeast(new PortParameterFunction(input, factor));
 
-         // icon
+        // icon
 	_attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-30,-20 30,-4 30,4 -30,20\" "
                 + "style=\"fill:white\"/>\n"
@@ -126,7 +126,7 @@ public class Scale extends Transformer {
 	    throws CloneNotSupportedException {
         Scale newObject = (Scale)super.clone(workspace);
 	PortParameterFunction function = new PortParameterFunction(newObject.input,
-	                                                   newObject.factor);
+                newObject.factor);
         newObject.output.setTypeAtLeast(function);
         return newObject;
     }

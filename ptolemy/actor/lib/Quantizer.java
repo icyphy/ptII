@@ -124,7 +124,7 @@ public class Quantizer extends Transformer {
             double previous = Double.NEGATIVE_INFINITY;
             for (int i = 0; i < levelsValue.length(); i++) {
                 _levels[i] = ((DoubleToken)levelsValue.getElement(i))
-                        .doubleValue();
+                    .doubleValue();
                 // Check nondecreasing property.
                 if (_levels[i] < previous) {
                     throw new IllegalActionException(this,

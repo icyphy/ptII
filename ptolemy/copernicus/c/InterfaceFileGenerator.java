@@ -109,19 +109,19 @@ public class InterfaceFileGenerator extends CodeGenerator {
 
         bodyCode.append("struct " + typeName + ";\n");
         bodyCode.append("typedef struct " + typeName + " *" +
-                        typeName + ";\n\n");
+                typeName + ";\n\n");
 
         bodyCode.append("/* Structure that implements " + className + " */\n");
         bodyCode.append("struct " + objectName +";\n\n");
         bodyCode.append("/* Pointer to structure that implements " +
-                        className + " */\n");
+                className + " */\n");
         bodyCode.append("typedef struct " +objectName+ " *" + objectName
-                        +";\n");
+                +";\n");
 
 
 
 
-         // Return an appropriate concatenation of the code strings.
+        // Return an appropriate concatenation of the code strings.
         return (headerCode.append(bodyCode.append(footerCode))).toString();
     }
 

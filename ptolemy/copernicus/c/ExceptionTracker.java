@@ -43,180 +43,180 @@ import java.util.LinkedList;
 
 public class ExceptionTracker
 {
-/*
-A class that keeps track of Exceptions and Traps
-@author Ankush Varma
-@version $Id$
-@since Ptolemy II 2.0
-*/
+    /*
+      A class that keeps track of Exceptions and Traps
+      @author Ankush Varma
+      @version $Id$
+      @since Ptolemy II 2.0
+    */
 
-	public void ExceptionTracker()
-	{
-		//do nothing
+    public void ExceptionTracker()
+    {
+        //do nothing
 
-	}
+    }
 
-	public boolean isBeginUnit(Unit u)
-	{
-		return(_beginUnitList.contains(u));
-	}
+    public boolean isBeginUnit(Unit u)
+    {
+        return(_beginUnitList.contains(u));
+    }
 
-	public boolean isEndUnit(Unit u)
-	{
-		return(_endUnitList.contains(u));
-	}
+    public boolean isEndUnit(Unit u)
+    {
+        return(_endUnitList.contains(u));
+    }
 
-	public boolean isHandlerUnit(Unit u)
-	{
-		return(_handlerUnitList.contains(u));
-	}
+    public boolean isHandlerUnit(Unit u)
+    {
+        return(_handlerUnitList.contains(u));
+    }
 
-	public int beginIndexOf(Unit u)
-	{
-	   return(_beginUnitList.indexOf(u));
-        }
+    public int beginIndexOf(Unit u)
+    {
+        return(_beginUnitList.indexOf(u));
+    }
 
-        public int endIndexOf(Unit u)
-        {
-            return(_endUnitList.indexOf(u));
-        }
+    public int endIndexOf(Unit u)
+    {
+        return(_endUnitList.indexOf(u));
+    }
 
-        public int handlerIndexOf(Unit u)
-        {
-            return(_handlerUnitList.indexOf(u));
-        }
-
-
-	public void init(Body body)
-	{
-		_trapChain = body.getTraps();
-		Iterator i = _trapChain.iterator();
-		_epc = 0;
-
-		_beginUnitList   = new LinkedList();
-		_endUnitList     = new LinkedList();
-		_handlerUnitList = new LinkedList();
-
-                _currently_active_traps = new LinkedList();
-                _trapsForEachEpc = new LinkedList();
+    public int handlerIndexOf(Unit u)
+    {
+        return(_handlerUnitList.indexOf(u));
+    }
 
 
-		while (i.hasNext())
-		{
-			Trap CurrentTrap = (Trap)i.next();
+    public void init(Body body)
+    {
+        _trapChain = body.getTraps();
+        Iterator i = _trapChain.iterator();
+        _epc = 0;
 
-			Unit BeginUnit   = CurrentTrap.getBeginUnit();
-			Unit EndUnit     = CurrentTrap.getEndUnit();
-			Unit HandlerUnit = CurrentTrap.getHandlerUnit();
+        _beginUnitList   = new LinkedList();
+        _endUnitList     = new LinkedList();
+        _handlerUnitList = new LinkedList();
 
-			_beginUnitList.add(BeginUnit);
-			_endUnitList.add(EndUnit);
-			_handlerUnitList.add(HandlerUnit);
-
-		}
-	}
+        _currently_active_traps = new LinkedList();
+        _trapsForEachEpc = new LinkedList();
 
 
+        while (i.hasNext())
+            {
+                Trap CurrentTrap = (Trap)i.next();
 
-	public boolean trapsExist()
-	{
-		return(_beginUnitList.size() != 0);
-	}
+                Unit BeginUnit   = CurrentTrap.getBeginUnit();
+                Unit EndUnit     = CurrentTrap.getEndUnit();
+                Unit HandlerUnit = CurrentTrap.getHandlerUnit();
 
-	public int numberOfTraps()
-	{
-		return(_beginUnitList.size());
-	}
+                _beginUnitList.add(BeginUnit);
+                _endUnitList.add(EndUnit);
+                _handlerUnitList.add(HandlerUnit);
 
-	public int getEpc()
-	{
-	   return _epc;
-        }
+            }
+    }
 
-	public void beginUnitEncountered(Unit u)
-	{
-           _storeState();
 
-           _epc++;
-           Iterator i = _trapChain.iterator();
 
-           //record all traps beginning here as active
-           while (i.hasNext())
-           {
-               Trap ThisTrap = (Trap)i.next();
-               if (ThisTrap.getBeginUnit() == u)
-                   _currently_active_traps.addFirst(ThisTrap);
-                   //so that traps are stored in the reverse order in which they
-                   //are encountered. Most recent trap first.
-           }
-	}
+    public boolean trapsExist()
+    {
+        return(_beginUnitList.size() != 0);
+    }
 
-        public void endUnitEncountered(Unit u)
-        {
-            _storeState();
+    public int numberOfTraps()
+    {
+        return(_beginUnitList.size());
+    }
 
-            _epc++;
-            Iterator i = _trapChain.iterator();
+    public int getEpc()
+    {
+        return _epc;
+    }
 
-            //record all traps ending here as inactive
-            while (i.hasNext())
+    public void beginUnitEncountered(Unit u)
+    {
+        _storeState();
+
+        _epc++;
+        Iterator i = _trapChain.iterator();
+
+        //record all traps beginning here as active
+        while (i.hasNext())
+            {
+                Trap ThisTrap = (Trap)i.next();
+                if (ThisTrap.getBeginUnit() == u)
+                    _currently_active_traps.addFirst(ThisTrap);
+                //so that traps are stored in the reverse order in which they
+                //are encountered. Most recent trap first.
+            }
+    }
+
+    public void endUnitEncountered(Unit u)
+    {
+        _storeState();
+
+        _epc++;
+        Iterator i = _trapChain.iterator();
+
+        //record all traps ending here as inactive
+        while (i.hasNext())
             {
                 Trap ThisTrap = (Trap)i.next();
                 if (ThisTrap.getEndUnit() == u)
-                   _currently_active_traps.remove(ThisTrap);
+                    _currently_active_traps.remove(ThisTrap);
             }
 
-        }
+    }
 
-        public LinkedList getHandlerUnitList(int epc)
-        //returns a list of all handlers associated with a given epc
-        {
-            LinkedList ListOfTraps = (LinkedList)_trapsForEachEpc.get(epc);
-            LinkedList ListOfHandlers = new LinkedList();
-            Iterator i = ListOfTraps.listIterator();
+    public LinkedList getHandlerUnitList(int epc)
+            //returns a list of all handlers associated with a given epc
+    {
+        LinkedList ListOfTraps = (LinkedList)_trapsForEachEpc.get(epc);
+        LinkedList ListOfHandlers = new LinkedList();
+        Iterator i = ListOfTraps.listIterator();
 
-            while (i.hasNext())
+        while (i.hasNext())
             {
                 Trap t = (Trap)i.next();
                 ListOfHandlers.add(t.getHandlerUnit());
             }
 
-            return ListOfHandlers;
-        }
+        return ListOfHandlers;
+    }
 
-        public LinkedList getTrapsForEpc(int epc)
-        //returns a list of traps corresponding to the given epc
-        {
-            return (LinkedList)_trapsForEachEpc.get(epc);
-        }
+    public LinkedList getTrapsForEpc(int epc)
+            //returns a list of traps corresponding to the given epc
+    {
+        return (LinkedList)_trapsForEachEpc.get(epc);
+    }
 
-        public Chain getTrapChain()
-        {
-            return _trapChain;
-        }
+    public Chain getTrapChain()
+    {
+        return _trapChain;
+    }
 
-        protected void _storeState()
-        {
-            _trapsForEachEpc.add(_currently_active_traps.clone());
-            //yes, this is a list of lists
-        }
+    protected void _storeState()
+    {
+        _trapsForEachEpc.add(_currently_active_traps.clone());
+        //yes, this is a list of lists
+    }
 
 
 
-	protected int _epc;
+    protected int _epc;
 
-        protected Chain _trapChain;
+    protected Chain _trapChain;
 
-	protected LinkedList _beginUnitList;
-	protected LinkedList _endUnitList;
-	protected LinkedList _handlerUnitList;
+    protected LinkedList _beginUnitList;
+    protected LinkedList _endUnitList;
+    protected LinkedList _handlerUnitList;
 
-        protected LinkedList _currently_active_traps;
-        protected LinkedList _trapsForEachEpc;
-        //list containing the list of traps for each epc
-        //the index in this list is the epc, so the
-        //epc is not explicitly stored in this data
-        //structure
+    protected LinkedList _currently_active_traps;
+    protected LinkedList _trapsForEachEpc;
+    //list containing the list of traps for each epc
+    //the index in this list is the epc, so the
+    //epc is not explicitly stored in this data
+    //structure
 
 
 }

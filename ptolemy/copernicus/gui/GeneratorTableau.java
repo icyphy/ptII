@@ -118,8 +118,8 @@ public class GeneratorTableau extends Tableau {
         } else {
             throw
 		new IllegalActionException(model,
-					   "Can only generate code for "
-					   + "instances of CompositeEntity.");
+                        "Can only generate code for "
+                        + "instances of CompositeEntity.");
         }
     }
 
@@ -181,7 +181,7 @@ public class GeneratorTableau extends Tableau {
                                     null, infoURL, infoURL.toExternalForm());
                         } catch (Exception ex) {
                             throw new InternalErrorException(model, ex,
-				     "Failed to open doc/codegen.htm: ");
+                                    "Failed to open doc/codegen.htm: ");
 
                         }
                     }
@@ -275,8 +275,8 @@ public class GeneratorTableau extends Tableau {
                             if (!directory.canWrite()) {
                                 throw
 				    new IllegalActionException(model,
-							       "Can't write: "
-							       + directoryName
+                                            "Can't write: "
+                                            + directoryName
 							       );
                             }
 			    // True if we should run jode, jad or javap
@@ -297,74 +297,74 @@ public class GeneratorTableau extends Tableau {
 				options.codeGenerator.getExpression();
 
 			    if (codeGenerator.equals(options
-						     .sootApplet.
-						     getExpression())){
+                                    .sootApplet.
+                                    getExpression())){
 				// Soot is a memory pig, so we run
 				// it in a separate process.
 				try {
 				    execCommands
 					.add(_generateSootJavaCommand(model,
-								      directoryName,
-								      packageNameString,
-								      "applet" /* Generate applet code. */));
+                                                directoryName,
+                                                packageNameString,
+                                                "applet" /* Generate applet code. */));
 
 				} catch (Exception ex) {
 				    throw new IllegalActionException(model, ex, null);
 				}
 				isApplet = true;
 			    } else if (codeGenerator.equals(options
-							    .sootC.
-							    getExpression())){
+                                    .sootC.
+                                    getExpression())){
 
 				// FIXME: we should disable the compile
 				// button.
 				exec.updateStatusBar("Starting c "
-						     + "code generation");
+                                        + "code generation");
 				// FIXME: How come the status bar
 				// does not get updated?
 				ptolemy.copernicus.c
 				    .Main.generate((CompositeActor)model,
-						   directoryName);
+                                            directoryName);
 				exec.updateStatusBar("C Code generation "
-						     + "complete.");
+                                        + "complete.");
 				decompile = true;
 
 			    } else if (codeGenerator.equals(options
-							    .sootDeep.
-							    getExpression())){
+                                    .sootDeep.
+                                    getExpression())){
 
 				// Soot is a memory pig, so we run
 				// it in a separate process.
 				try {
 				    execCommands
 					.add(_generateSootJavaCommand(model,
-								      directoryName,
-								      packageNameString,
-								      "java"
-								      /* Generate deep code. */));
+                                                directoryName,
+                                                packageNameString,
+                                                "java"
+                                                /* Generate deep code. */));
 
-				decompile = true;
-				isDeep = true;
+                                    decompile = true;
+                                    isDeep = true;
 				} catch (Exception ex) {
 				    throw new IllegalActionException(model, ex, null);
 				}
 			    } else if (codeGenerator.equals(options
-							    .sootJHDL.
-							    getExpression())){
+                                    .sootJHDL.
+                                    getExpression())){
 				// FIXME: we should disable the compile
 				// button.
 
 				exec.updateStatusBar("Starting jhdl "
-						     + "code generation");
+                                        + "code generation");
 				ptolemy.copernicus.jhdl
 				    .Main.generate((CompositeActor)model,
-						   directoryName);
+                                            directoryName);
 				exec.updateStatusBar("Code generation "
-						     + "complete.");
+                                        + "complete.");
 
 			    } else if (codeGenerator.equals(options
-							    .sootShallow.
-							    getExpression())){
+                                    .sootShallow.
+                                    getExpression())){
 				// FIXME: we should disable the compile
 				// button.
 
@@ -373,9 +373,9 @@ public class GeneratorTableau extends Tableau {
 				try {
 				    execCommands
 					.add(_generateSootJavaCommand(model,
-								      directoryName,
-								      packageNameString,
-								      "shallow" /* Generate shallow code */));
+                                                directoryName,
+                                                packageNameString,
+                                                "shallow" /* Generate shallow code */));
 				} catch (Exception ex) {
 				    throw new IllegalActionException(model, ex, null);
 				}
@@ -396,7 +396,7 @@ public class GeneratorTableau extends Tableau {
 				className = className + ".Main";
 			    } else {
 				if (className.length() > 0
-				    && ! className.endsWith(".") ) {
+                                        && ! className.endsWith(".") ) {
 				    className = className + '.'
 					+ "CG" + model.getName();
 				} else {
@@ -409,34 +409,34 @@ public class GeneratorTableau extends Tableau {
 
 			    if (show && decompile) {
 				execCommands.add("javap "
-						 + runOptions
-						 + " "
-						 + className);
+                                        + runOptions
+                                        + " "
+                                        + className);
 			    }
                             if (run) {
 				if (isApplet) {
 				    String appletDirectoryName =
 					_getPtolemyPtIIDir() + "/"
 					+ StringUtilities.substitute(
-								     packageNameString,
-								     ".", "/")
+                                                packageNameString,
+                                                ".", "/")
 					+ "/" + model.getName() ;
 
 
 				    execCommands.add("make -C "
-						     + appletDirectoryName
-						     + " demo"
+                                            + appletDirectoryName
+                                            + " demo"
 						     );
 				} else if (isDeep) {
 				    execCommands.add("java "
-						     + runOptions
-						     + " " + className);
+                                            + runOptions
+                                            + " " + className);
 				} else {
 				    execCommands.add("java "
-                                        + runOptions
-                                        + " ptolemy.actor.gui"
-					+ ".CompositeActorApplication -class "
-                                        + className);
+                                            + runOptions
+                                            + " ptolemy.actor.gui"
+                                            + ".CompositeActorApplication -class "
+                                            + className);
 				}
                             }
                             if (execCommands.size() > 0) {
@@ -445,7 +445,7 @@ public class GeneratorTableau extends Tableau {
                             }
                         } catch (Exception ex) {
                             MessageHandler.error("Code generation failed.",
-						 ex);
+                                    ex);
                         }
                     }
                 });
@@ -513,10 +513,10 @@ public class GeneratorTableau extends Tableau {
     // the generator we are running.  Usually, something like
     // "applet" or "java" or "shallow".
     private String _generateSootJavaCommand(CompositeEntity model,
-					    String directoryName,
-					    String targetPackage,
-					    String copernicusSubdirectory)
-	throws IllegalArgumentException, InternalErrorException
+            String directoryName,
+            String targetPackage,
+            String copernicusSubdirectory)
+            throws IllegalArgumentException, InternalErrorException
     {
 	// Make sure the directory exists.
 	String makefileDirectory = _getPtolemyPtIIDir() + File.separatorChar
@@ -526,10 +526,10 @@ public class GeneratorTableau extends Tableau {
 	File makefileDirectoryFile = new File(makefileDirectory);
 	if (!makefileDirectoryFile.isDirectory()) {
             throw new IllegalArgumentException("'" + makefileDirectory
-					   + "' is not a directory. "
-					   + "This directory should contain "
-					   + "the makefile used for code "
-					   + " generation.");
+                    + "' is not a directory. "
+                    + "This directory should contain "
+                    + "the makefile used for code "
+                    + " generation.");
 	}
 
 	// Create a temporary file in c:/temp or /tmp.
@@ -547,8 +547,8 @@ public class GeneratorTableau extends Tableau {
 	    fileWriter.close();
 	} catch (IOException io) {
 	    throw new InternalErrorException(model, null, "Warning: failed to write model "
-                                           + "to '"
-					   + temporaryMoMLFile + "': " + io);
+                    + "to '"
+                    + temporaryMoMLFile + "': " + io);
 	}
 	if (temporaryMoMLFile == null) {
 	    return "# Could not write temporary moml file";
@@ -559,27 +559,27 @@ public class GeneratorTableau extends Tableau {
   	    temporaryMoMLURL = temporaryMoMLFile.toURL();
   	} catch (MalformedURLException malformedURL) {
             throw new InternalErrorException(this, malformedURL,
-                                           "Failed to convert '"
-  					   + temporaryMoMLFile + "' to a URL");
+                    "Failed to convert '"
+                    + temporaryMoMLFile + "' to a URL");
   	}
 
-//  	String temporaryMoMLCanonicalPath = null;
-//  	try {
-//  	    temporaryMoMLCanonicalPath = temporaryMoMLFile.getCanonicalPath();
-//    	} catch (IOException io) {
-//    	    InternalErrorException internalError =
-//    		new InternalErrorException("Failed to get canonical path '"
-//    					   + temporaryMoMLFile + ": " + io);
-//    	    internalError.fillInStackTrace();
-//    	    throw internalError;
-//  	}
+        //  	String temporaryMoMLCanonicalPath = null;
+        //  	try {
+        //  	    temporaryMoMLCanonicalPath = temporaryMoMLFile.getCanonicalPath();
+        //    	} catch (IOException io) {
+        //    	    InternalErrorException internalError =
+        //    		new InternalErrorException("Failed to get canonical path '"
+        //    					   + temporaryMoMLFile + ": " + io);
+        //    	    internalError.fillInStackTrace();
+        //    	    throw internalError;
+        //  	}
 
         return "make -C \"" + makefileDirectory
-		+ "\" MODEL=\"" + model.getName()
-		+ "\" SOURCECLASS=\"" + temporaryMoMLURL
-		//	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
-		+ "\" TARGETPACKAGE=\"" + targetPackage
-		+ "\" compileDemo";
+            + "\" MODEL=\"" + model.getName()
+            + "\" SOURCECLASS=\"" + temporaryMoMLURL
+            //	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
+            + "\" TARGETPACKAGE=\"" + targetPackage
+            + "\" compileDemo";
 
     }
 
@@ -593,11 +593,11 @@ public class GeneratorTableau extends Tableau {
 	    home = System.getProperty("ptolemy.ptII.dir");
         } catch (SecurityException security) {
             throw new InternalErrorException(this, security,
-                                           "Could not find "
-                                           + "'ptolemy.ptII.dir'"
-					   + " property.  Vergil should be "
-					   + "invoked with -Dptolemy.ptII.dir"
-					   + "=\"$PTII\"");
+                    "Could not find "
+                    + "'ptolemy.ptII.dir'"
+                    + " property.  Vergil should be "
+                    + "invoked with -Dptolemy.ptII.dir"
+                    + "=\"$PTII\"");
         }
 	return home;
     }

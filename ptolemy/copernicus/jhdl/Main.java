@@ -116,7 +116,7 @@ public class Main extends KernelMain {
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ffat",
-               FieldsForAttributesTransformer.v(_toplevel)));
+                FieldsForAttributesTransformer.v(_toplevel)));
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
         // to getPort with references to those fields.
@@ -188,7 +188,7 @@ public class Main extends KernelMain {
      *  model cannot be changed to a Java identifier String.
      */
     public static void main(String[] args)
-	throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 	Main main = new Main(args);
 
 	// Parse the model.

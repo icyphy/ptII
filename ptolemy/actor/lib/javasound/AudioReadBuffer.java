@@ -297,7 +297,7 @@ public class AudioReadBuffer extends Transformer {
 	// parameter accordingly.
 	_channels = _soundReader.getChannels();
 	int length = ((IntToken)bufferLength
-                    .getToken()).intValue();
+                .getToken()).intValue();
 	_audioBuffer = new double[length];
 	// Read all of the samples into an array.
 	double[][] samples = new double[_channels][getSamplesArraySize];

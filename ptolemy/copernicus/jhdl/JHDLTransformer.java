@@ -385,7 +385,7 @@ class JHDLTransformer extends SceneTransformer {
 
         // iterate over all constructors
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             // get constructor
             SootMethod constructor = (SootMethod)methods.next();
             // Ignore things that aren't constructors.
@@ -589,7 +589,7 @@ class JHDLTransformer extends SceneTransformer {
 
 		// compare type with the arguments type
 		for (Iterator parameters=parameterTypes.iterator();
-		    parameters.hasNext();) {
+                     parameters.hasNext();) {
 
 		    Type parameterType = (Type) parameters.next();
 		    if (parameterType.equals(rightOpType)) {
@@ -642,7 +642,7 @@ class JHDLTransformer extends SceneTransformer {
 
         int i = 0;
         for (Iterator fields = theClass.getFields().snapshotIterator();
-            fields.hasNext();) {
+             fields.hasNext();) {
 
             SootField field = (SootField)fields.next();
             if (field.getType().equals(RefType.v(ioPortClass))) {

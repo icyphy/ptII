@@ -59,10 +59,10 @@ public class TreeEditor extends JFrame {
 
         // Handle window closing by exiting the application.
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+                public void windowClosing(WindowEvent e) {
+                    System.exit(0);
+                }
+            });
 
         getContentPane().add(new TreeEditorPanel(filename));
         pack();

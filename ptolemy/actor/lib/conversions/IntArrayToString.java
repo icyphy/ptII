@@ -119,7 +119,7 @@ public class IntArrayToString extends TypedAtomicActor {
         byte[] dataBytes = new byte[dataIntArrayToken.length()];
         for (int j = 0; j < dataIntArrayToken.length(); j++) {
             IntToken dataIntOneToken =
-                    (IntToken)dataIntArrayToken.getElement(j);
+                (IntToken)dataIntArrayToken.getElement(j);
             dataBytes[j] = (byte)dataIntOneToken.intValue(); //Keep low 8 bits
         }
         // Note:  Following line may assume 1 byte per character, not sure.

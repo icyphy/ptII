@@ -79,7 +79,7 @@ public class Synchronizer extends Transformer {
      *  @exception IllegalActionException If there is no director or
      *   if the number of input channels does not equal the number of
      *   output channels.
-    */
+     */
     public void fire() throws IllegalActionException {
         int outWidth = output.getWidth();
         int inWidth = input.getWidth();

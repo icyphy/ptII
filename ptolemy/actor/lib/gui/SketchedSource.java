@@ -294,18 +294,18 @@ public class SketchedSource extends Source
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (plot != null) {
-                    if (_container != null) {
-                        _container.remove(plot);
-                        _container.invalidate();
-                        _container.repaint();
-                    } else if (_frame != null) {
-                        _frame.dispose();
+                public void run() {
+                    if (plot != null) {
+                        if (_container != null) {
+                            _container.remove(plot);
+                            _container.invalidate();
+                            _container.repaint();
+                        } else if (_frame != null) {
+                            _frame.dispose();
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 
     // Set the initial value of the plot and fill the plot.

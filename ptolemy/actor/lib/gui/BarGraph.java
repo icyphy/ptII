@@ -177,8 +177,8 @@ public class BarGraph extends Plotter implements SequenceActor {
         int width = input.getWidth();
         _offset = ((IntToken)startingDataset.getToken()).intValue();
         if (_tokens == null || _tokens.length != width) {
-           _tokens = new ArrayToken[width];
-       }
+            _tokens = new ArrayToken[width];
+        }
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 _tokens[i] = (ArrayToken)input.get(i);
@@ -187,7 +187,7 @@ public class BarGraph extends Plotter implements SequenceActor {
                     plot.clear(i + _offset);
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue =
-                                ((DoubleToken)currentArray[j]).doubleValue();
+                            ((DoubleToken)currentArray[j]).doubleValue();
                         plot.addPoint(i + _offset, j, currentValue, true);
                     }
                 }
@@ -195,7 +195,7 @@ public class BarGraph extends Plotter implements SequenceActor {
         }
         _iteration++;
         if (_iteration == ((IntToken)iterationsPerUpdate
-                 .getToken()).intValue()) {
+                .getToken()).intValue()) {
             _iteration = 0;
         }
         return super.postfire();
@@ -213,7 +213,7 @@ public class BarGraph extends Plotter implements SequenceActor {
                     plot.clear(i + _offset);
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue =
-                                ((DoubleToken)currentArray[j]).doubleValue();
+                            ((DoubleToken)currentArray[j]).doubleValue();
                         plot.addPoint(i + _offset, j, currentValue, true);
                     }
                 }

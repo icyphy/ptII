@@ -271,7 +271,7 @@ public class Plotter extends TypedAtomicActor
             // NOTE: Cannot include xml spec in the header because processing
             // instructions cannot be nested in XML (lame, isn't it?).
             String header
-            = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+                = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
             StringWriter writer = new StringWriter();
 	    PrintWriter print = new PrintWriter(writer);
             // NOTE: Cannot include xml spec in the header because processing
@@ -495,18 +495,18 @@ public class Plotter extends TypedAtomicActor
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (plot != null) {
-                    if (_container != null) {
-                        _container.remove(plot);
-                        _container.invalidate();
-                        _container.repaint();
-                    } else if (_frame != null) {
-                        _frame.dispose();
+                public void run() {
+                    if (plot != null) {
+                        if (_container != null) {
+                            _container.remove(plot);
+                            _container.invalidate();
+                            _container.repaint();
+                        } else if (_frame != null) {
+                            _frame.dispose();
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 
     ///////////////////////////////////////////////////////////////////

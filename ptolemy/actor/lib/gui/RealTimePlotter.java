@@ -91,7 +91,7 @@ public class RealTimePlotter extends Plotter {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-       _startTime = System.currentTimeMillis();
+        _startTime = System.currentTimeMillis();
     }
 
     /** Read at most one input from each channel and plot it as a

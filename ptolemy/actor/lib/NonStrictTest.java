@@ -115,11 +115,11 @@ public class NonStrictTest extends Test {
     public boolean postfire() throws IllegalActionException {
 	if (input.getWidth() != 1) {
 	    throw new IllegalActionException(this,
-			 "Width of input is " + input.getWidth()
-			 + "but NonStrictTest only supports a width of 1.");
+                    "Width of input is " + input.getWidth()
+                    + "but NonStrictTest only supports a width of 1.");
 	}
 	if (_numberOfInputTokensSeen
-	    >= ((ArrayToken)(correctValues.getToken())).length()) {
+                >= ((ArrayToken)(correctValues.getToken())).length()) {
 	    // Consume and discard input values.  We are beyond the end
 	    // of the correctValues array.
 	    if (input.hasToken(0)) {
@@ -133,15 +133,15 @@ public class NonStrictTest extends Test {
 	    .getElement(_numberOfInputTokensSeen);
 	if (referenceToken instanceof ArrayToken) {
 	    throw new IllegalActionException(this,
-			 "Reference is an ArrayToken, "
-			 + "but NonStrictTest only supports a width of 1.");
+                    "Reference is an ArrayToken, "
+                    + "but NonStrictTest only supports a width of 1.");
 	}
 
 	if (input.hasToken(0)) {
 	    Token token = input.get(0);
 	    _numberOfInputTokensSeen++;
 	    if (token.isCloseTo(referenceToken, _tolerance).booleanValue()
-		== false)
+                    == false)
 		throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration
                         + ".\n"

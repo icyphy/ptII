@@ -187,7 +187,7 @@ public class Clock extends TimedSource {
             double previous = 0.0;
             for (int i = 0; i < offsetsValue.length(); i++) {
                 _offsets[i] = ((DoubleToken)offsetsValue.getElement(i))
-                        .doubleValue();
+                    .doubleValue();
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,

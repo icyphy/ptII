@@ -189,11 +189,11 @@ public class Lattice extends Transformer {
      */
     public boolean postfire() throws IllegalActionException {
         System.arraycopy(_backwardCache, 0,
-                        _backward, 0,
-                        _backwardCache.length);
+                _backward, 0,
+                _backwardCache.length);
         System.arraycopy(_forwardCache, 0,
-                        _forward, 0,
-                        _forwardCache.length);
+                _forward, 0,
+                _forwardCache.length);
         return super.postfire();
     }
 

@@ -327,10 +327,10 @@ public class IconEditor {
 
     // When you click exit in the file menu of the menubar.
     Action exitIconAction = new AbstractAction("Exit") {
-        public void actionPerformed(ActionEvent e) {
-	    _context.setVisible(false);
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                _context.setVisible(false);
+            }
+        };
 
     ///////////////////////////////////////////////////////////////////
     ///////////////////      Private variables.       /////////////////////
@@ -428,189 +428,189 @@ public class IconEditor {
     // quadraticAction, cubicAction, circleAction, and
     // ellipseAction, only this action is commented.
     Action rectangleAction = new AbstractAction("Rectangle") {
-        public void actionPerformed(ActionEvent e) {
-	    // Create a new figure with the given outline
-	    // thickness and stroke color.  This figure
-	    // is placed on the canvas, underneath the
-	    // rectangle button in the toolbar.
-	    VersatileFigure figure = new VersatileFigure
-                (new PaintedShape(new Rectangle2D.Double
+            public void actionPerformed(ActionEvent e) {
+                // Create a new figure with the given outline
+                // thickness and stroke color.  This figure
+                // is placed on the canvas, underneath the
+                // rectangle button in the toolbar.
+                VersatileFigure figure = new VersatileFigure
+                    (new PaintedShape(new Rectangle2D.Double
                         (8.0, 10.0, 20.0, 20.0),
-                        _outlineThickness, _outlinePaint));
+                            _outlineThickness, _outlinePaint));
 
-	    // This figure begins with a fill color that is
-	    // currently selected.
-	    figure.setFillPaint(_fillPaint);
+                // This figure begins with a fill color that is
+                // currently selected.
+                figure.setFillPaint(_fillPaint);
 
-	    // Add it to the editor pane.
-	    _editorPane.addFigure(figure);
-	}
-    };
+                // Add it to the editor pane.
+                _editorPane.addFigure(figure);
+            }
+        };
 
     // When the straight line button is pressed.
     Action lineAction = new AbstractAction("Line") {
-        public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure
-                (new PaintedShape(new Line2D.Double
+            public void actionPerformed(ActionEvent e) {
+                VersatileFigure figure = new VersatileFigure
+                    (new PaintedShape(new Line2D.Double
                         (45.0, 10.0, 65.0, 30.0),
-                        _outlineThickness, _outlinePaint));
-	    figure.setFillPaint(_fillPaint);
-	    _editorPane.addFigure(figure);
-    	}
-    };
+                            _outlineThickness, _outlinePaint));
+                figure.setFillPaint(_fillPaint);
+                _editorPane.addFigure(figure);
+            }
+        };
 
     // When the quadratic curve button is pressed.
     Action quadraticAction = new AbstractAction("Quadratic Curve") {
-        public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure
-                (new PaintedShape(new QuadCurve2D.Double
+            public void actionPerformed(ActionEvent e) {
+                VersatileFigure figure = new VersatileFigure
+                    (new PaintedShape(new QuadCurve2D.Double
                         (77.0, 10.0, 87.0, 20.0, 97.0, 30.0),
-                        _outlineThickness, _outlinePaint));
+                            _outlineThickness, _outlinePaint));
 
-	    figure.setFillPaint(_fillPaint);
-	    _editorPane.addFigure(figure);
-	}
-    };
+                figure.setFillPaint(_fillPaint);
+                _editorPane.addFigure(figure);
+            }
+        };
 
     // When the cubic curve button is pressed.
     Action cubicAction = new AbstractAction("Cubic Curve") {
-        public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure
-                (new PaintedShape(new CubicCurve2D.Double
+            public void actionPerformed(ActionEvent e) {
+                VersatileFigure figure = new VersatileFigure
+                    (new PaintedShape(new CubicCurve2D.Double
                         (110.0, 10.0, 117.0, 17.0,
                                 123.0, 23.0, 130.0, 30.0),
-                        _outlineThickness, _outlinePaint));
+                            _outlineThickness, _outlinePaint));
 
-	    figure.setFillPaint(_fillPaint);
-	    _editorPane.addFigure(figure);
-	}
-    };
+                figure.setFillPaint(_fillPaint);
+                _editorPane.addFigure(figure);
+            }
+        };
 
     // When the circle button is pressed.
     Action circleAction = new AbstractAction("Circle") {
-        public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure
-                (new PaintedShape(new Ellipse2D.Double
+            public void actionPerformed(ActionEvent e) {
+                VersatileFigure figure = new VersatileFigure
+                    (new PaintedShape(new Ellipse2D.Double
                         (148.0, 10.0, 20.0, 20.0),
-                        _outlineThickness, _outlinePaint));
+                            _outlineThickness, _outlinePaint));
 
-	    figure.setFillPaint(_fillPaint);
-	    _editorPane.addFigure(figure);
-	}
-    };
+                figure.setFillPaint(_fillPaint);
+                _editorPane.addFigure(figure);
+            }
+        };
 
     // When the ellipse button is pressed.
     Action ellipseAction = new AbstractAction("Ellipse") {
-        public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure
-                (new PaintedShape(new Ellipse2D.Double
+            public void actionPerformed(ActionEvent e) {
+                VersatileFigure figure = new VersatileFigure
+                    (new PaintedShape(new Ellipse2D.Double
                         (183.0, 10.0, 20.0, 30.0),
-                        _outlineThickness, _outlinePaint));
-	    figure.setFillPaint(_fillPaint);
-	    _editorPane.addFigure(figure);
-	}
-    };
+                            _outlineThickness, _outlinePaint));
+                figure.setFillPaint(_fillPaint);
+                _editorPane.addFigure(figure);
+            }
+        };
 
     // When the fill color combo box is chosen.
     Action fillAction = new AbstractAction() {
-        public void actionPerformed(ActionEvent e) {
-	    int selection = _fillComboBox.getSelectedIndex();
-	    int itemCount = _fillComboBox.getItemCount();
-	    if (selection == itemCount - 1) {
-	        _changingFill = true;
-	        _dialog = JColorChooser.createDialog
-                    (_editorPane, "Choose A Fill Color", true,
-                            _colorChooser, okAction, cancelAction);
-		_dialog.setVisible(true);
-	    } else {
-		_fillPaint = _colors[selection];
-	        _editorPane.setFillPaint(_fillPaint);
-	    }
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                int selection = _fillComboBox.getSelectedIndex();
+                int itemCount = _fillComboBox.getItemCount();
+                if (selection == itemCount - 1) {
+                    _changingFill = true;
+                    _dialog = JColorChooser.createDialog
+                        (_editorPane, "Choose A Fill Color", true,
+                                _colorChooser, okAction, cancelAction);
+                    _dialog.setVisible(true);
+                } else {
+                    _fillPaint = _colors[selection];
+                    _editorPane.setFillPaint(_fillPaint);
+                }
+            }
+        };
 
     // When the outline color combo box is chosen.
     Action outlineAction = new AbstractAction() {
-        public void actionPerformed(ActionEvent e) {
-	    int selection = _outlineComboBox.getSelectedIndex();
-	    int itemCount = _outlineComboBox.getItemCount();
-	    if (selection == itemCount - 1) {
-	        _changingFill = false;
-	        _dialog = JColorChooser.createDialog
-                    (_editorPane, "Choose An Outline Color", true,
-                            _colorChooser, okAction, cancelAction);
-		_dialog.setVisible(true);
-	    } else {
-		_outlinePaint = _colors[selection];
-	        _editorPane.setOutlinePaint(_outlinePaint);
-	    }
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                int selection = _outlineComboBox.getSelectedIndex();
+                int itemCount = _outlineComboBox.getItemCount();
+                if (selection == itemCount - 1) {
+                    _changingFill = false;
+                    _dialog = JColorChooser.createDialog
+                        (_editorPane, "Choose An Outline Color", true,
+                                _colorChooser, okAction, cancelAction);
+                    _dialog.setVisible(true);
+                } else {
+                    _outlinePaint = _colors[selection];
+                    _editorPane.setOutlinePaint(_outlinePaint);
+                }
+            }
+        };
 
     // When the thinner button is pressed.
     Action thinnerAction = new AbstractAction("Thinner") {
-        public void actionPerformed(ActionEvent e) {
-	    float oldWidth = _editorPane.getThickness();
-	    if (oldWidth != 0.0 && oldWidth > 1.0) {
-		_outlineThickness = oldWidth - 1.0f;
-		_editorPane.setThickness(_outlineThickness);
+            public void actionPerformed(ActionEvent e) {
+                float oldWidth = _editorPane.getThickness();
+                if (oldWidth != 0.0 && oldWidth > 1.0) {
+                    _outlineThickness = oldWidth - 1.0f;
+                    _editorPane.setThickness(_outlineThickness);
 
-	    }
-	}
-    };
+                }
+            }
+        };
 
     // When the thicker button is pressed.
     Action thickerAction = new AbstractAction("Thicker") {
-        public void actionPerformed(ActionEvent e) {
-	    float oldWidth = _editorPane.getThickness();
-	    if (oldWidth != 0.0) {
-		_outlineThickness = oldWidth + 1.0f;
-		_editorPane.setThickness(_outlineThickness);
-	    }
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                float oldWidth = _editorPane.getThickness();
+                if (oldWidth != 0.0) {
+                    _outlineThickness = oldWidth + 1.0f;
+                    _editorPane.setThickness(_outlineThickness);
+                }
+            }
+        };
 
     // When you click ok in the color window.
     Action okAction = new AbstractAction("Ok") {
-        public void actionPerformed(ActionEvent e) {
-	    Color thisColor = _colorChooser.getColor();
-	    if (_changingFill) {
-	        _fillPaint = thisColor;
-		_editorPane.setFillPaint(thisColor);
-		// FIXME	_fillComboBox.setSelectedIndex(-1);
-	    } else {
-	        _outlinePaint = thisColor;
-		_editorPane.setFillPaint(thisColor);
-	    }
-    	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                Color thisColor = _colorChooser.getColor();
+                if (_changingFill) {
+                    _fillPaint = thisColor;
+                    _editorPane.setFillPaint(thisColor);
+                    // FIXME	_fillComboBox.setSelectedIndex(-1);
+                } else {
+                    _outlinePaint = thisColor;
+                    _editorPane.setFillPaint(thisColor);
+                }
+            }
+        };
 
     // When you click cancel in the color window.
     Action cancelAction = new AbstractAction("Cancel") {
-        public void actionPerformed(ActionEvent e) {
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
 
     // When you click cut in the edit menu of the menubar.
     // The cut operation grabs the system clipboard, then puts
     // the currently selected item onto the clipboard, and removes
     // the currently selected item from the canvas.
     Action cutAction = new AbstractAction("Cut") {
-        public void actionPerformed(ActionEvent e) {
-	    Clipboard c = _editorPane.getToolkit().getSystemClipboard();
-	    _editorPane.cut(c);
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                Clipboard c = _editorPane.getToolkit().getSystemClipboard();
+                _editorPane.cut(c);
+            }
+        };
 
     // When you click copy in the edit menu of the menubar.
     // The copy operation grabs the system clipboard, then puts
     // the currently selected item onto the clipboard.
     Action copyAction = new AbstractAction("Copy") {
-        public void actionPerformed(ActionEvent e) {
-	    Clipboard c = _editorPane.getToolkit().getSystemClipboard();
-	    _editorPane.copy(c);
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                Clipboard c = _editorPane.getToolkit().getSystemClipboard();
+                _editorPane.copy(c);
+            }
+        };
 
     // When you click paste in the edit menu of the menubar.
     // The paste operation grabs the system clipboard, then gets the
@@ -618,120 +618,120 @@ public class IconEditor {
     // and adds it to the figure layer of the canvas.
     // If something goes wrong, the machine should beep.
     Action pasteAction = new AbstractAction("Paste") {
-        public void actionPerformed(ActionEvent e) {
-	    Clipboard c = _editorPane.getToolkit().getSystemClipboard();
-	    _editorPane.paste(c);
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                Clipboard c = _editorPane.getToolkit().getSystemClipboard();
+                _editorPane.paste(c);
+            }
+        };
 
     // When you click new in the file menu of the menubar.
     Action newIconAction = new AbstractAction("New") {
-        public void actionPerformed(ActionEvent e) {
-	    _editorPane.clear();
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                _editorPane.clear();
+            }
+        };
 
     // When you click open in the file menu of the menubar.
     Action openIconAction = new AbstractAction("Open") {
-        public void actionPerformed(ActionEvent e) {
-	    int choice =
-                _fileChooser.showOpenDialog(_context.makeComponent());
-	    if (choice == JFileChooser.CANCEL_OPTION) {
-	        //System.out.println("You have cancelled your open file choice");
-	    } else {
-	        //System.out.println("You have chosen to open this file: " +
-	        //		    _fileChooser.getSelectedFile().getName());
-	        _editorPane.clear();
-		//FIXME: Here is where I would import an xml file to this
-	        //canvas.
-	    }
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                int choice =
+                    _fileChooser.showOpenDialog(_context.makeComponent());
+                if (choice == JFileChooser.CANCEL_OPTION) {
+                    //System.out.println("You have cancelled your open file choice");
+                } else {
+                    //System.out.println("You have chosen to open this file: " +
+                    //		    _fileChooser.getSelectedFile().getName());
+                    _editorPane.clear();
+                    //FIXME: Here is where I would import an xml file to this
+                    //canvas.
+                }
+            }
+        };
 
     // When you click save in the file menu of the menubar.
     Action saveIconAction = new AbstractAction("Save") {
-        public void actionPerformed(ActionEvent e) {
-	    System.out.println("Save");
-	    // FIXME
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Save");
+                // FIXME
+            }
+        };
 
     // When you click save as in the file menu of the menubar.
     Action saveIconAsAction = new AbstractAction("Save As...") {
-        public void actionPerformed(ActionEvent e) {
-	    int choice =
-                _fileChooser.showSaveDialog(_context.makeComponent());
-	    if (choice == JFileChooser.CANCEL_OPTION) {
-	        //System.out.println("You have cancelled your
-	        //                     save choice.");
-	    } else {
-                //System.out.println("You chose to save this file: " +
-                //		    _fileChooser.getSelectedFile().getName());
-	    }
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                int choice =
+                    _fileChooser.showSaveDialog(_context.makeComponent());
+                if (choice == JFileChooser.CANCEL_OPTION) {
+                    //System.out.println("You have cancelled your
+                    //                     save choice.");
+                } else {
+                    //System.out.println("You chose to save this file: " +
+                    //		    _fileChooser.getSelectedFile().getName());
+                }
+            }
+        };
 
     Action printIconAction = new AbstractAction("Print") {
-	public void actionPerformed(ActionEvent e) {
-	    _editorPane.print();
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                _editorPane.print();
+            }
+        };
 
     // When you click about in the help menu of the menubar.
     Action helpAction = new AbstractAction("About") {
-        public void actionPerformed(ActionEvent e) {
-	    // FIXME Dialog.
-	    _helpFrame = new JFrame("About Icon Editor");
-	    JButton jButton = new JButton
-                ("Author: Nick Zamora, Version: " +
-                        "$version$");
-	    jButton.addActionListener(helpOkAction);
-	    _helpFrame.getContentPane().add(jButton);
-	    _helpFrame.getContentPane().doLayout();
-	    _helpFrame.setResizable(false);
-	    _helpFrame.setLocation(100, 100);
-	    _helpFrame.setSize(500, 150);
-	    _helpFrame.setVisible(true);
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                // FIXME Dialog.
+                _helpFrame = new JFrame("About Icon Editor");
+                JButton jButton = new JButton
+                    ("Author: Nick Zamora, Version: " +
+                            "$version$");
+                jButton.addActionListener(helpOkAction);
+                _helpFrame.getContentPane().add(jButton);
+                _helpFrame.getContentPane().doLayout();
+                _helpFrame.setResizable(false);
+                _helpFrame.setLocation(100, 100);
+                _helpFrame.setSize(500, 150);
+                _helpFrame.setVisible(true);
+            }
+        };
 
     // When you click the button in the about window.
     Action helpOkAction = new AbstractAction("OK Button") {
-        public void actionPerformed(ActionEvent e) {
-	    _helpFrame.setVisible(false);
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                _helpFrame.setVisible(false);
+            }
+        };
 
     // When the thickness combo box is chosen.
     Action thicknessAction = new AbstractAction() {
-        public void actionPerformed(ActionEvent e) {
-	    int chosenThickness = _thicknessComboBox.getSelectedIndex();
-	    switch(chosenThickness) {
-	    case 0:
-                _editorPane.setThickness(1.0f);
-                _outlineThickness = 1.0f;
-                break;
-	    case 1:
-                _editorPane.setThickness(3.0f);
-                _outlineThickness = 3.0f;
-                break;
-	    case 2:
-                _editorPane.setThickness(6.0f);
-                _outlineThickness = 6.0f;
-                break;
-	    case 3:
-                _editorPane.setThickness(10.0f);
-                _outlineThickness = 10.0f;
-                break;
-	    case 4:
-                _editorPane.setThickness(14.0f);
-                _outlineThickness = 14.0f;
-                break;
-	    default:
-                break;
-	    }
-	}
-    };
+            public void actionPerformed(ActionEvent e) {
+                int chosenThickness = _thicknessComboBox.getSelectedIndex();
+                switch(chosenThickness) {
+                case 0:
+                    _editorPane.setThickness(1.0f);
+                    _outlineThickness = 1.0f;
+                    break;
+                case 1:
+                    _editorPane.setThickness(3.0f);
+                    _outlineThickness = 3.0f;
+                    break;
+                case 2:
+                    _editorPane.setThickness(6.0f);
+                    _outlineThickness = 6.0f;
+                    break;
+                case 3:
+                    _editorPane.setThickness(10.0f);
+                    _outlineThickness = 10.0f;
+                    break;
+                case 4:
+                    _editorPane.setThickness(14.0f);
+                    _outlineThickness = 14.0f;
+                    break;
+                default:
+                    break;
+                }
+            }
+        };
 
     public class BlockIcon implements Icon {
 	BlockIcon(Color c) {
@@ -760,10 +760,10 @@ public class IconEditor {
     // command is irreversible.  "Paste" will NOT return a figure that has
     // been deleted from the canvas.
     Action deletionListener = new AbstractAction() {
-        public void actionPerformed(ActionEvent evt) {
-	    _editorPane.delete();
-	}
-    };
+            public void actionPerformed(ActionEvent evt) {
+                _editorPane.delete();
+            }
+        };
 
     public AppContext getAppContext() {
         return _context;

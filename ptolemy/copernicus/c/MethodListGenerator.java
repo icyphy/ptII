@@ -179,7 +179,7 @@ public class MethodListGenerator {
                     // Static initializer for the class.
                     // Assume that there is at most one such initializer.
                     SootMethod previousEntry =
-                            (SootMethod)(_classInitializerMap.get(source));
+                        (SootMethod)(_classInitializerMap.get(source));
                     if (previousEntry == null)  {
                         _classInitializerMap.put(source, method);
                     }
@@ -198,9 +198,9 @@ public class MethodListGenerator {
                 else {
                     // Unrecognized method with name that contains '<'
                     throw new RuntimeException(
-                        "Unknown type of special method: "
-                        + method.getSubSignature() + " in class "
-                        + source.getName());
+                            "Unknown type of special method: "
+                            + method.getSubSignature() + " in class "
+                            + source.getName());
                 }
             }
             else {

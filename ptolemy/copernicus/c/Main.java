@@ -119,7 +119,7 @@ public class Main extends KernelMain {
      *  model cannot be changed to a Java identifier String.
      */
     public static void main(String[] args)
-	throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
 	Main main = new Main(args);
 

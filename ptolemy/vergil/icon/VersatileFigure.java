@@ -228,7 +228,7 @@ public class VersatileFigure extends AbstractFigure
      */
     public boolean hit (Rectangle2D r) {
         if (!isVisible ()) {
-             return false;
+            return false;
         }
         if (_paintedObject instanceof PaintedShape) {
 	    return ((PaintedShape) _paintedObject).hit (r);
@@ -249,7 +249,7 @@ public class VersatileFigure extends AbstractFigure
      */
     public void paint (Graphics2D g) {
         if (!isVisible ()) {
-             return;
+            return;
         }
         if (_composite != null) {
             g.setComposite (_composite);
@@ -287,26 +287,26 @@ public class VersatileFigure extends AbstractFigure
 	repaint ();
     }
 
-   /** Set the line width of this figure. If the width is zero,
-    * then the stroke will be removed.  Note that if this is a
-    * painted string, then the size of the font will be changed
-    * to approximately the same size.
-    *
-    */
+    /** Set the line width of this figure. If the width is zero,
+     * then the stroke will be removed.  Note that if this is a
+     * painted string, then the size of the font will be changed
+     * to approximately the same size.
+     *
+     */
     public void setLineWidth (float lineWidth) {
-      repaint ();
-      if (_paintedObject instanceof PaintedString) {
-	  ((PaintedString) _paintedObject).setSize (Math.round (lineWidth + 5.0f));
-      }
-      else if (_paintedObject instanceof PaintedShape) {
-	  ((PaintedShape) _paintedObject).setLineWidth (lineWidth);
-      }
-      else if (_paintedObject instanceof PaintedPath) {
-	  ((PaintedPath) _paintedObject).setLineWidth (lineWidth);
-      }
-      else {
-      }
-      repaint ();
+        repaint ();
+        if (_paintedObject instanceof PaintedString) {
+            ((PaintedString) _paintedObject).setSize (Math.round (lineWidth + 5.0f));
+        }
+        else if (_paintedObject instanceof PaintedShape) {
+            ((PaintedShape) _paintedObject).setLineWidth (lineWidth);
+        }
+        else if (_paintedObject instanceof PaintedPath) {
+            ((PaintedPath) _paintedObject).setLineWidth (lineWidth);
+        }
+        else {
+        }
+        repaint ();
     }
 
     /** Set the shape of this figure.  If this is a
@@ -429,7 +429,7 @@ public class VersatileFigure extends AbstractFigure
 	Shape cloneShape = ShapeUtilities.cloneShape(getShape());
         PaintedObject object =
 	    new PaintedShape(cloneShape, getFillPaint(),
-			     getLineWidth(), getStrokePaint());
+                    getLineWidth(), getStrokePaint());
 	VersatileFigure clone = new VersatileFigure(object);
 	clone.setStroke(getStroke());
 	clone.setComposite(getComposite());

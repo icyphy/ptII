@@ -281,18 +281,18 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (slider != null) {
-                    if (_container != null) {
-                        _container.remove(_panel);
-                        _container.invalidate();
-                        _container.repaint();
-                    } else if (_frame != null) {
-                        _frame.dispose();
+                public void run() {
+                    if (slider != null) {
+                        if (_container != null) {
+                            _container.remove(_panel);
+                            _container.invalidate();
+                            _container.repaint();
+                        } else if (_frame != null) {
+                            _frame.dispose();
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -144,61 +144,61 @@ public class SootUtilities {
      *  within an initializer (for instance fields) or a static
      *  initializer (for static fields).
 
-    public static void assertFinalField(SootClass theClass,
-            SootField theField) {
-        // First make the field final.
-        theField.setModifiers(theField.getModifiers() | Modifier.FINAL);
+     public static void assertFinalField(SootClass theClass,
+     SootField theField) {
+     // First make the field final.
+     theField.setModifiers(theField.getModifiers() | Modifier.FINAL);
 
-        // Find any assignment to the field in the class and convert
-        // them to Exceptions, unless they are in constructors,
-        // in which case ignore them.
-        for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
-            SootMethod method = (SootMethod)methods.next();
-            if (method.getName().equals("<init>")) {
-                continue;
-            }
+     // Find any assignment to the field in the class and convert
+     // them to Exceptions, unless they are in constructors,
+     // in which case ignore them.
+     for (Iterator methods = theClass.getMethods().iterator();
+     methods.hasNext();) {
+     SootMethod method = (SootMethod)methods.next();
+     if (method.getName().equals("<init>")) {
+     continue;
+     }
 
-            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-            Chain units = body.getUnits();
+     JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+     Chain units = body.getUnits();
 
-            for (Iterator stmts = units.snapshotIterator();
-                stmts.hasNext();) {
-                Stmt stmt = (Stmt)stmts.next();
-                // Remove all the definitions.
-                for (Iterator boxes = stmt.getDefBoxes().iterator();
-                    boxes.hasNext();) {
-                    ValueBox box = (ValueBox)boxes.next();
-                    Value value = box.getValue();
-                    if (value instanceof FieldRef) {
-                        FieldRef ref = (FieldRef)value;
-                        if (ref.getField() == theField) {
-                            System.out.println("removing stmt = " + stmt);
-                            units.remove(stmt);
-                        }
-                    }
-                }
-                // Inline all the uses.
-                if (Evaluator.isValueConstantValued(newValue)) {
-                    for (Iterator boxes = stmt.getUseBoxes().iterator();
-                        boxes.hasNext();) {
-                        ValueBox box = (ValueBox)boxes.next();
-                        Value value = box.getValue();
-                        if (value instanceof FieldRef) {
-                            FieldRef ref = (FieldRef)value;
-                            if (ref.getField() == theField) {
-                                System.out.println("inlining stmt = " + stmt);
+     for (Iterator stmts = units.snapshotIterator();
+     stmts.hasNext();) {
+     Stmt stmt = (Stmt)stmts.next();
+     // Remove all the definitions.
+     for (Iterator boxes = stmt.getDefBoxes().iterator();
+     boxes.hasNext();) {
+     ValueBox box = (ValueBox)boxes.next();
+     Value value = box.getValue();
+     if (value instanceof FieldRef) {
+     FieldRef ref = (FieldRef)value;
+     if (ref.getField() == theField) {
+     System.out.println("removing stmt = " + stmt);
+     units.remove(stmt);
+     }
+     }
+     }
+     // Inline all the uses.
+     if (Evaluator.isValueConstantValued(newValue)) {
+     for (Iterator boxes = stmt.getUseBoxes().iterator();
+     boxes.hasNext();) {
+     ValueBox box = (ValueBox)boxes.next();
+     Value value = box.getValue();
+     if (value instanceof FieldRef) {
+     FieldRef ref = (FieldRef)value;
+     if (ref.getField() == theField) {
+     System.out.println("inlining stmt = " + stmt);
 
-                                box.setValue(Evaluator
-                                        .getConstantValueOf(newValue));
-                            }
-                        }
+     box.setValue(Evaluator
+     .getConstantValueOf(newValue));
+     }
+     }
 
-                    }
-                }
-            }
-        }
-    }
+     }
+     }
+     }
+     }
+     }
     */
 
     /** Make the given field final.  Anywhere where the the given
@@ -222,17 +222,17 @@ public class SootUtilities {
         // them to Exceptions, unless they are in constructors,
         // in which case remove them.
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             Chain units = body.getUnits();
 
             for (Iterator stmts = units.snapshotIterator();
-                stmts.hasNext();) {
+                 stmts.hasNext();) {
                 Stmt stmt = (Stmt)stmts.next();
                 // Remove all the definitions.
                 for (Iterator boxes = stmt.getDefBoxes().iterator();
-                    boxes.hasNext();) {
+                     boxes.hasNext();) {
                     ValueBox box = (ValueBox)boxes.next();
                     Value value = box.getValue();
                     if (value instanceof FieldRef) {
@@ -246,7 +246,7 @@ public class SootUtilities {
                 // Inline all the uses.
                 if (Evaluator.isValueConstantValued(newValue)) {
                     for (Iterator boxes = stmt.getUseBoxes().iterator();
-                        boxes.hasNext();) {
+                         boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
                         Value value = box.getValue();
                         if (value instanceof FieldRef) {
@@ -286,7 +286,7 @@ public class SootUtilities {
                     insertPoint);
         } else {
             for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 // ignore things that aren't initializers.
                 if (!method.getName().equals("<init>"))
@@ -310,7 +310,7 @@ public class SootUtilities {
         }
     }
 
-   /** Copy a class */
+    /** Copy a class */
     public static SootClass copyClass(SootClass oldClass,
             String newClassName) {
 	//System.out.println("SootClass.copyClass(" + oldClass + ", "
@@ -392,7 +392,7 @@ public class SootUtilities {
         //  System.out.println("fixing references on " + theClass);
         //  System.out.println("replacing " + oldClass + " with " + newClass);
         for (Iterator methods = theClass.getMethods().snapshotIterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod newMethod = (SootMethod)methods.next();
             //   System.out.println("newMethod = " + newMethod.getSignature());
 
@@ -403,8 +403,8 @@ public class SootUtilities {
             }
             List paramTypes = new LinkedList();
             for (Iterator oldParamTypes =
-                    newMethod.getParameterTypes().iterator();
-                oldParamTypes.hasNext();) {
+                     newMethod.getParameterTypes().iterator();
+                 oldParamTypes.hasNext();) {
                 Type type = (Type)oldParamTypes.next();
                 if (type instanceof RefType &&
                         ((RefType)type).getSootClass() == oldClass) {
@@ -424,7 +424,7 @@ public class SootUtilities {
             Body newBody = newMethod.retrieveActiveBody();
 
             for (Iterator locals = newBody.getLocals().iterator();
-                locals.hasNext();) {
+                 locals.hasNext();) {
                 Local local = (Local)locals.next();
                 Type type = local.getType();
                 if (type instanceof RefType &&
@@ -812,13 +812,13 @@ public class SootUtilities {
             (InvokeExpr)constructorStmt.getInvokeExpr();
         Stmt insertStmt =
             Jimple.v().newInvokeStmt(Jimple.v().newStaticInvokeExpr(
-                   staticConstructorMethod, constructorExpr.getArgs()));
+                    staticConstructorMethod, constructorExpr.getArgs()));
         clinitUnits.insertBefore(insertStmt, insertPoint);
 
         // Loop through the class and make all the non-static method static.
         // Make all reference to this into static references.
         for (Iterator methods = staticClass.getMethods().snapshotIterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             // ignore static methods.
             if (method.isStatic()) {
@@ -853,7 +853,7 @@ public class SootUtilities {
             // run the CopyPropagator somewhere here?
             // change method calls to static invocation
             for (Iterator useBoxes = body.getUseAndDefBoxes().iterator();
-                useBoxes.hasNext();) {
+                 useBoxes.hasNext();) {
                 ValueBox box = (ValueBox)useBoxes.next();
                 if (box.getValue() instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr expr =
@@ -879,7 +879,7 @@ public class SootUtilities {
             // Fix synchronization locks.  Anything synchronized on this
             // should instead be synchronized on the class.
             for (Iterator stmts = body.getUnits().snapshotIterator();
-                stmts.hasNext();) {
+                 stmts.hasNext();) {
                 Stmt stmt = (Stmt)stmts.next();
                 if (stmt instanceof MonitorStmt) {
                     MonitorStmt monitorStmt = (MonitorStmt)stmt;
@@ -910,7 +910,7 @@ public class SootUtilities {
         // Loop through the class and make all the non-static fields static.
         // Make all reference to this into static references.
         for (Iterator fields = staticClass.getFields().iterator();
-            fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             // make the fieldd static.
             field.setModifiers(field.getModifiers() | Modifier.STATIC);
@@ -933,7 +933,7 @@ public class SootUtilities {
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
         List useList = localUses.getUsesOf(newStmt);
         for (Iterator pairs = useList.iterator();
-            pairs.hasNext();) {
+             pairs.hasNext();) {
             UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
             Stmt useStmt = (Stmt)pair.getUnit();
             ValueBox useBox = (ValueBox)pair.getValueBox();
@@ -950,7 +950,7 @@ public class SootUtilities {
         SootClass objectClass = Scene.v().getSootClass("java.lang.Object");
         while (theClass != objectClass) {
             if (baseClass == theClass ||
-               theClass.implementsInterface(baseClass.getName())) {
+                    theClass.implementsInterface(baseClass.getName())) {
                 return true;
             }
             theClass = theClass.getSuperclass();
@@ -991,7 +991,7 @@ public class SootUtilities {
         // whose name is the same between
         // the given class and its superclass.
         for (Iterator fields = theClass.getFields().snapshotIterator();
-            fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             if (superClass.declaresFieldByName(field.getName())) {
                 // SootField superField = superClass.getFieldByName(field.getName());
@@ -1018,7 +1018,7 @@ public class SootUtilities {
         // exist in the super class, but not in the given class.
         // Invoke the super class.
         for (Iterator methods = superClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod oldMethod = (SootMethod)methods.next();
             if (theClass.declaresMethod(oldMethod.getSubSignature()))
                 continue;
@@ -1085,7 +1085,7 @@ public class SootUtilities {
         // over all the methods in the class twice, which could get
         // very expensive.
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod newMethod = (SootMethod)methods.next();
             Body newBody = newMethod.retrieveActiveBody();
 
@@ -1204,7 +1204,7 @@ public class SootUtilities {
         inlineMethod.retrieveActiveBody();
 
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             // System.out.println("method = " + method.getSignature());
 
@@ -1249,7 +1249,7 @@ public class SootUtilities {
                         continue;
                     }
                     SiteInliner.inlineSite(inlineMethod,
-                                stmt, method);
+                            stmt, method);
                     inlinedAnything = true;
                 } else if (!method.isStatic() && invoke instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr instanceInvoke =
@@ -1311,7 +1311,7 @@ public class SootUtilities {
     public static void makeFieldStatic(SootClass theClass, SootField field) {
         field.setModifiers(field.getModifiers() | Modifier.STATIC);
         for (Iterator methods = theClass.getMethods().snapshotIterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             // ignore static methods?
             if (method.isStatic()) {
@@ -1320,7 +1320,7 @@ public class SootUtilities {
 
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             for (Iterator useBoxes = body.getUseAndDefBoxes().iterator();
-                useBoxes.hasNext();) {
+                 useBoxes.hasNext();) {
                 ValueBox box = (ValueBox)useBoxes.next();
                 if (box.getValue() instanceof InstanceFieldRef) {
                     InstanceFieldRef expr =
@@ -1346,8 +1346,8 @@ public class SootUtilities {
         int i = 0;
         Object[] args = new Object[argValues.length];
         for (Iterator parameterTypes =
-                sootMethod.getParameterTypes().iterator();
-            parameterTypes.hasNext();) {
+                 sootMethod.getParameterTypes().iterator();
+             parameterTypes.hasNext();) {
             Type parameterType = (Type)parameterTypes.next();
             try {
                 args[i] = convertConstantValueToArgument(argValues[i]);
@@ -1395,8 +1395,8 @@ public class SootUtilities {
         int i = 0;
         Object[] args = new Object[argValues.length];
         for (Iterator parameterTypes =
-                sootMethod.getParameterTypes().iterator();
-            parameterTypes.hasNext();) {
+                 sootMethod.getParameterTypes().iterator();
+             parameterTypes.hasNext();) {
             Type parameterType = (Type)parameterTypes.next();
             try {
                 args[i] = convertConstantValueToArgument(argValues[i]);
@@ -1455,13 +1455,13 @@ public class SootUtilities {
         SootMethod iteratorHasNextMethod =
             iteratorClass.getMethod("boolean hasNext()");
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
             BlockGraph graph = new CompleteBlockGraph(body);
             for (Iterator blocks = graph.iterator();
-                blocks.hasNext();) {
+                 blocks.hasNext();) {
                 Block block = (Block)blocks.next();
                 // System.out.println("body = " + block);
                 // filter out anything that doesn't look like a loop body.
@@ -1569,7 +1569,7 @@ public class SootUtilities {
                 // them from the method body.
                 Unit insertPoint = (Unit)units.getSuccOf(block.getTail());
                 for (Iterator blockStmts = block.iterator();
-                    blockStmts.hasNext();) {
+                     blockStmts.hasNext();) {
                     Stmt original = (Stmt)blockStmts.next();
                     blockStmtList.add(original);
                     blockStmts.remove();
@@ -1578,18 +1578,18 @@ public class SootUtilities {
                 // Loop through and unroll the loop body once for
                 // every element of the field list.
                 for (Iterator fields = fieldList.iterator();
-                    fields.hasNext();) {
+                     fields.hasNext();) {
                     SootField insertField =
                         (SootField)fields.next();
                     for (Iterator blockStmts = blockStmtList.iterator();
-                        blockStmts.hasNext();) {
+                         blockStmts.hasNext();) {
                         // clone each statement
                         Stmt original = (Stmt)blockStmts.next();
                         Stmt clone = (Stmt)original.clone();
                         // If the statement is a call to the next() method,
                         // then inline it with the next value of the iterator.
                         for (Iterator boxes = clone.getUseBoxes().iterator();
-                            boxes.hasNext();) {
+                             boxes.hasNext();) {
                             ValueBox box = (ValueBox)boxes.next();
                             Value value = box.getValue();
                             if (value instanceof InvokeExpr) {
@@ -1607,7 +1607,7 @@ public class SootUtilities {
 
                 // remove the conditional
                 for (Iterator blockStmts = whileCond.iterator();
-                    blockStmts.hasNext();) {
+                     blockStmts.hasNext();) {
                     Stmt original = (Stmt)blockStmts.next();
                     blockStmts.remove();
                 }

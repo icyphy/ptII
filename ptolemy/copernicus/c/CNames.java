@@ -111,7 +111,7 @@ public class CNames {
             // with names that are longer than the number of significant
             // characters in a C identifier.
             Integer prefixCode = new Integer(
-                                field.getSubSignature().hashCode());
+                    field.getSubSignature().hashCode());
             name = _sanitize("f" + prefixCode + "_" + field.getName());
             _nameMap.put(field, name);
         }
@@ -126,13 +126,13 @@ public class CNames {
         String name;
         if ((name = (String)(_functionMap.get(method))) == null) {
             if (method.isNative()) {
-               name = ((method.getDeclaringClass().getName()) + "_" +
-                       method.getName()).replace('.', '_');
+                name = ((method.getDeclaringClass().getName()) + "_" +
+                        method.getName()).replace('.', '_');
             } else {
                 // Hash the class name + type signature combination to
                 // avoid naming conflicts.
                 String prefixBase = method.getDeclaringClass().getName()
-                        + method.getSubSignature();
+                    + method.getSubSignature();
                 Integer prefixCode = new Integer(prefixBase.hashCode());
                 name = _sanitize("f" + prefixCode + "_" + method.getName());
             }
@@ -211,7 +211,7 @@ public class CNames {
             // Hash the type signature to avoid naming conflicts for overloaded
             // methods.
             Integer prefixCode = new Integer(
-                                        method.getSubSignature().hashCode());
+                    method.getSubSignature().hashCode());
             name = _sanitize("m" + prefixCode + "_" + method.getName());
             _nameMap.put(method, name);
         }
@@ -317,7 +317,7 @@ public class CNames {
 
         // The choice of 'i' as the first letter stands for "instance."
         String className = (name.indexOf(".") < 0) ? name :
-                name.substring(name.lastIndexOf(".") + 1);
+            name.substring(name.lastIndexOf(".") + 1);
         Integer prefixCode = new Integer(name.hashCode());
         String CClassName = _sanitize("i" + prefixCode.toString()
                 + "_" + className);
@@ -328,10 +328,10 @@ public class CNames {
     // Sanitize a name to be valid a C identifier.
     private static String _sanitize(String name) {
         return name.
-                replace('-', '0').
-                replace('<', '_').
-                replace('>', '_').
-                replace('$', '_');
+            replace('-', '0').
+            replace('<', '_').
+            replace('>', '_').
+            replace('$', '_');
     }
 
     ///////////////////////////////////////////////////////////////////

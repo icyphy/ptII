@@ -111,7 +111,7 @@ models.
 @since Ptolemy II 2.0
 */
 public class ModalModel extends TypedCompositeActor
-        implements CTStepSizeControlActor {
+    implements CTStepSizeControlActor {
 
     /** Construct a modal model in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -220,9 +220,9 @@ public class ModalModel extends TypedCompositeActor
                             Port newPort = entity.newPort(name);
                             /* No longer needed since Yuhong modified
                              * the type system to allow UNKNOWN. EAL
-                            if (newPort instanceof TypedIOPort) {
-                                ((TypedIOPort)newPort).setTypeSameAs(port);
-                            }
+                             if (newPort instanceof TypedIOPort) {
+                             ((TypedIOPort)newPort).setTypeSameAs(port);
+                             }
                             */
                         } finally {
                             ((ModalController)entity)._mirrorDisable = false;
@@ -235,9 +235,9 @@ public class ModalModel extends TypedCompositeActor
                             Port newPort = entity.newPort(name);
                             /* No longer needed since Yuhong modified
                              * the type system to allow UNKNOWN. EAL
-                            if (newPort instanceof TypedIOPort) {
-                                ((TypedIOPort)newPort).setTypeSameAs(port);
-                            }
+                             if (newPort instanceof TypedIOPort) {
+                             ((TypedIOPort)newPort).setTypeSameAs(port);
+                             }
                             */
                         } finally {
                             ((Refinement)entity)._mirrorDisable = false;

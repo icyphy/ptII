@@ -333,18 +333,18 @@ public class Display extends Sink implements Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (textArea != null) {
-                    if (_container != null) {
-                        _container.remove(textArea);
-                        _container.invalidate();
-                        _container.repaint();
-                    } else if (_frame != null) {
-                        _frame.dispose();
+                public void run() {
+                    if (textArea != null) {
+                        if (_container != null) {
+                            _container.remove(textArea);
+                            _container.invalidate();
+                            _container.repaint();
+                        } else if (_frame != null) {
+                            _frame.dispose();
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 
     ///////////////////////////////////////////////////////////////////

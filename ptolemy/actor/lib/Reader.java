@@ -222,7 +222,7 @@ public class Reader extends Source {
      */
     public void initialize() throws IllegalActionException {
 	System.out.println("actor.lib.Reader is obsolete, "
-			   + "use actor.lib.DoubleReader instead");
+                + "use actor.lib.DoubleReader instead");
         _dataSize = output.getWidth();
         _data = new double[_dataSize];
         attributeChanged(sourceURL);

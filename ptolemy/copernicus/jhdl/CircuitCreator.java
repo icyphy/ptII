@@ -50,7 +50,7 @@ public class CircuitCreator {
         write_header(writer, packageName, className);
 
         for (Iterator nodes = operatorGraph.getNodes().iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             writer.write("    Wire " + _getWireName(node) + " = wire(32);\r\n");
         }
@@ -98,8 +98,8 @@ public class CircuitCreator {
     static void write_fir(FileWriter writer, Object in, Object out)
             throws IOException {
         writer.write("    new byucc.ptolemy.domains.jhdl.lib.JHDLSimpleFir(this,"
-		     + _getWireName(in) + ", " +
-		     _getWireName(out) + ");\r\n");
+                + _getWireName(in) + ", " +
+                _getWireName(out) + ");\r\n");
     }
 
     static void write_add(FileWriter writer, Object in1,
@@ -124,7 +124,7 @@ public class CircuitCreator {
 
     static void write_header(FileWriter writer,
             String packageName, String className)
-             throws IOException {
+            throws IOException {
         writer.write("package " + packageName + ";\r\n");
         writer.write("import byucc.jhdl.base.*;\r\n");
         writer.write("import byucc.jhdl.Logic.*;\r\n");

@@ -92,24 +92,24 @@ public class EditParametersFactory implements MenuItemFactory {
 	// ensure that we actually have a target.
 	if (target == null) return null;
 	Action action = new AbstractAction(_name) {
-	    public void actionPerformed(ActionEvent e) {
-		// Create a dialog for configuring the object.
-                // First, identify the top parent frame.
-                // Normally, this is a Frame, but just in case, we check.
-                // If it isn't a Frame, then the edit parameters dialog
-                // will not have the appropriate parent, and will disappear
-                // when put in the background.
-                Component parent = menu.getInvoker();
-                while (parent.getParent() != null) {
-                    parent = parent.getParent();
+                public void actionPerformed(ActionEvent e) {
+                    // Create a dialog for configuring the object.
+                    // First, identify the top parent frame.
+                    // Normally, this is a Frame, but just in case, we check.
+                    // If it isn't a Frame, then the edit parameters dialog
+                    // will not have the appropriate parent, and will disappear
+                    // when put in the background.
+                    Component parent = menu.getInvoker();
+                    while (parent.getParent() != null) {
+                        parent = parent.getParent();
+                    }
+                    if (parent instanceof Frame) {
+                        openDialog((Frame)parent, target);
+                    } else {
+                        openDialog(null, target);
+                    }
                 }
-                if (parent instanceof Frame) {
-                    openDialog((Frame)parent, target);
-                } else {
-                    openDialog(null, target);
-                }
-	    }
-	};
+            };
 	return menu.add(action, _name);
     }
 

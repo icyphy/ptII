@@ -103,7 +103,7 @@ public class JavaToC {
 
         // generate other required files
         RequiredFileGenerator.generateTransitiveClosureOf(classPath,
-                        className, compileMode, verbose);
+                className, compileMode, verbose);
 
         // Generate the makefile
         MakeFileGenerator.generateMakeFile(classPath, className);
@@ -114,15 +114,15 @@ public class JavaToC {
     public static void showHelp()
     {
         System.out.println( "USAGE: java [-Dj2c_lib=<system library path>]"
-            +" javatoc classPath [flags] className1"
-            +" [flags][className2]...\n");
+                +" javatoc classPath [flags] className1"
+                +" [flags][className2]...\n");
         System.out.println( "Compile mode flags: "+
-            "[-singleClass], [-headersOnly], [-full]");
+                "[-singleClass], [-headersOnly], [-full]");
         System.out.println( "Verbose mode flags: "+
-            "[-v] for verbose, [-q] for quiet.");
+                "[-v] for verbose, [-q] for quiet.");
         System.out.println( "help flags        : [-h] to see this message");
         System.out.println( "\nLater flags are given precedence over "+
-            "earlier ones.");
+                "earlier ones.");
     }
 
     /** Entry point for the JavaToC application. See {@link JavaToC} for
@@ -132,12 +132,12 @@ public class JavaToC {
     public static void main(String[] args) throws IOException
     {
         /*
-        String usage =
-                "Usage: java ptolemy.lang.copernicus.c.JavaToC classpath "
-                + " classname [-singleClass][-headersOnly]";
-        if ((args.length < 2) || (args.length > 3)) {
-            throw new RuntimeException(usage);
-        }
+          String usage =
+          "Usage: java ptolemy.lang.copernicus.c.JavaToC classpath "
+          + " classname [-singleClass][-headersOnly]";
+          if ((args.length < 2) || (args.length > 3)) {
+          throw new RuntimeException(usage);
+          }
         */
 
         String classPath = new String(args[0]);
@@ -149,29 +149,29 @@ public class JavaToC {
 
         // actual flags
         for (int i = 1;i<args.length; i++)
-        {
-            if (args[i].startsWith("-")) //its a flag
             {
-                if     (args[i].equals("-v")) verbose = true;
-                else if (args[i].equals("-q")) verbose = false;
-                else if (args[i].equals("-singleClass"))
-                    compileMode = new String("singleClass");
-                else if (args[i].equals("-headersOnly"))
-                    compileMode = new String("headersOnly");
-                else if (args[i].equals("-full"))
-                    compileMode = new String ("full");
-                else if (args[i].equals("-h"))
-                {
-                    showHelp();
-                    System.exit(0);
-                }
+                if (args[i].startsWith("-")) //its a flag
+                    {
+                        if     (args[i].equals("-v")) verbose = true;
+                        else if (args[i].equals("-q")) verbose = false;
+                        else if (args[i].equals("-singleClass"))
+                            compileMode = new String("singleClass");
+                        else if (args[i].equals("-headersOnly"))
+                            compileMode = new String("headersOnly");
+                        else if (args[i].equals("-full"))
+                            compileMode = new String ("full");
+                        else if (args[i].equals("-h"))
+                            {
+                                showHelp();
+                                System.exit(0);
+                            }
+                    }
+                else //its the name of a class to convert
+                    {
+                        className=args[i];
+                        convert(classPath, className, compileMode, verbose);
+                    }
             }
-            else //its the name of a class to convert
-            {
-                className=args[i];
-                convert(classPath, className, compileMode, verbose);
-            }
-        }
 
         if (className.equals("")) showHelp(); //if no className specified
 

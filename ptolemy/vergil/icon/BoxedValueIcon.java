@@ -80,7 +80,7 @@ public class BoxedValueIcon extends AttributeValueIcon {
             // Measure width of the text.  Unfortunately, this
             // requires generating a label figure that we will not use.
             LabelFigure label = new LabelFigure(displayString,
-                     _labelFont, 1.0, SwingConstants.CENTER);
+                    _labelFont, 1.0, SwingConstants.CENTER);
             Rectangle2D stringBounds = label.getBounds();
             // NOTE: Padding of 20.
             width = stringBounds.getWidth() + 20;

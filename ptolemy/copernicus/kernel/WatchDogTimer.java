@@ -62,15 +62,15 @@ public class WatchDogTimer extends SceneTransformer {
     }
 
     public void cancel() {
-            System.out.println("WatchDogTimer.cancel(): canceling "
-                    + (new Date()));
-            if ( _timer == null) {
-                System.out.println("WatchDogTimer.cancel(): "
-                        + "Warning: cancel called twice?");
-            } else {
-                _timer.cancel();
-                _timer = null;
-            }
+        System.out.println("WatchDogTimer.cancel(): canceling "
+                + (new Date()));
+        if ( _timer == null) {
+            System.out.println("WatchDogTimer.cancel(): "
+                    + "Warning: cancel called twice?");
+        } else {
+            _timer.cancel();
+            _timer = null;
+        }
     }
 
     public String getDefaultOptions() {
@@ -111,7 +111,7 @@ public class WatchDogTimer extends SceneTransformer {
             return;
         }
 
-       final long timeToDie = (new Long(timeToDieString)).longValue();
+        final long timeToDie = (new Long(timeToDieString)).longValue();
 
         // Timers are new in JDK1.3
         // For information about Timers, see
@@ -124,42 +124,42 @@ public class WatchDogTimer extends SceneTransformer {
         final long startTime = (new Date()).getTime();
 
         TimerTask doTimeToDie = new TimerTask() {
-            public void run() {
-                try {
-                    System.err.println("WatchDogTimer went off after "
-                            + timeToDie + "ms.");
+                public void run() {
+                    try {
+                        System.err.println("WatchDogTimer went off after "
+                                + timeToDie + "ms.");
 
-                    // Get the root ThreadGroup
-                    ThreadGroup parent, rootGroup;
+                        // Get the root ThreadGroup
+                        ThreadGroup parent, rootGroup;
 
-                    parent = Thread.currentThread().getThreadGroup();
-                    do {
-                        rootGroup = parent;
-                        parent = parent.getParent();
-                    } while (parent != null);
+                        parent = Thread.currentThread().getThreadGroup();
+                        do {
+                            rootGroup = parent;
+                            parent = parent.getParent();
+                        } while (parent != null);
 
-                    // Display all the threads
-                    Thread threads[] = new Thread[rootGroup.activeCount()];
-                    rootGroup.enumerate(threads);
-                    for (int i = 0; i < threads.length; i++) {
-                        System.err.println(i + ". " + threads[i]);
-                        // It would be nice to display the stack traces,
-                        // but this is hard to do.  Thread.dumpStack()
-                        // only dumps the stack trace for the current thread.
-                        // For an idea using Thread.stop(), see
-                        // http://forum.java.sun.com/thread.jsp?forum=4&thread=178641&start=15&range=15&hilite=false&q=
+                        // Display all the threads
+                        Thread threads[] = new Thread[rootGroup.activeCount()];
+                        rootGroup.enumerate(threads);
+                        for (int i = 0; i < threads.length; i++) {
+                            System.err.println(i + ". " + threads[i]);
+                            // It would be nice to display the stack traces,
+                            // but this is hard to do.  Thread.dumpStack()
+                            // only dumps the stack trace for the current thread.
+                            // For an idea using Thread.stop(), see
+                            // http://forum.java.sun.com/thread.jsp?forum=4&thread=178641&start=15&range=15&hilite=false&q=
+                        }
+
+                    } catch (Exception e) {
+                        System.err.println(e);
+                    } finally {
+                        System.out.println("WatchDogTime went off, stats: "
+                                + Manager.timeAndMemory(startTime));
+                        // Do not pass go, do not collect $200
+                        System.exit(4);
                     }
-
-                } catch (Exception e) {
-                    System.err.println(e);
-                } finally {
-                    System.out.println("WatchDogTime went off, stats: "
-                            + Manager.timeAndMemory(startTime));
-                    // Do not pass go, do not collect $200
-                    System.exit(4);
                 }
-            }
-        };
+            };
 	if (_timer == null) {
             // Create the timer as a Daemon.. This way it won't prevent
             // the compiler from exiting if an exception occurs.

@@ -65,7 +65,7 @@ actor is designed to work with KeystrokeSensor.java.  <p>
 public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner {
 
     public SystemClipboard(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
 	// Inputs
@@ -102,12 +102,12 @@ public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner 
 	if (trigger.getWidth() > 0 && trigger.hasToken(0)) {
 	    trigger.get(0);
 	    Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-                    .getSystemClipboard();
+                .getSystemClipboard();
 	    Transferable transferable = clipboard.getContents(this);
 	    try{
 		output.broadcast(new StringToken( (String)transferable
                         .getTransferData(DataFlavor.stringFlavor) ));
-	    // NullPointerException also possible //
+                // NullPointerException also possible //
 		// Ignore this for now, allowing exception to go uncaught.
 	    } catch (java.io.IOException ex) {
 		throw new IllegalActionException(this,
@@ -121,7 +121,7 @@ public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner 
 	// Copy
 	if (input.getWidth()>0 && input.hasToken(0)) {
 	    Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-                    .getSystemClipboard();
+                .getSystemClipboard();
 	    String myString = ((StringToken)(input.get(0))).stringValue();
 	    clipboard.setContents(new StringSelection(myString), this);
 	}
@@ -143,19 +143,19 @@ public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner 
      *              ptolemy.actor.lib.net.Wormhole)
      */
     /*
-CLASSPATH="../../../..;c:\cygwin\home\winthrop\8Feb\ptII/lib/diva.jar" "/cygdriv
-e/c/jdk1.4/bin/javac" -g -O Wormhole.java
-Wormhole.java:137: cannot resolve symbol
-symbol  : variable _myFrame
-location: class ptolemy.actor.lib.net.Wormhole
-            Transferable transferable = clipboard.getContents(_myFrame);
-                                                              ^
-1 error
-make: *** [Wormhole.class] Error 1
-bash-2.04$ emacs Wormhole.java
+      CLASSPATH="../../../..;c:\cygwin\home\winthrop\8Feb\ptII/lib/diva.jar" "/cygdriv
+      e/c/jdk1.4/bin/javac" -g -O Wormhole.java
+      Wormhole.java:137: cannot resolve symbol
+      symbol  : variable _myFrame
+      location: class ptolemy.actor.lib.net.Wormhole
+      Transferable transferable = clipboard.getContents(_myFrame);
+      ^
+      1 error
+      make: *** [Wormhole.class] Error 1
+      bash-2.04$ emacs Wormhole.java
 
-When I have '_myframe' in place of 'this' in getContents( ) call.
-Seems "requestor" who calls this must implement the ClipboardOwner interface.
+      When I have '_myframe' in place of 'this' in getContents( ) call.
+      Seems "requestor" who calls this must implement the ClipboardOwner interface.
     */
 
     public void lostOwnership(Clipboard clipboard, Transferable contents) {

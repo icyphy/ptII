@@ -166,7 +166,7 @@ public class ArrayExtract extends Transformer {
                         outputArray, destinationPositionValue,
                         extractLengthValue);
                 for (int i = destinationPositionValue + extractLengthValue;
-                    i < outputArrayLengthValue; i++) {
+                     i < outputArrayLengthValue; i++) {
                     outputArray[i] = zero;
                 }
                 output.send(0, new ArrayToken(outputArray));

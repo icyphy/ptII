@@ -167,7 +167,7 @@ public class Interpolator extends SequenceSource {
             double previous = 0.0;
             for (int i = 0; i < valuesValue.length(); i++) {
                 _values[i] = ((DoubleToken)valuesValue.getElement(i))
-                        .doubleValue();
+                    .doubleValue();
                 previous = _values[i];
             }
             _interpolation.setValues(_values);

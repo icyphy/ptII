@@ -245,12 +245,12 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 	} else if (attribute == bufferLength) {
 	    if (_safeToInitialize == true) {
 		//try {
-		    _initializeWriter();
-		    //} catch (IOException ex) {
-		    //throw new IllegalActionException(this,
-		    //      "Cannot read audio:\n" +
-		    //      ex);
-		    //}
+                _initializeWriter();
+                //} catch (IOException ex) {
+                //throw new IllegalActionException(this,
+                //      "Cannot read audio:\n" +
+                //      ex);
+                //}
 	    }
 	} else {
 	    super.attributeChanged(attribute);
@@ -314,13 +314,13 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 	    }
 	} else if (address.hasToken(0)) {
 	    System.out.println(getName()
-			       + "WARNING: address port does not have a token!");
+                    + "WARNING: address port does not have a token!");
 	} else if (data.hasToken(0)) {
 	    System.out.println(getName()
-			       + "WARNING: data port does not have a token!");
+                    + "WARNING: data port does not have a token!");
 	} else {
 	    System.out.println(getName()
-			       + "WARNING: neither data port has a token!");
+                    + "WARNING: neither data port has a token!");
 	}
     }
 
@@ -355,7 +355,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 		    _audioPutArray[0][0] = _audioBuffer[i];
 		    _soundWriter.putSamples(_audioPutArray);
 
-		    }
+                }
                 _soundWriter.closeFile();
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
@@ -413,7 +413,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
                 putSamplesSize);
 	_curElement = 0;
 	int length = ((IntToken)bufferLength
-                    .getToken()).intValue();
+                .getToken()).intValue();
 	_audioBuffer = new double[length];
     }
 

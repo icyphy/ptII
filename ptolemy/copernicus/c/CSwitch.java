@@ -190,17 +190,17 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     {
         //FIXME: Does not handle null cast
         if (!v.getOp().toString().equals("null"))
-        {
-            _push("("+CNames.typeNameOf(v.getCastType())+")"
-                +CNames.localNameOf((Local)v.getOp()));
-        }
+            {
+                _push("("+CNames.typeNameOf(v.getCastType())+")"
+                        +CNames.localNameOf((Local)v.getOp()));
+            }
         else
-        {
-            System.err.println("CSwitch.caseCastExpression does not"
-                +"handle null.");
+            {
+                System.err.println("CSwitch.caseCastExpression does not"
+                        +"handle null.");
 
-            defaultCase(v);
-        }
+                defaultCase(v);
+            }
     }
 
     /** Generate code for a CmpExpr expression.
@@ -251,18 +251,18 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // FIXME: add support for all relevant types.
         Type type = v.getCheckType();
         if ((type instanceof RefType))
-        {
-            v.getOp().apply(this);
-            _push(CNames.instanceOfFunction + "(" + _pop() + ", &"
-                + CNames.classStructureNameOf(((RefType)type).getSootClass())
-                + ")");
-        }
+            {
+                v.getOp().apply(this);
+                _push(CNames.instanceOfFunction + "(" + _pop() + ", &"
+                        + CNames.classStructureNameOf(((RefType)type).getSootClass())
+                        + ")");
+            }
 
         else
-        {
-            _unexpectedCase(v,
-                "Only RefTypes are presently supported for 'instanceof'");
-        }
+            {
+                _unexpectedCase(v,
+                        "Only RefTypes are presently supported for 'instanceof'");
+            }
     }
 
     public void caseInterfaceInvokeExpr(InterfaceInvokeExpr v) {
@@ -322,7 +322,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseNewMultiArrayExpr(NewMultiArrayExpr v) {
         if (_debug) {
             System.out.println("NewMultiArrayExpr: " + v.getSizeCount() +
-            "/" + v.getSizes().size() + v.getBaseType().getClass().getName());
+                    "/" + v.getSizes().size() + v.getBaseType().getClass().getName());
         }
         String sizeCode = new String();
         Iterator sizes = v.getSizes().iterator();
@@ -368,7 +368,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             _unexpectedCase(v, "RefType base type expected.");
         } else {
             SootClass baseClass = ((RefType)(v.getBase().getType())).
-                    getSootClass();
+                getSootClass();
             if (baseClass == methodClass) {
                 if (method.isStatic()) {
                     _unexpectedCase(v, "Non-static method expected.");
@@ -381,9 +381,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                     (baseClass.getSuperclass() != methodClass)) {
                 _unexpectedCase(v,
                         "Expected method class to be superclass of base");
-            // If we are generating code in single class mode, then
-            // we are not supporting inheritance, so ignore invocation
-            // of the superclass constructor.
+                // If we are generating code in single class mode, then
+                // we are not supporting inheritance, so ignore invocation
+                // of the superclass constructor.
             } else if (_context.getSingleClassMode()) {
                 return;
             } else {
@@ -450,14 +450,14 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseCaughtExceptionRef(CaughtExceptionRef v) {
 
         /*
-        System.out.println("Caught exception ref of type: " +
-                v.getType().toString());
-        Iterator useBoxes = v.getUseBoxes().iterator();
-        while (useBoxes.hasNext()) {
-            Object box = useBoxes.next();
-            System.out.println("use box of type " + box.getClass().getName());
-        }
-        defaultCase(v);
+          System.out.println("Caught exception ref of type: " +
+          v.getType().toString());
+          Iterator useBoxes = v.getUseBoxes().iterator();
+          while (useBoxes.hasNext()) {
+          Object box = useBoxes.next();
+          System.out.println("use box of type " + box.getClass().getName());
+          }
+          defaultCase(v);
         */
 
         _push("exception_id");
@@ -557,8 +557,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseReturnStmt(ReturnStmt stmt) {
         stmt.getOp().apply(this);
         _push("memcpy(env, caller_env, sizeof(jmp_buf));\n"
-            +"        epc = caller_epc;\n"
-            +"        return " + _pop());
+                +"        epc = caller_epc;\n"
+                +"        return " + _pop());
     }
 
     public void caseReturnVoidStmt(ReturnVoidStmt stmt) {
@@ -583,18 +583,18 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     public void defaultCase(Object obj) {
         if (obj instanceof Stmt)
-        {
-            _push("/*UNHANDLED STATEMENT: " + obj.getClass().getName() + "*/");
-        }
+            {
+                _push("/*UNHANDLED STATEMENT: " + obj.getClass().getName() + "*/");
+            }
         else if (obj instanceof Expr)
-        {
-            _push("0 /*UNHANDLED EXPRESSION HERE:"
-                +obj.getClass().getName() +"*/");
-        }
+            {
+                _push("0 /*UNHANDLED EXPRESSION HERE:"
+                        +obj.getClass().getName() +"*/");
+            }
         else //neither statement nor expression
-        {
-            _push("< UNHANDLED: "+obj.getClass().getName()+">");
-        }
+            {
+                _push("< UNHANDLED: "+obj.getClass().getName()+">");
+            }
 
         System.err.println("Unsupported visitation type: "
                 + obj.getClass().getName() + "(ignored).");
@@ -643,7 +643,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 emptyDimensions = ((ArrayType)elementType).numDimensions;
             } else {
                 elementClass = CNames.arrayClassPrefix +
-                        CNames.typeNameOf(elementType) + "_elem";
+                    CNames.typeNameOf(elementType) + "_elem";
                 elementSizeType = CNames.typeNameOf(elementType);
             }
 
@@ -652,9 +652,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             // by the calling method with the appropriate dimension
             // and size.
             return CNames.arrayAllocateFunction + "(" +
-                    elementClass + ", sizeof(" + elementSizeType + "), " +
-                    dimensionsToFill + ", " + emptyDimensions + ", " +
-                    sizeCode + ")";
+                elementClass + ", sizeof(" + elementSizeType + "), " +
+                dimensionsToFill + ", " + emptyDimensions + ", " +
+                sizeCode + ")";
         }
     }
 

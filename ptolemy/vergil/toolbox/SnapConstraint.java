@@ -93,7 +93,7 @@ public class SnapConstraint implements PointConstraint {
      *  @return True.
      */
     public boolean snapped () {
-      return true;
+        return true;
     }
 
     /** Set the resolution. Note that this sets the snap resolution

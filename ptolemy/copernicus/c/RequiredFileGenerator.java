@@ -54,17 +54,17 @@ transitive closure.
 public class RequiredFileGenerator
 {
     public void RequiredFileGenerator()
-        {
-            // dummy constructor
+    {
+        // dummy constructor
 
-        }
+    }
 
 
     public static void generateTransitiveClosureOf(String classPath,
-    String className, String compileMode, boolean verbose) throws IOException
-    //generate a list of classes required for transitive closure of given class
+            String className, String compileMode, boolean verbose) throws IOException
+            //generate a list of classes required for transitive closure of given class
     {
-            if (!compileMode.equals("singleClass"))
+        if (!compileMode.equals("singleClass"))
             {
                 Scene.v().setSootClassPath(classPath);
                 Scene.v().loadClassAndSupport(className);
@@ -75,58 +75,58 @@ public class RequiredFileGenerator
                 String nextClassName = new String();
 
                 while (i.hasNext())
-                {
-                    nextClassName=((SootClass)i.next()).getName();
-                    generateCode(classPath, nextClassName,
-                        compileMode, verbose);
-                }
+                    {
+                        nextClassName=((SootClass)i.next()).getName();
+                        generateCode(classPath, nextClassName,
+                                compileMode, verbose);
+                    }
             }
 
 
     }
 
 
-   public static void generateCode(String classPath, String className,
-        String compileMode, boolean verbose) throws IOException
+    public static void generateCode(String classPath, String className,
+            String compileMode, boolean verbose) throws IOException
+    {
+
+        // Initialize code generation
+        Scene.v().setSootClassPath(classPath);
+
+        HeaderFileGenerator hGenerator      = new HeaderFileGenerator();
+        CodeFileGenerator cGenerator        = new CodeFileGenerator();
+        InterfaceFileGenerator iGenerator   = new InterfaceFileGenerator();
+
+        String code;
+
+        cGenerator.clearSingleClassMode();
+        hGenerator.clearSingleClassMode();
+        iGenerator.clearSingleClassMode();
+
+        Scene.v().loadClassAndSupport(className);
+        SootClass sootClass = Scene.v().getSootClass(className);
+        CNames.setup();
+
+        //Make changes in the filename
+        String fileName = new String();
+        fileName = classNameToFileName(className);
+
+        //create any parent directories
+        if (fileName.lastIndexOf('/')>0);
+        //the file requires some directories
         {
+            if (verbose) System.out.println(className);
+            File dummyFile = new File(fileName.substring(0,
+                    fileName.lastIndexOf('/')));
+            dummyFile.mkdirs();
+        }
 
-            // Initialize code generation
-            Scene.v().setSootClassPath(classPath);
-
-            HeaderFileGenerator hGenerator      = new HeaderFileGenerator();
-            CodeFileGenerator cGenerator        = new CodeFileGenerator();
-            InterfaceFileGenerator iGenerator   = new InterfaceFileGenerator();
-
-            String code;
-
-            cGenerator.clearSingleClassMode();
-            hGenerator.clearSingleClassMode();
-            iGenerator.clearSingleClassMode();
-
-            Scene.v().loadClassAndSupport(className);
-            SootClass sootClass = Scene.v().getSootClass(className);
-            CNames.setup();
-
-            //Make changes in the filename
-            String fileName = new String();
-            fileName = classNameToFileName(className);
-
-            //create any parent directories
-            if (fileName.lastIndexOf('/')>0);
-            //the file requires some directories
-            {
-                if (verbose) System.out.println(className);
-                File dummyFile = new File(fileName.substring(0,
-                                            fileName.lastIndexOf('/')));
-                dummyFile.mkdirs();
-            }
-
-            // Generate the .i.h file.
-            if (FileHandler.exists(fileName+".i.h"))
+        // Generate the .i.h file.
+        if (FileHandler.exists(fileName+".i.h"))
             {
                 if (verbose) System.out.println( "\texists: "+fileName+".i.h");
             }
-            else
+        else
             {
                 code = iGenerator.generate(sootClass);
                 FileHandler.write(fileName+".i.h",code);
@@ -134,12 +134,12 @@ public class RequiredFileGenerator
             }
 
 
-            // Generate the .h file.
-            if (FileHandler.exists(fileName+".h"))
+        // Generate the .h file.
+        if (FileHandler.exists(fileName+".h"))
             {
                 if (verbose) System.out.println( "\texists: "+fileName+".h");
             }
-            else
+        else
             {
                 code = hGenerator.generate(sootClass);
                 FileHandler.write(fileName+".h",code);
@@ -147,27 +147,27 @@ public class RequiredFileGenerator
             }
 
 
-            // Generate the .c file.
-            if (compileMode.equals("full"))
+        // Generate the .c file.
+        if (compileMode.equals("full"))
             {
                 if (FileHandler.exists(fileName+".c"))
-                {
-                    if (verbose) System.out.println( "\texists:"+fileName+".c");
-                }
+                    {
+                        if (verbose) System.out.println( "\texists:"+fileName+".c");
+                    }
                 else
-                {
-                    code = cGenerator.generate(sootClass);
-                    FileHandler.write(fileName+".c",code);
-                    if (verbose) System.out.println( "\tcreated: "
-                        +fileName+".c");
-                }
+                    {
+                        code = cGenerator.generate(sootClass);
+                        FileHandler.write(fileName+".c",code);
+                        if (verbose) System.out.println( "\tcreated: "
+                                +fileName+".c");
+                    }
             }
-        }
+    }
 
     public static String classNameToFileName(String className)
     {
         if (isSystemClass(className)) return(System.getProperty("j2c_lib")+"/"
-                    +className.replace('.', '/'));
+                +className.replace('.', '/'));
         else return(className);
     }
 
@@ -175,7 +175,7 @@ public class RequiredFileGenerator
     {
 
         if ((className.startsWith("java."))||
-            (className.startsWith("sun."))) return (true);
+                (className.startsWith("sun."))) return (true);
         else return(false);
     }
 

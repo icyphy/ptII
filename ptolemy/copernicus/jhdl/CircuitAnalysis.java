@@ -78,21 +78,21 @@ public class CircuitAnalysis {
     public CircuitAnalysis(Entity entity, SootClass theClass) {
         HashMutableDirectedGraph graph = new HashMutableDirectedGraph() {
 
-            public String toString() {
+                public String toString() {
 
-                String string = "nodes = " + getNodes();
-                for (Iterator nodes = getNodes().iterator();
-                    nodes.hasNext();) {
+                    String string = "nodes = " + getNodes();
+                    for (Iterator nodes = getNodes().iterator();
+                         nodes.hasNext();) {
                         Object source = nodes.next();
                         string += "\nsource = " + source + " targets = ";
                         for (Iterator succs = getSuccsOf(source).iterator();
-                            succs.hasNext();) {
-                                string += succs.next() + ",";
-                            }
+                             succs.hasNext();) {
+                            string += succs.next() + ",";
+                        }
                     }
-                return string;
-            }
-        };
+                    return string;
+                }
+            };
         _graph = graph;
 
         System.out.println("className = " + entity.getClass().getName());
@@ -146,7 +146,7 @@ public class CircuitAnalysis {
         while (changed) {
             changed = false;
             for (Iterator nodes = graph.getNodes().iterator();
-                nodes.hasNext();) {
+                 nodes.hasNext();) {
                 Object node = nodes.next();
                 if (requiredNodeSet.contains(node)) {
                     continue;
@@ -163,7 +163,7 @@ public class CircuitAnalysis {
 
         //System.out.println("Original graph:\r\n" + graph + "\r\n");
 	System.out.println(HashMutableToDotty.convert(graph,
-						      entity.getName()));
+                entity.getName()));
 
         // Go though and eliminate unnecessary nodes.  These are nodes
         // that are not the names of output ports and have no targets,
@@ -173,16 +173,16 @@ public class CircuitAnalysis {
 	// find removable nodes and add new edges between removed
 	// nodes predecessors and successors
         for (Iterator nodes = graph.getNodes().iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             if (node instanceof Local || node instanceof SootField ||
                     !requiredNodeSet.contains(node)) {
                 // Then remove the node.
                 for (Iterator preds = graph.getPredsOf(node).iterator();
-                    preds.hasNext();) {
+                     preds.hasNext();) {
                     Object pred = preds.next();
                     for (Iterator succs = graph.getSuccsOf(node).iterator();
-                        succs.hasNext();) {
+                         succs.hasNext();) {
                         Object succ = succs.next();
                         graph.addEdge(pred, succ);
                     }
@@ -193,17 +193,17 @@ public class CircuitAnalysis {
 
         // Remove all the edges & nodes
         for (Iterator nodes = removeSet.iterator();
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object node = nodes.next();
             List predList = new LinkedList(graph.getPredsOf(node));
             for (Iterator preds = predList.iterator();
-                preds.hasNext();) {
+                 preds.hasNext();) {
                 Object pred = preds.next();
                 graph.removeEdge(pred, node);
             }
             List succList = new LinkedList(graph.getSuccsOf(node));
             for (Iterator succs = succList.iterator();
-                succs.hasNext();) {
+                 succs.hasNext();) {
                 Object succ = succs.next();
                 graph.removeEdge(node, succ);
             }
@@ -226,7 +226,7 @@ public class CircuitAnalysis {
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
         for (Iterator units = body.getUnits().iterator();
-            units.hasNext();) {
+             units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
             if (stmt instanceof AssignStmt) {
                 Object leftOp = ((AssignStmt)stmt).getLeftOp();
@@ -266,19 +266,19 @@ public class CircuitAnalysis {
 			//This is a token that has been initialized to some
 			//value
                         // Get the constant value of the token.
-//                          String valueString =
-//                              ((Token)tag.getObject()).toString();
-//                          requiredNodeSet.add(valueString);
-//                          if (!graph.containsNode(valueString)) {
-//                              graph.addNode(valueString);
-//                          }
-//                          graph.addEdge(valueString, leftOp);
+                        //                          String valueString =
+                        //                              ((Token)tag.getObject()).toString();
+                        //                          requiredNodeSet.add(valueString);
+                        //                          if (!graph.containsNode(valueString)) {
+                        //                              graph.addNode(valueString);
+                        //                          }
+                        //                          graph.addEdge(valueString, leftOp);
 			Token valueToken=(Token)tag.getObject();
                         requiredNodeSet.add(valueToken);
                         if (!graph.containsNode(valueToken)) {
                             graph.addNode(valueToken);
                         }
-//                          graph.addEdge(valueString, leftOp);
+                        //                          graph.addEdge(valueString, leftOp);
                         graph.addEdge(valueToken, leftOp);
                     }
                 } else if (rightOp instanceof Local) {
@@ -298,27 +298,27 @@ public class CircuitAnalysis {
                                     localUses);
                             // String portName = port.getName();
                             if (!graph.containsNode(port)) {
-  			      graph.addNode(port);
-//    			      graph.addNode(port.getName());
+                                graph.addNode(port);
+                                //    			      graph.addNode(port.getName());
                             }
 			    requiredNodeSet.add(port);
 			    graph.addEdge(port, leftOp);
-//  			    requiredNodeSet.add(port.getName());
-//  			    graph.addEdge(port.getName(), leftOp);
+                            //  			    requiredNodeSet.add(port.getName());
+                            //  			    graph.addEdge(port.getName(), leftOp);
                             continue;
                         } else {
 			    //This is for all methods that have not been
 			    //inlined yet (and aren't "get"s).  Must handle
 			    //these eventually
-//                              graph.addNode(opName);
-//                              graph.addEdge(base, opName);
+                            //                              graph.addNode(opName);
+                            //                              graph.addEdge(base, opName);
                             graph.addNode(invokedMethod);
                             graph.addEdge(base, invokedMethod);
                         }
                     }
                     for (Iterator arguments =
-                            ((InvokeExpr)rightOp).getArgs().iterator();
-                        arguments.hasNext();) {
+                             ((InvokeExpr)rightOp).getArgs().iterator();
+                         arguments.hasNext();) {
                         Value argument = (Value)arguments.next();
                         if (!graph.containsNode(argument)) {
                             graph.addNode(argument);
@@ -357,7 +357,7 @@ public class CircuitAnalysis {
     }
 
     protected ptolemy.data.type.Type _getPortType(Port port)
-	throws RuntimeException {
+            throws RuntimeException {
 	ptolemy.data.type.Type t=null;
 	try {
 	    TypedIOPort tport=(TypedIOPort)port;
@@ -366,8 +366,8 @@ public class CircuitAnalysis {
 	    throw new RuntimeException("Must have ports that are TypedIOPorts");
 	}
 	if (t.equals(BaseType.FIX) || t.equals(BaseType.INT) ||
-	    t.equals(BaseType.LONG) || t.equals(BaseType.BYTE) ||
-	    t.equals(BaseType.BOOLEAN) ) {
+                t.equals(BaseType.LONG) || t.equals(BaseType.BYTE) ||
+                t.equals(BaseType.BOOLEAN) ) {
 	    return t;
 	} else {
 	    throw new RuntimeException("Unsupported port type "+t+" in port "+port);

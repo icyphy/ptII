@@ -78,18 +78,18 @@ public class MatrixViewer extends Sink implements Placeable {
      */
     public MatrixViewer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException
-        {
-            super(container, name);
-            input.setMultiport(false);
-            input.setTypeEquals(BaseType.MATRIX);
+    {
+        super(container, name);
+        input.setMultiport(false);
+        input.setTypeEquals(BaseType.MATRIX);
 
-            // set the parameters
-            width = new Parameter(this, "width", new IntToken(500));
-            width.setTypeEquals(BaseType.INT);
-            height = new Parameter(this, "height", new IntToken(300));
-            height.setTypeEquals(BaseType.INT);
+        // set the parameters
+        width = new Parameter(this, "width", new IntToken(500));
+        width.setTypeEquals(BaseType.INT);
+        height = new Parameter(this, "height", new IntToken(300));
+        height.setTypeEquals(BaseType.INT);
 
-        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -238,18 +238,18 @@ public class MatrixViewer extends Sink implements Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (_scrollPane != null) {
-                    if (_container != null) {
-                        _container.remove(_scrollPane);
-                        _container.invalidate();
-                        _container.repaint();
-                    } else if (_frame != null) {
-                        _frame.dispose();
+                public void run() {
+                    if (_scrollPane != null) {
+                        if (_container != null) {
+                            _container.remove(_scrollPane);
+                            _container.invalidate();
+                            _container.repaint();
+                        } else if (_frame != null) {
+                            _frame.dispose();
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 
     ///////////////////////////////////////////////////////////////////

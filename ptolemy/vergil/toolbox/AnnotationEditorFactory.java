@@ -92,7 +92,7 @@ public class AnnotationEditorFactory extends EditorFactory {
      */
     public void createEditor(NamedObj object, Frame parent) {
         ComponentDialog dialog = new ComponentDialog(
-                 parent, "Edit Annotation", createEditorPane());
+                parent, "Edit Annotation", createEditorPane());
 
         String button = dialog.buttonPressed();
         if (!button.equals("OK")) return;
@@ -103,15 +103,15 @@ public class AnnotationEditorFactory extends EditorFactory {
             newText = "Double click to edit text.";
         }
         String moml = "<configure><svg><text x=\"20\" y=\"20\" "
-                + "style=\"font-size:"
-                + _fontProperties.stringValue("fontSize")
-                + "; font-family:"
-                + _fontProperties.stringValue("fontFamily")
-                + "; fill:"
-                + _fontProperties.stringValue("fontColor")
-                + "\">"
-                + newText
-                + "</text></svg></configure>";
+            + "style=\"font-size:"
+            + _fontProperties.stringValue("fontSize")
+            + "; font-family:"
+            + _fontProperties.stringValue("fontFamily")
+            + "; fill:"
+            + _fontProperties.stringValue("fontColor")
+            + "\">"
+            + newText
+            + "</text></svg></configure>";
         _iconDescription.requestChange(new MoMLChangeRequest(
                 this, _iconDescription, moml));
     }
@@ -122,12 +122,12 @@ public class AnnotationEditorFactory extends EditorFactory {
     public Component createEditorPane() {
         _textArea = new JTextArea();
         _iconDescription =
-                (SingletonConfigurableAttribute)_container
-                .getAttribute("_iconDescription");
+            (SingletonConfigurableAttribute)_container
+            .getAttribute("_iconDescription");
         if (_iconDescription == null) {
             try {
                 _iconDescription = new SingletonConfigurableAttribute(
-                          _container, "_iconDescription");
+                        _container, "_iconDescription");
             } catch (KernelException ex) {
                 // Cannot occur.
                 throw new InternalErrorException(ex.toString());
@@ -157,7 +157,7 @@ public class AnnotationEditorFactory extends EditorFactory {
                     if (name.equals("text")) {
                         text = child.getPCData();
                         String style = (String)
-                                child.getAttributeMap().get("style");
+                            child.getAttributeMap().get("style");
                         if (style != null) {
                             StringTokenizer tokenizer = new StringTokenizer(
                                     style, ";");
@@ -166,7 +166,7 @@ public class AnnotationEditorFactory extends EditorFactory {
                                 int colon = token.indexOf(":");
                                 if (colon > 0) {
                                     String property =
-                                           token.substring(0, colon).trim();
+                                        token.substring(0, colon).trim();
                                     if (property.equals("fill")) {
                                         _fontColor = token.substring(colon+1);
                                     } else if (property.equals("font-size")) {
@@ -242,8 +242,8 @@ public class AnnotationEditorFactory extends EditorFactory {
             // This includes logical font names, per Font class in Java:
             // Dialog, DialogInput, Monospaced, Serif, SansSerif, or Symbol.
             String[] families = GraphicsEnvironment
-                   .getLocalGraphicsEnvironment()
-                   .getAvailableFontFamilyNames();
+                .getLocalGraphicsEnvironment()
+                .getAvailableFontFamilyNames();
             _fontProperties.addChoice("fontFamily", "font family", families,
                     _fontFamily, false);
 

@@ -142,14 +142,14 @@ public class VergilApplication extends MoMLApplication {
         // weird things happens at the user interface level.  This
         // seems to prevent occasional errors rending HTML.
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    VergilApplication.super._parseArgs(args);
-                } catch (Exception ex) {
-                    MessageHandler.error("Command failed", ex);
-                    System.exit(0);
+                public void run() {
+                    try {
+                        VergilApplication.super._parseArgs(args);
+                    } catch (Exception ex) {
+                        MessageHandler.error("Command failed", ex);
+                        System.exit(0);
+                    }
                 }
-            }
-        });
+            });
     }
 }

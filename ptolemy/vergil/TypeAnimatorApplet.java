@@ -148,19 +148,19 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
         Attribute label = _toplevel.getAttribute(labelName);
         if (label != null) {
             Configurable config = (Configurable)
-                     label.getAttribute("_iconDescription");
+                label.getAttribute("_iconDescription");
             if (config != null) {
                 String moml = "<property name="
-                        + "\"_iconDescription\" "
-                        + "class=\"ptolemy.kernel.util"
-                        + ".SingletonConfigurableAttribute\">"
-                        + "<configure><svg><text x=\"20\" "
-                        + "style=\"font-size:14; font-family:sanserif; "
-                        + "fill:red\" y=\"20\">"
-                        + port.getType()
-                        + "</text></svg></configure></property>";
+                    + "\"_iconDescription\" "
+                    + "class=\"ptolemy.kernel.util"
+                    + ".SingletonConfigurableAttribute\">"
+                    + "<configure><svg><text x=\"20\" "
+                    + "style=\"font-size:14; font-family:sanserif; "
+                    + "fill:red\" y=\"20\">"
+                    + port.getType()
+                    + "</text></svg></configure></property>";
                 label.requestChange(new MoMLChangeRequest(
-                           this, label, moml));
+                        this, label, moml));
             }
         }
     }

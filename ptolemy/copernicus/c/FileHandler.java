@@ -53,15 +53,15 @@ public class FileHandler
     public static void write(String fileName, String code)
     {
         try
-        {
-            PrintWriter out = new PrintWriter(new FileOutputStream(fileName));
-            out.println(code.toString());
-            out.close();
-        }
+            {
+                PrintWriter out = new PrintWriter(new FileOutputStream(fileName));
+                out.println(code.toString());
+                out.close();
+            }
         catch(IOException e)
-        {
-            System.err.println("ERROR: Could not create file: "+fileName);
-        }
+            {
+                System.err.println("ERROR: Could not create file: "+fileName);
+            }
     }
 
 }
