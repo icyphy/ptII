@@ -1,5 +1,5 @@
-/* An event that can be inserted in a CalendarQueue using a double as
-   a sort key.
+/* An event that can be inserted in a CalendarQueue using an instance of Time
+   as a sort key.
 
    Copyright (c) 1998-2005 The Regents of the University of California.
    All rights reserved.
@@ -29,13 +29,15 @@
 package ptolemy.actor.util;
 
 import ptolemy.actor.Director;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedEvent
 
 /**
-   This class aggregates a double and an Object, and provides a CQComparator
+   This class aggregates an instance of Time and an Object, and provides a CQComparator
    as an inner class.
 
    @author Edward A. Lee
@@ -44,11 +46,13 @@ import ptolemy.actor.Director;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (liuj)
    @see CQComparator
+   @see Time
 */
 public class TimedEvent {
+    
     /** Construct an event with the specified time stamp and contents.
      *  @param time The time stamp.
-     *  @param obj The contents
+     *  @param obj The contents.
      */
     public TimedEvent(Time time, Object obj) {
         timeStamp = time;
@@ -65,7 +69,15 @@ public class TimedEvent {
     public Object contents;
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Display timeStamp and contents */
+    public String toString() {
+    	return "timeStamp: " + timeStamp + ", contents: " + contents;
+    }
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    
     ///////////////////////////////////////////////////////////////////
     //// TimeComparator
 
@@ -76,12 +88,15 @@ public class TimedEvent {
      * If this is violated, ClassCastException will be thrown.
      */
     public static class TimeComparator implements CQComparator {
+        
         /** Construct a TimeComparator object for the given director.
          *  @param director The director this comparator is associated with.
+         *  @exception IllegalActionException If the specified director has
+         *   an invalid time precision.
          */
-        public TimeComparator(Director director) {
+        public TimeComparator(Director director) throws IllegalActionException {
             _director = director;
-            _binWidth = new TimedEvent(new Time(_director, 1.0), null);
+            _binWidth = 1.0;
             _zeroReference = new TimedEvent(new Time(_director, 0.0), null);
         }
 
@@ -104,14 +119,7 @@ public class TimedEvent {
         public final int compare(Object object1, Object object2) {
             TimedEvent a = (TimedEvent) object1;
             TimedEvent b = (TimedEvent) object2;
-
-            if (a.timeStamp.compareTo(b.timeStamp) < 0) {
-                return -1;
-            } else if (a.timeStamp.compareTo(b.timeStamp) > 0) {
-                return 1;
-            } else {
-                return 0;
-            }
+            return a.timeStamp.compareTo(b.timeStamp);
         }
 
         /** Given an entry, return a virtual bin number for the entry.
@@ -127,11 +135,12 @@ public class TimedEvent {
          *   current zero reference and the bin width.
          *  @exception ClassCastException If the arguments are not instances of
          *   TimedEvent.
+         *  @exception InternalErrorException If the specified director has
+         *   an invalid time precision.
          */
         public long getVirtualBinNumber(Object entry) {
-            return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
-                    .getDoubleValue() / _binWidth.timeStamp
-                    .getDoubleValue());
+			return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
+			        .getDoubleValue() / _binWidth);
         }
 
         /** Given an array of TimedEvent objects, find the appropriate bin
@@ -140,7 +149,7 @@ public class TimedEvent {
          *  the number of entries in all non-empty bins is equal to one.
          *  If the argument is null, return the default bin width,
          *  which is 1.0 for this implementation.  If the argument
-         *  is a length one array, then the single element in the array
+         *  is a length-one array, then the single element in the array
          *  (an instance of TimedEvent) is made the bin width.
          *  Otherwise, the statistics of the elements of the array
          *  are analyzed to determine a reasonable bin width.
@@ -148,50 +157,51 @@ public class TimedEvent {
          *  @param entryArray An array of TimedEvent objects.
          *  @exception ClassCastException If one of the array elements is not
          *   an instance of TimedEvent.
+         *  @exception InternalErrorException If the specified director has
+         *   an invalid time precision.
          */
         public void setBinWidth(Object[] entryArray) {
-            if (entryArray == null) {
-                // Reset to default.
-                _binWidth = new TimedEvent(new Time(_director, 1.0), null);
-                return;
-            }
+			if (entryArray == null) {
+			    // Reset to default.
+			 	_binWidth = 1.0;
+			    return;
+			}
 
-            if (entryArray.length == 1) {
-                _binWidth = (TimedEvent) entryArray[0];
-                return;
-            }
+			if (entryArray.length == 1) {
+			    _binWidth = ((TimedEvent) entryArray[0]).timeStamp.getDoubleValue();
+			    return;
+			}
 
-            double[] diff = new double[entryArray.length - 1];
+			double[] diff = new double[entryArray.length - 1];
 
-            double average = 0;
+			double average = 0;
 
-            for (int i = 1; i < entryArray.length; ++i) {
-                diff[i - 1] = ((TimedEvent) entryArray[i]).timeStamp.subtract(((TimedEvent) entryArray[i
-                                                                                       - 1]).timeStamp).getDoubleValue();
-                average = average + diff[i - 1];
-            }
+			for (int i = 1; i < entryArray.length; ++i) {
+			    diff[i - 1] = ((TimedEvent) entryArray[i]).timeStamp.subtract(
+                        ((TimedEvent) entryArray[i - 1]).timeStamp).getDoubleValue();
+			    average = average + diff[i - 1];
+			}
 
-            average = average / diff.length;
+			average = average / diff.length;
 
-            double effAverage = 0;
-            int nEffSamples = 0;
+			double effAverage = 0;
+			int nEffSamples = 0;
 
-            for (int i = 1; i < entryArray.length; ++i) {
-                if (diff[i - 1] < (2 * average)) {
-                    nEffSamples++;
-                    effAverage = effAverage + diff[i - 1];
-                }
-            }
+			for (int i = 1; i < entryArray.length; ++i) {
+			    if (diff[i - 1] < (2 * average)) {
+			        nEffSamples++;
+			        effAverage = effAverage + diff[i - 1];
+			    }
+			}
 
-            // To avoid returning NaN or 0.0 for the width, if this is
-            // the result, leave the bin width unchanged.
-            if ((effAverage == 0.0) || (nEffSamples == 0)) {
-                return;
-            }
+			// To avoid returning NaN or 0.0 for the width, if this is
+			// the result, leave the bin width unchanged.
+			if ((effAverage == 0.0) || (nEffSamples == 0)) {
+			    return;
+			}
 
-            effAverage = effAverage / nEffSamples;
-            _binWidth = new TimedEvent(new Time(_director, 3.0 * effAverage),
-                    null);
+			effAverage = effAverage / nEffSamples;
+			_binWidth = 3.0 * effAverage;
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -205,11 +215,12 @@ public class TimedEvent {
 
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
+        
         // The director that contains this comparator.
         private Director _director;
 
         // The bin width.
-        private TimedEvent _binWidth;
+        private double _binWidth;
 
         // The zero reference.
         private TimedEvent _zeroReference;

@@ -27,9 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.util;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import ptolemy.actor.Director;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 
@@ -37,33 +38,29 @@ import ptolemy.kernel.util.InternalErrorException;
 //// Time
 
 /**
-   An object of the Time class represents model time in a model. It is
-   different from the real time of the physical world. This object is
-   immutable. It contains a BigDecimal number to record the time value,
-   which provides an arbitrary precision and an accuracy as small as 10^(-2^32).
-   There are two time constants specified in this class: NEGATIVE_INFINITY and
-   POSITIVE_INFINITY.
+   An object of the Time class represents model time, as distinct from
+   "wall-clock time," which is time in the physical world. An instance
+   of Time has a value that is immutable. It has no limit on the magnitude.
+   There are two time constants: NEGATIVE_INFINITY and POSITIVE_INFINITY.
 
-   <p> The time value contained by a time object is quantized according to
-   the time resolution specified by the <i>timePrecisionInDigits</i> parameter.
+   <p> The time value is quantized to the time resolution specified
+   by the <i>timeResolution</i> parameter of the associated director.
    The reason for this is that without quantization, it is extremely difficult
    to compare two time values with digit-to-digit accuracy because of the
    unpredictable numerical errors introduced during computation.
    In practice, two time values can only be distinguished if their difference
    can be detected by some measuring instrument, which always has a smallest
    unit for measurement. This smallest unit measurement gives the physical
-   meaning of the time resolution used for quantization. The quantization is
-   performed with the half-even rounding mode by default.
+   meaning of the time resolution used for quantization.
 
    <p> The time value can be retrived in two ways, the {@link #toString()}
    method and the {@link #getDoubleValue()} method. The first method returns a
    string representation while the second method returns a double value. There
    are some limitations on both methods. For the toString method, we can not
-   directly do numerical operations on strings, in particular the above two
-   time constants. For the getDoubleValue method, we can not
-   garantee that the returned double value preserves the time resolution
-   because of the limited digits for double representation. We recommand to
-   operate time objects directly instead of the time values of time objects.
+   directly do numerical operations on strings. For the getDoubleValue method,
+   we can not guarantee that the returned double value preserves the time resolution
+   because of the limited digits for double representation. We recommend to
+   operate on time objects directly instead of the time values of time objects.
 
    <p> Two operations, add and subtract, can be performed on a time object,
    where the argument can be a double or a time object. If the
@@ -72,11 +69,11 @@ import ptolemy.kernel.util.InternalErrorException;
    quantized result.
 
    <p> The time value of a time object can be infinite. The add and subtract
-   operations on infinite time values follow the rules of the IEEE Standard 754
-   Floating Point Numbers. In particular, adding two positive/negative
+   operations on infinite time values follow rules similar to the IEEE Standard 754
+   for Floating Point Numbers. In particular, adding two positive/negative
    infinities yield a positive/negative infinity; adding a positive infinity
-   and a negative infinity yields NaN; the negation of a positive/negative
-   infinity is a negative/positive infinity.
+   and a negative infinity, however, triggers an ArithmeticException;
+   the negation of a positive/negative infinity is a negative/positive infinity.
 
    <p> This class implements the Comparable interface, where two time
    objects can be compared in the following way. If any of the two time objects
@@ -91,15 +88,13 @@ import ptolemy.kernel.util.InternalErrorException;
 
    <p> All time objects share the same time resolution, which is provided by
    the top-level director. In some domains, such as CT and DE, users can
-   change the time resolution by configuring the <i>timePrecisionInDigits</i>
-   parameter. This parameter reprents the number of the digits to the right of
-   the decimal point (the fractional part). The default value for this parameter
-   is 10. The corresponding time resolution is 10^(-1*timePrecisionInDigits).
-   Note that the only change of timePrecisionInDigits at the top-level director
-   takes effect. What is more, to preserve the consistency of time values,
-   timePrecisionInDigits can not be changed when a model is running.
-
-   @author Haiyang Zheng
+   change the time resolution by configuring the <i>timeResolution</i>
+   parameter. The default value for this parameter "1E-10", which has
+   value 10<sup>-10</sup>. To preserve the consistency of time values,
+   timeResolution can not be changed when a model is running
+   (attempting to do so will trigger an exception).
+   
+   @author Haiyang Zheng and Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Yellow (hyzheng)
@@ -111,30 +106,30 @@ public class Time implements Comparable {
      *  is associated with the given director, which provides the necessary
      *  information for quantization. 
      *  @param director The director with which this time object is associated.
+     *   This must not be null, or subsequent uses of the class will fail.
+     *  @exception IllegalActionException If the director has an invalid
+     *   value for its time resolution
      */
-    public Time(Director director) {
+    public Time(Director director) throws IllegalActionException {
         _director = director;
-
-        if (_usingDouble) {
-            _timeDoubleValue = 0.0;
-        } else {
-            _timeValue = _quantizeTimeValue(new BigDecimal(0));
-        }
+        _timeValue = BigInteger.ZERO;
     }
 
     /** Construct a Time object with the specified double value as its
-     *  time value. The time object is associated with the given director,
-     *  which provides the necessary information for quantization.
-     *  The double value can not be NaN, otherwise, a NumberFormatException
-     *  will be thrown.
+     *  time value. The specified director provides the resolution that
+     *  is used to quantize the double value so that the value of the
+     *  resulting Time object is a multiple of the precision.
      *  @param director The director with which this time object is associated.
      *  @param timeValue A double value as the specified time value.
+     *  @exception IllegalActionException If the director has an invalid
+     *   value for its time resolution.
+     *  @exception ArithmeticException If the argument is NaN.
      */
-    public Time(Director director, double timeValue) {
+    public Time(Director director, double timeValue) throws IllegalActionException {
         _director = director;
 
         if (Double.isNaN(timeValue)) {
-            throw new NumberFormatException("Time value can not be NaN.");
+            throw new ArithmeticException("Time value can not be NaN.");
         }
 
         if (Double.isInfinite(timeValue)) {
@@ -145,186 +140,243 @@ public class Time implements Comparable {
                 _isPositiveInfinite = true;
             }
         } else {
-            if (!_usingDouble) {
-                _timeValue = _quantizeTimeValue(new BigDecimal(timeValue));
-            }
+            _timeValue = _doubleToMultiple(timeValue);
         }
-
-        _timeDoubleValue = timeValue;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private constructor               ////
 
-    /** Construct a Time object with the specified BigDecimal value as its
-     *  time value. The time object is associated with the given director,
+    /** Construct a Time object with the specified BigInteger value as its
+     *  time value (as a multiple of the precision). The time object
+     *  is associated with the given director,
      *  which provides the necessary information for quantization.
      *  This constructor is private and can only be accessed by the methods
      *  defined inside this class.
      *  @param director The director with which this time object is associated.
-     *  @param timeValue A BidDecimal value as the specified time value.
+     *  @param timeValue The multiple of the precsision that is the time value.
      */
-    private Time(Director director, BigDecimal timeValue) {
+    private Time(Director director, BigInteger timeValue) {
         _director = director;
+        _timeValue = timeValue;
+    }
 
-        if (_usingDouble) {
+    /** Construct a Time object with value that is one of _POSITIVE_INFINITY
+     *  or _NEGATIVE_INFINITY.
+     *  @param value One of _POSITIVE_INFINITY or _NEGATIVE_INFINITY.
+     */
+    private Time(int value) {
+        if (value == _POSITIVE_INFINITY) {
             _timeValue = null;
-        } else {
-            // Addition operation performed on BigDecimal is always accurate.
-            _timeValue = timeValue;
+            _isPositiveInfinite = true;
+        } else if (value == _NEGATIVE_INFINITY) {
+            _timeValue = null;
+            _isNegativeInfinite = true;
         }
-        _timeDoubleValue = timeValue.doubleValue();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public  fields                   ////
-    // NOTE: BigDecimal does not support infinity.
+    ////                          static  fields                   ////
+
+    // Indicator to create negative infinite value.
+    private static int _NEGATIVE_INFINITY = 0;
+    
+    // Indicator to create positve infinite value.
+    private static int _POSITIVE_INFINITY = 1;
+
     // NOTE: For the following constants, the director argument is null
     // because these constants are invariant to any time resolution.
 
     /** A static and final time constant holding a negative infinity.
      */
-    public static final Time NEGATIVE_INFINITY = new Time(null,
-            Double.NEGATIVE_INFINITY);
+    public static final Time NEGATIVE_INFINITY = new Time(_NEGATIVE_INFINITY);
 
     /** A static and final time constant holding a positive infinity.
      */
-    public static final Time POSITIVE_INFINITY = new Time(null,
-            Double.POSITIVE_INFINITY);
+    public static final Time POSITIVE_INFINITY = new Time(_POSITIVE_INFINITY);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return a new time object whose time value is increased by the
-     *  given double value. Quantization is performed on both the timeValue
-     *  argument and the result.
-     *  The double value can not be NaN and the result time value can not
-     *  be NaN.
-     *  @param timeValue The amount of time increment.
-     *  @return A new time object with the quantized and incremented time value.
+     *  given double value. The specified double value is quantized
+     *  to a multiple of the precision before it is added.
+     *  @param timeValue The amount of the time increment.
+     *  @return A new time object with the incremented time value.
+     *  @exception ArithmeticException If the result is not a valid
+     *   number (the argument is NaN or the sum would be).
      */
     public Time add(double timeValue) {
+        
         // NOTE: a double time value can be either positive infinite,
         // negative infinite, or a NaN.
         if (Double.isNaN(timeValue)) {
-            throw new InternalErrorException("Time value can not be a NaN.");
+            throw new ArithmeticException("Time: Time value can not be NaN.");
         }
 
         if (Double.isInfinite(timeValue)) {
             if (timeValue < 0) {
                 // time value is a negative infinity
-                if (isPositiveInfinite()) {
-                    throw new InternalErrorException(
-                            "Adding a positive infinity to a negative "
-                            + "infinity yields a NaN.");
+                if (_isPositiveInfinite) {
+                    throw new ArithmeticException(
+                            "Time: Adding a positive infinity to a negative "
+                            + "infinity results in an invalid time.");
                 } else {
                     return NEGATIVE_INFINITY;
                 }
             } else {
                 // time value is a positive infinity
-                if (isNegativeInfinite()) {
-                    throw new InternalErrorException(
-                            "Adding a negative infinity to a positive "
-                            + "infinity yields a NaN.");
+                if (_isNegativeInfinite) {
+                    throw new ArithmeticException(
+                            "Time: Adding a negative infinity to a positive "
+                            + "infinity results in an invalid time.");
                 } else {
                     return POSITIVE_INFINITY;
                 }
             }
         } else if (isInfinite()) {
             return this;
-        } else if (_usingDouble) {
-            double newValue = 
-                _quantizeTimeValue(_timeDoubleValue + timeValue);
-            return new Time(_director, newValue);
         } else {
-            BigDecimal newTimeValue = 
-                _quantizeTimeValue(new BigDecimal(timeValue));
-            return _add(newTimeValue);
+            return new Time(_director, _timeValue.add(_doubleToMultiple(timeValue)));
         }
     }
 
-    /** Return a new time object whose time value is increased by the
-     *  time value of the time object. Quantization is performed on the result.
-     *  The result time value can not be NaN.
+    /** Return a new time object whose time value is the sum of that of
+     *  this time object and of the specified time object. The two time
+     *  objects are expected to have directors with the same time resolution.
+     *  If they do not, then the returned result is a new Time object
+     *  representing the sum of the double values of the two Time objects.
+     *  This would not be as accurate.
      *  @param time The time object contains the amount of time increment.
      *  @return A new time object with the quantized and incremented time value.
+     *  @exception ArithmeticException If the result is not a valid number
+     *   (it is the sum of positive and negative infinity).
      */
     public Time add(Time time) {
         // NOTE: a time value of a time object can be either positive infinite
         // or negative infinite.
-        if (_usingDouble) {
-            return add(time.getDoubleValue());
-        }
-        
-        if (time.isNegativeInfinite()) {
+        if (time._isNegativeInfinite) {
             // the time object has a negative infinity time value
-            if (isPositiveInfinite()) {
-                throw new InternalErrorException(
-                        "Adding a positive infinity to a negative "
-                        + "infinity yields a NaN.");
+            if (_isPositiveInfinite) {
+                throw new ArithmeticException(
+                        "Time: Adding a positive infinity to a negative "
+                        + "infinity yields an invalid time.");
             } else {
                 return NEGATIVE_INFINITY;
             }
-        } else if (time.isPositiveInfinite()) {
+        } else if (time._isPositiveInfinite) {
             // the time object has a positive infinity time value
-            if (isNegativeInfinite()) {
-                throw new InternalErrorException(
+            if (_isNegativeInfinite) {
+                throw new ArithmeticException(
                         "Adding a negative infinity to a positive "
-                        + "infinity yields a NaN.");
+                        + "infinity yields an invalid time.");
             } else {
                 return POSITIVE_INFINITY;
             }
         } else if (isInfinite()) {
             return this;
-        } else {
-            return _add(time._getBigDecimalValue());
         }
+        // Ensure the resolutions are the same.
+        try {
+			double resolution = _director.getTimeResolution();
+			if (resolution != time._director.getTimeResolution()) {
+			    double thisValue = getDoubleValue();
+			    double thatValue = time.getDoubleValue();
+			    return new Time(_director, thisValue + thatValue);
+			}
+		} catch (IllegalActionException e) {
+            // If the time resolution values are malformed this
+            // should have been caught before this.
+            throw new InternalErrorException(e);
+		}
+        return new Time(_director, _timeValue.add(time._timeValue));
     }
 
     /** Return -1, 0, or 1 if this time object is less than, equal to, or
-     *  greater than the given argument object. Note that a ClassCastException
+     *  greater than the given argument. Note that a ClassCastException
      *  will be thrown if the argument is not an instance of Time.
+     *  This object expects the directors associated with this and the
+     *  specified Time objects to have the same time resolution. If this
+     *  is not the case, then it compares the double representations of
+     *  those time values, which is not as accurate.
      *  @param time A time object to compare to.
-     *  @return an integer as -1, 0, or 1.
+     *  @return The integer -1, 0, or 1 if this is less than, equal to, or
+     *   greater than the argument.
      */
     public int compareTo(Object time) {
-        // NOTE: a time object may contain infinite time values, which can
-        // not be quantized.
-        Time castedTime = (Time) time;
+        // NOTE: a time object may contain infinite time values.
+        Time castTime = (Time) time;
 
-        if (_usingDouble) {
-            return Double.compare(_timeDoubleValue,
-                    castedTime.getDoubleValue());
-        }
-         
         // If at least one of the time objects has an infinite time value,
-        if (castedTime.isInfinite() || isInfinite()) {
-            if (castedTime.isNegativeInfinite()) {
-                // the castedTime object is a negative infinity.
-                if (isNegativeInfinite()) {
+        if (castTime.isInfinite() || isInfinite()) {
+            if (castTime._isNegativeInfinite) {
+                // the castTime object is a negative infinity.
+                if (_isNegativeInfinite) {
                     return 0;
                 } else {
                     return 1;
                 }
-            } else if (castedTime.isPositiveInfinite()) {
-                // the castedTime object is a positive infinity.
-                if (isPositiveInfinite()) {
+            } else if (castTime._isPositiveInfinite) {
+                // the castTime object is a positive infinity.
+                if (_isPositiveInfinite) {
                     return 0;
                 } else {
                     return -1;
                 }
             } else {
-                // the castedTime object is not infinite, this object must
+                // the castTime object is not infinite, this object must
                 // be infinite.
-                if (isNegativeInfinite()) {
+                if (_isNegativeInfinite) {
                     return -1;
                 } else {
                     return 1;
                 }
             }
-        } else {
-            return _timeValue.compareTo(castedTime._getBigDecimalValue());
         }
+		double resolution = _director.getTimeResolution();
+		if (resolution == castTime._director.getTimeResolution()) {
+		    return _timeValue.compareTo(castTime._timeValue);
+		} else {
+			double thisValue = getDoubleValue();
+		    double thatValue = castTime.getDoubleValue();
+		    if (thisValue < thatValue) {
+		    	return -1;
+		    } else if (thisValue > thatValue) {
+		        return 1;
+		    } else {
+		        return 0;
+		    }
+		}
+    }
+    
+    /** Return the integer result of dividing this time by the
+     *  specified time interval. That is, the returned value represents
+     *  how many times the specified time interval fits within this
+     *  time.  If the two time resolutions are not the same, or
+     *  if the interval is zero, then throw an exception.
+     *  @param interval The time interval to divide by.
+     *  @return The number of times the interval fits entirely
+     *   within this time.
+     *  @exception ArithmeticException If the interval is zero,
+     *   or if the time resolution of the specified interval is
+     *   not the same as that of this object.
+     */
+    public BigInteger divide(Time interval) {
+        if (_isPositiveInfinite || _isNegativeInfinite) {
+            if (!interval.isInfinite()) {
+                // FIXME: This isn't right
+            	return  new BigInteger(Long.toString(Long.MAX_VALUE));
+            } else {
+            	throw new ArithmeticException("Time: Cannot divide infinity by infinity");
+            }
+        }
+        double resolution = _director.getTimeResolution();
+        if (resolution == interval._director.getTimeResolution()) {
+            return _timeValue.divide(interval._timeValue);
+        } else {
+            throw new ArithmeticException(
+                    "Cannot divide instances of Time that do not have the same time resolution.");
+        }        
     }
 
     /** Return true if this time object has the same time value as
@@ -337,36 +389,38 @@ public class Time implements Comparable {
     }
 
     /** Return the double representation of the time value of this time object.
-     *  Note limitations may apply, see BigDecimal.doubleValue().
-     *  In particular, due to the fixed and limited number of bits of
-     *  double representation in Java, the returned double value may not
-     *  have the specified time resoution if it is too big.
+     *  Note that the returned result is not necessarily as accurate as
+     *  the internal representation. In particular, if the internal representation
+     *  is too large, then then the returned result may be infinite.
+     *  In addition, if the magnitude of the retuned number is large
+     *  relative to the time resolution of the associated director,
+     *  then the result may be innacurrate by more than the time resolution.
      *  @return The double representation of the time value.
      */
     public double getDoubleValue() {
-        if (_usingDouble) {
-            return _timeDoubleValue;
-        } 
-        if (isPositiveInfinite()) {
+        if (_isPositiveInfinite) {
             return Double.POSITIVE_INFINITY;
-        } else if (isNegativeInfinite()) {
+        } else if (_isNegativeInfinite) {
             return Double.NEGATIVE_INFINITY;
         } else {
-            // NOTE: A simple computation may help to warn users that
-            // the returned double value loses the specified precisoin.
-            // One example: if timePrecisionInDigits = 12, and time resolution is 1E-12,
-            // any double that is bigger than 8192.0 can distinguish from itself
-            // from a value slighter bigger (with the difference as time
-            // resolution). 8192 is the LUB of the set of double values have
-            // the time resolution.
-            // NOTE: The strategy to find the LUB for a given time resolution r:
-            // find the smallest N such that time resolution r >=  2^(-1*N);
-            // get M = 52 - N, which is the multiplication we can apply on the
-            // significand without loss of time resolution;
-            // the LUB is approximately (1+1)*2^M.
-            // NOTE: the formula to calculate a decimal value from a binary
-            // representation is (-1)^(sign)x(1+significand)x2^(exponent-127).
-            return _getBigDecimalValue().doubleValue();
+			// NOTE: A simple computation may help to warn users that
+			// the returned double value loses the specified precisoin.
+			// One example: if time resolution is 1E-12,
+			// any double that is bigger than 8192.0 cannot distinguish from itself
+			// from a value slighter bigger (with the difference as time
+			// resolution). 8192 is the LUB of the set of double values have
+			// the time resolution.
+			// NOTE: The strategy to find the LUB for a given time resolution r:
+			// find the smallest N such that time resolution r >=  2^(-1*N);
+			// get M = 52 - N, which is the multiplication we can apply on the
+			// significand without loss of time resolution;
+			// the LUB is approximately (1+1)*2^M.
+			// NOTE: the formula to calculate a decimal value from a binary
+			// representation is (-1)^(sign)x(1+significand)x2^(exponent-127).
+            
+            // FIXME: Should use doubleValue() here, but it hugely increases the
+            // execution time...
+			return _timeValue.doubleValue() * _director.getTimeResolution();
         }
     }
 
@@ -377,16 +431,12 @@ public class Time implements Comparable {
      *  @return The hash code for the time object.
      */
     public int hashCode() {
-        if (_usingDouble) {
-            return (new Double(_timeDoubleValue)).hashCode();
-        } 
-        
-        if (isNegativeInfinite()) {
+        if (_isNegativeInfinite) {
             return Integer.MIN_VALUE;
-        } else if (isPositiveInfinite()) {
+        } else if (_isPositiveInfinite) {
             return Integer.MAX_VALUE;
         } else {
-            return _getBigDecimalValue().hashCode();
+            return _timeValue.hashCode();
         }
     }
 
@@ -394,7 +444,7 @@ public class Time implements Comparable {
      *  @return true if the current time value is infinite.
      */
     public boolean isInfinite() {
-        return isNegativeInfinite() || isPositiveInfinite();
+        return _isNegativeInfinite || _isPositiveInfinite;
     }
 
     /** Return true if the current time value is a negative infinity.
@@ -422,147 +472,76 @@ public class Time implements Comparable {
     }
 
     /** Return a new time object whose time value is decreased by the
-     *  time value of the time object. Quantization
-     *  is performed on the result.
+     *  time value of the specified time object. This method assumes that the two
+     *  time values have directors with the same time resolution. If
+     *  this is not the case, then the result is a new Time object whose
+     *  value is constructed from the difference between the double values
+     *  for this and the specified Time objects, using the time resolution
+     *  of the director of this one.
      *  @param time The time object contains the amount of time decrement.
      *  @return A new time object with time value decremented.
      */
     public Time subtract(Time time) {
-        if (_usingDouble) {
-            return add(-1 * time.getDoubleValue());
-        } 
-        
-        // NOTE: a time value of a time object can be either a
-        // positive infinity or a negative infinity.
-        if (time.isNegativeInfinite()) {
-            // the time object has a negative infinity time value
-            if (isNegativeInfinite()) {
-                throw new InternalErrorException(
-                        "Subtracting a negative infinity from a negative "
-                        + "infinity yields a NaN.");
-            } else {
-                return POSITIVE_INFINITY;
-            }
-        } else if (time.isPositiveInfinite()) {
-            // the time object has a positive infinity time value
-            if (isPositiveInfinite()) {
-                throw new InternalErrorException(
-                        "Subtracting a positive infinity from a positive "
-                        + "infinity yields a NaN.");
-            } else {
-                return NEGATIVE_INFINITY;
-            }
-        } else if (isInfinite()) {
-            return this;
-        } else {
-            return _add(time._getBigDecimalValue().negate());
-        }
+        return add(new Time(time._director, time._timeValue.negate()));
     }
 
     /** Return the string representation of this time object.
+     *  This is actually an approximation generated by first converting to a double.
      *  Note that the string representation of infinities can not be
      *  used to construct the time objects containing infinite time values.
      *  @return A String represention of this time object.
      */
     public String toString() {
-        if (_usingDouble) {
-            return "" + _timeDoubleValue;
-        } 
-        
-        if (isPositiveInfinite()) {
-            return "A positive infinity.";
-        } else if (isNegativeInfinite()) {
-            return "A negative infinity.";
+        if (_isPositiveInfinite) {
+            return "Infinity";
+        } else if (_isNegativeInfinite) {
+            return "-Infinity";
         } else {
-            return _getBigDecimalValue().toString();
+            return "" + getDoubleValue();
+			// NOTE: Could use BigDecimal to get full resolution, as follows,
+            // but the resulution is absurd.
+            /*
+            BigDecimal resolution = new BigDecimal(_director.getTimeResolution());
+            BigDecimal scale = new BigDecimal(_timeValue);
+			return resolution.multiply(scale).toString();
+            */
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return a new time object whose time value is increased by the
-     *  time value of the given BigDecimal. If the time value of this
-     *  time object is infinite, return this time object. Quantization
-     *  is performed on both the timeValue argument and the result.
-     *  @param timeValue The amount of time increment.
-     *  @return A new time object with the quantized and incremented time value.
-     */
-    private Time _add(BigDecimal timeValue) {
-        return new Time(_director, _timeValue.add(timeValue));
-    }
-
-    /** Return the time value of this time object as a BigDecimal.
-     *  The returned value is not quantized. This method can not be applied
-     *  on time objects that have infinite time values.
-     *  @return The BigDecimal time value.
-     */
-    private BigDecimal _getBigDecimalValue() {
-        // We do not check whether this time object is infinite.
-        // Other methods call this method should be responsible for checking.
-        return _timeValue;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Get the timePrecisionInDigits of the container director.
-    // This method is only called when quantization happens.
-    private int _getTimePrecisionInDigits() {
-        if (_director == null) {
-            throw new InternalErrorException("Director is null. Cannot "
-                    + "quantize the time value of a Time object without having "
-                    + "a director providing a time resolution.");
-        } else {
-            return _director.getTimePrecisionInDigits();
-        }
-    }
 
-    // Return the quantized time value of the original time value.
-    // This method can not be applied on time objects with infinite
-    // time values.
-    private BigDecimal _quantizeTimeValue(BigDecimal originalTimeValue) {
-        if (isInfinite()) {
-            // This should not happen. Otherwise, there is a bug of using
-            // this method.
-            throw new InternalErrorException("Quantization can not "
-                    + "be performed on time objects with infinite time "
-                    + "values.");
-        } else {
-            return originalTimeValue.setScale(_getTimePrecisionInDigits(),
-                    BigDecimal.ROUND_HALF_EVEN);
-        }
-    }
-
-    private double _quantizeTimeValue(double originalTimeValue) {
-        // NOTE: when the value is too big, e.g. close to the
-        // maximum double value, the following algorithm will
-        // get overflow, which gives a wrong answer.
-        int precision = _getTimePrecisionInDigits();
-        double newValue = Math.round(originalTimeValue * Math.pow(10, precision)) / Math
-            .pow(10, precision);
-        return newValue;
+    /** Given a double, return the BigInteger that represents its
+     *  quantized value. The BigInteger is the rounded result of dividing
+     *  the double by the time resolution.
+     *  @param value The value as a double.
+     *  @return A BigInteger that specifies this double value as a multiple
+     *   of the resolution given by the associated director.
+     */
+    private BigInteger _doubleToMultiple(double value) {
+        // FIXME: when the value is too big a multiple of the resolution,
+        // the division fails to deliver adequate precision.
+        // Is there a better way?
+		double precision = _director.getTimeResolution();
+		return BigInteger.valueOf(Math.round(value/precision));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The director that this time object is associated with.
+    
+    /** The director that this time object is associated with. */
     private Director _director;
 
-    // A boolean variable is true if the time value is a positive infinity.
-    // By default, it is false.
+    /** A boolean variable is true if the time value is a positive infinity.
+     *  By default, it is false.
+     */
     private boolean _isPositiveInfinite = false;
 
-    // A boolean variable is true if the time value is a negative infinity.
-    // By default, it is false.
+    /** A boolean variable is true if the time value is a negative infinity.
+     *  By default, it is false.
+     */
     private boolean _isNegativeInfinite = false;
-
-    // A double representation of the time value.
-    private double _timeDoubleValue = 0.0;
-
-    // The time value, which is quantized.
-    private BigDecimal _timeValue = null;
-
-    // A boolean value that choose different representation of time values
-    // for performance comparison.
-    private boolean _usingDouble = false;
+    
+    /** The time value, as a multiple of the resolution. */
+    private BigInteger _timeValue = null;
 }
