@@ -60,17 +60,21 @@ test Applet-1.1 {Compile and run the SDF IIR test} {
 } {{}}
 
 test Applet-1.2 {Create an applet for a graphical demo that uses diva.jar in a directory outside of the Ptolemy II tree} {
+    set tmpdir \
+	[java::call ptolemy.util.StringUtilities getProperty java.io.tmpdir]
+    set ptapplet [file join $tmpdir ptapplet]
+
     # ptapplet must exist or else the defaults will be used.
-    file delete -force /tmp/ptapplet	
-    file mkdir /tmp/ptapplet
+    file delete -force $ptapplet
+    file mkdir $ptapplet
 	
     set args [java::new {String[]} 11 \
 	[list \
 	    [file join $relativePathToPTII ptolemy domains fsm demo \
 		MultipleRuns MultipleRuns.xml] \
-	    "-ptIIUserDirectory" "/tmp/ptapplet" \
-	    "-targetPath" "modelName" \
-	    "-targetPackage" "modelName" \
+	    "-ptIIUserDirectory" "$ptapplet" \
+	    "-targetPath" "\$modelName" \
+	    "-targetPackage" "\$modelName" \
 	    "-codeGenerator" "applet" \
 	    "-run" "false"] ]
     java::new ptolemy.copernicus.kernel.Copernicus $args	
