@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.UIManager;
 
 /**
 A transferable object that contains a local JVM reference to a
@@ -144,9 +145,23 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * The flavor that requests a local virtual machine
      * reference to the contained object.
      */
-    public static final DataFlavor namedObjFlavor =
-    new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
-            ";class=ptolemy.kernel.util.NamedObj", "Named Object");
+    public static final DataFlavor namedObjFlavor;
+    static {
+        // Under MacOS X 10.2, Java 1.4.1_01 we get a stack trace
+        // when ever we drag and drop.  For details See
+        // http://lists.apple.com/archives/java-dev/2003/Apr/16/classcastexceptionindrag.txt
+        // FIXME: This change happened just before the release of 3.0.2,
+        // so we only make the change under Mac OS.
+        if (UIManager.getLookAndFeel().getName().startsWith("MacOS")) {
+            namedObjFlavor =
+                new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
+                        ";class=ptolemy.kernel.util.NamedObj", "Named Object");
+        } else {
+            namedObjFlavor =
+                new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
+                        "ptolemy.kernel.util.NamedObj", "Named Object");
+        }
+    }
 
     // Return a string with a moml description of all the objects in the list.
     public String _getMoML() throws IOException {
