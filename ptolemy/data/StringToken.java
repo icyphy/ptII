@@ -80,7 +80,7 @@ public class StringToken extends ObjectToken {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
             if (typeInfo == CPO.STRICT_GREATER) {
-                StringToken tmp = this.convert(tok);
+                StringToken tmp = (StringToken)this.convert(tok);
                 String result = _value + tmp.getValue();
                 return new StringToken(result);
             } else if (tok instanceof StringToken) {
@@ -110,7 +110,7 @@ public class StringToken extends ObjectToken {
      *   a lossless fashion.
      */
     public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
-        StringToken tmp = this.convert(tok);
+        StringToken tmp = (StringToken)this.convert(tok);
         String result = tmp.getValue() + _value;
         return new StringToken(result);
     }
@@ -125,7 +125,7 @@ public class StringToken extends ObjectToken {
      *  classes. It skips down to the DoubleToken part of the lossless
      *  type hierarchy.
      */
-    static public StringToken convert(Token tok) throws IllegalActionException{
+    public Token convert(Token tok) throws IllegalActionException{
         if (tok instanceof BooleanToken) {
             String result = ((BooleanToken)tok).stringValue();
             return new StringToken(result);
@@ -134,7 +134,7 @@ public class StringToken extends ObjectToken {
             return new StringToken(result);
         } else {
             try {
-                DoubleToken res = DoubleToken.convert(tok);
+                DoubleToken res = (DoubleToken)(new DoubleToken()).convert(tok);
                 return convert(res);
             } catch (Exception ex) {
                 String str = "cannot convert from token type: ";

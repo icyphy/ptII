@@ -73,7 +73,7 @@ public class LongToken extends ScalarToken {
                 long result = _value + ((LongToken)tok).getValue();
                 return new LongToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                LongToken tmp = this.convert(tok);
+                LongToken tmp = (LongToken)this.convert(tok);
                 long result = _value + tmp.getValue();
                 return new LongToken(result);
             } else {
@@ -96,7 +96,7 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
-        LongToken tmp = this.convert(tok);
+        LongToken tmp = (LongToken)this.convert(tok);
         long result = tmp.getValue() + _value;
         return new LongToken(result);
     }
@@ -107,13 +107,13 @@ public class LongToken extends ScalarToken {
      *  @exception IllegalActionException Thrown if the conversion
      *  cannot be carried out in a lossless fashion.
      */
-    static public LongToken convert(Token tok) throws IllegalActionException{
+    public Token convert(Token tok) throws IllegalActionException{
         if (tok instanceof IntToken) {
             long result = ((IntToken)tok).longValue();
             return new LongToken(result);
         } else {
             try {
-                IntToken res = IntToken.convert(tok);
+                IntToken res = (IntToken)(new IntToken()).convert(tok);
                 return convert(res);
             } catch (Exception ex) {
                 String str = "cannot convert from token type: ";
@@ -142,7 +142,7 @@ public class LongToken extends ScalarToken {
                 }
                 return new BooleanToken(false);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                LongToken tmp = this.convert(tok);
+                LongToken tmp = (LongToken)this.convert(tok);
                 if ( _value == tmp.getValue()) {
                     return new BooleanToken(true);
                 }
@@ -200,7 +200,7 @@ public class LongToken extends ScalarToken {
                 long result = _value % ((LongToken)tok).getValue();
                 return new LongToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                LongToken tmp = this.convert(tok);
+                LongToken tmp = (LongToken)this.convert(tok);
                 long result = _value % tmp.getValue();
                 return new LongToken(result);
             } else {
@@ -222,7 +222,7 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token moduloR(ptolemy.data.Token tok) throws IllegalActionException {
-        LongToken tmp = this.convert(tok);
+        LongToken tmp = (LongToken)this.convert(tok);
         long result = tmp.getValue() %  _value;
         return new LongToken(result);
     }
@@ -245,7 +245,7 @@ public class LongToken extends ScalarToken {
                 long result = _value * ((LongToken)tok).getValue();
                 return new LongToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER){
-                LongToken tmp = this.convert(tok);
+                LongToken tmp = (LongToken)this.convert(tok);
                 long result = _value * tmp.getValue();
                 return new LongToken(result);
             } else {
@@ -268,7 +268,7 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token multiplyR(ptolemy.data.Token tok) throws IllegalActionException {
-        LongToken tmp = this.convert(tok);
+        LongToken tmp = (LongToken)this.convert(tok);
         long result = tmp.getValue() * _value;
         return new LongToken(result);
     }
@@ -309,7 +309,7 @@ public class LongToken extends ScalarToken {
                 long result = _value -  ((LongToken)tok).getValue();
                 return new LongToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER){
-                LongToken tmp = this.convert(tok);
+                LongToken tmp = (LongToken)this.convert(tok);
                 long result = _value - tmp.getValue();
                 return new LongToken(result);
             } else {
@@ -332,7 +332,7 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token subtractR(ptolemy.data.Token tok) throws IllegalActionException {
-        LongToken tmp = this.convert(tok);
+        LongToken tmp = (LongToken)this.convert(tok);
         long result = _value - tmp.getValue();
         return new LongToken(result);
     }

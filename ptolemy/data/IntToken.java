@@ -73,7 +73,7 @@ public class IntToken extends ScalarToken {
                 int result = _value + ((IntToken)tok).getValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                IntToken tmp = this.convert(tok);
+                IntToken tmp = (IntToken)this.convert(tok);
                 int result = _value + tmp.getValue();
                 return new IntToken(result);
             } else {
@@ -96,7 +96,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
-        IntToken tmp = this.convert(tok);
+        IntToken tmp = (IntToken)this.convert(tok);
         int result = tmp.getValue() + _value;
         return new IntToken(result);
     }
@@ -115,7 +115,7 @@ public class IntToken extends ScalarToken {
      *  @exception IllegalActionException Thrown if the conversion
      *  cannot be carried out in a lossless fashion.
      */
-    static public IntToken convert(Token tok) throws IllegalActionException{
+    public Token convert(Token tok) throws IllegalActionException{
         String str = "cannot convert from token type: ";
         str = str + tok.getClass().getName() + " to a ";
         throw new IllegalActionException(str + "IntToken");
@@ -143,7 +143,7 @@ public class IntToken extends ScalarToken {
                     return new DoubleToken(result);
                 }
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                IntToken tmp = this.convert(tok);
+                IntToken tmp = (IntToken)this.convert(tok);
                 double result = _value / tmp.doubleValue();
                 if ((result - (int)result) == 0) {
                     return new IntToken((int)result);
@@ -170,7 +170,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token divideR(ptolemy.data.Token tok) throws IllegalActionException {
-        IntToken tmp = this.convert(tok);
+        IntToken tmp = (IntToken)this.convert(tok);
         double result = tmp.getValue() / _value;
         if (result == (int)result) {
             return new IntToken((int)result);
@@ -203,7 +203,7 @@ public class IntToken extends ScalarToken {
                 }
                 return new BooleanToken(false);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                IntToken tmp = this.convert(tok);
+                IntToken tmp = (IntToken)this.convert(tok);
                 if ( _value == tmp.getValue()) {
                     return new BooleanToken(true);
                 }
@@ -267,7 +267,7 @@ public class IntToken extends ScalarToken {
                 int result = _value % ((IntToken)tok).getValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                IntToken tmp = this.convert(tok);
+                IntToken tmp = (IntToken)this.convert(tok);
                 int result = _value % tmp.getValue();
                 return new IntToken(result);
             } else {
@@ -289,7 +289,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token moduloR(ptolemy.data.Token tok) throws IllegalActionException {
-        IntToken tmp = this.convert(tok);
+        IntToken tmp = (IntToken)this.convert(tok);
         int result = tmp.getValue() %  _value;
         return new IntToken(result);
     }
@@ -312,7 +312,7 @@ public class IntToken extends ScalarToken {
                 int result = _value * ((IntToken)tok).getValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER){
-                IntToken tmp = this.convert(tok);
+                IntToken tmp = (IntToken)this.convert(tok);
                 int result = _value * tmp.getValue();
                 return new IntToken(result);
             } else {
@@ -335,7 +335,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token multiplyR(ptolemy.data.Token tok) throws IllegalActionException {
-        IntToken tmp = this.convert(tok);
+        IntToken tmp = (IntToken)this.convert(tok);
         int result = tmp.getValue() * _value;
         return new IntToken(result);
     }
@@ -376,7 +376,7 @@ public class IntToken extends ScalarToken {
                 int result = _value -  ((IntToken)tok).getValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER){
-                IntToken tmp = this.convert(tok);
+                IntToken tmp = (IntToken)this.convert(tok);
                 int result = _value - tmp.getValue();
                 return new IntToken(result);
             } else {
@@ -399,7 +399,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token subtractR(ptolemy.data.Token tok) throws IllegalActionException {
-        IntToken tmp = this.convert(tok);
+        IntToken tmp = (IntToken)this.convert(tok);
         int result = _value - tmp.getValue();
         return new IntToken(result);
     }

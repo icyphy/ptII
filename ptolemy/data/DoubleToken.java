@@ -77,7 +77,7 @@ public class DoubleToken extends ScalarToken {
                 double result = _value + ((DoubleToken)tok).getValue();
                 return new DoubleToken(result);
             } else  if (typeInfo == CPO.STRICT_GREATER) {
-                DoubleToken tmp = this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(tok);
                 double result = _value + tmp.getValue();
                 return new DoubleToken(result);
             } else {
@@ -100,7 +100,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
-        DoubleToken tmp = this.convert(tok);
+        DoubleToken tmp = (DoubleToken)this.convert(tok);
         double result = tmp.getValue() + _value;
         return new DoubleToken(result);
     }
@@ -118,13 +118,13 @@ public class DoubleToken extends ScalarToken {
      *  @exception IllegalActionException Thrown if the conversion
      *  cannot be carried out in a lossless fashion.
      */
-    static public DoubleToken convert(Token tok) throws IllegalActionException{
+    public Token convert(Token tok) throws IllegalActionException{
         if (tok instanceof IntToken) {
             double result = ((IntToken)tok).doubleValue();
             return new DoubleToken(result);
         } else {
             try {
-                IntToken res = IntToken.convert(tok);
+                IntToken res = (IntToken)(new IntToken()).convert(tok);
                 return convert(res);
             } catch (Exception ex) {
                 String str = "cannot convert from token type: ";
@@ -151,7 +151,7 @@ public class DoubleToken extends ScalarToken {
                 double result = _value / ((DoubleToken)tok).getValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                DoubleToken tmp = this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(tok);
                 double result = _value / tmp.getValue();
                 return new DoubleToken(result);
             } else {
@@ -174,7 +174,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token divideR(ptolemy.data.Token tok) throws IllegalActionException {
-        DoubleToken tmp = this.convert(tok);
+        DoubleToken tmp = (DoubleToken)this.convert(tok);
         double result = tmp.getValue() / _value;
         return new DoubleToken(result);
     }
@@ -203,7 +203,7 @@ public class DoubleToken extends ScalarToken {
                 }
                 return new BooleanToken(false);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                DoubleToken tmp = this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(tok);
                 if ( _value == tmp.getValue()) {
                     return new BooleanToken(true);
                 }
@@ -255,7 +255,7 @@ public class DoubleToken extends ScalarToken {
                 double result = _value % ((DoubleToken)tok).getValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                DoubleToken tmp = this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(tok);
                 double result = _value % tmp.getValue();
                 return new DoubleToken(result);
             } else {
@@ -277,7 +277,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token moduloR(ptolemy.data.Token tok) throws IllegalActionException {
-        DoubleToken tmp = this.convert(tok);
+        DoubleToken tmp = (DoubleToken)this.convert(tok);
         double result = tmp.getValue() %  _value;
         return new DoubleToken(result);
     }
@@ -300,7 +300,7 @@ public class DoubleToken extends ScalarToken {
                 double result = _value * ((DoubleToken)tok).getValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                DoubleToken tmp = this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(tok);
                 double result = _value * tmp.getValue();
                 return new DoubleToken(result);
             } else {
@@ -323,7 +323,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token multiplyR(ptolemy.data.Token tok) throws IllegalActionException {
-        DoubleToken tmp = this.convert(tok);
+        DoubleToken tmp = (DoubleToken)this.convert(tok);
         double result = tmp.getValue() * _value;
         return new DoubleToken(result);
     }
@@ -366,7 +366,7 @@ public class DoubleToken extends ScalarToken {
                 double result = _value -  ((DoubleToken)tok).getValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.STRICT_GREATER) {
-                DoubleToken tmp = this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(tok);
                 double result = _value - tmp.getValue();
                 return new DoubleToken(result);
             } else {
@@ -389,7 +389,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      */
     public Token subtractR(ptolemy.data.Token tok) throws IllegalActionException {
-        DoubleToken tmp = this.convert(tok);
+        DoubleToken tmp = (DoubleToken)this.convert(tok);
         double result = _value - tmp.getValue();
         return new DoubleToken(result);
     }

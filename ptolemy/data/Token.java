@@ -103,6 +103,21 @@ public abstract class Token implements Cloneable {
         
     }
 
+    /** Convert the specified token into an instance of this class.
+     *  Since all the token classes are drived from this base class,
+     *  no conversion is needed. This method just returns the specified
+     *  token. The derived classes should override this method to
+     *  convert a token type further down the type hierarchy to the
+     *  type of itself.
+     *  @param token a Token to be converted to an instance of this class
+     *  @return the Token in the argument
+     *  @exception IllegalActionException not thrown in this base class
+     */
+    public Token convert(Token token)
+	    throws IllegalActionException {
+	return token;
+    }
+
     /** Divide the value of this Token with the value of the divisor.
      *  It should be overridden in derived classes to provide type specific
      *  actions for divide. 
