@@ -433,6 +433,14 @@ public class Manager extends NamedObj implements Runnable {
             _iterationCount++;
             _setState(ITERATING);
 
+            if (_actorsToInitialize.size() > 0) {
+                Iterator actors = _actorsToInitialize.iterator();
+                while (actors.hasNext()) {
+                    Actor actor = (Actor)actors.next();
+                    actor.initialize();
+                }
+                _actorsToInitialize.clear();
+            }
             // Set the appropriate write access, because we're about to
             // go into an iteration.
             if (!_needWriteAccess()) {
@@ -441,14 +449,7 @@ public class Manager extends NamedObj implements Runnable {
             if(_debugging) _debug("Prefire container.");
             if (_container.prefire()) {
                 // Invoke initialize on actors that have been added.
-                if (_actorsToInitialize.size() > 0) {
-                    Iterator actors = _actorsToInitialize.iterator();
-                    while (actors.hasNext()) {
-                        Actor actor = (Actor)actors.next();
-                        actor.initialize();
-                    }
-                    _actorsToInitialize.clear();
-                }
+                
                 if(_debugging) _debug("Fire model.");
                 _container.fire();
                 if(_debugging) _debug("Postfire model.");
