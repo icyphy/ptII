@@ -15,6 +15,7 @@ make.out
 *.jar
 *.jsm
 *.mif
+*.pdf
 *.vsd
 */CVS
 */Output
@@ -29,6 +30,7 @@ OLD
 */logs/*
 */tclIndex
 */.glimpse_exclude
+*/ptolemy/copernicus/java/cg/*
 */ptIIweb/*
 */ptII/ptII/*
 */public_html/*
