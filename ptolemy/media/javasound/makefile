@@ -63,7 +63,8 @@ MISC_FILES = $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
