@@ -31,7 +31,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 65.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -47,6 +47,8 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </property>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
     </property>
     <entity name="CTSubsystem" class="ptolemy.actor.TypedCompositeActor">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
@@ -300,6 +302,10 @@ are feeded back. The accumulation of the quantized values is the digital output.
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={496, 38, 508, 348}}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="637.0, 201.0">
@@ -313,7 +319,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="15.019999999999769"/>
+<xRange min="0.0" max="15.01999999989977"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
             </configure>
@@ -341,7 +347,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <relation name="_R1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="CR0" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="142.0, 245.0">
+            <vertex name="vertex" value="142.0, 245.0">
             </vertex>
         </relation>
         <relation name="CR1" class="ptolemy.actor.TypedIORelation">
@@ -349,11 +355,11 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <relation name="CR2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="CR3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="434.0, 66.0">
+            <vertex name="vertex" value="434.0, 66.0">
             </vertex>
         </relation>
         <relation name="CR4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="550.0, 120.0">
+            <vertex name="vertex" value="550.0, 120.0">
             </vertex>
         </relation>
         <relation name="CR5" class="ptolemy.actor.TypedIORelation">
@@ -367,7 +373,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <relation name="CR9" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="CR10" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex" class="ptolemy.moml.Vertex" value="140.0, 155.0">
+            <vertex name="vertex" value="140.0, 155.0">
             </vertex>
         </relation>
         <link port="Pin" relation="CR9"/>
@@ -470,6 +476,8 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </port>
     </entity>
     <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <property name="initialValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 370.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
@@ -508,6 +516,10 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={498, 392, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 275.0">
@@ -521,7 +533,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.02" max="15.0"/>
+<xRange min="0.0399999999" max="15.0"/>
 <yRange min="-1.0" max="1.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -564,13 +576,13 @@ are feeded back. The accumulation of the quantized values is the digital output.
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" class="ptolemy.moml.Vertex" value="115.0, 260.0">
+        <vertex name="vertex" value="115.0, 260.0">
         </vertex>
     </relation>
     <relation name="_R4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" class="ptolemy.moml.Vertex" value="180.0, 380.0">
+        <vertex name="vertex" value="180.0, 380.0">
         </vertex>
     </relation>
     <relation name="_R6" class="ptolemy.actor.TypedIORelation">

@@ -49,11 +49,11 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="114.0, 38.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 35.0">
         </property>
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 85.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 60.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -67,16 +67,18 @@ which takes the parameters and construct a Ptolemy model for you.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[494, 317]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <entity name="ContinuousTransferFunction1" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 709, 426}}">
+    </property>
+    <entity name="ContinuousTransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{500.0}">
         </property>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 10.0, 1000.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="208.5, 173.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -137,12 +139,6 @@ which takes the parameters and construct a Ptolemy model for you.</text>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -154,12 +150,6 @@ which takes the parameters and construct a Ptolemy model for you.</text>
             <property name="factor" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -187,12 +177,6 @@ which takes the parameters and construct a Ptolemy model for you.</text>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -204,12 +188,6 @@ which takes the parameters and construct a Ptolemy model for you.</text>
             <property name="factor" class="ptolemy.data.expr.Parameter" value="500.0">
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -258,7 +236,7 @@ which takes the parameters and construct a Ptolemy model for you.</text>
         <link port="Feedforward1.input" relation="node1"/>
         <link port="Feedforward1.output" relation="_R4"/>
     </entity>
-    <entity name="Clock2" class="ptolemy.actor.lib.Clock">
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -268,7 +246,7 @@ which takes the parameters and construct a Ptolemy model for you.</text>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0, -2.0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="53.5, 243.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -278,14 +256,18 @@ which takes the parameters and construct a Ptolemy model for you.</text>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 413, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="383.5, 243.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -295,21 +277,23 @@ which takes the parameters and construct a Ptolemy model for you.</text>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title></title>
+<title>Response of an LTI system to a Square Wave</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
 <xRange min="0.0" max="6.0"/>
-<yRange min="-2.20116729694037" max="2.1987177099956607"/>
+<yRange min="-2.201797303058116" max="2.1983770849394797"/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="155.0, 290.0">
+        <vertex name="vertex1" value="138.5, 243.0">
         </vertex>
     </relation>
-    <link port="ContinuousTransferFunction1.input" relation="relation6"/>
-    <link port="ContinuousTransferFunction1.output" relation="relation5"/>
-    <link port="Clock2.output" relation="relation6"/>
-    <link port="TimedPlotter4.input" relation="relation5"/>
-    <link port="TimedPlotter4.input" relation="relation6"/>
+    <link port="ContinuousTransferFunction.input" relation="relation6"/>
+    <link port="ContinuousTransferFunction.output" relation="relation5"/>
+    <link port="Clock.output" relation="relation6"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
+    <link port="TimedPlotter.input" relation="relation6"/>
 </entity>
