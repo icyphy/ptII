@@ -122,5 +122,5 @@ public class Icon extends Attribute implements Locatable {
     ////                         private variables                 ////
 
     // The location.
-    private double[] _location = new double[2];
+    private double[] _location;
 }
