@@ -171,8 +171,15 @@ public class Constants {
             _table.put("PTII",
                     new StringToken(
                             StringUtilities.getProperty("ptolemy.ptII.dir")));
+            // This variable is used as a tag by the FileParameter
+            // class to represent a search in the classpath.  This is a hack,
+            // but it deals with the fact that Java is not symmetric in how it
+            // deals with getting files from the classpath (using getResource)
+            // and getting files from the file system.
+            _table.put("CLASSPATH",
+                    new StringToken("xxxxxxCLASSPATHxxxxxx"));
 
-            // See also the ptolemy.ptII.dirAsURL properyt in StringUtilities.
+            // See also the ptolemy.ptII.dirAsURL property in StringUtilities.
 
         } catch (Exception e) {}
 

@@ -401,45 +401,19 @@ public class FileParameter extends StringParameter {
         _baseDirectory = directory;
     }
 
-    /** Override the base class to create a parameter CLASSPATH in the
-     *  container if there isn't one already.  The parameter that is
-     *  created is neither user-visible nor persistent. Its value is
-     *  a dummy marker value that is used as an indicator to search
-     *  the classpath.
-     *  @param container The proposed container of this variable.
-     *  @exception IllegalActionException If the container will not accept
-     *   a variable as its attribute, or this variable and the container
-     *   are not in the same workspace, or the proposed container would
-     *   result in recursive containment.
-     *  @exception NameDuplicationException If the container already has
-     *   an attribute with the name of this variable.
-     */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-        
-        super.setContainer(container);
-
-        // Create a dummy variable in scope that will be sustituted
-        // for references to $CLASSPATH.
-        if (container.getAttribute("CLASSPATH") == null) {
-            // Use a singleton here because the container may have more
-            // than one instance of FileParameter, and if this isn't a
-            // singleton, then clone() will fail with a NameDuplicationException.
-            Parameter classpath = new SingletonParameter(container, "CLASSPATH");
-            classpath.setStringMode(true);
-            classpath.setVisibility(Settable.NONE);
-            classpath.setPersistent(false);
-            classpath.setExpression(_CLASSPATH_VALUE);
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     /** The base directory to use for relative file names. */
     private URI _baseDirectory;
     
-    /** Value of CLASSPATH variable. */
+    /** Tag value used by this class and registered as a parser
+     *  constant for the identifier "CLASSPATH" to indicate searching
+     *  in the classpath.  This is a hack, but it deals with the fact
+     *  that Java is not symmetric in how it deals with getting files
+     *  from the classpath (using getResource) and getting files from
+     *  the file system.
+     */
     private static String _CLASSPATH_VALUE = "xxxxxxCLASSPATHxxxxxx";
 
     /** The current reader for the input file. */
