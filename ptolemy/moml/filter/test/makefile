@@ -50,7 +50,9 @@ JSRCS =
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	BackwardCompatibility.tcl \
+	MultiportToSinglePort.tcl \
 	RemoveGraphicalClasses.tcl
+
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -135,6 +137,7 @@ compatDemo:
 		mkdir $@; \
 		echo "Copying old xmls over"; \
 		cp `cat /tmp/oldxmls` $@; \
+		rm -f /tmp/oldxmls; \
 	fi
 
 # Location of the old tree that we harvest auto/*.xml
@@ -156,6 +159,7 @@ compat2:
 		mkdir $@; \
 		echo "Copying old xmls over"; \
 		cp `cat /tmp/oldxmls` $@; \
+		rm -f /tmp/oldxmls; \
 		echo "Copying xmls that have the same name"; \
 		rm $@/test1.xml; \
 		cp $(OLDTREE2)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
