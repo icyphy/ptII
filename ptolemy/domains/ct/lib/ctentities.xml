@@ -10,25 +10,17 @@
 
 <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
 </entity>
-<entity name="ContinuousFransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+<entity name="LaplaceFransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
 </entity>
 <entity name="LinearStateSpace" class="ptolemy.domains.ct.lib.LinearStateSpace">
 </entity>
 <entity name="DifferentialSystem" class="ptolemy.domains.ct.lib.DifferentialSystem">
 </entity>
-<entity name="CTPeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-</entity>
-<entity name="CTTriggeredSampler" class="ptolemy.domains.ct.lib.CTTriggeredSampler">
-</entity>
 <entity name="RateLimiter" class="ptolemy.domains.ct.lib.CTRateLimiter">
 </entity>
-<entity name="ThresholdMonitor" class="ptolemy.domains.ct.lib.ThresholdMonitor">
-</entity>
-<entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
-</entity>
 
-<entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-</entity>
+<input source="ptolemy/domains/ct/lib/eventgenerators.xml"/>
+<input source="ptolemy/domains/ct/lib/wavegenerators.xml"/>
 
       </group>
     ?>
