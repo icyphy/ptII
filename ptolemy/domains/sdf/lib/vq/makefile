@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/sdf/lib/vq
 
-DIRS =		test
+DIRS =		test data
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -76,7 +76,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: all jars
 
 
 # Get the rest of the rules
