@@ -38,6 +38,7 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.util.Attribute;
@@ -124,6 +125,16 @@ public class ExpressionShellTableau extends Tableau
                             null, model, name);
                     if (result != null) {
                         return result.getType();
+                    } else {
+                        return null;
+                    }
+                }
+                public InequalityTerm getTypeTerm(String name)
+                        throws IllegalActionException {
+                    Variable result = getScopedVariable(
+                            null, model, name);
+                    if (result != null) {
+                        return result.getTypeTerm();
                     } else {
                         return null;
                     }
