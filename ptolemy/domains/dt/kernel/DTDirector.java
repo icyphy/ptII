@@ -40,7 +40,7 @@ import ptolemy.domains.sdf.kernel.*;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.lib.Delay;
+import ptolemy.domains.sdf.lib.SampleDelay;
 
 import java.util.*;
 

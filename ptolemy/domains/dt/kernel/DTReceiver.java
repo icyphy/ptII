@@ -38,7 +38,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.util.*;
 import ptolemy.actor.*;
-import ptolemy.domains.sdf.lib.Delay;
+import ptolemy.domains.sdf.lib.SampleDelay;
 
 import java.util.NoSuchElementException;
 import java.util.Enumeration;

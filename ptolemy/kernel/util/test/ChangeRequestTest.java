@@ -34,7 +34,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.actor.*;
 import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.Delay;
+import ptolemy.domains.sdf.lib.SampleDelay;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 
