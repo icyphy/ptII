@@ -64,7 +64,7 @@ public class Environ {
         this(parent, new LinkedList());
     }
 
-    /** Constuct an environment nested inside the parent argument,
+    /** Construct an environment nested inside the parent argument,
      *  with the given List of Decl's in this environment itself.
      */
     public Environ(Environ parent, List declList) {
@@ -84,6 +84,8 @@ public class Environ {
     }
 
     public void copyDeclList(Environ env) {
+	// FIXME: This is a little strange, but if two envs share a declList
+	// then copyDeclList will effectively set them to null
         _declList.clear();
         _declList.addAll(env._declList);
     }

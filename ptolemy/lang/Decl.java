@@ -91,8 +91,13 @@ public class Decl extends TrackedPropertyMap {
 
     public final boolean matches(String name, int mask) {
         if ((category & mask) != 0) {
-            return (name.equals(ANY_NAME) || name.equals(_name));
+            return (name.equals(ANY_NAME) || _name.equals(ANY_NAME)|| name.equals(_name));
         }
+	// If two Decls have a category of 0, then they
+	// do technically match
+	if (category == 0 && mask == 0) {
+	    return (name.equals(ANY_NAME) || name.equals(_name));
+	}
         return false;
     }
 
