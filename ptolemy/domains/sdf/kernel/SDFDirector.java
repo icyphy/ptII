@@ -443,7 +443,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////                         private variables                 ////
 
     private int _iteration = 0;
-    private boolean _postfirereturns = true;
+    protected boolean _postfirereturns = true;
 
     // Support for mutations.
     // private CircularList _pendingMutations = null;
