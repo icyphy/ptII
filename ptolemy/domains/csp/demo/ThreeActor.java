@@ -74,10 +74,10 @@ public class ThreeActor {
 	    CSPBuffer middle = new CSPBuffer(univ, "Buffer", 5);
             CSPSink sink = new CSPSink(univ, "Sink");
 
-            IOPort out1 = source.output;
-	    IOPort in1 = middle.input;
-	    IOPort out2 = middle.output;
-            IOPort in2 = sink.input;
+            IOPort out1 = (IOPort)source.getPort("output");
+	    IOPort in1 = (IOPort)middle.getPort("input");
+	    IOPort out2 = (IOPort)middle.getPort("output");
+            IOPort in2 = (IOPort)sink.getPort("input");
 
             IORelation rel1 = (IORelation)univ.connect(out1, in1, "R1");
             IORelation rel2 = (IORelation)univ.connect(out2, in2, "R2");
