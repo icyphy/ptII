@@ -77,7 +77,7 @@ public class BusDisassembler extends TypedAtomicActor {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" width=\"6\" " +
                 "height=\"40\" style=\"fill:black\"/>\n" +
                 "</svg>\n");
@@ -123,6 +123,6 @@ public class BusDisassembler extends TypedAtomicActor {
                     j = 0;
                 }
             }
-	}
+        }
     }
 }

@@ -79,7 +79,7 @@ public class BusAssembler extends TypedAtomicActor {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" width=\"6\" " +
                 "height=\"40\" style=\"fill:black\"/>\n" +
                 "</svg>\n");
@@ -141,7 +141,7 @@ public class BusAssembler extends TypedAtomicActor {
                 inputWidth = inputPort != null ? inputPort.getWidth() : 0;
                 i = 0;
             }
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
