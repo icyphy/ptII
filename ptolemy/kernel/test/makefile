@@ -96,7 +96,7 @@ test_java: jclass
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
 test_jsimple: $(EXTRA_SRCS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH) $(JTCLSH) alljtests.tcl
+	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
 
 docs: javadocs
 
