@@ -232,12 +232,15 @@ test SchematicElement-9.1 {set/getName tests} {
 #
 test SchematicElement-10.1 {Parameter tests} {
     set e0 [java::new ptolemy.schematic.SchematicElement "schematicelement"]
-    $e0 addParameter testparameter testtype testvalue
-    list [$e0 toString] [$e0 containsParameter testlibrary]
+    set p0 [java::new ptolemy.schematic.SchematicParameter testparameter testtype testvalue]
+    $e0 addParameter $p0
+    set p1 [$e0 getParameter testparameter]
+    list [$e0 toString] [$e0 containsParameter testparameter] [$p1 toString]
 } {{<schematicelement name="">
 <parameter value="testvalue" name="testparameter" type="testtype"></parameter>
 </schematicelement>
-} 0}
+} 1 {<parameter value="testvalue" name="testparameter" type="testtype"></parameter>
+}}
 
 ######################################################################
 ####
@@ -246,11 +249,11 @@ test SchematicElement-10.2 {parameters tests} {
     # uses configuration above
     set enumlib [$e0 parameters]
     set onelib [$enumlib hasMoreElements]
-    $enumlib nextElement
+    set param [$enumlib nextElement]
     set zerolib [$enumlib hasMoreElements]
-    list $onelib $zerolib [$e0 getParameterType testparameter]\
-[$e0 getParameterValue testparameter]
-} {1 0 testtype testvalue}
+    list $onelib $zerolib [$param getName] [$param getType]\
+[$param getValue]
+} {1 0 testparameter testtype testvalue}
 
 ######################################################################
 ####
