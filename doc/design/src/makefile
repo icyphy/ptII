@@ -1,4 +1,4 @@
-# Makefile for the Ptolemy II 
+# Makefile for the Ptolemy II Design doc framemaker source
 #
 # Version: $Id$
 # Makefile Author: Christopher Hylands
