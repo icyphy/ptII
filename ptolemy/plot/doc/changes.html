@@ -10,7 +10,7 @@
 <li> Moved index.html out of the top level, and set up files to use frames.
 <li> Modified top level makefile to use InstallShield's JShield
 to build releases.
-<li> Added <a href="../download"><code>doc/download</code></a>
+<li> Added <a href="download"><code>doc/download</code></a>
 directory which provides links to multiple download formats
 
 <li> Plot.java:
@@ -180,15 +180,15 @@ package.
 <h3>New classes</h3>
 <dl>
 
-<dt> <a href="../../PlotFrame.java">PlotFrame</a>
+<dt> <a href="../PlotFrame.java">PlotFrame</a>
 <dd> 2-D plotter widget used by PlotApplication, below.
 
 
-<dt> <a href="../../PlotApplication.java">PlotApplication</a>
+<dt> <a href="../PlotApplication.java">PlotApplication</a>
 <dd> Stand alone plotter application, started up by
-<a href="../../ptplot"><CODE>ptplot</CODE></a>
+<a href="../ptplot"><CODE>ptplot</CODE></a>
 
-<dt> <a href="../../demo/TwoPlotExample.java">TwoPlotExample</a>
+<dt> <a href="../demo/TwoPlotExample.java">TwoPlotExample</a>
 <dd> a simple example application with two side by side plots.
 
 </dl>
@@ -261,7 +261,7 @@ machine, then use the <code>-littleendian</code> flag.
 native to the machine where the Java Ptplot process is running.
 The other binary format read by the <CODE>-binary</CODE> option,
 known as the raw binary format is always reads data as big-endian.
-The <a href="../../demo/Endian.html">Endian Examples</a> page
+The <a href="../demo/Endian.html">Endian Examples</a> page
 illustrates use of the three options.
 
 <li> The Pxgraph class and the <code>pxgraph</code>script now take
@@ -278,7 +278,7 @@ the <code>Ok</code> button.
 The new command line arguments are used to make it easier to create
 PostScript output.
 
-<li> <A href="../../ptplot2mif.tcl"><code>ptplot2mif.tcl</code></A> script
+<li> <A href"../ptplot2mif.tcl"><code>ptplot2mif.tcl</code></A> script
 can be used to convert the PostScript output of Ptplot to Framemaker
 MIF format.  This script requires Tcl, and probably won't work under
 Windows.  This script does not do a perfect job converting, but it is
@@ -326,12 +326,12 @@ and <A href="ptplotfaq.html">Ptplot FAQ</A>.
 
 
 <li> Added a demo that illustrates a
-<A href="../../demo/Ptplot.html">JavaScript Interface to Ptplot</A>.
+<A href="../demo/Ptplot.html">JavaScript Interface to Ptplot</A>.
 
 <li> If <code>setXRange()</code> or <code>setYRange()</code> are not
 explicitly called by the user, then the data is padded slightly so that
 the data is not plotted on the axes.  The
-<A href="../../demo/Marks.html">Black and white plot using unique marks</A>
+<A href="../demo/Marks.html">Black and white plot using unique marks</A>
 demo is padded.  Many of the other demos are not padded because the X
 and Y ranges are explicitly set either in the data file or in the Java
 code that created the plot.
@@ -340,7 +340,7 @@ code that created the plot.
 <li> Raw binary files that consist only of 4 byte floats are now supported.
 Formerly, ptplot only supported Joe Buck's binary format, which used
 single characters as plot directives (see the
-<A href="../codeDoc/ptplot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A>
+<A href="codeDoc/ptolemy.plot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A>
 for details about this format).  The new raw binary format
 now reads the first byte, and if it is not a <code>d</code>, then
 the raw 4 byte float format is assumed.
@@ -353,7 +353,7 @@ format.
 consists of four numbers, then the first two numbers are assumed to be the
 x and y values, and the last two numbers are assumed to be the lower and upper
 y values for the error bar.  The numbers can be separated by white space
-or a comma.  See the <A href="../../demo/ErrorBars.html">Error Bars</A> demo
+or a comma.  See the <A href="../demo/ErrorBars.html">Error Bars</A> demo
 for more information.
  <br>The error bar code is based on a code fragment from
 Michael Altmann &lt;michael@email.labmed.umn.edu&gt;.
@@ -362,7 +362,7 @@ Michael Altmann &lt;michael@email.labmed.umn.edu&gt;.
 controlled by the file directives: <code>XLog: on</code> and
 <code>YLog: on</code>.  The <code>pxgraph</code> script
 now takes <code>-lnx</code> and <code>-lny</code> arguments as well.
-See the <A href="../../demo/LogAxes.html">Log Axes</A> demo for more information.
+See the <A href="../demo/LogAxes.html">Log Axes</A> demo for more information.
 
 <li> Fixed problem with recycling colors and marks.
 The bug was reported by Lutz Harnisch, &lt;Lutz.Harnisch@hmrag.com&gt;
@@ -382,12 +382,15 @@ Formerly, they used
 <code>code="ptplot.Plot"</code>
 <li> The directory structure has been reorganized so that
 the plot classes are in ptplot, and the demo classes are in
-<A href="../../demo"><code>ptplot/demo</code></A>.
+<A href="../demo/toc.html" target="contents"><code>ptplot/demo</code></A>.
 This means that the ptplot.zip does not contain the demo
 classes, which is better if anyone actually wants to _use_ the plotter
 instead of just running the demos.
-<li> There is a <A href="../../demo/audio/PlayingWave.html">Playing Wave
+<li> There is a <A href="../demo/audio/PlayingWave.html">Playing Wave
 Applet</A> that uses real time audio.
+<I>Note, this demo was removed, see
+<a href="http://ptolemy.eecs.berkeley.edu/java/old/ptplot1.3/ptplot/demo/audio/PlayingWave.html"><CODE>http://ptolemy.eecs.berkeley.edu/java/old/ptplot1.3/ptplot/demo/audio/PlayingWave.html</CODE></a>
+</I>
 <li> Edward Lee fixed a bar graph label bug reported by Marc Ellis.
 <li> A few other minor bugs were fixed.
 </menu>
