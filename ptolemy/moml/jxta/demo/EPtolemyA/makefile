@@ -103,7 +103,7 @@ demo: Average.class EPtolemy.properties
 	@echo "   cd ../$(OTHER_DEMO); make demo"
 	@echo "in another window"
 	safePTII=`echo "$(PTII)" | sed 's@\\\@/@g'`; \
-	"$(ROOT)/bin/moml" "$$safePTII/ptolemy/configs/jxta/jxta.xml" \
+	"$(ROOT)/bin/moml" "$$safePTII/ptolemy/configs/jxta/configuration.xml" \
 		"$$safePTII/ptolemy/configs/vergilConfiguration.xml";
 
 # Get the rest of the rules
