@@ -39,13 +39,14 @@ public final class ComplexArrayMath {
     // Private constructor prevents construction of this class.
     private ComplexArrayMath() {}
 
-    /** Create an array of Complex's using two arrays for the real and
+    /** Return a new array of Complex's using two arrays for the real and
      *  imaginary parts.
      *  @param realPart An array of doubles, used for the real parts.
      *  @param imagPart An array of doubles, used for the imaginary parts.
      *  @retval A new array of Complex's.
      */
-    public static Complex[] formArray(double[] realPart, double[] imagPart) {
+    public static final Complex[] formArray(double[] realPart, 
+     double[] imagPart) {
        int size = Math.min(realPart.length, imagPart.length);
 
        Complex[] retval = new Complex[size];
@@ -57,12 +58,46 @@ public final class ComplexArrayMath {
        return retval;
     }
 
+    /** Return a new array of Complex's with the values in realArray for
+     *  the real parts, and 0 for the imaginary parts.
+     *  @param realArray An array of doubles, used for the real parts.
+     *  @retval A new array of Complex's.
+     */ 
+    public static final Complex[] realArrayToComplexArray(double[] realArray)
+    {
+       int size = realArray.length;
+
+       Complex[] retval = new Complex[size];
+
+       for (int i = 0; i < size; i++) {
+           retval[i] = new Complex(realArray[i], 0);
+       }
+       return retval;
+    }
+
+    /** Return a new array of Complex's with the values in imagArray for
+     *  the imaginary parts, and 0 for the real parts.
+     *  @param imagArray An array of doubles, used for the imag parts.
+     *  @retval A new array of Complex's.
+     */  
+    public static final Complex[] imagArrayToComplexArray(double[] imagArray) 
+    { 
+       int size = imagArray.length;
+
+       Complex[] retval = new Complex[size];
+
+       for (int i = 0; i < size; i++) {
+           retval[i] = new Complex(0, imagArray[i]);
+       }
+       return retval;
+    }
+
     /** Return a new array of doubles with the real parts of the array of
      *  Complex's.
      *  @param Complex[] An array of Complex's.
      *  @retval A new array of doubles.
      */
-    public static double[] realParts(Complex[] x) {
+    public static final double[] realParts(Complex[] x) {
         int size = x.length;
 
         double[] retval = new double[size];
@@ -79,7 +114,7 @@ public final class ComplexArrayMath {
      *  @param Complex[] An array of Complex's.
      *  @retval A new array of doubles.
      */
-    public static double[] imagParts(Complex[] x) {
+    public static final double[] imagParts(Complex[] x) {
         int size = x.length;
 
         double[] retval = new double[size];
@@ -97,7 +132,7 @@ public final class ComplexArrayMath {
      *  @param z The complex number to add.
      *  @return A new array of complex numbers.
      */
-    public static Complex[] add(Complex[] array, Complex z) {
+    public static final Complex[] add(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];
         for (int i = array.length-1; i >= 0; i--) {
             result[i] = array[i].add(z);
@@ -109,7 +144,7 @@ public final class ComplexArrayMath {
      *  @param array An array of complex numbers.
      *  @return A new array of complex numbers.
      */
-    public static Complex[] conjugate(Complex[] array) {
+    public static final Complex[] conjugate(Complex[] array) {
         Complex[] result = new Complex[array.length];
         for (int i = array.length-1; i >= 0; i--) {
             result[i] = array[i].conjugate();
@@ -131,7 +166,8 @@ public final class ComplexArrayMath {
      *  @param array2 The second array.
      *  @return A new array.
      */
-    public static Complex[] convolve(Complex[] array1, Complex[] array2) {
+    public static final Complex[] convolve(Complex[] array1, Complex[] array2)
+    {
         Complex[] result;
         int resultsize = array1.length+array2.length-1;
         if (resultsize < 0) {
@@ -168,8 +204,10 @@ public final class ComplexArrayMath {
      *  @param array1 The first array.
      *  @param array2 The second array.
      *  @return A new array.
+     *  @deprecated
      */
-    public static double[] convolve(double[] array1, double[] array2) {
+    public static double[] convolve(double[] array1, double[] array2) 
+    {
         double[] result;
         int resultsize = array1.length+array2.length-1;
 
@@ -203,7 +241,8 @@ public final class ComplexArrayMath {
      *  @return A new array with values in the range [bottom, top].
      *  @see Double
      */
-    public static double[] limit(double[] array, double bottom, double top) {
+    public static final double[] limit(double[] array, double bottom, 
+     double top) {
         double[] result = new double[array.length];
         for (int i = array.length-1; i >= 0; i--) {
             if (array[i] > top ||
@@ -222,11 +261,11 @@ public final class ComplexArrayMath {
     }
 
     /** Return a new array containing the magnitudes of the elements
-     *  of the specified complex array.
-     *  @param array A complex array.
+     *  of the specified array of Complex's.
+     *  @param array An array of Complex's.
      *  @return An array of doubles.
      */
-    public static double[] mag(Complex[] array) {
+    public static final double[] mag(Complex[] array) {
         double[] mags = new double[array.length];
         for (int i = array.length-1; i >= 0; i--) {
             mags[i] = array[i].mag();
@@ -236,10 +275,10 @@ public final class ComplexArrayMath {
 
     /** Return a new array containing the angles of the elements of the
      *  specified complex array.
-     *  @param array A complex array.
+     *  @param array A array of Complex's.
      *  @return An array of angles in the range of <em>-pi</em> to <em>pi</em>.
      */
-    public static double[] phase(Complex[] array) {
+    public static final double[] phase(Complex[] array) {
         double[] angles = new double[array.length];
         for (int i = array.length-1; i >= 0; i--) {
             angles[i] = array[i].angle();
@@ -267,7 +306,7 @@ public final class ComplexArrayMath {
      *  @return A new array representing a monic polynomial with the given
      *   roots.
      */
-    public static Complex[] polynomial(Complex[] roots) {
+    public static final Complex[] polynomial(Complex[] roots) {
         if (roots.length <= 1) {
             Complex[] result = new Complex[1];
             result[0] = new Complex(1);
@@ -292,10 +331,10 @@ public final class ComplexArrayMath {
     /** Return the product of the elements in the array.
      *  If there are no elements in the array, return a Complex number 
      *  with value zero.
-     *  @param array A complex array.
+     *  @param array An array of Complex's.
      *  @return A new complex number.
      */
-    public static Complex product(Complex[] array) {
+    public static final Complex product(Complex[] array) {
         if (array.length == 0) return new Complex();
         double real = 1.0;
         double imag = 0.0;
@@ -307,14 +346,39 @@ public final class ComplexArrayMath {
         return new Complex(real, imag);
     }
 
+    /** Return true iff all the elements in the array are purely imaginary.
+     *  @param array An array of Complex's
+     *  @return A boolean.
+     */
+    public static final boolean pureImag(Complex[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].real != 0.0) {
+               return false;
+            }
+        }
+        return true;
+    }
 
+    /** Return true iff all the elements in the array are purely real.
+     *  @param array An array of Complex's
+     *  @return A boolean.
+     */
+    public static final boolean pureReal(Complex[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].imag != 0.0) {
+               return false;
+            }
+        }
+        return true;
+    }
+                
     /** Return a new array that is constructed from the argument by
      *  scaling each element in the array by the second argument.
-     *  @param array An array of complex numbers.
+     *  @param array An array of Complex's.
      *  @param factor A double.
-     *  @return A new array of complex numbers.
+     *  @return A new array of Complex's.
      */
-    public static Complex[] scale(Complex[] array, double factor) {
+    public static final Complex[] scale(Complex[] array, double factor) {
         int len = array.length;
         Complex[] retval = new Complex[len];
 
@@ -327,11 +391,11 @@ public final class ComplexArrayMath {
 
     /** Return a new array that is constructed from the argument by
      *  subtracting the second argument from every element.
-     *  @param array An array of complex numbers.
+     *  @param array An array of Complex's.
      *  @param z The complex number to subtract.
-     *  @return A new array of complex numbers.
+     *  @return A new array of Complex's.
      */
-    public static Complex[] subtract(Complex[] array, Complex z) {
+    public static final Complex[] subtract(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];
         for (int i = array.length-1; i >= 0; i--) {
             result[i] = array[i].subtract(z);
@@ -341,7 +405,7 @@ public final class ComplexArrayMath {
 
     /** Return a new String in the format "{x[0], x[1], x[2], ... , x[n-1]}",
      *  where x[i] is the ith element of the array.
-     *  @param array An array of complex numbers.
+     *  @param array An array of Complex's.
      *  @return A new String representing the contents of the array.
      */
     public static String toString(Complex[] array) {
@@ -371,8 +435,8 @@ public final class ComplexArrayMath {
      *  @param maxError A double.
      *  @return A boolean.
      */
-    public static boolean within(Complex[] array1, Complex[] array2, 
-                                 double maxError) {
+    public static final boolean within(Complex[] array1, Complex[] array2, 
+     double maxError) {
         int length = array1.length;
         
         for (int i = 0; i < length; i++) {

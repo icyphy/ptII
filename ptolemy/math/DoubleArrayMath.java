@@ -54,7 +54,8 @@ public class DoubleArrayMath {
     ////                         Public methods                          ////
 
 
-    /** Return a new array that is the sum of the two input arrays.
+    /** Return a new array that is the element-by-element sum of the two 
+     *  input arrays.
      *  @param array1 The first array of doubles.
      *  @param array2 The second array of doubles.
      *  @retval A new array of doubles.
@@ -63,6 +64,18 @@ public class DoubleArrayMath {
         double[] retval = new double[array1.length];
         for (int i = 0; i < array1.length; i++) {
             retval[i] = array1[i] + array2[i];
+        }
+        return retval;
+    }
+
+    /** Return a new array that is the absolute value of the input array.
+     *  @param array An array of doubles.
+     *  @retval A new array of doubles.
+     */
+    public final static double[] abs(double[] array) {
+        double[] retval = new double[array.length];
+        for (int i = 0; i < array.length; i++) {
+            retval[i] = Math.abs(array[i]);
         }
         return retval;
     }
@@ -88,8 +101,8 @@ public class DoubleArrayMath {
      *  @param length2 The number of elements of array2 to append.
      *  @retval A new array of doubles.
      */
-    public final static double[] append(double[] array1, int idx1, int length1,
-     double[] array2, int idx2, int length2) {
+    public final static double[] append(double[] array1, int idx1, 
+     int length1, double[] array2, int idx2, int length2) {
         double[] retval = new double[length1 + length2];
        
         System.arraycopy(array1, idx1, retval, 0, length1);
@@ -118,8 +131,8 @@ public class DoubleArrayMath {
     } 
     
 
-    /** Return a new array that is the difference of the two input arrays,
-     *  i.e. the first array minus the second array.
+    /** Return a new array that is the element-by-element difference of the 
+     *  two input arrays, i.e. the first array minus the second array.
      *  @param array1 The first array of doubles.
      *  @param array2 The second array of doubles.
      *  @retval A new array of doubles.
@@ -132,7 +145,7 @@ public class DoubleArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the element by element multiplication of
+    /** Return a new array that is the element-by-element multiplication of
      *  the two input arrays.
      *  @param array1 The first array of doubles.
      *  @param array2 The second array of doubles.
@@ -146,7 +159,7 @@ public class DoubleArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the element by element division of
+    /** Return a new array that is the element-by-element division of
      *  the first array by the second array.
      *  @param array1 The first array of doubles.
      *  @param array2 The second array of doubles.
@@ -161,7 +174,7 @@ public class DoubleArrayMath {
     }
 
     /** Return a new array of doubles produced by scaling the input
-     *  array by a constant.
+     *  array elements by a constant.
      *  @param array An array of doubles.
      *  @param scalefactor A double.
      *  @retval A new array of doubles.
@@ -188,40 +201,6 @@ public class DoubleArrayMath {
             sum += array1[i] * array2[i];
         }
         return sum;
-    }
-
-
-    /*  FIXME: This should be moved to SignalProcessing I think. */
-    /** Return a new array that is the convolution of the two argument arrays.
-     *  The length of the new array is equal to the sum of the lengths of the
-     *  two argument arrays minus one.  Note that convolution is the same
-     *  as polynomial multiplication.  If the two argument arrays represent
-     *  the coefficients of two polynomials, then the resulting array
-     *  represents the coefficients of the product polynomial.
-     *  @param array1 The first array.
-     *  @param array2 The second array.
-     *  @return A new array.
-     */
-    public final static double[] convolve(double[] array1, double[] array2) {
-        double[] result;
-        int resultsize = array1.length+array2.length-1;
-
-        if (resultsize < 0) {
-            // If we attempt to convolve two zero length arrays, return
-            // a zero length array.  
-            result = new double[0];
-            return result;
-        }
-
-        result = new double[resultsize];
-
-        // The result is assumed initialized to zero (in the Java spec).
-        for (int i = 0; i<array1.length; i++) {
-            for (int j = 0; j<array2.length; j++) {
-                result[i+j] += array1[i]*array2[j];
-            }
-        }
-        return result;
     }
 
     /** Return a new array that is a copy of the argument except that the
@@ -277,6 +256,21 @@ public class DoubleArrayMath {
 
         return new String(sb);
     }
+
+    /** Return a new array of doubles that is formed by raising each
+     *  element to the specified exponent.
+     *  @param array An array of doubles.
+     *  @return A new array of doubles.
+     */
+    public final static double[] pow(double[] array, double exponent) {
+        int length = array.length;
+        double[] retval = new double[length];
+
+        for (int i = 0; i < length; i++) {
+            retval[i] = Math.pow(array[i], exponent);
+        }
+        return retval;
+    }      
 
     /** Return true iff all the absolute differences between corresponding 
      *  elements of array1 and array2 are all less than or equal to maxError.
