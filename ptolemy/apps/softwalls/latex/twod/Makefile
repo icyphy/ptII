@@ -18,20 +18,22 @@ $(PS) : $(DVI)
 $(DVI) : $(TEX)
 	latex $(TEX)
 	latex $(TEX)	%Used twice to update labels and table of contents.
+
+clean : 
 	rm $(AUX)
 	rm $(LOG)
 	rm $(OUT)
 	#rm $(TOC)
-
-clean : 
-	rm $(PDF)
+	rm $(DVI)
 	rm $(PS)
-	rm $(DVI)
+	rm $(PDF)
 
-cleandvi : 
+cleanmess :
+	rm $(AUX)
+	rm $(LOG)
+	rm $(OUT)
+	#rm $(TOC)
 	rm $(DVI)
-
-cleanps : 
 	rm $(PS)
 
 cleanpdf :
