@@ -39,7 +39,7 @@ ME =		ptolemy
 # if the Soot package was found.
 # PTMATLAB_DIR is set to matlab by configure in $PTII/mk/ptII.mk
 # if libeng.def is found.
-DIRS = kernel plot graph moml data actor gui math media	\
+DIRS = util kernel plot graph moml data actor gui math media	\
 	$(PTCOPERNICUS_DIR) \
 	$(PTMATLAB_DIR)	domains vergil apps configs
 
