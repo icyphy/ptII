@@ -1728,7 +1728,7 @@ public class UnsafeSDFScheduler extends Scheduler {
      */
     private boolean _simulateInputConsumption(ComponentEntity currentActor,
             Map sinkPortToSourcePortToWaitingTokens, int firingCount)
-        throws IllegalActionException {
+            throws IllegalActionException {
         boolean stillReadyToSchedule = true;
 
         // Update the number of tokens waiting on the actor's input ports.

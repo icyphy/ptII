@@ -157,10 +157,10 @@ public class Histogram extends PlotBox {
      */
     public synchronized void addPoint(final int dataset, final double value) {
         Runnable doAddPoint = new Runnable() {
-            public void run() {
-                _addPoint(dataset, value);
-            }
-        };
+                public void run() {
+                    _addPoint(dataset, value);
+                }
+            };
         deferIfNecessary(doAddPoint);
     }
 
@@ -175,8 +175,8 @@ public class Histogram extends PlotBox {
      */
     public synchronized void addPoint(int dataset, double x, double y,
             boolean connected) {
-        addPoint(dataset, y);
-    }
+                addPoint(dataset, y);
+            }
 
     /** Clear the plot of all data points.  If the argument is true, then
      *  reset all parameters to their initial conditions, including
@@ -195,10 +195,10 @@ public class Histogram extends PlotBox {
      */
     public synchronized void clear(final boolean format) {
         Runnable doClear = new Runnable() {
-            public void run() {
-                _clear(format);
-            }
-        };
+                public void run() {
+                    _clear(format);
+                }
+            };
         deferIfNecessary(doClear);
     }
 
@@ -213,9 +213,9 @@ public class Histogram extends PlotBox {
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
             output.println(
-              "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+                    "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
             output.println(
-              "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
+                    "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
@@ -273,10 +273,10 @@ public class Histogram extends PlotBox {
      */
     public synchronized void fillPlot() {
         Runnable doFill = new Runnable() {
-            public void run() {
-                _fillPlot();
-            }
-        };
+                public void run() {
+                    _fillPlot();
+                }
+            };
         deferIfNecessary(doFill);
     }
 
@@ -446,37 +446,37 @@ public class Histogram extends PlotBox {
      */
     protected void _drawBar(Graphics graphics, int dataset,
             long xpos, long ypos, boolean clip) {
-        if (clip) {
-            if (ypos < _uly) {
-                ypos = _uly;
-            } if (ypos > _lry) {
-                ypos = _lry;
-            }
-        }
-        if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
-            // left x position of bar.
-            int barlx = (int)(xpos - _barwidth *_binWidth * _xscale/2 +
-                    dataset * _baroffset *_binWidth * _xscale);
-            // right x position of bar
-            int barrx = (int)(barlx + _barwidth *_binWidth * _xscale);
-            if (barlx < _ulx) barlx = _ulx;
-            if (barrx > _lrx) barrx = _lrx;
-            // Make sure that a bar is always at least one pixel wide.
-            if (barlx >= barrx) barrx = barlx+1;
-            // The y position of the zero line.
-            long zeroypos = _lry - (long) ((0-_yMin) * _yscale);
-            if (_lry < zeroypos) zeroypos = _lry;
-            if (_uly > zeroypos) zeroypos = _uly;
+                if (clip) {
+                    if (ypos < _uly) {
+                        ypos = _uly;
+                    } if (ypos > _lry) {
+                        ypos = _lry;
+                    }
+                }
+                if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
+                    // left x position of bar.
+                    int barlx = (int)(xpos - _barwidth *_binWidth * _xscale/2 +
+                            dataset * _baroffset *_binWidth * _xscale);
+                    // right x position of bar
+                    int barrx = (int)(barlx + _barwidth *_binWidth * _xscale);
+                    if (barlx < _ulx) barlx = _ulx;
+                    if (barrx > _lrx) barrx = _lrx;
+                    // Make sure that a bar is always at least one pixel wide.
+                    if (barlx >= barrx) barrx = barlx+1;
+                    // The y position of the zero line.
+                    long zeroypos = _lry - (long) ((0-_yMin) * _yscale);
+                    if (_lry < zeroypos) zeroypos = _lry;
+                    if (_uly > zeroypos) zeroypos = _uly;
 
-            if (_yMin >= 0 || ypos <= zeroypos) {
-                graphics.fillRect(barlx, (int)ypos,
-                        barrx - barlx, (int)(zeroypos - ypos));
-            } else {
-                graphics.fillRect(barlx, (int)zeroypos,
-                        barrx - barlx, (int)(ypos - zeroypos));
+                    if (_yMin >= 0 || ypos <= zeroypos) {
+                        graphics.fillRect(barlx, (int)ypos,
+                                barrx - barlx, (int)(zeroypos - ypos));
+                    } else {
+                        graphics.fillRect(barlx, (int)zeroypos,
+                                barrx - barlx, (int)(ypos - zeroypos));
+                    }
+                }
             }
-        }
-    }
 
     /** Draw the axes and then plot the histogram. If the second
      *  argument is true, clear the display first.
@@ -493,25 +493,25 @@ public class Histogram extends PlotBox {
      */
     protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst) {
-        // We must call PlotBox._drawPlot() before calling _drawPlotPoint
-        // so that _xscale and _yscale are set.
-        super._drawPlot(graphics, clearfirst);
+                // We must call PlotBox._drawPlot() before calling _drawPlotPoint
+                // so that _xscale and _yscale are set.
+                super._drawPlot(graphics, clearfirst);
 
-        _showing = true;
+                _showing = true;
 
-        // Plot the histograms in reverse order so that the first colors
-        // appear on top.
-        for (int dataset = _points.size() - 1; dataset >= 0 ; dataset--) {
-            Hashtable data = (Hashtable)_histogram.elementAt(dataset);
-            Enumeration keys = data.keys();
-            while (keys.hasMoreElements()) {
-                Integer bin = (Integer)keys.nextElement();
-                Integer count = (Integer)data.get(bin);
-                _drawPlotPoint(graphics, dataset,
-                        bin.intValue(), count.intValue());
+                // Plot the histograms in reverse order so that the first colors
+                // appear on top.
+                for (int dataset = _points.size() - 1; dataset >= 0 ; dataset--) {
+                    Hashtable data = (Hashtable)_histogram.elementAt(dataset);
+                    Enumeration keys = data.keys();
+                    while (keys.hasMoreElements()) {
+                        Integer bin = (Integer)keys.nextElement();
+                        Integer count = (Integer)data.get(bin);
+                        _drawPlotPoint(graphics, dataset,
+                                bin.intValue(), count.intValue());
+                    }
+                }
             }
-        }
-    }
 
     /** Parse a line that gives plotting information. Return true if
      *  the line is recognized.  Lines with syntax errors are ignored.
@@ -539,62 +539,62 @@ public class Histogram extends PlotBox {
                 return true;
             } else if (lcLine.startsWith("bars:") ||
                     lcLine.startsWith("bargraph:")) {
-                // The PlotML code uses barGraph, but the older style
-                // uses bars
-                int comma = line.indexOf(",", 5);
-                String barwidth;
-                String baroffset = null;
-                if (comma > 0) {
-                    barwidth = (line.substring(5, comma)).trim();
-                    baroffset = (line.substring(comma+1)).trim();
-                } else {
-                    barwidth = (line.substring(5)).trim();
-                }
-                try {
-                    Double bwidth = new Double(barwidth);
-                    double boffset = _baroffset;
-                    if (baroffset != null) {
-                        boffset = (new Double(baroffset)).doubleValue();
+                        // The PlotML code uses barGraph, but the older style
+                        // uses bars
+                        int comma = line.indexOf(",", 5);
+                        String barwidth;
+                        String baroffset = null;
+                        if (comma > 0) {
+                            barwidth = (line.substring(5, comma)).trim();
+                            baroffset = (line.substring(comma+1)).trim();
+                        } else {
+                            barwidth = (line.substring(5)).trim();
+                        }
+                        try {
+                            Double bwidth = new Double(barwidth);
+                            double boffset = _baroffset;
+                            if (baroffset != null) {
+                                boffset = (new Double(baroffset)).doubleValue();
+                            }
+                            setBars(bwidth.doubleValue(), boffset);
+                        } catch (NumberFormatException e) {
+                            // ignore if format is bogus.
+                        }
+                        return true;
+                    } else if (lcLine.startsWith("binwidth:")) {
+                        String binwidth = (line.substring(9)).trim();
+                        try {
+                            Double bwidth = new Double(binwidth);
+                            setBinWidth(bwidth.doubleValue());
+                        } catch (NumberFormatException e) {
+                            // ignore if format is bogus.
+                        }
+                        return true;
+                    } else if (lcLine.startsWith("binoffset:")) {
+                        String binoffset = (line.substring(10)).trim();
+                        try {
+                            Double boffset = new Double(binoffset);
+                            setBinOffset(boffset.doubleValue());
+                        } catch (NumberFormatException e) {
+                            // ignore if format is bogus.
+                        }
+                        return true;
+                    } else if (lcLine.startsWith("numsets:")) {
+                        // Obsolete field... ignore.
+                        return true;
+                    } else if (line.startsWith("move:")) {
+                        // deal with 'move: 1 2' and 'move:2 2'
+                        line = line.substring(5, line.length()).trim();
+                    } else if (line.startsWith("move")) {
+                        // deal with 'move 1 2' and 'move2 2'
+                        line = line.substring(4, line.length()).trim();
+                    } else if (line.startsWith("draw:")) {
+                        // a connected point, if connect is enabled.
+                        line = line.substring(5, line.length()).trim();
+                    } else if (line.startsWith("draw")) {
+                        // a connected point, if connect is enabled.
+                        line = line.substring(4, line.length()).trim();
                     }
-                    setBars(bwidth.doubleValue(), boffset);
-                } catch (NumberFormatException e) {
-                    // ignore if format is bogus.
-                }
-                return true;
-            } else if (lcLine.startsWith("binwidth:")) {
-                String binwidth = (line.substring(9)).trim();
-                try {
-                    Double bwidth = new Double(binwidth);
-                    setBinWidth(bwidth.doubleValue());
-                } catch (NumberFormatException e) {
-                    // ignore if format is bogus.
-                }
-                return true;
-            } else if (lcLine.startsWith("binoffset:")) {
-                String binoffset = (line.substring(10)).trim();
-                try {
-                    Double boffset = new Double(binoffset);
-                    setBinOffset(boffset.doubleValue());
-                } catch (NumberFormatException e) {
-                    // ignore if format is bogus.
-                }
-                return true;
-            } else if (lcLine.startsWith("numsets:")) {
-                // Obsolete field... ignore.
-                return true;
-            } else if (line.startsWith("move:")) {
-                // deal with 'move: 1 2' and 'move:2 2'
-                line = line.substring(5, line.length()).trim();
-            } else if (line.startsWith("move")) {
-                // deal with 'move 1 2' and 'move2 2'
-                line = line.substring(4, line.length()).trim();
-            } else if (line.startsWith("draw:")) {
-                // a connected point, if connect is enabled.
-                line = line.substring(5, line.length()).trim();
-            } else if (line.startsWith("draw")) {
-                // a connected point, if connect is enabled.
-                line = line.substring(4, line.length()).trim();
-            }
             line = line.trim();
 
             // Handle Plot formats
@@ -745,46 +745,46 @@ public class Histogram extends PlotBox {
      */
     private void _drawPlotPoint(Graphics graphics,
             int dataset, int bin, int count) {
-        // Set the color
-        if (_usecolor) {
-            int color = dataset % _colors.length;
-            graphics.setColor(_colors[color]);
-        } else {
-            graphics.setColor(_foreground);
-        }
+                // Set the color
+                if (_usecolor) {
+                    int color = dataset % _colors.length;
+                    graphics.setColor(_colors[color]);
+                } else {
+                    graphics.setColor(_foreground);
+                }
 
-        double y = (double)count;
-        double x = _binWidth*bin + _binOffset;
+                double y = (double)count;
+                double x = _binWidth*bin + _binOffset;
 
-        if (_xlog) {
-            if (x <= 0.0) {
-                System.err.println("Can't plot non-positive X values "+
-                        "when the logarithmic X axis value is specified: " +
-                        x);
-                return;
+                if (_xlog) {
+                    if (x <= 0.0) {
+                        System.err.println("Can't plot non-positive X values "+
+                                "when the logarithmic X axis value is specified: " +
+                                x);
+                        return;
+                    }
+                    x = Math.log(x)*_LOG10SCALE;
+                }
+                if (_ylog) {
+                    if (y <= 0.0) {
+                        System.err.println("Can't plot non-positive Y values "+
+                                "when the logarithmic Y axis value is specified: " +
+                                y);
+                        return;
+                    }
+                    y = Math.log(y)*_LOG10SCALE;
+                }
+
+                // Use long here because these numbers can be quite large
+                // (when we are zoomed out a lot).
+                long ypos = _lry - (long)((y - _yMin) * _yscale);
+                long xpos = _ulx + (long)((x - _xMin) * _xscale);
+
+                _drawBar(graphics, dataset, xpos, ypos, true);
+
+                // Restore the color, in case the box gets redrawn.
+                graphics.setColor(_foreground);
             }
-            x = Math.log(x)*_LOG10SCALE;
-        }
-        if (_ylog) {
-            if (y <= 0.0) {
-                System.err.println("Can't plot non-positive Y values "+
-                        "when the logarithmic Y axis value is specified: " +
-                        y);
-                return;
-            }
-            y = Math.log(y)*_LOG10SCALE;
-        }
-
-        // Use long here because these numbers can be quite large
-        // (when we are zoomed out a lot).
-        long ypos = _lry - (long)((y - _yMin) * _yscale);
-        long xpos = _ulx + (long)((x - _xMin) * _xscale);
-
-        _drawBar(graphics, dataset, xpos, ypos, true);
-
-        // Restore the color, in case the box gets redrawn.
-        graphics.setColor(_foreground);
-    }
 
     /* Rescale so that the data that is currently plotted just fits.
      * This simply calls the base class.

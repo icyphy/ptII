@@ -152,12 +152,12 @@ public class Expression extends TypedAtomicActor {
 
         get1x1asScalars = new Parameter
             (this, "get1x1asScalars",
-             new BooleanToken(_dataParameters.getScalarMatrices));
+                    new BooleanToken(_dataParameters.getScalarMatrices));
         new CheckBoxStyle(get1x1asScalars, "style");
 
         getIntegerMatrices = new Parameter
             (this, "getIntegerMatrices",
-             new BooleanToken(_dataParameters.getIntMatrices));
+                    new BooleanToken(_dataParameters.getIntMatrices));
         new CheckBoxStyle(getIntegerMatrices, "style");
 
         // _time is not needed, fire() sets a matlab variable directly
@@ -183,8 +183,8 @@ public class Expression extends TypedAtomicActor {
     public Parameter get1x1asScalars;
 
     /** If true, all double-valued matrix results are checked to see if
-    all elements represent integers, and if so, an IntMatrixToken is
-    returned, default is <i>false</i> for performance reasons. */
+        all elements represent integers, and if so, an IntMatrixToken is
+        returned, default is <i>false</i> for performance reasons. */
     public Parameter getIntegerMatrices;
 
     ///////////////////////////////////////////////////////////////////
@@ -209,11 +209,11 @@ public class Expression extends TypedAtomicActor {
         } catch (Throwable throwable) {
             // LinkageError is and Error, not an exceptoin
             throw new IllegalActionException(this, throwable,
-                 "There was a problem invoking the Ptolemy II Matlab interface"
-                 + ".\nThe interface has been tested under Windows and Linux,\n"
-                 + "requires that Matlab be installed on the local machine."
-                 + "Refer to $PTII/ptolemy/matlab/makefile for more"
-                 + "information.");
+                    "There was a problem invoking the Ptolemy II Matlab interface"
+                    + ".\nThe interface has been tested under Windows and Linux,\n"
+                    + "requires that Matlab be installed on the local machine."
+                    + "Refer to $PTII/ptolemy/matlab/makefile for more"
+                    + "information.");
         }
 
         // First set default debugging level, then check for more
@@ -334,7 +334,7 @@ public class Expression extends TypedAtomicActor {
                     // FIXME: Handle multiports
                     if (port.getWidth() > 0) {
                         port.send(0, matlabEngine.get
-                                  (engine, port.getName(), _dataParameters));
+                                (engine, port.getName(), _dataParameters));
                     }
                 }
                 // Restore previous path if path was modified above
