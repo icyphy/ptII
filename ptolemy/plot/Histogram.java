@@ -282,15 +282,34 @@ public class Histogram extends PlotBox {
             // Write the dataset directive
             String legend = getLegend(dataset);
             if (legend != null) {
-                output.println("<dataset name=\"" + legend + "\">");
+                output.println("<dataset name=\"" 
+                        + legend
+                        + "\" connected=\"no\">");
             } else {
-                output.println("<dataset>");
+                output.println("<dataset connected=\"no\">");
             }
             // Write the data
+            // NOTE: Used to write the raw data.
+            // Now we write the histogram data.
+            /*
             Vector pts = (Vector)_points.elementAt(dataset);
             for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
                 Double pt = (Double)pts.elementAt(pointnum);
                 output.println("<p y=\"" + pt.doubleValue() + "\"/>");
+            }
+            */
+            Hashtable data = (Hashtable)_histogram.elementAt(dataset);
+            Enumeration keys = data.keys();
+            while (keys.hasMoreElements()) {
+                Integer bin = (Integer)keys.nextElement();
+                Integer count = (Integer)data.get(bin);
+                // The X axis value is a bit complex to get.
+                int xValue = (int)(bin.intValue() * _binWidth + _binOffset);
+                output.println("<p x=\""
+                        + xValue
+                        + "\" y=\""
+                        + count.intValue()
+                        + "\"/>");
             }
             output.println("</dataset>");
         }
@@ -302,9 +321,14 @@ public class Histogram extends PlotBox {
     public synchronized void writeFormat(PrintWriter output) {
         super.writeFormat(output);
         output.println(
-                "<barGraph width=\"" + _barwidth
-                + "\" offset=\"" + _baroffset + "\"/>");
+                "<barGraph width=\""
+                + (_barwidth * _binWidth)
+                + "\" offset=\""
+                + (_baroffset * _binWidth)
+                + "\"/>");
 
+        // NOTE: This is probably irrelevant, since what is written
+        // is an ordinary plot, but it seems harmless to record it.
         output.println("<bin width=\"" + _binWidth
                 + "\" offset=\"" + _binOffset + "\"/>");
     }
