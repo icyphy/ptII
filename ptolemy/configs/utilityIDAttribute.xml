@@ -9,4 +9,8 @@
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
         </property>
     </property>
+    <!-- prevent the name from being editable, since SaveAs is the naming mechanism. -->
+    <property name="name">
+        <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+    </property>
 </property>
