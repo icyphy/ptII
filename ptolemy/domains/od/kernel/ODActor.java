@@ -195,26 +195,36 @@ public class ODActor extends AtomicActor {
      *  with the lowest time stamp, then the returned token will also 
      *  have the highest priority.
      */
-    public Token getNextToken() {
+    public synchronized Token getNextToken() {
+        
+        ODDirector director = (ODDirector)getDirector();
+        
+        System.out.println("\nEntered getNextToken()");
+        printRcvrTable();
         
         if( _rcvrTimeTable.size() == 0 ) {
+            System.out.println("No receivers. Return from getNextToken()");
             return null;
         }
         
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
+        System.out.println("Checking triple");
         
         ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
         _currentTime = triple.getTime();
         _lastPort = (ODIOPort)triple.getReceiver().getContainer();
         
+        System.out.println("Preparing to get from port: " + _lastPort.getName());
         Token token = lowestRcvr.get();
         
         
         if( token != null ) {
-            System.out.println("We returned a token: 1st null");
+            System.out.println("We returned a token: 1st non-null");
+            // updateRcvrTable( triple );
             return token;
         } else {
             if( this.hasMinRcvrTime() ) {
+                System.out.println("Has minimum receiver time.");
                 // This means that there must be a different
                 // receiver which has the minimum arc time
                 // after the token was actually received -
@@ -225,6 +235,7 @@ public class ODActor extends AtomicActor {
                 return getNextToken();
                 
             } else {
+                System.out.println("Does not have minimum receiver time.");
                 // This means that multiple arcs have the 
                 // the same minimum arc time. Find the arc
                 // with the lowest time and priority.
@@ -237,19 +248,22 @@ public class ODActor extends AtomicActor {
                 _lastPort = (ODIOPort)lowestRcvr.getContainer();
                 
                 if( token != null ) {
-                    System.out.println("We returned a token: 2nd null");
+                    // updateRcvrTable( priorityTriple );
+                    System.out.println("We returned a token: 2nd non-null");
                     return token;
                 } else {
+                    System.out.println("Minimum rcvrTime must have changed.");
                     // This means that although originally there was 
                     // a receiver with highest priority, it must have
                     // blocked and upon receiving a token no longer
                     // had the minimum time. The result is that there 
                     // is another minimum.
-                    
+                        
                     return getNextToken();
                 }
             }
         }
+        // System.out.println("Reached end of getNextToken()");
     }
 
     /** Return the port from which the last token was consumed.
@@ -335,35 +349,99 @@ public class ODActor extends AtomicActor {
      *  specified in the argument.
      */
     private void _addRcvrTriple(RcvrTimeTriple newTriple) {
+        System.out.println("Entered _addRcvrTriple");
+        printRcvrTable();
 	int cnt = 0;
+        boolean notAddedYet = true;
 
         if( _rcvrTimeTable.size() == 0 ) {
+            String portName = newTriple.getReceiver().getContainer().getName();
+            System.out.println(portName + " inserted at position " + cnt);
             _rcvrTimeTable.insertAt( 0, newTriple );
+            printRcvrTable();
             return;
         }
         
+        System.out.println("Preparing to add triple to table of size "
+                + _rcvrTimeTable.size() );
 	while( cnt < _rcvrTimeTable.size() ) {
 	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
-	    if( newTriple.getTime() <= triple.getTime() ) {
-	        _rcvrTimeTable.insertAt( cnt, triple );
+            
+            String portName1 = triple.getReceiver().getContainer().getName();
+            System.out.println(portName1 + " being checked.");
+            String portName2 = newTriple.getReceiver().getContainer().getName();
+            System.out.println(portName2 + " to be added.");
+            
+            System.out.println(portName1+" has time of " +triple.getTime());
+            System.out.println(portName2+" has time of " +newTriple.getTime());
+            
+	    if( newTriple.getTime() < triple.getTime() ) {
+                String portName = 
+                        newTriple.getReceiver().getContainer().getName();
+                System.out.println(portName + " inserted at position " + cnt);
+	        _rcvrTimeTable.insertAt( cnt, newTriple );
 		cnt = _rcvrTimeTable.size();
+                // return;
+                notAddedYet = false;
 	    }
 	    cnt++;
 	}
+        
+        if( notAddedYet ) {
+            _rcvrTimeTable.insertLast( newTriple );
+        }
+        
+        System.out.println("Additions are complete. Now check elements");
+        printRcvrTable();
+    }
+    
+    /** FIXME: This is only for testing purposes.
+     *  Remove this eventually
+     */
+    public void printRcvrTable() {
+        System.out.println("Print RcvrTable.");
+        System.out.println("\tRcvrTable size = " + _rcvrTimeTable.size() );
+        if( _rcvrTimeTable.size() == 0 ) {
+            System.out.println("\tTable is empty");
+        }
+        for( int i = 0; i < _rcvrTimeTable.size(); i++ ) {
+	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeTable.at(i);
+	    Receiver testRcvr = testTriple.getReceiver(); 
+            String testPort = testRcvr.getContainer().getName();
+            System.out.println("\t" + testPort + " is in the rcvrTimeTable.");
+        }
     }
 
     /** Remove the specified RcvrTimeTriple based on the _Receiver_. 
      */
     private void _removeRcvrTable(RcvrTimeTriple triple) {
-        Receiver oldRcvr = triple.getReceiver();
+        System.out.println("Entered _removeRcvrTriple");
+        
+        printRcvrTable();
+        
+        Receiver rcvrToBeRemoved = triple.getReceiver();
+        
 	for( int cnt = 0; cnt < _rcvrTimeTable.size(); cnt++ ) {
-	    RcvrTimeTriple newTriple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
-	    Receiver rcvr = newTriple.getReceiver(); 
-	    if( rcvr == oldRcvr ) {
+	    RcvrTimeTriple nextTriple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
+	    Receiver nextRcvr = nextTriple.getReceiver(); 
+            
+            String portName1 = nextRcvr.getContainer().getName();
+            System.out.println(portName1 + " being checked.");
+            String portName2 = rcvrToBeRemoved.getContainer().getName();
+            System.out.println(portName2 + " to be removed.");
+            
+	    if( rcvrToBeRemoved == nextRcvr ) {
+                String portName = nextRcvr.getContainer().getName();
+                System.out.println(portName + " removed from position " + cnt);
 	        _rcvrTimeTable.removeAt( cnt );
 		cnt = _rcvrTimeTable.size();
+                // return;
 	    }
 	}
+        
+        System.out.println("Removal is complete. Now check remaining elements.");
+        
+        printRcvrTable();
     }
 
     ///////////////////////////////////////////////////////////////////
