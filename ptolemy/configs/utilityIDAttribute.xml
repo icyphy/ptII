@@ -4,13 +4,5 @@
 
 <property name="ModelID" class="ptolemy.kernel.attributes.IDAttribute">
     <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
-        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="name">
-        </property>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-        </property>
-    </property>
-    <!-- prevent the name from being editable, since SaveAs is the naming mechanism. -->
-    <property name="name">
-        <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
     </property>
 </property>
