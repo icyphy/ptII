@@ -88,12 +88,12 @@ public class ProcessThread extends PtolemyThread {
         _manager = ((CompositeActor)
                 ((NamedObj)actor).getContainer()).getManager();
 
-	//This method is called here and not in the run() method as the
-	//count should be incremented before any thread is started
-	//or made active. This is because the second started thread might
-	//block on a read or write to this process and increment the block
-	//count even before this thread has incremented the active count.
-	//This results in false deadlocks.
+	// This method is called here and not in the run() method as the
+	// count should be incremented before any thread is started
+	// or made active. This is because the second started thread might
+	// block on a read or write to this process and increment the block
+	// count even before this thread has incremented the active count.
+	// This results in false deadlocks.
 	_director._increaseActiveCount();
         
         _name = ((Nameable)_actor).getName();
@@ -131,10 +131,8 @@ public class ProcessThread extends PtolemyThread {
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
-	    /*
 	} catch( InterruptedException e) {
             _manager.notifyListenersOfException(e);
-	    */
         } catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
         } finally {
