@@ -173,8 +173,10 @@ $(PTIIDIST):
 	touch $(PTIIDIST)/mk/ptII.mk.in
 	# Remove apps.xml from the configuration
 	grep -v "apps.xml" \
-		< $(PTIIHOME)/ptolemy/configs/vergilConfiguration.xml \
-		> $(PTIIDIST)/ptolemy/configs/vergilConfiguration.xml
+		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
+		> /tmp/defaultFullConfiguration_tmp.xml
+	mv /tmp/defaultFullConfiguration_tmp.xml \
+		$(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml
 
 clean_src:
 	rm -f $(PTII_FULL)
