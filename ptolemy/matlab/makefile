@@ -75,7 +75,9 @@ MISC_FILES =	test \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	'Engine$$ConversionParameters.class' \
+	matlabWindows.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
 
