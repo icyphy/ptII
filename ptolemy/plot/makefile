@@ -118,9 +118,11 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: sources jclass $(TYZIP) $(JARFILE) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
+	rm -f pxgraph
 	ln -s ptplot pxgraph
 install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
+	rm -f pxgraph
 	ln -s ptplot pxgraph
 
 # Jar file consisting of classes used by an applet.  Basically,
