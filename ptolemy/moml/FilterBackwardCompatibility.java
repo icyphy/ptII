@@ -41,7 +41,10 @@ import java.util.HashMap;
 method, it will cause MoMLParser to filter so that models from
 earlier releases will run in the current release.
 
-@author  Edward A. Lee, Christopher Hylands
+<p>This class will filter for actors that have had port name changes, and 
+for classes with property where the class name has changed
+
+@author Christopher Hylands, Edward A. Lee
 @version $Id$
 */
 public class FilterBackwardCompatibility implements MoMLFilter {
@@ -59,6 +62,9 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue) {
 
+        _debug("filterAttributeValue: " + container + "\t"
+	       +  attributeName + "\t" + attributeValue);
+
         if (attributeValue == null) {
 	    // attributeValue == null is fairly common, so we check for
 	    // that first
@@ -68,33 +74,77 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    // Save the name of the for later use if we see a "class"
 	    _lastNameSeen = attributeValue;
 	}
+	// The code below is more complicated than perhaps it
+	// should be because we do all the backward compatibility
+	// changes in one pass.  An alternative would be to have
+	// a pass for each time of change, but this would result
+	// in a slower system.  In the code below, we try
+	// to nest comparisons so as to make as few comparisons as
+	// possible, and we try to compare against booleans first
+	// so as to avoid more expensive string comparisons.
+
 	if (attributeName.equals("class")) { 
-	    if (_actors.containsKey(attributeValue)) {
-		_currentlyProcessingActor = true;
-		_doneProcessingActor = false;
+	    // Look for lines like:
+	    // <entity name="ComplexToCartesian1"
+	    //   class="ptolemy.actor.lib.conversions.ComplexToCartesian">
+
+	    if (_actorsWithPortNameChanges.containsKey(attributeValue)) {
+		// We found a class with a port name change.
+		_currentlyProcessingActorWithPortNameChanges = true;
+		_doneProcessingActorWithPortNameChanges  = false;
 		_currentActorFullName = container.getFullName()
 		    + "." + _lastNameSeen;
-		_portMap = (HashMap) _actors.get(attributeValue);
-	    } else {
-		if (_currentlyProcessingActor 
-		    && !container.getFullName()
-		    .equals(_currentActorFullName)) {
+		_portMap = (HashMap) _actorsWithPortNameChanges.get(attributeValue);
+		_debug("filterAttributeValue: saw1 "
+		       + _currentActorFullName);
+	    } else if (_actorsWithPropertyClassChanges
+		       .containsKey(attributeValue)) {
+		// We found a class with a property class change.
+		_currentlyProcessingActorWithPropertyClassChanges = true;
+		_doneProcessingActorWithPortNameChanges  = false;
+		_currentActorFullName = container.getFullName()
+		    + "." + _lastNameSeen;
+		_propertyMap =
+		    (HashMap) _actorsWithPropertyClassChanges
+		    .get(attributeValue);
+		_debug("filterAttributeValue: saw2 "
+		       + _currentActorFullName);
 
-		    _currentlyProcessingActor = false;
-		    _doneProcessingActor = true;
-		    _currentActorFullName = null;
-		    _portMap = null;
-		}
+	    } else if (_currentlyProcessingActorWithPropertyClassChanges
+		       && _newClass != null) {
+		// We found a property class to change, and now we found the
+		// class itself that needs changing.
+		_debug("filterAttributeValue: return0 "
+		       + _newClass);
+		// Only return the new class once.
+		_newClass = null;
+		return _newClass;
+	    } else if (_currentlyProcessingActorWithPortNameChanges
+		       && container != null
+		       && !container.getFullName()
+		       .equals(_currentActorFullName)) {
+		// We found another class in a different container
+		// while handling a class with port name changes,
+		// so set _doneProcessingActorWithPortNameChanges  so we can handle
+		// any port changes later.
+		_currentlyProcessingActorWithPortNameChanges = false;
+		_doneProcessingActorWithPortNameChanges  = true;
+		_currentActorFullName = null;
+		_portMap = null;
 	    }
-	} else if (_currentlyProcessingActor
+	} else if (_currentlyProcessingActorWithPortNameChanges
 		   && attributeName.equals("name")
+		   && _portMap != null
 		   && _portMap.containsKey(attributeValue)) {
 	    // We will do the above checks only if we found a
-	    // class that had port name changes.
+	    // class that had port name changes, but have not
+	    // yet found the next class.
 
-	    // FIXME: get rid of the leading .?
+	    // Here, we add the port name and the new port name
+	    // to a map for later use.
+
 	    String containerName =
-		container.getFullName().substring(2);
+		container.getFullName();
 
 	    String newPort = (String)_portMap.get(attributeValue);
 
@@ -102,18 +152,59 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    _containerPortMap.put(containerName + "." + attributeValue,
 				  containerName + "." + newPort
 				  );
+	    _debug("filterAttributeValue: return1 ("
+	    		       + containerName + "." + attributeValue + ", " 
+	    		       +  containerName + "." + newPort + ") "
+	    		       + newPort);
 	    return newPort;
-	} else if (_doneProcessingActor
+	} else if (_currentlyProcessingActorWithPropertyClassChanges) {
+	    if (attributeName.equals("name")) {
+		if (_propertyMap.containsKey(attributeValue)) {
+		    // We will do the above checks only if we found a
+		    // class that had property class changes.
+		    _newClass = (String)_propertyMap.get(attributeValue);
+		    _debug("filterAttributeValue: _newClass = " + _newClass);
+		} else {
+		    // Saw a name that did not match
+		    _newClass = null;
+		}
+	    }
+	} else if (_doneProcessingActorWithPortNameChanges 
 		   && attributeName.equals("port")
-		   && _containerPortMap.containsKey(attributeValue)) {
-	    return (String)_containerPortMap.get(attributeValue);
+		   && _containerPortMap.containsKey(container.getFullName()
+						 + "." + attributeValue)) {
+	    // We are processing actors that have port names.
+	    // Now map the old port to the new port.
+	    String newPort = (String)_containerPortMap
+		.get(container.getFullName() + "." + attributeValue);
+
+	    // Extreme chaos here because sometimes
+	    // container.getFullName() will be ".transform_2.transform" and
+	    // attributeValue will be "ComplexToCartesian.real"
+	    // and sometimes container.getFullName() will be
+	    // ".transform_2.transform.ComplexToCartesian"
+	    // and attributeValue will be "real"
+
+	    newPort =
+		newPort.substring(container.getFullName().length() + 1);
+					
+	    _debug("filterAttributeValue: return2 " 
+		   + newPort);
+	    return newPort;
 	} 
         return attributeValue;
     } 
 
+    // FIXME: this should go away
+    private void _debug(String printString) {
+	//System.out.println(printString);
+    }
 
     // Map of actor names a HashMap of old ports to new ports
-    private static HashMap _actors;
+    private static HashMap _actorsWithPortNameChanges;
+
+    // Map of actor names a HashMap of property names to new classes.
+    private static HashMap _actorsWithPropertyClassChanges;
 
     // Map of old container.port to new container.newPort;
     private static HashMap _containerPortMap; 
@@ -121,33 +212,93 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // The the full name of the actor we are currently processing
     private static String _currentActorFullName;
 
-    // Set to true if we are currently processing an actor, set
-    // to false when we are done.
-    private static boolean _currentlyProcessingActor = false; 
+    // Set to true if we are currently processing an actor with parameter
+    // class changes, set to false when we are done.
+    private static boolean
+	_currentlyProcessingActorWithPropertyClassChanges = false; 
+
+    // Set to true if we are currently processing an actor with port name
+    // changes, set to false when we are done.
+    private static boolean
+	_currentlyProcessingActorWithPortNameChanges = false; 
 
     // Set to true if we are done processing an actor.
-    private static boolean _doneProcessingActor = false;
+    private static boolean _doneProcessingActorWithPortNameChanges = false;
 
     // Last "name" value seen, for use if we see a "class".
     private static String _lastNameSeen; 
 
+    // The new class name for the property we are working on.
+    private static String _newClass;
+
     // Cache of map from old port names to new port names for
     // the actor we are working on.
-
     private static HashMap _portMap;
 
-    static {
-	_actors = new HashMap();
-	_containerPortMap = new HashMap();
+    // Cache of map from old property names to new class names for
+    // the actor we are working on.
+    private static HashMap _propertyMap;
 
-	HashMap ports = new HashMap();
+    static {
+	///////////////////////////////////////////////////////////
+	// Actors with port name changes.
+	_actorsWithPortNameChanges = new HashMap();
+	_containerPortMap = new HashMap();
 	
 	// ComplexToCartesian: real is now x, imag is now y.
-	ports.put("real", "x");
-	ports.put("imag", "y");
-	_actors.put("ptolemy.actor.lib.conversions.ComplexToCartesian", ports);
+	HashMap cartesianPorts = new HashMap();
+	cartesianPorts.put("real", "x");
+	cartesianPorts.put("imag", "y");
+	_actorsWithPortNameChanges
+	    .put("ptolemy.actor.lib.conversions.ComplexToCartesian",
+		 cartesianPorts);
 
 	// CartesianToComplex has the same ports as ComplexToCartesian.
-	_actors.put("ptolemy.actor.lib.conversions.CartesianToComplex", ports);
+	_actorsWithPortNameChanges
+	    .put("ptolemy.actor.lib.conversions.CartesianToComplex",
+		 cartesianPorts);
+
+
+	
+
+	///////////////////////////////////////////////////////////
+	// Actors that have properties that have changed class.
+	_actorsWithPropertyClassChanges = new HashMap();
+
+	// AudioReader
+	HashMap sourceURLClassChanges = new HashMap();
+	// Key = property name, Value = new class name
+	sourceURLClassChanges.put("sourceURL", "ptolemy.data.expr.Parameter");
+
+	_actorsWithPropertyClassChanges
+	    .put("ptolemy.actor.lib.javasound.AudioReader", 
+		 sourceURLClassChanges);
+
+	// ImagePartition
+	HashMap inputOutputTypedIOPortClassChanges = new HashMap();
+	inputOutputTypedIOPortClassChanges.put("input",
+					       "ptolemy.actor.TypedIOPort");
+	inputOutputTypedIOPortClassChanges.put("output",
+					       "ptolemy.actor.TypedIOPort");
+
+	_actorsWithPropertyClassChanges
+   	    .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
+		 inputOutputTypedIOPortClassChanges);
+
+
+	// ImageUnpartition
+	_actorsWithPropertyClassChanges
+   	    .put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
+		 inputOutputTypedIOPortClassChanges);
+
+	// HTVQEncode
+	_actorsWithPropertyClassChanges
+   	    .put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
+		 inputOutputTypedIOPortClassChanges);
+
+	// VQDecode
+	_actorsWithPropertyClassChanges
+   	    .put("ptolemy.domains.sdf.lib.vq.VQDecode",
+		 inputOutputTypedIOPortClassChanges);
     }
 }

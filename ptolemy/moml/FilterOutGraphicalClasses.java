@@ -32,6 +32,8 @@ package ptolemy.moml;
 
 import ptolemy.kernel.util.NamedObj;
 
+import java.util.HashMap;
+
 //////////////////////////////////////////////////////////////////////////
 //// FilterOutGraphicalClasses
 /** When this class is registered with the MoMLParser.setMoMLFilter()
@@ -72,22 +74,34 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
         //System.out.println("filterAttributeValue: " + container + "\t"
         //        +  attributeName + "\t" + attributeValue);
 
-	// FIXME: This should be a better data structure, like a
-	// hash table.
         if (attributeValue == null) {
             return null;
-        } else if (attributeValue
-                .equals("ptolemy.vergil.icon.ValueIcon")
-		|| attributeValue
-		.equals("ptolemy.vergil.basic.NodeControllerFactory")) {
-            return "ptolemy.kernel.util.Attribute";
-	} else if (
-                attributeValue
-                .equals("ptolemy.vergil.icon.AttributeValueIcon")
-                || attributeValue
-                .equals("ptolemy.vergil.icon.BoxedValueIcon")) {
-	    return null;
+        } else if (_graphicalClasses.containsKey(attributeValue)) {
+            return (String) _graphicalClasses.get(attributeValue);
         }
         return attributeValue;
     } 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Map of actor names a HashMap of graphical classes to their
+     *  non-graphical counterparts, usually either
+     *  ptolemy.kernel.util.Attribute or null.
+     */
+    private static HashMap _graphicalClasses;
+
+    static {
+	_graphicalClasses = new HashMap();
+	// Alphabetical by key class
+	_graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
+			      "ptolemy.kernel.util.Attribute");
+	_graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
+			      null);
+	_graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon",
+			      null);
+	_graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
+			      "ptolemy.kernel.util.Attribute");
+    }
 }
+

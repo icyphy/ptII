@@ -44,7 +44,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test FilterOutGraphicalClasses-1.1 {filterAttributeValue} { 
     set parser [java::new ptolemy.moml.MoMLParser]
-    $parser setMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
     set toplevel [$parser parseFile "./FilterOutGraphicalClasses.xml"]
     set newMoML [$toplevel exportMoML]
     list $newMoML
@@ -168,8 +168,8 @@ proc createAndExecute {file} {
     global KNOWN_FAILED
     #java::new ptolemy.actor.gui.MoMLSimpleApplication $file
     set parser [java::new ptolemy.moml.MoMLParser]
-  #  $parser setMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
-    $parser setMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    $parser addMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
     set namedObj [$parser parseFile $file]
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
 
@@ -217,7 +217,7 @@ proc createAndExecute {file} {
 
 # Find all the files in the compat directory
 
-#foreach file compat/ComplexToCartesianAndBack.xml {
+#foreach file [list compat/FIR1.xml compat/ComplexToCartesianAndBack.xml compat/testAudioReaderAudioPlayer.xml compat/test1.xml ] {
 foreach file [glob compat/*.xml] {
     puts "------------------ testing $file"
     test "Auto" "Automatic test in file $file" {

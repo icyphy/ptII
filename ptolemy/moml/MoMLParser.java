@@ -206,6 +206,20 @@ public class MoMLParser extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+   /**  Add a MoMLFilter to the end of the list of MoMLFilters used
+     *  to translate names.
+     *  Note that this method is static.  The specified MoMLFilter
+     *  will filter all MoML for any instances of this class.
+     *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
+     */   
+    public void addMoMLFilter(MoMLFilter filter) {
+	if (_filterList == null) {
+	    _filterList = new LinkedList(); 
+	}
+        _filterList.add(filter);
+    }
+
+
     /** Handle an attribute assignment that is part of an XML element.
      *  This method is called prior to the corresponding startElement()
      *  call, so it simply accumulates attributes in a hashtable for
@@ -235,27 +249,34 @@ public class MoMLParser extends HandlerBase {
             value = _namespace + ":" + value;
         }
 
-        // Apply a MoMLFilter here.
+        // Apply MoMLFilters here.
         // Filters can filter out graphical classes, or change
         // the names of ports to handle backward compatibility.
-        if (_filter != null) {
+        if (_filterList != null) {
+	    Iterator filters = _filterList.iterator();
+	    String filteredValue = value;
+	    while (filters.hasNext()) {
+		MoMLFilter filter = (MoMLFilter)filters.next();
+		filteredValue =
+		    filter.filterAttributeValue(_current, name,
+						 filteredValue);
+	    }
+
 	    // Sometimes the value we pass in is null, so we only
 	    // want to skip if filterAttributeValue returns null
 	    // when passed a non-null value.
-	    String filteredValue =
-		_filter.filterAttributeValue(_current, name, value);
-            if (value != null && filteredValue == null) {
+	    if (value != null && filteredValue == null) {
 		// If attribute() found an element to skip, then
 		// the first time we startElement(), we do not
 		// want to increment _skipElement again in
 		// startElement() because we already did it in
 		// attribute().
 		_skipElementIsNew = true;
-                _skipElementName = _parser.getCurrentElement(); 
+		_skipElementName = _parser.getCurrentElement(); 
 		// Is there ever a case when _skipElement would not
 		// be 0 here?  I'm not sure . . .
-                _skipElement++;
-            }
+		_skipElement++;
+	    }
 	    value = filteredValue;
         }
 
@@ -497,13 +518,13 @@ public class MoMLParser extends HandlerBase {
         return _handler;
     }
 
-    /** Get the MoMLFilter used to translate names.
-     *  Note that this method is static.  The returned MoMLFilter
+    /** Get the List of MoMLFilters used to translate names.
+     *  Note that this method is static.  The returned MoMLFilters
      *  will filter all MoML for any instances of this class.
-     *  @return The MoMLFilter currently filtering. 
+     *  @return The MoMLFilters currently filtering. 
      */
-    public MoMLFilter getMoMLFilter() {
-        return _filter;
+    public List getMoMLFilters() {
+        return _filterList;
     }
 
     /** Get the top-level entity associated with this parser, or null if none.
@@ -745,15 +766,6 @@ public class MoMLParser extends HandlerBase {
      */
     public static void setErrorHandler(ErrorHandler handler) {
         _handler = handler;
-    }
-
-    /** Set the MoMLFilter to translate names.
-     *  Note that this method is static.  The specified MoMLFilter
-     *  will filter all MoML for any instances of this class.
-     *  @param filter  The MoMLFilter to call.  
-     */   
-    public void setMoMLFilter(MoMLFilter filter) {
-        _filter = filter;
     }
 
     /** Set the top-level entity.  This can be used to associate this
@@ -2598,10 +2610,10 @@ public class MoMLParser extends HandlerBase {
     // ErrorHandler that handles parse errors.
     private static ErrorHandler _handler = null;
 
-    // MoMLFilter to apply if non-null.  MoMLFilters translate MoML
-    // elements.  This filter will filter all MoML for all instances
+    // List of MoMLFilters to apply if non-null.  MoMLFilters translate MoML
+    // elements.  These filters will filter all MoML for all instances
     // of this class.
-    private static MoMLFilter _filter = null;
+    private static List _filterList = null;
 
     // List of top-level entities imported via import element.
     private List _imports;
