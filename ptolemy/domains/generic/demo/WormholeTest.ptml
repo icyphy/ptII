@@ -22,12 +22,12 @@
 </entity>
 <relation name="Relation0" width="1">
 <link name="Clock0.output"></link>
-<link name="Processor0.input"></link>
-<layout to="Processor0 input" from="Clock0 output" coords="" name="edge0" type="edge"></layout>
+<link name="Processor0.In0"></link>
+<layout to="Processor0 In0" from="Clock0 output" coords="" name="edge0" type="edge"></layout>
 </relation>
 <relation name="Relation1" width="1">
-<link name="Processor0.output"></link>
+<link name="Processor0.Out0"></link>
 <link name="Plot0.input"></link>
-<layout to="Plot0 input" from="Processor0 output" coords="" name="edge1" type="edge"></layout>
+<layout to="Plot0 input" from="Processor0 Out0" coords="" name="edge1" type="edge"></layout>
 </relation>
 </schematic>

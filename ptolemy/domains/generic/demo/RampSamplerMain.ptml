@@ -7,14 +7,14 @@
 <parameter value="Calendar queue" name="director" type="CONTROLPARAMETER" class="ptolemy.domains.de.kernel.DECQDirector"></parameter>
 <parameter value="10.0" name="StopTime" type="DoubleToken"></parameter>
 <entity coords="137.0 90.0" name="RampSampler0" icon="Composites.RampSampler">
-<entitytype location="" ports="?" name="RampSampler" type="actor"></entitytype>
+<entitytype location="" ports="?" name="RampSampler" type="composite"></entitytype>
 </entity>
 <entity coords="345.0 150.0" name="Plot0" icon="Sinks.Plot">
 <entitytype location="" ports="?" name="Plot" type="actor"></entitytype>
 </entity>
 <relation name="Relation0" width="1">
-<link name="RampSampler0.output"></link>
+<link name="RampSampler0.Out0"></link>
 <link name="Plot0.input"></link>
-<layout to="Plot0 input" from="RampSampler0 output" coords="" name="edge0" type="edge"></layout>
+<layout to="Plot0 input" from="RampSampler0 Out0" coords="" name="edge0" type="edge"></layout>
 </relation>
 </schematic>
