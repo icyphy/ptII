@@ -42,6 +42,16 @@ import com.microstar.xml.*;
 //////////////////////////////////////////////////////////////////////////
 //// PTMLParser
 /**
+This class interfaces to the Microstar Aelfred XML parser in order to 
+parse PTML files.  Calling one of the parse methods will read the XML
+input and create a parse tree of XMLElements, returning the root of the
+tree.   Some of the nodes in the tree may actually be subclasses of 
+XMLElement.  The subclass that is created depends solely on the type
+of the element.   These subclasses encapsulate the semantic meaning
+of the contained parse tree.  For Example an element in the XML document 
+of type "iconlibrary" will be placed in an instance of the IconLibrary class.  
+an IconLibrary represents a collection of Icons, and contains methods
+to directly access its child elements that represent icons.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -180,25 +190,28 @@ public class PTMLParser extends HandlerBase{
     public void startElement(String name) {
         XMLElement e;
  
-        if(name.equals("icon")) {
-            e=new Icon(attributes);
-        }
-        if(name.equals("sublibrary")) {
-            e=new XMLElement(name,attributes);
-        }
-        if(name.equals("iconlibrary")) {
-            e=new IconLibrary(attributes);
-        }
-        if(name.equals("parameter")) {
-            //            e=new SchematicParameter(attributes);
-        }
         if(name.equals("description")) {
             e=new XMLElement(name,attributes);
         }
-        if(name.equals("port")) {
-            //            e=new SchematicPort(attributes);
+        else if(name.equals("entitytype")) {
+            e=new EntityType(attributes);
         }
-        if(name.equals("graphic")) {
+        else if(name.equals("graphic")) {
+            e=new XMLElement(name,attributes);
+        }
+        else if(name.equals("icon")) {
+            e=new Icon(attributes);
+        }
+        else if(name.equals("iconlibrary")) {
+            e=new IconLibrary(attributes);
+        }
+        else if(name.equals("parameter")) {
+            e=new XMLElement(name,attributes);
+        }
+        else if(name.equals("port")) {
+            e=new XMLElement(name,attributes);
+        }
+        else if(name.equals("sublibrary")) {
             e=new XMLElement(name,attributes);
         }
         else {
