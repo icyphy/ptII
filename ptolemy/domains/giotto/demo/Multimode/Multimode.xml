@@ -67,7 +67,7 @@ FSM and Giotto domains.</doc>
             <property name="_location" class="ptolemy.moml.Location" value="378.0, 280.0">
             </property>
         </port>
-        <entity name="controller" class="ptolemy.domains.giotto.demo.MultiMode.Controller">
+        <entity name="controller" class="ptolemy.domains.giotto.demo.Multimode.Controller">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 205]">
@@ -77,7 +77,7 @@ FSM and Giotto domains.</doc>
             <property name="_location" class="ptolemy.moml.Location" value="361.0, 164.0">
             </property>
         </entity>
-        <entity name="mode0" class="ptolemy.domains.giotto.demo.MultiMode.OneMode">
+        <entity name="mode0" class="ptolemy.domains.giotto.demo.Multimode.OneMode">
             <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
                 <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
@@ -95,7 +95,7 @@ FSM and Giotto domains.</doc>
             <property name="_location" class="ptolemy.moml.Location" value="138.0, 239.0">
             </property>
         </entity>
-        <entity name="mode1" class="ptolemy.domains.giotto.demo.MultiMode.OneMode">
+        <entity name="mode1" class="ptolemy.domains.giotto.demo.Multimode.OneMode">
             <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
                 <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
