@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II DDE domain demos
+# Makefile for Ptolemy II Distributed Discrete Event demos
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-1999 The Regents of the University of California.
+# @Copyright (c) 1998-1999 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,58 +29,65 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/dde/demo
-
-DIRS = 		helloWorld LocalZeno
+ME =		ptolemy/domains/dde/demo/LocalZeno
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
+
+# Used to build jar files
+PTPACKAGE = 	LocalZeno
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Flags to pass to javadoc. (Override value in ptII.mk)
-JDOCFLAGS = 	-author -version -public
-
-# Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
-JSRCS = 
-
-# Non-graphical Java demos written in Tcl
-# Since there are no demos, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a demo, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = \
-        dummy.tcl
+TCL_SRCS = 
 
 
-EXTRA_SRCS =	$(JSRCS) \
-	index.htm
+JSRCS = \
+	ListenClock.java \
+	ListenFBDelay.java \
+	ListenFork.java \
+	ListenGet.java \
+	ListenPipe.java \
+	ListenSink.java \
+	LocalZenoApplet.java \
+	LocalZenoApplication.java 
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-MISC_FILES =	$(DIRS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
+	LocalZeno.htm
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	doc \
+	'LocalZenoApplication$$1.class' \
+	'LocalZenoApplication$$2.class' \
+	'LocalZenoApplication$$LocalEdgeRenderer.class' \
+	'LocalZenoApplication$$StateListener.class' \
+	'LocalZenoApplication$$ThreadRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
-all: jclass
+install: all
 
-install: jclass $(PTCLASSJAR)
-
-depend:
-	@echo "no dependencies in this directory"
+demo:
+	CLASSPATH="$(CLASSPATH)" $(JAVA) ptolemy.domains.dde.demo.LocalZeno.LocalZenoApplication
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+
