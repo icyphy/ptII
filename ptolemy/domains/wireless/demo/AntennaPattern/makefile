@@ -48,7 +48,6 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	AntennaGainTest.xml \
-	AntennaModel.xml \
 	ReceiveAntennaPattern.xml \
 	TransmitAntennaPattern.xml
 
@@ -70,10 +69,10 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass 
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all $(PTCLASSJAR)
 
 # Run the demo in all its different formats
 demo: demo_ptolemy demo_vergil
