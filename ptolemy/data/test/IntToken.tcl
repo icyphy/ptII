@@ -66,7 +66,7 @@ test IntToken-1.1 {Create a non-empty instance from an int} {
 ######################################################################
 ####
 # 
-test IntToken-1.0 {Create a non-empty instance from an String} {
+test IntToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.IntToken String} "7"]
     $p toString
 } {ptolemy.data.IntToken(7)}

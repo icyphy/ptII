@@ -66,7 +66,7 @@ test DoubleToken-1.1 {Create a non-empty instance from an double} {
 ######################################################################
 ####
 # 
-test DoubleToken-1.0 {Create a non-empty instance from an String} {
+test DoubleToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.DoubleToken String} "7.77"]
     $p toString
 } {ptolemy.data.DoubleToken(7.77)}
