@@ -36,7 +36,7 @@ import ptolemy.math.Complex;
 /**
 A token that contains a Complex.
 <p>
-@author Yuhong Xiong
+@author Yuhong Xiong, Neil Smyth
 @version $Id$
 @see ptolemy.data.Token
 
@@ -260,7 +260,7 @@ public class ComplexToken extends ScalarToken {
         }
     }
 
-    /** Return the Compelx value contained by this token.
+    /** Return the Complex value contained by this token.
      *  @return The Compelx value contained by this token.
      */
     public Complex getValue() {
@@ -372,7 +372,7 @@ public class ComplexToken extends ScalarToken {
     }
 
     /** Return a new token whose value is the value of this token
-     *  subtracted from the value of the arguement token. The type of
+     *  subtracted from the value of the argument token. The type of
      *  the specified token must be lower than ComplexToken.
      *  @param leftArg The token to subtract this token from.
      *  @return A new token containing the result.
