@@ -110,7 +110,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @return A new complex number.
      */
     public Complex acos () {
-        Complex c1 = new Complex(1.0-real*real+imag*imag,-2.0*real*imag);
+        Complex c1 = new Complex(1.0-real*real+imag*imag, -2.0*real*imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(real - c2.imag, imag + c2.real);
         Complex c4 = c3.log();
@@ -367,7 +367,7 @@ public final class Complex implements Cloneable, Serializable {
         double i = 0.0;
         if (real != 0.0) r = -real;
         if (imag != 0.0) i = -imag;
-        return new Complex(r,i);
+        return new Complex(r, i);
     }
 
     /** Return a new Complex with the specified magnitude and angle.
