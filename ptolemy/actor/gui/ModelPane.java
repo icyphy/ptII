@@ -279,7 +279,7 @@ public class ModelPane extends JPanel implements CloseListener {
                         _controlPanel.add(pTitle);
                         _controlPanel.add(
                                 Box.createRigidArea(new Dimension(0, 8)));
-                        _directorQuery = new Configurer(model);
+                        _directorQuery = new Configurer(director);
                         _directorQuery.setAlignmentX(LEFT_ALIGNMENT);
                         _directorQuery.setBackground(null);
                         _controlPanel.add(_directorQuery);

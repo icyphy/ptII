@@ -830,9 +830,10 @@ public class Query extends JPanel {
     ////                         protected variables               ////
 
     /** The background color as set by setBackground().
-     *  This defaults to white.
+     *  This defaults to null, which indicates that the background
+     *  is the same as the container.
      */
-    protected Color _background = Color.white;
+    protected Color _background = null;
 
     /** Layout control. */
     protected GridBagLayout _grid;

@@ -83,6 +83,7 @@ is included in the comma-separated list, then controls for the
 top-level parameters of the model are placed on the screen, below
 the buttons.  If the word "directorParameters" is included,
 then controls for the director parameters are also included.
+<li>
 <i>modelClass</i>: The fully qualified class name of a Java class
 that extends CompositeActor.  This class defines the model.
 <li>
