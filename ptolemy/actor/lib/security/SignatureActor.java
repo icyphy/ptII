@@ -63,6 +63,79 @@ also be specified in the <i>provider</i> parameter.
 
 <p>The input and output are both arrays of unsigned bytes.
 
+<h3>How to exchange data securely with a remote part<h3>
+<a href="http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html</code>
+discusses how to exchange files using signatures, keytool
+and jarsigner.  In Ptolemy II, we use the KeyReader actor
+
+<h4>Steps for the Sender</h4>
+<ol>
+<li>Generate keys using keytool, which is included
+in the JDK
+<pre>
+keytool -genkey -alias claudius -keystore $PTII/ptKeystore -keypass this.is.not.secure,it.is.for.testing.only -storepass this.is.not.secure,it.is.for.testing.only
+</pre>
+You will be prompted for information about yourself.
+<li>Optional: Generate a Certificate Signing Request (CVR), send
+it to your vendor and import the response.  Since we
+are using a self signed certificate, this step is option.
+<li> Export the certificate
+<pre>
+keytool -alias claudius -export -keystore $PTII/ptKeystore -keypass this.is.not.secure,it.is.for.testing.only -storepass this.is.not.secure,it.is.for.testing.only -file claudius.cer -rfc
+</pre>
+<li> Send the output file (claudius.cer) to the recipient
+<li>Create a Ptolemy model that uses the 
+@{link ptolemy.actor.lib.security.PrivateKeyReader} actor
+to read $PTII/ptKeystore with the appropriate passwords
+and sign your data.  
+See left side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
+for an example model.
+
+</ol>
+<h4>Steps for the Receiver</h4>
+<ol>
+<li>Receive the public key from the sender and import it
+into your keystore
+<pre>
+cxh@cooley 91% keytool -import -alias claudius -keystore $PTII/receivedKeystore -file claudius.cer
+Enter keystore password:  foobar
+Owner: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
+Issuer: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
+Serial number: 3fa9b2c5
+Valid from: Wed Nov 05 18:32:37 PST 2003 until: Tue Feb 03 18:32:37 PST 2004
+Certificate fingerprints:
+	 MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
+	 SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
+Trust this certificate? [no]:  yes
+Certificate was added to keystore
+cxh@cooley 92% 
+</pre>
+
+<li>Verify the signature by calling up the sender and comparing the
+fingerprints on the phone.  The send can view the fingerprints with
+<pre>
+cxh@cooley 93% keytool -printcert -file claudius.cer
+Owner: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
+Issuer: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
+Serial number: 3fa9b2c5
+Valid from: Wed Nov 05 18:32:37 PST 2003 until: Tue Feb 03 18:32:37 PST 2004
+Certificate fingerprints:
+	 MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
+	 SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
+cxh@cooley 94% 
+</pre>
+If the Certificate fingerprints match, then the file has not been
+modified in transit.
+<li> The receiver should then create a model that uses the
+@{link ptolemy.actor.lib.security.PublicKeyReader} actor with
+the appropriate passwords.
+See right side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
+for an example model.
+
+<ol>
+
+<h3>Notes for derived classes</h3>
+
 <p>In initialize(), this actor sets the value of the _signature member
 to the results of calling java.security.Signature.getInstance() with
 the values of the <i>signatureAlgorithm</i> and <i>provider</i>
