@@ -58,18 +58,18 @@
         <property name="_location" class="ptolemy.moml.Location" value="210.0, 95.0">
         </property>
     </property>
-    <property name="speed" class="ptolemy.data.expr.Parameter" value="10.0">
+    <property name="speed" class="ptolemy.data.expr.Parameter" value="0.1 /* miles/second */">
     </property>
     <property name="heading_dot_max" class="ptolemy.data.expr.Parameter" value="2*PI / 20.0">
     </property>
     <property name="r_min" class="ptolemy.data.expr.Parameter" value="speed / heading_dot_max">
     </property>
-    <property name="boundary_x" class="ptolemy.data.expr.Parameter" value="200.0">
+    <property name="boundary_x" class="ptolemy.data.expr.Parameter" value="2.0">
     </property>
     <entity name="aircraft_dynamics" class="ptolemy.actor.TypedCompositeActor">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[791, 574]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[137, 168]">
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[9, 40]">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -349,11 +349,11 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>XYPlotter - Plane Trajectory</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="189.59571960077213"/>
-<yRange min="0.0" max="640.2804754520356"/>
+<title>Plane Trajectory</title>
+<xLabel>x</xLabel>
+<yLabel>y</yLabel>
+<xRange min="0.0" max="1.8959571960077226"/>
+<yRange min="0.0" max="6.402804754520362"/>
 </plot>?>
         </configure>
     </entity>
@@ -694,11 +694,11 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter - Plane Heading</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
+<title>Plane Heading</title>
+<xLabel>time (sec)</xLabel>
+<yLabel>angle</yLabel>
 <xRange min="0.0" max="79.99999999999973"/>
-<yRange min="1.0888248427350984E-15" max="2.2582392217132012"/>
+<yRange min="1.0888248427350984E-15" max="2.2582392217132035"/>
 </plot>?>
         </configure>
     </entity>
@@ -785,11 +785,11 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter2 - Criticality</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
+<title>Criticality (in Seconds to Wall)</title>
+<xLabel>time (sec)</xLabel>
+<yLabel>time</yLabel>
 <xRange min="0.0" max="79.99999999999973"/>
-<yRange min="2.2477112265219272" max="21.718471805300318"/>
+<yRange min="2.2477112265219086" max="21.718471805300318"/>
 </plot>?>
         </configure>
     </entity>
@@ -951,8 +951,8 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter11 - Pilot Control, Bias, and Combined</title>
-<xLabel></xLabel>
+<title>Pilot Control, Bias, and Combined (theta-dot)</title>
+<xLabel>time (sec)</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="79.99999999999973"/>
 <yRange min="-0.3141592653589793" max="0.47123889803846897"/>
@@ -1047,8 +1047,8 @@
     <link port="TimedPlotter11.input" relation="relation"/>
     <link port="TimedPlotter11.input" relation="relation13"/>
     <link port="TimedPlotter11.input" relation="relation15"/>
-    <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation13"/>
+    <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.output" relation="relation14"/>
     <link port="Limiter.input" relation="relation14"/>
     <link port="Limiter.output" relation="relation15"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="LinearControl" class="ptolemy.actor.TypedCompositeActor">
+<entity name="AngleIndependentControl" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[737, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[36, 102]">
@@ -418,7 +418,7 @@
 <xRange min="0.0" max="4006.977726572602"/>
 <yRange min="0.0" max="6898.497048283604"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="1.0 - (wallYPosition - y - minimumTurnRadius)/(wallThickness - minimumTurnRadius)">
         </property>
@@ -449,7 +449,7 @@
         </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="670.5, 378.5">
+        <property name="_location" class="ptolemy.moml.Location" value="675.0, 380.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -468,7 +468,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 369.5">
+        <property name="_location" class="ptolemy.moml.Location" value="360.0, 370.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -515,12 +515,6 @@
             <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.moml.Location" value="125.0, 60.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
