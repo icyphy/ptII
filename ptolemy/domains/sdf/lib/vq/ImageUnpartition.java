@@ -91,8 +91,10 @@ public final class ImageUnpartition extends SDFAtomicActor {
 
     /** 
      * Initialize this actor
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() { 
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 	Parameter p;
 	p = (Parameter) getAttribute("XFramesize");
         xframesize = ((IntToken)p.getToken()).intValue();

@@ -159,6 +159,7 @@ public class FIR extends SDFAtomicActor {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         IntToken interptoken = (IntToken)(interpolation.getToken());
         _interp = interptoken.intValue();

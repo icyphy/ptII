@@ -90,7 +90,7 @@ public class CTSaberSubsys extends CTActor
     /** Initialize: start the saber process.
      */
     public void initialize() throws IllegalActionException {
-        
+        super.initialize();
         _debug(getFullName() + "In initialize");
         super.initialize();
         _debug(getFullName() + "update parameters");

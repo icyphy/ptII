@@ -99,6 +99,7 @@ public class VQEncode extends SDFAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
+        super.initialize();
         File sourcefile = null;
         FileInputStream source = null;
 

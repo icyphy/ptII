@@ -116,10 +116,9 @@ public class DEClock extends DEActor {
      *  the first output at time zero.
      *
      *  FIXME: What to do if the initial current event is less than zero ?
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize()
-            throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         // FIXME: This should be just DEDirector
         // FIXME: This class should be derived from DEActor, which should
         // ensure that this cast is valid.

@@ -100,6 +100,7 @@ public final class ImageDisplay extends SDFAtomicActor {
      * @exception IllegalActionException If a contained method throws it.
      */ 
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         image = (IOPort) getPort("image");
         _oldxsize = 0;

@@ -96,6 +96,7 @@ public class CTZeroCrossingDetector extends CTActor
      *  If the director is not a CTMixedSignalDirector throw an exception.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         /*
         if(!(getDirector() instanceof CTMixedSignalDirector)) {
             throw new IllegalActionException(this,

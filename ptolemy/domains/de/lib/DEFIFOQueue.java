@@ -170,8 +170,7 @@ public class DEFIFOQueue extends TypedAtomicActor {
 
     /** FIXME:Describe me!
      *
-     *  @exception IllegalActionException Thrown if could not create the
-     *   receivers.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

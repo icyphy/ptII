@@ -200,7 +200,7 @@ public class SDFDelay extends SDFAtomicActor {
      *  @exception IllegalActionException If initializing is not permitted.
      */
     public void initialize() throws IllegalActionException {
-        return;
+        super.initialize();
     }
 
     /* Postfire is the last step in an iteration.   This actor returns

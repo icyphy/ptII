@@ -106,8 +106,10 @@ public class SDFRamp extends SDFAtomicActor {
 
     /**
      * Initialize the sequence so the first token created has value zero.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _value = 0;
     }
 

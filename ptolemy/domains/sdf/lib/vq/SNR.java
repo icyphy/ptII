@@ -97,7 +97,8 @@ public final class SNR extends SDFAtomicActor {
      */
     
     public void initialize() throws IllegalActionException {
-        
+        super.initialize();
+
 	Parameter p;
 	
         p = (Parameter) getAttribute("originalXFramesize");

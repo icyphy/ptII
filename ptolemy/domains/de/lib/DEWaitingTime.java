@@ -110,8 +110,9 @@ public class DEWaitingTime extends DEActor {
     }
 
     /** Clear the list of waiters.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
         try{
             super.initialize();
         } catch (IllegalActionException ex) {

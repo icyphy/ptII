@@ -62,7 +62,12 @@ public class PNImageSink extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void initialize() {
+    /** Initialize.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
 	String filename =((StringToken)_filename.getToken()).stringValue();
 	try {
             //_file = new BufferedReader(new FileReader(filename));

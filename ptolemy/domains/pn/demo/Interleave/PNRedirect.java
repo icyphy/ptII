@@ -77,7 +77,11 @@ public class PNRedirect extends AtomicActor{
 	}
     }
 
-    public void initialize() {
+    /** Initialize the actor.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         if (_initValue == null) {
             _initValue = new IntToken(0);
         }

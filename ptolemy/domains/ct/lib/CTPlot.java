@@ -101,7 +101,7 @@ public class  CTPlot extends CTActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
-
+        super.initialize();
         if (_plot == null) {
             _plot = new Plot();
             new PlotFrame(getName(), _plot);

@@ -137,6 +137,7 @@ public class LineCoder extends SDFAtomicActor {
      *   a power of two.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         // FIXME: Handle mutations.
         _wordlength = ((IntToken)(wordlength.getToken())).intValue();

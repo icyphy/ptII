@@ -134,8 +134,10 @@ public class  CTXYPlot extends CTActor {
 
     /** Clear the plot window, adjust the right size as set in the
      *  parameters.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize()  {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 
         if (_plot == null) {
             _plot = new Plot();

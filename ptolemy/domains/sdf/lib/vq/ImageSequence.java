@@ -73,6 +73,7 @@ public final class ImageSequence extends SDFAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
+        super.initialize();
         InputStream source = null;
         Parameter p = (Parameter) getAttribute("imageUrlTemplate");
         String fileroot = ((StringToken)p.getToken()).stringValue();

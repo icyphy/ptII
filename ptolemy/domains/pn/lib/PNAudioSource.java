@@ -65,7 +65,11 @@ public class PNAudioSource extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void initialize() {
+    /** Initialize the actor.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 	String filename =((StringToken)_filename.getToken()).stringValue();
 	try {
 	    FileInputStream fis = new FileInputStream(filename);

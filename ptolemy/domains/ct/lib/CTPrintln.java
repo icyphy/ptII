@@ -101,8 +101,10 @@ public class CTPrintln extends TypedAtomicActor {
     }
 
     /** set up the input data buffer.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _data = new double[input.getWidth()];
     }
 

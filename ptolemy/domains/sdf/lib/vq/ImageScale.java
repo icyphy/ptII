@@ -79,6 +79,7 @@ public final class ImageScale extends SDFAtomicActor {
      *  or xframesize is less than one, or yframesize is less than one.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
 	Parameter p;
 	p = (Parameter) getAttribute("XFramesize");

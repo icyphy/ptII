@@ -128,10 +128,11 @@ public class CTPeriodicalSampler extends CTActor
         return true;
     }
 
-    /** Initilaize, chech if the director is a CTMixedSignalDirector.
+    /** Initialize, check if the director is a CTMixedSignalDirector.
      *  If the director is not a CTMixedSignalDirector throw an exception.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         //if(!(getDirector() instanceof CTMixedSignalDirector)) {
         //    throw new IllegalActionException(this,
         //        " Must be executed after a CTMixedSignalDirector.");

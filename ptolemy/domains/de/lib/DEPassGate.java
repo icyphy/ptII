@@ -143,6 +143,7 @@ public class DEPassGate extends DEActor {
      *   receivers.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _gateOpen = true;
         _lastToken = null;
 

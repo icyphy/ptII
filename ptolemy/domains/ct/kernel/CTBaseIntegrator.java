@@ -260,6 +260,7 @@ public class CTBaseIntegrator extends CTActor
      *       integratorInitialize() of the solver.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _initState = ((DoubleToken)_paramInitState.getToken()).doubleValue();
         _potentialState = _initState;
     }

@@ -78,6 +78,7 @@ public final class ImageContrast extends SDFAtomicActor {
      */
 
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
 	Parameter p;
 

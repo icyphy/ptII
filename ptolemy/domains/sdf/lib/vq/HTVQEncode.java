@@ -126,6 +126,7 @@ public final class HTVQEncode extends SDFAtomicActor {
      * parameter "Codebook".  
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         InputStream source = null;
 

@@ -94,6 +94,7 @@ public class DEPseudoPlot extends DEActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         //_plot.clear(false);
 

@@ -147,11 +147,10 @@ public class DEStats extends DEActor {
     }
 
     /** Intialize the object fields.
-     *
-     *  @exception IllegalActionException Thrown if could not create the
-     *   receivers.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _sum = 0;
         _sum2 = 0;
         _num = 0;

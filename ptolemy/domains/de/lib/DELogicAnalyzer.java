@@ -82,6 +82,7 @@ public class DELogicAnalyzer extends DEActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         if (_logicAnalyzer == null) {
             _logicAnalyzer = new LogicAnalyzer();

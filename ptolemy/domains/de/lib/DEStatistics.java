@@ -152,6 +152,7 @@ public class DEStatistics extends DEActor {
      *   receivers.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _sum = 0;
         _sum2 = 0;
         _num = 0;

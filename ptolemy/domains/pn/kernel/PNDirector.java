@@ -359,7 +359,6 @@ public class PNDirector extends BasePNDirector {
 	Enumeration newactors = _newActors();
 	while (newactors.hasMoreElements()) {
 	    Actor actor = (Actor)newactors.nextElement();
-	    actor.createReceivers();
 	    actor.initialize();
 	    ProcessThread pnt = new ProcessThread(actor, this);
 	    threadlist.insertFirst(pnt);

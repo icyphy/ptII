@@ -99,6 +99,7 @@ public final class VQDecode extends SDFAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         InputStream source = null;
 

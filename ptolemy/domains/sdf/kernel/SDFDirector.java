@@ -217,6 +217,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             (ComponentEntity) actor, "Actor " +
                             "is not ready to fire.");
                 }
+                _debug("Firing " + ((Nameable)actor).getFullName());
                 actor.fire();
                 _postfirereturns = _postfirereturns && actor.postfire();
             }

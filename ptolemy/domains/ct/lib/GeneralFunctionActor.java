@@ -93,7 +93,11 @@ public class GeneralFunctionActor extends TypedAtomicActor {
         }
     }
 
-    public void initialize() {
+    /** Initialize the actor.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         try {
             // create input variables
             Enumeration ports = inputPorts();

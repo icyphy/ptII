@@ -98,6 +98,7 @@ public class Delay extends SDFAtomicActor {
      * throws it.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         // Create the Delay token.
         IntToken token = new IntToken();
         TypedIOPort output = (TypedIOPort)getPort("output");

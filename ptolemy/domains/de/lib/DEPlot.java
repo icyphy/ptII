@@ -98,6 +98,7 @@ public class DEPlot extends DEActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         if (_plot == null) {
             _plot = new Plot();

@@ -178,6 +178,7 @@ public class RaisedCosine extends FIR {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         // FIXME: Doesn't handle mutations.
         double ebw = ((DoubleToken)(excessBW.getToken())).doubleValue();

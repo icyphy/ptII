@@ -178,7 +178,7 @@ public class DEWaveForm extends DEActor {
      *  any other action methods. This method typically initializes
      *  internal members of an actor and produces initial output data.
      *
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

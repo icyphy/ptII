@@ -100,6 +100,7 @@ public final class ImagePartition extends SDFAtomicActor {
      * @exception IllegalActionException If a contained method throws it.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 	Parameter p;
 	p = (Parameter) getAttribute("XFramesize");
         xframesize = ((IntToken)p.getToken()).intValue();

@@ -135,6 +135,7 @@ public class DEFIRfilter extends DEActor {
     /** Describe me
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         // clean  the taps.
         _tapContents = new double[0];

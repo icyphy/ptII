@@ -62,6 +62,7 @@ public final class ImageDisplay extends AtomicActor {
 //     }
 
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _frame = null;
         _oldxsize = 0;
         _oldysize = 0;

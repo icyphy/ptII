@@ -123,6 +123,7 @@ public class PNPlot extends AtomicActor implements Placeable {
      *  using its add() method.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         // FIXME: remove "throws" clause.
         if (plot == null) {
             if (_panel == null) {

@@ -153,9 +153,10 @@ public class DESampler extends DEActor {
     }
     
     /** Reset the initial token.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _lastTokens.clear();
         if (_initToken != null) {
             _lastTokens.insertLast(_initToken.getToken());

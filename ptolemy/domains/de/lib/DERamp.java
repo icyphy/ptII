@@ -128,6 +128,7 @@ public class DERamp extends TypedAtomicActor {
     /** Describe me
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 
         Class valueClass = _value.getToken().getClass();
         Class stepClass = _step.getToken().getClass();

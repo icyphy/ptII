@@ -58,6 +58,8 @@ public final class TicTacToeDisplay extends AtomicActor {
 
     /** Initialize the actor */
     public void initialize() throws IllegalActionException {
+        super.initialize();
+
 	_notdone = true;
 	_nomove = true;
 	_playermove = false;
