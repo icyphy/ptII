@@ -177,7 +177,11 @@ bin_install_dir:
 # Quickly attempt to build the tree
 # 'make fast' is a hack.  If it does not work for you, either fix it or
 # don't use it and use 'make' instead.
+# EXTRA_TARGETS is used in ptolemy/actor/lib/security/demo/Signature/makefile
 fast:
+	@if [ "x$(EXTRA_TARGETS)" != "x" ]; then \
+                $(MAKE) $(EXTRA_TARGETS); \
+        fi
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
