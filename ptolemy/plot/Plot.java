@@ -1207,7 +1207,7 @@ public class Plot extends PlotBox {
 		    break;
                 default:
                     throw new IOException("Failed to parse: '"+ (char)c +
-					  '" in `"+pxgraphargs+"'");
+					  "' in `"+pxgraphargs+"'");
                 }
             }
 	 } catch (IOException e) {
