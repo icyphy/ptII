@@ -99,8 +99,8 @@ test ArrayMath-3.2 {conjugate} {
 
 ####################################################################
 test ArrayMath-4.1 {conjugateR} {
-    set ca2 [java::call ptolemy.math.ArrayMath conjugateR $ca0]
-    javaPrintArray $ca2
+    java::call ptolemy.math.ArrayMath conjugateR $ca0
+    javaPrintArray $ca0
 } {}
 
 ####################################################################
