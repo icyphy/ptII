@@ -6,7 +6,7 @@
     <property name="stockName" value="&quot;YHOO&quot;"
         class="ptolemy.data.expr.Parameter">	
     </property>
-    <property class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
     </property>
 
     <entity name="subscriber" class="ptolemy.actor.lib.jspaces.Subscriber">

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="simple_hierarchy" class="ptolemy.actor.TypedCompositeActor">
-    <property class="ptolemy.domains.giotto.kernel.GiottoDirector">
+    <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="iterations" value="10">
             <doc>Number of iterations in an execution.</doc>
         </property>

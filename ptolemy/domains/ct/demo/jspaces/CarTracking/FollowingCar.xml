@@ -9,7 +9,7 @@
         class="ptolemy.data.expr.Parameter"></property>
     <property name="initialPosition" value="0.0" 
         class="ptolemy.data.expr.Parameter"></property>
-    <property class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
+    <property name="CTRealTimeDirector" class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="240">
         </property>
     </property>

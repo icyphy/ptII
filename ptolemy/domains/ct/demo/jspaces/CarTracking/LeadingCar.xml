@@ -11,7 +11,7 @@
 	        class="ptolemy.actor.gui.style.CheckBoxStyle"-->
             <!-- /property-->
 	</property>
-    <property name="director" class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
+    <property name="CTRealTimeDirector" class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="240">
         </property>
     </property>
