@@ -79,15 +79,16 @@ contained by an actor that has a director.  If it is not, then
 any attempt to read data or list the receivers will trigger
 an exception.
 <p>
-If this port is at the boundary of an opaque composite actor, then
+If this port is at the boundary of an composite actor,
 then it can have both inside and outside links, with corresponding
-inside and outside receivers. The inside links are to relations
+inside and outside receivers if it opaque. The inside links are to relations
 inside the opaque composite actor, whereas the outside links are
 to relations outside. If it is not specified, then a link is an
 outside link.
 <p>
-The port has a <i>width</i>, which by default can be no greater
-than one.  This width is the sum of the widths of the linked relations.
+The port has a <i>width</i>, which by default is constrained to
+be either zero or one. 
+The width is the sum of the widths of the linked relations.
 A port with a width greater than one behaves as a bus interface,
 so if the width is <i>w</i>, then the port can simultaneously
 handle <i>w</i> distinct input or output channels of data.
@@ -95,7 +96,7 @@ handle <i>w</i> distinct input or output channels of data.
 In general, an input port might have more than one receiver for
 each channel.  This occurs particularly for transparent input ports,
 which treat the receivers of the ports linked on the inside as its own.
-But might also occur for opaque ports in some derived classes.
+This might also occur for opaque ports in some derived classes.
 Each receiver in the group is sent the same data. Thus, an input port in
 general will have <i>w</i> distinct groups of receivers, and can receive
 <i>w</i> distinct channels.
@@ -194,17 +195,16 @@ public class IOPort extends ComponentPort {
      *  reference to the same token and no clones are made.
      *  The transfer is accomplished by calling getRemoteReceivers()
      *  to determine the number of channels with valid receivers and
-     *  then calling send on the appropriate channels.
-     *  It would probably be faster to call put() directly on the receivers.
+     *  then putting the token into the receivers.
      *  If there are no destination receivers, then nothing is sent.
      *  If the port is not connected to anything, or receivers have not been
      *  created in the remote port, then just return.
      *  <p>
      *  Some of this method is read-synchronized on the workspace.
-     *  Since it is possible for a thread to block while executing a put,
+     *  Since it is possible for a thread to block while executing a put(),
      *  it is important that the thread does not hold read access on
      *  the workspace when it is blocked. Thus this method releases
-     *  read access on the workspace before calling put.
+     *  read access on the workspace before calling put().
      *
      *  @param token The token to send
      *  @exception IllegalActionException Not thrown in this base class.
@@ -229,8 +229,9 @@ public class IOPort extends ComponentPort {
         // NOTE: This does not call send() here, because send()
         // repeats the above on each call.
         for (int i = 0; i < farReceivers.length; i++) {
-            if (farReceivers[i] == null) continue;
-
+            if (farReceivers[i] == null) {
+                continue;
+            }
             for (int j = 0; j < farReceivers[i].length; j++) {
                 farReceivers[i][j].put(token);
             }
@@ -257,10 +258,10 @@ public class IOPort extends ComponentPort {
      *  Since it is possible for a thread to block while executing a put,
      *  it is important that the thread does not hold read access on
      *  the workspace when it is blocked. Thus this method releases
-     *  read access on the workspace before calling put.
+     *  read access on the workspace before calling put().
      *
      *  @param tokenArray The token array to send
-     *  @param vectorLength The number of elements of of the token
+     *  @param vectorLength The number of elements of the token
      *   array to send.
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -283,19 +284,20 @@ public class IOPort extends ComponentPort {
         // NOTE: This does not call send() here, because send()
         // repeats the above on each call.
         for (int i = 0; i < farReceivers.length; i++) {
-            if (farReceivers[i] == null) continue;
-
+            if (farReceivers[i] == null) {
+                continue;
+            }
             for (int j = 0; j < farReceivers[i].length; j++) {
                 farReceivers[i][j].putArray(tokenArray, vectorLength);
             }
         }
     }
 
-    /** Set all connected receivers to have no tokens. The transfer
-     *  is accomplished by calling clear() on the appropriate receivers.
-     *  If there are no destination receivers, or if this is not an
-     *  output port, then do nothing.
-     *  Some of this method is read-synchronized on the workspace.
+    /** Set all receivers connected on the outside to have no
+     *  tokens. The transfer is accomplished by calling clear() on the
+     *  appropriate receivers.  If there are no destination receivers,
+     *  or if this is not an output port, then do nothing.  Some of
+     *  this method is read-synchronized on the workspace.
      *  @see #sendClear()
      *  @exception IllegalActionException If a receiver does not support
      *   clear().
@@ -318,8 +320,9 @@ public class IOPort extends ComponentPort {
         // so we make sure to release read access above before calling
         // clear().
         for (int i = 0; i < farReceivers.length; i++) {
-            if (farReceivers[i] == null) continue;
-
+            if (farReceivers[i] == null) {
+                continue;
+            }
             for (int j = 0; j < farReceivers[i].length; j++) {
                 farReceivers[i][j].clear();
             }
@@ -358,10 +361,9 @@ public class IOPort extends ComponentPort {
     }
 
     /** Create new receivers for this port, replacing any that may
-     *  previously exist, and validate any instances of Settable that this
-     *  port may contain. This method should only be
-     *  called on opaque ports. It should also normally only be called
-     *  during the preinitialize and prefire methods of the director.
+     *  previously exist, and validate any instances of Settable that
+     *  this port may contain. This method should only be called on
+     *  opaque ports.
      *  <p>
      *  If the port is an input port, receivers are created as necessary
      *  for each relation connecting to the port from the outside.
@@ -401,8 +403,8 @@ public class IOPort extends ComponentPort {
             Iterator outsideRelations = linkedRelationList().iterator();
             while (outsideRelations.hasNext()) {
                 IORelation relation = (IORelation) outsideRelations.next();
-                // A null link (supported since indexed links) might
-                // yield a null relation here. EAL 7/19/00.
+                // A null link which can be created using insertLink()
+                // with an index might result in an null relation.
                 if (relation != null) {
                     int width = relation.getWidth();
 
@@ -480,7 +482,6 @@ public class IOPort extends ComponentPort {
             LinkedList result = new LinkedList();
 
             Iterator ports = deepConnectedPortList().iterator();
-            //int myDepth = depthInHierarchy();
             while (ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
                 if (port.isInput()) {
@@ -524,7 +525,6 @@ public class IOPort extends ComponentPort {
             LinkedList result = new LinkedList();
 
             Iterator ports = deepConnectedPortList().iterator();
-            //int myDepth = depthInHierarchy();
             while (ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
                 if (port.isOutput()) {
@@ -566,9 +566,13 @@ public class IOPort extends ComponentPort {
      *   are none.
      */
     public Receiver[][] deepGetReceivers() {
-        if (!isInput()) return _EMPTY_RECEIVER_ARRAY;
+        if (!isInput()) {
+            return _EMPTY_RECEIVER_ARRAY;
+        }
         int width = getWidth();
-        if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
+        if (width <= 0) {
+            return _EMPTY_RECEIVER_ARRAY;
+        }
         if (_insideReceiversVersion != _workspace.getVersion()) {
             // Cache is invalid.  Update it.
             _insideReceivers = new Receiver[width][0];
@@ -604,7 +608,7 @@ public class IOPort extends ComponentPort {
      *  Since it is possible for a thread to block while executing a get,
      *  it is important that the thread does not hold read access on
      *  the workspace when it is blocked. Thus this method releases
-     *  read access on the workspace before calling get.
+     *  read access on the workspace before calling get().
      *
      *  @param channelIndex The channel index.
      *  @return A token from the specified channel.
@@ -743,6 +747,11 @@ public class IOPort extends ComponentPort {
      *  </pre>
      *  I.e., getCurrentTime() is called before get().
      *  Currently, only the DT domain uses this per-channel time feature.
+     *
+     *  @param channelIndex The channel index.
+     *  @return The current time associated with a certain channel.
+     *  @exception IllegalActionException If the channel index
+     *  is out of range or if the port is not an input port.
      */
     public double getCurrentTime(int channelIndex)
             throws IllegalActionException {
