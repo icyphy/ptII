@@ -519,7 +519,7 @@ public class MoMLParser extends HandlerBase {
      *  @param column The approximate column number of the error.
      *  @exception XmlException If called.
      */
-    public void error(String message, String systemId
+    public void error(String message, String systemId,
             int line, int column) throws XmlException {
 	String currentExternalEntity = "";
 	try {
