@@ -71,6 +71,8 @@ public class AudioViewer extends PlotApplication {
     }
 
     /** Construct an audio plot with no command-line arguments.
+     *  @param args The command line arguments that are handed to
+     *  PlotApplication.
      *  @exception Exception If the command-line arguments have problems.
      */
     public AudioViewer(String args[]) throws Exception {
@@ -101,6 +103,8 @@ public class AudioViewer extends PlotApplication {
     }
 
     /** Create a new plot window and map it to the screen.
+     *  @param args The command line arguments that are eventually
+     *  passed to PlotApplication.
      */
     public static void main(String args[]) {
         AudioViewer plot = null;
