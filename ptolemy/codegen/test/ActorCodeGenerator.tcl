@@ -52,8 +52,10 @@ test ActorCodeGenerator-1.1 {} {
 	    [java::call ptolemy.codegen.CodeGeneratorClassFactory getInstance]
     set actorCodeGeneratorInfo \
 	    [java::new ptolemy.codegen.ActorCodeGeneratorInfo]
-    set outputDirectoryName "$PTII/cg/test"
-    set outputPackageName "cg.test"
+    set outputDirectoryName "."
+    set outputPackageName "acg"
+    file mkdir $outputPackageName
+
     set actorCodeGenerator \
 	    [java::new ptolemy.codegen.ActorCodeGenerator \
 	    $codeGeneratorClassFactory \
@@ -72,5 +74,5 @@ test ActorCodeGenerator-1.1 {} {
 
     # Generate Code
     $actorCodeGenerator pass1 $actorCodeGeneratorInfo
-} {}
+} {acg.CG_Ramp_Ramp}
 
