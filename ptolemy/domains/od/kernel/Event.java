@@ -1,4 +1,4 @@
-/* A Token with a time stamp and destination Receiver.
+/* An aggregation consisting of a Token, a time stamp and destination Receiver.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -24,39 +24,39 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Red (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.od.kernel;
 
 import ptolemy.actor.*;
 import ptolemy.data.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-
-import java.util.Enumeration;
-import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Event
 /**
-An Event is a Token that has associated with it a time stamp and
-a destination Receiver.
+An Event is an aggregation consisting of a Token, a time stamp and 
+destination Receiver. Both the token and destination receiver are 
+allowed to have null values. This is particularly useful in situations
+where the specification of the destination receiver may be considered 
+redundant.
 
 @author John S. Davis II
 @version @(#)Event.java	1.3	11/02/98
 @see ptolemy.actors.Token
 */
+
 public class Event {
 
-    /** 
+    /** Construct an Event with a token and time stamp.
      */
     public Event(Token token, double time) {
         _token = token;
         _timeStamp = time;
     }
 
-    /** 
+    /** Construct an Event with a token, a time stamp and a 
+     *  destination receiver.
      */
     public Event(Token token, double time, Receiver receiver) {
         this(token, time);
@@ -91,7 +91,7 @@ public class Event {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    Token _token;
     double _timeStamp = 0.0;
-    Receiver _receiver;
+    Token _token = null;
+    Receiver _receiver = null;
 }

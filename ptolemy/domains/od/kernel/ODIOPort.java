@@ -38,38 +38,77 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// ODIOPort
 /** 
-A timed input/output port used in the OD domain.
+An ODIOPort is a timed input/output port used in the OD domain. ODIOPorts
+are used to send tokens between ODActors, and in so doing, time is 
+associated with the tokens as they are placed in ODReceivers. The 
+association of time with a token involves the use of an Event which is
+then stored in a ODReceiver.
 
-FIXME: There are some critical semantic differences between actors that
+BEGIN FIXME 
+       There are some critical semantic differences between actors that
        use ODIOPorts and polymorphic ports which use regular IOPorts.
        The key difference is that IOPort.send() sets the timestamp of the
        token to the rcvrTime of the receiving actor's receiver. ODIOPort.send()
        sets the timestamp of the token to the minimum rcvrTime of the
-       sending actor. FIXME: Do I have this right???
+       sending actor. 
        
        What I should do is set the timestamp of the token to the current
        time of the sending actor.
+END FIXME 
+
+In addition to the specification of time values, each ODIOPort has a 
+(integer) priority. If an ODIOPort is an input, its priority is used 
+relative to the priorities of other input ODIOPorts for a given ODActor 
+to determine how receivers are selected when there are pending events 
+with simultaneous times. The receivers of ODIOPorts with higher priorities 
+are selected first in situations involving simultaneous event times.
 
 
 @author John S. Davis II
 @version @(#)ODIOPort.java	1.5	11/16/98
+@see ptolemy.domains.od.kernel.Event
 */
+
 public class ODIOPort extends IOPort {
 
-    /** 
+    /** Construct an ODIOPort with no container and no name that is
+     *  neither an input nor an output.
      */
     public ODIOPort() {
         super();
     }
     
-    /** 
+    /** Construct an ODIOPort with a containing actor and a name
+     *  that is neither an input nor an output.  The specified container
+     *  must implement the Actor interface, or an exception will be thrown.
+     *
+     * @param container The container actor.
+     * @param name The name of the port.
+     * @exception IllegalActionException If the port is not of an acceptable
+     *  class for the container, or if the container does not implement the
+     *  Actor interface.
+     * @exception NameDuplicationException If the name coincides with
+     *  a port already in the container.
      */
     public ODIOPort(ComponentEntity container, String name) 
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
     
-    /** 
+    /** Construct an ODIOPort with a container and a name that is
+     *  either an input, an output, or both, depending on the third
+     *  and fourth arguments. The specified container must implement
+     *  the Actor interface or an exception will be thrown.
+     *
+     *  @param container The container actor.
+     *  @param name The name of the port.
+     *  @param isinput True if this is to be an input port.
+     *  @param isoutput True if this is to be an output port.
+     *  @exception IllegalActionException If the port is not of an acceptable
+     *   class for the container, or if the container does not implement the
+     *   Actor interface.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a port already in the container.
      */
     public ODIOPort(ComponentEntity container, String name,
             boolean isinput, boolean isoutput) 
@@ -80,18 +119,32 @@ public class ODIOPort extends IOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Broadcast a token to all connected receivers. The time stamp 
-     *  associated with this token will be the current time of the actor
-     *  which contains this port.
+    /** Send a token to all connected receivers. If there are no 
+     *  connected receivers, then nothing is sent. The time stamp 
+     *  associated with this token will be the current time of the 
+     *  actor which contains this port.
+     *
+     * @param token The token to send
+     * @exception IllegalActionException If the port is not an output.
+     * @exception NoRoomException If a send to one of the channels throws
+     *  it.
      */
     public void broadcast(Token token) 
             throws IllegalActionException, NoRoomException {
         broadcast( token, ((ODActor)getContainer()).getCurrentTime() );
     }
             
-    /** Broadcast a token to all connected receivers. The time stamp 
-     *  associated with this token will be the current time of the 
-     *  actor which contains this port plus the specified delay.
+    /** Send a token to all connected receivers. If there are no connected
+     *  receivers, then nothing is sent. The time stamp associated with 
+     *  this token will be the current time of the actor which contains 
+     *  this port plus the specified delay.
+     *
+     * @param token The token to send
+     * @param delay The delay from the containing actors current time.
+     * @exception IllegalActionException If the port is not an output or
+     *  the delay is negative.
+     * @exception NoRoomException If a send to one of the channels throws
+     *  it.
      */
     public void broadcast(Token token, double delay) 
             throws IllegalActionException, NoRoomException {
@@ -120,30 +173,56 @@ public class ODIOPort extends IOPort {
         }
     }
    
-    /** FIXME
+    /** Return the priority associated with this port.
+     * @return int The priority of this port.
      */
     public int getPriority() {
         return _priority;
     }
     
-    /** Note that the priority of a port only impacts the priority of the
-     *  port's contained receivers in a relative sense. 
-     *  FIXME
+    /** Set the priority associated with this port. If this is an input
+     *  port, the priority will be passed to the contained receiver's of 
+     *  this port and will be used to determine how receivers with 
+     *  simultaneous events are dealt with. Greater priorities get 
+     *  preference over lower priorities. Priority is measured with 
+     *  respect to the priority of other input ports associated with the 
+     *  containing actor of this port. 
+     * @param int The priority of this port.
      */
     public void setPriority(int priority) {
         _priority = priority;
     }
     
-    /** Send a token to the receiver specified by the output port
-     *  and channel number.
+    /** Send the specified token to all receivers connected to the
+     *  specified channel.  The first receiver gets the actual token,
+     *  while subsequent ones get a clone.  If there are no receivers,
+     *  then do nothing. The current time of the containing actor of 
+     *  this port will be associated with the token.
+     * 
+     * @param channel The index of the channel, from 0 to width-1.
+     * @param token The token to send.
+     * @exception NoRoomException If there is no room in the receiver.
+     * @exception IllegalActionException If the port is not an output or if
+     *  the index is out of range.
      */
     public void send(int channel, Token token)
             throws InvalidStateException, IllegalActionException  {
+        // send( channel, token );
         send( channel, token, ((ODActor)getContainer()).getCurrentTime() );
     }
             
-    /** Send a token to the receiver specified by the output port
-     *  and channel number.
+    /** Send the specified token to all receivers connected to the
+     *  specified channel.  The first receiver gets the actual token,
+     *  while subsequent ones get a clone.  If there are no receivers,
+     *  then do nothing. The current time of the containing actor of 
+     *  this port plus the specified delay will be associated with the token.
+     * 
+     * @param channel The index of the channel, from 0 to width-1.
+     * @param token The token to send.
+     * @param delay The delay from the containing actors current time.
+     * @exception NoRoomException If there is no room in the receiver.
+     * @exception IllegalActionException If the port is not an output, if
+     *  the index is out of range.
      */
     public void send(int channelindex, Token token, double delay)
             throws InvalidStateException, IllegalActionException  {
@@ -183,7 +262,8 @@ public class ODIOPort extends IOPort {
             }
         } finally {
             workspace().doneReading();
-        }
+	}
+
     }
 
 
