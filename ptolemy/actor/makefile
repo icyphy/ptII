@@ -77,6 +77,7 @@ JSRCS = \
 	Director.java \
 	Executable.java \
 	ExecutionListener.java \
+	FiringEvent.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
