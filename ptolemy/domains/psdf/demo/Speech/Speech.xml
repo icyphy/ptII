@@ -4,21 +4,11 @@
 <entity name="Speech" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
         </property>
     </property>
@@ -50,13 +40,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 240.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="process blocks" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 240.0">
@@ -86,24 +69,16 @@
             </property>
         </property>
         <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="Scheduler2" class="ptolemy.domains.psdf.kernel.PSDFScheduler">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 45.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
         </property>
         <port name="blockSize" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -115,41 +90,18 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 125.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="filterSize">
             </property>
-            <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 125.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
             <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="filterSize">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 135.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="AudioPlayer" class="ptolemy.actor.lib.javasound.AudioPlayer">
             <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="8000">
@@ -182,33 +134,13 @@
                     </property>
                 </property>
             </property>
-            <property name="transferSize" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 305.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="transferSize">
-                </property>
-            </port>
         </entity>
         <entity name="Decoder" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 305.0">
             </property>
             <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <property name="Scheduler2" class="ptolemy.domains.psdf.kernel.PSDFScheduler">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 65.0">
                 </property>
             </property>
@@ -234,20 +166,6 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 140.0">
-                </property>
-            </property>
-            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 60.0">
                 </property>
             </property>
             <port name="ReflectionCoefficients" class="ptolemy.actor.parameters.ParameterPort">
@@ -276,41 +194,18 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 210.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
                 <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="blockSize">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 270.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                </port>
             </entity>
             <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
                 <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="blockSize">
                 </property>
-                <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 270.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -340,44 +235,16 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 115.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="LevinsonDurbin" class="ptolemy.actor.lib.LevinsonDurbin">
             <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 115.0">
             </property>
-            <port name="autocorrelation" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="errorPower" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="linearPredictor" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="reflectionCoefficients" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Encoder" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 210.0">
             </property>
             <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="blockSize">
-                </property>
-                <property name="Scheduler2" class="ptolemy.domains.psdf.kernel.PSDFScheduler">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 65.0">
                 </property>
@@ -444,23 +311,9 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 90.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 60.0">
-                </property>
             </property>
             <port name="ReflectionCoefficients" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
@@ -482,53 +335,24 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 210.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <entity name="Quantizer2" class="ptolemy.actor.lib.Quantizer">
                 <property name="levels" class="ptolemy.data.expr.Parameter" value="createSequence(-maxLevel,(2*maxLevel)/quantizationLevels, quantizationLevels)">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 210.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
                 <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="blockSize">
                 </property>
-                <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 270.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
                 <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="blockSize">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 270.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                </port>
             </entity>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="365.0, 210.0">
@@ -558,18 +382,8 @@
             <link port="SequenceToArray.output" relation="relation4"/>
         </entity>
         <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 220.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="multiport"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="190.0, 160.0">

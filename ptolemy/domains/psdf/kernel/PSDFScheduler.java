@@ -241,6 +241,14 @@ public class PSDFScheduler extends BaseSDFScheduler {
  
         _saveBufferSizes(_bufferSizeMap);
        
+        // Crazy hack to infer firing counts for each actor.
+        try {
+            _inferFiringCounts(resultSchedule, null);
+        } catch (NameDuplicationException ex) {
+            throw new NotSchedulableException(null, ex,
+                    "Error recording firing counts");
+        }
+
         // Crazy hack to Infer port production: FIXME: This should be
         // done as part of the APGAN expansion where the rates of
         // external ports are unknown The reason is that it will make
@@ -263,36 +271,36 @@ public class PSDFScheduler extends BaseSDFScheduler {
             } else if (port.isInput()) {
                 List sinks = port.insideSinkPortList();
                 if(sinks.size() > 0) {
-                    Variable variable = SDFUtilities.getRateVariable(
-                            (IOPort)sinks.get(0), "tokenConsumptionRate");
-                    if(variable != null) {
-                        String expression = SDFUtilities.getRateVariable(
-                                (IOPort)sinks.get(0), 
-                                "tokenConsumptionRate").getExpression();
-                        SDFUtilities.setExpressionIfNotDefined(
-                                port, "tokenConsumptionRate",
-                                expression);
-                        
-                        if (_debugging && VERBOSE) {
-                            _debug("Setting tokenConsumptionRate to "
-                                    + expression);
-                        }
+                    IOPort connectedPort = (IOPort)sinks.get(0);
+                    Entity entity = (Entity)connectedPort.getContainer();
+                    String name = connectedPort.getName(container);
+                    String identifier = name.replaceAll("\\.", "::");
+                    String expression = identifier + "::tokenConsumptionRate * " + entity.getName() + "::firingCount";
+                   
+                    SDFUtilities.setExpressionIfNotDefined(
+                            port, "tokenConsumptionRate",
+                            expression);
+                    
+                    if (_debugging && VERBOSE) {
+                        _debug("Setting tokenConsumptionRate to "
+                                + expression);
                     }
                 }
             } else if (port.isOutput()) {
                 List sources = port.insideSourcePortList();
                 if(sources.size() > 0) {
-                    Variable variable = SDFUtilities.getRateVariable(
-                            (IOPort)sources.get(0), "tokenProductionRate");
-                    if(variable != null) {
-                        String expression = variable.getExpression();
-                        SDFUtilities.setExpressionIfNotDefined(
-                                port, "tokenProductionRate",
-                                expression);
-                        if (_debugging && VERBOSE) {
-                            _debug("Setting tokenProductionRate to "
-                                    + expression);
-                        }
+                    IOPort connectedPort = (IOPort)sources.get(0);
+                    Entity entity = (Entity)connectedPort.getContainer();
+                    String name = connectedPort.getName(container);
+                    String identifier = name.replaceAll("\\.", "::");
+                    String expression = identifier + "::tokenProductionRate * " + entity.getName() + "::firingCount";
+
+                    SDFUtilities.setExpressionIfNotDefined(
+                            port, "tokenProductionRateRate",
+                            expression);
+                    if (_debugging && VERBOSE) {
+                        _debug("Setting tokenProductionRate to "
+                                + expression);
                     }
                 }
                     // Infer init production.
@@ -478,7 +486,38 @@ public class PSDFScheduler extends BaseSDFScheduler {
             }
         } catch (Exception exception) {
             throw new RuntimeException("Error converting cluster hierarchy to "
-                    + "schedule.\n" + exception.getMessage());
+                    + "sschchedule.\n" + exception.getMessage());
+        }
+    }
+
+    private void _inferFiringCounts(
+            SymbolicScheduleElement element, String expression) 
+            throws IllegalActionException, NameDuplicationException {
+        String recursiveExpression;
+        if(expression == null) {
+            recursiveExpression = element.expression();
+        } else {
+            recursiveExpression = expression + "*" + element.expression();
+        }
+        if(element instanceof SymbolicFiring) {
+            SymbolicFiring firing = (SymbolicFiring)element;
+            Entity actor = (Entity)firing.getActor();
+            Variable parameter = (Variable)actor.getAttribute("firingCount");
+            if (parameter == null) {
+                parameter = new Parameter(actor, "firingCount");
+                parameter.setVisibility(Settable.NOT_EDITABLE);
+                parameter.setPersistent(false);
+            }
+            parameter.setExpression(recursiveExpression);
+        } else if(element instanceof SymbolicSchedule) {
+            SymbolicSchedule schedule = (SymbolicSchedule)element;
+            
+            for(Iterator i = schedule.iterator(); i.hasNext();) {
+                _inferFiringCounts((SymbolicScheduleElement)i.next(), 
+                        recursiveExpression);
+            }
+        } else {
+            throw new RuntimeException("Unexpected Schedule Element");
         }
     }
 
@@ -676,6 +715,13 @@ public class PSDFScheduler extends BaseSDFScheduler {
     private interface SymbolicScheduleElement {
         // FIXME: populate with more methods as appropriate.
 
+        /** Return the most recent expression that was used to set the
+         *  iteration count of this symbolic firing.
+         *  @return The most recent expression.
+         *  @see setIterationCount(String).
+         */
+        public String expression();
+
         /** Get the parse tree of the iteration expression.
          *  @return The parse tree.
          */
@@ -712,17 +758,10 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 throws IllegalActionException {
             PSDFDirector director = (PSDFDirector)getContainer();
             CompositeActor reference = (CompositeActor)director.getContainer();
-            Variable result;
-            if(name.indexOf("::") != -1) {
-                String insideName = name.replaceAll("::", ".");
-                _debug("insideName = " + insideName);
-                result = (Variable)reference.getAttribute(insideName);
-            } else {
-                result = getScopedVariable(
-                        null,
-                        reference,
-                        name);
-            }
+            Variable result = getScopedVariable(
+                    null,
+                    reference,
+                    name);
 
             if (result != null) {
                 return result.getToken();
@@ -742,17 +781,11 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 throws IllegalActionException {
             PSDFDirector director = (PSDFDirector)getContainer();
             CompositeActor reference = (CompositeActor)director.getContainer();
-            Variable result;
-            if(name.indexOf("::") != -1) {
-                String insideName = name.replaceAll("::", ".");
-                result = (Variable)reference.getAttribute(insideName);
-            } else {
-                result = getScopedVariable(
-                        null,
-                        reference,
-                        name);
-            }
-
+            Variable result = getScopedVariable(
+                    null,
+                    reference,
+                    name);
+       
             if (result != null) {
                 return result.getType();
             } else {
@@ -772,17 +805,11 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 throws IllegalActionException {
             PSDFDirector director = (PSDFDirector)getContainer();
             CompositeActor reference = (CompositeActor)director.getContainer();
-            Variable result;
-            if(name.indexOf("::") != -1) {
-                String insideName = name.replaceAll("::", ".");
-                result = (Variable)reference.getAttribute(insideName);
-            } else {
-                result = getScopedVariable(
-                        null,
-                        reference,
-                        name);
-            }
-
+            Variable result = getScopedVariable(
+                    null,
+                    reference,
+                    name);
+            
             if (result != null) {
                 return result.getTypeTerm();
             } else {
