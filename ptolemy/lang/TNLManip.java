@@ -75,8 +75,7 @@ public class TNLManip {
      *  @param list The list to clone.
      *  @return A new list.
      */
-    public static final ArrayList cloneList(List list) {
-        // FIXME: Shouldn't the return value be a List?
+    public static final List cloneList(List list) {
         Iterator itr = list.iterator();
         ArrayList retval = new ArrayList(list.size());
 
@@ -231,9 +230,8 @@ public class TNLManip {
 
                 retList.add(retval);
             } else {
-                // FIXME: This should not be a runtime exception!
-                throw new RuntimeException("unknown object in list: " +
-                        obj.getClass());
+                throw new RuntimeException("TNLManip.traverseList(): " +
+                        "unknown object in list: " + obj.getClass());
             }
         }
         return retList;

@@ -57,8 +57,8 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  be added to the child list later.
      */
     public TreeNode() {
-        // the list will grow as needed, and should be trimmed after
-        // all members are added
+        // The list will grow as needed, and should be trimmed after
+        // all members are added.
         _childList = new ArrayList();
     }
 
@@ -93,19 +93,19 @@ public abstract class TreeNode extends TrackedPropertyMap
         switch (visitor.traversalMethod()) {
         case IVisitor.TM_CHILDREN_FIRST:
             {
-                // Traverse the children first
+                // Traverse the children first.
                 traverseChildren(visitor, visitorArgs);
                 retval = _acceptHere(visitor, visitorArgs);
 
-                // remove the children return values to prevent
-                // exponential usage of memory
+                // Remove the children return values to prevent
+                // exponential usage of memory.
                 removeProperty(CHILD_RETURN_VALUES_KEY);
             }
             break;
 
         case IVisitor.TM_SELF_FIRST:
             {
-                // Visit myself first
+                // Visit myself first.
                 retval = _acceptHere(visitor, visitorArgs);
                 traverseChildren(visitor, visitorArgs);
             }
@@ -113,14 +113,14 @@ public abstract class TreeNode extends TrackedPropertyMap
 
         case IVisitor.TM_CUSTOM:
             {
-                // Let visitor do custom traversal
+                // Let visitor do custom traversal.
                 retval = _acceptHere(visitor, visitorArgs);
             }
             break;
 
         default:
             throw new RuntimeException("Unknown traversal method for visitor");
-        } // end switch
+        }
 
         return retval;
     }
@@ -170,12 +170,12 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  @return A deep copy of this node.
      */
     public Object clone() {
-        // don't clone singletons
+        // Don't clone singletons.
         if (isSingleton()) {
             return this;
         }
         TreeNode copy = (TreeNode) super.clone();
-        copy._childList = TNLManip.cloneList(_childList);
+        copy._childList = (ArrayList) TNLManip.cloneList(_childList);
         return copy;
     }
 
@@ -291,11 +291,12 @@ public abstract class TreeNode extends TrackedPropertyMap
 			sb.append(" " + retval.toString() + "} \n");
 		    }
                 }
-            } // if (methodName.startsWith("get") ...
-        } // for
+            }
+        }
 
         if (matchingMethods < 1) {
-            sb.append(" {leaf}"); // Node has no children
+            // Node has no children.
+            sb.append(" {leaf}");
         } else {
             sb.append(prefix + "}") ;
         }
