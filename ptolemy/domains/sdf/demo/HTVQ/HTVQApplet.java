@@ -102,16 +102,18 @@ public class HTVQApplet extends SDFApplet {
 	    ImageSequence source = new ImageSequence(_toplevel, "Source");
             source.setBaseURL(baseURL);
 
-            //added SNR actor
-            SNR ratio = new SNR(_toplevel, "SNR");
+            //added PSNR actor
+            PSNR snr = new PSNR(_toplevel, "PSNR");
 
             ImagePartition part = new ImagePartition(_toplevel, "Part");
 
 	    HTVQEncode encode = new HTVQEncode(_toplevel, "Encoder");
             encode.setBaseURL(baseURL);
+            encode.blockCount.setExpression("3168");
 
 	    VQDecode decode = new VQDecode(_toplevel, "Decoder");
             decode.setBaseURL(baseURL);
+            decode.blockCount.setExpression("3168");
 
 	    ImageUnpartition unPartition =
 		new ImageUnpartition(_toplevel, "Unpart");
@@ -135,7 +137,7 @@ public class HTVQApplet extends SDFApplet {
             r = (TypedIORelation) _toplevel.connect(
                     source.output, part.input, "R1");
             original.input.link(r);
-            ((TypedIOPort)ratio.getPort("inoriginal")).link(r);
+            snr.signal.link(r);
 
             r = (TypedIORelation) _toplevel.connect(
                     part.output, encode.input, "R2");
@@ -148,11 +150,10 @@ public class HTVQApplet extends SDFApplet {
 
             r = (TypedIORelation) _toplevel.connect(
                     unPartition.output, consumer.input, "R5");
-            ((TypedIOPort)ratio.getPort("inmodified")).link(r);
+            snr.distortedSignal.link(r);
 
             r = (TypedIORelation) _toplevel.connect(
-                    (TypedIOPort)ratio.getPort("SNRvalue"),
-                    prn.input, "R6");
+                    snr.output, prn.input, "R6");
 
 
         } catch (Exception ex) {
