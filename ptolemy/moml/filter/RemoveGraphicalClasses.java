@@ -159,8 +159,13 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 null);
         //_graphicalClasses.put("ptolemy.actor.lib.gui.Display",
         //        "ptolemy.actor.lib.Discard");
+
+	// Generated applet from moml/demo/modulation.xml
+	// fails to run if substitute Attribute for NodeControllerFactory
+	// so we set it to null instead.
         //_graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
         //        "ptolemy.kernel.util.Attribute");
+
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 null);
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
@@ -171,6 +176,10 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
                 "ptolemy.kernel.util.Attribute");
+  	// Generated applet from moml/demo/modulation.xml
+  	// fails to run if substitute Attribute for AnnotationEditorFactory
+	// so we set it to null instead.
+
         //_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
         //        "ptolemy.kernel.util.Attribute");
 
