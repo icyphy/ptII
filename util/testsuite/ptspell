@@ -36,14 +36,43 @@
 # Keep the local dictionary in sort order
 LOCALFILE=
 if [ -f "$PTII/util/testsuite/ptlocaldict" ]; then
-	LOCALFILE="+$PTII/util/testsuite/ptlocaldict"
+	LOCALFILE="$PTII/util/testsuite/ptlocaldict"
 else
 	echo "$0: The Ptolemy II local dictionary at '$PTII/util/testsuite/ptlocaldict' can't be found"
 fi
 
-# The sed calls split up words with internal capitalization
-spell $LOCALFILE ${1+"$@"} | \
-	sed -e 's/\./ /g' | spell $LOCALFILE | \
-	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | spell $LOCALFILE | \
+ISPELL=/usr/local/bin/ispell
+if [ -f $ISPELL ]; then
+    cat ${1+"$@"} |$ISPELL -l -p $LOCALFILE | \
+	sed -e 's/\./ /g' | $ISPELL -l -p $LOCALFILE | \
+	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | $ISPELL -l -p $LOCALFILE | \
+	sed -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' | \
+        $ISPELL -l -p $LOCALFILE | sort
+
+else
+    # Determine if we are on windows
+    windows=no
+    case "${OSTYPE-no}" in
+	# Cygwin Bash
+	cygwin*)
+	    windows=yes;;
+	# Tcsh
+	Windows*)
+	    windows=yes;;
+    esac
+
+    if [ "$windows" = "yes" ]; then
+	echo "$0: Could not find"
+	echo "  '$ISPELL'."
+	echo "  A Windows ispell tar file for Cygwin can be found at:"
+	echo "  http://ptolemy.eecs.berkeley.edu/tycho/tychoTools.htm"
+    fi
+
+
+    # The sed calls split up words with internal capitalization
+    spell +$LOCALFILE ${1+"$@"} | \
+	sed -e 's/\./ /g' | spell +$LOCALFILE | \
+	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | spell +$LOCALFILE | \
 	sed -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' \
-        | spell $LOCALFILE
+        | spell +$LOCALFILE
+fi
