@@ -285,14 +285,18 @@ public class HistogramPlotter extends PlotterBase
             if (_plotSize != null) {
                 _plotSize.setSize(plot);
             }
+            _frame.show();
         } else {
             // Clear the histogram without clearing the axes.
             plot.clear(false);
             plot.repaint();
         }
+        /* NOTE: This causes a bug where manual resizes of the window
+           get overridden on re-run.
         if (_frame != null) {
             _frame.show();
         }
+        */
     }
 
     /** Read at most one input token from each input channel

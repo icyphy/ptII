@@ -168,6 +168,7 @@ public class Plotter extends PlotterBase {
             if (_plotSize != null) {
                 _plotSize.setSize(plot);
             }
+            _frame.show();
         } else {
             if (plot instanceof Plot) {
                 int width = ((Plot)plot).getNumDataSets();
@@ -181,8 +182,11 @@ public class Plotter extends PlotterBase {
                 plot.repaint();
             }
         }
+        /* NOTE: This causes a bug where manual resizes of the window
+           get overridden on re-run.
         if (_frame != null) {
             _frame.show();
         }
+        */
     }
 }
