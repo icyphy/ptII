@@ -107,6 +107,23 @@ test ArrayFIFOQueue-2.4 {Set container} {
     [$queue getContainer] getName
 } {parent}
 
+######################################################################
+####
+#
+test ArrayFIFOQueue-2.4 {Set container constructor with size} {
+    set container [java::new ptolemy.kernel.util.NamedObj "parent"]
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue \
+	    $container 3]
+    [$queue getContainer] getName
+} {parent}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-2.5 {INFINITE_CAPACITY} {
+    java::field ptolemy.domains.sdf.kernel.ArrayFIFOQueue INFINITE_CAPACITY
+} {-1}
+
 
     ######################################################################
     ######################################################################
@@ -134,12 +151,21 @@ test ArrayFIFOQueue-3.1 {Put data on a queue} {
 ####
 #
 test ArrayFIFOQueue-3.2 {Get individual items} {
-    list \
-	    [[java::cast ptolemy.kernel.util.NamedObj [$queue get 1]] \
-            getName] \
-            [$queue size] \
-            [$queue isFull]
-} {n2 5 0}
+   
+    catch {[$queue get -1]} s0
+    set a0 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 0]] \
+            getName] 
+    set a1 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 1]] \
+            getName] 
+    set a2 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 2]] \
+            getName] 
+    set a3 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 3]] \
+            getName] 
+    set a4 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 4]] \
+            getName] 
+    catch {[$queue get 5]} s1 
+    list $s0 $a0 $a1 $a2 $a3 $a4 $s1 [$queue size] [$queue isFull]
+} {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} n1 n2 n3 n4 n5 {java.util.NoSuchElementException: No object at offset 5 in the FIFOQueue.} 5 0}
 
 ######################################################################
 ####
@@ -157,6 +183,20 @@ test ArrayFIFOQueue-3.3 {Take items} {
 test ArrayFIFOQueue-4.1 {Inserting elements into a queue of bounded size} {
     set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
     $queue setCapacity 3
+    list \
+            [$queue {put java.lang.Object} $n1] \
+            [$queue {put java.lang.Object} $n2] \
+            [$queue {put java.lang.Object} $n3] \
+            [$queue {put java.lang.Object} $n4] \
+            [_testEnums elements $queue]
+} {1 1 1 0 {{n1 n2 n3}}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.1 {Inserting elements into a queue of bounded size \
+    using size constructor} {
+set queue [java::new {ptolemy.domains.sdf.kernel.ArrayFIFOQueue int} 3]
     list \
             [$queue {put java.lang.Object} $n1] \
             [$queue {put java.lang.Object} $n2] \
