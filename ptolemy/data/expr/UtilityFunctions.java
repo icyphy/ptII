@@ -503,14 +503,14 @@ public class UtilityFunctions {
      *  classpath are understood. If the file contains text that is a
      *  valid expression in the expression language, then that text can
      *  interpreted using the eval() function in
-     *  ptolemy.data.expr.ASTPtFunctionNode.
+     *  ptolemy.data.expr.ASTPtFunctionApplicationNode.
      *  For example: <code>eval(readFile("<i>filename</i>"))</code><p>
      *
      *  @param filename The name of the file to read from.
      *  @return A StringToken containing the text contained in
      *   the specified file.
      *  @exception IllegalActionException If the file cannot be opened.
-     *  @see ptolemy.data.expr.ASTPtFunctionNode
+     *  @see ptolemy.data.expr.ASTPtFunctionApplicationNode
      *  @see #readResource(String)
      */
     public static StringToken readFile(String filename)
@@ -629,14 +629,14 @@ public class UtilityFunctions {
      *  If the file contains text that is a
      *  valid expression in the expression language, then that text can
      *  interpreted using the eval() function in
-     *  ptolemy.data.expr.ASTPtFunctionNode.
+     *  ptolemy.data.expr.ASTPtFunctionApplicationNode.
      *  For example: <code>eval(readFile("<i>filename</i>"))</code><p>
      *
      *  @param name The name of the resource to read from.
      *  @return A StringToken containing the text contained in
      *   the specified resource.
      *  @exception IllegalActionException If the resource cannot be opened.
-     *  @see ptolemy.data.expr.ASTPtFunctionNode
+     *  @see ptolemy.data.expr.ASTPtFunctionApplicationNode
      *  @see #readFile(String)
      */
     public static StringToken readResource(String name)

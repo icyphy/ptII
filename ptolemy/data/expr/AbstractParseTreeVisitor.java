@@ -69,9 +69,9 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtBitwiseNode");
     }
-    public void visitFunctionNode(ASTPtFunctionNode node)
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtFunctionNode");
+        throw _unsupportedVisitException("ASTPtFunctionApplicationNode");
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {

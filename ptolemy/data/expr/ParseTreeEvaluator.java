@@ -245,12 +245,12 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     /** Apply a function to the children of the specified node.
      *  This also handles indexing into matrices and arrays, which look
      *  like function calls.
-     *  
+     *
      *  In the simplest cases, if the function is being applied to an
      *  expression that evaluated to a FunctionToken, an ArrayToken,
      *  or a MatrixToken, then the function application is simply
      *  applied to the available arguments.
-     *  
+     *
      *  More complex is if the function is being applied to an
      *  expression that does not evaluate as above, resulting in three
      *  cases:  Of primary interest is a function node that represents the
@@ -266,7 +266,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  parser.  The result is then evaluated *in this evaluator*.
      *  This has the effect that any identifiers are evaluated in the
      *  same scope as the original expression.
-     * 
+     *
      *  A third case is the matlab() function, which is also handled
      *  specially in this method, allowing the evaluation of
      *  expressions in matlab if matlab is installed.  The matlab
@@ -284,7 +284,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    public void visitFunctionNode(ASTPtFunctionNode node)
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         // A flag for debugging.
         boolean debug = false;
@@ -798,7 +798,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         _evaluatedChildToken = (result);
         if(node.isConstant()) {
             node.setToken(_evaluatedChildToken);
-        }    
+        }
     }
 
     /** Multiply the children of the specified node.

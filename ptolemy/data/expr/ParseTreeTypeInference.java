@@ -155,7 +155,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
-    public void visitFunctionNode(ASTPtFunctionNode node)
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
 
@@ -208,7 +208,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 ((ASTPtRootNode)node.jjtGetChild(0 + 1));
             ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
             try {
-                ptolemy.data.Token t = 
+                ptolemy.data.Token t =
                     parseTreeEvaluator.evaluateParseTree(castTypeNode, _scope);
                 _setType(node, t.getType());
             } catch (IllegalActionException ex) {
@@ -381,9 +381,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
-        
+
         // FIXME: Check that exponents are valid??
-        
+
         Type baseType = childTypes[0];
         _setType(node, baseType);
     }
@@ -539,7 +539,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             _inferChild(node, i);
             Type type = _inferredChildType;
             if (type == null) {
-                throw new RuntimeException("node " + node.jjtGetChild(i) 
+                throw new RuntimeException("node " + node.jjtGetChild(i)
                         + " has no type.");
             }
             types[i] = type;

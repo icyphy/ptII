@@ -1,4 +1,4 @@
-/* ASTPtFunctionNode represents function nodes or array references in the parse tree
+/* ASTPtFunctionApplicationNode represents function nodes or array references in the parse tree
 
  Copyright (c) 1998-2003 The Regents of the University of California and
  Research in Motion Limited.

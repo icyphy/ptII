@@ -1,4 +1,4 @@
-/* ASTPtFunctionNode represents function nodes or array references in the parse tree
+/* ASTPtFunctionApplicationNode represents function nodes or array references in the parse tree
 
  Copyright (c) 1998-2003 The Regents of the University of California and
  Research in Motion Limited.
@@ -46,7 +46,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
-//// ASTPtFunctionNode
+//// ASTPtFunctionApplicationNode
 /**
  This class represents an expression that is the application of a
 function in the parse tree.  The first child of this node is the child
@@ -55,7 +55,7 @@ node that evaluates to a FunctionToken, or a leaf node that refers to
 the name of a function registered with the parser.  The remaining
 children are node representing the arguments of the function.  For
 information on the evaluation of functions, refer to {@link
-ptolemy.data.expr.ParseTreeEvaluator#visitFunctionNode}.
+ptolemy.data.expr.ParseTreeEvaluator#visitFunctionApplicationNode}.
 
 @author Neil Smyth, Edward A. Lee, Steve Neuendorffer
 @author Zoltan Kemenczy, Research in Motion Limited
@@ -66,13 +66,13 @@ ptolemy.data.expr.ParseTreeEvaluator#visitFunctionNode}.
 @see ptolemy.data.expr.UtilityFunctions
 @see java.lang.Math
 */
-public class ASTPtFunctionNode extends ASTPtRootNode {
+public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
 
-    public ASTPtFunctionNode(int id) {
+    public ASTPtFunctionApplicationNode(int id) {
         super(id);
     }
 
-    public ASTPtFunctionNode(PtParser p, int id) {
+    public ASTPtFunctionApplicationNode(PtParser p, int id) {
         super(p, id);
     }
 
@@ -98,7 +98,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
      */
     public void visit(ParseTreeVisitor visitor)
             throws IllegalActionException {
-        visitor.visitFunctionNode(this);
+        visitor.visitFunctionApplicationNode(this);
     }
 
 }

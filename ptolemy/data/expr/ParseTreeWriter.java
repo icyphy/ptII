@@ -94,7 +94,7 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         _printChildrenSeparated(node, node.getOperator().image);
         _writer.print(")");
     }
-    public void visitFunctionNode(ASTPtFunctionNode node)
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException  {
         _printChild(node, 0);
         _writer.print("(");

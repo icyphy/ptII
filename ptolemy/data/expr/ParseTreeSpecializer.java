@@ -96,7 +96,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         _defaultVisit(node);
 
     }
-    public void visitFunctionNode(ASTPtFunctionNode node)
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }

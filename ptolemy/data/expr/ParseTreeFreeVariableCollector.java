@@ -84,7 +84,7 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         _visitAllChildren(node);
     }
-    public void visitFunctionNode(ASTPtFunctionNode node)
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }

@@ -60,7 +60,7 @@ public interface ParseTreeVisitor {
             throws IllegalActionException;
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException;
-    public void visitFunctionNode(ASTPtFunctionNode node)
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException;
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException;

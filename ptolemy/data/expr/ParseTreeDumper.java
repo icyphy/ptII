@@ -73,7 +73,7 @@ public class ParseTreeDumper extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         _displayNode(node);
     }
-    public void visitFunctionNode(ASTPtFunctionNode node)
+    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException  {
         _displayNode(node);
     }

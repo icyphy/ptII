@@ -70,7 +70,7 @@ the kernel code, method calls on Tokens are supported with the following
 syntax  (token).methodName(comma separated arguments).
 <p>
 Method arguments are processed as described in
-{@link ASTPtFunctionNode}. However, to allow element-by-element method
+{@link ASTPtFunctionApplicationNode}. However, to allow element-by-element method
 calls on ArrayTokens, the following sequence is followed here to find
 a method to execute:
 <ul>

@@ -117,7 +117,7 @@ invalid.
 @version $Id$
 
 @see ptolemy.data.expr.ASTPtBitwiseNode
-@see ptolemy.data.expr.ASTPtFunctionNode
+@see ptolemy.data.expr.ASTPtFunctionApplicationNode
 @see ptolemy.data.expr.ASTPtFunctionalIfNode
 @see ptolemy.data.expr.ASTPtLeafNode
 @see ptolemy.data.expr.ASTPtLogicalNode
@@ -1167,7 +1167,7 @@ void element() #void :
         boolean hasName = false;
         boolean hasCall = false;
         String name = null;
-      ASTPtFunctionNode jjtn002 = new ASTPtFunctionNode(JJTPTFUNCTIONNODE);
+      ASTPtFunctionApplicationNode jjtn002 = new ASTPtFunctionApplicationNode(JJTPTFUNCTIONNODE);
       boolean jjtc002 = true;
       jjtree.openNodeScope(jjtn002);
     try {
@@ -1624,7 +1624,7 @@ String tidied, x;
 
   final public void function() throws ParseException {
  /*@bgen(jjtree) PtFunctionNode */
-  ASTPtFunctionNode jjtn000 = new ASTPtFunctionNode(JJTPTFUNCTIONNODE);
+  ASTPtFunctionApplicationNode jjtn000 = new ASTPtFunctionApplicationNode(JJTPTFUNCTIONNODE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
