@@ -60,7 +60,7 @@ of the corresponding type.
 
 @author Rachel Zhou
 @version $Id$
-@since Ptolemy II 0.4
+@since Ptolemy II 3.1
 */
 
 public class ElementsToArray extends Transformer {

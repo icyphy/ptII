@@ -66,7 +66,7 @@ Kluwer, 2004.
 <p>
 @author Rachel Zhou, contributor: Edward A. Lee
 @version $Id$
-@since Ptolemy II 3.0
+@since Ptolemy II 3.1
 */
 
 public class TrellisDecoder extends ViterbiDecoder {
