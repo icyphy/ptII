@@ -59,7 +59,9 @@ JSRCS1_0 = \
 	PlotPoint.java \
 
 # Sources that require JDK1.1 and later.
-JSRCS1_1 = 	Pxgraph.java
+JSRCS1_1 = \
+	Message.class \
+	Pxgraph.java
 
 JSRCS = $(JSRCS1_0) $(JSRCS1_1)
 
@@ -78,7 +80,9 @@ JCLASS1_0 = \
 	PlotLiveDemo.class \
 	PlotPoint.class
 
-JCLASS1_1 = Pxgraph.class
+JCLASS1_1 = \
+	Message.class \
+	Pxgraph.class
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
