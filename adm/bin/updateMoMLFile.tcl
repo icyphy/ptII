@@ -29,12 +29,18 @@
 # 						COPYRIGHTENDKEY
 
 proc updateMoMLFile { {file ../../ptolemy/domains/ct/demo/CarTracking/CarTracking.xml} } {
+    set outputFile "updateMoMLFiles.xml"
+    file delete -force $outputFile
+
     puts "parsing $file"
     set parser [java::new ptolemy.moml.MoMLParser]
     #$parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
     set toplevel [$parser parseFile $file]
-    set outputFile "updateMoMLFiles.xml"
+
+    if  {$toplevel == [java::null]} {
+	error "$file: toplevel was null"
+    }
     set fileOutputStream [java::new java.io.FileOutputStream $outputFile]
     set outputStreamWriter [java::new java.io.OutputStreamWriter \
 	    $fileOutputStream]
@@ -43,7 +49,6 @@ proc updateMoMLFile { {file ../../ptolemy/domains/ct/demo/CarTracking/CarTrackin
     $outputStreamWriter close
 }
 
-puts "$argv0 $argc $argv"
 if {$argc > 0 } {
     updateMoMLFile $argv
 }
