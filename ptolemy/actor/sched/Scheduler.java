@@ -95,8 +95,8 @@ public class Scheduler extends NamedObj {
      *  Increment the version number of the workspace.
      *  @param workspace Object for synchronization and version tracking.
      */
-    public Scheduler(Workspace ws) {
-        super(ws);
+    public Scheduler(Workspace workspace) {
+        super(workspace);
         try {
             setName(_DEFAULT_SCHEDULER_NAME);
         } catch (KernelException ex) {
@@ -113,13 +113,14 @@ public class Scheduler extends NamedObj {
      *  yourself if you want it there).
      *  The result is a new scheduler with no container, and no valid schedule.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return The new Scheduler.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Scheduler newobj = (Scheduler) super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Scheduler newobj = (Scheduler) super.clone(workspace);
         newobj._container = null;
         newobj._valid = false;
         newobj._cachedSchedule = null;
